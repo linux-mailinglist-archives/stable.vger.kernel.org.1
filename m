@@ -2,203 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E957736D43
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 15:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10241736D46
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 15:26:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233022AbjFTNZu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 09:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56784 "EHLO
+        id S229478AbjFTN0Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 09:26:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233400AbjFTNZb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 09:25:31 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35ABD199A
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 06:24:59 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1b520c77de0so21631915ad.0
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 06:24:59 -0700 (PDT)
+        with ESMTP id S230466AbjFTN0T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 09:26:19 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B78371718;
+        Tue, 20 Jun 2023 06:26:05 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-5196a728d90so6279599a12.0;
+        Tue, 20 Jun 2023 06:26:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1687267498; x=1689859498;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=re+SyBILUicxlS34iUets7Pi+i9q+UR/ma+OQFUNz3A=;
-        b=MYxidG8ghbS9JZpyM0oIyctDaxTcuG0OjKbKNW5EmF0G2lZtyabzimYhrZkGaI1XQ3
-         UQmJwgKBI3acaQe8oPPZ0xWIvVQYUF5tEZjvjsek+aLid2jDgKfL91VBZSRhlJIS9BrD
-         E7ALLVoCgge9Jk8TCSdpdFBuDz9UR6cXt3CSY=
+        d=gmail.com; s=20221208; t=1687267564; x=1689859564;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=IPaTUj5pEcTFbztNjeiIr+QIhC6HKA9RU60IVRtSiWs=;
+        b=qQG8U3EdxAxJW3XEyHis9Y9EIKVX5JhaP23fnCKAZg3tJLo8ZCC/5kCBfVw8FCt6L8
+         lF17idAtlMeSiABUI26GK0fzmkFoT9iGfro/cQi49yiBCs8I6BtqwC+/zl8NwTb4f8hp
+         paP4gbXtaGnmsASB+yZ4jHxzLK73p2CozKWJo3u00UVz9zoswD6pJyPZ2dlDHWGlSA3v
+         YKA0AYL/pRiftgh9GYjrjsD2zeREwLS3nUREczcAdh8Tf6bdPYscme/TOW6bS0ZR2Gew
+         jzDVmIXkz09bSJmZYOGK1+eHpc95ql/42MQZZ3bW2eWW3e8+eH3tbaB6M70CuSD0M4ot
+         vB5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687267498; x=1689859498;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=re+SyBILUicxlS34iUets7Pi+i9q+UR/ma+OQFUNz3A=;
-        b=Op1yCr+6bR1iBX/uLuuHoM5arqJtf5f9OEfFmxAbIMs23r8EFrUD/iGOBG67tVtImL
-         oHoWzZJgtUKMH+imiOKiUVV8m988faqwe4WUxP+H1NAqM6OaGhxt+SJ4i8tXhpXARhT4
-         gBpjNxGPz02VZP44ouP0zV2dVBb8i1hbG5FobYwx5WfU3yj/1CHYWcNG/DtYhepvCeBJ
-         t6YRNUC9TCq+V+H6Dw6fyVkPwES47aj9W01YDALkJ2kj6Uro6sfh3Gbf2HRiFVQuVPea
-         e5bfcFUFFO7zn0PAyt6ziBfTIuZ8WepQlXDH/iqfqilcUGXYM0AKco92HAMCjGGdP1z5
-         OeIg==
-X-Gm-Message-State: AC+VfDyAkxGrOHLsrX2kX4GnlPAwYVedI4jRbytW4ALZemCin/mfmc2M
-        xN+ai2TzJrNK+3QOLIooogSpE7JD4CMxsZ6jxKRut6k5VN9JK4/ZWC2f82hP
-X-Google-Smtp-Source: ACHHUZ5K3/8TLzGIfM4jjvCSa4fJcEYPFzG/qAHAv1A2vluglx+NqbztVcunHa0YS421ZIYE+QiMZfeSH0B6my2vaRA=
-X-Received: by 2002:a17:902:e548:b0:1b6:788a:551d with SMTP id
- n8-20020a170902e54800b001b6788a551dmr2794705plf.44.1687267498470; Tue, 20 Jun
- 2023 06:24:58 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687267564; x=1689859564;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IPaTUj5pEcTFbztNjeiIr+QIhC6HKA9RU60IVRtSiWs=;
+        b=CGsHz98YxgMX6RW3jdb17C4l1wuivNCRUIUBdgv1/8g6rKVjbincFGInHjqWpGB8rq
+         CNEI1vvmYdvYWpkZSJZLSRDiWJ0cBft0At81ygvJ5z7fZBW2Y8Cy/X+3+hSKlOkP1m2S
+         61hUQ08n1JmfvS4l1LAVe64WNRAiUI5ZJD/l2ggGaj3db8oUcI3mJo1Awd0YUSvzXR7S
+         uqnBml19JK2q8MlPlkXV5qoggCWZE/8Uwbp5/dtGwxm6ePvQ7hKta0Ig3l/VV6/bVQ7Z
+         XlF3qQ4WkXWiluHxX8Ukb+n/VrYIE7H1kaWVpigHORe0MttUkjHi8mE2K4evvaclsHCE
+         PFwQ==
+X-Gm-Message-State: AC+VfDwXWQH7ECTqQMD+T83863EHy7wJvhPOC3eI2C3zg6xya2TbLVm8
+        hiRsLzR3g5BZjRhq3QMuEmz4GzwSycxfAMSWmP3WdiisCJQ=
+X-Google-Smtp-Source: ACHHUZ5UXrb42EtfrSi6eUbr/A6TSZ6RyCP5szc8spZeltVx3rKadZBg972Ya0mPjCa21LQwjtMjeMxtYe2nCRVMvSw=
+X-Received: by 2002:a05:6402:1acd:b0:51a:453b:a493 with SMTP id
+ ba13-20020a0564021acd00b0051a453ba493mr6472200edb.37.1687267563978; Tue, 20
+ Jun 2023 06:26:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230615145607.3469985-1-revest@chromium.org> <CAEf4BzbjCt3tKJ40tg12rMjCLXrm7UoGuOdC62vGnpTTt8-buw@mail.gmail.com>
- <CABRcYmK=yXDumZj3tdW7341+sSV1zmZw1UpQkfSF6RFgnBQjew@mail.gmail.com> <c26de68d-4a56-03a0-2625-25c7e2997d45@meta.com>
-In-Reply-To: <c26de68d-4a56-03a0-2625-25c7e2997d45@meta.com>
-From:   Florent Revest <revest@chromium.org>
-Date:   Tue, 20 Jun 2023 15:24:47 +0200
-Message-ID: <CABRcYm+-x-Dou0zMgTPEXL+7dLoE7xDFQSLR+sU_Pyjg9=Ub0g@mail.gmail.com>
-Subject: Re: [PATCH bpf] bpf/btf: Accept function names that contain dots
-To:     Yonghong Song <yhs@meta.com>
-Cc:     Andrii Nakryiko <andrii.nakryiko@gmail.com>, bpf@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-        martin.lau@linux.dev, ast@kernel.org, daniel@iogearbox.net,
-        andrii@kernel.org, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, nathan@kernel.org,
-        ndesaulniers@google.com, trix@redhat.com, stable@vger.kernel.org
+From:   Tim Lewis <elatllat@gmail.com>
+Date:   Tue, 20 Jun 2023 09:25:52 -0400
+Message-ID: <CA+3zgmsC2qKph_wDfknSa5eq6EnJqxzzj4K7G4_ZxGr5ZQTqbA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 00/89] 5.10.185-rc1 review
+To:     osmtendev@gmail.com, Greg KH <gregkh@linuxfoundation.org>
+Cc:     open list <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 19, 2023 at 8:17=E2=80=AFPM Yonghong Song <yhs@meta.com> wrote:
->
->
->
-> On 6/19/23 7:03 AM, Florent Revest wrote:
-> > On Fri, Jun 16, 2023 at 6:57=E2=80=AFPM Andrii Nakryiko
-> > <andrii.nakryiko@gmail.com> wrote:
-> >>
-> >> On Thu, Jun 15, 2023 at 7:56=E2=80=AFAM Florent Revest <revest@chromiu=
-m.org> wrote:
-> >>>
-> >>> When building a kernel with LLVM=3D1, LLVM_IAS=3D0 and CONFIG_KASAN=
-=3Dy, LLVM
-> >>> leaves DWARF tags for the "asan.module_ctor" & co symbols. In turn,
-> >>> pahole creates BTF_KIND_FUNC entries for these and this makes the BTF
-> >>> metadata validation fail because they contain a dot.
-> >>>
-> >>> In a dramatic turn of event, this BTF verification failure can cause
-> >>> the netfilter_bpf initialization to fail, causing netfilter_core to
-> >>> free the netfilter_helper hashmap and netfilter_ftp to trigger a
-> >>> use-after-free. The risk of u-a-f in netfilter will be addressed
-> >>> separately but the existence of "asan.module_ctor" debug info under s=
-ome
-> >>> build conditions sounds like a good enough reason to accept functions
-> >>> that contain dots in BTF.
-> >>
-> >> I don't see much harm in allowing dots. There are also all those .isra
-> >> and other modifications to functions that we currently don't have in
-> >> BTF, but with the discussions about recording function addrs we might
-> >> eventually have those as well. So:
-> >>
-> >> Acked-by: Andrii Nakryiko <andrii@kernel.org>
-> >
-> > Thanks Andrii! :)
-> >
-> >>> Cc: stable@vger.kernel.org
-> >>> Fixes: 1dc92851849c ("bpf: kernel side support for BTF Var and DataSe=
-c")
-> >
-> > So do you think these trailers should be kept ? I suppose we can
-> > either see this as a "new feature" to accommodate .isra that should go
-> > through bpf-next or as a bug fix that goes through bpf and gets
-> > backported to stable (without this, BTF wouldn't work on old kernels
-> > built under a new clang and with LLVM_IAS=3D0 and CONFIG_KASAN=3Dy so t=
-his
-> > sounds like a legitimate bug fix to me, I just wanted to double check)
->
-> How many people really build the kernel with
->     LLVM=3D1 LLVM_IAS=3D0
-> which uses clang compiler ans gcc 'as'.
-> I think distro most likely won't do this if they intend to
-> build the kernel with clang.
+Is it intentional and acceptable for dmesg to now log 14 "Failed to
+create debugfs directory" messages?
 
-I tend to agree with you
+I assume it's related to "regulator: Fix error checking for debugfs_create_dir".
 
-> Note that
->     LLVM=3D1
-> implies to use both clang compiler and clang assembler.
+dmesg 398 lines: diff ./5.10.184-rc1-dirty.txt ./5.10.185-rc1-dirty.txt
+19a20
+> 12V: Failed to create debugfs directory
+20a22
+> 5V: Failed to create debugfs directory
+69a72
+> FLASH_1V8: Failed to create debugfs directory
+72a76
+> HUB_5V: Failed to create debugfs directory
+121a126,127
+> TFLASH_VDD: Failed to create debugfs directory
+> TF_IO: Failed to create debugfs directory
+122a129
+> USB_PWR_EN: Failed to create debugfs directory
+123a131
+> VCC_1V8: Failed to create debugfs directory
+124a133
+> VCC_3V3: Failed to create debugfs directory
+125a135
+> VDDAO_1V8: Failed to create debugfs directory
+126a137
+> VDDAO_3V3: Failed to create debugfs directory
+127a139
+> VDDCPU: Failed to create debugfs directory
+278a291,292
+> regulator-dummy: Failed to create debugfs directory
+> regulator: Failed to create debugfs directory
 
-However, this is only true since:
-f12b034afeb3 ("scripts/Makefile.clang: default to LLVM_IAS=3D1")
+kselftest 270 tests: diff ./out_5.10.184-rc1-dirty.txt
+./out_5.10.185-rc1-dirty.txt
 
-5.10 stable for example does not have that commit and LLVM_IAS=3D0 is
-still the default there. (actually that's how I stumbled upon this: by
-building a 5.10 LTS and then finding a way to reproduce it upstream by
-disabling LLVM_IAS)
-
-> Using clang17 and 'LLVM=3D1 LLVM_IAS=3D0', with latest bpf-next,
-> I actually hit some build errors like:
->
-> /tmp/video-bios-59fa52.s: Assembler messages:
-> /tmp/video-bios-59fa52.s:4: Error: junk at end of line, first
-> unrecognized character is `"'
-> /tmp/video-bios-59fa52.s:4: Error: file number less than one
-> /tmp/video-bios-59fa52.s:5: Error: junk at end of line, first
-> unrecognized character is `"'
-> /tmp/video-bios-59fa52.s:6: Error: junk at end of line, first
-> unrecognized character is `"'
-> /tmp/video-bios-59fa52.s:7: Error: junk at end of line, first
-> unrecognized character is `"'
-> /tmp/video-bios-59fa52.s:8: Error: junk at end of line, first
-> unrecognized character is `"'
-> /tmp/video-bios-59fa52.s:9: Error: junk at end of line, first
-> unrecognized character is `"'
-> /tmp/video-bios-59fa52.s:10: Error: junk at end of line, first
-> unrecognized character is `"'
-> /tmp/video-bios-59fa52.s:68: Error: junk at end of line, first
-> unrecognized character is `"'
-> clang: error: assembler command failed with exit code 1 (use -v to see
-> invocation)
-> make[4]: *** [/home/yhs/work/bpf-next/scripts/Makefile.build:252:
-> arch/x86/realmode/rm/video-bios.o] Error 1
-> make[4]: *** Waiting for unfinished jobs....
-> /tmp/wakemain-88777c.s: Assembler messages:
-> /tmp/wakemain-88777c.s:4: Error: junk at end of line, first unrecognized
-> character is `"'
-> /tmp/wakemain-88777c.s:4: Error: file number less than one
-> /tmp/wakemain-88777c.s:5: Error: junk at end of line, first unrecognized
-> character is `"'
-> /tmp/wakemain-88777c.s:6: Error: junk at end of line, first unrecognized
-> character is `"'
-> /tmp/wakemain-88777c.s:7: Error: junk at end of line, first unrecognized
-> character is `"'
-> /tmp/wakemain-88777c.s:8: Error: junk at end of line, first unrecognized
-> character is `"'
-> /tmp/wakemain-88777c.s:81: Error: junk at end of line, first
-> unrecognized character is `"'
-> /tmp/wakemain-88777c.s:312: Error: junk at end of line, first
-> unrecognized character is `"'
-> clang: error: assembler command failed with exit code 1 (use -v to see
-> invocation)
->
-> Potentially because of my local gnu assembler 2.30-120.el8 won't work
-> with some syntax generated by clang. Mixing clang compiler and arbitrary
-> gnu assembler are not a good idea (see the above example). It might
-> work with close-to-latest gnu assembler.
-
-I did not hit this bug with clang 17 and bpf-next so it's probably an
-incompatibility with that gnu assembler indeed.
-
-> To support function name like '<fname>.isra', some llvm work will be
-> needed, and it may take some time.
->
-> So in my opinion, this patch is NOT a bug fix. It won't affect distro.
-> Whether we should backport to the old kernel, I am not sure whether it
-> is absolutely necessary as casual build can always remove LLVM_IAS=3D0 or
-> hack the kernel source itself.
-
-If you think it's not worth backporting to 5.10 (where LLVM_IAS=3D0 is
-the default) then I could drop these trailers and send it to bpf-next
-with a different justification. Either way is fine by me.
+ltp 865 tests: diff ./out_5.10.184-rc1-dirty.txt ./out_5.10.185-rc1-dirty.txt
