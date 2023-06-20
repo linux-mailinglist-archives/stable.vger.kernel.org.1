@@ -2,124 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 062EB737148
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 18:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A548737165
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 18:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233201AbjFTQQ5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 12:16:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49448 "EHLO
+        id S230320AbjFTQZB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 12:25:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230020AbjFTQQ4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 12:16:56 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B40695;
-        Tue, 20 Jun 2023 09:16:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
-        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=AeL+ePUG2U+gtbaPVRNCeIftvITy04qZEoWPXivPMGM=; b=gSvQNHy5jmJwaB8fkE8RCWcVzk
-        awSwFgQ72MtyCwUP4Dt2Rs+U5WnsTVmsOT6G9l2RkOoIIRZO4rtnEuCKa3EhPMJ3GrVLAWZp/pasI
-        xk8m3QGZP1vUmPW1ovtBts1TiQchVrP/l2gkZjUpwaoUipbyRHWM8eroglEx3wWmT4Vk=;
-Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:49610 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1qBe29-0001IH-PZ; Tue, 20 Jun 2023 12:16:46 -0400
-Date:   Tue, 20 Jun 2023 12:16:45 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org
-Message-Id: <20230620121645.512b31a872306b43a276bbac@hugovil.com>
-In-Reply-To: <CAHp75VcieuYqxWrO7rknx2ROYz=rnWnKV6s9eXZ5Zd1BKc6YMg@mail.gmail.com>
-References: <20230602152626.284324-1-hugo@hugovil.com>
-        <20230602152626.284324-6-hugo@hugovil.com>
-        <2023060454-cotton-paramount-e33e@gregkh>
-        <CAHp75Ve6W-hcB4YAeKukgv-uOEzBY7Tx5Sdf3doTRYKzNPcVGw@mail.gmail.com>
-        <20230604134459.3c3844012e9714fa2a61e642@hugovil.com>
-        <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
-        <20230620100846.d58436efc061fb91074fa7e5@hugovil.com>
-        <CAHp75VcWSVgA8LFLo0-b5TfKWdHb2GfLpXV-V3PZvthTv1Xc4A@mail.gmail.com>
-        <20230620113312.882d8f0c7d5603b1c93f33fb@hugovil.com>
-        <CAHp75VfGm6=ULW6kMjsg2OgB1z1T0YdmzvCTa3DFXXX-q_RnfA@mail.gmail.com>
-        <20230620114209.fb5272ad8cf5c5e2895d68b1@hugovil.com>
-        <CAHp75VcieuYqxWrO7rknx2ROYz=rnWnKV6s9eXZ5Zd1BKc6YMg@mail.gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 184.161.19.61
-X-SA-Exim-Mail-From: hugo@hugovil.com
+        with ESMTP id S231326AbjFTQY5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 12:24:57 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B92130
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 09:24:54 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3f900cd3f69so33674195e9.0
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 09:24:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares.net; s=google; t=1687278293; x=1689870293;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KZiePvQp+al3FKzqRXjxppdYvMnDeS6krGk8yswyq9Q=;
+        b=fI/g/+kKD47r49rMcbAbcJPR+NnnqJfKICsB7eL0o5deyMZKztnVC73myKB9iRtztC
+         4Hn0BVeTuQP5t3t6Vd1k5jHM9yZshtNWIibtlQifw+lCLjHcFVxKe/CwbIas9yv1JI1I
+         /o3pXsIVNndYYnHcL7rJwHZsviZxCM0bBIpwOyDEQcD9zkAgliutLs9JkDOgX9k4hQg9
+         PcdKCdRclYGW14VSRigyA/7ZedsVpVK0dpw0ck6Kq/qXcnM+dB4tt/yJ2ypTgsPovJi+
+         FB3kPB9w4ebf29536naaOnUlPMIS6Pm3IaMBt8Z0GobnS7irhx2wkgg5JppHa6/vNgU7
+         7S9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687278293; x=1689870293;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KZiePvQp+al3FKzqRXjxppdYvMnDeS6krGk8yswyq9Q=;
+        b=M9GrRfveRi6h7Tkylrw5mQVI3a7FOKnj1hzepmLSr1zKaa9IRo/L4scNV2QUIV0WZy
+         6cG2r72hUfRxVZlv9NZ76GMmnrZTxiG3PdV2PQwuVWolY2yJluGyi9ZJNMGOvWaXNrHL
+         JjZ2UEbL58xXPl9V1Zz+2czFgyKS0SzpUTDQ86X+2CjZeDOPkj/s6I6mB6EvtXjDPZEY
+         A2/S7gx4XpivhOQaIxPq5wPAODV90tXkC6LQ++EpmmpNvws0KPaQwJud/wAZs8lNwMxu
+         6AxAOt5GLaruPaKhwBtr+Y/MQZJS+73aywf0B2NnXP6AIOfnDlC9NdR+Q1IJ+FymGxLL
+         jEuQ==
+X-Gm-Message-State: AC+VfDxAn36ivGRXcglE7/BOSCqzhQMF7Jr7sfE236jXM7Y554LY3w91
+        AjFQJBbIKLcrcRQD0DVFzyt+nsUBxb1NRz41/Ct14A==
+X-Google-Smtp-Source: ACHHUZ4X++gNkgkYQ9NR8U6rUE/PLbEipynm2A8AZLg+tAv7RRPTrtOeK0PvfcP4WlkHktxcCRMyGQ==
+X-Received: by 2002:a1c:4b0c:0:b0:3f9:b0c2:9ffb with SMTP id y12-20020a1c4b0c000000b003f9b0c29ffbmr4371716wma.27.1687278293150;
+        Tue, 20 Jun 2023 09:24:53 -0700 (PDT)
+Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
+        by smtp.gmail.com with ESMTPSA id o19-20020a05600c511300b003f8fe1933e4sm15753056wms.3.2023.06.20.09.24.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jun 2023 09:24:52 -0700 (PDT)
+From:   Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH net 0/6] mptcp: fixes for 6.4
+Date:   Tue, 20 Jun 2023 18:24:17 +0200
+Message-Id: <20230620-upstream-net-20230620-misc-fixes-for-v6-4-v1-0-f36aa5eae8b9@tessares.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALHSkWQC/z2MSQ7CMAxFr1J5jUVIByGuglikwaFeNK3stEKqe
+ ndcJFi+P7wNlIRJ4VZtILSy8pQNLqcK4hDyi5CfxuCdr13nHS6zFqEwYqaC/3RkjZj4TYppElw
+ 7bLBtKTX11Sa+AfP1QQl7CTkOh7Gcf6qjnIW+d2vuYGp47PsHY5hLqJ0AAAA=
+To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Florian Westphal <fw@strlen.de>
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        stable@vger.kernel.org, Christoph Paasch <cpaasch@apple.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2098;
+ i=matthieu.baerts@tessares.net; h=from:subject:message-id;
+ bh=MNa5Zv2WFB2ZD/+VqaVhvs5aElxmpw5Mk5036ctzZRA=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkkdLTrZXGyWJzsiM93UPDbxMayZGi+q+lQqlwQ
+ lE9mY6wj3mJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZJHS0wAKCRD2t4JPQmmg
+ cyhvEACAvM4cqa/ydDhDCawGPClVtar8UI4PjG6ao+G7lEP8B4oH7sP+TDEawGc4JM+1Wm9JEWB
+ /suKJ6vMWwbL7i5lqpk8a6y35pfPVl184tth9q2Gtm2uRqWyfBAxesZHuCL+TuP/Ig/PAjmI87Z
+ RqfLcg9JJgesS/cRlZfCehYRspt3IYkEUyPHW/Wemr7CkNgq4qHshmy53yTpkOVMA3ebvHHi2sB
+ aKS8kLUOLOji9GNmLxE2CrURJHUjmLu8h2MXH6+32U7kDNlQIULT99mX8Y6ch4xedJZ3rcaceCh
+ kKt8adyNx8aW+1l/2mS6N/hphYDJP73sVSclLiTM9MPWPz3qa3mGXieAatqjrHHJWP1o9PDZIcV
+ EqG4w28G/z4AvQLP6r///6Un1qNhKfB9PXejE4riUT3UAYHmzNiHVl+HfwSHOBTSfPhDaryeAvC
+ 6PcztG2KdwEVTLDMshc29RC4uXC6QDvGL7TNrX76dChRcKC5wqSKwPSlYCmwMJmhx1fRtSmVsrf
+ OyBM5p0aV5gXN25PjmfAMvbLCxjrGRC4hXTr0Fcokmqhr0ucWMDqGg1VIRbTR57UmBH/SntfJ6i
+ M72B4ZuW1k3Zo0jzzhzsgt0lyQhOxfrvH4em7QehaDO7pFj1MbxPqQ0wvl+w3+WhOZDv/H4UuJf
+ TJVoZyX5aifKV8A==
+X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
-Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO
- configuration
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 20 Jun 2023 18:45:51 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+Patch 1 correctly handles disconnect() failures that can happen in some
+specific cases: now the socket state is set as unconnected as expected.
+That fixes an issue introduced in v6.2.
 
-> On Tue, Jun 20, 2023 at 6:42 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > On Tue, 20 Jun 2023 18:35:48 +0300
-> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > On Tue, Jun 20, 2023 at 6:33 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > > > On Tue, 20 Jun 2023 18:18:12 +0300
-> > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > > On Tue, Jun 20, 2023 at 5:08 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > > > > > On Sun, 4 Jun 2023 22:31:04 +0300
-> > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> 
-> ...
-> 
-> > > > > > did you have a chance to look at V8 (sent two weks ago) which fixed all
-> > > > > > of what we discussed?
-> > > > >
-> > > > > The patch 6 already has my tag, anything specific you want me to do?
-> > > >
-> > > > Hi Andy,
-> > > > I forgot to remove your "Reviewed-by: Andy..." tag before sending V8
-> > > > since there were some changes involved in patch 6 and I wanted you to
-> > > > review them. Can you confirm if the changes are correct?
-> > > >
-> > > > I also added a new patch "remove obsolete out_thread label". It has no
-> > > > real impact on the code generation itself, but maybe you can review and
-> > > > confirm if tags are ok or not, based on commit message and also
-> > > > additional commit message.
-> > >
-> > > Both are fine to me.
-> >
-> > Hi,
-> > Ok, thank you for reviewing this.
-> >
-> > I guess now we are good to go with this series if the stable tags and
-> > patches order are good after Greg's review?
-> 
-> Taking into account that we are at rc7, and even with Fixes tags in
-> your series I think Greg might take this after v6.5-0rc1 is out. It's
-> up to him how to proceed with that. Note, he usually has thousands of
-> patches in backlog, you might need to respin it after the above
-> mentioned rc1.
+Patch 2 fixes a divide by zero bug in mptcp_recvmsg() with a fix similar
+to a recent one from Eric Dumazet for TCP introducing sk_wait_pending
+flag. It should address an issue present in MPTCP from almost the
+beginning, from v5.9.
 
-Ok, understood.
+Patch 3 fixes a possible list corruption on passive MPJ even if the race
+seems very unlikely, better be safe than sorry. The possible issue is
+present from v5.17.
 
-Let's wait then.
+Patch 4 consolidates fallback and non fallback state machines to avoid
+leaking some MPTCP sockets. The fix is likely needed for versions from
+v5.11.
 
-Thank you.
-Hugo.
+Patch 5 drops code that is no longer used after the introduction of
+patch 4/6. This is not really a fix but this patch can probably land in
+the -net tree as well not to leave unused code.
+
+Patch 6 ensures listeners are unhashed before updating their sk status
+to avoid possible deadlocks when diag info are going to be retrieved
+with a lock. Even if it should not be visible with the way we are
+currently getting diag info, the issue is present from v5.17.
+
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+---
+Paolo Abeni (6):
+      mptcp: handle correctly disconnect() failures
+      mptcp: fix possible divide by zero in recvmsg()
+      mptcp: fix possible list corruption on passive MPJ
+      mptcp: consolidate fallback and non fallback state machine
+      mptcp: drop legacy code around RX EOF
+      mptcp: ensure listener is unhashed before updating the sk status
+
+ net/mptcp/pm_netlink.c |   1 +
+ net/mptcp/protocol.c   | 160 ++++++++++++++++++++-----------------------------
+ net/mptcp/protocol.h   |   5 +-
+ net/mptcp/subflow.c    |  17 +++---
+ 4 files changed, 76 insertions(+), 107 deletions(-)
+---
+base-commit: 9a43827e876c9a071826cc81783aa2222b020f1d
+change-id: 20230620-upstream-net-20230620-misc-fixes-for-v6-4-55ef43802324
+
+Best regards,
+-- 
+Matthieu Baerts <matthieu.baerts@tessares.net>
+
