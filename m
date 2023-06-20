@@ -2,59 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10241736D46
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 15:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 010D8736DA9
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 15:46:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjFTN0Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 09:26:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58326 "EHLO
+        id S233056AbjFTNqQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 09:46:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230466AbjFTN0T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 09:26:19 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B78371718;
-        Tue, 20 Jun 2023 06:26:05 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-5196a728d90so6279599a12.0;
-        Tue, 20 Jun 2023 06:26:05 -0700 (PDT)
+        with ESMTP id S232834AbjFTNqO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 09:46:14 -0400
+Received: from mail-vk1-xa34.google.com (mail-vk1-xa34.google.com [IPv6:2607:f8b0:4864:20::a34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8F0D1B6
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 06:46:12 -0700 (PDT)
+Received: by mail-vk1-xa34.google.com with SMTP id 71dfb90a1353d-4718f761333so1093114e0c.0
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 06:46:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687267564; x=1689859564;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IPaTUj5pEcTFbztNjeiIr+QIhC6HKA9RU60IVRtSiWs=;
-        b=qQG8U3EdxAxJW3XEyHis9Y9EIKVX5JhaP23fnCKAZg3tJLo8ZCC/5kCBfVw8FCt6L8
-         lF17idAtlMeSiABUI26GK0fzmkFoT9iGfro/cQi49yiBCs8I6BtqwC+/zl8NwTb4f8hp
-         paP4gbXtaGnmsASB+yZ4jHxzLK73p2CozKWJo3u00UVz9zoswD6pJyPZ2dlDHWGlSA3v
-         YKA0AYL/pRiftgh9GYjrjsD2zeREwLS3nUREczcAdh8Tf6bdPYscme/TOW6bS0ZR2Gew
-         jzDVmIXkz09bSJmZYOGK1+eHpc95ql/42MQZZ3bW2eWW3e8+eH3tbaB6M70CuSD0M4ot
-         vB5A==
+        d=linaro.org; s=google; t=1687268772; x=1689860772;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WcJCG56qv3SmBGDxfHQD2CThgz4mtwNLX+rRWuwbSbw=;
+        b=C6lG92cgKkpAVqdPf/+kfYhbGfzGw0ijZRCo1LZ5+Dds967JBZd/mMhSmnIalidWWy
+         yhBnmSpWERId0kz3K4S+579oH1XNQy4Cbl1bnGqVFB5YnbsCX1aEu6nBBtFocfURNW5l
+         ekCO0yCPIxJWbYbd4LLvhl0Uc3n45EhNWzFK6yQtBri1Zzy3EifQDSSerf2w2XZ83j31
+         o5A6taC6X1OVjML94K4vZnvwRPxyq8yFkVMSlwkURpbLS7f2IMIFqqfPG0fB4+0fcSgJ
+         8W8xcXeQ3HTNaau3QzwBgWGsWvCSqp9D2SkaNBuyhDZvk9cONGJHi0v5vqhmVzmWTaB+
+         zxMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687267564; x=1689859564;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IPaTUj5pEcTFbztNjeiIr+QIhC6HKA9RU60IVRtSiWs=;
-        b=CGsHz98YxgMX6RW3jdb17C4l1wuivNCRUIUBdgv1/8g6rKVjbincFGInHjqWpGB8rq
-         CNEI1vvmYdvYWpkZSJZLSRDiWJ0cBft0At81ygvJ5z7fZBW2Y8Cy/X+3+hSKlOkP1m2S
-         61hUQ08n1JmfvS4l1LAVe64WNRAiUI5ZJD/l2ggGaj3db8oUcI3mJo1Awd0YUSvzXR7S
-         uqnBml19JK2q8MlPlkXV5qoggCWZE/8Uwbp5/dtGwxm6ePvQ7hKta0Ig3l/VV6/bVQ7Z
-         XlF3qQ4WkXWiluHxX8Ukb+n/VrYIE7H1kaWVpigHORe0MttUkjHi8mE2K4evvaclsHCE
-         PFwQ==
-X-Gm-Message-State: AC+VfDwXWQH7ECTqQMD+T83863EHy7wJvhPOC3eI2C3zg6xya2TbLVm8
-        hiRsLzR3g5BZjRhq3QMuEmz4GzwSycxfAMSWmP3WdiisCJQ=
-X-Google-Smtp-Source: ACHHUZ5UXrb42EtfrSi6eUbr/A6TSZ6RyCP5szc8spZeltVx3rKadZBg972Ya0mPjCa21LQwjtMjeMxtYe2nCRVMvSw=
-X-Received: by 2002:a05:6402:1acd:b0:51a:453b:a493 with SMTP id
- ba13-20020a0564021acd00b0051a453ba493mr6472200edb.37.1687267563978; Tue, 20
- Jun 2023 06:26:03 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687268772; x=1689860772;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WcJCG56qv3SmBGDxfHQD2CThgz4mtwNLX+rRWuwbSbw=;
+        b=DVZUfruFUE7xeXzmSBirxUdX5lywwcOQyWtCHaw5Wl9GOl6W6JeyF5/2DvN+AURdvw
+         DNSNfuV/SAZmI/E3U/aVBXGq0w8YpiplMabU5hyYppU2sKS4OZSvgdyP2EAsZyhRu98s
+         m1hSJSHTsmQ3IrdkdjsFlk/VtNVtlHuERMq+tPNk+k59du01QPQTwftEKw1qysBrKcE5
+         eoq1uTY+cb9O0pSQ8s/w09+Ys2WfQNakLxFlVd/L6lH6Su9hlePDzkzXfuD2yhRCHfmy
+         i5vBLttxtGtb47Thd4eW7HCrKH8l9ubqz+UixtEsGy2sFjjMB7OIQoZDr59daSg5JpLR
+         U7wg==
+X-Gm-Message-State: AC+VfDwSs7+mjE0gsASzYL3aDCXGuEUxoXCzSsCruGL/mbuEaLNBhpab
+        aRRoI5kBN8YIgXlVrwkfwP23APiat5irVT+0ZP+1fWIuDxorwZsLIlxVCw==
+X-Google-Smtp-Source: ACHHUZ7LyLpgdajqJ8eAW188Ghx5k/iDZpGh8m5wskPIyToCVUBLZmhjwi1g5PH+fXKJaQSqUxbkRjlnnvaKZCQfIYk=
+X-Received: by 2002:a1f:e1c7:0:b0:46e:7102:7211 with SMTP id
+ y190-20020a1fe1c7000000b0046e71027211mr4487185vkg.11.1687268771687; Tue, 20
+ Jun 2023 06:46:11 -0700 (PDT)
 MIME-Version: 1.0
-From:   Tim Lewis <elatllat@gmail.com>
-Date:   Tue, 20 Jun 2023 09:25:52 -0400
-Message-ID: <CA+3zgmsC2qKph_wDfknSa5eq6EnJqxzzj4K7G4_ZxGr5ZQTqbA@mail.gmail.com>
-Subject: Re: [PATCH 5.10 00/89] 5.10.185-rc1 review
-To:     osmtendev@gmail.com, Greg KH <gregkh@linuxfoundation.org>
-Cc:     open list <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 20 Jun 2023 19:16:00 +0530
+Message-ID: <CA+G9fYuLStZT5JN0DngsfeTZf_TBLB1UQqEcNgDJYaut_27FvA@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/107] 5.15.118-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,40 +72,175 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Is it intentional and acceptable for dmesg to now log 14 "Failed to
-create debugfs directory" messages?
+On Mon, 19 Jun 2023 at 16:28, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.118 release.
+> There are 107 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 21 Jun 2023 10:21:12 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.118-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I assume it's related to "regulator: Fix error checking for debugfs_create_dir".
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-dmesg 398 lines: diff ./5.10.184-rc1-dirty.txt ./5.10.185-rc1-dirty.txt
-19a20
-> 12V: Failed to create debugfs directory
-20a22
-> 5V: Failed to create debugfs directory
-69a72
-> FLASH_1V8: Failed to create debugfs directory
-72a76
-> HUB_5V: Failed to create debugfs directory
-121a126,127
-> TFLASH_VDD: Failed to create debugfs directory
-> TF_IO: Failed to create debugfs directory
-122a129
-> USB_PWR_EN: Failed to create debugfs directory
-123a131
-> VCC_1V8: Failed to create debugfs directory
-124a133
-> VCC_3V3: Failed to create debugfs directory
-125a135
-> VDDAO_1V8: Failed to create debugfs directory
-126a137
-> VDDAO_3V3: Failed to create debugfs directory
-127a139
-> VDDCPU: Failed to create debugfs directory
-278a291,292
-> regulator-dummy: Failed to create debugfs directory
-> regulator: Failed to create debugfs directory
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-kselftest 270 tests: diff ./out_5.10.184-rc1-dirty.txt
-./out_5.10.185-rc1-dirty.txt
+## Build
+* kernel: 5.15.118-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: 71c980089d7356d54f2dc0be100c29d8c4534602
+* git describe: v5.15.117-108-g71c980089d73
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.117-108-g71c980089d73
 
-ltp 865 tests: diff ./out_5.10.184-rc1-dirty.txt ./out_5.10.185-rc1-dirty.txt
+## Test Regressions (compared to v5.15.116)
+
+## Metric Regressions (compared to v5.15.116)
+
+## Test Fixes (compared to v5.15.116)
+
+## Metric Fixes (compared to v5.15.116)
+
+## Test result summary
+total: 133496, pass: 108841, fail: 3835, skip: 20716, xfail: 104
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 117 total, 116 passed, 1 failed
+* arm64: 45 total, 43 passed, 2 failed
+* i386: 35 total, 32 passed, 3 failed
+* mips: 27 total, 26 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 27 total, 26 passed, 1 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 12 total, 11 passed, 1 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 38 total, 36 passed, 2 failed
+
+## Test suites summary
+* boot
+* fwts
+* igt-gpu-tools
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
