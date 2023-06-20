@@ -2,61 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4964C737167
+	by mail.lfdr.de (Postfix) with ESMTP id E8E51737169
 	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 18:25:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230105AbjFTQZC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 12:25:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52072 "EHLO
+        id S230404AbjFTQZD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 12:25:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230128AbjFTQZB (ORCPT
+        with ESMTP id S230347AbjFTQZB (ORCPT
         <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 12:25:01 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B671E2
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 09:24:58 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3f907f311ccso39805595e9.1
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 09:24:58 -0700 (PDT)
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CFE4109
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 09:25:00 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3f907f31247so30549505e9.2
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 09:25:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1687278297; x=1689870297;
+        d=tessares.net; s=google; t=1687278299; x=1689870299;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hkKFIXP3nMZMGbz/H4LzCpiIvuj0i5ReDDgyO4dldUo=;
-        b=18coibiYCs7GzrJghsUH9DUBCsPyEVkNrkbpk0vDqcJIh9zUM0bufg9NlHs6Z9fO6r
-         dMz2aY0NbwA4Nju/jfcX5KmcHhTFIfioomhCT1Pmo8qBm0DIBYntGie+3IxqZ5YImTA6
-         IUR7dDB2dlVEGsKWe2TAT8JYTUYNw3hGpnyCmMQNfYGyED7i5AcZNCds8u69SX5XLtA1
-         YLEzztzsZxQRzbYaJjyMeBMq9ZRS9AcBoMYcTGt6wZSkgUQ2SuKuVq1RhHxwKiqIj8+k
-         WJbjRc7aOGvjn5tOZzEMSMb9F0tK8R1oJRTlTT0rdJLmrxVVx/UjxuysMsqYkxQc5wEu
-         tpsw==
+        bh=Znjz9mhWIkZAzM3bIGR89qxXvHDPKMA75QcoPc3MXbs=;
+        b=fjHkYLbe0be2lmDc2DbzliG3daRP8Cwy06e4lWbBzihbpEvjrLDc4IpnCrklJPm9y/
+         TrVPeC4nxdDD+X9nVbCkLnjfNhQCO4ETgtXMWa7UoMTJy9HgEkfxkjDwQ1CdJeUtsoYS
+         JGzvkldrixNbVNxPNAvFOwqaF/XGy3paO6imJBQZgW9Vora7xJ49Yl3Qa3ii6TZjnbA0
+         um/RD4koPftR93T6D1qFbrFLliTFjM6MUBdRZ2fROywwJ5Ri5/evXYEEpBPGKVaJwNnX
+         CTw2OAEDgYCEaXnQV3KXDzD05oQVevUDcQzXLC5ZCtnrMKkf7hjqc32i88cFWHarU3GN
+         OLiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687278297; x=1689870297;
+        d=1e100.net; s=20221208; t=1687278299; x=1689870299;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hkKFIXP3nMZMGbz/H4LzCpiIvuj0i5ReDDgyO4dldUo=;
-        b=WMl2VuDxVzvBtpAKhIotrh9T9+pDiBAragGlelgh2vs1ivILzl7WhNcQq0ONzJVDn9
-         wFfVT3dyszEVO9EWH943euoB5vkn+3RiOKyqX8+LdcCUU8XXCgGLSyWZ8l7q/x7sAS31
-         CHL+jMxIt2C9RRWNwl3C/W27MxdOa3o2iBSvyx+aqqlE0obBl0PZOMmG0pJdUd+MyVNF
-         cnwRuV9686W0H7CJRFewDx7UPBtTy91WL+230zGxgzUXdtgQ0nTfm7Allmps6d2iW3UC
-         Ec+eO1Y06zPPiv9bHJypfi/GGJfwjx+ZkRHc0jM32V1p08fEw1ExqxStI8Z3IKCXgJNf
-         qFtA==
-X-Gm-Message-State: AC+VfDw9lhVS72XSWrik7P8UfNTcS+P/q9mtDmH2jrTdE0cwwo5jN09U
-        ppWNXGkcrD0HT55+PUTGDdDVOw==
-X-Google-Smtp-Source: ACHHUZ6D19ITO6vbLFwWP79kFcfvZdTYB/bmrCekR6gfLOy/7xPv/K6rlbzkrkXfngO+mYPk+ZgHMg==
-X-Received: by 2002:a05:600c:2113:b0:3f9:b4b5:e000 with SMTP id u19-20020a05600c211300b003f9b4b5e000mr2986300wml.23.1687278297174;
-        Tue, 20 Jun 2023 09:24:57 -0700 (PDT)
+        bh=Znjz9mhWIkZAzM3bIGR89qxXvHDPKMA75QcoPc3MXbs=;
+        b=KTCpLLJTfI4Km3BYFgthL1AllYve5ET88cWNq7F+s/XxX/i7nlBjnWJgn5oiDXANjJ
+         fpEo8V3n167CaLVfinvLPgd5d1TFG9eRgihagmZalrz/XSpfVaa6E4BoiZuvj3OrwcTZ
+         MzT0dlDdwmjXmkvpHFKr6aktkH7U47uwwHzyoDxI5xIphFSQAx7zW4Crv8VXnd7D264c
+         rovzywJcUXXg4eJ9y9tK6BRHTokiGQKrtFL/VaWplnI7riagK+dw0ZjDFj3q3BOQGHQE
+         RzFiNtSmRsj2xrryH3P9qrto8KiSzGy61e8zbQBBwg3gldTahhE98vU5Z3nVF/rm6n07
+         Ba6Q==
+X-Gm-Message-State: AC+VfDzA8N86NIHiY+/KP985fdP4DzKO7nvEbl7bnTDyvvtOpXWUzLpE
+        fb0qWjEQL02xoucqIjkf73datQ==
+X-Google-Smtp-Source: ACHHUZ4wiLUY+Cf2Yma1uofHbvwI5tQcGLbRTlxlEi+dJ/ojWLtPbmVMni/kTCWN4E5uhAJojkAVZg==
+X-Received: by 2002:a1c:6a07:0:b0:3f9:b13b:a1cd with SMTP id f7-20020a1c6a07000000b003f9b13ba1cdmr3960518wmc.16.1687278298940;
+        Tue, 20 Jun 2023 09:24:58 -0700 (PDT)
 Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id o19-20020a05600c511300b003f8fe1933e4sm15753056wms.3.2023.06.20.09.24.56
+        by smtp.gmail.com with ESMTPSA id o19-20020a05600c511300b003f8fe1933e4sm15753056wms.3.2023.06.20.09.24.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 09:24:56 -0700 (PDT)
+        Tue, 20 Jun 2023 09:24:58 -0700 (PDT)
 From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-Date:   Tue, 20 Jun 2023 18:24:21 +0200
-Subject: [PATCH net 4/6] mptcp: consolidate fallback and non fallback state
- machine
+Date:   Tue, 20 Jun 2023 18:24:23 +0200
+Subject: [PATCH net 6/6] mptcp: ensure listener is unhashed before updating
+ the sk status
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230620-upstream-net-20230620-misc-fixes-for-v6-4-v1-4-f36aa5eae8b9@tessares.net>
+Message-Id: <20230620-upstream-net-20230620-misc-fixes-for-v6-4-v1-6-f36aa5eae8b9@tessares.net>
 References: <20230620-upstream-net-20230620-misc-fixes-for-v6-4-v1-0-f36aa5eae8b9@tessares.net>
 In-Reply-To: <20230620-upstream-net-20230620-misc-fixes-for-v6-4-v1-0-f36aa5eae8b9@tessares.net>
 To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
@@ -67,29 +67,29 @@ To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
         Florian Westphal <fw@strlen.de>
 Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         Matthieu Baerts <matthieu.baerts@tessares.net>,
-        stable@vger.kernel.org
+        Christoph Paasch <cpaasch@apple.com>, stable@vger.kernel.org
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7143;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3462;
  i=matthieu.baerts@tessares.net; h=from:subject:message-id;
- bh=X1x+zUK0l1HOVh79Cqgvoe802mLCyclxUoTN2kDb43w=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkkdLUGDPzc0YG99qg/FkfAMjjoHdDODJEgDLik
- +lu8E1fYb6JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZJHS1AAKCRD2t4JPQmmg
- cw3/D/sGZxhaONGAkakyjkx7pamXXh3GIk/nU00UH7+2PNeMHP/RXfZc578fPEnP0A4bi/lJl9d
- cjQBnprmJzemTZZzaDozprqlkU7Tn16Tm+KYy1t6kGHQ7OkNSePiub6QBztKo3RmYfeqAAm3EPT
- 5ZAOZZGXXQb9U/X1GRQvIKw2ulHbi6gYGuvp0SAkboHVbSqPbjL5Qm2reZkxlXt5a+K291QjDzs
- qmnm2A1JE46P0BF8FHvDsBze1+MR1vy5o38Dzd3MiUFZSYH+ggwP60XZpObx2dAbqJUadr0Mxr9
- CUJJZYvd7shDEopIO8iVg1ItI/0Jytrdi/AEw58OHqwgGMIET4eDsm79nS4YPCxgFHuEJFtFoPZ
- z6bC1/ScFHYLKrWVWzGhPy+Vs3dchT9BeKeX39iHlnqEPh75L9XRM+K3J+vvTBy9KiRoqrwjtmt
- 8kFGRvjRhV0rOTDau5ajNlniSpo+MBSMSUeRiloS6V1fJmtkrCFknaoEaa6SEg0aMmdC4SE2R0x
- QvTbavnPL1TOht6DYdaea9kKUudBEWXLABbWnrSnNdVLMg7FskN9eOkqGablXcRNVMDapi8CP74
- 73+EQWw2ofTbGE7DnfYOY+ZA3zU221RyP75SvTSFqB2BGWVOK7iGo98lbz2bTScBRXfIBfzO5Dj
- IqOjdklVmePA4GQ==
+ bh=XrTodyZuRWl4/4OQC7pAwj7PljaPvC+0axsjgRjlweQ=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkkdLU59rYoS7PISGtstSFpyCDz13h50kwKhhsz
+ UQhglzkRciJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZJHS1AAKCRD2t4JPQmmg
+ c85lEADP17RDWFFhZabVkHlxq7xu4jsB18M64f5ecSn1Q1W0UimQtRHq5TqzSexe/LTDZwijN4R
+ usgqHa6AAfyU4TzLIu819mQKV0A2apCfVhzOAcMr2JDvez8Jl+UMG6xHBzabivfIECOKeK1Ja8l
+ CLqYFWlhghut3N4SU0ue0wTLO6OxkDBr85cz271+DRv3jpGZRbOgQu/g8T9cGEuO8shFUp5OvUI
+ Yu3Qjzv/zUM5WGOajxnQc6b5GL2Aj3SZLETNtB+Lj2RVjuDgIp6lT+ftKzUUV4H1LAXZlU5pTuC
+ HtprYVd7qZzUcO4xJvkj03Neu42M4AEFL02lu9bM7hRiByklUb5M7hP5HVBqZGGbqdDpSwRnywo
+ wp4FyQI/9R0otMK4HyKzc10oOB8rOpOm2vjC9XEJGBEjb7L+SxvgLrzWPE8dRKCJWsD7Dn4sO1U
+ n7pGJrs1qPJcBcuBbH98/jBlkrJUCvcGC9901bxlpFgBeVUl+AlBvbgfjSFy7WDx9CVHpk0bEMt
+ Wun0sKe5W4/vblO3i8br8uiS7/0wtOlCNft7zQZR1LY2BlTCvfXZqyoDdg8Usg6S9kB8TUZMz7G
+ jbRUwOylPsIe2dEyhNjpMUECCsaRE5MRr2yE0xn4V81S1IrPZ9tp2IcP2flYl6fYAaTJQbVKgyq
+ PIn8PYetOam3Txg==
 X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -98,204 +98,103 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-An orphaned msk releases the used resources via the worker,
-when the latter first see the msk in CLOSED status.
+The MPTCP protocol access the listener subflow in a lockless
+manner in a couple of places (poll, diag). That works only if
+the msk itself leaves the listener status only after that the
+subflow itself has been closed/disconnected. Otherwise we risk
+deadlock in diag, as reported by Christoph.
 
-If the msk status transitions to TCP_CLOSE in the release callback
-invoked by the worker's final release_sock(), such instance of the
-workqueue will not take any action.
+Address the issue ensuring that the first subflow (the listener
+one) is always disconnected before updating the msk socket status.
 
-Additionally the MPTCP code prevents scheduling the worker once the
-socket reaches the CLOSE status: such msk resources will be leaked.
-
-The only code path that can trigger the above scenario is the
-__mptcp_check_send_data_fin() in fallback mode.
-
-Address the issue removing the special handling of fallback socket
-in __mptcp_check_send_data_fin(), consolidating the state machine
-for fallback and non fallback socket.
-
-Since non-fallback sockets do not send and do not receive data_fin,
-the mptcp code can update the msk internal status to match the next
-step in the SM every time data fin (ack) should be generated or
-received.
-
-As a consequence we can remove a bunch of checks for fallback from
-the fastpath.
-
-Fixes: 6e628cd3a8f7 ("mptcp: use mptcp release_cb for delayed tasks")
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/407
+Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 ---
- net/mptcp/protocol.c | 41 +++++++++++++++--------------------------
- net/mptcp/subflow.c  | 17 ++++++++++-------
- 2 files changed, 25 insertions(+), 33 deletions(-)
+ net/mptcp/pm_netlink.c |  1 +
+ net/mptcp/protocol.c   | 31 +++++++++++++++++++------------
+ 2 files changed, 20 insertions(+), 12 deletions(-)
 
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 59f8f3124855..1224dfca5bf3 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1047,6 +1047,7 @@ static int mptcp_pm_nl_create_listen_socket(struct sock *sk,
+ 	if (err)
+ 		return err;
+ 
++	inet_sk_state_store(newsk, TCP_LISTEN);
+ 	err = kernel_listen(ssock, backlog);
+ 	if (err)
+ 		return err;
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 9a40dae31cec..27d206f7af62 100644
+index a66ec341485e..a6c7f2d24909 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -44,7 +44,7 @@ enum {
- static struct percpu_counter mptcp_sockets_allocated ____cacheline_aligned_in_smp;
- 
- static void __mptcp_destroy_sock(struct sock *sk);
--static void __mptcp_check_send_data_fin(struct sock *sk);
-+static void mptcp_check_send_data_fin(struct sock *sk);
- 
- DEFINE_PER_CPU(struct mptcp_delegated_action, mptcp_delegated_actions);
- static struct net_device mptcp_napi_dev;
-@@ -424,8 +424,7 @@ static bool mptcp_pending_data_fin_ack(struct sock *sk)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 
--	return !__mptcp_check_fallback(msk) &&
--	       ((1 << sk->sk_state) &
-+	return ((1 << sk->sk_state) &
- 		(TCPF_FIN_WAIT1 | TCPF_CLOSING | TCPF_LAST_ACK)) &&
- 	       msk->write_seq == READ_ONCE(msk->snd_una);
- }
-@@ -583,9 +582,6 @@ static bool mptcp_check_data_fin(struct sock *sk)
- 	u64 rcv_data_fin_seq;
- 	bool ret = false;
- 
--	if (__mptcp_check_fallback(msk))
--		return ret;
--
- 	/* Need to ack a DATA_FIN received from a peer while this side
- 	 * of the connection is in ESTABLISHED, FIN_WAIT1, or FIN_WAIT2.
- 	 * msk->rcv_data_fin was set when parsing the incoming options
-@@ -623,7 +619,8 @@ static bool mptcp_check_data_fin(struct sock *sk)
- 		}
- 
- 		ret = true;
--		mptcp_send_ack(msk);
-+		if (!__mptcp_check_fallback(msk))
-+			mptcp_send_ack(msk);
- 		mptcp_close_wake_up(sk);
- 	}
- 	return ret;
-@@ -1609,7 +1606,7 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
- 	if (!mptcp_timer_pending(sk))
- 		mptcp_reset_timer(sk);
- 	if (do_check_data_fin)
--		__mptcp_check_send_data_fin(sk);
-+		mptcp_check_send_data_fin(sk);
- }
- 
- static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool first)
-@@ -2680,8 +2677,6 @@ static void mptcp_worker(struct work_struct *work)
- 	if (unlikely((1 << state) & (TCPF_CLOSE | TCPF_LISTEN)))
- 		goto unlock;
- 
--	mptcp_check_data_fin_ack(sk);
--
- 	mptcp_check_fastclose(msk);
- 
- 	mptcp_pm_nl_work(msk);
-@@ -2689,7 +2684,8 @@ static void mptcp_worker(struct work_struct *work)
- 	if (test_and_clear_bit(MPTCP_WORK_EOF, &msk->flags))
- 		mptcp_check_for_eof(msk);
- 
--	__mptcp_check_send_data_fin(sk);
-+	mptcp_check_send_data_fin(sk);
-+	mptcp_check_data_fin_ack(sk);
- 	mptcp_check_data_fin(sk);
- 
- 	if (test_and_clear_bit(MPTCP_WORK_CLOSE_SUBFLOW, &msk->flags))
-@@ -2828,6 +2824,12 @@ void mptcp_subflow_shutdown(struct sock *sk, struct sock *ssk, int how)
- 			pr_debug("Fallback");
- 			ssk->sk_shutdown |= how;
- 			tcp_shutdown(ssk, how);
-+
-+			/* simulate the data_fin ack reception to let the state
-+			 * machine move forward
-+			 */
-+			WRITE_ONCE(mptcp_sk(sk)->snd_una, mptcp_sk(sk)->snd_nxt);
-+			mptcp_schedule_work(sk);
- 		} else {
- 			pr_debug("Sending DATA_FIN on subflow %p", ssk);
- 			tcp_send_ack(ssk);
-@@ -2867,7 +2869,7 @@ static int mptcp_close_state(struct sock *sk)
- 	return next & TCP_ACTION_FIN;
- }
- 
--static void __mptcp_check_send_data_fin(struct sock *sk)
-+static void mptcp_check_send_data_fin(struct sock *sk)
- {
- 	struct mptcp_subflow_context *subflow;
- 	struct mptcp_sock *msk = mptcp_sk(sk);
-@@ -2885,19 +2887,6 @@ static void __mptcp_check_send_data_fin(struct sock *sk)
- 
- 	WRITE_ONCE(msk->snd_nxt, msk->write_seq);
- 
--	/* fallback socket will not get data_fin/ack, can move to the next
--	 * state now
--	 */
--	if (__mptcp_check_fallback(msk)) {
--		WRITE_ONCE(msk->snd_una, msk->write_seq);
--		if ((1 << sk->sk_state) & (TCPF_CLOSING | TCPF_LAST_ACK)) {
--			inet_sk_state_store(sk, TCP_CLOSE);
--			mptcp_close_wake_up(sk);
--		} else if (sk->sk_state == TCP_FIN_WAIT1) {
--			inet_sk_state_store(sk, TCP_FIN_WAIT2);
+@@ -2368,13 +2368,6 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 		kfree_rcu(subflow, rcu);
+ 	} else {
+ 		/* otherwise tcp will dispose of the ssk and subflow ctx */
+-		if (ssk->sk_state == TCP_LISTEN) {
+-			tcp_set_state(ssk, TCP_CLOSE);
+-			mptcp_subflow_queue_clean(sk, ssk);
+-			inet_csk_listen_stop(ssk);
+-			mptcp_event_pm_listener(ssk, MPTCP_EVENT_LISTENER_CLOSED);
 -		}
--	}
 -
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *tcp_sk = mptcp_subflow_tcp_sock(subflow);
+ 		__tcp_close(ssk, 0);
  
-@@ -2917,7 +2906,7 @@ static void __mptcp_wr_shutdown(struct sock *sk)
- 	WRITE_ONCE(msk->write_seq, msk->write_seq + 1);
- 	WRITE_ONCE(msk->snd_data_fin_enable, 1);
- 
--	__mptcp_check_send_data_fin(sk);
-+	mptcp_check_send_data_fin(sk);
+ 		/* close acquired an extra ref */
+@@ -2902,10 +2895,24 @@ static __poll_t mptcp_check_readable(struct mptcp_sock *msk)
+ 	return EPOLLIN | EPOLLRDNORM;
  }
  
- static void __mptcp_destroy_sock(struct sock *sk)
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 4688daa6b38b..d9c8b21c6076 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1749,14 +1749,16 @@ static void subflow_state_change(struct sock *sk)
+-static void mptcp_listen_inuse_dec(struct sock *sk)
++static void mptcp_check_listen_stop(struct sock *sk)
  {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
- 	struct sock *parent = subflow->conn;
-+	struct mptcp_sock *msk;
- 
- 	__subflow_state_change(sk);
- 
-+	msk = mptcp_sk(parent);
- 	if (subflow_simultaneous_connect(sk)) {
- 		mptcp_propagate_sndbuf(parent, sk);
- 		mptcp_do_fallback(sk);
--		mptcp_rcv_space_init(mptcp_sk(parent), sk);
--		pr_fallback(mptcp_sk(parent));
-+		mptcp_rcv_space_init(msk, sk);
-+		pr_fallback(msk);
- 		subflow->conn_finished = 1;
- 		mptcp_set_connected(parent);
- 	}
-@@ -1772,11 +1774,12 @@ static void subflow_state_change(struct sock *sk)
- 
- 	subflow_sched_work_if_closed(mptcp_sk(parent), sk);
- 
--	if (__mptcp_check_fallback(mptcp_sk(parent)) &&
--	    !subflow->rx_eof && subflow_is_done(sk)) {
--		subflow->rx_eof = 1;
--		mptcp_subflow_eof(parent);
--	}
-+	/* when the fallback subflow closes the rx side, trigger a 'dummy'
-+	 * ingress data fin, so that the msk state will follow along
-+	 */
-+	if (__mptcp_check_fallback(msk) && subflow_is_done(sk) && msk->first == sk &&
-+	    mptcp_update_rcv_data_fin(msk, READ_ONCE(msk->ack_seq), true))
-+		mptcp_schedule_work(parent);
+-	if (inet_sk_state_load(sk) == TCP_LISTEN)
+-		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
++	struct sock *ssk;
++
++	if (inet_sk_state_load(sk) != TCP_LISTEN)
++		return;
++
++	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
++	ssk = mptcp_sk(sk)->first;
++	if (WARN_ON_ONCE(!ssk || inet_sk_state_load(ssk) != TCP_LISTEN))
++		return;
++
++	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
++	mptcp_subflow_queue_clean(sk, ssk);
++	inet_csk_listen_stop(ssk);
++	mptcp_event_pm_listener(ssk, MPTCP_EVENT_LISTENER_CLOSED);
++	tcp_set_state(ssk, TCP_CLOSE);
++	release_sock(ssk);
  }
  
- void mptcp_subflow_queue_clean(struct sock *listener_sk, struct sock *listener_ssk)
+ bool __mptcp_close(struct sock *sk, long timeout)
+@@ -2918,7 +2925,7 @@ bool __mptcp_close(struct sock *sk, long timeout)
+ 	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
+ 
+ 	if ((1 << sk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE)) {
+-		mptcp_listen_inuse_dec(sk);
++		mptcp_check_listen_stop(sk);
+ 		inet_sk_state_store(sk, TCP_CLOSE);
+ 		goto cleanup;
+ 	}
+@@ -3035,7 +3042,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 	if (msk->fastopening)
+ 		return -EBUSY;
+ 
+-	mptcp_listen_inuse_dec(sk);
++	mptcp_check_listen_stop(sk);
+ 	inet_sk_state_store(sk, TCP_CLOSE);
+ 
+ 	mptcp_stop_timer(sk);
 
 -- 
 2.40.1
