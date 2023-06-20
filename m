@@ -2,107 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28517736E50
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 16:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A73DE736E8D
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 16:22:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232972AbjFTOJG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 10:09:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59302 "EHLO
+        id S233266AbjFTOWF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 10:22:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231528AbjFTOJF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 10:09:05 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37560E58;
-        Tue, 20 Jun 2023 07:09:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
-        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=ekPPUQAmVVrrWr1qBlhGGDjUTFbwDIDMgk2nEuBhZRY=; b=Pttv+VUNGuJ461RzDONyDnw806
-        3P6etPgLo+dBFcM7lIC85HVrvF4fc6w8YNDyVGDJDd4ZRBCRvfkjELMfeB2A8vlZth6N6mUZff1de
-        5wAZPsiPO+EBdkG4Be0uG2WjiUtH28SSGNHd4tLUi2/Cu9h5jyKQy5504K1fBFJ2vXuE=;
-Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:48278 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1qBc2J-0000F2-9L; Tue, 20 Jun 2023 10:08:48 -0400
-Date:   Tue, 20 Jun 2023 10:08:46 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        with ESMTP id S231945AbjFTOVp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 10:21:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61B7391
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 07:20:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1687270849;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=0ernhwPaP6FSJ+kstqzHO13IrHrywXGZE43s/6KXwas=;
+        b=Jrp8q6QAB/jPyPXr0mkFgaig0pl6pzUJfbc+4FstrMJrnh5h+bOwWuzzsAHnHLw9GUwP7s
+        qPvKxlUdvqE/PbUfjmYHQ2O3zpkeqN5Fno6oLTWq30R020kykCAFz9nZz1IrTWpx8SgCWM
+        bLhzDxd5JYOG8Kn9N0n0iMzI76z/9Yc=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-654-cfyC2KMPPAmDet1BUk1gtw-1; Tue, 20 Jun 2023 10:20:37 -0400
+X-MC-Unique: cfyC2KMPPAmDet1BUk1gtw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2C971C128DB
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 14:15:59 +0000 (UTC)
+Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fs.lab.eng.bos.redhat.com [10.16.224.23])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 77883492C13;
+        Tue, 20 Jun 2023 14:15:59 +0000 (UTC)
+From:   Alexander Aring <aahringo@redhat.com>
+To:     teigland@redhat.com
+Cc:     cluster-devel@redhat.com, aahringo@redhat.com,
         stable@vger.kernel.org
-Message-Id: <20230620100846.d58436efc061fb91074fa7e5@hugovil.com>
-In-Reply-To: <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
-References: <20230602152626.284324-1-hugo@hugovil.com>
-        <20230602152626.284324-6-hugo@hugovil.com>
-        <2023060454-cotton-paramount-e33e@gregkh>
-        <CAHp75Ve6W-hcB4YAeKukgv-uOEzBY7Tx5Sdf3doTRYKzNPcVGw@mail.gmail.com>
-        <20230604134459.3c3844012e9714fa2a61e642@hugovil.com>
-        <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Subject: [PATCHv2 dlm/next] fs: dlm: remove filter local comms on close
+Date:   Tue, 20 Jun 2023 10:15:57 -0400
+Message-Id: <20230620141557.2952429-1-aahringo@redhat.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 184.161.19.61
-X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
-Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO
- configuration
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, 4 Jun 2023 22:31:04 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+The current way how lowcomms is configured is due configfs entries. Each
+comms configfs entry will create a lowcomms connection. Even the local
+connection itself will be stored as a lowcomms connection, although most
+functionality for a local lowcomms connection struct is not necessary.
 
-> On Sun, Jun 4, 2023 at 8:45 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> >
-> > On Sun, 4 Jun 2023 14:57:31 +0300
-> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> >
-> > > On Sun, Jun 4, 2023 at 10:47 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > > On Fri, Jun 02, 2023 at 11:26:21AM -0400, Hugo Villeneuve wrote:
-> > >
-> > > ...
-> > >
-> > > > > +static u8 sc16is7xx_setup_mctrl_ports(struct device *dev)
-> > > >
-> > > > This returns what, mctrl?  If so, please document that, it doesn't look
-> > > > obvious.
-> > >
-> > > Good suggestion. Because I also stumbled over the returned type.
-> > >
-> > > >  And as the kernel test robot reported, you do nothing with the
-> > > > return value so why compute it?
-> > >
-> > > It seems that the entire function and respective call has to be moved
-> > > under #ifdef CONFIG_GPIOLIB.
-> >
-> > Hi,
-> > it cannot. See my explanations in response to Greg's comments.
-> 
-> Then as Greg suggested, store in the structure and make this function
-> to return an error code (with int), with this amendment you don't need
-> to add a comment about the returned variable anymore.
+Now in some scenarios we will see that dlm_controld reports a -EEXIST
+when configure a node via configfs:
 
-Hi Andy,
-did you have a chance to look at V8 (sent two weks ago) which fixed all
-of what we discussed?
+... /sys/kernel/config/dlm/cluster/comms/1/addr: write failed: 17 -1
 
-Thank you,
-Hugo.
+Doing a:
+
+cat /sys/kernel/config/dlm/cluster/comms/1/addr_list
+
+reported nothing. This was being seen on cluster with nodeid 1 and it's
+local configuration. To be sure the configfs entries are in sync with
+lowcomms connection structures we always call dlm_midcomms_close() to be
+sure the lowcomms connection gets removed when the configfs entry gets
+dropped.
+
+Before commit 07ee38674a0b ("fs: dlm: filter ourself midcomms calls") it
+was just doing this by accident and the filter by doing:
+
+if (nodeid == dlm_our_nodeid())
+	return 0;
+
+inside dlm_midcomms_close() was never been hit because drop_comm() sets
+local_comm to NULL and cause that dlm_our_nodeid() returns always the
+invalid nodeid 0.
+
+Fixes: 07ee38674a0b ("fs: dlm: filter ourself midcomms calls")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+---
+changes since v2:
+ - add fixes tag
+ - cc stable
+
+ fs/dlm/config.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/fs/dlm/config.c b/fs/dlm/config.c
+index 4246cd425671..2beceff024e3 100644
+--- a/fs/dlm/config.c
++++ b/fs/dlm/config.c
+@@ -532,8 +532,7 @@ static void drop_comm(struct config_group *g, struct config_item *i)
+ 	struct dlm_comm *cm = config_item_to_comm(i);
+ 	if (local_comm == cm)
+ 		local_comm = NULL;
+-	if (!cm->local)
+-		dlm_midcomms_close(cm->nodeid);
++	dlm_midcomms_close(cm->nodeid);
+ 	while (cm->addr_count--)
+ 		kfree(cm->addr[cm->addr_count]);
+ 	config_item_put(i);
+-- 
+2.31.1
+
