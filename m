@@ -2,132 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D95973636E
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 08:14:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A181736392
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 08:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230514AbjFTGOD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 02:14:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37034 "EHLO
+        id S231180AbjFTGY6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 02:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230218AbjFTGOC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 02:14:02 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1E4310D7;
-        Mon, 19 Jun 2023 23:14:01 -0700 (PDT)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35K5xOJn013840;
-        Tue, 20 Jun 2023 06:13:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=Q5zsPzlifA3wE+OG3e0VDwThrrdWXITSvpqMnJmucHU=;
- b=JdNYKTfZ7ifClpiiUHQEfK/AIVe5t4VQFeAdPOpn+CdcjOtXtjB0+5XgfI2+BByMyaes
- rSr0SkcJ/hTgX6AdoqJPn9mB+mo1Hn76g/0bLgy50tEXcVur7pw4Wu3ICbH2efen2q6Q
- WnINBPv/kGCjqr20HAEPQgeeaDMaj6GODviwKX91OV9t6LWg+4zXAlDKcN5F/FLfwZJC
- FLTNPhmyvv6dv0mfPjvFip12ltovLNbUiI9zFIgZf3Nka1dYKHdBecFoeqwlAC8Twk+U
- E1IS0ryophx9U5zAgkEyok/lgqykUBszJzDLYpOvm+qet1HO6kGCkHXRroWSycwSWKog kA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rb3gur8yg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 20 Jun 2023 06:13:32 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 35K6DWFt016918
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 20 Jun 2023 06:13:32 GMT
-Received: from [10.201.2.96] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Mon, 19 Jun
- 2023 23:13:29 -0700
-Message-ID: <2f915104-952f-3e3d-b3d5-4c0400b4f331@quicinc.com>
-Date:   Tue, 20 Jun 2023 11:43:26 +0530
+        with ESMTP id S231171AbjFTGY4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 02:24:56 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EB3E2;
+        Mon, 19 Jun 2023 23:24:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1687242275; x=1687847075; i=deller@gmx.de;
+ bh=P4yET/ii6laUO0c0nA2w7JL4IyFthpA/vzXPBsUXChM=;
+ h=X-UI-Sender-Class:Date:To:Cc:References:From:Subject:In-Reply-To;
+ b=hEfNUGv4oZFo6i7NeRr66V8+HC0Z19w49eyJegnYHUaTis3VcK+QjCzm+nxZIARZybq5iz1
+ E2brAqU4PyV11XT8w/2ofjvNvlpPCS4FOh6ilx2VTUCYYYZbHNGkqulblBDBZfLxVRhFcTK7B
+ oIMUzsgLqTjDzFde63HcfJdgSahV4I4F2cDi82he1WBLKot5r3sgNB1GMQ25Dsm1wa0Hz3jZz
+ kg0v5NHrrU4wWOq0AXG7YQuLdN1rRb9rwI+Y7qc1x1Qp+bTCCguNJidtuRxxBkyDpY6nxxZWi
+ iseO8qo1qex/MTeK1HCZptluKskuwvN/FM2DGJCSpNA7LLTbc/OQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.157.8]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MpUYu-1pkBv518uK-00ps7o; Tue, 20
+ Jun 2023 08:24:35 +0200
+Message-ID: <3d8c3a8c-68be-422a-c4ff-6d2e99c3f01b@gmx.de>
+Date:   Tue, 20 Jun 2023 08:24:34 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH V2] firmware: qcom_scm: use the SCM_CONVENTION based on
- ARM / ARM64
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Elliot Berman <eberman@codeaurora.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <quic_eberman@quicinc.com>, <stable@vger.kernel.org>
-References: <20230607045345.25049-1-quic_kathirav@quicinc.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
 Content-Language: en-US
-From:   Kathiravan T <quic_kathirav@quicinc.com>
-In-Reply-To: <20230607045345.25049-1-quic_kathirav@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: vMdxPtZbujt0GBwjLluTsjyv7uqxDZ6G
-X-Proofpoint-GUID: vMdxPtZbujt0GBwjLluTsjyv7uqxDZ6G
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-20_03,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- spamscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=999
- priorityscore=1501 phishscore=0 clxscore=1011 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306200056
+To:     Cyril Brulebois <cyril@debamax.com>, Rob Herring <robh@kernel.org>
+Cc:     =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Salvatore Bonaccorso <carnil@debian.org>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+References: <20230412095509.2196162-1-cyril@debamax.com>
+ <20230412095509.2196162-2-cyril@debamax.com> <ZDvrY7X9mpJ7WZ3z@eldamar.lan>
+ <11b342dc-1a46-d1be-5fdd-c6eee661e15a@leemhuis.info>
+ <fe3b90b0-b52f-9677-0245-a201975c3e0c@suse.de>
+ <20230615132107.GA9196@kitsune.suse.cz>
+ <20230615200901.GA1572644-robh@kernel.org>
+ <20230615211924.cf2qs52cfaf7m3f7@debamax.com>
+From:   Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH 1/2] fbdev/offb: Update expected device name
+In-Reply-To: <20230615211924.cf2qs52cfaf7m3f7@debamax.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:/5EbFHqdTR5VZsqWRgQuO1B3pFhNypJeYz67/Gfk+zk8oU7VQHh
+ +VZIjwowX5PZ3z2zjHqKgFfyQGf8bdNU9PEU7PzE3mCVgiKu5kTkeUxVi7c1Bvp5pOoxEwF
+ 3BCkiWoE7TRt3R514QqSXbDTf0vyL2jyRzqdymHfNt2l8YdEAYAiOyQKzzEmymdGqa0m8mY
+ SNP16ZtzRxLCfHo3AYECg==
+UI-OutboundReport: notjunk:1;M01:P0:zbmZ87N98Vw=;mfvc1cgsO73dUvNLnQLh1n/hqru
+ ji2qD0q7adNzvSs2na/gU8PIC28GNHDnx4Gy+NZgMC8n5dQenxQz9nkoKM/2RQXMQTZDpbBN6
+ AIPFsSouYdTtry00NaNzIqPz4blCvHHsUA52OOkrk+OimQ4eZd0DebT9+e1fUUmdcRg8YtbHy
+ pF2S9PXcNKeQs+p/4wNGuUptSi+CE5+AG6dKYqVMJLJWiwF0yhf2EKqdceS7zl4YP2t9QPake
+ NNZpU9qann2QCr4BoAAyjCakXodNYUQmltm8jNbEYpjwY6HtuLBzI4QSLrfdUwHGqQwEkViRc
+ RpIKXO0ii+pBneR7zu5u7sGY95DotNxUGHbu5s/jbZgsIGFDWxPAJeD+aMi8qBw4QtbO/oTh7
+ 1zjS/l201UCQPN3ryMPiERbCgOHuAdDwUcnX4MPx0Rhu0UyTcNgk4gjZ+RyQIyjprFccFSE+b
+ v0pXLiAueJ1A1FsQVoQ3lUFcAFUqJrrvYrbCnsfWIsceoUMu1fC5xzkfXL2+MmrTNOH2L9CgO
+ PUs5Lw57XmZ1HKSN/lreKvucnVnBBJHW4EMhOgRVTZGczltM6hILr0AcH7seNBq7xW7p92Nqz
+ HWpgTnAQVPBC1cDpJS443BRaoG+RclTS9WVVxgR18kDJA74rlB0cR/aYAsY3aF6bE9a6J+cc4
+ 3viGZN6VgPBv+SPmNzd4oEEszvoLo3biHhvHAas9PK4Z6Z7s81Gz51lafN8c0TQPMEnY2XLuo
+ 3XLBro8r9GAaOJ3VpWnH57Z9pt6Lah2Jr44KNKIlm6HRF2UbcGepYwHgd43UoJQP3BrKyuo29
+ DrnEN6v4nnxAFStVj19KK4Jjd8r4cLWCjLJm/9/ByRlcuUMgm0yuFg35ioAC0+UqC2oRv41/e
+ 1tmR4rxD9hnrleliemSKb9itdhUSIOqA9tBp1PezLz/NDcatUgZHPcltOCD5mCJ9ULa2kugiU
+ PxYbSmWZbRu5W6tZibZAgSNNYDQ=
 X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-On 6/7/2023 10:23 AM, Kathiravan T wrote:
-> During SCM probe, to identify the SCM convention, scm call is made with
-> SMC_CONVENTION_ARM_64 followed by SMC_CONVENTION_ARM_32. Based on the
-> result what convention to be used is decided.
+On 6/15/23 23:19, Cyril Brulebois wrote:
+> Hi Rob,
 >
-> IPQ chipsets starting from IPQ807x, supports both 32bit and 64bit kernel
-> variants, however TZ firmware runs in 64bit mode. When running on 32bit
-> kernel, scm call is made with SMC_CONVENTION_ARM_64 is causing the
-> system crash, due to the difference in the register sets between ARM and
-> AARCH64, which is accessed by the TZ.
->
-> To avoid this, use SMC_CONVENTION_ARM_64 only on ARM64 builds.
+> Rob Herring <robh@kernel.org> (2023-06-15):
+>> On Thu, Jun 15, 2023 at 03:21:07PM +0200, Michal Such=C3=A1nek wrote:
+>>> At the time this was proposed it was said that "of-display", is wrong,
+>>> and that "of-display.0" must be used for the first device instead, and
+>>> if something breaks an alias can be provided.
+>>>
+>>> So how does one provide an alias so that offb can find "of-display.0"
+>>> as "of-display"?
+>>
+>> I'm not aware of any way. There isn't because device names and paths ar=
+e
+>> not considered ABI. There are mechanisms for getting stable class devic=
+e
+>> indices (e.g. i2c0, mmcblk0, fb0, fb1, etc.) though not implemented for
+>> fbN (and please don't add it).
+>>
+>> In any case, this should be an easy fix. Though if "linux,opened" or
+>> "linux,boot-display" is not set, then you'd still get "of-display.0":
+>>
+>> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+>> index 78ae84187449..e46482cef9c7 100644
+>> --- a/drivers/of/platform.c
+>> +++ b/drivers/of/platform.c
+>> @@ -553,7 +553,7 @@ static int __init of_platform_default_populate_init=
+(void)
+>>                          if (!of_get_property(node, "linux,opened", NUL=
+L) ||
+>>                              !of_get_property(node, "linux,boot-display=
+", NULL))
+>>                                  continue;
+>> -                       dev =3D of_platform_device_create(node, "of-dis=
+play.0", NULL);
+>> +                       dev =3D of_platform_device_create(node, "of-dis=
+play", NULL);
+>>                          of_node_put(node);
+>>                          if (WARN_ON(!dev))
+>>                                  return -ENOMEM;
 
+Michal, does that patch look correct?
+I don't have that hardware, but that way the boot-display gets named
+"of-display" while all others get "of-display.x"....
 
-Gentle Reminder...
+> I've just replaced my clueless workaround with this patch on top of the
+> kernel found in Debian 12 (Bookworm), i.e. 6.1.27 at this point, and it
+> indeed fixes the black screen problem in the installer's context.
 
+... at least it fixes the issue.
 
+> I didn't run a full installation to check whether this kernel is also fi=
+ne
+> after rebooting into the installed system, but as far as I understood fo=
+r
+> the original bug report[1], it wasn't affected in the first place.
 >
-> Cc: stable@vger.kernel.org
-> Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC and legacy conventions")
-> Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
-> ---
-> Changes in V2:
-> 	- Added the Fixes tag and cc'd stable mailing list
+>   1. https://bugs.debian.org/1033058
 >
->   drivers/firmware/qcom_scm.c | 2 ++
->   1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
-> index fde33acd46b7..db6754db48a0 100644
-> --- a/drivers/firmware/qcom_scm.c
-> +++ b/drivers/firmware/qcom_scm.c
-> @@ -171,6 +171,7 @@ static enum qcom_scm_convention __get_convention(void)
->   	if (likely(qcom_scm_convention != SMC_CONVENTION_UNKNOWN))
->   		return qcom_scm_convention;
->   
-> +#if IS_ENABLED(CONFIG_ARM64)
->   	/*
->   	 * Device isn't required as there is only one argument - no device
->   	 * needed to dma_map_single to secure world
-> @@ -191,6 +192,7 @@ static enum qcom_scm_convention __get_convention(void)
->   		forced = true;
->   		goto found;
->   	}
-> +#endif
->   
->   	probed_convention = SMC_CONVENTION_ARM_32;
->   	ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
+> Will somebody else pick up the torch from here, and submit that for
+> inclusion in master? Or should I re-submit the above patch on my own?
+
+It would be good to get some more feedback, but in general if you
+or Rob send me a patch I can include it in the fbdev git tree for futher
+testing (and if nobody else disagrees).
+
+Helge
