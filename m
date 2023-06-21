@@ -2,148 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AF5A737A5A
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 06:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DB03737B0D
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 08:12:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229990AbjFUEje (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 21 Jun 2023 00:39:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55060 "EHLO
+        id S229822AbjFUGIM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 21 Jun 2023 02:08:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229970AbjFUEjc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 00:39:32 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD261BE7
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 21:39:03 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1qBpcK-0001Hm-7A; Wed, 21 Jun 2023 06:38:52 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1qBpcI-008x8k-2A; Wed, 21 Jun 2023 06:38:50 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1qBpcH-00Fy9P-AC; Wed, 21 Jun 2023 06:38:49 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
+        with ESMTP id S230013AbjFUGIL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 02:08:11 -0400
+Received: from mail-40130.protonmail.ch (mail-40130.protonmail.ch [185.70.40.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC91171C
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 23:08:07 -0700 (PDT)
+Date:   Wed, 21 Jun 2023 06:07:59 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=protonmail; t=1687327684; x=1687586884;
+        bh=ubPaVyZowGktzCcEYffuW++8GPJVzBrtENIQ7uYjie0=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=eSNWl+3DJpvQHCiraPqTyJlsxcW7+N/gjjYZYCKXlSRVDs3jbcR2adXUJ7jdnAqdp
+         VQZVjHJIbCMJJVikX7dZ7H0x7gbQd4RfkZ3pHn0utr17fhULg63/+VDxU1C/Rz29xg
+         h1DdG0TddsZVWnZL1rXKhreRwVmVRXz2lB6crP8LdvgnaojSUxn+xIfIrqzCGOhGPw
+         p6PBmP6j0T4RGKP7stxbvyJqrJCwVlIzyOkauM9mdcos+SRtwCtWdNiVUDirPhwITp
+         LPnieK7n4nYWZ2JbgdG7Prhj05nEKuyCoOqrS4xCCH5/DDmkNJzcoiTApvgRfVW/4/
+         81QKQIKZoxd7A==
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+From:   Sami Korkalainen <sami.korkalainen@proton.me>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>, stable@vger.kernel.org,
-        kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH v2 1/1] net: phy: dp83td510: fix kernel stall during netboot in DP83TD510E PHY driver
-Date:   Wed, 21 Jun 2023 06:38:48 +0200
-Message-Id: <20230621043848.3806124-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+        Paolo Abeni <pabeni@redhat.com>,
+        "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
+Message-ID: <FNzHwp9-AyweVwIMndmih6VuBD0nsyRp3OM72bmOxpeYszF680jFPJjENIknT32FeaqfVBtVSQFw-5mgE3ZXeksVD8VCFbxwojxP3mSZ9DQ=@proton.me>
+In-Reply-To: <e2ca75ef-d779-4bad-84a5-a9f262dbe213@lunn.ch>
+References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me> <ZHFaFosKY24-L7tQ@debian.me> <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me> <ZIcmpcEsTLXFaO0f@debian.me> <oEbkgJ-ImLxBDZDUTnIAGFWrRVnwBss3FOlalTpwrz83xWgESC9pcvNKiAVp9BzFgqZ0V-NIwzBZ7icKD8ynuIi_ZMtGt7URu3ftcSt16u4=@proton.me> <e2ca75ef-d779-4bad-84a5-a9f262dbe213@lunn.ch>
+Feedback-ID: 45678890:user:proton
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed;
+ boundary="b1_xW5OBqT6eYXTEKbSnFLDvGSiisfLN9WDGQYH44fZg"
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Fix an issue where the kernel would stall during netboot, showing the
-"sched: RT throttling activated" message. This stall was triggered by
-the behavior of the mii_interrupt bit (Bit 7 - DP83TD510E_STS_MII_INT)
-in the DP83TD510E's PHY_STS Register (Address = 0x10). The DP83TD510E
-datasheet (2020) states that the bit clears on write, however, in
-practice, the bit clears on read.
+This is a multi-part message in MIME format.
 
-This discrepancy had significant implications on the driver's interrupt
-handling. The PHY_STS Register was used by handle_interrupt() to check
-for pending interrupts and by read_status() to get the current link
-status. The call to read_status() was unintentionally clearing the
-mii_interrupt status bit without deasserting the IRQ pin, causing
-handle_interrupt() to miss other pending interrupts. This issue was most
-apparent during netboot.
+--b1_xW5OBqT6eYXTEKbSnFLDvGSiisfLN9WDGQYH44fZg
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-The fix refrains from using the PHY_STS Register for interrupt handling.
-Instead, we now solely rely on the INTERRUPT_REG_1 Register (Address =
-0x12) and INTERRUPT_REG_2 Register (Address = 0x13) for this purpose.
-These registers directly influence the IRQ pin state and are latched
-high until read.
+I bisected again. It seems I made some mistake last time, as I got a differ=
+ent result this time. Maybe, because these problematic kernels may boot fin=
+e sometimes, like I said before.
 
-Note: The INTERRUPT_REG_2 Register (Address = 0x13) exists and can also
-be used for interrupt handling, specifically for "Aneg page received
-interrupt" and "Polarity change interrupt". However, these features are
-currently not supported by this driver.
+Anyway, first bad commit (makes much more sense this time):
+e7b813b32a42a3a6281a4fd9ae7700a0257c1d50
+efi: random: refresh non-volatile random seed when RNG is initialized
 
-Fixes: 165cd04fe253 ("net: phy: dp83td510: Add support for the DP83TD510 Ethernet PHY")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
- drivers/net/phy/dp83td510.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+I confirmed that this is the code causing the issue by commenting it out (s=
+ee the patch file). Without this code, the latest mainline boots fine.
 
-diff --git a/drivers/net/phy/dp83td510.c b/drivers/net/phy/dp83td510.c
-index 3cd9a77f9532..d7616b13c594 100644
---- a/drivers/net/phy/dp83td510.c
-+++ b/drivers/net/phy/dp83td510.c
-@@ -12,6 +12,11 @@
- 
- /* MDIO_MMD_VEND2 registers */
- #define DP83TD510E_PHY_STS			0x10
-+/* Bit 7 - mii_interrupt, active high. Clears on read.
-+ * Note: Clearing does not necessarily deactivate IRQ pin if interrupts pending.
-+ * This differs from the DP83TD510E datasheet (2020) which states this bit
-+ * clears on write 0.
-+ */
- #define DP83TD510E_STS_MII_INT			BIT(7)
- #define DP83TD510E_LINK_STATUS			BIT(0)
- 
-@@ -53,12 +58,6 @@ static int dp83td510_config_intr(struct phy_device *phydev)
- 	int ret;
- 
- 	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
--		/* Clear any pending interrupts */
--		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PHY_STS,
--				    0x0);
--		if (ret)
--			return ret;
--
- 		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
- 				    DP83TD510E_INTERRUPT_REG_1,
- 				    DP83TD510E_INT1_LINK_EN);
-@@ -81,10 +80,6 @@ static int dp83td510_config_intr(struct phy_device *phydev)
- 					 DP83TD510E_GENCFG_INT_EN);
- 		if (ret)
- 			return ret;
--
--		/* Clear any pending interrupts */
--		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PHY_STS,
--				    0x0);
- 	}
- 
- 	return ret;
-@@ -94,14 +89,6 @@ static irqreturn_t dp83td510_handle_interrupt(struct phy_device *phydev)
- {
- 	int  ret;
- 
--	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PHY_STS);
--	if (ret < 0) {
--		phy_error(phydev);
--		return IRQ_NONE;
--	} else if (!(ret & DP83TD510E_STS_MII_INT)) {
--		return IRQ_NONE;
--	}
--
- 	/* Read the current enabled interrupts */
- 	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_INTERRUPT_REG_1);
- 	if (ret < 0) {
--- 
-2.39.2
+Terveisin
+Sami Korkalainen
+--b1_xW5OBqT6eYXTEKbSnFLDvGSiisfLN9WDGQYH44fZg
+Content-Type: text/x-patch; name=patch.diff
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=patch.diff
+
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvZmlybXdhcmUvZWZpL2VmaS5jIGIvZHJpdmVycy9maXJtd2Fy
+ZS9lZmkvZWZpLmMKaW5kZXggYWJlZmY3ZGMwYjU4Li5jMzYyYzgwN2Y1ZDYgMTAwNjQ0Ci0tLSBh
+L2RyaXZlcnMvZmlybXdhcmUvZWZpL2VmaS5jCisrKyBiL2RyaXZlcnMvZmlybXdhcmUvZWZpL2Vm
+aS5jCkBAIC0zNjAsNyArMzYwLDcgQEAgc3RhdGljIHZvaWQgX19pbml0IGVmaV9kZWJ1Z2ZzX2lu
+aXQodm9pZCkKICNlbHNlCiBzdGF0aWMgaW5saW5lIHZvaWQgZWZpX2RlYnVnZnNfaW5pdCh2b2lk
+KSB7fQogI2VuZGlmCi0KKy8qCiBzdGF0aWMgdm9pZCByZWZyZXNoX252X3JuZ19zZWVkKHN0cnVj
+dCB3b3JrX3N0cnVjdCAqd29yaykKIHsKIAl1OCBzZWVkW0VGSV9SQU5ET01fU0VFRF9TSVpFXTsK
+QEAgLTM3OCw3ICszNzgsNyBAQCBzdGF0aWMgaW50IHJlZnJlc2hfbnZfcm5nX3NlZWRfbm90aWZp
+Y2F0aW9uKHN0cnVjdCBub3RpZmllcl9ibG9jayAqbmIsIHVuc2lnbmVkCiAJcmV0dXJuIE5PVElG
+WV9ET05FOwogfQogc3RhdGljIHN0cnVjdCBub3RpZmllcl9ibG9jayByZWZyZXNoX252X3JuZ19z
+ZWVkX25iID0geyAubm90aWZpZXJfY2FsbCA9IHJlZnJlc2hfbnZfcm5nX3NlZWRfbm90aWZpY2F0
+aW9uIH07Ci0KKyovCiAvKgogICogV2UgcmVnaXN0ZXIgdGhlIGVmaSBzdWJzeXN0ZW0gd2l0aCB0
+aGUgZmlybXdhcmUgc3Vic3lzdGVtIGFuZCB0aGUKICAqIGVmaXZhcnMgc3Vic3lzdGVtIHdpdGgg
+dGhlIGVmaSBzdWJzeXN0ZW0sIGlmIHRoZSBzeXN0ZW0gd2FzIGJvb3RlZCB3aXRoCkBAIC00NTAs
+MTAgKzQ1MCwxMCBAQCBzdGF0aWMgaW50IF9faW5pdCBlZmlzdWJzeXNfaW5pdCh2b2lkKQogCWlm
+IChlZmkuY29jb19zZWNyZXQgIT0gRUZJX0lOVkFMSURfVEFCTEVfQUREUikKIAkJcGxhdGZvcm1f
+ZGV2aWNlX3JlZ2lzdGVyX3NpbXBsZSgiZWZpX3NlY3JldCIsIDAsIE5VTEwsIDApOwogI2VuZGlm
+Ci0KKy8qCiAJaWYgKGVmaV9ydF9zZXJ2aWNlc19zdXBwb3J0ZWQoRUZJX1JUX1NVUFBPUlRFRF9T
+RVRfVkFSSUFCTEUpKQogCQlleGVjdXRlX3dpdGhfaW5pdGlhbGl6ZWRfcm5nKCZyZWZyZXNoX252
+X3JuZ19zZWVkX25iKTsKLQorKi8KIAlyZXR1cm4gMDsKIAogZXJyX3JlbW92ZV9ncm91cDoK
+
+--b1_xW5OBqT6eYXTEKbSnFLDvGSiisfLN9WDGQYH44fZg--
 
