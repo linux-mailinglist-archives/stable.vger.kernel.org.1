@@ -2,197 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFDA5739114
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 22:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C994C739139
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 23:01:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbjFUUw0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 21 Jun 2023 16:52:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33880 "EHLO
+        id S229624AbjFUVBV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 21 Jun 2023 17:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229624AbjFUUwZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 16:52:25 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D2F219C;
-        Wed, 21 Jun 2023 13:52:24 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2b4725e9917so63538341fa.2;
-        Wed, 21 Jun 2023 13:52:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687380742; x=1689972742;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mmIDeIftl/J1oTKrvXeOO7UZTGQdp+QEUmL6PNdEA80=;
-        b=mbGPczFkhaKwPmZi/JCZ6V4Sm/YvtZnGJdQbrD4OC8cgNjZLKLCwuIA7Qcvyptfyle
-         C+8aQ1HEtgM/d0t3yn+pL0vKi/1Nh44P0Fojiq9GgtPCKdhx1ASvZzfK1yo67EqP3+7K
-         w6wLMIKQXc8+07H/g8myZYCqQudPMlujsNsZQH/IRg7998Gh1C7kO9/fC1tv4viTpuWV
-         YdolOyTnR7uncttPOA8QBAWltNxf9E7ghmfuhWgiwOR0t3744mmMUg0mNs/ihU/9pXrA
-         eYVoDRSL7BFhrpzRp/+mHbE8+l1ZxMb/kAPfklNwoqP+BikBjMrb3wu8of9lzQeHTTr9
-         AwfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687380742; x=1689972742;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mmIDeIftl/J1oTKrvXeOO7UZTGQdp+QEUmL6PNdEA80=;
-        b=CTtLdxXTzBmjLhX5z+TQp++YVKEOhAehKwQ9mUpc6O6KKWWJvwtubUsS43r14ny83z
-         Kzfs7nMxEVMoDRiuek5mo0ILiHUJfsfu6+o5sMd4JwJp3vHrlkO/fkmjW7kvDojw/0dE
-         yXLGjU43OANXJP+RafPIXDoBHVdUt0ajcpoO6mzpUb4IMzaEcCfWRbXjgm6+KOlv1+Ew
-         rxXkLJg5kaL9yeUaPr+ygqlIJjvibHjgsyRqQc56mOA6f7bQAV6gJ0nvuI6w/eNq8g/h
-         G7PuDFD7FcJvPIWClAx/9zsArMRaRCj5r33T/vVvhbmAJRxPAMSj1GIrho8wWgNY83ph
-         dC3A==
-X-Gm-Message-State: AC+VfDxC6qzG5i2ZDjx0dOr1/WY6fSpOCCChFtMh0YV+i0euSkFhN+w1
-        bk/qSZDC9C9Z1E36PkfjndBSumS8WMykWk0pnI8=
-X-Google-Smtp-Source: ACHHUZ4Koruy9Ehxdxr2YisgN6XBu4IK85gKx5qj4KmAi//FHdw/k8BOw86E8OYQDYWxtC13R9iX94zrSaN1N36dY4s=
-X-Received: by 2002:a05:6512:1112:b0:4f9:5bed:9c1f with SMTP id
- l18-20020a056512111200b004f95bed9c1fmr2394019lfg.56.1687380741936; Wed, 21
- Jun 2023 13:52:21 -0700 (PDT)
+        with ESMTP id S229590AbjFUVBU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 17:01:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B6EE19C;
+        Wed, 21 Jun 2023 14:01:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26D84616D7;
+        Wed, 21 Jun 2023 21:01:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD2BC433C0;
+        Wed, 21 Jun 2023 21:01:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687381278;
+        bh=jlWJbhOrjnKVTwHPTVGHq334iwyIMm2mAeU6LYyasFM=;
+        h=From:Subject:Date:To:Cc:From;
+        b=sqGwHkhh/RtwEsmY/s6OMERkZGXJQNzZSRHuV7hqGSyvUc13q6PLfMM5jouJooT57
+         0xcMorV1vbB24/T4FNVK9+5U++bGSYDvnmXT6p7JN6SHSYDGBG6edWwA3IFFHpolZS
+         91tZIGufOk3DnP+DDiIg9ohuaQJUuWjNrnx+6w1P/f5maSXXWUq6YP8e3nft1pSKGH
+         RduHRMQdyxJzbAyshVNFls35OFUVpvDwqC87msRXfHt5/1LaD6BeKOVDESdd1wSLMC
+         +719qHFdXSKWcmfhcFW1U/SjaAUSGEW1437NLn56GrYj/5bP+ZvZotSDcNNKrEnG7M
+         bBjIpZl8cwrUQ==
+From:   Mark Brown <broonie@kernel.org>
+Subject: [PATCH 0/2] arm64/signal: Fix handling of TPIDR2
+Date:   Wed, 21 Jun 2023 22:00:49 +0100
+Message-Id: <20230621-arm64-fix-tpidr2-signal-restore-v1-0-b6d9e584d2ee@kernel.org>
 MIME-Version: 1.0
-References: <20230607214102.2113-1-jason.gerecke@wacom.com>
- <20230608213828.2108-1-jason.gerecke@wacom.com> <CANRwn3R-XbfB+mP9AQ-J7R_19jLi4eS3MhswaWjL+LCEih-7pg@mail.gmail.com>
- <CAO-hwJJC12dRhmykE+P_LBcEJ2G0gHy3Nh1gvWULjdA=4qa-ZQ@mail.gmail.com>
-In-Reply-To: <CAO-hwJJC12dRhmykE+P_LBcEJ2G0gHy3Nh1gvWULjdA=4qa-ZQ@mail.gmail.com>
-From:   Jason Gerecke <killertofu@gmail.com>
-Date:   Wed, 21 Jun 2023 13:52:10 -0700
-Message-ID: <CANRwn3SwEOZWxkCAU8FvFZyLHNpq78bZQtN7tbGTQjU=sQ9iAA@mail.gmail.com>
-Subject: Re: [PATCH v2] HID: wacom: Use ktime_t rather than int when dealing
- with timestamps
-To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiri Kosina <jikos@kernel.org>,
-        Ping Cheng <pinglinux@gmail.com>,
-        Aaron Armstrong Skomra <skomra@gmail.com>,
-        Joshua Dickens <Joshua@joshua-dickens.com>,
-        Peter Hutterer <peter.hutterer@who-t.net>,
-        Jason Gerecke <jason.gerecke@wacom.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAFlk2QC/x3NQQ6CMBCF4auQWTsJbQlYr2JcFDrARG3JDFETw
+ t0pLv+3+N4GSsKkcKs2EPqwck4lzKWCYQ5pIuRYGmxtXd1ag0HebYMj/3BdOIpF5SmFFwrpmoW
+ wMy561/nr6D0UpQ9K2EtIw3w63yzPc16EivE/vj/2/QDHSZHfiAAAAA==
+To:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Shuah Khan <shuah@kernel.org>,
+        Szabolcs Nagy <szabolcs.nagy@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        linux-kselftest@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        stable@vger.kernel.org
+X-Mailer: b4 0.13-dev-c6835
+X-Developer-Signature: v=1; a=openpgp-sha256; l=963; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=jlWJbhOrjnKVTwHPTVGHq334iwyIMm2mAeU6LYyasFM=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBkk2UayLmMV7bhjwqgQSk8JxacfjjHw7fXHZBgtRzQ
+ 3U7eprmJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZJNlGgAKCRAk1otyXVSH0CHRB/
+ 4+TKV4M117JVnOwEgv+VhL2tlZUiImG0JWrKcycaD1OrRB5qQ5bFMqSole80KLA702OuIlDccQmvcq
+ qT4HA+q2SzHzoZbXaURUcF2RCqYyFXxa46LvtXqR+pz4rYnIfCZnkc+evIfFK4OM7mgK4MKyiuIw6z
+ Gheq3Bz7ePhzSO6jb9cWQ0MxlNIXoG1CSYcmkj66WlM2IiuxngDeLutvBZgDFCicgJY/CPdZz591x4
+ /HSl2ag9Fl45WSD2rXZSguFBKXJDmy1sqho0yAGLsm4ANG+pka7pxbf+GII7wFq13CiTvbdawYzaH/
+ G1ncrAk2juLGDSkFeg+S2Y6Qs1Uwy7
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 21, 2023 at 9:04=E2=80=AFAM Benjamin Tissoires
-<benjamin.tissoires@redhat.com> wrote:
->
-> On Wed, Jun 21, 2023 at 5:18=E2=80=AFPM Jason Gerecke <killertofu@gmail.c=
-om> wrote:
-> >
-> > Following up since no action seems to have been taken on this patch yet=
-.
->
-> Sorry, this went through the cracks (I seem to have a lot of cracks recen=
-tly...)
->
-> >
-> > On Thu, Jun 8, 2023 at 2:38=E2=80=AFPM Jason Gerecke <killertofu@gmail.=
-com> wrote:
-> > >
-> > > Code which interacts with timestamps needs to use the ktime_t type
-> > > returned by functions like ktime_get. The int type does not offer
-> > > enough space to store these values, and attempting to use it is a
-> > > recipe for problems. In this particular case, overflows would occur
-> > > when calculating/storing timestamps leading to incorrect values being
-> > > reported to userspace. In some cases these bad timestamps cause input
-> > > handling in userspace to appear hung.
->
-> I have to ask, is this something we should consider writing a test for? :=
-)
->
+The restoring of TPIDR2 signal context has been broken since it was
+merged, fix this and add a test case covering it.  This is a result of
+TPIDR2 context management following a different flow to any of the other
+state that we provide and the fact that we don't expose TPIDR (which
+follows the same pattern) to signals.
 
-Very good point! I'm happy to work on such a test.
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+Mark Brown (2):
+      arm64/signal: Restore TPIDR2 register rather than memory state
+      kselftest/arm64: Add a test case for TPIDR2 restore
 
-Are you open to merging this patch without delay while I write a
-testcase? I don't like the idea of this (apparent) system freeze being
-affecting users any longer than absolutely necessary.
+ arch/arm64/kernel/signal.c                         |  2 +-
+ tools/testing/selftests/arm64/signal/.gitignore    |  2 +-
+ .../arm64/signal/testcases/tpidr2_restore.c        | 85 ++++++++++++++++++++++
+ 3 files changed, 87 insertions(+), 2 deletions(-)
+---
+base-commit: 858fd168a95c5b9669aac8db6c14a9aeab446375
+change-id: 20230621-arm64-fix-tpidr2-signal-restore-713d93798f99
 
-> Also, you are missing the rev-by from Peter, not sure if the tools
-> will pick it up automatically then.
->
-> Reviewed-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
->
+Best regards,
+-- 
+Mark Brown <broonie@kernel.org>
 
-Oof, good catch. Apologies to Peter :)
-
-Jason
-
-> Cheers,
-> Benjamin
->
-> > >
-> > > Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/901
-> > > Fixes: 17d793f3ed53 ("HID: wacom: insert timestamp to packed Bluetoot=
-h (BT) events")
-> > > CC: stable@vger.kernel.org
-> > > Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-> > > ---
-> > > v2: Use div_u64 to perform division to deal with ARC and ARM architec=
-tures
-> > >     (as found by the kernel test robot)
-> > >
-> > >  drivers/hid/wacom_wac.c | 6 +++---
-> > >  drivers/hid/wacom_wac.h | 2 +-
-> > >  2 files changed, 4 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-> > > index 2ccf838371343..174bf03908d7c 100644
-> > > --- a/drivers/hid/wacom_wac.c
-> > > +++ b/drivers/hid/wacom_wac.c
-> > > @@ -1314,7 +1314,7 @@ static void wacom_intuos_pro2_bt_pen(struct wac=
-om_wac *wacom)
-> > >         struct input_dev *pen_input =3D wacom->pen_input;
-> > >         unsigned char *data =3D wacom->data;
-> > >         int number_of_valid_frames =3D 0;
-> > > -       int time_interval =3D 15000000;
-> > > +       ktime_t time_interval =3D 15000000;
-> > >         ktime_t time_packet_received =3D ktime_get();
-> > >         int i;
-> > >
-> > > @@ -1348,7 +1348,7 @@ static void wacom_intuos_pro2_bt_pen(struct wac=
-om_wac *wacom)
-> > >         if (number_of_valid_frames) {
-> > >                 if (wacom->hid_data.time_delayed)
-> > >                         time_interval =3D ktime_get() - wacom->hid_da=
-ta.time_delayed;
-> > > -               time_interval /=3D number_of_valid_frames;
-> > > +               time_interval =3D div_u64(time_interval, number_of_va=
-lid_frames);
-> > >                 wacom->hid_data.time_delayed =3D time_packet_received=
-;
-> > >         }
-> > >
-> > > @@ -1359,7 +1359,7 @@ static void wacom_intuos_pro2_bt_pen(struct wac=
-om_wac *wacom)
-> > >                 bool range =3D frame[0] & 0x20;
-> > >                 bool invert =3D frame[0] & 0x10;
-> > >                 int frames_number_reversed =3D number_of_valid_frames=
- - i - 1;
-> > > -               int event_timestamp =3D time_packet_received - frames=
-_number_reversed * time_interval;
-> > > +               ktime_t event_timestamp =3D time_packet_received - fr=
-ames_number_reversed * time_interval;
-> > >
-> > >                 if (!valid)
-> > >                         continue;
-> > > diff --git a/drivers/hid/wacom_wac.h b/drivers/hid/wacom_wac.h
-> > > index 1a40bb8c5810c..ee21bb260f22f 100644
-> > > --- a/drivers/hid/wacom_wac.h
-> > > +++ b/drivers/hid/wacom_wac.h
-> > > @@ -324,7 +324,7 @@ struct hid_data {
-> > >         int ps_connected;
-> > >         bool pad_input_event_flag;
-> > >         unsigned short sequence_number;
-> > > -       int time_delayed;
-> > > +       ktime_t time_delayed;
-> > >  };
-> > >
-> > >  struct wacom_remote_data {
-> > > --
-> > > 2.41.0
-> > >
-> >
->
