@@ -2,55 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 551CC738DE2
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 19:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C623A738DEC
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 19:58:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231803AbjFUR51 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 21 Jun 2023 13:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56926 "EHLO
+        id S230089AbjFUR6X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 21 Jun 2023 13:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231754AbjFUR5P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 13:57:15 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C39B26A2
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 10:56:31 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2b46bfa66d2so66064591fa.2
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 10:56:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1687370185; x=1689962185;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HJx3UsV77JuxwQCPSbmxcEQXpPRNKRvV07UCaJ+HfVc=;
-        b=Wu1t92qowZqWEvU6vL86VubsGqP7ZiAe/0yKh2Uo9hUyr1+KNt9u6pUnLcAKyY9sR3
-         ZWqTIWSpQrQGDvrvDmroUqarj53N10HlPjmpnyNFTM4KOXVZjfx0KI1A5gH8ViE7rkJX
-         aqd6C4KxMse+GkQ8ySISEvR5g1UzEvcnK79zE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687370185; x=1689962185;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HJx3UsV77JuxwQCPSbmxcEQXpPRNKRvV07UCaJ+HfVc=;
-        b=O0anl7VAL+1GzG1cqg0WGmr+jXNXDr8FBz7dbYGpjb8I9K7EFAvRHswpK8yR6xF/AF
-         UESXk/WIbh60wYT6kIZVvuEzwjc6/3yWWEn08AU16KMwrkdv7dvcG8U/IT7mojaoAfh6
-         afkEgS45ik8ybnL+LuCToiJi2hzm9ciHBHGwEGEBmZBV2UY0rENIOi02QHCymImwGiMM
-         2uEU8nZIMGy4/fl/+whtPMu7wX+5Woa/TgPJqLfoVKAf9VBhIOvFjoA7Um1B7J0XKljr
-         q71F0KaAbsEsNKd7COsXt2CBBL+QGvCReAJDgMdNmHyehd5CgtEJvs4Q3JeL12RrLyF0
-         cLjA==
-X-Gm-Message-State: AC+VfDwFGlqeTXcMowOSkn3yf9CSJZGfXMllsNmTJaQj+6IkGoo40FEw
-        nx04jiC5+8ZYIkwbW0JD7tw4FteLQwhSZq4iGylbwo9U
-X-Google-Smtp-Source: ACHHUZ4HAT1XYYCEuLcFIHuzU3Z3FWGhLzPkcitnApiWg7YgIo0QcwogwiBeYrkYC1w81N7GJqozMA==
-X-Received: by 2002:a2e:86d0:0:b0:2b5:8080:af5a with SMTP id n16-20020a2e86d0000000b002b58080af5amr3298873ljj.48.1687370184863;
-        Wed, 21 Jun 2023 10:56:24 -0700 (PDT)
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com. [209.85.167.51])
-        by smtp.gmail.com with ESMTPSA id u15-20020a2e2e0f000000b002b1e6a78d3esm964432lju.82.2023.06.21.10.56.24
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jun 2023 10:56:24 -0700 (PDT)
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-4f8792d2e86so3831159e87.1
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 10:56:24 -0700 (PDT)
-X-Received: by 2002:a19:f201:0:b0:4f7:42de:3a8f with SMTP id
- q1-20020a19f201000000b004f742de3a8fmr9024880lfh.56.1687370183631; Wed, 21 Jun
- 2023 10:56:23 -0700 (PDT)
+        with ESMTP id S230199AbjFUR6P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 13:58:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 870F7198E
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 10:57:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C6DB61658
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 17:57:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37075C433CA
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 17:57:48 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="a8pKHg/W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1687370264;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Rl4SatZlYW3zfPB8EhfcgRbTfzI6pKWS4+j1IBQgrSM=;
+        b=a8pKHg/W9ZwYVTfZTeHjMpZ3K5aKoSMPoH/XMSUfa511H3j5VyaOLTL6JWqjhXGgrXoRQs
+        OHl8wXJrG14M9pf8KY8QHbhf0wrNRXUDD/ad0QsKOscjXnH1JDdwsbm+7l1DWz6GFJxPuf
+        j5iDqlWZFKcPgdACKJV9OPuZvLeD6o8=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 7d0e998e (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+        for <stable@vger.kernel.org>;
+        Wed, 21 Jun 2023 17:57:43 +0000 (UTC)
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-78a065548e3so2495337241.0
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 10:57:43 -0700 (PDT)
+X-Gm-Message-State: AC+VfDzXrw2j3m9upenHh8J/M6JNXT4BHfGQvsKvwaiBvbUyNjwvUtve
+        PtPo8byYtLDjR8pTfSJqhcQonybUPlR2SBt6GkY=
+X-Google-Smtp-Source: ACHHUZ53lppsuJRUY2telQU1fgcbJ1amd7Gy3dfz3XBiZB9kGBmv82dqJ5lIE/ByYVNdHEJQPKWfMcJPdfqxchHEuyE=
+X-Received: by 2002:a05:6102:398:b0:440:a920:dcc4 with SMTP id
+ m24-20020a056102039800b00440a920dcc4mr5969366vsq.22.1687370261715; Wed, 21
+ Jun 2023 10:57:41 -0700 (PDT)
 MIME-Version: 1.0
 References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me>
  <ZHFaFosKY24-L7tQ@debian.me> <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me>
@@ -58,50 +52,85 @@ References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9
  <e2ca75ef-d779-4bad-84a5-a9f262dbe213@lunn.ch> <FNzHwp9-AyweVwIMndmih6VuBD0nsyRp3OM72bmOxpeYszF680jFPJjENIknT32FeaqfVBtVSQFw-5mgE3ZXeksVD8VCFbxwojxP3mSZ9DQ=@proton.me>
  <9517bb70-426c-0296-b426-f5b4f075f7c8@leemhuis.info>
 In-Reply-To: <9517bb70-426c-0296-b426-f5b4f075f7c8@leemhuis.info>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 21 Jun 2023 10:56:06 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiK5oDqgt6=OHLiiAu4VmLy4qn8WQdhvFo+sm26r4UjHw@mail.gmail.com>
-Message-ID: <CAHk-=wiK5oDqgt6=OHLiiAu4VmLy4qn8WQdhvFo+sm26r4UjHw@mail.gmail.com>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Wed, 21 Jun 2023 19:57:30 +0200
+X-Gmail-Original-Message-ID: <CAHmME9p2ZLJUMq96vhkiSgvJkxP5BxE778MhY5Ou2WdxLVEJyg@mail.gmail.com>
+Message-ID: <CAHmME9p2ZLJUMq96vhkiSgvJkxP5BxE778MhY5Ou2WdxLVEJyg@mail.gmail.com>
 Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
-To:     Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Andrew Lunn <andrew@lunn.ch>,
+To:     regressions@leemhuis.info, Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
         Bagas Sanjaya <bagasdotme@gmail.com>,
         Sami Korkalainen <sami.korkalainen@proton.me>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 21 Jun 2023 at 01:46, Linux regression tracking (Thorsten
++Ard - any ideas here?
+
+On Wed, Jun 21, 2023 at 10:46=E2=80=AFAM Linux regression tracking (Thorste=
+n
 Leemhuis) <regressions@leemhuis.info> wrote:
+>
+> [added Jason (who authored the culprit) to the list of recipients; moved
+> net people and list to BCC, guess they are not much interested in this
+> anymore then]
+>
+> On 21.06.23 08:07, Sami Korkalainen wrote:
+> > I bisected again. It seems I made some mistake last time, as I got a
+> > different result this time. Maybe, because these problematic kernels ma=
+y
+> > boot fine sometimes, like I said before.
+> >
+> > Anyway, first bad commit (makes much more sense this time):
+> > e7b813b32a42a3a6281a4fd9ae7700a0257c1d50 efi: random: refresh
+> > non-volatile random seed when RNG is initialized
+> >
+> > I confirmed that this is the code causing the issue by commenting it
+> > out (see the patch file). Without this code, the latest mainline boots =
+fine.
 >
 > Jason, in that case it seems this is something for you. For the initial
 > report, see here:
-
-I'll just revert it for now. Writing EFI variables has always been
-fraught with danger - more so than just reading them - and this one
-just looks horrible anyway.
-
-Calling execute_with_initialized_rng() can end up having the callback
-done under a spinlock with interrupts disabled, which is probably why
-it then has that odd double indirection through a one-time work. And
-in no situation should we start writing to EFI variables during early
-subsystem initialization, I feel.
-
-It also probably shouldn't use the "set_variable" function at all, but
-the non-blocking one, and who knows if it should try to do some
-serialization with efi/vars.c.
-
-I think it would be better off done in user space, but if we can't
-trust user space to do the right thing, at least do it much much
-later.
-
-               Linus
+>
+> https://lore.kernel.org/all/GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24=
+OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=3D@proton.me=
+/
+>
+> Quoting a part of it:
+>
+> ```
+> Linux 6.2 and newer are (mostly) unbootable on my old HP 6730b laptop,
+> the 6.1.30 works still fine.
+> The weirdest thing is that newer kernels (like 6.3.4 and 6.4-rc3) may
+> boot ok on the first try, but when rebooting, the very same version
+> doesn't boot.
+>
+> Some times, when trying to boot, I get this message repeated forever:
+> ACPI Error: No handler or method for GPE [XX], disabling event
+> (20221020/evgpe-839)
+> On newer kernels, the date is 20230331 instead of 20221020. There is
+> also some other error, but I can't read it as it gets overwritten by the
+> other ACPI error, see image linked at the end.
+>
+> And some times, the screen will just stay completely blank.
+>
+> I tried booting with acpi=3Doff, but it does not help.
+> ```
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
+>
+> #regzbot introduced e7b813b32a42a3a6281a4fd9ae7700a0257c1d50
