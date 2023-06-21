@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A723738F50
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 20:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59DE8738F4F
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 20:56:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbjFUS4S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 21 Jun 2023 14:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41812 "EHLO
+        id S229704AbjFUS4P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 21 Jun 2023 14:56:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbjFUS4S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 14:56:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41EB81A3
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:56:16 -0700 (PDT)
+        with ESMTP id S229570AbjFUS4O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 14:56:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF5671A4
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:56:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BDCD161698
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 18:56:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB65C433C8;
-        Wed, 21 Jun 2023 18:56:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A8CC6167F
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 18:56:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78805C433C8;
+        Wed, 21 Jun 2023 18:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687373775;
-        bh=g+6+RQqQT97BVC5E5XXEt+A3A8l6wYelAXjpH2z5eao=;
+        s=korg; t=1687373771;
+        bh=5POfZEdpK5FbEVBax9dLji5ep4VVdmdan2tEGOSEhYA=;
         h=Subject:To:Cc:From:Date:From;
-        b=wPlL5p5a6gwjdZifEWAHFmd2QoO6cA5X44et/ipH/8sAzMtP8gCOhPKR0Hx2O1gvq
-         8blQvlSGMCB9fDYhdqId0lqhFLZUxhriNrhDgonibltZuWA0qnYq/zd2ZFwFvJeVvT
-         eWkEPSGgJeqHVrMSZkgo0UeWguTvy8HpY9sypttY=
-Subject: FAILED: patch "[PATCH] ksmbd: add mnt_want_write to ksmbd vfs functions" failed to apply to 6.1-stable tree
+        b=en8j4VxOylf6zixEdfXkut+adcOffKVwL47Gsi/sjcaJgC/IFSQc5ZXZKYbk/Ae+h
+         NCoKLaHjzMP6zK/IOvuoOeRSyEsUt9tbEioArq3W0M5uycWMpPJMCe4DdkRBE1AMXf
+         ybsyaHXDE8hHfbt0fXUXcyg/6yo5JBxZ41R+CkAQ=
+Subject: FAILED: patch "[PATCH] ksmbd: add mnt_want_write to ksmbd vfs functions" failed to apply to 5.15-stable tree
 To:     linkinjeon@kernel.org, amir73il@gmail.com, stfrench@microsoft.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Wed, 21 Jun 2023 20:56:01 +0200
-Message-ID: <2023062100-anyplace-spore-21ac@gregkh>
+Message-ID: <2023062101-reason-capacity-fcfc@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 40b268d384a22276dca1450549f53eed60e21deb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062100-anyplace-spore-21ac@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062101-reason-capacity-fcfc@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
