@@ -2,96 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 809387378D2
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 03:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C48E0737954
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 04:46:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229595AbjFUBt7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 21:49:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35996 "EHLO
+        id S229954AbjFUCqo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 22:46:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjFUBt5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 21:49:57 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B848D1728;
-        Tue, 20 Jun 2023 18:49:56 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6686708c986so3587753b3a.0;
-        Tue, 20 Jun 2023 18:49:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687312196; x=1689904196;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0ry3IPi7RV+RVDCpY68V4pGxA3Mva/4700DA+cxVYeY=;
-        b=DMtfPyZC9ppzsUwyADd328RctyjiiOW/Y3ulct79Lme8H+P6wRF6DaYZHQoPvcFF8G
-         aAelELigiyrzKMV/X5osFvRssKDMC9q5qAETjTq1m96meVG9HbeXQSg2LgFB6lzxtwux
-         ZgcL0QQHwfSjdoxx2tbdO5h27rUEA0Sd+mlxSURFPo+OMApafkAwuK4JkEo+BC7Bf7H0
-         WTbneI5tz73t8ultanibKKTAUdWVsuMJg5TR5e6IYwGLUIdNAas/p/6NswIHMsHHYbgl
-         i7Zqww8AYxsuQpk9OLEQ8WAlN6OLzLWpsfMZIz5QnOup8j85/hue5S+zEdu8BQifr68a
-         VKqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687312196; x=1689904196;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0ry3IPi7RV+RVDCpY68V4pGxA3Mva/4700DA+cxVYeY=;
-        b=G1ZtxJQLkB0gDH/B9BzJURlphwwuni2SbOfeE/TDjw6MO4Wa4Ocv/GXJO7FWKjMqjR
-         s9rHTBJYS22nR1pSFw//f8Z0xjR9MrrU9UtqVfyoGotMqmbP+JyiOIyB22TVaER2VBUq
-         rLZZNnEDs++c8Nl8vjnIoCqIGCXDVnrvStNFngqsZJx21+9oqDapeA2mO9oq2HSmiCET
-         R7IjaFJJbJ4oiniD8duEbcrbRTUD8gt3C7Msje4Hpw/WiShQfV0bd9/ODbA8dapuk++0
-         mT76lgdoCNHgprgEemqDOBDuqzREr2BWKcfJq321JeTs+OZK28meEY70ShK87Mg0bFro
-         Q9Og==
-X-Gm-Message-State: AC+VfDzMeSEEgySoshj2kKWb6/GCtnv4V3EEdE3htr6im/Hiu+T+cWrr
-        8IkHGxNyCIdgniHv/H0u1CY=
-X-Google-Smtp-Source: ACHHUZ4lYT5DHLkUs+qrcxPEFUiRY53k7N/A8hiFqIl2ggCrARtXsgsjcngVw7L9xc+4eKhYk/zwuw==
-X-Received: by 2002:a05:6a00:8d5:b0:666:ad0c:c0f4 with SMTP id s21-20020a056a0008d500b00666ad0cc0f4mr19095048pfu.23.1687312196099;
-        Tue, 20 Jun 2023 18:49:56 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d1-20020aa78141000000b0066875f17266sm1841555pfn.135.2023.06.20.18.49.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 18:49:55 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 20 Jun 2023 18:49:53 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 5.4 00/64] 5.4.248-rc1 review
-Message-ID: <ba1c3460-e06f-4884-9ec9-e990629622db@roeck-us.net>
-References: <20230619102132.808972458@linuxfoundation.org>
+        with ESMTP id S229849AbjFUCqo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 22:46:44 -0400
+Received: from rs225.mailgun.us (rs225.mailgun.us [209.61.151.225])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA7D1989
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 19:46:42 -0700 (PDT)
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=hexchain.org;
+ q=dns/txt; s=smtp; t=1687315601; x=1687322801; h=Content-Transfer-Encoding:
+ Content-Type: In-Reply-To: From: From: References: Cc: To: To: Subject:
+ Subject: MIME-Version: Date: Message-ID: Sender: Sender;
+ bh=5stQnICSelnzp1yyIPPD1WlmY4XcWQOBfdxQvv1XFbw=;
+ b=FFaVNFSZw4a9h0FWJ422Z1MD4yS/Z0mPKWy5NO4DU3aNWsf4YVdBUEHXlHnGBL7JSRt55QhnbJxzZzypMRIH/ScLh03E4Tj9kf1FfHFN0wi2Ygnjj0sWRZi8Pfg+v07xGpjktW2Gwy+L97o5Y5nowDEe0oir/1tod1aErwakCNu6UIfuz+0ZfQgZQBDThpeAmJ/rjgq3qYxewOs8yU9l7P3L23xLbslyo6p5lqxU+zq1LDc5i25W4QbeMGchlh2m4nxcG5gYQuiiXNDgfs3d0zAQbzoS6Ze68w53n9Nvg9MMcM9N0BYijpBfaiIm+Tj5mg+fdN7J1UD/lEQthb9U/w==
+X-Mailgun-Sending-Ip: 209.61.151.225
+X-Mailgun-Sid: WyI2Y2ZiNSIsInN0YWJsZUB2Z2VyLmtlcm5lbC5vcmciLCIxOTI1MTgiXQ==
+Received: from [10.22.69.180] (122.11.166-8.unknown.starhub.net.sg [122.11.166.8]) by
+ 0b3e52753156 with SMTP id 6492649145220fab9318d1bd; Wed, 21 Jun 2023 02:46:41
+ GMT
+Sender: linux@hexchain.org
+Message-ID: <653274b4-7b69-8f3f-4214-e0be36f7102e@hexchain.org>
+Date:   Wed, 21 Jun 2023 10:46:37 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: amd_sfh driver causes kernel oops during boot
+To:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        Malte Starostik <malte@starostik.de>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>, basavaraj.natikar@amd.com,
+        linux-input@vger.kernel.org, linux@hexchain.org,
+        stable@vger.kernel.org
+References: <ZG3ipauL9FTnQJiC@debian.me>
+ <aci7a4jnosozypn6sffsdoaezg4p42zgjy5dwnjyvnbav7chdm@wettfjwb4enw>
+ <79bd270e-4a0d-b4be-992b-73c65d085624@amd.com> <5980752.YW5z2jdOID@zen>
+ <1b3fd148-44d7-d476-e9e6-f9d8c8ec0ee6@leemhuis.info>
+Content-Language: en-US
+From:   Haochen Tong <linux@hexchain.org>
+In-Reply-To: <1b3fd148-44d7-d476-e9e6-f9d8c8ec0ee6@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 19, 2023 at 12:29:56PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.248 release.
-> There are 64 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 6/20/23 21:20, Linux regression tracking (Thorsten Leemhuis) wrote:
+> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+> for once, to make this easily accessible to everyone.
 > 
-> Responses should be made by Wed, 21 Jun 2023 10:21:12 +0000.
-> Anything received after that time might be too late.
-> 
+> What happens to this? From here it looks like there was no progress to
+> resolve the regression in the past two weeks, but maybe I just missed
+> something.
 
-Build results:
-	total: 159 pass: 159 fail: 0
-Qemu test results:
-	total: 450 pass: 450 fail: 0
+Hi,
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-
-Guenter
+I just looked at the journal again and this problem seemed to go away 
+after upgrading from 6.3.3 to 6.3.5. At that time the BIOS version was 
+still 1.27. Now, on 1.57, the device 1022:164a is indeed no longer 
+present anymore.
