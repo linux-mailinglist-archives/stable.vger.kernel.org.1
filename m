@@ -2,107 +2,166 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87144738437
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 15:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0658F738467
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 15:07:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231631AbjFUNAj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 21 Jun 2023 09:00:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37834 "EHLO
+        id S232223AbjFUNHk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 21 Jun 2023 09:07:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232140AbjFUNAh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 09:00:37 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B809910D5
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 06:00:35 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 721381FE35;
-        Wed, 21 Jun 2023 13:00:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1687352434; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Y7DrHbq83XNgL4+Xxasxii68U65vKI3Ki/aKcW+TTks=;
-        b=RYFM6anEj/GbdXtl9uAUgOEPJGo/ZeJN08qA8rniaFjcsdHJ0ATUk4B4mVbgm4179NzZqf
-        yMJMoNsRE7qQchpSDm2/I3ixQjjkGdPJ7N0JocJsRiR4zb2rtBuqXQPFbmRUK9jUXNznOH
-        A5CZ6Wh+X9o55IXn93d/CvYys+KYvbY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1687352434;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Y7DrHbq83XNgL4+Xxasxii68U65vKI3Ki/aKcW+TTks=;
-        b=0qcXVzriRGafNBkiaOCAv92DmmXwgeXjj81kzQ0HZWit2JYO9AeWC/3ZBYvgcE3oRHlTB6
-        DXBK1Qyt/LKw3QDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 47FAA134B1;
-        Wed, 21 Jun 2023 13:00:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 4FC+EHL0kmTaWgAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Wed, 21 Jun 2023 13:00:34 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     airlied@redhat.com, jfalempe@redhat.com, daniel@ffwll.ch,
-        jammy_huang@aspeedtech.com, suijingfeng@loongson.cn
-Cc:     dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
-Subject: [PATCH v2 01/14] drm/ast: Fix DRAM init on AST2200
-Date:   Wed, 21 Jun 2023 14:53:35 +0200
-Message-ID: <20230621130032.3568-2-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230621130032.3568-1-tzimmermann@suse.de>
-References: <20230621130032.3568-1-tzimmermann@suse.de>
+        with ESMTP id S232214AbjFUNHj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 09:07:39 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DBE10E6
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 06:07:36 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-25695bb6461so4767316a91.1
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 06:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1687352856; x=1689944856;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AN9rHqAMb+s9JldJn9/oqOzjlHcCzpCU13r5zGj/2KQ=;
+        b=cK7F3u9YWXKESMkYMrq4CLbiYhmqAwgCfOHFwEMrXZBDvEfantgIL+FukZP7lJa0HE
+         ea+9QoGvYwMLYvpCEbugNNosto1uR6rlY5mkWJTITzJG2HsAWzwIj4R3IGti2g+h74VS
+         9+4U+k4MGAY/K5+AO5LbCu4ijCkdwFXd/Flus=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687352856; x=1689944856;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AN9rHqAMb+s9JldJn9/oqOzjlHcCzpCU13r5zGj/2KQ=;
+        b=VhWYt7WEZMpUTvobxUW4T80+54EwFup8rvRJ7V7a1+X6RoQX/EURLfB0DW5Ey0i53r
+         /M37ypngBC7GBClqcE0v43doS/DnRo1txfUjvhXyuPe3MLrxttz5pTC5uVzt6kVede2S
+         LAqM2iWU9gVK/uo7FF6IQYRTyNNFQjfweRm80ABFPIxm5rtFxS8N2Ykbggv++3fdC4vA
+         jT8cxoAuutV0dRSehNdajoLNG5JnZl3hW+7xiC6nndC07sL2QUdVvvakeRqyUXyadLts
+         9gym6QiO99iWHW3mJH6jPOq3OjfI4YHsYa/19xZEstSwYJ78rMQzDyM2nMbOTr8X+DmJ
+         IPaw==
+X-Gm-Message-State: AC+VfDzNuVvNC8S0H2cnmkkqQKoEaIHcu04bJGtAdDtQtyhbIWPLEKQT
+        kSmkZixMjyGrhhNEwTY5mGjxHC89Ia/9RmplbruWGQ==
+X-Google-Smtp-Source: ACHHUZ58CXQQpAnHz3lkggiqe1EL/HQv8J6Ipct9oA7wdxqNiCgJ8ePDZU2c7RUje6+6AvX2hFO4F8Z0/irOHhzxVjI=
+X-Received: by 2002:a17:90a:e385:b0:25e:e70f:423f with SMTP id
+ b5-20020a17090ae38500b0025ee70f423fmr14962926pjz.19.1687352855923; Wed, 21
+ Jun 2023 06:07:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230615152918.3484699-1-revest@chromium.org> <ZJFIy+oJS+vTGJer@calendula>
+ <CABRcYmJjv-JoadtzZwU5A+SZwbmbgnzWb27UNZ-UC+9r+JnVxg@mail.gmail.com> <20230621111454.GB24035@breakpoint.cc>
+In-Reply-To: <20230621111454.GB24035@breakpoint.cc>
+From:   Florent Revest <revest@chromium.org>
+Date:   Wed, 21 Jun 2023 15:07:24 +0200
+Message-ID: <CABRcYmKeo6A+3dmZd9bRp8W3tO9M5cHDpQ13b8aeMkhYr4L64Q@mail.gmail.com>
+Subject: Re: [PATCH nf] netfilter: conntrack: Avoid nf_ct_helper_hash uses
+ after free
+To:     Florian Westphal <fw@strlen.de>
+Cc:     Pablo Neira Ayuso <pablo@netfilter.org>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kadlec@netfilter.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        lirongqing@baidu.com, daniel@iogearbox.net, ast@kernel.org,
+        kpsingh@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Fix the test for the AST2200 in the DRAM initialization. The value
-in ast->chip has to be compared against an enum constant instead of
-a numerical value.
+On Wed, Jun 21, 2023 at 1:14=E2=80=AFPM Florian Westphal <fw@strlen.de> wro=
+te:
+>
+> Florent Revest <revest@chromium.org> wrote:
+> > On Tue, Jun 20, 2023 at 8:35=E2=80=AFAM Pablo Neira Ayuso <pablo@netfil=
+ter.org> wrote:
+> > >
+> > > On Thu, Jun 15, 2023 at 05:29:18PM +0200, Florent Revest wrote:
+> > > > If register_nf_conntrack_bpf() fails (for example, if the .BTF sect=
+ion
+> > > > contains an invalid entry), nf_conntrack_init_start() calls
+> > > > nf_conntrack_helper_fini() as part of its cleanup path and
+> > > > nf_ct_helper_hash gets freed.
+> > > >
+> > > > Further netfilter modules like netfilter_conntrack_ftp don't check
+> > > > whether nf_conntrack initialized correctly and call
+> > > > nf_conntrack_helpers_register() which accesses the freed
+> > > > nf_ct_helper_hash and causes a uaf.
+> > > >
+> > > > This patch guards nf_conntrack_helper_register() from accessing
+> > > > freed/uninitialized nf_ct_helper_hash maps and fixes a boot-time
+> > > > use-after-free.
+> > >
+> > > How could this possibly happen?
+> >
+> > Here is one way to reproduce this bug:
+> >
+> >   # Use nf/main
+> >   git clone git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.=
+git
+> >   cd nf
+> >
+> >   # Start from a minimal config
+> >   make LLVM=3D1 LLVM_IAS=3D0 defconfig
+> >
+> >   # Enable KASAN, BTF and nf_conntrack_ftp
+> >   scripts/config -e KASAN -e BPF_SYSCALL -e DEBUG_INFO -e
+> > DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT -e DEBUG_INFO_BTF -e
+> > NF_CONNTRACK_FTP
+> >   make LLVM=3D1 LLVM_IAS=3D0 olddefconfig
+> >
+> >   # Build without the LLVM integrated assembler
+> >   make LLVM=3D1 LLVM_IAS=3D0 -j `nproc`
+> >
+> > (Note that the use of LLVM_IAS=3D0, KASAN and BTF is just to trigger a
+> > bug in BTF that will be fixed by
+> > https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf.git/commit/?id=
+=3D9724160b3942b0a967b91a59f81da5593f28b8ba
+> > Independently of that specific BTF bug, it shows how an error in
+> > nf_conntrack_bpf can cause a boot-time uaf in netfilter)
+> >
+> > Then, booting gives me:
+> >
+> > [    4.624666] BPF: [13893] FUNC asan.module_ctor
+> > [    4.625611] BPF: type_id=3D1
+> > [    4.626176] BPF:
+> > [    4.626601] BPF: Invalid name
+> > [    4.627208] BPF:
+> > [    4.627723] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > [    4.628610] BUG: KASAN: slab-use-after-free in
+> > nf_conntrack_helper_register+0x129/0x2f0
+> > [    4.628610] Read of size 8 at addr ffff888102d24000 by task swapper/=
+0/1
+> > [    4.628610]
+>
+> Isn't that better than limping along?
 
-This bug got introduced when the driver was first imported into the
-kernel.
+Note that this only panics because KASAN instrumentation notices the
+use-after-free and makes a lot of noise about it. In a non-debug boot,
+this would just silently corrupt random memory instead.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.5+
-Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Tested-by: Jocelyn Falempe <jfalempe@redhat.com> # AST2600
----
- drivers/gpu/drm/ast/ast_post.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> in this case an initcall is failing and I think panic is preferrable
+> to a kernel that behaves like NF_CONNTRACK_FTP=3Dn.
 
-diff --git a/drivers/gpu/drm/ast/ast_post.c b/drivers/gpu/drm/ast/ast_post.c
-index a005aec18a020..0262aaafdb1c5 100644
---- a/drivers/gpu/drm/ast/ast_post.c
-+++ b/drivers/gpu/drm/ast/ast_post.c
-@@ -291,7 +291,7 @@ static void ast_init_dram_reg(struct drm_device *dev)
- 				;
- 			} while (ast_read32(ast, 0x10100) != 0xa8);
- 		} else {/* AST2100/1100 */
--			if (ast->chip == AST2100 || ast->chip == 2200)
-+			if (ast->chip == AST2100 || ast->chip == AST2200)
- 				dram_reg_info = ast2100_dram_table_data;
- 			else
- 				dram_reg_info = ast1100_dram_table_data;
--- 
-2.41.0
+In that case, it seems like what you'd want is
+nf_conntrack_standalone_init() to BUG() instead of returning an error
+then ? (so you'd never get to NF_CONNTRACK_FTP or any other if
+nf_conntrack failed to initialize) If this is the prefered behavior,
+then sure, why not.
 
+> AFAICS this problem is specific to NF_CONNTRACK_FTP=3Dy
+> (or any other helper module, for that matter).
+
+Even with NF_CONNTRACK_FTP=3Dm, the initialization failure in
+nf_conntrack_standalone_init() still happens. Therefore, the helper
+hashtable gets freed and when the nf_conntrack_ftp.ko module gets
+insmod-ed, it calls nf_conntrack_helpers_register() and this still
+causes a use-after-free.
+
+> If you disagree please resend with a commit message that
+> makes it clear that this is only relevant for the 'builtin' case.
