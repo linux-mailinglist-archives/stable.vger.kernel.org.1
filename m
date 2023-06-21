@@ -2,89 +2,155 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A717738F22
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 20:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27B4E738F49
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 20:55:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229961AbjFUStf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 21 Jun 2023 14:49:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36902 "EHLO
+        id S229958AbjFUSzt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 21 Jun 2023 14:55:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjFUSte (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 14:49:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DFE49B
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:49:33 -0700 (PDT)
+        with ESMTP id S231629AbjFUSzd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 14:55:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69A191BC1
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:55:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF0E661689
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 18:49:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3896C433C0
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 18:49:31 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="SAk+oiUr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1687373369;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZR62tl0M6BOshKrD0nf8mF7iZ5cr1fmRG4jE24AQIZU=;
-        b=SAk+oiUrQFWEDmXRaUg9nnUVTQmlRSAJgxlTz7LuSIMNC8MYdY0OJKhVuN5C5Mq1fBauuZ
-        Qj6vjUx70Mdy4hpwZQHIl5GD+NR+m0KWUi5dj7vF0ktPM9bsyhTbHBifKbW+hTMmuZriWN
-        Uh5nkJPDqWpCFNl8Ne3nMqOsPqOBmwE=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 9009531e (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
-        for <stable@vger.kernel.org>;
-        Wed, 21 Jun 2023 18:49:28 +0000 (UTC)
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-440c14d6a5eso1105071137.0
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:49:28 -0700 (PDT)
-X-Gm-Message-State: AC+VfDyjN0PDXGcgclqTMyau6j9y7nOQgqpsesShp1LjDuOpkAsB9EAa
-        0aCCmbx8Lb/hiLDzX6H24qtWCbUkpGnvU6981fs=
-X-Google-Smtp-Source: ACHHUZ4IQJSCPvWCxmMLQOe7nbT0LiDhZ8XnSQo8Wq/dexoR3YH1/8bbg9nnYkL7RUXRS29D5PNqruRa3+2Y/NxcdgI=
-X-Received: by 2002:a67:edc9:0:b0:43b:2fa9:eb3a with SMTP id
- e9-20020a67edc9000000b0043b2fa9eb3amr6968951vsp.9.1687373367438; Wed, 21 Jun
- 2023 11:49:27 -0700 (PDT)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E7A4A616A1
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 18:55:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDD0C433C8;
+        Wed, 21 Jun 2023 18:55:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1687373731;
+        bh=kSQto4wqUFy5d/R6waTkJdvPJ9sE0ZPz9JVEbRRbRQw=;
+        h=Subject:To:Cc:From:Date:From;
+        b=sX/l1hY+yV6Qo5vVvbL+674WSdBRZ+NtrAtunc2I75PZtYaLXyhpV2qthXEiBL6tV
+         KGdx2k6wO7OI84alg6x4EERjGGnG+muq3m2Jl4w82le+Wbc2WNkUp1UVvgclKaNsww
+         ARjf15ERRaOE5uf/amEvIFoITLj5LsBKcfyOn+Dw=
+Subject: FAILED: patch "[PATCH] ksmbd: validate command payload size" failed to apply to 5.15-stable tree
+To:     linkinjeon@kernel.org, cc85nod@gmail.com, stfrench@microsoft.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 21 Jun 2023 20:55:28 +0200
+Message-ID: <2023062128-record-unclog-7ccd@gregkh>
 MIME-Version: 1.0
-References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me>
- <ZHFaFosKY24-L7tQ@debian.me> <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me>
- <ZIcmpcEsTLXFaO0f@debian.me> <oEbkgJ-ImLxBDZDUTnIAGFWrRVnwBss3FOlalTpwrz83xWgESC9pcvNKiAVp9BzFgqZ0V-NIwzBZ7icKD8ynuIi_ZMtGt7URu3ftcSt16u4=@proton.me>
- <e2ca75ef-d779-4bad-84a5-a9f262dbe213@lunn.ch> <FNzHwp9-AyweVwIMndmih6VuBD0nsyRp3OM72bmOxpeYszF680jFPJjENIknT32FeaqfVBtVSQFw-5mgE3ZXeksVD8VCFbxwojxP3mSZ9DQ=@proton.me>
- <9517bb70-426c-0296-b426-f5b4f075f7c8@leemhuis.info>
-In-Reply-To: <9517bb70-426c-0296-b426-f5b4f075f7c8@leemhuis.info>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Wed, 21 Jun 2023 20:49:16 +0200
-X-Gmail-Original-Message-ID: <CAHmME9oh7kEUe-6NFk9=_8UxeD-SNbfMksYh3GaYdutXS01zOw@mail.gmail.com>
-Message-ID: <CAHmME9oh7kEUe-6NFk9=_8UxeD-SNbfMksYh3GaYdutXS01zOw@mail.gmail.com>
-Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
-To:     Sami Korkalainen <sami.korkalainen@proton.me>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Brad Spengler <spender@grsecurity.net>,
-        regressions@leemhuis.info
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Sami,
 
-Would you try applying
-https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/?id=13bb06f8dd42071cb9a49f6e21099eea05d4b856
-instead of the revert?
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Spender (CC'd) suggested to me that possibly the reason for your first
-mis-bisect and possibly for the result you wound with has more to do
-with some non-determinism in the actual underlying bug that the above
-commit fixes. If applying 13bb06f8dd4207 fixes the issue, then Linus
-can then revert the revert he just committed.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Jason
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2b9b8f3b68edb3d67d79962f02e26dbb5ae3808d
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062128-record-unclog-7ccd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 2b9b8f3b68edb3d67d79962f02e26dbb5ae3808d Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Mon, 5 Jun 2023 01:57:34 +0900
+Subject: [PATCH] ksmbd: validate command payload size
+
+->StructureSize2 indicates command payload size. ksmbd should validate
+this size with rfc1002 length before accessing it.
+This patch remove unneeded check and add the validation for this.
+
+[    8.912583] BUG: KASAN: slab-out-of-bounds in ksmbd_smb2_check_message+0x12a/0xc50
+[    8.913051] Read of size 2 at addr ffff88800ac7d92c by task kworker/0:0/7
+...
+[    8.914967] Call Trace:
+[    8.915126]  <TASK>
+[    8.915267]  dump_stack_lvl+0x33/0x50
+[    8.915506]  print_report+0xcc/0x620
+[    8.916558]  kasan_report+0xae/0xe0
+[    8.917080]  kasan_check_range+0x35/0x1b0
+[    8.917334]  ksmbd_smb2_check_message+0x12a/0xc50
+[    8.917935]  ksmbd_verify_smb_message+0xae/0xd0
+[    8.918223]  handle_ksmbd_work+0x192/0x820
+[    8.918478]  process_one_work+0x419/0x760
+[    8.918727]  worker_thread+0x2a2/0x6f0
+[    8.919222]  kthread+0x187/0x1d0
+[    8.919723]  ret_from_fork+0x1f/0x30
+[    8.919954]  </TASK>
+
+Cc: stable@vger.kernel.org
+Reported-by: Chih-Yen Chang <cc85nod@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/smb2misc.c b/fs/smb/server/smb2misc.c
+index 0ffe663b7590..57749f41b991 100644
+--- a/fs/smb/server/smb2misc.c
++++ b/fs/smb/server/smb2misc.c
+@@ -351,6 +351,7 @@ int ksmbd_smb2_check_message(struct ksmbd_work *work)
+ 	int command;
+ 	__u32 clc_len;  /* calculated length */
+ 	__u32 len = get_rfc1002_len(work->request_buf);
++	__u32 req_struct_size;
+ 
+ 	if (le32_to_cpu(hdr->NextCommand) > 0)
+ 		len = le32_to_cpu(hdr->NextCommand);
+@@ -373,17 +374,9 @@ int ksmbd_smb2_check_message(struct ksmbd_work *work)
+ 	}
+ 
+ 	if (smb2_req_struct_sizes[command] != pdu->StructureSize2) {
+-		if (command != SMB2_OPLOCK_BREAK_HE &&
+-		    (hdr->Status == 0 || pdu->StructureSize2 != SMB2_ERROR_STRUCTURE_SIZE2_LE)) {
+-			/* error packets have 9 byte structure size */
+-			ksmbd_debug(SMB,
+-				    "Illegal request size %u for command %d\n",
+-				    le16_to_cpu(pdu->StructureSize2), command);
+-			return 1;
+-		} else if (command == SMB2_OPLOCK_BREAK_HE &&
+-			   hdr->Status == 0 &&
+-			   le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_20 &&
+-			   le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_21) {
++		if (command == SMB2_OPLOCK_BREAK_HE &&
++		    le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_20 &&
++		    le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_21) {
+ 			/* special case for SMB2.1 lease break message */
+ 			ksmbd_debug(SMB,
+ 				    "Illegal request size %d for oplock break\n",
+@@ -392,6 +385,14 @@ int ksmbd_smb2_check_message(struct ksmbd_work *work)
+ 		}
+ 	}
+ 
++	req_struct_size = le16_to_cpu(pdu->StructureSize2) +
++		__SMB2_HEADER_STRUCTURE_SIZE;
++	if (command == SMB2_LOCK_HE)
++		req_struct_size -= sizeof(struct smb2_lock_element);
++
++	if (req_struct_size > len + 1)
++		return 1;
++
+ 	if (smb2_calc_size(hdr, &clc_len))
+ 		return 1;
+ 
+
