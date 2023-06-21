@@ -2,117 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91084738319
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 14:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 107687382C1
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 14:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230445AbjFULPc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 21 Jun 2023 07:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42548 "EHLO
+        id S231760AbjFUMFU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 21 Jun 2023 08:05:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231710AbjFULPH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 07:15:07 -0400
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [IPv6:2a0a:51c0:0:237:300::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06EC186;
-        Wed, 21 Jun 2023 04:15:06 -0700 (PDT)
-Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
-        (envelope-from <fw@strlen.de>)
-        id 1qBvna-0006ir-Ck; Wed, 21 Jun 2023 13:14:54 +0200
-Date:   Wed, 21 Jun 2023 13:14:54 +0200
-From:   Florian Westphal <fw@strlen.de>
-To:     Florent Revest <revest@chromium.org>
-Cc:     Pablo Neira Ayuso <pablo@netfilter.org>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kadlec@netfilter.org, fw@strlen.de,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, lirongqing@baidu.com, wangli39@baidu.com,
-        zhangyu31@baidu.com, daniel@iogearbox.net, ast@kernel.org,
-        kpsingh@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH nf] netfilter: conntrack: Avoid nf_ct_helper_hash uses
- after free
-Message-ID: <20230621111454.GB24035@breakpoint.cc>
-References: <20230615152918.3484699-1-revest@chromium.org>
- <ZJFIy+oJS+vTGJer@calendula>
- <CABRcYmJjv-JoadtzZwU5A+SZwbmbgnzWb27UNZ-UC+9r+JnVxg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+        with ESMTP id S231663AbjFUMFS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 08:05:18 -0400
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2052.outbound.protection.outlook.com [40.107.95.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A891721
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 05:05:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EOCrwhZymYY8rooExVpQ1E3DyFm1F4xjoHCTJRsHfUnh+kGI8eMrItDded2oIscDHq10WioVOUkUY5+3cvBt1adHoYTP/kXcvghbomKauZxe7D07MhcOSvCV/C2+WKTulruBZqRl+hy8jL8hGTAKYAdN701iZJQKtLJyL5foY90toDZXjyIhikaEgzFksRa4CJxjut29RE9jUhTShI+wD9cXxfQSYfIAvYQHNa8tbz+Wtxhlc0LXF/DIaFV5YjcWfzkfAH3E4p2LZ5Vrobok044RWjUg+k07G++c2cGYfkF4Aw4XCiYtjnb1ZdJd+kNQmkiFaOI6H2/TFigaqaQfXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XsaWs3hSyg7E/YiXYs6vqEwsHnb5yfuEG628FmNcbzk=;
+ b=i6o82ApjMVw6N9cAy/q7GAgsDmbCk5ohBkN2J4yBhHj+G27n7H7yPPVStbY+JeaegfJ53ggHjQhh7zDHqqSAanyT2FerX1Fpf4GYELm9EWM3CBaXAlK0+vstnzhP1VJ1HPDHKD+Oj3nvtkZdXEc6ctLszr9K9Lfqp7fINBrLvhzTdpzcKvGb2XmEZOBImAc/h7C/FK9lxEV50cSbQo0an3kO3Gq8rb0wSojFSXb7MRtoEjFE3GobbfCoiS4WggRmgApD7jd0KX5DUrt8O0fmvddk3RLIoLyidCpWP+XdFNlxya2RrlUygNEipJlqiwPU0bbhK0qfDJ8VaFU9iNynPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XsaWs3hSyg7E/YiXYs6vqEwsHnb5yfuEG628FmNcbzk=;
+ b=D/Ik5Bo29HDSfmWU6q+J10IjoakfrmDgj1BwRpIvS4jW67C1NqV34luqS0iUVKdcvMvntze5oqipVB/zh4ftf2bakENmbU/mYzcQRaOwysGEFq+iEnX7Ihm6vBUF4wP1+a6pufkw0+4IYm0pQCGmnKRsa0j+FWdU3Eo59xdBEgo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BN8PR12MB3587.namprd12.prod.outlook.com (2603:10b6:408:43::13)
+ by LV2PR12MB5822.namprd12.prod.outlook.com (2603:10b6:408:179::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Wed, 21 Jun
+ 2023 12:05:13 +0000
+Received: from BN8PR12MB3587.namprd12.prod.outlook.com
+ ([fe80::384a:95a4:8819:ee84]) by BN8PR12MB3587.namprd12.prod.outlook.com
+ ([fe80::384a:95a4:8819:ee84%7]) with mapi id 15.20.6521.023; Wed, 21 Jun 2023
+ 12:05:12 +0000
+Message-ID: <44be4e13-a157-35ec-6ff7-e3a0fce057e4@amd.com>
+Date:   Wed, 21 Jun 2023 14:05:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] dma-buf: keep the signaling time of merged fences
+Content-Language: en-US
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
+Cc:     juan.hao@nxp.com, dri-devel@lists.freedesktop.org,
+        stable@vger.kernel.org
+References: <20230621073204.28459-1-christian.koenig@amd.com>
+ <2023062140-bartender-closable-9fa9@gregkh>
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+In-Reply-To: <2023062140-bartender-closable-9fa9@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABRcYmJjv-JoadtzZwU5A+SZwbmbgnzWb27UNZ-UC+9r+JnVxg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-ClientProxiedBy: FR0P281CA0184.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ab::7) To BN8PR12MB3587.namprd12.prod.outlook.com
+ (2603:10b6:408:43::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8PR12MB3587:EE_|LV2PR12MB5822:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3963c21-4fc5-4626-750b-08db724fc42a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: g0QSPHQjNA4zDIOWKfMaIQTPkeO4YuLxwevG/8LFcdORcYbl6mT0lqSMzR+HtFo4vx+/8ttU+gAvu/WMF5FjjfYf+ETKm+wqcW2Qs3OXmXoWjrUysvMoE1Z75G65y6YunH0mmodHgcKbtlbTkkoeKLQOMi3rwZWYatkJHHvEUvrhqiEBSGQuo0N0GQM6B/0rlMrP7N3x3+t7ZfJfUh8hbEfDqXvpmBH4MWx5ky2aeamiJseAAMp/SruRLCKBd3YrkWQIOuicAQ4x+T0q72wzAckI/apnzsuDqyQY8UFIIHXFXtvkxoyhMsHJmmtr/ihtHPYzivxX6n67vXBN+AA49IsftbsAaMfMO8B9OMOdPyMR3LGgowR2tD5l2rUmL1iBtNpChFdh/nHX4Qykxja5/QQIdCYGR58cJJ7cwUkzIoXGgR9s7HIsfwzALW17JGafvf2fLuS57wgZ5K0Lar+vmc7UvXRYUnM5rSh7F5kTlOqPJph7xkk9Txxvw85fO6ZMTzybxdZD8n4BrtD9RwegTol2W0UVjqkHpo7Un/h/JCRfoUPB+fAzZVgl2Agp4wPGEQw1kouLqXJ7xtOx4VigL9xsYOc3Su8gAjDya7aLTwVAMXj8GRldgNtUdYGBIG06Or2tLYpBgscZOazVeuqYQw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3587.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(346002)(376002)(136003)(366004)(396003)(451199021)(4326008)(110136005)(478600001)(6486002)(6666004)(38100700002)(36756003)(2616005)(86362001)(6506007)(6512007)(186003)(31696002)(5660300002)(316002)(31686004)(2906002)(4744005)(8936002)(41300700001)(8676002)(66476007)(66556008)(66946007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R3FPYVQ0VXNaTTBiWTlGMVdhQTdkc1JYdnF5clJXN2JpOUF1eldDc0NYMjZN?=
+ =?utf-8?B?bDNSd29idksxNFhjOWs5cURyUWV4bDZ5NkswQ2hjV1RoMVhNRUFVbElSZGdR?=
+ =?utf-8?B?TFl5S2dLN2RlWWtibWx4NE5VL0JackdMTEhjeWhJWmE5SHRjbytsWkFkUjlu?=
+ =?utf-8?B?NVJrcml4TTF6MEtINm82M2VMVzhHWjZZTHUzaFJucDcyRm1YQ0sweGxuZldI?=
+ =?utf-8?B?bnBUcEgwM3hDNXgyZjVCODZhTVVHYlZkd1pkalI2eU1ieE1hTjhhaEpVd0Vq?=
+ =?utf-8?B?TkQ4NmlqRWZmNXV0VFVSY2xhN3p5RkJmVG5hQmVZamNFVXNoMUVVa3g3QW5l?=
+ =?utf-8?B?STV3SVZuRnBoVk1HNnZDK1JmRXZJZVRJOGI1RmtQTEx5TnJXUXVkMXVjc2Nv?=
+ =?utf-8?B?bTlaSzRzNy8rK0tzMGxtWEhXdjBJTHhibnkxNVc5QU1peEp2UjkvZUhrbEtz?=
+ =?utf-8?B?cFVYK3hlbGx3d2s3akZOQ2M0RkgzNXM1em43Sko0K3M0U21SYWNEZnQ0NUxq?=
+ =?utf-8?B?NUlGcGYya3YyNWxLcDRkQ2V2MDR0cnowUTdtMVJyUDZlVHJpVkxqU2xKNDhJ?=
+ =?utf-8?B?M1ZvRUpxUEx0UzhqeWQzcTgrVHRTYUhJY09nZEV0Tkp3UDlPcEVuVzlYd1pO?=
+ =?utf-8?B?SHJFcFFkYnlSVmlXM1VmdmxWaGFpNHk0cUtnOTljZCtsM3BnUEZTY2diM21F?=
+ =?utf-8?B?TFE2bDZiTmUvVGhnSGxWM01DcG5jNE9sY3BmVnltVk9KNWFSNGdna1A1bE8x?=
+ =?utf-8?B?OWQxc05JVDc4cTVzQlNaSVBOaFIyUkZhZ3lDRUVBOGR5NjZrMk9xUXpJN0pJ?=
+ =?utf-8?B?QXg1b3BUOWZ6ZnYySHdqTnJrM1VuTmZKYWJKQUcyanZoZXgrWkNkZExSMkxY?=
+ =?utf-8?B?T2Y2Zm53WDVpWDcwMjloeTZOclQvRm51VStXZS9NcitOOENBTFlnODVQNkx4?=
+ =?utf-8?B?OXFnUEJ6UnpVa3RXclZGVzBuTGxIZ092M1lNTFM3dUIzdmc0VEtOdWJqMERa?=
+ =?utf-8?B?d1hDS3pZdlVLSnlPMTJJWjlhaW5SNUE4b2xZM3YxZzFwcFp3MGVDZEt4TER3?=
+ =?utf-8?B?UVhPdytQanZYKzZtbjVmYUJUTnFpdlR4Vk1tNVE1dFBxcWNCQWlsMG1GZjRq?=
+ =?utf-8?B?MXgvc2dGeWZKVHlxWGhlcDVPK0ovS004ais0ZUFsVjRld3kyQjVHTnFBTXcz?=
+ =?utf-8?B?VWIzZDdHQXV3aG13V1NSc0IwRzROZzJpWUV0c05TblVoSXF6TEhaaGY3TENq?=
+ =?utf-8?B?b29hT1lxT0NNR1pqWXJiNC8vY3o2dUx3MnBpcmQzeC9JMW5UWGNnZGlSeG9w?=
+ =?utf-8?B?WHQ3dkwzTmtJUmhsb2Y0WTllV2I4ZFV3bzNaeEhJVDRhRzE3b2VBcGdzTW9x?=
+ =?utf-8?B?OGtJM2RydngwNlNhK3d4WUh5SE02RkZCdEQ3WE1iRnB6dXB2a0lobGxSOHh4?=
+ =?utf-8?B?Zi9MRTIycVdxY0RTNVdQN0U4ckVEMEdDNkZkT2d6NUZsalhkTktnbUd0OFF5?=
+ =?utf-8?B?aXc3Z0JyOGJqMzNSMUkrS3hxTTBZS2RDeFJFVFF2YVdHR2FtRTR2TzA2bWtN?=
+ =?utf-8?B?am9NblZOaldPZDRVckl5N3IyOGdaYzVwS3lzTzMwRmtDaTNQMkdZWXBucEw2?=
+ =?utf-8?B?WGxEazJOaUdwMXpVMnhIN0VRNlhCZ050ZFcyT2hMVmVOUUgwS3Z2ZXlrdkph?=
+ =?utf-8?B?enNNSUFaWldEakJObWFSR2Z1OGtvNjFuWHQ2QkNlQzRtNTlTamk1M1BIK1Ex?=
+ =?utf-8?B?d1FTVk1xbDZhdFRTdFpiaTAyMTNyYWFkQ1QzY0lST0xHaXJSOGdydUhEcVRJ?=
+ =?utf-8?B?VHU4TkIxYlc2UmRHSlR4TFFyY1hldWRQaml2OTluQzlTcS8zVThCeE9JZkx2?=
+ =?utf-8?B?RlFmU0ltV1lRMTREMjhYZG5RVWYzTjJLUHgrRTZKQVRZVEJUUCtzU3ZyYTJ3?=
+ =?utf-8?B?SFhnaDAzNEtIREF6WVc3UGlLZzhsbkZLdmhwREk5alUrMU5XcC9oU2NCSUMr?=
+ =?utf-8?B?eVNnSG4vM1hiRWFXWXg1ODJaQ3M3S04rNjF5VTlCVFhRaHYyU0JIQVNhS3RZ?=
+ =?utf-8?B?eXVtYllOcnZTMGZETjJaM0c0bEZFSU9UTUV5b0QwVXhUa3FaeHdlWGc1WFQ3?=
+ =?utf-8?B?anhhdS80cFFlSnpxUDhVbEFGTFptM2FNNStJb3FhQXltYUZnS3Y5NnVZRjQ3?=
+ =?utf-8?Q?PQdJgpw7URazEgnZke4ylA5j/aurZ2dT/BpD8AQmlzG7?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3963c21-4fc5-4626-750b-08db724fc42a
+X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3587.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 12:05:12.5042
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mTKLWCH2q5XegdM83iB1F3Rnc6b7uADIg82oKoHwT5TsQ/fl8kTBr0m44PtfQbDe
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5822
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Florent Revest <revest@chromium.org> wrote:
-> On Tue, Jun 20, 2023 at 8:35 AM Pablo Neira Ayuso <pablo@netfilter.org> wrote:
-> >
-> > On Thu, Jun 15, 2023 at 05:29:18PM +0200, Florent Revest wrote:
-> > > If register_nf_conntrack_bpf() fails (for example, if the .BTF section
-> > > contains an invalid entry), nf_conntrack_init_start() calls
-> > > nf_conntrack_helper_fini() as part of its cleanup path and
-> > > nf_ct_helper_hash gets freed.
-> > >
-> > > Further netfilter modules like netfilter_conntrack_ftp don't check
-> > > whether nf_conntrack initialized correctly and call
-> > > nf_conntrack_helpers_register() which accesses the freed
-> > > nf_ct_helper_hash and causes a uaf.
-> > >
-> > > This patch guards nf_conntrack_helper_register() from accessing
-> > > freed/uninitialized nf_ct_helper_hash maps and fixes a boot-time
-> > > use-after-free.
-> >
-> > How could this possibly happen?
-> 
-> Here is one way to reproduce this bug:
-> 
->   # Use nf/main
->   git clone git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git
->   cd nf
-> 
->   # Start from a minimal config
->   make LLVM=1 LLVM_IAS=0 defconfig
-> 
->   # Enable KASAN, BTF and nf_conntrack_ftp
->   scripts/config -e KASAN -e BPF_SYSCALL -e DEBUG_INFO -e
-> DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT -e DEBUG_INFO_BTF -e
-> NF_CONNTRACK_FTP
->   make LLVM=1 LLVM_IAS=0 olddefconfig
-> 
->   # Build without the LLVM integrated assembler
->   make LLVM=1 LLVM_IAS=0 -j `nproc`
-> 
-> (Note that the use of LLVM_IAS=0, KASAN and BTF is just to trigger a
-> bug in BTF that will be fixed by
-> https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf.git/commit/?id=9724160b3942b0a967b91a59f81da5593f28b8ba
-> Independently of that specific BTF bug, it shows how an error in
-> nf_conntrack_bpf can cause a boot-time uaf in netfilter)
-> 
-> Then, booting gives me:
-> 
-> [    4.624666] BPF: [13893] FUNC asan.module_ctor
-> [    4.625611] BPF: type_id=1
-> [    4.626176] BPF:
-> [    4.626601] BPF: Invalid name
-> [    4.627208] BPF:
-> [    4.627723] ==================================================================
-> [    4.628610] BUG: KASAN: slab-use-after-free in
-> nf_conntrack_helper_register+0x129/0x2f0
-> [    4.628610] Read of size 8 at addr ffff888102d24000 by task swapper/0/1
-> [    4.628610]
+Am 21.06.23 um 13:02 schrieb Greg KH:
+> On Wed, Jun 21, 2023 at 09:32:04AM +0200, Christian König wrote:
+>> Some Android CTS is testing for that.
+>>
+>> Signed-off-by: Christian König <christian.koenig@amd.com>
+>> CC: stable@vger.kernel.org
+> What commit id does this fix?
 
-Isn't that better than limping along?
+Sorry Greg, totally unintentionally send this CC to the stable list 
+because git wasn't correctly configured.
 
-in this case an initcall is failing and I think panic is preferrable
-to a kernel that behaves like NF_CONNTRACK_FTP=n.
+The patch is still under review.
 
-AFAICS this problem is specific to NF_CONNTRACK_FTP=y
-(or any other helper module, for that matter).
+Regards,
+Christian.
 
-If you disagree please resend with a commit message that
-makes it clear that this is only relevant for the 'builtin' case.
+>
+> thanks,
+>
+> greg k-h
+
