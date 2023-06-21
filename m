@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E603738EDB
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 20:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CC0A738EE8
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 20:34:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjFUSdM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 21 Jun 2023 14:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57262 "EHLO
+        id S230365AbjFUSem (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 21 Jun 2023 14:34:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjFUSdK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 14:33:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE9A0C6
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:33:08 -0700 (PDT)
+        with ESMTP id S231508AbjFUSek (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 14:34:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9275E199F
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:34:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FC6761692
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 18:33:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD79C433C0;
-        Wed, 21 Jun 2023 18:33:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB21161657
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 18:34:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE804C433C0;
+        Wed, 21 Jun 2023 18:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687372387;
-        bh=l6ej5E0RDhospak8yXLc5npUkPJrufdAyWzcDKfr7iM=;
+        s=korg; t=1687372471;
+        bh=nVh7vSp7iEktJTC6uClRqJWe2XTX8B/qdkEDY7q50I8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pemo81HyTUVmEcyR6xLTx/rTQX92v6J1lrQoADPDIKKFzejbCg7CcEpccOOsoZvQY
-         yscYMaYzVn813MiDZ18p4oWTKYIAQpfJwD3+o3+9p69HnYwLZm9jdqMLzD84fDe2sb
-         eK7HJLK0SShaEsvR3mO1UOpbYG5SAE1C5J126V0E=
-Date:   Wed, 21 Jun 2023 20:33:05 +0200
+        b=U7ptex5Xvgf0XzEsgA+6OAUnUOwDYbsg1rS2xhQaZ4XiQ5Dsj9z8Uv++YMpV2wycf
+         DHpacSx89Vr9+YWTdhWws0wX0ewikxHww17qIuNjP8TvUNFc395PU/qXKZK5aLlPNn
+         j9XR+aYgspVK3HxJVFYNE5NJNfaZW52eW5U5Y++8=
+Date:   Wed, 21 Jun 2023 20:34:28 +0200
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Bernhard Seibold <mail@bernhard-seibold.de>
-Cc:     stable@vger.kernel.org,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH 4.14.y v2] serial: lantiq: add missing interrupt ack
-Message-ID: <2023062152-rewrite-auction-0779@gregkh>
-References: <2023061830-rubbed-stubble-2775@gregkh>
- <20230619211008.13464-1-mail@bernhard-seibold.de>
+To:     Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc:     stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 4.14 4.19 5.4] nilfs2: reject devices with insufficient
+ block count
+Message-ID: <2023062120-whiff-slip-72d2@gregkh>
+References: <20230619105524.3932-1-konishi.ryusuke@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230619211008.13464-1-mail@bernhard-seibold.de>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230619105524.3932-1-konishi.ryusuke@gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,35 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 19, 2023 at 11:10:08PM +0200, Bernhard Seibold wrote:
-> commit 306320034e8fbe7ee1cc4f5269c55658b4612048 upstream.
+On Mon, Jun 19, 2023 at 07:55:24PM +0900, Ryusuke Konishi wrote:
+> commit 92c5d1b860e9581d64baca76779576c0ab0d943d upstream.
 > 
-> Currently, the error interrupt is never acknowledged, so once active it
-> will stay active indefinitely, causing the handler to be called in an
-> infinite loop.
+> The current sanity check for nilfs2 geometry information lacks checks for
+> the number of segments stored in superblocks, so even for device images
+> that have been destructively truncated or have an unusually high number of
+> segments, the mount operation may succeed.
 > 
-> Fixes: 2f0fc4159a6a ("SERIAL: Lantiq: Add driver for MIPS Lantiq SOCs.")
+> This causes out-of-bounds block I/O on file system block reads or log
+> writes to the segments, the latter in particular causing
+> "a_ops->writepages" to repeatedly fail, resulting in sync_inodes_sb() to
+> hang.
+> 
+> Fix this issue by checking the number of segments stored in the superblock
+> and avoiding mounting devices that can cause out-of-bounds accesses.  To
+> eliminate the possibility of overflow when calculating the number of
+> blocks required for the device from the number of segments, this also adds
+> a helper function to calculate the upper bound on the number of segments
+> and inserts a check using it.
+> 
+> Link: https://lkml.kernel.org/r/20230526021332.3431-1-konishi.ryusuke@gmail.com
+> Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+> Reported-by: syzbot+7d50f1e54a12ba3aeae2@syzkaller.appspotmail.com
+>   Link: https://syzkaller.appspot.com/bug?extid=7d50f1e54a12ba3aeae2
+> Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 > Cc: <stable@vger.kernel.org>
-> Signed-off-by: Bernhard Seibold <mail@bernhard-seibold.de>
-> Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> Message-ID: <20230602133029.546-1-mail@bernhard-seibold.de>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 > ---
->  drivers/tty/serial/lantiq.c | 2 ++
->  1 file changed, 2 insertions(+)
+> Please apply this patch to the above stable trees instead of the patch
+> that could not be applied to them.  The hang issue reported by syzbot was
+> confirmed to reproduce on these stable kernels using its reproducer.
+> This fixes it.
 > 
-> diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
-> index 22df94f107e5..195b85176914 100644
-> --- a/drivers/tty/serial/lantiq.c
-> +++ b/drivers/tty/serial/lantiq.c
-> @@ -1,3 +1,4 @@
-> +
->  /*
->   *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts'o.
->   *
+> In this patch, "sb_bdev_nr_blocks()" and "nilfs_err()" are replaced with
+> their equivalents since they don't yet exist in these kernels.  With these
+> tweaks, this patch is applicable from v4.8 to v5.8.  Also, this patch has
+> been tested against the title stable trees.
 
-This first chunk was not needed :(
-
-I'll go hand edit it...
+Now queued up, thanks.
 
 greg k-h
