@@ -2,96 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4514738E38
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 20:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F694738E83
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 20:23:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229887AbjFUSJA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 21 Jun 2023 14:09:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40172 "EHLO
+        id S229564AbjFUSXQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 21 Jun 2023 14:23:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbjFUSI6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 14:08:58 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E1381716
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:08:55 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-98746d7f35dso793333166b.2
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:08:55 -0700 (PDT)
+        with ESMTP id S229762AbjFUSXP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 14:23:15 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80BB81710
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:23:14 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id ffacd0b85a97d-3112f2b9625so4618731f8f.1
+        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:23:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1687370933; x=1689962933;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=h4Ucd0qvaN4RbTaMub1cXvd79JxnZbAQ50t+Lut4dXs=;
-        b=F+9rPl8kM1cTRgwBD7y5l2+OIyTmPj+r4+80xkIxPVbZ85r+grot89w/imibqZVvHy
-         m1ktqIJeFLejg2Ju3ftAoNwKBy47y08A2Ty8WKYIot+/yqzniwYfw4UFUhvckBszvTfO
-         Ju3g8EjIJRbPtW+hfJY+lToEpueZdhJTc9zbc=
+        d=gmail.com; s=20221208; t=1687371793; x=1689963793;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rJ/7Kbo9gs7zs3QTF5nFKkJrBjocKGAtdax9LA/wsFg=;
+        b=edmNdkQOK/jLnUmP9KBcbk8Qk2mLzhAKyMHAEcUwfdbsuaF8znYeAjMOLYPGuBfyA/
+         uYEGcvQvwF/5k5m6rxPT8kwQa+5FPaGsayogmIEQTtt9O4W3Wr4zIPkvMCPVS9ltZX5V
+         T3KGoNDMKHfgYJXmWKTHRptYyRf43jVwDNEByXePx8+huYvT4nHJGUN89hqY2mcop+oQ
+         RkRUkVfsRgflPq5kq6zZOCgCFDoP22BFM/vwosbK88oQfL7Oi9NVrfeWnBDVtGGysXAr
+         5KFocUOWlzPF4hLYF2mVquMn3B9GyZq+SXU5TP9QfwGUexaVqLo87IJnbkGrlgHjcrtf
+         9dGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687370933; x=1689962933;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h4Ucd0qvaN4RbTaMub1cXvd79JxnZbAQ50t+Lut4dXs=;
-        b=F0VfarSWgwcsvsX5DJE83nay3XTN5Z5JGctgkUQPyAsAigWIIVb1+FAakg0ZsjFCLG
-         iJD1HQWo/JDokYVk+vq5a1MNrcdTw016KSbH1bCcw2EDV4OB+ajM9AZy5u0lAv6lQZmr
-         J1XpWZMBKlD9b0qi2PPxoZGEkxQFIDCzdoykY/DyI+QGDxeIAn9vfyRCnFTTz41ZdMYI
-         +MI8UUAolLU32yQHFH5ztoEB2QbtAebsaifCxzGEEMU+P919NpacHv68rTn6qZG2341i
-         1mmaZg18gL7uDSo4z12ytDTeW7reTqzZkqRCEzBsyv/WX1jQOy2/P9kwht87o6oW8xUI
-         RpLw==
-X-Gm-Message-State: AC+VfDz8TgL4nuaUOIhRI+7U4ukJb2NBgBEev216rf21VP/CI/oEh+q0
-        UYhwWKKkfd5qoNjgVec2IpUPo1HQoq1greUkfJ3O5QKy
-X-Google-Smtp-Source: ACHHUZ7we52DPQV7lUgg9HEELI6uzmzzXHUENkEh4sj6/xuzigKHPD4xs9SsGCliIATo0khd7lMwQQ==
-X-Received: by 2002:a17:907:944e:b0:987:1c6b:6e6d with SMTP id dl14-20020a170907944e00b009871c6b6e6dmr12071785ejc.28.1687370933453;
-        Wed, 21 Jun 2023 11:08:53 -0700 (PDT)
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
-        by smtp.gmail.com with ESMTPSA id g15-20020a17090613cf00b009885462a644sm3469162ejc.215.2023.06.21.11.08.52
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jun 2023 11:08:53 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-51a426e4f4bso7440700a12.1
-        for <stable@vger.kernel.org>; Wed, 21 Jun 2023 11:08:52 -0700 (PDT)
-X-Received: by 2002:aa7:c90f:0:b0:51a:50f2:4e7a with SMTP id
- b15-20020aa7c90f000000b0051a50f24e7amr7543192edt.13.1687370932607; Wed, 21
- Jun 2023 11:08:52 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687371793; x=1689963793;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rJ/7Kbo9gs7zs3QTF5nFKkJrBjocKGAtdax9LA/wsFg=;
+        b=DQlun20A8Mo7aE3TY/f5vVYfMbKZ8zPEHMN8+2S+2FKmIlIj4oPXilwPy0EgF99ZsC
+         37f7bkMSOl70AWnqb3ie2vjSc3Jipi8HQ63WPmLGBRNtisdBM/3i6ErEf0piVgCObGh3
+         hq4Dqds6OwJLSDf9QZxB6z7AJkKaHX2ydk9GjWvNcLxFJzwJURGMYu4lt1RgBcY9BY0z
+         PVExpanitEk2RveS1dXF45A5AjJapLjXiQ7kgRGiPRlJO5BeTxL5auDAGYKMEzrvqjaN
+         Gv1ae/mXU9TmF/Qz1bRf0xzV+LNMR497DTRhGOead14MWTssk8mV6UPVxJo4HoueFYjc
+         mtCQ==
+X-Gm-Message-State: AC+VfDwry4elDNnCG6LSixww/tFt2f1n6nf/WLxK0XfsrrPhdpa2lmv3
+        J1/OZpCMecxcVk4ilmiflUH18WF+5y7pX0XDcr0=
+X-Google-Smtp-Source: ACHHUZ4058z5gMYZ6Y+PRkKy8QL0Gncw4gkdVqqF/dRgxoadkdWLg1tfoNOek0iq1LiguOVvzoVz9NL1zrIN/f2J3F4=
+X-Received: by 2002:a5d:5342:0:b0:30a:c2c4:7133 with SMTP id
+ t2-20020a5d5342000000b0030ac2c47133mr12190662wrv.49.1687371792479; Wed, 21
+ Jun 2023 11:23:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me>
- <ZHFaFosKY24-L7tQ@debian.me> <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me>
- <ZIcmpcEsTLXFaO0f@debian.me> <oEbkgJ-ImLxBDZDUTnIAGFWrRVnwBss3FOlalTpwrz83xWgESC9pcvNKiAVp9BzFgqZ0V-NIwzBZ7icKD8ynuIi_ZMtGt7URu3ftcSt16u4=@proton.me>
- <e2ca75ef-d779-4bad-84a5-a9f262dbe213@lunn.ch> <FNzHwp9-AyweVwIMndmih6VuBD0nsyRp3OM72bmOxpeYszF680jFPJjENIknT32FeaqfVBtVSQFw-5mgE3ZXeksVD8VCFbxwojxP3mSZ9DQ=@proton.me>
- <9517bb70-426c-0296-b426-f5b4f075f7c8@leemhuis.info> <CAHk-=wiK5oDqgt6=OHLiiAu4VmLy4qn8WQdhvFo+sm26r4UjHw@mail.gmail.com>
-In-Reply-To: <CAHk-=wiK5oDqgt6=OHLiiAu4VmLy4qn8WQdhvFo+sm26r4UjHw@mail.gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 21 Jun 2023 11:08:36 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjGubMs+yoCS44bM1x4=CxDWvJeauquCcE5qLzNmToozw@mail.gmail.com>
-Message-ID: <CAHk-=wjGubMs+yoCS44bM1x4=CxDWvJeauquCcE5qLzNmToozw@mail.gmail.com>
-Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
-To:     Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Linux Stable <stable@vger.kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Sami Korkalainen <sami.korkalainen@proton.me>
+Received: by 2002:adf:f88e:0:b0:306:3860:4d5b with HTTP; Wed, 21 Jun 2023
+ 11:23:12 -0700 (PDT)
+From:   OFFER <maerskoildrilling@gmail.com>
+Date:   Wed, 21 Jun 2023 06:23:12 -1200
+Message-ID: <CAKz7aAiYZXpfVfLwd_SAp-73WDxYcReVgKbUzCmy_qG_wn8Rag@mail.gmail.com>
+Subject: Greetings From Saudi Arabia
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=3.6 required=5.0 tests=BAYES_50,DEAR_SOMETHING,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 21 Jun 2023 at 10:56, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> I'll just revert it for now.
+Dear Sir,
 
-Btw, Thorsten, is there a good way to refer to the regzbot entry in a
-commit message some way? I know about the email interface, but I'd
-love to just be able to link to the regression entry. Now I just
-linked to the report in this thread.
+Need funding for your project or your business ? We are looking for
+foreign direct investment partners in any of the sectors stated below and we are
+willing to provide financing for up to US$ ten Billion to corporate
+bodies, companies, industries and entrepreneurs with profitable
+business ideas and investment projects that can generate the required
+ROI, so you can draw from this opportunity. We are currently providing
+funds in any of the sectors stated below. Energy & Power,
+construction, Agriculture, Acquisitions, Healthcare or Hospital, Real
+Estate, Oil & Gas, IT, technology, transport, mining,marine
+transportation and manufacturing, Education, hotels, etc. We are
+willing to finance your projects. We have developed a new funding
+method that does not take longer to receive funding from our
+customers. If you are seriously pursuing Foreign Direct Investment or
+Joint Venture for your projects in any of the sectors above or are you
+seeking a Loan to expand your Business or seeking funds to finance
+your business or project ? We are willing to fund your business and we
+would like you to provide us with your comprehensive business plan for
+our team of investment experts to review. Kindly contact me with below
+email: yousefahmedalgosaibi@consultant.com
 
-Maybe you don't keep a long-term stable link around anywhere, and you
-just pick up on reverts directly, but I suspect it would be nice to be
-able to just link to any regression entry directly.
-
-            Linus
+Regards
+Mr. Yousef Ahmed
