@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D91B77379BF
-	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 05:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AF5A737A5A
+	for <lists+stable@lfdr.de>; Wed, 21 Jun 2023 06:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjFUDbv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 23:31:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38648 "EHLO
+        id S229990AbjFUEje (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 21 Jun 2023 00:39:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbjFUDbu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 23:31:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF62694;
-        Tue, 20 Jun 2023 20:31:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 35FE36145C;
-        Wed, 21 Jun 2023 03:31:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4C7C433C0;
-        Wed, 21 Jun 2023 03:31:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687318306;
-        bh=w/WJ4ih3bWFbg0Sp+HP6bcoaz3TM0sRb50HscssW6MU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bR88lo4oD30GmFt15WApTVHfKB8r8xfkjaRVADkJ2JAd3VOlMCk29G3bmmZI1xmv2
-         lPQSSuXGnvOTADDXMuDxnR53GTYL03AK9Qi1IeGUvq6aDe5YsuJi0Gy0c3CzvEVfuf
-         z3RHv6PHWulfVdTu6MMytJbovQ9IEoSZOLckkYLml073/3hpTgLNlLlfxbp6AMR6ET
-         n1bAgai8idE+OCjr+6Vuh6aTiQvxLLSYgYSEyU8SfxQWqQ6GMOVU9Tx1D6LfBbyw2l
-         as7BknO4rpEgboGtdj2wcKG82J2/JTFTRuoL2FiNLZm34m649hgx3ftz/oJMEvcKT9
-         v9bDUARK4hfCA==
-Date:   Tue, 20 Jun 2023 20:31:45 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>
-Cc:     andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        richardcochran@gmail.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, sebastian.tobuschat@nxp.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH net v3 1/1] net: phy: nxp-c45-tja11xx: fix the PTP
- interrupt enablig/disabling
-Message-ID: <20230620203145.2da7c958@kernel.org>
-In-Reply-To: <20230619132851.233976-1-radu-nicolae.pirea@oss.nxp.com>
-References: <20230619132851.233976-1-radu-nicolae.pirea@oss.nxp.com>
+        with ESMTP id S229970AbjFUEjc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 21 Jun 2023 00:39:32 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD261BE7
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 21:39:03 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1qBpcK-0001Hm-7A; Wed, 21 Jun 2023 06:38:52 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ore@pengutronix.de>)
+        id 1qBpcI-008x8k-2A; Wed, 21 Jun 2023 06:38:50 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ore@pengutronix.de>)
+        id 1qBpcH-00Fy9P-AC; Wed, 21 Jun 2023 06:38:49 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>, stable@vger.kernel.org,
+        kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH v2 1/1] net: phy: dp83td510: fix kernel stall during netboot in DP83TD510E PHY driver
+Date:   Wed, 21 Jun 2023 06:38:48 +0200
+Message-Id: <20230621043848.3806124-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,35 +55,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 19 Jun 2023 16:28:51 +0300 Radu Pirea (NXP OSS) wrote:
-> Subject: [PATCH net v3 1/1] net: phy: nxp-c45-tja11xx: fix the PTP interrupt enablig/disabling
+Fix an issue where the kernel would stall during netboot, showing the
+"sched: RT throttling activated" message. This stall was triggered by
+the behavior of the mii_interrupt bit (Bit 7 - DP83TD510E_STS_MII_INT)
+in the DP83TD510E's PHY_STS Register (Address = 0x10). The DP83TD510E
+datasheet (2020) states that the bit clears on write, however, in
+practice, the bit clears on read.
 
-typo: enablig -> enabling
+This discrepancy had significant implications on the driver's interrupt
+handling. The PHY_STS Register was used by handle_interrupt() to check
+for pending interrupts and by read_status() to get the current link
+status. The call to read_status() was unintentionally clearing the
+mii_interrupt status bit without deasserting the IRQ pin, causing
+handle_interrupt() to miss other pending interrupts. This issue was most
+apparent during netboot.
 
-> .config_intr() handles only the link event interrupt and should
-> disable/enable the PTP interrupt also.
+The fix refrains from using the PHY_STS Register for interrupt handling.
+Instead, we now solely rely on the INTERRUPT_REG_1 Register (Address =
+0x12) and INTERRUPT_REG_2 Register (Address = 0x13) for this purpose.
+These registers directly influence the IRQ pin state and are latched
+high until read.
 
-I don't understand this sentence, TBH, could you rephrase?
+Note: The INTERRUPT_REG_2 Register (Address = 0x13) exists and can also
+be used for interrupt handling, specifically for "Aneg page received
+interrupt" and "Polarity change interrupt". However, these features are
+currently not supported by this driver.
 
-> Fixes: 514def5dd339 ("phy: nxp-c45-tja11xx: add timestamping support")
+Fixes: 165cd04fe253 ("net: phy: dp83td510: Add support for the DP83TD510 Ethernet PHY")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+---
+ drivers/net/phy/dp83td510.c | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
-For a fix we really need to commit message to say what the problem is,
-in terms which will be understood by the user. User visible behavior.
-
-> CC: stable@vger.kernel.org # 5.15+
-> Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
-> ---
-> 
-> Where is V1?
-> https://patchwork.kernel.org/project/netdevbpf/patch/20230410124856.287753-1-radu-nicolae.pirea@oss.nxp.com/
-> 
-> Where is V2?
-> https://patchwork.kernel.org/project/netdevbpf/patch/20230616135323
-
-This link looks cut off.
-
-> +	/* 0x807A register is not present on SJA1110 PHYs. */
-
-Meaning? It's safe because the operation will be ignored?
+diff --git a/drivers/net/phy/dp83td510.c b/drivers/net/phy/dp83td510.c
+index 3cd9a77f9532..d7616b13c594 100644
+--- a/drivers/net/phy/dp83td510.c
++++ b/drivers/net/phy/dp83td510.c
+@@ -12,6 +12,11 @@
+ 
+ /* MDIO_MMD_VEND2 registers */
+ #define DP83TD510E_PHY_STS			0x10
++/* Bit 7 - mii_interrupt, active high. Clears on read.
++ * Note: Clearing does not necessarily deactivate IRQ pin if interrupts pending.
++ * This differs from the DP83TD510E datasheet (2020) which states this bit
++ * clears on write 0.
++ */
+ #define DP83TD510E_STS_MII_INT			BIT(7)
+ #define DP83TD510E_LINK_STATUS			BIT(0)
+ 
+@@ -53,12 +58,6 @@ static int dp83td510_config_intr(struct phy_device *phydev)
+ 	int ret;
+ 
+ 	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
+-		/* Clear any pending interrupts */
+-		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PHY_STS,
+-				    0x0);
+-		if (ret)
+-			return ret;
+-
+ 		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
+ 				    DP83TD510E_INTERRUPT_REG_1,
+ 				    DP83TD510E_INT1_LINK_EN);
+@@ -81,10 +80,6 @@ static int dp83td510_config_intr(struct phy_device *phydev)
+ 					 DP83TD510E_GENCFG_INT_EN);
+ 		if (ret)
+ 			return ret;
+-
+-		/* Clear any pending interrupts */
+-		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PHY_STS,
+-				    0x0);
+ 	}
+ 
+ 	return ret;
+@@ -94,14 +89,6 @@ static irqreturn_t dp83td510_handle_interrupt(struct phy_device *phydev)
+ {
+ 	int  ret;
+ 
+-	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PHY_STS);
+-	if (ret < 0) {
+-		phy_error(phydev);
+-		return IRQ_NONE;
+-	} else if (!(ret & DP83TD510E_STS_MII_INT)) {
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Read the current enabled interrupts */
+ 	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_INTERRUPT_REG_1);
+ 	if (ret < 0) {
 -- 
-pw-bot: cr
+2.39.2
+
