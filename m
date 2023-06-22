@@ -2,194 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1406B73A6F7
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 19:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 725E373A6E4
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 19:04:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229930AbjFVRIx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 13:08:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48884 "EHLO
+        id S229830AbjFVRET (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 13:04:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229802AbjFVRIw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 13:08:52 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48499C3;
-        Thu, 22 Jun 2023 10:08:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687453731; x=1718989731;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Cf+dpIYfAbSBeiWlETELLtCHHrcSgMWgIRdJXuiqLaE=;
-  b=nicibwG0x6SZ68yxH1a7avLcbIeR/E51LExxCtTg5xQdUlbc5sL4zESY
-   HNUmxOhz0qgn6EIpkeo+VFpZr2LkNO80+6uyIE5pfvUhwY9nhT5UpeX4n
-   HWGSCQBLhMX+CTDFeI1VGHQTpgnGoIZGlXUrOYHwUBlMFBDr8imb4PYnj
-   h8g7cX3DIY0sP52xoIOTkupkaGbfG/HTFpIDXozhTRHHBeVMI5GDTtc/p
-   implGM17DHq+FHz6v1kUnMYd+A08Mi5Mq5Q0Ph3iilKw2CE/o8lKapCrr
-   WjDbxmoYih6lkVT/oqGpNTOUMHj5rQHF/K3phBOqg9TPyzT7wnUu7rwTe
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="363104865"
-X-IronPort-AV: E=Sophos;i="6.01,149,1684825200"; 
-   d="scan'208";a="363104865"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 10:04:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="1045277900"
-X-IronPort-AV: E=Sophos;i="6.01,149,1684825200"; 
-   d="scan'208";a="1045277900"
-Received: from shari19x-mobl1.gar.corp.intel.com (HELO [10.249.254.173]) ([10.249.254.173])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 10:03:59 -0700
-Message-ID: <ef5d91b8-c68b-5edc-d611-6a4dbf55c945@linux.intel.com>
-Date:   Thu, 22 Jun 2023 19:03:56 +0200
+        with ESMTP id S229757AbjFVRES (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 13:04:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 065DE171C;
+        Thu, 22 Jun 2023 10:04:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 936146184D;
+        Thu, 22 Jun 2023 17:04:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FE4C433C8;
+        Thu, 22 Jun 2023 17:04:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1687453457;
+        bh=CUb1r77sczHHVHY+vTbaAic4qViP8MYNo43Ytj7EWx8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qM2kRM/69kq0xhfMOUvvb3O1Rda7qKqphuH7ylZX6NOhj06plX5jNG+uApBdF7wdl
+         HDdeey6Eh0IMdUxCA+/eFzGOfPfUmISegMOWPJubII1z5aM8Py3ovEWv4hXplrS4LK
+         6pJ9vEeMacXHBUv41riVO6BJcCIPxJ817CRQ2wgg=
+Date:   Thu, 22 Jun 2023 19:04:13 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
+Cc:     Ranjan Kumar <ranjan.kumar@broadcom.com>,
+        linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+        sreekanth.reddy@broadcom.com, stable@vger.kernel.org
+Subject: Re: [PATCH] mpt3sas: Perform additional retries if Doorbell read
+ returns 0
+Message-ID: <2023062228-circus-deed-7c9e@gregkh>
+References: <20230615083010.45837-1-ranjan.kumar@broadcom.com>
+ <2023061538-dizzy-amiable-9ec7@gregkh>
+ <CAFdVvOwjQZZnViCYbJqPC81ZJPsZdqjNuQE=dH4bHWD4Pyu7Ew@mail.gmail.com>
+ <2023062207-plywood-vindicate-c271@gregkh>
+ <CAFdVvOyMdoE8Nwg82uj0HRw=MuAsxgKprTjb0p9bxL6efNPSOw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.1
-Subject: Re: [Intel-gfx] [PATCH 3/4] drm/ttm: Don't leak a resource on
- eviction error
-Content-Language: en-US
-To:     =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>
-Cc:     intel-xe@lists.freedesktop.org,
-        Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>,
-        intel-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Huang Rui <ray.huang@amd.com>,
-        dri-devel@lists.freedesktop.org
-References: <20230622101412.78426-1-thomas.hellstrom@linux.intel.com>
- <20230622101412.78426-4-thomas.hellstrom@linux.intel.com>
- <ZJRSyp7fT6VXpow7@ashyti-mobl2.lan>
- <3a089ebb-7389-3d3e-beb0-13a8d64eb04d@linux.intel.com>
- <196a7f74-66ac-1eae-4795-a42691f4793e@amd.com>
-From:   =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= 
-        <thomas.hellstrom@linux.intel.com>
-In-Reply-To: <196a7f74-66ac-1eae-4795-a42691f4793e@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAFdVvOyMdoE8Nwg82uj0HRw=MuAsxgKprTjb0p9bxL6efNPSOw@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Thu, Jun 22, 2023 at 10:15:58AM -0600, Sathya Prakash Veerichetty wrote:
+> On Thu, Jun 22, 2023 at 10:08 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Thu, Jun 22, 2023 at 09:26:50AM -0600, Sathya Prakash Veerichetty wrote:
+> > > --
+> > > This electronic communication and the information and any files transmitted
+> > > with it, or attached to it, are confidential and are intended solely for
+> > > the use of the individual or entity to whom it is addressed and may contain
+> > > information that is confidential, legally privileged, protected by privacy
+> > > laws, or otherwise restricted from disclosure to anyone else. If you are
+> > > not the intended recipient or the person responsible for delivering the
+> > > e-mail to the intended recipient, you are hereby notified that any use,
+> > > copying, distributing, dissemination, forwarding, printing, or copying of
+> > > this e-mail is strictly prohibited. If you received this e-mail in error,
+> > > please return the e-mail to the sender, delete it from your computer, and
+> > > destroy any printed copy of it.
+> >
+> > Now deleted.
+> you didn't receive this in error, so you can keep it,
 
-On 6/22/23 16:48, Christian König wrote:
->
->
-> Am 22.06.23 um 16:08 schrieb Thomas Hellström:
->>
->> On 6/22/23 15:55, Andi Shyti wrote:
->>> Hi Thomas,
->>>
->>> On Thu, Jun 22, 2023 at 12:14:11PM +0200, Thomas Hellström wrote:
->>>> On eviction errors other than -EMULTIHOP we were leaking a resource.
->>>> Fix.
->>>>
->>>> Fixes: 403797925768 ("drm/ttm: Fix multihop assert on eviction.")
->>>> Cc: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
->>>> Cc: Christian König <christian.koenig@amd.com>
->>>> Cc: Christian Koenig <christian.koenig@amd.com>
->>>> Cc: Huang Rui <ray.huang@amd.com>
->>>> Cc: dri-devel@lists.freedesktop.org
->>>> Cc: <stable@vger.kernel.org> # v5.15+
->>>> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->>>> ---
->>>>   drivers/gpu/drm/ttm/ttm_bo.c | 16 ++++++++--------
->>>>   1 file changed, 8 insertions(+), 8 deletions(-)
->>>>
->>>> diff --git a/drivers/gpu/drm/ttm/ttm_bo.c 
->>>> b/drivers/gpu/drm/ttm/ttm_bo.c
->>>> index 615d30c4262d..89530f2a027f 100644
->>>> --- a/drivers/gpu/drm/ttm/ttm_bo.c
->>>> +++ b/drivers/gpu/drm/ttm/ttm_bo.c
->>>> @@ -462,14 +462,14 @@ static int ttm_bo_evict(struct 
->>>> ttm_buffer_object *bo,
->>>>       ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
->>>>       if (ret == -EMULTIHOP) {
->>>>           ret = ttm_bo_bounce_temp_buffer(bo, &evict_mem, ctx, &hop);
->>>> -        if (ret) {
->>>> -            if (ret != -ERESTARTSYS && ret != -EINTR)
->>>> -                pr_err("Buffer eviction failed\n");
->>>> -            ttm_resource_free(bo, &evict_mem);
->>>> -            goto out;
->>>> -        }
->>>> -        /* try and move to final place now. */
->>>> -        goto bounce;
->>>> +        if (!ret)
->>>> +            /* try and move to final place now. */
->>>> +            goto bounce;
->>> As we are at this, can't we replace this with a while()? Goto's
->>> used instead of a while loop are a fist in the eye...
->>
->> I'm completely OK with that. this patch already did away with one of 
->> them. Let's hear Christian's opinion first, though.
->
-> I'm not a fan of that goto either, but could we somehow avoid the 
-> while(1) ? E.g. something like do { } while (!ret) after handling the 
-> multihop?
+No I can not, as this obviously is confidential, and as such, I need to
+delete it because that is incompatible with kernel development.
 
-I think the construct that makes it most obvious what's happening, 
-although it needs two tests for -EMULTIHOP is something like
-
-do {
-....
-    if (ret != -EMULTIHOP)
-       break;
-    ....
-} while (ret ==-EMULTIHOP);
-
-Will be out tomorrow, though, so I don't have time to respin before Monday.
-
-/Thomas
+> not sure from
+> when this footer is getting added, I will check on the options to
+> remove it :(
+> 
+> -- 
+> This electronic communication and the information and any files transmitted 
+> with it, or attached to it, are confidential and are intended solely for 
+> the use of the individual or entity to whom it is addressed and may contain 
+> information that is confidential, legally privileged, protected by privacy 
+> laws, or otherwise restricted from disclosure to anyone else. If you are 
+> not the intended recipient or the person responsible for delivering the 
+> e-mail to the intended recipient, you are hereby notified that any use, 
+> copying, distributing, dissemination, forwarding, printing, or copying of 
+> this e-mail is strictly prohibited. If you received this e-mail in error, 
+> please return the e-mail to the sender, delete it from your computer, and 
+> destroy any printed copy of it.
 
 
->
-> Christian.
->
->>
->> Thanks,
->>
->> Thomas
->>
->>
->>
->>
->>
->>>
->>> It looks even better:
->>>
->>>     while (1) {
->>>         ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
->>>         if (!ret)
->>>             break;
->>>
->>>         if (ret == -EMULTIHOP)
->>>             ret = ttm_bo_bounce_temp_buffer(bo, &evict_mem,
->>>                             ctx, &hop);
->>>
->>>         /* try again */
->>>         if (!ret)
->>>             continue;
->>>
->>>         ttm_resource_free(bo, &evict_mem);
->>>         if (ret != -ERESTARTSYS && ret != -EINTR)
->>>             pr_err("Buffer eviction failed\n");
->>>
->>>         break;
->>>     }
->>>
->>> Andi
->>>
->>>> +    }
->>>> +    if (ret) {
->>>> +        ttm_resource_free(bo, &evict_mem);
->>>> +        if (ret != -ERESTARTSYS && ret != -EINTR)
->>>> +            pr_err("Buffer eviction failed\n");
->>>>       }
->>>>   out:
->>>>       return ret;
->>>> -- 
->>>> 2.40.1
->
+I'll go delete this as well.
+
