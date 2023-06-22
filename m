@@ -2,100 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EBB173ACB3
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 00:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00D3F73AD51
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 01:46:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231409AbjFVWvS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 18:51:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59970 "EHLO
+        id S231644AbjFVXqu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 19:46:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229747AbjFVWvR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 18:51:17 -0400
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 067361BD7
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 15:50:38 -0700 (PDT)
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-3fde1d6b1c4so1015271cf.0
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 15:50:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687474237; x=1690066237;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9x9QfSSVUpTeAWdqCixUHSwi7foPPLLpLOSUdEXv8WE=;
-        b=hyYpKB3akbEwrySEmiPVzckI7cZCMjtb/j5H83upjvVU19I+TWMhq5QlvW7UTpi6Oj
-         WczOrKCxF14DjODwsd+FrU6QL9QbeA63fObc4WULv0odNHzph6ddVwKOQW34tHHHHCBV
-         pSRBSV/LUwUvUidg9LTuzqgxUNY3VwAZ3Y4UCbe2w6974MRPYIRkl8g3wHHwWhxa/gUY
-         i9NOvTFqxtkmenDt9dEr423JRAIn2UpXuG2Q/bZRM3EcsCa68abfERTlskGE9BxJSjTt
-         vUk2Hhu78TsxgQ42UEndt7xUcm4NFX4/Vjvzq+ULTwuKgxS4b64syrIDlFdS6F/Pcs5V
-         zsNQ==
-X-Gm-Message-State: AC+VfDwJnu6FikJV726ETL5AmzNnvHNNtKx42G8jlNBSQVPCeg05wzlB
-        g7hsSgto0z5vrPww8UAKStRm
-X-Google-Smtp-Source: ACHHUZ5wU337FIxFIJZQbmKE670bOEaoz4yGFxNkDChOmuLZrnAXBAhPW8u4+uoVVHUQbDgFJVqDGA==
-X-Received: by 2002:a05:6214:20ae:b0:62f:fe87:67e9 with SMTP id 14-20020a05621420ae00b0062ffe8767e9mr21122003qvd.44.1687474237072;
-        Thu, 22 Jun 2023 15:50:37 -0700 (PDT)
-Received: from localhost (pool-68-160-166-30.bstnma.fios.verizon.net. [68.160.166.30])
-        by smtp.gmail.com with ESMTPSA id i20-20020a0cf394000000b0063013c621fasm4263594qvk.68.2023.06.22.15.50.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jun 2023 15:50:36 -0700 (PDT)
-Date:   Thu, 22 Jun 2023 18:50:35 -0400
-From:   Mike Snitzer <snitzer@kernel.org>
-To:     Demi Marie Obenour <demi@invisiblethingslab.com>
-Cc:     Alasdair Kergon <agk@redhat.com>, dm-devel@redhat.com,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] device-mapper: Avoid pointer arithmetic overflow
-Message-ID: <ZJTQO5sk3ugSrXjz@redhat.com>
-References: <20230601212456.1533-1-demi@invisiblethingslab.com>
- <20230603145244.1538-1-demi@invisiblethingslab.com>
- <20230603145244.1538-3-demi@invisiblethingslab.com>
+        with ESMTP id S231601AbjFVXqt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 19:46:49 -0400
+X-Greylist: delayed 565 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 22 Jun 2023 16:46:48 PDT
+Received: from smtp66.iad3a.emailsrvr.com (smtp66.iad3a.emailsrvr.com [173.203.187.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97134E2
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 16:46:48 -0700 (PDT)
+X-Auth-ID: kenneth@whitecape.org
+Received: by smtp25.relay.iad3a.emailsrvr.com (Authenticated sender: kenneth-AT-whitecape.org) with ESMTPSA id 5FD2C23976;
+        Thu, 22 Jun 2023 19:37:22 -0400 (EDT)
+From:   Kenneth Graunke <kenneth@whitecape.org>
+To:     intel-gfx@lists.freedesktop.org,
+        Lucas De Marchi <lucas.demarchi@intel.com>
+Cc:     dri-devel@lists.freedesktop.org,
+        Matt Roper <matthew.d.roper@intel.com>, stable@vger.kernel.org,
+        Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH 2/3] drm/i915/gt: Fix context workarounds with non-masked regs
+Date:   Thu, 22 Jun 2023 16:37:21 -0700
+Message-ID: <3337022.2OMYdDKdcH@mizzik>
+In-Reply-To: <20230622182731.3765039-2-lucas.demarchi@intel.com>
+References: <20230622182731.3765039-1-lucas.demarchi@intel.com>
+ <20230622182731.3765039-2-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230603145244.1538-3-demi@invisiblethingslab.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="nextPart23769370.ZV0zXJHA5L";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
+X-Classification-ID: fa98ef4b-1604-47dd-b2b5-2b1b6ee0f044-1-1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jun 03 2023 at 10:52P -0400,
-Demi Marie Obenour <demi@invisiblethingslab.com> wrote:
+--nextPart23769370.ZV0zXJHA5L
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Kenneth Graunke <kenneth@whitecape.org>
+Date: Thu, 22 Jun 2023 16:37:21 -0700
+Message-ID: <3337022.2OMYdDKdcH@mizzik>
+In-Reply-To: <20230622182731.3765039-2-lucas.demarchi@intel.com>
+MIME-Version: 1.0
 
-> Especially on 32-bit systems, it is possible for the pointer arithmetic
-> to overflow and cause a userspace pointer to be dereferenced in the
-> kernel.
+On Thursday, June 22, 2023 11:27:30 AM PDT Lucas De Marchi wrote:
+> Most of the context workarounds tweak masked registers, but not all. For
+> masked registers, when writing the value it's sufficient to just write
+> the wa->set_bits since that will take care of both the clr and set bits
+> as well as not overwriting other bits.
 > 
-> Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/md/dm-ioctl.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+> However there are some workarounds, the registers are non-masked. Up
+> until now the driver was simply emitting a MI_LOAD_REGISTER_IMM with the
+> set_bits to program the register via the GPU in the WA bb. This has the
+> side effect of overwriting the content of the register outside of bits
+> that should be set and also doesn't handle the bits that should be
+> cleared.
 > 
-> diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
-> index 34fa74c6a70db8aa67aaba3f6a2fc4f38ef736bc..64e8f16d344c47057de5e2d29e3d63202197dca0 100644
-> --- a/drivers/md/dm-ioctl.c
-> +++ b/drivers/md/dm-ioctl.c
-> @@ -1396,6 +1396,25 @@ static int next_target(struct dm_target_spec *last, uint32_t next, void *end,
->  {
->  	static_assert(_Alignof(struct dm_target_spec) <= 8,
->  		      "struct dm_target_spec has excessive alignment requirements");
-> +	static_assert(offsetof(struct dm_ioctl, data) >= sizeof(struct dm_target_spec),
-> +		      "struct dm_target_spec too big");
+> Kenneth reported that on DG2, mesa was seeing a weird behavior due to
+> the kernel programming of L3SQCREG5 in dg2_ctx_gt_tuning_init(). With
+> the GPU idle, that register could be read via intel_reg as 0x00e001ff,
+> but during a 3D workload it would change to 0x0000007f. So the
+> programming of that tuning was affecting more than the bits in
+> L3_PWM_TIMER_INIT_VAL_MASK. Matt Roper noticed the lack of rmw for the
+> context workarounds due to the use of MI_LOAD_REGISTER_IMM.
+> 
+> So, for registers that are not masked, read its value via mmio, modify
+> and then set it in the buffer to be written by the GPU. This should take
+> care in a simple way of programming just the bits required by the
+> tuning/workaround. If in future there are registers that involved that
+> can't be read by the CPU, a more complex approach may be required like
+> a) issuing additional instructions to read and modify; or b) scan the
+> golden context and patch it in place before saving it; or something
+> else. But for now this should suffice.
+> 
+> Scanning the context workarounds for all platforms, these are the
+> impacted ones with the respective registers
+> 
+> 	mtl: DRAW_WATERMARK
+> 	mtl/dg2: XEHP_L3SQCREG5, XEHP_FF_MODE2
+> 	gen12: GEN12_FF_MODE2
 
-I'm struggling to see the point for this compile-time check?
-Especially when you consider (on x86_64):
+Speaking of GEN12_FF_MODE2...there's a big scary comment above that
+workaround write which says that register "will return the wrong value
+when read."  I think with this patch, we'll start doing a RMW cycle for
+the register, which could mix in some of this "wrong value".  The
+comment mentions that the intention is to write the whole register,
+as the default value is 0 for all fields.
 
-sizeof(struct dm_target_spec) = 40
-offsetof(struct dm_ioctl, data) = 305
+Maybe what we want to do is change gen12_ctx_gt_tuning_init to do
 
-Just feels like there is no utility offered by adding this check.
+    wa_write(wal, GEN12_FF_MODE2, FF_MODE2_TDS_TIMER_128);
 
-SO I've dropped it.  But if you feel there is some inherent value
-please let me know.
+so it has a clear mask of ~0 instead of FF_MODE2_TDS_TIMER_MASK, and
+then in this patch update your condition below from
 
-Thanks,
-Mike
++		if (wa->masked_reg || wa->set == U32_MAX) {
+
+to
+
++		if (wa->masked_reg || wa->set == U32_MAX || wa->clear == U32_MAX) {
+
+because if we're clearing all bits then we don't care about doing a
+read-modify-write either.
+
+--Ken
+
+--nextPart23769370.ZV0zXJHA5L
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE6OtbNAgc4e6ibv4ZW1vaBx1JzDgFAmSU2zEACgkQW1vaBx1J
+zDi2Dg//a2kNxu7B2APmRk9aNgVr1so4zaW2qGlqsfqUmUZFVIU0fBOE1KKE7C2p
+15II2rsMTU1695AdfR83F/qt8AV3thWOd7drE7f3jh1TTxahlZVdipqLvJ/UG8FK
+GVjUO90+UWNI9WJycrB6QjdnVlgWz/VsBfzBuZH8TQDdp+ko4hwhoPEzqHSlpsNd
+XPvZyDiDU7Xoj59/sGUbFOrBoZANC56HKsLeaVpLLof2KCOi5LUZzmQ+kIYrkmYa
+zvsMuLhfWEtcS15bwSY6eTFT9NqV00/PuQAt0Jdg/IfGx7wm1OIYRnpHYnDAimUz
++JgKXAEFBC3dyWucfUSQb6/UPEuHm+9COXnFso3sOFaWCVBEBklRuobEk+O0RmXe
+naIuGsgV2vGtzhFGrmKu9NLNO86qgaENMOjhdS+9t+Z0ws+3I/SNyXB2TkAZ0k21
+nEDgMVaO+FkjivyqDfiDwoiTIvtLrONWB7SSv7wdZze3mws2GpY14X3yF7GLkNCJ
+TWjVGnntSIjF7gLnnNnK5hnWl1uN/NrjQpf2j8WkIvUu32C0dErddY0PwNZFT6Tp
+yjtONwRcs3/4IJaAdyPC5u2/Qu9DkGubTqdcwsvNeTEPMC+bKAUgkyiI3anKtw5e
+4S1oTin2BTwRx5q4pNy3tDKvKLEYiDVCEWCiHMc9loek7EvPd1Q=
+=t4AT
+-----END PGP SIGNATURE-----
+
+--nextPart23769370.ZV0zXJHA5L--
+
+
+
