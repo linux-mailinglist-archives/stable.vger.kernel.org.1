@@ -2,78 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2309373A278
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 16:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA6B573A297
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 16:01:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbjFVOAO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 10:00:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52624 "EHLO
+        id S231490AbjFVOBr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 10:01:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230381AbjFVOAM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 10:00:12 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 302181AC
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 07:00:11 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3f9bdb01ec0so21480635e9.2
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 07:00:11 -0700 (PDT)
+        with ESMTP id S230339AbjFVOBa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 10:01:30 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82A6119BE
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 07:01:21 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3f904dcc1e2so63602735e9.3
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 07:01:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1687442409; x=1690034409;
+        d=tessares.net; s=google; t=1687442479; x=1690034479;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
         bh=waQDjvoZSvSPW8K61PEMM6QFQmxHoBgMRZ62rhmNBFw=;
-        b=lexP8Ue93/SngWupHjVyZH35wxNuymJSBHjCW/1NbBb3xfo9hEEdEkGwYaBZCWFvs1
-         RyVUkuaTJG9iXBpZpCBo8DL7kAfP124EXQqR3IgxzjJ/dNfK5xx/WhSK15PdRgnyX3Gl
-         ubmeSnGXpGcAWX0lTCe2YH7LztMe2EbqO6zXsuhKKAx7WedHgCiKToZkqi3rrN++//O1
-         Rwa48pL5WEjlASNeIwVFhTVmXzSbtkXeGfAABzs2kG2H7NdBYc3Y2Hjw1pRBQ3PSPSww
-         HB4qjHeZz4lAwvG5LIo+nLDFGIX7TKDuVZKJR+oqWd3rSjrW5XPDmLSrqO1CKOZx1Xl6
-         MexQ==
+        b=ZFYL2rNtSS1bqZs99uiZ8QrxXSr/slcEChqdoEh1Fi5JxeKvrXgxDkb3XKdadw6PHk
+         BzGNWn+s/meAymTC8RMtC0D7DzLTCnIWel5erkYzs1mWYO9nBllBYkwBRIU1jNGOim4K
+         H3Y+hJ+6JzKISQyrTPfnTK0ENfTJy3tYd2Ujk6EKIczBHaXqmMOX5jYd7Dr2apS1Rkaa
+         kOoTSOymi9/cKj/PhSJ5FsBxjPkQjBIvX/DTlipr3laA7kEQfwFttRcoqI4nwQ8ElDVm
+         big93ogwsSsbztXKXP/tr/72iLOh8UhEygajeu8EGVXc/jhTwOnLP+1Or/4XaUT7dE8O
+         0SLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687442409; x=1690034409;
+        d=1e100.net; s=20221208; t=1687442479; x=1690034479;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
         bh=waQDjvoZSvSPW8K61PEMM6QFQmxHoBgMRZ62rhmNBFw=;
-        b=RujdAzYZcdZhIddiwFnNK9wiw4aX7XAaENsLl/ezRACMhbB7qihSz0Nj1+v1eluh7V
-         ez7hrORBI3t3mLUz7iAOE4Lxt9CT/S/J7+xuZLrLXMDq5EpP+ZZeDfUV2u0qBZkCxIuq
-         U4poeVBc7ofMkQ/Bxlj3Illg4V2joJRKT7tcif2vXiuPxH0hVCWaaFpa9frI2/uiMRnM
-         mlBiV5herhoaukywL65ZpjJzgpV4W0zbuHWHXIuL7XWCRjBqjcN31gk2d/wSEMFc2P9z
-         nS91VUv8vcYdIz/5cM23bRDOzNpQw7qLRzlrb3lNwBSBLYXO9VBC6sJUk/vwmzKWrLT3
-         /6Jw==
-X-Gm-Message-State: AC+VfDzgNrc3eJ1jZW4tUi6AQ+AV3FV6EpuOSvqu+NBDRv4vo3n9Vso7
-        70ypfO+y49+R815nq4V0IJxBc0LFcjx0vs4vkF21JQ==
-X-Google-Smtp-Source: ACHHUZ5WYQsIAhYmYqu+HqZ3VQCpFYTGcu6BpiAxPagO3C3I8ERRW8n8ML4L1AUJEyZXLLMZyPtjRw==
-X-Received: by 2002:a7b:c7c9:0:b0:3f7:f90c:4978 with SMTP id z9-20020a7bc7c9000000b003f7f90c4978mr15831875wmk.21.1687442409174;
-        Thu, 22 Jun 2023 07:00:09 -0700 (PDT)
+        b=f1rt15yr87uomgT15zVKH6nvmFxz5PECr+32NL2clHR6+f4LG1hAYEUmFMZe4Qu+fj
+         s6znX3tS7T3sVYAn9RvroMXfRHc8C/kBFrJfEQxiQoyBtJvDi8d7toOM29Fp7/kuHD7u
+         JTrfRDOVEYMT6/9XvSHlhFjuVZExYgc4CCK8eHcP0lL0vxRsiXbA22ffvvssm7LBxRR3
+         AIRumMNHlzzxhMXG1dzsobLtkViOffdw3j9wLr5FSdpU4qXLV/I4jbbfk8LpE/WNxjcZ
+         CGrs6Jfu2eJQlZH0iiNsGEi6WKnJlIeC0WUijWfHgxJ9fADskEhK1avJKpWZKe3LDixb
+         mKjw==
+X-Gm-Message-State: AC+VfDxjLWHXsJCSPkwRMYoUBwA8kdd/M27TuPC7pbVFkd3bd/ZgnDfa
+        OQPX5mIgC6FiRnwE9mloghNzVim5c81K7FpGP6mjHw==
+X-Google-Smtp-Source: ACHHUZ5S/0jNAexLS/ZZ4yD2tktiUCS3E1qUiPyQLvHC2ngMuW9Tyk1M8zuLPQYUe9MnvtnkdY72ng==
+X-Received: by 2002:a7b:c4da:0:b0:3f8:f67d:912d with SMTP id g26-20020a7bc4da000000b003f8f67d912dmr14342605wmk.16.1687442479516;
+        Thu, 22 Jun 2023 07:01:19 -0700 (PDT)
 Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id u16-20020a7bc050000000b003f080b2f9f4sm18868083wmc.27.2023.06.22.07.00.08
+        by smtp.gmail.com with ESMTPSA id n6-20020a7bcbc6000000b003f7e4d143cfsm7840620wmi.15.2023.06.22.07.01.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jun 2023 07:00:08 -0700 (PDT)
+        Thu, 22 Jun 2023 07:01:19 -0700 (PDT)
 From:   Matthieu Baerts <matthieu.baerts@tessares.net>
 To:     stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc:     Matthieu Baerts <matthieu.baerts@tessares.net>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10.y 2/2] selftests: mptcp: join: skip check if MIB counter not supported
-Date:   Thu, 22 Jun 2023 15:59:48 +0200
-Message-Id: <20230622135948.3245451-2-matthieu.baerts@tessares.net>
+Subject: [PATCH 5.10.y] selftests: mptcp: join: skip check if MIB counter not supported
+Date:   Thu, 22 Jun 2023 16:01:08 +0200
+Message-Id: <20230622140108.3246987-1-matthieu.baerts@tessares.net>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230622135948.3245451-1-matthieu.baerts@tessares.net>
-References: <2023062217-never-sedan-c4bd@gregkh>
- <20230622135948.3245451-1-matthieu.baerts@tessares.net>
+In-Reply-To: <2023062256-giggly-chummy-891a@gregkh>
+References: <2023062256-giggly-chummy-891a@gregkh>
 MIME-Version: 1.0
 X-Developer-Signature: v=1; a=openpgp-sha256; l=5884; i=matthieu.baerts@tessares.net;
  h=from:subject; bh=8ITtsCsCWZKQFp+hcaaL6pFZAGuJOTDq1UPIRq3Cnyk=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBklFPU9e5QeaEO0LWZIDM283FKKXzkobtQEdPQu
- UPkMXLkFIOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZJRT1AAKCRD2t4JPQmmg
- c/i0D/4oolKAKwyDJYprWjJnsi7arzMnfHiDFe0N3rHzgoVxkSGfQEU19wEl1NoqqFT6InUEELt
- gnn2Pk75U4s7gZnjdLXZ8wliUI7F4vEi2xki2SMJlBEmTXwN6ZNzIwPmN6FknwURFERL4JwuO9P
- 4TIQqAwCygv4J0t9WmTfMkUbqcHlzVy79jsevmdJM0lBoIx5P2OmsC6BcvnrCvyUFZXDEGHeB4y
- 2E6sXqMeGLTe2CQ9B7okQ7BbDzYQC2GOaKR915YONjgKSqusSGr1MCRtNOjG1m+QmS4hr3b9FJn
- JQL5QFOoQ1k5rAulyktgMqtZsDIs7mrBjuyKF2y5XCfnEhtgyeFOkmOX/aeqz4F5h53GpRSv5+g
- Kj2zLWKhU18sYVQzW97OJ5VIRui2wMMQ0YuxuxJJQbdZEjjHee3I17PzV0+MOoJ9i2a/ZwRg2FJ
- f5P5RElVWzScrGKjYS+w/9yarLG6eKA31ufblzcjJ3XS+i66Zq1b8BF+FWSm3BJ7oCAIE/2pGmk
- KV58f1BKPNYowDomSuAoD2V7V+v9NEdEn2Df+koAI5so/zD529T8YDJB4JSU+yJwQyGW0Gi1+Gi
- wetlLUkZH0sj3CLM+wZmdM+HS+g8A+pS9wknJhi1+SkipJzIb1XDgfA8OXgmFHgibT2DFkkFTeA q+HeD8xZBNX+MWg==
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBklFQj9e5QeaEO0LWZIDM283FKKXzkobtQEdPQu
+ UPkMXLkFIOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZJRUIwAKCRD2t4JPQmmg
+ cx1xEADp1C4F+ePJhBIVwIyFtSCb/jEPLND8JGrX5/KQCRUnIUiJ15hQb4RNZN04L5DBU3ZDfqH
+ RnhN5TerkBlEAhDMzhGl4r4S3YKQk0b7B58/W/O8VQt/d/XcNW2XgfEix0JE/cRonB39LXwajEc
+ q2ADmY9EgVeDN/jeK43hqhTw0kHiodTI6p5LF/pGej1mcET7ELkAA0ftTsBz9dcy02eWp2cf0UP
+ keAPE3m3wc9o506JZ7PFeF9Vr+WorNyMwqbrXnbSOFccAyeIyRZk1d39Z/9zyym/F9RTAlLU5Sw
+ 6A57eCrNSqAXeOy4I0Y+d//LbyAUiqSDljqJPyanvVLlCLZkXwGgY/JcdWIvk3qcZ1f+B30SqQP
+ IKbKvA6OU7t4wDlyySgHZIVkkRk6rrtjb4LkkECxNw85JWxIRtTsiWcXlkPiiOzExQ3imjYDiPG
+ ZwTainL0qHUa7kdZ5FV6acs8ccBLGhbFItkkS6GdDWS8+9GK6VegK5mzDPCAYV3E0wmF3QGTH0V
+ z1h3DfZSI7mODfkVWM+I3D23R89EClAnc1C6H0e92b5j/0f7YmMRsWlWfuxXxGEcPE8dPsJ0k5J
+ O3como2tPzDQTu3Z/f8eiwNSMZGY099I6hfhCnaNayS2mKMMJyZ17D+Sn6IOEfo5ogyPo6cm5Fz SjcB1xfFPQey1tA==
 X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
