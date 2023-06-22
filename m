@@ -2,56 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DC2C73A748
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 19:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC84173A74B
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 19:32:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231179AbjFVRb4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 13:31:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59312 "EHLO
+        id S231140AbjFVRc2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 13:32:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231132AbjFVRbv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 13:31:51 -0400
+        with ESMTP id S230072AbjFVRc1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 13:32:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC59E1BD2
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 10:31:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEB952111
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 10:31:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687455064;
+        s=mimecast20190719; t=1687455094;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=1XwheaDZGZRpJwzvs7S81oxlOK2dxP/D6trWluCaM6o=;
-        b=Q0WVWrHiUiPhaDE1DHQzP9MFghMtXuvL97NeOKE0ACqZH47ZOxQ2lo0EKAETfaKCxG/Vya
-        dz0qL+ulWh1kOVsH2WES2SmCM0qr8KObwrmbP8hLX679gaf2YwvlHZQwPYW4eayBk1+jVH
-        L/A8vRUDkrFD2jMf/y2xUf1Fi5VytNU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=3A/9MXgBBjsOiJR7aN+jD3J+Q2qngmB+feAsrMbXy+w=;
+        b=HjT/g6WCMyyUN8UuSLua0gMYMWDTsY720NuWa6QhBpHt+ginsofeElSCh5WZyZTpMIg7hs
+        TbZt9x9scd43eHP+tUIayIED9pDSgBv57QN6QTCUEJIedzgT1DputyPxLF5M+rtZUkFHFJ
+        3pMVDGfPQNQHS6/uQXjzEaLjFCJf6KY=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-126-m_NT0INGNfOCJC9XE_vJGA-1; Thu, 22 Jun 2023 13:31:02 -0400
-X-MC-Unique: m_NT0INGNfOCJC9XE_vJGA-1
+ us-mta-252-UyN40HpJMXeYe_nUBtgVVA-1; Thu, 22 Jun 2023 13:31:31 -0400
+X-MC-Unique: UyN40HpJMXeYe_nUBtgVVA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 48F1490ED25;
-        Thu, 22 Jun 2023 17:30:57 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F2C11C08781;
+        Thu, 22 Jun 2023 17:31:28 +0000 (UTC)
 Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 7EA6D2166B25;
-        Thu, 22 Jun 2023 17:30:49 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 11C002166B25;
+        Thu, 22 Jun 2023 17:31:28 +0000 (UTC)
 Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
-        id 78C5430C0457; Thu, 22 Jun 2023 17:30:49 +0000 (UTC)
+        id 0BC4130C0457; Thu, 22 Jun 2023 17:31:28 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
-        by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 77DE53F7CF;
-        Thu, 22 Jun 2023 19:30:49 +0200 (CEST)
-Date:   Thu, 22 Jun 2023 19:30:49 +0200 (CEST)
+        by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 0ACF83F7CF;
+        Thu, 22 Jun 2023 19:31:28 +0200 (CEST)
+Date:   Thu, 22 Jun 2023 19:31:28 +0200 (CEST)
 From:   Mikulas Patocka <mpatocka@redhat.com>
 To:     Demi Marie Obenour <demi@invisiblethingslab.com>
 cc:     Alasdair Kergon <agk@redhat.com>,
         Mike Snitzer <snitzer@kernel.org>, dm-devel@redhat.com,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [dm-devel] [PATCH v2 2/6] device-mapper: Avoid pointer arithmetic
- overflow
-In-Reply-To: <20230603145244.1538-3-demi@invisiblethingslab.com>
-Message-ID: <d0ac7c9b-fbb-b79e-3a34-f5bc4ae87ba@redhat.com>
-References: <20230601212456.1533-1-demi@invisiblethingslab.com> <20230603145244.1538-1-demi@invisiblethingslab.com> <20230603145244.1538-3-demi@invisiblethingslab.com>
+Subject: Re: [dm-devel] [PATCH v2 3/6] device-mapper: structs and parameter
+ strings must not overlap
+In-Reply-To: <20230603145244.1538-4-demi@invisiblethingslab.com>
+Message-ID: <c0c36fe0-41cf-abf-727c-bbef17b6face@redhat.com>
+References: <20230601212456.1533-1-demi@invisiblethingslab.com> <20230603145244.1538-1-demi@invisiblethingslab.com> <20230603145244.1538-4-demi@invisiblethingslab.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
@@ -69,9 +69,11 @@ X-Mailing-List: stable@vger.kernel.org
 
 On Sat, 3 Jun 2023, Demi Marie Obenour wrote:
 
-> Especially on 32-bit systems, it is possible for the pointer arithmetic
-> to overflow and cause a userspace pointer to be dereferenced in the
-> kernel.
+> The NUL terminator for each target parameter string must precede the
+> following 'struct dm_target_spec'.  Otherwise, dm_split_args() might
+> corrupt this struct.  Furthermore, the first 'struct dm_target_spec'
+> must come after the 'struct dm_ioctl', as if it overlaps too much
+> dm_split_args() could corrupt the 'struct dm_ioctl'.
 > 
 > Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
 > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
@@ -80,39 +82,84 @@ On Sat, 3 Jun 2023, Demi Marie Obenour wrote:
 Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
 
 > ---
->  drivers/md/dm-ioctl.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+>  drivers/md/dm-ioctl.c | 28 +++++++++++++++++++++-------
+>  1 file changed, 21 insertions(+), 7 deletions(-)
 > 
 > diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
-> index 34fa74c6a70db8aa67aaba3f6a2fc4f38ef736bc..64e8f16d344c47057de5e2d29e3d63202197dca0 100644
+> index 64e8f16d344c47057de5e2d29e3d63202197dca0..da6ca26b51d0953df380582bb3a51c2ec22c27cb 100644
 > --- a/drivers/md/dm-ioctl.c
 > +++ b/drivers/md/dm-ioctl.c
-> @@ -1396,6 +1396,25 @@ static int next_target(struct dm_target_spec *last, uint32_t next, void *end,
+> @@ -1391,7 +1391,7 @@ static inline fmode_t get_mode(struct dm_ioctl *param)
+>  	return mode;
+>  }
+>  
+> -static int next_target(struct dm_target_spec *last, uint32_t next, void *end,
+> +static int next_target(struct dm_target_spec *last, uint32_t next, const char *end,
+>  		       struct dm_target_spec **spec, char **target_params)
 >  {
 >  	static_assert(_Alignof(struct dm_target_spec) <= 8,
->  		      "struct dm_target_spec has excessive alignment requirements");
-> +	static_assert(offsetof(struct dm_ioctl, data) >= sizeof(struct dm_target_spec),
-> +		      "struct dm_target_spec too big");
+> @@ -1404,7 +1404,7 @@ static int next_target(struct dm_target_spec *last, uint32_t next, void *end,
+>  	 * sizeof(struct dm_target_spec) or more, as otherwise *last was
+>  	 * out of bounds already.
+>  	 */
+> -	size_t remaining = (char *)end - (char *)last;
+> +	size_t remaining = end - (char *)last;
+>  
+>  	/*
+>  	 * There must be room for both the next target spec and the
+> @@ -1423,10 +1423,7 @@ static int next_target(struct dm_target_spec *last, uint32_t next, void *end,
+>  	*spec = (struct dm_target_spec *) ((unsigned char *) last + next);
+>  	*target_params = (char *) (*spec + 1);
+>  
+> -	if (*spec < (last + 1))
+> -		return -EINVAL;
+> -
+> -	return invalid_str(*target_params, end);
+> +	return 0;
+>  }
+>  
+>  static int populate_table(struct dm_table *table,
+> @@ -1436,8 +1433,9 @@ static int populate_table(struct dm_table *table,
+>  	unsigned int i = 0;
+>  	struct dm_target_spec *spec = (struct dm_target_spec *) param;
+>  	uint32_t next = param->data_start;
+> -	void *end = (void *) param + param_size;
+> +	const char *const end = (const char *) param + param_size;
+>  	char *target_params;
+> +	size_t min_size = sizeof(struct dm_ioctl);
+>  
+>  	if (!param->target_count) {
+>  		DMERR("%s: no targets specified", __func__);
+> @@ -1445,6 +1443,13 @@ static int populate_table(struct dm_table *table,
+>  	}
+>  
+>  	for (i = 0; i < param->target_count; i++) {
+> +		const char *nul_terminator;
 > +
-> +	/*
-> +	 * Number of bytes remaining, starting with last. This is always
-> +	 * sizeof(struct dm_target_spec) or more, as otherwise *last was
-> +	 * out of bounds already.
-> +	 */
-> +	size_t remaining = (char *)end - (char *)last;
+> +		if (next < min_size) {
+> +			DMERR("%s: next target spec (offset %u) overlaps %s",
+> +			      __func__, next, i ? "previous target" : "'struct dm_ioctl'");
+> +			return -EINVAL;
+> +		}
+>  
+>  		r = next_target(spec, next, end, &spec, &target_params);
+>  		if (r) {
+> @@ -1452,6 +1457,15 @@ static int populate_table(struct dm_table *table,
+>  			return r;
+>  		}
+>  
+> +		nul_terminator = memchr(target_params, 0, (size_t)(end - target_params));
+> +		if (nul_terminator == NULL) {
+> +			DMERR("%s: target parameters not NUL-terminated", __func__);
+> +			return -EINVAL;
+> +		}
 > +
-> +	/*
-> +	 * There must be room for both the next target spec and the
-> +	 * NUL-terminator of the target itself.
-> +	 */
-> +	if (remaining - sizeof(struct dm_target_spec) <= next) {
-> +		DMERR("Target spec extends beyond end of parameters");
-> +		return -EINVAL;
-> +	}
+> +		/* Add 1 for NUL terminator */
+> +		min_size = (size_t)(nul_terminator - (const char *)spec) + 1;
 > +
->  	if (next % 8) {
->  		DMERR("Next target spec (offset %u) is not 8-byte aligned", next);
->  		return -EINVAL;
+>  		r = dm_table_add_target(table, spec->target_type,
+>  					(sector_t) spec->sector_start,
+>  					(sector_t) spec->length,
 > -- 
 > Sincerely,
 > Demi Marie Obenour (she/her/hers)
