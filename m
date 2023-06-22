@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68A167398AB
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 09:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D2947398C1
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 09:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230296AbjFVH5e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 03:57:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54998 "EHLO
+        id S230454AbjFVH6r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 03:58:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230380AbjFVH5d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 03:57:33 -0400
+        with ESMTP id S230503AbjFVH6m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 03:58:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B89A2199F
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 00:57:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D812102
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 00:58:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44EB961768
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 07:57:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2BEC433C8;
-        Thu, 22 Jun 2023 07:57:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 632D06178A
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 07:58:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F3FC433C8;
+        Thu, 22 Jun 2023 07:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687420651;
-        bh=fY5wjLsO1PEAiozU6Sgqq0DSLVAw72T9ZqHzHax3Ixw=;
+        s=korg; t=1687420688;
+        bh=v43zjBUCrNubr+aEPRcS7a47o1SEmTD0k39mbP3jUpE=;
         h=Subject:To:Cc:From:Date:From;
-        b=2VUIty2DdAO0a1YSq9Vdork1tx2SZWKQunl02a84AuqNYt92uGdMh9YfQZJfLBUjQ
-         1gzpLN/ARKSAk58hM3QwQwluJaVs3fUDGPuLqlAnO1soCcShJL6Z0OJ4rvETZ7/3UZ
-         b+3s19UwIxAhpwbibfcJTDbgduWMm0sZx+IhHecs=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: pm nl: remove hardcoded default limits" failed to apply to 5.4-stable tree
+        b=hVuAQfHX+m890/51CNMvAgaY94aJcoOHUzXoUi2rGWclK2H0qT0jNaIwJkuHn7KVe
+         JpogbTR37DUV9iyIIGgVKB6gFkSrzUHO22lpIEP8du+WGR90EGkssBHG82YN6p2x+s
+         5TDwVuvyFdanckPKi1csizoEboTOOyT96TwhQYF8=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: sockopt: skip TCP_INQ checks if not" failed to apply to 6.1-stable tree
 To:     matthieu.baerts@tessares.net, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 22 Jun 2023 09:57:18 +0200
-Message-ID: <2023062218-porous-squiggle-d837@gregkh>
+Date:   Thu, 22 Jun 2023 09:58:06 +0200
+Message-ID: <2023062206-muzzle-pope-0802@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2177d0b08e421971e035672b70f3228d9485c650
+git cherry-pick -x b631e3a4e94c77c9007d60b577a069c203ce9594
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062218-porous-squiggle-d837@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062206-muzzle-pope-0802@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,60 +73,67 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2177d0b08e421971e035672b70f3228d9485c650 Mon Sep 17 00:00:00 2001
+From b631e3a4e94c77c9007d60b577a069c203ce9594 Mon Sep 17 00:00:00 2001
 From: Matthieu Baerts <matthieu.baerts@tessares.net>
-Date: Thu, 8 Jun 2023 18:38:49 +0200
-Subject: [PATCH] selftests: mptcp: pm nl: remove hardcoded default limits
+Date: Thu, 8 Jun 2023 18:38:53 +0200
+Subject: [PATCH] selftests: mptcp: sockopt: skip TCP_INQ checks if not
+ supported
 
 Selftests are supposed to run on any kernels, including the old ones not
 supporting all MPTCP features.
 
-One of them is the checks of the default limits returned by the MPTCP
-in-kernel path-manager. The default values have been modified by commit
-72bcbc46a5c3 ("mptcp: increase default max additional subflows to 2").
-Instead of comparing with hardcoded values, we can get the default one
-and compare with them.
+One of them is TCP_INQ cmsg support introduced in commit 2c9e77659a0c
+("mptcp: add TCP_INQ cmsg support").
 
-Note that if we expect to have the latest version, we continue to check
-the hardcoded values to avoid unexpected behaviour changes.
+It is possible to look for "mptcp_ioctl" in kallsyms because it was
+needed to introduce the mentioned feature. We can skip these tests and
+not set TCPINQ option if the feature is not supported.
 
 Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: eedbc685321b ("selftests: add PM netlink functional tests")
+Fixes: 5cbd886ce2a9 ("selftests: mptcp: add TCP_INQ support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/tools/testing/selftests/net/mptcp/pm_netlink.sh b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-index 32f7533e0919..664cafc60705 100755
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -73,8 +73,12 @@ check()
- }
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+index 1d4ae8792227..f295a371ff14 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+@@ -187,9 +187,14 @@ do_transfer()
+ 		local_addr="0.0.0.0"
+ 	fi
  
- check "ip netns exec $ns1 ./pm_nl_ctl dump" "" "defaults addr list"
--check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 0
++	cmsg="TIMESTAMPNS"
++	if mptcp_lib_kallsyms_has "mptcp_ioctl$"; then
++		cmsg+=",TCPINQ"
++	fi
 +
-+default_limits="$(ip netns exec $ns1 ./pm_nl_ctl limits)"
-+if mptcp_lib_expect_all_features; then
-+	check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 0
- subflows 2" "defaults limits"
-+fi
+ 	timeout ${timeout_test} \
+ 		ip netns exec ${listener_ns} \
+-			$mptcp_connect -t ${timeout_poll} -l -M 1 -p $port -s ${srv_proto} -c TIMESTAMPNS,TCPINQ \
++			$mptcp_connect -t ${timeout_poll} -l -M 1 -p $port -s ${srv_proto} -c "${cmsg}" \
+ 				${local_addr} < "$sin" > "$sout" &
+ 	local spid=$!
  
- ip netns exec $ns1 ./pm_nl_ctl add 10.0.1.1
- ip netns exec $ns1 ./pm_nl_ctl add 10.0.1.2 flags subflow dev lo
-@@ -121,12 +125,10 @@ ip netns exec $ns1 ./pm_nl_ctl flush
- check "ip netns exec $ns1 ./pm_nl_ctl dump" "" "flush addrs"
+@@ -197,7 +202,7 @@ do_transfer()
  
- ip netns exec $ns1 ./pm_nl_ctl limits 9 1
--check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 0
--subflows 2" "rcv addrs above hard limit"
-+check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "rcv addrs above hard limit"
+ 	timeout ${timeout_test} \
+ 		ip netns exec ${connector_ns} \
+-			$mptcp_connect -t ${timeout_poll} -M 2 -p $port -s ${cl_proto} -c TIMESTAMPNS,TCPINQ \
++			$mptcp_connect -t ${timeout_poll} -M 2 -p $port -s ${cl_proto} -c "${cmsg}" \
+ 				$connect_addr < "$cin" > "$cout" &
  
- ip netns exec $ns1 ./pm_nl_ctl limits 1 9
--check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 0
--subflows 2" "subflows above hard limit"
-+check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "subflows above hard limit"
+ 	local cpid=$!
+@@ -313,6 +318,11 @@ do_tcpinq_tests()
+ {
+ 	local lret=0
  
- ip netns exec $ns1 ./pm_nl_ctl limits 8 8
- check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 8
++	if ! mptcp_lib_kallsyms_has "mptcp_ioctl$"; then
++		echo "INFO: TCP_INQ not supported: SKIP"
++		return
++	fi
++
+ 	local args
+ 	for args in "-t tcp" "-r tcp"; do
+ 		do_tcpinq_test $args
 
