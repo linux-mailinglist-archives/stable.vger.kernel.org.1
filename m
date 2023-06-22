@@ -2,53 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8194973A850
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 20:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D54673A887
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 20:46:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbjFVSe3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 14:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59568 "EHLO
+        id S231389AbjFVSqt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 14:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjFVSe2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 14:34:28 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 599C919AD
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 11:34:26 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qCP8S-0004ne-71; Thu, 22 Jun 2023 20:34:24 +0200
-Message-ID: <d445cc65-fd51-acf8-2a8d-08abdb3cf77e@leemhuis.info>
-Date:   Thu, 22 Jun 2023 20:34:23 +0200
+        with ESMTP id S231393AbjFVSqr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 14:46:47 -0400
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2FFA210C
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 11:46:36 -0700 (PDT)
+Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-338bd590bc1so5145025ab.1
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 11:46:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1687459596; x=1690051596;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=manSCipOOhmWOPB1AQ+dPEX6xxX8Josbxr+cGJcmDTw=;
+        b=BF0clXInxT/cyf32LbIk93WOsKiO08d4WNaZaiK5Jlzy1NZ1uHoiZtnlIMZuCQfkrD
+         6KiPrvyI1cIyL440IlfvkV9mvxuiTnRSaZLjGM/R0LrSfRjkmYtiI2O4Cuqh7KUZlDen
+         CDCI52XDqLUV16ARPWW5rdJnTccK6UKgy3aLI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687459596; x=1690051596;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=manSCipOOhmWOPB1AQ+dPEX6xxX8Josbxr+cGJcmDTw=;
+        b=Dldq4N3ioVXKOrHkaUUE95OYvA0OrtKSCv4qqkyeTrdqEFk/kyP4T0keLBd05gzoNJ
+         yj5Co/KkzQwyBiVinGjZMWZK9LSArXNWv3kWQWBW8BU2Z21HKX9nziv+rD4nZcPJMP45
+         gaSsigTnTs+AC1nU1PwQrl6T5ElkmQbKThwB1kLtF8DKy4EA9XdEbQizKG9oUDqT6UIT
+         7zpTfA1ZP6GAsPeEq9tJXdb6ZHTmyDH/K1P6D/BNFqFKU0JiouXolol/ow6OlqwZ8UmS
+         Cx/DRr3O1VZgJK0hmJbE3YwufOCtG+yoIlpB6dY9icoJLrkfgtrbvV/u1ucOb7Qbc19x
+         3/Ww==
+X-Gm-Message-State: AC+VfDzVn1gfTdp8+CExxUDUIfq27cfHFTa8tcsIiQ/k8j21qJgYxYPz
+        hRwnZWxfV1YzHoOJ2jXwrYh5qA==
+X-Google-Smtp-Source: ACHHUZ5qRksVQUc529ilEx05M1/JeEvBhIQIatLjK3cFdJpcMXoMxSJVzYBIbdbPXvmVV1YjZ8jF/g==
+X-Received: by 2002:a92:740d:0:b0:338:4b36:5097 with SMTP id p13-20020a92740d000000b003384b365097mr18131055ilc.1.1687459596143;
+        Thu, 22 Jun 2023 11:46:36 -0700 (PDT)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id x10-20020a92060a000000b0034255d2d3c5sm2143703ilg.48.2023.06.22.11.46.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Jun 2023 11:46:35 -0700 (PDT)
+Message-ID: <74c961a0-4a36-51db-5ed7-6f0185e499ce@linuxfoundation.org>
+Date:   Thu, 22 Jun 2023 12:46:34 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
-Content-Language: en-US, de-DE
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Linux Stable <stable@vger.kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Sami Korkalainen <sami.korkalainen@proton.me>,
-        Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-        Linux regressions mailing list <regressions@lists.linux.dev>
-References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me>
- <ZHFaFosKY24-L7tQ@debian.me>
- <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me>
- <ZIcmpcEsTLXFaO0f@debian.me>
- <oEbkgJ-ImLxBDZDUTnIAGFWrRVnwBss3FOlalTpwrz83xWgESC9pcvNKiAVp9BzFgqZ0V-NIwzBZ7icKD8ynuIi_ZMtGt7URu3ftcSt16u4=@proton.me>
- <e2ca75ef-d779-4bad-84a5-a9f262dbe213@lunn.ch>
- <FNzHwp9-AyweVwIMndmih6VuBD0nsyRp3OM72bmOxpeYszF680jFPJjENIknT32FeaqfVBtVSQFw-5mgE3ZXeksVD8VCFbxwojxP3mSZ9DQ=@proton.me>
- <9517bb70-426c-0296-b426-f5b4f075f7c8@leemhuis.info>
- <CAHk-=wiK5oDqgt6=OHLiiAu4VmLy4qn8WQdhvFo+sm26r4UjHw@mail.gmail.com>
- <CAHk-=wjGubMs+yoCS44bM1x4=CxDWvJeauquCcE5qLzNmToozw@mail.gmail.com>
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <CAHk-=wjGubMs+yoCS44bM1x4=CxDWvJeauquCcE5qLzNmToozw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 5.15 000/107] 5.15.118-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
+ <f7bf3aa8-f1b8-a1b5-8e51-46d51d002633@linuxfoundation.org>
+ <2023062150-expansive-polygon-7b5f@gregkh>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <2023062150-expansive-polygon-7b5f@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1687458866;d7c37153;
-X-HE-SMSGID: 1qCP8S-0004ne-71
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,65 +78,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[CCing Konstantin]
-
-On 21.06.23 20:08, Linus Torvalds wrote:
-> On Wed, 21 Jun 2023 at 10:56, Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
+On 6/21/23 07:59, Greg Kroah-Hartman wrote:
+> On Tue, Jun 20, 2023 at 03:04:12PM -0600, Shuah Khan wrote:
+>> On 6/19/23 04:29, Greg Kroah-Hartman wrote:
+>>> This is the start of the stable review cycle for the 5.15.118 release.
+>>> There are 107 patches in this series, all will be posted as a response
+>>> to this one.  If anyone has any issues with these being applied, please
+>>> let me know.
+>>>
+>>> Responses should be made by Wed, 21 Jun 2023 10:21:12 +0000.
+>>> Anything received after that time might be too late.
+>>>
+>>> The whole patch series can be found in one patch at:
+>>> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.118-rc1.gz
+>>> or in the git tree and branch at:
+>>> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+>>> and the diffstat can be found below.
+>>>
+>>> thanks,
+>>>
+>>> greg k-h
+>>>
 >>
->> I'll just revert it for now.
+>> Compiled and boots, but doesn't get to login prompt. Keeps running
+>> into NMIs and watchdog detects had lockups.
+>>
+>> I am starting bisect and will keep you updated.
 > 
-> Btw, Thorsten, is there a good way to refer to the regzbot entry in a
-> commit message some way? I know about the email interface, but I'd
-> love to just be able to link to the regression entry.
+> Very odd, let me know what you find, thanks!
+> 
+> greg k-h
 
-There is a separate page for each tracked regression:
+Bisect flagged the following commit and I don't think
+this commit could be the cause on an AMD system
 
-https://linux-regtracking.leemhuis.info/regzbot/regression/lore/GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me/
+# first bad commit: [17627e3f8f0cca041becbec376c07724968c1bf5] of: overlay: rename variables to be consistent
 
-FWIW, such pages existed earlier already, but before sending this reply
-I wanted to fix a related bug that changed the url slightly. One can
-find that link by clicking on "activity" in the regzbot webui (I need to
-find a better place for this link to make it more approachable :-/ ).
+Please go ahead with the release. I will keep debugging.
 
-And yes, in this case the URL sadly is rather long -- and the long msgid
-is only partly to blame. If we really want to link there more regularly
-I could work towards making that url shorter.
+thanks,
+-- Shuah
 
-That being said: I wonder if we really want to add these links to commit
-messages regularly. In case of this particular regression...
 
-> Now I just linked to the report in this thread.
-
-...the thread with the report basically contains nearly everything
-relevant (expect a link to the commit with the revert; but in this case
-that's where the journey or a curious reader would start).
-
-But yes, for regressions with a more complex history it's different, as
-there the regzbot webui makes things a bit easier -- among others by
-directly pointing to patches in the same or other threads that otherwise
-are hard to find from the original thread, unless you know how to search
-for them on lore.
-
-I sometimes wonder if the real solution for this kind of problem would
-be some bot (regzbot? bugbot?) that does something similar to the
-pr-tracker-bot:
-
-1) bot notices when a patch with a Link: or Closes: tag to a thread with
-the msgid <foo> is posted or applied to next, mainline, or stable
-2) bot posts a reply to <foo> with a short msg like "a patch that links
-to this thread was (posted|merged); for details see <url>"
-
-That would solve a few things (that might or might not be worth solving):
-
- * bug reporters would become aware of the progress in case the
-developer forgets to CC them (which happens)
-
- * people that run into an issue and search for existing mailed reports
-on lore currently have no simple way to find fixes that are already
-under review or were applied somewhere already
-
-That together with lore is also more likely to be long-term stable than
-links to the regzbot webui.
-
-Ciao, Thorsten
