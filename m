@@ -2,116 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61C90739A8A
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 10:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5620E739BE2
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 11:08:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231145AbjFVIrA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 04:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56528 "EHLO
+        id S231897AbjFVJGH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 05:06:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbjFVIqm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 04:46:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C8530E4
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 01:44:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687423425;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=Hsp1wQu2X2nYe9KSjQosq+KIdmLssGP1CLoUN2sv5ss=;
-        b=fh0yexIB6wHEtHbxLCmgQpyzM6tPuvM9OswM+NGEHmMGKJ+TgC+Ao49n+t7c7UO0fhpAV/
-        GCtNzd/ruFO7jJWNXqQy2KkFvkpvtzjzfVtmgNv8keWYu1l2qJHMK7q9ukUaD82o7PxlpI
-        5AOo9a5NjFAPX3mLgWIZD/NZWgNpNho=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-646-HtCwnymZMPqV7jJbet8iFA-1; Thu, 22 Jun 2023 04:43:41 -0400
-X-MC-Unique: HtCwnymZMPqV7jJbet8iFA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20AC83C108D2;
-        Thu, 22 Jun 2023 08:43:41 +0000 (UTC)
-Received: from localhost (ovpn-8-17.pek2.redhat.com [10.72.8.17])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2C20C425359;
-        Thu, 22 Jun 2023 08:43:39 +0000 (UTC)
-From:   Ming Lei <ming.lei@redhat.com>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     linux-block@vger.kernel.org, Ming Lei <ming.lei@redhat.com>,
-        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-        stable@vger.kernel.org, Jay Shin <jaeshin@redhat.com>,
-        Tejun Heo <tj@kernel.org>, Waiman Long <longman@redhat.com>
-Subject: [PATCH] block: make sure local irq is disabled when calling __blkcg_rstat_flush
-Date:   Thu, 22 Jun 2023 16:42:49 +0800
-Message-Id: <20230622084249.1208005-1-ming.lei@redhat.com>
+        with ESMTP id S229914AbjFVJE0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 05:04:26 -0400
+X-Greylist: delayed 387 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 22 Jun 2023 01:58:12 PDT
+Received: from mail.venturelinkbiz.com (mail.venturelinkbiz.com [51.195.119.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD1D26AB
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 01:58:12 -0700 (PDT)
+Received: by mail.venturelinkbiz.com (Postfix, from userid 1002)
+        id 7C64244D06; Thu, 22 Jun 2023 08:51:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkbiz.com;
+        s=mail; t=1687423904;
+        bh=URZixhFWewR/JnB/fYD7FSLZF8Ljb9zRMm7TbuKR78c=;
+        h=Date:From:To:Subject:From;
+        b=kfyQatSEu6yBU0IqAiEOhc8EvTm1sthwoFJeceBNibx4moTNyWyGeyS24K6gjM7v8
+         yCeC9+vb9GX/w34oS8EXY2BM8dCEOwdlflZf9lGQ1oDGTEqRNplFmCZBHAX8FAAW3o
+         a6lctw85/dnFSaDEsQS0ak0cJ8Avy+DaoIBgB9M/lYssrPdZJSjLzT6Ft8wUwfXMge
+         3p9JkOWUt5W7/eHrmTtSETl7QVM0oD53DOdQGn1No4/ea3YPHvWB+iPPwoaVfSFFHL
+         poj0YzOPGrKLq5e3XM53iwQ7zKfLSdTXwQhkE+z/CR92n8/MssP2e11yZshDv23kRA
+         atQjQdvVb+UIQ==
+Received: by venturelinkbiz.com for <stable@vger.kernel.org>; Thu, 22 Jun 2023 08:51:09 GMT
+Message-ID: <20230622074941-0.1.r.19kp.0.6l61djcino@venturelinkbiz.com>
+Date:   Thu, 22 Jun 2023 08:51:09 GMT
+From:   "Michal Rmoutil" <michal.rmoutil@venturelinkbiz.com>
+To:     <stable@vger.kernel.org>
+Subject: =?UTF-8?Q?Bezplatn=C3=A1_60denn=C3=AD_zku=C5=A1ebn=C3=AD_verze:_Vylep=C5=A1ete_sv=C3=A9_v=C3=BDrobn=C3=AD_procesy?=
+X-Mailer: mail.venturelinkbiz.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
+        *      [score: 0.2412]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [51.195.119.142 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: venturelinkbiz.com]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: venturelinkbiz.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When __blkcg_rstat_flush() is called from cgroup_rstat_flush*() code
-path, interrupt is always disabled.
+Ahoj!
 
-When we start to flush blkcg per-cpu stats list in __blkg_release()
-for avoiding to leak blkcg_gq's reference in commit 20cb1c2fb756
-("blk-cgroup: Flush stats before releasing blkcg_gq"), local irq
-isn't disabled yet, then lockdep warning may be triggered because
-the dependent cgroup locks may be acquired from irq(soft irq) handler.
+Vytvo=C5=99ili jsme n=C3=A1stroj pro automatick=C3=BD sb=C4=9Br dat z v=C3=
+=BDrobn=C3=ADch stanic, kter=C3=BD m=C5=AF=C5=BEe zlep=C5=A1it va=C5=A1i =
+pr=C3=A1ci a zv=C3=BD=C5=A1it efektivitu proces=C5=AF.
 
-Fix the issue by disabling local irq always.
+Toto =C5=99e=C5=A1en=C3=AD se rychle instaluje a snadno se pou=C5=BE=C3=AD=
+v=C3=A1 a poskytne v=C3=A1m cenn=C3=A9 =C3=BAdaje o ukazatel=C3=ADch v=C3=
+=BDkonu pro cel=C3=BD z=C3=A1vod a jednotliv=C3=A9 stroje. N=C3=A1stroj j=
+asn=C4=9B ukazuje, kdy se stroj/linka zpomaluje, jak=C3=A9 m=C3=A1 prosto=
+je, a vy tak v=C3=ADte, kdy zareagovat.
 
-Fixes: 20cb1c2fb756 ("blk-cgroup: Flush stats before releasing blkcg_gq")
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Closes: https://lore.kernel.org/linux-block/pz2wzwnmn5tk3pwpskmjhli6g3qly7eoknilb26of376c7kwxy@qydzpvt6zpis/T/#u
-Cc: stable@vger.kernel.org
-Cc: Jay Shin <jaeshin@redhat.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
----
- block/blk-cgroup.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Z=C3=ADsk=C3=A1te cenn=C3=A9 informace o stavu v=C3=BDroby a d=C5=AFvodec=
+h mo=C5=BEn=C3=BDch zpo=C5=BEd=C4=9Bn=C3=AD. D=C3=ADky schopnosti okam=C5=
+=BEit=C4=9B reagovat na vznikaj=C3=ADc=C3=AD probl=C3=A9my a p=C5=99=C3=AD=
+znaky zvy=C5=A1ujete efektivitu sv=C3=A9 pr=C3=A1ce o n=C4=9Bkolik des=C3=
+=ADtek procent.
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index f0b5c9c41cde..dce1548a7a0c 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -970,6 +970,7 @@ static void __blkcg_rstat_flush(struct blkcg *blkcg, int cpu)
- 	struct llist_head *lhead = per_cpu_ptr(blkcg->lhead, cpu);
- 	struct llist_node *lnode;
- 	struct blkg_iostat_set *bisc, *next_bisc;
-+	unsigned long flags;
- 
- 	rcu_read_lock();
- 
-@@ -983,7 +984,7 @@ static void __blkcg_rstat_flush(struct blkcg *blkcg, int cpu)
- 	 * When flushing from cgroup, cgroup_rstat_lock is always held, so
- 	 * this lock won't cause contention most of time.
- 	 */
--	raw_spin_lock(&blkg_stat_lock);
-+	raw_spin_lock_irqsave(&blkg_stat_lock, flags);
- 
- 	/*
- 	 * Iterate only the iostat_cpu's queued in the lockless list.
-@@ -1009,7 +1010,7 @@ static void __blkcg_rstat_flush(struct blkcg *blkcg, int cpu)
- 			blkcg_iostat_update(parent, &blkg->iostat.cur,
- 					    &blkg->iostat.last);
- 	}
--	raw_spin_unlock(&blkg_stat_lock);
-+	raw_spin_unlock_irqrestore(&blkg_stat_lock, flags);
- out:
- 	rcu_read_unlock();
- }
--- 
-2.40.1
+Chcete takov=C3=A9 =C5=99e=C5=A1en=C3=AD zdarma otestovat ve va=C5=A1=C3=AD=
+ firm=C4=9B?
 
+
+Pozdravy
+Michal Rmoutil
