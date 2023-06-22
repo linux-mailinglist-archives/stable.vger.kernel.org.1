@@ -2,56 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED53B73A83A
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 20:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC8D373A849
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 20:30:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229721AbjFVS2K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 14:28:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56996 "EHLO
+        id S229549AbjFVSav (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 14:30:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231132AbjFVS2J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 14:28:09 -0400
+        with ESMTP id S231446AbjFVS3v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 14:29:51 -0400
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17AB12114
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 11:28:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFBFB2100
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 11:29:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687458487; x=1718994487;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gGSmBZm4ElPK4e6h2HF7hxSWk/W6Y+2f5EQJGNikYlA=;
-  b=Yul5WSiR/K5FnmnCCFrGvNkXyjWIvinw024tqm+z1i8yXQXk3zpd+TOs
-   8LIJBgPMl/CNBlaSiPymqw/4juEAaZgk2881wpcQ0ybF2qUcjablx3v9y
-   sv7gTto5fDJ9hjsnBsi/yYvbQr8ORdU/MZKH2fOg08paI0gh8TFWistyC
-   ZBZYyTe4hUb1EYgbjVhk+Ej7329qp3bjYmMd53DeAE/Ya5JCUowxuivBB
-   zrMsciTplwXmyGT7Zmv3rw7vPKFh9l52LrVfefLgTAyFN08oMjaMwBvjj
-   jdQI4yKJAOGBVi5bVzPc/bUbff+4wdTjZ7skUtBTc2D3cVRkW5+UOLq3Y
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="359437777"
+  t=1687458588; x=1718994588;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=sAMtdJGFOrPNGvo+P+jzCmggQReY0RKjVQsxVZA/FRM=;
+  b=Zmdi1fSNrJRWJpZ9dxL3FQ5piS0NRv7LTVMOha0dCiOj71nqQKbJkMyC
+   FkYombLl+nno7128CEOsc4ublXnjgQC09mgdtS8yFIr32PE7jbjH6Ere4
+   X+otmKXTE2zUZEQ+gcSHMfwn1joVu8JSmK5Yg8lzNuNXnEk5t/CJbnhpq
+   R17OAG57sfgpmUQPyl17Y2M6oFhg+j1VggVMJwxan+cUHRsZynWaWQaXi
+   JP9pAg1NDR4TajFKeGJI5HhHSFmN5j8qCxqkoX1pptkRkFvZyCC2HA+2D
+   ++qGaNWf5FSpQEbcGc7qXrY4zl9bQuM7iywjxCBBdkrpXLj29+ttYUde+
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="359438453"
 X-IronPort-AV: E=Sophos;i="6.01,149,1684825200"; 
-   d="scan'208";a="359437777"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 11:27:45 -0700
+   d="scan'208";a="359438453"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 11:29:48 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="780345387"
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="785026514"
 X-IronPort-AV: E=Sophos;i="6.01,149,1684825200"; 
-   d="scan'208";a="780345387"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 11:27:45 -0700
-From:   Lucas De Marchi <lucas.demarchi@intel.com>
-To:     intel-gfx@lists.freedesktop.org
-Cc:     dri-devel@lists.freedesktop.org,
-        Kenneth Graunke <kenneth@whitecape.org>,
-        Matt Roper <matthew.d.roper@intel.com>, stable@vger.kernel.org,
-        Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 3/3] drm/i915/gt: Drop read from GEN8_L3CNTLREG in ICL workaround
-Date:   Thu, 22 Jun 2023 11:27:31 -0700
-Message-Id: <20230622182731.3765039-3-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230622182731.3765039-1-lucas.demarchi@intel.com>
-References: <20230622182731.3765039-1-lucas.demarchi@intel.com>
+   d="scan'208";a="785026514"
+Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 22 Jun 2023 11:29:46 -0700
+Received: from kbuild by 783282924a45 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qCP3x-0007jv-14;
+        Thu, 22 Jun 2023 18:29:45 +0000
+Date:   Fri, 23 Jun 2023 02:29:12 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Lucas De Marchi <lucas.demarchi@intel.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 3/3] drm/i915/gt: Drop read from GEN8_L3CNTLREG in ICL
+ workaround
+Message-ID: <ZJSS+Ca2GSIazO9T@65525e8f8615>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230622182731.3765039-3-lucas.demarchi@intel.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -62,30 +63,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Now that non-masked registers are already read before programming the
-context reads, the additional read became redudant, so remove it.
+Hi,
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- drivers/gpu/drm/i915/gt/intel_workarounds.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Thanks for your patch.
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-index a013f245a790..7d90fb376e8e 100644
---- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-+++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-@@ -637,10 +637,7 @@ static void icl_ctx_workarounds_init(struct intel_engine_cs *engine,
- 				     struct i915_wa_list *wal)
- {
- 	/* Wa_1406697149 (WaDisableBankHangMode:icl) */
--	wa_write(wal,
--		 GEN8_L3CNTLREG,
--		 intel_uncore_read(engine->uncore, GEN8_L3CNTLREG) |
--		 GEN8_ERRDETBCTRL);
-+	wa_write(wal, GEN8_L3CNTLREG, GEN8_ERRDETBCTRL);
- 
- 	/* WaForceEnableNonCoherent:icl
- 	 * This is not the same workaround as in early Gen9 platforms, where
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH 3/3] drm/i915/gt: Drop read from GEN8_L3CNTLREG in ICL workaround
+Link: https://lore.kernel.org/stable/20230622182731.3765039-3-lucas.demarchi%40intel.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.40.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
