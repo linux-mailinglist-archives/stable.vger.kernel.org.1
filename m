@@ -2,44 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABFB173A652
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 18:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1406B73A6F7
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 19:08:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231138AbjFVQnO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 12:43:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37960 "EHLO
+        id S229930AbjFVRIx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 13:08:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231189AbjFVQnL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 12:43:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15C431FEF;
-        Thu, 22 Jun 2023 09:42:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FBB6618C1;
-        Thu, 22 Jun 2023 16:42:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DA2C433C8;
-        Thu, 22 Jun 2023 16:42:56 +0000 (UTC)
-Date:   Thu, 22 Jun 2023 17:42:54 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Will Deacon <will@kernel.org>, Shuah Khan <shuah@kernel.org>,
-        Szabolcs Nagy <szabolcs.nagy@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] arm64/signal: Restore TPIDR2 register rather than
- memory state
-Message-ID: <ZJR6DvGofAvxSVYW@arm.com>
-References: <20230621-arm64-fix-tpidr2-signal-restore-v2-0-c8e8fcc10302@kernel.org>
- <20230621-arm64-fix-tpidr2-signal-restore-v2-1-c8e8fcc10302@kernel.org>
+        with ESMTP id S229802AbjFVRIw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 13:08:52 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48499C3;
+        Thu, 22 Jun 2023 10:08:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687453731; x=1718989731;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Cf+dpIYfAbSBeiWlETELLtCHHrcSgMWgIRdJXuiqLaE=;
+  b=nicibwG0x6SZ68yxH1a7avLcbIeR/E51LExxCtTg5xQdUlbc5sL4zESY
+   HNUmxOhz0qgn6EIpkeo+VFpZr2LkNO80+6uyIE5pfvUhwY9nhT5UpeX4n
+   HWGSCQBLhMX+CTDFeI1VGHQTpgnGoIZGlXUrOYHwUBlMFBDr8imb4PYnj
+   h8g7cX3DIY0sP52xoIOTkupkaGbfG/HTFpIDXozhTRHHBeVMI5GDTtc/p
+   implGM17DHq+FHz6v1kUnMYd+A08Mi5Mq5Q0Ph3iilKw2CE/o8lKapCrr
+   WjDbxmoYih6lkVT/oqGpNTOUMHj5rQHF/K3phBOqg9TPyzT7wnUu7rwTe
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="363104865"
+X-IronPort-AV: E=Sophos;i="6.01,149,1684825200"; 
+   d="scan'208";a="363104865"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 10:04:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="1045277900"
+X-IronPort-AV: E=Sophos;i="6.01,149,1684825200"; 
+   d="scan'208";a="1045277900"
+Received: from shari19x-mobl1.gar.corp.intel.com (HELO [10.249.254.173]) ([10.249.254.173])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 10:03:59 -0700
+Message-ID: <ef5d91b8-c68b-5edc-d611-6a4dbf55c945@linux.intel.com>
+Date:   Thu, 22 Jun 2023 19:03:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230621-arm64-fix-tpidr2-signal-restore-v2-1-c8e8fcc10302@kernel.org>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.1
+Subject: Re: [Intel-gfx] [PATCH 3/4] drm/ttm: Don't leak a resource on
+ eviction error
+Content-Language: en-US
+To:     =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>
+Cc:     intel-xe@lists.freedesktop.org,
+        Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>,
+        intel-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Huang Rui <ray.huang@amd.com>,
+        dri-devel@lists.freedesktop.org
+References: <20230622101412.78426-1-thomas.hellstrom@linux.intel.com>
+ <20230622101412.78426-4-thomas.hellstrom@linux.intel.com>
+ <ZJRSyp7fT6VXpow7@ashyti-mobl2.lan>
+ <3a089ebb-7389-3d3e-beb0-13a8d64eb04d@linux.intel.com>
+ <196a7f74-66ac-1eae-4795-a42691f4793e@amd.com>
+From:   =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= 
+        <thomas.hellstrom@linux.intel.com>
+In-Reply-To: <196a7f74-66ac-1eae-4795-a42691f4793e@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,47 +74,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 22, 2023 at 02:39:45PM +0100, Mark Brown wrote:
-> Currently when restoring the TPIDR2 signal context we set the new value
-> from the signal frame in the thread data structure but not the register,
-> following the pattern for the rest of the data we are restoring. This does
-> not work in the case of TPIDR2, the register always has the value for the
-> current task. This means that either we return to userspace and ignore the
-> new value or we context switch and save the register value on top of the
-> newly restored value.
-> 
-> Load the value from the signal context into the register instead.
-> 
-> Fixes: 39e54499280f ("arm64/signal: Include TPIDR2 in the signal context")
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Cc: stable@vger.kernel.org
-> ---
->  arch/arm64/kernel/signal.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-> index 2cfc810d0a5b..10b407672c42 100644
-> --- a/arch/arm64/kernel/signal.c
-> +++ b/arch/arm64/kernel/signal.c
-> @@ -398,7 +398,7 @@ static int restore_tpidr2_context(struct user_ctxs *user)
->  
->  	__get_user_error(tpidr2_el0, &user->tpidr2->tpidr2, err);
->  	if (!err)
-> -		current->thread.tpidr2_el0 = tpidr2_el0;
-> +		write_sysreg_s(tpidr2_el0, SYS_TPIDR2_EL0);
 
-I guess the other way around may also be true - the libc sets tpidr2_el0
-to something else and doesn't want the kernel to restore its original
-value from sigcontext.
+On 6/22/23 16:48, Christian König wrote:
+>
+>
+> Am 22.06.23 um 16:08 schrieb Thomas Hellström:
+>>
+>> On 6/22/23 15:55, Andi Shyti wrote:
+>>> Hi Thomas,
+>>>
+>>> On Thu, Jun 22, 2023 at 12:14:11PM +0200, Thomas Hellström wrote:
+>>>> On eviction errors other than -EMULTIHOP we were leaking a resource.
+>>>> Fix.
+>>>>
+>>>> Fixes: 403797925768 ("drm/ttm: Fix multihop assert on eviction.")
+>>>> Cc: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+>>>> Cc: Christian König <christian.koenig@amd.com>
+>>>> Cc: Christian Koenig <christian.koenig@amd.com>
+>>>> Cc: Huang Rui <ray.huang@amd.com>
+>>>> Cc: dri-devel@lists.freedesktop.org
+>>>> Cc: <stable@vger.kernel.org> # v5.15+
+>>>> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+>>>> ---
+>>>>   drivers/gpu/drm/ttm/ttm_bo.c | 16 ++++++++--------
+>>>>   1 file changed, 8 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/drivers/gpu/drm/ttm/ttm_bo.c 
+>>>> b/drivers/gpu/drm/ttm/ttm_bo.c
+>>>> index 615d30c4262d..89530f2a027f 100644
+>>>> --- a/drivers/gpu/drm/ttm/ttm_bo.c
+>>>> +++ b/drivers/gpu/drm/ttm/ttm_bo.c
+>>>> @@ -462,14 +462,14 @@ static int ttm_bo_evict(struct 
+>>>> ttm_buffer_object *bo,
+>>>>       ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
+>>>>       if (ret == -EMULTIHOP) {
+>>>>           ret = ttm_bo_bounce_temp_buffer(bo, &evict_mem, ctx, &hop);
+>>>> -        if (ret) {
+>>>> -            if (ret != -ERESTARTSYS && ret != -EINTR)
+>>>> -                pr_err("Buffer eviction failed\n");
+>>>> -            ttm_resource_free(bo, &evict_mem);
+>>>> -            goto out;
+>>>> -        }
+>>>> -        /* try and move to final place now. */
+>>>> -        goto bounce;
+>>>> +        if (!ret)
+>>>> +            /* try and move to final place now. */
+>>>> +            goto bounce;
+>>> As we are at this, can't we replace this with a while()? Goto's
+>>> used instead of a while loop are a fist in the eye...
+>>
+>> I'm completely OK with that. this patch already did away with one of 
+>> them. Let's hear Christian's opinion first, though.
+>
+> I'm not a fan of that goto either, but could we somehow avoid the 
+> while(1) ? E.g. something like do { } while (!ret) after handling the 
+> multihop?
 
-For tpidr_el0 we don't bother with sigcontext, not sure what the use for
-tpidr2_el0 in signals is. If we assume the context saved is only
-informative (like esr), we can simply ignore restoring it from the
-signal stack.
+I think the construct that makes it most obvious what's happening, 
+although it needs two tests for -EMULTIHOP is something like
 
-I guess we need to ask Szabolcs what his preference is. The current code
-is wrong either way since current->thread.tpidr2_el0 would be overridden
-at thread switch.
+do {
+....
+    if (ret != -EMULTIHOP)
+       break;
+    ....
+} while (ret ==-EMULTIHOP);
 
--- 
-Catalin
+Will be out tomorrow, though, so I don't have time to respin before Monday.
+
+/Thomas
+
+
+>
+> Christian.
+>
+>>
+>> Thanks,
+>>
+>> Thomas
+>>
+>>
+>>
+>>
+>>
+>>>
+>>> It looks even better:
+>>>
+>>>     while (1) {
+>>>         ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
+>>>         if (!ret)
+>>>             break;
+>>>
+>>>         if (ret == -EMULTIHOP)
+>>>             ret = ttm_bo_bounce_temp_buffer(bo, &evict_mem,
+>>>                             ctx, &hop);
+>>>
+>>>         /* try again */
+>>>         if (!ret)
+>>>             continue;
+>>>
+>>>         ttm_resource_free(bo, &evict_mem);
+>>>         if (ret != -ERESTARTSYS && ret != -EINTR)
+>>>             pr_err("Buffer eviction failed\n");
+>>>
+>>>         break;
+>>>     }
+>>>
+>>> Andi
+>>>
+>>>> +    }
+>>>> +    if (ret) {
+>>>> +        ttm_resource_free(bo, &evict_mem);
+>>>> +        if (ret != -ERESTARTSYS && ret != -EINTR)
+>>>> +            pr_err("Buffer eviction failed\n");
+>>>>       }
+>>>>   out:
+>>>>       return ret;
+>>>> -- 
+>>>> 2.40.1
+>
