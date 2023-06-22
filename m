@@ -2,50 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCBCF73A8F7
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 21:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C895973A970
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 22:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229647AbjFVT0G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 15:26:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53298 "EHLO
+        id S231191AbjFVU1v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 16:27:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjFVT0F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 15:26:05 -0400
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24DBC1A3
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 12:26:01 -0700 (PDT)
-Date:   Thu, 22 Jun 2023 19:25:47 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1687461955; x=1687721155;
-        bh=ADpE/ZbY89bRqLuQZe1Y0FFBNBNKvgk+vf0bMC0Wn5U=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=fgTe9BMrUuSI49LzamTSVm4joZyrnVY7aULSlcC642YASmFxn7/kSgm/2XT92PwP7
-         pmPZt+l1sfIt9nBwX6Ea8yAj1bbCoNguwgVDXCWsp4UToWqFpgNFKv5OfMvFYGqeWD
-         TOV0njoglJe5Sy/K5E8CGbjoYTzE4LtQWRJpFffpTQY84Q6/QRA2FxGRGX9UgpoNbf
-         /CrnZvIhN6IEGr6CLKD8I6T25HjbOPty07aCUfb6DyxC4RV06ssb93SBSb+bvbQK8I
-         rLxQSdZgEwwx8S32CiPRpLZdeqBdwmyS1YjL0hu/pgkr7eR2/egdVP3FpBDOeNJ7u0
-         j0W5UT8U7fBjg==
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-From:   Sami Korkalainen <sami.korkalainen@proton.me>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Brad Spengler <spender@grsecurity.net>,
-        regressions@leemhuis.info
-Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
-Message-ID: <B3rdc87zERdKUeeqyxt7UtKahv6vsZAZrVM6V4oVSA_yJBbvZns9Vu4lhzAc5ysbZQLZAxnjHd05_Hv6xEetS4r_OuVdDFopYt9yUfJ8Xmk=@proton.me>
-In-Reply-To: <CAHmME9obXuj3qM8RkVqoKeU41--HqzMF-KEdNcepFWKCMAXCfQ@mail.gmail.com>
-References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me> <ZIcmpcEsTLXFaO0f@debian.me> <oEbkgJ-ImLxBDZDUTnIAGFWrRVnwBss3FOlalTpwrz83xWgESC9pcvNKiAVp9BzFgqZ0V-NIwzBZ7icKD8ynuIi_ZMtGt7URu3ftcSt16u4=@proton.me> <e2ca75ef-d779-4bad-84a5-a9f262dbe213@lunn.ch> <FNzHwp9-AyweVwIMndmih6VuBD0nsyRp3OM72bmOxpeYszF680jFPJjENIknT32FeaqfVBtVSQFw-5mgE3ZXeksVD8VCFbxwojxP3mSZ9DQ=@proton.me> <9517bb70-426c-0296-b426-f5b4f075f7c8@leemhuis.info> <CAHmME9oh7kEUe-6NFk9=_8UxeD-SNbfMksYh3GaYdutXS01zOw@mail.gmail.com> <CAHk-=who5-p3QKFnio2nA9b4yf0qrV-KZ8bJa7m80ouJbvOfoA@mail.gmail.com> <CAHmME9obXuj3qM8RkVqoKeU41--HqzMF-KEdNcepFWKCMAXCfQ@mail.gmail.com>
-Feedback-ID: 45678890:user:proton
+        with ESMTP id S230190AbjFVU1t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 16:27:49 -0400
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF261FF5;
+        Thu, 22 Jun 2023 13:27:48 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.west.internal (Postfix) with ESMTP id 3FEE53200907;
+        Thu, 22 Jun 2023 16:27:46 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Thu, 22 Jun 2023 16:27:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1687465665; x=1687552065; bh=ilJlmW5t/nNPJnmJ9TZkHLhft7UuDMdmosF
+        my2qk/S8=; b=EBJHw7L/eT0J4kZs8eq/RthZPLrXyDpbFYbvrT4ELAQ20aQTYbN
+        fSTsVTOwvCXp5i/KCrZSsG5dmGT21hGXrN6I+qcp23GFOioAkC7JmYXKD/rSMbbh
+        ZPngWtXETA7q5tn1vk4IZxxZa4w2hO+EOYgjL9xqb1WB/gK/gFo2BKTZuNWXEBtA
+        1D8Qow9UjF2AIzWNV4jVDfCoKJKbkt8mRdM24nxe9tnitkibT/dTEdhDSWiuuO0z
+        imGn8pS0p+mAIfGH7mWKf4wpgylhqNwkavwsLGeTglu7OmiMwGQxAlF1mhwadBxD
+        Dcqt3rDMM1k5qIr+fcAu1TqxtoNZ159GFjw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1687465665; x=1687552065; bh=ilJlmW5t/nNPJ
+        nmJ9TZkHLhft7UuDMdmosFmy2qk/S8=; b=UhNHZ5sPRRswW9vfl+/iSssWVKGLG
+        hY8lnOd+QcqY4UXlJW0VoqunDgXCIpyeGIbK+QLkPRP9dCSS86+WAdtdU9R+zRBP
+        6x71TfJAK2G5fT4qaAaqSzsuBQnlTa2A7KFsQFsY6Z2ncpFRKjBFidsnyG5z9BLc
+        cCCseu17H5OgyPRW4omgbg9VI6ZbuyYw6QsZPDCQiTG1ZmCDWDRgWstZCKLM61U7
+        iD7Sv/ZnsCiJ4pfQJXftBfCuWD2+8JogVQni/CiVN0N/Y95ryxqU1dAPjCum7tT9
+        xyR0D5N0tVZEwI+KjsAaNuTOSFLm/gfCV7iIV8/ksb124asDuDCjlqc1Q==
+X-ME-Sender: <xms:wa6UZEBWPUC4gRnfPLhesSBAALBGJJQ-nMbwENMcotb_n07fHo_ASQ>
+    <xme:wa6UZGhVkcDF15PMF8HWRzo7R88XMFNP3wmjbQWDBVwnv93mILaqou11ZqqOdjcQM
+    XHocqlGuXfXvmM>
+X-ME-Received: <xmr:wa6UZHkl3XPU0J6zssPiHXctf7TNeYKAZdKPbFDDj9huRouHeQu_Xd9cOSs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeeguddgudeglecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpeffvghm
+    ihcuofgrrhhivgcuqfgsvghnohhurhcuoeguvghmihesihhnvhhishhisghlvghthhhinh
+    hgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpedvjeetgeekhfetudfhgfetffeg
+    fffguddvgffhffeifeeikeektdehgeetheffleenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpeguvghmihesihhnvhhishhisghlvghthhhinhhg
+    shhlrggsrdgtohhm
+X-ME-Proxy: <xmx:wa6UZKwWQ8OXEO61atZ6yScKd2o3GssCiKCRndZxW6qlS2LvHTimDA>
+    <xmx:wa6UZJTzwrQ7UtnPND0ecjnRMAJVHBvYZu4eZr_lU4YxcVTzDUHUrw>
+    <xmx:wa6UZFZKL4MQuK1gBljJJHpZ2zh1zVIYPnVBHfiWrmMMQy8MiTRDwQ>
+    <xmx:wa6UZLdkWlYfiM0yzNViaGbzhthhAv5GOf7W13M7WwwQZjeb5kDKcw>
+Feedback-ID: iac594737:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 22 Jun 2023 16:27:45 -0400 (EDT)
+Date:   Thu, 22 Jun 2023 16:27:40 -0400
+From:   Demi Marie Obenour <demi@invisiblethingslab.com>
+To:     Mikulas Patocka <mpatocka@redhat.com>
+Cc:     Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@redhat.com,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [dm-devel] [PATCH v2 1/6] device-mapper: Check that target specs
+ are sufficiently aligned
+Message-ID: <ZJSuv0cdqGR1BEbS@itl-email>
+References: <20230601212456.1533-1-demi@invisiblethingslab.com>
+ <20230603145244.1538-1-demi@invisiblethingslab.com>
+ <20230603145244.1538-2-demi@invisiblethingslab.com>
+ <7d56d190-b97c-f515-ebd0-c3790f11954@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="atMqDGrroiLEtsgA"
+Content-Disposition: inline
+In-Reply-To: <7d56d190-b97c-f515-ebd0-c3790f11954@redhat.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,14 +90,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> > Now, with non-repeatable boot failures, anything is possible, and Sami
-> > does mention 6.1.30 as good (implying that 6.1.31 might not be -=20
 
-6.1.34 is ok
+--atMqDGrroiLEtsgA
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Jun 2023 16:27:40 -0400
+From: Demi Marie Obenour <demi@invisiblethingslab.com>
+To: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+	dm-devel@redhat.com, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [dm-devel] [PATCH v2 1/6] device-mapper: Check that target specs
+ are sufficiently aligned
 
-> Sami - awaiting your results.
+On Thu, Jun 22, 2023 at 07:29:52PM +0200, Mikulas Patocka wrote:
+>=20
+>=20
+> On Sat, 3 Jun 2023, Demi Marie Obenour wrote:
+>=20
+> > Otherwise subsequent code will dereference a misaligned
+> > `struct dm_target_spec *`, which is undefined behavior.
+> >=20
+> > Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Cc: stable@vger.kernel.org
+> > ---
+> >  drivers/md/dm-ioctl.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >=20
+> > diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
+> > index cc77cf3d410921432eb0c62cdede7d55b9aa674a..34fa74c6a70db8aa67aaba3=
+f6a2fc4f38ef736bc 100644
+> > --- a/drivers/md/dm-ioctl.c
+> > +++ b/drivers/md/dm-ioctl.c
+> > @@ -1394,6 +1394,13 @@ static inline fmode_t get_mode(struct dm_ioctl *=
+param)
+> >  static int next_target(struct dm_target_spec *last, uint32_t next, voi=
+d *end,
+> >  		       struct dm_target_spec **spec, char **target_params)
+> >  {
+> > +	static_assert(_Alignof(struct dm_target_spec) <=3D 8,
+> > +		      "struct dm_target_spec has excessive alignment requirements");
+> > +	if (next % 8) {
+> > +		DMERR("Next target spec (offset %u) is not 8-byte aligned", next);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> >  	*spec =3D (struct dm_target_spec *) ((unsigned char *) last + next);
+> >  	*target_params =3D (char *) (*spec + 1);
+> > =20
+> > --=20
+> > Sincerely,
+> > Demi Marie Obenour (she/her/hers)
+> > Invisible Things Lab
+>=20
+> Hi
+>=20
+> Some architectures (such as 32-bit x86) specify that the alignment of=20
+> 64-bit integers is only 4-byte. This could in theory break old userspace=
+=20
+> code that only uses 4-byte alignment. I would change "next % 8" to "next =
+%=20
+> __alignof__(struct dm_target_spec)".
 
-I cherry-picked that commit 13bb06f8dd42071cb9a49f6e21099eea05d4b856
-on top of 6.4-rc7 and it does not fix the issue for me.
+That=E2=80=99s fine, provided that the rest of the code is okay with 4-byte
+alignment.
 
-=E2=80=94Sami
+> I think that there is no need to backport this patch series to the stable=
+=20
+> kernels because the bugs that it fixes may only be exploited by the user=
+=20
+> with CAP_SYS_ADMIN privilege. So, there is no security or reliability=20
+> problem being fixed.
+
+I agree that there is no reliability problem, but with kernel lockdown
+root =E2=86=92 kernel is a security boundary, so fixes for memory unsafety
+problems should still be backported IMO.
+--=20
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+Invisible Things Lab
+
+--atMqDGrroiLEtsgA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmSUrr8ACgkQsoi1X/+c
+IsEIoA/8DWkGd0KGw2WnHuJEvQDRBwlh1Ul4+Bx9L6TCUVH56McjuQR+fUiH/QKg
+PGQJSofqHwfFcaadQpHjJSp5FNcElA2gfFARBtOnFkRZAnytpZkEdvbgcPeNC0iD
+1C3ss025m7IBVFxyWXbZqL6fyAIsYPSFjYUmlRVJ7lUySzUNIbTuuXoRWtzRdv9D
+CmJlKfSI1LDuPVcV96bTJtTXItG+6whsKyQSoZOUV7Wg4JVpO+OqPaBahZFX20Ju
+ArgxFM4N1u4VZQjUqf63YwT5ijjNIFOgsh/h37H7H4LtGYcRyu7oSFby8klfQa2T
+aOexZyalxphANKoZm4AYpbx1Zp4G0g2Y1r06anldmNsD2PZsbFBsgv7lX2dJapVY
+01JaexjpJuvtLQ4NrJgiVOd4Is2C26P3cQnb1R7mdwiwmyf6tWlkkqayVSI8JJJV
+EdHnPvYJyx5hKZH8eSeodb8ylcRZoWGROdCu3m3hOBU6+asBfqwXLx80RiFqSLAy
+998TUZZ2rfJYLZsvYmNNBdfBQC65xp4iO+sB4Me0By9e3r5tJO27tKm63LR1oO63
+wlmPQYEnMFUr1gX2u7opD3XJPow9d9MBk2mjwN0IKqjqyni7kieNTU7MpnVEIaa9
+agQLGBCuQ/lQm3zC/OTbpIF1F4ledIhfeGoV0jhOGXiQYfCB/i0=
+=Ls9+
+-----END PGP SIGNATURE-----
+
+--atMqDGrroiLEtsgA--
