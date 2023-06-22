@@ -2,59 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 258F073A09F
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 14:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C264773A0C8
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 14:25:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230243AbjFVMNb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 08:13:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33814 "EHLO
+        id S230097AbjFVMZO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 08:25:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230281AbjFVMNa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 08:13:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CA66199E;
-        Thu, 22 Jun 2023 05:13:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E2DD61807;
-        Thu, 22 Jun 2023 12:13:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05272C433C0;
-        Thu, 22 Jun 2023 12:13:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687436009;
-        bh=PGOGQGOXTZziMMV8nEYl3izDXzKlD36UBk87Cs8a5Jw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Qg8ETrRo6Fh49qASL295/66y1yxMWmP5rwPmEcppgEw6EIyO+evpneQl9i88UGlR3
-         2Ry0++2IJkFPcosKI0xsQpQSNT8azxSK+YhwsX8Qrq78D2qLvywdWrn6VN2vCvdOVc
-         vrodZg7mIRCwLL0ulQ3C2OjxyS9ooPWrgvEdy93TX0Eiw4SRWb4R01u1jWDtkX/MCR
-         aGiBiBs4WXUS+Q5LBEWfR/W7RVHez0U2O/U/NV7GhCnU/65Jd6t+kf4BKFh90KBEcV
-         NES4r+wJN1X44Bwkgfh8UOknDwNXHA/lp67xpOf2eA5v0jhHFQ2mtydvxniXqWweIx
-         3HfFsXNUcOrrQ==
-Date:   Thu, 22 Jun 2023 13:13:23 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Sameer Pujar <spujar@nvidia.com>
-Cc:     robh+dt@kernel.org, krzk+dt@kernel.org, thierry.reding@gmail.com,
-        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-        jonathanh@nvidia.com, mkumard@nvidia.com, sheetal@nvidia.com,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 7/8] arm64: tegra: Update AHUB clock parent and rate on
- Tegra234
-Message-ID: <410e46f1-11ab-4775-9328-48aa45906b48@sirena.org.uk>
-References: <1687433656-7892-1-git-send-email-spujar@nvidia.com>
- <1687433656-7892-8-git-send-email-spujar@nvidia.com>
+        with ESMTP id S229812AbjFVMZN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 08:25:13 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E24199D;
+        Thu, 22 Jun 2023 05:25:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687436712; x=1718972712;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=VFIhXIMBVxone3gWtsN0Ctk34JSxSUHhD8XO85Zqc1I=;
+  b=AmVCj3wmH569Bd6Soedwup9+huG+6lAz0KdYXppUWoIocEGIyW3i6sSf
+   VAXc8OLnaF9GmhgyfxxUvjoc6WkTxtsnD6k34+XVZN7CSoF9iyRkNchV7
+   NHvtI6mjKu4ydfBh1FYT4BRB1M4ETyAzAgfFbaIOimcWlLvrgilplBUzM
+   Xvd13xolFvsFN7yq06kNV2LcKjSRYROlgVPhjM8rGmiCaPGVfFEwmw0xK
+   0G9Ks9lahQGuh4dcMAccXk9DRTtbJz3u66Vrxe4mUqW4P9C2GO6W5xEd1
+   j+GYB6c0PtJ+6j+ZkBcw6a4TTmwbyX7PAyjTujpfyRRhP3NUKd9JfC8CR
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="360489511"
+X-IronPort-AV: E=Sophos;i="6.00,263,1681196400"; 
+   d="scan'208";a="360489511"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 05:25:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="839028264"
+X-IronPort-AV: E=Sophos;i="6.00,263,1681196400"; 
+   d="scan'208";a="839028264"
+Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.249.46.93]) ([10.249.46.93])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 05:25:09 -0700
+Message-ID: <206f92ee-ed18-a503-6119-bc03779cd516@linux.intel.com>
+Date:   Thu, 22 Jun 2023 14:25:06 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="MhoiR7vHGfkcD/ZI"
-Content-Disposition: inline
-In-Reply-To: <1687433656-7892-8-git-send-email-spujar@nvidia.com>
-X-Cookie: Please ignore previous fortune.
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 3/4] drm/ttm: Don't leak a resource on eviction error
+Content-Language: en-US
+To:     =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= 
+        <thomas.hellstrom@linux.intel.com>, intel-xe@lists.freedesktop.org
+Cc:     Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>,
+        intel-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Huang Rui <ray.huang@amd.com>,
+        dri-devel@lists.freedesktop.org,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+References: <20230622101412.78426-1-thomas.hellstrom@linux.intel.com>
+ <20230622101412.78426-4-thomas.hellstrom@linux.intel.com>
+From:   Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20230622101412.78426-4-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,43 +70,49 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---MhoiR7vHGfkcD/ZI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 6/22/2023 12:14 PM, Thomas Hellström wrote:
+> On eviction errors other than -EMULTIHOP we were leaking a resource.
+> Fix.
+>
+> Fixes: 403797925768 ("drm/ttm: Fix multihop assert on eviction.")
+> Cc: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Huang Rui <ray.huang@amd.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.15+
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-On Thu, Jun 22, 2023 at 05:04:15PM +0530, Sameer Pujar wrote:
-> From: Sheetal <sheetal@nvidia.com>
->=20
-> I2S data sanity tests fail beyond a bit clock frequency of 6.144MHz.
-> This happens because the AHUB clock rate is too low and it shows
-> 9.83MHz on boot.
->=20
-> The maximum rate of PLLA_OUT0 is 49.152MHz and is used to serve I/O
-> clocks. It is recommended that AHUB clock operates higher than this.
-> Thus fix this by using PLLP_OUT0 as parent clock for AHUB instead of
-> PLLA_OUT0 and fix the rate to 81.6MHz.
->=20
-> Fixes: dc94a94daa39 ("arm64: tegra: Add audio devices on Tegra234")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sheetal <sheetal@nvidia.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 
-Fixes should come before cleanups in a patch series to ensure that they
-can be applied and sent as fixes without dependencies on non-fixes.
-
---MhoiR7vHGfkcD/ZI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSUOuIACgkQJNaLcl1U
-h9BQ/wf6A4ZIp6SU+zUdNVkskOaaEKPYmqfrTPDbpRk/OjSwjwUkjhFHjTHRqgru
-XB1GbDE8bpF3kcHit/PkdtdrUmYNyfrZ5PNmv+56UlyObu4TBSr6hkAieHg9HDF4
-Oa9hQ0CxfK/IOmUKPG+uSZtXcpk1orWMzx/Q1Yg5RpikhgodSsBwUXlkw79Q68FY
-ybogyto/jHAUshuJ9PsP9T9SEs2hQKKybh0ckaXIXI4XYjXkX/D2Ds91YAGxmKnz
-DOhIpH8tASXpujxD2mdYoX62sIKrUdtirlgAMUYH8RUbPL7+NiZrL+9H5J/vPLmZ
-zxRtzlYRZN88Vt8t9ah8dI8kFm/56w==
-=bQo1
------END PGP SIGNATURE-----
-
---MhoiR7vHGfkcD/ZI--
+> ---
+>   drivers/gpu/drm/ttm/ttm_bo.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+> index 615d30c4262d..89530f2a027f 100644
+> --- a/drivers/gpu/drm/ttm/ttm_bo.c
+> +++ b/drivers/gpu/drm/ttm/ttm_bo.c
+> @@ -462,14 +462,14 @@ static int ttm_bo_evict(struct ttm_buffer_object *bo,
+>   	ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
+>   	if (ret == -EMULTIHOP) {
+>   		ret = ttm_bo_bounce_temp_buffer(bo, &evict_mem, ctx, &hop);
+> -		if (ret) {
+> -			if (ret != -ERESTARTSYS && ret != -EINTR)
+> -				pr_err("Buffer eviction failed\n");
+> -			ttm_resource_free(bo, &evict_mem);
+> -			goto out;
+> -		}
+> -		/* try and move to final place now. */
+> -		goto bounce;
+> +		if (!ret)
+> +			/* try and move to final place now. */
+> +			goto bounce;
+> +	}
+> +	if (ret) {
+> +		ttm_resource_free(bo, &evict_mem);
+> +		if (ret != -ERESTARTSYS && ret != -EINTR)
+> +			pr_err("Buffer eviction failed\n");
+>   	}
+>   out:
+>   	return ret;
