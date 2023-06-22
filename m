@@ -2,66 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA08073A1FE
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 15:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A963D73A1FF
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 15:38:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230063AbjFVNi3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 09:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43186 "EHLO
+        id S229650AbjFVNiv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 09:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbjFVNi2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 09:38:28 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 227271FEB
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 06:38:21 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-98d25cbbb43so97441066b.1
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 06:38:21 -0700 (PDT)
+        with ESMTP id S230151AbjFVNiu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 09:38:50 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEEA01996
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 06:38:48 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b4725e9917so74835211fa.2
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 06:38:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1687441099; x=1690033099;
+        d=tessares.net; s=google; t=1687441127; x=1690033127;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=VdsOmrGOouO6FAJz+S7EnO1o2aDwMI9ei1KAon2Zvmw=;
-        b=q9AlbfK227wCGAp+iBn62hH6mLXkdZ7+sh6Ep/QAqBO3zJgNEPVXOz2sKKCRLpFWP6
-         UPkRUZDtfYxLgcOSJ/3IDyRyp8BZ8S8RKz847RUXwplbpPlOmtqD733Q3IK71NUKi/XW
-         YEIhtQVrzzY8nSZCfzF3MjpD3jmtktVMW9nP7zZ88V8sn9dp5sc8Z0o8iOecZvBpTPPg
-         Iu/k6qdXfEuH9eqGXcYFppcALJvX43cvmMQVLLkHkFEI5dgzQ/7+fwDBfsmWvRyCc+GT
-         Ueyniri70suW8z+YfVEX3kk50RYIhQxvOeEnRKNQ91L4g0TyXjBAsa5oRvL9GN7M0T/J
-         3Yeg==
+        bh=P3fAlIm2VhzCLJtFp8wdA5IrYQ1XrCTKspq5908UfLk=;
+        b=vReaDcpxAvyHB+o7E3w9b9SHtpfqpQkolhhBnkBZTD0G+S0TiGdADQIBi6f/BkQPE1
+         RsEr+l/hqkFNAgYV08ZuzPD/ClEl5aMCVISMZdVPhXk1vZ0A6/Z5EpErDYuyHdGC+iOw
+         DGsHbhbOBjCMPbs1GcInFXZIF1IZ/S+tL5wJIcCtOTCpjug4xJZndt3r2psnjnvNNaAE
+         qgd4cqz/fldj9npBKt80vwZ6LFmSv5BpVmB7M2s7BpYuy7PbBOVfwiQBsAYOB2EfanIM
+         bQ+oCRpNobHCPIiu6d2TcZNZiZ9NqZWEDJyT9W7+pjRYnyy2SwPDGr5qFFnVfqRCWGZq
+         0s1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687441099; x=1690033099;
+        d=1e100.net; s=20221208; t=1687441127; x=1690033127;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VdsOmrGOouO6FAJz+S7EnO1o2aDwMI9ei1KAon2Zvmw=;
-        b=BaLTm8m/hJP3+j3qe1nvkjkMPbTrBX9MrdL2ctYZz3qgbjXqVS+oFxqKR9gy9nrMLJ
-         vDbtcfUnURKqQMMvs2YJkFH5swSWRv8ECKC4znNainFfYoP+olppxVdEKVYvLhC7j88C
-         zduus6XwHiCbb0arBR1sbd7xnQh7S0ICdo++a/hv7NhYbLb0uoAZUnc4UETLoDSMVA6l
-         nj/9Vu2vYobNzIm/ZKDrioMQ5FDtsn9uGIqEtX5Cq6xZz6lIIf5OA0g3p7HIHfClBzlA
-         wjXtRovA6RlFXKYkcy/IfaWLZzsjHwPKjWpOepy707g5Dst2cwQX787SNm08e55I7tHZ
-         uS8w==
-X-Gm-Message-State: AC+VfDwNHDg7j7XjnIPAK9oZhxz1yQe7xQCH7V4+X8BsY7MVG4jGa7cV
-        NmH5b0AD0s2Lcd3AuhhGB1QeXg==
-X-Google-Smtp-Source: ACHHUZ63qWYhGb54QFF+ZYnXHYxk5DwTOQMwPOqzeBibu81wzdgtQZZ7mWlB5Ed2GT9u7u109hbvzQ==
-X-Received: by 2002:a17:907:940d:b0:989:64f0:8f89 with SMTP id dk13-20020a170907940d00b0098964f08f89mr5259021ejc.38.1687441099483;
-        Thu, 22 Jun 2023 06:38:19 -0700 (PDT)
+        bh=P3fAlIm2VhzCLJtFp8wdA5IrYQ1XrCTKspq5908UfLk=;
+        b=QsmC1pxwsLchqkbL5GxlEqTxBOxSX9wCALYSy5Gv1Vnvq4L7jt2sS6yefHamMf71D9
+         Ry28/qux37JS/zvyIpOr6yxqOMdKWWSc764IbYFC+YX0dVx0UnpDiWtmQKMW6kCAkzi1
+         cwAgdCbtavRO9k9ES1g3czLjFZQm2+dDMZhOQ4gF28ala80oXHi3ceJwHtVerubTyy3/
+         qD6zOHtLNWAA53+5EPbhF5uKyEz3YHyIRTk3+23mZPtzo/j+tmP+ThUj2xdyGgfcyMFJ
+         GwcqhR7VaJR/X5/Z8B56WPQuQMUjVFDmRF5y13yLkoGTaNBQraBS3p/8U4bymcT04gjt
+         6DaA==
+X-Gm-Message-State: AC+VfDwMTXfzBKxwQFCKPWVai974WT0cGxvT+B1ur/0AknAJBumsQxZu
+        XIJNdntMFxBYcUBct7kMyjK8Jw==
+X-Google-Smtp-Source: ACHHUZ7Bt2qtBr8gJBo73rt2dlrHsweBpWqjh8pFTmwB8sLaeF0v2btwzVScH2ytRFqvBmyMF2f8cw==
+X-Received: by 2002:a2e:6818:0:b0:2b5:7b4a:cf8f with SMTP id c24-20020a2e6818000000b002b57b4acf8fmr5258300lja.10.1687441126860;
+        Thu, 22 Jun 2023 06:38:46 -0700 (PDT)
 Received: from ?IPV6:2a02:578:8593:1200:c154:8b90:b6a7:cb1d? ([2a02:578:8593:1200:c154:8b90:b6a7:cb1d])
-        by smtp.gmail.com with ESMTPSA id u9-20020a170906068900b00988ca8b175dsm4700117ejb.119.2023.06.22.06.38.18
+        by smtp.gmail.com with ESMTPSA id v15-20020a17090606cf00b0098d2d219649sm912866ejb.174.2023.06.22.06.38.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Jun 2023 06:38:19 -0700 (PDT)
-Message-ID: <8856f544-b753-a0bd-4e4d-e52616da9006@tessares.net>
-Date:   Thu, 22 Jun 2023 15:38:18 +0200
+        Thu, 22 Jun 2023 06:38:46 -0700 (PDT)
+Message-ID: <36b7e220-3f9f-726d-62d7-af05eededeab@tessares.net>
+Date:   Thu, 22 Jun 2023 15:38:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: join: skip test if
- iptables/tc cmds fail" failed to apply to 5.10-stable tree
+Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: pm nl: remove hardcoded
+ default limits" failed to apply to 5.4-stable tree
 Content-Language: en-GB
 To:     gregkh@linuxfoundation.org, kuba@kernel.org
 Cc:     stable@vger.kernel.org
-References: <2023062220-unclamped-fiddle-b56e@gregkh>
+References: <2023062218-porous-squiggle-d837@gregkh>
 From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-In-Reply-To: <2023062220-unclamped-fiddle-b56e@gregkh>
+In-Reply-To: <2023062218-porous-squiggle-d837@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -76,50 +76,47 @@ X-Mailing-List: stable@vger.kernel.org
 
 Hi Greg,
 
-On 22/06/2023 10:00, gregkh@linuxfoundation.org wrote:
+On 22/06/2023 09:57, gregkh@linuxfoundation.org wrote:
 > 
-> The patch below does not apply to the 5.10-stable tree.
+> The patch below does not apply to the 5.4-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
 
 (...)
 
 > ------------------ original commit in Linus's tree ------------------
 > 
-> From 4a0b866a3f7d3c22033f40e93e94befc6fe51bce Mon Sep 17 00:00:00 2001
+> From 2177d0b08e421971e035672b70f3228d9485c650 Mon Sep 17 00:00:00 2001
 > From: Matthieu Baerts <matthieu.baerts@tessares.net>
-> Date: Sat, 10 Jun 2023 18:11:40 +0200
-> Subject: [PATCH] selftests: mptcp: join: skip test if iptables/tc cmds fail
+> Date: Thu, 8 Jun 2023 18:38:49 +0200
+> Subject: [PATCH] selftests: mptcp: pm nl: remove hardcoded default limits
 > 
 > Selftests are supposed to run on any kernels, including the old ones not
 > supporting all MPTCP features.
 > 
-> Some tests are using IPTables and/or TC commands to force some
-> behaviours. If one of these commands fails -- likely because some
-> features are not available due to missing kernel config -- we should
-> intercept the error and skip the tests requiring these features.
+> One of them is the checks of the default limits returned by the MPTCP
+> in-kernel path-manager. The default values have been modified by commit
+> 72bcbc46a5c3 ("mptcp: increase default max additional subflows to 2").
+> Instead of comparing with hardcoded values, we can get the default one
+> and compare with them.
 > 
-> Note that if we expect to have these features available and if
-> SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES env var is set to 1, the tests
-> will be marked as failed instead of skipped.
-> 
-> This patch also replaces the 'exit 1' by 'return 1' not to stop the
-> selftest in the middle without the conclusion if there is an issue with
-> NF or TC.
+> Note that if we expect to have the latest version, we continue to check
+> the hardcoded values to avoid unexpected behaviour changes.
 > 
 > Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-> Fixes: 8d014eaa9254 ("selftests: mptcp: add ADD_ADDR timeout test case")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Fixes: eedbc685321b ("selftests: add PM netlink functional tests")
 
 Thank you for this notification!
 
-With the same reasons as the ones explained in my email for the same
-patch but for v5.15, here for v5.10, we also don't need to backport this
-commit 4a0b866a3f7d ("selftests: mptcp: join: skip test if iptables/tc
-cmds fail").
+I'm not sure why this patch got picked up for v5.4-stable tree because
+it is fixing code that is not in v5.4 but introduced in v5.7. The commit
+mentioned here above has not been backported in v5.4. That seems to be
+confirmed by:
+
+  https://kernel.dance/#eedbc685321b
 
 So no need to do anything here.
 
