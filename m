@@ -2,95 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7451A739817
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 09:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AFD7739828
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 09:33:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbjFVHc2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 03:32:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43060 "EHLO
+        id S229814AbjFVHd2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 03:33:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbjFVHc1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 03:32:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE461992
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 00:32:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8927B61772
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 07:32:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92120C433CA;
-        Thu, 22 Jun 2023 07:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687419144;
-        bh=/VJ8LTv21XD2aswss1g8Gr2xv3DFk8BDmLxgGWCcH44=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=h2UwsLScbogELIUkFmIroHfdI0NSw4wfelJ1Qhmk2cDL6cNODLq87BR74A1NQrwlD
-         CuJxPZ/fHNIAvJaB4Tbv0Mh64TJv0KlRcqyie/zZV44EloBZKmc6zvxnvqLO+KwVFD
-         DiUFI9D9AX7vLhGKCLLCbbedziZ4a1ZNBHmFmGsI=
-Date:   Thu, 22 Jun 2023 09:32:21 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     stable@vger.kernel.org
-Subject: Re: [mst@redhat.com: [PATCH v2] Revert "virtio-blk: support
- completion batching for the IRQ path"]
-Message-ID: <2023062203-skyline-vitally-988f@gregkh>
-References: <20230622021540-mutt-send-email-mst@kernel.org>
- <2023062220-submarine-flagman-096a@gregkh>
- <20230622023907-mutt-send-email-mst@kernel.org>
- <2023062214-reprise-footrest-e8df@gregkh>
- <20230622024302-mutt-send-email-mst@kernel.org>
+        with ESMTP id S229595AbjFVHd1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 03:33:27 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17DC41BE2;
+        Thu, 22 Jun 2023 00:33:23 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 794A35C0107;
+        Thu, 22 Jun 2023 03:33:22 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Thu, 22 Jun 2023 03:33:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1687419202; x=1687505602; bh=WU
+        F2UhU/KYpd5ixgintGJLSlQSYHQH6noEbn0rcOCAo=; b=BWH1CR43qIrEMs94NM
+        hR3c+rrpKoLb0CNWHWUWqammPY6EyrZGHJH7gm/eav4fZ8ZN6SP32S0jo7RhDCii
+        M1vns51Sp/cAIGNzv+NLNCRsPigdrKxWU617JfvSrRmD2/fwiL+uWTjXY2XwKdjL
+        JPdZTQJpyqQ3oroXV5h3t9pt2ddsZeB7udFMxpKoxc4HMElYy1eJ0Y3Y3yw3nOUa
+        RhHLvy5B4KeUw5DhepnHnDubg52VHqnfhOk8mS1QC7PazYVMCIWT6JiFGiTP6rdy
+        Oz1YHjM0RteuvBlpxi8F488tp8V/cW7hZP45qk4rguQXdpMuOgpdFK7ic9wCtgJb
+        bbNQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1687419202; x=1687505602; bh=WUF2UhU/KYpd5
+        ixgintGJLSlQSYHQH6noEbn0rcOCAo=; b=JPlV0SzDfpET0SkJeEChm1+j++VvA
+        rA3j/5bMjCPw65c4a+lVv+2GENORZi878NkS7M8AytJ+Wfls7HYnK5d+ZVxRpefb
+        zafJsTXVmDXk3QOPjnk+lFmj23/fThqeIOVT+qUoRGMiapNTyY3w02sDEkhy5zo0
+        qosTWuvWMcWfzLiBCCHR2rj5i+2h0Y5o9DJ/+UrjnIuQp/ZwJas6v+ZLhdpT9zLj
+        AHzN1ZFE1DaYppgSflYrYPhjgjxcb0Lupx01mP4JD1RemAKJ3YQ/8g/G1JZf6nso
+        AWgRpGp5BxU0WidIE6P5B6bntjkk9DV6hpgyZrKq1Ic2XwXHnLkmztXXg==
+X-ME-Sender: <xms:QvmTZEkQStOU5RT2YsGYOZBlUZK6MVT0gHi4sKboDlrVQZGFVy-E-Q>
+    <xme:QvmTZD2hbBpR7fQ3IdQf_y4_OerkLYi9xI5fAY3MHP6B2QiB22pK1ZDL7DwPZFbRH
+    WVUNCTusUc-7w>
+X-ME-Received: <xmr:QvmTZCrNuVpgJQkRnkb1CfuUWINeA1s7DIGme3oN-fW-ndvSoAOKuGgQ600QtQH57asVT3rvknHeIfNYA31yQ9TKLq5Xmo2YAKMA6J3o-eM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeegtddguddugecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehge
+    dvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
+    grhhdrtghomh
+X-ME-Proxy: <xmx:QvmTZAmDC2Nz_eo5X0Ej2vid4ZvSRNgSKwEH6cRrA_cS_dQBYj6wVw>
+    <xmx:QvmTZC2lMFrw5jjOZqRw5jlvcT3Kdp9g3pl_1dZk64vb7Ljlk4c4GA>
+    <xmx:QvmTZHtef-cUdgagJYFA82TRAG04uf-nlg5U3sCE9yP8TgvBMZFBjw>
+    <xmx:QvmTZFTUdD3kNwh3ea-kwpjDRdDylbc6ShetnBml7SpeElM4enhNCg>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 22 Jun 2023 03:33:21 -0400 (EDT)
+Date:   Thu, 22 Jun 2023 09:33:20 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Ronald Warsow <rwarsow@gmx.de>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 6.3 000/187] 6.3.9-rc1 review
+Message-ID: <2023062218-glisten-estimate-66bf@gregkh>
+References: <c5ee96f9-1f93-3eca-6560-b8367cd8d124@gmx.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230622024302-mutt-send-email-mst@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <c5ee96f9-1f93-3eca-6560-b8367cd8d124@gmx.de>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 22, 2023 at 02:43:41AM -0400, Michael S. Tsirkin wrote:
-> On Thu, Jun 22, 2023 at 08:42:39AM +0200, Greg KH wrote:
-> > On Thu, Jun 22, 2023 at 02:39:15AM -0400, Michael S. Tsirkin wrote:
-> > > On Thu, Jun 22, 2023 at 08:37:36AM +0200, Greg KH wrote:
-> > > > On Thu, Jun 22, 2023 at 02:15:45AM -0400, Michael S. Tsirkin wrote:
-> > > > > ----- Forwarded message from "Michael S. Tsirkin" <mst@redhat.com> -----
-> > > > > 
-> > > > > From: "Michael S. Tsirkin" <mst@redhat.com>
-> > > > > Date: Fri, 9 Jun 2023 03:27:28 -0400
-> > > > > To: linux-kernel@vger.kernel.org
-> > > > > Cc: kernel test robot <lkp@intel.com>, Suwan Kim <suwan.kim027@gmail.com>, "Roberts, Martin" <martin.roberts@intel.com>, Jason Wang
-> > > > > 	<jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Xuan Zhuo
-> > > > > 	<xuanzhuo@linux.alibaba.com>, Jens Axboe <axboe@kernel.dk>, virtualization@lists.linux-foundation.org,
-> > > > > 	linux-block@vger.kernel.org
-> > > > > Subject: [PATCH v2] Revert "virtio-blk: support completion batching for the IRQ path"
-> > > > > Message-ID: <336455b4f630f329380a8f53ee8cad3868764d5c.1686295549.git.mst@redhat.com>
-> > > > > 
-> > > > > This reverts commit 07b679f70d73483930e8d3c293942416d9cd5c13.
-> > > > 
-> > > > What commit id is this in Linus's tree?
-> > > > 
-> > > > thanks,
-> > > > 
-> > > > greg k-h
-> > > 
-> > > afd384f0dbea2229fd11159efb86a5b41051c4a9
-> > 
-> > Great, and what tree(s) do you want it applied to, just 6.3.y?
-> > 
-> > thanks,
-> > 
-> > greg k-h
+On Mon, Jun 19, 2023 at 05:03:28PM +0200, Ronald Warsow wrote:
+> Hi Greg
 > 
+> 6.3.9-rc1
 > 
-> That's the only one that has the commit we revert so yes. Thanks!
+> compiles, boots and runs here on x86_64
+> (Intel Rocket Lake, i5-11400)
+> 
+> Thanks
+> 
+> Tested-by: Ronald Warsow <rwarsow@gmx.de>
+> 
 
-Great, now queued up, thanks.
+Thanks for testing and letting me know,
 
 greg k-h
