@@ -2,105 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE63D73A204
-	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 15:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29B2973A209
+	for <lists+stable@lfdr.de>; Thu, 22 Jun 2023 15:40:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbjFVNkF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 09:40:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43702 "EHLO
+        id S229765AbjFVNki (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 09:40:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229765AbjFVNkE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 09:40:04 -0400
+        with ESMTP id S230267AbjFVNkd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 09:40:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB421996;
-        Thu, 22 Jun 2023 06:40:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DC81997
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 06:40:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E6B56182A;
-        Thu, 22 Jun 2023 13:40:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A17C433CC;
-        Thu, 22 Jun 2023 13:39:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687441202;
-        bh=w8fxWAGiQaBMUkDFhDb0uejIT4OUWJBakDRMQaptQUc=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-        b=iICu2phPR5ILZG7JI+68q0+Ns20bNqyrhvhMml5d1wdZUjJIv++BCVrkuNLIDBWdt
-         Kd20yWMwj+Dga0597jCavM6zRC4YX2QQBwy7sJsOBxGH4Sn6RLqwHv/b1evHSWIwQr
-         Vvzl7D0C9M/k+2WEDmAG4EtSyLHUnnFIr1IQegTJXtK9mZ82SNPw5THJH9/FMAgQXH
-         WGXWTaqIbQ8tG4UF5qObRfLwG4RRRxci7Pdvxiii/6Is5GNiD2mEomUesEHkn7QEnI
-         I9L4amYoZMYfzQRlZECyjtWYCRe/wp1ZgqrWgAuqrTU/9BbRgBPt6zi9ZzPJT+owK1
-         oVn511dFpR3nQ==
-From:   Mark Brown <broonie@kernel.org>
-Date:   Thu, 22 Jun 2023 14:39:45 +0100
-Subject: [PATCH v2 1/2] arm64/signal: Restore TPIDR2 register rather than
- memory state
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1CE06182F
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 13:40:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB57C433C9
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 13:40:31 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="O6QUREMu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1687441228;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=NMlPufS1+CTdDaO981ksP6l0rkZcElrayPR5JrP7aTU=;
+        b=O6QUREMucD3BV93ZIR2NQdJcKhi9tlXAhNyO5CwzMJBqEbergT6rsnmQLRcUHC/cDLSFCM
+        2bEW3xgFdj/DE6afrePfSsT9EnOSufVIlDOcgCex0KWVZmV31rcsI4O41mLRC0ZILVYlNq
+        Dq9KA1p7SPK/rMX/ho97xCIvdpOn0ik=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 655b255a (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+        for <stable@vger.kernel.org>;
+        Thu, 22 Jun 2023 13:40:28 +0000 (UTC)
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-440a925df4aso1797873137.2
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 06:40:28 -0700 (PDT)
+X-Gm-Message-State: AC+VfDzgvzRtzEbphZSewpdtHYZeoHjTCmiDsg9iliLfLV0GLi45icG0
+        o88V60iCBf9iwp5AsQ9WInr3bRWCOwb086J8BHg=
+X-Google-Smtp-Source: ACHHUZ6AedmTTMjJkhooZ6D7XkXYhYsP+uTelsVSFnTDMTpR+pjxhEZxY8PIvy32HERqZ48Gh3qsLyZrMsiakU7W+Q8=
+X-Received: by 2002:a67:fbd8:0:b0:440:b25f:5cab with SMTP id
+ o24-20020a67fbd8000000b00440b25f5cabmr6443596vsr.15.1687441226959; Thu, 22
+ Jun 2023 06:40:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230621-arm64-fix-tpidr2-signal-restore-v2-1-c8e8fcc10302@kernel.org>
-References: <20230621-arm64-fix-tpidr2-signal-restore-v2-0-c8e8fcc10302@kernel.org>
-In-Reply-To: <20230621-arm64-fix-tpidr2-signal-restore-v2-0-c8e8fcc10302@kernel.org>
-To:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Shuah Khan <shuah@kernel.org>,
-        Szabolcs Nagy <szabolcs.nagy@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        linux-kselftest@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        stable@vger.kernel.org
-X-Mailer: b4 0.13-dev-c6835
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1250; i=broonie@kernel.org;
- h=from:subject:message-id; bh=w8fxWAGiQaBMUkDFhDb0uejIT4OUWJBakDRMQaptQUc=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBklE8nsYvELF3WpfKfmByc+fGAeLNPcr9NAY5/8CsN
- LVvdDDuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZJRPJwAKCRAk1otyXVSH0KBhB/
- 473Gq3ZQ6893sd0piLda7UZJYhhBVNu0fwedBuDBuNgvNMdK0H3wXVUYvCW9jNcR15aSIZS/pq7kU3
- 8URMlQX/Z3hg3mls6Rq4kAmBU26Z/ZaX1P9Q1mcVp+MWL/W6xzcN27KBFS+5nIWPX6tgpLMmVAMnep
- Sypvldcx/pJRVAfX5wnHWPfQ35s2NEPO+mfTDSsOh5lvsOq3KJ0KISzk3k1R6X7MCbXB6ZxVoKl7sg
- EzoiSrSssf+NLXLIom2bKAeEnYVN+aO+T9bF0MKAPteCBs9Am8fNNY4VBsqaD40r3LNfdl3yO2byUn
- Ugs8AZ/DZYuXXkxiMZmhsbq+06e+oe
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me>
+ <ZHFaFosKY24-L7tQ@debian.me> <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me>
+ <ZIcmpcEsTLXFaO0f@debian.me> <oEbkgJ-ImLxBDZDUTnIAGFWrRVnwBss3FOlalTpwrz83xWgESC9pcvNKiAVp9BzFgqZ0V-NIwzBZ7icKD8ynuIi_ZMtGt7URu3ftcSt16u4=@proton.me>
+ <e2ca75ef-d779-4bad-84a5-a9f262dbe213@lunn.ch> <FNzHwp9-AyweVwIMndmih6VuBD0nsyRp3OM72bmOxpeYszF680jFPJjENIknT32FeaqfVBtVSQFw-5mgE3ZXeksVD8VCFbxwojxP3mSZ9DQ=@proton.me>
+ <9517bb70-426c-0296-b426-f5b4f075f7c8@leemhuis.info> <CAHmME9oh7kEUe-6NFk9=_8UxeD-SNbfMksYh3GaYdutXS01zOw@mail.gmail.com>
+ <CAHk-=who5-p3QKFnio2nA9b4yf0qrV-KZ8bJa7m80ouJbvOfoA@mail.gmail.com>
+In-Reply-To: <CAHk-=who5-p3QKFnio2nA9b4yf0qrV-KZ8bJa7m80ouJbvOfoA@mail.gmail.com>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Thu, 22 Jun 2023 15:40:15 +0200
+X-Gmail-Original-Message-ID: <CAHmME9obXuj3qM8RkVqoKeU41--HqzMF-KEdNcepFWKCMAXCfQ@mail.gmail.com>
+Message-ID: <CAHmME9obXuj3qM8RkVqoKeU41--HqzMF-KEdNcepFWKCMAXCfQ@mail.gmail.com>
+Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Sami Korkalainen <sami.korkalainen@proton.me>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Brad Spengler <spender@grsecurity.net>,
+        regressions@leemhuis.info
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Currently when restoring the TPIDR2 signal context we set the new value
-from the signal frame in the thread data structure but not the register,
-following the pattern for the rest of the data we are restoring. This does
-not work in the case of TPIDR2, the register always has the value for the
-current task. This means that either we return to userspace and ignore the
-new value or we context switch and save the register value on top of the
-newly restored value.
+On Wed, Jun 21, 2023 at 9:51=E2=80=AFPM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+> Now, with non-repeatable boot failures, anything is possible, and Sami
+> does mention 6.1.30 as good (implying that 6.1.31 might not be - and
+> that is when the backport happened).
+>
+> So it's certainly worth checking out, but on the face of it, that
+> bisection result doesn't really support the bug being due to
+> e9523a0d81899 (which came *after* e7b813b32a42).
 
-Load the value from the signal context into the register instead.
-
-Fixes: 39e54499280f ("arm64/signal: Include TPIDR2 in the signal context")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/arm64/kernel/signal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-index 2cfc810d0a5b..10b407672c42 100644
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -398,7 +398,7 @@ static int restore_tpidr2_context(struct user_ctxs *user)
- 
- 	__get_user_error(tpidr2_el0, &user->tpidr2->tpidr2, err);
- 	if (!err)
--		current->thread.tpidr2_el0 = tpidr2_el0;
-+		write_sysreg_s(tpidr2_el0, SYS_TPIDR2_EL0);
- 
- 	return err;
- }
-
--- 
-2.30.2
-
+Sami - awaiting your results.
