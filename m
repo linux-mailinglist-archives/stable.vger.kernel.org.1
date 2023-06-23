@@ -2,216 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2687973B1AB
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 09:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC07573B1B4
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 09:32:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230189AbjFWH35 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 03:29:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59402 "EHLO
+        id S229501AbjFWHcF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 03:32:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231308AbjFWH3x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 03:29:53 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6734F269E;
-        Fri, 23 Jun 2023 00:29:30 -0700 (PDT)
-Received: by linux.microsoft.com (Postfix, from userid 1099)
-        id DAE5821C252A; Fri, 23 Jun 2023 00:29:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DAE5821C252A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1687505369;
-        bh=WxxAPKNGl0H+WTQ0UDLQ32a7/6XvpGgl1O/Ni4g9HfY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Eap/hEPhjwd5yosGaSuaJOIxVroA3M7faq1C9kS+rybdNoQP4FlLYAfS5x9fkrnL+
-         u5GtbHklLVumy8lRUXL4QKATNzsNWRCg83h9p17A12l3eoh4n3n2e2D8cHZB+kdzEv
-         tOWXns2Xy1e8Kei4Z2AMsV6Y5cCgaBS4Wgmk1xJQ=
-From:   souradeep chakrabarti <schakrabarti@linux.microsoft.com>
-To:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
-        sharmaajay@microsoft.com, leon@kernel.org, cai.huoqing@linux.dev,
-        ssengar@linux.microsoft.com, vkuznets@redhat.com,
-        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-Cc:     stable@vger.kernel.org, schakrabarti@microsoft.com,
-        Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Subject: [PATCH V2 net] net: mana: Fix MANA VF unload when host is unresponsive
-Date:   Fri, 23 Jun 2023 00:29:15 -0700
-Message-Id: <1687505355-29212-1-git-send-email-schakrabarti@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230171AbjFWHcE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 03:32:04 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 788E81988
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 00:32:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687505523; x=1719041523;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=6i6aS5or0UbyJjQKq6Mwkei167b+Q8Ja8wfDrpOhhhk=;
+  b=m5C41HzDqyWB06vRGq2nZCrTpkR3CQ/hnIC+EhUCQ719h36YBPvwJo6V
+   rqC/6M6VZRRlW8wx5mVKZh6u7gH67NOJYzU1JzDCU6MIhmGxlc5//i8ad
+   QKxOhhxC/ueufXzjCHYUp0qUoiAVwV81LIBmrVdwT9QbeT5xOXdO2jHKm
+   GfavDP0AEMynXjHinAB+cJQ370CTuesAwtAqOcimvcAPgX76RKEVwnJ9u
+   HpKAX/DYC95huWPD8p/QJgvI67Y81OUzmqUnkkMU1kTrV5Z/UttfWPY2j
+   hu2KTMnWvXFeHQIfuf1blULEQchXaaSB7ZaXypZxD3ThpN1a5ysqwitZZ
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="358200553"
+X-IronPort-AV: E=Sophos;i="6.01,151,1684825200"; 
+   d="scan'208";a="358200553"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2023 00:32:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="961878180"
+X-IronPort-AV: E=Sophos;i="6.01,151,1684825200"; 
+   d="scan'208";a="961878180"
+Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 23 Jun 2023 00:32:01 -0700
+Received: from kbuild by 783282924a45 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qCbGy-000859-1v;
+        Fri, 23 Jun 2023 07:32:00 +0000
+Date:   Fri, 23 Jun 2023 15:31:37 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     souradeep chakrabarti <schakrabarti@linux.microsoft.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH V2 net] net: mana: Fix MANA VF unload when host is
+ unresponsive
+Message-ID: <ZJVKWe3QYybrme8x@65525e8f8615>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1687505355-29212-1-git-send-email-schakrabarti@linux.microsoft.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Hi,
 
-This patch addresses  the VF unload issue, where mana_dealloc_queues()
-gets stuck in infinite while loop, because of host unresponsiveness.
-It adds a timeout in the while loop, to fix it.
+Thanks for your patch.
 
-Also this patch adds a new attribute in mana_context, which gets set when
-mana_hwc_send_request() hits a timeout because of host unresponsiveness.
-This flag then helps to avoid the timeouts in successive calls.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
----
-V1 -> V2:
-* Added net branch
-* Removed the typecasting to (struct mana_context*) of void pointer
-* Repositioned timeout variable in mana_dealloc_queues()
-* Repositioned vf_unload_timeout in mana_context struct, to utilise the
-  6 bytes hole
----
- .../net/ethernet/microsoft/mana/gdma_main.c   |  4 +++-
- .../net/ethernet/microsoft/mana/hw_channel.c  | 12 ++++++++++-
- drivers/net/ethernet/microsoft/mana/mana_en.c | 21 +++++++++++++++++--
- include/net/mana/mana.h                       |  2 ++
- 4 files changed, 35 insertions(+), 4 deletions(-)
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH V2 net] net: mana: Fix MANA VF unload when host is unresponsive
+Link: https://lore.kernel.org/stable/1687505355-29212-1-git-send-email-schakrabarti%40linux.microsoft.com
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 8f3f78b68592..6411f01be0d9 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -946,10 +946,12 @@ int mana_gd_deregister_device(struct gdma_dev *gd)
- 	struct gdma_context *gc = gd->gdma_context;
- 	struct gdma_general_resp resp = {};
- 	struct gdma_general_req req = {};
-+	struct mana_context *ac;
- 	int err;
- 
- 	if (gd->pdid == INVALID_PDID)
- 		return -EINVAL;
-+	ac = gd->driver_data;
- 
- 	mana_gd_init_req_hdr(&req.hdr, GDMA_DEREGISTER_DEVICE, sizeof(req),
- 			     sizeof(resp));
-@@ -957,7 +959,7 @@ int mana_gd_deregister_device(struct gdma_dev *gd)
- 	req.hdr.dev_id = gd->dev_id;
- 
- 	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
--	if (err || resp.hdr.status) {
-+	if ((err || resp.hdr.status) && !ac->vf_unload_timeout) {
- 		dev_err(gc->dev, "Failed to deregister device: %d, 0x%x\n",
- 			err, resp.hdr.status);
- 		if (!err)
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 9d1507eba5b9..492cb2c6e2cb 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -1,8 +1,10 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /* Copyright (c) 2021, Microsoft Corporation. */
- 
-+#include "asm-generic/errno.h"
- #include <net/mana/gdma.h>
- #include <net/mana/hw_channel.h>
-+#include <net/mana/mana.h>
- 
- static int mana_hwc_get_msg_index(struct hw_channel_context *hwc, u16 *msg_id)
- {
-@@ -786,12 +788,19 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 	struct hwc_wq *txq = hwc->txq;
- 	struct gdma_req_hdr *req_msg;
- 	struct hwc_caller_ctx *ctx;
-+	struct mana_context *ac;
- 	u32 dest_vrcq = 0;
- 	u32 dest_vrq = 0;
- 	u16 msg_id;
- 	int err;
- 
- 	mana_hwc_get_msg_index(hwc, &msg_id);
-+	ac = hwc->gdma_dev->driver_data;
-+	if (ac->vf_unload_timeout) {
-+		dev_err(hwc->dev, "HWC: vport is already unloaded.\n");
-+		err = -ETIMEDOUT;
-+		goto out;
-+	}
- 
- 	tx_wr = &txq->msg_buf->reqs[msg_id];
- 
-@@ -825,9 +834,10 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 		goto out;
- 	}
- 
--	if (!wait_for_completion_timeout(&ctx->comp_event, 30 * HZ)) {
-+	if (!wait_for_completion_timeout(&ctx->comp_event, 5 * HZ)) {
- 		dev_err(hwc->dev, "HWC: Request timed out!\n");
- 		err = -ETIMEDOUT;
-+		ac->vf_unload_timeout = true;
- 		goto out;
- 	}
- 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index d907727c7b7a..cb2080b3a00c 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -2329,7 +2329,10 @@ static int mana_dealloc_queues(struct net_device *ndev)
- {
- 	struct mana_port_context *apc = netdev_priv(ndev);
- 	struct gdma_dev *gd = apc->ac->gdma_dev;
-+	unsigned long timeout;
- 	struct mana_txq *txq;
-+	struct sk_buff *skb;
-+	struct mana_cq *cq;
- 	int i, err;
- 
- 	if (apc->port_is_up)
-@@ -2348,13 +2351,26 @@ static int mana_dealloc_queues(struct net_device *ndev)
- 	 *
- 	 * Drain all the in-flight TX packets
- 	 */
-+
-+	timeout = jiffies + 120 * HZ;
- 	for (i = 0; i < apc->num_queues; i++) {
- 		txq = &apc->tx_qp[i].txq;
--
--		while (atomic_read(&txq->pending_sends) > 0)
-+		while (atomic_read(&txq->pending_sends) > 0 &&
-+		       time_before(jiffies, timeout)) {
- 			usleep_range(1000, 2000);
-+		}
- 	}
- 
-+	for (i = 0; i < apc->num_queues; i++) {
-+		txq = &apc->tx_qp[i].txq;
-+		cq = &apc->tx_qp[i].tx_cq;
-+		while (atomic_read(&txq->pending_sends)) {
-+			skb = skb_dequeue(&txq->pending_skbs);
-+			mana_unmap_skb(skb, apc);
-+			napi_consume_skb(skb, cq->budget);
-+			atomic_sub(1, &txq->pending_sends);
-+		}
-+	}
- 	/* We're 100% sure the queues can no longer be woken up, because
- 	 * we're sure now mana_poll_tx_cq() can't be running.
- 	 */
-@@ -2605,6 +2621,7 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- 		}
- 	}
- 
-+	ac->vf_unload_timeout = false;
- 	err = add_adev(gd);
- out:
- 	if (err)
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 9eef19972845..5f5affdca1eb 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -358,6 +358,8 @@ struct mana_context {
- 
- 	u16 num_ports;
- 
-+	bool vf_unload_timeout;
-+
- 	struct mana_eq *eqs;
- 
- 	struct net_device *ports[MAX_PORTS_IN_MANA_DEV];
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
