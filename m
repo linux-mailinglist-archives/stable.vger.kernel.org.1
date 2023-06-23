@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C411773B382
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01E6A73B384
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231483AbjFWJ13 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 05:27:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53524 "EHLO
+        id S230255AbjFWJ2L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 05:28:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231490AbjFWJ10 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:27:26 -0400
+        with ESMTP id S229715AbjFWJ2K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:28:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AFC5BA
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:27:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6540A9D
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:28:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E452A619C2
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:27:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F232DC433C0;
-        Fri, 23 Jun 2023 09:27:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2CBB619E1
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:28:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AA2C433C0;
+        Fri, 23 Jun 2023 09:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687512444;
-        bh=21VpoT8jufwxtYVj/O+/uELZ2gaMOPXO532rVjahVCA=;
+        s=korg; t=1687512488;
+        bh=tlK3xxaHR1peEjgPEpW9lJUAnCwQuMjt14dRWcjYvZA=;
         h=Subject:To:Cc:From:Date:From;
-        b=o8ho6xTQSfQ6qEbQz6sTTVEEKmwxGTPyj+l03XTHSxKGVm0e/F/StmgrxjzssUmNP
-         DwCqWWPBHEaXs+88Y9wZv+Z/E3NtTmbmhjWPm2Afx3cwYbjEykP/VAxPso4XTqt+7T
-         wUlYfjNIjhCmYTy3RM9zuAT2t9qPdqj6mpAVxr1Y=
-Subject: FAILED: patch "[PATCH] PCI: hv: Fix a race condition bug in hv_pci_query_relations()" failed to apply to 4.14-stable tree
+        b=Hhnpr4OsMsgb+v3zLnzhLzhc/6vWHXQIj7hfr0vLPkK4z16pD+6Zz6C3wJaExscSe
+         XLe3vqMT0HSPYLK/cga6WJPrmIwlsop4q43u3ke5jnPccWXyAVdtbWkcQYtR8uacfh
+         f9Dhell0kUVZCb4nPK6eg+3l3GTmaEbhnECXr9CU=
+Subject: FAILED: patch "[PATCH] PCI: hv: Remove the useless hv_pcichild_state from struct" failed to apply to 5.4-stable tree
 To:     decui@microsoft.com, lpieralisi@kernel.org, mikelley@microsoft.com,
         wei.liu@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 23 Jun 2023 11:27:21 +0200
-Message-ID: <2023062321-recreate-donation-85c8@gregkh>
+Date:   Fri, 23 Jun 2023 11:28:05 +0200
+Message-ID: <2023062305-bogus-footing-aa7f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 440b5e3663271b0ffbd4908115044a6a51fb938b
+git cherry-pick -x add9195e69c94b32e96f78c2f9cea68f0e850b3f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062321-recreate-donation-85c8@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062305-bogus-footing-aa7f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,55 +74,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 440b5e3663271b0ffbd4908115044a6a51fb938b Mon Sep 17 00:00:00 2001
+From add9195e69c94b32e96f78c2f9cea68f0e850b3f Mon Sep 17 00:00:00 2001
 From: Dexuan Cui <decui@microsoft.com>
-Date: Wed, 14 Jun 2023 21:44:47 -0700
-Subject: [PATCH] PCI: hv: Fix a race condition bug in hv_pci_query_relations()
+Date: Wed, 14 Jun 2023 21:44:49 -0700
+Subject: [PATCH] PCI: hv: Remove the useless hv_pcichild_state from struct
+ hv_pci_dev
 
-Since day 1 of the driver, there has been a race between
-hv_pci_query_relations() and survey_child_resources(): during fast
-device hotplug, hv_pci_query_relations() may error out due to
-device-remove and the stack variable 'comp' is no longer valid;
-however, pci_devices_present_work() -> survey_child_resources() ->
-complete() may be running on another CPU and accessing the no-longer-valid
-'comp'. Fix the race by flushing the workqueue before we exit from
-hv_pci_query_relations().
+The hpdev->state is never really useful. The only use in
+hv_pci_eject_device() and hv_eject_device_work() is not really necessary.
 
-Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
 Signed-off-by: Dexuan Cui <decui@microsoft.com>
 Reviewed-by: Michael Kelley <mikelley@microsoft.com>
 Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230615044451.5580-2-decui@microsoft.com
+Link: https://lore.kernel.org/r/20230615044451.5580-4-decui@microsoft.com
 Signed-off-by: Wei Liu <wei.liu@kernel.org>
 
 diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
-index bc32662c6bb7..ea8862e656b6 100644
+index 733637d96765..a826b41c949a 100644
 --- a/drivers/pci/controller/pci-hyperv.c
 +++ b/drivers/pci/controller/pci-hyperv.c
-@@ -3401,6 +3401,24 @@ static int hv_pci_query_relations(struct hv_device *hdev)
- 	if (!ret)
- 		ret = wait_for_response(hdev, &comp);
+@@ -545,19 +545,10 @@ struct hv_dr_state {
+ 	struct hv_pcidev_description func[];
+ };
  
-+	/*
-+	 * In the case of fast device addition/removal, it's possible that
-+	 * vmbus_sendpacket() or wait_for_response() returns -ENODEV but we
-+	 * already got a PCI_BUS_RELATIONS* message from the host and the
-+	 * channel callback already scheduled a work to hbus->wq, which can be
-+	 * running pci_devices_present_work() -> survey_child_resources() ->
-+	 * complete(&hbus->survey_event), even after hv_pci_query_relations()
-+	 * exits and the stack variable 'comp' is no longer valid; as a result,
-+	 * a hang or a page fault may happen when the complete() calls
-+	 * raw_spin_lock_irqsave(). Flush hbus->wq before we exit from
-+	 * hv_pci_query_relations() to avoid the issues. Note: if 'ret' is
-+	 * -ENODEV, there can't be any more work item scheduled to hbus->wq
-+	 * after the flush_workqueue(): see vmbus_onoffer_rescind() ->
-+	 * vmbus_reset_channel_cb(), vmbus_rescind_cleanup() ->
-+	 * channel->rescind = true.
-+	 */
-+	flush_workqueue(hbus->wq);
-+
- 	return ret;
- }
+-enum hv_pcichild_state {
+-	hv_pcichild_init = 0,
+-	hv_pcichild_requirements,
+-	hv_pcichild_resourced,
+-	hv_pcichild_ejecting,
+-	hv_pcichild_maximum
+-};
+-
+ struct hv_pci_dev {
+ 	/* List protected by pci_rescan_remove_lock */
+ 	struct list_head list_entry;
+ 	refcount_t refs;
+-	enum hv_pcichild_state state;
+ 	struct pci_slot *pci_slot;
+ 	struct hv_pcidev_description desc;
+ 	bool reported_missing;
+@@ -2843,8 +2834,6 @@ static void hv_eject_device_work(struct work_struct *work)
+ 	hpdev = container_of(work, struct hv_pci_dev, wrk);
+ 	hbus = hpdev->hbus;
  
+-	WARN_ON(hpdev->state != hv_pcichild_ejecting);
+-
+ 	/*
+ 	 * Ejection can come before or after the PCI bus has been set up, so
+ 	 * attempt to find it and tear down the bus state, if it exists.  This
+@@ -2901,7 +2890,6 @@ static void hv_pci_eject_device(struct hv_pci_dev *hpdev)
+ 		return;
+ 	}
+ 
+-	hpdev->state = hv_pcichild_ejecting;
+ 	get_pcichild(hpdev);
+ 	INIT_WORK(&hpdev->wrk, hv_eject_device_work);
+ 	queue_work(hbus->wq, &hpdev->wrk);
 
