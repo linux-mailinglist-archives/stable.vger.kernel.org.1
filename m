@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D52AF73B39A
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC9F373B39E
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231144AbjFWJbD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 05:31:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54152 "EHLO
+        id S231329AbjFWJbX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 05:31:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230492AbjFWJbC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:31:02 -0400
+        with ESMTP id S231500AbjFWJbV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:31:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6757C9D
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:31:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2F2010D
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:31:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F004E619DA
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:31:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02579C433C0;
-        Fri, 23 Jun 2023 09:30:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7963C619F4
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:31:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85718C433C0;
+        Fri, 23 Jun 2023 09:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687512660;
-        bh=KKNPS6UIckINjDTVBrRUc3bcmbRysFHhaHdT95an0B0=;
+        s=korg; t=1687512678;
+        bh=AjnOiYRP8+OGSoTqRGZifzlfX5P8idfIRG/D4OPZ70w=;
         h=Subject:To:Cc:From:Date:From;
-        b=Gjcsx7DE9Rlm7t+WT5MzJBRFS3r6LDmaHuOIbhbqBauoUJM3irvPFVanwqlmUjYxU
-         iEkp5WLu08nCxFe/XfC4AQeNSS3lv326Dmi48UnnX4sycbDxM9VymWvJdrFBOq1lZa
-         HH1593BkTfPjGjl7ztU/8HZC+lQOG8g3YhK8zv6c=
-Subject: FAILED: patch "[PATCH] mptcp: fix possible divide by zero in recvmsg()" failed to apply to 5.10-stable tree
-To:     pabeni@redhat.com, cpaasch@apple.com, kuba@kernel.org,
+        b=xgFw8fJoi52aFAQ7AooLS4Kj4SjVbKd/zBTBOP9qEx0i73JgceQeX5Q2g5H9jor79
+         Un9xfad3rXpRip2zT3hKmGhHRps41z1mt+Vjw7qshErLzOEJfP9MYq1yVgLA3tbIjz
+         SCPSSc2kF+Ik3BjijIsICV11EoTUq0QkpoHUL/NM=
+Subject: FAILED: patch "[PATCH] mptcp: consolidate fallback and non fallback state machine" failed to apply to 5.15-stable tree
+To:     pabeni@redhat.com, kuba@kernel.org, martineau@kernel.org,
         matthieu.baerts@tessares.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 23 Jun 2023 11:30:49 +0200
-Message-ID: <2023062349-nerd-rupture-49ab@gregkh>
+Date:   Fri, 23 Jun 2023 11:31:16 +0200
+Message-ID: <2023062315-example-anger-442b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0ad529d9fd2bfa3fc619552a8d2fb2f2ef0bce2e
+git cherry-pick -x 81c1d029016001f994ce1c46849c5e9900d8eab8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062349-nerd-rupture-49ab@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062315-example-anger-442b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,93 +74,204 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0ad529d9fd2bfa3fc619552a8d2fb2f2ef0bce2e Mon Sep 17 00:00:00 2001
+From 81c1d029016001f994ce1c46849c5e9900d8eab8 Mon Sep 17 00:00:00 2001
 From: Paolo Abeni <pabeni@redhat.com>
-Date: Tue, 20 Jun 2023 18:24:19 +0200
-Subject: [PATCH] mptcp: fix possible divide by zero in recvmsg()
+Date: Tue, 20 Jun 2023 18:24:21 +0200
+Subject: [PATCH] mptcp: consolidate fallback and non fallback state machine
 
-Christoph reported a divide by zero bug in mptcp_recvmsg():
+An orphaned msk releases the used resources via the worker,
+when the latter first see the msk in CLOSED status.
 
-divide error: 0000 [#1] PREEMPT SMP
-CPU: 1 PID: 19978 Comm: syz-executor.6 Not tainted 6.4.0-rc2-gffcc7899081b #20
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-RIP: 0010:__tcp_select_window+0x30e/0x420 net/ipv4/tcp_output.c:3018
-Code: 11 ff 0f b7 cd c1 e9 0c b8 ff ff ff ff d3 e0 89 c1 f7 d1 01 cb 21 c3 eb 17 e8 2e 83 11 ff 31 db eb 0e e8 25 83 11 ff 89 d8 99 <f7> 7c 24 04 29 d3 65 48 8b 04 25 28 00 00 00 48 3b 44 24 10 75 60
-RSP: 0018:ffffc90000a07a18 EFLAGS: 00010246
-RAX: 000000000000ffd7 RBX: 000000000000ffd7 RCX: 0000000000040000
-RDX: 0000000000000000 RSI: 000000000003ffff RDI: 0000000000040000
-RBP: 000000000000ffd7 R08: ffffffff820cf297 R09: 0000000000000001
-R10: 0000000000000000 R11: ffffffff8103d1a0 R12: 0000000000003f00
-R13: 0000000000300000 R14: ffff888101cf3540 R15: 0000000000180000
-FS:  00007f9af4c09640(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b33824000 CR3: 000000012f241001 CR4: 0000000000170ee0
-Call Trace:
- <TASK>
- __tcp_cleanup_rbuf+0x138/0x1d0 net/ipv4/tcp.c:1611
- mptcp_recvmsg+0xcb8/0xdd0 net/mptcp/protocol.c:2034
- inet_recvmsg+0x127/0x1f0 net/ipv4/af_inet.c:861
- ____sys_recvmsg+0x269/0x2b0 net/socket.c:1019
- ___sys_recvmsg+0xe6/0x260 net/socket.c:2764
- do_recvmmsg+0x1a5/0x470 net/socket.c:2858
- __do_sys_recvmmsg net/socket.c:2937 [inline]
- __se_sys_recvmmsg net/socket.c:2953 [inline]
- __x64_sys_recvmmsg+0xa6/0x130 net/socket.c:2953
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x47/0xa0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7f9af58fc6a9
-Code: 5c c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 4f 37 0d 00 f7 d8 64 89 01 48
-RSP: 002b:00007f9af4c08cd8 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
-RAX: ffffffffffffffda RBX: 00000000006bc050 RCX: 00007f9af58fc6a9
-RDX: 0000000000000001 RSI: 0000000020000140 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000f00 R11: 0000000000000246 R12: 00000000006bc05c
-R13: fffffffffffffea8 R14: 00000000006bc050 R15: 000000000001fe40
- </TASK>
+If the msk status transitions to TCP_CLOSE in the release callback
+invoked by the worker's final release_sock(), such instance of the
+workqueue will not take any action.
 
-mptcp_recvmsg is allowed to release the msk socket lock when
-blocking, and before re-acquiring it another thread could have
-switched the sock to TCP_LISTEN status - with a prior
-connect(AF_UNSPEC) - also clearing icsk_ack.rcv_mss.
+Additionally the MPTCP code prevents scheduling the worker once the
+socket reaches the CLOSE status: such msk resources will be leaked.
 
-Address the issue preventing the disconnect if some other process is
-concurrently performing a blocking syscall on the same socket, alike
-commit 4faeee0cf8a5 ("tcp: deny tcp_disconnect() when threads are waiting").
+The only code path that can trigger the above scenario is the
+__mptcp_check_send_data_fin() in fallback mode.
 
-Fixes: a6b118febbab ("mptcp: add receive buffer auto-tuning")
+Address the issue removing the special handling of fallback socket
+in __mptcp_check_send_data_fin(), consolidating the state machine
+for fallback and non fallback socket.
+
+Since non-fallback sockets do not send and do not receive data_fin,
+the mptcp code can update the msk internal status to match the next
+step in the SM every time data fin (ack) should be generated or
+received.
+
+As a consequence we can remove a bunch of checks for fallback from
+the fastpath.
+
+Fixes: 6e628cd3a8f7 ("mptcp: use mptcp release_cb for delayed tasks")
 Cc: stable@vger.kernel.org
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/404
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Tested-by: Christoph Paasch <cpaasch@apple.com>
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 86f8a7621aff..ee357700b27b 100644
+index 9a40dae31cec..27d206f7af62 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -3082,6 +3082,12 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+@@ -44,7 +44,7 @@ enum {
+ static struct percpu_counter mptcp_sockets_allocated ____cacheline_aligned_in_smp;
+ 
+ static void __mptcp_destroy_sock(struct sock *sk);
+-static void __mptcp_check_send_data_fin(struct sock *sk);
++static void mptcp_check_send_data_fin(struct sock *sk);
+ 
+ DEFINE_PER_CPU(struct mptcp_delegated_action, mptcp_delegated_actions);
+ static struct net_device mptcp_napi_dev;
+@@ -424,8 +424,7 @@ static bool mptcp_pending_data_fin_ack(struct sock *sk)
  {
  	struct mptcp_sock *msk = mptcp_sk(sk);
  
-+	/* Deny disconnect if other threads are blocked in sk_wait_event()
-+	 * or inet_wait_for_connect().
-+	 */
-+	if (sk->sk_wait_pending)
-+		return -EBUSY;
+-	return !__mptcp_check_fallback(msk) &&
+-	       ((1 << sk->sk_state) &
++	return ((1 << sk->sk_state) &
+ 		(TCPF_FIN_WAIT1 | TCPF_CLOSING | TCPF_LAST_ACK)) &&
+ 	       msk->write_seq == READ_ONCE(msk->snd_una);
+ }
+@@ -583,9 +582,6 @@ static bool mptcp_check_data_fin(struct sock *sk)
+ 	u64 rcv_data_fin_seq;
+ 	bool ret = false;
+ 
+-	if (__mptcp_check_fallback(msk))
+-		return ret;
+-
+ 	/* Need to ack a DATA_FIN received from a peer while this side
+ 	 * of the connection is in ESTABLISHED, FIN_WAIT1, or FIN_WAIT2.
+ 	 * msk->rcv_data_fin was set when parsing the incoming options
+@@ -623,7 +619,8 @@ static bool mptcp_check_data_fin(struct sock *sk)
+ 		}
+ 
+ 		ret = true;
+-		mptcp_send_ack(msk);
++		if (!__mptcp_check_fallback(msk))
++			mptcp_send_ack(msk);
+ 		mptcp_close_wake_up(sk);
+ 	}
+ 	return ret;
+@@ -1609,7 +1606,7 @@ out:
+ 	if (!mptcp_timer_pending(sk))
+ 		mptcp_reset_timer(sk);
+ 	if (do_check_data_fin)
+-		__mptcp_check_send_data_fin(sk);
++		mptcp_check_send_data_fin(sk);
+ }
+ 
+ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool first)
+@@ -2680,8 +2677,6 @@ static void mptcp_worker(struct work_struct *work)
+ 	if (unlikely((1 << state) & (TCPF_CLOSE | TCPF_LISTEN)))
+ 		goto unlock;
+ 
+-	mptcp_check_data_fin_ack(sk);
+-
+ 	mptcp_check_fastclose(msk);
+ 
+ 	mptcp_pm_nl_work(msk);
+@@ -2689,7 +2684,8 @@ static void mptcp_worker(struct work_struct *work)
+ 	if (test_and_clear_bit(MPTCP_WORK_EOF, &msk->flags))
+ 		mptcp_check_for_eof(msk);
+ 
+-	__mptcp_check_send_data_fin(sk);
++	mptcp_check_send_data_fin(sk);
++	mptcp_check_data_fin_ack(sk);
+ 	mptcp_check_data_fin(sk);
+ 
+ 	if (test_and_clear_bit(MPTCP_WORK_CLOSE_SUBFLOW, &msk->flags))
+@@ -2828,6 +2824,12 @@ void mptcp_subflow_shutdown(struct sock *sk, struct sock *ssk, int how)
+ 			pr_debug("Fallback");
+ 			ssk->sk_shutdown |= how;
+ 			tcp_shutdown(ssk, how);
 +
- 	/* We are on the fastopen error path. We can't call straight into the
- 	 * subflows cleanup code due to lock nesting (we are already under
- 	 * msk->firstsocket lock).
-@@ -3148,6 +3154,7 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 		inet_sk(nsk)->pinet6 = mptcp_inet6_sk(nsk);
- #endif
++			/* simulate the data_fin ack reception to let the state
++			 * machine move forward
++			 */
++			WRITE_ONCE(mptcp_sk(sk)->snd_una, mptcp_sk(sk)->snd_nxt);
++			mptcp_schedule_work(sk);
+ 		} else {
+ 			pr_debug("Sending DATA_FIN on subflow %p", ssk);
+ 			tcp_send_ack(ssk);
+@@ -2867,7 +2869,7 @@ static int mptcp_close_state(struct sock *sk)
+ 	return next & TCP_ACTION_FIN;
+ }
  
-+	nsk->sk_wait_pending = 0;
- 	__mptcp_init_sock(nsk);
+-static void __mptcp_check_send_data_fin(struct sock *sk)
++static void mptcp_check_send_data_fin(struct sock *sk)
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+@@ -2885,19 +2887,6 @@ static void __mptcp_check_send_data_fin(struct sock *sk)
  
- 	msk = mptcp_sk(nsk);
+ 	WRITE_ONCE(msk->snd_nxt, msk->write_seq);
+ 
+-	/* fallback socket will not get data_fin/ack, can move to the next
+-	 * state now
+-	 */
+-	if (__mptcp_check_fallback(msk)) {
+-		WRITE_ONCE(msk->snd_una, msk->write_seq);
+-		if ((1 << sk->sk_state) & (TCPF_CLOSING | TCPF_LAST_ACK)) {
+-			inet_sk_state_store(sk, TCP_CLOSE);
+-			mptcp_close_wake_up(sk);
+-		} else if (sk->sk_state == TCP_FIN_WAIT1) {
+-			inet_sk_state_store(sk, TCP_FIN_WAIT2);
+-		}
+-	}
+-
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *tcp_sk = mptcp_subflow_tcp_sock(subflow);
+ 
+@@ -2917,7 +2906,7 @@ static void __mptcp_wr_shutdown(struct sock *sk)
+ 	WRITE_ONCE(msk->write_seq, msk->write_seq + 1);
+ 	WRITE_ONCE(msk->snd_data_fin_enable, 1);
+ 
+-	__mptcp_check_send_data_fin(sk);
++	mptcp_check_send_data_fin(sk);
+ }
+ 
+ static void __mptcp_destroy_sock(struct sock *sk)
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 4688daa6b38b..d9c8b21c6076 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1749,14 +1749,16 @@ static void subflow_state_change(struct sock *sk)
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+ 	struct sock *parent = subflow->conn;
++	struct mptcp_sock *msk;
+ 
+ 	__subflow_state_change(sk);
+ 
++	msk = mptcp_sk(parent);
+ 	if (subflow_simultaneous_connect(sk)) {
+ 		mptcp_propagate_sndbuf(parent, sk);
+ 		mptcp_do_fallback(sk);
+-		mptcp_rcv_space_init(mptcp_sk(parent), sk);
+-		pr_fallback(mptcp_sk(parent));
++		mptcp_rcv_space_init(msk, sk);
++		pr_fallback(msk);
+ 		subflow->conn_finished = 1;
+ 		mptcp_set_connected(parent);
+ 	}
+@@ -1772,11 +1774,12 @@ static void subflow_state_change(struct sock *sk)
+ 
+ 	subflow_sched_work_if_closed(mptcp_sk(parent), sk);
+ 
+-	if (__mptcp_check_fallback(mptcp_sk(parent)) &&
+-	    !subflow->rx_eof && subflow_is_done(sk)) {
+-		subflow->rx_eof = 1;
+-		mptcp_subflow_eof(parent);
+-	}
++	/* when the fallback subflow closes the rx side, trigger a 'dummy'
++	 * ingress data fin, so that the msk state will follow along
++	 */
++	if (__mptcp_check_fallback(msk) && subflow_is_done(sk) && msk->first == sk &&
++	    mptcp_update_rcv_data_fin(msk, READ_ONCE(msk->ack_seq), true))
++		mptcp_schedule_work(parent);
+ }
+ 
+ void mptcp_subflow_queue_clean(struct sock *listener_sk, struct sock *listener_ssk)
 
