@@ -2,156 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F302273B960
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 16:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44F5973B95F
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 16:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231622AbjFWOII (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 10:08:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42490 "EHLO
+        id S231502AbjFWOIA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 10:08:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231529AbjFWOIH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 10:08:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 943AD173F
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 07:07:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687529245;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KYsxNSdKE4My9fB1vJaP+1VJGB9cX7O+jlY9hbCk0pY=;
-        b=MXCeoHPuk3dRlygnGkzEKoBLJ9g7qO9yrOOaDeSYUFnI+2KkxJjIIl3TXr3Ncz7NVE5h8t
-        88mvO1Ayke7cDZj1cLFE8CFyzE6nY6ERzYvAJ7X2+qLFBMWbROCu5hkqRq9X3k0JH2ASZv
-        VXKWgg1lL8QSwmFNd1lHmJGzqYjNIP4=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-669-9dP_9ZiOPH-8nodBmj2sCQ-1; Fri, 23 Jun 2023 10:07:21 -0400
-X-MC-Unique: 9dP_9ZiOPH-8nodBmj2sCQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9127738149C8;
-        Fri, 23 Jun 2023 14:07:15 +0000 (UTC)
-Received: from optiplex-lnx.redhat.com (unknown [10.22.8.90])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 51F1940C2070;
-        Fri, 23 Jun 2023 14:07:15 +0000 (UTC)
-From:   Rafael Aquini <aquini@redhat.com>
-To:     stable@vger.kernel.org
-Cc:     Yafang Shao <laoar.shao@gmail.com>,
-        Aristeu Rozanski <aris@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10.y] writeback: fix dereferencing NULL mapping->host on writeback_page_template
-Date:   Fri, 23 Jun 2023 10:07:01 -0400
-Message-Id: <20230623140701.1565186-1-aquini@redhat.com>
-In-Reply-To: <2023062333-security-reenact-e4a6@gregkh>
-References: <2023062333-security-reenact-e4a6@gregkh>
+        with ESMTP id S231631AbjFWOH6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 10:07:58 -0400
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05olkn2050.outbound.protection.outlook.com [40.92.90.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C1D2689
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 07:07:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MhrH73DsDOzMWpW7Tgs9gNDvL/OPJcVG2cxz/o/ETnjhwWyigKPVe5QrgxE6O6Qd09dZY0d6XUJFVtHSFjuBWylQbxQEn7XVDJuUM0DDXjIs9mjGGmu8ndPxPDV9yjXcIENgXZcdFQNL0DZhD4PltfNQpVyL1BCsNRKoskT83dppPcsUIm48ywEjtNRKz6XfPzYiitsK3kTfzZ6X9FuIk738MFBa4629GDvPuJ9QUHyJ6keGuyMEflVID+dxo65/vlJ+DEEFj3ZUReydsltYmXfRkroWsRsARSPxjFd7P1kJuxgYTwYdbjAOZE57RFG5kkmgYfbAxu1YqLs18NwRZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R0mXqXurALy9eS6K/S2VJsaWvAch8KCO3pBUJvJuDv8=;
+ b=BrZaZGHthpsWKlCsrkzY/Z2yLo+WE35fHf4U9A5j0vyjg8GaVKePp44jhpBxeefHz4+iICzzuKNzMKGtyqQv1DfGrdzGKh/L6QeGt912V1p2+edYr56eahFpvCXNZ4ESwAwV1UqNWj0y3+NNO/SEYoMt19jg3KSESIKlNrnliILvpFqd9EqN/2l9u+/m9QAJfeDPlUXYT3sis0f3rxqfdwY1TGt9qKRgoRk4pEOGIjltygFzXE99I0pwASv6Wv+Otrfq7UHyBn9qB9Ly2FxDn99E1l02qE7S7JXSk7Q2e3tzdHWdanV++Ba92C11QkZjLPbeTctgg87JEqzAwGr6Sw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from DB4P250MB1032.EURP250.PROD.OUTLOOK.COM (2603:10a6:10:3cc::7) by
+ PR3P250MB0370.EURP250.PROD.OUTLOOK.COM (2603:10a6:102:17d::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6521.26; Fri, 23 Jun 2023 14:07:44 +0000
+Received: from DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
+ ([fe80::1f3e:9e10:27b2:5ae4]) by DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
+ ([fe80::1f3e:9e10:27b2:5ae4%2]) with mapi id 15.20.6521.023; Fri, 23 Jun 2023
+ 14:07:44 +0000
+From:   Olivier Maignial <olivier.maignial@hotmail.fr>
+To:     olivier.maignial@somfy.com
+Cc:     Olivier Maignial <olivier.maignial@hotmail.fr>,
+        stable@vger.kernel.org
+Subject: [PATCH 1/2] mtd: spinand: toshiba: Fix ecc_get_status
+Date:   Fri, 23 Jun 2023 16:07:21 +0200
+Message-ID: <DB4P250MB103278A74C636547740F3CF0FE23A@DB4P250MB1032.EURP250.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-TMN:  [YG1OeFbMABK7hopdrWlhsugD442pvTo2]
+X-ClientProxiedBy: PA7P264CA0310.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:395::7) To DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
+ (2603:10a6:10:3cc::7)
+X-Microsoft-Original-Message-ID: <20230623140722.3028981-1-olivier.maignial@hotmail.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB4P250MB1032:EE_|PR3P250MB0370:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f0a36ba-48a5-4b6e-cd6c-08db73f33746
+X-MS-Exchange-SLBlob-MailProps: mWtqiNqNgRtPdd8uo8VLeZ94y4B5qpXLhiiWJi7h2tEh9ZGkqFZlYCGABoeR5UO6jCbTbwxxe361FY5G8zIwODjZWT8zMMaIUHot1Oy6PQtEO+RTq0Jb5f5YNjFJBpzQjQgbQRdXTu7NEOsJoqwkd8heDTze/TYkTGhcD/nOV/6CR1lCGoQE6z8C4PsgXQlnSDmVoUQQiVg+r5F/rGgsvMXzxrMz3hVNIIabGWh2131Jj1/Vm+Jo3E/vfe0KCY+GzzXR0B11PSDhRXOGiSLdK5BzNySINne3s45Qx93PGLPXMAeHnvakQAhofYdvBQQxUEt7b2e+MG2NYf6GDm4TBb0kGRMlCwVvnvznc1RMNN465RhFV91QRr9jUkUbuGdHUJVGRuxSay80jOJwkoNoUAgkseeiwaFpYZxMkW8ScjI7VfGZB73oTMYJ8vbofA55YVPoYyxcRLisAaP0Vg+uU60pWJJ8ouMP7xJgGnSFv4+LK5G4zGQuPKjZceS8Qw76KAfJhw+43dxES8Tm0dwuVB7bQ6sDyXTvvfRm36rV7VWah2BJnFfdwO6Y1hCKz4oQklusCdzKxW/EW52qB+ZVqttMnLAZylIZ7xnf0uBoQA+6j3FDmycYQagdZoBzUmBXI+/1+f3HnFtaNKeWfo4TUC/+f1ik/6577E1qAEX4tLI8czLUFrcctm7EMuGGdl9rYHWCGw90JEEAmnr46kPdDiwPqCiSeRVBQcn8sZKGfLiXW07SYmbnKC5rEN8wbaXc3UJPP0xCK1Bu572PhjSCjJP+aHrpvqEztYr8x2Zan6k=
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 95oc8SnNhGgrDj5heUAgZ5Twaukmd7loHoaWrWOKP3wnk/QFIUys+jtoIJkdu/oBOLNtrPV+o1UrrrKC1tmp9KIT9x/O3suvnn+u6QsfJM63GL3CExipQ/7Wb4dU2lBnH4Ax+e8UJfhF9pE7t5YZlr8LFWIG5OFMca3WMLRuhXtQDum6UzJ4JeIYA5INBjcKmHtO7WNCNaB/k3fF0v00mNV2R+dW/wuwsbug8E5BhSw+c1bi8X7aWN3QqvQ7o6K2Z9kYjtnK+JBySk/wiZhDFmAm1l74fZq+oCwEZih5l5PANDwlKmiyDkbE3f7eH/2YyaVRb/yRm0kBLWLF5WuNqS8YC7I4VnjDK31UpZMYnc1t5oipB7/G73JrNdo5vgvxqbZjcPhffL4AHJWE76np2lWZNErHsYL/VPT0bQjxl5B+/AMMv2x63F7iTym7Lj3gcGzif+ZsLSPGcthsdLBt8Bt1t5EOPZ52IjMtKOwDxcOs2noflYMSzpmnYze7wYqx1gKzSE4bgpnM/RKdSf8FEQdZ98VKwS6/0RO2JR++WJ6BE3wnwmMaErAVcnHXscPTumjlbXXzJ+NCKePUpyj6SuSmpK8RGUHeSzC9ujFG2G+BNkrsDSNTJGrfx9ShnHJXkGwghlyvWp3lQpuLy0ZH3g==
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?df2qxfVe5BENoaP7tF4unNuOUxj8qM821FpwMxQAOzbL014i2yfQVz6MS7ya?=
+ =?us-ascii?Q?gkDOVz+n/E4mSsgVywbn6k62pQJ5g112wBBI6emE7pC64rcznTJkdAq+/Lon?=
+ =?us-ascii?Q?v2jI6RFl5Y5Iy5FWjKdIwmo+5kD8vct9Loak0JSsFVUkQr8NimTIY98vWN+8?=
+ =?us-ascii?Q?GE5UpJN0vxs0UaSiygp4kDo5vA2cSZ4WjKfICHzAso/hjlzxPtUGA1F2YKdr?=
+ =?us-ascii?Q?uFniVIimUSZutfU/IUwXLQ2fjx0G+XMMdIQ6AUpr7lbVPFqazngjFdEjMAwz?=
+ =?us-ascii?Q?r6vr4FfFxInniIYvhzLMR2ruw3pSo0UmKEa+TqPcMXB+wA6IQHDJnzRYk+Sl?=
+ =?us-ascii?Q?a0FCO7YTb3u3v39REQvGhQbzqv5oOdJzEs+r4NJ5vGk+ZE+RYp1a6Cd4bz+G?=
+ =?us-ascii?Q?bNvi1MmT7oivf4OMltlniMDo7Y2up6ij4fL9QAtsrOziFYQxT54YPsXs6L3N?=
+ =?us-ascii?Q?j0tuqsXTXvcB9dXX9pu/BNSTfdFaVLGg0OYHp1clm+dzCwo9ZN/WZMuGL+zp?=
+ =?us-ascii?Q?k/axQZ8uSEB2Tmh6Hz59UfwkRK+knwpoM15+hs+rAZY6bcy4QrGp1lOpN2x9?=
+ =?us-ascii?Q?KgaSgBJwQbBmeNl+AcFAoWl7FEFQkb11UY0X0J6zZvLsp47QeqQvVRDA99QX?=
+ =?us-ascii?Q?r86BU14+cGS1UdV7/UJq8ZnJbhj1lusLjyaEKEaEkkCVN5c0uqqAQqN6+vvd?=
+ =?us-ascii?Q?1C6S5RtVVn7Kz6+FcDMD16Q5CV1CCidQBWOXy+sPnSfR6hM+paeKnPOAou4a?=
+ =?us-ascii?Q?UVNyPfyqn8FNzAfk3jkprW2L+C79wTMZOg1kWYYuaAtvuDYNqLAcTHGzuPuW?=
+ =?us-ascii?Q?xUm1+KAQHRP3ao3uAqMO1jWykgBF7fClI2YuYiRuzkIkqDA+hBjxEJTmNibh?=
+ =?us-ascii?Q?1UCYVpI8+ZL3yRGQjXbYN0rrWZoU/49JZPxFrs2boraljquwXjn/iCnQjSlB?=
+ =?us-ascii?Q?9NRomMc2lMyc1BLyRkROcrAvZs6lSSixjQnUdACyTEEKzYvePl5xeg1BzqnG?=
+ =?us-ascii?Q?EuhFz+VpcSvvg+Lqz74IbJ+NYEClk2LJPGByIoHv8xJV0d5TsxlgAFckl9Wq?=
+ =?us-ascii?Q?XsxhF3nYlZx/z/WkuabtQnBwJZoq3xbv3/z41z2StxkY1ve3gxJckm0s0TYz?=
+ =?us-ascii?Q?aAaQ8BzQFANPLbJr0szlIzwRSjEvWtjoTd0Z4M0xce8oomaxayHXD6Ek1joc?=
+ =?us-ascii?Q?bHkIHJsTbvcYALfiJ4ajRuOA2jilBB9nQlZVu4ngNdjjjLGU40jSakSKGC8?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-e3d53.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f0a36ba-48a5-4b6e-cd6c-08db73f33746
+X-MS-Exchange-CrossTenant-AuthSource: DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2023 14:07:44.8176
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3P250MB0370
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,FORGED_SPF_HELO,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPOOFED_FREEMAIL,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 54abe19e00cfcc5a72773d15cd00ed19ab763439 upstream.
+Reading ECC status is failing.
 
-When commit 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for
-wait_on_page_writeback()") repurposed the writeback_dirty_page trace event
-as a template to create its new wait_on_page_writeback trace event, it
-ended up opening a window to NULL pointer dereference crashes due to the
-(infrequent) occurrence of a race where an access to a page in the
-swap-cache happens concurrently with the moment this page is being written
-to disk and the tracepoint is enabled:
+tx58cxgxsxraix_ecc_get_status() is using on-stack buffer
+for SPINAND_GET_FEATURE_OP() output. It is not suitable
+for DMA needs of spi-mem.
 
-    BUG: kernel NULL pointer dereference, address: 0000000000000040
-    #PF: supervisor read access in kernel mode
-    #PF: error_code(0x0000) - not-present page
-    PGD 800000010ec0a067 P4D 800000010ec0a067 PUD 102353067 PMD 0
-    Oops: 0000 [#1] PREEMPT SMP PTI
-    CPU: 1 PID: 1320 Comm: shmem-worker Kdump: loaded Not tainted 6.4.0-rc5+ #13
-    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230301gitf80f052277c8-1.fc37 03/01/2023
-    RIP: 0010:trace_event_raw_event_writeback_folio_template+0x76/0xf0
-    Code: 4d 85 e4 74 5c 49 8b 3c 24 e8 06 98 ee ff 48 89 c7 e8 9e 8b ee ff ba 20 00 00 00 48 89 ef 48 89 c6 e8 fe d4 1a 00 49 8b 04 24 <48> 8b 40 40 48 89 43 28 49 8b 45 20 48 89 e7 48 89 43 30 e8 a2 4d
-    RSP: 0000:ffffaad580b6fb60 EFLAGS: 00010246
-    RAX: 0000000000000000 RBX: ffff90e38035c01c RCX: 0000000000000000
-    RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff90e38035c044
-    RBP: ffff90e38035c024 R08: 0000000000000002 R09: 0000000000000006
-    R10: ffff90e38035c02e R11: 0000000000000020 R12: ffff90e380bac000
-    R13: ffffe3a7456d9200 R14: 0000000000001b81 R15: ffffe3a7456d9200
-    FS:  00007f2e4e8a15c0(0000) GS:ffff90e3fbc80000(0000) knlGS:0000000000000000
-    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    CR2: 0000000000000040 CR3: 00000001150c6003 CR4: 0000000000170ee0
-    Call Trace:
-     <TASK>
-     ? __die+0x20/0x70
-     ? page_fault_oops+0x76/0x170
-     ? kernelmode_fixup_or_oops+0x84/0x110
-     ? exc_page_fault+0x65/0x150
-     ? asm_exc_page_fault+0x22/0x30
-     ? trace_event_raw_event_writeback_folio_template+0x76/0xf0
-     folio_wait_writeback+0x6b/0x80
-     shmem_swapin_folio+0x24a/0x500
-     ? filemap_get_entry+0xe3/0x140
-     shmem_get_folio_gfp+0x36e/0x7c0
-     ? find_busiest_group+0x43/0x1a0
-     shmem_fault+0x76/0x2a0
-     ? __update_load_avg_cfs_rq+0x281/0x2f0
-     __do_fault+0x33/0x130
-     do_read_fault+0x118/0x160
-     do_pte_missing+0x1ed/0x2a0
-     __handle_mm_fault+0x566/0x630
-     handle_mm_fault+0x91/0x210
-     do_user_addr_fault+0x22c/0x740
-     exc_page_fault+0x65/0x150
-     asm_exc_page_fault+0x22/0x30
+Fix this by using the spi-mem operations dedicated buffer
+spinand->scratchbuf.
 
-This problem arises from the fact that the repurposed writeback_dirty_page
-trace event code was written assuming that every pointer to mapping
-(struct address_space) would come from a file-mapped page-cache object,
-thus mapping->host would always be populated, and that was a valid case
-before commit 19343b5bdd16.  The swap-cache address space
-(swapper_spaces), however, doesn't populate its ->host (struct inode)
-pointer, thus leading to the crashes in the corner-case aforementioned.
+See
+spinand->scratchbuf:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/mtd/spinand.h?h=v6.3#n418
+spi_mem_check_op():
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spi-mem.c?h=v6.3#n199
 
-commit 19343b5bdd16 ended up breaking the assignment of __entry->name and
-__entry->ino for the wait_on_page_writeback tracepoint -- both dependent
-on mapping->host carrying a pointer to a valid inode.  The assignment of
-__entry->name was fixed by commit 68f23b89067f ("memcg: fix a crash in
-wb_workfn when a device disappears"), and this commit fixes the remaining
-case, for __entry->ino.
-
-Link: https://lkml.kernel.org/r/20230606233613.1290819-1-aquini@redhat.com
-Fixes: 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for wait_on_page_writeback()")
-Signed-off-by: Rafael Aquini <aquini@redhat.com>
-Reviewed-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: Aristeu Rozanski <aris@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Rafael Aquini <aquini@redhat.com>
+Fixes: 10949af1681d
+Cc: stable@vger.kernel.org
+Signed-off-by: Olivier Maignial <olivier.maignial@hotmail.fr>
 ---
- include/trace/events/writeback.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/spi/toshiba.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
-index 57d795365987..453255afbe2d 100644
---- a/include/trace/events/writeback.h
-+++ b/include/trace/events/writeback.h
-@@ -67,7 +67,7 @@ DECLARE_EVENT_CLASS(writeback_page_template,
- 		strscpy_pad(__entry->name,
- 			    bdi_dev_name(mapping ? inode_to_bdi(mapping->host) :
- 					 NULL), 32);
--		__entry->ino = mapping ? mapping->host->i_ino : 0;
-+		__entry->ino = (mapping && mapping->host) ? mapping->host->i_ino : 0;
- 		__entry->index = page->index;
- 	),
+diff --git a/drivers/mtd/nand/spi/toshiba.c b/drivers/mtd/nand/spi/toshiba.c
+index 7380b1ebaccd..a80427c13121 100644
+--- a/drivers/mtd/nand/spi/toshiba.c
++++ b/drivers/mtd/nand/spi/toshiba.c
+@@ -73,7 +73,7 @@ static int tx58cxgxsxraix_ecc_get_status(struct spinand_device *spinand,
+ {
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 	u8 mbf = 0;
+-	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, &mbf);
++	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, spinand->scratchbuf);
  
+ 	switch (status & STATUS_ECC_MASK) {
+ 	case STATUS_ECC_NO_BITFLIPS:
+@@ -92,7 +92,7 @@ static int tx58cxgxsxraix_ecc_get_status(struct spinand_device *spinand,
+ 		if (spi_mem_exec_op(spinand->spimem, &op))
+ 			return nanddev_get_ecc_conf(nand)->strength;
+ 
+-		mbf >>= 4;
++		mbf = *(spinand->scratchbuf) >> 4;
+ 
+ 		if (WARN_ON(mbf > nanddev_get_ecc_conf(nand)->strength || !mbf))
+ 			return nanddev_get_ecc_conf(nand)->strength;
 -- 
-2.39.2
+2.34.1
 
