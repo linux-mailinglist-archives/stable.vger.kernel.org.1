@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E364A73B367
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A1D73B368
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:23:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229712AbjFWJXU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 05:23:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51680 "EHLO
+        id S230171AbjFWJXg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 05:23:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbjFWJXT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:23:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4A7C1BFC
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:23:18 -0700 (PDT)
+        with ESMTP id S229469AbjFWJXg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:23:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1223E1BFC
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:23:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B7E0619C0
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:23:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B7BC433C0;
-        Fri, 23 Jun 2023 09:23:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0AD1619C2
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89A0C433C8;
+        Fri, 23 Jun 2023 09:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687512197;
-        bh=LQsGp77l6Y0E1pO7To+Ywmo4f313V333pdn9VdPVmks=;
+        s=korg; t=1687512214;
+        bh=4iXhyy5u8chGmloZOFJF5JUJT8T3KugMSDcxv6rTqII=;
         h=Subject:To:Cc:From:Date:From;
-        b=s+tuzyhXXBRXJJ6aw+Na9LNSaEHKfco7Hfhsgn9mAXexCHK6El4xvGM36sUb2ADgP
-         d+sWV0q8FYdflSa9Q25214eDd6W0onywgADWdbW4wV7iRrfZqc7nRG3MG/xxJ8nyUl
-         kpwRMBXNmQQQUCgPkwxFlcwdobenNrVxcwK8Ycoc=
-Subject: FAILED: patch "[PATCH] memfd: check for non-NULL file_seals in memfd_create()" failed to apply to 6.1-stable tree
-To:     roberto.sassu@huawei.com, akpm@linux-foundation.org,
-        marcandre.lureau@redhat.com, mike.kravetz@oracle.com,
-        stable@vger.kernel.org
+        b=RHBe2RM9vQi1iTqDdYseGE2001BmuhiMcQNk91R90lDTdQuKWPbvMmxkOTkXaWlYI
+         XBdI1c+HXo8+2m+uz+dOfbe6GFGlbQ1xshcjmLYhd+Nzr2+VawNiteMWIjPwCXuWRN
+         +GoD7iPxs3I3j7tckH3iuWVJvEL4cONCmu/4RAHg=
+Subject: FAILED: patch "[PATCH] writeback: fix dereferencing NULL mapping->host on" failed to apply to 5.15-stable tree
+To:     aquini@redhat.com, akpm@linux-foundation.org, aris@redhat.com,
+        laoar.shao@gmail.com, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 23 Jun 2023 11:23:14 +0200
-Message-ID: <2023062314-saffron-portly-6c2a@gregkh>
+Date:   Fri, 23 Jun 2023 11:23:31 +0200
+Message-ID: <2023062330-bulb-sadden-dffe@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 935d44acf621aa0688fef8312dec3e5940f38f4e
+git cherry-pick -x 54abe19e00cfcc5a72773d15cd00ed19ab763439
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062314-saffron-portly-6c2a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062330-bulb-sadden-dffe@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,45 +74,96 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 935d44acf621aa0688fef8312dec3e5940f38f4e Mon Sep 17 00:00:00 2001
-From: Roberto Sassu <roberto.sassu@huawei.com>
-Date: Wed, 7 Jun 2023 15:24:27 +0200
-Subject: [PATCH] memfd: check for non-NULL file_seals in memfd_create()
- syscall
+From 54abe19e00cfcc5a72773d15cd00ed19ab763439 Mon Sep 17 00:00:00 2001
+From: Rafael Aquini <aquini@redhat.com>
+Date: Tue, 6 Jun 2023 19:36:13 -0400
+Subject: [PATCH] writeback: fix dereferencing NULL mapping->host on
+ writeback_page_template
 
-Ensure that file_seals is non-NULL before using it in the memfd_create()
-syscall.  One situation in which memfd_file_seals_ptr() could return a
-NULL pointer when CONFIG_SHMEM=n, oopsing the kernel.
+When commit 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for
+wait_on_page_writeback()") repurposed the writeback_dirty_page trace event
+as a template to create its new wait_on_page_writeback trace event, it
+ended up opening a window to NULL pointer dereference crashes due to the
+(infrequent) occurrence of a race where an access to a page in the
+swap-cache happens concurrently with the moment this page is being written
+to disk and the tracepoint is enabled:
 
-Link: https://lkml.kernel.org/r/20230607132427.2867435-1-roberto.sassu@huaweicloud.com
-Fixes: 47b9012ecdc7 ("shmem: add sealing support to hugetlb-backed memfd")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Marc-Andr Lureau <marcandre.lureau@redhat.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
+    BUG: kernel NULL pointer dereference, address: 0000000000000040
+    #PF: supervisor read access in kernel mode
+    #PF: error_code(0x0000) - not-present page
+    PGD 800000010ec0a067 P4D 800000010ec0a067 PUD 102353067 PMD 0
+    Oops: 0000 [#1] PREEMPT SMP PTI
+    CPU: 1 PID: 1320 Comm: shmem-worker Kdump: loaded Not tainted 6.4.0-rc5+ #13
+    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230301gitf80f052277c8-1.fc37 03/01/2023
+    RIP: 0010:trace_event_raw_event_writeback_folio_template+0x76/0xf0
+    Code: 4d 85 e4 74 5c 49 8b 3c 24 e8 06 98 ee ff 48 89 c7 e8 9e 8b ee ff ba 20 00 00 00 48 89 ef 48 89 c6 e8 fe d4 1a 00 49 8b 04 24 <48> 8b 40 40 48 89 43 28 49 8b 45 20 48 89 e7 48 89 43 30 e8 a2 4d
+    RSP: 0000:ffffaad580b6fb60 EFLAGS: 00010246
+    RAX: 0000000000000000 RBX: ffff90e38035c01c RCX: 0000000000000000
+    RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff90e38035c044
+    RBP: ffff90e38035c024 R08: 0000000000000002 R09: 0000000000000006
+    R10: ffff90e38035c02e R11: 0000000000000020 R12: ffff90e380bac000
+    R13: ffffe3a7456d9200 R14: 0000000000001b81 R15: ffffe3a7456d9200
+    FS:  00007f2e4e8a15c0(0000) GS:ffff90e3fbc80000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 0000000000000040 CR3: 00000001150c6003 CR4: 0000000000170ee0
+    Call Trace:
+     <TASK>
+     ? __die+0x20/0x70
+     ? page_fault_oops+0x76/0x170
+     ? kernelmode_fixup_or_oops+0x84/0x110
+     ? exc_page_fault+0x65/0x150
+     ? asm_exc_page_fault+0x22/0x30
+     ? trace_event_raw_event_writeback_folio_template+0x76/0xf0
+     folio_wait_writeback+0x6b/0x80
+     shmem_swapin_folio+0x24a/0x500
+     ? filemap_get_entry+0xe3/0x140
+     shmem_get_folio_gfp+0x36e/0x7c0
+     ? find_busiest_group+0x43/0x1a0
+     shmem_fault+0x76/0x2a0
+     ? __update_load_avg_cfs_rq+0x281/0x2f0
+     __do_fault+0x33/0x130
+     do_read_fault+0x118/0x160
+     do_pte_missing+0x1ed/0x2a0
+     __handle_mm_fault+0x566/0x630
+     handle_mm_fault+0x91/0x210
+     do_user_addr_fault+0x22c/0x740
+     exc_page_fault+0x65/0x150
+     asm_exc_page_fault+0x22/0x30
+
+This problem arises from the fact that the repurposed writeback_dirty_page
+trace event code was written assuming that every pointer to mapping
+(struct address_space) would come from a file-mapped page-cache object,
+thus mapping->host would always be populated, and that was a valid case
+before commit 19343b5bdd16.  The swap-cache address space
+(swapper_spaces), however, doesn't populate its ->host (struct inode)
+pointer, thus leading to the crashes in the corner-case aforementioned.
+
+commit 19343b5bdd16 ended up breaking the assignment of __entry->name and
+__entry->ino for the wait_on_page_writeback tracepoint -- both dependent
+on mapping->host carrying a pointer to a valid inode.  The assignment of
+__entry->name was fixed by commit 68f23b89067f ("memcg: fix a crash in
+wb_workfn when a device disappears"), and this commit fixes the remaining
+case, for __entry->ino.
+
+Link: https://lkml.kernel.org/r/20230606233613.1290819-1-aquini@redhat.com
+Fixes: 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for wait_on_page_writeback()")
+Signed-off-by: Rafael Aquini <aquini@redhat.com>
+Reviewed-by: Yafang Shao <laoar.shao@gmail.com>
+Cc: Aristeu Rozanski <aris@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/memfd.c b/mm/memfd.c
-index 69b90c31d38c..e763e76f1106 100644
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -371,12 +371,15 @@ SYSCALL_DEFINE2(memfd_create,
+diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+index 86b2a82da546..54e353c9f919 100644
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -68,7 +68,7 @@ DECLARE_EVENT_CLASS(writeback_folio_template,
+ 		strscpy_pad(__entry->name,
+ 			    bdi_dev_name(mapping ? inode_to_bdi(mapping->host) :
+ 					 NULL), 32);
+-		__entry->ino = mapping ? mapping->host->i_ino : 0;
++		__entry->ino = (mapping && mapping->host) ? mapping->host->i_ino : 0;
+ 		__entry->index = folio->index;
+ 	),
  
- 		inode->i_mode &= ~0111;
- 		file_seals = memfd_file_seals_ptr(file);
--		*file_seals &= ~F_SEAL_SEAL;
--		*file_seals |= F_SEAL_EXEC;
-+		if (file_seals) {
-+			*file_seals &= ~F_SEAL_SEAL;
-+			*file_seals |= F_SEAL_EXEC;
-+		}
- 	} else if (flags & MFD_ALLOW_SEALING) {
- 		/* MFD_EXEC and MFD_ALLOW_SEALING are set */
- 		file_seals = memfd_file_seals_ptr(file);
--		*file_seals &= ~F_SEAL_SEAL;
-+		if (file_seals)
-+			*file_seals &= ~F_SEAL_SEAL;
- 	}
- 
- 	fd_install(fd, file);
 
