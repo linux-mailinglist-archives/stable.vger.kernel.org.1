@@ -2,45 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3B9E73B3D4
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E0E573B3DC
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:43:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231608AbjFWJmK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 05:42:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59772 "EHLO
+        id S231281AbjFWJnd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 05:43:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231578AbjFWJmJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:42:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD75E1A3
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:42:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 731C1619DA
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:42:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8270CC433C8;
-        Fri, 23 Jun 2023 09:42:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687513326;
-        bh=i2pymgD8btgxK1FvbMqZyZiczKkJyWL9GdX3yPUxbsg=;
-        h=Subject:To:Cc:From:Date:From;
-        b=S/kZSwfK738tMdv03HSGOVJ+XQhFgfe5vd+tgagWeGFH3e0eOQjpw9Xy82gmZlnnr
-         PHNw4tH2nPga3CVlwQyiF8BYNsOdfcEq290umohNEI5HEc4W1WmEg5YyIhnrVzxMhq
-         jvRh3vDRNkC85v1osfTJIsYTALItFI8wB8uwGNhg=
-Subject: FAILED: patch "[PATCH] mmc: meson-gx: fix deferred probing" failed to apply to 6.1-stable tree
-To:     s.shtylyov@omp.ru, neil.armstrong@linaro.org,
-        ulf.hansson@linaro.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 23 Jun 2023 11:42:04 +0200
-Message-ID: <2023062303-crazily-recent-78b0@gregkh>
+        with ESMTP id S231329AbjFWJna (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:43:30 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E13661FFD
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:43:27 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-311183ef595so468126f8f.0
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:43:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1687513406; x=1690105406;
+        h=content-transfer-encoding:to:organization:subject:from
+         :content-language:reply-to:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XjZAhEtpirppmTFiyTb5VtGp1QtZ5M30vX9Q7LxJcmU=;
+        b=FovACiPHOBJPgZ/esqnUliEIyVK7C9GyX2TZ8wmru+ImKhFO0bRyidDlsO4ybuyEqs
+         LDSp4DmRMBViAMEDCdmL6/Um4SWDrhA8OoittolJfdDd2qi5SiDdaaCzogiyBdH5FOBb
+         9WaloKTwDFk7UhWNAH63j3ybtd+zTTC36DPalamOCDNZD3hLHD2VpN6A65zJ09P3FRZO
+         axYW3NMPx0dMdlwaTQ23jdHON78cftIl2bluapaDi/IG9xjERbgKYXF76EdQBEvNLG+u
+         tAOX8u+Jl0nf49vrg/WtFXs4BAGkg6vL5PR8Hf4QfZIvYoZTtRRVF+DnDbQBNB/1OQaZ
+         CJ3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687513406; x=1690105406;
+        h=content-transfer-encoding:to:organization:subject:from
+         :content-language:reply-to:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XjZAhEtpirppmTFiyTb5VtGp1QtZ5M30vX9Q7LxJcmU=;
+        b=AAr0C5j13lgMybPwiIOgKm+1akrc+4k39ZMJJSc2VLD3ZIcEqeyS0QRg42P85Zbs5q
+         cjwjO2IlvWq6bbmuvxP+qxtf21vR9r6KeqlLTepmtD7mTOPWboDlPE0pA40wi7zQXzW7
+         0v89oDSHlKo8glUL+ZjP0ZQke9mN0dWKVCGZtazLu6qN+JCaSQIMbH5ml3ADU0kynX5R
+         oEsN5uz0RJkUhPzo73qW9WW7vGTMUkIncErlMeetjkZtG8KziBKLNrVrT6r6oxc4r2x1
+         4YswzEYYMUDPN1YbWfYg3HiWl0uUyQQxXl054KgfUieFTWJ4WRkh5uS+4zW/aiSY8jBj
+         OAYw==
+X-Gm-Message-State: AC+VfDygsPj8MmLPRfVxMn0+8J1rSdgGB4TLiOpYtCqC2rgVxlQeZhYE
+        h1jBlYgqUCUhdYt/IOnYrkLwp8IYRVU0pomdxtU=
+X-Google-Smtp-Source: ACHHUZ4iMVHZznwPFCuAC3RowG6FjDpkNVgtzQSPPykJy05vxE2riRWmPUC5l1G1K5e1ZBaBJk14VQ==
+X-Received: by 2002:adf:ef50:0:b0:30e:45a5:9476 with SMTP id c16-20020adfef50000000b0030e45a59476mr17177911wrp.1.1687513406330;
+        Fri, 23 Jun 2023 02:43:26 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:b41:c160:cf7c:7555:e0c8:46cd? ([2a01:e0a:b41:c160:cf7c:7555:e0c8:46cd])
+        by smtp.gmail.com with ESMTPSA id f14-20020adfe90e000000b003111a9a8dbfsm9089503wrm.44.2023.06.23.02.43.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Jun 2023 02:43:25 -0700 (PDT)
+Message-ID: <f220c0e0-446c-58bd-eabb-0dee9819dd53@6wind.com>
+Date:   Fri, 23 Jun 2023 11:43:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Reply-To: nicolas.dichtel@6wind.com
+Content-Language: en-US
+From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Subject: Request for "ip_tunnels: allow VXLAN/GENEVE to inherit TOS/TTL from
+ VLAN" in v5.4 / v5.15
+Organization: 6WIND
+To:     stable <stable@vger.kernel.org>, netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,63 +73,20 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi,
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I would like to request for cherry-picking commit 7074732c8fae ("ip_tunnels:
+allow VXLAN/GENEVE to inherit TOS/TTL from VLAN") in linux-5.15.y and
+linux-5.4.y branches.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7074732c8fae
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x b8ada54fa1b83f3b6480d4cced71354301750153
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062303-crazily-recent-78b0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+This commit has lived since a long time in upstream (11 months), the potential
+regressions seems low. The cherry-pick is straightforward.
+It fixes the vxlan tos inherit option when vlan frames are encapsulated in vxlan.
 
-Possible dependencies:
+The kernel 5.4 and 5.15 are used by a lot of vendors, having this patch will fix
+this bug.
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From b8ada54fa1b83f3b6480d4cced71354301750153 Mon Sep 17 00:00:00 2001
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Date: Sat, 17 Jun 2023 23:36:12 +0300
-Subject: [PATCH] mmc: meson-gx: fix deferred probing
-
-The driver overrides the error codes and IRQ0 returned by platform_get_irq()
-to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the error
-codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
-in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
-so we now can safely ignore it...
-
-Fixes: cbcaac6d7dd2 ("mmc: meson-gx-mmc: Fix platform_get_irq's error checking")
-Cc: stable@vger.kernel.org # v5.19+
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20230617203622.6812-3-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
-index f90b0fd8d8b0..ee9a25b900ae 100644
---- a/drivers/mmc/host/meson-gx-mmc.c
-+++ b/drivers/mmc/host/meson-gx-mmc.c
-@@ -1186,8 +1186,8 @@ static int meson_mmc_probe(struct platform_device *pdev)
- 		return PTR_ERR(host->regs);
- 
- 	host->irq = platform_get_irq(pdev, 0);
--	if (host->irq <= 0)
--		return -EINVAL;
-+	if (host->irq < 0)
-+		return host->irq;
- 
- 	cd_irq = platform_get_irq_optional(pdev, 1);
- 	mmc_gpio_set_cd_irq(mmc, cd_irq);
-
+Regards,
+Nicolas
