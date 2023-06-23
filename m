@@ -2,151 +2,243 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E10073BBB6
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 17:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1055573BBFB
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 17:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232116AbjFWPeZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 11:34:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45740 "EHLO
+        id S231834AbjFWPtW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 11:49:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232128AbjFWPeX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 11:34:23 -0400
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05olkn2033.outbound.protection.outlook.com [40.92.90.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA7A2117;
-        Fri, 23 Jun 2023 08:34:22 -0700 (PDT)
+        with ESMTP id S230348AbjFWPtU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 11:49:20 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F4FA2117
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 08:49:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687535358; x=1719071358;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=f1vtJUWn5GkrrciCQgPzyLnhU6Q134IlVZdSLsRGeNE=;
+  b=j9CPxVHUlkmNk5BHvqeIBVDtovbnVJWiw1HQwQwBVwIED0hyYHli7daT
+   DKUcT2W01Q77Q2EWLC82sJJHzYa9eP7qvQNhtQ3bka55otM1kYw6YqXO0
+   wmJq3jXi1vHH3o7PNELkkBlG1/YG0a2Pj78YqkGoMNMdDAta+U61VudlI
+   zcValizo4/KvyVeQ+mz1+hcSgUNbRIAg6huWrQlkc2eLK9Hu+NeX9cbz0
+   4QuJNCbNF13O7tZ8Zm5eYwbZ21RLp3LC5urRs6JnBjK+t3yvK047fHz7G
+   RD3Tf/HSLy0i9IPSRhEFFq+DhXBOqkr1i62ZdRKRhPPF68P8jppe5R85P
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10750"; a="340386966"
+X-IronPort-AV: E=Sophos;i="6.01,152,1684825200"; 
+   d="scan'208";a="340386966"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2023 08:49:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10750"; a="961996992"
+X-IronPort-AV: E=Sophos;i="6.01,152,1684825200"; 
+   d="scan'208";a="961996992"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmsmga006.fm.intel.com with ESMTP; 23 Jun 2023 08:49:18 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Fri, 23 Jun 2023 08:49:17 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Fri, 23 Jun 2023 08:49:17 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Fri, 23 Jun 2023 08:49:17 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.43) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Fri, 23 Jun 2023 08:49:15 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YkOZSEUCm3u6ROvjRhcPN7t3adDg4P2IhYwhJaL5uRqZqHqBS5h+8qlKh1E6H5txkIFhcnvKu3pdQ/C2BPv9xQYzsqnLiQNG+tx+L//J/7Za+C8CVA8Wdoq32xbebzbLhT4zxIIE6LTdIed0ygbN+5tGG7aJe9QEP63BadHtPed5GHWjb5yJVI93HZXgs+hX0YlVf7BB6HV1eMzUwSc6zgQxqwzmUI6Cwno2COgF8dRr6lVKTPQpkCvQsXaJlIikfZcTBj+Nih8xL33iC3Io9NHchxrRFpr/7sCidwNtgjUgyh1q3kBoGaRonNXDdgBgFztmpgWrMnCokyFpCpLTcg==
+ b=FGgFIgJs1Xsx2aPb6scqHllvMes4tCr4tih6IYIAssU/YMpcS+hJDCK93aeNeb+jJZ+73oTWe5s0arNrz65gbqA6YnEQrpFfd0eK5CkBSf7jjsQW6VehSnAcOZHWEkJNhzmOXOMxx2RmCrVOk0GcTIB894O0iQOwsJM3/9dVDN6BtsRD6Ha61OvitTvh2sLucuU959B1JeKjVflWv4C/4x3cEqm7ZeId22xtKxNU5mfYWRp1UfkVwnPudpb4ej80MoDdoDyTr8yis+32GX3RVJPNOWEryVdEsthcjDU3V6YKjiT+AG6S2q8Jq81uupAlgXNFGSWUAsQusKoX9BGAsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NLprr/21Fj5NqO0IczSq5tMyoC4apgBU7K5sCy4rKbc=;
- b=cw/AbKiaERlubxZIoFiDbkE1YiHGi/TwjCIQBooxB5hg2LiqeL6wlE3DFLUklzbfYLHLg7tQ4XjY65sZXaBP9GvT1Sv+CofHG/nkXwymwN7k6oj/ItwdpmwvbKuuU03BMGkKpNu+qa+PU6Ry7zsEPFrZ3ufAQYwKgQ0Hjj0zJZZ+EoTM6f6k5+Q7IDb2zJ0+EzBdAQU+T77x8UtK2CdB9yQe3uxkIL8sDc1AdvyR8iPTDJEqLvuvgN1iI1enuxmM1XmLkLE6TKL52DAASYInuvX5IupYNhYV7UCczbGgvT2QezS/uRy3rDfwQgBdaGbKJekEbT+3/KYFgk6xtm8uqg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-Received: from DB4P250MB1032.EURP250.PROD.OUTLOOK.COM (2603:10a6:10:3cc::7) by
- AM8P250MB0042.EURP250.PROD.OUTLOOK.COM (2603:10a6:20b:3d9::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6521.26; Fri, 23 Jun 2023 15:34:20 +0000
-Received: from DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
- ([fe80::1f3e:9e10:27b2:5ae4]) by DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
- ([fe80::1f3e:9e10:27b2:5ae4%2]) with mapi id 15.20.6521.023; Fri, 23 Jun 2023
- 15:34:20 +0000
-From:   Olivier Maignial <olivier.maignial@hotmail.fr>
-Cc:     Olivier Maignial <olivier.maignial@hotmail.fr>,
-        stable@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Schrempf Frieder <frieder.schrempf@kontron.De>,
-        Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
-        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [v2, 2/2] mtd: spinand: winbond: Fix ecc_get_status
-Date:   Fri, 23 Jun 2023 17:33:37 +0200
-Message-ID: <DB4P250MB1032EDB9E36B764A33769039FE23A@DB4P250MB1032.EURP250.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230623153337.3818369-1-olivier.maignial@hotmail.fr>
-References: <20230623153337.3818369-1-olivier.maignial@hotmail.fr>
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-TMN:  [zanMV4eiVPO53ocmI8ZGKTnV7PvRdaP7]
-X-ClientProxiedBy: PR1P264CA0058.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:2ca::12) To DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
- (2603:10a6:10:3cc::7)
-X-Microsoft-Original-Message-ID: <20230623153337.3818369-2-olivier.maignial@hotmail.fr>
+ bh=7jU+wMIXZ3DV8c4GEkCXPxzLXXDZpVA6XfCceWcMS7s=;
+ b=P56tQaSdZsbO9V9VJt2IP0WXPlCwGziHZg8yBOWGZdUFizcAKLb6Z0E+VUIqUOjnIEXyIEjm9ZRDrY8dwgYc9RuEMLHnHVoSyYL/of4M9tuHnxgd+TQXvcTMHVnNiRWkFzdpX+9+r41MeOr4Gn0LmsZCTA6QhjWlk38jY/El1/j9J726JE8cdabrHskYbz91mEzFDZnglqDBUQBx7jTUrPuhBnkg9jX6hv/LCTOTXLbX3zaFQ4V3EF3aFVB/L9o6YYPbJPZ7XXdNGySVFrRNq35FksfvDFgl9FjuiBzTP+MzlmUN2GzpCGSTRNc+4xs7C5UaJxOC4sJKw31WcbpN5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by IA0PR11MB7212.namprd11.prod.outlook.com (2603:10b6:208:43e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Fri, 23 Jun
+ 2023 15:49:08 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::44e7:c479:62f4:3eb4]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::44e7:c479:62f4:3eb4%7]) with mapi id 15.20.6521.023; Fri, 23 Jun 2023
+ 15:49:08 +0000
+Date:   Fri, 23 Jun 2023 08:49:05 -0700
+From:   Lucas De Marchi <lucas.demarchi@intel.com>
+To:     Kenneth Graunke <kenneth@whitecape.org>
+CC:     <intel-gfx@lists.freedesktop.org>,
+        <dri-devel@lists.freedesktop.org>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH 2/3] drm/i915/gt: Fix context workarounds with non-masked
+ regs
+Message-ID: <ehp36knxqfilobajjyk54oamk3n43s3cja5webx3q4jzm6xrlm@idrattdnr3fa>
+X-Patchwork-Hint: comment
+References: <20230622182731.3765039-1-lucas.demarchi@intel.com>
+ <20230622182731.3765039-2-lucas.demarchi@intel.com>
+ <3337022.2OMYdDKdcH@mizzik>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <3337022.2OMYdDKdcH@mizzik>
+X-ClientProxiedBy: MW4PR03CA0330.namprd03.prod.outlook.com
+ (2603:10b6:303:dd::35) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB4P250MB1032:EE_|AM8P250MB0042:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7af60408-3afd-4282-64ba-08db73ff5027
-X-MS-Exchange-SLBlob-MailProps: a+H6FLLcF3qXcYLnbyrqKtqrVM43XjewP5Mt+qMANFqJddK6Qn17WN7r6idc3ocOgfShtwL85AOCKS+x3jEFpwEsh1lE51a3VELdI42C61VRSRWdTGuol4DnIvHJwaSh8hxh7iTN6j2BRl0+mLjV/DIeXn6gDFLnUXNeNiFrzKt0nCQk1KfgcoK600SOhuwh2CHFWEEqkMzz+5AwZYIZnSjWTo14Ct3oRQbjwRhkIJvG2pHHkjQzv+jCgjGZLsfEzfotCsbeB955A7Hkt+aE+oaydFG597Y+Qm4qJNXCL8qu6a3jFLltikjF60Z+b1uhoxQTodtM6ztRdPCO6eMWl4Dv+LYfkwRe/aTe9E3lnyJLprabQ2l4Vss57bFAC0lpjDD3xAfDsSjzJlEN2UDbIvJ0VXscfXRd/nJ1Xmbrq5ypGD7MBgirweeL3grJY4S/76ta+JZAEE6VtMNAzv3EgJbeaP17vKRMJcDBCz7YfeWX4pGrlMnPaZ6A4RuuS2WGFQRjeoyaHx1QP2aMwY5vniSDCe1agCg2UId4bhqo8+PmsUeL8f2v+dpmbK0eHio57kc7sZ5yA4F/qtbQt65mf91JPNvv9q9kKrB8sYn1PfhVBP9nfHvDMI2/CDCvylBDaN1xHL+HdWaypvdYUndbxCoezHIZKoxAQfeRxUO7kVdagCFxnrhzS6Xwj8j/iBNEFR/JFvIAQf9Av7Vb+7nUksOni6NoXxijmXeoDIZ5OPZuFkZbx5uG1qJ18qz1DEY4kNISkgVTo2nCCIBtVQcIp2XK9hZxe0foDPl3iyKZQvJkfO3trKZt3geDwfpvThWZ
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|IA0PR11MB7212:EE_
+X-MS-Office365-Filtering-Correlation-Id: 29b40465-9a50-405e-ea6e-08db7401616b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2MfYA1slhC80sh47rovDRaPLYl4+CiDSQALPtDk/QvPrNk4KmJqbRt59/Nyhrv13Lo3zD3TokVUvUJ/fByEXzPwIECL4g6bNYeGWD27VroIA4vh2TjD4ni/IzVqHsJCjNFiKIqQJYHHGcbNig72hNBsm8uE8AHX+y1fZ7gb4LV1XpI5TAgLvqeppDojRjHFJ4n9dbxW8Subh+3qxX3pCFV9Cz9to3FmbDa1DXKjPHsYeUL1cStoHVgeuOBfjoNTgxpSaSfOt9oq/Fmeeoj3hObtXlwQa6YdWE8RdW18EldJWljmBE8nlJ0Jkftwp1aj7CloCQ5yt9noGYCJkVZ2opm/G5wYs0tczl5HeQe+hrpbmU+rPYr3b9Yw4DYLpO8NU+IHDWyvIlEpws3nQ3XpvkgMRNJT9HC5/smr3yXXh3NIM67ok/MBVhyJjdvpkQLq8eAoauxJPktcsbGaBTwR+i5HOKfhYCmuu2CbrgfqBV3tZKGiMebpVZoynamLPr8wiys6QQEC5WkwHB3poQWhzh0n2m4C5ec8ivHWOA1N1Udoz1MuhptEH4vtl30FqYkKSX1gnjGAOYRsmi+kVoY5hAP/DNVgEBLCQ1GevbyWL/5vXD55RzeMAElt6810IZ3DpwoGh4whLHcLHXHNwHadJUQ==
+X-Microsoft-Antispam-Message-Info: ZspaTnhT7sH6WHgCVosHOHDXE34fEuJK3FEcHBZ1pz/mQmT5zgCxqzvWBBw5oAQMnq9RY8h2QLbrNuNVub9huoPMxODeDqjyJHffAF5XZsImkRAHFXpe9pIf8rHNBE9YthPXswVHiiJjvQNvAbp1RAcL1lTSk9N86XRnLt+L5eVKRT8Vr9lCmSPHSXs6vC27yVhN3g4/Eg+f2iEkhPmKz0XuLLBNa5XR1WTuigUMX95OBCUZaSCdQeF4HTfCe1RD/8V9CZPUnn7kuF7z9KAnUXUn1tw7yZLITu7ZLCAgYgRo3rNAX0cz/30Zz4frmKBTEbUQmCOlpRZKuCg04Eilbc8gYoGc3h8FxLLjanVJLZx+yV3O0iZ9wNIAjvQCA9hmAvtaj+jQm93bifeQw1SlyO9TAw2oagWCoBVsGycx25oLXd+Kd3oyBpK10E+GDfhMe/1m3axn8U+GTksoxgPUpDHlUgkspLIiLPTvTp0FytSkojIhCqGMb5WV3U+uHScKtR8lih0W7P9+KDjK0q6DO2szdjfvUpymxQuPD+vghDgNVgdRnBx9hZT1O7iBOKaX
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6139.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(376002)(39860400002)(346002)(396003)(136003)(366004)(451199021)(33716001)(478600001)(86362001)(41300700001)(8936002)(6916009)(66946007)(66556008)(66476007)(316002)(8676002)(83380400001)(5660300002)(6486002)(6506007)(6666004)(6512007)(2906002)(4326008)(186003)(9686003)(26005)(82960400001)(38100700002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KEYVpBj/y4D6RjSIUpaDSllgYCqHSEQTnGVgePh1kvZ5wgQMBBs4QvESg15M?=
- =?us-ascii?Q?Aur2zdgcZvmYkyZJN40xs2YhQlcAmmkVdyQrO1rCXyQDgesgy9uWHfZKahMM?=
- =?us-ascii?Q?9Y+4O6EzCS0cu6hm/DcMJZXVYWHSiesfdKce0miC+I9Z9uBWtLHycvJGpeXZ?=
- =?us-ascii?Q?LEkNhoo4AQYsIJPjXg8CgmNlYekE8GfPcJpedGL68YQP1q7dLBDdM0clRxZR?=
- =?us-ascii?Q?gV8KfE3akaw3IVj000chEu5pM+4uby9/xTj8IySaHb2zzt5VZ4TcxOu5cUAO?=
- =?us-ascii?Q?Lx9ZYfrxpUslQ8Yp5uKRcqkcIDIdi1PlX5BkbCqim3I8JvitkhgzX3c2YHga?=
- =?us-ascii?Q?CzlK4G36N0mU4lBq51apOJQ+SncLxegZ3bi4rRVKjb751hd0imaqBM4BEi/N?=
- =?us-ascii?Q?uU9bWC6ZaE+A7BQ1zLbo9m5SxfQ+mpEQfG+tsFhtWQsiUCQ/xwe31okvKU7e?=
- =?us-ascii?Q?awsvvILSSuIjHqaDRoFY6ME1XiHrRNh8msDtKy/z7j9NLyaYBc5vQXvFMWEA?=
- =?us-ascii?Q?hHX94ve8+bTKfUQNlpGqkmcDsKgh75KS4QBTJcUIHV6wzb4mnJ7pV9V62WI1?=
- =?us-ascii?Q?4u7/nsS03rXcPSzt6jW+k7P2NJ+3ICu1YagYBDKmM6zFuY/kg/Y7CQrtq8GU?=
- =?us-ascii?Q?0MDi/ax/X7mqbFwzd6S50YdKmLthG6gubFLljT/dzZV1f/QLs+S0Cuyc31vv?=
- =?us-ascii?Q?pWPBT0lkSgc2m0MZyP4NgLnTObS6g9hBuxbwcGmh0e5lgbVA1AJnqcaNZnzj?=
- =?us-ascii?Q?tKZB4rOe9HLajRbPMlqgug7iXi4vFHECyK8pYM6ACDShLxVlJBs3Xe8UGloB?=
- =?us-ascii?Q?xht/qe7dDbgSMSD+YTIxrVu/DUWKzr+PReMT46AZ9ROcEKqh1SHdDA0qHuu7?=
- =?us-ascii?Q?w1mGrWOjMHWDVvksUW0Bm9enJaFW1qFPTwroTyNF32b7ViJErsy3tq+Vnil2?=
- =?us-ascii?Q?T9DalMNrEIA6ZqbUjIJeD8gVuPggORpwLXQW4Wwujx3lUvHsoZOxJBwpPtEl?=
- =?us-ascii?Q?qt+Cy9V8EXIQHT3UcRBY695n126HwLiGp8vS6Lz90SV/xj5hl5PCngmPtM2A?=
- =?us-ascii?Q?QME2N8928KuKvVzDdOwjIN7zzPqnRGIQIE9NgpLLx1Ptzzox2iY2+CmmwAIh?=
- =?us-ascii?Q?WmGJIS3NDlHXMbbqDYAjs9elC8fRsYHpGqtyv0AsxozbDR+05vWjBUdDRg2Z?=
- =?us-ascii?Q?unS9uNk6+YnTMSWVklhhucGHQZW/Qtpu1W2uRjYm21xqWaNuMdt4oKiQhvk?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-e3d53.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7af60408-3afd-4282-64ba-08db73ff5027
-X-MS-Exchange-CrossTenant-AuthSource: DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1uRDwALj/XX7cfPjqIODz6BDffHz9X33j5NF9Sbo297ViJPvA98BlS+QwW07?=
+ =?us-ascii?Q?D2nG/Dk0+ZSWaLrFbO22E2s9C3frU8D4fwN9q+G4MRYuxRk8AuQs6WxkKxro?=
+ =?us-ascii?Q?YItPbCW2MRzgpNm0dP6495tVo4jWFqJ35pKnRXtbLhYctdiDyF/7ud265KYg?=
+ =?us-ascii?Q?FMw9XCdIzWZTwiNfjcePdEpLMmwrTP44iVKTfKLnAIzq9gLqWv85V5fd68ho?=
+ =?us-ascii?Q?XBA50Y5A/5lTryPjxZg+Xm63t7WLOnyxwdxRkkph+fX10sDJ6F44HOyZTKsS?=
+ =?us-ascii?Q?JCA5Tn9wOmVsiyYqSP+RcJyRfsao7lw0XyI1o3tGtwPod60B9ojU2ZjAf7Z2?=
+ =?us-ascii?Q?W29cLwuj59O/yD00UIDGAi3FeTHIZmuZGsPyK9FloeiwteiWwtTrtKbB0WDR?=
+ =?us-ascii?Q?CfixdLrVhzmZwdyQSi3VYAa2RtyrCUCoK1QJE9WshW1PH+hMYGlk7KD9624i?=
+ =?us-ascii?Q?vjlk0eTBe750u1Otjd26Gry1/fCSyOimfxWGSgULSCKvKIoZoKlCta2WH2lw?=
+ =?us-ascii?Q?avRRKQXactmAcdWRyaDDK+mcNuwxNwjYobEGdBpYejFgHQuRk0B0z2HokP++?=
+ =?us-ascii?Q?uCcFHoWPguo9PuTTyPjC/NveeWbxPni7RZGHFfa0CjvP9VyMsHSGSl5EjsaC?=
+ =?us-ascii?Q?ld7mBb+SgRa2gcv1LXx9wu7AfBRaHrumPNSMPiM+RcDzAG9X/+jbgdvSruFu?=
+ =?us-ascii?Q?K/VpcVmf6BhxWMnELPg3+zuQRMU3hsPfZBVafsThupeL8isv3US2zFMBd3BC?=
+ =?us-ascii?Q?jrYGD7ETV4ziIVZCqhFJORayDWkV1QAzoBKYy6rYg/rOk9DdDGDZiIxsjLIR?=
+ =?us-ascii?Q?OH7Q0R6ngFGLPfi58f8lfTY+2odBduXoeQ2XMYfW3qvHfgvNbTV/xdGeApdK?=
+ =?us-ascii?Q?hstBvtaTR33ztXxjXZyrFU12HSwwuXy3AirMrs7yrEmb+GsJnPh0kTCfQeVP?=
+ =?us-ascii?Q?cboNA/FTRL+bEQcCjkQhBnFJre0NNgaH+Ffn/8P1e5dji6Eum8bQc05aC09B?=
+ =?us-ascii?Q?YnmAHPFMPKHO9yVYfKL9vHGMbEU6a8mGQuRYzINne22zfUFaaMPVTfyAt9Ze?=
+ =?us-ascii?Q?K1KeVvngBFAKKZytAKThBVfPfP5yIg5BoJ20OL56bxpKs2nRX6N2B/XtSP+f?=
+ =?us-ascii?Q?BBKzPBW82J9xVExMvpNJPnjsnPsCt3ArH5Xw3V3SYR1PC05WIP+qqt1SMHLF?=
+ =?us-ascii?Q?plLUEwiqXoWvcUOpXS72EhJ5hK6tB9aHpO9iHBT/ogn7n7EjeltU1G4V8Yji?=
+ =?us-ascii?Q?fL/0w/sfGFVdYRW06v3AW4ON8rxW7OxQFkdNio3O+tQKS8zv8w+8RVOAmRoT?=
+ =?us-ascii?Q?6Mb1yLWcHO0CNBZSuO1/017X5rifCl2z6Q7S+TLPrbRDqXOlc+KVyN2Uw108?=
+ =?us-ascii?Q?fepNAQrRdEtP05WluKBaOj6ROvCA92oZm4w7pPTiJAKX6NOz0sWRLOUm+LBN?=
+ =?us-ascii?Q?nGQIf5kLoHgRXPSmarIa0mGKKR1KEFIypODr2c5lfjrhdNrLntQ1EdWMP2LL?=
+ =?us-ascii?Q?DsGMRduP0jOGWQ2WN1wS+nCllVhU2pTVLRZc1aQi+QySq8ydWIArDoAkBiRz?=
+ =?us-ascii?Q?D0CA56AwRQGGoVByo1OSBbCG9LRJGhHawZSw+P51ctbedcZRS6FBgBJ+Pz9H?=
+ =?us-ascii?Q?mQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29b40465-9a50-405e-ea6e-08db7401616b
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2023 15:34:20.4591
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2023 15:49:08.3355
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P250MB0042
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wYgPjvE5CrURip8YDQnYCMvCouRYFoQijqtluJJjRp7ZccVRXPaVl7WeuXgxdUFPB9FXIXgeeEec+lMEvMACxvMonQZvtpgjGx8fzCDHQZM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7212
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Reading ECC status is failing.
+On Thu, Jun 22, 2023 at 04:37:21PM -0700, Kenneth Graunke wrote:
+>On Thursday, June 22, 2023 11:27:30 AM PDT Lucas De Marchi wrote:
+>> Most of the context workarounds tweak masked registers, but not all. For
+>> masked registers, when writing the value it's sufficient to just write
+>> the wa->set_bits since that will take care of both the clr and set bits
+>> as well as not overwriting other bits.
+>>
+>> However there are some workarounds, the registers are non-masked. Up
+>> until now the driver was simply emitting a MI_LOAD_REGISTER_IMM with the
+>> set_bits to program the register via the GPU in the WA bb. This has the
+>> side effect of overwriting the content of the register outside of bits
+>> that should be set and also doesn't handle the bits that should be
+>> cleared.
+>>
+>> Kenneth reported that on DG2, mesa was seeing a weird behavior due to
+>> the kernel programming of L3SQCREG5 in dg2_ctx_gt_tuning_init(). With
+>> the GPU idle, that register could be read via intel_reg as 0x00e001ff,
+>> but during a 3D workload it would change to 0x0000007f. So the
+>> programming of that tuning was affecting more than the bits in
+>> L3_PWM_TIMER_INIT_VAL_MASK. Matt Roper noticed the lack of rmw for the
+>> context workarounds due to the use of MI_LOAD_REGISTER_IMM.
+>>
+>> So, for registers that are not masked, read its value via mmio, modify
+>> and then set it in the buffer to be written by the GPU. This should take
+>> care in a simple way of programming just the bits required by the
+>> tuning/workaround. If in future there are registers that involved that
+>> can't be read by the CPU, a more complex approach may be required like
+>> a) issuing additional instructions to read and modify; or b) scan the
+>> golden context and patch it in place before saving it; or something
+>> else. But for now this should suffice.
+>>
+>> Scanning the context workarounds for all platforms, these are the
+>> impacted ones with the respective registers
+>>
+>> 	mtl: DRAW_WATERMARK
+>> 	mtl/dg2: XEHP_L3SQCREG5, XEHP_FF_MODE2
+>> 	gen12: GEN12_FF_MODE2
+>
+>Speaking of GEN12_FF_MODE2...there's a big scary comment above that
+>workaround write which says that register "will return the wrong value
+>when read."  I think with this patch, we'll start doing a RMW cycle for
+>the register, which could mix in some of this "wrong value".  The
+>comment mentions that the intention is to write the whole register,
+>as the default value is 0 for all fields.
 
-w25n02kv_ecc_get_status() is using on-stack buffer for
-SPINAND_GET_FEATURE_OP() output. It is not suitable for
-DMA needs of spi-mem.
+Good point. That also means we don't need to backport this patch to
+stable kernel to any gen12, since overwritting the other bits is
+actually the intended behavior.
 
-Fix this by using the spi-mem operations dedicated buffer
-spinand->scratchbuf.
+>
+>Maybe what we want to do is change gen12_ctx_gt_tuning_init to do
+>
+>    wa_write(wal, GEN12_FF_MODE2, FF_MODE2_TDS_TIMER_128);
+>
+>so it has a clear mask of ~0 instead of FF_MODE2_TDS_TIMER_MASK, and
 
-See
-spinand->scratchbuf:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/mtd/spinand.h?h=v6.3#n418
-spi_mem_check_op():
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spi-mem.c?h=v6.3#n199
+In order to ignore read back when verifying, we would still need to use
+wa_add(), but changing the mask. We don't have a wa_write() that ends up
+with { .clr = ~0, .read_mask = 0 }.
 
-Fixes: 6154c7a58348 ("mtd: spinand: winbond: add Winbond W25N02KV flash support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Olivier Maignial <olivier.maignial@hotmail.fr>
----
- drivers/mtd/nand/spi/winbond.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+	wa_add(wal,
+	       GEN12_FF_MODE2,
+	       ~0, FF_MODE2_TDS_TIMER_128,
+	       0, false);
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 3ad58cd284d8..f507e3759301 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -108,7 +108,7 @@ static int w25n02kv_ecc_get_status(struct spinand_device *spinand,
- {
- 	struct nand_device *nand = spinand_to_nand(spinand);
- 	u8 mbf = 0;
--	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, &mbf);
-+	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, spinand->scratchbuf);
- 
- 	switch (status & STATUS_ECC_MASK) {
- 	case STATUS_ECC_NO_BITFLIPS:
-@@ -126,7 +126,7 @@ static int w25n02kv_ecc_get_status(struct spinand_device *spinand,
- 		if (spi_mem_exec_op(spinand->spimem, &op))
- 			return nanddev_get_ecc_conf(nand)->strength;
- 
--		mbf >>= 4;
-+		mbf = *(spinand->scratchbuf) >> 4;
- 
- 		if (WARN_ON(mbf > nanddev_get_ecc_conf(nand)->strength || !mbf))
- 			return nanddev_get_ecc_conf(nand)->strength;
--- 
-2.34.1
+
+>then in this patch update your condition below from
+>
+>+		if (wa->masked_reg || wa->set == U32_MAX) {
+>
+>to
+>
+>+		if (wa->masked_reg || wa->set == U32_MAX || wa->clear == U32_MAX) {
+
+yeah... and maybe also warn if wa->read is 0, which means it's one
+of the registers we can't/shouldn't read from the CPU.
+
+>
+>because if we're clearing all bits then we don't care about doing a
+>read-modify-write either.
+
+thanks
+Lucas De Marchi
+
+>
+>--Ken
+
 
