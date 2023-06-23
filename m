@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46BE373B3D3
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3B9E73B3D4
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231245AbjFWJlL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 05:41:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59522 "EHLO
+        id S231608AbjFWJmK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 05:42:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231626AbjFWJlK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:41:10 -0400
+        with ESMTP id S231578AbjFWJmJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:42:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EAFF1FF9
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:41:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD75E1A3
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:42:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7F4C619CB
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:41:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6225C433C0;
-        Fri, 23 Jun 2023 09:41:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 731C1619DA
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:42:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8270CC433C8;
+        Fri, 23 Jun 2023 09:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687513267;
-        bh=WtYLjCbvYqhhjmVbMPHfmMbcpAC5vKXuX3Lgsa3dzdU=;
+        s=korg; t=1687513326;
+        bh=i2pymgD8btgxK1FvbMqZyZiczKkJyWL9GdX3yPUxbsg=;
         h=Subject:To:Cc:From:Date:From;
-        b=c6Ve+BRzPyi2HLql6jwffQ71lARIwlBNfXfaE9kYeXhW/9aV0fG3P7AIF6y8Jqet5
-         kJRHPhQ3jX17WyQY7UdabYJeHn6/6IqD5Xewld4130lmyhralPgJMg/7/MUcSv/9yq
-         RH9fPEzEYWNb2cafOL/z/mCh6jGdyypZG1FGfcpI=
-Subject: FAILED: patch "[PATCH] mmc: meson-gx: remove redundant mmc_request_done() call from" failed to apply to 4.14-stable tree
-To:     martin@geanix.com, ulf.hansson@linaro.org
+        b=S/kZSwfK738tMdv03HSGOVJ+XQhFgfe5vd+tgagWeGFH3e0eOQjpw9Xy82gmZlnnr
+         PHNw4tH2nPga3CVlwQyiF8BYNsOdfcEq290umohNEI5HEc4W1WmEg5YyIhnrVzxMhq
+         jvRh3vDRNkC85v1osfTJIsYTALItFI8wB8uwGNhg=
+Subject: FAILED: patch "[PATCH] mmc: meson-gx: fix deferred probing" failed to apply to 6.1-stable tree
+To:     s.shtylyov@omp.ru, neil.armstrong@linaro.org,
+        ulf.hansson@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 23 Jun 2023 11:40:56 +0200
-Message-ID: <2023062356-emote-submitter-c1ec@gregkh>
+Date:   Fri, 23 Jun 2023 11:42:04 +0200
+Message-ID: <2023062303-crazily-recent-78b0@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3c40eb8145325b0f5b93b8a169146078cb2c49d6
+git cherry-pick -x b8ada54fa1b83f3b6480d4cced71354301750153
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062356-emote-submitter-c1ec@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062303-crazily-recent-78b0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,100 +74,38 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3c40eb8145325b0f5b93b8a169146078cb2c49d6 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>
-Date: Wed, 7 Jun 2023 10:27:12 +0200
-Subject: [PATCH] mmc: meson-gx: remove redundant mmc_request_done() call from
- irq context
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From b8ada54fa1b83f3b6480d4cced71354301750153 Mon Sep 17 00:00:00 2001
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Date: Sat, 17 Jun 2023 23:36:12 +0300
+Subject: [PATCH] mmc: meson-gx: fix deferred probing
 
-The call to mmc_request_done() can schedule, so it must not be called
-from irq context. Wake the irq thread if it needs to be called, and let
-its existing logic do its work.
+The driver overrides the error codes and IRQ0 returned by platform_get_irq()
+to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the error
+codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
+in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
+so we now can safely ignore it...
 
-Fixes the following kernel bug, which appears when running an RT patched
-kernel on the AmLogic Meson AXG A113X SoC:
-[   11.111407] BUG: scheduling while atomic: kworker/0:1H/75/0x00010001
-[   11.111438] Modules linked in:
-[   11.111451] CPU: 0 PID: 75 Comm: kworker/0:1H Not tainted 6.4.0-rc3-rt2-rtx-00081-gfd07f41ed6b4-dirty #1
-[   11.111461] Hardware name: RTX AXG A113X Linux Platform Board (DT)
-[   11.111469] Workqueue: kblockd blk_mq_run_work_fn
-[   11.111492] Call trace:
-[   11.111497]  dump_backtrace+0xac/0xe8
-[   11.111510]  show_stack+0x18/0x28
-[   11.111518]  dump_stack_lvl+0x48/0x60
-[   11.111530]  dump_stack+0x18/0x24
-[   11.111537]  __schedule_bug+0x4c/0x68
-[   11.111548]  __schedule+0x80/0x574
-[   11.111558]  schedule_loop+0x2c/0x50
-[   11.111567]  schedule_rtlock+0x14/0x20
-[   11.111576]  rtlock_slowlock_locked+0x468/0x730
-[   11.111587]  rt_spin_lock+0x40/0x64
-[   11.111596]  __wake_up_common_lock+0x5c/0xc4
-[   11.111610]  __wake_up+0x18/0x24
-[   11.111620]  mmc_blk_mq_req_done+0x68/0x138
-[   11.111633]  mmc_request_done+0x104/0x118
-[   11.111644]  meson_mmc_request_done+0x38/0x48
-[   11.111654]  meson_mmc_irq+0x128/0x1f0
-[   11.111663]  __handle_irq_event_percpu+0x70/0x114
-[   11.111674]  handle_irq_event_percpu+0x18/0x4c
-[   11.111683]  handle_irq_event+0x80/0xb8
-[   11.111691]  handle_fasteoi_irq+0xa4/0x120
-[   11.111704]  handle_irq_desc+0x20/0x38
-[   11.111712]  generic_handle_domain_irq+0x1c/0x28
-[   11.111721]  gic_handle_irq+0x8c/0xa8
-[   11.111735]  call_on_irq_stack+0x24/0x4c
-[   11.111746]  do_interrupt_handler+0x88/0x94
-[   11.111757]  el1_interrupt+0x34/0x64
-[   11.111769]  el1h_64_irq_handler+0x18/0x24
-[   11.111779]  el1h_64_irq+0x64/0x68
-[   11.111786]  __add_wait_queue+0x0/0x4c
-[   11.111795]  mmc_blk_rw_wait+0x84/0x118
-[   11.111804]  mmc_blk_mq_issue_rq+0x5c4/0x654
-[   11.111814]  mmc_mq_queue_rq+0x194/0x214
-[   11.111822]  blk_mq_dispatch_rq_list+0x3ac/0x528
-[   11.111834]  __blk_mq_sched_dispatch_requests+0x340/0x4d0
-[   11.111847]  blk_mq_sched_dispatch_requests+0x38/0x70
-[   11.111858]  blk_mq_run_work_fn+0x3c/0x70
-[   11.111865]  process_one_work+0x17c/0x1f0
-[   11.111876]  worker_thread+0x1d4/0x26c
-[   11.111885]  kthread+0xe4/0xf4
-[   11.111894]  ret_from_fork+0x10/0x20
-
-Fixes: 51c5d8447bd7 ("MMC: meson: initial support for GX platforms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Hundebøll <martin@geanix.com>
-Link: https://lore.kernel.org/r/20230607082713.517157-1-martin@geanix.com
+Fixes: cbcaac6d7dd2 ("mmc: meson-gx-mmc: Fix platform_get_irq's error checking")
+Cc: stable@vger.kernel.org # v5.19+
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20230617203622.6812-3-s.shtylyov@omp.ru
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
 diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
-index b8514d9d5e73..f90b0fd8d8b0 100644
+index f90b0fd8d8b0..ee9a25b900ae 100644
 --- a/drivers/mmc/host/meson-gx-mmc.c
 +++ b/drivers/mmc/host/meson-gx-mmc.c
-@@ -991,11 +991,8 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
+@@ -1186,8 +1186,8 @@ static int meson_mmc_probe(struct platform_device *pdev)
+ 		return PTR_ERR(host->regs);
  
- 		if (data && !cmd->error)
- 			data->bytes_xfered = data->blksz * data->blocks;
--		if (meson_mmc_bounce_buf_read(data) ||
--		    meson_mmc_get_next_command(cmd))
--			ret = IRQ_WAKE_THREAD;
--		else
--			ret = IRQ_HANDLED;
-+
-+		return IRQ_WAKE_THREAD;
- 	}
+ 	host->irq = platform_get_irq(pdev, 0);
+-	if (host->irq <= 0)
+-		return -EINVAL;
++	if (host->irq < 0)
++		return host->irq;
  
- out:
-@@ -1007,9 +1004,6 @@ out:
- 		writel(start, host->regs + SD_EMMC_START);
- 	}
- 
--	if (ret == IRQ_HANDLED)
--		meson_mmc_request_done(host->mmc, cmd->mrq);
--
- 	return ret;
- }
- 
+ 	cd_irq = platform_get_irq_optional(pdev, 1);
+ 	mmc_gpio_set_cd_irq(mmc, cd_irq);
 
