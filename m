@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A97573B38E
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23DEC73B38F
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:29:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbjFWJ27 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 05:28:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53820 "EHLO
+        id S231253AbjFWJ3D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 05:29:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231466AbjFWJ26 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:28:58 -0400
+        with ESMTP id S231466AbjFWJ3C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:29:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 660EFBA
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:28:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD28910D
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:29:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFC4A619E5
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:28:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076D0C433C8;
-        Fri, 23 Jun 2023 09:28:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F7F9619E3
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:29:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4871AC433C0;
+        Fri, 23 Jun 2023 09:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687512536;
-        bh=IHqLXnIde+XwvRuSQj+ie3tVFvlZheKzAF1PFgsR0J4=;
+        s=korg; t=1687512539;
+        bh=Yc1NDv9YgFYw9c0No3h7oz8h+RcmQ3PDtD+Fjfq25G8=;
         h=Subject:To:Cc:From:Date:From;
-        b=zQMB9yunRSRQ8zDu5tQMCNLX32lEV1OqtRgXS18UJYf+dwfWCluJJtCcPRATBZyIj
-         G1ORPZF2/yWsl2x2tszBLoDvIn5pR/9oSykEhOjGoOhM75X85FNqcnr6tMiM/E+8l2
-         G+poD6t0g5siEjK8SQREUKsbzRDPs0SyTuWI2+aA=
-Subject: FAILED: patch "[PATCH] PCI: hv: Add a per-bus mutex state_lock" failed to apply to 4.19-stable tree
+        b=vsxvKR5JTH5HGt0h4F3YUhpqDo39toxpiM+PyUv8TUbhlJdDReO0q6el3N5g9gFUT
+         0sZmxHrlmTuW0ZtjSnqU4MH1MXbr5PPIQjXhIJEoI2FJEQDgfVhZ7TlKmgKAlj634S
+         Ud3B7G4ETB4xjZ6Zo5wf5LqJuhV/7ZFVE4r7Lhzw=
+Subject: FAILED: patch "[PATCH] PCI: hv: Add a per-bus mutex state_lock" failed to apply to 4.14-stable tree
 To:     decui@microsoft.com, lpieralisi@kernel.org, mikelley@microsoft.com,
         wei.liu@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 23 Jun 2023 11:28:50 +0200
-Message-ID: <2023062350-companion-debtless-8e8e@gregkh>
+Date:   Fri, 23 Jun 2023 11:28:52 +0200
+Message-ID: <2023062352-unrivaled-feline-e1a2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 067d6ec7ed5b49380688e06c1e5f883a71bef4fe
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062350-companion-debtless-8e8e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062352-unrivaled-feline-e1a2@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
