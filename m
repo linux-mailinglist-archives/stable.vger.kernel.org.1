@@ -2,92 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4937773AD52
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 01:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C21073AEBD
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 04:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231736AbjFVXqw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 22 Jun 2023 19:46:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57164 "EHLO
+        id S230008AbjFWCuX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 22 Jun 2023 22:50:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231601AbjFVXqv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 19:46:51 -0400
-Received: from smtp116.iad3a.emailsrvr.com (smtp116.iad3a.emailsrvr.com [173.203.187.116])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934D2E2
-        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 16:46:50 -0700 (PDT)
-X-Auth-ID: kenneth@whitecape.org
-Received: by smtp39.relay.iad3a.emailsrvr.com (Authenticated sender: kenneth-AT-whitecape.org) with ESMTPSA id 2E14E3FA4;
-        Thu, 22 Jun 2023 19:38:01 -0400 (EDT)
-From:   Kenneth Graunke <kenneth@whitecape.org>
-To:     intel-gfx@lists.freedesktop.org,
-        Lucas De Marchi <lucas.demarchi@intel.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Matt Roper <matthew.d.roper@intel.com>, stable@vger.kernel.org,
-        Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH 1/3] drm/i915/gt: Move wal_get_fw_for_rmw()
-Date:   Thu, 22 Jun 2023 16:37:59 -0700
-Message-ID: <24458277.F5hiQvuxAt@mizzik>
-In-Reply-To: <20230622182731.3765039-1-lucas.demarchi@intel.com>
-References: <20230622182731.3765039-1-lucas.demarchi@intel.com>
+        with ESMTP id S229685AbjFWCuW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 22 Jun 2023 22:50:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 944AA210E;
+        Thu, 22 Jun 2023 19:50:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BBDE61947;
+        Fri, 23 Jun 2023 02:50:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 50123C433C9;
+        Fri, 23 Jun 2023 02:50:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687488620;
+        bh=nil53usVHzZEl98eGBgwg8grEDlY3XKRAjW/MwQOux0=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=VX+fA4ahPQV2gOe12mGyaYILTu/CEGUPSFwCfnX072+QSJ44QLrmbFR9b5/oTWB61
+         oSX/Fo4LVWAtW6k8zC3aXWHy5+aABHTMZx9ovjmu/oGwqaOAk1IbmfC4RSHSSQtO2N
+         80o6sJ8FWX0KQiF4WYUo91YoegYRAg2IvO3jnofWgIah8auvX9djj7+bYRFrWlivdJ
+         P9UTU0BZVGqRuzPYD16b3H2qUIVJS2X3nN++Pfj3MWOgt7Bu9mUYCtsIlHuqAQcKhd
+         Xfnuqtyd5/XiFMmtu35lSNhB3mtpYOF3YVwFS4IsSXNN5676CwJ0vfoNYELrVO94UQ
+         4WLEkI5F8z6Hg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2C76DC395F1;
+        Fri, 23 Jun 2023 02:50:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3654635.B3pjK0ouWD";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-X-Classification-ID: a2f77604-44eb-471c-83ac-7c871bfb7d70-1-1
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 1/1] net: phy: dp83td510: fix kernel stall during netboot
+ in DP83TD510E PHY driver
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168748862017.32034.11932493767244915559.git-patchwork-notify@kernel.org>
+Date:   Fri, 23 Jun 2023 02:50:20 +0000
+References: <20230621043848.3806124-1-o.rempel@pengutronix.de>
+In-Reply-To: <20230621043848.3806124-1-o.rempel@pengutronix.de>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        stable@vger.kernel.org, kernel@pengutronix.de,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---nextPart3654635.B3pjK0ouWD
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Kenneth Graunke <kenneth@whitecape.org>
-Subject: Re: [PATCH 1/3] drm/i915/gt: Move wal_get_fw_for_rmw()
-Date: Thu, 22 Jun 2023 16:37:59 -0700
-Message-ID: <24458277.F5hiQvuxAt@mizzik>
-In-Reply-To: <20230622182731.3765039-1-lucas.demarchi@intel.com>
-References: <20230622182731.3765039-1-lucas.demarchi@intel.com>
-MIME-Version: 1.0
+Hello:
 
-On Thursday, June 22, 2023 11:27:29 AM PDT Lucas De Marchi wrote:
-> Move helper function to get all the forcewakes required by the wa list
-> to the top, so it can be re-used by other functions.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 21 Jun 2023 06:38:48 +0200 you wrote:
+> Fix an issue where the kernel would stall during netboot, showing the
+> "sched: RT throttling activated" message. This stall was triggered by
+> the behavior of the mii_interrupt bit (Bit 7 - DP83TD510E_STS_MII_INT)
+> in the DP83TD510E's PHY_STS Register (Address = 0x10). The DP83TD510E
+> datasheet (2020) states that the bit clears on write, however, in
+> practice, the bit clears on read.
 > 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  drivers/gpu/drm/i915/gt/intel_workarounds.c | 32 ++++++++++-----------
->  1 file changed, 16 insertions(+), 16 deletions(-)
+> [...]
 
-Patches 1 and 3 are:
+Here is the summary with links:
+  - [v2,1/1] net: phy: dp83td510: fix kernel stall during netboot in DP83TD510E PHY driver
+    https://git.kernel.org/netdev/net/c/fc0649395dca
 
-Reviewed-by: Kenneth Graunke <kenneth@whitecape.org>
-
---nextPart3654635.B3pjK0ouWD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE6OtbNAgc4e6ibv4ZW1vaBx1JzDgFAmSU21cACgkQW1vaBx1J
-zDjnFA//U/nDOsrzgqZo+472pK9esanusHc+zttV6T+Hiu2ArNKir9nikv5vlAq/
-PdK5ttI+n+rpT749bXaTEu00LIRkQvCd7hypf3ZPkdYuKpQNbbi8Ul+mWz9pWXrF
-DBQkRfB4t2Y0+BBuvMcFzJGPT5+a1wa/L+kNacBMSnZueD5AzwRr99cNofd7ZJAX
-OhMCIidq8f4m25GFRSO7U+/APAbZC2qzt+GMutwT4rbpW7fogMs48SmX5xy0xOUb
-DVq807pf4l4JKFdFJBeDPsskof232pGzvogLQ4ejMRsRmdgMbV7J3hWTk2GUlSL0
-SIgmc0SH42zDKx5T7uPnE5YrDCe8ot2BaDKYJEtuIn9OW7sKy9emZpNuXu5SqW5+
-bxvaWr4ft4JLUxxuefA5/z2AwtnwrZUzKVGM+Jsu8I9Hj4NBVhFqqsqK9mfQVt1U
-CHTyk3EQex4RgYx5p38cmA0ZdiIjfZx7GEg0HQ1jhe3eASvNxTPeJjEo6KnIwvKn
-ecSOhHFhJoya85EoplM+5DVzoFz5LHXzToBUCrfNctHbVamCFKTuiiye3C0G8yAf
-bYc55CcCaoPq0rOK4CRd2//KFO1+CDX9YdMO7IdObjwkAwqdbIoqOcKU/j2pjZ3f
-gMO0PYrF7yP1yttFngKyy4UezfF/36aYHoR+FVMsbnOBWNO4LFY=
-=kvk+
------END PGP SIGNATURE-----
-
---nextPart3654635.B3pjK0ouWD--
-
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
