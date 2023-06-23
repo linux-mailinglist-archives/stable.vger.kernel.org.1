@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2818273B373
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F40D673B375
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:25:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231382AbjFWJYi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 05:24:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52136 "EHLO
+        id S230379AbjFWJZQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 05:25:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231424AbjFWJYh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:24:37 -0400
+        with ESMTP id S230168AbjFWJZP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:25:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 132E61FE7
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:24:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C4F1BFC
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:25:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A654161949
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:24:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F16C433C0;
-        Fri, 23 Jun 2023 09:24:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4E11619DD
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:25:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03ADC433C8;
+        Fri, 23 Jun 2023 09:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687512276;
-        bh=bviG6yyWKDcM//WsxnF9wxdQ+yvNkQNDwEjLRb0dly0=;
+        s=korg; t=1687512313;
+        bh=iRbeaWCyHjfz3k82NoHBShb6MHSqoicOgAYcvpL9f2w=;
         h=Subject:To:Cc:From:Date:From;
-        b=S2oIIWoBUp9opoQIbji4NUkBJTTeNBKVnBsfBkU4wKEFglCOTipV1qMNU+fQJYxvp
-         1R/I8cq+MrGxo6EjKbEQ4U6N2rWvhMY3a1GcQQiIGkYYEKGY5XaWqZlEJBVsKk4/xN
-         W5ph7/41KQdHu3xIoGuA186yhxYs35cCVxRBIq9w=
-Subject: FAILED: patch "[PATCH] nilfs2: prevent general protection fault in" failed to apply to 4.14-stable tree
-To:     konishi.ryusuke@gmail.com, akpm@linux-foundation.org,
-        stable@vger.kernel.org
+        b=IryJXmy7ZOYz33b/gVwPCJeoYwOzil8BYXOGd0uerSWnYFxG1gkHIGXbV05AT/YiQ
+         jXlinkbn1WNZpMYpplmRRsncRovPFiBqCPj4ElW1IlOTONXR7FRtirk5C99LCaQN/c
+         mfC55V2YXrRYVh2bwLi50KuwijEY0ivPLau95Wto=
+Subject: FAILED: patch "[PATCH] KVM: Avoid illegal stage2 mapping on invalid memory slot" failed to apply to 5.10-stable tree
+To:     gshan@redhat.com, david@redhat.com, hshuai@redhat.com,
+        oliver.upton@linux.dev, pbonzini@redhat.com, peterx@redhat.com,
+        seanjc@google.com, shahuang@redhat.com, zhenyzha@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 23 Jun 2023 11:24:23 +0200
-Message-ID: <2023062323-remarry-update-6cc4@gregkh>
+Date:   Fri, 23 Jun 2023 11:25:10 +0200
+Message-ID: <2023062310-preppy-grief-4bfb@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 782e53d0c14420858dbf0f8f797973c150d3b6d7
+git cherry-pick -x 2230f9e1171a2e9731422a14d1bbc313c0b719d1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062323-remarry-update-6cc4@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062310-preppy-grief-4bfb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,55 +75,118 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 782e53d0c14420858dbf0f8f797973c150d3b6d7 Mon Sep 17 00:00:00 2001
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Mon, 12 Jun 2023 11:14:56 +0900
-Subject: [PATCH] nilfs2: prevent general protection fault in
- nilfs_clear_dirty_page()
+From 2230f9e1171a2e9731422a14d1bbc313c0b719d1 Mon Sep 17 00:00:00 2001
+From: Gavin Shan <gshan@redhat.com>
+Date: Thu, 15 Jun 2023 15:42:59 +1000
+Subject: [PATCH] KVM: Avoid illegal stage2 mapping on invalid memory slot
 
-In a syzbot stress test that deliberately causes file system errors on
-nilfs2 with a corrupted disk image, it has been reported that
-nilfs_clear_dirty_page() called from nilfs_clear_dirty_pages() can cause a
-general protection fault.
+We run into guest hang in edk2 firmware when KSM is kept as running on
+the host. The edk2 firmware is waiting for status 0x80 from QEMU's pflash
+device (TYPE_PFLASH_CFI01) during the operation of sector erasing or
+buffered write. The status is returned by reading the memory region of
+the pflash device and the read request should have been forwarded to QEMU
+and emulated by it. Unfortunately, the read request is covered by an
+illegal stage2 mapping when the guest hang issue occurs. The read request
+is completed with QEMU bypassed and wrong status is fetched. The edk2
+firmware runs into an infinite loop with the wrong status.
 
-In nilfs_clear_dirty_pages(), when looking up dirty pages from the page
-cache and calling nilfs_clear_dirty_page() for each dirty page/folio
-retrieved, the back reference from the argument page to "mapping" may have
-been changed to NULL (and possibly others).  It is necessary to check this
-after locking the page/folio.
+The illegal stage2 mapping is populated due to same page sharing by KSM
+at (C) even the associated memory slot has been marked as invalid at (B)
+when the memory slot is requested to be deleted. It's notable that the
+active and inactive memory slots can't be swapped when we're in the middle
+of kvm_mmu_notifier_change_pte() because kvm->mn_active_invalidate_count
+is elevated, and kvm_swap_active_memslots() will busy loop until it reaches
+to zero again. Besides, the swapping from the active to the inactive memory
+slots is also avoided by holding &kvm->srcu in __kvm_handle_hva_range(),
+corresponding to synchronize_srcu_expedited() in kvm_swap_active_memslots().
 
-So, fix this issue by not calling nilfs_clear_dirty_page() on a page/folio
-after locking it in nilfs_clear_dirty_pages() if the back reference
-"mapping" from the page/folio is different from the "mapping" that held
-the page/folio just before.
+  CPU-A                    CPU-B
+  -----                    -----
+                           ioctl(kvm_fd, KVM_SET_USER_MEMORY_REGION)
+                           kvm_vm_ioctl_set_memory_region
+                           kvm_set_memory_region
+                           __kvm_set_memory_region
+                           kvm_set_memslot(kvm, old, NULL, KVM_MR_DELETE)
+                             kvm_invalidate_memslot
+                               kvm_copy_memslot
+                               kvm_replace_memslot
+                               kvm_swap_active_memslots        (A)
+                               kvm_arch_flush_shadow_memslot   (B)
+  same page sharing by KSM
+  kvm_mmu_notifier_invalidate_range_start
+        :
+  kvm_mmu_notifier_change_pte
+    kvm_handle_hva_range
+    __kvm_handle_hva_range
+    kvm_set_spte_gfn            (C)
+        :
+  kvm_mmu_notifier_invalidate_range_end
 
-Link: https://lkml.kernel.org/r/20230612021456.3682-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000da4f6b05eb9bf593@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fix the issue by skipping the invalid memory slot at (C) to avoid the
+illegal stage2 mapping so that the read request for the pflash's status
+is forwarded to QEMU and emulated by it. In this way, the correct pflash's
+status can be returned from QEMU to break the infinite loop in the edk2
+firmware.
 
-diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
-index 5cf30827f244..b4e54d079b7d 100644
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -370,7 +370,15 @@ void nilfs_clear_dirty_pages(struct address_space *mapping, bool silent)
- 			struct folio *folio = fbatch.folios[i];
+We tried a git-bisect and the first problematic commit is cd4c71835228 ("
+KVM: arm64: Convert to the gfn-based MMU notifier callbacks"). With this,
+clean_dcache_guest_page() is called after the memory slots are iterated
+in kvm_mmu_notifier_change_pte(). clean_dcache_guest_page() is called
+before the iteration on the memory slots before this commit. This change
+literally enlarges the racy window between kvm_mmu_notifier_change_pte()
+and memory slot removal so that we're able to reproduce the issue in a
+practical test case. However, the issue exists since commit d5d8184d35c9
+("KVM: ARM: Memory virtualization setup").
+
+Cc: stable@vger.kernel.org # v3.9+
+Fixes: d5d8184d35c9 ("KVM: ARM: Memory virtualization setup")
+Reported-by: Shuai Hu <hshuai@redhat.com>
+Reported-by: Zhenyu Zhang <zhenyzha@redhat.com>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+Message-Id: <20230615054259.14911-1-gshan@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 479802a892d4..65f94f592ff8 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -686,6 +686,24 @@ static __always_inline int kvm_handle_hva_range_no_flush(struct mmu_notifier *mn
  
- 			folio_lock(folio);
--			nilfs_clear_dirty_page(&folio->page, silent);
+ 	return __kvm_handle_hva_range(kvm, &range);
+ }
 +
-+			/*
-+			 * This folio may have been removed from the address
-+			 * space by truncation or invalidation when the lock
-+			 * was acquired.  Skip processing in that case.
-+			 */
-+			if (likely(folio->mapping == mapping))
-+				nilfs_clear_dirty_page(&folio->page, silent);
++static bool kvm_change_spte_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
++{
++	/*
++	 * Skipping invalid memslots is correct if and only change_pte() is
++	 * surrounded by invalidate_range_{start,end}(), which is currently
++	 * guaranteed by the primary MMU.  If that ever changes, KVM needs to
++	 * unmap the memslot instead of skipping the memslot to ensure that KVM
++	 * doesn't hold references to the old PFN.
++	 */
++	WARN_ON_ONCE(!READ_ONCE(kvm->mn_active_invalidate_count));
 +
- 			folio_unlock(folio);
- 		}
- 		folio_batch_release(&fbatch);
++	if (range->slot->flags & KVM_MEMSLOT_INVALID)
++		return false;
++
++	return kvm_set_spte_gfn(kvm, range);
++}
++
+ static void kvm_mmu_notifier_change_pte(struct mmu_notifier *mn,
+ 					struct mm_struct *mm,
+ 					unsigned long address,
+@@ -707,7 +725,7 @@ static void kvm_mmu_notifier_change_pte(struct mmu_notifier *mn,
+ 	if (!READ_ONCE(kvm->mmu_invalidate_in_progress))
+ 		return;
+ 
+-	kvm_handle_hva_range(mn, address, address + 1, pte, kvm_set_spte_gfn);
++	kvm_handle_hva_range(mn, address, address + 1, pte, kvm_change_spte_gfn);
+ }
+ 
+ void kvm_mmu_invalidate_begin(struct kvm *kvm, unsigned long start,
 
