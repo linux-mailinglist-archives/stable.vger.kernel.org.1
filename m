@@ -2,262 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE2F273B3E2
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B194973B402
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:46:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231530AbjFWJoF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 05:44:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60800 "EHLO
+        id S229501AbjFWJq4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 05:46:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbjFWJoF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:44:05 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56F681FF9
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:44:01 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-3090d3e9c92so658731f8f.2
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:44:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20221208.gappssmtp.com; s=20221208; t=1687513440; x=1690105440;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pcy5cyjz7F8/6l0R/EBOM5X+Qzp4ddDgR685z6/Mzss=;
-        b=ok4Ft78NCIBjvhxW6+v7MQjB26wxgcCwNpE1Ml0e0dES5zZCq7apHWlDFflAKjDAyc
-         h99BcsaBrDSYbom6kNsNjhUDrV14INYkboViGd7fIqL3q7IB+ZPqawgGMT4ekZA7STgx
-         IViXmHCmEnAUn9oVFg9sioxPx2fEWXgsC7E6WJ27QCwNSfaG7Af+tV7QzRFqdCQrlLLB
-         RozewenzHz1pqcTU64hm3p6EDzwQNHwYwy/uD4FiRPYvUsCvhIsM3eym3p0h5Au+PJQA
-         BsfvNGWOI4rk+dvwRD53tzJRxJP9FUrrVDXCSQWqJ262Ub+4UgQ2ELAwJhgG9cyDZDNZ
-         SgWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687513440; x=1690105440;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pcy5cyjz7F8/6l0R/EBOM5X+Qzp4ddDgR685z6/Mzss=;
-        b=ZOnsr+LRyMWFatJoeHrpg+oTTl8H8mpn1egIzDFLSrDqdHGOigdGR8H6qDz/ZBW/Un
-         2XHVT2bt3fxeqXV+0aOfKuCwuDa5vwHI00LVm/BpVLK1nhvZiQXH8hPOQMAuJYTFnJhO
-         GlF/un17c/LSy7vku5FfGBzN2mzkrVfEmhr1VN3jIniVht5FlTaDWViKpIMRpfoaI35m
-         vz8wuX1ptpL/+mRhcVXII59AG7mCOSreDVPu1XTZAVuw203vpbqRB37qbWGvTU1nnNkG
-         DHIqN2Wyd3D/+GLPWHLo5kRweM5WnbJI/dHbyujQMkOtYuRLJIQEfL14PISol+9Wn5/R
-         hxeg==
-X-Gm-Message-State: AC+VfDx/3GlxcCm8rYyOlLgvmFt7i75azcnIMuJGgQelPV3H58EN46QT
-        eieHe+qOy57URfJgdSUVMFdgqw==
-X-Google-Smtp-Source: ACHHUZ7DMQ7qm38AjWRARvBdOxeZdZfTwYAdbda1YDLhCgkTQvc+wurTdcmndV+S22IzJxbEHx6UJA==
-X-Received: by 2002:a5d:58ea:0:b0:30f:bafb:2478 with SMTP id f10-20020a5d58ea000000b0030fbafb2478mr19835564wrd.42.1687513439618;
-        Fri, 23 Jun 2023 02:43:59 -0700 (PDT)
-Received: from localhost (host-213-179-129-39.customer.m-online.net. [213.179.129.39])
-        by smtp.gmail.com with ESMTPSA id o8-20020a5d4a88000000b003068f5cca8csm9069659wrq.94.2023.06.23.02.43.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jun 2023 02:43:58 -0700 (PDT)
-Date:   Fri, 23 Jun 2023 11:43:57 +0200
-From:   Jiri Pirko <jiri@resnulli.us>
-To:     souradeep chakrabarti <schakrabarti@linux.microsoft.com>
-Cc:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
-        sharmaajay@microsoft.com, leon@kernel.org, cai.huoqing@linux.dev,
-        ssengar@linux.microsoft.com, vkuznets@redhat.com,
-        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org, stable@vger.kernel.org,
-        schakrabarti@microsoft.com
-Subject: Re: [PATCH V2 net] net: mana: Fix MANA VF unload when host is
- unresponsive
-Message-ID: <ZJVpXR52RQxdYRY+@nanopsycho>
-References: <1687505355-29212-1-git-send-email-schakrabarti@linux.microsoft.com>
+        with ESMTP id S230168AbjFWJqy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:46:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95544118
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:46:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2ACA8619DA
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:46:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AD1C433C8;
+        Fri, 23 Jun 2023 09:46:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1687513605;
+        bh=QqyYl2PNsfTmeMAPaoZzm98miTiU3RvTLn7rGkrNIgM=;
+        h=Subject:To:Cc:From:Date:From;
+        b=RMO8EUiZpW89GRIO7DSOgAJKHWUWq0TlkFIaNN6vLWb1C2fZvN29TrTD0gJ/tRqNK
+         dA2iGxyeEBLJ0idH7tA+G3Nk6oCIWWdxTCj/VLaE6xnG9fpZa/nkTJmXflYdw9I49W
+         Y9cfV64MqMrdUqRjikmpfOqEacrY0gEfi96btTvQ=
+Subject: FAILED: patch "[PATCH] bpf: ensure main program has an extable" failed to apply to 5.15-stable tree
+To:     kjlx@templeofstupid.com, ast@kernel.org, iii@linux.ibm.com,
+        yhs@fb.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Fri, 23 Jun 2023 11:46:42 +0200
+Message-ID: <2023062341-reunite-senior-f0c0@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1687505355-29212-1-git-send-email-schakrabarti@linux.microsoft.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Fri, Jun 23, 2023 at 09:29:15AM CEST, schakrabarti@linux.microsoft.com wrote:
->From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
->
->This patch addresses  the VF unload issue, where mana_dealloc_queues()
 
-double space here    ^^
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
->gets stuck in infinite while loop, because of host unresponsiveness.
->It adds a timeout in the while loop, to fix it.
->
->Also this patch adds a new attribute in mana_context, which gets set when
->mana_hwc_send_request() hits a timeout because of host unresponsiveness.
->This flag then helps to avoid the timeouts in successive calls.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-You aparently combine 2 patches together. Please split.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0108a4e9f3584a7a2c026d1601b0682ff7335d95
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062341-reunite-senior-f0c0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-
->
->Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-
-Please provide a "Fixes" tag with pointer to the commit that introduced
-the problem.
+Possible dependencies:
 
 
->---
->V1 -> V2:
->* Added net branch
->* Removed the typecasting to (struct mana_context*) of void pointer
->* Repositioned timeout variable in mana_dealloc_queues()
->* Repositioned vf_unload_timeout in mana_context struct, to utilise the
->  6 bytes hole
->---
-> .../net/ethernet/microsoft/mana/gdma_main.c   |  4 +++-
-> .../net/ethernet/microsoft/mana/hw_channel.c  | 12 ++++++++++-
-> drivers/net/ethernet/microsoft/mana/mana_en.c | 21 +++++++++++++++++--
-> include/net/mana/mana.h                       |  2 ++
-> 4 files changed, 35 insertions(+), 4 deletions(-)
->
->diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
->index 8f3f78b68592..6411f01be0d9 100644
->--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
->+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
->@@ -946,10 +946,12 @@ int mana_gd_deregister_device(struct gdma_dev *gd)
-> 	struct gdma_context *gc = gd->gdma_context;
-> 	struct gdma_general_resp resp = {};
-> 	struct gdma_general_req req = {};
->+	struct mana_context *ac;
-> 	int err;
-> 
-> 	if (gd->pdid == INVALID_PDID)
-> 		return -EINVAL;
->+	ac = gd->driver_data;
-> 
-> 	mana_gd_init_req_hdr(&req.hdr, GDMA_DEREGISTER_DEVICE, sizeof(req),
-> 			     sizeof(resp));
->@@ -957,7 +959,7 @@ int mana_gd_deregister_device(struct gdma_dev *gd)
-> 	req.hdr.dev_id = gd->dev_id;
-> 
-> 	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
->-	if (err || resp.hdr.status) {
->+	if ((err || resp.hdr.status) && !ac->vf_unload_timeout) {
-> 		dev_err(gc->dev, "Failed to deregister device: %d, 0x%x\n",
-> 			err, resp.hdr.status);
-> 		if (!err)
->diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
->index 9d1507eba5b9..492cb2c6e2cb 100644
->--- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
->+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
->@@ -1,8 +1,10 @@
-> // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-> /* Copyright (c) 2021, Microsoft Corporation. */
-> 
->+#include "asm-generic/errno.h"
-> #include <net/mana/gdma.h>
-> #include <net/mana/hw_channel.h>
->+#include <net/mana/mana.h>
-> 
-> static int mana_hwc_get_msg_index(struct hw_channel_context *hwc, u16 *msg_id)
-> {
->@@ -786,12 +788,19 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
-> 	struct hwc_wq *txq = hwc->txq;
-> 	struct gdma_req_hdr *req_msg;
-> 	struct hwc_caller_ctx *ctx;
->+	struct mana_context *ac;
-> 	u32 dest_vrcq = 0;
-> 	u32 dest_vrq = 0;
-> 	u16 msg_id;
-> 	int err;
-> 
-> 	mana_hwc_get_msg_index(hwc, &msg_id);
->+	ac = hwc->gdma_dev->driver_data;
->+	if (ac->vf_unload_timeout) {
->+		dev_err(hwc->dev, "HWC: vport is already unloaded.\n");
->+		err = -ETIMEDOUT;
->+		goto out;
->+	}
-> 
-> 	tx_wr = &txq->msg_buf->reqs[msg_id];
-> 
->@@ -825,9 +834,10 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
-> 		goto out;
-> 	}
-> 
->-	if (!wait_for_completion_timeout(&ctx->comp_event, 30 * HZ)) {
->+	if (!wait_for_completion_timeout(&ctx->comp_event, 5 * HZ)) {
-> 		dev_err(hwc->dev, "HWC: Request timed out!\n");
-> 		err = -ETIMEDOUT;
->+		ac->vf_unload_timeout = true;
-> 		goto out;
-> 	}
-> 
->diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
->index d907727c7b7a..cb2080b3a00c 100644
->--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
->+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
->@@ -2329,7 +2329,10 @@ static int mana_dealloc_queues(struct net_device *ndev)
-> {
-> 	struct mana_port_context *apc = netdev_priv(ndev);
-> 	struct gdma_dev *gd = apc->ac->gdma_dev;
->+	unsigned long timeout;
-> 	struct mana_txq *txq;
->+	struct sk_buff *skb;
->+	struct mana_cq *cq;
-> 	int i, err;
-> 
-> 	if (apc->port_is_up)
->@@ -2348,13 +2351,26 @@ static int mana_dealloc_queues(struct net_device *ndev)
-> 	 *
-> 	 * Drain all the in-flight TX packets
-> 	 */
->+
->+	timeout = jiffies + 120 * HZ;
-> 	for (i = 0; i < apc->num_queues; i++) {
-> 		txq = &apc->tx_qp[i].txq;
->-
->-		while (atomic_read(&txq->pending_sends) > 0)
->+		while (atomic_read(&txq->pending_sends) > 0 &&
->+		       time_before(jiffies, timeout)) {
-> 			usleep_range(1000, 2000);
->+		}
-> 	}
-> 
->+	for (i = 0; i < apc->num_queues; i++) {
->+		txq = &apc->tx_qp[i].txq;
->+		cq = &apc->tx_qp[i].tx_cq;
->+		while (atomic_read(&txq->pending_sends)) {
->+			skb = skb_dequeue(&txq->pending_skbs);
->+			mana_unmap_skb(skb, apc);
->+			napi_consume_skb(skb, cq->budget);
->+			atomic_sub(1, &txq->pending_sends);
->+		}
->+	}
-> 	/* We're 100% sure the queues can no longer be woken up, because
-> 	 * we're sure now mana_poll_tx_cq() can't be running.
-> 	 */
->@@ -2605,6 +2621,7 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
-> 		}
-> 	}
-> 
->+	ac->vf_unload_timeout = false;
 
-Pointless init. You have the struct zeroed during allocation.
+thanks,
 
+greg k-h
 
-> 	err = add_adev(gd);
-> out:
-> 	if (err)
->diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
->index 9eef19972845..5f5affdca1eb 100644
->--- a/include/net/mana/mana.h
->+++ b/include/net/mana/mana.h
->@@ -358,6 +358,8 @@ struct mana_context {
-> 
-> 	u16 num_ports;
-> 
->+	bool vf_unload_timeout;
->+
-> 	struct mana_eq *eqs;
-> 
-> 	struct net_device *ports[MAX_PORTS_IN_MANA_DEV];
->-- 
->2.34.1
->
->
+------------------ original commit in Linus's tree ------------------
+
+From 0108a4e9f3584a7a2c026d1601b0682ff7335d95 Mon Sep 17 00:00:00 2001
+From: Krister Johansen <kjlx@templeofstupid.com>
+Date: Mon, 12 Jun 2023 17:44:40 -0700
+Subject: [PATCH] bpf: ensure main program has an extable
+
+When subprograms are in use, the main program is not jit'd after the
+subprograms because jit_subprogs sets a value for prog->bpf_func upon
+success.  Subsequent calls to the JIT are bypassed when this value is
+non-NULL.  This leads to a situation where the main program and its
+func[0] counterpart are both in the bpf kallsyms tree, but only func[0]
+has an extable.  Extables are only created during JIT.  Now there are
+two nearly identical program ksym entries in the tree, but only one has
+an extable.  Depending upon how the entries are placed, there's a chance
+that a fault will call search_extable on the aux with the NULL entry.
+
+Since jit_subprogs already copies state from func[0] to the main
+program, include the extable pointer in this state duplication.
+Additionally, ensure that the copy of the main program in func[0] is not
+added to the bpf_prog_kallsyms table. Instead, let the main program get
+added later in bpf_prog_load().  This ensures there is only a single
+copy of the main program in the kallsyms table, and that its tag matches
+the tag observed by tooling like bpftool.
+
+Cc: stable@vger.kernel.org
+Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function programs")
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Acked-by: Yonghong Song <yhs@fb.com>
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Tested-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Link: https://lore.kernel.org/r/6de9b2f4b4724ef56efbb0339daaa66c8b68b1e7.1686616663.git.kjlx@templeofstupid.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 0dd8adc7a159..cf5f230360f5 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -17217,9 +17217,10 @@ static int jit_subprogs(struct bpf_verifier_env *env)
+ 	}
+ 
+ 	/* finally lock prog and jit images for all functions and
+-	 * populate kallsysm
++	 * populate kallsysm. Begin at the first subprogram, since
++	 * bpf_prog_load will add the kallsyms for the main program.
+ 	 */
+-	for (i = 0; i < env->subprog_cnt; i++) {
++	for (i = 1; i < env->subprog_cnt; i++) {
+ 		bpf_prog_lock_ro(func[i]);
+ 		bpf_prog_kallsyms_add(func[i]);
+ 	}
+@@ -17245,6 +17246,8 @@ static int jit_subprogs(struct bpf_verifier_env *env)
+ 	prog->jited = 1;
+ 	prog->bpf_func = func[0]->bpf_func;
+ 	prog->jited_len = func[0]->jited_len;
++	prog->aux->extable = func[0]->aux->extable;
++	prog->aux->num_exentries = func[0]->aux->num_exentries;
+ 	prog->aux->func = func;
+ 	prog->aux->func_cnt = env->subprog_cnt;
+ 	bpf_prog_jit_attempt_done(prog);
+
