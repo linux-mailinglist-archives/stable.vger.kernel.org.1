@@ -2,126 +2,171 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C9A173B2CC
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 10:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A33873B2F5
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 10:54:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230168AbjFWIip (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 04:38:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36616 "EHLO
+        id S229451AbjFWIyR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 04:54:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229958AbjFWIio (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 04:38:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9CB810C2
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 01:38:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687509481;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=ptejR8lbUvAso4nSZTEHuxuZqlk7XN4zpapla+ipUe8=;
-        b=b2hrh6v5WFHkyGvuPNyh9sNqvaBROayd+QDMhkq7aQb2lvLRM6t6kvgTPodUOu1NuH0k62
-        Wsm0JzBZGcQ+Myz8vUY5gtgotmJoXa0FvtsEBxiOxdfN+FsKfhoOi5UaBHJ13DKKrU2E5D
-        Gs4KYmxen3IjxUG7R3npedw8hvLTz3o=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-645-9IRqxVdFPPmco9PIfXr3bQ-1; Fri, 23 Jun 2023 04:37:53 -0400
-X-MC-Unique: 9IRqxVdFPPmco9PIfXr3bQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D49978CC202;
-        Fri, 23 Jun 2023 08:37:52 +0000 (UTC)
-Received: from mail.corp.redhat.com (unknown [10.45.225.205])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 4050740C6CD1;
-        Fri, 23 Jun 2023 08:37:51 +0000 (UTC)
-Date:   Fri, 23 Jun 2023 10:37:48 +0200
-From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Filipe =?utf-8?B?TGHDrW5z?= <lains@riseup.net>,
-        Bastien Nocera <hadess@hadess.net>,
-        Jiri Kosina <jikos@kernel.org>, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] HID: logitech-hidpp: rework one more time the retries
- attempts
-Message-ID: <qbvmv3eexohswyagmllfh3xsxoftwa3wbmsdafmwak2bxlnlft@jz74dijlfxlz>
-References: <20230621-logitech-fixes-v1-1-32e70933c0b0@redhat.com>
- <2023062156-trespass-pandemic-7f4f@gregkh>
+        with ESMTP id S230009AbjFWIyQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 04:54:16 -0400
+Received: from esa5.hgst.iphmx.com (esa5.hgst.iphmx.com [216.71.153.144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED28D10C1;
+        Fri, 23 Jun 2023 01:54:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1687510455; x=1719046455;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=+qz+W3cPpCADCJLvLvBmU74bNuVE0Tjtx2bxexKlSDI=;
+  b=Kxpm8JJgTd/oJk7V3UvHUIfj6Lalj1mpMoO+GDYfEW3LDxbkn0fSXCJA
+   qxM32KNXFwwiVR9eJNDkzZcR5uvQVUfRtH6xj4DOUGerEHseBpanpqxAp
+   Cgj9xyeBmW9T95LigCOWu+nFUoId4FcEcFODpoibwx6IKVcRdJTpnh8la
+   mS0RIldpw4R0f1Ktg3uuISg6mP7wMUelBI/dihLNiYh5UHHgWurnenvmX
+   dJOBTu2k9UFs+CYygAVksxeAjuR8Ak++XqGaooyikX6KcGMQZ4JwQon1d
+   J13W/iZ/8ehgdS6chi2PtYYgtSVze1/Fu9tNHSvRuzOMC5nL10tmucBoo
+   w==;
+X-IronPort-AV: E=Sophos;i="6.01,151,1684771200"; 
+   d="scan'208";a="236044863"
+Received: from mail-bn7nam10lp2107.outbound.protection.outlook.com (HELO NAM10-BN7-obe.outbound.protection.outlook.com) ([104.47.70.107])
+  by ob1.hgst.iphmx.com with ESMTP; 23 Jun 2023 16:54:08 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=e8bKz9/0Dea796rRu0V0ZTEl3TUYKTIQw3F2I6xm+WUdeEFMJ5XzB0vRZqQJo/l4I3vmSaY2c91s2c7QMABJOQwoA4jeE3/CtBr1nLLkXXFdDxaetAUjfu04KF4sSaWYDBgSnKEcNT5soJUaAbHWReZzmZ/C1r7Lwx6qrRgEfC4l7y51FNVSshOXi0zrZCbR3xjErR7k3n6SYqENey8U6dFVxdPKPhR5IxgyuSnls49I6a3o1wvSOHaYuoT76paDMRsneYJoTRlXcL1WkuUUenI/Nlntb5oYecDyLq/a+pTOpzs0MqRlCGDRgXo+kMBOizTQ9RlyBF/9G8hkLmaloQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+qz+W3cPpCADCJLvLvBmU74bNuVE0Tjtx2bxexKlSDI=;
+ b=dvGordNAXIm2Xal7fa9znvRbB+43T8TilGzLPK3ZhLyJuEMM57XWIQAQl9xJkFdQlaYiOq9lqfwOzJzRLltxFurhTF/Ofgd65n24oWHb1InYpk63HxITX+dyKGZ90J6u1QoeuBe13G0Gx+wM669KSceHEiMX96yRRTUGrbDKlnLEXT+mlGEqafsN6JGjkFn+RFDc/o/BrlZWdWvRjrhaJAXgE8yRaJu+nVNrvc5QF80tUv5M0UxGO+A46IAzxsgjnC2N5hFIEuh5OHsREfpj3cIqmez+GMr1XIiMHQ4bWZh4C4sxgEMVDt7BFjuMDrJFgXu+4zn5/Xqk7mY+uyxldw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
+ header.d=wdc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+qz+W3cPpCADCJLvLvBmU74bNuVE0Tjtx2bxexKlSDI=;
+ b=ESdkCxrPUma0tcMAy706r6wiN++Shm9KB2Zv8lUx9bVP2rCE+AWUidDS9zIaf27oJy8NpuSmMwTX37o7QINwv658ZL6hYrHFKGNd3go1NwQZ5+UYljPQ6pgngqeDev8dyShJCVbNNKV6daLuXs7v6QFK3TVDNCFZIZj6ZcCjdxA=
+Received: from DM8PR04MB8037.namprd04.prod.outlook.com (2603:10b6:8:f::6) by
+ BL3PR04MB7993.namprd04.prod.outlook.com (2603:10b6:208:344::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Fri, 23 Jun
+ 2023 08:54:06 +0000
+Received: from DM8PR04MB8037.namprd04.prod.outlook.com
+ ([fe80::bfa:d453:e7e9:8f98]) by DM8PR04MB8037.namprd04.prod.outlook.com
+ ([fe80::bfa:d453:e7e9:8f98%7]) with mapi id 15.20.6521.024; Fri, 23 Jun 2023
+ 08:54:06 +0000
+From:   Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+To:     Ming Lei <ming.lei@redhat.com>
+CC:     Jens Axboe <axboe@kernel.dk>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Jay Shin <jaeshin@redhat.com>, Tejun Heo <tj@kernel.org>,
+        Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH] block: make sure local irq is disabled when calling
+ __blkcg_rstat_flush
+Thread-Topic: [PATCH] block: make sure local irq is disabled when calling
+ __blkcg_rstat_flush
+Thread-Index: AQHZpOWyalexY3rv0EGLnyvh+ABlIq+YFruA
+Date:   Fri, 23 Jun 2023 08:54:06 +0000
+Message-ID: <s33v2z3pspz7vkgwawxetz3yudbhwbnnmkupzeqf62i6272mex@rks2oo3hur4h>
+References: <20230622084249.1208005-1-ming.lei@redhat.com>
+In-Reply-To: <20230622084249.1208005-1-ming.lei@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=wdc.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM8PR04MB8037:EE_|BL3PR04MB7993:EE_
+x-ms-office365-filtering-correlation-id: 24c02f94-aca1-4e08-de29-08db73c766e9
+wdcipoutbound: EOP-TRUE
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: fU3SvjRh/4T+OP+T5SWr1rw647YLLP8rywoNXcz7AWEcjHunltJlORan/0d/iyrJ2HfUEU3seJRkT5caj+7Xbbu+265GBoy2YaulHcKjwTAeYx31f+MUi+SVvRXQ11W1EDz1Momhdajs4myme+8uC/LC7X10xSpCQqeulRklbW9YNFoAW5CXHtFuTPeXC8bZgQs3dY0qro4ir/ZI4vdlEGgPHKK69POwOrlEmAnNAPmOvWKDegWby/ZupoqUcC2cTgL01VclM6Xk+Elo65jSBPft3/3E9J6e5sz7OBcSjZJ8TJDGJWSJPRAMscsF8dMEZCeczq07Y10/qsfDH8fibcnaYn49WXo50NkOfempoHTkktY0uO/edJ/mSqsMgc3cUdOJCY4sw++ybReLPJI8avcZuIQUtkzsZ3iri036+miE2GhjVZHmtLgyn20zfgSGevLtfRm64wV/JprnoDkZCubp0UqyEmiYswKjuRRpR+rBuxFAMkw+mFLN4Kzj6LtG/bzQoabka7BkZZAMZNCJt5yWZJeNO1ivWRkNi0eP1kZeqc8jkcDGSxSUsZc6nY/zewPbTHHW1JJxXkKs1rZBgY/T9kyFvxv4pIeZh6EQOQA=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR04MB8037.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(4636009)(366004)(396003)(39860400002)(376002)(136003)(346002)(451199021)(6486002)(38100700002)(38070700005)(86362001)(966005)(82960400001)(186003)(26005)(6506007)(6512007)(9686003)(71200400001)(33716001)(122000001)(83380400001)(8676002)(8936002)(2906002)(6916009)(316002)(4326008)(41300700001)(64756008)(66446008)(66556008)(91956017)(66946007)(76116006)(66476007)(478600001)(54906003)(5660300002)(44832011);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?iWHx7KAqmrU4ltwVP7mqNjmBA0jkWEGS6rP1Xr7CzXTd52DgfAV0C/bZHjVY?=
+ =?us-ascii?Q?0oaAeNGHkGC+V5hzU51OpGORgYjf3ymJoMsTPAvTlFYzrC+BIud8l+dW9JjF?=
+ =?us-ascii?Q?qvaYYZALDTo4Z3gUUmQqq0+VImnR5Xi45ZLAhybIjL1AZhnlHj5ofvpmY+Jy?=
+ =?us-ascii?Q?SqnyJr9h8sDoHyEFSQejWDKLXG2lwKKKrnztiRr/Oy0n33NxpAlF12B0VSF3?=
+ =?us-ascii?Q?mJagEuPtmIpiiSW85UK482V8fPD5QwIlQUzbekamN4HLoaY4I1h1/XVQ7y8W?=
+ =?us-ascii?Q?8PMpnCxSQb722h/QRCEalmCY+Y0gn1GCr2+TQO2wmd7HPFfHUQnZ83fu5u+c?=
+ =?us-ascii?Q?Cjbi8cLs8sGHLKgK2GQUiv2pgDSMxuW22FHj5Q2DeEStV/Nb5jPxf58I66gP?=
+ =?us-ascii?Q?J4sjxqZemEOnv/r31Lrm6nKJBrjQqH/2EJX30PGz3tvTASe8Np/3wCfWyPwv?=
+ =?us-ascii?Q?/zI6Diz1l+6UzBz7JF3ftLkz4xuJRZ4r7yl5e38Zne4KsvE4LsbJVBumCplZ?=
+ =?us-ascii?Q?fabgOc/3y3pO8U1Q/b4KSetytQZV3htlRYSGnyDHuF3NTQynRD8CBQx93rNf?=
+ =?us-ascii?Q?whCvoy4OuP6Z0GrxjQonxTn0fgBdG8Yl/dC1EJ5zXsm5RwTjItsMyfltpgK1?=
+ =?us-ascii?Q?bNQANzCGU23P2KuspCyjajaUalS+SJFRiX1HDNWgD5H3bWo5Nfr7k5c4fFYm?=
+ =?us-ascii?Q?+4YA9UKzSQbLZPdvKU2BAFVtjPzOlqzkYbgFZkNtTmKmaoV2+JejyHmg5fSo?=
+ =?us-ascii?Q?WHqOA9xT4+hnkPlP7Hvrk9VEyaiOI/9pgV1wQI51cXzLERzc73GntkVVVtEt?=
+ =?us-ascii?Q?G2mHyiRYwb736wEi4GPCC8BzY4rFQ/qZ3jAQuM1vNSdTNo5f+Yl0h20qLTur?=
+ =?us-ascii?Q?oojNYhWJ6rBbzvB4v3YEVUs9qBqYp69NVtKi225CpPFh6+MtGM5Dx7h9JSCc?=
+ =?us-ascii?Q?LgXIjdR0hyoHhdMBA803gC3PiX3KZr9ZI0fDY+xe2lml0M1uNix/Iu9S5l0m?=
+ =?us-ascii?Q?gDCLJs629wjsg5xntznsMgc5Lj3yVaAwFATC10s16Yq5SQeNS5QXE3w45hbv?=
+ =?us-ascii?Q?9U2kD+tD0va+pLYTuB00mDBQqL1pOY0FmA3aq7db0jJ/Yy7FvF0kwe+CpTG4?=
+ =?us-ascii?Q?C+TWaPSmzLf5X3iJ8+aoSuh6TVPzBOSoDa5B8tMPnUqnCwCu9ftkkT+RFjrB?=
+ =?us-ascii?Q?qEX8z63LFpINUiLkRKH7zaC++0CCLtGxkWQx9T40pkP3HzRlAe/gar13JWNA?=
+ =?us-ascii?Q?L+oznh9w/FGrWGMooK7SikVMGFSet74f1XKdIggbb54KTDQSneLtnzwFC8K+?=
+ =?us-ascii?Q?O49MLvnQR7tPqEwbsN1KWERV9ZTrPRQVV23Q6Gaf3lcFiQ0bTgT3N7t9krFz?=
+ =?us-ascii?Q?iuRv/yvZX+OGGr/d0yLoyUtCOedLGNjkbQF2dYH8dzkrysMp3kMQvRx024ao?=
+ =?us-ascii?Q?oAjxy3XsltjH04JPbgrB5DoRbvwywWzCP+9TMLhjl6+bA6qmq1wHMoGScVTQ?=
+ =?us-ascii?Q?0143b5X7HR1CYdiMZeJdhJSBJ1a2pR07r6HMJbYWyvMkx83N6/kMFOEgQvCu?=
+ =?us-ascii?Q?LcukKcQ8q1cs7vtXe3Q44snXIeUZekPb7kGKjXhLr6ML0hUTefp1hsy6siiT?=
+ =?us-ascii?Q?FIMtMGLJWpY8TxuohkRfZSo=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <DB490FE65D57414B955E76A457FA80D9@namprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023062156-trespass-pandemic-7f4f@gregkh>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: pt2Sm22m2Ib9Fz38Kdlp70jN+k4jhuBTAeC/oCuKkIFHoFq6U1xabcRlrn4uc7Wb4FZ20qOLIdx8sxPCgSPhky11iI2S72E4stNthr8xdiMm5zyemyL33e8HPyR39meJDgeCtQJziA0Xmpa3xy5TFKEoubMnkc0i7IywVG6uq8op4fdMq7CDXxihKFM+Zof0P7qa4oVFt1ZS9bEX3Ty+2/vk3khHeHk8lNjjCl+49u/QSmyVgUyFWT9xcdikl1FAfH6MFE6msXGFbYzvYx49R/wc55lmLCsEktaGHU82mpjmKkNMYNX8vgms2ecxdpepD5N6lvz8ie4oBVnjYAIkVbBvhDicHZFJmXoqXNG1wII0lRi1HkY7ls69U1s0Y7UoBBVuJanzFEYp5a1ZHIkDry6tnhQbG3Ca8VD54KsfZGMKV7OyRFdnjuVEWFvuhL3CfdECxMVrhKtPmnm83wPGORSfV3xDz49Y8w3s0PPeBj2UDPbv6ABEmDKBp7IfZobdfKYr+37gzQcuO5BQ2iJCfLXiVrSFpHwDBLyaNTDDVX3LT4X8jXMF57Y7sZhiJfSBFUMgYHlMf/Oaed3fnhe8/ooPzzNqXbUU/MqGdJumk3jX8/ZHbtXsc1EPv6ZuUfXVZDgRoOd8Zbd47d5LG/SqQk7U0lj2MXAKhj9jR3sbbWIyC/vczLSpJHbQWlYDTvf/My0ResiJf0qryH6QsrJfV0bmlY+vq/q9yxNB8oMFlxf/oH1194VgVHtrHgEmUFGPvXcSVxmgIsHm4TyR0w4urYO2CYplaxbldhWXJ2BrLf278GVnR5ChKF++xER2WwbhVgi3Cwmnqp5q+p9J+7iCgmGK1uoUwHHlt5dPEggAuDo=
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR04MB8037.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24c02f94-aca1-4e08-de29-08db73c766e9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jun 2023 08:54:06.5090
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Req9dD50cN+7e+PdHostb88Jp8RDucySqIyHwB1Y33e4mbxKQB+639g/DjlNPDBOrBvuDf06hHuPKkGl5HCEHgZzCYNot4yZGtReeFLbiiE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR04MB7993
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Jun 22, 2023 / 16:42, Ming Lei wrote:
+> When __blkcg_rstat_flush() is called from cgroup_rstat_flush*() code
+> path, interrupt is always disabled.
+>=20
+> When we start to flush blkcg per-cpu stats list in __blkg_release()
+> for avoiding to leak blkcg_gq's reference in commit 20cb1c2fb756
+> ("blk-cgroup: Flush stats before releasing blkcg_gq"), local irq
+> isn't disabled yet, then lockdep warning may be triggered because
+> the dependent cgroup locks may be acquired from irq(soft irq) handler.
+>=20
+> Fix the issue by disabling local irq always.
+>=20
+> Fixes: 20cb1c2fb756 ("blk-cgroup: Flush stats before releasing blkcg_gq")
+> Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+> Closes: https://lore.kernel.org/linux-block/pz2wzwnmn5tk3pwpskmjhli6g3qly=
+7eoknilb26of376c7kwxy@qydzpvt6zpis/T/#u
+> Cc: stable@vger.kernel.org
+> Cc: Jay Shin <jaeshin@redhat.com>
+> Cc: Tejun Heo <tj@kernel.org>
+> Cc: Waiman Long <longman@redhat.com>
+> Signed-off-by: Ming Lei <ming.lei@redhat.com>
 
-On Jun 21 2023, Greg KH wrote:
-> 
-> On Wed, Jun 21, 2023 at 11:42:30AM +0200, Benjamin Tissoires wrote:
-> > Make the code looks less like Pascal.
-> > 
-> > Extract the internal code inside a helper function, fix the
-> > initialization of the parameters used in the helper function
-> > (`hidpp->answer_available` was not reset and `*response` wasn't too),
-> > and use a `do {...} while();` loop.
-> > 
-> > Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when device is busy")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> > ---
-> > as requested by https://lore.kernel.org/all/CAHk-=wiMbF38KCNhPFiargenpSBoecSXTLQACKS2UMyo_Vu2ww@mail.gmail.com/
-> > This is a rewrite of that particular piece of code.
-> > ---
-> >  drivers/hid/hid-logitech-hidpp.c | 102 +++++++++++++++++++++++----------------
-> >  1 file changed, 61 insertions(+), 41 deletions(-)
-> > 
-> > diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-> > index dfe8e09a18de..3d1ffe199f08 100644
-> > --- a/drivers/hid/hid-logitech-hidpp.c
-> > +++ b/drivers/hid/hid-logitech-hidpp.c
-> > @@ -275,21 +275,20 @@ static int __hidpp_send_report(struct hid_device *hdev,
-> >  }
-> >  
-> >  /*
-> > - * hidpp_send_message_sync() returns 0 in case of success, and something else
-> > - * in case of a failure.
-> > - * - If ' something else' is positive, that means that an error has been raised
-> > - *   by the protocol itself.
-> > - * - If ' something else' is negative, that means that we had a classic error
-> > - *   (-ENOMEM, -EPIPE, etc...)
-> > + * Effectively send the message to the device, waiting for its answer.
-> > + *
-> > + * Must be called with hidpp->send_mutex locked
-> > + *
-> > + * Same return protocol than hidpp_send_message_sync():
-> > + * - success on 0
-> > + * - negative error means transport error
-> > + * - positive value means protocol error
-> >   */
-> > -static int hidpp_send_message_sync(struct hidpp_device *hidpp,
-> > +static int __do_hidpp_send_message_sync(struct hidpp_device *hidpp,
-> >  	struct hidpp_report *message,
-> >  	struct hidpp_report *response)
-> 
-> __must_hold(&hidpp->send_mutex)  ?
-> 
+Thanks Ming, I confirmed this avoids the WARN I reported. I also ran my tes=
+t
+sets and observed no regression. Looks good.
 
-Good point. I'll add this in v2.
-
-I'm still waiting for some feedback from the people who particpated in
-the original BZ, but the new bug is harder to reproduce. Anyway, there
-is no rush IMO.
-
-Cheers,
-Benjamin
-
+Tested-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>=
