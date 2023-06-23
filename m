@@ -2,177 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E24073BF1A
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 21:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F44173BF88
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 22:31:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231559AbjFWT4t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 15:56:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
+        id S230504AbjFWUbT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 16:31:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231389AbjFWT4s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 15:56:48 -0400
-X-Greylist: delayed 512 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 23 Jun 2023 12:56:47 PDT
-Received: from smtp127.ord1d.emailsrvr.com (smtp127.ord1d.emailsrvr.com [184.106.54.127])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB6610F2
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 12:56:47 -0700 (PDT)
-X-Auth-ID: kenneth@whitecape.org
-Received: by smtp24.relay.ord1d.emailsrvr.com (Authenticated sender: kenneth-AT-whitecape.org) with ESMTPSA id 11DEBA013F;
-        Fri, 23 Jun 2023 15:48:13 -0400 (EDT)
-From:   Kenneth Graunke <kenneth@whitecape.org>
-To:     Lucas De Marchi <lucas.demarchi@intel.com>
-Cc:     intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        Matt Roper <matthew.d.roper@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] drm/i915/gt: Fix context workarounds with non-masked regs
-Date:   Fri, 23 Jun 2023 12:48:13 -0700
-Message-ID: <2063427.kFxYfkjxrY@mizzik>
-In-Reply-To: <ehp36knxqfilobajjyk54oamk3n43s3cja5webx3q4jzm6xrlm@idrattdnr3fa>
-References: <20230622182731.3765039-1-lucas.demarchi@intel.com>
- <3337022.2OMYdDKdcH@mizzik>
- <ehp36knxqfilobajjyk54oamk3n43s3cja5webx3q4jzm6xrlm@idrattdnr3fa>
+        with ESMTP id S229583AbjFWUbS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 16:31:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C22802114
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 13:31:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 49E3861B0E
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 20:31:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450FBC433C8
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 20:31:15 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="EQfecjam"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1687552272;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/7RQGlAB89sk9l3x3cWa6v6OFgBLxqb3tUGFhtwpznI=;
+        b=EQfecjamyhZz8dUngN6+yzII2ySfTjPjBqBMzy2e2uvxybXVu+XT3OvXdCnDE8yT/r/ZGK
+        o0cfir4nQtCVjoFcul025xxZorp+59fbAj+Q9BZsy1zqIkmjAKFcniE3p/MkrWXH63bQmc
+        KxP261tWi8cLw2MHARmZePKviQLEjFo=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c36c6e0e (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+        for <stable@vger.kernel.org>;
+        Fri, 23 Jun 2023 20:31:11 +0000 (UTC)
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-791c27bb91dso804215241.0
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 13:31:11 -0700 (PDT)
+X-Gm-Message-State: AC+VfDx2lc1zIxUZFMTHqjplErMbLpN5LeQYF9TPusiGA+r3+qZ5wFGb
+        jBQ6uZwyUvqWUUl4zMAoUeP93vyrILlv/Wdu/1I=
+X-Google-Smtp-Source: ACHHUZ5LO3adpOPYHon4zqAOppyav/4fvfwfswqpT0SOQ/rHvf9wtJcG8Z8lqtsxNTbRdRLhJ3UmtHeGbmpZVZi0f2s=
+X-Received: by 2002:a05:6102:4421:b0:440:d5e2:7c72 with SMTP id
+ df33-20020a056102442100b00440d5e27c72mr3224744vsb.13.1687552269290; Fri, 23
+ Jun 2023 13:31:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1867622.CKnAoKXUt6";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-X-Classification-ID: 5fd2a755-ac59-4319-8aa7-670f466f52f6-1-1
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me>
+ <ZHFaFosKY24-L7tQ@debian.me> <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me>
+ <ZIcmpcEsTLXFaO0f@debian.me> <oEbkgJ-ImLxBDZDUTnIAGFWrRVnwBss3FOlalTpwrz83xWgESC9pcvNKiAVp9BzFgqZ0V-NIwzBZ7icKD8ynuIi_ZMtGt7URu3ftcSt16u4=@proton.me>
+ <e2ca75ef-d779-4bad-84a5-a9f262dbe213@lunn.ch> <FNzHwp9-AyweVwIMndmih6VuBD0nsyRp3OM72bmOxpeYszF680jFPJjENIknT32FeaqfVBtVSQFw-5mgE3ZXeksVD8VCFbxwojxP3mSZ9DQ=@proton.me>
+ <9517bb70-426c-0296-b426-f5b4f075f7c8@leemhuis.info> <CAHmME9p2ZLJUMq96vhkiSgvJkxP5BxE778MhY5Ou2WdxLVEJyg@mail.gmail.com>
+ <CAMj1kXHGkJsgArabs_mbzR3Y83s48qmf_aqb50k1LV1Hi5iNgA@mail.gmail.com> <CAHk-=wiiFHLSDe3JSSMm5EezpXXMFxYH=RwFLEbgsCKLjg4qqQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wiiFHLSDe3JSSMm5EezpXXMFxYH=RwFLEbgsCKLjg4qqQ@mail.gmail.com>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Fri, 23 Jun 2023 22:30:57 +0200
+X-Gmail-Original-Message-ID: <CAHmME9oC6Kq5qeoSmY5CdDrbGnkcp9sy-9ESXdpRtM8x1_6Hwg@mail.gmail.com>
+Message-ID: <CAHmME9oC6Kq5qeoSmY5CdDrbGnkcp9sy-9ESXdpRtM8x1_6Hwg@mail.gmail.com>
+Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, regressions@leemhuis.info,
+        Andrew Lunn <andrew@lunn.ch>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Sami Korkalainen <sami.korkalainen@proton.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---nextPart1867622.CKnAoKXUt6
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Kenneth Graunke <kenneth@whitecape.org>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Date: Fri, 23 Jun 2023 12:48:13 -0700
-Message-ID: <2063427.kFxYfkjxrY@mizzik>
-MIME-Version: 1.0
+Hi Linus, Ard,
 
-On Friday, June 23, 2023 8:49:05 AM PDT Lucas De Marchi wrote:
-> On Thu, Jun 22, 2023 at 04:37:21PM -0700, Kenneth Graunke wrote:
-> >On Thursday, June 22, 2023 11:27:30 AM PDT Lucas De Marchi wrote:
-> >> Most of the context workarounds tweak masked registers, but not all. For
-> >> masked registers, when writing the value it's sufficient to just write
-> >> the wa->set_bits since that will take care of both the clr and set bits
-> >> as well as not overwriting other bits.
-> >>
-> >> However there are some workarounds, the registers are non-masked. Up
-> >> until now the driver was simply emitting a MI_LOAD_REGISTER_IMM with the
-> >> set_bits to program the register via the GPU in the WA bb. This has the
-> >> side effect of overwriting the content of the register outside of bits
-> >> that should be set and also doesn't handle the bits that should be
-> >> cleared.
-> >>
-> >> Kenneth reported that on DG2, mesa was seeing a weird behavior due to
-> >> the kernel programming of L3SQCREG5 in dg2_ctx_gt_tuning_init(). With
-> >> the GPU idle, that register could be read via intel_reg as 0x00e001ff,
-> >> but during a 3D workload it would change to 0x0000007f. So the
-> >> programming of that tuning was affecting more than the bits in
-> >> L3_PWM_TIMER_INIT_VAL_MASK. Matt Roper noticed the lack of rmw for the
-> >> context workarounds due to the use of MI_LOAD_REGISTER_IMM.
-> >>
-> >> So, for registers that are not masked, read its value via mmio, modify
-> >> and then set it in the buffer to be written by the GPU. This should take
-> >> care in a simple way of programming just the bits required by the
-> >> tuning/workaround. If in future there are registers that involved that
-> >> can't be read by the CPU, a more complex approach may be required like
-> >> a) issuing additional instructions to read and modify; or b) scan the
-> >> golden context and patch it in place before saving it; or something
-> >> else. But for now this should suffice.
-> >>
-> >> Scanning the context workarounds for all platforms, these are the
-> >> impacted ones with the respective registers
-> >>
-> >> 	mtl: DRAW_WATERMARK
-> >> 	mtl/dg2: XEHP_L3SQCREG5, XEHP_FF_MODE2
-> >> 	gen12: GEN12_FF_MODE2
+On Fri, Jun 23, 2023 at 7:30=E2=80=AFPM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+> Maybe it would make more sense to write a new seed at kernel shutdown.
+> Not only do y ou presumably have a ton more entropy at that point, but
+> if things go sideways it's also less of a problem to have dead
+> machine.
+
+We always have to write when using so that we don't credit the same
+seed twice, so it's gotta be used at a stage when SetVariable is
+somewhat working.
+
+> On Fri, 23 Jun 2023 at 06:55, Ard Biesheuvel <ardb@kernel.org> wrote:
 > >
-> >Speaking of GEN12_FF_MODE2...there's a big scary comment above that
-> >workaround write which says that register "will return the wrong value
-> >when read."  I think with this patch, we'll start doing a RMW cycle for
-> >the register, which could mix in some of this "wrong value".  The
-> >comment mentions that the intention is to write the whole register,
-> >as the default value is 0 for all fields.
-> 
-> Good point. That also means we don't need to backport this patch to
-> stable kernel to any gen12, since overwritting the other bits is
-> actually the intended behavior.
-> 
-> >
-> >Maybe what we want to do is change gen12_ctx_gt_tuning_init to do
-> >
-> >    wa_write(wal, GEN12_FF_MODE2, FF_MODE2_TDS_TIMER_128);
-> >
-> >so it has a clear mask of ~0 instead of FF_MODE2_TDS_TIMER_MASK, and
-> 
-> In order to ignore read back when verifying, we would still need to use
-> wa_add(), but changing the mask. We don't have a wa_write() that ends up
-> with { .clr = ~0, .read_mask = 0 }.
-> 
-> 	wa_add(wal,
-> 	       GEN12_FF_MODE2,
-> 	       ~0, FF_MODE2_TDS_TIMER_128,
-> 	       0, false);
+> > Setting the variable from user space is ultimately a better choice, I
+> > think.
+>
+> Doing it from the kernel might still be an option, but I think it was
+> a huge mistake to do it *early*.
+>
+> Early boot is fragile to begin with when not everything is set up, and
+> *much* harder to debug.
+>
+> So not only are problems more likely to happen in the first place,
+> when they do happen they are a lot harder to figure out.
 
-Good point!  Though, I just noticed another bug here:
+I think it's still worth doing in the kernel - or trying to do, at least.
 
-gen12_ctx_workarounds_init sets FF_MODE2_GS_TIMER_224 to avoid hangs
-in the HS/DS unit, after gen12_ctx_gt_tuning_init set TDS_TIMER_128
-for performance.  One of those is going to clobber the other; we're
-likely losing the TDS tuning today.  Combining those workarounds into
-one place seems like an easy way to fix that.
+I wonder why SetVariable is failing on this system, and whether
+there's a way to workaround it. If we wind up needing to quirk around
+it somewhat, then I suspect your suggestion of not doing this as early
+in boot might be wise. Specifically, what if we do this after
+workqueues are available and do it from one of them? That's still
+early enough in boot that it makes the feature useful, but the
+scheduler is alive at that point. Then in the worst case, we just get
+a wq stall splat, which the user is able to report, and then can
+figure out what to do from there.
 
-> >then in this patch update your condition below from
-> >
-> >+		if (wa->masked_reg || wa->set == U32_MAX) {
-> >
-> >to
-> >
-> >+		if (wa->masked_reg || wa->set == U32_MAX || wa->clear == U32_MAX) {
-> 
-> yeah... and maybe also warn if wa->read is 0, which means it's one
-> of the registers we can't/shouldn't read from the CPU.
-> 
-> >
-> >because if we're clearing all bits then we don't care about doing a
-> >read-modify-write either.
-> 
-> thanks
-> Lucas De Marchi
-> 
-> >
-> >--Ken
-> 
-> 
-> 
-
-
---nextPart1867622.CKnAoKXUt6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE6OtbNAgc4e6ibv4ZW1vaBx1JzDgFAmSV9v0ACgkQW1vaBx1J
-zDjrZg//afm16ckrRi/gJT1PqXX0Vr6kGCfIH6eHyHu3tM2IFEUjbgTAUD8us+yf
-Vzao0Z+8ImfMZMWqYCqlkOdh+tzYq4uqOVpKnT37M6IR5eJ9084I3owuwijetrEn
-rekrPBwW+pDwzVMY8mVjZlnyU7NKoSuYsiWQrENy2POCVFd2yb/hIL3lKhzfeAs7
-x1kGY3K/mMGc3n5s7WgmSdOnR1n0E47ux8L3RkIb0quRTl6RUUpXuo23gwCvKahp
-+Xkg0Ze/qAp7e++XuzGbLdZOjKQFNu8TvhpNhh9+YQsQGfG9NqZR4NrETRacF5Ve
-ERFwhoyRZulx6nJEgXE4IyIHZFr5GJcv6/l17mmhHLsbP+70KL9zJzhpSN/LRiWN
-u6bw8tOvaM6GWpuAgmvXARzOevI3NuSmovPPynEMHdNjDfHmB9gdmWfKSjqNDJMx
-CNj8ucEhyYUCJQ8kd41l5MCgYu6+tOUOLxA4fC5YlG82AywCR6tiPacAlaShaXi6
-5dd9WTIig6EpFe0mfRM30X2BHo2rZgaeYqfK0vaiif63g0cOaoUKi83D4NMUQWYf
-gidVjzA+gi9gvXJou+xy63mNMrOaNLW1M5cuySpb08kZ1/y3Srrq8R+Mw8ePfSMt
-cKV/sXMObB8ASqcpZ5Yi6eg1ohmg8KJ4aUGYdNBw2fKAC83DdnQ=
-=Palk
------END PGP SIGNATURE-----
-
---nextPart1867622.CKnAoKXUt6--
-
-
-
+Jason
