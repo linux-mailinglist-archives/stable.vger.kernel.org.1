@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBF7F73B394
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAAC673B395
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 11:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231493AbjFWJ3n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 05:29:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53918 "EHLO
+        id S229451AbjFWJaI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 05:30:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230117AbjFWJ3m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:29:42 -0400
+        with ESMTP id S230117AbjFWJaH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 05:30:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C759D
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:29:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD57A9D
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 02:30:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B6A95619E3
-        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:29:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C122BC433C0;
-        Fri, 23 Jun 2023 09:29:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A96B619B0
+        for <stable@vger.kernel.org>; Fri, 23 Jun 2023 09:30:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5603DC433C0;
+        Fri, 23 Jun 2023 09:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687512580;
-        bh=2Th706VLdgMqUfsStVTUmbJ+OOydGgRTHnHS2x5AYOg=;
+        s=korg; t=1687512605;
+        bh=Inb3HDDkpxHp+BRltmiL3jhchw6PLydpKpoeQPEepLU=;
         h=Subject:To:Cc:From:Date:From;
-        b=FuBxGoHP90K2IS8q9Z98i8PIW+00WdGMPwIMh9kz3vpdnHjEFk0H1vxumL9Zoq0Yn
-         fWjQJHQ7SRpwWK32mCv+QZcHmwfDgZHyg9gYn71NdVv0jNq6wYvmZi5/9waPrQVgJx
-         SSt3u6ppIAOCy8nKH+LTIgCEi5l62lHIvPMg4gvY=
-Subject: FAILED: patch "[PATCH] io_uring/net: clear msg_controllen on partial sendmsg retry" failed to apply to 5.10-stable tree
+        b=ngM4vCVWVphyf05m33fsPVtNuYnjIYWfbV5mHCLHbPU3W/QrGlVQWVZ3sjvU29ps9
+         Yt4/YyjAkDacEQuYBrErU3ylGinxwOqSduPyCoEotA6UA8/EpBW9u3sru35JAY0+Qt
+         mGBePT89I0MoGuK1Et7gK3D7yzI+Q2DntR8IHfcA=
+Subject: FAILED: patch "[PATCH] io_uring/net: disable partial retries for recvmsg with cmsg" failed to apply to 5.15-stable tree
 To:     axboe@kernel.dk, metze@samba.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 23 Jun 2023 11:29:29 +0200
-Message-ID: <2023062329-stem-resize-ab95@gregkh>
+Date:   Fri, 23 Jun 2023 11:30:02 +0200
+Message-ID: <2023062302-supremacy-backboned-b263@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x b1dc492087db0f2e5a45f1072a743d04618dd6be
+git cherry-pick -x 78d0d2063bab954d19a1696feae4c7706a626d48
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062329-stem-resize-ab95@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062302-supremacy-backboned-b263@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,31 +73,51 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b1dc492087db0f2e5a45f1072a743d04618dd6be Mon Sep 17 00:00:00 2001
+From 78d0d2063bab954d19a1696feae4c7706a626d48 Mon Sep 17 00:00:00 2001
 From: Jens Axboe <axboe@kernel.dk>
-Date: Mon, 19 Jun 2023 09:35:34 -0600
-Subject: [PATCH] io_uring/net: clear msg_controllen on partial sendmsg retry
+Date: Mon, 19 Jun 2023 09:41:05 -0600
+Subject: [PATCH] io_uring/net: disable partial retries for recvmsg with cmsg
 
-If we have cmsg attached AND we transferred partial data at least, clear
-msg_controllen on retry so we don't attempt to send that again.
+We cannot sanely handle partial retries for recvmsg if we have cmsg
+attached. If we don't, then we'd just be overwriting the initial cmsg
+header on retries. Alternatively we could increment and handle this
+appropriately, but it doesn't seem worth the complication.
 
+Move the MSG_WAITALL check into the non-multishot case while at it,
+since MSG_WAITALL is explicitly disabled for multishot anyway.
+
+Link: https://lore.kernel.org/io-uring/0b0d4411-c8fd-4272-770b-e030af6919a0@kernel.dk/
 Cc: stable@vger.kernel.org # 5.10+
-Fixes: cac9e4418f4c ("io_uring/net: save msghdr->msg_control for retries")
 Reported-by: Stefan Metzmacher <metze@samba.org>
 Reviewed-by: Stefan Metzmacher <metze@samba.org>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
 diff --git a/io_uring/net.c b/io_uring/net.c
-index 51b0f7fbb4f5..c0924ab1ea11 100644
+index c0924ab1ea11..2bc2cb2f4d6c 100644
 --- a/io_uring/net.c
 +++ b/io_uring/net.c
-@@ -326,6 +326,8 @@ int io_sendmsg(struct io_kiocb *req, unsigned int issue_flags)
- 		if (ret == -EAGAIN && (issue_flags & IO_URING_F_NONBLOCK))
- 			return io_setup_async_msg(req, kmsg, issue_flags);
- 		if (ret > 0 && io_net_retry(sock, flags)) {
-+			kmsg->msg.msg_controllen = 0;
-+			kmsg->msg.msg_control = NULL;
- 			sr->done_io += ret;
- 			req->flags |= REQ_F_PARTIAL_IO;
- 			return io_setup_async_msg(req, kmsg, issue_flags);
+@@ -789,16 +789,19 @@ retry_multishot:
+ 	flags = sr->msg_flags;
+ 	if (force_nonblock)
+ 		flags |= MSG_DONTWAIT;
+-	if (flags & MSG_WAITALL)
+-		min_ret = iov_iter_count(&kmsg->msg.msg_iter);
+ 
+ 	kmsg->msg.msg_get_inq = 1;
+-	if (req->flags & REQ_F_APOLL_MULTISHOT)
++	if (req->flags & REQ_F_APOLL_MULTISHOT) {
+ 		ret = io_recvmsg_multishot(sock, sr, kmsg, flags,
+ 					   &mshot_finished);
+-	else
++	} else {
++		/* disable partial retry for recvmsg with cmsg attached */
++		if (flags & MSG_WAITALL && !kmsg->msg.msg_controllen)
++			min_ret = iov_iter_count(&kmsg->msg.msg_iter);
++
+ 		ret = __sys_recvmsg_sock(sock, &kmsg->msg, sr->umsg,
+ 					 kmsg->uaddr, flags);
++	}
+ 
+ 	if (ret < min_ret) {
+ 		if (ret == -EAGAIN && force_nonblock) {
 
