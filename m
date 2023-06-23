@@ -2,128 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAE2B73B028
-	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 07:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B13AF73B0DF
+	for <lists+stable@lfdr.de>; Fri, 23 Jun 2023 08:47:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230165AbjFWFjt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 01:39:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58002 "EHLO
+        id S229607AbjFWGre (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 02:47:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229802AbjFWFjs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 01:39:48 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2040.outbound.protection.outlook.com [40.107.93.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C56EE46;
-        Thu, 22 Jun 2023 22:39:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PXSrkdEHKOtpVLIMR03FjE5tSiYZMKO78gCQM76emQTGXVcfqxoTbG8pKKRdcPx9Vz5+/6sukuhuNUhyCWvckAywG2JXJt+T6JUxILChCBXNhCKOepOwtrOY60LLbL3Pkn3PVRQmdNlWA7vsOSW3ImKaUrOmr+n0DIclMDToXRFMPUxAl2pCgueezshCjJ7QiMWAZRfjo2HlJ4RD6C7N47JFtw12Ogmhu9npKBYNndY8WDd6fTqDd08kBkmJGZZGZeMJdlhuGZqoetF7UxDwXHrz5+LkiFp2tDvpGwi9FWoJ9V56+AEGChSqzdXLO5fki8xFmvoucZf2D1a3Q3zmeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5gtRnrPNa37pqPdvqErR1PNLHREKDMTrPn7bzP/Fops=;
- b=B5n5qI8i3tyVucWSSVrNdcH2yUebSSXWJIsWLei5j/ry7Vz+8FFfHsD7aC54H+VbgC3v/iytlAicV2pDpZgT35CCJH1X9MsDqqLblXEsrwaQ9mD+QL6ia2erNhpOEq1fFvW1uNzxNgtNMaQVw/bl6k+BI5pO2OPknFkCDRgTQGb6+HuMzWgsFsTvbAuxq3HPgMazU0q7vPhdpJ3VnYQUzjGZ6Ptsg2Hi8h2Pag2tY1eeFI24Px3TwYt6TwMHSkPzP/W1op6HCMGAbOg7QNSREojdF94Lsh4vgGtHHqGWEfsdNER7HTevp2LjaNGVTkLDU7uNZepSRMAVjWSAvifudA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5gtRnrPNa37pqPdvqErR1PNLHREKDMTrPn7bzP/Fops=;
- b=EWX0sNKTSrJOqhZ1F9MWQDv5mC2W9we8CFbzRRqP+uQMGASpinqymjRN0yjgSHvA0JNXW/37WwdpnopJdj+/j47o63vAc6b257OPaOsWMFbbQwJ2w52b4EYMmY5ywCcnT+9IIH/sp/mCXixAYDVrN2PmWLSeVCVsOYVf+ysTPm+XENZunkHMXuYY1rcb5AvRoQPRZ8xAbK/dEeuFC8/hmT9ePb2AaTNanP9us7F0mjBhAOzYMDspdcHueDYo+f1UasHTXoqajT4lFYjxueTWzCmQydCSKwSX6EUmSGusPHgvoq5IULAPtEpvTHyQLzYU5VHrfSMsmDhyxsRODOt4yw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BYAPR12MB3205.namprd12.prod.outlook.com (2603:10b6:a03:134::32)
- by DS0PR12MB7993.namprd12.prod.outlook.com (2603:10b6:8:14b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Fri, 23 Jun
- 2023 05:39:44 +0000
-Received: from BYAPR12MB3205.namprd12.prod.outlook.com
- ([fe80::bda0:2d44:96c3:c3fd]) by BYAPR12MB3205.namprd12.prod.outlook.com
- ([fe80::bda0:2d44:96c3:c3fd%4]) with mapi id 15.20.6521.024; Fri, 23 Jun 2023
- 05:39:44 +0000
-Message-ID: <7893c366-e6aa-d606-c3d6-e85f73a345e0@nvidia.com>
-Date:   Fri, 23 Jun 2023 11:09:32 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 2/8] ASoC: tegra: Fix AMX byte map
-Content-Language: en-US
-To:     Mark Brown <broonie@kernel.org>
-Cc:     robh+dt@kernel.org, krzk+dt@kernel.org, thierry.reding@gmail.com,
-        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-        jonathanh@nvidia.com, mkumard@nvidia.com, sheetal@nvidia.com,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S229451AbjFWGrd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 02:47:33 -0400
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75A9CE52
+        for <stable@vger.kernel.org>; Thu, 22 Jun 2023 23:47:31 -0700 (PDT)
+Date:   Fri, 23 Jun 2023 06:47:13 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tmb.nu;
+        s=protonmail; t=1687502846; x=1687762046;
+        bh=NjBF+7pqqYe64aAO0fArWosp/b7tBdc/NMgwZtdnJZ0=;
+        h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+        b=M7SzMhdGZtS8j0dmc2obDweSL82WG3qi4m7ku7vuMSYxvNLQUnQ68yW01DXtAHP8O
+         n8FDjMgOLxwfsr1wRxRHuJmjDfA/CoQuph73bwUa3aPFG+K8I1/Rq7kHY1Lx160dOw
+         fjuPl09qpgrSt3hYjVW4zhhuGzE88omAVCZL5Hw8=
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>,
         stable@vger.kernel.org
-References: <1687433656-7892-1-git-send-email-spujar@nvidia.com>
- <1687433656-7892-3-git-send-email-spujar@nvidia.com>
- <ad4b4dc9-7466-45a9-a008-c2301a7485dd@sirena.org.uk>
-From:   Sameer Pujar <spujar@nvidia.com>
-In-Reply-To: <ad4b4dc9-7466-45a9-a008-c2301a7485dd@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0068.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ad::14) To BYAPR12MB3205.namprd12.prod.outlook.com
- (2603:10b6:a03:134::32)
+From:   Thomas Backlund <tmb@tmb.nu>
+Subject: Re: [6.3.y 6.1.y 5.15.y] drm/amd/display: fix the system hang while disable PSR
+Message-ID: <b7a277fc-a60e-6de4-72c4-59aaeb1600e0@tmb.nu>
+Feedback-ID: 19711308:user:proton
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR12MB3205:EE_|DS0PR12MB7993:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71079866-6326-4e96-26b8-08db73ac3f87
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: J7r0FFPc3go5WaGTu3DVRsygBWkUWXkynp3q4xJWyaYtQWxN/1m/tDwRS4mYF2oYCTxdnznMThCys0NOmB5OPvNfgVdS5n3bzFZOgHbu5bIwB6VQDuf/PbZ+6tPEsqeQ89Rk2Ytdt8aMmwfbg7uTLulabNj+B4Iuhrs6E47NhTrt/FtT4wQEHjMinmwxPPNhJGTBzC+w/9MmWPtrhkKQruZd7CEDvHa2kVE8zK6hTTV8JU1fWeWnydwVGskIf0pFqJTigZKNbnIGuWHQx07xgndXFf8a5yA5AL0k3O01WDpXnT7QuCpvSfwdAA6R3KOvpfLBwknJMKl7pPRUpyqF3k6UvQAsSnVOlBDTNNcwtU1tcKev2ZI9Ser8RC6XeMFrRSW/8TXT/pu3ZGe+daDOLkigQxlzUZb5YXiA8PFuPenuF0IFXAREUoW8mPG4+mxoV3p9HJaYPoAgbxMeBB0NicBUXuHaTOKZYt1in/N5uQuSz9BIF4NMRckA0biP24xNihYJDxCN5QjhUYdXAX/Fy8ya4r523bzxZFIuonUZuhBHOtsChs3ic8CmlVp7GX3YgdAdfsDwYv9ZC9fkELq0qE07yBBw/2JxSVuif7zvZlRTiQQ2wzBPENW2VVGkbu+rw29Znap7Ixuq5/LlWEm51w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3205.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(366004)(39860400002)(376002)(346002)(136003)(451199021)(6486002)(6666004)(66946007)(66556008)(66476007)(478600001)(2616005)(26005)(186003)(6512007)(6506007)(53546011)(4326008)(8936002)(41300700001)(8676002)(6916009)(316002)(5660300002)(2906002)(7416002)(38100700002)(36756003)(31686004)(86362001)(31696002)(83380400001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aHR3RFE0VE12Yit4UTBkNTl0OTNsazcrZXUydkZWTTBkanY4ZHE2Z3J6ZXFt?=
- =?utf-8?B?cVk1eS92WUZtWi9qSlIyV2ZqSCtVYWtZc0xTN3c5U1A2U2ZPVTBIbXFmUXo2?=
- =?utf-8?B?MGZxTGtqTVg1UXRnRHpqZzVjdFZackg2N0FjaTZVQUYyaHJoRWJid2k4MVhw?=
- =?utf-8?B?bzNBc2MvUjJJRWhRbjdsR1pubWhpYjZxNFVpM0RkZlAzSWx1Y2hIenFBZUpv?=
- =?utf-8?B?eHpzSEZIdURFbi9UVzVnODJFTVZGRklQdnZvWWlOQ2tMZ09iK0s5UzRIOEdB?=
- =?utf-8?B?NW9haDVZQWF1R2dBaUh1U1JkenJHckNFUkowUmhPR1FYK2o2bzdhV2RGV2RT?=
- =?utf-8?B?VGVpajBJSXFoTTFmM1AvR2MzVWZFcEkycVpraGNQbkpIeWJhVW9qY1RTTW1E?=
- =?utf-8?B?eW10SktMM1B6MnZEaUpkREZTN3dXcmZGUlVvZEQ3T29ha0FDMm1zUko0NHl2?=
- =?utf-8?B?c3g5N1RjV3pwaW53S0JwWGZJRC9GYmVma2JyM2x6aHhkWkJQVklaQXlVcW41?=
- =?utf-8?B?WXNjSzZjSnM0Y2tSa2JxcXBoU1N2UnNzeGFmMVprcVc3bXlidWVsZVU1SHJU?=
- =?utf-8?B?d0NmcjYzcCtlQVVscFV0amJTbHdPYVZHeE5RMG5sL0pzZWlFSUNsdlFoM0xy?=
- =?utf-8?B?SVpFMWpqK1B0MDFvQm56MzBodU5DZXhmQ1o1eFR2QkVJbUQ5UGJreXVJZmFl?=
- =?utf-8?B?d0cxMTZEUnJtN3Z6WkRhQk90dnluaFp5Z2hMMTRYNndGUVVia3pCaTlVb0dz?=
- =?utf-8?B?NWpJNGsySXN4amxibGN4dmUyWk11WTJsMll2RGNpY1Ribkh3NWlTQURYeURj?=
- =?utf-8?B?eG1WWm1QSzJERFNYS1F0QnMyUlBCa3R0d3IrMk94dnZndVdvUU9YT2ZjUEhw?=
- =?utf-8?B?WDNZeStLanhBbGZrUTlpNC9XWTYxMjRFZGJpU3F6ZjQ5clhhZytYbHdhOXJm?=
- =?utf-8?B?KzV4VjFuTVlBY1lmaXQzcHFDdlBYZUsxWFRPNDNWNGJPazFCZkFWQTkzallS?=
- =?utf-8?B?QkJrZndRdTVyUzV6bi8vMUZkZ1hqSzRwRXhqa0FablJwSmt5UW9zeTB2QXRn?=
- =?utf-8?B?UmlyYjNQWFg2cXROWmQ0QkdCWEJYQkVDOGFGRkRCZWlLQTJmbWhlSEh6V2ha?=
- =?utf-8?B?TzkzNzh0bWVkdkRhSUplN2NuVzcvSVlNU2hWeTMwZ3ZDeWZDT1BzNm12djVY?=
- =?utf-8?B?cjRZYzlXL2hzU2dqeGFpd0h5Rm16MzdXUHJuQkk4RlZFUkNHYzFha3o4RDFR?=
- =?utf-8?B?QWk5emZ0aDRUa1lROFQxWmczR1hXbXBDY3RvaXFkaDJSQ1F5T25xQ3BZdFp1?=
- =?utf-8?B?Rml6bksyVGphcXVxR3cwODVudUdVbmhxcWRZaTZzNTZ2S0d1TkRrWXY2YzQr?=
- =?utf-8?B?a1k5VGUvRDdwZHgxRXBVa1ZTRSsyZXU4cnBpTnpDUUZVYS94M0hYNTRhbVh1?=
- =?utf-8?B?eGhVTWYzZ2xKYVFJajZkdjZGSjU3Y1c2NUYxMXpnT0FwZ2pBb0hISVBqcSsz?=
- =?utf-8?B?Z0VQUzRMbmVFcW9XSnR4TUQ2c2NTTTcvRGIvNWVLSlhzTUlaMTUwRHZqMXFE?=
- =?utf-8?B?MHZWRzJWeDVHalpWaStYSm9jU01FMEk0d1dCK1BYUFBtT1gwQTZIZ2g3bEdZ?=
- =?utf-8?B?c3ROdmppS284dW9GLzNJcWVHazM2YWRyL20zek50TXdKTEZMZzNid0lmQUs2?=
- =?utf-8?B?T0t4cjZSK0VWMlpHYlFHMGY3dWxYOWN2RFlob2NidFc2OUUvc05wWXA4akJV?=
- =?utf-8?B?NzJ3eWpxbkh1Qk90MWlhRjZVV1hBWXNKQTBocm11NHFHelhLMmhVSWwrNnlC?=
- =?utf-8?B?YURUbkdyS3NyK0pJWlBuNU1oVDE1Q3dHaWtYMDBnU0tMSFQxd0JweFFaaVdp?=
- =?utf-8?B?ZnpyOEozQktISmdHT3RLbmtxTDF0NVV5M3FTcXZXNjkreDZ1MmI0elJiT05z?=
- =?utf-8?B?cGJhVUlPVXZXNUlqRFk5c2FGWnFkbHFpdlh5WkFlMHI5Sk5WOVlFNkQrSlpn?=
- =?utf-8?B?KzVpTUhsYTBwc3RSMDJLOU9od215MTRySDVBK1FiUHRKQnEvMXBOWWlYNWht?=
- =?utf-8?B?UU5aU1FpMXpuVGtGcFlzU3ZUSDlONnA1Z2lwRnp5OUloTEduMklYMCtTVTlP?=
- =?utf-8?Q?su4LVqSHyw8JJR91O77DjP6Pi?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71079866-6326-4e96-26b8-08db73ac3f87
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3205.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2023 05:39:44.3791
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T7s2mLPj27aIf74YlhzTxWtNp+EEQeTeqp7TpNEQO8J6LS9U7wnyWzl5BsYjE982FMZcYR+92tdpmnGvRFvc1g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7993
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -131,63 +42,143 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Den 2023-06-20 kl. 00:16, skrev Limonciello, Mario:
+> Hi,
+>=20
+> ea2062dd1f03 ("drm/amd/display: fix the system hang while disable PSR")=
+=20
+> was tagged for stable, but failed to apply to 6.3.y, 6.1.y and 5.15.y.
+>=20
+> I've looked into the missing dependencies, and here are the dependencies=
+=20
+> needed for the stable backport:
+>=20
+> 5.15.y:
+> -------
+> 97ca308925a5 ("drm/amd/display: Add minimal pipe split transition state")
+> f7511289821f ("drm/amd/display: Use dc_update_planes_and_stream")
+> 81f743a08f3b ("drm/amd/display: Add wrapper to call planes and stream=20
+> update")
+> ea2062dd1f03 ("drm/amd/display: fix the system hang while disable PSR")
+>=20
+> 6.1.y / 6.3.y
+> -------------
+> ea2062dd1f03 ("drm/amd/display: fix the system hang while disable PSR")
+> f7511289821f ("drm/amd/display: Use dc_update_planes_and_stream")
+> 81f743a08f3b ("drm/amd/display: Add wrapper to call planes and stream=20
+> update")
+> ea2062dd1f03 ("drm/amd/display: fix the system hang while disable PSR")
+>=20
+
+Is there something missing in that series ?
+
+We get a  report of those patches on top of 6.3.9 failing on AMD STONEY=20
+(0x1002:0x98E4 0x1043:0x1FE0 0xEA) with:
+
+  ------------[ cut here ]------------
+  WARNING: CPU: 1 PID: 1248 at=20
+drivers/gpu/drm/amd/amdgpu/../display/dc/dce/dce_aux.c:393=20
+dce_aux_transfer_raw+0x731/0x760 [amdgpu]
+  Modules linked in: rfcomm ip6t_REJECT nf_reject_ipv6 xt_comment=20
+ip6table_mangle ip6table_nat ip6table_raw ip6table_filter ip6_tables=20
+xt_recent ipt_IFWLOG ipt_psd xt_set ip_set_hash_ip ip_set ipt_REJECT=20
+nf_reject_ipv4 xt_conntrack xt_hashlimit xt_addrtype xt_mark=20
+iptable_mangle iptable_nat xt_CT xt_tcpudp iptable_raw xt_NFLOG=20
+nfnetlink_log xt_LOG nf_log_syslog nf_nat_tftp nf_nat_snmp_basic=20
+nf_conntrack_snmp nf_nat_sip nf_nat_pptp nf_nat_irc nf_nat_h323=20
+nf_nat_ftp nf_nat_amanda ts_kmp nf_conntrack_amanda nf_nat=20
+nf_conntrack_sane nf_conntrack_tftp nf_conntrack_sip nf_conntrack_pptp=20
+nf_conntrack_netlink nfnetlink nf_conntrack_netbios_ns=20
+nf_conntrack_broadcast nf_conntrack_irc nf_conntrack_h323=20
+nf_conntrack_ftp nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4=20
+iptable_filter ccm af_packet qrtr cmac algif_hash algif_skcipher af_alg=20
+bnep nls_iso8859_1 nls_cp437 vfat fat dm_mirror dm_region_hash dm_log=20
+rtl8723be btcoexist rtl8723_common rtl_pci rtlwifi mac80211 uvcvideo uvc=20
+cfg80211 videobuf2_vmalloc videobuf2_memops
+   videobuf2_v4l2 kvm_amd btusb btmtk btrtl btbcm btintel ccp kvm=20
+videodev bluetooth snd_hda_codec_realtek snd_hda_codec_generic=20
+snd_hda_codec_hdmi snd_hda_intel snd_intel_dspcfg snd_intel_sdw_acpi=20
+videobuf2_common asus_nb_wmi mc ecdh_generic ecc snd_hda_codec asus_wmi=20
+ledtrig_audio sparse_keymap platform_profile irqbypass wmi_bmof=20
+sha1_generic r8169 rfkill libarc4 realtek i2c_piix4 mdio_devres=20
+snd_hda_core tpm_crb snd_hwdep libphy snd_pcm snd_timer snd fam15h_power=20
+k10temp soundcore tpm_tis tpm_tis_core tpm asus_wireless acpi_cpufreq=20
+input_leds joydev evdev sch_fq_codel fuse dm_mod loop configfs efivarfs=20
+dmi_sysfs ip_tables x_tables ipv6 crc_ccitt autofs4 sdhci_pci=20
+crc32_pclmul crc32c_intel polyval_clmulni cqhci sdhci polyval_generic=20
+gf128mul mmc_core xhci_pci xhci_pci_renesas xhci_hcd atkbd=20
+ghash_clmulni_intel vivaldi_fmap sha512_ssse3 aesni_intel crypto_simd=20
+cryptd serio_raw ehci_pci ehci_hcd sp5100_tco amdgpu i2c_algo_bit=20
+drm_ttm_helper ttm iommu_v2 drm_buddy gpu_sched drm_display_helper=20
+drm_kms_helper
+   video hid_multitouch drm wmi i2c_hid_acpi i2c_hid 8250_dw cec
+  CPU: 1 PID: 1248 Comm: Xorg Not tainted 6.3.9-desktop-1.mga9 #1
+  Hardware name: ASUSTeK COMPUTER INC. X441BA/X441BA, BIOS X441BA.310=20
+02/25/2020
+  RIP: 0010:dce_aux_transfer_raw+0x731/0x760 [amdgpu]
+  Code: 4c 10 00 8b 54 24 0c 89 e8 83 c5 01 41 88 14 04 3b 6c 24 04 72=20
+c9 e9 3e fd ff ff 3c 01 19 c0 83 e0 c0 83 c0 50 e9 72 f9 ff ff <0f> 0b=20
+b8 03 00 00 00 e9 77 ff ff ff b8 03 00 00 00 e9 6d ff ff ff
+  RSP: 0018:ffffa52801b8ba48 EFLAGS: 00010246
+  RAX: 0000000000000000 RBX: ffff934801cdec80 RCX: 0000000000000000
+  RDX: 0000000000000000 RSI: 00000000000098e4 RDI: ffff93480c700000
+  RBP: ffffa52801b8bac0 R08: 0000000000000000 R09: 000000000000000a
+  R10: 0000000000000001 R11: ffff93480c700010 R12: ffffa52801b8babc
+  R13: 0000000000000000 R14: 0000000000000000 R15: ffff934803816a30
+  FS:  00007f0dd47f82c0(0000) GS:ffff93480dc80000(0000)=20
+knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f298f3620d0 CR3: 0000000104d00000 CR4: 00000000001506e0
+  Call Trace:
+   <TASK>
+   ? dce_aux_transfer_raw+0x731/0x760 [amdgpu]
+   ? __warn+0x7d/0x130
+   ? dce_aux_transfer_raw+0x731/0x760 [amdgpu]
+   ? report_bug+0x16d/0x1a0
+   ? handle_bug+0x41/0x70
+   ? exc_invalid_op+0x13/0x60
+   ? asm_exc_invalid_op+0x16/0x20
+   ? dce_aux_transfer_raw+0x731/0x760 [amdgpu]
+   dm_dp_aux_transfer+0xa1/0x160 [amdgpu]
+   drm_dp_dpcd_access+0xad/0x130 [drm_display_helper]
+   drm_dp_dpcd_probe+0x3a/0xf0 [drm_display_helper]
+   drm_dp_dpcd_read+0xbf/0x100 [drm_display_helper]
+   dm_helpers_dp_read_dpcd+0x28/0x50 [amdgpu]
+   amdgpu_dm_update_freesync_caps+0x17b/0x360 [amdgpu]
+   amdgpu_dm_connector_get_modes+0x242/0x4f0 [amdgpu]
+   drm_helper_probe_single_connector_modes+0x18c/0x520 [drm_kms_helper]
+   drm_mode_getconnector+0x390/0x4a0 [drm]
+   ? ____sys_recvmsg+0xdd/0x1a0
+   ? __pfx_drm_mode_getconnector+0x10/0x10 [drm]
+   drm_ioctl_kernel+0xc1/0x160 [drm]
+   drm_ioctl+0x24c/0x490 [drm]
+   ? __pfx_drm_mode_getconnector+0x10/0x10 [drm]
+   amdgpu_drm_ioctl+0x4a/0x80 [amdgpu]
+   __x64_sys_ioctl+0x90/0xd0
+   do_syscall_64+0x3a/0x90
+   entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  RIP: 0033:0x7f0dd3f68e68
+  Code: 00 00 48 8d 44 24 08 48 89 54 24 e0 48 89 44 24 c0 48 8d 44 24=20
+d0 48 89 44 24 c8 b8 10 00 00 00 c7 44 24 b8 10 00 00 00 0f 05 <89> c2=20
+3d 00 f0 ff ff 77 07 89 d0 c3 0f 1f 40 00 48 8b 15 71 ef 0c
+  RSP: 002b:00007ffe6fb5b398 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00000000009a5ce0 RCX: 00007f0dd3f68e68
+  RDX: 00007ffe6fb5b3e0 RSI: 00000000c05064a7 RDI: 0000000000000010
+  RBP: 00007ffe6fb5b3e0 R08: 0000000000000007 R09: 0000000000bea1c0
+  R10: 0000000000000003 R11: 0000000000000246 R12: 00000000c05064a7
+  R13: 0000000000000010 R14: 00000000c05064a7 R15: 00007ffe6fb5b3e0
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
 
-On 22-06-2023 17:37, Mark Brown wrote:
-> On Thu, Jun 22, 2023 at 05:04:10PM +0530, Sameer Pujar wrote:
->> From: Sheetal <sheetal@nvidia.com>
->>
->> Byte mask for channel-1 of stream-1 is not getting enabled and this
->> causes failures during AMX use cases. The enable bit is not set during
->> put() callback of byte map mixer control.
->>
->> This happens because the byte map value 0 matches the initial state
->> of byte map array and put() callback returns without doing anything.
->>
->> Fix the put() callback by actually looking at the byte mask array
->> to identify if any change is needed and update the fields accordingly.
-> I'm not quite sure I follow the logic here - I'd have expected this to
-> mean that there's a bootstrapping issue and that we should be doing some
-> more initialisation during startup such that the existing code which
-> checks if there is a change will be doing the right thing?
-The issue can happen in subsequent cycles as well if once the user 
-disables the byte map by putting 256. It happens because of following 
-reason where 256 value is reset to 0 since the byte map array is tightly 
-packed and it can't store 256 value.
-
-static int tegra210_amx_put_byte_map() {
-         ...
-         if (value >= 0 && value <= 255)
-             mask_val |= (1 << (reg % 32));
-         else
-             mask_val &= ~(1 << (reg % 32));
-
-         if (mask_val == amx->byte_mask[reg / 32])
-             return 0;
-
-         /* Update byte map and slot */
-==>     bytes_map[reg] = value % 256;
-         amx->byte_mask[reg / 32] = mask_val;
-
-         return 1;
-}
-
->> Also update get() callback to return 256 if the byte map is disabled.
-> This will be a user visible change.  It's not clear to me why it's
-> needed - it seems like it's a hack to push users to do an update in the
-> case where they want to use channel 1 stream 1?
-
-Though it looks like 256 value is forced, but actually the user sees 
-whatever value is set before. The 256 value storage is linked to byte 
-mask value.
-
-I must admit that this is not easily readable. If you suggest to 
-simplify this, I can check if storage space increase for byte map value 
-can make it more readable. Thanks for your feedback.
+reverting them from the 6.3.9 build is confirmed to fix the issue.
 
 
+here is full boot journals with working 6.3.8 and failing 6.3.9 with=20
+those patches applied:
+https://bugs.mageia.org/attachment.cgi?id=3D13888
 
-
-
+--
+Thomas
 
 
