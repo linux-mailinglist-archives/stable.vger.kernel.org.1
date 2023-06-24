@@ -2,77 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7E8373CABD
-	for <lists+stable@lfdr.de>; Sat, 24 Jun 2023 14:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 420F573CAD4
+	for <lists+stable@lfdr.de>; Sat, 24 Jun 2023 14:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231911AbjFXMQF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 24 Jun 2023 08:16:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47112 "EHLO
+        id S233110AbjFXMWg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 24 Jun 2023 08:22:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231707AbjFXMQF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 24 Jun 2023 08:16:05 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74FB81BFC;
-        Sat, 24 Jun 2023 05:16:04 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-666ecf9a081so1395399b3a.2;
-        Sat, 24 Jun 2023 05:16:04 -0700 (PDT)
+        with ESMTP id S233132AbjFXMWf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 24 Jun 2023 08:22:35 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DB52738
+        for <stable@vger.kernel.org>; Sat, 24 Jun 2023 05:22:04 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2b47742de92so25678921fa.0
+        for <stable@vger.kernel.org>; Sat, 24 Jun 2023 05:22:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687608964; x=1690200964;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Q5gqXPV4PTFmPbh9Zh+d+AFfgDSYPHvyuQvmSWXaCHM=;
-        b=GSlyV/6jSVuH94sgYqU5l2hZ/vFLVm17jC73az92Vrcd2d/BFlXXxFFxzf6Vp30FCx
-         tVRrSaAozJxD7ShYaUpUlNDY7siYc3h8j9GhCsVR6eCxllgrTEWB0U7uzwfTTYVI6W7x
-         AZbfqlbw9T8QYbUXWyw6VwUByWJZcodGY9vyeASiKn2e9Di8ypFNy1fgw4BBjstTdrzn
-         xCeqoyS/osXPg4iWIkkCAtppNK12CFynje23SverEgCXnwis39rppObDTejJyCXqTh1s
-         CmVAglsURQcjwkjzADdbhyt1JRDe0FI6ASOdtcXJ0akfAeNh/nzjQx8y2KlFhcvajhb+
-         TpYw==
+        d=linaro.org; s=google; t=1687609305; x=1690201305;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VBAeuEKi4TumGQZarWYAofM/kt/WlzX0ayFAaSfgRg0=;
+        b=isELkhleoirfZfTIzL1phvML2a4utiN1s+Zc5tXECihFYMuaobFx17Zh3KJZH+1tUT
+         iF075/7CBZtw87MNe+CyogWJhShfq+7mq95W4BOMxqWsbxMWu5FwihAkFItzEbikpV6m
+         Rl4TU1w3u1EQsWGjQbdYah3K0EGR1Avl6qY4gGvgV8q5HqxcsocO9R08fXcEuvE91Vfw
+         Fm1eJwKoD2Vp3T0P7jffYkWOf0l6xIeseCKkXkggEjSFLmZYIlNqFrvY8UykzOt6S0B1
+         SH0rHqp314/6f7N2ZStlSSd4pQctAUFAvI29HgL3B/cBMoKen4KMPeA25Q5gIlRGZgXq
+         0aTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687608964; x=1690200964;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q5gqXPV4PTFmPbh9Zh+d+AFfgDSYPHvyuQvmSWXaCHM=;
-        b=Awi2QLudna7leKo3WY9dMUSZZ41cSL8de/RzArkMDrfypfpNuX/Mb8vqZswVnlJzmB
-         NEURqPr5mEgoX/gL2KZ8v9VuVhVeoSGgofnkE/CuJrkUZWyLoCFZTZ4V7f6a6CspfwyX
-         /QX3xvFLZrLr13i7Kr9ljkn6H7FjKnGsqlYIi2m7UViCd25muqWCt1iPtuqOIxw7gAJ8
-         6izPSEIXNg2fQg7s4wMni9umLOu2uJP2IM9z2eo2ZLEVYmG7DarXwqq2duEdCdlpQ+fc
-         KVi8vgMbXYT8Sec/iCbSt/86sz7OsbaXsx4dRrJ6PDUdLu9j2h1ifzTg2aBtp0nyO4G2
-         RfSg==
-X-Gm-Message-State: AC+VfDx355Ju6dJvirTvZRckvefSwiGDyYUD3Hxz+Y3qMcAXkjsWSx9i
-        dL7jhQMgOBa+hd3Nj+7JVp07SCIy9JSiig==
-X-Google-Smtp-Source: ACHHUZ5EpQ65SR/LaXzT/XybSAMzramJefXD9F0LO3L1KAkTP0j347Sr+AXCX1XFPm90SaCzHiVC4A==
-X-Received: by 2002:a05:6a00:1a53:b0:66a:6339:e8f6 with SMTP id h19-20020a056a001a5300b0066a6339e8f6mr8131229pfv.10.1687608963801;
-        Sat, 24 Jun 2023 05:16:03 -0700 (PDT)
-Received: from [192.168.0.103] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id p25-20020aa78619000000b0065418efa5ebsm991442pfn.155.2023.06.24.05.15.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 24 Jun 2023 05:16:03 -0700 (PDT)
-Message-ID: <c125ec63-f7ba-3fd6-c286-05854fa1a07a@gmail.com>
-Date:   Sat, 24 Jun 2023 19:15:36 +0700
+        d=1e100.net; s=20221208; t=1687609305; x=1690201305;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VBAeuEKi4TumGQZarWYAofM/kt/WlzX0ayFAaSfgRg0=;
+        b=kCo+J9EocHCqF1E/y0htZA0FxpjONOxECg82jQjF8tkLL2IU1K4bYbquDHcDJrdKI4
+         XO9TYuRAx8PjTldsKtxifmykYFEjU0xX6O53T5EAo8acoM2emquV/QXODI/mLpgbRnkW
+         /V8xdiPtdXaWW02P4zEXPagpwCFHw5URcIqdJwTY5cyzX5hZgQMXRw91TKB8moS+ztQF
+         fq+WJ0ax3NiJBGz4yfV/+z1tqJC5wLUtfxohVwoTLY26Gd4SR16sU5moLcN4BdkaeiK6
+         bZno09Tp4Rdt8Tqoobd86Ag66SGf/X/Ph7EUnx3WYuC6vGEOL09QRh3rr8Ed+0SRTZeE
+         JFfg==
+X-Gm-Message-State: AC+VfDz1OZkVvuILE7NUBWNshyFQJDWQHRhwwrN/SKlYG8onAwSbWqoj
+        XiOeHmJ4kfYDpso7AKLo+ZZC/Y6hFK6pp9pLeuQ=
+X-Google-Smtp-Source: ACHHUZ46nD0x2dHG5p6zlGBmn2pjrt4AVodkjdoyLQ+u979hnQlVdrR/RZGt7MpW7gDA9SaM2xnx0g==
+X-Received: by 2002:a2e:7e11:0:b0:2b5:95a8:412b with SMTP id z17-20020a2e7e11000000b002b595a8412bmr3617667ljc.52.1687609304977;
+        Sat, 24 Jun 2023 05:21:44 -0700 (PDT)
+Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
+        by smtp.gmail.com with ESMTPSA id p15-20020a2e740f000000b002b4d766bda5sm256819ljc.124.2023.06.24.05.21.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Jun 2023 05:21:44 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     arm@kernel.org, soc@kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Jonas Gorski <jonas.gorski@gmail.com>, stable@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH] bus: ixp4xx: fix IXP4XX_EXP_T1_MASK
+Date:   Sat, 24 Jun 2023 14:21:39 +0200
+Message-Id: <20230624122139.3229642-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Fwd: kernel fault on hibernation: get_zeroed_page/swsusp_write
-To:     Elmar Stellnberger <estellnb@elstel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Memory Management <linux-mm@kvack.org>,
-        Linux Stable <stable@vger.kernel.org>
-References: <5d4959b7-61da-8ab0-6bc6-21305d37c7aa@gmail.com>
- <ZJXFgfldS6W_LCiI@mail.dotplex.com> <ZJZGE4ZxJzrhRznA@debian.me>
- <ZJbDqStCNfdpwObE@mail.dotplex.com>
-Content-Language: en-US
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <ZJbDqStCNfdpwObE@mail.dotplex.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,28 +69,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/24/23 17:21, Elmar Stellnberger wrote:
-> Hi Bagas S., Hi all
-> 
-> concerns: Bug 217544 - kernel fault on hibernation: get_zeroed_page/swsusp_write 
-> https://bugzilla.kernel.org/show_bug.cgi?id=217544
-> 
->   Bisection does not make sense here, since I can not reproduce the
-> issue. Packing the kernel binaries and symbol files was meant to invoke
-> gdb directly on the kcore:
->  
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-Thorsten: Should this be marked as invalid/inconclusive?
+The IXP4XX_EXP_T1_MASK was shifted one bit to the right, overlapping
+IXP4XX_EXP_T2_MASK and leaving bit 29 unused. The offset being wrong is
+also confirmed at least by the datasheet of IXP45X/46X [1].
 
-> Am Sat, Jun 24, 2023 at 08:25:39AM +0700 schrieb Bagas Sanjaya:
->> On Fri, Jun 23, 2023 at 06:17:05PM +0200, Elmar Stellnberger wrote:
->> Can you attach [1] to your Bugzilla report? Also, any report on bisection?
-> 
-> Pardon, what is [1]?
-> 
+Fix this by aligning it to IXP4XX_EXP_T1_SHIFT.
 
-Your kcore dump.
+[1] https://www.intel.com/content/dam/www/public/us/en/documents/manuals/ixp45x-ixp46x-developers-manual.pdf
 
+Cc: stable@vger.kernel.org
+Fixes: 1c953bda90ca ("bus: ixp4xx: Add a driver for IXP4xx expansion bus")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://lore.kernel.org/r/20230624112958.27727-1-jonas.gorski@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+SoC maintainers: please apply this for fixes.
+---
+ drivers/bus/intel-ixp4xx-eb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/bus/intel-ixp4xx-eb.c b/drivers/bus/intel-ixp4xx-eb.c
+index f5ba6bee6fd8..320cf307db05 100644
+--- a/drivers/bus/intel-ixp4xx-eb.c
++++ b/drivers/bus/intel-ixp4xx-eb.c
+@@ -33,7 +33,7 @@
+ #define IXP4XX_EXP_TIMING_STRIDE	0x04
+ #define IXP4XX_EXP_CS_EN		BIT(31)
+ #define IXP456_EXP_PAR_EN		BIT(30) /* Only on IXP45x and IXP46x */
+-#define IXP4XX_EXP_T1_MASK		GENMASK(28, 27)
++#define IXP4XX_EXP_T1_MASK		GENMASK(29, 28)
+ #define IXP4XX_EXP_T1_SHIFT		28
+ #define IXP4XX_EXP_T2_MASK		GENMASK(27, 26)
+ #define IXP4XX_EXP_T2_SHIFT		26
 -- 
-An old man doll... just what I always wanted! - Clara
+2.40.1
 
