@@ -2,277 +2,169 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68DC973CC56
-	for <lists+stable@lfdr.de>; Sat, 24 Jun 2023 20:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0689873CCAB
+	for <lists+stable@lfdr.de>; Sat, 24 Jun 2023 22:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbjFXSMq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 24 Jun 2023 14:12:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44552 "EHLO
+        id S229449AbjFXU1q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 24 Jun 2023 16:27:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229824AbjFXSMp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 24 Jun 2023 14:12:45 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC47EA
-        for <stable@vger.kernel.org>; Sat, 24 Jun 2023 11:12:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687630364; x=1719166364;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=4seqizfYTwrvcToGxqutCQOUmjEHwtjic2dhzY4cvFo=;
-  b=jdM5K4UpeINvwryW8cwMOgQf4QXJJLiqoO7jUkV6ygRqcFK7BSdnKqPq
-   iOYq+YMwjgPMSAAJr05AJoI2tBtFKQdWMxM1fx0c7ae8Vqnv2dacBDxd+
-   fE3myrjDqQyChhppPEA38AWnn3aofulu7IJVfV8dJwL3HU9ooQUY3F9/I
-   yxLNK8YrZodJ1m2jkPDZ2Xxw61lJAtkoWikNDoV+hJhNfeKkSKOAl/xvU
-   f01X3RF6fJQmCfpfexvXx0exTJNhs2p8tpR/HLXD/TCTQdHp2Y9ss0gnY
-   9T5xac+8keWxl3WSSdwPp+nxJ+DSr3zS1L//WUNpb0fwrGUJyjGsKJj6F
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10751"; a="361006446"
-X-IronPort-AV: E=Sophos;i="6.01,155,1684825200"; 
-   d="scan'208";a="361006446"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2023 11:12:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10751"; a="780932443"
-X-IronPort-AV: E=Sophos;i="6.01,155,1684825200"; 
-   d="scan'208";a="780932443"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by fmsmga008.fm.intel.com with ESMTP; 24 Jun 2023 11:12:43 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Sat, 24 Jun 2023 11:12:42 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Sat, 24 Jun 2023 11:12:42 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Sat, 24 Jun 2023 11:12:42 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.172)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Sat, 24 Jun 2023 11:12:42 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QZSAMos68Mu5Sjo7PcIVKa+MUQI5tHHbqxKieixuFwnDhnKF31oODmvfoGyxYPeg0Hh3EXMAzVmHdEKmBRTcn9vZC9rmjvzpS4utRnfjKhcklb6Te3ZxLrW31NJhc8dOR4gea2oA/lDy3D6fBMcqg8sgZNNLHLdm3IYtuJVtGg1pc6tuuvMD2pc3n18+x+WnZO0AbNgm1Nhl+0znbrEI4MiB4OCix+9S80MXUuzNBJN0Puk+Yt91Y13sDV35Fb0GmohYoA4jTDFucxtXGGrG+mObhr6kMrhMtRAd8/kYlMVXkXwOzwAv2b6OhJTEh6FfcVG5Ho8Qe+0hP2thn7BLRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QHOi9/sHS4TJsZc195cMPR6iYGdtJNekFDYCp0J/imk=;
- b=hXZs5z7EDKNFRnd3TIRS11fweGujQZBtivLBu7FhtbQU4LY8QYOQ0Lfzz1EyDyW+RGiGIrMr4G7l7fpYs32mMeVY44G7q3JeVhybG+g8EOZjnmqy8z/1o8mpJhNIkWL0n9HAqp5RdqOPrtqo0hFCzc8X3vyS4WFIE7A/8Utvbz5kqT887YZTDRURa3x9GiAq0dZssNBuOTPJaTq07T8Y2bI/Nhmn04/eyHLUvQt9O7jjZGlmpHd8w59KCtMbT8DA608crZy9sWSqJNuE4/WMzbDds6FMo/MROujWy1ytZiP0omm5ja9F2MHWpIlgVEqIqeG+zBK2zLMMF91Q8+oUvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by PH7PR11MB7570.namprd11.prod.outlook.com (2603:10b6:510:27a::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Sat, 24 Jun
- 2023 18:12:40 +0000
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::44e7:c479:62f4:3eb4]) by CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::44e7:c479:62f4:3eb4%7]) with mapi id 15.20.6521.023; Sat, 24 Jun 2023
- 18:12:40 +0000
-Date:   Sat, 24 Jun 2023 11:12:36 -0700
-From:   Lucas De Marchi <lucas.demarchi@intel.com>
-To:     Matt Roper <matthew.d.roper@intel.com>
-CC:     <stable@vger.kernel.org>, Kenneth Graunke <kenneth@whitecape.org>,
-        <intel-gfx@lists.freedesktop.org>,
-        <dri-devel@lists.freedesktop.org>
-Subject: Re: [Intel-gfx] [PATCH 2/3] drm/i915/gt: Fix context workarounds
- with non-masked regs
-Message-ID: <6uzutmfcihbvqpglrvdty7v6nxswn7k4yibugd3hwkrpnocuac@pbhsizmyahpy>
-X-Patchwork-Hint: comment
-References: <20230622182731.3765039-1-lucas.demarchi@intel.com>
- <3337022.2OMYdDKdcH@mizzik>
- <ehp36knxqfilobajjyk54oamk3n43s3cja5webx3q4jzm6xrlm@idrattdnr3fa>
- <2063427.kFxYfkjxrY@mizzik>
- <aet7uj3ldnjk5rdgc2fwsn42uqgx5kbxau3efvdgmnhq473s2m@d6uyzwskmfaf>
- <20230623215646.GJ5433@mdroper-desk1.amr.corp.intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230623215646.GJ5433@mdroper-desk1.amr.corp.intel.com>
-X-ClientProxiedBy: MW4PR04CA0368.namprd04.prod.outlook.com
- (2603:10b6:303:81::13) To CY5PR11MB6139.namprd11.prod.outlook.com
- (2603:10b6:930:29::17)
+        with ESMTP id S229446AbjFXU1p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 24 Jun 2023 16:27:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D1F5B5
+        for <stable@vger.kernel.org>; Sat, 24 Jun 2023 13:26:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1687638416;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=dbXyyk/yBqQILU1gFxN7ECCFAbqxFWuc5FXiBKUeh9M=;
+        b=V6vHlaH5dDOUs6RXaYOvE9w7R6Jxdlrzyz8lHhjolKAeWyz2WLDhCUH389NO5Jjdxvu+bP
+        I2ZBN6BHIH96LRh6FYQvg1jqOqTZxZAfPGIWIM7Kp6MtwjvHgWcmKHrrYtgcBBoZRhwwv+
+        4sHOLox1B05i9SrYHksQCdtTv1m2HG8=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-316-ZV-FxS1HOkCVWB2n-IIWVA-1; Sat, 24 Jun 2023 16:26:54 -0400
+X-MC-Unique: ZV-FxS1HOkCVWB2n-IIWVA-1
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-635984f84a9so2578206d6.0
+        for <stable@vger.kernel.org>; Sat, 24 Jun 2023 13:26:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687638414; x=1690230414;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dbXyyk/yBqQILU1gFxN7ECCFAbqxFWuc5FXiBKUeh9M=;
+        b=dSz33IvwF2NyNxeiFpP9u3ngrMu5S1npers7ZnuI0SRbBIEi86YvBRlB6+VN5qwKHI
+         mfZrSElb6SrMNBjSyelHQknlphfs/nXnPcFGufxS8fSze4+mg6XPkSfkY0I7gfYivvGE
+         QewBb6Sufbar8YtS5BILg/dZfC2X59eZvpCjPhiqRsny6j74vii9L3PFzBr3Y5jEM4uo
+         cbUc/s55nJqN/7Nd0FN+0O9IVElLeHYc3d8snYNFK6aTO+KjBmKKdP9mQ2Fpm3yrdMSM
+         FPnD/AyThTLR1Ykzcx5BA0HsnO9GsE2D1jDuXEHPp5/bUYuwnrllzAQlBohS/eHHPjE6
+         7mXg==
+X-Gm-Message-State: AC+VfDxHwSeyioBnZG3ErqTynl8ndhA8KF2vm6OyJZ+9gIfbXPJDLWx2
+        dq7hp/2IB9NOVyq3HJcsqpVE9TG74MVzTdj6hgctmR4oRUZpl4UcEo/3wN1iD885SwjIfNqJXuk
+        dP4o53iYk1YttDblB
+X-Received: by 2002:a05:6214:4111:b0:62d:eb54:5f4d with SMTP id kc17-20020a056214411100b0062deb545f4dmr26915167qvb.38.1687638414173;
+        Sat, 24 Jun 2023 13:26:54 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ45SP7ygLE1GGGlF5/xUwSYzln5vf/n6k9iO0KJrYeVc94xkPjROkjdPgcmnmnI/31cP4nUeQ==
+X-Received: by 2002:a05:6214:4111:b0:62d:eb54:5f4d with SMTP id kc17-20020a056214411100b0062deb545f4dmr26915161qvb.38.1687638413936;
+        Sat, 24 Jun 2023 13:26:53 -0700 (PDT)
+Received: from x1-fbsd (c-73-249-122-233.hsd1.nh.comcast.net. [73.249.122.233])
+        by smtp.gmail.com with ESMTPSA id l4-20020ad44444000000b00625808d44cfsm1289268qvt.29.2023.06.24.13.26.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Jun 2023 13:26:53 -0700 (PDT)
+Date:   Sat, 24 Jun 2023 16:26:51 -0400
+From:   Rafael Aquini <aquini@redhat.com>
+To:     Greg KH <greg@kroah.com>
+Cc:     stable@vger.kernel.org, Yafang Shao <laoar.shao@gmail.com>,
+        Aristeu Rozanski <aris@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 5.4.y] writeback: fix dereferencing NULL mapping->host on
+ writeback_page_template
+Message-ID: <ZJdRi6irmaebWDmg@x1-fbsd>
+References: <2023062336-squall-impotence-3b78@gregkh>
+ <20230623134601.1564846-1-aquini@redhat.com>
+ <2023062427-glare-clutter-6dcc@gregkh>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|PH7PR11MB7570:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9172a2a0-234e-4fb5-e2d2-08db74de9889
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: e0A/pkfE8hUAwY1z3WL6bdSia9HaDwJEnioLcZ0E+2SFO9W1KkdtriUuILBxAAn5AKZaE4FOO7AaevMC6ZxTQgdCKuo3sp8SlIHthLJWczR7OKsQ2ZPnNGmtr+esVniWi5C4B32TLa53TpDCmwWnqcF5S9u4bHwiJT4ueW8nMdoPcBY4uPKeelZiLsFsCnFfIQeTWsT/ww13zuWwig1kKCG9PMF41SnueoP0ntMzBygwIOT+AVyvMxwC8YlotjP3owEgBRHZOUV4Ua5x7ZxCD8K95tpOH3gvBr1YX1SbbnuPilX/MSxzEaTFrquqQh3Vu5dq8/G7NV8TdRkRqGXUigenYaxId0jl3fDFE0WBEORFKmKu8CORekyACPEFnEVTUwydBQOXUa/xEC71BM0yQsGzVgLUu6iYlfcohctAEjjq6vTwvSH9wMcj1vQKCHZSQ6LTzkrDGGhsponukDLjny2RV4hO/RHsOp4etUGe8q3up0fk2BoUrZ7w+0jlwyt3mq5lzrUKZ1YPlcRaalXX4PpEtlbRAcx57zR5r8KpuMDpx+s+KYDBS+1Iyy6c+QQYwSJCZ7hbVcsl42dO51O/Bh1K9uqMS4sDNWPsLDmGV7hdVQA8y02S1nNxthuOR/jK
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6139.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(136003)(366004)(346002)(396003)(39860400002)(376002)(451199021)(86362001)(33716001)(82960400001)(38100700002)(8676002)(83380400001)(6862004)(6512007)(26005)(186003)(9686003)(2906002)(53546011)(6506007)(478600001)(6666004)(4326008)(6486002)(6636002)(66946007)(66476007)(66556008)(5660300002)(41300700001)(8936002)(316002)(27246005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?NF1wFH8QTmEic8Q0W5ILHGmSTyHAjr95QbSvPuOozFPmbGgfA7Vvv+UXBlKb?=
- =?us-ascii?Q?a71LobG9Ac8dQ3QWwXt2ZIvL9rWgiVzcaomAKH3a4C/p2pIg/zigUbv5GOur?=
- =?us-ascii?Q?Prt5IaAyo9d2PobpVpKlJmhJGdbDDjuMxGA1rGUsk108YobHTD8OtJWI5x+H?=
- =?us-ascii?Q?asoRYB0R3z3mNwOau0oA5jQC9La9z4FH4HzIPZ0zswm1Nho/2h30sr8Ykz5F?=
- =?us-ascii?Q?LQvylgyVKsYgu9SQJv9klquNxtTOP6ESNZh7IAd3LhvR8VpKk0Ra7Pe9ZOQT?=
- =?us-ascii?Q?sI5ZTtfBjptZaJzaYp/jkZmT63/k6f7wl+QRMxIrmayG/hregq0VJuUSjs0Q?=
- =?us-ascii?Q?2QvxBJkkQPy7albf0yAatuwTr80YwcBkGg3p8f2C21tb2whC/5i5fXfczASo?=
- =?us-ascii?Q?BBNa5Gm9UnUGqAekzQFm1IoJIUF5Y+dbsm8VQfQakdF+qnX4INZhpp7AREkd?=
- =?us-ascii?Q?minizUOChIsZTfPQUa42xkba4zOhnsaqboML8z2HH4RVJkXpxu5zHktNru/n?=
- =?us-ascii?Q?MGg/AgWb4lo9RDfFpchN+NM8cNV2Ux5p/ceAoPHtpIVc8+YhpKzWTuyTtZap?=
- =?us-ascii?Q?41VN+VmdKLSex/tbKEnW0n1fOdypEF/nqsyKFEo7wxyxerYPB4lnb2LmID/5?=
- =?us-ascii?Q?TLfMvSEp/jDsblVEE+Au7eCqposWhNmlj9ixqRMn/R4HfC39T1bS8x6Xis++?=
- =?us-ascii?Q?xFt2IRcCn19xS0mo/BwKzW4YMKDg80L+z/mmj2x1jfTZqZnsIfwBiCzh/THU?=
- =?us-ascii?Q?9yOrPur4zvyJ5edUZ/bhkcObkPtIwWuqIyGhJVFAJ+NX5mZ/aKmnr1zy5XHs?=
- =?us-ascii?Q?Lmo8Czo636IXRkpoIey9IP70xMDVxlhWJcpud5byk8NgAPK7oKG1ay0qflG2?=
- =?us-ascii?Q?A+27XbjfxuPYgG1sPu0kxI70y5zFG+vIe893oKeFvRzMvU3mbzA/WBgkaZmf?=
- =?us-ascii?Q?TJP9epcoszm4JSz3NuDu3dMXfApKnFxTAXlxCafaARXwRjwbAEHL7oU76XO4?=
- =?us-ascii?Q?qzYIn2A1n3TrTpFLQE7prJNTYMxEbFjNZSHTEL3AzhtJk7Wn8HFjO2weKbRh?=
- =?us-ascii?Q?LnOL7hYw8dNxuEswxLkzrd6FJ0PAkpMRKu5EZgqi3IjVEk01t8fUJu7aad2N?=
- =?us-ascii?Q?3pwNCECDBX6+0y26PMc7O/21Yqa0xOTWm9y9YqBpAmJeJEy6LeFTWdxb/zSf?=
- =?us-ascii?Q?XUxmGCxdwaDqd6cD6E+RwtjR25e5ObkKeup1n2MN8z5ReWQ0aCLMDaOL3LkY?=
- =?us-ascii?Q?Dsb23oA0LQhxM6qe0eFZGu1jnqFw2QfCNw4ydCap6ZG+f3SAcSHdJvtYu2i6?=
- =?us-ascii?Q?o3X8en+A81a7ryoNvxPgKLfWsPmnpu5BC6sIz0ZxUFD936THMe/TZFXwGfPR?=
- =?us-ascii?Q?WolRwbZupXWrUyHUdSN7F6+cOp3iXAuELD7Fn1KpIX8rvVH+6kiKBct/Bpdu?=
- =?us-ascii?Q?rPX8O04u+EZzOHdeFXA9hKXqD1F0K2s9aS6MRn8iiCa85h+pK0LGvd+xb+hj?=
- =?us-ascii?Q?afEMD1sToP9qM7gFnXS806iCLN/JCSGrUwesri7Fybw55W1gUoKteDJpo4+W?=
- =?us-ascii?Q?2VkLtEZRco8d6PBYPBK22lvsrC4l6emS5kRbzpiddasWcVnxZ6CoXtLaGDRl?=
- =?us-ascii?Q?9w=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9172a2a0-234e-4fb5-e2d2-08db74de9889
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2023 18:12:39.6782
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: j4CKyuBZjytcb8JTMwxb/tWC9yafIoixS0kwYSG69MiWY066t1Kzmwlnc8q2w1HJiF3M12ZdWz1g4TDp9Df9OFFD5gokYLdk3REeqPPYN5o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7570
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023062427-glare-clutter-6dcc@gregkh>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jun 23, 2023 at 02:56:46PM -0700, Matt Roper wrote:
->On Fri, Jun 23, 2023 at 02:05:20PM -0700, Lucas De Marchi wrote:
->> On Fri, Jun 23, 2023 at 12:48:13PM -0700, Kenneth Graunke wrote:
->> > On Friday, June 23, 2023 8:49:05 AM PDT Lucas De Marchi wrote:
->> > > On Thu, Jun 22, 2023 at 04:37:21PM -0700, Kenneth Graunke wrote:
->> > > >On Thursday, June 22, 2023 11:27:30 AM PDT Lucas De Marchi wrote:
->> > > >> Most of the context workarounds tweak masked registers, but not all. For
->> > > >> masked registers, when writing the value it's sufficient to just write
->> > > >> the wa->set_bits since that will take care of both the clr and set bits
->> > > >> as well as not overwriting other bits.
->> > > >>
->> > > >> However there are some workarounds, the registers are non-masked. Up
->> > > >> until now the driver was simply emitting a MI_LOAD_REGISTER_IMM with the
->> > > >> set_bits to program the register via the GPU in the WA bb. This has the
->> > > >> side effect of overwriting the content of the register outside of bits
->> > > >> that should be set and also doesn't handle the bits that should be
->> > > >> cleared.
->> > > >>
->> > > >> Kenneth reported that on DG2, mesa was seeing a weird behavior due to
->> > > >> the kernel programming of L3SQCREG5 in dg2_ctx_gt_tuning_init(). With
->> > > >> the GPU idle, that register could be read via intel_reg as 0x00e001ff,
->> > > >> but during a 3D workload it would change to 0x0000007f. So the
->> > > >> programming of that tuning was affecting more than the bits in
->> > > >> L3_PWM_TIMER_INIT_VAL_MASK. Matt Roper noticed the lack of rmw for the
->> > > >> context workarounds due to the use of MI_LOAD_REGISTER_IMM.
->> > > >>
->> > > >> So, for registers that are not masked, read its value via mmio, modify
->> > > >> and then set it in the buffer to be written by the GPU. This should take
->> > > >> care in a simple way of programming just the bits required by the
->> > > >> tuning/workaround. If in future there are registers that involved that
->> > > >> can't be read by the CPU, a more complex approach may be required like
->> > > >> a) issuing additional instructions to read and modify; or b) scan the
->> > > >> golden context and patch it in place before saving it; or something
->> > > >> else. But for now this should suffice.
->> > > >>
->> > > >> Scanning the context workarounds for all platforms, these are the
->> > > >> impacted ones with the respective registers
->> > > >>
->> > > >> 	mtl: DRAW_WATERMARK
->> > > >> 	mtl/dg2: XEHP_L3SQCREG5, XEHP_FF_MODE2
->> > > >> 	gen12: GEN12_FF_MODE2
->> > > >
->> > > >Speaking of GEN12_FF_MODE2...there's a big scary comment above that
->> > > >workaround write which says that register "will return the wrong value
->> > > >when read."  I think with this patch, we'll start doing a RMW cycle for
->> > > >the register, which could mix in some of this "wrong value".  The
->> > > >comment mentions that the intention is to write the whole register,
->> > > >as the default value is 0 for all fields.
->> > >
->> > > Good point. That also means we don't need to backport this patch to
->> > > stable kernel to any gen12, since overwritting the other bits is
->> > > actually the intended behavior.
->> > >
->> > > >
->> > > >Maybe what we want to do is change gen12_ctx_gt_tuning_init to do
->> > > >
->> > > >    wa_write(wal, GEN12_FF_MODE2, FF_MODE2_TDS_TIMER_128);
->> > > >
->> > > >so it has a clear mask of ~0 instead of FF_MODE2_TDS_TIMER_MASK, and
->> > >
->> > > In order to ignore read back when verifying, we would still need to use
->> > > wa_add(), but changing the mask. We don't have a wa_write() that ends up
->> > > with { .clr = ~0, .read_mask = 0 }.
->> > >
->> > > 	wa_add(wal,
->> > > 	       GEN12_FF_MODE2,
->> > > 	       ~0, FF_MODE2_TDS_TIMER_128,
->> > > 	       0, false);
->> >
->> > Good point!  Though, I just noticed another bug here:
->> >
->> > gen12_ctx_workarounds_init sets FF_MODE2_GS_TIMER_224 to avoid hangs
->> > in the HS/DS unit, after gen12_ctx_gt_tuning_init set TDS_TIMER_128
->> > for performance.  One of those is going to clobber the other; we're
->> > likely losing the TDS tuning today.  Combining those workarounds into
->>
->> we are not losing it today. As long as the wa list is the same, we do detect collisions when
->> adding workarounds and they are coallesced before applying. However,
->> indeed if we change this to make clear be ~0, then they will collide and
->> we will see a warning.
->>
->> Applying them together in a single operation would indeed solve it
->> with a side-effect of moving this back to the workarounds. Either that
->> or
->>
->> a) we handle the read_back == 0 && clear == U32_MAX specially when
->>    adding WAs. If that is true, then the check for collisions can
->>    be adjusted to allow that.
->>
->> b) we give up on this approach and proceed with one of
->>
->> 	1) scan the ctx wa list. If it has any non-masked register,
->> 	   we submit a job to read it from the GPU side. MCR will
->> 	   make this harder as the steering from the GPU side is
->> 	   different than the CPU
->>
->> 	2) emit additional commands to read and modify the register from
->> 	   the GPU side
->>
->> 	3) find the register in the golden context and patch it in place
->>
->>
->>
->>
->> > one place seems like an easy way to fix that.
->>
->> I'm leaning towards this option in the hope we don't have have
->> another GEN12_FF_MODE2 in future.
->>
->> Matt, we've been pushing towards separating the tuning from the WAs, but
->> here we'd go the other way. Anything against doing this for now?
+On Sat, Jun 24, 2023 at 04:04:38PM +0200, Greg KH wrote:
+> On Fri, Jun 23, 2023 at 09:46:01AM -0400, Rafael Aquini wrote:
+> > commit 54abe19e00cfcc5a72773d15cd00ed19ab763439 upstream.
+> > 
+> > When commit 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for
+> > wait_on_page_writeback()") repurposed the writeback_dirty_page trace event
+> > as a template to create its new wait_on_page_writeback trace event, it
+> > ended up opening a window to NULL pointer dereference crashes due to the
+> > (infrequent) occurrence of a race where an access to a page in the
+> > swap-cache happens concurrently with the moment this page is being written
+> > to disk and the tracepoint is enabled:
+> > 
+> >     BUG: kernel NULL pointer dereference, address: 0000000000000040
+> >     #PF: supervisor read access in kernel mode
+> >     #PF: error_code(0x0000) - not-present page
+> >     PGD 800000010ec0a067 P4D 800000010ec0a067 PUD 102353067 PMD 0
+> >     Oops: 0000 [#1] PREEMPT SMP PTI
+> >     CPU: 1 PID: 1320 Comm: shmem-worker Kdump: loaded Not tainted 6.4.0-rc5+ #13
+> >     Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230301gitf80f052277c8-1.fc37 03/01/2023
+> >     RIP: 0010:trace_event_raw_event_writeback_folio_template+0x76/0xf0
+> >     Code: 4d 85 e4 74 5c 49 8b 3c 24 e8 06 98 ee ff 48 89 c7 e8 9e 8b ee ff ba 20 00 00 00 48 89 ef 48 89 c6 e8 fe d4 1a 00 49 8b 04 24 <48> 8b 40 40 48 89 43 28 49 8b 45 20 48 89 e7 48 89 43 30 e8 a2 4d
+> >     RSP: 0000:ffffaad580b6fb60 EFLAGS: 00010246
+> >     RAX: 0000000000000000 RBX: ffff90e38035c01c RCX: 0000000000000000
+> >     RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff90e38035c044
+> >     RBP: ffff90e38035c024 R08: 0000000000000002 R09: 0000000000000006
+> >     R10: ffff90e38035c02e R11: 0000000000000020 R12: ffff90e380bac000
+> >     R13: ffffe3a7456d9200 R14: 0000000000001b81 R15: ffffe3a7456d9200
+> >     FS:  00007f2e4e8a15c0(0000) GS:ffff90e3fbc80000(0000) knlGS:0000000000000000
+> >     CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> >     CR2: 0000000000000040 CR3: 00000001150c6003 CR4: 0000000000170ee0
+> >     Call Trace:
+> >      <TASK>
+> >      ? __die+0x20/0x70
+> >      ? page_fault_oops+0x76/0x170
+> >      ? kernelmode_fixup_or_oops+0x84/0x110
+> >      ? exc_page_fault+0x65/0x150
+> >      ? asm_exc_page_fault+0x22/0x30
+> >      ? trace_event_raw_event_writeback_folio_template+0x76/0xf0
+> >      folio_wait_writeback+0x6b/0x80
+> >      shmem_swapin_folio+0x24a/0x500
+> >      ? filemap_get_entry+0xe3/0x140
+> >      shmem_get_folio_gfp+0x36e/0x7c0
+> >      ? find_busiest_group+0x43/0x1a0
+> >      shmem_fault+0x76/0x2a0
+> >      ? __update_load_avg_cfs_rq+0x281/0x2f0
+> >      __do_fault+0x33/0x130
+> >      do_read_fault+0x118/0x160
+> >      do_pte_missing+0x1ed/0x2a0
+> >      __handle_mm_fault+0x566/0x630
+> >      handle_mm_fault+0x91/0x210
+> >      do_user_addr_fault+0x22c/0x740
+> >      exc_page_fault+0x65/0x150
+> >      asm_exc_page_fault+0x22/0x30
+> > 
+> > This problem arises from the fact that the repurposed writeback_dirty_page
+> > trace event code was written assuming that every pointer to mapping
+> > (struct address_space) would come from a file-mapped page-cache object,
+> > thus mapping->host would always be populated, and that was a valid case
+> > before commit 19343b5bdd16.  The swap-cache address space
+> > (swapper_spaces), however, doesn't populate its ->host (struct inode)
+> > pointer, thus leading to the crashes in the corner-case aforementioned.
+> > 
+> > commit 19343b5bdd16 ended up breaking the assignment of __entry->name and
+> > __entry->ino for the wait_on_page_writeback tracepoint -- both dependent
+> > on mapping->host carrying a pointer to a valid inode.  The assignment of
+> > __entry->name was fixed by commit 68f23b89067f ("memcg: fix a crash in
+> > wb_workfn when a device disappears"), and this commit fixes the remaining
+> > case, for __entry->ino.
+> > 
+> > Link: https://lkml.kernel.org/r/20230606233613.1290819-1-aquini@redhat.com
+> > Fixes: 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for wait_on_page_writeback()")
+> > Signed-off-by: Rafael Aquini <aquini@redhat.com>
+> > Reviewed-by: Yafang Shao <laoar.shao@gmail.com>
+> > Cc: Aristeu Rozanski <aris@redhat.com>
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> > Signed-off-by: Rafael Aquini <aquini@redhat.com>
+> > ---
+> >  include/trace/events/writeback.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> All now queued up, thanks.
 >
->That's probably fine as long as we leave a comment behind in the tuning
->section explaining why that specific setting is found in a different
->spot.
 
-alright, just submitted a new version with a few more changes.
+Thank you, Greg.
 
-thanks
-Lucas De Marchi
+-- Rafael
+
