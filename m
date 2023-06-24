@@ -2,107 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 420F573CAD4
-	for <lists+stable@lfdr.de>; Sat, 24 Jun 2023 14:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 015C073CB14
+	for <lists+stable@lfdr.de>; Sat, 24 Jun 2023 15:44:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233110AbjFXMWg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 24 Jun 2023 08:22:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50572 "EHLO
+        id S229869AbjFXNoN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 24 Jun 2023 09:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233132AbjFXMWf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 24 Jun 2023 08:22:35 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DB52738
-        for <stable@vger.kernel.org>; Sat, 24 Jun 2023 05:22:04 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2b47742de92so25678921fa.0
-        for <stable@vger.kernel.org>; Sat, 24 Jun 2023 05:22:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687609305; x=1690201305;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VBAeuEKi4TumGQZarWYAofM/kt/WlzX0ayFAaSfgRg0=;
-        b=isELkhleoirfZfTIzL1phvML2a4utiN1s+Zc5tXECihFYMuaobFx17Zh3KJZH+1tUT
-         iF075/7CBZtw87MNe+CyogWJhShfq+7mq95W4BOMxqWsbxMWu5FwihAkFItzEbikpV6m
-         Rl4TU1w3u1EQsWGjQbdYah3K0EGR1Avl6qY4gGvgV8q5HqxcsocO9R08fXcEuvE91Vfw
-         Fm1eJwKoD2Vp3T0P7jffYkWOf0l6xIeseCKkXkggEjSFLmZYIlNqFrvY8UykzOt6S0B1
-         SH0rHqp314/6f7N2ZStlSSd4pQctAUFAvI29HgL3B/cBMoKen4KMPeA25Q5gIlRGZgXq
-         0aTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687609305; x=1690201305;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VBAeuEKi4TumGQZarWYAofM/kt/WlzX0ayFAaSfgRg0=;
-        b=kCo+J9EocHCqF1E/y0htZA0FxpjONOxECg82jQjF8tkLL2IU1K4bYbquDHcDJrdKI4
-         XO9TYuRAx8PjTldsKtxifmykYFEjU0xX6O53T5EAo8acoM2emquV/QXODI/mLpgbRnkW
-         /V8xdiPtdXaWW02P4zEXPagpwCFHw5URcIqdJwTY5cyzX5hZgQMXRw91TKB8moS+ztQF
-         fq+WJ0ax3NiJBGz4yfV/+z1tqJC5wLUtfxohVwoTLY26Gd4SR16sU5moLcN4BdkaeiK6
-         bZno09Tp4Rdt8Tqoobd86Ag66SGf/X/Ph7EUnx3WYuC6vGEOL09QRh3rr8Ed+0SRTZeE
-         JFfg==
-X-Gm-Message-State: AC+VfDz1OZkVvuILE7NUBWNshyFQJDWQHRhwwrN/SKlYG8onAwSbWqoj
-        XiOeHmJ4kfYDpso7AKLo+ZZC/Y6hFK6pp9pLeuQ=
-X-Google-Smtp-Source: ACHHUZ46nD0x2dHG5p6zlGBmn2pjrt4AVodkjdoyLQ+u979hnQlVdrR/RZGt7MpW7gDA9SaM2xnx0g==
-X-Received: by 2002:a2e:7e11:0:b0:2b5:95a8:412b with SMTP id z17-20020a2e7e11000000b002b595a8412bmr3617667ljc.52.1687609304977;
-        Sat, 24 Jun 2023 05:21:44 -0700 (PDT)
-Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
-        by smtp.gmail.com with ESMTPSA id p15-20020a2e740f000000b002b4d766bda5sm256819ljc.124.2023.06.24.05.21.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Jun 2023 05:21:44 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     arm@kernel.org, soc@kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Jonas Gorski <jonas.gorski@gmail.com>, stable@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] bus: ixp4xx: fix IXP4XX_EXP_T1_MASK
-Date:   Sat, 24 Jun 2023 14:21:39 +0200
-Message-Id: <20230624122139.3229642-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S229552AbjFXNoM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 24 Jun 2023 09:44:12 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17DACE7E;
+        Sat, 24 Jun 2023 06:44:11 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qD3Yf-00060A-0M; Sat, 24 Jun 2023 15:44:09 +0200
+Message-ID: <f78c38f6-9c8d-9c4c-75be-9d9b5fe5024b@leemhuis.info>
+Date:   Sat, 24 Jun 2023 15:44:08 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: Fwd: kernel fault on hibernation: get_zeroed_page/swsusp_write
+Content-Language: en-US, de-DE
+To:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Elmar Stellnberger <estellnb@elstel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Memory Management <linux-mm@kvack.org>,
+        Linux Stable <stable@vger.kernel.org>
+References: <5d4959b7-61da-8ab0-6bc6-21305d37c7aa@gmail.com>
+ <ZJXFgfldS6W_LCiI@mail.dotplex.com> <ZJZGE4ZxJzrhRznA@debian.me>
+ <ZJbDqStCNfdpwObE@mail.dotplex.com>
+ <c125ec63-f7ba-3fd6-c286-05854fa1a07a@gmail.com>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <c125ec63-f7ba-3fd6-c286-05854fa1a07a@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1687614251;7aa1bd10;
+X-HE-SMSGID: 1qD3Yf-00060A-0M
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+On 24.06.23 14:15, Bagas Sanjaya wrote:
+> On 6/24/23 17:21, Elmar Stellnberger wrote:
+>> Hi Bagas S., Hi all
+>>
+>> concerns: Bug 217544 - kernel fault on hibernation: get_zeroed_page/swsusp_write 
+>> https://bugzilla.kernel.org/show_bug.cgi?id=217544
+>>
+>>   Bisection does not make sense here, since I can not reproduce the
+>> issue. Packing the kernel binaries and symbol files was meant to invoke
+>> gdb directly on the kcore:
+> 
+> Thorsten: Should this be marked as invalid/inconclusive?
 
-The IXP4XX_EXP_T1_MASK was shifted one bit to the right, overlapping
-IXP4XX_EXP_T2_MASK and leaving bit 29 unused. The offset being wrong is
-also confirmed at least by the datasheet of IXP45X/46X [1].
+Not as invalid, as there might be a real issue here; but it's hard to
+say, as among others it also quite possible that something else went
+wrong (compiler? hardware?). Someone would have to investigate. But
+given the fact that this happened with a stable kernel[1] and is
+impossible to reproduce, I suspect no developer will be motivated enough
+to do so. Then it's not worth tracking[2]:
 
-Fix this by aligning it to IXP4XX_EXP_T1_SHIFT.
+#regzbot inconclusive: impossible to reproduce
 
-[1] https://www.intel.com/content/dam/www/public/us/en/documents/manuals/ixp45x-ixp46x-developers-manual.pdf
+Elmar, that's nothing bad. In case this turns out to be something you
+can reproduce and bisect, just let us know and we'll add it back.
 
-Cc: stable@vger.kernel.org
-Fixes: 1c953bda90ca ("bus: ixp4xx: Add a driver for IXP4xx expansion bus")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://lore.kernel.org/r/20230624112958.27727-1-jonas.gorski@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-SoC maintainers: please apply this for fixes.
----
- drivers/bus/intel-ixp4xx-eb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[1] see the sections about stable kernels
+https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-kernel-bug-reports-are-ignored/
 
-diff --git a/drivers/bus/intel-ixp4xx-eb.c b/drivers/bus/intel-ixp4xx-eb.c
-index f5ba6bee6fd8..320cf307db05 100644
---- a/drivers/bus/intel-ixp4xx-eb.c
-+++ b/drivers/bus/intel-ixp4xx-eb.c
-@@ -33,7 +33,7 @@
- #define IXP4XX_EXP_TIMING_STRIDE	0x04
- #define IXP4XX_EXP_CS_EN		BIT(31)
- #define IXP456_EXP_PAR_EN		BIT(30) /* Only on IXP45x and IXP46x */
--#define IXP4XX_EXP_T1_MASK		GENMASK(28, 27)
-+#define IXP4XX_EXP_T1_MASK		GENMASK(29, 28)
- #define IXP4XX_EXP_T1_SHIFT		28
- #define IXP4XX_EXP_T2_MASK		GENMASK(27, 26)
- #define IXP4XX_EXP_T2_SHIFT		26
--- 
-2.40.1
+[2] side note: due to limited resources I consider to stop tracking all
+non-bisected issues in general (expect those that started to happen in
+mainline since the last mainline release) – or put them in a special
+category that signals "those are collected here JFYI until they are
+bisected, as the regression tracker due to limited resources for now
+can't keep a close eye on these"
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
