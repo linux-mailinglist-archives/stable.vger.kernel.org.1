@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E253573CB3E
-	for <lists+stable@lfdr.de>; Sat, 24 Jun 2023 16:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D5A673CB3F
+	for <lists+stable@lfdr.de>; Sat, 24 Jun 2023 16:10:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231374AbjFXOJE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 24 Jun 2023 10:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36672 "EHLO
+        id S230016AbjFXOK3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 24 Jun 2023 10:10:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230461AbjFXOJD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 24 Jun 2023 10:09:03 -0400
+        with ESMTP id S229869AbjFXOK2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 24 Jun 2023 10:10:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BF3C1BC2
-        for <stable@vger.kernel.org>; Sat, 24 Jun 2023 07:09:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39AA41BC2;
+        Sat, 24 Jun 2023 07:10:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9743B60302
-        for <stable@vger.kernel.org>; Sat, 24 Jun 2023 14:09:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A213AC433C0;
-        Sat, 24 Jun 2023 14:09:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C133860670;
+        Sat, 24 Jun 2023 14:10:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7558C433C8;
+        Sat, 24 Jun 2023 14:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687615742;
-        bh=W2/jOBewhTmU4X8k/Qjg0yQqTZ43GTlMlbmNNm0Jvds=;
+        s=korg; t=1687615827;
+        bh=guBS/pXFgHuNgM7sT8xh/zRfKmjGXRbCU6mtO94IDLA=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nWt2MlxKYKWND39whxXZmgyzvKgBT7V6RgnSXKITr8osL4BywqaUBf8mlcBGoSSoc
-         kuBYWFwD02a/MD8ry9UwAaW372SmChBMRsM4PggYa25IAjXYjOFTVmKimIFf+zqB5C
-         eCObJHK86LDDroIC02xFtUIloc/3fFqVeU9Vton0=
-Date:   Sat, 24 Jun 2023 16:08:59 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc:     stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 4.14 4.19 5.4 5.10 5.15 6.1] nilfs2: prevent general
- protection fault in nilfs_clear_dirty_page()
-Message-ID: <2023062452-drank-strife-99ad@gregkh>
-References: <2023062316-swooned-scurvy-040f@gregkh>
- <20230624041802.4195-1-konishi.ryusuke@gmail.com>
+        b=aVmxZgBo6RyuOrNnSx3g61md/oL2lzI0LMfINwpy8f70Vcx+MxMs4wtdagqUwbrFg
+         D7Z2PRiiBs3y7qDPFPdKYWGkEeJDCaFqGVNt0JplhqhzoNc4hyIyMJt3H69U5mbLBI
+         BLpUq2zK2g5PtbBMZgvnWDBKJTKfPHMDOgzf1qag=
+Date:   Sat, 24 Jun 2023 16:10:24 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Paulo Alcantara <pc@manguebit.com>
+Cc:     Rishabh Bhatnagar <risbhat@amazon.com>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-cifs@vger.kernel.org
+Subject: Re: [PATCH 5.4 0/5] CIFS DFS fixes for 5.4
+Message-ID: <2023062419-smoking-buggy-ebbf@gregkh>
+References: <20230623213406.5596-1-risbhat@amazon.com>
+ <56200b7e7f5a8852869814ff1f9f0fa7.pc@manguebit.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230624041802.4195-1-konishi.ryusuke@gmail.com>
+In-Reply-To: <56200b7e7f5a8852869814ff1f9f0fa7.pc@manguebit.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -52,45 +52,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jun 24, 2023 at 01:18:02PM +0900, Ryusuke Konishi wrote:
-> commit 782e53d0c14420858dbf0f8f797973c150d3b6d7 upstream.
+On Fri, Jun 23, 2023 at 07:08:22PM -0300, Paulo Alcantara wrote:
+> Rishabh Bhatnagar <risbhat@amazon.com> writes:
 > 
-> In a syzbot stress test that deliberately causes file system errors on
-> nilfs2 with a corrupted disk image, it has been reported that
-> nilfs_clear_dirty_page() called from nilfs_clear_dirty_pages() can cause a
-> general protection fault.
+> > We are seeing deadlock in cifs code while updating volume in
+> > cifs_reconnect. There are few fixes available in stable trees
+> > already. This series backports some patches back to 5.4 stable.
+> >
+> >  __schedule+0x268/0x6e0
+> >  schedule+0x2f/0xa0
+> >  schedule_preempt_disabled+0xa/0x10
+> >  __mutex_lock.isra.7+0x20b/0x470
+> >  ? dfs_cache_update_vol+0x45/0x2a0 [cifs]
+> >  dfs_cache_update_vol+0x45/0x2a0 [cifs]
+> >  cifs_reconnect+0x6f2/0xef0 [cifs]
+> >  cifs_handle_standard+0x18d/0x1b0 [cifs]
+> >  cifs_demultiplex_thread+0xa5c/0xc90 [cifs]
+> >  ? cifs_handle_standard+0x1b0/0x1b0 [cifs]
+> >
+> > Paulo Alcantara (SUSE) (5):
+> >   cifs: Clean up DFS referral cache
+> >   cifs: Get rid of kstrdup_const()'d paths
+> >   cifs: Introduce helpers for finding TCP connection
+> >   cifs: Merge is_path_valid() into get_normalized_path()
+> >   cifs: Fix potential deadlock when updating vol in cifs_reconnect()
+> >
+> >  fs/cifs/dfs_cache.c | 701 +++++++++++++++++++++++---------------------
+> >  1 file changed, 372 insertions(+), 329 deletions(-)
 > 
-> In nilfs_clear_dirty_pages(), when looking up dirty pages from the page
-> cache and calling nilfs_clear_dirty_page() for each dirty page/folio
-> retrieved, the back reference from the argument page to "mapping" may have
-> been changed to NULL (and possibly others).  It is necessary to check this
-> after locking the page/folio.
-> 
-> So, fix this issue by not calling nilfs_clear_dirty_page() on a page/folio
-> after locking it in nilfs_clear_dirty_pages() if the back reference
-> "mapping" from the page/folio is different from the "mapping" that held
-> the page/folio just before.
-> 
-> Link: https://lkml.kernel.org/r/20230612021456.3682-1-konishi.ryusuke@gmail.com
-> Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-> Reported-by: syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com
-> Closes: https://lkml.kernel.org/r/000000000000da4f6b05eb9bf593@google.com
-> Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-> ---
-> Please apply this patch to the above stable trees instead of the patch
-> that could not be applied to them.  This patch resolves the conflict
-> caused by the recent page to folio conversion applied in
-> nilfs_clear_dirty_pages().  The general protection fault reported by
-> syzbot reproduces on these stable kernels before the page/folio
-> conversion is applied.  This fixes it.
-> 
-> With this tweak, this patch is applicable from v3.10 to v6.2.  Also,
-> this patch has been tested against the -stable trees of each version in
-> the subject prefix.
+> Looks good, thanks.
 
-Now queued up, thanks.
+All now queued up, thanks.
 
 greg k-h
