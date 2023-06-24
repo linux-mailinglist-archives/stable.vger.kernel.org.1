@@ -2,44 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC1BC73C4B2
-	for <lists+stable@lfdr.de>; Sat, 24 Jun 2023 01:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EF2773C5DB
+	for <lists+stable@lfdr.de>; Sat, 24 Jun 2023 03:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231808AbjFWXKo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 23 Jun 2023 19:10:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47974 "EHLO
+        id S229630AbjFXBer (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 23 Jun 2023 21:34:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231210AbjFWXKo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 19:10:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4516AEA;
-        Fri, 23 Jun 2023 16:10:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B45CA61032;
-        Fri, 23 Jun 2023 23:10:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14465C433C0;
-        Fri, 23 Jun 2023 23:10:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1687561842;
-        bh=9D2gxM3MefNukqRvygLHlTpTq6KpftKL3EmG4IYUc5s=;
-        h=Date:To:From:Subject:From;
-        b=Fdqh2GUgPnYx3x+SODanYbSY/HPwPF/MfR9nGYan3l9XBjgFSrjlodCFgagiIbfSC
-         wvd3jGxv8pyXRWMydpGNL/Va/IA5iMvk6ZLR+LtnrJGr73JeqHYhfI0qu6YR3OAhGN
-         WU4Dw3v8DTXexVJHcfjHP4Yn3ynNTZ04DuYW0NYM=
-Date:   Fri, 23 Jun 2023 16:10:41 -0700
-To:     mm-commits@vger.kernel.org, yosryahmed@google.com,
-        stable@vger.kernel.org, yuzhao@google.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-mglru-make-memcg_lru-lock-irq-safe.patch removed from -mm tree
-Message-Id: <20230623231042.14465C433C0@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229543AbjFXBer (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 23 Jun 2023 21:34:47 -0400
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5644213A;
+        Fri, 23 Jun 2023 18:34:45 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6686c74183cso1050759b3a.1;
+        Fri, 23 Jun 2023 18:34:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687570485; x=1690162485;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NweAbjy52dJmvgrS5Se3FN0lnSLavmsB+nKxFGPGvW0=;
+        b=VSGfQTWVWsbp9D+RhlgroWtsItjwsd+PAsju+hPuWGHSmM2/N6JW/0cyml04B5fnDA
+         S6Oja8X71oM1CVdjhclXpm3mU3WwX/vzDHeHPqLfz5PFyuGHNzknB3hAjH89MEMfszI0
+         D7qh7o4mervwSD6aRKthAHFjjCLVmOG90BqJ9r4jfR91KjFoFLHUN4FPNi4/od9UnaAP
+         Fu5sq0g8N68zOOIGbpCp+pGjSvzyN7kt9GY5h52bNLOGoaAOZk2lbrB25Lzve2A9CmcD
+         lTosl3lLEdYxYlsRATwecnEOk19Eeu5zot2eFK45XTNHzPSdVRyu1GAszlfdQ2LQMVbM
+         O8Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687570485; x=1690162485;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NweAbjy52dJmvgrS5Se3FN0lnSLavmsB+nKxFGPGvW0=;
+        b=f3J7dNBQlGrxy3qJc5an1Oa/Gt7mU+76Dr/w2RN/AAQzxHclgqPDG5aBIZdKv4alNu
+         cDtR0hfn0sx0I+1DvUSZ19aOcXPQN0qFLUL+oSVi1zfEIKqzFtEYDYDQIXc20W1w4AF2
+         38ZaaMWfdNIt5IWJKHqLW2HMCJtgzbfBkFW5KGtvlEPkevC8v5uLf1nuhgNYiZpK3B4F
+         oDw2FfY1hJ9ePmw4pGF5awf2WEN0JLUivNOdq3hk6tDfeCdNvWZoF8HZDTLI8wHdgV2e
+         vZKjtcbMTZnGe568WlFjHwGz2LZKOHY9E7gtxXVoInd0SWpgv7WagBVLXVInq7+Q2NyW
+         YZpQ==
+X-Gm-Message-State: AC+VfDyGde3DaAS4cbbmDMlYHgUhXwVjxPW+gcGeDjD9JWHRgStyrIsO
+        N+d1XuQ7HTwhXU/9mmTzBcgVYSs0DAFYow==
+X-Google-Smtp-Source: ACHHUZ4EaqFt6nWD83dMOJjUmyNBRz7LaE9yDDNtm67kqPMvxGc6jCP04lmsfP6QNI8sfJL/8U7eVw==
+X-Received: by 2002:a05:6a20:2588:b0:11d:2764:d9c1 with SMTP id k8-20020a056a20258800b0011d2764d9c1mr27851326pzd.51.1687570485339;
+        Fri, 23 Jun 2023 18:34:45 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id 24-20020a631258000000b0054fe07d2f3dsm240316pgs.11.2023.06.23.18.34.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jun 2023 18:34:44 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 467208BFA791; Sat, 24 Jun 2023 08:25:40 +0700 (WIB)
+Date:   Sat, 24 Jun 2023 08:25:39 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Elmar Stellnberger <estellnb@elstel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Memory Management <linux-mm@kvack.org>,
+        Linux Stable <stable@vger.kernel.org>
+Subject: Re: Fwd: kernel fault on hibernation: get_zeroed_page/swsusp_write
+Message-ID: <ZJZGE4ZxJzrhRznA@debian.me>
+References: <5d4959b7-61da-8ab0-6bc6-21305d37c7aa@gmail.com>
+ <ZJXFgfldS6W_LCiI@mail.dotplex.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="r2ki5HdcOTzEK4x7"
+Content-Disposition: inline
+In-Reply-To: <ZJXFgfldS6W_LCiI@mail.dotplex.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -47,100 +79,62 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The quilt patch titled
-     Subject: mm/mglru: make memcg_lru->lock irq safe
-has been removed from the -mm tree.  Its filename was
-     mm-mglru-make-memcg_lru-lock-irq-safe.patch
+--r2ki5HdcOTzEK4x7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On Fri, Jun 23, 2023 at 06:17:05PM +0200, Elmar Stellnberger wrote:
+> Hi all, Hi Bagas S.
+>=20
+> As the issue didn't reproduce the way I would have liked (did not
+> reproduce at all here, not even with the same kernel version; no
+> further comment) I have now uploaded the /proc/kcore and the kernel
+> binaries and symbol files I still had on disk at
+> https://upload.elstel.info (This may move to something like
+> upload.elstel.info/bugs/kernpagealloc in the future)
+>=20
 
-------------------------------------------------------
-From: Yu Zhao <yuzhao@google.com>
-Subject: mm/mglru: make memcg_lru->lock irq safe
-Date: Mon, 19 Jun 2023 13:38:21 -0600
+First, tl;dr:
 
-lru_gen_rotate_memcg() can happen in softirq if memory.soft_limit_in_bytes
-is set.  This requires memcg_lru->lock to be irq safe.  Lockdep warns on
-this.
+> A: http://en.wikipedia.org/wiki/Top_post
+> Q: Were do I find info about this thing called top-posting?
+> A: Because it messes up the order in which people normally read text.
+> Q: Why is top-posting such a bad thing?
+> A: Top-posting.
+> Q: What is the most annoying thing in e-mail?
+>=20
+> A: No.
+> Q: Should I include quotations after my reply?
+>=20
+> http://daringfireball.net/2007/07/on_top
 
-This problem only affects memcg v1.
+Can you attach [1] to your Bugzilla report? Also, any report on bisection?
 
-Link: https://lkml.kernel.org/r/20230619193821.2710944-1-yuzhao@google.com
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Reported-by: syzbot+87c490fd2be656269b6a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=87c490fd2be656269b6a
-Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+Also, you don't need to upload full kernel images instead; people can
+grab /proc/config.gz you uploaded on Bugzilla and then `make olddefconfig`
+=66rom it.
 
- mm/vmscan.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+Anyway, telling regzbot:
 
---- a/mm/vmscan.c~mm-mglru-make-memcg_lru-lock-irq-safe
-+++ a/mm/vmscan.c
-@@ -4728,10 +4728,11 @@ static void lru_gen_rotate_memcg(struct
- {
- 	int seg;
- 	int old, new;
-+	unsigned long flags;
- 	int bin = get_random_u32_below(MEMCG_NR_BINS);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 
--	spin_lock(&pgdat->memcg_lru.lock);
-+	spin_lock_irqsave(&pgdat->memcg_lru.lock, flags);
- 
- 	VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
- 
-@@ -4766,7 +4767,7 @@ static void lru_gen_rotate_memcg(struct
- 	if (!pgdat->memcg_lru.nr_memcgs[old] && old == get_memcg_gen(pgdat->memcg_lru.seq))
- 		WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
- 
--	spin_unlock(&pgdat->memcg_lru.lock);
-+	spin_unlock_irqrestore(&pgdat->memcg_lru.lock, flags);
- }
- 
- void lru_gen_online_memcg(struct mem_cgroup *memcg)
-@@ -4779,7 +4780,7 @@ void lru_gen_online_memcg(struct mem_cgr
- 		struct pglist_data *pgdat = NODE_DATA(nid);
- 		struct lruvec *lruvec = get_lruvec(memcg, nid);
- 
--		spin_lock(&pgdat->memcg_lru.lock);
-+		spin_lock_irq(&pgdat->memcg_lru.lock);
- 
- 		VM_WARN_ON_ONCE(!hlist_nulls_unhashed(&lruvec->lrugen.list));
- 
-@@ -4790,7 +4791,7 @@ void lru_gen_online_memcg(struct mem_cgr
- 
- 		lruvec->lrugen.gen = gen;
- 
--		spin_unlock(&pgdat->memcg_lru.lock);
-+		spin_unlock_irq(&pgdat->memcg_lru.lock);
- 	}
- }
- 
-@@ -4814,7 +4815,7 @@ void lru_gen_release_memcg(struct mem_cg
- 		struct pglist_data *pgdat = NODE_DATA(nid);
- 		struct lruvec *lruvec = get_lruvec(memcg, nid);
- 
--		spin_lock(&pgdat->memcg_lru.lock);
-+		spin_lock_irq(&pgdat->memcg_lru.lock);
- 
- 		VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
- 
-@@ -4826,7 +4827,7 @@ void lru_gen_release_memcg(struct mem_cg
- 		if (!pgdat->memcg_lru.nr_memcgs[gen] && gen == get_memcg_gen(pgdat->memcg_lru.seq))
- 			WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
- 
--		spin_unlock(&pgdat->memcg_lru.lock);
-+		spin_unlock_irq(&pgdat->memcg_lru.lock);
- 	}
- }
- 
-_
+#regzbot link: https://upload.elstel.info/kcore.xz
 
-Patches currently in -mm which might be from yuzhao@google.com are
+Thanks.
 
+[1]: https://upload.elstel.info/kcore.xz
 
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--r2ki5HdcOTzEK4x7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZJZGCwAKCRD2uYlJVVFO
+o8DMAQC6zR1yWAa7UjG6IkGQnqbipk2vCuN918vTrru6uzJIMQEA3roDgr7VTrHm
+nimvRUDgB4IcrFpNlJFzdVpaRrSpDws=
+=DDa0
+-----END PGP SIGNATURE-----
+
+--r2ki5HdcOTzEK4x7--
