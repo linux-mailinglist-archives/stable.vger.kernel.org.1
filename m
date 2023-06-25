@@ -2,68 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63BA773CFA3
-	for <lists+stable@lfdr.de>; Sun, 25 Jun 2023 11:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A99E473D016
+	for <lists+stable@lfdr.de>; Sun, 25 Jun 2023 12:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230058AbjFYJML (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 25 Jun 2023 05:12:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39970 "EHLO
+        id S231636AbjFYK1r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 25 Jun 2023 06:27:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230362AbjFYJMK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 25 Jun 2023 05:12:10 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35F65E7E
-        for <stable@vger.kernel.org>; Sun, 25 Jun 2023 02:12:06 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b69f71a7easo1031561fa.1
-        for <stable@vger.kernel.org>; Sun, 25 Jun 2023 02:12:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687684324; x=1690276324;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kppE/1aeZz73sSj584qwbxqHiJbo+GK5PP0QhEK9lPs=;
-        b=X6vjvdRUWOoDKNEOxsMIRf0LlUv2MBVLMiSIW4+HZKxaqplikdZhdeN1+shXxkde5Z
-         Ujq007RKCoQ0ymqc4k8vsmxUIZqcJE05gKc+liQ/yq5ZumMSRFUssjex5UyeywmKAN7A
-         ytYKIJzJULiPZ02f0y/IpWFZqimrfAihXc8u1TTPEAt53rncVHtPedj6+Ymuw6CYx9JM
-         pDtK4JitaiBEpvU5Z1WH3lC5H6/H8/B3Xsfu6aJdow1hgBU+I/P95WFDagMHmgp/4YyH
-         wHoW49IeM2ZdKHxHqqTuZl5adFvFcfFtBAe4t0kbM0b37TPlYrq2CkZiEjfbRue9C/kT
-         zqhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687684324; x=1690276324;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kppE/1aeZz73sSj584qwbxqHiJbo+GK5PP0QhEK9lPs=;
-        b=gjp5XchuvxYbLT+ncH7heV02xNyxGmiMJCu6bUm50C9Esfc/hH9OzHgfgXhTl1xVsM
-         gpp0xvBqLfnb65l3B0KUfLKqqhSho9aKhJjAorvNeSUzvhGEfRqKo36L3ZU+1t+1KmyW
-         RMGqD6rRv6X1c5xdiMqfnBePiJowMNaGh7t78VB0Q0lglHgvril7XGg8wOtgrfeDgwdf
-         i0FFr1nFEWVoRXoBX1lTIF66RFiJVmb5+lDQYBeGSaXYa0CbxvLmUmk/HY9hSlIKvbRG
-         By+NubwWA9UzBmfFdM2bhrjmWp0Src3BJF6tH4bgWbzxcwn+40OP+ImayXQlaM227AgA
-         cTgw==
-X-Gm-Message-State: AC+VfDyCMKeTA78dXXYzkSpA1vnMJlBlzIj+Q6VgluOEZREcj91pVmVk
-        dsDPK5lmJEonxyMmXmBVbpauJceIfJrWx1eV45Y=
-X-Google-Smtp-Source: ACHHUZ7NeeVbEhQyhlAtClXP+KKnObAPnXzqWhDhWldSrMLAqtfVqaCSEqzKkFTdgtshoznsAnZxVQzmh9h0D1uGQhs=
-X-Received: by 2002:a2e:95d7:0:b0:2b4:65bf:d7b with SMTP id
- y23-20020a2e95d7000000b002b465bf0d7bmr13715273ljh.2.1687684324041; Sun, 25
- Jun 2023 02:12:04 -0700 (PDT)
+        with ESMTP id S231626AbjFYK1q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 25 Jun 2023 06:27:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C08E47;
+        Sun, 25 Jun 2023 03:27:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AE8160B87;
+        Sun, 25 Jun 2023 10:27:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864A2C433C0;
+        Sun, 25 Jun 2023 10:27:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687688863;
+        bh=zNDv0rJ1JFrpa40hA5kU8PjgiXyqQg1Bdpc7cE33+ac=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+        b=doyFu9VMBsbOGEH7Fb1qBuAtd0cB/uvUYFk3t/YR2/CfMA74Cbx6/kJVbnJvo4i5c
+         +SfTGigasBvSHbiR8jOfxKcc6UqzpOuuVTxB8qcx7acUqbmDkVSbQWwTnlQUoXtO6/
+         VMgT7aiK6sKBevHZWT7g3eAgLa8iOwR1aXN1eV1MpxIVv10VtJiw1rZnaRu1Xmug2m
+         WP6HQZU59MNf0feR96Pe3gE6BzTFap1NjkG+Wh/nPOvrkJy5Jk1qenE6F4sA0851d7
+         3+L9qaCV65ILKrhWRvliAPmzqFgsdaigcTHitlgvjlBEmo5aXGSU76jnQEYfCm0cyi
+         MzkF0r4OMXvAQ==
+Message-ID: <d0ec4a04-ab81-7e71-ad56-5b22e1815919@kernel.org>
+Date:   Sun, 25 Jun 2023 18:27:40 +0800
 MIME-Version: 1.0
-References: <CAMeyCbi16i4mdkOnqYhbW1tnqNwPwg2FVYqbdyhXt1fT10EaUw@mail.gmail.com>
- <20230621152556.qcjarclgbagkygdt@umbrella> <CAMeyCbgmiNTpV5_sbP3dq0TNJBBxcW8j0SRM+dxbjQXWAShDBg@mail.gmail.com>
- <CAMeyCbhb2wV8-kmjaihjT3vQsFs-zzix77ztG7Z9E4VdEZOHOQ@mail.gmail.com>
-In-Reply-To: <CAMeyCbhb2wV8-kmjaihjT3vQsFs-zzix77ztG7Z9E4VdEZOHOQ@mail.gmail.com>
-From:   Kegl Rohit <keglrohit@gmail.com>
-Date:   Sun, 25 Jun 2023 11:11:52 +0200
-Message-ID: <CAMeyCbjWSJChDatzwTCKhW9iU=E_+=BLXAmpgR4DnFLJ7koh2Q@mail.gmail.com>
-Subject: Re: mtd: raw: nand: gpmi-nand data corruption @ v5.10.184
-To:     "han.xu" <han.xu@nxp.com>
-Cc:     linux-mtd@lists.infradead.org, stable@vger.kernel.org,
-        s.hauer@pengutronix.de, miquel.raynal@bootlin.com,
-        tomasz.mon@camlingroup.com, gregkh@linuxfoundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [f2fs-dev] [PATCH] f2fs: remove i_xattr_sem to avoid deadlock and
+ fix the original issue
+Content-Language: en-US
+From:   Chao Yu <chao@kernel.org>
+To:     Jaegeuk Kim <jaegeuk@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net
+Cc:     stable@vger.kernel.org
+References: <20230613233940.3643362-1-jaegeuk@kernel.org>
+ <e5788348-b547-8e10-21af-90544f3aa75c@kernel.org>
+In-Reply-To: <e5788348-b547-8e10-21af-90544f3aa75c@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,121 +59,161 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello!
+On 2023/6/25 15:26, Chao Yu wrote:
+> One concern below:
+> 
+> Thread A:                    Thread B:
+> - f2fs_getxattr
+>   - lookup_all_xattrs
+>    - read_inline_xattr
+>     - f2fs_get_node_page(ino)
+>     - memcpy inline xattr
+>     - f2fs_put_page
+>                          - f2fs_setxattr
+>                           - __f2fs_setxattr
+>                            - __f2fs_setxattr
+>                             - write_all_xattrs
+>                              - write xnode and inode
+>    ---> inline xattr may out of update here.
+>    - read_xattr_block
+>     - f2fs_get_node_page(xnid)
+>     - memcpy xnode xattr
+>     - f2fs_put_page
+> 
+> Do we need to keep xattr_{get,set} being atomical operation?
 
-Following to the initial discussion
-https://lore.kernel.org/all/20220701110341.3094023-1-s.hauer@pengutronix.de
-which caused the revert commit:
-Are there any plans to fix this issue for 5.10.y (and maybe other
-stable branches)?
+It seems xfstest starts to complain w/ below message...
 
-Thanks in advance!
+[ 3400.856443] F2FS-fs (vdc): inode (2187) has invalid last xattr entry, entry_size: 21468
+[ 3400.864042] F2FS-fs (vdc): inode (1595) has invalid last xattr entry, entry_size: 26580
+[ 3400.865764] F2FS-fs (vdc): inode (2187) has invalid last xattr entry, entry_size: 21468
+[ 3400.880067] F2FS-fs (vdc): inode (9839) has corrupted xattr
+[ 3400.880714] F2FS-fs (vdc): inode (10855) has corrupted xattr
 
-On Thu, Jun 22, 2023 at 6:46=E2=80=AFAM Kegl Rohit <keglrohit@gmail.com> wr=
-ote:
->
-> After reverting the revert :), the data corruption did not happen anymore=
-!
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.git/co=
-mmit/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c?h=3Dv5.10.184-rt90&id=3Dcc5=
-ee0e0eed0bec2b7cc1d0feb9405e884eace7d
->
-> On Wed, Jun 21, 2023 at 7:55=E2=80=AFPM Kegl Rohit <keglrohit@gmail.com> =
-wrote:
-> >
-> > ok, looking at the 5.10.184 gpmi-nand.c:
-> >
-> > #define BF_GPMI_TIMING1_BUSY_TIMEOUT(v) \
-> > (((v) << BP_GPMI_TIMING1_BUSY_TIMEOUT) & BM_GPMI_TIMING1_BUSY_TIMEOUT)
-> >
-> > hw->timing1 =3D BF_GPMI_TIMING1_BUSY_TIMEOUT(busy_timeout_cycles * 4096=
-);
-> >
-> > and then 5.19 (upstream patch source 0fddf9ad06fd9f439f1371398615566716=
-73e31c)
-> > https://github.com/gregkh/linux/commit/0fddf9ad06fd9f439f13713986155667=
-1673e31c#diff-0dec2fa8640ea2067789c406ab1e42c9805d0d0fc9f70a3a29d17f9311e23=
-ca2L893
-> >
-> > hw->timing1 =3D BF_GPMI_TIMING1_BUSY_TIMEOUT(DIV_ROUND_UP(busy_timeout_=
-cycles,
-> > 4096));
-> >
-> > could be the cause. DIV_ROUND_UP is most likely a division and
-> > busy_timeout_cycles * 4096 a multiplication!
-> >
-> > The backport is wrong, because on the 5.10 kernel tree commit
-> > cc5ee0e0eed0bec2b7cc1d0feb9405e884eace7d was reverted and on mainline
-> > not.
-> > https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.git/=
-commit/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c?h=3Dv5.10.184-rt90&id=3Dc=
-c5ee0e0eed0bec2b7cc1d0feb9405e884eace7d
-> >
-> > =3D> now in 5.10.184 this line "hw->timing1 ..." is wrong!
-> >
-> >  I will test this tomorrow.
-> >
-> > On Wed, Jun 21, 2023 at 5:26=E2=80=AFPM han.xu <han.xu@nxp.com> wrote:
-> > >
-> > > On 23/06/21 04:27PM, Kegl Rohit wrote:
-> > > > Hello!
-> > > >
-> > > > Using imx7d and rt stable kernel tree.
-> > > >
-> > > > After upgrading to v5.10.184-rt90 the rootfs ubifs mtd partition go=
-t corrupted.
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.=
-git/tag/?h=3Dv5.10.184-rt90
-> > > >
-> > > > After reverting the latest patch
-> > > > (e4e4b24b42e710db058cc2a79a7cf16bf02b4915), the rootfs partition di=
-d
-> > > > not get corrupted.
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.=
-git/commit/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c?h=3Dv5.10.184-rt90&id=
-=3De4e4b24b42e710db058cc2a79a7cf16bf02b4915
-> > > >
-> > > > The commit message states the timeout calculation was changed.
-> > > > Here are the calculated timeouts `busy_timeout_cycles` before (_old=
-)
-> > > > and after the patch (_new):
-> > > >
-> > > > [    0.491534] busy_timeout_cycles_old 4353
-> > > > [    0.491604] busy_timeout_cycles_new 1424705
-> > > > [    0.492300] nand: device found, Manufacturer ID: 0xc2, Chip ID: =
-0xdc
-> > > > [    0.492310] nand: Macronix MX30LF4G28AC
-> > > > [    0.492316] nand: 512 MiB, SLC, erase size: 128 KiB, page size:
-> > > > 2048, OOB size: 112
-> > > > [    0.492488] busy_timeout_cycles_old 4353
-> > > > [    0.492493] busy_timeout_cycles_new 1424705
-> > > > [    0.492863] busy_timeout_cycles_old 2510
-> > > > [    0.492872] busy_timeout_cycles_new 350000
-> > > >
-> > > > The new timeouts are set a lot higher. Higher timeouts should not b=
-e
-> > > > an issue. Lower timeouts could be an issue.
-> > > > But because of this high timeouts gpmi-nand is broken for us.
-> > > >
-> > > > For now we simple reverted the change.
-> > > > The new calculations seem to be flaky, a previous "fix backport" wa=
-s
-> > > > already reverted because of data corruption.
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable-rt.=
-git/commit/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c?h=3Dv5.10.184-rt90&id=
-=3Dcc5ee0e0eed0bec2b7cc1d0feb9405e884eace7d
-> > > >
-> > > > Any guesses why the high timeout causes issues?
-> > >
-> > > high timeout with wrong calculation may overflow and causes DEVICE_BU=
-SY_TIMEOUT
-> > > register turns to be 0.
-> > >
-> > > >
-> > > >
-> > > > Thanks in advance!
-> > > >
-> > > > ______________________________________________________
-> > > > Linux MTD discussion mailing list
-> > > > http://lists.infradead.org/mailman/listinfo/linux-mtd/
+Thanks,
+
+> 
+> Thanks,
+> 
+>>
+>> I think we don't need to truncate xattr pages eagerly which introduces lots of
+>> data races without big benefits.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+>> ---
+>>   fs/f2fs/f2fs.h  |  1 -
+>>   fs/f2fs/super.c |  1 -
+>>   fs/f2fs/xattr.c | 31 ++++++++-----------------------
+>>   3 files changed, 8 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+>> index 3f5b161dd743..7b9af2d51656 100644
+>> --- a/fs/f2fs/f2fs.h
+>> +++ b/fs/f2fs/f2fs.h
+>> @@ -838,7 +838,6 @@ struct f2fs_inode_info {
+>>       /* avoid racing between foreground op and gc */
+>>       struct f2fs_rwsem i_gc_rwsem[2];
+>> -    struct f2fs_rwsem i_xattr_sem; /* avoid racing between reading and changing EAs */
+>>       int i_extra_isize;        /* size of extra space located in i_addr */
+>>       kprojid_t i_projid;        /* id for project quota */
+>> diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+>> index 1b2c788ed80d..c917fa771f0e 100644
+>> --- a/fs/f2fs/super.c
+>> +++ b/fs/f2fs/super.c
+>> @@ -1418,7 +1418,6 @@ static struct inode *f2fs_alloc_inode(struct super_block *sb)
+>>       INIT_LIST_HEAD(&fi->gdirty_list);
+>>       init_f2fs_rwsem(&fi->i_gc_rwsem[READ]);
+>>       init_f2fs_rwsem(&fi->i_gc_rwsem[WRITE]);
+>> -    init_f2fs_rwsem(&fi->i_xattr_sem);
+>>       /* Will be used by directory only */
+>>       fi->i_dir_level = F2FS_SB(sb)->dir_level;
+>> diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+>> index 213805d3592c..bdc8a55085a2 100644
+>> --- a/fs/f2fs/xattr.c
+>> +++ b/fs/f2fs/xattr.c
+>> @@ -433,7 +433,7 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+>>   {
+>>       struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+>>       size_t inline_size = inline_xattr_size(inode);
+>> -    struct page *in_page = NULL;
+>> +    struct page *in_page = ipage;
+>>       void *xattr_addr;
+>>       void *inline_addr = NULL;
+>>       struct page *xpage;
+>> @@ -446,29 +446,19 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+>>       /* write to inline xattr */
+>>       if (inline_size) {
+>> -        if (ipage) {
+>> -            inline_addr = inline_xattr_addr(inode, ipage);
+>> -        } else {
+>> +        if (!in_page) {
+>>               in_page = f2fs_get_node_page(sbi, inode->i_ino);
+>>               if (IS_ERR(in_page)) {
+>>                   f2fs_alloc_nid_failed(sbi, new_nid);
+>>                   return PTR_ERR(in_page);
+>>               }
+>> -            inline_addr = inline_xattr_addr(inode, in_page);
+>>           }
+>> +        inline_addr = inline_xattr_addr(inode, in_page);
+>> -        f2fs_wait_on_page_writeback(ipage ? ipage : in_page,
+>> -                            NODE, true, true);
+>> -        /* no need to use xattr node block */
+>> +        f2fs_wait_on_page_writeback(in_page, NODE, true, true);
+>>           if (hsize <= inline_size) {
+>> -            err = f2fs_truncate_xattr_node(inode);
+>> -            f2fs_alloc_nid_failed(sbi, new_nid);
+>> -            if (err) {
+>> -                f2fs_put_page(in_page, 1);
+>> -                return err;
+>> -            }
+>>               memcpy(inline_addr, txattr_addr, inline_size);
+>> -            set_page_dirty(ipage ? ipage : in_page);
+>> +            set_page_dirty(in_page);
+>>               goto in_page_out;
+>>           }
+>>       }
+>> @@ -502,12 +492,13 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+>>       memcpy(xattr_addr, txattr_addr + inline_size, VALID_XATTR_BLOCK_SIZE);
+>>       if (inline_size)
+>> -        set_page_dirty(ipage ? ipage : in_page);
+>> +        set_page_dirty(in_page);
+>>       set_page_dirty(xpage);
+>>       f2fs_put_page(xpage, 1);
+>>   in_page_out:
+>> -    f2fs_put_page(in_page, 1);
+>> +    if (in_page != ipage)
+>> +        f2fs_put_page(in_page, 1);
+>>       return err;
+>>   }
+>> @@ -528,10 +519,8 @@ int f2fs_getxattr(struct inode *inode, int index, const char *name,
+>>       if (len > F2FS_NAME_LEN)
+>>           return -ERANGE;
+>> -    f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+>>       error = lookup_all_xattrs(inode, ipage, index, len, name,
+>>                   &entry, &base_addr, &base_size, &is_inline);
+>> -    f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+>>       if (error)
+>>           return error;
+>> @@ -565,9 +554,7 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
+>>       int error;
+>>       size_t rest = buffer_size;
+>> -    f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+>>       error = read_all_xattrs(inode, NULL, &base_addr);
+>> -    f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+>>       if (error)
+>>           return error;
+>> @@ -794,9 +781,7 @@ int f2fs_setxattr(struct inode *inode, int index, const char *name,
+>>       f2fs_balance_fs(sbi, true);
+>>       f2fs_lock_op(sbi);
+>> -    f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
+>>       err = __f2fs_setxattr(inode, index, name, value, size, ipage, flags);
+>> -    f2fs_up_write(&F2FS_I(inode)->i_xattr_sem);
+>>       f2fs_unlock_op(sbi);
+>>       f2fs_update_time(sbi, REQ_TIME);
+> 
+> 
+> _______________________________________________
+> Linux-f2fs-devel mailing list
+> Linux-f2fs-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
