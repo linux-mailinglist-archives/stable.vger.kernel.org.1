@@ -2,105 +2,269 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DE7573CD32
-	for <lists+stable@lfdr.de>; Sun, 25 Jun 2023 00:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2256073CEE8
+	for <lists+stable@lfdr.de>; Sun, 25 Jun 2023 09:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbjFXWKm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 24 Jun 2023 18:10:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41566 "EHLO
+        id S230363AbjFYH0q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 25 Jun 2023 03:26:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjFXWKl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 24 Jun 2023 18:10:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AE411728;
-        Sat, 24 Jun 2023 15:10:40 -0700 (PDT)
+        with ESMTP id S230000AbjFYH0q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 25 Jun 2023 03:26:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69831184;
+        Sun, 25 Jun 2023 00:26:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5F3E60A72;
-        Sat, 24 Jun 2023 22:10:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D18C433C8;
-        Sat, 24 Jun 2023 22:10:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0A2660AC3;
+        Sun, 25 Jun 2023 07:26:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7499AC433C0;
+        Sun, 25 Jun 2023 07:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687644639;
-        bh=HWt8oRnYu87Ln4J37mjVUiNFUEhjYUmsz1tsbbm/9FQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AP5cpRleJJxVIBPpCJ76uLDgVgCP/AGaJnlKcIitMzQ/jqV7ODH2Xa3+rHcTjgiWw
-         i7kR+s9dHvWl5t9FnQlg8YoOlYgalhCQaufFlEi/dVFFBhGV7rtw/VXQ3LXMU+LE9m
-         X/eDmmmiMVQUYrqA52A7wo8hn3Me8u8m356GcndmGixUbgCf+QpEO2DArhhJrFt6cB
-         WtvWXmc01AUUSEkpIz5g8t68XhbFA4gSu04WfCAx/1JsvR60WS6aTb+oBHamvj7gBN
-         TfNJN+Y4WDxyPp95aHQfb0TAAYlbhIzIzwKZ4hc1ZUlNIZTgsC9vCj7OMaimFZzaxi
-         e36XYhHUKSl6w==
-Date:   Sat, 24 Jun 2023 15:10:37 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     longli@linuxonhyperv.com
-Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>, linux-rdma@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Long Li <longli@microsoft.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] net: mana: Batch ringing RX queue doorbell on
- receiving packets
-Message-ID: <20230624151037.699c50c6@kernel.org>
-In-Reply-To: <1687450956-6407-1-git-send-email-longli@linuxonhyperv.com>
-References: <1687450956-6407-1-git-send-email-longli@linuxonhyperv.com>
+        s=k20201202; t=1687678003;
+        bh=n8NJrHW6O64INrNVioHV6r1iMPZT7RdhdOdSbYch9jI=;
+        h=Date:To:Cc:References:From:Subject:In-Reply-To:From;
+        b=agH9X662vWufI4ggY1kdPZubOHqMvSfpdKqkjFf/pAKcgkK5f3Ffa9njfQLtzuEJ9
+         MZdzkBMZcteZrDs6eJglF0DiP9BQj2yD5kApVjDZOLYM9VdpAPybfvvTbHIzYcjmYK
+         VUZXb6aEQTxoPsiGneLISxPh6DejVRU+G215qMOxEHiWMI9LZnPTIkIgqubNI0njoX
+         sM2gW5rsmaW6b57QmrlBhqCrb5wjIIOzk/6rln+ZE3r8gfD+uWnFdUsarHy6agMCFb
+         dpkJ/Ab9kGmcv3voxbe7QSFroqMKAn6L+5e4qen8u3GZG2zOwRgp2uCMaFOuzyFJLA
+         m6mj2Ipz2urmQ==
+Message-ID: <e5788348-b547-8e10-21af-90544f3aa75c@kernel.org>
+Date:   Sun, 25 Jun 2023 15:26:38 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To:     Jaegeuk Kim <jaegeuk@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net
+Cc:     stable@vger.kernel.org
+References: <20230613233940.3643362-1-jaegeuk@kernel.org>
+From:   Chao Yu <chao@kernel.org>
+Subject: Re: [f2fs-dev] [PATCH] f2fs: remove i_xattr_sem to avoid deadlock and
+ fix the original issue
+In-Reply-To: <20230613233940.3643362-1-jaegeuk@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 22 Jun 2023 09:22:36 -0700 longli@linuxonhyperv.com wrote:
-> It's inefficient to ring the doorbell page every time a WQE is posted to
-> the received queue.
+On 2023/6/14 7:39, Jaegeuk Kim wrote:
+> This reverts commit 27161f13e3c3 "f2fs: avoid race in between read xattr & write xattr".
 > 
-> Move the code for ringing doorbell page to where after we have posted all
-> WQEs to the receive queue during a callback from napi_poll().
+> That introduced a deadlock case:
 > 
-> Tests showed no regression in network latency benchmarks.
+> Thread #1:
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+> [122554.641906][   T92]  f2fs_getxattr+0xd4/0x5fc
+>      -> waiting for f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+> 
+> [122554.641927][   T92]  __f2fs_get_acl+0x50/0x284
+> [122554.641948][   T92]  f2fs_init_acl+0x84/0x54c
+> [122554.641969][   T92]  f2fs_init_inode_metadata+0x460/0x5f0
+> [122554.641990][   T92]  f2fs_add_inline_entry+0x11c/0x350
+>      -> Locked dir->inode_page by f2fs_get_node_page()
+> 
+> [122554.642009][   T92]  f2fs_do_add_link+0x100/0x1e4
+> [122554.642025][   T92]  f2fs_create+0xf4/0x22c
+> [122554.642047][   T92]  vfs_create+0x130/0x1f4
+> 
+> Thread #2:
+> 
+> [123996.386358][   T92]  __get_node_page+0x8c/0x504
+>      -> waiting for dir->inode_page lock
+> 
+> [123996.386383][   T92]  read_all_xattrs+0x11c/0x1f4
+> [123996.386405][   T92]  __f2fs_setxattr+0xcc/0x528
+> [123996.386424][   T92]  f2fs_setxattr+0x158/0x1f4
+>      -> f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
+> 
+> [123996.386443][   T92]  __f2fs_set_acl+0x328/0x430
+> [123996.386618][   T92]  f2fs_set_acl+0x38/0x50
+> [123996.386642][   T92]  posix_acl_chmod+0xc8/0x1c8
+> [123996.386669][   T92]  f2fs_setattr+0x5e0/0x6bc
+> [123996.386689][   T92]  notify_change+0x4d8/0x580
+> [123996.386717][   T92]  chmod_common+0xd8/0x184
+> [123996.386748][   T92]  do_fchmodat+0x60/0x124
+> [123996.386766][   T92]  __arm64_sys_fchmodat+0x28/0x3c
+> 
+> Let's take a look at the original issue back.
+> 
+> Thread A:                                       Thread B:
+> -f2fs_getxattr
+>     -lookup_all_xattrs
+>        -xnid = F2FS_I(inode)->i_xattr_nid;
+>                                                  -f2fs_setxattr
+>                                                      -__f2fs_setxattr
+>                                                          -write_all_xattrs
+>                                                              -truncate_xattr_node
+>                                                                    ...  ...
+>                                                  -write_checkpoint
+>                                                                    ...  ...
+>                                                  -alloc_nid   <- nid reuse
+>            -get_node_page
+>                -f2fs_bug_on  <- nid != node_footer->nid
 
-If this is supposed to be a fix, you need to clearly explain what the
-performance loss was, so that backporters can make an informed decision.
+One concern below:
 
->  drivers/net/ethernet/microsoft/mana/gdma_main.c |  5 ++++-
->  drivers/net/ethernet/microsoft/mana/mana_en.c   | 10 ++++++++--
->  2 files changed, 12 insertions(+), 3 deletions(-)
+Thread A:					Thread B:
+- f2fs_getxattr
+  - lookup_all_xattrs
+   - read_inline_xattr
+    - f2fs_get_node_page(ino)
+    - memcpy inline xattr
+    - f2fs_put_page
+						- f2fs_setxattr
+						 - __f2fs_setxattr
+						  - __f2fs_setxattr
+						   - write_all_xattrs
+						    - write xnode and inode
+   ---> inline xattr may out of update here.
+   - read_xattr_block
+    - f2fs_get_node_page(xnid)
+    - memcpy xnode xattr
+    - f2fs_put_page
+
+Do we need to keep xattr_{get,set} being atomical operation?
+
+Thanks,
+
 > 
-> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> index 8f3f78b68592..ef11d09a3655 100644
-> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> @@ -300,8 +300,11 @@ static void mana_gd_ring_doorbell(struct gdma_context *gc, u32 db_index,
->  
->  void mana_gd_wq_ring_doorbell(struct gdma_context *gc, struct gdma_queue *queue)
->  {
-> +	/* BNIC Spec specifies that client should set 0 for rq.wqe_cnt
-> +	 * This value is not used in sq
-> +	 */
->  	mana_gd_ring_doorbell(gc, queue->gdma_dev->doorbell, queue->type,
-> -			      queue->id, queue->head * GDMA_WQE_BU_SIZE, 1);
-> +			      queue->id, queue->head * GDMA_WQE_BU_SIZE, 0);
->  }
-
-This change needs to be explained in the commit message, or should be 
-a separate patch.
--- 
-pw-bot: cr
+> I think we don't need to truncate xattr pages eagerly which introduces lots of
+> data races without big benefits.
+> 
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+> ---
+>   fs/f2fs/f2fs.h  |  1 -
+>   fs/f2fs/super.c |  1 -
+>   fs/f2fs/xattr.c | 31 ++++++++-----------------------
+>   3 files changed, 8 insertions(+), 25 deletions(-)
+> 
+> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+> index 3f5b161dd743..7b9af2d51656 100644
+> --- a/fs/f2fs/f2fs.h
+> +++ b/fs/f2fs/f2fs.h
+> @@ -838,7 +838,6 @@ struct f2fs_inode_info {
+>   
+>   	/* avoid racing between foreground op and gc */
+>   	struct f2fs_rwsem i_gc_rwsem[2];
+> -	struct f2fs_rwsem i_xattr_sem; /* avoid racing between reading and changing EAs */
+>   
+>   	int i_extra_isize;		/* size of extra space located in i_addr */
+>   	kprojid_t i_projid;		/* id for project quota */
+> diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+> index 1b2c788ed80d..c917fa771f0e 100644
+> --- a/fs/f2fs/super.c
+> +++ b/fs/f2fs/super.c
+> @@ -1418,7 +1418,6 @@ static struct inode *f2fs_alloc_inode(struct super_block *sb)
+>   	INIT_LIST_HEAD(&fi->gdirty_list);
+>   	init_f2fs_rwsem(&fi->i_gc_rwsem[READ]);
+>   	init_f2fs_rwsem(&fi->i_gc_rwsem[WRITE]);
+> -	init_f2fs_rwsem(&fi->i_xattr_sem);
+>   
+>   	/* Will be used by directory only */
+>   	fi->i_dir_level = F2FS_SB(sb)->dir_level;
+> diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+> index 213805d3592c..bdc8a55085a2 100644
+> --- a/fs/f2fs/xattr.c
+> +++ b/fs/f2fs/xattr.c
+> @@ -433,7 +433,7 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+>   {
+>   	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+>   	size_t inline_size = inline_xattr_size(inode);
+> -	struct page *in_page = NULL;
+> +	struct page *in_page = ipage;
+>   	void *xattr_addr;
+>   	void *inline_addr = NULL;
+>   	struct page *xpage;
+> @@ -446,29 +446,19 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+>   
+>   	/* write to inline xattr */
+>   	if (inline_size) {
+> -		if (ipage) {
+> -			inline_addr = inline_xattr_addr(inode, ipage);
+> -		} else {
+> +		if (!in_page) {
+>   			in_page = f2fs_get_node_page(sbi, inode->i_ino);
+>   			if (IS_ERR(in_page)) {
+>   				f2fs_alloc_nid_failed(sbi, new_nid);
+>   				return PTR_ERR(in_page);
+>   			}
+> -			inline_addr = inline_xattr_addr(inode, in_page);
+>   		}
+> +		inline_addr = inline_xattr_addr(inode, in_page);
+>   
+> -		f2fs_wait_on_page_writeback(ipage ? ipage : in_page,
+> -							NODE, true, true);
+> -		/* no need to use xattr node block */
+> +		f2fs_wait_on_page_writeback(in_page, NODE, true, true);
+>   		if (hsize <= inline_size) {
+> -			err = f2fs_truncate_xattr_node(inode);
+> -			f2fs_alloc_nid_failed(sbi, new_nid);
+> -			if (err) {
+> -				f2fs_put_page(in_page, 1);
+> -				return err;
+> -			}
+>   			memcpy(inline_addr, txattr_addr, inline_size);
+> -			set_page_dirty(ipage ? ipage : in_page);
+> +			set_page_dirty(in_page);
+>   			goto in_page_out;
+>   		}
+>   	}
+> @@ -502,12 +492,13 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+>   	memcpy(xattr_addr, txattr_addr + inline_size, VALID_XATTR_BLOCK_SIZE);
+>   
+>   	if (inline_size)
+> -		set_page_dirty(ipage ? ipage : in_page);
+> +		set_page_dirty(in_page);
+>   	set_page_dirty(xpage);
+>   
+>   	f2fs_put_page(xpage, 1);
+>   in_page_out:
+> -	f2fs_put_page(in_page, 1);
+> +	if (in_page != ipage)
+> +		f2fs_put_page(in_page, 1);
+>   	return err;
+>   }
+>   
+> @@ -528,10 +519,8 @@ int f2fs_getxattr(struct inode *inode, int index, const char *name,
+>   	if (len > F2FS_NAME_LEN)
+>   		return -ERANGE;
+>   
+> -	f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+>   	error = lookup_all_xattrs(inode, ipage, index, len, name,
+>   				&entry, &base_addr, &base_size, &is_inline);
+> -	f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+>   	if (error)
+>   		return error;
+>   
+> @@ -565,9 +554,7 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
+>   	int error;
+>   	size_t rest = buffer_size;
+>   
+> -	f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+>   	error = read_all_xattrs(inode, NULL, &base_addr);
+> -	f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+>   	if (error)
+>   		return error;
+>   
+> @@ -794,9 +781,7 @@ int f2fs_setxattr(struct inode *inode, int index, const char *name,
+>   	f2fs_balance_fs(sbi, true);
+>   
+>   	f2fs_lock_op(sbi);
+> -	f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
+>   	err = __f2fs_setxattr(inode, index, name, value, size, ipage, flags);
+> -	f2fs_up_write(&F2FS_I(inode)->i_xattr_sem);
+>   	f2fs_unlock_op(sbi);
+>   
+>   	f2fs_update_time(sbi, REQ_TIME);
