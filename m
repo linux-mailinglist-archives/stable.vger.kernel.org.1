@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B50C573E9AE
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2033473E872
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232448AbjFZSi7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52142 "EHLO
+        id S232064AbjFZS0G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:26:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232504AbjFZSit (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:38:49 -0400
+        with ESMTP id S232062AbjFZSZq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:25:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E81FAC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:38:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8976B2711
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9245460F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:38:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2A8C433C0;
-        Mon, 26 Jun 2023 18:38:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA93560F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E24C433C8;
+        Mon, 26 Jun 2023 18:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804725;
-        bh=99qiVGy0SIFILiDN9harjLtfmZel3dxIDsi6mCBJIj4=;
+        s=korg; t=1687803891;
+        bh=UkcvQeGlBwvWKAmrA6+9reRwq5WoIFucTljsXLzofnM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WE1Ahi+n1l9NRK1UtFhA2FMOJE5iQ1jLbDU0AwZkOIDSzyi4bGhtM+R4noYsBRvpu
-         HWESG9AL3nqVL7PWp+DYsKvNao5hhoJwgocX0+UA84efYIGTpE3EsAQow/zAVPJAlz
-         QkNxZNKbeJ788K+W5MFqBoB784YrZg+IAPY9aHMk=
+        b=hHp4gxRCrIIPONpKq82PCdFFpJ1EkUTOukx4URUDxbYdYQtH5QP72iiTRoJvOxIEb
+         waivgsrV4NkBpj/55VtJ4QLDp/p1/1SgKjRSVtSjcFGbTztXBTpm9P/OPmX4hNmjaU
+         iSywjX32n1tbPaWVSIwAmzIOsvt7Lr7DBsR5GxAE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 5.15 21/96] PCI: hv: Remove the useless hv_pcichild_state from struct hv_pci_dev
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 13/41] nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
 Date:   Mon, 26 Jun 2023 20:11:36 +0200
-Message-ID: <20230626180747.804964858@linuxfoundation.org>
+Message-ID: <20230626180736.784492004@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
+References: <20230626180736.243379844@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,62 +56,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit add9195e69c94b32e96f78c2f9cea68f0e850b3f upstream.
+commit 782e53d0c14420858dbf0f8f797973c150d3b6d7 upstream.
 
-The hpdev->state is never really useful. The only use in
-hv_pci_eject_device() and hv_eject_device_work() is not really necessary.
+In a syzbot stress test that deliberately causes file system errors on
+nilfs2 with a corrupted disk image, it has been reported that
+nilfs_clear_dirty_page() called from nilfs_clear_dirty_pages() can cause a
+general protection fault.
 
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230615044451.5580-4-decui@microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+In nilfs_clear_dirty_pages(), when looking up dirty pages from the page
+cache and calling nilfs_clear_dirty_page() for each dirty page/folio
+retrieved, the back reference from the argument page to "mapping" may have
+been changed to NULL (and possibly others).  It is necessary to check this
+after locking the page/folio.
+
+So, fix this issue by not calling nilfs_clear_dirty_page() on a page/folio
+after locking it in nilfs_clear_dirty_pages() if the back reference
+"mapping" from the page/folio is different from the "mapping" that held
+the page/folio just before.
+
+Link: https://lkml.kernel.org/r/20230612021456.3682-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/000000000000da4f6b05eb9bf593@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-hyperv.c |   12 ------------
- 1 file changed, 12 deletions(-)
+ fs/nilfs2/page.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -547,19 +547,10 @@ struct hv_dr_state {
- 	struct hv_pcidev_description func[];
- };
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -372,7 +372,15 @@ void nilfs_clear_dirty_pages(struct addr
+ 			struct page *page = pvec.pages[i];
  
--enum hv_pcichild_state {
--	hv_pcichild_init = 0,
--	hv_pcichild_requirements,
--	hv_pcichild_resourced,
--	hv_pcichild_ejecting,
--	hv_pcichild_maximum
--};
--
- struct hv_pci_dev {
- 	/* List protected by pci_rescan_remove_lock */
- 	struct list_head list_entry;
- 	refcount_t refs;
--	enum hv_pcichild_state state;
- 	struct pci_slot *pci_slot;
- 	struct hv_pcidev_description desc;
- 	bool reported_missing;
-@@ -2430,8 +2421,6 @@ static void hv_eject_device_work(struct
- 	hpdev = container_of(work, struct hv_pci_dev, wrk);
- 	hbus = hpdev->hbus;
- 
--	WARN_ON(hpdev->state != hv_pcichild_ejecting);
--
- 	/*
- 	 * Ejection can come before or after the PCI bus has been set up, so
- 	 * attempt to find it and tear down the bus state, if it exists.  This
-@@ -2488,7 +2477,6 @@ static void hv_pci_eject_device(struct h
- 		return;
- 	}
- 
--	hpdev->state = hv_pcichild_ejecting;
- 	get_pcichild(hpdev);
- 	INIT_WORK(&hpdev->wrk, hv_eject_device_work);
- 	queue_work(hbus->wq, &hpdev->wrk);
+ 			lock_page(page);
+-			nilfs_clear_dirty_page(page, silent);
++
++			/*
++			 * This page may have been removed from the address
++			 * space by truncation or invalidation when the lock
++			 * was acquired.  Skip processing in that case.
++			 */
++			if (likely(page->mapping == mapping))
++				nilfs_clear_dirty_page(page, silent);
++
+ 			unlock_page(page);
+ 		}
+ 		pagevec_release(&pvec);
 
 
