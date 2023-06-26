@@ -2,57 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2370A73E1A9
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 16:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D96D73E1FC
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 16:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230422AbjFZONm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 10:13:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33894 "EHLO
+        id S231315AbjFZOVt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 10:21:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231164AbjFZONj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 10:13:39 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0E95810CB;
-        Mon, 26 Jun 2023 07:13:19 -0700 (PDT)
-Received: from [10.171.21.113] (unknown [167.220.238.145])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 3085221C3F3B;
-        Mon, 26 Jun 2023 07:13:09 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3085221C3F3B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1687788798;
-        bh=arhrccEDU/8IYlgG/8DTb4iy24jRvQPaA2ChU1M97HI=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=KwSocRBsFmMC8Ej4aJUFk89Emg2JoHBvQtFNCvnasRIMMlW0DEgMKO/zhjrINro1M
-         yPNjhjJPL8l6Z0U0AXgY2lVDfHd9qzGzjZqb/grjA883NsAu+1CNbgXcS3ow3124GZ
-         WMCgQj4IuvJ0F10Ezsu+6GPO0FBuISJTQ19xsSvI=
-Message-ID: <578faf91-35e6-d946-d9ec-c949e57eadef@linux.microsoft.com>
-Date:   Mon, 26 Jun 2023 19:43:07 +0530
+        with ESMTP id S231317AbjFZOVa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 10:21:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EA331729
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 07:20:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A12F60E8C
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 14:19:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720C8C433C0;
+        Mon, 26 Jun 2023 14:19:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1687789169;
+        bh=oQyvsHt4dM8odTAWdioblxJilaNctTipAgDHI9LckMs=;
+        h=Subject:To:Cc:From:Date:From;
+        b=exuZKmu6auJU2AZci0GhyzTkL7bwJX6etCPqLYNAH7TLQzhhEOO3CWOs8z5pw+SYh
+         OeOgnlZR35mo0hwblCTqYZ3unkEiIhZP0sz2ry5xkRfkcrqgcSD+rgyGru2zkpOH5M
+         RWSMVPDGH4WCxNZS/1fO+yWDCrZakZRAoAD07Tyk=
+Subject: FAILED: patch "[PATCH] wifi: iwlwifi: mvm: spin_lock_bh() to fix lockdep regression" failed to apply to 6.3-stable tree
+To:     hughd@google.com, johannes.berg@intel.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 26 Jun 2023 16:19:26 +0200
+Message-ID: <2023062625-squeamish-trident-4e6a@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 2/2 V3 net] net: mana: Fix MANA VF unload when host is
- unresponsive
-To:     souradeep chakrabarti <schakrabarti@linux.microsoft.com>,
-        kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
-        sharmaajay@microsoft.com, leon@kernel.org, cai.huoqing@linux.dev,
-        ssengar@linux.microsoft.com, vkuznets@redhat.com,
-        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-Cc:     stable@vger.kernel.org, schakrabarti@microsoft.com
-References: <1687771098-26775-1-git-send-email-schakrabarti@linux.microsoft.com>
- <1687771224-27162-1-git-send-email-schakrabarti@linux.microsoft.com>
-Content-Language: en-US
-From:   Praveen Kumar <kumarpraveen@linux.microsoft.com>
-In-Reply-To: <1687771224-27162-1-git-send-email-schakrabarti@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-19.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,122 +48,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/26/2023 2:50 PM, souradeep chakrabarti wrote:
-> From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-> 
-> This is the second part of the fix.
-> 
-> Also this patch adds a new attribute in mana_context, which gets set when
-> mana_hwc_send_request() hits a timeout because of host unresponsiveness.
-> This flag then helps to avoid the timeouts in successive calls.
-> 
-> Fixes: ca9c54d2d6a5ab2430c4eda364c77125d62e5e0f (net: mana: Add a driver for
-> Microsoft Azure Network Adapter)
-> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-> ---
-> V2 -> V3:
-> * Removed the initialization of vf_unload_timeout
-> * Splitted the patch in two.
-> * Fixed extra space from the commit message.
-> ---
->  drivers/net/ethernet/microsoft/mana/gdma_main.c  |  4 +++-
->  drivers/net/ethernet/microsoft/mana/hw_channel.c | 12 +++++++++++-
->  include/net/mana/mana.h                          |  2 ++
->  3 files changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> index 8f3f78b68592..6411f01be0d9 100644
-> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> @@ -946,10 +946,12 @@ int mana_gd_deregister_device(struct gdma_dev *gd)
->  	struct gdma_context *gc = gd->gdma_context;
->  	struct gdma_general_resp resp = {};
->  	struct gdma_general_req req = {};
-> +	struct mana_context *ac;
->  	int err;
->  
->  	if (gd->pdid == INVALID_PDID)
->  		return -EINVAL;
-> +	ac = gd->driver_data;
->  
->  	mana_gd_init_req_hdr(&req.hdr, GDMA_DEREGISTER_DEVICE, sizeof(req),
->  			     sizeof(resp));
-> @@ -957,7 +959,7 @@ int mana_gd_deregister_device(struct gdma_dev *gd)
->  	req.hdr.dev_id = gd->dev_id;
->  
->  	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
-> -	if (err || resp.hdr.status) {
-> +	if ((err || resp.hdr.status) && !ac->vf_unload_timeout) {
->  		dev_err(gc->dev, "Failed to deregister device: %d, 0x%x\n",
->  			err, resp.hdr.status);
 
-With !ac->vf_unload_timeout option, this message may not be correctly showing err, status. Probably you want to add explicit information during timeouts so that it give right information ? Or have the err, status field properly updated.
+The patch below does not apply to the 6.3-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
->  		if (!err)
-> diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-> index 9d1507eba5b9..492cb2c6e2cb 100644
-> --- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-> +++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-> @@ -1,8 +1,10 @@
->  // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
->  /* Copyright (c) 2021, Microsoft Corporation. */
->  
-> +#include "asm-generic/errno.h"
->  #include <net/mana/gdma.h>
->  #include <net/mana/hw_channel.h>
-> +#include <net/mana/mana.h>
->  
->  static int mana_hwc_get_msg_index(struct hw_channel_context *hwc, u16 *msg_id)
->  {
-> @@ -786,12 +788,19 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
->  	struct hwc_wq *txq = hwc->txq;
->  	struct gdma_req_hdr *req_msg;
->  	struct hwc_caller_ctx *ctx;
-> +	struct mana_context *ac;
->  	u32 dest_vrcq = 0;
->  	u32 dest_vrq = 0;
->  	u16 msg_id;
->  	int err;
->  
->  	mana_hwc_get_msg_index(hwc, &msg_id);
-> +	ac = hwc->gdma_dev->driver_data;
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Is there a case where gdma_dev be invalid here ? If so, lets check the state and then proceed further ?
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git checkout FETCH_HEAD
+git cherry-pick -x f1a0898b5d6a77d332d036da03bad6fa9770de5b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062625-squeamish-trident-4e6a@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
-> +	if (ac->vf_unload_timeout) {
-> +		dev_err(hwc->dev, "HWC: vport is already unloaded.\n");
-> +		err = -ETIMEDOUT;
-> +		goto out;
-> +	}
->  
->  	tx_wr = &txq->msg_buf->reqs[msg_id];
->  
-> @@ -825,9 +834,10 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
->  		goto out;
->  	}
->  
-> -	if (!wait_for_completion_timeout(&ctx->comp_event, 30 * HZ)) {
-> +	if (!wait_for_completion_timeout(&ctx->comp_event, 5 * HZ)) {
+Possible dependencies:
 
-IMHO we should have macros instead of magic numbers (5 , 30 or so). But would like others to comment here.
 
->  		dev_err(hwc->dev, "HWC: Request timed out!\n");
->  		err = -ETIMEDOUT;
-> +		ac->vf_unload_timeout = true;
->  		goto out;
->  	}
->  
-> diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-> index 9eef19972845..5f5affdca1eb 100644
-> --- a/include/net/mana/mana.h
-> +++ b/include/net/mana/mana.h
-> @@ -358,6 +358,8 @@ struct mana_context {
->  
->  	u16 num_ports;
->  
-> +	bool vf_unload_timeout;
-> +
->  	struct mana_eq *eqs;
->  
->  	struct net_device *ports[MAX_PORTS_IN_MANA_DEV];
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f1a0898b5d6a77d332d036da03bad6fa9770de5b Mon Sep 17 00:00:00 2001
+From: Hugh Dickins <hughd@google.com>
+Date: Fri, 9 Jun 2023 14:29:39 -0700
+Subject: [PATCH] wifi: iwlwifi: mvm: spin_lock_bh() to fix lockdep regression
+
+Lockdep on 6.4-rc on ThinkPad X1 Carbon 5th says
+=====================================================
+WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
+6.4.0-rc5 #1 Not tainted
+-----------------------------------------------------
+kworker/3:1/49 [HC0[0]:SC0[4]:HE1:SE0] is trying to acquire:
+ffff8881066fa368 (&mvm_sta->deflink.lq_sta.rs_drv.pers.lock){+.+.}-{2:2}, at: rs_drv_get_rate+0x46/0xe7
+
+and this task is already holding:
+ffff8881066f80a8 (&sta->rate_ctrl_lock){+.-.}-{2:2}, at: rate_control_get_rate+0xbd/0x126
+which would create a new lock dependency:
+ (&sta->rate_ctrl_lock){+.-.}-{2:2} -> (&mvm_sta->deflink.lq_sta.rs_drv.pers.lock){+.+.}-{2:2}
+
+but this new dependency connects a SOFTIRQ-irq-safe lock:
+ (&sta->rate_ctrl_lock){+.-.}-{2:2}
+etc. etc. etc.
+
+Changing the spin_lock() in rs_drv_get_rate() to spin_lock_bh() was not
+enough to pacify lockdep, but changing them all on pers.lock has worked.
+
+Fixes: a8938bc881d2 ("wifi: iwlwifi: mvm: Add locking to the rate read flow")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Link: https://lore.kernel.org/r/79ffcc22-9775-cb6d-3ffd-1a517c40beef@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+index 23266d0c9ce4..9a20468345e4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+@@ -2692,7 +2692,7 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
+ 
+ 	lq_sta = mvm_sta;
+ 
+-	spin_lock(&lq_sta->pers.lock);
++	spin_lock_bh(&lq_sta->pers.lock);
+ 	iwl_mvm_hwrate_to_tx_rate_v1(lq_sta->last_rate_n_flags,
+ 				     info->band, &info->control.rates[0]);
+ 	info->control.rates[0].count = 1;
+@@ -2707,7 +2707,7 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
+ 		iwl_mvm_hwrate_to_tx_rate_v1(last_ucode_rate, info->band,
+ 					     &txrc->reported_rate);
+ 	}
+-	spin_unlock(&lq_sta->pers.lock);
++	spin_unlock_bh(&lq_sta->pers.lock);
+ }
+ 
+ static void *rs_drv_alloc_sta(void *mvm_rate, struct ieee80211_sta *sta,
+@@ -3264,11 +3264,11 @@ void iwl_mvm_rs_tx_status(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 	/* If it's locked we are in middle of init flow
+ 	 * just wait for next tx status to update the lq_sta data
+ 	 */
+-	if (!spin_trylock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock))
++	if (!spin_trylock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock))
+ 		return;
+ 
+ 	__iwl_mvm_rs_tx_status(mvm, sta, tid, info, ndp);
+-	spin_unlock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
++	spin_unlock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
+ }
+ 
+ #ifdef CONFIG_MAC80211_DEBUGFS
+@@ -4117,9 +4117,9 @@ void iwl_mvm_rs_rate_init(struct iwl_mvm *mvm,
+ 	} else {
+ 		struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 
+-		spin_lock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
++		spin_lock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
+ 		rs_drv_rate_init(mvm, sta, band);
+-		spin_unlock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
++		spin_unlock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
+ 	}
+ }
+ 
 
