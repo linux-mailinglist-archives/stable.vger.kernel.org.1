@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D90B173E970
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:36:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 321B073E9B9
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232365AbjFZSgE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49750 "EHLO
+        id S232437AbjFZSjW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:39:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232374AbjFZSgD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:36:03 -0400
+        with ESMTP id S231637AbjFZSjV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EBF999
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:36:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE88413D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB20C60F3E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:36:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59F5C433C9;
-        Mon, 26 Jun 2023 18:36:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27A2260F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1B8C433C0;
+        Mon, 26 Jun 2023 18:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804561;
-        bh=xNQ54ytPvumoCeiLgJc7OnP+1PsgOlLIuIcEDfadQF8=;
+        s=korg; t=1687804757;
+        bh=cyIc4jyLpv2ZhMQ4aAYi5gbcJrDlAYEqWTalrl4ljFs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1hUw8/aU5C8HQPPDiw9l9TqK+KLof9PNTmDX1uQkk17euvMPIhhqyWDPGsWAXfeQC
-         Mk01Thmu3XLXD9wChlhtmAlcah+x96UA3E4A4NgxuCChlDjVrCZCi0MoIw9FrSxH5J
-         JRyx4WpTyFSAv0BAOT4OGZPIefF3uwEINMsI5KcA=
+        b=xXVbxxFEqQIPw8honFuJmq8NH1qQPxgBpzhn3rO8ra58JHy8lnS4z72SNpjRmYVHU
+         RdUeNyfiAPgzbviFth6Hx/imjbQ4SYIkvKC9Y2hTE+tKGwwuk5ib5jSY5IPOvrmVc0
+         h8qWMF2EPQznq8DZZYrZst/Je3/Ebnr7iGKcimDg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mathias Krause <minipli@grsecurity.net>,
-        "Bhatnagar, Rishabh" <risbhat@amazon.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "Richard W.M. Jones" <rjones@redhat.com>,
-        SeongJae Park <sj@kernel.org>
-Subject: [PATCH 5.4 07/60] tick/common: Align tick period during sched_timer setup
+        patches@lists.linux.dev, Rafael Aquini <aquini@redhat.com>,
+        Yafang Shao <laoar.shao@gmail.com>,
+        Aristeu Rozanski <aris@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 31/96] writeback: fix dereferencing NULL mapping->host on writeback_page_template
 Date:   Mon, 26 Jun 2023 20:11:46 +0200
-Message-ID: <20230626180739.855278973@linuxfoundation.org>
+Message-ID: <20230626180748.239369698@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,95 +56,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Rafael Aquini <aquini@redhat.com>
 
-commit 13bb06f8dd42071cb9a49f6e21099eea05d4b856 upstream.
+commit 54abe19e00cfcc5a72773d15cd00ed19ab763439 upstream.
 
-The tick period is aligned very early while the first clock_event_device is
-registered. At that point the system runs in periodic mode and switches
-later to one-shot mode if possible.
+When commit 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for
+wait_on_page_writeback()") repurposed the writeback_dirty_page trace event
+as a template to create its new wait_on_page_writeback trace event, it
+ended up opening a window to NULL pointer dereference crashes due to the
+(infrequent) occurrence of a race where an access to a page in the
+swap-cache happens concurrently with the moment this page is being written
+to disk and the tracepoint is enabled:
 
-The next wake-up event is programmed based on the aligned value
-(tick_next_period) but the delta value, that is used to program the
-clock_event_device, is computed based on ktime_get().
+    BUG: kernel NULL pointer dereference, address: 0000000000000040
+    #PF: supervisor read access in kernel mode
+    #PF: error_code(0x0000) - not-present page
+    PGD 800000010ec0a067 P4D 800000010ec0a067 PUD 102353067 PMD 0
+    Oops: 0000 [#1] PREEMPT SMP PTI
+    CPU: 1 PID: 1320 Comm: shmem-worker Kdump: loaded Not tainted 6.4.0-rc5+ #13
+    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230301gitf80f052277c8-1.fc37 03/01/2023
+    RIP: 0010:trace_event_raw_event_writeback_folio_template+0x76/0xf0
+    Code: 4d 85 e4 74 5c 49 8b 3c 24 e8 06 98 ee ff 48 89 c7 e8 9e 8b ee ff ba 20 00 00 00 48 89 ef 48 89 c6 e8 fe d4 1a 00 49 8b 04 24 <48> 8b 40 40 48 89 43 28 49 8b 45 20 48 89 e7 48 89 43 30 e8 a2 4d
+    RSP: 0000:ffffaad580b6fb60 EFLAGS: 00010246
+    RAX: 0000000000000000 RBX: ffff90e38035c01c RCX: 0000000000000000
+    RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff90e38035c044
+    RBP: ffff90e38035c024 R08: 0000000000000002 R09: 0000000000000006
+    R10: ffff90e38035c02e R11: 0000000000000020 R12: ffff90e380bac000
+    R13: ffffe3a7456d9200 R14: 0000000000001b81 R15: ffffe3a7456d9200
+    FS:  00007f2e4e8a15c0(0000) GS:ffff90e3fbc80000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 0000000000000040 CR3: 00000001150c6003 CR4: 0000000000170ee0
+    Call Trace:
+     <TASK>
+     ? __die+0x20/0x70
+     ? page_fault_oops+0x76/0x170
+     ? kernelmode_fixup_or_oops+0x84/0x110
+     ? exc_page_fault+0x65/0x150
+     ? asm_exc_page_fault+0x22/0x30
+     ? trace_event_raw_event_writeback_folio_template+0x76/0xf0
+     folio_wait_writeback+0x6b/0x80
+     shmem_swapin_folio+0x24a/0x500
+     ? filemap_get_entry+0xe3/0x140
+     shmem_get_folio_gfp+0x36e/0x7c0
+     ? find_busiest_group+0x43/0x1a0
+     shmem_fault+0x76/0x2a0
+     ? __update_load_avg_cfs_rq+0x281/0x2f0
+     __do_fault+0x33/0x130
+     do_read_fault+0x118/0x160
+     do_pte_missing+0x1ed/0x2a0
+     __handle_mm_fault+0x566/0x630
+     handle_mm_fault+0x91/0x210
+     do_user_addr_fault+0x22c/0x740
+     exc_page_fault+0x65/0x150
+     asm_exc_page_fault+0x22/0x30
 
-With the subtracted offset, the device fires earlier than the exact time
-frame. With a large enough offset the system programs the timer for the
-next wake-up and the remaining time left is too small to make any boot
-progress. The system hangs.
+This problem arises from the fact that the repurposed writeback_dirty_page
+trace event code was written assuming that every pointer to mapping
+(struct address_space) would come from a file-mapped page-cache object,
+thus mapping->host would always be populated, and that was a valid case
+before commit 19343b5bdd16.  The swap-cache address space
+(swapper_spaces), however, doesn't populate its ->host (struct inode)
+pointer, thus leading to the crashes in the corner-case aforementioned.
 
-Move the alignment later to the setup of tick_sched timer. At this point
-the system switches to oneshot mode and a high resolution clocksource is
-available. At this point it is safe to align tick_next_period because
-ktime_get() will now return accurate (not jiffies based) time.
+commit 19343b5bdd16 ended up breaking the assignment of __entry->name and
+__entry->ino for the wait_on_page_writeback tracepoint -- both dependent
+on mapping->host carrying a pointer to a valid inode.  The assignment of
+__entry->name was fixed by commit 68f23b89067f ("memcg: fix a crash in
+wb_workfn when a device disappears"), and this commit fixes the remaining
+case, for __entry->ino.
 
-[bigeasy: Patch description + testing].
-
-Fixes: e9523a0d81899 ("tick/common: Align tick period with the HZ tick.")
-Reported-by: Mathias Krause <minipli@grsecurity.net>
-Reported-by: "Bhatnagar, Rishabh" <risbhat@amazon.com>
-Suggested-by: Mathias Krause <minipli@grsecurity.net>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Richard W.M. Jones <rjones@redhat.com>
-Tested-by: Mathias Krause <minipli@grsecurity.net>
-Acked-by: SeongJae Park <sj@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net
-Link: https://lore.kernel.org/12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com
-Link: https://lore.kernel.org/r/20230615091830.RxMV2xf_@linutronix.de
+Link: https://lkml.kernel.org/r/20230606233613.1290819-1-aquini@redhat.com
+Fixes: 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for wait_on_page_writeback()")
+Signed-off-by: Rafael Aquini <aquini@redhat.com>
+Reviewed-by: Yafang Shao <laoar.shao@gmail.com>
+Cc: Aristeu Rozanski <aris@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/tick-common.c |   13 +------------
- kernel/time/tick-sched.c  |   13 ++++++++++++-
- 2 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -216,19 +216,8 @@ static void tick_setup_device(struct tic
- 		 * this cpu:
- 		 */
- 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
--			ktime_t next_p;
--			u32 rem;
--
- 			tick_do_timer_cpu = cpu;
--
--			next_p = ktime_get();
--			div_u64_rem(next_p, TICK_NSEC, &rem);
--			if (rem) {
--				next_p -= rem;
--				next_p += TICK_NSEC;
--			}
--
--			tick_next_period = next_p;
-+			tick_next_period = ktime_get();
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
- 			 * The boot CPU may be nohz_full, in which case set
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -129,8 +129,19 @@ static ktime_t tick_init_jiffy_update(vo
- 	raw_spin_lock(&jiffies_lock);
- 	write_seqcount_begin(&jiffies_seq);
- 	/* Did we start the jiffies update yet ? */
--	if (last_jiffies_update == 0)
-+	if (last_jiffies_update == 0) {
-+		u32 rem;
-+
-+		/*
-+		 * Ensure that the tick is aligned to a multiple of
-+		 * TICK_NSEC.
-+		 */
-+		div_u64_rem(tick_next_period, TICK_NSEC, &rem);
-+		if (rem)
-+			tick_next_period += TICK_NSEC - rem;
-+
- 		last_jiffies_update = tick_next_period;
-+	}
- 	period = last_jiffies_update;
- 	write_seqcount_end(&jiffies_seq);
- 	raw_spin_unlock(&jiffies_lock);
+---
+ include/trace/events/writeback.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -68,7 +68,7 @@ DECLARE_EVENT_CLASS(writeback_page_templ
+ 		strscpy_pad(__entry->name,
+ 			    bdi_dev_name(mapping ? inode_to_bdi(mapping->host) :
+ 					 NULL), 32);
+-		__entry->ino = mapping ? mapping->host->i_ino : 0;
++		__entry->ino = (mapping && mapping->host) ? mapping->host->i_ino : 0;
+ 		__entry->index = page->index;
+ 	),
+ 
 
 
