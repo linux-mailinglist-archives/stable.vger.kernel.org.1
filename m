@@ -2,57 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 949BB73E91C
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE64873E86F
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:25:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232157AbjFZScp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:32:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45564 "EHLO
+        id S232084AbjFZSZz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:25:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232225AbjFZSca (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB81F11B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:25 -0700 (PDT)
+        with ESMTP id S231981AbjFZSZb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:25:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C52326AE
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8783160F24
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64EA9C433C8;
-        Mon, 26 Jun 2023 18:32:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E0A660F1E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193F9C433C9;
+        Mon, 26 Jun 2023 18:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804345;
-        bh=a9Oy0MxKigZg00yyBSawMWwV3+A+bp21q92JtF8UxF8=;
+        s=korg; t=1687803885;
+        bh=LW7Ba/gICkWus5mwEmCusr0AOesDkDoQfsauCS98rjE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b9khdwpCUTYpz4EeC+zmcZ77Cf9nuTD5oexewzRmyLq7Fd4JJN1tuQuX3qeRz04vX
-         LESyd9I9j2GANmECda3NUWIWcS7uqDg3sBegSk6iOFIRYkLuPsoyG6v3lKHIi8fOgq
-         HT+XCt9E1hvCXcGaLt00mlwq7Pk90o37COm4wQJw=
+        b=nDRpNXq0xuFUMKqY/n87A61uRe/UBNupevTma44cq1qf27L3MI4Cux0Mem2wU3xuK
+         Stv+k8XE43fTi2lBHtLP5V8fYAw1CoP0wVAV6J9uhoEd3IDNsU8aNX05VW8hhrYrNb
+         +FYCL/j6MhB4RMy3ZV/nHnX1xw+cuwi7OjwYlB48=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Simon Horman <simon.horman@corigine.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/170] sch_netem: acquire qdisc lock in netem_change()
+        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 4.19 11/41] PCI: hv: Fix a race condition bug in hv_pci_query_relations()
 Date:   Mon, 26 Jun 2023 20:11:34 +0200
-Message-ID: <20230626180806.175134894@linuxfoundation.org>
+Message-ID: <20230626180736.706994463@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
+References: <20230626180736.243379844@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,109 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dexuan Cui <decui@microsoft.com>
 
-[ Upstream commit 2174a08db80d1efeea382e25ac41c4e7511eb6d6 ]
+commit 440b5e3663271b0ffbd4908115044a6a51fb938b upstream.
 
-syzbot managed to trigger a divide error [1] in netem.
+Since day 1 of the driver, there has been a race between
+hv_pci_query_relations() and survey_child_resources(): during fast
+device hotplug, hv_pci_query_relations() may error out due to
+device-remove and the stack variable 'comp' is no longer valid;
+however, pci_devices_present_work() -> survey_child_resources() ->
+complete() may be running on another CPU and accessing the no-longer-valid
+'comp'. Fix the race by flushing the workqueue before we exit from
+hv_pci_query_relations().
 
-It could happen if q->rate changes while netem_enqueue()
-is running, since q->rate is read twice.
-
-It turns out netem_change() always lacked proper synchronization.
-
-[1]
-divide error: 0000 [#1] SMP KASAN
-CPU: 1 PID: 7867 Comm: syz-executor.1 Not tainted 6.1.30-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
-RIP: 0010:div64_u64 include/linux/math64.h:69 [inline]
-RIP: 0010:packet_time_ns net/sched/sch_netem.c:357 [inline]
-RIP: 0010:netem_enqueue+0x2067/0x36d0 net/sched/sch_netem.c:576
-Code: 89 e2 48 69 da 00 ca 9a 3b 42 80 3c 28 00 4c 8b a4 24 88 00 00 00 74 0d 4c 89 e7 e8 c3 4f 3b fd 48 8b 4c 24 18 48 89 d8 31 d2 <49> f7 34 24 49 01 c7 4c 8b 64 24 48 4d 01 f7 4c 89 e3 48 c1 eb 03
-RSP: 0018:ffffc9000dccea60 EFLAGS: 00010246
-RAX: 000001a442624200 RBX: 000001a442624200 RCX: ffff888108a4f000
-RDX: 0000000000000000 RSI: 000000000000070d RDI: 000000000000070d
-RBP: ffffc9000dcceb90 R08: ffffffff849c5e26 R09: fffffbfff10e1297
-R10: 0000000000000000 R11: dffffc0000000001 R12: ffff888108a4f358
-R13: dffffc0000000000 R14: 0000001a8cd9a7ec R15: 0000000000000000
-FS: 00007fa73fe18700(0000) GS:ffff8881f6b00000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fa73fdf7718 CR3: 000000011d36e000 CR4: 0000000000350ee0
-Call Trace:
-<TASK>
-[<ffffffff84714385>] __dev_xmit_skb net/core/dev.c:3931 [inline]
-[<ffffffff84714385>] __dev_queue_xmit+0xcf5/0x3370 net/core/dev.c:4290
-[<ffffffff84d22df2>] dev_queue_xmit include/linux/netdevice.h:3030 [inline]
-[<ffffffff84d22df2>] neigh_hh_output include/net/neighbour.h:531 [inline]
-[<ffffffff84d22df2>] neigh_output include/net/neighbour.h:545 [inline]
-[<ffffffff84d22df2>] ip_finish_output2+0xb92/0x10d0 net/ipv4/ip_output.c:235
-[<ffffffff84d21e63>] __ip_finish_output+0xc3/0x2b0
-[<ffffffff84d10a81>] ip_finish_output+0x31/0x2a0 net/ipv4/ip_output.c:323
-[<ffffffff84d10f14>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
-[<ffffffff84d10f14>] ip_output+0x224/0x2a0 net/ipv4/ip_output.c:437
-[<ffffffff84d123b5>] dst_output include/net/dst.h:444 [inline]
-[<ffffffff84d123b5>] ip_local_out net/ipv4/ip_output.c:127 [inline]
-[<ffffffff84d123b5>] __ip_queue_xmit+0x1425/0x2000 net/ipv4/ip_output.c:542
-[<ffffffff84d12fdc>] ip_queue_xmit+0x4c/0x70 net/ipv4/ip_output.c:556
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Jiri Pirko <jiri@resnulli.us>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230620184425.1179809-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230615044451.5580-2-decui@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/pci/controller/pci-hyperv.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index fb00ac40ecb72..aa9842158df0a 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -966,6 +966,7 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 	if (ret < 0)
- 		return ret;
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -2445,6 +2445,24 @@ static int hv_pci_query_relations(struct
+ 	if (!ret)
+ 		ret = wait_for_response(hdev, &comp);
  
-+	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
- 	old_loss_model = q->loss_model;
-@@ -974,7 +975,7 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 		ret = get_loss_clg(q, tb[TCA_NETEM_LOSS]);
- 		if (ret) {
- 			q->loss_model = old_loss_model;
--			return ret;
-+			goto unlock;
- 		}
- 	} else {
- 		q->loss_model = CLG_RANDOM;
-@@ -1041,6 +1042,8 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 	/* capping jitter to the range acceptable by tabledist() */
- 	q->jitter = min_t(s64, abs(q->jitter), INT_MAX);
- 
-+unlock:
-+	sch_tree_unlock(sch);
- 	return ret;
- 
- get_table_failure:
-@@ -1050,7 +1053,8 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 	 */
- 	q->clg = old_clg;
- 	q->loss_model = old_loss_model;
--	return ret;
++	/*
++	 * In the case of fast device addition/removal, it's possible that
++	 * vmbus_sendpacket() or wait_for_response() returns -ENODEV but we
++	 * already got a PCI_BUS_RELATIONS* message from the host and the
++	 * channel callback already scheduled a work to hbus->wq, which can be
++	 * running pci_devices_present_work() -> survey_child_resources() ->
++	 * complete(&hbus->survey_event), even after hv_pci_query_relations()
++	 * exits and the stack variable 'comp' is no longer valid; as a result,
++	 * a hang or a page fault may happen when the complete() calls
++	 * raw_spin_lock_irqsave(). Flush hbus->wq before we exit from
++	 * hv_pci_query_relations() to avoid the issues. Note: if 'ret' is
++	 * -ENODEV, there can't be any more work item scheduled to hbus->wq
++	 * after the flush_workqueue(): see vmbus_onoffer_rescind() ->
++	 * vmbus_reset_channel_cb(), vmbus_rescind_cleanup() ->
++	 * channel->rescind = true.
++	 */
++	flush_workqueue(hbus->wq);
 +
-+	goto unlock;
+ 	return ret;
  }
  
- static int netem_init(struct Qdisc *sch, struct nlattr *opt,
--- 
-2.39.2
-
 
 
