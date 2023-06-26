@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 122D573EA1E
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2603273E898
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232558AbjFZSni (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:43:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56168 "EHLO
+        id S232160AbjFZS1Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232585AbjFZSnd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:33 -0400
+        with ESMTP id S232043AbjFZS05 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F94BE3
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 721CF171A
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:26:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2082660F57
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A07EC433C0;
-        Mon, 26 Jun 2023 18:43:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D18860F1E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:26:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15593C433C8;
+        Mon, 26 Jun 2023 18:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805004;
-        bh=XT1qF+wv7lG7G/hRZUyqTnEsaJgVnzHLAJErBrJl+34=;
+        s=korg; t=1687803998;
+        bh=VoCyN92JMw4IzOJxg/gH06Ss8/ZSL0OYhFeq2csDpCY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cgoNXC3EyF8d/nbgmLxE9aXzMqIQlqgBjfh3Ab5SG1cI2i9C0qLdyTqec/C1ynyRW
-         3Cr7AdsdXX9UZU9cFBuc3+Xo+VnbsdpxKic+DwgEHR6T+5B7nmokgxxvIjmkunZZtu
-         pS15rf/00jeJ4UXhOK07q8Z3r7mVo661Zk7wAxLo=
+        b=DZVa6Pd8Rm6dnfPx5NYDbhDazADVDWUjkA2gqra0k7fBWmA71fGNUSbabqShCx+D3
+         DlmXeQl0DH0HUv5q5ZT1R68IE4Mk3fYzZLY/2iO1VeoqqPB+MZ/8xw14s/VADgAT77
+         qomXsh2hwzGssfGwennoiowxbvM/hU1WqvWaFkWw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yann Gautier <yann.gautier@foss.st.com>,
-        Christophe Kerello <christophe.kerello@foss.st.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 18/81] mmc: mmci: stm32: fix max busy timeout calculation
+        patches@lists.linux.dev, Inki Dae <inki.dae@samsung.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 37/41] drm/exynos: vidi: fix a wrong error return
 Date:   Mon, 26 Jun 2023 20:12:00 +0200
-Message-ID: <20230626180745.214913457@linuxfoundation.org>
+Message-ID: <20230626180737.649452010@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
+References: <20230626180736.243379844@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Kerello <christophe.kerello@foss.st.com>
+From: Inki Dae <inki.dae@samsung.com>
 
-commit 47b3ad6b7842f49d374a01b054a4b1461a621bdc upstream.
+[ Upstream commit 4a059559809fd1ddbf16f847c4d2237309c08edf ]
 
-The way that the timeout is currently calculated could lead to a u64
-timeout value in mmci_start_command(). This value is then cast in a u32
-register that leads to mmc erase failed issue with some SD cards.
+Fix a wrong error return by dropping an error return.
 
-Fixes: 8266c585f489 ("mmc: mmci: add hardware busy timeout feature")
-Signed-off-by: Yann Gautier <yann.gautier@foss.st.com>
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230613134146.418016-1-yann.gautier@foss.st.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When vidi driver is remvoed, if ctx->raw_edid isn't same as fake_edid_info
+then only what we have to is to free ctx->raw_edid so that driver removing
+can work correctly - it's not an error case.
+
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mmci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -1728,7 +1728,8 @@ static void mmci_set_max_busy_timeout(st
- 		return;
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+index 19697c1362d8f..947c9627c565a 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -480,8 +480,6 @@ static int vidi_remove(struct platform_device *pdev)
+ 	if (ctx->raw_edid != (struct edid *)fake_edid_info) {
+ 		kfree(ctx->raw_edid);
+ 		ctx->raw_edid = NULL;
+-
+-		return -EINVAL;
+ 	}
  
- 	if (host->variant->busy_timeout && mmc->actual_clock)
--		max_busy_timeout = ~0UL / (mmc->actual_clock / MSEC_PER_SEC);
-+		max_busy_timeout = U32_MAX / DIV_ROUND_UP(mmc->actual_clock,
-+							  MSEC_PER_SEC);
- 
- 	mmc->max_busy_timeout = max_busy_timeout;
- }
+ 	component_del(&pdev->dev, &vidi_component_ops);
+-- 
+2.39.2
+
 
 
