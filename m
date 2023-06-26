@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF83473E8F1
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C571673E7E4
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232163AbjFZSat (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:30:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44500 "EHLO
+        id S231577AbjFZSUK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:20:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232428AbjFZSa0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:26 -0400
+        with ESMTP id S231530AbjFZSUJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:20:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CE9299
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E48294
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:20:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AEA4660E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDC2C433C8;
-        Mon, 26 Jun 2023 18:30:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE12C60F1E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AF6C433C8;
+        Mon, 26 Jun 2023 18:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804224;
-        bh=MlswrwMQP56Pi/z/UhASEXmuzdhIygzlY/TiIqb6phw=;
+        s=korg; t=1687803607;
+        bh=U1WP+wywmwTYfoJG24IM1926hIeSyuga01PtxEr31WA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jTOeZD0wSkC0DK23aDSK7r/TtkrQkkeCKr+0OGlKBWRx08v5u9ddkCY8Dv92SY33m
-         5XNqrn4ERjC7Nu4xcEY/8hywGLcQOOaMTYRw3LE6S1x6XCo8MKQ+3/+go3KxFqtRp2
-         VSQu8jDqWrRm/TB/ho6Q5yAl1B5kF9RKwizXk1rk=
+        b=OVgtMV30q/3hbYhwYL2a0Re8enMKtZE52Zp5wDvRy8Kdp21I5UHCmFuowxY4PDWs6
+         L7eUg7zjaetq/4rqic0bllfzB+z/lZ4jlNxakfpx2hiZiAAVoJuLxrfmnTsWelOOnp
+         HgTeodrV3XYAUxwu/ItPUougadLTBmq7a9Prcci4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Metzmacher <metze@samba.org>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 055/170] io_uring/net: clear msg_controllen on partial sendmsg retry
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 118/199] mmc: owl: fix deferred probing
 Date:   Mon, 26 Jun 2023 20:10:24 +0200
-Message-ID: <20230626180803.042579520@linuxfoundation.org>
+Message-ID: <20230626180810.819239366@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,33 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit b1dc492087db0f2e5a45f1072a743d04618dd6be upstream.
+[ Upstream commit 3c482e1e830d79b9be8afb900a965135c01f7893 ]
 
-If we have cmsg attached AND we transferred partial data at least, clear
-msg_controllen on retry so we don't attempt to send that again.
+The driver overrides the error codes returned by platform_get_irq() to
+-EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the
+error codes upstream.
 
-Cc: stable@vger.kernel.org # 5.10+
-Fixes: cac9e4418f4c ("io_uring/net: save msghdr->msg_control for retries")
-Reported-by: Stefan Metzmacher <metze@samba.org>
-Reviewed-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ff65ffe46d28 ("mmc: Add Actions Semi Owl SoCs SD/MMC driver")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20230617203622.6812-8-s.shtylyov@omp.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/host/owl-mmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -313,6 +313,8 @@ int io_sendmsg(struct io_kiocb *req, uns
- 		if (ret == -EAGAIN && (issue_flags & IO_URING_F_NONBLOCK))
- 			return io_setup_async_msg(req, kmsg, issue_flags);
- 		if (ret > 0 && io_net_retry(sock, flags)) {
-+			kmsg->msg.msg_controllen = 0;
-+			kmsg->msg.msg_control = NULL;
- 			sr->done_io += ret;
- 			req->flags |= REQ_F_PARTIAL_IO;
- 			return io_setup_async_msg(req, kmsg, issue_flags);
+diff --git a/drivers/mmc/host/owl-mmc.c b/drivers/mmc/host/owl-mmc.c
+index 3dc143b039397..679b8b0b310e5 100644
+--- a/drivers/mmc/host/owl-mmc.c
++++ b/drivers/mmc/host/owl-mmc.c
+@@ -638,7 +638,7 @@ static int owl_mmc_probe(struct platform_device *pdev)
+ 
+ 	owl_host->irq = platform_get_irq(pdev, 0);
+ 	if (owl_host->irq < 0) {
+-		ret = -EINVAL;
++		ret = owl_host->irq;
+ 		goto err_release_channel;
+ 	}
+ 
+-- 
+2.39.2
+
 
 
