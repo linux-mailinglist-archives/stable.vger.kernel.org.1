@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD28A73E7BD
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDFB073E8C3
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbjFZSSV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:18:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33756 "EHLO
+        id S232224AbjFZS31 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:29:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231298AbjFZSSU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:18:20 -0400
+        with ESMTP id S231976AbjFZS3J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7367294
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:18:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D973C19BA
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:28:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 112D260F40
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:18:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCC2C433C8;
-        Mon, 26 Jun 2023 18:18:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7641060F51
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:28:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF89C433C0;
+        Mon, 26 Jun 2023 18:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803498;
-        bh=vqIqFnWSJE0E90bomROB1dnMkiZREdqIziRgYD7M7P4=;
+        s=korg; t=1687804112;
+        bh=zfZESOLOkYLtdIRgj5FHS4SjZcmF4oaUzPNdHYIHPW4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yde1389JG6vNeoRPcx/NATa/T8BB0a3ma6ZMv3EJCPC+BOKDg1wSAV5QNTw2Y20ZL
-         2Yf9z2SDdKC0UkUHA6ojXTG42fk6/wGXJOULxbJsV/UuLNIjUmkns2F/onvO/AYdWN
-         ApmshiSsaAvm9qt4tNCHNy7WFC4tCzex/3Z0GW6Q=
+        b=T2nGB3Phl2f7Kp+MD58JQbu5zjr216laZAapGlWClt2hFqUqyuO0VhwQv+g6p76ED
+         SiUxZQqLoxVH+iBmf2aEIkLd5vWJHVD9m8ZM1PTIeQOXCgMMSpQaWOL9sUHxlSaP9/
+         BhkyAeDTiiIovG7tjR2J4N3O1or0y0A+ZzQNzIuI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yann Gautier <yann.gautier@foss.st.com>,
-        Christophe Kerello <christophe.kerello@foss.st.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.3 081/199] mmc: mmci: stm32: fix max busy timeout calculation
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 018/170] selftests: mptcp: connect: skip disconnect tests if not supported
 Date:   Mon, 26 Jun 2023 20:09:47 +0200
-Message-ID: <20230626180809.133109117@linuxfoundation.org>
+Message-ID: <20230626180801.380024137@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Kerello <christophe.kerello@foss.st.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit 47b3ad6b7842f49d374a01b054a4b1461a621bdc upstream.
+commit 4ad39a42da2e9770c8e4c37fe632ed8898419129 upstream.
 
-The way that the timeout is currently calculated could lead to a u64
-timeout value in mmci_start_command(). This value is then cast in a u32
-register that leads to mmc erase failed issue with some SD cards.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-Fixes: 8266c585f489 ("mmc: mmci: add hardware busy timeout feature")
-Signed-off-by: Yann Gautier <yann.gautier@foss.st.com>
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+One of them is the full support of disconnections from the userspace
+introduced by commit b29fcfb54cd7 ("mptcp: full disconnect
+implementation").
+
+It is possible to look for "mptcp_pm_data_reset" in kallsyms because a
+preparation patch added it to ease the introduction of the mentioned
+feature.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230613134146.418016-1-yann.gautier@foss.st.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mmci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -1735,7 +1735,8 @@ static void mmci_set_max_busy_timeout(st
- 		return;
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -782,6 +782,11 @@ run_tests_disconnect()
+ 	local old_cin=$cin
+ 	local old_sin=$sin
  
- 	if (host->variant->busy_timeout && mmc->actual_clock)
--		max_busy_timeout = ~0UL / (mmc->actual_clock / MSEC_PER_SEC);
-+		max_busy_timeout = U32_MAX / DIV_ROUND_UP(mmc->actual_clock,
-+							  MSEC_PER_SEC);
++	if ! mptcp_lib_kallsyms_has "mptcp_pm_data_reset$"; then
++		echo "INFO: Full disconnect not supported: SKIP"
++		return
++	fi
++
+ 	cat $cin $cin $cin > "$cin".disconnect
  
- 	mmc->max_busy_timeout = max_busy_timeout;
- }
+ 	# force do_transfer to cope with the multiple tranmissions
 
 
