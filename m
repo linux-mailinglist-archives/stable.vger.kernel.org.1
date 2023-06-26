@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92EA873E7F0
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D75C173E8B6
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:28:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231655AbjFZSUf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:20:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34956 "EHLO
+        id S232037AbjFZS2x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:28:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231656AbjFZSU3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:20:29 -0400
+        with ESMTP id S232039AbjFZS2b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:28:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4279E8
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:20:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3DD82709
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:27:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D9F460F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8D6C433CD;
-        Mon, 26 Jun 2023 18:20:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B75160EFC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:27:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC55C433C0;
+        Mon, 26 Jun 2023 18:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803622;
-        bh=lCdrSBBnf+pP20fLiCNvWVrG/YG274yASOAWt+DEm6I=;
+        s=korg; t=1687804074;
+        bh=U5lT5QxVboM+xA1QUoWhSuD7Z+o4phKWyxAEud5AwYo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mXkJnwTqKpNkHc4qWXXFgJii9QFYIpJpwIX61YbLO8jRECvx2ktdJIVf6htC/Sv7T
-         HuBRwT90+gaQVVatCwC5SVafrHnlYPy8cfhSQWO2gr0U1sv2Miwsv8WSV/GvmPV0HO
-         c1dUloQsW5ULkHzZvEBERxvNBF1B8m/Hnc5EAjmw=
+        b=MhAOGherHsYmFMx2ncOc7+tLb+/4z21U5NVhzX5L2OzwtLqAfVN8HQbPL8mnz2OwG
+         SbFHBTROZtXrQb3lX69iTkKqUqVC1t+Xw9ihHjo6ytFB9xvgDwLX3634rdfHByDNRb
+         qasMzyQs7XSQXuLRWW0qjNFcoVFEK5h0zYFha4Qs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-        Jay Shin <jaeshin@redhat.com>, Tejun Heo <tj@kernel.org>,
-        Waiman Long <longman@redhat.com>,
-        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.3 096/199] block: make sure local irq is disabled when calling __blkcg_rstat_flush
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 033/170] selftests: mptcp: join: skip backup if set flag on ID not supported
 Date:   Mon, 26 Jun 2023 20:10:02 +0200
-Message-ID: <20230626180809.833924745@linuxfoundation.org>
+Message-ID: <20230626180802.035210620@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,64 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit 9c39b7a905d84b7da5f59d80f2e455853fea7217 upstream.
+commit 07216a3c5d926bf1b6b360a0073747228a1f9b7f upstream.
 
-When __blkcg_rstat_flush() is called from cgroup_rstat_flush*() code
-path, interrupt is always disabled.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-When we start to flush blkcg per-cpu stats list in __blkg_release()
-for avoiding to leak blkcg_gq's reference in commit 20cb1c2fb756
-("blk-cgroup: Flush stats before releasing blkcg_gq"), local irq
-isn't disabled yet, then lockdep warning may be triggered because
-the dependent cgroup locks may be acquired from irq(soft irq) handler.
+Commit bccefb762439 ("selftests: mptcp: simplify pm_nl_change_endpoint")
+has simplified the way the backup flag is set on an endpoint. Instead of
+doing:
 
-Fix the issue by disabling local irq always.
+  ./pm_nl_ctl set 10.0.2.1 flags backup
 
-Fixes: 20cb1c2fb756 ("blk-cgroup: Flush stats before releasing blkcg_gq")
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Closes: https://lore.kernel.org/linux-block/pz2wzwnmn5tk3pwpskmjhli6g3qly7eoknilb26of376c7kwxy@qydzpvt6zpis/T/#u
+Now we do:
+
+  ./pm_nl_ctl set id 1 flags backup
+
+The new way is easier to maintain but it is also incompatible with older
+kernels not supporting the implicit endpoints putting in place the
+infrastructure to set flags per ID, hence the second Fixes tag.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: bccefb762439 ("selftests: mptcp: simplify pm_nl_change_endpoint")
 Cc: stable@vger.kernel.org
-Cc: Jay Shin <jaeshin@redhat.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/20230622084249.1208005-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 4cf86ae84c71 ("mptcp: strict local address ID selection")
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-cgroup.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -907,6 +907,7 @@ static void __blkcg_rstat_flush(struct b
- 	struct llist_head *lhead = per_cpu_ptr(blkcg->lhead, cpu);
- 	struct llist_node *lnode;
- 	struct blkg_iostat_set *bisc, *next_bisc;
-+	unsigned long flags;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2573,7 +2573,8 @@ v4mapped_tests()
+ backup_tests()
+ {
+ 	# single subflow, backup
+-	if reset "single subflow, backup"; then
++	if reset "single subflow, backup" &&
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 0 1
+ 		pm_nl_set_limits $ns2 0 1
+ 		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
+@@ -2583,7 +2584,8 @@ backup_tests()
+ 	fi
  
- 	rcu_read_lock();
+ 	# single address, backup
+-	if reset "single address, backup"; then
++	if reset "single address, backup" &&
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 0 1
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+ 		pm_nl_set_limits $ns2 1 1
+@@ -2594,7 +2596,8 @@ backup_tests()
+ 	fi
  
-@@ -920,7 +921,7 @@ static void __blkcg_rstat_flush(struct b
- 	 * When flushing from cgroup, cgroup_rstat_lock is always held, so
- 	 * this lock won't cause contention most of time.
- 	 */
--	raw_spin_lock(&blkg_stat_lock);
-+	raw_spin_lock_irqsave(&blkg_stat_lock, flags);
- 
- 	/*
- 	 * Iterate only the iostat_cpu's queued in the lockless list.
-@@ -946,7 +947,7 @@ static void __blkcg_rstat_flush(struct b
- 			blkcg_iostat_update(parent, &blkg->iostat.cur,
- 					    &blkg->iostat.last);
- 	}
--	raw_spin_unlock(&blkg_stat_lock);
-+	raw_spin_unlock_irqrestore(&blkg_stat_lock, flags);
- out:
- 	rcu_read_unlock();
- }
+ 	# single address with port, backup
+-	if reset "single address with port, backup"; then
++	if reset "single address with port, backup" &&
++	   continue_if mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 0 1
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal port 10100
+ 		pm_nl_set_limits $ns2 1 1
 
 
