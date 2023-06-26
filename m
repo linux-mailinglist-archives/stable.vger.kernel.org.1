@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A601073E8B5
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92EA873E7F0
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232183AbjFZS2w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:28:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43166 "EHLO
+        id S231655AbjFZSUf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:20:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232201AbjFZS2V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:28:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E979826B8
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:27:52 -0700 (PDT)
+        with ESMTP id S231656AbjFZSU3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:20:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4279E8
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:20:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80E9B60F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:27:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEDBC433C8;
-        Mon, 26 Jun 2023 18:27:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D9F460F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8D6C433CD;
+        Mon, 26 Jun 2023 18:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804071;
-        bh=dEMGVul993S1sSJCk+tlbrm+EtlkMY7k/D6Qn02tzxU=;
+        s=korg; t=1687803622;
+        bh=lCdrSBBnf+pP20fLiCNvWVrG/YG274yASOAWt+DEm6I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X+2+Qba/xUCiYtT4hLWpoxfJ7wsICqlFNfMVpoGFAwu3Dd6YDsknui0ATD1AEuKbW
-         pwfzMyCMZyZLwUBKEtupABkWo8gkD8YZR7xMuTtF8pSkr4rqGRCS9S9E9fuZ/iVuQr
-         QjyXESCY+F2mpucDNHLbeGiatBNUuXHOluUij11g=
+        b=mXkJnwTqKpNkHc4qWXXFgJii9QFYIpJpwIX61YbLO8jRECvx2ktdJIVf6htC/Sv7T
+         HuBRwT90+gaQVVatCwC5SVafrHnlYPy8cfhSQWO2gr0U1sv2Miwsv8WSV/GvmPV0HO
+         c1dUloQsW5ULkHzZvEBERxvNBF1B8m/Hnc5EAjmw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 032/170] selftests: mptcp: join: skip implicit tests if not supported
-Date:   Mon, 26 Jun 2023 20:10:01 +0200
-Message-ID: <20230626180801.988987534@linuxfoundation.org>
+        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+        Jay Shin <jaeshin@redhat.com>, Tejun Heo <tj@kernel.org>,
+        Waiman Long <longman@redhat.com>,
+        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.3 096/199] block: make sure local irq is disabled when calling __blkcg_rstat_flush
+Date:   Mon, 26 Jun 2023 20:10:02 +0200
+Message-ID: <20230626180809.833924745@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,64 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 36c4127ae8dd0ebac6d56d8a1b272dd483471c40 upstream.
+commit 9c39b7a905d84b7da5f59d80f2e455853fea7217 upstream.
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting all MPTCP features.
+When __blkcg_rstat_flush() is called from cgroup_rstat_flush*() code
+path, interrupt is always disabled.
 
-One of them is the support of the implicit endpoints introduced by
-commit d045b9eb95a9 ("mptcp: introduce implicit endpoints").
+When we start to flush blkcg per-cpu stats list in __blkg_release()
+for avoiding to leak blkcg_gq's reference in commit 20cb1c2fb756
+("blk-cgroup: Flush stats before releasing blkcg_gq"), local irq
+isn't disabled yet, then lockdep warning may be triggered because
+the dependent cgroup locks may be acquired from irq(soft irq) handler.
 
-It is possible to look for "mptcp_subflow_send_ack" in kallsyms because
-it was needed to introduce the mentioned feature. So we can know in
-advance if the feature is supported instead of trying and accepting any
-results.
+Fix the issue by disabling local irq always.
 
-Note that here and in the following commits, we re-do the same check for
-each sub-test of the same function for a few reasons. The main one is
-not to break the ID assign to each test in order to be able to easily
-compare results between different kernel versions. Also, we can still
-run a specific test even if it is skipped. Another reason is that it
-makes it clear during the review that a specific subtest will be skipped
-or not under certain conditions. At the end, it looks OK to call the
-exact same helper multiple times: it is not a critical path and it is
-the same code that is executed, not really more cases to maintain.
-
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
+Fixes: 20cb1c2fb756 ("blk-cgroup: Flush stats before releasing blkcg_gq")
+Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Closes: https://lore.kernel.org/linux-block/pz2wzwnmn5tk3pwpskmjhli6g3qly7eoknilb26of376c7kwxy@qydzpvt6zpis/T/#u
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Jay Shin <jaeshin@redhat.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/r/20230622084249.1208005-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ block/blk-cgroup.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3108,8 +3108,10 @@ userspace_tests()
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -907,6 +907,7 @@ static void __blkcg_rstat_flush(struct b
+ 	struct llist_head *lhead = per_cpu_ptr(blkcg->lhead, cpu);
+ 	struct llist_node *lnode;
+ 	struct blkg_iostat_set *bisc, *next_bisc;
++	unsigned long flags;
  
- endpoint_tests()
- {
-+	# subflow_rebuild_header is needed to support the implicit flag
- 	# userspace pm type prevents add_addr
--	if reset "implicit EP"; then
-+	if reset "implicit EP" &&
-+	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 2 2
- 		pm_nl_set_limits $ns2 2 2
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-@@ -3129,7 +3131,8 @@ endpoint_tests()
- 		kill_tests_wait
- 	fi
+ 	rcu_read_lock();
  
--	if reset "delete and re-add"; then
-+	if reset "delete and re-add" &&
-+	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 1 1
- 		pm_nl_set_limits $ns2 1 1
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+@@ -920,7 +921,7 @@ static void __blkcg_rstat_flush(struct b
+ 	 * When flushing from cgroup, cgroup_rstat_lock is always held, so
+ 	 * this lock won't cause contention most of time.
+ 	 */
+-	raw_spin_lock(&blkg_stat_lock);
++	raw_spin_lock_irqsave(&blkg_stat_lock, flags);
+ 
+ 	/*
+ 	 * Iterate only the iostat_cpu's queued in the lockless list.
+@@ -946,7 +947,7 @@ static void __blkcg_rstat_flush(struct b
+ 			blkcg_iostat_update(parent, &blkg->iostat.cur,
+ 					    &blkg->iostat.last);
+ 	}
+-	raw_spin_unlock(&blkg_stat_lock);
++	raw_spin_unlock_irqrestore(&blkg_stat_lock, flags);
+ out:
+ 	rcu_read_unlock();
+ }
 
 
