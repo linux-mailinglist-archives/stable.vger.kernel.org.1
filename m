@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 317B273E7B6
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF7773E89E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:27:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231364AbjFZSSA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:18:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33530 "EHLO
+        id S232051AbjFZS1j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:27:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231298AbjFZSR7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:17:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91EF1CC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:17:58 -0700 (PDT)
+        with ESMTP id S232043AbjFZS1Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:27:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF8D71BE2
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:26:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AEEC60F45
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:17:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A42C433C0;
-        Mon, 26 Jun 2023 18:17:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C1E860F1E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:26:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43008C433C0;
+        Mon, 26 Jun 2023 18:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803477;
-        bh=woGTmBM6Oq62b2nOBm3ISgO13MbsyT6ie4DERgzHVBg=;
+        s=korg; t=1687804015;
+        bh=63HRqoZ97aVX8/+9AGQxERkNCOLukHfX0jNI7gW1kO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gc78gepAlzWpDWotirnu1RJhpaSEsDjeuStrXl1B/dnkMxuq7oFMxngcr/zFodi28
-         IqsfD631qayIdg0RCx+MO3WzGE79/KvZa7zu5axJndaYB0jnfFmlXnBFniV1TIQS7A
-         VADuyFogLc6IHonVb87ZuL39YjFRjBDI6v8BKrvM=
+        b=RfEkmFb2oZuZT4XTAqVVwlG3ssVhRmQhSNjLpY210ddZVpdsNthOSBUz0+9pcUBlv
+         wrv6NUJnUG9u+4BPOMKT+mIcpUul+ZdJVe808MTelQQX8i3+fY6ybEB1t1Be/jeBjS
+         cjJYi42btRC4UpavoCxKVGbO5fQyFNutgTb3aexA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
-        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-        Xiu Jianfeng <xiujianfeng@huawei.com>,
-        Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.3 075/199] cgroup: Do not corrupt task iteration when rebinding subsystem
-Date:   Mon, 26 Jun 2023 20:09:41 +0200
-Message-ID: <20230626180808.841340657@linuxfoundation.org>
+        patches@lists.linux.dev, Mathias Krause <minipli@grsecurity.net>,
+        "Bhatnagar, Rishabh" <risbhat@amazon.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Richard W.M. Jones" <rjones@redhat.com>,
+        SeongJae Park <sj@kernel.org>
+Subject: [PATCH 6.1 013/170] tick/common: Align tick period during sched_timer setup
+Date:   Mon, 26 Jun 2023 20:09:42 +0200
+Message-ID: <20230626180801.146886575@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,122 +58,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 6f363f5aa845561f7ea496d8b1175e3204470486 upstream.
+commit 13bb06f8dd42071cb9a49f6e21099eea05d4b856 upstream.
 
-We found a refcount UAF bug as follows:
+The tick period is aligned very early while the first clock_event_device is
+registered. At that point the system runs in periodic mode and switches
+later to one-shot mode if possible.
 
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 1 PID: 342 at lib/refcount.c:25 refcount_warn_saturate+0xa0/0x148
-Workqueue: events cpuset_hotplug_workfn
-Call trace:
- refcount_warn_saturate+0xa0/0x148
- __refcount_add.constprop.0+0x5c/0x80
- css_task_iter_advance_css_set+0xd8/0x210
- css_task_iter_advance+0xa8/0x120
- css_task_iter_next+0x94/0x158
- update_tasks_root_domain+0x58/0x98
- rebuild_root_domains+0xa0/0x1b0
- rebuild_sched_domains_locked+0x144/0x188
- cpuset_hotplug_workfn+0x138/0x5a0
- process_one_work+0x1e8/0x448
- worker_thread+0x228/0x3e0
- kthread+0xe0/0xf0
- ret_from_fork+0x10/0x20
+The next wake-up event is programmed based on the aligned value
+(tick_next_period) but the delta value, that is used to program the
+clock_event_device, is computed based on ktime_get().
 
-then a kernel panic will be triggered as below:
+With the subtracted offset, the device fires earlier than the exact time
+frame. With a large enough offset the system programs the timer for the
+next wake-up and the remaining time left is too small to make any boot
+progress. The system hangs.
 
-Unable to handle kernel paging request at virtual address 00000000c0000010
-Call trace:
- cgroup_apply_control_disable+0xa4/0x16c
- rebind_subsystems+0x224/0x590
- cgroup_destroy_root+0x64/0x2e0
- css_free_rwork_fn+0x198/0x2a0
- process_one_work+0x1d4/0x4bc
- worker_thread+0x158/0x410
- kthread+0x108/0x13c
- ret_from_fork+0x10/0x18
+Move the alignment later to the setup of tick_sched timer. At this point
+the system switches to oneshot mode and a high resolution clocksource is
+available. At this point it is safe to align tick_next_period because
+ktime_get() will now return accurate (not jiffies based) time.
 
-The race that cause this bug can be shown as below:
+[bigeasy: Patch description + testing].
 
-(hotplug cpu)                | (umount cpuset)
-mutex_lock(&cpuset_mutex)    | mutex_lock(&cgroup_mutex)
-cpuset_hotplug_workfn        |
- rebuild_root_domains        |  rebind_subsystems
-  update_tasks_root_domain   |   spin_lock_irq(&css_set_lock)
-   css_task_iter_start       |    list_move_tail(&cset->e_cset_node[ss->id]
-   while(css_task_iter_next) |                  &dcgrp->e_csets[ss->id]);
-   css_task_iter_end         |   spin_unlock_irq(&css_set_lock)
-mutex_unlock(&cpuset_mutex)  | mutex_unlock(&cgroup_mutex)
-
-Inside css_task_iter_start/next/end, css_set_lock is hold and then
-released, so when iterating task(left side), the css_set may be moved to
-another list(right side), then it->cset_head points to the old list head
-and it->cset_pos->next points to the head node of new list, which can't
-be used as struct css_set.
-
-To fix this issue, switch from all css_sets to only scgrp's css_sets to
-patch in-flight iterators to preserve correct iteration, and then
-update it->cset_head as well.
-
-Reported-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Link: https://www.spinics.net/lists/cgroups/msg37935.html
-Suggested-by: Michal Koutný <mkoutny@suse.com>
-Link: https://lore.kernel.org/all/20230526114139.70274-1-xiujianfeng@huaweicloud.com/
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Fixes: 2d8f243a5e6e ("cgroup: implement cgroup->e_csets[]")
-Cc: stable@vger.kernel.org # v3.16+
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: e9523a0d81899 ("tick/common: Align tick period with the HZ tick.")
+Reported-by: Mathias Krause <minipli@grsecurity.net>
+Reported-by: "Bhatnagar, Rishabh" <risbhat@amazon.com>
+Suggested-by: Mathias Krause <minipli@grsecurity.net>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Richard W.M. Jones <rjones@redhat.com>
+Tested-by: Mathias Krause <minipli@grsecurity.net>
+Acked-by: SeongJae Park <sj@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net
+Link: https://lore.kernel.org/12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com
+Link: https://lore.kernel.org/r/20230615091830.RxMV2xf_@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ kernel/time/tick-common.c |   13 +------------
+ kernel/time/tick-sched.c  |   13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -1788,7 +1788,7 @@ int rebind_subsystems(struct cgroup_root
- {
- 	struct cgroup *dcgrp = &dst_root->cgrp;
- 	struct cgroup_subsys *ss;
--	int ssid, i, ret;
-+	int ssid, ret;
- 	u16 dfl_disable_ss_mask = 0;
- 
- 	lockdep_assert_held(&cgroup_mutex);
-@@ -1832,7 +1832,8 @@ int rebind_subsystems(struct cgroup_root
- 		struct cgroup_root *src_root = ss->root;
- 		struct cgroup *scgrp = &src_root->cgrp;
- 		struct cgroup_subsys_state *css = cgroup_css(scgrp, ss);
--		struct css_set *cset;
-+		struct css_set *cset, *cset_pos;
-+		struct css_task_iter *it;
- 
- 		WARN_ON(!css || cgroup_css(dcgrp, ss));
- 
-@@ -1850,9 +1851,22 @@ int rebind_subsystems(struct cgroup_root
- 		css->cgroup = dcgrp;
- 
- 		spin_lock_irq(&css_set_lock);
--		hash_for_each(css_set_table, i, cset, hlist)
-+		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
-+		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
-+					 e_cset_node[ss->id]) {
- 			list_move_tail(&cset->e_cset_node[ss->id],
- 				       &dcgrp->e_csets[ss->id]);
-+			/*
-+			 * all css_sets of scgrp together in same order to dcgrp,
-+			 * patch in-flight iterators to preserve correct iteration.
-+			 * since the iterator is always advanced right away and
-+			 * finished when it->cset_pos meets it->cset_head, so only
-+			 * update it->cset_head is enough here.
-+			 */
-+			list_for_each_entry(it, &cset->task_iters, iters_node)
-+				if (it->cset_head == &scgrp->e_csets[ss->id])
-+					it->cset_head = &dcgrp->e_csets[ss->id];
-+		}
- 		spin_unlock_irq(&css_set_lock);
- 
- 		if (ss->css_rstat_flush) {
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -218,19 +218,8 @@ static void tick_setup_device(struct tic
+ 		 * this cpu:
+ 		 */
+ 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
+-			ktime_t next_p;
+-			u32 rem;
+-
+ 			tick_do_timer_cpu = cpu;
+-
+-			next_p = ktime_get();
+-			div_u64_rem(next_p, TICK_NSEC, &rem);
+-			if (rem) {
+-				next_p -= rem;
+-				next_p += TICK_NSEC;
+-			}
+-
+-			tick_next_period = next_p;
++			tick_next_period = ktime_get();
+ #ifdef CONFIG_NO_HZ_FULL
+ 			/*
+ 			 * The boot CPU may be nohz_full, in which case set
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -161,8 +161,19 @@ static ktime_t tick_init_jiffy_update(vo
+ 	raw_spin_lock(&jiffies_lock);
+ 	write_seqcount_begin(&jiffies_seq);
+ 	/* Did we start the jiffies update yet ? */
+-	if (last_jiffies_update == 0)
++	if (last_jiffies_update == 0) {
++		u32 rem;
++
++		/*
++		 * Ensure that the tick is aligned to a multiple of
++		 * TICK_NSEC.
++		 */
++		div_u64_rem(tick_next_period, TICK_NSEC, &rem);
++		if (rem)
++			tick_next_period += TICK_NSEC - rem;
++
+ 		last_jiffies_update = tick_next_period;
++	}
+ 	period = last_jiffies_update;
+ 	write_seqcount_end(&jiffies_seq);
+ 	raw_spin_unlock(&jiffies_lock);
 
 
