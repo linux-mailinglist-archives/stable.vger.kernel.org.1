@@ -2,167 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA6AA73DC25
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 12:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E08973DC38
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 12:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbjFZKVs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 06:21:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55806 "EHLO
+        id S229834AbjFZK2g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 06:28:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230176AbjFZKVm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 06:21:42 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AA401AA;
-        Mon, 26 Jun 2023 03:21:41 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2b69f958ef3so14076721fa.1;
-        Mon, 26 Jun 2023 03:21:40 -0700 (PDT)
+        with ESMTP id S229768AbjFZK2f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 06:28:35 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 937DA19F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 03:28:26 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b6a662b9adso4386371fa.2
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 03:28:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687774899; x=1690366899;
+        d=linaro.org; s=google; t=1687775304; x=1690367304;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=HeacIq0iGBmlMTVQdsWhJFRPflCyuB9lhDlBAARX9pM=;
-        b=MU0bhlG+BLyjbACqov3lAaQ+x/BLQbwWuoLQXFBcrNlTaUiR/oJWoe7If8mNFbrM/a
-         KvMV6iQ3ndKT2Suyh/cxeNu4v3aqi07XLFg0oFMSxlyKzitdS4c7H/9KvIkBKskwaP++
-         ilkzuD9jrM8gIYUops8xBUT2pJSAYAxUNkIGqHiqMACIbaTvGUD7kzZgilU+NqtJr6qq
-         ka8nNQC5CnSkSDCOmFbAoCy0/PBwsreflYYQR35R/SB7KRmRgubkBQ+zAT8WjkkBQy3/
-         8fLLCI1ltpyhICG2SNJvoDhiXlp5Yl7PaGueJEIDk/DFKvKBJ9bPfkf/9Ju5D8fRqaXZ
-         1p5w==
+        bh=SlLbl4k7Er5MQ2EA7lMi/0F7IALSlRv5Fiy4Evgi9NE=;
+        b=Ssjc1BHbGaR9A4gKSXlL7IVZE/RfC/VGfw7qGPcCGJUtq9CC+jBNbe559pNwfsI6s1
+         jZHODCoCYY+pTqKbr69r+oXXajtEuTi5cyKRmkhAWtGeg1H52yUdvp/CLyRVKAOAsi5+
+         LVd472ZxTDuyTYNs0hvqOeTv2O3b7OySo5tFjj/xpUEFSsgKCNO3QLDLTawpraCwFOa4
+         eKOaHA490v9OBloda9XgGX2pmLtyDYbrFP4/p7Z+xZpWdAsrZ/AOu3f8MMpnVsfbnrM5
+         4+ngYIfYzBFi/rNNw9YYrzJD1iPiWkk+apccKInd5WEg3NjgchuC9M3+ngKXpIXGrMeu
+         YDnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687774899; x=1690366899;
+        d=1e100.net; s=20221208; t=1687775304; x=1690367304;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HeacIq0iGBmlMTVQdsWhJFRPflCyuB9lhDlBAARX9pM=;
-        b=IuucYF7KuWWNyd4vIOFfjYOy7/yZHITgLu2Uoe3rVWwNcfI+TqwiyYY4X7yum8ZBHt
-         4wto4h46Z5syH4nPKeuARjn9upOq76bfgYQTmETXvUq9tJ1WWwXb7SaxyC93sf1+mKEk
-         nsNt7P9zNFHbbHDLdzpMbELvyaeJpj52DLacMs7qRf6+bhwMXGQwNSyT0i2SpprsGc7d
-         Oagf5We4EfV8NYX8i798Cmhe0CHd6eSLjVxZrO9Sg7cM5bumcNQ+mn5ENApHx9vonI/e
-         JUpiSEg1Beh1+nyZYdCwhfhq99Nd6/k4bGgMahiPDrC5vqGHkTreD0XokhMuFDZ8worz
-         s8sg==
-X-Gm-Message-State: AC+VfDynXEk+H4kwcNcPEOELcFhMAGZz6b3kmJBZbi2a6/anMTAP/xtv
-        a4cX4WKF3M2m8dpvyakfEQc=
-X-Google-Smtp-Source: ACHHUZ4FJTWxVTLMoTaqDFVe37vxY6VWwgHI7xhOcZo5HF8sUgxfA4+6g6TYMz7Wt/q2BtpA2MneDw==
-X-Received: by 2002:a2e:8088:0:b0:2b4:7f66:8c85 with SMTP id i8-20020a2e8088000000b002b47f668c85mr13594865ljg.48.1687774898695;
-        Mon, 26 Jun 2023 03:21:38 -0700 (PDT)
-Received: from ?IPV6:2a00:e180:158d:7600:d62f:c4fb:6eee:7b87? ([2a00:e180:158d:7600:d62f:c4fb:6eee:7b87])
-        by smtp.gmail.com with ESMTPSA id m10-20020a50ef0a000000b0051d8f9ec3basm2024177eds.15.2023.06.26.03.21.37
+        bh=SlLbl4k7Er5MQ2EA7lMi/0F7IALSlRv5Fiy4Evgi9NE=;
+        b=BTc3MHMVuXdLpB6cwPs0EdmSZt8wGxZQv304ni9gneDGpsEDFYIdvvs66z9vm/nr3b
+         dF5oo+CauO5MqT9rWhhHj4MZmYdaXur6Rb6n120oX0S33WMVvC3fliM1L6j+X1Ygorq8
+         U8XxLQPdwK6dB7ViJT2MgZLkwDQUcBgurJ9zAQsETczLbmfbAKRbHBJhMd9/FZb7ZB7N
+         L4FMHfPYNIpGeuaiDWZVUTwkKzZk+oYgyR9MEq4nYYEMEj16UHhMRaPzY+BwaPox9OS4
+         LU0wJux35L81A8u76wnGx2kBwhbmDXrj/BYKt/G8eSEgGcSIzA8i5Joa27OnnH7ytozJ
+         e4hA==
+X-Gm-Message-State: AC+VfDziuHr2r1g9bwGM5rEQwthdG7hp5G1IBRiZFv1VysQlLFQtnkwt
+        0CGsL9o8MAKYZH/HaXCSzxNylg==
+X-Google-Smtp-Source: ACHHUZ7oJcNjPAQBg785ZTjQJK+Q1euOzsgaxFLR4hb3MnQ9cnOnNLL9QSgex5oep26+zntiSFw3kw==
+X-Received: by 2002:a2e:9619:0:b0:2b6:a59c:5e02 with SMTP id v25-20020a2e9619000000b002b6a59c5e02mr765933ljh.20.1687775304450;
+        Mon, 26 Jun 2023 03:28:24 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.226])
+        by smtp.gmail.com with ESMTPSA id i16-20020aa7c710000000b0051a2d4d85fesm2653281edq.75.2023.06.26.03.28.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Jun 2023 03:21:38 -0700 (PDT)
-Message-ID: <dd54ed9e-b548-67a9-4998-b969b6d888a4@gmail.com>
-Date:   Mon, 26 Jun 2023 12:21:37 +0200
+        Mon, 26 Jun 2023 03:28:23 -0700 (PDT)
+Message-ID: <961c855a-81ea-c628-3e67-81877a748027@linaro.org>
+Date:   Mon, 26 Jun 2023 12:28:21 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 1/4] drm/ttm: Fix ttm_lru_bulk_move_pos_tail()
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] MIPS: KVM: Fix NULL pointer dereference
 Content-Language: en-US
-To:     =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= 
-        <thomas.hellstrom@linux.intel.com>, intel-xe@lists.freedesktop.org
-Cc:     =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Andi Shyti <andi.shyti@linux.intel.com>
-References: <20230626091450.14757-1-thomas.hellstrom@linux.intel.com>
- <20230626091450.14757-2-thomas.hellstrom@linux.intel.com>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
-In-Reply-To: <20230626091450.14757-2-thomas.hellstrom@linux.intel.com>
+To:     Huacai Chen <chenhuacai@loongson.cn>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Huacai Chen <chenhuacai@kernel.org>
+Cc:     linux-mips@vger.kernel.org, kvm@vger.kernel.org,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+References: <20230626074919.1871944-1-chenhuacai@loongson.cn>
+From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230626074919.1871944-1-chenhuacai@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LOTS_OF_MONEY,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-I've already pushed the version from Teddy to drm-misc-fixes last week.
+On 26/6/23 09:49, Huacai Chen wrote:
+> After commit 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support") we
+> get a NULL pointer dereference when creating a KVM guest:
+> 
+> [  146.243409] Starting KVM with MIPS VZ extensions
+> [  149.849151] CPU 3 Unable to handle kernel paging request at virtual address 0000000000000300, epc == ffffffffc06356ec, ra == ffffffffc063568c
+> [  149.849177] Oops[#1]:
+> [  149.849182] CPU: 3 PID: 2265 Comm: qemu-system-mip Not tainted 6.4.0-rc3+ #1671
+> [  149.849188] Hardware name: THTF CX TL630 Series/THTF-LS3A4000-7A1000-ML4A, BIOS KL4.1F.TF.D.166.201225.R 12/25/2020
+> [  149.849192] $ 0   : 0000000000000000 000000007400cce0 0000000000400004 ffffffff8119c740
+> [  149.849209] $ 4   : 000000007400cce1 000000007400cce1 0000000000000000 0000000000000000
+> [  149.849221] $ 8   : 000000240058bb36 ffffffff81421ac0 0000000000000000 0000000000400dc0
+> [  149.849233] $12   : 9800000102a07cc8 ffffffff80e40e38 0000000000000001 0000000000400dc0
+> [  149.849245] $16   : 0000000000000000 9800000106cd0000 9800000106cd0000 9800000100cce000
+> [  149.849257] $20   : ffffffffc0632b28 ffffffffc05b31b0 9800000100ccca00 0000000000400000
+> [  149.849269] $24   : 9800000106cd09ce ffffffff802f69d0
+> [  149.849281] $28   : 9800000102a04000 9800000102a07cd0 98000001106a8000 ffffffffc063568c
+> [  149.849293] Hi    : 00000335b2111e66
+> [  149.849295] Lo    : 6668d90061ae0ae9
+> [  149.849298] epc   : ffffffffc06356ec kvm_vz_vcpu_setup+0xc4/0x328 [kvm]
+> [  149.849324] ra    : ffffffffc063568c kvm_vz_vcpu_setup+0x64/0x328 [kvm]
+> [  149.849336] Status: 7400cce3 KX SX UX KERNEL EXL IE
+> [  149.849351] Cause : 1000000c (ExcCode 03)
+> [  149.849354] BadVA : 0000000000000300
+> [  149.849357] PrId  : 0014c004 (ICT Loongson-3)
+> [  149.849360] Modules linked in: kvm nfnetlink_queue nfnetlink_log nfnetlink fuse sha256_generic libsha256 cfg80211 rfkill binfmt_misc vfat fat snd_hda_codec_hdmi input_leds led_class snd_hda_intel snd_intel_dspcfg snd_hda_codec snd_hda_core snd_pcm snd_timer snd serio_raw xhci_pci radeon drm_suballoc_helper drm_display_helper xhci_hcd ip_tables x_tables
+> [  149.849432] Process qemu-system-mip (pid: 2265, threadinfo=00000000ae2982d2, task=0000000038e09ad4, tls=000000ffeba16030)
+> [  149.849439] Stack : 9800000000000003 9800000100ccca00 9800000100ccc000 ffffffffc062cef4
+> [  149.849453]         9800000102a07d18 c89b63a7ab338e00 0000000000000000 ffffffff811a0000
+> [  149.849465]         0000000000000000 9800000106cd0000 ffffffff80e59938 98000001106a8920
+> [  149.849476]         ffffffff80e57f30 ffffffffc062854c ffffffff811a0000 9800000102bf4240
+> [  149.849488]         ffffffffc05b0000 ffffffff80e3a798 000000ff78000000 000000ff78000010
+> [  149.849500]         0000000000000255 98000001021f7de0 98000001023f0078 ffffffff81434000
+> [  149.849511]         0000000000000000 0000000000000000 9800000102ae0000 980000025e92ae28
+> [  149.849523]         0000000000000000 c89b63a7ab338e00 0000000000000001 ffffffff8119dce0
+> [  149.849535]         000000ff78000010 ffffffff804f3d3c 9800000102a07eb0 0000000000000255
+> [  149.849546]         0000000000000000 ffffffff8049460c 000000ff78000010 0000000000000255
+> [  149.849558]         ...
+> [  149.849565] Call Trace:
+> [  149.849567] [<ffffffffc06356ec>] kvm_vz_vcpu_setup+0xc4/0x328 [kvm]
+> [  149.849586] [<ffffffffc062cef4>] kvm_arch_vcpu_create+0x184/0x228 [kvm]
+> [  149.849605] [<ffffffffc062854c>] kvm_vm_ioctl+0x64c/0xf28 [kvm]
+> [  149.849623] [<ffffffff805209c0>] sys_ioctl+0xc8/0x118
+> [  149.849631] [<ffffffff80219eb0>] syscall_common+0x34/0x58
+> 
+> The root cause is the deletion of kvm_mips_commpage_init() leaves vcpu->
+> arch.cop0 NULL. So fix it by make cop0 from a pointer to an embed object.
 
-So no need for that one any more.
+"by making ... to an embedded object."
 
-Christian.
+> 
+> Fixes: 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support")
+> Cc: stable@vger.kernel.org
 
-Am 26.06.23 um 11:14 schrieb Thomas Hellström:
-> The value of pos->first was not updated when the first resource of the
-> range was moved. This could lead to errors like the one below.
-> Fix this by updating pos->first when needed.
->
-> <3> [218.963342] BUG: KASAN: null-ptr-deref in ttm_lru_bulk_move_del+0xc5/0x180 [ttm]
-> <3> [218.963456] Read of size 8 at addr 0000000000000038 by task xe_evict/1529
-> <3> [218.963546]
-> <3> [218.963566] CPU: 0 PID: 1529 Comm: xe_evict Not tainted 6.3.0-xe #1
-> <3> [218.963664] Hardware name: Intel Corporation Tiger Lake Client Platform/TigerLake H DDR4 SODIMM RVP, BIOS TGLSFWI1.R00.4064.A00.2102041619 02/04/2021
-> <3> [218.963841] Call Trace:
-> <3> [218.963881]  <TASK>
-> <3> [218.963915]  dump_stack_lvl+0x64/0xb0
-> <3> [218.963976]  print_report+0x3e5/0x600
-> <3> [218.964036]  ? ttm_lru_bulk_move_del+0xc5/0x180 [ttm]
-> <3> [218.964127]  kasan_report+0x96/0xc0
-> <3> [218.964183]  ? ttm_lru_bulk_move_del+0xc5/0x180 [ttm]
-> <3> [218.964276]  ttm_lru_bulk_move_del+0xc5/0x180 [ttm]
-> <3> [218.964365]  ttm_bo_set_bulk_move+0x92/0x140 [ttm]
-> <3> [218.964454]  xe_gem_object_close+0xc8/0x120 [xe]
-> <3> [218.964675]  ? __pfx_xe_gem_object_close+0x10/0x10 [xe]
-> <3> [218.964908]  ? drm_gem_object_handle_put_unlocked+0xc7/0x170 [drm]
-> <3> [218.965071]  drm_gem_object_release_handle+0x45/0x80 [drm]
-> <3> [218.965220]  ? __pfx_drm_gem_object_release_handle+0x10/0x10 [drm]
-> <3> [218.965381]  idr_for_each+0xc9/0x180
-> <3> [218.965437]  ? __pfx_idr_for_each+0x10/0x10
-> <3> [218.965504]  drm_gem_release+0x20/0x30 [drm]
-> <3> [218.965637]  drm_file_free.part.0+0x4cb/0x4f0 [drm]
-> <3> [218.965778]  ? drm_close_helper.isra.0+0xb7/0xe0 [drm]
-> <3> [218.965921]  drm_release_noglobal+0x49/0x90 [drm]
-> <3> [218.966061]  __fput+0x122/0x450
-> <3> [218.966115]  task_work_run+0xfe/0x190
-> <3> [218.966175]  ? __pfx_task_work_run+0x10/0x10
-> <3> [218.966239]  ? do_raw_spin_unlock+0xa7/0x140
-> <3> [218.966308]  do_exit+0x55f/0x1430
-> <3> [218.966364]  ? __pfx_lock_release+0x10/0x10
-> <3> [218.966431]  ? do_raw_spin_lock+0x11d/0x1e0
-> <3> [218.966498]  ? __pfx_do_exit+0x10/0x10
-> <3> [218.966554]  ? __pfx_do_raw_spin_lock+0x10/0x10
-> <3> [218.966625]  ? mark_held_locks+0x24/0x90
-> <3> [218.966688]  ? lockdep_hardirqs_on_prepare+0x136/0x210
-> <3> [218.966768]  do_group_exit+0x68/0x110
-> <3> [218.966828]  __x64_sys_exit_group+0x2c/0x30
-> <3> [218.966896]  do_syscall_64+0x3c/0x90
-> <3> [218.966955]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> <3> [218.967035] RIP: 0033:0x7f77b194f146
-> <3> [218.967094] Code: Unable to access opcode bytes at 0x7f77b194f11c.
-> <3> [218.967174] RSP: 002b:00007ffc64791188 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-> <3> [218.967271] RAX: ffffffffffffffda RBX: 00007f77b1a548a0 RCX: 00007f77b194f146
-> <3> [218.967364] RDX: 0000000000000062 RSI: 000000000000003c RDI: 0000000000000062
-> <3> [218.967458] RBP: 0000000000000062 R08: 00000000000000e7 R09: ffffffffffffff78
-> <3> [218.967553] R10: 0000000000000058 R11: 0000000000000246 R12: 00007f77b1a548a0
-> <3> [218.967648] R13: 0000000000000003 R14: 00007f77b1a5d2e8 R15: 0000000000000000
-> <3> [218.967745]  </TASK>
->
-> Fixes: fee2ede15542 ("drm/ttm: rework bulk move handling v5")
-> Cc: "Christian König" <christian.koenig@amd.com>
-> Cc: "Christian König" <ckoenig.leichtzumerken@gmail.com>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v5.19+
-> Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/411
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reported-by: Yu Zhao <yuzhao@google.com>
+
+> Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 > ---
->   drivers/gpu/drm/ttm/ttm_resource.c | 2 ++
->   1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
-> index 7333f7a87a2f..cb05e0a36576 100644
-> --- a/drivers/gpu/drm/ttm/ttm_resource.c
-> +++ b/drivers/gpu/drm/ttm/ttm_resource.c
-> @@ -86,6 +86,8 @@ static void ttm_lru_bulk_move_pos_tail(struct ttm_lru_bulk_move_pos *pos,
->   				       struct ttm_resource *res)
->   {
->   	if (pos->last != res) {
-> +		if (pos->first == res)
-> +			pos->first = list_next_entry(res, lru);
->   		list_move(&res->lru, &pos->last->lru);
->   		pos->last = res;
->   	}
+>   arch/mips/include/asm/kvm_host.h |  6 +++---
+>   arch/mips/kvm/emulate.c          | 22 +++++++++++-----------
+>   arch/mips/kvm/mips.c             | 16 ++++++++--------
+>   arch/mips/kvm/trace.h            |  8 ++++----
+>   arch/mips/kvm/vz.c               | 20 ++++++++++----------
+>   5 files changed, 36 insertions(+), 36 deletions(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
