@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28B4A73E86C
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5328473E91A
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232098AbjFZSZw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:25:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38140 "EHLO
+        id S232211AbjFZSco (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:32:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232082AbjFZSZ1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:25:27 -0400
+        with ESMTP id S232341AbjFZSc2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D565026A0
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082E7DA
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B519760F4F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EC3C433C0;
-        Mon, 26 Jun 2023 18:24:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99DC960F45
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97DDC433C0;
+        Mon, 26 Jun 2023 18:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803859;
-        bh=GS0pPVjWt188lZEoepBV2THYAmcEA8YdD0oC8UPiH2w=;
+        s=korg; t=1687804339;
+        bh=Y3dU+evQdbvEAfFTbXaCTSTe3vJeJZBHTQG3j2EQOtg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lIhxyZfvAKLINPYN5UvLb5xEEzjp+xtGL+Owejfkd7d5S/eW7A8cGp4ZOoRQpekW+
-         wuXqy56wll0Z/8N6udXGnbiVyND+Q4zeNp5FRXvx+H3Fn9kJwX83CgVRcqOQk9CK7I
-         zpomX5D9iL1qotfPqrUn6wm2tCkogFRWU/av65j0=
+        b=FbIJvedhX2e3rnLFrIeLZ51eGaLPkQmZqAu5ZipBSjAYt6k4yq8N35dLVOxN3wErz
+         bp5mepgA2xwdH1HuBr46oqklw+IFftm3Jt0vTAdCS+1V2hB4xvgOn6iI9s6b2tNTG/
+         5IDCUkpssIBJiBPQfwojLYcuQ4MOpN7CpWzjkI8g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anuj Gupta <anuj20.g@samsung.com>,
-        Nitesh Shetty <nj.shetty@samsung.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 185/199] null_blk: Fix: memory release when memory_backed=1
-Date:   Mon, 26 Jun 2023 20:11:31 +0200
-Message-ID: <20230626180813.862034004@linuxfoundation.org>
+        patches@lists.linux.dev, Danielle Ratson <danieller@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 123/170] selftests: forwarding: Fix race condition in mirror installation
+Date:   Mon, 26 Jun 2023 20:11:32 +0200
+Message-ID: <20230626180806.080102688@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,46 +56,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nitesh Shetty <nj.shetty@samsung.com>
+From: Danielle Ratson <danieller@nvidia.com>
 
-[ Upstream commit 8cfb98196cceec35416041c6b91212d2b99392e4 ]
+[ Upstream commit c7c059fba6fb19c3bc924925c984772e733cb594 ]
 
-Memory/pages are not freed, when unloading nullblk driver.
+When mirroring to a gretap in hardware the device expects to be
+programmed with the egress port and all the encapsulating headers. This
+requires the driver to resolve the path the packet will take in the
+software data path and program the device accordingly.
 
-Steps to reproduce issue
-  1.free -h
-        total        used        free      shared  buff/cache   available
-Mem:    7.8Gi       260Mi       7.1Gi       3.0Mi       395Mi       7.3Gi
-Swap:      0B          0B          0B
-  2.modprobe null_blk memory_backed=1
-  3.dd if=/dev/urandom of=/dev/nullb0 oflag=direct bs=1M count=1000
-  4.modprobe -r null_blk
-  5.free -h
-        total        used        free      shared  buff/cache   available
-Mem:    7.8Gi       1.2Gi       6.1Gi       3.0Mi       398Mi       6.3Gi
-Swap:      0B          0B          0B
+If the path cannot be resolved (in this case because of an unresolved
+neighbor), then mirror installation fails until the path is resolved.
+This results in a race that causes the test to sometimes fail.
 
-Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
-Signed-off-by: Nitesh Shetty <nj.shetty@samsung.com>
-Link: https://lore.kernel.org/r/20230605062354.24785-1-nj.shetty@samsung.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fix this by setting the neighbor's state to permanent in a couple of
+tests, so that it is always valid.
+
+Fixes: 35c31d5c323f ("selftests: forwarding: Test mirror-to-gretap w/ UL 802.1d")
+Fixes: 239e754af854 ("selftests: forwarding: Test mirror-to-gretap w/ UL 802.1q")
+Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://lore.kernel.org/r/268816ac729cb6028c7a34d4dda6f4ec7af55333.1687264607.git.petrm@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../testing/selftests/net/forwarding/mirror_gre_bridge_1d.sh  | 4 ++++
+ .../testing/selftests/net/forwarding/mirror_gre_bridge_1q.sh  | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 14491952047f5..3b6b4cb400f42 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -2212,6 +2212,7 @@ static void null_destroy_dev(struct nullb *nullb)
- 	struct nullb_device *dev = nullb->dev;
+diff --git a/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1d.sh b/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1d.sh
+index c5095da7f6bf8..aec752a22e9ec 100755
+--- a/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1d.sh
++++ b/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1d.sh
+@@ -93,12 +93,16 @@ cleanup()
  
- 	null_del_dev(nullb);
-+	null_free_device_storage(dev, false);
- 	null_free_dev(dev);
+ test_gretap()
+ {
++	ip neigh replace 192.0.2.130 lladdr $(mac_get $h3) \
++		 nud permanent dev br2
+ 	full_test_span_gre_dir gt4 ingress 8 0 "mirror to gretap"
+ 	full_test_span_gre_dir gt4 egress 0 8 "mirror to gretap"
  }
  
+ test_ip6gretap()
+ {
++	ip neigh replace 2001:db8:2::2 lladdr $(mac_get $h3) \
++		nud permanent dev br2
+ 	full_test_span_gre_dir gt6 ingress 8 0 "mirror to ip6gretap"
+ 	full_test_span_gre_dir gt6 egress 0 8 "mirror to ip6gretap"
+ }
+diff --git a/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q.sh b/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q.sh
+index 9ff22f28032dd..0cf4c47a46f9b 100755
+--- a/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q.sh
++++ b/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q.sh
+@@ -90,12 +90,16 @@ cleanup()
+ 
+ test_gretap()
+ {
++	ip neigh replace 192.0.2.130 lladdr $(mac_get $h3) \
++		 nud permanent dev br1
+ 	full_test_span_gre_dir gt4 ingress 8 0 "mirror to gretap"
+ 	full_test_span_gre_dir gt4 egress 0 8 "mirror to gretap"
+ }
+ 
+ test_ip6gretap()
+ {
++	ip neigh replace 2001:db8:2::2 lladdr $(mac_get $h3) \
++		nud permanent dev br1
+ 	full_test_span_gre_dir gt6 ingress 8 0 "mirror to ip6gretap"
+ 	full_test_span_gre_dir gt6 egress 0 8 "mirror to ip6gretap"
+ }
 -- 
 2.39.2
 
