@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CB2D73E9C6
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA77E73E88A
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232458AbjFZSj7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:39:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52898 "EHLO
+        id S232123AbjFZS0q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:26:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232463AbjFZSj6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6BDBDA
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:57 -0700 (PDT)
+        with ESMTP id S232128AbjFZS0b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 928162702
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:26:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C31360F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252F6C433C0;
-        Mon, 26 Jun 2023 18:39:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DF0E60F53
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:26:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3231EC433C0;
+        Mon, 26 Jun 2023 18:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804796;
-        bh=CB4iqS6QBcYygSMa7xFiPxzdOjqSf8Ej75ndeu28NR8=;
+        s=korg; t=1687803963;
+        bh=ORNtt1uyS+bdExhzytTopnz8wPg88MGBmGRh9gE1AJI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HW2XB5m0aK5GsK3BRDJSyS8sxcFu87lW/4Pl/ov9fH/DB33PigvpHZKtCLt4yiCGF
-         WI5vhfEXxhZ/Johk7E7TsyQihf13C9hlN3MU3PEP561UEbgT6BgnQVeYhFBFM5VOPu
-         c7fZNKxd/2yn/erUU4oEvhNqe0WoChGjRmVNKJ0E=
+        b=VgYtEFfj2zSPpujbIswGa0BA35MTaLTKZ/2pk0RlOQZXoHW1jAKpQqf9t3fcZWC4/
+         yoM1uyV796wvX2OABzLdrJEte3MAfwZvhChuWQzgpy9YgZWA6eROabs7UmQOMCAjSc
+         sF4+8pYFz6Tbz1STNx4oTx3k0m2cwP5zb2uk5DpY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Marc-Andr Lureau <marcandre.lureau@redhat.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Maurizio Lombardi <mlombard@redhat.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/96] memfd: check for non-NULL file_seals in memfd_create() syscall
+Subject: [PATCH 4.19 29/41] scsi: target: iscsi: Prevent login threads from racing between each other
 Date:   Mon, 26 Jun 2023 20:11:52 +0200
-Message-ID: <20230626180748.493707567@linuxfoundation.org>
+Message-ID: <20230626180737.368385576@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
+References: <20230626180736.243379844@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,40 +56,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit 935d44acf621aa0688fef8312dec3e5940f38f4e ]
+[ Upstream commit 2a737d3b8c792400118d6cf94958f559de9c5e59 ]
 
-Ensure that file_seals is non-NULL before using it in the memfd_create()
-syscall.  One situation in which memfd_file_seals_ptr() could return a
-NULL pointer when CONFIG_SHMEM=n, oopsing the kernel.
+The tpg->np_login_sem is a semaphore that is used to serialize the login
+process when multiple login threads run concurrently against the same
+target portal group.
 
-Link: https://lkml.kernel.org/r/20230607132427.2867435-1-roberto.sassu@huaweicloud.com
-Fixes: 47b9012ecdc7 ("shmem: add sealing support to hugetlb-backed memfd")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Marc-Andr Lureau <marcandre.lureau@redhat.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The iscsi_target_locate_portal() function finds the tpg, calls
+iscsit_access_np() against the np_login_sem semaphore and saves the tpg
+pointer in conn->tpg;
+
+If iscsi_target_locate_portal() fails, the caller will check for the
+conn->tpg pointer and, if it's not NULL, then it will assume that
+iscsi_target_locate_portal() called iscsit_access_np() on the semaphore.
+
+Make sure that conn->tpg gets initialized only if iscsit_access_np() was
+successful, otherwise iscsit_deaccess_np() may end up being called against
+a semaphore we never took, allowing more than one thread to access the same
+tpg.
+
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Link: https://lore.kernel.org/r/20230508162219.1731964-4-mlombard@redhat.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memfd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/target/iscsi/iscsi_target_nego.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/mm/memfd.c b/mm/memfd.c
-index 475d095dd7f53..a73af8be9c285 100644
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -330,7 +330,8 @@ SYSCALL_DEFINE2(memfd_create,
+diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
+index 5db8842a80265..e39177f9fdb0a 100644
+--- a/drivers/target/iscsi/iscsi_target_nego.c
++++ b/drivers/target/iscsi/iscsi_target_nego.c
+@@ -1072,6 +1072,7 @@ int iscsi_target_locate_portal(
+ 	iscsi_target_set_sock_callbacks(conn);
  
- 	if (flags & MFD_ALLOW_SEALING) {
- 		file_seals = memfd_file_seals_ptr(file);
--		*file_seals &= ~F_SEAL_SEAL;
-+		if (file_seals)
-+			*file_seals &= ~F_SEAL_SEAL;
- 	}
+ 	login->np = np;
++	conn->tpg = NULL;
  
- 	fd_install(fd, file);
+ 	login_req = (struct iscsi_login_req *) login->req;
+ 	payload_length = ntoh24(login_req->dlength);
+@@ -1141,7 +1142,6 @@ int iscsi_target_locate_portal(
+ 	 */
+ 	sessiontype = strncmp(s_buf, DISCOVERY, 9);
+ 	if (!sessiontype) {
+-		conn->tpg = iscsit_global->discovery_tpg;
+ 		if (!login->leading_connection)
+ 			goto get_target;
+ 
+@@ -1158,9 +1158,11 @@ int iscsi_target_locate_portal(
+ 		 * Serialize access across the discovery struct iscsi_portal_group to
+ 		 * process login attempt.
+ 		 */
++		conn->tpg = iscsit_global->discovery_tpg;
+ 		if (iscsit_access_np(np, conn->tpg) < 0) {
+ 			iscsit_tx_login_rsp(conn, ISCSI_STATUS_CLS_TARGET_ERR,
+ 				ISCSI_LOGIN_STATUS_SVC_UNAVAILABLE);
++			conn->tpg = NULL;
+ 			ret = -1;
+ 			goto out;
+ 		}
 -- 
 2.39.2
 
