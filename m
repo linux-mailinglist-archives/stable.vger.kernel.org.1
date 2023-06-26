@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FE6973E7DA
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DC1C73E8B1
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231552AbjFZSUA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:20:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34424 "EHLO
+        id S232103AbjFZS2k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:28:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231536AbjFZSTk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B471394
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:38 -0700 (PDT)
+        with ESMTP id S232068AbjFZS2N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:28:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CDF41FCC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:27:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 521D660F1D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59DE2C433C0;
-        Mon, 26 Jun 2023 18:19:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83A2760F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:27:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB55C433C8;
+        Mon, 26 Jun 2023 18:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803577;
-        bh=wU4FfD56033/Si1reuDGs9OQsJP5VREbxSRtpZ3wtmw=;
+        s=korg; t=1687804059;
+        bh=v+gs2Fj9nj7Q3b5h3DzGtuRrqVboffdn1xpp0EymZ1A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kniaEooONxAJjBYUlSxXD8Mi8MG3QX+tb02xuVcfgIgIk+mDmuOFBBE52D1XMkEr5
-         xvBOhYiIyvD8NiaPwa2q7esYonNJ7Ya8LpomgCNf8+TBs0nPzgEHwUslwQeZOlyK7s
-         2vewZfTWxJCGRMs9eod1ArDq58p3F2BHdj5Ub8qU=
+        b=CXeHmb1PjIHQ2QkTGbbR66S/uSUWz2KFGaxV+ILqPKFNDfCA/OFt5XqgwrF9otXof
+         +OV9L3grnIL6EXtSLBWypPR2MmOoA+wAad3s37SGzN30/YRs51nAQAUL2XnT+UFykh
+         C/4RPeXJ/sN10nEPxA7bQgl+Sah6YcJ/Ct5FTvLE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Al Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 091/199] ksmbd: remove internal.h include
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 028/170] selftests: mptcp: join: skip check if MIB counter not supported
 Date:   Mon, 26 Jun 2023 20:09:57 +0200
-Message-ID: <20230626180809.593896061@linuxfoundation.org>
+Message-ID: <20230626180801.801722221@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,66 +55,513 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit 211db0ac9e3dc6c46f2dd53395b34d76af929faf ]
+commit 47867f0a7e831e24e5eab3330667ce9682d50fb1 upstream.
 
-Since vfs_path_lookup is exported, It should not be internal.
-Move vfs_path_lookup prototype in internal.h to linux/namei.h.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Stable-dep-of: 40b268d384a2 ("ksmbd: add mnt_want_write to ksmbd vfs functions")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+One of them is the MPTCP MIB counters introduced in commit fc518953bc9c
+("mptcp: add and use MIB counter infrastructure") and more later. The
+MPTCP Join selftest heavily relies on these counters.
+
+If a counter is not supported by the kernel, it is not displayed when
+using 'nstat -z'. We can then detect that and skip the verification. A
+new helper (get_counter()) has been added to do the required checks and
+return an error if the counter is not available.
+
+Note that if we expect to have these features available and if
+SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES env var is set to 1, the tests
+will be marked as failed instead of skipped.
+
+This new helper also makes sure we get the exact counter we want to
+avoid issues we had in the past, e.g. with MPTcpExtRmAddr and
+MPTcpExtRmAddrDrop sharing the same prefix. While at it, we uniform the
+way we fetch a MIB counter.
+
+Note for the backports: we rarely change these modified blocks so if
+there is are conflicts, it is very likely because a counter is not used
+in the older kernels and we don't need that chunk.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: b08fbf241064 ("selftests: add test-cases for MPTCP MP_JOIN")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/internal.h         | 2 --
- fs/ksmbd/vfs.c        | 2 --
- include/linux/namei.h | 2 ++
- 3 files changed, 2 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |  230 +++++++++++++-----------
+ 1 file changed, 130 insertions(+), 100 deletions(-)
 
-diff --git a/fs/internal.h b/fs/internal.h
-index dc4eb91a577a8..071a7517f1a74 100644
---- a/fs/internal.h
-+++ b/fs/internal.h
-@@ -59,8 +59,6 @@ extern int finish_clean_context(struct fs_context *fc);
-  */
- extern int filename_lookup(int dfd, struct filename *name, unsigned flags,
- 			   struct path *path, struct path *root);
--extern int vfs_path_lookup(struct dentry *, struct vfsmount *,
--			   const char *, unsigned int, struct path *);
- int do_rmdir(int dfd, struct filename *name);
- int do_unlinkat(int dfd, struct filename *name);
- int may_linkat(struct mnt_idmap *idmap, const struct path *link);
-diff --git a/fs/ksmbd/vfs.c b/fs/ksmbd/vfs.c
-index f6a8b26593090..1ad97df1dfb6f 100644
---- a/fs/ksmbd/vfs.c
-+++ b/fs/ksmbd/vfs.c
-@@ -19,8 +19,6 @@
- #include <linux/sched/xacct.h>
- #include <linux/crc32c.h>
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -480,11 +480,25 @@ wait_local_port_listen()
+ 	done
+ }
  
--#include "../internal.h"	/* for vfs_path_lookup */
+-rm_addr_count()
++# $1: ns ; $2: counter
++get_counter()
+ {
+-	local ns=${1}
++	local ns="${1}"
++	local counter="${2}"
++	local count
++
++	count=$(ip netns exec ${ns} nstat -asz "${counter}" | awk 'NR==1 {next} {print $2}')
++	if [ -z "${count}" ]; then
++		mptcp_lib_fail_if_expected_feature "${counter} counter"
++		return 1
++	fi
+ 
+-	ip netns exec ${ns} nstat -as | grep MPTcpExtRmAddr | awk '{print $2}'
++	echo "${count}"
++}
++
++rm_addr_count()
++{
++	get_counter "${1}" "MPTcpExtRmAddr"
+ }
+ 
+ # $1: ns, $2: old rm_addr counter in $ns
+@@ -507,11 +521,11 @@ wait_mpj()
+ 	local ns="${1}"
+ 	local cnt old_cnt
+ 
+-	old_cnt=$(ip netns exec ${ns} nstat -as | grep MPJoinAckRx | awk '{print $2}')
++	old_cnt=$(get_counter ${ns} "MPTcpExtMPJoinAckRx")
+ 
+ 	local i
+ 	for i in $(seq 10); do
+-		cnt=$(ip netns exec ${ns} nstat -as | grep MPJoinAckRx | awk '{print $2}')
++		cnt=$(get_counter ${ns} "MPTcpExtMPJoinAckRx")
+ 		[ "$cnt" = "${old_cnt}" ] || break
+ 		sleep 0.1
+ 	done
+@@ -1191,12 +1205,13 @@ chk_csum_nr()
+ 	fi
+ 
+ 	printf "%-${nr_blank}s %s" " " "sum"
+-	count=$(ip netns exec $ns1 nstat -as | grep MPTcpExtDataCsumErr | awk '{print $2}')
+-	[ -z "$count" ] && count=0
++	count=$(get_counter ${ns1} "MPTcpExtDataCsumErr")
+ 	if [ "$count" != "$csum_ns1" ]; then
+ 		extra_msg="$extra_msg ns1=$count"
+ 	fi
+-	if { [ "$count" != $csum_ns1 ] && [ $allow_multi_errors_ns1 -eq 0 ]; } ||
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif { [ "$count" != $csum_ns1 ] && [ $allow_multi_errors_ns1 -eq 0 ]; } ||
+ 	   { [ "$count" -lt $csum_ns1 ] && [ $allow_multi_errors_ns1 -eq 1 ]; }; then
+ 		echo "[fail] got $count data checksum error[s] expected $csum_ns1"
+ 		fail_test
+@@ -1205,12 +1220,13 @@ chk_csum_nr()
+ 		echo -n "[ ok ]"
+ 	fi
+ 	echo -n " - csum  "
+-	count=$(ip netns exec $ns2 nstat -as | grep MPTcpExtDataCsumErr | awk '{print $2}')
+-	[ -z "$count" ] && count=0
++	count=$(get_counter ${ns2} "MPTcpExtDataCsumErr")
+ 	if [ "$count" != "$csum_ns2" ]; then
+ 		extra_msg="$extra_msg ns2=$count"
+ 	fi
+-	if { [ "$count" != $csum_ns2 ] && [ $allow_multi_errors_ns2 -eq 0 ]; } ||
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif { [ "$count" != $csum_ns2 ] && [ $allow_multi_errors_ns2 -eq 0 ]; } ||
+ 	   { [ "$count" -lt $csum_ns2 ] && [ $allow_multi_errors_ns2 -eq 1 ]; }; then
+ 		echo "[fail] got $count data checksum error[s] expected $csum_ns2"
+ 		fail_test
+@@ -1252,12 +1268,13 @@ chk_fail_nr()
+ 	fi
+ 
+ 	printf "%-${nr_blank}s %s" " " "ftx"
+-	count=$(ip netns exec $ns_tx nstat -as | grep MPTcpExtMPFailTx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
++	count=$(get_counter ${ns_tx} "MPTcpExtMPFailTx")
+ 	if [ "$count" != "$fail_tx" ]; then
+ 		extra_msg="$extra_msg,tx=$count"
+ 	fi
+-	if { [ "$count" != "$fail_tx" ] && [ $allow_tx_lost -eq 0 ]; } ||
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif { [ "$count" != "$fail_tx" ] && [ $allow_tx_lost -eq 0 ]; } ||
+ 	   { [ "$count" -gt "$fail_tx" ] && [ $allow_tx_lost -eq 1 ]; }; then
+ 		echo "[fail] got $count MP_FAIL[s] TX expected $fail_tx"
+ 		fail_test
+@@ -1267,12 +1284,13 @@ chk_fail_nr()
+ 	fi
+ 
+ 	echo -n " - failrx"
+-	count=$(ip netns exec $ns_rx nstat -as | grep MPTcpExtMPFailRx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
++	count=$(get_counter ${ns_rx} "MPTcpExtMPFailRx")
+ 	if [ "$count" != "$fail_rx" ]; then
+ 		extra_msg="$extra_msg,rx=$count"
+ 	fi
+-	if { [ "$count" != "$fail_rx" ] && [ $allow_rx_lost -eq 0 ]; } ||
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif { [ "$count" != "$fail_rx" ] && [ $allow_rx_lost -eq 0 ]; } ||
+ 	   { [ "$count" -gt "$fail_rx" ] && [ $allow_rx_lost -eq 1 ]; }; then
+ 		echo "[fail] got $count MP_FAIL[s] RX expected $fail_rx"
+ 		fail_test
+@@ -1304,10 +1322,11 @@ chk_fclose_nr()
+ 	fi
+ 
+ 	printf "%-${nr_blank}s %s" " " "ctx"
+-	count=$(ip netns exec $ns_tx nstat -as | grep MPTcpExtMPFastcloseTx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	[ "$count" != "$fclose_tx" ] && extra_msg="$extra_msg,tx=$count"
+-	if [ "$count" != "$fclose_tx" ]; then
++	count=$(get_counter ${ns_tx} "MPTcpExtMPFastcloseTx")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$fclose_tx" ]; then
++		extra_msg="$extra_msg,tx=$count"
+ 		echo "[fail] got $count MP_FASTCLOSE[s] TX expected $fclose_tx"
+ 		fail_test
+ 		dump_stats=1
+@@ -1316,10 +1335,11 @@ chk_fclose_nr()
+ 	fi
+ 
+ 	echo -n " - fclzrx"
+-	count=$(ip netns exec $ns_rx nstat -as | grep MPTcpExtMPFastcloseRx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	[ "$count" != "$fclose_rx" ] && extra_msg="$extra_msg,rx=$count"
+-	if [ "$count" != "$fclose_rx" ]; then
++	count=$(get_counter ${ns_rx} "MPTcpExtMPFastcloseRx")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$fclose_rx" ]; then
++		extra_msg="$extra_msg,rx=$count"
+ 		echo "[fail] got $count MP_FASTCLOSE[s] RX expected $fclose_rx"
+ 		fail_test
+ 		dump_stats=1
+@@ -1350,9 +1370,10 @@ chk_rst_nr()
+ 	fi
+ 
+ 	printf "%-${nr_blank}s %s" " " "rtx"
+-	count=$(ip netns exec $ns_tx nstat -as | grep MPTcpExtMPRstTx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ $count -lt $rst_tx ]; then
++	count=$(get_counter ${ns_tx} "MPTcpExtMPRstTx")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ $count -lt $rst_tx ]; then
+ 		echo "[fail] got $count MP_RST[s] TX expected $rst_tx"
+ 		fail_test
+ 		dump_stats=1
+@@ -1361,9 +1382,10 @@ chk_rst_nr()
+ 	fi
+ 
+ 	echo -n " - rstrx "
+-	count=$(ip netns exec $ns_rx nstat -as | grep MPTcpExtMPRstRx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ "$count" -lt "$rst_rx" ]; then
++	count=$(get_counter ${ns_rx} "MPTcpExtMPRstRx")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" -lt "$rst_rx" ]; then
+ 		echo "[fail] got $count MP_RST[s] RX expected $rst_rx"
+ 		fail_test
+ 		dump_stats=1
+@@ -1384,9 +1406,10 @@ chk_infi_nr()
+ 	local dump_stats
+ 
+ 	printf "%-${nr_blank}s %s" " " "itx"
+-	count=$(ip netns exec $ns2 nstat -as | grep InfiniteMapTx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$infi_tx" ]; then
++	count=$(get_counter ${ns2} "MPTcpExtInfiniteMapTx")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$infi_tx" ]; then
+ 		echo "[fail] got $count infinite map[s] TX expected $infi_tx"
+ 		fail_test
+ 		dump_stats=1
+@@ -1395,9 +1418,10 @@ chk_infi_nr()
+ 	fi
+ 
+ 	echo -n " - infirx"
+-	count=$(ip netns exec $ns1 nstat -as | grep InfiniteMapRx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$infi_rx" ]; then
++	count=$(get_counter ${ns1} "MPTcpExtInfiniteMapRx")
++	if [ -z "$count" ]; then
++		echo "[skip]"
++	elif [ "$count" != "$infi_rx" ]; then
+ 		echo "[fail] got $count infinite map[s] RX expected $infi_rx"
+ 		fail_test
+ 		dump_stats=1
+@@ -1429,9 +1453,10 @@ chk_join_nr()
+ 	fi
+ 
+ 	printf "%03u %-36s %s" "${TEST_COUNT}" "${title}" "syn"
+-	count=$(ip netns exec $ns1 nstat -as | grep MPTcpExtMPJoinSynRx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$syn_nr" ]; then
++	count=$(get_counter ${ns1} "MPTcpExtMPJoinSynRx")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$syn_nr" ]; then
+ 		echo "[fail] got $count JOIN[s] syn expected $syn_nr"
+ 		fail_test
+ 		dump_stats=1
+@@ -1441,9 +1466,10 @@ chk_join_nr()
+ 
+ 	echo -n " - synack"
+ 	with_cookie=$(ip netns exec $ns2 sysctl -n net.ipv4.tcp_syncookies)
+-	count=$(ip netns exec $ns2 nstat -as | grep MPTcpExtMPJoinSynAckRx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$syn_ack_nr" ]; then
++	count=$(get_counter ${ns2} "MPTcpExtMPJoinSynAckRx")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$syn_ack_nr" ]; then
+ 		# simult connections exceeding the limit with cookie enabled could go up to
+ 		# synack validation as the conn limit can be enforced reliably only after
+ 		# the subflow creation
+@@ -1459,9 +1485,10 @@ chk_join_nr()
+ 	fi
+ 
+ 	echo -n " - ack"
+-	count=$(ip netns exec $ns1 nstat -as | grep MPTcpExtMPJoinAckRx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$ack_nr" ]; then
++	count=$(get_counter ${ns1} "MPTcpExtMPJoinAckRx")
++	if [ -z "$count" ]; then
++		echo "[skip]"
++	elif [ "$count" != "$ack_nr" ]; then
+ 		echo "[fail] got $count JOIN[s] ack expected $ack_nr"
+ 		fail_test
+ 		dump_stats=1
+@@ -1493,12 +1520,12 @@ chk_stale_nr()
+ 	local recover_nr
+ 
+ 	printf "%-${nr_blank}s %-18s" " " "stale"
+-	stale_nr=$(ip netns exec $ns nstat -as | grep MPTcpExtSubflowStale | awk '{print $2}')
+-	[ -z "$stale_nr" ] && stale_nr=0
+-	recover_nr=$(ip netns exec $ns nstat -as | grep MPTcpExtSubflowRecover | awk '{print $2}')
+-	[ -z "$recover_nr" ] && recover_nr=0
+ 
+-	if [ $stale_nr -lt $stale_min ] ||
++	stale_nr=$(get_counter ${ns} "MPTcpExtSubflowStale")
++	recover_nr=$(get_counter ${ns} "MPTcpExtSubflowRecover")
++	if [ -z "$stale_nr" ] || [ -z "$recover_nr" ]; then
++		echo "[skip]"
++	elif [ $stale_nr -lt $stale_min ] ||
+ 	   { [ $stale_max -gt 0 ] && [ $stale_nr -gt $stale_max ]; } ||
+ 	   [ $((stale_nr - recover_nr)) -ne $stale_delta ]; then
+ 		echo "[fail] got $stale_nr stale[s] $recover_nr recover[s], " \
+@@ -1534,12 +1561,12 @@ chk_add_nr()
+ 	timeout=$(ip netns exec $ns1 sysctl -n net.mptcp.add_addr_timeout)
+ 
+ 	printf "%-${nr_blank}s %s" " " "add"
+-	count=$(ip netns exec $ns2 nstat -as MPTcpExtAddAddr | grep MPTcpExtAddAddr | awk '{print $2}')
+-	[ -z "$count" ] && count=0
 -
- #include "glob.h"
- #include "oplock.h"
- #include "connection.h"
-diff --git a/include/linux/namei.h b/include/linux/namei.h
-index 0d797f3367cad..ba9b32b4d1b07 100644
---- a/include/linux/namei.h
-+++ b/include/linux/namei.h
-@@ -63,6 +63,8 @@ extern struct dentry *kern_path_create(int, const char *, struct path *, unsigne
- extern struct dentry *user_path_create(int, const char __user *, struct path *, unsigned int);
- extern void done_path_create(struct path *, struct dentry *);
- extern struct dentry *kern_path_locked(const char *, struct path *);
-+int vfs_path_lookup(struct dentry *, struct vfsmount *, const char *,
-+		    unsigned int, struct path *);
++	count=$(get_counter ${ns2} "MPTcpExtAddAddr")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
+ 	# if the test configured a short timeout tolerate greater then expected
+ 	# add addrs options, due to retransmissions
+-	if [ "$count" != "$add_nr" ] && { [ "$timeout" -gt 1 ] || [ "$count" -lt "$add_nr" ]; }; then
++	elif [ "$count" != "$add_nr" ] && { [ "$timeout" -gt 1 ] || [ "$count" -lt "$add_nr" ]; }; then
+ 		echo "[fail] got $count ADD_ADDR[s] expected $add_nr"
+ 		fail_test
+ 		dump_stats=1
+@@ -1548,9 +1575,10 @@ chk_add_nr()
+ 	fi
  
- extern struct dentry *try_lookup_one_len(const char *, struct dentry *, int);
- extern struct dentry *lookup_one_len(const char *, struct dentry *, int);
--- 
-2.39.2
-
+ 	echo -n " - echo  "
+-	count=$(ip netns exec $ns1 nstat -as | grep MPTcpExtEchoAdd | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$echo_nr" ]; then
++	count=$(get_counter ${ns1} "MPTcpExtEchoAdd")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$echo_nr" ]; then
+ 		echo "[fail] got $count ADD_ADDR echo[s] expected $echo_nr"
+ 		fail_test
+ 		dump_stats=1
+@@ -1560,9 +1588,10 @@ chk_add_nr()
+ 
+ 	if [ $port_nr -gt 0 ]; then
+ 		echo -n " - pt "
+-		count=$(ip netns exec $ns2 nstat -as | grep MPTcpExtPortAdd | awk '{print $2}')
+-		[ -z "$count" ] && count=0
+-		if [ "$count" != "$port_nr" ]; then
++		count=$(get_counter ${ns2} "MPTcpExtPortAdd")
++		if [ -z "$count" ]; then
++			echo "[skip]"
++		elif [ "$count" != "$port_nr" ]; then
+ 			echo "[fail] got $count ADD_ADDR[s] with a port-number expected $port_nr"
+ 			fail_test
+ 			dump_stats=1
+@@ -1571,10 +1600,10 @@ chk_add_nr()
+ 		fi
+ 
+ 		printf "%-${nr_blank}s %s" " " "syn"
+-		count=$(ip netns exec $ns1 nstat -as | grep MPTcpExtMPJoinPortSynRx |
+-			awk '{print $2}')
+-		[ -z "$count" ] && count=0
+-		if [ "$count" != "$syn_nr" ]; then
++		count=$(get_counter ${ns1} "MPTcpExtMPJoinPortSynRx")
++		if [ -z "$count" ]; then
++			echo -n "[skip]"
++		elif [ "$count" != "$syn_nr" ]; then
+ 			echo "[fail] got $count JOIN[s] syn with a different \
+ 				port-number expected $syn_nr"
+ 			fail_test
+@@ -1584,10 +1613,10 @@ chk_add_nr()
+ 		fi
+ 
+ 		echo -n " - synack"
+-		count=$(ip netns exec $ns2 nstat -as | grep MPTcpExtMPJoinPortSynAckRx |
+-			awk '{print $2}')
+-		[ -z "$count" ] && count=0
+-		if [ "$count" != "$syn_ack_nr" ]; then
++		count=$(get_counter ${ns2} "MPTcpExtMPJoinPortSynAckRx")
++		if [ -z "$count" ]; then
++			echo -n "[skip]"
++		elif [ "$count" != "$syn_ack_nr" ]; then
+ 			echo "[fail] got $count JOIN[s] synack with a different \
+ 				port-number expected $syn_ack_nr"
+ 			fail_test
+@@ -1597,10 +1626,10 @@ chk_add_nr()
+ 		fi
+ 
+ 		echo -n " - ack"
+-		count=$(ip netns exec $ns1 nstat -as | grep MPTcpExtMPJoinPortAckRx |
+-			awk '{print $2}')
+-		[ -z "$count" ] && count=0
+-		if [ "$count" != "$ack_nr" ]; then
++		count=$(get_counter ${ns1} "MPTcpExtMPJoinPortAckRx")
++		if [ -z "$count" ]; then
++			echo "[skip]"
++		elif [ "$count" != "$ack_nr" ]; then
+ 			echo "[fail] got $count JOIN[s] ack with a different \
+ 				port-number expected $ack_nr"
+ 			fail_test
+@@ -1610,10 +1639,10 @@ chk_add_nr()
+ 		fi
+ 
+ 		printf "%-${nr_blank}s %s" " " "syn"
+-		count=$(ip netns exec $ns1 nstat -as | grep MPTcpExtMismatchPortSynRx |
+-			awk '{print $2}')
+-		[ -z "$count" ] && count=0
+-		if [ "$count" != "$mis_syn_nr" ]; then
++		count=$(get_counter ${ns1} "MPTcpExtMismatchPortSynRx")
++		if [ -z "$count" ]; then
++			echo -n "[skip]"
++		elif [ "$count" != "$mis_syn_nr" ]; then
+ 			echo "[fail] got $count JOIN[s] syn with a mismatched \
+ 				port-number expected $mis_syn_nr"
+ 			fail_test
+@@ -1623,10 +1652,10 @@ chk_add_nr()
+ 		fi
+ 
+ 		echo -n " - ack   "
+-		count=$(ip netns exec $ns1 nstat -as | grep MPTcpExtMismatchPortAckRx |
+-			awk '{print $2}')
+-		[ -z "$count" ] && count=0
+-		if [ "$count" != "$mis_ack_nr" ]; then
++		count=$(get_counter ${ns1} "MPTcpExtMismatchPortAckRx")
++		if [ -z "$count" ]; then
++			echo "[skip]"
++		elif [ "$count" != "$mis_ack_nr" ]; then
+ 			echo "[fail] got $count JOIN[s] ack with a mismatched \
+ 				port-number expected $mis_ack_nr"
+ 			fail_test
+@@ -1670,9 +1699,10 @@ chk_rm_nr()
+ 	fi
+ 
+ 	printf "%-${nr_blank}s %s" " " "rm "
+-	count=$(ip netns exec $addr_ns nstat -as | grep MPTcpExtRmAddr | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$rm_addr_nr" ]; then
++	count=$(get_counter ${addr_ns} "MPTcpExtRmAddr")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$rm_addr_nr" ]; then
+ 		echo "[fail] got $count RM_ADDR[s] expected $rm_addr_nr"
+ 		fail_test
+ 		dump_stats=1
+@@ -1681,29 +1711,27 @@ chk_rm_nr()
+ 	fi
+ 
+ 	echo -n " - rmsf  "
+-	count=$(ip netns exec $subflow_ns nstat -as | grep MPTcpExtRmSubflow | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ -n "$simult" ]; then
++	count=$(get_counter ${subflow_ns} "MPTcpExtRmSubflow")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ -n "$simult" ]; then
+ 		local cnt suffix
+ 
+-		cnt=$(ip netns exec $addr_ns nstat -as | grep MPTcpExtRmSubflow | awk '{print $2}')
++		cnt=$(get_counter ${addr_ns} "MPTcpExtRmSubflow")
+ 
+ 		# in case of simult flush, the subflow removal count on each side is
+ 		# unreliable
+-		[ -z "$cnt" ] && cnt=0
+ 		count=$((count + cnt))
+ 		[ "$count" != "$rm_subflow_nr" ] && suffix="$count in [$rm_subflow_nr:$((rm_subflow_nr*2))]"
+ 		if [ $count -ge "$rm_subflow_nr" ] && \
+ 		   [ "$count" -le "$((rm_subflow_nr *2 ))" ]; then
+-			echo "[ ok ] $suffix"
++			echo -n "[ ok ] $suffix"
+ 		else
+ 			echo "[fail] got $count RM_SUBFLOW[s] expected in range [$rm_subflow_nr:$((rm_subflow_nr*2))]"
+ 			fail_test
+ 			dump_stats=1
+ 		fi
+-		return
+-	fi
+-	if [ "$count" != "$rm_subflow_nr" ]; then
++	elif [ "$count" != "$rm_subflow_nr" ]; then
+ 		echo "[fail] got $count RM_SUBFLOW[s] expected $rm_subflow_nr"
+ 		fail_test
+ 		dump_stats=1
+@@ -1724,9 +1752,10 @@ chk_prio_nr()
+ 	local dump_stats
+ 
+ 	printf "%-${nr_blank}s %s" " " "ptx"
+-	count=$(ip netns exec $ns1 nstat -as | grep MPTcpExtMPPrioTx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$mp_prio_nr_tx" ]; then
++	count=$(get_counter ${ns1} "MPTcpExtMPPrioTx")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$mp_prio_nr_tx" ]; then
+ 		echo "[fail] got $count MP_PRIO[s] TX expected $mp_prio_nr_tx"
+ 		fail_test
+ 		dump_stats=1
+@@ -1735,9 +1764,10 @@ chk_prio_nr()
+ 	fi
+ 
+ 	echo -n " - prx   "
+-	count=$(ip netns exec $ns1 nstat -as | grep MPTcpExtMPPrioRx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$mp_prio_nr_rx" ]; then
++	count=$(get_counter ${ns1} "MPTcpExtMPPrioRx")
++	if [ -z "$count" ]; then
++		echo "[skip]"
++	elif [ "$count" != "$mp_prio_nr_rx" ]; then
+ 		echo "[fail] got $count MP_PRIO[s] RX expected $mp_prio_nr_rx"
+ 		fail_test
+ 		dump_stats=1
+@@ -1813,7 +1843,7 @@ wait_attempt_fail()
+ 	while [ $time -lt $timeout_ms ]; do
+ 		local cnt
+ 
+-		cnt=$(ip netns exec $ns nstat -as TcpAttemptFails | grep TcpAttemptFails | awk '{print $2}')
++		cnt=$(get_counter ${ns} "TcpAttemptFails")
+ 
+ 		[ "$cnt" = 1 ] && return 1
+ 		time=$((time + 100))
 
 
