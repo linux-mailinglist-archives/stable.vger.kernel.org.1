@@ -2,58 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7B2B73E8C2
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EF0373E7D8
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232170AbjFZS30 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:29:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43698 "EHLO
+        id S231532AbjFZSTj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:19:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232223AbjFZS3H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B297A2D54
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:28:30 -0700 (PDT)
+        with ESMTP id S231519AbjFZSTd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B86ECCC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9055F60F52
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:28:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9520FC433C0;
-        Mon, 26 Jun 2023 18:28:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BA9A60F39
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D995C433C8;
+        Mon, 26 Jun 2023 18:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804110;
-        bh=slOVVCUERGZrfuvkPOcCoW4j2l/wRj3KFqSA4qWY2sw=;
+        s=korg; t=1687803571;
+        bh=QnsAWiIGc5DFg3WiUAfmD8ul+vWcK0urVQdZLVTnyVs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yRNYkIvPy7Ov8Elm7uzfmPEwpqpXt2STkvsP1h/z4J5hnrGRiOZtn9+CsrpVbZlHw
-         7r0CkLDRxOqIleTSC7TGqALlnOOV9Y6OAprKJGC9ON8WBvbOTKIZMRNxl8Lc6phV4C
-         +WtbfcozgPh4M1rD8yLGrcFBFJyzath3jLknoHyI=
+        b=I/6e4n/GHuLIUGFixWrMnJOvqnDnHHTE0MkXi2G/KtCS1LCaFJ+ksRsa8X4zCpgRR
+         nYa69FRuBGhUWvAUVBor9QkyaDOxas6GsX6y61DfWTZOirGKHPnQgrtTOBqt2WprRH
+         cGaH7eXcS+7R3ydDrcj9jRg4f7M9CvrWsbAbuyqU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Prathu Baronia <prathubaronia2011@gmail.com>,
-        David Hildenbrand <david@redhat.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Ingo Molnar <mingo@kernel.org>,
-        Yury Norov <yury.norov@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 044/170] scripts: fix the gfp flags header path in gfp-translate
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        Magali Lemes <magali.lemes@canonical.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 107/199] selftests: net: tls: check if FIPS mode is enabled
 Date:   Mon, 26 Jun 2023 20:10:13 +0200
-Message-ID: <20230626180802.513799366@linuxfoundation.org>
+Message-ID: <20230626180810.350373449@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,51 +55,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Prathu Baronia <prathubaronia2011@gmail.com>
+From: Magali Lemes <magali.lemes@canonical.com>
 
-commit 2049a7d0cbc6ac8e370e836ed68597be04a7dc49 upstream.
+[ Upstream commit d113c395c67b62fc0d3f2004c0afc406aca0a2b7 ]
 
-Since gfp flags have been shifted to gfp_types.h so update the path in
-the gfp-translate script.
+TLS selftests use the ChaCha20-Poly1305 and SM4 algorithms, which are not
+FIPS compliant. When fips=1, this set of tests fails. Add a check and only
+run these tests if not in FIPS mode.
 
-Link: https://lkml.kernel.org/r/20230608154450.21758-1-prathubaronia2011@gmail.com
-Fixes: cb5a065b4ea9c ("headers/deps: mm: Split <linux/gfp_types.h> out of <linux/gfp.h>")
-Signed-off-by: Prathu Baronia <prathubaronia2011@gmail.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Yury Norov <yury.norov@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4f336e88a870 ("selftests/tls: add CHACHA20-POLY1305 to tls selftests")
+Fixes: e506342a03c7 ("selftests/tls: add SM4 GCM/CCM to tls selftests")
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gfp-translate | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/tls.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/gfp-translate b/scripts/gfp-translate
-index b2ce416d944b..6c9aed17cf56 100755
---- a/scripts/gfp-translate
-+++ b/scripts/gfp-translate
-@@ -63,11 +63,11 @@ fi
+diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
+index 2cbb12736596d..c0ad8385441f2 100644
+--- a/tools/testing/selftests/net/tls.c
++++ b/tools/testing/selftests/net/tls.c
+@@ -25,6 +25,8 @@
+ #define TLS_PAYLOAD_MAX_LEN 16384
+ #define SOL_TLS 282
  
- # Extract GFP flags from the kernel source
- TMPFILE=`mktemp -t gfptranslate-XXXXXX` || exit 1
--grep -q ___GFP $SOURCE/include/linux/gfp.h
-+grep -q ___GFP $SOURCE/include/linux/gfp_types.h
- if [ $? -eq 0 ]; then
--	grep "^#define ___GFP" $SOURCE/include/linux/gfp.h | sed -e 's/u$//' | grep -v GFP_BITS > $TMPFILE
-+	grep "^#define ___GFP" $SOURCE/include/linux/gfp_types.h | sed -e 's/u$//' | grep -v GFP_BITS > $TMPFILE
- else
--	grep "^#define __GFP" $SOURCE/include/linux/gfp.h | sed -e 's/(__force gfp_t)//' | sed -e 's/u)/)/' | grep -v GFP_BITS | sed -e 's/)\//) \//' > $TMPFILE
-+	grep "^#define __GFP" $SOURCE/include/linux/gfp_types.h | sed -e 's/(__force gfp_t)//' | sed -e 's/u)/)/' | grep -v GFP_BITS | sed -e 's/)\//) \//' > $TMPFILE
- fi
++static int fips_enabled;
++
+ struct tls_crypto_info_keys {
+ 	union {
+ 		struct tls12_crypto_info_aes_gcm_128 aes128;
+@@ -235,7 +237,7 @@ FIXTURE_VARIANT(tls)
+ {
+ 	uint16_t tls_version;
+ 	uint16_t cipher_type;
+-	bool nopad;
++	bool nopad, fips_non_compliant;
+ };
  
- # Parse the flags
+ FIXTURE_VARIANT_ADD(tls, 12_aes_gcm)
+@@ -254,24 +256,28 @@ FIXTURE_VARIANT_ADD(tls, 12_chacha)
+ {
+ 	.tls_version = TLS_1_2_VERSION,
+ 	.cipher_type = TLS_CIPHER_CHACHA20_POLY1305,
++	.fips_non_compliant = true,
+ };
+ 
+ FIXTURE_VARIANT_ADD(tls, 13_chacha)
+ {
+ 	.tls_version = TLS_1_3_VERSION,
+ 	.cipher_type = TLS_CIPHER_CHACHA20_POLY1305,
++	.fips_non_compliant = true,
+ };
+ 
+ FIXTURE_VARIANT_ADD(tls, 13_sm4_gcm)
+ {
+ 	.tls_version = TLS_1_3_VERSION,
+ 	.cipher_type = TLS_CIPHER_SM4_GCM,
++	.fips_non_compliant = true,
+ };
+ 
+ FIXTURE_VARIANT_ADD(tls, 13_sm4_ccm)
+ {
+ 	.tls_version = TLS_1_3_VERSION,
+ 	.cipher_type = TLS_CIPHER_SM4_CCM,
++	.fips_non_compliant = true,
+ };
+ 
+ FIXTURE_VARIANT_ADD(tls, 12_aes_ccm)
+@@ -311,6 +317,9 @@ FIXTURE_SETUP(tls)
+ 	int one = 1;
+ 	int ret;
+ 
++	if (fips_enabled && variant->fips_non_compliant)
++		SKIP(return, "Unsupported cipher in FIPS mode");
++
+ 	tls_crypto_info_init(variant->tls_version, variant->cipher_type,
+ 			     &tls12);
+ 
+@@ -1820,4 +1829,17 @@ TEST(tls_v6ops) {
+ 	close(sfd);
+ }
+ 
++static void __attribute__((constructor)) fips_check(void) {
++	int res;
++	FILE *f;
++
++	f = fopen("/proc/sys/crypto/fips_enabled", "r");
++	if (f) {
++		res = fscanf(f, "%d", &fips_enabled);
++		if (res != 1)
++			ksft_print_msg("ERROR: Couldn't read /proc/sys/crypto/fips_enabled\n");
++		fclose(f);
++	}
++}
++
+ TEST_HARNESS_MAIN
 -- 
-2.41.0
+2.39.2
 
 
 
