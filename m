@@ -2,54 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9E4B73ED57
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 23:52:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7CE573ED4E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 23:52:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231357AbjFZVwX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 17:52:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40786 "EHLO
+        id S231381AbjFZVv6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 17:51:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231359AbjFZVvr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 17:51:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8CF82D64;
-        Mon, 26 Jun 2023 14:50:51 -0700 (PDT)
+        with ESMTP id S231389AbjFZVvl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 17:51:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CC99297D;
+        Mon, 26 Jun 2023 14:50:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B5D560F8B;
-        Mon, 26 Jun 2023 21:50:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AF1C433C8;
-        Mon, 26 Jun 2023 21:50:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27C8860F79;
+        Mon, 26 Jun 2023 21:50:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4F7C433C8;
+        Mon, 26 Jun 2023 21:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687816230;
-        bh=HB5ik3gv4Co5XN3kmgZPaP1UTspqkoXwyNIw4+YFVPc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vR3KuYyM/U/ra9uf+68V3j1v+tH1D4VL6z9GqSj8Joipj/WUvLAeDZcSLH0npZbBD
-         k9bA2GamEOhPFsiv1OVDqPxR7gjNv/v/KSWe7qsljI/efT8bzgyR0PjZDMsA9vwarR
-         P/oIplP/VjJIWTxkaALokwA0SVwhFbKUaOIpjfqSDI/T6ATCeeT/NoV4WLSbtcrvpc
-         secvImJdYxeZLdsTb8cuQk3xXMxOl67Z+VF/7z9bMAp3MZ67GC1RZAt8JNzEgMpjNI
-         LHeRmtMgrdSFu3USbZaOWEkO3fBuCHZ6xjMtzSAP42iqUlHTOA8BNL7ZybLn21APQG
-         PRHpUmwvpW6xA==
+        s=k20201202; t=1687816232;
+        bh=BElIyGm/sxQtcF6iwtpyXz1F8nrc7dChyXX1AZVCY5c=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bgaR00wqIrtSXwd0SZRTOGHD9jK0vMvt6jShKzFoFL2KDkb929N8zA+B9PG9m8A/U
+         uGqT6PXz1FU/NCYWAELpzRp9pbSF/SYgV25eUGVHx4GvMUmEVbZzgupp8+X24E5DFb
+         /XtTIdtHxJ/4t8dftHUZs3vug2gN0O+EG1g0U7Gj3oTESMY167eiHTjsTuQT41hFN4
+         xCiqGsBvambcHZblZraSgvpw8VeA+hZjQ+w70D0cBtEKmjc4ZBLwK1m+Inp0x7cBqi
+         f7dXYyyEK983Aru9mJEJwi0//aEjXzTZhxbDfKzuBm2R5sbrvhAFvqTLhTYhttxC9M
+         XCKZU8Z/ZndNw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Takashi Iwai <tiwai@suse.de>, "Gong, Sishuai" <sishuai@purdue.edu>,
-        Sasha Levin <sashal@kernel.org>, perex@perex.cz,
-        tiwai@suse.com, alsa-devel@alsa-project.org
-Subject: [PATCH AUTOSEL 6.3 16/16] ALSA: seq: oss: Fix racy open/close of MIDI devices
-Date:   Mon, 26 Jun 2023 17:49:56 -0400
-Message-Id: <20230626214956.178942-16-sashal@kernel.org>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 01/15] wifi: cfg80211: remove links only on AP
+Date:   Mon, 26 Jun 2023 17:50:17 -0400
+Message-Id: <20230626215031.179159-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230626214956.178942-1-sashal@kernel.org>
-References: <20230626214956.178942-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.3.9
+X-stable-base: Linux 6.1.35
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,127 +59,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 297224fc0922e7385573a30c29ffdabb67f27b7d ]
+[ Upstream commit 34d4e3eb67fed9c19719bedb748e5a8b6ccc97a5 ]
 
-Although snd_seq_oss_midi_open() and snd_seq_oss_midi_close() can be
-called concurrently from different code paths, we have no proper data
-protection against races.  Introduce open_mutex to each seq_oss_midi
-object for avoiding the races.
+Since links are only controlled by userspace via cfg80211
+in AP mode, also only remove them from the driver in that
+case.
 
-Reported-by: "Gong, Sishuai" <sishuai@purdue.edu>
-Closes: https://lore.kernel.org/r/7DC9AF71-F481-4ABA-955F-76C535661E33@purdue.edu
-Link: https://lore.kernel.org/r/20230612125533.27461-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230608163202.ed65b94916fa.I2458c46888284cc5ce30715fe642bc5fc4340c8f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/oss/seq_oss_midi.c | 35 +++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 13 deletions(-)
+ net/wireless/util.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/seq/oss/seq_oss_midi.c b/sound/core/seq/oss/seq_oss_midi.c
-index 07efb38f58ac1..f2940b29595f0 100644
---- a/sound/core/seq/oss/seq_oss_midi.c
-+++ b/sound/core/seq/oss/seq_oss_midi.c
-@@ -37,6 +37,7 @@ struct seq_oss_midi {
- 	struct snd_midi_event *coder;	/* MIDI event coder */
- 	struct seq_oss_devinfo *devinfo;	/* assigned OSSseq device */
- 	snd_use_lock_t use_lock;
-+	struct mutex open_mutex;
- };
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 39680e7bad45a..f433f3fdd9e94 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -5,7 +5,7 @@
+  * Copyright 2007-2009	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright 2017	Intel Deutschland GmbH
+- * Copyright (C) 2018-2022 Intel Corporation
++ * Copyright (C) 2018-2023 Intel Corporation
+  */
+ #include <linux/export.h>
+ #include <linux/bitops.h>
+@@ -2479,6 +2479,13 @@ void cfg80211_remove_links(struct wireless_dev *wdev)
+ {
+ 	unsigned int link_id;
  
- 
-@@ -172,6 +173,7 @@ snd_seq_oss_midi_check_new_port(struct snd_seq_port_info *pinfo)
- 	mdev->flags = pinfo->capability;
- 	mdev->opened = 0;
- 	snd_use_lock_init(&mdev->use_lock);
-+	mutex_init(&mdev->open_mutex);
- 
- 	/* copy and truncate the name of synth device */
- 	strscpy(mdev->name, pinfo->name, sizeof(mdev->name));
-@@ -322,15 +324,17 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
- 	int perm;
- 	struct seq_oss_midi *mdev;
- 	struct snd_seq_port_subscribe subs;
-+	int err;
- 
- 	mdev = get_mididev(dp, dev);
- 	if (!mdev)
- 		return -ENODEV;
- 
-+	mutex_lock(&mdev->open_mutex);
- 	/* already used? */
- 	if (mdev->opened && mdev->devinfo != dp) {
--		snd_use_lock_free(&mdev->use_lock);
--		return -EBUSY;
-+		err = -EBUSY;
-+		goto unlock;
- 	}
- 
- 	perm = 0;
-@@ -340,14 +344,14 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
- 		perm |= PERM_READ;
- 	perm &= mdev->flags;
- 	if (perm == 0) {
--		snd_use_lock_free(&mdev->use_lock);
--		return -ENXIO;
-+		err = -ENXIO;
-+		goto unlock;
- 	}
- 
- 	/* already opened? */
- 	if ((mdev->opened & perm) == perm) {
--		snd_use_lock_free(&mdev->use_lock);
--		return 0;
-+		err = 0;
-+		goto unlock;
- 	}
- 
- 	perm &= ~mdev->opened;
-@@ -372,13 +376,17 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
- 	}
- 
- 	if (! mdev->opened) {
--		snd_use_lock_free(&mdev->use_lock);
--		return -ENXIO;
-+		err = -ENXIO;
-+		goto unlock;
- 	}
- 
- 	mdev->devinfo = dp;
-+	err = 0;
++	/*
++	 * links are controlled by upper layers (userspace/cfg)
++	 * only for AP mode, so only remove them here for AP
++	 */
++	if (wdev->iftype != NL80211_IFTYPE_AP)
++		return;
 +
-+ unlock:
-+	mutex_unlock(&mdev->open_mutex);
- 	snd_use_lock_free(&mdev->use_lock);
--	return 0;
-+	return err;
- }
- 
- /*
-@@ -393,10 +401,9 @@ snd_seq_oss_midi_close(struct seq_oss_devinfo *dp, int dev)
- 	mdev = get_mididev(dp, dev);
- 	if (!mdev)
- 		return -ENODEV;
--	if (! mdev->opened || mdev->devinfo != dp) {
--		snd_use_lock_free(&mdev->use_lock);
--		return 0;
--	}
-+	mutex_lock(&mdev->open_mutex);
-+	if (!mdev->opened || mdev->devinfo != dp)
-+		goto unlock;
- 
- 	memset(&subs, 0, sizeof(subs));
- 	if (mdev->opened & PERM_WRITE) {
-@@ -415,6 +422,8 @@ snd_seq_oss_midi_close(struct seq_oss_devinfo *dp, int dev)
- 	mdev->opened = 0;
- 	mdev->devinfo = NULL;
- 
-+ unlock:
-+	mutex_unlock(&mdev->open_mutex);
- 	snd_use_lock_free(&mdev->use_lock);
- 	return 0;
- }
+ 	wdev_lock(wdev);
+ 	if (wdev->valid_links) {
+ 		for_each_valid_link(wdev, link_id)
 -- 
 2.39.2
 
