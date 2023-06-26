@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06CCA73EA5A
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB95473EA5B
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232627AbjFZSqT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:46:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58424 "EHLO
+        id S232630AbjFZSqV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:46:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232624AbjFZSqS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:46:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC8CAC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:46:17 -0700 (PDT)
+        with ESMTP id S232068AbjFZSqV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:46:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54A5397
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:46:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EAA9460F4F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:46:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E3FC433C8;
-        Mon, 26 Jun 2023 18:46:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5C7960F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:46:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98A1C433C0;
+        Mon, 26 Jun 2023 18:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805176;
-        bh=N3wiWNo8oTSQLA/c3Gvi104liUWp1Qe0VRqgxmqrFh4=;
+        s=korg; t=1687805179;
+        bh=18v4T2c8E0N1qbvb6lppMvmLCldA85knI5OjAmtEet4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XRihq7cqcWAxaqCtF8FLS9XABjyYp9uUtm21ifHPXThJoT1q2NT3nbcJc+43GqWzH
-         jtxQfIBBmWTCkBMhZq09U3yWNXK4m5uZkowk4DlCkQ241ZezsvUOhwCelm29juR0Cm
-         4F7MiXu8YhAUk5Z6VPEchI+nSNdioIZKBUI0MNN4=
+        b=tMGv9aOuq7+4v4aDFpKOY0yJwzwrQM5V8F3/V5f9YklQBbkW+1VUVuaw7lqhwku8s
+         9rtuE5mrggwGLk3GKeAJHe26RrxHRSRAXfCxOQFuP+yUhWnvEEV+DEgP0WzX91vGR/
+         IQBWLmtZL4Nre2mKfPQByIhtSz+HiCkISw4U2rPA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Kishon Vijay Abraham I <kvijayab@amd.com>,
-        Vasant Hegde <vasant.hegde@amd.com>,
-        Cyrill Gorcunov <gorcunov@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 76/81] x86/apic: Fix kernel panic when booting with intremap=off and x2apic_phys
-Date:   Mon, 26 Jun 2023 20:12:58 +0200
-Message-ID: <20230626180747.508535984@linuxfoundation.org>
+        patches@lists.linux.dev, Clark Wang <xiaoning.wang@nxp.com>,
+        Carlos Song <carlos.song@nxp.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 77/81] i2c: imx-lpi2c: fix type char overflow issue when calculating the clock cycle
+Date:   Mon, 26 Jun 2023 20:12:59 +0200
+Message-ID: <20230626180747.549740136@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
 References: <20230626180744.453069285@linuxfoundation.org>
@@ -50,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,77 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-[ Upstream commit 85d38d5810e285d5aec7fb5283107d1da70c12a9 ]
+[ Upstream commit e69b9bc170c6d93ee375a5cbfd15f74c0fb59bdd ]
 
-When booting with "intremap=off" and "x2apic_phys" on the kernel command
-line, the physical x2APIC driver ends up being used even when x2APIC
-mode is disabled ("intremap=off" disables x2APIC mode). This happens
-because the first compound condition check in x2apic_phys_probe() is
-false due to x2apic_mode == 0 and so the following one returns true
-after default_acpi_madt_oem_check() having already selected the physical
-x2APIC driver.
+Claim clkhi and clklo as integer type to avoid possible calculation
+errors caused by data overflow.
 
-This results in the following panic:
-
-   kernel BUG at arch/x86/kernel/apic/io_apic.c:2409!
-   invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-   CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.0-rc2-ver4.1rc2 #2
-   Hardware name: Dell Inc. PowerEdge R6515/07PXPY, BIOS 2.3.6 07/06/2021
-   RIP: 0010:setup_IO_APIC+0x9c/0xaf0
-   Call Trace:
-    <TASK>
-    ? native_read_msr
-    apic_intr_mode_init
-    x86_late_time_init
-    start_kernel
-    x86_64_start_reservations
-    x86_64_start_kernel
-    secondary_startup_64_no_verify
-    </TASK>
-
-which is:
-
-setup_IO_APIC:
-  apic_printk(APIC_VERBOSE, "ENABLING IO-APIC IRQs\n");
-  for_each_ioapic(ioapic)
-  	BUG_ON(mp_irqdomain_create(ioapic));
-
-Return 0 to denote that x2APIC has not been enabled when probing the
-physical x2APIC driver.
-
-  [ bp: Massage commit message heavily. ]
-
-Fixes: 9ebd680bd029 ("x86, apic: Use probe routines to simplify apic selection")
-Signed-off-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230616212236.1389-1-dheerajkumar.srivastava@amd.com
+Fixes: a55fa9d0e42e ("i2c: imx-lpi2c: add low power i2c bus driver")
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/x2apic_phys.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/x2apic_phys.c b/arch/x86/kernel/apic/x2apic_phys.c
-index 032a00e5d9fa6..76c80e191a1b1 100644
---- a/arch/x86/kernel/apic/x2apic_phys.c
-+++ b/arch/x86/kernel/apic/x2apic_phys.c
-@@ -97,7 +97,10 @@ static void init_x2apic_ldr(void)
- 
- static int x2apic_phys_probe(void)
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index d45ec26d51cb9..c688f11ae5c9f 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -200,8 +200,8 @@ static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
+ /* CLKLO = I2C_CLK_RATIO * CLKHI, SETHOLD = CLKHI, DATAVD = CLKHI/2 */
+ static int lpi2c_imx_config(struct lpi2c_imx_struct *lpi2c_imx)
  {
--	if (x2apic_mode && (x2apic_phys || x2apic_fadt_phys()))
-+	if (!x2apic_mode)
-+		return 0;
-+
-+	if (x2apic_phys || x2apic_fadt_phys())
- 		return 1;
+-	u8 prescale, filt, sethold, clkhi, clklo, datavd;
+-	unsigned int clk_rate, clk_cycle;
++	u8 prescale, filt, sethold, datavd;
++	unsigned int clk_rate, clk_cycle, clkhi, clklo;
+ 	enum lpi2c_imx_pincfg pincfg;
+ 	unsigned int temp;
  
- 	return apic == &apic_x2apic_phys;
 -- 
 2.39.2
 
