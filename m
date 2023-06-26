@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2690473E87A
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C96A673E927
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:33:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231854AbjFZS02 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:26:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37756 "EHLO
+        id S232213AbjFZSc7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:32:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231941AbjFZS0J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:09 -0400
+        with ESMTP id S232201AbjFZSc7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06ECD2728
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:25:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D64099
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DAE4660F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:25:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36DEC433C0;
-        Mon, 26 Jun 2023 18:25:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD46060F3E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A08C433C8;
+        Mon, 26 Jun 2023 18:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803915;
-        bh=kdD8J7GcY2y5eT3dPLJBHF7NfR/0NZ0d3NkOGAaTCB8=;
+        s=korg; t=1687804377;
+        bh=mmdudRkuSbiUU5LPtsxAkTPhX5voY/Mn+ojKMk7dSZI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AqDroX1gdXxDbmuifvGPRg7UwZcw9vF6iLKn0ASaWIl8snmDXykZdJuctSFubvwgc
-         4+qhNxU8f4GM2S3RlMMAvaU2PYRTGtgIyh6Ocwu0iAMtLXgl4tAGmPbcSaelsK45Bh
-         ubCM/lH5g5ehz0K4AFY5KFDfTas8jykASTZfaJ08=
+        b=ZT7rdmbyQdPnm9RoCMTg0ajtFaCGEUyl9+n/nrz7urK9SYDT8lvVtSS22b14F7Hee
+         2bIelupeltGYHMgeWIYQY0sCURRgVP6D7txkU63V2OsV174iGRA8zwtR/8CPa4U9XR
+         3VDf9FW+SNuq8ESroigZ1ldwuZchhG9fdjrm5w2c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Steve French <stfrench@microsoft.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 20/41] mmc: mvsdio: fix deferred probing
-Date:   Mon, 26 Jun 2023 20:11:43 +0200
-Message-ID: <20230626180737.059552012@linuxfoundation.org>
+Subject: [PATCH 6.1 135/170] smb3: missing null check in SMB2_change_notify
+Date:   Mon, 26 Jun 2023 20:11:44 +0200
+Message-ID: <20230626180806.622508535@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
-References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 8d84064da0d4672e74f984e8710f27881137472c ]
+[ Upstream commit b535cc796a4b4942cd189652588e8d37c1f5925a ]
 
-The driver overrides the error codes returned by platform_get_irq() to
--ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the
-error codes upstream.
+If plen is null when passed in, we only checked for null
+in one of the two places where it could be used. Although
+plen is always valid (not null) for current callers of the
+SMB2_change_notify function, this change makes it more consistent.
 
-Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20230617203622.6812-5-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/all/202305251831.3V1gbbFs-lkp@intel.com/
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mvsdio.c | 2 +-
+ fs/cifs/smb2pdu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/mvsdio.c b/drivers/mmc/host/mvsdio.c
-index 3ad8d1108fd08..fff9980a3ef28 100644
---- a/drivers/mmc/host/mvsdio.c
-+++ b/drivers/mmc/host/mvsdio.c
-@@ -707,7 +707,7 @@ static int mvsd_probe(struct platform_device *pdev)
+diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
+index 537e8679900b8..3ca593cdda76e 100644
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -3779,7 +3779,7 @@ SMB2_change_notify(const unsigned int xid, struct cifs_tcon *tcon,
+ 		if (*out_data == NULL) {
+ 			rc = -ENOMEM;
+ 			goto cnotify_exit;
+-		} else
++		} else if (plen)
+ 			*plen = le32_to_cpu(smb_rsp->OutputBufferLength);
  	}
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
--		return -ENXIO;
-+		return irq;
  
- 	mmc = mmc_alloc_host(sizeof(struct mvsd_host), &pdev->dev);
- 	if (!mmc) {
 -- 
 2.39.2
 
