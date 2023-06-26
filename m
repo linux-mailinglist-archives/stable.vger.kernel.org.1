@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A5FB73E916
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79F5B73E75F
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232190AbjFZSck (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45248 "EHLO
+        id S229637AbjFZSOx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:14:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232332AbjFZScX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E51D2117
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:08 -0700 (PDT)
+        with ESMTP id S229681AbjFZSOV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:14:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C742E74
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:14:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A20E60F39
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AADC433C0;
-        Mon, 26 Jun 2023 18:32:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A805B60F4D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:14:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7422C433C0;
+        Mon, 26 Jun 2023 18:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804327;
-        bh=B+Z9ziGShRXR14vlnJ4PvGPJlwLyKL+nA2/bnQL2dqQ=;
+        s=korg; t=1687803257;
+        bh=X9vr8TB3+gT0/oGVcRn7LyiA5OqAGXTTldjBIrnejp0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2i5so1WvFVZ3QwGGsZRj11GgzrUS/sdS3M0PVrvS9xLnRjpSMcfJc4iPlt8Mn/eCq
-         ktL7s6nOD45bvdqHkZ2d1oGNpSezfukwtqDGBaOyPksDDAIlPAHQTm5H6j4DTRInYl
-         Tn8jNy72G/8jv2Ynz1+orgupSXIWqZ2VSN75g1Vw=
+        b=flH5f1TwzGlIHp34hhf3TFwkS88hfuBM4jacyLaatLrx+b0ziFYu8WgbMky1n8VIp
+         OgZus1SH0qhhfViXSDuHrbseG0zapt+DKLX5c13ND0GwhuQ2H628MvrOYDXXgbsmFa
+         PGft/Fltv1lKI04mhiI7oFrhyG22bMg40/170Yv4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Francesco Dolcini <francesco.dolcini@toradex.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Praneeth Bajjuri <praneeth@ti.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/170] Revert "net: phy: dp83867: perform soft reset and retain established link"
+        patches@lists.linux.dev, Clark Wang <xiaoning.wang@nxp.com>,
+        Carlos Song <carlos.song@nxp.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 26/26] i2c: imx-lpi2c: fix type char overflow issue when calculating the clock cycle
 Date:   Mon, 26 Jun 2023 20:11:28 +0200
-Message-ID: <20230626180805.906405438@linuxfoundation.org>
+Message-ID: <20230626180734.740564707@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
+References: <20230626180733.699092073@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,43 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-[ Upstream commit a129b41fe0a8b4da828c46b10f5244ca07a3fec3 ]
+[ Upstream commit e69b9bc170c6d93ee375a5cbfd15f74c0fb59bdd ]
 
-This reverts commit da9ef50f545f86ffe6ff786174d26500c4db737a.
+Claim clkhi and clklo as integer type to avoid possible calculation
+errors caused by data overflow.
 
-This fixes a regression in which the link would come up, but no
-communication was possible.
-
-The reverted commit was also removing a comment about
-DP83867_PHYCR_FORCE_LINK_GOOD, this is not added back in this commits
-since it seems that this is unrelated to the original code change.
-
-Closes: https://lore.kernel.org/all/ZGuDJos8D7N0J6Z2@francesco-nb.int.toradex.com/
-Fixes: da9ef50f545f ("net: phy: dp83867: perform soft reset and retain established link")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Praneeth Bajjuri <praneeth@ti.com>
-Link: https://lore.kernel.org/r/20230619154435.355485-1-francesco@dolcini.it
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a55fa9d0e42e ("i2c: imx-lpi2c: add low power i2c bus driver")
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83867.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index 14990f8462ae3..f7436191fa807 100644
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -905,7 +905,7 @@ static int dp83867_phy_reset(struct phy_device *phydev)
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 511d332f47326..526f2f8871293 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -215,8 +215,8 @@ static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
+ /* CLKLO = I2C_CLK_RATIO * CLKHI, SETHOLD = CLKHI, DATAVD = CLKHI/2 */
+ static int lpi2c_imx_config(struct lpi2c_imx_struct *lpi2c_imx)
  {
- 	int err;
- 
--	err = phy_write(phydev, DP83867_CTRL, DP83867_SW_RESTART);
-+	err = phy_write(phydev, DP83867_CTRL, DP83867_SW_RESET);
- 	if (err < 0)
- 		return err;
+-	u8 prescale, filt, sethold, clkhi, clklo, datavd;
+-	unsigned int clk_rate, clk_cycle;
++	u8 prescale, filt, sethold, datavd;
++	unsigned int clk_rate, clk_cycle, clkhi, clklo;
+ 	enum lpi2c_imx_pincfg pincfg;
+ 	unsigned int temp;
  
 -- 
 2.39.2
