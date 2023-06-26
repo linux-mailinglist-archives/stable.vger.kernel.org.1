@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BC1E73E843
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27C9673E91E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231954AbjFZSYB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:24:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38254 "EHLO
+        id S229631AbjFZScr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:32:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232009AbjFZSXo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:44 -0400
+        with ESMTP id S232284AbjFZScc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 785731BC7
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF1A10C9
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 47F9460F7A
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:22:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D84C433C0;
-        Mon, 26 Jun 2023 18:22:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F93260F39
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6C4C433C8;
+        Mon, 26 Jun 2023 18:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803773;
-        bh=RmyQEvId7Q4D1NdxNMNyeH1BnQPNLsCs5kZZNV1k3l0=;
+        s=korg; t=1687804350;
+        bh=lqCJ0IIy1mYeLMESwrFUdPZ5AMPm8TZx93CFPrYjjLk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZbrF5PrfYaClUZWGqBGsO6KoWutcw+f/IZetvkQGTdtmLXUxD9kcah/tnGlQx3rWp
-         eDrTo0nVq79cABiPfqKyLnBA2sYQR0nS1ESYbJ4UuG9AXdY7jPTGmRJsb5Z/q1bxMc
-         v+rR+VwchfurJJA9+6073aS/NW6GoF04UM8zFrds=
+        b=gH3JKdEDwvvj1pmoySURdWZGM1TRKNuZNrSOu+QsAdL3nPZ4XEQ4RKLTuvwkPPEFc
+         yuxbQx5+HZZnSVkAL8WwKjgVixA1iRKH1IwmhWcDCNPCSJBRtphcCbTD8C/9drjl/O
+         PsqI7Z8tlN5AiqhNAvKY2uiPET107kAxHdjNIkVg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Rander Wang <rander.wang@intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 172/199] soundwire: dmi-quirks: add new mapping for HP Spectre x360
+        Ross Lagerwall <ross.lagerwall@citrix.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 109/170] be2net: Extend xmit workaround to BE3 chip
 Date:   Mon, 26 Jun 2023 20:11:18 +0200
-Message-ID: <20230626180813.266266740@linuxfoundation.org>
+Message-ID: <20230626180805.428261429@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,42 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Ross Lagerwall <ross.lagerwall@citrix.com>
 
-[ Upstream commit 700581ede41d029403feec935df4616309696fd7 ]
+[ Upstream commit 7580e0a78eb29e7bb1a772eba4088250bbb70d41 ]
 
-A BIOS/DMI update seems to have broken some devices, let's add a new
-mapping.
+We have seen a bug where the NIC incorrectly changes the length in the
+IP header of a padded packet to include the padding bytes. The driver
+already has a workaround for this so do the workaround for this NIC too.
+This resolves the issue.
 
-Link: https://github.com/thesofproject/linux/issues/4323
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20230515074859.3097-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The NIC in question identifies itself as follows:
+
+[    8.828494] be2net 0000:02:00.0: FW version is 10.7.110.31
+[    8.834759] be2net 0000:02:00.0: Emulex OneConnect(be3): PF FLEX10 port 1
+
+02:00.0 Ethernet controller: Emulex Corporation OneConnect 10Gb NIC (be3) (rev 01)
+
+Fixes: ca34fe38f06d ("be2net: fix wrong usage of adapter->generation")
+Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+Link: https://lore.kernel.org/r/20230616164549.2863037-1-ross.lagerwall@citrix.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/dmi-quirks.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/emulex/benet/be_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soundwire/dmi-quirks.c b/drivers/soundwire/dmi-quirks.c
-index 58ea013fa918a..2a1096dab63d3 100644
---- a/drivers/soundwire/dmi-quirks.c
-+++ b/drivers/soundwire/dmi-quirks.c
-@@ -99,6 +99,13 @@ static const struct dmi_system_id adr_remap_quirk_table[] = {
- 		},
- 		.driver_data = (void *)intel_tgl_bios,
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_BOARD_NAME, "8709"),
-+		},
-+		.driver_data = (void *)intel_tgl_bios,
-+	},
- 	{
- 		/* quirk used for NUC15 'Bishop County' LAPBC510 and LAPBC710 skews */
- 		.matches = {
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index a92a747615466..5d39df8452653 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -1136,8 +1136,8 @@ static struct sk_buff *be_lancer_xmit_workarounds(struct be_adapter *adapter,
+ 	eth_hdr_len = ntohs(skb->protocol) == ETH_P_8021Q ?
+ 						VLAN_ETH_HLEN : ETH_HLEN;
+ 	if (skb->len <= 60 &&
+-	    (lancer_chip(adapter) || skb_vlan_tag_present(skb)) &&
+-	    is_ipv4_pkt(skb)) {
++	    (lancer_chip(adapter) || BE3_chip(adapter) ||
++	     skb_vlan_tag_present(skb)) && is_ipv4_pkt(skb)) {
+ 		ip = (struct iphdr *)ip_hdr(skb);
+ 		pskb_trim(skb, eth_hdr_len + ntohs(ip->tot_len));
+ 	}
 -- 
 2.39.2
 
