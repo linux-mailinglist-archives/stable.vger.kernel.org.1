@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4241C73E8D2
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C486973E82D
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:23:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231748AbjFZSaa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:30:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43582 "EHLO
+        id S231874AbjFZSXl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:23:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231868AbjFZS3d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB613125
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:11 -0700 (PDT)
+        with ESMTP id S231879AbjFZSXW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAC41171A
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59A1C60F1E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63027C433C0;
-        Mon, 26 Jun 2023 18:29:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A13360F64
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:21:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAB8C433C0;
+        Mon, 26 Jun 2023 18:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804150;
-        bh=V5ipiWSx90hf5RW9m62pcRBzjA8w7Y2D3SsbHX9mYdo=;
+        s=korg; t=1687803705;
+        bh=YHrJlFnn6URmQHZxJAJNjwvVjq/iIncFuqNPNNo+0ww=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YY37yqozNURsJKZopWtACudfyZofbvt9JxvkH3f2hqwaaOppf+JP7WwOoxp4thLUT
-         /v7NMVF9IE6HiIXt1PNLAO7yzcTYg1875cS4bmlPIoWq/OO/3gsqdR7xzemsd7PUfH
-         FndF+c1c81oQDcYQNxFqN/Uolz2uLQfarMaLKf/U=
+        b=FdTEjU0GsOCU+bDuromg6ZFzI+zKYsdGsCa1swDusU53F9EnXQcWl4qOgDiB/S7Fh
+         tyQRMZh7Hh8bc7h6M1FerfRRwuVEIv0grMXz7VFRweErJWJ3i6PAdI45GSGeE6c6KC
+         ET+AU4teJtUzzYk4hMAqog/sFa8xxqo0JL7RpouM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 059/170] mptcp: fix possible list corruption on passive MPJ
+        patches@lists.linux.dev, Terin Stock <terin@cloudflare.com>,
+        Julian Anastasov <ja@ssi.bg>, Simon Horman <horms@kernel.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 122/199] ipvs: align inner_mac_header for encapsulation
 Date:   Mon, 26 Jun 2023 20:10:28 +0200
-Message-ID: <20230626180803.236430324@linuxfoundation.org>
+Message-ID: <20230626180810.991488247@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,78 +56,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Terin Stock <terin@cloudflare.com>
 
-commit 56a666c48b038e91b76471289e2cf60c79d326b9 upstream.
+[ Upstream commit d7fce52fdf96663ddc2eb21afecff3775588612a ]
 
-At passive MPJ time, if the msk socket lock is held by the user,
-the new subflow is appended to the msk->join_list under the msk
-data lock.
+When using encapsulation the original packet's headers are copied to the
+inner headers. This preserves the space for an inner mac header, which
+is not used by the inner payloads for the encapsulation types supported
+by IPVS. If a packet is using GUE or GRE encapsulation and needs to be
+segmented, flow can be passed to __skb_udp_tunnel_segment() which
+calculates a negative tunnel header length. A negative tunnel header
+length causes pskb_may_pull() to fail, dropping the packet.
 
-In mptcp_release_cb()/__mptcp_flush_join_list(), the subflows in
-that list are moved from the join_list into the conn_list under the
-msk socket lock.
+This can be observed by attaching probes to ip_vs_in_hook(),
+__dev_queue_xmit(), and __skb_udp_tunnel_segment():
 
-Append and removal could race, possibly corrupting such list.
-Address the issue splicing the join list into a temporary one while
-still under the msk data lock.
+    perf probe --add '__dev_queue_xmit skb->inner_mac_header \
+    skb->inner_network_header skb->mac_header skb->network_header'
+    perf probe --add '__skb_udp_tunnel_segment:7 tnl_hlen'
+    perf probe -m ip_vs --add 'ip_vs_in_hook skb->inner_mac_header \
+    skb->inner_network_header skb->mac_header skb->network_header'
 
-Found by code inspection, the race itself should be almost impossible
-to trigger in practice.
+These probes the headers and tunnel header length for packets which
+traverse the IPVS encapsulation path. A TCP packet can be forced into
+the segmentation path by being smaller than a calculated clamped MSS,
+but larger than the advertised MSS.
 
-Fixes: 3e5014909b56 ("mptcp: cleanup MPJ subflow list handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    probe:ip_vs_in_hook: inner_mac_header=0x0 inner_network_header=0x0 mac_header=0x44 network_header=0x52
+    probe:ip_vs_in_hook: inner_mac_header=0x44 inner_network_header=0x52 mac_header=0x44 network_header=0x32
+    probe:dev_queue_xmit: inner_mac_header=0x44 inner_network_header=0x52 mac_header=0x44 network_header=0x32
+    probe:__skb_udp_tunnel_segment_L7: tnl_hlen=-2
+
+When using veth-based encapsulation, the interfaces are set to be
+mac-less, which does not preserve space for an inner mac header. This
+prevents this issue from occurring.
+
+In our real-world testing of sending a 32KB file we observed operation
+time increasing from ~75ms for veth-based encapsulation to over 1.5s
+using IPVS encapsulation due to retries from dropped packets.
+
+This changeset modifies the packet on the encapsulation path in
+ip_vs_tunnel_xmit() and ip_vs_tunnel_xmit_v6() to remove the inner mac
+header offset. This fixes UDP segmentation for both encapsulation types,
+and corrects the inner headers for any IPIP flows that may use it.
+
+Fixes: 84c0d5e96f3a ("ipvs: allow tunneling with gue encapsulation")
+Signed-off-by: Terin Stock <terin@cloudflare.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/netfilter/ipvs/ip_vs_xmit.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -846,12 +846,12 @@ static bool __mptcp_finish_join(struct m
- 	return true;
- }
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index 80448885c3d71..b452eb3ddcecb 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -1225,6 +1225,7 @@ ip_vs_tunnel_xmit(struct sk_buff *skb, struct ip_vs_conn *cp,
+ 	skb->transport_header = skb->network_header;
  
--static void __mptcp_flush_join_list(struct sock *sk)
-+static void __mptcp_flush_join_list(struct sock *sk, struct list_head *join_list)
- {
- 	struct mptcp_subflow_context *tmp, *subflow;
- 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	skb_set_inner_ipproto(skb, next_protocol);
++	skb_set_inner_mac_header(skb, skb_inner_network_offset(skb));
  
--	list_for_each_entry_safe(subflow, tmp, &msk->join_list, node) {
-+	list_for_each_entry_safe(subflow, tmp, join_list, node) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 		bool slow = lock_sock_fast(ssk);
+ 	if (tun_type == IP_VS_CONN_F_TUNNEL_TYPE_GUE) {
+ 		bool check = false;
+@@ -1373,6 +1374,7 @@ ip_vs_tunnel_xmit_v6(struct sk_buff *skb, struct ip_vs_conn *cp,
+ 	skb->transport_header = skb->network_header;
  
-@@ -3335,9 +3335,14 @@ static void mptcp_release_cb(struct sock
- 	for (;;) {
- 		unsigned long flags = (msk->cb_flags & MPTCP_FLAGS_PROCESS_CTX_NEED) |
- 				      msk->push_pending;
-+		struct list_head join_list;
-+
- 		if (!flags)
- 			break;
+ 	skb_set_inner_ipproto(skb, next_protocol);
++	skb_set_inner_mac_header(skb, skb_inner_network_offset(skb));
  
-+		INIT_LIST_HEAD(&join_list);
-+		list_splice_init(&msk->join_list, &join_list);
-+
- 		/* the following actions acquire the subflow socket lock
- 		 *
- 		 * 1) can't be invoked in atomic scope
-@@ -3348,8 +3353,9 @@ static void mptcp_release_cb(struct sock
- 		msk->push_pending = 0;
- 		msk->cb_flags &= ~flags;
- 		spin_unlock_bh(&sk->sk_lock.slock);
-+
- 		if (flags & BIT(MPTCP_FLUSH_JOIN_LIST))
--			__mptcp_flush_join_list(sk);
-+			__mptcp_flush_join_list(sk, &join_list);
- 		if (flags & BIT(MPTCP_PUSH_PENDING))
- 			__mptcp_push_pending(sk, 0);
- 		if (flags & BIT(MPTCP_RETRANSMIT))
+ 	if (tun_type == IP_VS_CONN_F_TUNNEL_TYPE_GUE) {
+ 		bool check = false;
+-- 
+2.39.2
+
 
 
