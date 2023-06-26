@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC4E773E801
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6639573E7CE
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231723AbjFZSUr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:20:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35146 "EHLO
+        id S231502AbjFZSTN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:19:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231727AbjFZSUi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:20:38 -0400
+        with ESMTP id S231617AbjFZSTH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81B4B10FC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:20:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C190E7F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 14DAE60F1E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAE0C433C8;
-        Mon, 26 Jun 2023 18:20:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B3AEC60F4F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A60C433C8;
+        Mon, 26 Jun 2023 18:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803631;
-        bh=OzeipN3I+iR/9kL2cyXVLietlRx4UE/bzV8CPzpaz8w=;
+        s=korg; t=1687803545;
+        bh=VJwSSW7VUjSIMxSRaaQ2XZoVmSOxinwNm4f1SFdGTQE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Huf2fippZWnSETLsS+uBCJmd/xfnGiFFf5EerW9uOfIXYJt8ZcxOk2Eu/Qllpk1xE
-         ByFVf7nQHgFNeMy1cXXB8GjAEXao7HF6mOCeYvkP9n2pMPnq9/iEUomRjg/ub5OOxX
-         QgCZ+TT0uUa5zIL/yS+9yYoQ/mPwZDjyg9+pTzr0=
+        b=VbzwgZEGsmqTzshxcSizLB5sJKyhzjuJtDDcErCJ952Hn9Xf1Rm7uaklngwwGRqqe
+         1NV1eRc9mKR8Ggj5U+Zthii3cpVgxJMkdfG3omCLC37YWdp4vC01+QTWx5kuJOL6d7
+         qzOBjTBuIBZVqXRS91izi2fyuOagMym0UlKFEt9U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Teresa Remmet <t.remmet@phytec.de>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>,
+        patches@lists.linux.dev,
+        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
+        Russ Weight <russell.h.weight@intel.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 089/199] regulator: pca9450: Fix LDO3OUT and LDO4OUT MASK
-Date:   Mon, 26 Jun 2023 20:09:55 +0200
-Message-ID: <20230626180809.503340143@linuxfoundation.org>
+Subject: [PATCH 6.3 090/199] regmap: spi-avmm: Fix regmap_bus max_raw_write
+Date:   Mon, 26 Jun 2023 20:09:56 +0200
+Message-ID: <20230626180809.543515215@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
 References: <20230626180805.643662628@linuxfoundation.org>
@@ -56,41 +57,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Teresa Remmet <t.remmet@phytec.de>
+From: Russ Weight <russell.h.weight@intel.com>
 
-[ Upstream commit 7257d930aadcd62d1c7971ab14f3b1126356abdc ]
+[ Upstream commit c8e796895e2310b6130e7577248da1d771431a77 ]
 
-L3_OUT and L4_OUT Bit fields range from Bit 0:4 and thus the
-mask should be 0x1F instead of 0x0F.
+The max_raw_write member of the regmap_spi_avmm_bus structure is defined
+as:
+	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT
 
-Fixes: 0935ff5f1f0a ("regulator: pca9450: add pca9450 pmic driver")
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Link: https://lore.kernel.org/r/20230614125240.3946519-1-t.remmet@phytec.de
+SPI_AVMM_VAL_SIZE == 4 and MAX_WRITE_CNT == 1 so this results in a
+maximum write transfer size of 4 bytes which provides only enough space to
+transfer the address of the target register. It provides no space for the
+value to be transferred. This bug became an issue (divide-by-zero in
+_regmap_raw_write()) after the following was accepted into mainline:
+
+commit 3981514180c9 ("regmap: Account for register length when chunking")
+
+Change max_raw_write to include space (4 additional bytes) for both the
+register address and value:
+
+	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT
+
+Fixes: 7f9fb67358a2 ("regmap: add Intel SPI Slave to AVMM Bus Bridge support")
+Reviewed-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
+Signed-off-by: Russ Weight <russell.h.weight@intel.com>
+Link: https://lore.kernel.org/r/20230620202824.380313-1-russell.h.weight@intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/regulator/pca9450.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/regmap/regmap-spi-avmm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/regulator/pca9450.h b/include/linux/regulator/pca9450.h
-index 3c01c2bf84f53..505c908dbb817 100644
---- a/include/linux/regulator/pca9450.h
-+++ b/include/linux/regulator/pca9450.h
-@@ -196,11 +196,11 @@ enum {
+diff --git a/drivers/base/regmap/regmap-spi-avmm.c b/drivers/base/regmap/regmap-spi-avmm.c
+index 4c2b94b3e30be..6af692844c196 100644
+--- a/drivers/base/regmap/regmap-spi-avmm.c
++++ b/drivers/base/regmap/regmap-spi-avmm.c
+@@ -660,7 +660,7 @@ static const struct regmap_bus regmap_spi_avmm_bus = {
+ 	.reg_format_endian_default = REGMAP_ENDIAN_NATIVE,
+ 	.val_format_endian_default = REGMAP_ENDIAN_NATIVE,
+ 	.max_raw_read = SPI_AVMM_VAL_SIZE * MAX_READ_CNT,
+-	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
++	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
+ 	.free_context = spi_avmm_bridge_ctx_free,
+ };
  
- /* PCA9450_REG_LDO3_VOLT bits */
- #define LDO3_EN_MASK			0xC0
--#define LDO3OUT_MASK			0x0F
-+#define LDO3OUT_MASK			0x1F
- 
- /* PCA9450_REG_LDO4_VOLT bits */
- #define LDO4_EN_MASK			0xC0
--#define LDO4OUT_MASK			0x0F
-+#define LDO4OUT_MASK			0x1F
- 
- /* PCA9450_REG_LDO5_VOLT bits */
- #define LDO5L_EN_MASK			0xC0
 -- 
 2.39.2
 
