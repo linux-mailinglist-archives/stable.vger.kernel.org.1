@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 439B573E98C
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E19E73EA11
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231191AbjFZShN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:37:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
+        id S231370AbjFZSnL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230290AbjFZShM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:37:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2626EAC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:37:12 -0700 (PDT)
+        with ESMTP id S232542AbjFZSnH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 710EC10D5
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:42:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7A3C60E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:37:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B96C433C9;
-        Mon, 26 Jun 2023 18:37:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CAB5260F57
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD33CC433C0;
+        Mon, 26 Jun 2023 18:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804631;
-        bh=kOLsJa76zqfPuOfw8I5+PGjN1wLCPIKt8iink4QIXMw=;
+        s=korg; t=1687804966;
+        bh=SHcMoxFrwRfz5gwCQL7N5+gLWRvbdjQwmFylLaBH9tU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eIJ40PMoh++zelM6JhbVkuP0K8sTqKKyUHuh6WEfa734BGL4aud88ChZsIPZc0uzk
-         VDZlgdHje0Ik27MMwZ9Yd1jRC9wvkm/bdqdCx5Qxv1RCWnZJz5d5+efTlrUUjalpic
-         d26ZePkJyf2j7UyX6uvf1qy3MooTtpi8sYHQyAQU=
+        b=Fb+1I5p4KYBSKGCmusiu3McJ4fbNEt9ZTu/GiAOwLtRqLAG7KozXLZQ0CDWG+Szvz
+         mm4c6aTg0qoTRqbM+XGp0h42wa3ygFQUtE7Tsg/scwks4ZRA4s48ezwdXqhiu/fEOm
+         Fox8nF+Xv2xKfDw0WAOnuGrl9W02rGs6yBgogNDM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 49/60] usb: gadget: udc: fix NULL dereference in remove()
+Subject: [PATCH 5.15 73/96] gpio: Allow per-parent interrupt data
 Date:   Mon, 26 Jun 2023 20:12:28 +0200
-Message-ID: <20230626180741.589129920@linuxfoundation.org>
+Message-ID: <20230626180750.013163172@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,37 +56,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 016da9c65fec9f0e78c4909ed9a0f2d567af6775 ]
+[ Upstream commit cfe6807d82e97e81c3209dca9448f091e1448a57 ]
 
-The "udc" pointer was never set in the probe() function so it will
-lead to a NULL dereference in udc_pci_remove() when we do:
+The core gpiolib code is able to deal with multiple interrupt parents
+for a single gpio irqchip. It however only allows a single piece
+of data to be conveyed to all flow handlers (either the gpio_chip
+or some other, driver-specific data).
 
-	usb_del_gadget_udc(&udc->gadget);
+This means that drivers have to go through some interesting dance
+to find the correct context, something that isn't great in interrupt
+context (see aebdc8abc9db86e2bd33070fc2f961012fff74b4 for a prime
+example).
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/ZG+A/dNpFWAlCChk@kili
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, offer an optional way for a pinctrl/gpio driver to provide
+an array of pointers which gets used to provide the correct context
+to the flow handler.
+
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20211026175815.52703-2-joey.gouly@arm.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: 8c00914e5438 ("gpiolib: Fix GPIO chip IRQ initialization restriction")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/amd5536udc_pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpio/gpiolib.c      |  9 +++++++--
+ include/linux/gpio/driver.h | 19 +++++++++++++++++--
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/amd5536udc_pci.c b/drivers/usb/gadget/udc/amd5536udc_pci.c
-index 362284057d307..a3d15c3fb82a9 100644
---- a/drivers/usb/gadget/udc/amd5536udc_pci.c
-+++ b/drivers/usb/gadget/udc/amd5536udc_pci.c
-@@ -171,6 +171,9 @@ static int udc_pci_probe(
- 		retval = -ENODEV;
- 		goto err_probe;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 8c041a8dd9d8f..099fe2e39bd63 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1578,9 +1578,14 @@ static int gpiochip_add_irqchip(struct gpio_chip *gc,
  	}
-+
-+	udc = dev;
-+
- 	return 0;
  
- err_probe:
+ 	if (gc->irq.parent_handler) {
+-		void *data = gc->irq.parent_handler_data ?: gc;
+-
+ 		for (i = 0; i < gc->irq.num_parents; i++) {
++			void *data;
++
++			if (gc->irq.per_parent_data)
++				data = gc->irq.parent_handler_data_array[i];
++			else
++				data = gc->irq.parent_handler_data ?: gc;
++
+ 			/*
+ 			 * The parent IRQ chip is already using the chip_data
+ 			 * for this IRQ chip, so our callbacks simply use the
+diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
+index 11c26ae7b4fa4..65df2ce96f0b1 100644
+--- a/include/linux/gpio/driver.h
++++ b/include/linux/gpio/driver.h
+@@ -168,11 +168,18 @@ struct gpio_irq_chip {
+ 
+ 	/**
+ 	 * @parent_handler_data:
++	 * @parent_handler_data_array:
+ 	 *
+ 	 * Data associated, and passed to, the handler for the parent
+-	 * interrupt.
++	 * interrupt. Can either be a single pointer if @per_parent_data
++	 * is false, or an array of @num_parents pointers otherwise.  If
++	 * @per_parent_data is true, @parent_handler_data_array cannot be
++	 * NULL.
+ 	 */
+-	void *parent_handler_data;
++	union {
++		void *parent_handler_data;
++		void **parent_handler_data_array;
++	};
+ 
+ 	/**
+ 	 * @num_parents:
+@@ -203,6 +210,14 @@ struct gpio_irq_chip {
+ 	 */
+ 	bool threaded;
+ 
++	/**
++	 * @per_parent_data:
++	 *
++	 * True if parent_handler_data_array describes a @num_parents
++	 * sized array to be used as parent data.
++	 */
++	bool per_parent_data;
++
+ 	/**
+ 	 * @init_hw: optional routine to initialize hardware before
+ 	 * an IRQ chip will be added. This is quite useful when
 -- 
 2.39.2
 
