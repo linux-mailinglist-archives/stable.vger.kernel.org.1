@@ -2,51 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF25373E919
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01E6573E9A9
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:38:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230449AbjFZScn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:32:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
+        id S232424AbjFZSir (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:38:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232213AbjFZSc1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F2989B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:17 -0700 (PDT)
+        with ESMTP id S232425AbjFZSin (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:38:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8891C10CC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:38:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C11EA60F24
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11C3C433C0;
-        Mon, 26 Jun 2023 18:32:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1337C60F4F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:38:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA4AC433C8;
+        Mon, 26 Jun 2023 18:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804336;
-        bh=R3xLn3LrKMnRyXEZ+DITys4ZK78OIrcJCLL2O/Ho3b0=;
+        s=korg; t=1687804710;
+        bh=YtoAU3eukpvvJErUwR5tBtOrs/6b3TjJ2QBaUkB+uMI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VTIt2PmDeHu6mOr3pIu0sf1qbfgqtBMel4gwHR0+8vHrwS2C8vN+Q+1r/q8JhVsRS
-         G9NdOCi5I+JbI5c+KFtECv4dAOlzVg0EoLDi7Cv1XaUEb57WUjl5kqAaWmQkDmsyN8
-         g0uu8cDayMsOnvhq2qU3Vgw5xKIHe9X8jRGLCEaw=
+        b=Zb3msFWL/bIrLoB6yu5g7MsWYSC1i68Dy+QI7v/tLYD9neh0EsFOLhyxhq18lpD8a
+         8o8MGrwkN9tVgFasTLfO/WoueHhuUQaYy/HNgYNWizHJEsPhRgDkUJsvUAk9/9k0Md
+         0C+nxCodxYQKHHTJsj+Vf5RT0sFA3Lm/g6COBYsk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/170] io_uring/net: use the correct msghdr union member in io_sendmsg_copy_hdr
+        patches@lists.linux.dev, Shuai Hu <hshuai@redhat.com>,
+        Zhenyu Zhang <zhenyzha@redhat.com>,
+        Gavin Shan <gshan@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Peter Xu <peterx@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Shaoqin Huang <shahuang@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.15 16/96] KVM: Avoid illegal stage2 mapping on invalid memory slot
 Date:   Mon, 26 Jun 2023 20:11:31 +0200
-Message-ID: <20230626180806.031333298@linuxfoundation.org>
+Message-ID: <20230626180747.600081893@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,49 +61,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Gavin Shan <gshan@redhat.com>
 
-[ Upstream commit 26fed83653d0154704cadb7afc418f315c7ac1f0 ]
+commit 2230f9e1171a2e9731422a14d1bbc313c0b719d1 upstream.
 
-Rather than assign the user pointer to msghdr->msg_control, assign it
-to msghdr->msg_control_user to make sparse happy. They are in a union
-so the end result is the same, but let's avoid new sparse warnings and
-squash this one.
+We run into guest hang in edk2 firmware when KSM is kept as running on
+the host. The edk2 firmware is waiting for status 0x80 from QEMU's pflash
+device (TYPE_PFLASH_CFI01) during the operation of sector erasing or
+buffered write. The status is returned by reading the memory region of
+the pflash device and the read request should have been forwarded to QEMU
+and emulated by it. Unfortunately, the read request is covered by an
+illegal stage2 mapping when the guest hang issue occurs. The read request
+is completed with QEMU bypassed and wrong status is fetched. The edk2
+firmware runs into an infinite loop with the wrong status.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202306210654.mDMcyMuB-lkp@intel.com/
-Fixes: cac9e4418f4c ("io_uring/net: save msghdr->msg_control for retries")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The illegal stage2 mapping is populated due to same page sharing by KSM
+at (C) even the associated memory slot has been marked as invalid at (B)
+when the memory slot is requested to be deleted. It's notable that the
+active and inactive memory slots can't be swapped when we're in the middle
+of kvm_mmu_notifier_change_pte() because kvm->mn_active_invalidate_count
+is elevated, and kvm_swap_active_memslots() will busy loop until it reaches
+to zero again. Besides, the swapping from the active to the inactive memory
+slots is also avoided by holding &kvm->srcu in __kvm_handle_hva_range(),
+corresponding to synchronize_srcu_expedited() in kvm_swap_active_memslots().
+
+  CPU-A                    CPU-B
+  -----                    -----
+                           ioctl(kvm_fd, KVM_SET_USER_MEMORY_REGION)
+                           kvm_vm_ioctl_set_memory_region
+                           kvm_set_memory_region
+                           __kvm_set_memory_region
+                           kvm_set_memslot(kvm, old, NULL, KVM_MR_DELETE)
+                             kvm_invalidate_memslot
+                               kvm_copy_memslot
+                               kvm_replace_memslot
+                               kvm_swap_active_memslots        (A)
+                               kvm_arch_flush_shadow_memslot   (B)
+  same page sharing by KSM
+  kvm_mmu_notifier_invalidate_range_start
+        :
+  kvm_mmu_notifier_change_pte
+    kvm_handle_hva_range
+    __kvm_handle_hva_range
+    kvm_set_spte_gfn            (C)
+        :
+  kvm_mmu_notifier_invalidate_range_end
+
+Fix the issue by skipping the invalid memory slot at (C) to avoid the
+illegal stage2 mapping so that the read request for the pflash's status
+is forwarded to QEMU and emulated by it. In this way, the correct pflash's
+status can be returned from QEMU to break the infinite loop in the edk2
+firmware.
+
+We tried a git-bisect and the first problematic commit is cd4c71835228 ("
+KVM: arm64: Convert to the gfn-based MMU notifier callbacks"). With this,
+clean_dcache_guest_page() is called after the memory slots are iterated
+in kvm_mmu_notifier_change_pte(). clean_dcache_guest_page() is called
+before the iteration on the memory slots before this commit. This change
+literally enlarges the racy window between kvm_mmu_notifier_change_pte()
+and memory slot removal so that we're able to reproduce the issue in a
+practical test case. However, the issue exists since commit d5d8184d35c9
+("KVM: ARM: Memory virtualization setup").
+
+Cc: stable@vger.kernel.org # v3.9+
+Fixes: d5d8184d35c9 ("KVM: ARM: Memory virtualization setup")
+Reported-by: Shuai Hu <hshuai@redhat.com>
+Reported-by: Zhenyu Zhang <zhenyzha@redhat.com>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+Message-Id: <20230615054259.14911-1-gshan@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ virt/kvm/kvm_main.c |   20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 41f828d93c899..2b44126a876ef 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -190,7 +190,7 @@ static int io_sendmsg_copy_hdr(struct io_kiocb *req,
- 	ret = sendmsg_copy_msghdr(&iomsg->msg, sr->umsg, sr->msg_flags,
- 					&iomsg->free_iov);
- 	/* save msg_control as sys_sendmsg() overwrites it */
--	sr->msg_control = iomsg->msg.msg_control;
-+	sr->msg_control = iomsg->msg.msg_control_user;
- 	return ret;
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -636,6 +636,24 @@ static __always_inline int kvm_handle_hv
+ 
+ 	return __kvm_handle_hva_range(kvm, &range);
+ }
++
++static bool kvm_change_spte_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
++{
++	/*
++	 * Skipping invalid memslots is correct if and only change_pte() is
++	 * surrounded by invalidate_range_{start,end}(), which is currently
++	 * guaranteed by the primary MMU.  If that ever changes, KVM needs to
++	 * unmap the memslot instead of skipping the memslot to ensure that KVM
++	 * doesn't hold references to the old PFN.
++	 */
++	WARN_ON_ONCE(!READ_ONCE(kvm->mn_active_invalidate_count));
++
++	if (range->slot->flags & KVM_MEMSLOT_INVALID)
++		return false;
++
++	return kvm_set_spte_gfn(kvm, range);
++}
++
+ static void kvm_mmu_notifier_change_pte(struct mmu_notifier *mn,
+ 					struct mm_struct *mm,
+ 					unsigned long address,
+@@ -656,7 +674,7 @@ static void kvm_mmu_notifier_change_pte(
+ 	if (!READ_ONCE(kvm->mmu_notifier_count))
+ 		return;
+ 
+-	kvm_handle_hva_range(mn, address, address + 1, pte, kvm_set_spte_gfn);
++	kvm_handle_hva_range(mn, address, address + 1, pte, kvm_change_spte_gfn);
  }
  
-@@ -289,7 +289,7 @@ int io_sendmsg(struct io_kiocb *req, unsigned int issue_flags)
- 
- 	if (req_has_async_data(req)) {
- 		kmsg = req->async_data;
--		kmsg->msg.msg_control = sr->msg_control;
-+		kmsg->msg.msg_control_user = sr->msg_control;
- 	} else {
- 		ret = io_sendmsg_copy_hdr(req, &iomsg);
- 		if (ret)
--- 
-2.39.2
-
+ void kvm_inc_notifier_count(struct kvm *kvm, unsigned long start,
 
 
