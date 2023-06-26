@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FA6673EA24
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 225AD73E93E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:34:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232532AbjFZSno (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:43:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
+        id S232280AbjFZSeA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:34:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232536AbjFZSno (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:44 -0400
+        with ESMTP id S232284AbjFZSd7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:33:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BA3D97
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1721FDA
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:33:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C44E360F4F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC971C433C0;
-        Mon, 26 Jun 2023 18:43:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9682A60F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:33:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E0DC433C0;
+        Mon, 26 Jun 2023 18:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805022;
-        bh=tZHgfLjBHocg2hzFGgSyjEEIjOmxhRnIKdHVUQjCmHo=;
+        s=korg; t=1687804436;
+        bh=s91xc+b49aRIeahADLlpFRGHjYPIxXCRT0Db06lUIgI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GMrN36aVZc76sxAOoOH19/vGNfgQInjQLr7XWKawTkigrJWs7yn/e7ZvuOydp+fOr
-         nbMhIRbAaZiH68kee1yjxZrCNPiKsSGT+3oPigiNQM5MFf8Tb7kPhudB4mmwZildsA
-         945vsB0gnUrDiwtuS1dd7EoiCLz6Mat8CchHUlRw=
+        b=f+4JKL6L1h2dJW3H085hkmB+QesE8bGefpkbPBJZw1xro4hSQLbUyX8I75B3tErNJ
+         9q8D/azD1iYQrKS9bkoSRIbREHzP59pftHkrN9CcvzksWyhDzr6vQs4Qek1fXoawMk
+         J/mnaxEJ6pjiowVJi0mB7T8+e/spMIyxvbU63Qpc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Marek Majkowski <marek@cloudflare.com>
-Subject: [PATCH 5.10 23/81] io_uring/net: save msghdr->msg_control for retries
+        patches@lists.linux.dev, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 156/170] s390/purgatory: disable branch profiling
 Date:   Mon, 26 Jun 2023 20:12:05 +0200
-Message-ID: <20230626180745.429110033@linuxfoundation.org>
+Message-ID: <20230626180807.475253438@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,62 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-Commit cac9e4418f4cbd548ccb065b3adcafe073f7f7d2 upstream.
+[ Upstream commit 03c5c83b70dca3729a3eb488e668e5044bd9a5ea ]
 
-If the application sets ->msg_control and we have to later retry this
-command, or if it got queued with IOSQE_ASYNC to begin with, then we
-need to retain the original msg_control value. This is due to the net
-stack overwriting this field with an in-kernel pointer, to copy it
-in. Hitting that path for the second time will now fail the copy from
-user, as it's attempting to copy from a non-user address.
+Avoid linker error for randomly generated config file that
+has CONFIG_BRANCH_PROFILE_NONE enabled and make it similar
+to riscv, x86 and also to commit 4bf3ec384edf ("s390: disable
+branch profiling for vdso").
 
-Cc: stable@vger.kernel.org # 5.10+
-Link: https://github.com/axboe/liburing/issues/880
-Reported-and-tested-by: Marek Majkowski <marek@cloudflare.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/s390/purgatory/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -581,6 +581,7 @@ struct io_sr_msg {
- 	size_t				len;
- 	size_t				done_io;
- 	struct io_buffer		*kbuf;
-+	void __user			*msg_control;
- };
- 
- struct io_open {
-@@ -4718,10 +4719,16 @@ static int io_setup_async_msg(struct io_
- static int io_sendmsg_copy_hdr(struct io_kiocb *req,
- 			       struct io_async_msghdr *iomsg)
- {
-+	struct io_sr_msg *sr = &req->sr_msg;
-+	int ret;
-+
- 	iomsg->msg.msg_name = &iomsg->addr;
- 	iomsg->free_iov = iomsg->fast_iov;
--	return sendmsg_copy_msghdr(&iomsg->msg, req->sr_msg.umsg,
-+	ret = sendmsg_copy_msghdr(&iomsg->msg, req->sr_msg.umsg,
- 				   req->sr_msg.msg_flags, &iomsg->free_iov);
-+	/* save msg_control as sys_sendmsg() overwrites it */
-+	sr->msg_control = iomsg->msg.msg_control;
-+	return ret;
- }
- 
- static int io_sendmsg_prep_async(struct io_kiocb *req)
-@@ -4778,6 +4785,8 @@ static int io_sendmsg(struct io_kiocb *r
- 		if (ret)
- 			return ret;
- 		kmsg = &iomsg;
-+	} else {
-+		kmsg->msg.msg_control = sr->msg_control;
- 	}
- 
- 	flags = req->sr_msg.msg_flags;
+diff --git a/arch/s390/purgatory/Makefile b/arch/s390/purgatory/Makefile
+index d237bc6841cb8..4cbf306b8181f 100644
+--- a/arch/s390/purgatory/Makefile
++++ b/arch/s390/purgatory/Makefile
+@@ -26,6 +26,7 @@ KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
+ KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
+ KBUILD_CFLAGS += -c -MD -Os -m64 -msoft-float -fno-common
+ KBUILD_CFLAGS += -fno-stack-protector
++KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+ KBUILD_CFLAGS += $(CLANG_FLAGS)
+ KBUILD_CFLAGS += $(call cc-option,-fno-PIE)
+ KBUILD_AFLAGS := $(filter-out -DCC_USING_EXPOLINE,$(KBUILD_AFLAGS))
+-- 
+2.39.2
+
 
 
