@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2E1273E951
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7DAF73EA4B
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:45:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232358AbjFZSeq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:34:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48638 "EHLO
+        id S232608AbjFZSpe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:45:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232359AbjFZSei (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:34:38 -0400
+        with ESMTP id S232030AbjFZSpd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:45:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585FF13D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:34:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E98AB97
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:45:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA99060F24
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:34:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072F3C433C8;
-        Mon, 26 Jun 2023 18:34:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8691460F4B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:45:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D09C433C0;
+        Mon, 26 Jun 2023 18:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804468;
-        bh=kIsf8AbSmXSzhxQYkllhPv2Z+84eoqLgyPp+vctmyI8=;
+        s=korg; t=1687805132;
+        bh=lCWJKD76psD+3yaHMyASNE7r59nJvshmND+wnZIW4Ic=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YrBcpANNytinjnb0A2SPCLwaUHFSGPg6A2sWEvRaTi//qzYDH260EI91BwA6Wo9UX
-         +RlGQXJ5pUaUK9ShJ6HUQo2EYAsvpT0bjOkEP/AkqgQ9tVoE8VOKhtSwGPf7dyU7CG
-         gYHSk4cs4pbBzy/55G+nt2aLAY5yASY3LyTQBd4o=
+        b=NKIkj1JRSKI29PJcKKB7/l57uUIxAOkiD+kKmyguuBAr/5RiTQj2KwpCBcxYAA1LA
+         crnTdyWxrHOoMGhNJiOWwLgLDvked4229/S6FkOQJrrcB5wQHcsYax2iFBU7lg0Nvz
+         35qxKlyU4+dUW+Nb0YET7eFXIUcw/uV8QFW0SC2E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andrey Smetanin <asmetanin@yandex-team.ru>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
+        patches@lists.linux.dev, Eyal Birger <eyal.birger@gmail.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/170] vhost_net: revert upend_idx only on retriable error
+Subject: [PATCH 5.10 33/81] xfrm: interface: rename xfrm_interface.c to xfrm_interface_core.c
 Date:   Mon, 26 Jun 2023 20:12:15 +0200
-Message-ID: <20230626180807.916601652@linuxfoundation.org>
+Message-ID: <20230626180745.818007641@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,58 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrey Smetanin <asmetanin@yandex-team.ru>
+From: Eyal Birger <eyal.birger@gmail.com>
 
-[ Upstream commit 1f5d2e3bab16369d5d4b4020a25db4ab1f4f082c ]
+[ Upstream commit ee9a113ab63468137802898bcd2c598998c96938 ]
 
-Fix possible virtqueue used buffers leak and corresponding stuck
-in case of temporary -EIO from sendmsg() which is produced by
-tun driver while backend device is not up.
+This change allows adding additional files to the xfrm_interface module.
 
-In case of no-retriable error and zcopy do not revert upend_idx
-to pass packet data (that is update used_idx in corresponding
-vhost_zerocopy_signal_used()) as if packet data has been
-transferred successfully.
-
-v2: set vq->heads[ubuf->desc].len equal to VHOST_DMA_DONE_LEN
-in case of fake successful transmit.
-
-Signed-off-by: Andrey Smetanin <asmetanin@yandex-team.ru>
-Message-Id: <20230424204411.24888-1-asmetanin@yandex-team.ru>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Andrey Smetanin <asmetanin@yandex-team.ru>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Link: https://lore.kernel.org/r/20221203084659.1837829-2-eyal.birger@gmail.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Stable-dep-of: a287f5b0cfc6 ("xfrm: Ensure policies always checked on XFRM-I input path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/xfrm/Makefile                                    | 2 ++
+ net/xfrm/{xfrm_interface.c => xfrm_interface_core.c} | 0
+ 2 files changed, 2 insertions(+)
+ rename net/xfrm/{xfrm_interface.c => xfrm_interface_core.c} (100%)
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 4c538b30fd76d..4418192ab8aaa 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -934,13 +934,18 @@ static void handle_tx_zerocopy(struct vhost_net *net, struct socket *sock)
+diff --git a/net/xfrm/Makefile b/net/xfrm/Makefile
+index 494aa744bfb9a..08a2870fdd36f 100644
+--- a/net/xfrm/Makefile
++++ b/net/xfrm/Makefile
+@@ -3,6 +3,8 @@
+ # Makefile for the XFRM subsystem.
+ #
  
- 		err = sock->ops->sendmsg(sock, &msg, len);
- 		if (unlikely(err < 0)) {
-+			bool retry = err == -EAGAIN || err == -ENOMEM || err == -ENOBUFS;
++xfrm_interface-$(CONFIG_XFRM_INTERFACE) += xfrm_interface_core.o
 +
- 			if (zcopy_used) {
- 				if (vq->heads[ubuf->desc].len == VHOST_DMA_IN_PROGRESS)
- 					vhost_net_ubuf_put(ubufs);
--				nvq->upend_idx = ((unsigned)nvq->upend_idx - 1)
--					% UIO_MAXIOV;
-+				if (retry)
-+					nvq->upend_idx = ((unsigned)nvq->upend_idx - 1)
-+						% UIO_MAXIOV;
-+				else
-+					vq->heads[ubuf->desc].len = VHOST_DMA_DONE_LEN;
- 			}
--			if (err == -EAGAIN || err == -ENOMEM || err == -ENOBUFS) {
-+			if (retry) {
- 				vhost_discard_vq_desc(vq, 1);
- 				vhost_net_enable_vq(net, vq);
- 				break;
+ obj-$(CONFIG_XFRM) := xfrm_policy.o xfrm_state.o xfrm_hash.o \
+ 		      xfrm_input.o xfrm_output.o \
+ 		      xfrm_sysctl.o xfrm_replay.o xfrm_device.o
+diff --git a/net/xfrm/xfrm_interface.c b/net/xfrm/xfrm_interface_core.c
+similarity index 100%
+rename from net/xfrm/xfrm_interface.c
+rename to net/xfrm/xfrm_interface_core.c
 -- 
 2.39.2
 
