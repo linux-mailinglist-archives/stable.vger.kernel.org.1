@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A22F973EA25
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F43473E992
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232563AbjFZSnr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:43:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56414 "EHLO
+        id S230083AbjFZShb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:37:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232536AbjFZSnr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170C7E3
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:46 -0700 (PDT)
+        with ESMTP id S231902AbjFZSha (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:37:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C532CED
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:37:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A54AD60F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB5CC433C0;
-        Mon, 26 Jun 2023 18:43:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 57F8960EFC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:37:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E36C433C8;
+        Mon, 26 Jun 2023 18:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805025;
-        bh=wtGs4uhsKJik0lGMw9Jhb9SVPn98NiSJvhHi2x/iA3k=;
+        s=korg; t=1687804648;
+        bh=gf9JUNT9sR1lZgqk+XYC+GiCEFSiEr66Utc40VXGGdc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JBoF1sYMZ/pbXoKRbSZ/XAN+W2bqLCa7vfizszzDWt3HUv5i7ppPVuBraYX37x50A
-         rTNxeuIKeCKoziBQDDs+MFjOuF6ozowlG27xrTsk4nEU+pjdrQPZhzP8HbLM6HZYY+
-         ezJW1DHKFGy0gnqV3SyJIASo3/Vp9rUDpH93Arko=
+        b=U4BzVFrEB5WOfyAXLhm9XsfPppjk381M0X/88kdn6QeanWIN2vR1rHsZS79dg/gEN
+         Y3Si0sBfA+h3hjOuQxkf05+fhKHCNQFmXH6KLBWQdPyTR8Y4bb3dvhm31uPnTvo7oO
+         7AMF446Mkvc7iXd8C513fKWRghTrV6bMR/DtWNA4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Metzmacher <metze@samba.org>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 24/81] io_uring/net: clear msg_controllen on partial sendmsg retry
+        patches@lists.linux.dev,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 27/60] xfrm: Linearize the skb after offloading if needed.
 Date:   Mon, 26 Jun 2023 20:12:06 +0200
-Message-ID: <20230626180745.479465640@linuxfoundation.org>
+Message-ID: <20230626180740.639985220@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
+References: <20230626180739.558575012@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,33 +56,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-Commit b1dc492087db0f2e5a45f1072a743d04618dd6be upstream.
+[ Upstream commit f015b900bc3285322029b4a7d132d6aeb0e51857 ]
 
-If we have cmsg attached AND we transferred partial data at least, clear
-msg_controllen on retry so we don't attempt to send that again.
+With offloading enabled, esp_xmit() gets invoked very late, from within
+validate_xmit_xfrm() which is after validate_xmit_skb() validates and
+linearizes the skb if the underlying device does not support fragments.
 
-Cc: stable@vger.kernel.org # 5.10+
-Fixes: cac9e4418f4c ("io_uring/net: save msghdr->msg_control for retries")
-Reported-by: Stefan Metzmacher <metze@samba.org>
-Reviewed-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+esp_output_tail() may add a fragment to the skb while adding the auth
+tag/ IV. Devices without the proper support will then send skb->data
+points to with the correct length so the packet will have garbage at the
+end. A pcap sniffer will claim that the proper data has been sent since
+it parses the skb properly.
+
+It is not affected with INET_ESP_OFFLOAD disabled.
+
+Linearize the skb after offloading if the sending hardware requires it.
+It was tested on v4, v6 has been adopted.
+
+Fixes: 7785bba299a8d ("esp: Add a software GRO codepath")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/esp4_offload.c | 3 +++
+ net/ipv6/esp6_offload.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -5064,6 +5064,8 @@ static int io_recvmsg(struct io_kiocb *r
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
- 		if (ret > 0 && io_net_retry(sock, flags)) {
-+			kmsg->msg.msg_controllen = 0;
-+			kmsg->msg.msg_control = NULL;
- 			sr->done_io += ret;
- 			req->flags |= REQ_F_PARTIAL_IO;
- 			return io_setup_async_msg(req, kmsg);
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index 8c0af30fb0679..5cd219d7e7466 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -283,6 +283,9 @@ static int esp_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features_
+ 
+ 	secpath_reset(skb);
+ 
++	if (skb_needs_linearize(skb, skb->dev->features) &&
++	    __skb_linearize(skb))
++		return -ENOMEM;
+ 	return 0;
+ }
+ 
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index 1c532638b2adf..e19c1844276f8 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -314,6 +314,9 @@ static int esp6_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features
+ 
+ 	secpath_reset(skb);
+ 
++	if (skb_needs_linearize(skb, skb->dev->features) &&
++	    __skb_linearize(skb))
++		return -ENOMEM;
+ 	return 0;
+ }
+ 
+-- 
+2.39.2
+
 
 
