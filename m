@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1B0073E80C
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34B2C73E8F7
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231901AbjFZSVa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:21:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36006 "EHLO
+        id S232148AbjFZSay (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:30:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231908AbjFZSVN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:21:13 -0400
+        with ESMTP id S232248AbjFZS3u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BFB52135
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:20:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BFA01FFF
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7402060F52
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED5EC433C8;
-        Mon, 26 Jun 2023 18:20:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD1FD60F4B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61E1C433C0;
+        Mon, 26 Jun 2023 18:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803649;
-        bh=R3Vk5F7FmMWJgM06Ha/dM0Ec6hFtbjnnz4zMpX9YyhY=;
+        s=korg; t=1687804186;
+        bh=oj101hoR/fdfdGZ83ZFxby2/WMYFUmeUz2gOxjohqbs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DeSswwQfVUgiLSZ2t7y+ryXXwaOm01M0ILZKM/UbCW7P7ZiusspklnZ17qCLT3aA0
-         7hzzKnKRWj1m5GWlzEpDCoXeAhkE7iA3phd4bGa2KUpCWAYlTiQ48An2xJAl5ndZ8X
-         tjsCIWdiASWAvFAEIE/WhTgLBllnnl9WEyyV3Y6Q=
+        b=C4S2TSsD5MstkX1WKYMVi3qzRMSZG5SX+jle/TITx0XpT2Q6Z8cwGw3sme0lMgve9
+         H41/i/cRjg/5rqT+IfXmjNjbHz1yGampkuQne/iwnMvexNxPWzaxMXs2MG7DeIq0BH
+         SUj+pq/GoYadPO6ISJ9hkla18SqwFATCBbwVJqMw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 133/199] netfilter: nf_tables: reject unbound anonymous set before commit phase
+        patches@lists.linux.dev,
+        Krister Johansen <kjlx@templeofstupid.com>,
+        Yonghong Song <yhs@fb.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.1 070/170] bpf: ensure main program has an extable
 Date:   Mon, 26 Jun 2023 20:10:39 +0200
-Message-ID: <20230626180811.460996068@linuxfoundation.org>
+Message-ID: <20230626180803.770068893@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,144 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-[ Upstream commit 938154b93be8cd611ddfd7bafc1849f3c4355201 ]
+commit 0108a4e9f3584a7a2c026d1601b0682ff7335d95 upstream.
 
-Add a new list to track set transaction and to check for unbound
-anonymous sets before entering the commit phase.
+When subprograms are in use, the main program is not jit'd after the
+subprograms because jit_subprogs sets a value for prog->bpf_func upon
+success.  Subsequent calls to the JIT are bypassed when this value is
+non-NULL.  This leads to a situation where the main program and its
+func[0] counterpart are both in the bpf kallsyms tree, but only func[0]
+has an extable.  Extables are only created during JIT.  Now there are
+two nearly identical program ksym entries in the tree, but only one has
+an extable.  Depending upon how the entries are placed, there's a chance
+that a fault will call search_extable on the aux with the NULL entry.
 
-Bail out at the end of the transaction handling if an anonymous set
-remains unbound.
+Since jit_subprogs already copies state from func[0] to the main
+program, include the extable pointer in this state duplication.
+Additionally, ensure that the copy of the main program in func[0] is not
+added to the bpf_prog_kallsyms table. Instead, let the main program get
+added later in bpf_prog_load().  This ensures there is only a single
+copy of the main program in the kallsyms table, and that its tag matches
+the tag observed by tooling like bpftool.
 
-Fixes: 96518518cc41 ("netfilter: add nftables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function programs")
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Acked-by: Yonghong Song <yhs@fb.com>
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Tested-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Link: https://lore.kernel.org/r/6de9b2f4b4724ef56efbb0339daaa66c8b68b1e7.1686616663.git.kjlx@templeofstupid.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |  3 +++
- net/netfilter/nf_tables_api.c     | 35 ++++++++++++++++++++++++++++---
- 2 files changed, 35 insertions(+), 3 deletions(-)
+ kernel/bpf/verifier.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index a0f63c7d1d687..730c63ceee567 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1565,6 +1565,7 @@ static inline void nft_set_elem_clear_busy(struct nft_set_ext *ext)
-  *	struct nft_trans - nf_tables object update in transaction
-  *
-  *	@list: used internally
-+ *	@binding_list: list of objects with possible bindings
-  *	@msg_type: message type
-  *	@put_net: ctx->net needs to be put
-  *	@ctx: transaction context
-@@ -1572,6 +1573,7 @@ static inline void nft_set_elem_clear_busy(struct nft_set_ext *ext)
-  */
- struct nft_trans {
- 	struct list_head		list;
-+	struct list_head		binding_list;
- 	int				msg_type;
- 	bool				put_net;
- 	struct nft_ctx			ctx;
-@@ -1716,6 +1718,7 @@ static inline int nft_request_module(struct net *net, const char *fmt, ...) { re
- struct nftables_pernet {
- 	struct list_head	tables;
- 	struct list_head	commit_list;
-+	struct list_head	binding_list;
- 	struct list_head	module_list;
- 	struct list_head	notify_list;
- 	struct mutex		commit_mutex;
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 4bf532a2a60b9..2e3a374db1b9f 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -153,6 +153,7 @@ static struct nft_trans *nft_trans_alloc_gfp(const struct nft_ctx *ctx,
- 		return NULL;
- 
- 	INIT_LIST_HEAD(&trans->list);
-+	INIT_LIST_HEAD(&trans->binding_list);
- 	trans->msg_type = msg_type;
- 	trans->ctx	= *ctx;
- 
-@@ -165,9 +166,15 @@ static struct nft_trans *nft_trans_alloc(const struct nft_ctx *ctx,
- 	return nft_trans_alloc_gfp(ctx, msg_type, size, GFP_KERNEL);
- }
- 
--static void nft_trans_destroy(struct nft_trans *trans)
-+static void nft_trans_list_del(struct nft_trans *trans)
- {
- 	list_del(&trans->list);
-+	list_del(&trans->binding_list);
-+}
-+
-+static void nft_trans_destroy(struct nft_trans *trans)
-+{
-+	nft_trans_list_del(trans);
- 	kfree(trans);
- }
- 
-@@ -359,6 +366,14 @@ static void nft_trans_commit_list_add_tail(struct net *net, struct nft_trans *tr
- {
- 	struct nftables_pernet *nft_net = nft_pernet(net);
- 
-+	switch (trans->msg_type) {
-+	case NFT_MSG_NEWSET:
-+		if (!nft_trans_set_update(trans) &&
-+		    nft_set_is_anonymous(nft_trans_set(trans)))
-+			list_add_tail(&trans->binding_list, &nft_net->binding_list);
-+		break;
-+	}
-+
- 	list_add_tail(&trans->list, &nft_net->commit_list);
- }
- 
-@@ -9027,7 +9042,7 @@ static void nf_tables_trans_destroy_work(struct work_struct *w)
- 	synchronize_rcu();
- 
- 	list_for_each_entry_safe(trans, next, &head, list) {
--		list_del(&trans->list);
-+		nft_trans_list_del(trans);
- 		nft_commit_release(trans);
- 	}
- }
-@@ -9394,6 +9409,19 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 		return 0;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -13819,9 +13819,10 @@ static int jit_subprogs(struct bpf_verif
  	}
  
-+	list_for_each_entry(trans, &nft_net->binding_list, binding_list) {
-+		switch (trans->msg_type) {
-+		case NFT_MSG_NEWSET:
-+			if (!nft_trans_set_update(trans) &&
-+			    nft_set_is_anonymous(nft_trans_set(trans)) &&
-+			    !nft_trans_set_bound(trans)) {
-+				pr_warn_once("nftables ruleset with unbound set\n");
-+				return -EINVAL;
-+			}
-+			break;
-+		}
-+	}
-+
- 	/* 0. Validate ruleset, otherwise roll back for error reporting. */
- 	if (nf_tables_validate(net) < 0)
- 		return -EAGAIN;
-@@ -9893,7 +9921,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 
- 	list_for_each_entry_safe_reverse(trans, next,
- 					 &nft_net->commit_list, list) {
--		list_del(&trans->list);
-+		nft_trans_list_del(trans);
- 		nf_tables_abort_release(trans);
+ 	/* finally lock prog and jit images for all functions and
+-	 * populate kallsysm
++	 * populate kallsysm. Begin at the first subprogram, since
++	 * bpf_prog_load will add the kallsyms for the main program.
+ 	 */
+-	for (i = 0; i < env->subprog_cnt; i++) {
++	for (i = 1; i < env->subprog_cnt; i++) {
+ 		bpf_prog_lock_ro(func[i]);
+ 		bpf_prog_kallsyms_add(func[i]);
  	}
- 
-@@ -10669,6 +10697,7 @@ static int __net_init nf_tables_init_net(struct net *net)
- 
- 	INIT_LIST_HEAD(&nft_net->tables);
- 	INIT_LIST_HEAD(&nft_net->commit_list);
-+	INIT_LIST_HEAD(&nft_net->binding_list);
- 	INIT_LIST_HEAD(&nft_net->module_list);
- 	INIT_LIST_HEAD(&nft_net->notify_list);
- 	mutex_init(&nft_net->commit_mutex);
--- 
-2.39.2
-
+@@ -13847,6 +13848,8 @@ static int jit_subprogs(struct bpf_verif
+ 	prog->jited = 1;
+ 	prog->bpf_func = func[0]->bpf_func;
+ 	prog->jited_len = func[0]->jited_len;
++	prog->aux->extable = func[0]->aux->extable;
++	prog->aux->num_exentries = func[0]->aux->num_exentries;
+ 	prog->aux->func = func;
+ 	prog->aux->func_cnt = env->subprog_cnt;
+ 	bpf_prog_jit_attempt_done(prog);
 
 
