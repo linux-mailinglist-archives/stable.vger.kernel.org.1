@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EF0373E7D8
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C756773E8C4
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231532AbjFZSTj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:19:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34424 "EHLO
+        id S232236AbjFZS33 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:29:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231519AbjFZSTd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:33 -0400
+        with ESMTP id S232085AbjFZS3K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B86ECCC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E265F1BCE
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:28:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BA9A60F39
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D995C433C8;
-        Mon, 26 Jun 2023 18:19:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F89C60F39
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:28:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD5FC433C9;
+        Mon, 26 Jun 2023 18:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803571;
-        bh=QnsAWiIGc5DFg3WiUAfmD8ul+vWcK0urVQdZLVTnyVs=;
+        s=korg; t=1687804115;
+        bh=0f0/ysHr7SC7W3rVZbJbbMfE++pxOQtsuiwSp4i5XLY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I/6e4n/GHuLIUGFixWrMnJOvqnDnHHTE0MkXi2G/KtCS1LCaFJ+ksRsa8X4zCpgRR
-         nYa69FRuBGhUWvAUVBor9QkyaDOxas6GsX6y61DfWTZOirGKHPnQgrtTOBqt2WprRH
-         cGaH7eXcS+7R3ydDrcj9jRg4f7M9CvrWsbAbuyqU=
+        b=1LQAXHOrwQnQ7Vdxc6fS25YfAyVWCxKqwsmdylD6pGzGhbwdh21RaDuycDJ9phpQU
+         3Kr3jTluhuOxWwSDOiEa3EF9I7SJvEXSSHAZBfjJNXSl+4+94ZjlVOt6q3m4x41XZ8
+         jzDBzMM5c8vPYIysl+STyiqfgvZv/rAT5jHLSYfA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        Magali Lemes <magali.lemes@canonical.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 107/199] selftests: net: tls: check if FIPS mode is enabled
-Date:   Mon, 26 Jun 2023 20:10:13 +0200
-Message-ID: <20230626180810.350373449@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+31837fe952932efc8fb9@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 045/170] nilfs2: fix buffer corruption due to concurrent device reads
+Date:   Mon, 26 Jun 2023 20:10:14 +0200
+Message-ID: <20230626180802.559743644@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,105 +56,147 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Magali Lemes <magali.lemes@canonical.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit d113c395c67b62fc0d3f2004c0afc406aca0a2b7 ]
+commit 679bd7ebdd315bf457a4740b306ae99f1d0a403d upstream.
 
-TLS selftests use the ChaCha20-Poly1305 and SM4 algorithms, which are not
-FIPS compliant. When fips=1, this set of tests fails. Add a check and only
-run these tests if not in FIPS mode.
+As a result of analysis of a syzbot report, it turned out that in three
+cases where nilfs2 allocates block device buffers directly via sb_getblk,
+concurrent reads to the device can corrupt the allocated buffers.
 
-Fixes: 4f336e88a870 ("selftests/tls: add CHACHA20-POLY1305 to tls selftests")
-Fixes: e506342a03c7 ("selftests/tls: add SM4 GCM/CCM to tls selftests")
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Nilfs2 uses sb_getblk for segment summary blocks, that make up a log
+header, and the super root block, that is the trailer, and when moving and
+writing the second super block after fs resize.
+
+In any of these, since the uptodate flag is not set when storing metadata
+to be written in the allocated buffers, the stored metadata will be
+overwritten if a device read of the same block occurs concurrently before
+the write.  This causes metadata corruption and misbehavior in the log
+write itself, causing warnings in nilfs_btree_assign() as reported.
+
+Fix these issues by setting an uptodate flag on the buffer head on the
+first or before modifying each buffer obtained with sb_getblk, and
+clearing the flag on failure.
+
+When setting the uptodate flag, the lock_buffer/unlock_buffer pair is used
+to perform necessary exclusive control, and the buffer is filled to ensure
+that uninitialized bytes are not mixed into the data read from others.  As
+for buffers for segment summary blocks, they are filled incrementally, so
+if the uptodate flag was unset on their allocation, set the flag and zero
+fill the buffer once at that point.
+
+Also, regarding the superblock move routine, the starting point of the
+memset call to zerofill the block is incorrectly specified, which can
+cause a buffer overflow on file systems with block sizes greater than
+4KiB.  In addition, if the superblock is moved within a large block, it is
+necessary to assume the possibility that the data in the superblock will
+be destroyed by zero-filling before copying.  So fix these potential
+issues as well.
+
+Link: https://lkml.kernel.org/r/20230609035732.20426-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+31837fe952932efc8fb9@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/00000000000030000a05e981f475@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/tls.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ fs/nilfs2/segbuf.c  |    6 ++++++
+ fs/nilfs2/segment.c |    7 +++++++
+ fs/nilfs2/super.c   |   23 ++++++++++++++++++++++-
+ 3 files changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
-index 2cbb12736596d..c0ad8385441f2 100644
---- a/tools/testing/selftests/net/tls.c
-+++ b/tools/testing/selftests/net/tls.c
-@@ -25,6 +25,8 @@
- #define TLS_PAYLOAD_MAX_LEN 16384
- #define SOL_TLS 282
+--- a/fs/nilfs2/segbuf.c
++++ b/fs/nilfs2/segbuf.c
+@@ -101,6 +101,12 @@ int nilfs_segbuf_extend_segsum(struct ni
+ 	if (unlikely(!bh))
+ 		return -ENOMEM;
  
-+static int fips_enabled;
++	lock_buffer(bh);
++	if (!buffer_uptodate(bh)) {
++		memset(bh->b_data, 0, bh->b_size);
++		set_buffer_uptodate(bh);
++	}
++	unlock_buffer(bh);
+ 	nilfs_segbuf_add_segsum_buffer(segbuf, bh);
+ 	return 0;
+ }
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -979,10 +979,13 @@ static void nilfs_segctor_fill_in_super_
+ 	unsigned int isz, srsz;
+ 
+ 	bh_sr = NILFS_LAST_SEGBUF(&sci->sc_segbufs)->sb_super_root;
 +
- struct tls_crypto_info_keys {
- 	union {
- 		struct tls12_crypto_info_aes_gcm_128 aes128;
-@@ -235,7 +237,7 @@ FIXTURE_VARIANT(tls)
- {
- 	uint16_t tls_version;
- 	uint16_t cipher_type;
--	bool nopad;
-+	bool nopad, fips_non_compliant;
- };
++	lock_buffer(bh_sr);
+ 	raw_sr = (struct nilfs_super_root *)bh_sr->b_data;
+ 	isz = nilfs->ns_inode_size;
+ 	srsz = NILFS_SR_BYTES(isz);
  
- FIXTURE_VARIANT_ADD(tls, 12_aes_gcm)
-@@ -254,24 +256,28 @@ FIXTURE_VARIANT_ADD(tls, 12_chacha)
- {
- 	.tls_version = TLS_1_2_VERSION,
- 	.cipher_type = TLS_CIPHER_CHACHA20_POLY1305,
-+	.fips_non_compliant = true,
- };
- 
- FIXTURE_VARIANT_ADD(tls, 13_chacha)
- {
- 	.tls_version = TLS_1_3_VERSION,
- 	.cipher_type = TLS_CIPHER_CHACHA20_POLY1305,
-+	.fips_non_compliant = true,
- };
- 
- FIXTURE_VARIANT_ADD(tls, 13_sm4_gcm)
- {
- 	.tls_version = TLS_1_3_VERSION,
- 	.cipher_type = TLS_CIPHER_SM4_GCM,
-+	.fips_non_compliant = true,
- };
- 
- FIXTURE_VARIANT_ADD(tls, 13_sm4_ccm)
- {
- 	.tls_version = TLS_1_3_VERSION,
- 	.cipher_type = TLS_CIPHER_SM4_CCM,
-+	.fips_non_compliant = true,
- };
- 
- FIXTURE_VARIANT_ADD(tls, 12_aes_ccm)
-@@ -311,6 +317,9 @@ FIXTURE_SETUP(tls)
- 	int one = 1;
- 	int ret;
- 
-+	if (fips_enabled && variant->fips_non_compliant)
-+		SKIP(return, "Unsupported cipher in FIPS mode");
-+
- 	tls_crypto_info_init(variant->tls_version, variant->cipher_type,
- 			     &tls12);
- 
-@@ -1820,4 +1829,17 @@ TEST(tls_v6ops) {
- 	close(sfd);
++	raw_sr->sr_sum = 0;  /* Ensure initialization within this update */
+ 	raw_sr->sr_bytes = cpu_to_le16(srsz);
+ 	raw_sr->sr_nongc_ctime
+ 		= cpu_to_le64(nilfs_doing_gc() ?
+@@ -996,6 +999,8 @@ static void nilfs_segctor_fill_in_super_
+ 	nilfs_write_inode_common(nilfs->ns_sufile, (void *)raw_sr +
+ 				 NILFS_SR_SUFILE_OFFSET(isz), 1);
+ 	memset((void *)raw_sr + srsz, 0, nilfs->ns_blocksize - srsz);
++	set_buffer_uptodate(bh_sr);
++	unlock_buffer(bh_sr);
  }
  
-+static void __attribute__((constructor)) fips_check(void) {
-+	int res;
-+	FILE *f;
+ static void nilfs_redirty_inodes(struct list_head *head)
+@@ -1778,6 +1783,7 @@ static void nilfs_abort_logs(struct list
+ 	list_for_each_entry(segbuf, logs, sb_list) {
+ 		list_for_each_entry(bh, &segbuf->sb_segsum_buffers,
+ 				    b_assoc_buffers) {
++			clear_buffer_uptodate(bh);
+ 			if (bh->b_page != bd_page) {
+ 				if (bd_page)
+ 					end_page_writeback(bd_page);
+@@ -1789,6 +1795,7 @@ static void nilfs_abort_logs(struct list
+ 				    b_assoc_buffers) {
+ 			clear_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
++				clear_buffer_uptodate(bh);
+ 				if (bh->b_page != bd_page) {
+ 					end_page_writeback(bd_page);
+ 					bd_page = bh->b_page;
+--- a/fs/nilfs2/super.c
++++ b/fs/nilfs2/super.c
+@@ -372,10 +372,31 @@ static int nilfs_move_2nd_super(struct s
+ 		goto out;
+ 	}
+ 	nsbp = (void *)nsbh->b_data + offset;
+-	memset(nsbp, 0, nilfs->ns_blocksize);
+ 
++	lock_buffer(nsbh);
+ 	if (sb2i >= 0) {
++		/*
++		 * The position of the second superblock only changes by 4KiB,
++		 * which is larger than the maximum superblock data size
++		 * (= 1KiB), so there is no need to use memmove() to allow
++		 * overlap between source and destination.
++		 */
+ 		memcpy(nsbp, nilfs->ns_sbp[sb2i], nilfs->ns_sbsize);
 +
-+	f = fopen("/proc/sys/crypto/fips_enabled", "r");
-+	if (f) {
-+		res = fscanf(f, "%d", &fips_enabled);
-+		if (res != 1)
-+			ksft_print_msg("ERROR: Couldn't read /proc/sys/crypto/fips_enabled\n");
-+		fclose(f);
++		/*
++		 * Zero fill after copy to avoid overwriting in case of move
++		 * within the same block.
++		 */
++		memset(nsbh->b_data, 0, offset);
++		memset((void *)nsbp + nilfs->ns_sbsize, 0,
++		       nsbh->b_size - offset - nilfs->ns_sbsize);
++	} else {
++		memset(nsbh->b_data, 0, nsbh->b_size);
 +	}
-+}
++	set_buffer_uptodate(nsbh);
++	unlock_buffer(nsbh);
 +
- TEST_HARNESS_MAIN
--- 
-2.39.2
-
++	if (sb2i >= 0) {
+ 		brelse(nilfs->ns_sbh[sb2i]);
+ 		nilfs->ns_sbh[sb2i] = nsbh;
+ 		nilfs->ns_sbp[sb2i] = nsbp;
 
 
