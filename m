@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D91373E9E0
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35C5C73E984
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232491AbjFZSlB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:41:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53546 "EHLO
+        id S230511AbjFZSgw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:36:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232505AbjFZSk6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:40:58 -0400
+        with ESMTP id S232367AbjFZSgv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:36:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91C8A1A4
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:40:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDBC7FA
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:36:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 203CB60F4B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24885C433C8;
-        Mon, 26 Jun 2023 18:40:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53A0C60F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:36:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4E2C433C8;
+        Mon, 26 Jun 2023 18:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804856;
-        bh=4tK1bHvRQOjHBAkkXZ32+tduFDvpNqffkkmoOKkX/JM=;
+        s=korg; t=1687804607;
+        bh=3MFVvBzskfxez+OXlmwnCza4I97JtrDApIf947jMKUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ua5cDzGVmCusieR1+tz4lvtwFvulJof0iYWHL9hNzxK8qxnOmgsIQqbMjQHR+udNW
-         GfuUvA8OkBPTDD2dutzGTL70lRbme40NIvHk6e3SK6u31ZBfnwt/1iR5cSA7Fh8f2s
-         bqi5ZURvW04RHE5DH5T4e3mdHqbxIZ01k+LNS6O8=
+        b=X3VLurlocGQuZ5Jp77JkXC8Z53b5q4HUc6WIgD9VLec3vTcT0ceQjfTv/rO3/5mQO
+         iLVKmhki6CzWjVtlIcPQgovxvm8Nem7eMk54VKhACBB0ZC7s0tnynmTDECKZIo97Ay
+         IiTsvSwU4qb6cXIU+3ZEG288qQ5xHlzck4+P+VjY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 64/96] netfilter: nf_tables: disallow element updates of bound anonymous sets
-Date:   Mon, 26 Jun 2023 20:12:19 +0200
-Message-ID: <20230626180749.602845458@linuxfoundation.org>
+Subject: [PATCH 5.4 41/60] netfilter: nfnetlink_osf: fix module autoload
+Date:   Mon, 26 Jun 2023 20:12:20 +0200
+Message-ID: <20230626180741.243796658@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
+References: <20230626180739.558575012@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,44 +56,36 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit c88c535b592d3baeee74009f3eceeeaf0fdd5e1b ]
+[ Upstream commit 62f9a68a36d4441a6c412b81faed102594bc6670 ]
 
-Anonymous sets come with NFT_SET_CONSTANT from userspace. Although API
-allows to create anonymous sets without NFT_SET_CONSTANT, it makes no
-sense to allow to add and to delete elements for bound anonymous sets.
+Move the alias from xt_osf to nfnetlink_osf.
 
-Fixes: 96518518cc41 ("netfilter: add nftables")
+Fixes: f9324952088f ("netfilter: nfnetlink_osf: extract nfnetlink_subsystem code from xt_osf.c")
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/netfilter/nfnetlink_osf.c | 1 +
+ net/netfilter/xt_osf.c        | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 120b885fb44a6..c4e3aaeeb795c 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6332,7 +6332,8 @@ static int nf_tables_newsetelem(struct sk_buff *skb,
- 	if (IS_ERR(set))
- 		return PTR_ERR(set);
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 51e3953b414c0..9dbaa5ce24e51 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -440,3 +440,4 @@ module_init(nfnl_osf_init);
+ module_exit(nfnl_osf_fini);
  
--	if (!list_empty(&set->bindings) && set->flags & NFT_SET_CONSTANT)
-+	if (!list_empty(&set->bindings) &&
-+	    (set->flags & (NFT_SET_CONSTANT | NFT_SET_ANONYMOUS)))
- 		return -EBUSY;
- 
- 	nft_ctx_init(&ctx, net, skb, info->nlh, family, table, NULL, nla);
-@@ -6602,7 +6603,9 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
- 	set = nft_set_lookup(table, nla[NFTA_SET_ELEM_LIST_SET], genmask);
- 	if (IS_ERR(set))
- 		return PTR_ERR(set);
--	if (!list_empty(&set->bindings) && set->flags & NFT_SET_CONSTANT)
-+
-+	if (!list_empty(&set->bindings) &&
-+	    (set->flags & (NFT_SET_CONSTANT | NFT_SET_ANONYMOUS)))
- 		return -EBUSY;
- 
- 	nft_ctx_init(&ctx, net, skb, info->nlh, family, table, NULL, nla);
+ MODULE_LICENSE("GPL");
++MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_OSF);
+diff --git a/net/netfilter/xt_osf.c b/net/netfilter/xt_osf.c
+index e1990baf3a3b7..dc9485854002a 100644
+--- a/net/netfilter/xt_osf.c
++++ b/net/netfilter/xt_osf.c
+@@ -71,4 +71,3 @@ MODULE_AUTHOR("Evgeniy Polyakov <zbr@ioremap.net>");
+ MODULE_DESCRIPTION("Passive OS fingerprint matching.");
+ MODULE_ALIAS("ipt_osf");
+ MODULE_ALIAS("ip6t_osf");
+-MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_OSF);
 -- 
 2.39.2
 
