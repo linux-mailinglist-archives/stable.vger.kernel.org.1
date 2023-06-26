@@ -2,144 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAE8273DAF0
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 11:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A539A73DB1C
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 11:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229796AbjFZJNp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 05:13:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55794 "EHLO
+        id S229626AbjFZJTj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 05:19:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229728AbjFZJNO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 05:13:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15142E1;
-        Mon, 26 Jun 2023 02:11:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 963D160D2C;
-        Mon, 26 Jun 2023 09:11:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62601C433C0;
-        Mon, 26 Jun 2023 09:11:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687770715;
-        bh=iLYlNZZUWYeCPAHYoPNaCrwZSkSOhiZiARtAbZAablk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nfKAbQ31xMawaI7b/PDj9Cw9hIyccjj3JE9Tll9auIp659XVpCP2/iCO6Cu+Xydte
-         Mxl7bm+5+OpbJphkikCTk8/XOM+Ch356hqj3JdS48s1MSO6toqhfh7+wICZAGlgCHV
-         R6I2dmYDtgN56gj4N3nZ1bE96HUBfEcroQfK3hOXTh8kF4pnz3wxEBdsv0zKifvkTg
-         ntk4Ey0JKOliEpFxAH3T4rtyoAtXqsFYU736z/7czN25I78b7TDYTXbOtSDbTK5vAr
-         5ofNw01kFoMM7kN8Pxmwl0tJ2g8IKAmcRReZvP3fkDT001MrqKvJwuN6vuf0a3eaYS
-         zrLIqIim5HPdg==
-Date:   Mon, 26 Jun 2023 10:11:49 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Greg KH <greg@kroah.com>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linux-tip-commits@vger.kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
-Subject: Re: [tip: x86/urgent] x86/mm: Avoid using set_pgd() outside of real
- PGD pages
-Message-ID: <20230626091149.GA10378@google.com>
-References: <168694160067.404.13343792487331756749.tip-bot2@tip-bot2>
- <20230626085450.GA1344014@google.com>
- <2023062651-random-enjoyment-8838@gregkh>
+        with ESMTP id S229574AbjFZJTK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 05:19:10 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E2D2962;
+        Mon, 26 Jun 2023 02:16:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687770992; x=1719306992;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=c8zPgWJY6SC59lOQdr8vPRntj39QqPiFfis3EjYD9Kg=;
+  b=ZcMZON/+qj1pnMFopS7bG7uQmgjjaIGSPjEjo+S3ZEPh0E8JhCsdWQXn
+   Dr5DNtBK7iKJU3/UTuBHTpVWsKvS9d2a38Yxg29YoBoLd+PY5F72w7g/7
+   a2bC6Gz2lBD2pLsGyzhWBrT+cLNfMowgWbsKRYeO3bi2T3EiVv4XPpybR
+   L9ahOi82wFIR6JyISWS6NHhjd+59wWmmrM8hBYaIPY+Jn+vN4p6LaMrbr
+   YUNv4nTtpQjdjtqhgN096oic3TaXZZ9h68Nt/Rq9wrWHzmljPJJ0jPBAT
+   ntipHYL0gxFX7vyR1UQYjBaMR2vuRwSIYH7vuSWnL6MQiVfOcIS07/MvL
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10752"; a="345974083"
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
+   d="scan'208";a="345974083"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 02:15:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10752"; a="781357733"
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
+   d="scan'208";a="781357733"
+Received: from ettammin-mobl1.ger.corp.intel.com (HELO thellstr-mobl1.intel.com) ([10.249.254.105])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 02:15:02 -0700
+From:   =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
+        <thomas.hellstrom@linux.intel.com>
+To:     intel-xe@lists.freedesktop.org
+Cc:     =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
+        <thomas.hellstrom@linux.intel.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= 
+        <ckoenig.leichtzumerken@gmail.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        "Andi Shyti" <andi.shyti@linux.intel.com>
+Subject: [PATCH v2 1/4] drm/ttm: Fix ttm_lru_bulk_move_pos_tail()
+Date:   Mon, 26 Jun 2023 11:14:47 +0200
+Message-Id: <20230626091450.14757-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230626091450.14757-1-thomas.hellstrom@linux.intel.com>
+References: <20230626091450.14757-1-thomas.hellstrom@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023062651-random-enjoyment-8838@gregkh>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 26 Jun 2023, Greg KH wrote:
+The value of pos->first was not updated when the first resource of the
+range was moved. This could lead to errors like the one below.
+Fix this by updating pos->first when needed.
 
-> On Mon, Jun 26, 2023 at 09:54:50AM +0100, Lee Jones wrote:
-> > Dear Stable,
-> > 
-> > On Fri, 16 Jun 2023, tip-bot2 for Lee Jones wrote:
-> > 
-> > > The following commit has been merged into the x86/urgent branch of tip:
-> > > 
-> > > Commit-ID:     d082d48737c75d2b3cc1f972b8c8674c25131534
-> > > Gitweb:        https://git.kernel.org/tip/d082d48737c75d2b3cc1f972b8c8674c25131534
-> > > Author:        Lee Jones <lee@kernel.org>
-> > > AuthorDate:    Wed, 14 Jun 2023 17:38:54 +01:00
-> > > Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-> > > CommitterDate: Fri, 16 Jun 2023 11:46:42 -07:00
-> > > 
-> > > x86/mm: Avoid using set_pgd() outside of real PGD pages
-> > > 
-> > > KPTI keeps around two PGDs: one for userspace and another for the
-> > > kernel. Among other things, set_pgd() contains infrastructure to
-> > > ensure that updates to the kernel PGD are reflected in the user PGD
-> > > as well.
-> > > 
-> > > One side-effect of this is that set_pgd() expects to be passed whole
-> > > pages.  Unfortunately, init_trampoline_kaslr() passes in a single entry:
-> > > 'trampoline_pgd_entry'.
-> > > 
-> > > When KPTI is on, set_pgd() will update 'trampoline_pgd_entry' (an
-> > > 8-Byte globally stored [.bss] variable) and will then proceed to
-> > > replicate that value into the non-existent neighboring user page
-> > > (located +4k away), leading to the corruption of other global [.bss]
-> > > stored variables.
-> > > 
-> > > Fix it by directly assigning 'trampoline_pgd_entry' and avoiding
-> > > set_pgd().
-> > > 
-> > > [ dhansen: tweak subject and changelog ]
-> > > 
-> > > Fixes: 0925dda5962e ("x86/mm/KASLR: Use only one PUD entry for real mode trampoline")
-> > > Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > Signed-off-by: Lee Jones <lee@kernel.org>
-> > > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > Cc: <stable@vger.kernel.org>
-> > > Link: https://lore.kernel.org/all/20230614163859.924309-1-lee@kernel.org/g
-> > > ---
-> > >  arch/x86/mm/kaslr.c | 8 ++++----
-> > >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
-> > > index 557f0fe..37db264 100644
-> > > --- a/arch/x86/mm/kaslr.c
-> > > +++ b/arch/x86/mm/kaslr.c
-> > > @@ -172,10 +172,10 @@ void __meminit init_trampoline_kaslr(void)
-> > >  		set_p4d(p4d_tramp,
-> > >  			__p4d(_KERNPG_TABLE | __pa(pud_page_tramp)));
-> > >  
-> > > -		set_pgd(&trampoline_pgd_entry,
-> > > -			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp)));
-> > > +		trampoline_pgd_entry =
-> > > +			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp));
-> > >  	} else {
-> > > -		set_pgd(&trampoline_pgd_entry,
-> > > -			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp)));
-> > > +		trampoline_pgd_entry =
-> > > +			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp));
-> > >  	}
-> > >  }
-> > 
-> > Could we have this expedited please?  There are users waiting for it.
-> > 
-> > Upstream commit is:
-> > 
-> >   d082d48737c75 ("x86/mm: Avoid using set_pgd() outside of real PGD pages")
-> 
-> Please look through your emails you got this weekend, it's already
-> queued up in the following stable trees:
-> 	queue-5.4 queue-5.10 queue-5.15 queue-6.1 queue-6.3
+<3> [218.963342] BUG: KASAN: null-ptr-deref in ttm_lru_bulk_move_del+0xc5/0x180 [ttm]
+<3> [218.963456] Read of size 8 at addr 0000000000000038 by task xe_evict/1529
+<3> [218.963546]
+<3> [218.963566] CPU: 0 PID: 1529 Comm: xe_evict Not tainted 6.3.0-xe #1
+<3> [218.963664] Hardware name: Intel Corporation Tiger Lake Client Platform/TigerLake H DDR4 SODIMM RVP, BIOS TGLSFWI1.R00.4064.A00.2102041619 02/04/2021
+<3> [218.963841] Call Trace:
+<3> [218.963881]  <TASK>
+<3> [218.963915]  dump_stack_lvl+0x64/0xb0
+<3> [218.963976]  print_report+0x3e5/0x600
+<3> [218.964036]  ? ttm_lru_bulk_move_del+0xc5/0x180 [ttm]
+<3> [218.964127]  kasan_report+0x96/0xc0
+<3> [218.964183]  ? ttm_lru_bulk_move_del+0xc5/0x180 [ttm]
+<3> [218.964276]  ttm_lru_bulk_move_del+0xc5/0x180 [ttm]
+<3> [218.964365]  ttm_bo_set_bulk_move+0x92/0x140 [ttm]
+<3> [218.964454]  xe_gem_object_close+0xc8/0x120 [xe]
+<3> [218.964675]  ? __pfx_xe_gem_object_close+0x10/0x10 [xe]
+<3> [218.964908]  ? drm_gem_object_handle_put_unlocked+0xc7/0x170 [drm]
+<3> [218.965071]  drm_gem_object_release_handle+0x45/0x80 [drm]
+<3> [218.965220]  ? __pfx_drm_gem_object_release_handle+0x10/0x10 [drm]
+<3> [218.965381]  idr_for_each+0xc9/0x180
+<3> [218.965437]  ? __pfx_idr_for_each+0x10/0x10
+<3> [218.965504]  drm_gem_release+0x20/0x30 [drm]
+<3> [218.965637]  drm_file_free.part.0+0x4cb/0x4f0 [drm]
+<3> [218.965778]  ? drm_close_helper.isra.0+0xb7/0xe0 [drm]
+<3> [218.965921]  drm_release_noglobal+0x49/0x90 [drm]
+<3> [218.966061]  __fput+0x122/0x450
+<3> [218.966115]  task_work_run+0xfe/0x190
+<3> [218.966175]  ? __pfx_task_work_run+0x10/0x10
+<3> [218.966239]  ? do_raw_spin_unlock+0xa7/0x140
+<3> [218.966308]  do_exit+0x55f/0x1430
+<3> [218.966364]  ? __pfx_lock_release+0x10/0x10
+<3> [218.966431]  ? do_raw_spin_lock+0x11d/0x1e0
+<3> [218.966498]  ? __pfx_do_exit+0x10/0x10
+<3> [218.966554]  ? __pfx_do_raw_spin_lock+0x10/0x10
+<3> [218.966625]  ? mark_held_locks+0x24/0x90
+<3> [218.966688]  ? lockdep_hardirqs_on_prepare+0x136/0x210
+<3> [218.966768]  do_group_exit+0x68/0x110
+<3> [218.966828]  __x64_sys_exit_group+0x2c/0x30
+<3> [218.966896]  do_syscall_64+0x3c/0x90
+<3> [218.966955]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+<3> [218.967035] RIP: 0033:0x7f77b194f146
+<3> [218.967094] Code: Unable to access opcode bytes at 0x7f77b194f11c.
+<3> [218.967174] RSP: 002b:00007ffc64791188 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+<3> [218.967271] RAX: ffffffffffffffda RBX: 00007f77b1a548a0 RCX: 00007f77b194f146
+<3> [218.967364] RDX: 0000000000000062 RSI: 000000000000003c RDI: 0000000000000062
+<3> [218.967458] RBP: 0000000000000062 R08: 00000000000000e7 R09: ffffffffffffff78
+<3> [218.967553] R10: 0000000000000058 R11: 0000000000000246 R12: 00007f77b1a548a0
+<3> [218.967648] R13: 0000000000000003 R14: 00007f77b1a5d2e8 R15: 0000000000000000
+<3> [218.967745]  </TASK>
 
-Haven't reached those ones yet - only 160 to go!
+Fixes: fee2ede15542 ("drm/ttm: rework bulk move handling v5")
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: "Christian König" <ckoenig.leichtzumerken@gmail.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.19+
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/411
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ drivers/gpu/drm/ttm/ttm_resource.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thank you though, very much appreciated.
-
+diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
+index 7333f7a87a2f..cb05e0a36576 100644
+--- a/drivers/gpu/drm/ttm/ttm_resource.c
++++ b/drivers/gpu/drm/ttm/ttm_resource.c
+@@ -86,6 +86,8 @@ static void ttm_lru_bulk_move_pos_tail(struct ttm_lru_bulk_move_pos *pos,
+ 				       struct ttm_resource *res)
+ {
+ 	if (pos->last != res) {
++		if (pos->first == res)
++			pos->first = list_next_entry(res, lru);
+ 		list_move(&res->lru, &pos->last->lru);
+ 		pos->last = res;
+ 	}
 -- 
-Lee Jones [李琼斯]
+2.40.1
+
