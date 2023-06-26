@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7339D73E96D
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2690473E87A
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232370AbjFZSfz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:35:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49544 "EHLO
+        id S231854AbjFZS02 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:26:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232372AbjFZSfy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:35:54 -0400
+        with ESMTP id S231941AbjFZS0J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6880394
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:35:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06ECD2728
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:25:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 05D7560F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:35:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111EAC433C9;
-        Mon, 26 Jun 2023 18:35:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAE4660F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:25:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36DEC433C0;
+        Mon, 26 Jun 2023 18:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804552;
-        bh=v7pmnwCE80ZhgGzf3m+4GZLv86wicdfa/gHJOKXld+k=;
+        s=korg; t=1687803915;
+        bh=kdD8J7GcY2y5eT3dPLJBHF7NfR/0NZ0d3NkOGAaTCB8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mwne/lCdyzprHzuR25v4CdqqOV1+pxLO+qidNEPa1swMiYJTEwBlPOOYnA1y0Ewwm
-         DelSeH4EdntByEqnDRHQaagSykzeQfKodqAyjz/1lNbDZuYlBcSeKOp/NF6yeIUeh3
-         8DDju6bgvQVTSPgpRU0Q4/jWTpvgCOKojZ6yK+os=
+        b=AqDroX1gdXxDbmuifvGPRg7UwZcw9vF6iLKn0ASaWIl8snmDXykZdJuctSFubvwgc
+         4+qhNxU8f4GM2S3RlMMAvaU2PYRTGtgIyh6Ocwu0iAMtLXgl4tAGmPbcSaelsK45Bh
+         ubCM/lH5g5ehz0K4AFY5KFDfTas8jykASTZfaJ08=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Segall <bsegall@google.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 04/60] epoll: ep_autoremove_wake_function should use list_del_init_careful
+Subject: [PATCH 4.19 20/41] mmc: mvsdio: fix deferred probing
 Date:   Mon, 26 Jun 2023 20:11:43 +0200
-Message-ID: <20230626180739.725179251@linuxfoundation.org>
+Message-ID: <20230626180737.059552012@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
+References: <20230626180736.243379844@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,45 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benjamin Segall <bsegall@google.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit 2192bba03d80f829233bfa34506b428f71e531e7 ]
+[ Upstream commit 8d84064da0d4672e74f984e8710f27881137472c ]
 
-autoremove_wake_function uses list_del_init_careful, so should epoll's
-more aggressive variant.  It only doesn't because it was copied from an
-older wait.c rather than the most recent.
+The driver overrides the error codes returned by platform_get_irq() to
+-ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the
+error codes upstream.
 
-[bsegall@google.com: add comment]
-  Link: https://lkml.kernel.org/r/xm26bki0ulsr.fsf_-_@google.com
-Link: https://lkml.kernel.org/r/xm26pm6hvfer.fsf@google.com
-Fixes: a16ceb139610 ("epoll: autoremove wakers even more aggressively")
-Signed-off-by: Ben Segall <bsegall@google.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20230617203622.6812-5-s.shtylyov@omp.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/mmc/host/mvsdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 877f9f61a4e8d..8c0e94183186f 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -1814,7 +1814,11 @@ static int ep_autoremove_wake_function(struct wait_queue_entry *wq_entry,
- {
- 	int ret = default_wake_function(wq_entry, mode, sync, key);
+diff --git a/drivers/mmc/host/mvsdio.c b/drivers/mmc/host/mvsdio.c
+index 3ad8d1108fd08..fff9980a3ef28 100644
+--- a/drivers/mmc/host/mvsdio.c
++++ b/drivers/mmc/host/mvsdio.c
+@@ -707,7 +707,7 @@ static int mvsd_probe(struct platform_device *pdev)
+ 	}
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+-		return -ENXIO;
++		return irq;
  
--	list_del_init(&wq_entry->entry);
-+	/*
-+	 * Pairs with list_empty_careful in ep_poll, and ensures future loop
-+	 * iterations see the cause of this wakeup.
-+	 */
-+	list_del_init_careful(&wq_entry->entry);
- 	return ret;
- }
- 
+ 	mmc = mmc_alloc_host(sizeof(struct mvsd_host), &pdev->dev);
+ 	if (!mmc) {
 -- 
 2.39.2
 
