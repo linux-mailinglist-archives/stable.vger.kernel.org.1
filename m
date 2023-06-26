@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3C1773EA1A
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EE6773E967
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:35:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232566AbjFZSne (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:43:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56068 "EHLO
+        id S232055AbjFZSfh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232596AbjFZSn1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:27 -0400
+        with ESMTP id S232349AbjFZSfh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:35:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5CE5E72
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD74394
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:35:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A6E760F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444B8C433C0;
-        Mon, 26 Jun 2023 18:43:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 60FA660F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:35:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6629BC433C8;
+        Mon, 26 Jun 2023 18:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804992;
-        bh=ozHqJQqY3UxX64OUxMSLmjK+5XFSKDFm3eXV+PN4rCk=;
+        s=korg; t=1687804534;
+        bh=cyIc4jyLpv2ZhMQ4aAYi5gbcJrDlAYEqWTalrl4ljFs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qiivs4mMlUeJROhpj8Tn7Fhhv4La5M+C5bCkzb9ycOZobOeGlgKWXsWPjP04/5zXp
-         +zIdzpekztSoyME4WvzfaLCHo1hDDrykkKRT22waQkEhm/1it2PCWyBBf/mcKZirKc
-         ew2N6VSuz9VbbHwRbxF12oEXyDhiAzkJV3sHkFcs=
+        b=NHy6HdpA2IOaxjlP5MkQbCps5gGBmhjV/tLz7WDfhg90tvkCKctn579PTHw3w3RDb
+         /7Suw+Z1gaDC8kOZeijYuuNLd9176oKNnP9jSAPG2eeR4ee70I5QMnSvH04eboD8Cy
+         i1gb2qb6XRsesBt1DSf9YgbDSonF4O7cE44vZAEY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 5.10 14/81] PCI: hv: Fix a race condition in hv_irq_unmask() that can cause panic
+        patches@lists.linux.dev, Rafael Aquini <aquini@redhat.com>,
+        Yafang Shao <laoar.shao@gmail.com>,
+        Aristeu Rozanski <aris@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 17/60] writeback: fix dereferencing NULL mapping->host on writeback_page_template
 Date:   Mon, 26 Jun 2023 20:11:56 +0200
-Message-ID: <20230626180745.035669098@linuxfoundation.org>
+Message-ID: <20230626180740.261023650@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
+References: <20230626180739.558575012@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,73 +56,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Rafael Aquini <aquini@redhat.com>
 
-commit 2738d5ab7929a845b654cd171a1e275c37eb428e upstream.
+commit 54abe19e00cfcc5a72773d15cd00ed19ab763439 upstream.
 
-When the host tries to remove a PCI device, the host first sends a
-PCI_EJECT message to the guest, and the guest is supposed to gracefully
-remove the PCI device and send a PCI_EJECTION_COMPLETE message to the host;
-the host then sends a VMBus message CHANNELMSG_RESCIND_CHANNELOFFER to
-the guest (when the guest receives this message, the device is already
-unassigned from the guest) and the guest can do some final cleanup work;
-if the guest fails to respond to the PCI_EJECT message within one minute,
-the host sends the VMBus message CHANNELMSG_RESCIND_CHANNELOFFER and
-removes the PCI device forcibly.
+When commit 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for
+wait_on_page_writeback()") repurposed the writeback_dirty_page trace event
+as a template to create its new wait_on_page_writeback trace event, it
+ended up opening a window to NULL pointer dereference crashes due to the
+(infrequent) occurrence of a race where an access to a page in the
+swap-cache happens concurrently with the moment this page is being written
+to disk and the tracepoint is enabled:
 
-In the case of fast device addition/removal, it's possible that the PCI
-device driver is still configuring MSI-X interrupts when the guest receives
-the PCI_EJECT message; the channel callback calls hv_pci_eject_device(),
-which sets hpdev->state to hv_pcichild_ejecting, and schedules a work
-hv_eject_device_work(); if the PCI device driver is calling
-pci_alloc_irq_vectors() -> ... -> hv_compose_msi_msg(), we can break the
-while loop in hv_compose_msi_msg() due to the updated hpdev->state, and
-leave data->chip_data with its default value of NULL; later, when the PCI
-device driver calls request_irq() -> ... -> hv_irq_unmask(), the guest
-crashes in hv_arch_irq_unmask() due to data->chip_data being NULL.
+    BUG: kernel NULL pointer dereference, address: 0000000000000040
+    #PF: supervisor read access in kernel mode
+    #PF: error_code(0x0000) - not-present page
+    PGD 800000010ec0a067 P4D 800000010ec0a067 PUD 102353067 PMD 0
+    Oops: 0000 [#1] PREEMPT SMP PTI
+    CPU: 1 PID: 1320 Comm: shmem-worker Kdump: loaded Not tainted 6.4.0-rc5+ #13
+    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230301gitf80f052277c8-1.fc37 03/01/2023
+    RIP: 0010:trace_event_raw_event_writeback_folio_template+0x76/0xf0
+    Code: 4d 85 e4 74 5c 49 8b 3c 24 e8 06 98 ee ff 48 89 c7 e8 9e 8b ee ff ba 20 00 00 00 48 89 ef 48 89 c6 e8 fe d4 1a 00 49 8b 04 24 <48> 8b 40 40 48 89 43 28 49 8b 45 20 48 89 e7 48 89 43 30 e8 a2 4d
+    RSP: 0000:ffffaad580b6fb60 EFLAGS: 00010246
+    RAX: 0000000000000000 RBX: ffff90e38035c01c RCX: 0000000000000000
+    RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff90e38035c044
+    RBP: ffff90e38035c024 R08: 0000000000000002 R09: 0000000000000006
+    R10: ffff90e38035c02e R11: 0000000000000020 R12: ffff90e380bac000
+    R13: ffffe3a7456d9200 R14: 0000000000001b81 R15: ffffe3a7456d9200
+    FS:  00007f2e4e8a15c0(0000) GS:ffff90e3fbc80000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 0000000000000040 CR3: 00000001150c6003 CR4: 0000000000170ee0
+    Call Trace:
+     <TASK>
+     ? __die+0x20/0x70
+     ? page_fault_oops+0x76/0x170
+     ? kernelmode_fixup_or_oops+0x84/0x110
+     ? exc_page_fault+0x65/0x150
+     ? asm_exc_page_fault+0x22/0x30
+     ? trace_event_raw_event_writeback_folio_template+0x76/0xf0
+     folio_wait_writeback+0x6b/0x80
+     shmem_swapin_folio+0x24a/0x500
+     ? filemap_get_entry+0xe3/0x140
+     shmem_get_folio_gfp+0x36e/0x7c0
+     ? find_busiest_group+0x43/0x1a0
+     shmem_fault+0x76/0x2a0
+     ? __update_load_avg_cfs_rq+0x281/0x2f0
+     __do_fault+0x33/0x130
+     do_read_fault+0x118/0x160
+     do_pte_missing+0x1ed/0x2a0
+     __handle_mm_fault+0x566/0x630
+     handle_mm_fault+0x91/0x210
+     do_user_addr_fault+0x22c/0x740
+     exc_page_fault+0x65/0x150
+     asm_exc_page_fault+0x22/0x30
 
-Fix the issue by not testing hpdev->state in the while loop: when the
-guest receives PCI_EJECT, the device is still assigned to the guest, and
-the guest has one minute to finish the device removal gracefully. We don't
-really need to (and we should not) test hpdev->state in the loop.
+This problem arises from the fact that the repurposed writeback_dirty_page
+trace event code was written assuming that every pointer to mapping
+(struct address_space) would come from a file-mapped page-cache object,
+thus mapping->host would always be populated, and that was a valid case
+before commit 19343b5bdd16.  The swap-cache address space
+(swapper_spaces), however, doesn't populate its ->host (struct inode)
+pointer, thus leading to the crashes in the corner-case aforementioned.
 
-Fixes: de0aa7b2f97d ("PCI: hv: Fix 2 hang issues in hv_compose_msi_msg()")
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230615044451.5580-3-decui@microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+commit 19343b5bdd16 ended up breaking the assignment of __entry->name and
+__entry->ino for the wait_on_page_writeback tracepoint -- both dependent
+on mapping->host carrying a pointer to a valid inode.  The assignment of
+__entry->name was fixed by commit 68f23b89067f ("memcg: fix a crash in
+wb_workfn when a device disappears"), and this commit fixes the remaining
+case, for __entry->ino.
+
+Link: https://lkml.kernel.org/r/20230606233613.1290819-1-aquini@redhat.com
+Fixes: 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for wait_on_page_writeback()")
+Signed-off-by: Rafael Aquini <aquini@redhat.com>
+Reviewed-by: Yafang Shao <laoar.shao@gmail.com>
+Cc: Aristeu Rozanski <aris@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-hyperv.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -1228,6 +1228,11 @@ static void hv_irq_unmask(struct irq_dat
- 	pbus = pdev->bus;
- 	hbus = container_of(pbus->sysdata, struct hv_pcibus_device, sysdata);
- 	int_desc = data->chip_data;
-+	if (!int_desc) {
-+		dev_warn(&hbus->hdev->device, "%s() can not unmask irq %u\n",
-+			 __func__, data->irq);
-+		return;
-+	}
- 
- 	spin_lock_irqsave(&hbus->retarget_msi_interrupt_lock, flags);
- 
-@@ -1544,12 +1549,6 @@ static void hv_compose_msi_msg(struct ir
- 		hv_pci_onchannelcallback(hbus);
- 		spin_unlock_irqrestore(&channel->sched_lock, flags);
- 
--		if (hpdev->state == hv_pcichild_ejecting) {
--			dev_err_once(&hbus->hdev->device,
--				     "the device is being ejected\n");
--			goto enable_tasklet;
--		}
--
- 		udelay(100);
- 	}
+---
+ include/trace/events/writeback.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -68,7 +68,7 @@ DECLARE_EVENT_CLASS(writeback_page_templ
+ 		strscpy_pad(__entry->name,
+ 			    bdi_dev_name(mapping ? inode_to_bdi(mapping->host) :
+ 					 NULL), 32);
+-		__entry->ino = mapping ? mapping->host->i_ino : 0;
++		__entry->ino = (mapping && mapping->host) ? mapping->host->i_ino : 0;
+ 		__entry->index = page->index;
+ 	),
  
 
 
