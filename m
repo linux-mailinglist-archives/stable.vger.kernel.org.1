@@ -2,62 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DC3273E253
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 16:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E16A73E28F
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 16:54:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229728AbjFZOmJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 10:42:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
+        id S229628AbjFZOyn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 10:54:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229526AbjFZOmH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 10:42:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15BEAE7E;
-        Mon, 26 Jun 2023 07:42:06 -0700 (PDT)
+        with ESMTP id S229647AbjFZOyl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 10:54:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B61D3;
+        Mon, 26 Jun 2023 07:54:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9670060EA5;
-        Mon, 26 Jun 2023 14:42:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5BFC433C0;
-        Mon, 26 Jun 2023 14:42:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BB0E60C08;
+        Mon, 26 Jun 2023 14:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB7DC433C9;
+        Mon, 26 Jun 2023 14:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687790525;
-        bh=L52cfU8cNq6uou6/bZ8tK6hh1Kl1s94l1tWbXWw/lAo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OaBsPVWCxzitqlENhTyVt6B8OAjiMC63ES5TIBAf5vcRfKr6lyDTte7X/FyHa5pRv
-         VxxxEHlepMRn+2kghdO9gvALQUPGC5HMx9jumJ6sJ7JCeBvjYoUtLhVDz4cP8UBwjA
-         eFiUdCFrHqmb9wBnGpVf8R1IYsSx8RgBa1B6UDQSmKFZQdOEeXWNsemzlQF7TS3glk
-         eWNaxmvrVbN0buJEbOogNS0MVoKxVjYHl1mBI4cUK66tvNVkHiDTUw2IqLCRm91RCl
-         l5M1TiaU2ie3wIMPOuTlL5Gr5PYSj5me4V6tTgHy+DJE6/IIny9RDvpMg2CCmUR27p
-         DHMJblcXS48DA==
-Date:   Mon, 26 Jun 2023 15:41:58 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     Mark Brown <broonie@kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        linux-stable <stable@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: arm64: fp-stress: BUG: KFENCE: memory corruption in
- fpsimd_release_task
-Message-ID: <20230626144157.GA20162@willie-the-truck>
-References: <CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com>
- <b4bfd69f-2092-4d15-b7ce-b814f5f10ff2@sirena.org.uk>
- <CA+G9fYv=uyQaJs0JLMmZWLeLH0G5FF7WGcTa7y0bi0nCDfoi+A@mail.gmail.com>
+        s=k20201202; t=1687791279;
+        bh=VvKXlkNbyCjvlkKVGqZkEHFqFzCn0Jcjw7pEQfU+8yc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=niHOUldNdf2h1/wo50ereF/ZjhX3C54s7tad5hYjjZG1p2YdiRBVv9DM/Lu/eJOfn
+         Fk+aRuGW/Q0/nZ5x0FCfaDzUNXWA9NJIew5h8ppUhI4qPDfkAsYC/1U1EATCv8qLeu
+         5J4YzcYI1aHQPMcSmULGvBWagp3CvqR7TnLMMtdJvyDsOd61YBvpyfa2W5o9TCZErl
+         OIuzDRv3/3GDadYKxZOxUGS+U+kQyU3+l4jyExVsQ7a7mTcie2fpogiM+i1Yi96fzz
+         OH1O+ivwtqgfaOgKwa+Z2N8iOGf213A4dAQXlrHMhsQ4KI6BAVMmi+nE5Fk11xJQpQ
+         oAVwBxi+mFd8g==
+From:   bentiss@kernel.org
+To:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Jason Gerecke <killertofu@gmail.com>
+Cc:     Benjamin Tissoires <bentiss@kernel.org>,
+        Ping Cheng <pinglinux@gmail.com>,
+        Aaron Armstrong Skomra <skomra@gmail.com>,
+        Joshua Dickens <Joshua@Joshua-Dickens.com>,
+        Peter Hutterer <peter.hutterer@who-t.net>,
+        Jason Gerecke <jason.gerecke@wacom.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] HID: wacom: Use ktime_t rather than int when dealing with timestamps
+Date:   Mon, 26 Jun 2023 16:54:21 +0200
+Message-Id: <168779116662.356699.3703314952636539084.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230608213828.2108-1-jason.gerecke@wacom.com>
+References: <20230607214102.2113-1-jason.gerecke@wacom.com> <20230608213828.2108-1-jason.gerecke@wacom.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYv=uyQaJs0JLMmZWLeLH0G5FF7WGcTa7y0bi0nCDfoi+A@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,38 +62,29 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 25, 2023 at 07:21:24PM +0530, Naresh Kamboju wrote:
-> On Tue, 23 May 2023 at 03:42, Mark Brown <broonie@kernel.org> wrote:
-> > On Tue, May 16, 2023 at 11:58:40AM +0530, Naresh Kamboju wrote:
-> > > Test log links:
-> > > ========
-> > >
-> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.28-240-gb82733c0ff99/testrun/17007082/suite/log-parser-test/test/check-kernel-kfence/log
-> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.28-240-gb82733c0ff99/testrun/17007082/suite/log-parser-test/tests/
-> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.28-240-gb82733c0ff99/testrun/17007268/suite/kselftest-arm64/tests/
-> > >
-> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.2-247-g5a952cfef67c/testrun/17015127/suite/log-parser-test/test/check-kernel-bug/log
-> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.2-247-g5a952cfef67c/testrun/17015127/suite/log-parser-test/tests/
-> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.2-247-g5a952cfef67c/testrun/17015127/suite/kselftest-arm64/tests/
-> >
-> > None of these seem to provide me with information like what kernel
-> > config was used but I did manage to find
-> >
-> >   https://storage.tuxsuite.com/public/linaro/lkft/builds/2Pq5NvLiBcWRMuy6lXftDVQMvca/config
-> >
-> > which might be it?  Or one of them?  However even trying to use that I'm
-> > unable to reproduce issues with either the FVP or qemu.
+From: Benjamin Tissoires <bentiss@kernel.org>
+
+On Thu, 08 Jun 2023 14:38:28 -0700, Jason Gerecke wrote:
+> Code which interacts with timestamps needs to use the ktime_t type
+> returned by functions like ktime_get. The int type does not offer
+> enough space to store these values, and attempting to use it is a
+> recipe for problems. In this particular case, overflows would occur
+> when calculating/storing timestamps leading to incorrect values being
+> reported to userspace. In some cases these bad timestamps cause input
+> handling in userspace to appear hung.
 > 
-> You got the right config file which we are using for testing
-> FVP selftests.
+> [...]
 
-Sadly, the config link above no longer works (404 file not found).
+Updated the "from" email from your patch.
+It would be nice if you could fix your workflow (I know you well enough
+to know what is your gmail address, but not having to fix this by hand
+would be preferable)
 
-However, I notice that the failure still seems to occur with 6.4:
+Applied to hid/hid.git (for-6.5/wacom), thanks!
 
-https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.4/testrun/17767612/suite/log-parser-test/tests/
+[1/1] HID: wacom: Use ktime_t rather than int when dealing with timestamps
+      https://git.kernel.org/hid/hid/c/9a6c0e28e215
 
-Please can you point me at the config file for that run? I can't figure
-out which one I need from the web interface.
-
-Will
+Cheers,
+-- 
+Benjamin Tissoires <bentiss@kernel.org>
