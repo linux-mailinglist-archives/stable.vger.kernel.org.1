@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D22DE73EA2F
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:44:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB8C873E9BD
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232572AbjFZSoR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:44:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56858 "EHLO
+        id S232443AbjFZSje (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:39:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232543AbjFZSoQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:44:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B169297
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:44:15 -0700 (PDT)
+        with ESMTP id S232053AbjFZSjd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 086ECCC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45F8F60E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:44:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535A8C433C8;
-        Mon, 26 Jun 2023 18:44:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0638760EFC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C421C433C8;
+        Mon, 26 Jun 2023 18:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805054;
-        bh=ChdYqriUBCb5IrWN3UQERnUj4vV4mwlRn/0OJiQu5YQ=;
+        s=korg; t=1687804769;
+        bh=skUKu08vtIeaZlk9bosRzJGpXUH41bWtQeJykdtETKg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G2GeBfbas5WbxnA8JX0mOE55VxC9JMFRrIFZrYt/94GV8TDSTH98BTgOZpyqXwCkV
-         ikpPJ2hl1ha/vAkPF4+VILx15brQa7qsf8vHdnxxJJcWsfSSRD8GLLCg4AzZlrLQCp
-         IrJRjgVKFYJoCbD1uwRlLV+uYC85r+eFjP2Y+ADQ=
+        b=SE8cJ3dB2jbAiO6E0g/B3UjpvLedgIN9W4KW5tgl9lFIndkj8Y/rXsbEAVx1oWC30
+         IQPl2G3P88lowoKhrblMEb7qyfem8j4svo4ZBejTo/zUUy4qEexPTSrK5p5c32f71d
+         txBuaZk13HvjUm2jz0CypaJauJ3K1cGlySG3WE5Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 07/81] selftests: mptcp: pm nl: remove hardcoded default limits
+        patches@lists.linux.dev, Stefan Metzmacher <metze@samba.org>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 34/96] io_uring/net: disable partial retries for recvmsg with cmsg
 Date:   Mon, 26 Jun 2023 20:11:49 +0200
-Message-ID: <20230626180744.757171623@linuxfoundation.org>
+Message-ID: <20230626180748.367453596@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,63 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 2177d0b08e421971e035672b70f3228d9485c650 upstream.
+Commit 78d0d2063bab954d19a1696feae4c7706a626d48 upstream.
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting all MPTCP features.
+We cannot sanely handle partial retries for recvmsg if we have cmsg
+attached. If we don't, then we'd just be overwriting the initial cmsg
+header on retries. Alternatively we could increment and handle this
+appropriately, but it doesn't seem worth the complication.
 
-One of them is the checks of the default limits returned by the MPTCP
-in-kernel path-manager. The default values have been modified by commit
-72bcbc46a5c3 ("mptcp: increase default max additional subflows to 2").
-Instead of comparing with hardcoded values, we can get the default one
-and compare with them.
+Move the MSG_WAITALL check into the non-multishot case while at it,
+since MSG_WAITALL is explicitly disabled for multishot anyway.
 
-Note that if we expect to have the latest version, we continue to check
-the hardcoded values to avoid unexpected behaviour changes.
-
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: eedbc685321b ("selftests: add PM netlink functional tests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Link: https://lore.kernel.org/io-uring/0b0d4411-c8fd-4272-770b-e030af6919a0@kernel.dk/
+Cc: stable@vger.kernel.org # 5.10+
+Reported-by: Stefan Metzmacher <metze@samba.org>
+Reviewed-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/pm_netlink.sh |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ io_uring/io_uring.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -73,8 +73,12 @@ check()
- }
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -5201,7 +5201,7 @@ static int io_recvmsg(struct io_kiocb *r
+ 	flags = req->sr_msg.msg_flags;
+ 	if (force_nonblock)
+ 		flags |= MSG_DONTWAIT;
+-	if (flags & MSG_WAITALL)
++	if (flags & MSG_WAITALL && !kmsg->msg.msg_controllen)
+ 		min_ret = iov_iter_count(&kmsg->msg.msg_iter);
  
- check "ip netns exec $ns1 ./pm_nl_ctl dump" "" "defaults addr list"
--check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 0
-+
-+default_limits="$(ip netns exec $ns1 ./pm_nl_ctl limits)"
-+if mptcp_lib_expect_all_features; then
-+	check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 0
- subflows 0" "defaults limits"
-+fi
- 
- ip netns exec $ns1 ./pm_nl_ctl add 10.0.1.1
- ip netns exec $ns1 ./pm_nl_ctl add 10.0.1.2 flags subflow dev lo
-@@ -120,12 +124,10 @@ ip netns exec $ns1 ./pm_nl_ctl flush
- check "ip netns exec $ns1 ./pm_nl_ctl dump" "" "flush addrs"
- 
- ip netns exec $ns1 ./pm_nl_ctl limits 9 1
--check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 0
--subflows 0" "rcv addrs above hard limit"
-+check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "rcv addrs above hard limit"
- 
- ip netns exec $ns1 ./pm_nl_ctl limits 1 9
--check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 0
--subflows 0" "subflows above hard limit"
-+check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "subflows above hard limit"
- 
- ip netns exec $ns1 ./pm_nl_ctl limits 8 8
- check "ip netns exec $ns1 ./pm_nl_ctl limits" "accept 8
+ 	ret = __sys_recvmsg_sock(sock, &kmsg->msg, req->sr_msg.umsg,
 
 
