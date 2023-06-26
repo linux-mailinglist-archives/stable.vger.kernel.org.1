@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83A7873E880
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 621EB73EA2E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:44:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232102AbjFZS0g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:26:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38240 "EHLO
+        id S232565AbjFZSoP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:44:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232030AbjFZS0R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:17 -0400
+        with ESMTP id S232569AbjFZSoO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:44:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F2F268D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:25:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03913FA
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:44:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E7DE460F52
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:25:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00199C433CA;
-        Mon, 26 Jun 2023 18:25:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F45260F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:44:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F23C433C8;
+        Mon, 26 Jun 2023 18:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803930;
-        bh=njSrz8J2ck3zyZzLZGFbUcRhMQd9FEXWCCXxj7aQN9U=;
+        s=korg; t=1687805051;
+        bh=sLPz/zy6VvBK6O/u0orKUjbDlsRtmKqhlIMBDmxPss4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bXz3mTJ8SkzLA0e9yyIM7DGvXlrV2kWuqIwu5XHyny/IpyWtBLAeGQ67DsaguDrYK
-         5uBDMiCz/L9N0l3N1oMSd9y9BL32qe37w+xSXRNdim/zVJ7+eZAnCIei6s2HggLCyo
-         2Ucjv+j94zo2gEX635JHV8E6oM/wV1o6mtQfJLBo=
+        b=kG/IEKljjPxsWAB3M8O1zjDkN+kpU5XKeg68tF+n3/6+A7xEvZI7M4TwRrzesnV1X
+         3NM1lhsNhaCV6d5gSO3dBHHHqO8IbnYuZxZAQnk8WIx2YbsEmpH6tUzKyjnjNNBuBy
+         Zl9IuUvc9GzLn2J9Y/ldjtoUi8We09GqIafz7txU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ross Lagerwall <ross.lagerwall@citrix.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 25/41] be2net: Extend xmit workaround to BE3 chip
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 06/81] selftests: mptcp: lib: skip if not below kernel version
 Date:   Mon, 26 Jun 2023 20:11:48 +0200
-Message-ID: <20230626180737.225954012@linuxfoundation.org>
+Message-ID: <20230626180744.715584943@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
-References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,48 +55,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ross Lagerwall <ross.lagerwall@citrix.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit 7580e0a78eb29e7bb1a772eba4088250bbb70d41 ]
+commit b1a6a38ab8a633546cefae890da842f19e006c74 upstream.
 
-We have seen a bug where the NIC incorrectly changes the length in the
-IP header of a padded packet to include the padding bytes. The driver
-already has a workaround for this so do the workaround for this NIC too.
-This resolves the issue.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-The NIC in question identifies itself as follows:
+A new function is now available to easily detect if a feature is
+missing by looking at the kernel version. That's clearly not ideal and
+this kind of check should be avoided as soon as possible. But sometimes,
+there are no external sign that a "feature" is available or not:
+internal behaviours can change without modifying the uAPI and these
+selftests are verifying the internal behaviours. Sometimes, the only
+(easy) way to verify if the feature is present is to run the test but
+then the validation cannot determine if there is a failure with the
+feature or if the feature is missing. Then it looks better to check the
+kernel version instead of having tests that can never fail. In any case,
+we need a solution not to have a whole selftest being marked as failed
+just because one sub-test has failed.
 
-[    8.828494] be2net 0000:02:00.0: FW version is 10.7.110.31
-[    8.834759] be2net 0000:02:00.0: Emulex OneConnect(be3): PF FLEX10 port 1
+Note that this env var car be set to 1 not to do such check and run the
+linked sub-test: SELFTESTS_MPTCP_LIB_NO_KVERSION_CHECK.
 
-02:00.0 Ethernet controller: Emulex Corporation OneConnect 10Gb NIC (be3) (rev 01)
+This new helper is going to be used in the following commits. In order
+to ease the backport of such future patches, it would be good if this
+patch is backported up to the introduction of MPTCP selftests, hence the
+Fixes tag below: this type of check was supposed to be done from the
+beginning.
 
-Fixes: ca34fe38f06d ("be2net: fix wrong usage of adapter->generation")
-Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
-Link: https://lore.kernel.org/r/20230616164549.2863037-1-ross.lagerwall@citrix.com
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../testing/selftests/net/mptcp/mptcp_lib.sh  | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
-index 05cb2f7cc35c3..8603df2ae1736 100644
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -1136,8 +1136,8 @@ static struct sk_buff *be_lancer_xmit_workarounds(struct be_adapter *adapter,
- 	eth_hdr_len = ntohs(skb->protocol) == ETH_P_8021Q ?
- 						VLAN_ETH_HLEN : ETH_HLEN;
- 	if (skb->len <= 60 &&
--	    (lancer_chip(adapter) || skb_vlan_tag_present(skb)) &&
--	    is_ipv4_pkt(skb)) {
-+	    (lancer_chip(adapter) || BE3_chip(adapter) ||
-+	     skb_vlan_tag_present(skb)) && is_ipv4_pkt(skb)) {
- 		ip = (struct iphdr *)ip_hdr(skb);
- 		pskb_trim(skb, eth_hdr_len + ntohs(ip->tot_len));
- 	}
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+index 29b65f4b73b2..f32045b23b89 100644
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -76,3 +76,29 @@ mptcp_lib_kallsyms_doesnt_have() {
+ 
+ 	mptcp_lib_fail_if_expected_feature "${sym} symbol has been found"
+ }
++
++# !!!AVOID USING THIS!!!
++# Features might not land in the expected version and features can be backported
++#
++# $1: kernel version, e.g. 6.3
++mptcp_lib_kversion_ge() {
++	local exp_maj="${1%.*}"
++	local exp_min="${1#*.}"
++	local v maj min
++
++	# If the kernel has backported features, set this env var to 1:
++	if [ "${SELFTESTS_MPTCP_LIB_NO_KVERSION_CHECK:-}" = "1" ]; then
++		return 0
++	fi
++
++	v=$(uname -r | cut -d'.' -f1,2)
++	maj=${v%.*}
++	min=${v#*.}
++
++	if   [ "${maj}" -gt "${exp_maj}" ] ||
++	   { [ "${maj}" -eq "${exp_maj}" ] && [ "${min}" -ge "${exp_min}" ]; }; then
++		return 0
++	fi
++
++	mptcp_lib_fail_if_expected_feature "kernel version ${1} lower than ${v}"
++}
 -- 
-2.39.2
+2.41.0
 
 
 
