@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD2B873E88D
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B24173E93A
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231903AbjFZS0s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:26:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37508 "EHLO
+        id S232281AbjFZSds (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:33:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231950AbjFZS0e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:34 -0400
+        with ESMTP id S232284AbjFZSdq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:33:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9081D19BB
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:26:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A3BEDA
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:33:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BDE960F52
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:26:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E3AC433C9;
-        Mon, 26 Jun 2023 18:26:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E637160F4F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:33:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5B3C433C0;
+        Mon, 26 Jun 2023 18:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803966;
-        bh=yFkQHx5l4Duc4TCIvJ4ExrFuDF+a32YQJSujytrRTik=;
+        s=korg; t=1687804424;
+        bh=9gVndDDGD3GB5YZiZTn+lErzwx67qIfGPxOubXPSXPE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DnUjVtJ8VqZLk25t0kXnOTS9yjbiZCXjpR26nd82o6KQ3oRaJSttiH663MUSkyOXN
-         5rBL5ei9Ev2voooEI2ybdrEKZ/7xYpK3x6yZV38CdjMdduKV+Gv7mFUx2wIDzJ4Vec
-         B6fXQw2Ox5HKH04VbcJ/B5RddNOSC5xydm6PmA3A=
+        b=XXdu4IcyvTZn/coqQ44C9ApXwOvBfA8FSJG1c2A7phmNPATOD2uVPxfO7eweUZqNo
+         SEzma20a8amKUYWqegvsMkgYVEmXfrcmhjfI83hYiB9d8WfODnX+iSVCBsSeszmS+P
+         YLmD1oqN80Rt5856U8pn+GjWAnleJnFCm789zXWU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Min Li <lm0963hack@gmail.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Inki Dae <inki.dae@samsung.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 38/41] drm/exynos: fix race condition UAF in exynos_g2d_exec_ioctl
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 152/170] soundwire: qcom: add proper error paths in qcom_swrm_startup()
 Date:   Mon, 26 Jun 2023 20:12:01 +0200
-Message-ID: <20230626180737.687642245@linuxfoundation.org>
+Message-ID: <20230626180807.294002752@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
-References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,35 +56,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Min Li <lm0963hack@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 48bfd02569f5db49cc033f259e66d57aa6efc9a3 ]
+[ Upstream commit 99e09b9c0ab43346c52f2787ca4e5c4b1798362e ]
 
-If it is async, runqueue_node is freed in g2d_runqueue_worker on another
-worker thread. So in extreme cases, if g2d_runqueue_worker runs first, and
-then executes the following if statement, there will be use-after-free.
+Reverse actions in qcom_swrm_startup() error paths to avoid leaking
+stream memory and keeping runtime PM unbalanced.
 
-Signed-off-by: Min Li <lm0963hack@gmail.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230517163736.997553-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_g2d.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soundwire/qcom.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_g2d.c b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-index f2481a2014bb3..2b7ecc02b2774 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-@@ -1327,7 +1327,7 @@ int exynos_g2d_exec_ioctl(struct drm_device *drm_dev, void *data,
- 	/* Let the runqueue know that there is work to do. */
- 	queue_work(g2d->g2d_workq, &g2d->runqueue_work);
+diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
+index 21c50972047f5..b2eb3090f4b46 100644
+--- a/drivers/soundwire/qcom.c
++++ b/drivers/soundwire/qcom.c
+@@ -1090,8 +1090,10 @@ static int qcom_swrm_startup(struct snd_pcm_substream *substream,
+ 	}
  
--	if (runqueue_node->async)
-+	if (req->async)
- 		goto out;
+ 	sruntime = sdw_alloc_stream(dai->name);
+-	if (!sruntime)
+-		return -ENOMEM;
++	if (!sruntime) {
++		ret = -ENOMEM;
++		goto err_alloc;
++	}
  
- 	wait_for_completion(&runqueue_node->complete);
+ 	ctrl->sruntime[dai->id] = sruntime;
+ 
+@@ -1101,12 +1103,19 @@ static int qcom_swrm_startup(struct snd_pcm_substream *substream,
+ 		if (ret < 0 && ret != -ENOTSUPP) {
+ 			dev_err(dai->dev, "Failed to set sdw stream on %s\n",
+ 				codec_dai->name);
+-			sdw_release_stream(sruntime);
+-			return ret;
++			goto err_set_stream;
+ 		}
+ 	}
+ 
+ 	return 0;
++
++err_set_stream:
++	sdw_release_stream(sruntime);
++err_alloc:
++	pm_runtime_mark_last_busy(ctrl->dev);
++	pm_runtime_put_autosuspend(ctrl->dev);
++
++	return ret;
+ }
+ 
+ static void qcom_swrm_shutdown(struct snd_pcm_substream *substream,
 -- 
 2.39.2
 
