@@ -2,46 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B78AF73E875
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC54373E863
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:25:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231894AbjFZS0N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:26:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38204 "EHLO
+        id S231946AbjFZSZY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:25:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231569AbjFZSZy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:25:54 -0400
+        with ESMTP id S231941AbjFZSY4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:24:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F132126
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:25:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C34F510FD
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B645A60F58
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:25:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF337C433C8;
-        Mon, 26 Jun 2023 18:24:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF53960F1E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:23:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2ECC433C8;
+        Mon, 26 Jun 2023 18:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803900;
-        bh=+5XjyKA4/baDnSDTTpgTbmhJSP+YIa+O7q1daG+5pVU=;
+        s=korg; t=1687803833;
+        bh=Pm6ZkV4+A5KeYt3uWhxoHD7HH6jyVEp+Yd98bdrxBQM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1VIZu7q7f3EYbcvANWyGDNKbo2xW2P9PksKZS5hnvWWoEMrpx6ljMU2E7+6qCDbSh
-         E6uto3GXBOZmD+YSg2z+uAvBU7W2QHI3bTyfnwQT/S6FyZW3XsnpiSyIQ/qISdit6r
-         fyIOmgH9IAT4oNSyFkOMBoYcECbNx/8NF+SJCEps=
+        b=1YMblF0CzfXiT8cAoQgN68447+xpP7aUqpdlcsXoQXa7FAeNCgES887gfeyKa3udw
+         YpEOxRmKQnG8NgwQkZwJxh+w1d4F5gZZy+81mtPxhB6lYvvLu1WLbvIM0DsdRiK8C9
+         D0eZCo0pSnjLGxl7/KFnGI14oMl4nIewL15SzkD0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Kishon Vijay Abraham I <kvijayab@amd.com>,
+        Vasant Hegde <vasant.hegde@amd.com>,
+        Cyrill Gorcunov <gorcunov@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 16/41] xfrm: Linearize the skb after offloading if needed.
+Subject: [PATCH 6.3 193/199] x86/apic: Fix kernel panic when booting with intremap=off and x2apic_phys
 Date:   Mon, 26 Jun 2023 20:11:39 +0200
-Message-ID: <20230626180736.915717488@linuxfoundation.org>
+Message-ID: <20230626180814.209353916@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
-References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,62 +60,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
 
-[ Upstream commit f015b900bc3285322029b4a7d132d6aeb0e51857 ]
+[ Upstream commit 85d38d5810e285d5aec7fb5283107d1da70c12a9 ]
 
-With offloading enabled, esp_xmit() gets invoked very late, from within
-validate_xmit_xfrm() which is after validate_xmit_skb() validates and
-linearizes the skb if the underlying device does not support fragments.
+When booting with "intremap=off" and "x2apic_phys" on the kernel command
+line, the physical x2APIC driver ends up being used even when x2APIC
+mode is disabled ("intremap=off" disables x2APIC mode). This happens
+because the first compound condition check in x2apic_phys_probe() is
+false due to x2apic_mode == 0 and so the following one returns true
+after default_acpi_madt_oem_check() having already selected the physical
+x2APIC driver.
 
-esp_output_tail() may add a fragment to the skb while adding the auth
-tag/ IV. Devices without the proper support will then send skb->data
-points to with the correct length so the packet will have garbage at the
-end. A pcap sniffer will claim that the proper data has been sent since
-it parses the skb properly.
+This results in the following panic:
 
-It is not affected with INET_ESP_OFFLOAD disabled.
+   kernel BUG at arch/x86/kernel/apic/io_apic.c:2409!
+   invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+   CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.0-rc2-ver4.1rc2 #2
+   Hardware name: Dell Inc. PowerEdge R6515/07PXPY, BIOS 2.3.6 07/06/2021
+   RIP: 0010:setup_IO_APIC+0x9c/0xaf0
+   Call Trace:
+    <TASK>
+    ? native_read_msr
+    apic_intr_mode_init
+    x86_late_time_init
+    start_kernel
+    x86_64_start_reservations
+    x86_64_start_kernel
+    secondary_startup_64_no_verify
+    </TASK>
 
-Linearize the skb after offloading if the sending hardware requires it.
-It was tested on v4, v6 has been adopted.
+which is:
 
-Fixes: 7785bba299a8d ("esp: Add a software GRO codepath")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+setup_IO_APIC:
+  apic_printk(APIC_VERBOSE, "ENABLING IO-APIC IRQs\n");
+  for_each_ioapic(ioapic)
+  	BUG_ON(mp_irqdomain_create(ioapic));
+
+Return 0 to denote that x2APIC has not been enabled when probing the
+physical x2APIC driver.
+
+  [ bp: Massage commit message heavily. ]
+
+Fixes: 9ebd680bd029 ("x86, apic: Use probe routines to simplify apic selection")
+Signed-off-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Kishon Vijay Abraham I <kvijayab@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230616212236.1389-1-dheerajkumar.srivastava@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/esp4_offload.c | 3 +++
- net/ipv6/esp6_offload.c | 3 +++
- 2 files changed, 6 insertions(+)
+ arch/x86/kernel/apic/x2apic_phys.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
-index 58834a10c0be7..93045373e44bd 100644
---- a/net/ipv4/esp4_offload.c
-+++ b/net/ipv4/esp4_offload.c
-@@ -237,6 +237,9 @@ static int esp_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features_
+diff --git a/arch/x86/kernel/apic/x2apic_phys.c b/arch/x86/kernel/apic/x2apic_phys.c
+index 6bde05a86b4ed..896bc41cb2ba7 100644
+--- a/arch/x86/kernel/apic/x2apic_phys.c
++++ b/arch/x86/kernel/apic/x2apic_phys.c
+@@ -97,7 +97,10 @@ static void init_x2apic_ldr(void)
  
- 	secpath_reset(skb);
+ static int x2apic_phys_probe(void)
+ {
+-	if (x2apic_mode && (x2apic_phys || x2apic_fadt_phys()))
++	if (!x2apic_mode)
++		return 0;
++
++	if (x2apic_phys || x2apic_fadt_phys())
+ 		return 1;
  
-+	if (skb_needs_linearize(skb, skb->dev->features) &&
-+	    __skb_linearize(skb))
-+		return -ENOMEM;
- 	return 0;
- }
- 
-diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
-index eeee64a8a72c2..69313ec24264e 100644
---- a/net/ipv6/esp6_offload.c
-+++ b/net/ipv6/esp6_offload.c
-@@ -272,6 +272,9 @@ static int esp6_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features
- 
- 	secpath_reset(skb);
- 
-+	if (skb_needs_linearize(skb, skb->dev->features) &&
-+	    __skb_linearize(skb))
-+		return -ENOMEM;
- 	return 0;
- }
- 
+ 	return apic == &apic_x2apic_phys;
 -- 
 2.39.2
 
