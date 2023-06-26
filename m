@@ -2,64 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A25B073E886
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F30573E917
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232117AbjFZS0l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:26:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37706 "EHLO
+        id S232077AbjFZScm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:32:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232094AbjFZS0W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:22 -0400
+        with ESMTP id S232126AbjFZScY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66A921984
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:25:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DF02136
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 03AFB60E76
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:25:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B30C433C9;
-        Mon, 26 Jun 2023 18:25:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F32C160F3E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09770C433C9;
+        Mon, 26 Jun 2023 18:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803948;
-        bh=rPuc8Pj6VUZ4jVpNy+8Lp9AuzNyWmMOhqY1rhbIfKgk=;
+        s=korg; t=1687804330;
+        bh=qQf/OyIgR4XnoASZdvywr+M6gKTqZqBnUD5GvGrHF1g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GMXVZYfiqABjxrnO92x8qyC8SQvD1Q+v0/mQ7z5yJApKJ4ijYZ+zV7reXDZbgkQ7P
-         HK+UZmrmQylQXnFieCI3690QjjshBnacepKLE9xA6GUubGT5cMSKSiaQSaCAileiSV
-         e0wqsY1ECX3ZKrw+S0p+JoLp5g5zmrSTh0GbMyS0=
+        b=hh8UWzqqa9ZqlKHuc7cGtytfjkw38F6UN8ydm2QAicYnNx7hsAGX+y4W4/pV2NICo
+         1WvcdPbquwmIn1tju6YnANurdtu4HV58D1JoWs0WpcxKeH1sjbN0yTWRbqlp6vzKB3
+         coUTUh65mftrddebCN8oAxU8Bi/lCOEUqgDWkD2M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
-        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
+        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Yonghong Song <yhs@meta.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Philipp Rudo <prudo@redhat.com>,
-        Ross Zwisler <zwisler@google.com>,
-        Simon Horman <horms@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 06/41] x86/purgatory: remove PGO flags
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 120/170] bpf/btf: Accept function names that contain dots
 Date:   Mon, 26 Jun 2023 20:11:29 +0200
-Message-ID: <20230626180736.500425171@linuxfoundation.org>
+Message-ID: <20230626180805.950364291@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
-References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -74,60 +58,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Florent Revest <revest@chromium.org>
 
-commit 97b6b9cbba40a21c1d9a344d5c1991f8cfbf136e upstream.
+[ Upstream commit 9724160b3942b0a967b91a59f81da5593f28b8ba ]
 
-If profile-guided optimization is enabled, the purgatory ends up with
-multiple .text sections.  This is not supported by kexec and crashes the
-system.
+When building a kernel with LLVM=1, LLVM_IAS=0 and CONFIG_KASAN=y, LLVM
+leaves DWARF tags for the "asan.module_ctor" & co symbols. In turn,
+pahole creates BTF_KIND_FUNC entries for these and this makes the BTF
+metadata validation fail because they contain a dot.
 
-Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-2-b05c520b7296@chromium.org
-Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Cc: <stable@vger.kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+In a dramatic turn of event, this BTF verification failure can cause
+the netfilter_bpf initialization to fail, causing netfilter_core to
+free the netfilter_helper hashmap and netfilter_ftp to trigger a
+use-after-free. The risk of u-a-f in netfilter will be addressed
+separately but the existence of "asan.module_ctor" debug info under some
+build conditions sounds like a good enough reason to accept functions
+that contain dots in BTF.
+
+Although using only LLVM=1 is the recommended way to compile clang-based
+kernels, users can certainly do LLVM=1, LLVM_IAS=0 as well and we still
+try to support that combination according to Nick. To clarify:
+
+  - > v5.10 kernel, LLVM=1 (LLVM_IAS=0 is not the default) is recommended,
+    but user can still have LLVM=1, LLVM_IAS=0 to trigger the issue
+
+  - <= 5.10 kernel, LLVM=1 (LLVM_IAS=0 is the default) is recommended in
+    which case GNU as will be used
+
+Fixes: 1dc92851849c ("bpf: kernel side support for BTF Var and DataSec")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Cc: Yonghong Song <yhs@meta.com>
 Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Philipp Rudo <prudo@redhat.com>
-Cc: Ross Zwisler <zwisler@google.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tom Rix <trix@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Ricardo Ribalda Delgado <ribalda@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/bpf/20230615145607.3469985-1-revest@chromium.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/purgatory/Makefile |    5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/bpf/btf.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -12,6 +12,11 @@ $(obj)/string.o: $(srctree)/arch/x86/boo
- $(obj)/sha256.o: $(srctree)/lib/sha256.c FORCE
- 	$(call if_changed_rule,cc_o_c)
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index a8838a32f750e..8220caa488c54 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -735,13 +735,12 @@ static bool btf_name_offset_valid(const struct btf *btf, u32 offset)
+ 	return offset < btf->hdr.str_len;
+ }
  
-+# When profile-guided optimization is enabled, llvm emits two different
-+# overlapping text sections, which is not supported by kexec. Remove profile
-+# optimization flags.
-+KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
-+
- LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined -nostdlib -z nodefaultlib
- targets += purgatory.ro
+-static bool __btf_name_char_ok(char c, bool first, bool dot_ok)
++static bool __btf_name_char_ok(char c, bool first)
+ {
+ 	if ((first ? !isalpha(c) :
+ 		     !isalnum(c)) &&
+ 	    c != '_' &&
+-	    ((c == '.' && !dot_ok) ||
+-	      c != '.'))
++	    c != '.')
+ 		return false;
+ 	return true;
+ }
+@@ -758,20 +757,20 @@ static const char *btf_str_by_offset(const struct btf *btf, u32 offset)
+ 	return NULL;
+ }
  
+-static bool __btf_name_valid(const struct btf *btf, u32 offset, bool dot_ok)
++static bool __btf_name_valid(const struct btf *btf, u32 offset)
+ {
+ 	/* offset must be valid */
+ 	const char *src = btf_str_by_offset(btf, offset);
+ 	const char *src_limit;
+ 
+-	if (!__btf_name_char_ok(*src, true, dot_ok))
++	if (!__btf_name_char_ok(*src, true))
+ 		return false;
+ 
+ 	/* set a limit on identifier length */
+ 	src_limit = src + KSYM_NAME_LEN;
+ 	src++;
+ 	while (*src && src < src_limit) {
+-		if (!__btf_name_char_ok(*src, false, dot_ok))
++		if (!__btf_name_char_ok(*src, false))
+ 			return false;
+ 		src++;
+ 	}
+@@ -779,17 +778,14 @@ static bool __btf_name_valid(const struct btf *btf, u32 offset, bool dot_ok)
+ 	return !*src;
+ }
+ 
+-/* Only C-style identifier is permitted. This can be relaxed if
+- * necessary.
+- */
+ static bool btf_name_valid_identifier(const struct btf *btf, u32 offset)
+ {
+-	return __btf_name_valid(btf, offset, false);
++	return __btf_name_valid(btf, offset);
+ }
+ 
+ static bool btf_name_valid_section(const struct btf *btf, u32 offset)
+ {
+-	return __btf_name_valid(btf, offset, true);
++	return __btf_name_valid(btf, offset);
+ }
+ 
+ static const char *__btf_name_by_offset(const struct btf *btf, u32 offset)
+@@ -4044,7 +4040,7 @@ static s32 btf_var_check_meta(struct btf_verifier_env *env,
+ 	}
+ 
+ 	if (!t->name_off ||
+-	    !__btf_name_valid(env->btf, t->name_off, true)) {
++	    !__btf_name_valid(env->btf, t->name_off)) {
+ 		btf_verifier_log_type(env, t, "Invalid name");
+ 		return -EINVAL;
+ 	}
+-- 
+2.39.2
+
 
 
