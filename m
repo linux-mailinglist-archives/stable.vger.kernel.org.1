@@ -2,93 +2,139 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBA6C73DD67
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 13:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D8C73DD9E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 13:33:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjFZLYu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 07:24:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60460 "EHLO
+        id S229965AbjFZLdL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 07:33:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbjFZLYt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 07:24:49 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FF0AFD;
-        Mon, 26 Jun 2023 04:24:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687778687; x=1719314687;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Hbsx9lDG0ObqAYBCH/anLudkyMjn7A+iSFPOx7MPsBM=;
-  b=W4srQOuk8xXvEbRDrJOuRMuYPhg/cD6qFcVJYpdiGzY5/Ti0DoRuvUX7
-   18Ln+f/MFLuNilLCUBX6i632DLVSR2A+yLS0oVUpobQfmn0f3EfthAB0z
-   KvaHLufRcYmkeBZ5uZHINY21wZwp9rrFrAV8Ilv/1MNitf0VNHUSZCrjA
-   cJZxxl/PBSGovCjSzg93rIY1KnLMGDOxcOgqej4l5iceMli797VvRyemO
-   1Xp/NmxO1d0dZgJEjQQPhT4vfWBPKfW38KxUQ3muCbX2ozYm1zFvXWwfn
-   mMnqrramPsEVrwCGgPq93uo+u+6Vk9+B4ABIbkwXuyP8qzP+HM/eMEC9/
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10752"; a="363790146"
-X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
-   d="scan'208";a="363790146"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 04:24:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10752"; a="1046477310"
-X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
-   d="scan'208";a="1046477310"
-Received: from csteeb-mobl2.ger.corp.intel.com (HELO intel.com) ([10.251.217.4])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 04:24:41 -0700
-Date:   Mon, 26 Jun 2023 13:24:38 +0200
-From:   Andi Shyti <andi.shyti@linux.intel.com>
-To:     Thomas =?iso-8859-15?Q?Hellstr=F6m?= 
-        <thomas.hellstrom@linux.intel.com>
-Cc:     intel-xe@lists.freedesktop.org,
-        Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
-        Christian =?iso-8859-15?Q?K=F6nig?= <christian.koenig@amd.com>,
+        with ESMTP id S229629AbjFZLdE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 07:33:04 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550B2A0;
+        Mon, 26 Jun 2023 04:33:03 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-313f18f5295so1054749f8f.3;
+        Mon, 26 Jun 2023 04:33:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687779182; x=1690371182;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+SRZEwipWy/cjOgEXgKgnNMeRlmoMeF7Dl+vBl4nmyI=;
+        b=SDlbF25K8CznCfDXhIQspLYCYiziLOk5/eskJUr+xpO5seAEQ6lJmPo8Xrp54wb72q
+         p+PQ423QOfOuArzmwjCl+nJuJUDnMVRi+k0xOZ+oq2CAd1ygaZRYddDLem17dAZLwsIw
+         UEd6VRquDR6rsZlp4qpMxDALmIGjfEdlfsnaOjsRE2z7x5i2kNiZ/5jFgi1B/EXNSrav
+         gaNTYUJ/s+OFqgQzFI8pAdHAprmywKwNVXXho544UrbpCUIrYvlyWvGM7WTPyNZGWejr
+         emluld6C6B42FvWApLfisxICs804QJt5a23iyD8h5X/BceGX72K+r8z0QsBJadCLDw28
+         qX7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687779182; x=1690371182;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+SRZEwipWy/cjOgEXgKgnNMeRlmoMeF7Dl+vBl4nmyI=;
+        b=YXaUEETOQ9jpzfBy4Moqnz0SUcqBpE44OEoAdBfQqgQDgGwAzpqQDZMuOXcCgmctPF
+         RW493CgiWF/u7ehNjwpi3YgvQYkUBlJc62PrTDkgrw+5VTml3y9cgo2JRxCxOtP7BPES
+         UU/eyxTaN1iSU5WnOA98Xyt1/oyEH8byzIFxFy38EcNg/oY2ezDgJKTKMo0cEORcneiX
+         GIAQMQcjQel4MARxVGMmjAAG753YQuPC2CgOcBHzcQ/rKUhzREmTwqP3J+DzxbwG94Q3
+         QCIoCEeglaoes/E5odDyj+5TpfWF5jejyLl9B7W3oM/aCH98iHck33MicgK1G0PLzANt
+         5aWg==
+X-Gm-Message-State: AC+VfDyCa9NI5r6LPsVfrnmZzbyNtE7NraZvYqREw74MwJQJhTZ+QFpm
+        cM8tvQBlYfbeG3DTlcM14F0=
+X-Google-Smtp-Source: ACHHUZ4yUVe1NS+g9PNDkBGGvzC4bdn2WCFLjpynRmfAcWWAU1VoJXhjGm1U4gu7U5oeFzwBnVNLeg==
+X-Received: by 2002:adf:fd49:0:b0:311:e96:a6f2 with SMTP id h9-20020adffd49000000b003110e96a6f2mr23242376wrs.29.1687779181492;
+        Mon, 26 Jun 2023 04:33:01 -0700 (PDT)
+Received: from ?IPV6:2a00:e180:158d:7600:d62f:c4fb:6eee:7b87? ([2a00:e180:158d:7600:d62f:c4fb:6eee:7b87])
+        by smtp.gmail.com with ESMTPSA id t1-20020adfe441000000b00313f45f74a8sm1564636wrm.103.2023.06.26.04.33.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Jun 2023 04:33:01 -0700 (PDT)
+Message-ID: <aa189924-795c-0bd0-1a85-b60445572153@gmail.com>
+Date:   Mon, 26 Jun 2023 13:32:59 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 3/4] drm/ttm: Don't leak a resource on eviction error
+Content-Language: en-US
+To:     =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= 
+        <thomas.hellstrom@linux.intel.com>, intel-xe@lists.freedesktop.org
+Cc:     Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
         Huang Rui <ray.huang@amd.com>, dri-devel@lists.freedesktop.org,
         stable@vger.kernel.org, Nirmoy Das <nirmoy.das@intel.com>,
         intel-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Christian =?iso-8859-15?Q?K=F6nig?= 
-        <ckoenig.leichtzumerken@gmail.com>,
         Andi Shyti <andi.shyti@linux.intel.com>
-Subject: Re: [PATCH v2 3/4] drm/ttm: Don't leak a resource on eviction error
-Message-ID: <ZJl1dvx311ixwQ3I@ashyti-mobl2.lan>
 References: <20230626091450.14757-1-thomas.hellstrom@linux.intel.com>
  <20230626091450.14757-4-thomas.hellstrom@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
 In-Reply-To: <20230626091450.14757-4-thomas.hellstrom@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Thomas,
-
-On Mon, Jun 26, 2023 at 11:14:49AM +0200, Thomas Hellström wrote:
+Am 26.06.23 um 11:14 schrieb Thomas HellstrÃ¶m:
 > On eviction errors other than -EMULTIHOP we were leaking a resource.
 > Fix.
-> 
+>
 > v2:
 > - Avoid yet another goto (Andi Shyti)
-> 
+>
 > Fixes: 403797925768 ("drm/ttm: Fix multihop assert on eviction.")
 > Cc: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
-> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Christian KÃ¶nig <christian.koenig@amd.com>
 > Cc: Christian Koenig <christian.koenig@amd.com>
 > Cc: Huang Rui <ray.huang@amd.com>
 > Cc: dri-devel@lists.freedesktop.org
 > Cc: <stable@vger.kernel.org> # v5.15+
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Signed-off-by: Thomas HellstrÃ¶m <thomas.hellstrom@linux.intel.com>
 > Reviewed-by: Nirmoy Das <nirmoy.das@intel.com> #v1
 
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com> 
+Reviewed-by: Christian KÃ¶nig <christian.koenig@amd.com>
 
-Andi
+> ---
+>   drivers/gpu/drm/ttm/ttm_bo.c | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+> index 615d30c4262d..c0e3bbd21d3d 100644
+> --- a/drivers/gpu/drm/ttm/ttm_bo.c
+> +++ b/drivers/gpu/drm/ttm/ttm_bo.c
+> @@ -458,18 +458,18 @@ static int ttm_bo_evict(struct ttm_buffer_object *bo,
+>   		goto out;
+>   	}
+>   
+> -bounce:
+> -	ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
+> -	if (ret == -EMULTIHOP) {
+> +	do {
+> +		ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
+> +		if (ret != -EMULTIHOP)
+> +			break;
+> +
+>   		ret = ttm_bo_bounce_temp_buffer(bo, &evict_mem, ctx, &hop);
+> -		if (ret) {
+> -			if (ret != -ERESTARTSYS && ret != -EINTR)
+> -				pr_err("Buffer eviction failed\n");
+> -			ttm_resource_free(bo, &evict_mem);
+> -			goto out;
+> -		}
+> -		/* try and move to final place now. */
+> -		goto bounce;
+> +	} while (!ret);
+> +
+> +	if (ret) {
+> +		ttm_resource_free(bo, &evict_mem);
+> +		if (ret != -ERESTARTSYS && ret != -EINTR)
+> +			pr_err("Buffer eviction failed\n");
+>   	}
+>   out:
+>   	return ret;
+
