@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 566F973EA3D
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17F0E73EA12
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232596AbjFZSo4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:44:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57434 "EHLO
+        id S232537AbjFZSnN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:43:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232636AbjFZSoy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:44:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F99010B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:44:51 -0700 (PDT)
+        with ESMTP id S232554AbjFZSnL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5529910CC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:42:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6DE360F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:44:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E015EC433C9;
-        Mon, 26 Jun 2023 18:44:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D0C6B60F53
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:42:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C44C433C0;
+        Mon, 26 Jun 2023 18:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805090;
-        bh=Bswaf5qIiHuadcrmdSZoEhnbFMb1/tzjk+iN0IhIzXQ=;
+        s=korg; t=1687804969;
+        bh=F8FUVlnxdwh0wxecFka3joh4grL9o850eHRQc+PLDZI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O+DFEIS0crCJL9T5+n7sYEgs24hJk4u9dkvi6rFgEZgtyPV6QqPWXbJPIt9Q9I1ja
-         Iymu5jkpi0YKMa60b6r9O9xtT1Mo7Z0QqVJJE1Bvi2vuPdwd8bHgDeedIUcxAXGf/M
-         qJi7T1tnhdGX9oDqGa8HREvDx9H0VtxSEqyNuX4s=
+        b=dAR8wc3l3G7elE2pvVXg5354BWLDcInCPpVHIIgQTjW/yyIjhrVhlZZJ8jRw6Ezpf
+         XppK6DaJ3I1B+7fkjbEajgRvR46I+ZNSI+QgT8omClSz5mQ2Zi0iaCbYXA7TOxzy1w
+         CTMaimkQsJO6mRwwsDcDLGNVsm2Np9sJqtuAfVAw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev, Jiawen Wu <jiawenwu@trustnetic.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 47/81] mmc: sdhci-acpi: fix deferred probing
+Subject: [PATCH 5.15 74/96] gpiolib: Fix GPIO chip IRQ initialization restriction
 Date:   Mon, 26 Jun 2023 20:12:29 +0200
-Message-ID: <20230626180746.391634929@linuxfoundation.org>
+Message-ID: <20230626180750.067541851@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,38 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit b465dea5e1540c7d7b5211adaf94926980d3014b ]
+[ Upstream commit 8c00914e5438e3636f26b4f814b3297ae2a1b9ee ]
 
-The driver overrides the error codes returned by platform_get_irq() to
--EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the
-error codes upstream.
+In case of gpio-regmap, IRQ chip is added by regmap-irq and associated with
+GPIO chip by gpiochip_irqchip_add_domain(). The initialization flag was not
+added in gpiochip_irqchip_add_domain(), causing gpiochip_to_irq() to return
+-EPROBE_DEFER.
 
-Fixes: 1b7ba57ecc86 ("mmc: sdhci-acpi: Handle return value of platform_get_irq")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20230617203622.6812-9-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 5467801f1fcb ("gpio: Restrict usage of GPIO chip irq members before initialization")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpiolib.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
-index a2cdb37fcbbec..2a28101777c6f 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -876,7 +876,7 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
- 	host->ops	= &sdhci_acpi_ops_dflt;
- 	host->irq	= platform_get_irq(pdev, 0);
- 	if (host->irq < 0) {
--		err = -EINVAL;
-+		err = host->irq;
- 		goto err_free;
- 	}
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 099fe2e39bd63..f9fdd117c654c 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1683,6 +1683,14 @@ int gpiochip_irqchip_add_domain(struct gpio_chip *gc,
+ 	gc->to_irq = gpiochip_to_irq;
+ 	gc->irq.domain = domain;
  
++	/*
++	 * Using barrier() here to prevent compiler from reordering
++	 * gc->irq.initialized before adding irqdomain.
++	 */
++	barrier();
++
++	gc->irq.initialized = true;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(gpiochip_irqchip_add_domain);
 -- 
 2.39.2
 
