@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D75073E8EA
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C7A273E817
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:22:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232177AbjFZSap (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:30:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43412 "EHLO
+        id S231803AbjFZSW5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:22:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232355AbjFZSaI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:08 -0400
+        with ESMTP id S231796AbjFZSWw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:22:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA6161708
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC217CC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:22:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67D0F60F39
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8D2C433C8;
-        Mon, 26 Jun 2023 18:30:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87E3560F51
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:21:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907BFC433C0;
+        Mon, 26 Jun 2023 18:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804206;
-        bh=XkCv8m+SwglEKpH2hgINfBZTfuigdB5mMl/5EvINsKU=;
+        s=korg; t=1687803676;
+        bh=PIjjKVmZQ320dfLxqLy0VJY/NsmorB4h19c0vikRn68=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SsVu8bTXSQbKP3ecYJVt1pGD833vJw3z4adETwpzdOW6tzQa6q9ghq8ScYJ+h0idy
-         gYWm+oe0tnHx5hXpouxYsyNkEipqgchRSyuEse6oLps6JTzX+tgZx+kOVX3kIHLXWm
-         sagj09emDjHXR188zHl0xumtxQRDX1hOxPuwwzdI=
+        b=O1OQeRnqZHIq/quLs/PmGhs4jfgp6TJV8DvLArkeAj2/uhbIusvOLGDwqWyYxWotw
+         qDu5xDQDWdJDU+VAL0Ecl2GaRM/RgCYVZancinn86X9FH03TMXI+EufEE67m0A26tV
+         GM2QbIfWDbVj7sd/6ATAwFzJA6FTtwyInJ54Dl6k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Querijn Voet <querijnqyn@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 076/170] io_uring/poll: serialize poll linked timer start with poll removal
+        patches@lists.linux.dev, Jiri Olsa <jolsa@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 139/199] bpf: Force kprobe multi expected_attach_type for kprobe_multi link
 Date:   Mon, 26 Jun 2023 20:10:45 +0200
-Message-ID: <20230626180804.026649747@linuxfoundation.org>
+Message-ID: <20230626180811.698715648@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,71 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Jiri Olsa <jolsa@kernel.org>
 
-Commit ef7dfac51d8ed961b742218f526bd589f3900a59 upstream.
+[ Upstream commit db8eae6bc5c702d8e3ab2d0c6bb5976c131576eb ]
 
-We selectively grab the ctx->uring_lock for poll update/removal, but
-we really should grab it from the start to fully synchronize with
-linked timeouts. Normally this is indeed the case, but if requests
-are forced async by the application, we don't fully cover removal
-and timer disarm within the uring_lock.
+We currently allow to create perf link for program with
+expected_attach_type == BPF_TRACE_KPROBE_MULTI.
 
-Make this simpler by having consistent locking state for poll removal.
+This will cause crash when we call helpers like get_attach_cookie or
+get_func_ip in such program, because it will call the kprobe_multi's
+version (current->bpf_ctx context setup) of those helpers while it
+expects perf_link's current->bpf_ctx context setup.
 
-Cc: stable@vger.kernel.org # 6.1+
-Reported-by: Querijn Voet <querijnqyn@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Making sure that we use BPF_TRACE_KPROBE_MULTI expected_attach_type
+only for programs attaching through kprobe_multi link.
+
+Fixes: ca74823c6e16 ("bpf: Add cookie support to programs attached with kprobe multi link")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230618131414.75649-1-jolsa@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/poll.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ kernel/bpf/syscall.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -993,8 +993,9 @@ int io_poll_remove(struct io_kiocb *req,
- 	struct io_hash_bucket *bucket;
- 	struct io_kiocb *preq;
- 	int ret2, ret = 0;
--	bool locked;
-+	bool locked = true;
- 
-+	io_ring_submit_lock(ctx, issue_flags);
- 	preq = io_poll_find(ctx, true, &cd, &ctx->cancel_table, &bucket);
- 	ret2 = io_poll_disarm(preq);
- 	if (bucket)
-@@ -1006,12 +1007,10 @@ int io_poll_remove(struct io_kiocb *req,
- 		goto out;
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index adc83cb82f379..8bd5e3741d418 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -3412,6 +3412,11 @@ static int bpf_prog_attach_check_attach_type(const struct bpf_prog *prog,
+ 		return prog->enforce_expected_attach_type &&
+ 			prog->expected_attach_type != attach_type ?
+ 			-EINVAL : 0;
++	case BPF_PROG_TYPE_KPROBE:
++		if (prog->expected_attach_type == BPF_TRACE_KPROBE_MULTI &&
++		    attach_type != BPF_TRACE_KPROBE_MULTI)
++			return -EINVAL;
++		return 0;
+ 	default:
+ 		return 0;
  	}
- 
--	io_ring_submit_lock(ctx, issue_flags);
- 	preq = io_poll_find(ctx, true, &cd, &ctx->cancel_table_locked, &bucket);
- 	ret2 = io_poll_disarm(preq);
- 	if (bucket)
- 		spin_unlock(&bucket->lock);
--	io_ring_submit_unlock(ctx, issue_flags);
- 	if (ret2) {
- 		ret = ret2;
- 		goto out;
-@@ -1035,7 +1034,7 @@ found:
- 		if (poll_update->update_user_data)
- 			preq->cqe.user_data = poll_update->new_user_data;
- 
--		ret2 = io_poll_add(preq, issue_flags);
-+		ret2 = io_poll_add(preq, issue_flags & ~IO_URING_F_UNLOCKED);
- 		/* successfully updated, don't complete poll request */
- 		if (!ret2 || ret2 == -EIOCBQUEUED)
- 			goto out;
-@@ -1043,9 +1042,9 @@ found:
- 
- 	req_set_fail(preq);
- 	io_req_set_res(preq, -ECANCELED, 0);
--	locked = !(issue_flags & IO_URING_F_UNLOCKED);
- 	io_req_task_complete(preq, &locked);
- out:
-+	io_ring_submit_unlock(ctx, issue_flags);
- 	if (ret < 0) {
- 		req_set_fail(req);
- 		return ret;
+-- 
+2.39.2
+
 
 
