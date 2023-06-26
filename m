@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1844273E74C
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FC4773E83E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:23:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbjFZSN6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57202 "EHLO
+        id S231925AbjFZSX6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:23:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230310AbjFZSNl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:13:41 -0400
+        with ESMTP id S232003AbjFZSXg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E4CA1715
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:13:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE9B273D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9321660F24
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:13:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0342C433C0;
-        Mon, 26 Jun 2023 18:13:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BAB5560F4D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:22:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FD2C433C9;
+        Mon, 26 Jun 2023 18:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803216;
-        bh=v9l4/Hk+zQGDSANSsGgxGE+pz6nh9bLRum7ZssxZc7k=;
+        s=korg; t=1687803762;
+        bh=pT6Kk/bbYFJi3YjFoIFdzBdBxD8HJ/mXykEx2UzWtU8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dOOimbY6StdUEDEynaUkfd0eh6JvRwrEUaPiUM0d5uFv786cDsu59YqolgteyGNAn
-         JW9qL+uP0Wzw4/OpxWRegSpWYKgcoBVwICcPt5rNa1SNp6NsKKrDyWplADvBozEzO3
-         h+MsBcikZtoPXy0qTRWpaAB0FR64Hd905aPVBbq0=
+        b=J0AfPD11aWODTKmXUUX6twUTwjWG2hyUxJe0o5t33VM+qcQ00Nknx3g9wLL5EVX8R
+         6yjNh7g9m4u7NWkX6aPkNG9M/YE6/EWjPLnomeHa27C31mbdYN7m0J67ymfkXLgkJF
+         wZyxyn7ByMvgX+Pi8yD5ifcwZDCIYP2FhjRvcv9M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ross Lagerwall <ross.lagerwall@citrix.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Clark Wang <xiaoning.wang@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 13/26] be2net: Extend xmit workaround to BE3 chip
+Subject: [PATCH 6.3 169/199] spi: lpspi: disable lpspi module irq in DMA mode
 Date:   Mon, 26 Jun 2023 20:11:15 +0200
-Message-ID: <20230626180734.190982557@linuxfoundation.org>
+Message-ID: <20230626180813.110882188@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
-References: <20230626180733.699092073@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,46 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ross Lagerwall <ross.lagerwall@citrix.com>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-[ Upstream commit 7580e0a78eb29e7bb1a772eba4088250bbb70d41 ]
+[ Upstream commit 9728fb3ce11729aa8c276825ddf504edeb00611d ]
 
-We have seen a bug where the NIC incorrectly changes the length in the
-IP header of a padded packet to include the padding bytes. The driver
-already has a workaround for this so do the workaround for this NIC too.
-This resolves the issue.
+When all bits of IER are set to 0, we still can observe the lpspi irq events
+when using DMA mode to transfer data.
 
-The NIC in question identifies itself as follows:
+So disable irq to avoid the too much irq events.
 
-[    8.828494] be2net 0000:02:00.0: FW version is 10.7.110.31
-[    8.834759] be2net 0000:02:00.0: Emulex OneConnect(be3): PF FLEX10 port 1
-
-02:00.0 Ethernet controller: Emulex Corporation OneConnect 10Gb NIC (be3) (rev 01)
-
-Fixes: ca34fe38f06d ("be2net: fix wrong usage of adapter->generation")
-Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
-Link: https://lore.kernel.org/r/20230616164549.2863037-1-ross.lagerwall@citrix.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Link: https://lore.kernel.org/r/20230505063557.3962220-1-xiaoning.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
-index 43ae124cabff6..f8541d0c7bd52 100644
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -1129,8 +1129,8 @@ static struct sk_buff *be_lancer_xmit_workarounds(struct be_adapter *adapter,
- 	eth_hdr_len = ntohs(skb->protocol) == ETH_P_8021Q ?
- 						VLAN_ETH_HLEN : ETH_HLEN;
- 	if (skb->len <= 60 &&
--	    (lancer_chip(adapter) || skb_vlan_tag_present(skb)) &&
--	    is_ipv4_pkt(skb)) {
-+	    (lancer_chip(adapter) || BE3_chip(adapter) ||
-+	     skb_vlan_tag_present(skb)) && is_ipv4_pkt(skb)) {
- 		ip = (struct iphdr *)ip_hdr(skb);
- 		pskb_trim(skb, eth_hdr_len + ntohs(ip->tot_len));
- 	}
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 34488de555871..457fe6bc7e41e 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -910,9 +910,14 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	ret = fsl_lpspi_dma_init(&pdev->dev, fsl_lpspi, controller);
+ 	if (ret == -EPROBE_DEFER)
+ 		goto out_pm_get;
+-
+ 	if (ret < 0)
+ 		dev_err(&pdev->dev, "dma setup error %d, use pio\n", ret);
++	else
++		/*
++		 * disable LPSPI module IRQ when enable DMA mode successfully,
++		 * to prevent the unexpected LPSPI module IRQ events.
++		 */
++		disable_irq(irq);
+ 
+ 	ret = devm_spi_register_controller(&pdev->dev, controller);
+ 	if (ret < 0) {
 -- 
 2.39.2
 
