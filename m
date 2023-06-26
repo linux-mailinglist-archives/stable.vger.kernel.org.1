@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F30573E917
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4412673E85F
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:25:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232077AbjFZScm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:32:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45256 "EHLO
+        id S232009AbjFZSZO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:25:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232126AbjFZScY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:24 -0400
+        with ESMTP id S232017AbjFZSYr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:24:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DF02136
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02BB9268C
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F32C160F3E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09770C433C9;
-        Mon, 26 Jun 2023 18:32:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7F0360F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF352C433CA;
+        Mon, 26 Jun 2023 18:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804330;
-        bh=qQf/OyIgR4XnoASZdvywr+M6gKTqZqBnUD5GvGrHF1g=;
+        s=korg; t=1687803853;
+        bh=+Mljsuej5wv46TxjC+eGYKwSemJD87R+3PYWElssA4c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hh8UWzqqa9ZqlKHuc7cGtytfjkw38F6UN8ydm2QAicYnNx7hsAGX+y4W4/pV2NICo
-         1WvcdPbquwmIn1tju6YnANurdtu4HV58D1JoWs0WpcxKeH1sjbN0yTWRbqlp6vzKB3
-         coUTUh65mftrddebCN8oAxU8Bi/lCOEUqgDWkD2M=
+        b=UqAuQcDuDpRKTM0M1aFORmFmh9T2fFA5nntb1bXONnVE7O6heKbCOoVDz/MnC9P+I
+         6Hkf9+12mG1MyD9qWH+2GMHVso3DUw4jWbv4KxyfgZIp0MNp9CaIWywfLNuChfIOpS
+         7Aor3dgp8LUEPa/5HD3cCg8vedj+FOltmYGpaoRY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Yonghong Song <yhs@meta.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/170] bpf/btf: Accept function names that contain dots
+        patches@lists.linux.dev, David Zheng <david.zheng@intel.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 183/199] i2c: designware: fix idx_write_cnt in read loop
 Date:   Mon, 26 Jun 2023 20:11:29 +0200
-Message-ID: <20230626180805.950364291@linuxfoundation.org>
+Message-ID: <20230626180813.787122663@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,118 +55,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florent Revest <revest@chromium.org>
+From: David Zheng <david.zheng@intel.com>
 
-[ Upstream commit 9724160b3942b0a967b91a59f81da5593f28b8ba ]
+[ Upstream commit 1acfc6e753ed978b36d722f54e57fe4d1e8a6ffa ]
 
-When building a kernel with LLVM=1, LLVM_IAS=0 and CONFIG_KASAN=y, LLVM
-leaves DWARF tags for the "asan.module_ctor" & co symbols. In turn,
-pahole creates BTF_KIND_FUNC entries for these and this makes the BTF
-metadata validation fail because they contain a dot.
+With IC_INTR_RX_FULL slave interrupt handler reads data in a loop until
+RX FIFO is empty. When testing with the slave-eeprom, each transaction
+has 2 bytes for address/index and 1 byte for value, the address byte
+can be written as data byte due to dropping STOP condition.
 
-In a dramatic turn of event, this BTF verification failure can cause
-the netfilter_bpf initialization to fail, causing netfilter_core to
-free the netfilter_helper hashmap and netfilter_ftp to trigger a
-use-after-free. The risk of u-a-f in netfilter will be addressed
-separately but the existence of "asan.module_ctor" debug info under some
-build conditions sounds like a good enough reason to accept functions
-that contain dots in BTF.
+In the test below, the master continuously writes to the slave, first 2
+bytes are index, 3rd byte is value and follow by a STOP condition.
 
-Although using only LLVM=1 is the recommended way to compile clang-based
-kernels, users can certainly do LLVM=1, LLVM_IAS=0 as well and we still
-try to support that combination according to Nick. To clarify:
+ i2c_write: i2c-3 #0 a=04b f=0000 l=3 [00-D1-D1]
+ i2c_write: i2c-3 #0 a=04b f=0000 l=3 [00-D2-D2]
+ i2c_write: i2c-3 #0 a=04b f=0000 l=3 [00-D3-D3]
 
-  - > v5.10 kernel, LLVM=1 (LLVM_IAS=0 is not the default) is recommended,
-    but user can still have LLVM=1, LLVM_IAS=0 to trigger the issue
+Upon receiving STOP condition slave eeprom would reset `idx_write_cnt` so
+next 2 bytes can be treated as buffer index for upcoming transaction.
+Supposedly the slave eeprom buffer would be written as
 
-  - <= 5.10 kernel, LLVM=1 (LLVM_IAS=0 is the default) is recommended in
-    which case GNU as will be used
+ EEPROM[0x00D1] = 0xD1
+ EEPROM[0x00D2] = 0xD2
+ EEPROM[0x00D3] = 0xD3
 
-Fixes: 1dc92851849c ("bpf: kernel side support for BTF Var and DataSec")
-Signed-off-by: Florent Revest <revest@chromium.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Cc: Yonghong Song <yhs@meta.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lore.kernel.org/bpf/20230615145607.3469985-1-revest@chromium.org
+When CPU load is high the slave irq handler may not read fast enough,
+the interrupt status can be seen as 0x204 with both DW_IC_INTR_STOP_DET
+(0x200) and DW_IC_INTR_RX_FULL (0x4) bits. The slave device may see
+the transactions below.
+
+ 0x1 STATUS SLAVE_ACTIVITY=0x1 : RAW_INTR_STAT=0x1594 : INTR_STAT=0x4
+ 0x1 STATUS SLAVE_ACTIVITY=0x1 : RAW_INTR_STAT=0x1594 : INTR_STAT=0x4
+ 0x1 STATUS SLAVE_ACTIVITY=0x1 : RAW_INTR_STAT=0x1594 : INTR_STAT=0x4
+ 0x1 STATUS SLAVE_ACTIVITY=0x1 : RAW_INTR_STAT=0x1794 : INTR_STAT=0x204
+ 0x1 STATUS SLAVE_ACTIVITY=0x0 : RAW_INTR_STAT=0x1790 : INTR_STAT=0x200
+ 0x1 STATUS SLAVE_ACTIVITY=0x1 : RAW_INTR_STAT=0x1594 : INTR_STAT=0x4
+ 0x1 STATUS SLAVE_ACTIVITY=0x1 : RAW_INTR_STAT=0x1594 : INTR_STAT=0x4
+ 0x1 STATUS SLAVE_ACTIVITY=0x1 : RAW_INTR_STAT=0x1594 : INTR_STAT=0x4
+
+After `D1` is received, read loop continues to read `00` which is the
+first bype of next index. Since STOP condition is ignored by the loop,
+eeprom buffer index increased to `D2` and `00` is written as value.
+
+So the slave eeprom buffer becomes
+
+ EEPROM[0x00D1] = 0xD1
+ EEPROM[0x00D2] = 0x00
+ EEPROM[0x00D3] = 0xD3
+
+The fix is to use `FIRST_DATA_BYTE` (bit 11) in `IC_DATA_CMD` to split
+the transactions. The first index byte in this case would have bit 11
+set. Check this indication to inject I2C_SLAVE_WRITE_REQUESTED event
+which will reset `idx_write_cnt` in slave eeprom.
+
+Signed-off-by: David Zheng <david.zheng@intel.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/i2c/busses/i2c-designware-core.h  | 1 +
+ drivers/i2c/busses/i2c-designware-slave.c | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index a8838a32f750e..8220caa488c54 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -735,13 +735,12 @@ static bool btf_name_offset_valid(const struct btf *btf, u32 offset)
- 	return offset < btf->hdr.str_len;
- }
+diff --git a/drivers/i2c/busses/i2c-designware-core.h b/drivers/i2c/busses/i2c-designware-core.h
+index 050d8c63ad3c5..0164d92163308 100644
+--- a/drivers/i2c/busses/i2c-designware-core.h
++++ b/drivers/i2c/busses/i2c-designware-core.h
+@@ -40,6 +40,7 @@
+ #define DW_IC_CON_BUS_CLEAR_CTRL		BIT(11)
  
--static bool __btf_name_char_ok(char c, bool first, bool dot_ok)
-+static bool __btf_name_char_ok(char c, bool first)
- {
- 	if ((first ? !isalpha(c) :
- 		     !isalnum(c)) &&
- 	    c != '_' &&
--	    ((c == '.' && !dot_ok) ||
--	      c != '.'))
-+	    c != '.')
- 		return false;
- 	return true;
- }
-@@ -758,20 +757,20 @@ static const char *btf_str_by_offset(const struct btf *btf, u32 offset)
- 	return NULL;
- }
+ #define DW_IC_DATA_CMD_DAT			GENMASK(7, 0)
++#define DW_IC_DATA_CMD_FIRST_DATA_BYTE		BIT(11)
  
--static bool __btf_name_valid(const struct btf *btf, u32 offset, bool dot_ok)
-+static bool __btf_name_valid(const struct btf *btf, u32 offset)
- {
- 	/* offset must be valid */
- 	const char *src = btf_str_by_offset(btf, offset);
- 	const char *src_limit;
+ /*
+  * Registers offset
+diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
+index cec25054bb244..2e079cf20bb5b 100644
+--- a/drivers/i2c/busses/i2c-designware-slave.c
++++ b/drivers/i2c/busses/i2c-designware-slave.c
+@@ -176,6 +176,10 @@ static irqreturn_t i2c_dw_isr_slave(int this_irq, void *dev_id)
  
--	if (!__btf_name_char_ok(*src, true, dot_ok))
-+	if (!__btf_name_char_ok(*src, true))
- 		return false;
- 
- 	/* set a limit on identifier length */
- 	src_limit = src + KSYM_NAME_LEN;
- 	src++;
- 	while (*src && src < src_limit) {
--		if (!__btf_name_char_ok(*src, false, dot_ok))
-+		if (!__btf_name_char_ok(*src, false))
- 			return false;
- 		src++;
- 	}
-@@ -779,17 +778,14 @@ static bool __btf_name_valid(const struct btf *btf, u32 offset, bool dot_ok)
- 	return !*src;
- }
- 
--/* Only C-style identifier is permitted. This can be relaxed if
-- * necessary.
-- */
- static bool btf_name_valid_identifier(const struct btf *btf, u32 offset)
- {
--	return __btf_name_valid(btf, offset, false);
-+	return __btf_name_valid(btf, offset);
- }
- 
- static bool btf_name_valid_section(const struct btf *btf, u32 offset)
- {
--	return __btf_name_valid(btf, offset, true);
-+	return __btf_name_valid(btf, offset);
- }
- 
- static const char *__btf_name_by_offset(const struct btf *btf, u32 offset)
-@@ -4044,7 +4040,7 @@ static s32 btf_var_check_meta(struct btf_verifier_env *env,
- 	}
- 
- 	if (!t->name_off ||
--	    !__btf_name_valid(env->btf, t->name_off, true)) {
-+	    !__btf_name_valid(env->btf, t->name_off)) {
- 		btf_verifier_log_type(env, t, "Invalid name");
- 		return -EINVAL;
- 	}
+ 		do {
+ 			regmap_read(dev->map, DW_IC_DATA_CMD, &tmp);
++			if (tmp & DW_IC_DATA_CMD_FIRST_DATA_BYTE)
++				i2c_slave_event(dev->slave,
++						I2C_SLAVE_WRITE_REQUESTED,
++						&val);
+ 			val = tmp;
+ 			i2c_slave_event(dev->slave, I2C_SLAVE_WRITE_RECEIVED,
+ 					&val);
 -- 
 2.39.2
 
