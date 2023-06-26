@@ -2,46 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 789AA73E7CA
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CADF73E8A2
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:27:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231469AbjFZSTJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:19:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34006 "EHLO
+        id S232166AbjFZS1z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:27:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231423AbjFZSTF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:05 -0400
+        with ESMTP id S232140AbjFZS1d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:27:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BBCE8
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:18:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC99296C
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:27:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0767360F1D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:18:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5E8C433C0;
-        Mon, 26 Jun 2023 18:18:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B26AD60F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:27:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAE1C433C8;
+        Mon, 26 Jun 2023 18:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803533;
-        bh=h5dwPXy6is6fhSRU/REpNVLGNKSBZIkGY5F4x5blP44=;
+        s=korg; t=1687804024;
+        bh=RsLrGRp/8JHoGQiLj8gbfsamvqM3VVUpWQ7BJH7mPBk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gB1qSBV7r6uxhWTKiyjTIvfncmYW1+xjLQ3tCXz3aaW24KLPaHJdtIh0dXYoqhO8a
-         Vxl8FjNw78ywnqaRFsiPXYd0i7vqIt9+avi1jzcwOQT8CQWGTnKAzDpbQqiQjxcYhZ
-         Jj4ds5Vlf6WuS5E4Sl/wtAcoeUJODljT6MTzk9lE=
+        b=a2IWb7wAToSaqgpsaTEzIsqy8pjuptXsL9ymnLfLvwTHHhNplIZZnUU8NwCDlEsWX
+         IxXcwaryKbnAVNhif29vqQzNE6Ng0iLqC8IB/UTFYn4rbXRha6QR8kkZggW5zaUvpE
+         cvkB6uDCkQS7YkO/jntx4vvXaaZxdhqss43RAaNc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.3 065/199] PCI: hv: Remove the useless hv_pcichild_state from struct hv_pci_dev
-Date:   Mon, 26 Jun 2023 20:09:31 +0200
-Message-ID: <20230626180808.393742858@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Tom Chung <chiahsuan.chung@amd.com>,
+        Wayne Lin <Wayne.Lin@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 003/170] drm/amd/display: fix the system hang while disable PSR
+Date:   Mon, 26 Jun 2023 20:09:32 +0200
+Message-ID: <20230626180800.653440167@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,62 +60,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-commit add9195e69c94b32e96f78c2f9cea68f0e850b3f upstream.
+[ Upstream commit ea2062dd1f0384ae1b136d333ee4ced15bedae38 ]
 
-The hpdev->state is never really useful. The only use in
-hv_pci_eject_device() and hv_eject_device_work() is not really necessary.
+[Why]
+When the PSR enabled. If you try to adjust the timing parameters,
+it may cause system hang. Because the timing mismatch with the
+DMCUB settings.
 
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+[How]
+Disable the PSR before adjusting timing parameters.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230615044451.5580-4-decui@microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Stylon Wang <stylon.wang@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Reviewed-by: Wayne Lin <Wayne.Lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pci-hyperv.c |   12 ------------
- 1 file changed, 12 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -553,19 +553,10 @@ struct hv_dr_state {
- 	struct hv_pcidev_description func[];
- };
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 91f074f4f262c..91c308cf27eb2 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -7902,6 +7902,12 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 		if (acrtc_state->abm_level != dm_old_crtc_state->abm_level)
+ 			bundle->stream_update.abm_level = &acrtc_state->abm_level;
  
--enum hv_pcichild_state {
--	hv_pcichild_init = 0,
--	hv_pcichild_requirements,
--	hv_pcichild_resourced,
--	hv_pcichild_ejecting,
--	hv_pcichild_maximum
--};
++		mutex_lock(&dm->dc_lock);
++		if ((acrtc_state->update_type > UPDATE_TYPE_FAST) &&
++				acrtc_state->stream->link->psr_settings.psr_allow_active)
++			amdgpu_dm_psr_disable(acrtc_state->stream);
++		mutex_unlock(&dm->dc_lock);
++
+ 		/*
+ 		 * If FreeSync state on the stream has changed then we need to
+ 		 * re-adjust the min/max bounds now that DC doesn't handle this
+@@ -7915,10 +7921,6 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 			spin_unlock_irqrestore(&pcrtc->dev->event_lock, flags);
+ 		}
+ 		mutex_lock(&dm->dc_lock);
+-		if ((acrtc_state->update_type > UPDATE_TYPE_FAST) &&
+-				acrtc_state->stream->link->psr_settings.psr_allow_active)
+-			amdgpu_dm_psr_disable(acrtc_state->stream);
 -
- struct hv_pci_dev {
- 	/* List protected by pci_rescan_remove_lock */
- 	struct list_head list_entry;
- 	refcount_t refs;
--	enum hv_pcichild_state state;
- 	struct pci_slot *pci_slot;
- 	struct hv_pcidev_description desc;
- 	bool reported_missing;
-@@ -2751,8 +2742,6 @@ static void hv_eject_device_work(struct
- 	hpdev = container_of(work, struct hv_pci_dev, wrk);
- 	hbus = hpdev->hbus;
- 
--	WARN_ON(hpdev->state != hv_pcichild_ejecting);
--
- 	/*
- 	 * Ejection can come before or after the PCI bus has been set up, so
- 	 * attempt to find it and tear down the bus state, if it exists.  This
-@@ -2809,7 +2798,6 @@ static void hv_pci_eject_device(struct h
- 		return;
- 	}
- 
--	hpdev->state = hv_pcichild_ejecting;
- 	get_pcichild(hpdev);
- 	INIT_WORK(&hpdev->wrk, hv_eject_device_work);
- 	queue_work(hbus->wq, &hpdev->wrk);
+ 		update_planes_and_stream_adapter(dm->dc,
+ 					 acrtc_state->update_type,
+ 					 planes_count,
+-- 
+2.39.2
+
 
 
