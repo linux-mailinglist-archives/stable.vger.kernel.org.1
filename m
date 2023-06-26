@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D16B73EA2C
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D90B173E970
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:36:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbjFZSoJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:44:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56742 "EHLO
+        id S232365AbjFZSgE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:36:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232568AbjFZSoH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:44:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3988AC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:44:06 -0700 (PDT)
+        with ESMTP id S232374AbjFZSgD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:36:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EBF999
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:36:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6366860F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:44:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F29C433C8;
-        Mon, 26 Jun 2023 18:44:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB20C60F3E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:36:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59F5C433C9;
+        Mon, 26 Jun 2023 18:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805045;
+        s=korg; t=1687804561;
         bh=xNQ54ytPvumoCeiLgJc7OnP+1PsgOlLIuIcEDfadQF8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O6b8ukvnENt0ooKhdmkZ462pe0PXsF55zr2S4R8p9SN/1TRCNfCfU2PO0ZjPmZvOM
-         ACa7VA8HOKO3FmUQqiEoWdktlpTXwkFrGV8ADfLstrS3JWRaPGuhwkPsrjzX2qUE5I
-         WyCJNDgf0MtfqMQOi3yMhQMCcP8/HRLmja4zt7JQ=
+        b=1hUw8/aU5C8HQPPDiw9l9TqK+KLof9PNTmDX1uQkk17euvMPIhhqyWDPGsWAXfeQC
+         Mk01Thmu3XLXD9wChlhtmAlcah+x96UA3E4A4NgxuCChlDjVrCZCi0MoIw9FrSxH5J
+         JRyx4WpTyFSAv0BAOT4OGZPIefF3uwEINMsI5KcA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,19 +38,19 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         "Richard W.M. Jones" <rjones@redhat.com>,
         SeongJae Park <sj@kernel.org>
-Subject: [PATCH 5.10 04/81] tick/common: Align tick period during sched_timer setup
+Subject: [PATCH 5.4 07/60] tick/common: Align tick period during sched_timer setup
 Date:   Mon, 26 Jun 2023 20:11:46 +0200
-Message-ID: <20230626180744.637066310@linuxfoundation.org>
+Message-ID: <20230626180739.855278973@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
+References: <20230626180739.558575012@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
