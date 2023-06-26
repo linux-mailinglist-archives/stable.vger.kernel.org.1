@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DA4473E86B
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E82DD73E9A8
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:38:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232075AbjFZSZt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:25:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37718 "EHLO
+        id S232468AbjFZSiq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:38:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232081AbjFZSZX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:25:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 499FF1734
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:40 -0700 (PDT)
+        with ESMTP id S232441AbjFZSim (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:38:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A14CE5F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:38:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA70E60F51
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4126C433C0;
-        Mon, 26 Jun 2023 18:24:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2685260F5E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:38:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3093CC433C9;
+        Mon, 26 Jun 2023 18:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803856;
-        bh=sWbHzwJcjcN+KF7MSAJcYgZc3gqXfiFwPGSEio7TPEE=;
+        s=korg; t=1687804707;
+        bh=kR5t8bTEO73iH89VJlnnEQ9itMI1V0WT//U1zwobbgQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E/zwksMiDaWoZZQMcT9FafssFA7mGYsEp35Jngq9yEKmtf/ZeP2zc5p2uAdwXg1Hu
-         KtaTaUo81H3qFsv3M65u0ttNMiVMaq8iBALILodcH1qZ8X2ZOEmBVYjUXzxdlMYqRB
-         JPTSorup9T21l4O06vWrBrrtZ1Rp1zCMcA7S/cLY=
+        b=WB02v9ofGeP/c2ZY6I+mv91i37S1Q8mLddGVVg6FvuEB/WmU4HEnNkp6nZga/fTU5
+         oF+ThJUGRq8pfsHBreGMnQ3ZBxarIVq0GN9pKgVktZkrmbQdvT0+cDLUbvEHPLZ3hn
+         MKfWCyQByAWimyjVBeqjM3XJIxDaSg2KcUc/Btf0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 184/199] ARM: dts: Fix erroneous ADS touchscreen polarities
+        patches@lists.linux.dev,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.15 15/96] ACPI: sleep: Avoid breaking S3 wakeup due to might_sleep()
 Date:   Mon, 26 Jun 2023 20:11:30 +0200
-Message-ID: <20230626180813.820151816@linuxfoundation.org>
+Message-ID: <20230626180747.554067525@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,177 +56,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 4a672d500bfd6bb87092c33d5a2572c3d0a1cf83 ]
+commit 22db06337f590d01d79f60f181d8dfe5a9ef9085 upstream.
 
-Several device tree files get the polarity of the pendown-gpios
-wrong: this signal is active low. Fix up all incorrect flags, so
-that operating systems can rely on the flag being correctly set.
+The addition of might_sleep() to down_timeout() caused the latter to
+enable interrupts unconditionally in some cases, which in turn broke
+the ACPI S3 wakeup path in acpi_suspend_enter(), where down_timeout()
+is called by acpi_disable_all_gpes() via acpi_ut_acquire_mutex().
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20230510105156.1134320-1-linus.walleij@linaro.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Namely, if CONFIG_DEBUG_ATOMIC_SLEEP is set, might_sleep() causes
+might_resched() to be used and if CONFIG_PREEMPT_VOLUNTARY is set,
+this triggers __cond_resched() which may call preempt_schedule_common(),
+so __schedule() gets invoked and it ends up with enabled interrupts (in
+the prev == next case).
+
+Now, enabling interrupts early in the S3 wakeup path causes the kernel
+to crash.
+
+Address this by modifying acpi_suspend_enter() to disable GPEs without
+attempting to acquire the sleeping lock which is not needed in that code
+path anyway.
+
+Fixes: 99409b935c9a ("locking/semaphore: Add might_sleep() to down_*() family")
+Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/am57xx-cl-som-am57x.dts          | 2 +-
- arch/arm/boot/dts/at91sam9261ek.dts                | 2 +-
- arch/arm/boot/dts/imx7d-pico-hobbit.dts            | 2 +-
- arch/arm/boot/dts/imx7d-sdb.dts                    | 2 +-
- arch/arm/boot/dts/omap3-cm-t3x.dtsi                | 2 +-
- arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi | 2 +-
- arch/arm/boot/dts/omap3-lilly-a83x.dtsi            | 2 +-
- arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi    | 2 +-
- arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi    | 2 +-
- arch/arm/boot/dts/omap3-pandora-common.dtsi        | 2 +-
- arch/arm/boot/dts/omap5-cm-t54.dts                 | 2 +-
- 11 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/acpi/acpica/achware.h |    2 --
+ drivers/acpi/sleep.c          |   16 ++++++++++++----
+ include/acpi/acpixf.h         |    1 +
+ 3 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-index 2fc9a5d5e0c0d..625b9b311b49d 100644
---- a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-+++ b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-@@ -527,7 +527,7 @@
+--- a/drivers/acpi/acpica/achware.h
++++ b/drivers/acpi/acpica/achware.h
+@@ -101,8 +101,6 @@ acpi_status
+ acpi_hw_get_gpe_status(struct acpi_gpe_event_info *gpe_event_info,
+ 		       acpi_event_status *event_status);
  
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <31 0>;
--		pendown-gpio = <&gpio1 31 0>;
-+		pendown-gpio = <&gpio1 31 GPIO_ACTIVE_LOW>;
+-acpi_status acpi_hw_disable_all_gpes(void);
+-
+ acpi_status acpi_hw_enable_all_runtime_gpes(void);
  
+ acpi_status acpi_hw_enable_all_wakeup_gpes(void);
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -635,11 +635,19 @@ static int acpi_suspend_enter(suspend_st
+ 	}
  
- 		ti,x-min = /bits/ 16 <0x0>;
-diff --git a/arch/arm/boot/dts/at91sam9261ek.dts b/arch/arm/boot/dts/at91sam9261ek.dts
-index 88869ca874d1a..045cb253f23a6 100644
---- a/arch/arm/boot/dts/at91sam9261ek.dts
-+++ b/arch/arm/boot/dts/at91sam9261ek.dts
-@@ -156,7 +156,7 @@
- 					compatible = "ti,ads7843";
- 					interrupts-extended = <&pioC 2 IRQ_TYPE_EDGE_BOTH>;
- 					spi-max-frequency = <3000000>;
--					pendown-gpio = <&pioC 2 GPIO_ACTIVE_HIGH>;
-+					pendown-gpio = <&pioC 2 GPIO_ACTIVE_LOW>;
+ 	/*
+-	 * Disable and clear GPE status before interrupt is enabled. Some GPEs
+-	 * (like wakeup GPE) haven't handler, this can avoid such GPE misfire.
+-	 * acpi_leave_sleep_state will reenable specific GPEs later
++	 * Disable all GPE and clear their status bits before interrupts are
++	 * enabled. Some GPEs (like wakeup GPEs) have no handlers and this can
++	 * prevent them from producing spurious interrups.
++	 *
++	 * acpi_leave_sleep_state() will reenable specific GPEs later.
++	 *
++	 * Because this code runs on one CPU with disabled interrupts (all of
++	 * the other CPUs are offline at this time), it need not acquire any
++	 * sleeping locks which may trigger an implicit preemption point even
++	 * if there is no contention, so avoid doing that by using a low-level
++	 * library routine here.
+ 	 */
+-	acpi_disable_all_gpes();
++	acpi_hw_disable_all_gpes();
+ 	/* Allow EC transactions to happen. */
+ 	acpi_ec_unblock_transactions();
  
- 					ti,x-min = /bits/ 16 <150>;
- 					ti,x-max = /bits/ 16 <3830>;
-diff --git a/arch/arm/boot/dts/imx7d-pico-hobbit.dts b/arch/arm/boot/dts/imx7d-pico-hobbit.dts
-index d917dc4f2f227..6ad39dca70096 100644
---- a/arch/arm/boot/dts/imx7d-pico-hobbit.dts
-+++ b/arch/arm/boot/dts/imx7d-pico-hobbit.dts
-@@ -64,7 +64,7 @@
- 		interrupt-parent = <&gpio2>;
- 		interrupts = <7 0>;
- 		spi-max-frequency = <1000000>;
--		pendown-gpio = <&gpio2 7 0>;
-+		pendown-gpio = <&gpio2 7 GPIO_ACTIVE_LOW>;
- 		vcc-supply = <&reg_3p3v>;
- 		ti,x-min = /bits/ 16 <0>;
- 		ti,x-max = /bits/ 16 <4095>;
-diff --git a/arch/arm/boot/dts/imx7d-sdb.dts b/arch/arm/boot/dts/imx7d-sdb.dts
-index f483bc0afe5ea..234e5fc647b22 100644
---- a/arch/arm/boot/dts/imx7d-sdb.dts
-+++ b/arch/arm/boot/dts/imx7d-sdb.dts
-@@ -205,7 +205,7 @@
- 		pinctrl-0 = <&pinctrl_tsc2046_pendown>;
- 		interrupt-parent = <&gpio2>;
- 		interrupts = <29 0>;
--		pendown-gpio = <&gpio2 29 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio2 29 GPIO_ACTIVE_LOW>;
- 		touchscreen-max-pressure = <255>;
- 		wakeup-source;
- 	};
-diff --git a/arch/arm/boot/dts/omap3-cm-t3x.dtsi b/arch/arm/boot/dts/omap3-cm-t3x.dtsi
-index e61b8a2bfb7de..51baedf1603bd 100644
---- a/arch/arm/boot/dts/omap3-cm-t3x.dtsi
-+++ b/arch/arm/boot/dts/omap3-cm-t3x.dtsi
-@@ -227,7 +227,7 @@
- 
- 		interrupt-parent = <&gpio2>;
- 		interrupts = <25 0>;		/* gpio_57 */
--		pendown-gpio = <&gpio2 25 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio2 25 GPIO_ACTIVE_LOW>;
- 
- 		ti,x-min = /bits/ 16 <0x0>;
- 		ti,x-max = /bits/ 16 <0x0fff>;
-diff --git a/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi b/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi
-index 3decc2d78a6ca..a7f99ae0c1fe9 100644
---- a/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi
-+++ b/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi
-@@ -54,7 +54,7 @@
- 
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <27 0>;		/* gpio_27 */
--		pendown-gpio = <&gpio1 27 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio1 27 GPIO_ACTIVE_LOW>;
- 
- 		ti,x-min = /bits/ 16 <0x0>;
- 		ti,x-max = /bits/ 16 <0x0fff>;
-diff --git a/arch/arm/boot/dts/omap3-lilly-a83x.dtsi b/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
-index c595afe4181d7..d310b5c7bac36 100644
---- a/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
-+++ b/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
-@@ -311,7 +311,7 @@
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <8 0>;   /* boot6 / gpio_8 */
- 		spi-max-frequency = <1000000>;
--		pendown-gpio = <&gpio1 8 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio1 8 GPIO_ACTIVE_LOW>;
- 		vcc-supply = <&reg_vcc3>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&tsc2048_pins>;
-diff --git a/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi b/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi
-index 1d6e88f99eb31..c3570acc35fad 100644
---- a/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi
-+++ b/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi
-@@ -149,7 +149,7 @@
- 
- 		interrupt-parent = <&gpio4>;
- 		interrupts = <18 0>;			/* gpio_114 */
--		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_LOW>;
- 
- 		ti,x-min = /bits/ 16 <0x0>;
- 		ti,x-max = /bits/ 16 <0x0fff>;
-diff --git a/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi b/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi
-index 7e30f9d45790e..d95a0e130058c 100644
---- a/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi
-+++ b/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi
-@@ -160,7 +160,7 @@
- 
- 		interrupt-parent = <&gpio4>;
- 		interrupts = <18 0>;			/* gpio_114 */
--		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_LOW>;
- 
- 		ti,x-min = /bits/ 16 <0x0>;
- 		ti,x-max = /bits/ 16 <0x0fff>;
-diff --git a/arch/arm/boot/dts/omap3-pandora-common.dtsi b/arch/arm/boot/dts/omap3-pandora-common.dtsi
-index 559853764487f..4c3b6bab179cc 100644
---- a/arch/arm/boot/dts/omap3-pandora-common.dtsi
-+++ b/arch/arm/boot/dts/omap3-pandora-common.dtsi
-@@ -651,7 +651,7 @@
- 		pinctrl-0 = <&penirq_pins>;
- 		interrupt-parent = <&gpio3>;
- 		interrupts = <30 IRQ_TYPE_NONE>;	/* GPIO_94 */
--		pendown-gpio = <&gpio3 30 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio3 30 GPIO_ACTIVE_LOW>;
- 		vcc-supply = <&vaux4>;
- 
- 		ti,x-min = /bits/ 16 <0>;
-diff --git a/arch/arm/boot/dts/omap5-cm-t54.dts b/arch/arm/boot/dts/omap5-cm-t54.dts
-index 2d87b9fc230ee..af288d63a26a4 100644
---- a/arch/arm/boot/dts/omap5-cm-t54.dts
-+++ b/arch/arm/boot/dts/omap5-cm-t54.dts
-@@ -354,7 +354,7 @@
- 
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <15 0>;			/* gpio1_wk15 */
--		pendown-gpio = <&gpio1 15 GPIO_ACTIVE_HIGH>;
-+		pendown-gpio = <&gpio1 15 GPIO_ACTIVE_LOW>;
- 
- 
- 		ti,x-min = /bits/ 16 <0x0>;
--- 
-2.39.2
-
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -749,6 +749,7 @@ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_sta
+ 						     acpi_event_status
+ 						     *event_status))
+ ACPI_HW_DEPENDENT_RETURN_UINT32(u32 acpi_dispatch_gpe(acpi_handle gpe_device, u32 gpe_number))
++ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_hw_disable_all_gpes(void))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_disable_all_gpes(void))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_enable_all_runtime_gpes(void))
+ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_enable_all_wakeup_gpes(void))
 
 
