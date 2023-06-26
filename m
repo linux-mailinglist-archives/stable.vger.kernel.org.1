@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB0BF73E9A7
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DA4473E86B
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232457AbjFZSip (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:38:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51682 "EHLO
+        id S232075AbjFZSZt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:25:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231651AbjFZSik (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:38:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 076CE199
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:38:25 -0700 (PDT)
+        with ESMTP id S232081AbjFZSZX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:25:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 499FF1734
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C97060E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:38:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BACC433C9;
-        Mon, 26 Jun 2023 18:38:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA70E60F51
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4126C433C0;
+        Mon, 26 Jun 2023 18:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804704;
-        bh=0f0/ysHr7SC7W3rVZbJbbMfE++pxOQtsuiwSp4i5XLY=;
+        s=korg; t=1687803856;
+        bh=sWbHzwJcjcN+KF7MSAJcYgZc3gqXfiFwPGSEio7TPEE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z2YSMW6o3PRJXy5067qBG+meU316MJFg2aPAhHSDHuap9+40H4yupM2zIpouyGa49
-         5ityHhEJyMHoF12jthOgsWFb8TPgXEWMDnRuUKjLtI1Mr9Y/gKEoN2mnm5xDLHiM75
-         NV4kay0f2pnSYoqV/r6piL8W/JL2BnOecBdWArik=
+        b=E/zwksMiDaWoZZQMcT9FafssFA7mGYsEp35Jngq9yEKmtf/ZeP2zc5p2uAdwXg1Hu
+         KtaTaUo81H3qFsv3M65u0ttNMiVMaq8iBALILodcH1qZ8X2ZOEmBVYjUXzxdlMYqRB
+         JPTSorup9T21l4O06vWrBrrtZ1Rp1zCMcA7S/cLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+31837fe952932efc8fb9@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 14/96] nilfs2: fix buffer corruption due to concurrent device reads
-Date:   Mon, 26 Jun 2023 20:11:29 +0200
-Message-ID: <20230626180747.507226633@linuxfoundation.org>
+        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 184/199] ARM: dts: Fix erroneous ADS touchscreen polarities
+Date:   Mon, 26 Jun 2023 20:11:30 +0200
+Message-ID: <20230626180813.820151816@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,147 +54,177 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 679bd7ebdd315bf457a4740b306ae99f1d0a403d upstream.
+[ Upstream commit 4a672d500bfd6bb87092c33d5a2572c3d0a1cf83 ]
 
-As a result of analysis of a syzbot report, it turned out that in three
-cases where nilfs2 allocates block device buffers directly via sb_getblk,
-concurrent reads to the device can corrupt the allocated buffers.
+Several device tree files get the polarity of the pendown-gpios
+wrong: this signal is active low. Fix up all incorrect flags, so
+that operating systems can rely on the flag being correctly set.
 
-Nilfs2 uses sb_getblk for segment summary blocks, that make up a log
-header, and the super root block, that is the trailer, and when moving and
-writing the second super block after fs resize.
-
-In any of these, since the uptodate flag is not set when storing metadata
-to be written in the allocated buffers, the stored metadata will be
-overwritten if a device read of the same block occurs concurrently before
-the write.  This causes metadata corruption and misbehavior in the log
-write itself, causing warnings in nilfs_btree_assign() as reported.
-
-Fix these issues by setting an uptodate flag on the buffer head on the
-first or before modifying each buffer obtained with sb_getblk, and
-clearing the flag on failure.
-
-When setting the uptodate flag, the lock_buffer/unlock_buffer pair is used
-to perform necessary exclusive control, and the buffer is filled to ensure
-that uninitialized bytes are not mixed into the data read from others.  As
-for buffers for segment summary blocks, they are filled incrementally, so
-if the uptodate flag was unset on their allocation, set the flag and zero
-fill the buffer once at that point.
-
-Also, regarding the superblock move routine, the starting point of the
-memset call to zerofill the block is incorrectly specified, which can
-cause a buffer overflow on file systems with block sizes greater than
-4KiB.  In addition, if the superblock is moved within a large block, it is
-necessary to assume the possibility that the data in the superblock will
-be destroyed by zero-filling before copying.  So fix these potential
-issues as well.
-
-Link: https://lkml.kernel.org/r/20230609035732.20426-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+31837fe952932efc8fb9@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/00000000000030000a05e981f475@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20230510105156.1134320-1-linus.walleij@linaro.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segbuf.c  |    6 ++++++
- fs/nilfs2/segment.c |    7 +++++++
- fs/nilfs2/super.c   |   23 ++++++++++++++++++++++-
- 3 files changed, 35 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/am57xx-cl-som-am57x.dts          | 2 +-
+ arch/arm/boot/dts/at91sam9261ek.dts                | 2 +-
+ arch/arm/boot/dts/imx7d-pico-hobbit.dts            | 2 +-
+ arch/arm/boot/dts/imx7d-sdb.dts                    | 2 +-
+ arch/arm/boot/dts/omap3-cm-t3x.dtsi                | 2 +-
+ arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi | 2 +-
+ arch/arm/boot/dts/omap3-lilly-a83x.dtsi            | 2 +-
+ arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi    | 2 +-
+ arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi    | 2 +-
+ arch/arm/boot/dts/omap3-pandora-common.dtsi        | 2 +-
+ arch/arm/boot/dts/omap5-cm-t54.dts                 | 2 +-
+ 11 files changed, 11 insertions(+), 11 deletions(-)
 
---- a/fs/nilfs2/segbuf.c
-+++ b/fs/nilfs2/segbuf.c
-@@ -101,6 +101,12 @@ int nilfs_segbuf_extend_segsum(struct ni
- 	if (unlikely(!bh))
- 		return -ENOMEM;
+diff --git a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
+index 2fc9a5d5e0c0d..625b9b311b49d 100644
+--- a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
++++ b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
+@@ -527,7 +527,7 @@
  
-+	lock_buffer(bh);
-+	if (!buffer_uptodate(bh)) {
-+		memset(bh->b_data, 0, bh->b_size);
-+		set_buffer_uptodate(bh);
-+	}
-+	unlock_buffer(bh);
- 	nilfs_segbuf_add_segsum_buffer(segbuf, bh);
- 	return 0;
- }
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -979,10 +979,13 @@ static void nilfs_segctor_fill_in_super_
- 	unsigned int isz, srsz;
+ 		interrupt-parent = <&gpio1>;
+ 		interrupts = <31 0>;
+-		pendown-gpio = <&gpio1 31 0>;
++		pendown-gpio = <&gpio1 31 GPIO_ACTIVE_LOW>;
  
- 	bh_sr = NILFS_LAST_SEGBUF(&sci->sc_segbufs)->sb_super_root;
-+
-+	lock_buffer(bh_sr);
- 	raw_sr = (struct nilfs_super_root *)bh_sr->b_data;
- 	isz = nilfs->ns_inode_size;
- 	srsz = NILFS_SR_BYTES(isz);
  
-+	raw_sr->sr_sum = 0;  /* Ensure initialization within this update */
- 	raw_sr->sr_bytes = cpu_to_le16(srsz);
- 	raw_sr->sr_nongc_ctime
- 		= cpu_to_le64(nilfs_doing_gc() ?
-@@ -996,6 +999,8 @@ static void nilfs_segctor_fill_in_super_
- 	nilfs_write_inode_common(nilfs->ns_sufile, (void *)raw_sr +
- 				 NILFS_SR_SUFILE_OFFSET(isz), 1);
- 	memset((void *)raw_sr + srsz, 0, nilfs->ns_blocksize - srsz);
-+	set_buffer_uptodate(bh_sr);
-+	unlock_buffer(bh_sr);
- }
+ 		ti,x-min = /bits/ 16 <0x0>;
+diff --git a/arch/arm/boot/dts/at91sam9261ek.dts b/arch/arm/boot/dts/at91sam9261ek.dts
+index 88869ca874d1a..045cb253f23a6 100644
+--- a/arch/arm/boot/dts/at91sam9261ek.dts
++++ b/arch/arm/boot/dts/at91sam9261ek.dts
+@@ -156,7 +156,7 @@
+ 					compatible = "ti,ads7843";
+ 					interrupts-extended = <&pioC 2 IRQ_TYPE_EDGE_BOTH>;
+ 					spi-max-frequency = <3000000>;
+-					pendown-gpio = <&pioC 2 GPIO_ACTIVE_HIGH>;
++					pendown-gpio = <&pioC 2 GPIO_ACTIVE_LOW>;
  
- static void nilfs_redirty_inodes(struct list_head *head)
-@@ -1778,6 +1783,7 @@ static void nilfs_abort_logs(struct list
- 	list_for_each_entry(segbuf, logs, sb_list) {
- 		list_for_each_entry(bh, &segbuf->sb_segsum_buffers,
- 				    b_assoc_buffers) {
-+			clear_buffer_uptodate(bh);
- 			if (bh->b_page != bd_page) {
- 				if (bd_page)
- 					end_page_writeback(bd_page);
-@@ -1789,6 +1795,7 @@ static void nilfs_abort_logs(struct list
- 				    b_assoc_buffers) {
- 			clear_buffer_async_write(bh);
- 			if (bh == segbuf->sb_super_root) {
-+				clear_buffer_uptodate(bh);
- 				if (bh->b_page != bd_page) {
- 					end_page_writeback(bd_page);
- 					bd_page = bh->b_page;
---- a/fs/nilfs2/super.c
-+++ b/fs/nilfs2/super.c
-@@ -372,10 +372,31 @@ static int nilfs_move_2nd_super(struct s
- 		goto out;
- 	}
- 	nsbp = (void *)nsbh->b_data + offset;
--	memset(nsbp, 0, nilfs->ns_blocksize);
+ 					ti,x-min = /bits/ 16 <150>;
+ 					ti,x-max = /bits/ 16 <3830>;
+diff --git a/arch/arm/boot/dts/imx7d-pico-hobbit.dts b/arch/arm/boot/dts/imx7d-pico-hobbit.dts
+index d917dc4f2f227..6ad39dca70096 100644
+--- a/arch/arm/boot/dts/imx7d-pico-hobbit.dts
++++ b/arch/arm/boot/dts/imx7d-pico-hobbit.dts
+@@ -64,7 +64,7 @@
+ 		interrupt-parent = <&gpio2>;
+ 		interrupts = <7 0>;
+ 		spi-max-frequency = <1000000>;
+-		pendown-gpio = <&gpio2 7 0>;
++		pendown-gpio = <&gpio2 7 GPIO_ACTIVE_LOW>;
+ 		vcc-supply = <&reg_3p3v>;
+ 		ti,x-min = /bits/ 16 <0>;
+ 		ti,x-max = /bits/ 16 <4095>;
+diff --git a/arch/arm/boot/dts/imx7d-sdb.dts b/arch/arm/boot/dts/imx7d-sdb.dts
+index f483bc0afe5ea..234e5fc647b22 100644
+--- a/arch/arm/boot/dts/imx7d-sdb.dts
++++ b/arch/arm/boot/dts/imx7d-sdb.dts
+@@ -205,7 +205,7 @@
+ 		pinctrl-0 = <&pinctrl_tsc2046_pendown>;
+ 		interrupt-parent = <&gpio2>;
+ 		interrupts = <29 0>;
+-		pendown-gpio = <&gpio2 29 GPIO_ACTIVE_HIGH>;
++		pendown-gpio = <&gpio2 29 GPIO_ACTIVE_LOW>;
+ 		touchscreen-max-pressure = <255>;
+ 		wakeup-source;
+ 	};
+diff --git a/arch/arm/boot/dts/omap3-cm-t3x.dtsi b/arch/arm/boot/dts/omap3-cm-t3x.dtsi
+index e61b8a2bfb7de..51baedf1603bd 100644
+--- a/arch/arm/boot/dts/omap3-cm-t3x.dtsi
++++ b/arch/arm/boot/dts/omap3-cm-t3x.dtsi
+@@ -227,7 +227,7 @@
  
-+	lock_buffer(nsbh);
- 	if (sb2i >= 0) {
-+		/*
-+		 * The position of the second superblock only changes by 4KiB,
-+		 * which is larger than the maximum superblock data size
-+		 * (= 1KiB), so there is no need to use memmove() to allow
-+		 * overlap between source and destination.
-+		 */
- 		memcpy(nsbp, nilfs->ns_sbp[sb2i], nilfs->ns_sbsize);
-+
-+		/*
-+		 * Zero fill after copy to avoid overwriting in case of move
-+		 * within the same block.
-+		 */
-+		memset(nsbh->b_data, 0, offset);
-+		memset((void *)nsbp + nilfs->ns_sbsize, 0,
-+		       nsbh->b_size - offset - nilfs->ns_sbsize);
-+	} else {
-+		memset(nsbh->b_data, 0, nsbh->b_size);
-+	}
-+	set_buffer_uptodate(nsbh);
-+	unlock_buffer(nsbh);
-+
-+	if (sb2i >= 0) {
- 		brelse(nilfs->ns_sbh[sb2i]);
- 		nilfs->ns_sbh[sb2i] = nsbh;
- 		nilfs->ns_sbp[sb2i] = nsbp;
+ 		interrupt-parent = <&gpio2>;
+ 		interrupts = <25 0>;		/* gpio_57 */
+-		pendown-gpio = <&gpio2 25 GPIO_ACTIVE_HIGH>;
++		pendown-gpio = <&gpio2 25 GPIO_ACTIVE_LOW>;
+ 
+ 		ti,x-min = /bits/ 16 <0x0>;
+ 		ti,x-max = /bits/ 16 <0x0fff>;
+diff --git a/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi b/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi
+index 3decc2d78a6ca..a7f99ae0c1fe9 100644
+--- a/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi
++++ b/arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi
+@@ -54,7 +54,7 @@
+ 
+ 		interrupt-parent = <&gpio1>;
+ 		interrupts = <27 0>;		/* gpio_27 */
+-		pendown-gpio = <&gpio1 27 GPIO_ACTIVE_HIGH>;
++		pendown-gpio = <&gpio1 27 GPIO_ACTIVE_LOW>;
+ 
+ 		ti,x-min = /bits/ 16 <0x0>;
+ 		ti,x-max = /bits/ 16 <0x0fff>;
+diff --git a/arch/arm/boot/dts/omap3-lilly-a83x.dtsi b/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
+index c595afe4181d7..d310b5c7bac36 100644
+--- a/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
++++ b/arch/arm/boot/dts/omap3-lilly-a83x.dtsi
+@@ -311,7 +311,7 @@
+ 		interrupt-parent = <&gpio1>;
+ 		interrupts = <8 0>;   /* boot6 / gpio_8 */
+ 		spi-max-frequency = <1000000>;
+-		pendown-gpio = <&gpio1 8 GPIO_ACTIVE_HIGH>;
++		pendown-gpio = <&gpio1 8 GPIO_ACTIVE_LOW>;
+ 		vcc-supply = <&reg_vcc3>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&tsc2048_pins>;
+diff --git a/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi b/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi
+index 1d6e88f99eb31..c3570acc35fad 100644
+--- a/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi
++++ b/arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi
+@@ -149,7 +149,7 @@
+ 
+ 		interrupt-parent = <&gpio4>;
+ 		interrupts = <18 0>;			/* gpio_114 */
+-		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_HIGH>;
++		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_LOW>;
+ 
+ 		ti,x-min = /bits/ 16 <0x0>;
+ 		ti,x-max = /bits/ 16 <0x0fff>;
+diff --git a/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi b/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi
+index 7e30f9d45790e..d95a0e130058c 100644
+--- a/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi
++++ b/arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi
+@@ -160,7 +160,7 @@
+ 
+ 		interrupt-parent = <&gpio4>;
+ 		interrupts = <18 0>;			/* gpio_114 */
+-		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_HIGH>;
++		pendown-gpio = <&gpio4 18 GPIO_ACTIVE_LOW>;
+ 
+ 		ti,x-min = /bits/ 16 <0x0>;
+ 		ti,x-max = /bits/ 16 <0x0fff>;
+diff --git a/arch/arm/boot/dts/omap3-pandora-common.dtsi b/arch/arm/boot/dts/omap3-pandora-common.dtsi
+index 559853764487f..4c3b6bab179cc 100644
+--- a/arch/arm/boot/dts/omap3-pandora-common.dtsi
++++ b/arch/arm/boot/dts/omap3-pandora-common.dtsi
+@@ -651,7 +651,7 @@
+ 		pinctrl-0 = <&penirq_pins>;
+ 		interrupt-parent = <&gpio3>;
+ 		interrupts = <30 IRQ_TYPE_NONE>;	/* GPIO_94 */
+-		pendown-gpio = <&gpio3 30 GPIO_ACTIVE_HIGH>;
++		pendown-gpio = <&gpio3 30 GPIO_ACTIVE_LOW>;
+ 		vcc-supply = <&vaux4>;
+ 
+ 		ti,x-min = /bits/ 16 <0>;
+diff --git a/arch/arm/boot/dts/omap5-cm-t54.dts b/arch/arm/boot/dts/omap5-cm-t54.dts
+index 2d87b9fc230ee..af288d63a26a4 100644
+--- a/arch/arm/boot/dts/omap5-cm-t54.dts
++++ b/arch/arm/boot/dts/omap5-cm-t54.dts
+@@ -354,7 +354,7 @@
+ 
+ 		interrupt-parent = <&gpio1>;
+ 		interrupts = <15 0>;			/* gpio1_wk15 */
+-		pendown-gpio = <&gpio1 15 GPIO_ACTIVE_HIGH>;
++		pendown-gpio = <&gpio1 15 GPIO_ACTIVE_LOW>;
+ 
+ 
+ 		ti,x-min = /bits/ 16 <0x0>;
+-- 
+2.39.2
+
 
 
