@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FA0C73E765
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FD4073E82E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:23:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbjFZSO4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:14:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58186 "EHLO
+        id S232010AbjFZSXo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:23:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229737AbjFZSOj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:14:39 -0400
+        with ESMTP id S231819AbjFZSXX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 242F2E71
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:14:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F58173D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B48FD60F3E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:14:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD61C433C8;
-        Mon, 26 Jun 2023 18:14:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F87960F78
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:22:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C22FC433C8;
+        Mon, 26 Jun 2023 18:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803278;
-        bh=D/QqrU7YWZuGFmv2FdUa+J1Abg/q6d98nuSNr+f5BXc=;
+        s=korg; t=1687803750;
+        bh=0CVterN2oNR0snu/uDzo3u9HlQDH7EmEEvZabB0r2sE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cG/R0zFNJWS6nlkXVle0TfL4+zkxqeNYm2hUGKwaiCf6pKXWcvozo7WBfa71L7Xfv
-         9NYZBSqxQuD/GrBQqzyBCRHpPNd7SmUj8q5rN/OA0Ct6zyKBz8F7u9WUGUHXY5uL+f
-         L2yb2XSlDEQ43tOqIAgwdTLO7mdoXi6V9kdSoUCY=
+        b=0K+RRknwgY6KK2VGgatNd2ByC1kZKSn9ZuCv+g66z31w/k7L664xcbvvswYjGdV7y
+         YKMN7WQSvNERd+Knxu4jpTYG29y/yC/spqAMn1MvtcjKHc5+E0xPz2wAcutpVjSUqD
+         96c2O75Kn+Mhty9UOxnbrSfVyXTxg8urz5j7y/E4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 09/26] mmc: mtk-sd: fix deferred probing
+Subject: [PATCH 6.3 165/199] Input: soc_button_array - add invalid acpi_index DMI quirk handling
 Date:   Mon, 26 Jun 2023 20:11:11 +0200
-Message-ID: <20230626180734.010459039@linuxfoundation.org>
+Message-ID: <20230626180812.915700083@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
-References: <20230626180733.699092073@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 0c4dc0f054891a2cbde0426b0c0fdf232d89f47f ]
+[ Upstream commit 20a99a291d564a559cc2fd013b4824a3bb3f1db7 ]
 
-The driver overrides the error codes returned by platform_get_irq() to
--EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the
-error codes upstream.
+Some devices have a wrong entry in their button array which points to
+a GPIO which is required in another driver, so soc_button_array must
+not claim it.
 
-Fixes: 208489032bdd ("mmc: mediatek: Add Mediatek MMC driver")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20230617203622.6812-4-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+A specific example of this is the Lenovo Yoga Book X90F / X90L,
+where the PNP0C40 home button entry points to a GPIO which is not
+a home button and which is required by the lenovo-yogabook driver.
+
+Add a DMI quirk table which can specify an ACPI GPIO resource index which
+should be skipped; and add an entry for the Lenovo Yoga Book X90F / X90L
+to this new DMI quirk table.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230414072116.4497-1-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/misc/soc_button_array.c | 30 +++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index e51a62cff5ecc..3c77469df73b1 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -1663,7 +1663,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
+diff --git a/drivers/input/misc/soc_button_array.c b/drivers/input/misc/soc_button_array.c
+index 09489380afda7..e79f5497948b8 100644
+--- a/drivers/input/misc/soc_button_array.c
++++ b/drivers/input/misc/soc_button_array.c
+@@ -108,6 +108,27 @@ static const struct dmi_system_id dmi_use_low_level_irq[] = {
+ 	{} /* Terminating entry */
+ };
  
- 	host->irq = platform_get_irq(pdev, 0);
- 	if (host->irq < 0) {
--		ret = -EINVAL;
-+		ret = host->irq;
- 		goto host_free;
- 	}
++/*
++ * Some devices have a wrong entry which points to a GPIO which is
++ * required in another driver, so this driver must not claim it.
++ */
++static const struct dmi_system_id dmi_invalid_acpi_index[] = {
++	{
++		/*
++		 * Lenovo Yoga Book X90F / X90L, the PNP0C40 home button entry
++		 * points to a GPIO which is not a home button and which is
++		 * required by the lenovo-yogabook driver.
++		 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
++		},
++		.driver_data = (void *)1l,
++	},
++	{} /* Terminating entry */
++};
++
+ /*
+  * Get the Nth GPIO number from the ACPI object.
+  */
+@@ -137,6 +158,8 @@ soc_button_device_create(struct platform_device *pdev,
+ 	struct platform_device *pd;
+ 	struct gpio_keys_button *gpio_keys;
+ 	struct gpio_keys_platform_data *gpio_keys_pdata;
++	const struct dmi_system_id *dmi_id;
++	int invalid_acpi_index = -1;
+ 	int error, gpio, irq;
+ 	int n_buttons = 0;
  
+@@ -154,10 +177,17 @@ soc_button_device_create(struct platform_device *pdev,
+ 	gpio_keys = (void *)(gpio_keys_pdata + 1);
+ 	n_buttons = 0;
+ 
++	dmi_id = dmi_first_match(dmi_invalid_acpi_index);
++	if (dmi_id)
++		invalid_acpi_index = (long)dmi_id->driver_data;
++
+ 	for (info = button_info; info->name; info++) {
+ 		if (info->autorepeat != autorepeat)
+ 			continue;
+ 
++		if (info->acpi_index == invalid_acpi_index)
++			continue;
++
+ 		error = soc_button_lookup_gpio(&pdev->dev, info->acpi_index, &gpio, &irq);
+ 		if (error || irq < 0) {
+ 			/*
 -- 
 2.39.2
 
