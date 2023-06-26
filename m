@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8796D73E9BF
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E212C73E930
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232444AbjFZSjj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:39:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52626 "EHLO
+        id S232240AbjFZSdY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232053AbjFZSji (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:38 -0400
+        with ESMTP id S232256AbjFZSdX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:33:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46412ED
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F114AC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:33:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC0D860F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0056AC433C8;
-        Mon, 26 Jun 2023 18:39:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33CA360F3E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:33:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419ECC433C0;
+        Mon, 26 Jun 2023 18:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804775;
-        bh=P3h2hjZrHdqdljlQE0cOsJ4YhJ0VXF462+NZJyCH0XE=;
+        s=korg; t=1687804400;
+        bh=V7h6Wa/ar4gQ9g5vsTTujNo54gYjezoxwh+4JOPioKw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oeZsGgVHGFdv0iR66A7EZtlBzE3mufVr2mJxXD20pcu7kL9aP7YXRAR0sbGoMq38H
-         ooQ2mh/GOj0okfDhXS3woNvEVEM6ZOdtu/Yl38R6fhoOxbXVAjhzb4SK61/9AOoAg4
-         8MkZ3ILyR9NulAiCsfG79yqXDZHYsOykbSOo1gm0=
+        b=CHqzcwfdGEOdDnGZGZZoutd2ftVSDaRu8WVaAA0tVHPj9V40yJuFgXwdQf45XidYZ
+         Bh1uMKA0+feA15b5gcxsB4GKmNLXldoulNw3ZcKX/wef3I0EcJWEHdf6noYi9dtPCI
+         mRwv3/qfkP9IZsY7GnSOf2aE+Lseqb5wRsuQtAiE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 08/96] selftests: mptcp: lib: skip if missing symbol
-Date:   Mon, 26 Jun 2023 20:11:23 +0200
-Message-ID: <20230626180747.280147768@linuxfoundation.org>
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 115/170] netfilter: nf_tables: reject unbound anonymous set before commit phase
+Date:   Mon, 26 Jun 2023 20:11:24 +0200
+Message-ID: <20230626180805.711775048@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,83 +54,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 673004821ab98c6645bd21af56a290854e88f533 upstream.
+[ Upstream commit 938154b93be8cd611ddfd7bafc1849f3c4355201 ]
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting all MPTCP features.
+Add a new list to track set transaction and to check for unbound
+anonymous sets before entering the commit phase.
 
-New functions are now available to easily detect if a certain feature is
-missing by looking at kallsyms.
+Bail out at the end of the transaction handling if an anonymous set
+remains unbound.
 
-These new helpers are going to be used in the following commits. In
-order to ease the backport of such future patches, it would be good if
-this patch is backported up to the introduction of MPTCP selftests,
-hence the Fixes tag below: this type of check was supposed to be done
-from the beginning.
-
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 96518518cc41 ("netfilter: add nftables")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/config       |    1 
- tools/testing/selftests/net/mptcp/mptcp_lib.sh |   38 +++++++++++++++++++++++++
- 2 files changed, 39 insertions(+)
+ include/net/netfilter/nf_tables.h |  3 +++
+ net/netfilter/nf_tables_api.c     | 35 ++++++++++++++++++++++++++++---
+ 2 files changed, 35 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/config
-+++ b/tools/testing/selftests/net/mptcp/config
-@@ -1,3 +1,4 @@
-+CONFIG_KALLSYMS=y
- CONFIG_MPTCP=y
- CONFIG_IPV6=y
- CONFIG_MPTCP_IPV6=y
---- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-@@ -38,3 +38,41 @@ mptcp_lib_check_mptcp() {
- 		exit ${KSFT_SKIP}
- 	fi
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index bbcd558f19344..f3a37cacb32c3 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1558,6 +1558,7 @@ static inline void nft_set_elem_clear_busy(struct nft_set_ext *ext)
+  *	struct nft_trans - nf_tables object update in transaction
+  *
+  *	@list: used internally
++ *	@binding_list: list of objects with possible bindings
+  *	@msg_type: message type
+  *	@put_net: ctx->net needs to be put
+  *	@ctx: transaction context
+@@ -1565,6 +1566,7 @@ static inline void nft_set_elem_clear_busy(struct nft_set_ext *ext)
+  */
+ struct nft_trans {
+ 	struct list_head		list;
++	struct list_head		binding_list;
+ 	int				msg_type;
+ 	bool				put_net;
+ 	struct nft_ctx			ctx;
+@@ -1703,6 +1705,7 @@ static inline int nft_request_module(struct net *net, const char *fmt, ...) { re
+ struct nftables_pernet {
+ 	struct list_head	tables;
+ 	struct list_head	commit_list;
++	struct list_head	binding_list;
+ 	struct list_head	module_list;
+ 	struct list_head	notify_list;
+ 	struct mutex		commit_mutex;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 2cd83d09f4192..c0126aac035f8 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -153,6 +153,7 @@ static struct nft_trans *nft_trans_alloc_gfp(const struct nft_ctx *ctx,
+ 		return NULL;
+ 
+ 	INIT_LIST_HEAD(&trans->list);
++	INIT_LIST_HEAD(&trans->binding_list);
+ 	trans->msg_type = msg_type;
+ 	trans->ctx	= *ctx;
+ 
+@@ -165,9 +166,15 @@ static struct nft_trans *nft_trans_alloc(const struct nft_ctx *ctx,
+ 	return nft_trans_alloc_gfp(ctx, msg_type, size, GFP_KERNEL);
  }
-+
-+mptcp_lib_check_kallsyms() {
-+	if ! mptcp_lib_has_file "/proc/kallsyms"; then
-+		echo "SKIP: CONFIG_KALLSYMS is missing"
-+		exit ${KSFT_SKIP}
-+	fi
+ 
+-static void nft_trans_destroy(struct nft_trans *trans)
++static void nft_trans_list_del(struct nft_trans *trans)
+ {
+ 	list_del(&trans->list);
++	list_del(&trans->binding_list);
 +}
 +
-+# Internal: use mptcp_lib_kallsyms_has() instead
-+__mptcp_lib_kallsyms_has() {
-+	local sym="${1}"
++static void nft_trans_destroy(struct nft_trans *trans)
++{
++	nft_trans_list_del(trans);
+ 	kfree(trans);
+ }
+ 
+@@ -359,6 +366,14 @@ static void nft_trans_commit_list_add_tail(struct net *net, struct nft_trans *tr
+ {
+ 	struct nftables_pernet *nft_net = nft_pernet(net);
+ 
++	switch (trans->msg_type) {
++	case NFT_MSG_NEWSET:
++		if (!nft_trans_set_update(trans) &&
++		    nft_set_is_anonymous(nft_trans_set(trans)))
++			list_add_tail(&trans->binding_list, &nft_net->binding_list);
++		break;
++	}
 +
-+	mptcp_lib_check_kallsyms
+ 	list_add_tail(&trans->list, &nft_net->commit_list);
+ }
+ 
+@@ -8829,7 +8844,7 @@ static void nf_tables_trans_destroy_work(struct work_struct *w)
+ 	synchronize_rcu();
+ 
+ 	list_for_each_entry_safe(trans, next, &head, list) {
+-		list_del(&trans->list);
++		nft_trans_list_del(trans);
+ 		nft_commit_release(trans);
+ 	}
+ }
+@@ -9196,6 +9211,19 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 		return 0;
+ 	}
+ 
++	list_for_each_entry(trans, &nft_net->binding_list, binding_list) {
++		switch (trans->msg_type) {
++		case NFT_MSG_NEWSET:
++			if (!nft_trans_set_update(trans) &&
++			    nft_set_is_anonymous(nft_trans_set(trans)) &&
++			    !nft_trans_set_bound(trans)) {
++				pr_warn_once("nftables ruleset with unbound set\n");
++				return -EINVAL;
++			}
++			break;
++		}
++	}
 +
-+	grep -q " ${sym}" /proc/kallsyms
-+}
-+
-+# $1: part of a symbol to look at, add '$' at the end for full name
-+mptcp_lib_kallsyms_has() {
-+	local sym="${1}"
-+
-+	if __mptcp_lib_kallsyms_has "${sym}"; then
-+		return 0
-+	fi
-+
-+	mptcp_lib_fail_if_expected_feature "${sym} symbol not found"
-+}
-+
-+# $1: part of a symbol to look at, add '$' at the end for full name
-+mptcp_lib_kallsyms_doesnt_have() {
-+	local sym="${1}"
-+
-+	if ! __mptcp_lib_kallsyms_has "${sym}"; then
-+		return 0
-+	fi
-+
-+	mptcp_lib_fail_if_expected_feature "${sym} symbol has been found"
-+}
+ 	/* 0. Validate ruleset, otherwise roll back for error reporting. */
+ 	if (nf_tables_validate(net) < 0)
+ 		return -EAGAIN;
+@@ -9672,7 +9700,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 
+ 	list_for_each_entry_safe_reverse(trans, next,
+ 					 &nft_net->commit_list, list) {
+-		list_del(&trans->list);
++		nft_trans_list_del(trans);
+ 		nf_tables_abort_release(trans);
+ 	}
+ 
+@@ -10448,6 +10476,7 @@ static int __net_init nf_tables_init_net(struct net *net)
+ 
+ 	INIT_LIST_HEAD(&nft_net->tables);
+ 	INIT_LIST_HEAD(&nft_net->commit_list);
++	INIT_LIST_HEAD(&nft_net->binding_list);
+ 	INIT_LIST_HEAD(&nft_net->module_list);
+ 	INIT_LIST_HEAD(&nft_net->notify_list);
+ 	mutex_init(&nft_net->commit_mutex);
+-- 
+2.39.2
+
 
 
