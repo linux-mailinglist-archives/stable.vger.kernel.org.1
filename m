@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 215A973E904
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6198873E763
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:15:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232329AbjFZSbp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:31:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44780 "EHLO
+        id S230212AbjFZSOz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:14:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232220AbjFZSb2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:31:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7282B1BD2
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:31:15 -0700 (PDT)
+        with ESMTP id S231365AbjFZSOd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:14:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9919F10DF
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:14:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 083E960F40
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:31:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DB8C433C0;
-        Mon, 26 Jun 2023 18:31:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 357B660F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:14:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409F9C433C0;
+        Mon, 26 Jun 2023 18:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804274;
-        bh=qxe/rOKW83cQ9OOWZXLCtE8DzWX8uT6cRoDc3jgK1dQ=;
+        s=korg; t=1687803271;
+        bh=bI5ADwk+i/ECTMZFMhN23VkwjbhH6kY7ZbDNsEG8Twc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KhMA4H2H/QTlctg/x1WFBZaCOve8Y53ZL5i/1FbcZr5wP2M3U9g4Msi7pRxz1EUVD
-         OpHjW04JberElP51yax3SVCeTrNW8xMlNNbXyfet4yLlu3frLLoVs/lJAxJLWKBnPm
-         Xq9Mq4jyDWYP/Rhib7X/WJjH2Lms55K3OW0Qx138=
+        b=DvhaY/JoqzfqO4zIARbHmqIQlhYDcqvERR96i5RDxdAzJIbCa0Y8scbRjqC5FLqo6
+         zmQZ7TafOaON5Wl13ntfJQvWguvHR2bqpK34Ttf9u/WSlPobnxkHOm4ul5HovPSq1u
+         LTddiyp+iQWOar6JcwEcpHKUF73uFPQgmp46HZRw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/170] mmc: omap_hsmmc: fix deferred probing
+Subject: [PATCH 4.14 07/26] xfrm: Linearize the skb after offloading if needed.
 Date:   Mon, 26 Jun 2023 20:11:09 +0200
-Message-ID: <20230626180805.030279733@linuxfoundation.org>
+Message-ID: <20230626180733.945498148@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
+References: <20230626180733.699092073@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,42 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit fb51b74a57859b707c3e8055ed0c25a7ca4f6a29 ]
+[ Upstream commit f015b900bc3285322029b4a7d132d6aeb0e51857 ]
 
-The driver overrides the error codes returned by platform_get_irq() to
--ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the
-error codes upstream.
+With offloading enabled, esp_xmit() gets invoked very late, from within
+validate_xmit_xfrm() which is after validate_xmit_skb() validates and
+linearizes the skb if the underlying device does not support fragments.
 
-Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20230617203622.6812-7-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+esp_output_tail() may add a fragment to the skb while adding the auth
+tag/ IV. Devices without the proper support will then send skb->data
+points to with the correct length so the packet will have garbage at the
+end. A pcap sniffer will claim that the proper data has been sent since
+it parses the skb properly.
+
+It is not affected with INET_ESP_OFFLOAD disabled.
+
+Linearize the skb after offloading if the sending hardware requires it.
+It was tested on v4, v6 has been adopted.
+
+Fixes: 7785bba299a8d ("esp: Add a software GRO codepath")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/omap_hsmmc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv4/esp4_offload.c | 3 +++
+ net/ipv6/esp6_offload.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
-index 4bd7447552055..2db3a16e63c48 100644
---- a/drivers/mmc/host/omap_hsmmc.c
-+++ b/drivers/mmc/host/omap_hsmmc.c
-@@ -1791,9 +1791,11 @@ static int omap_hsmmc_probe(struct platform_device *pdev)
- 	}
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index 29b333a62ab01..5be59ccb61aa2 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -268,6 +268,9 @@ static int esp_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features_
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	irq = platform_get_irq(pdev, 0);
--	if (res == NULL || irq < 0)
-+	if (!res)
- 		return -ENXIO;
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		return irq;
+ 	secpath_reset(skb);
  
- 	base = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(base))
++	if (skb_needs_linearize(skb, skb->dev->features) &&
++	    __skb_linearize(skb))
++		return -ENOMEM;
+ 	return 0;
+ }
+ 
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index a50d1943dd620..7c72b85c93396 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -304,6 +304,9 @@ static int esp6_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features
+ 
+ 	secpath_reset(skb);
+ 
++	if (skb_needs_linearize(skb, skb->dev->features) &&
++	    __skb_linearize(skb))
++		return -ENOMEM;
+ 	return 0;
+ }
+ 
 -- 
 2.39.2
 
