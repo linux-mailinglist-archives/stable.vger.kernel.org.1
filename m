@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2DA873E826
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A802473E8DE
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231936AbjFZSXg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:23:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38196 "EHLO
+        id S232094AbjFZSae (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:30:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231859AbjFZSXW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BBD62109
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:22:56 -0700 (PDT)
+        with ESMTP id S232163AbjFZS3m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC7DA173C
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EDD0460F6E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:22:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED173C433C9;
-        Mon, 26 Jun 2023 18:22:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5112960E76
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55142C433C9;
+        Mon, 26 Jun 2023 18:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803726;
-        bh=3vEFY3LB+pFK7BEAd5ao0b3dgP4qi5p4Bd9n+p2Bg7E=;
+        s=korg; t=1687804168;
+        bh=k5yIwWUOiXY51QZt+ouJl1gvH/3GOOz/nkPonUESGxo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=smXVh8VGAOCNPX9PUn+EEVkd4mXTy9K74+5wPKJjwTn/jwb4nJE/n7M3TfYOIJwi4
-         kJv5oUBfdwhfy0wLyym2VJTYpgWxAzZk883Ej5sNizw1ypLprEheh2/GmDfPLwVNMR
-         XDPV5eQRza8HtWmTjPUBBL2X6X23kszY0EefzX3o=
+        b=Ff6CqSlZTq00HHsgPCH3TZV516RaIVGoPcYG0d3dC4fMPDslCDEOk7ocFfaRfM8g7
+         Fq5Fx86rCq5u6NKlT+yXLsvRkY5HwABNrlh9XMCooYgJjGiEO8Xrn1Huh/jyN2/YKW
+         +9GBrRCgt2DFY8avax9D5fc7BFpIH1QkJTXzsKVM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 128/199] netfilter: nf_tables: fix chain binding transaction logic
+        patches@lists.linux.dev,
+        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 065/170] mmc: meson-gx: remove redundant mmc_request_done() call from irq context
 Date:   Mon, 26 Jun 2023 20:10:34 +0200
-Message-ID: <20230626180811.272411755@linuxfoundation.org>
+Message-ID: <20230626180803.501958212@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,440 +55,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Martin Hundebøll <martin@geanix.com>
 
-[ Upstream commit 4bedf9eee016286c835e3d8fa981ddece5338795 ]
+commit 3c40eb8145325b0f5b93b8a169146078cb2c49d6 upstream.
 
-Add bound flag to rule and chain transactions as in 6a0a8d10a366
-("netfilter: nf_tables: use-after-free in failing rule with bound set")
-to skip them in case that the chain is already bound from the abort
-path.
+The call to mmc_request_done() can schedule, so it must not be called
+from irq context. Wake the irq thread if it needs to be called, and let
+its existing logic do its work.
 
-This patch fixes an imbalance in the chain use refcnt that triggers a
-WARN_ON on the table and chain destroy path.
+Fixes the following kernel bug, which appears when running an RT patched
+kernel on the AmLogic Meson AXG A113X SoC:
+[   11.111407] BUG: scheduling while atomic: kworker/0:1H/75/0x00010001
+[   11.111438] Modules linked in:
+[   11.111451] CPU: 0 PID: 75 Comm: kworker/0:1H Not tainted 6.4.0-rc3-rt2-rtx-00081-gfd07f41ed6b4-dirty #1
+[   11.111461] Hardware name: RTX AXG A113X Linux Platform Board (DT)
+[   11.111469] Workqueue: kblockd blk_mq_run_work_fn
+[   11.111492] Call trace:
+[   11.111497]  dump_backtrace+0xac/0xe8
+[   11.111510]  show_stack+0x18/0x28
+[   11.111518]  dump_stack_lvl+0x48/0x60
+[   11.111530]  dump_stack+0x18/0x24
+[   11.111537]  __schedule_bug+0x4c/0x68
+[   11.111548]  __schedule+0x80/0x574
+[   11.111558]  schedule_loop+0x2c/0x50
+[   11.111567]  schedule_rtlock+0x14/0x20
+[   11.111576]  rtlock_slowlock_locked+0x468/0x730
+[   11.111587]  rt_spin_lock+0x40/0x64
+[   11.111596]  __wake_up_common_lock+0x5c/0xc4
+[   11.111610]  __wake_up+0x18/0x24
+[   11.111620]  mmc_blk_mq_req_done+0x68/0x138
+[   11.111633]  mmc_request_done+0x104/0x118
+[   11.111644]  meson_mmc_request_done+0x38/0x48
+[   11.111654]  meson_mmc_irq+0x128/0x1f0
+[   11.111663]  __handle_irq_event_percpu+0x70/0x114
+[   11.111674]  handle_irq_event_percpu+0x18/0x4c
+[   11.111683]  handle_irq_event+0x80/0xb8
+[   11.111691]  handle_fasteoi_irq+0xa4/0x120
+[   11.111704]  handle_irq_desc+0x20/0x38
+[   11.111712]  generic_handle_domain_irq+0x1c/0x28
+[   11.111721]  gic_handle_irq+0x8c/0xa8
+[   11.111735]  call_on_irq_stack+0x24/0x4c
+[   11.111746]  do_interrupt_handler+0x88/0x94
+[   11.111757]  el1_interrupt+0x34/0x64
+[   11.111769]  el1h_64_irq_handler+0x18/0x24
+[   11.111779]  el1h_64_irq+0x64/0x68
+[   11.111786]  __add_wait_queue+0x0/0x4c
+[   11.111795]  mmc_blk_rw_wait+0x84/0x118
+[   11.111804]  mmc_blk_mq_issue_rq+0x5c4/0x654
+[   11.111814]  mmc_mq_queue_rq+0x194/0x214
+[   11.111822]  blk_mq_dispatch_rq_list+0x3ac/0x528
+[   11.111834]  __blk_mq_sched_dispatch_requests+0x340/0x4d0
+[   11.111847]  blk_mq_sched_dispatch_requests+0x38/0x70
+[   11.111858]  blk_mq_run_work_fn+0x3c/0x70
+[   11.111865]  process_one_work+0x17c/0x1f0
+[   11.111876]  worker_thread+0x1d4/0x26c
+[   11.111885]  kthread+0xe4/0xf4
+[   11.111894]  ret_from_fork+0x10/0x20
 
-This patch also disallows nested chain bindings, which is not
-supported from userspace.
-
-The logic to deal with chain binding in nft_data_hold() and
-nft_data_release() is not correct. The NFT_TRANS_PREPARE state needs a
-special handling in case a chain is bound but next expressions in the
-same rule fail to initialize as described by 1240eb93f061 ("netfilter:
-nf_tables: incorrect error path handling with NFT_MSG_NEWRULE").
-
-The chain is left bound if rule construction fails, so the objects
-stored in this chain (and the chain itself) are released by the
-transaction records from the abort path, follow up patch ("netfilter:
-nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain")
-completes this error handling.
-
-When deleting an existing rule, chain bound flag is set off so the
-rule expression .destroy path releases the objects.
-
-Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 51c5d8447bd7 ("MMC: meson: initial support for GX platforms")
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Hundebøll <martin@geanix.com>
+Link: https://lore.kernel.org/r/20230607082713.517157-1-martin@geanix.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h | 21 +++++++-
- net/netfilter/nf_tables_api.c     | 86 +++++++++++++++++++-----------
- net/netfilter/nft_immediate.c     | 87 +++++++++++++++++++++++++++----
- 3 files changed, 153 insertions(+), 41 deletions(-)
+ drivers/mmc/host/meson-gx-mmc.c |   10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 300bce4d67cec..91bf88dab245f 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1009,7 +1009,10 @@ static inline struct nft_userdata *nft_userdata(const struct nft_rule *rule)
- 	return (void *)&rule->data[rule->dlen];
- }
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -1007,11 +1007,8 @@ static irqreturn_t meson_mmc_irq(int irq
  
--void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule);
-+void nft_rule_expr_activate(const struct nft_ctx *ctx, struct nft_rule *rule);
-+void nft_rule_expr_deactivate(const struct nft_ctx *ctx, struct nft_rule *rule,
-+			      enum nft_trans_phase phase);
-+void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule);
- 
- static inline void nft_set_elem_update_expr(const struct nft_set_ext *ext,
- 					    struct nft_regs *regs,
-@@ -1092,6 +1095,7 @@ int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
- 			 const struct nft_set_iter *iter,
- 			 struct nft_set_elem *elem);
- int nft_set_catchall_validate(const struct nft_ctx *ctx, struct nft_set *set);
-+int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
- 
- enum nft_chain_types {
- 	NFT_CHAIN_T_DEFAULT = 0,
-@@ -1128,11 +1132,17 @@ int nft_chain_validate_dependency(const struct nft_chain *chain,
- int nft_chain_validate_hooks(const struct nft_chain *chain,
-                              unsigned int hook_flags);
- 
-+static inline bool nft_chain_binding(const struct nft_chain *chain)
-+{
-+	return chain->flags & NFT_CHAIN_BINDING;
-+}
+ 		if (data && !cmd->error)
+ 			data->bytes_xfered = data->blksz * data->blocks;
+-		if (meson_mmc_bounce_buf_read(data) ||
+-		    meson_mmc_get_next_command(cmd))
+-			ret = IRQ_WAKE_THREAD;
+-		else
+-			ret = IRQ_HANDLED;
 +
- static inline bool nft_chain_is_bound(struct nft_chain *chain)
- {
- 	return (chain->flags & NFT_CHAIN_BINDING) && chain->bound;
- }
- 
-+int nft_chain_add(struct nft_table *table, struct nft_chain *chain);
- void nft_chain_del(struct nft_chain *chain);
- void nf_tables_chain_destroy(struct nft_ctx *ctx);
- 
-@@ -1567,6 +1577,7 @@ struct nft_trans_rule {
- 	struct nft_rule			*rule;
- 	struct nft_flow_rule		*flow;
- 	u32				rule_id;
-+	bool				bound;
- };
- 
- #define nft_trans_rule(trans)	\
-@@ -1575,6 +1586,8 @@ struct nft_trans_rule {
- 	(((struct nft_trans_rule *)trans->data)->flow)
- #define nft_trans_rule_id(trans)	\
- 	(((struct nft_trans_rule *)trans->data)->rule_id)
-+#define nft_trans_rule_bound(trans)	\
-+	(((struct nft_trans_rule *)trans->data)->bound)
- 
- struct nft_trans_set {
- 	struct nft_set			*set;
-@@ -1599,15 +1612,19 @@ struct nft_trans_set {
- 	(((struct nft_trans_set *)trans->data)->gc_int)
- 
- struct nft_trans_chain {
-+	struct nft_chain		*chain;
- 	bool				update;
- 	char				*name;
- 	struct nft_stats __percpu	*stats;
- 	u8				policy;
-+	bool				bound;
- 	u32				chain_id;
- 	struct nft_base_chain		*basechain;
- 	struct list_head		hook_list;
- };
- 
-+#define nft_trans_chain(trans)	\
-+	(((struct nft_trans_chain *)trans->data)->chain)
- #define nft_trans_chain_update(trans)	\
- 	(((struct nft_trans_chain *)trans->data)->update)
- #define nft_trans_chain_name(trans)	\
-@@ -1616,6 +1633,8 @@ struct nft_trans_chain {
- 	(((struct nft_trans_chain *)trans->data)->stats)
- #define nft_trans_chain_policy(trans)	\
- 	(((struct nft_trans_chain *)trans->data)->policy)
-+#define nft_trans_chain_bound(trans)	\
-+	(((struct nft_trans_chain *)trans->data)->bound)
- #define nft_trans_chain_id(trans)	\
- 	(((struct nft_trans_chain *)trans->data)->chain_id)
- #define nft_trans_basechain(trans)	\
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 8f63514656a17..281ee688128ab 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -195,6 +195,48 @@ static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++		return IRQ_WAKE_THREAD;
  	}
- }
  
-+static void nft_chain_trans_bind(const struct nft_ctx *ctx, struct nft_chain *chain)
-+{
-+	struct nftables_pernet *nft_net;
-+	struct net *net = ctx->net;
-+	struct nft_trans *trans;
-+
-+	if (!nft_chain_binding(chain))
-+		return;
-+
-+	nft_net = nft_pernet(net);
-+	list_for_each_entry_reverse(trans, &nft_net->commit_list, list) {
-+		switch (trans->msg_type) {
-+		case NFT_MSG_NEWCHAIN:
-+			if (nft_trans_chain(trans) == chain)
-+				nft_trans_chain_bound(trans) = true;
-+			break;
-+		case NFT_MSG_NEWRULE:
-+			if (trans->ctx.chain == chain)
-+				nft_trans_rule_bound(trans) = true;
-+			break;
-+		}
-+	}
-+}
-+
-+int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
-+{
-+	if (!nft_chain_binding(chain))
-+		return 0;
-+
-+	if (nft_chain_binding(ctx->chain))
-+		return -EOPNOTSUPP;
-+
-+	if (chain->bound)
-+		return -EBUSY;
-+
-+	chain->bound = true;
-+	chain->use++;
-+	nft_chain_trans_bind(ctx, chain);
-+
-+	return 0;
-+}
-+
- static int nft_netdev_register_hooks(struct net *net,
- 				     struct list_head *hook_list)
- {
-@@ -340,8 +382,9 @@ static struct nft_trans *nft_trans_chain_add(struct nft_ctx *ctx, int msg_type)
- 				ntohl(nla_get_be32(ctx->nla[NFTA_CHAIN_ID]));
- 		}
+ out:
+@@ -1023,9 +1020,6 @@ out:
+ 		writel(start, host->regs + SD_EMMC_START);
  	}
+ 
+-	if (ret == IRQ_HANDLED)
+-		meson_mmc_request_done(host->mmc, cmd->mrq);
 -
-+	nft_trans_chain(trans) = ctx->chain;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
-+
- 	return trans;
+ 	return ret;
  }
  
-@@ -359,8 +402,7 @@ static int nft_delchain(struct nft_ctx *ctx)
- 	return 0;
- }
- 
--static void nft_rule_expr_activate(const struct nft_ctx *ctx,
--				   struct nft_rule *rule)
-+void nft_rule_expr_activate(const struct nft_ctx *ctx, struct nft_rule *rule)
- {
- 	struct nft_expr *expr;
- 
-@@ -373,9 +415,8 @@ static void nft_rule_expr_activate(const struct nft_ctx *ctx,
- 	}
- }
- 
--static void nft_rule_expr_deactivate(const struct nft_ctx *ctx,
--				     struct nft_rule *rule,
--				     enum nft_trans_phase phase)
-+void nft_rule_expr_deactivate(const struct nft_ctx *ctx, struct nft_rule *rule,
-+			      enum nft_trans_phase phase)
- {
- 	struct nft_expr *expr;
- 
-@@ -2221,7 +2262,7 @@ static int nft_basechain_init(struct nft_base_chain *basechain, u8 family,
- 	return 0;
- }
- 
--static int nft_chain_add(struct nft_table *table, struct nft_chain *chain)
-+int nft_chain_add(struct nft_table *table, struct nft_chain *chain)
- {
- 	int err;
- 
-@@ -3427,8 +3468,7 @@ static int nf_tables_getrule(struct sk_buff *skb, const struct nfnl_info *info,
- 	return err;
- }
- 
--static void nf_tables_rule_destroy(const struct nft_ctx *ctx,
--				   struct nft_rule *rule)
-+void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule)
- {
- 	struct nft_expr *expr, *next;
- 
-@@ -3445,7 +3485,7 @@ static void nf_tables_rule_destroy(const struct nft_ctx *ctx,
- 	kfree(rule);
- }
- 
--void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
-+static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
- {
- 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
- 	nf_tables_rule_destroy(ctx, rule);
-@@ -6570,7 +6610,6 @@ static int nf_tables_newsetelem(struct sk_buff *skb,
- void nft_data_hold(const struct nft_data *data, enum nft_data_types type)
- {
- 	struct nft_chain *chain;
--	struct nft_rule *rule;
- 
- 	if (type == NFT_DATA_VERDICT) {
- 		switch (data->verdict.code) {
-@@ -6578,15 +6617,6 @@ void nft_data_hold(const struct nft_data *data, enum nft_data_types type)
- 		case NFT_GOTO:
- 			chain = data->verdict.chain;
- 			chain->use++;
--
--			if (!nft_chain_is_bound(chain))
--				break;
--
--			chain->table->use++;
--			list_for_each_entry(rule, &chain->rules, list)
--				chain->use++;
--
--			nft_chain_add(chain->table, chain);
- 			break;
- 		}
- 	}
-@@ -9583,7 +9613,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 				kfree(nft_trans_chain_name(trans));
- 				nft_trans_destroy(trans);
- 			} else {
--				if (nft_chain_is_bound(trans->ctx.chain)) {
-+				if (nft_trans_chain_bound(trans)) {
- 					nft_trans_destroy(trans);
- 					break;
- 				}
-@@ -9601,6 +9631,10 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 			nft_trans_destroy(trans);
- 			break;
- 		case NFT_MSG_NEWRULE:
-+			if (nft_trans_rule_bound(trans)) {
-+				nft_trans_destroy(trans);
-+				break;
-+			}
- 			trans->ctx.chain->use--;
- 			list_del_rcu(&nft_trans_rule(trans)->list);
- 			nft_rule_expr_deactivate(&trans->ctx,
-@@ -10164,22 +10198,12 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
- static void nft_verdict_uninit(const struct nft_data *data)
- {
- 	struct nft_chain *chain;
--	struct nft_rule *rule;
- 
- 	switch (data->verdict.code) {
- 	case NFT_JUMP:
- 	case NFT_GOTO:
- 		chain = data->verdict.chain;
- 		chain->use--;
--
--		if (!nft_chain_is_bound(chain))
--			break;
--
--		chain->table->use--;
--		list_for_each_entry(rule, &chain->rules, list)
--			chain->use--;
--
--		nft_chain_del(chain);
- 		break;
- 	}
- }
-diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
-index c9d2f7c29f530..0492a04064f11 100644
---- a/net/netfilter/nft_immediate.c
-+++ b/net/netfilter/nft_immediate.c
-@@ -76,11 +76,9 @@ static int nft_immediate_init(const struct nft_ctx *ctx,
- 		switch (priv->data.verdict.code) {
- 		case NFT_JUMP:
- 		case NFT_GOTO:
--			if (nft_chain_is_bound(chain)) {
--				err = -EBUSY;
--				goto err1;
--			}
--			chain->bound = true;
-+			err = nf_tables_bind_chain(ctx, chain);
-+			if (err < 0)
-+				return err;
- 			break;
- 		default:
- 			break;
-@@ -98,6 +96,31 @@ static void nft_immediate_activate(const struct nft_ctx *ctx,
- 				   const struct nft_expr *expr)
- {
- 	const struct nft_immediate_expr *priv = nft_expr_priv(expr);
-+	const struct nft_data *data = &priv->data;
-+	struct nft_ctx chain_ctx;
-+	struct nft_chain *chain;
-+	struct nft_rule *rule;
-+
-+	if (priv->dreg == NFT_REG_VERDICT) {
-+		switch (data->verdict.code) {
-+		case NFT_JUMP:
-+		case NFT_GOTO:
-+			chain = data->verdict.chain;
-+			if (!nft_chain_binding(chain))
-+				break;
-+
-+			chain_ctx = *ctx;
-+			chain_ctx.chain = chain;
-+
-+			list_for_each_entry(rule, &chain->rules, list)
-+				nft_rule_expr_activate(&chain_ctx, rule);
-+
-+			nft_clear(ctx->net, chain);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
- 
- 	return nft_data_hold(&priv->data, nft_dreg_to_type(priv->dreg));
- }
-@@ -107,6 +130,40 @@ static void nft_immediate_deactivate(const struct nft_ctx *ctx,
- 				     enum nft_trans_phase phase)
- {
- 	const struct nft_immediate_expr *priv = nft_expr_priv(expr);
-+	const struct nft_data *data = &priv->data;
-+	struct nft_ctx chain_ctx;
-+	struct nft_chain *chain;
-+	struct nft_rule *rule;
-+
-+	if (priv->dreg == NFT_REG_VERDICT) {
-+		switch (data->verdict.code) {
-+		case NFT_JUMP:
-+		case NFT_GOTO:
-+			chain = data->verdict.chain;
-+			if (!nft_chain_binding(chain))
-+				break;
-+
-+			chain_ctx = *ctx;
-+			chain_ctx.chain = chain;
-+
-+			list_for_each_entry(rule, &chain->rules, list)
-+				nft_rule_expr_deactivate(&chain_ctx, rule, phase);
-+
-+			switch (phase) {
-+			case NFT_TRANS_PREPARE:
-+				nft_deactivate_next(ctx->net, chain);
-+				break;
-+			default:
-+				nft_chain_del(chain);
-+				chain->bound = false;
-+				chain->table->use--;
-+				break;
-+			}
-+			break;
-+		default:
-+			break;
-+		}
-+	}
- 
- 	if (phase == NFT_TRANS_COMMIT)
- 		return;
-@@ -131,15 +188,27 @@ static void nft_immediate_destroy(const struct nft_ctx *ctx,
- 	case NFT_GOTO:
- 		chain = data->verdict.chain;
- 
--		if (!nft_chain_is_bound(chain))
-+		if (!nft_chain_binding(chain))
-+			break;
-+
-+		/* Rule construction failed, but chain is already bound:
-+		 * let the transaction records release this chain and its rules.
-+		 */
-+		if (chain->bound) {
-+			chain->use--;
- 			break;
-+		}
- 
-+		/* Rule has been deleted, release chain and its rules. */
- 		chain_ctx = *ctx;
- 		chain_ctx.chain = chain;
- 
--		list_for_each_entry_safe(rule, n, &chain->rules, list)
--			nf_tables_rule_release(&chain_ctx, rule);
--
-+		chain->use--;
-+		list_for_each_entry_safe(rule, n, &chain->rules, list) {
-+			chain->use--;
-+			list_del(&rule->list);
-+			nf_tables_rule_destroy(&chain_ctx, rule);
-+		}
- 		nf_tables_chain_destroy(&chain_ctx);
- 		break;
- 	default:
--- 
-2.39.2
-
 
 
