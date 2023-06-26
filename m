@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 621EB73EA2E
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEFF573E972
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:36:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232565AbjFZSoP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:44:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56842 "EHLO
+        id S232372AbjFZSgJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232569AbjFZSoO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:44:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03913FA
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:44:12 -0700 (PDT)
+        with ESMTP id S232375AbjFZSgI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:36:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 151289B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:36:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F45260F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:44:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F23C433C8;
-        Mon, 26 Jun 2023 18:44:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D85660F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:36:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A81C433C8;
+        Mon, 26 Jun 2023 18:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805051;
-        bh=sLPz/zy6VvBK6O/u0orKUjbDlsRtmKqhlIMBDmxPss4=;
+        s=korg; t=1687804567;
+        bh=EmtYtNtfJBU8OI3hKa8VUkrEMX2tcuI4EMThsqQldAM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kG/IEKljjPxsWAB3M8O1zjDkN+kpU5XKeg68tF+n3/6+A7xEvZI7M4TwRrzesnV1X
-         3NM1lhsNhaCV6d5gSO3dBHHHqO8IbnYuZxZAQnk8WIx2YbsEmpH6tUzKyjnjNNBuBy
-         Zl9IuUvc9GzLn2J9Y/ldjtoUi8We09GqIafz7txU=
+        b=o7FdGeIzqqeUzd5fRD0KDtur87wzBicmsQ8Q7x/7GiWTvLGvFcWGRccq35rI79Icu
+         kTr/TA3titRF7Q6LujChlIdSgHy5Mih0ZR0wvC2GezAHQzR+LrK397Q+6/6U9EjRde
+         I6CR7XW9os+9THM2+xbcE3aDatDvrfJKFmWvmbz4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 06/81] selftests: mptcp: lib: skip if not below kernel version
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Ovidiu Panait <ovidiu.panait@windriver.com>
+Subject: [PATCH 5.4 09/60] media: dvbdev: fix error logic at dvb_register_device()
 Date:   Mon, 26 Jun 2023 20:11:48 +0200
-Message-ID: <20230626180744.715584943@linuxfoundation.org>
+Message-ID: <20230626180739.933397771@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
+References: <20230626180739.558575012@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,81 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit b1a6a38ab8a633546cefae890da842f19e006c74 upstream.
+commit 1fec2ecc252301110e4149e6183fa70460d29674 upstream.
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting all MPTCP features.
+As reported by smatch:
 
-A new function is now available to easily detect if a feature is
-missing by looking at the kernel version. That's clearly not ideal and
-this kind of check should be avoided as soon as possible. But sometimes,
-there are no external sign that a "feature" is available or not:
-internal behaviours can change without modifying the uAPI and these
-selftests are verifying the internal behaviours. Sometimes, the only
-(easy) way to verify if the feature is present is to run the test but
-then the validation cannot determine if there is a failure with the
-feature or if the feature is missing. Then it looks better to check the
-kernel version instead of having tests that can never fail. In any case,
-we need a solution not to have a whole selftest being marked as failed
-just because one sub-test has failed.
+	drivers/media/dvb-core/dvbdev.c: drivers/media/dvb-core/dvbdev.c:510 dvb_register_device() warn: '&dvbdev->list_head' not removed from list
+	drivers/media/dvb-core/dvbdev.c: drivers/media/dvb-core/dvbdev.c:530 dvb_register_device() warn: '&dvbdev->list_head' not removed from list
+	drivers/media/dvb-core/dvbdev.c: drivers/media/dvb-core/dvbdev.c:545 dvb_register_device() warn: '&dvbdev->list_head' not removed from list
 
-Note that this env var car be set to 1 not to do such check and run the
-linked sub-test: SELFTESTS_MPTCP_LIB_NO_KVERSION_CHECK.
+The error logic inside dvb_register_device() doesn't remove
+devices from the dvb_adapter_list in case of errors.
 
-This new helper is going to be used in the following commits. In order
-to ease the backport of such future patches, it would be good if this
-patch is backported up to the introduction of MPTCP selftests, hence the
-Fixes tag below: this type of check was supposed to be done from the
-beginning.
-
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../testing/selftests/net/mptcp/mptcp_lib.sh  | 26 +++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/media/dvb-core/dvbdev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-index 29b65f4b73b2..f32045b23b89 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-@@ -76,3 +76,29 @@ mptcp_lib_kallsyms_doesnt_have() {
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -511,6 +511,7 @@ int dvb_register_device(struct dvb_adapt
+ 			break;
  
- 	mptcp_lib_fail_if_expected_feature "${sym} symbol has been found"
- }
-+
-+# !!!AVOID USING THIS!!!
-+# Features might not land in the expected version and features can be backported
-+#
-+# $1: kernel version, e.g. 6.3
-+mptcp_lib_kversion_ge() {
-+	local exp_maj="${1%.*}"
-+	local exp_min="${1#*.}"
-+	local v maj min
-+
-+	# If the kernel has backported features, set this env var to 1:
-+	if [ "${SELFTESTS_MPTCP_LIB_NO_KVERSION_CHECK:-}" = "1" ]; then
-+		return 0
-+	fi
-+
-+	v=$(uname -r | cut -d'.' -f1,2)
-+	maj=${v%.*}
-+	min=${v#*.}
-+
-+	if   [ "${maj}" -gt "${exp_maj}" ] ||
-+	   { [ "${maj}" -eq "${exp_maj}" ] && [ "${min}" -ge "${exp_min}" ]; }; then
-+		return 0
-+	fi
-+
-+	mptcp_lib_fail_if_expected_feature "kernel version ${1} lower than ${v}"
-+}
--- 
-2.41.0
-
+ 	if (minor == MAX_DVB_MINORS) {
++		list_del (&dvbdev->list_head);
+ 		kfree(dvbdevfops);
+ 		kfree(dvbdev);
+ 		up_write(&minor_rwsem);
+@@ -531,6 +532,7 @@ int dvb_register_device(struct dvb_adapt
+ 		      __func__);
+ 
+ 		dvb_media_device_free(dvbdev);
++		list_del (&dvbdev->list_head);
+ 		kfree(dvbdevfops);
+ 		kfree(dvbdev);
+ 		mutex_unlock(&dvbdev_register_lock);
+@@ -546,6 +548,7 @@ int dvb_register_device(struct dvb_adapt
+ 		pr_err("%s: failed to create device dvb%d.%s%d (%ld)\n",
+ 		       __func__, adap->num, dnames[type], id, PTR_ERR(clsdev));
+ 		dvb_media_device_free(dvbdev);
++		list_del (&dvbdev->list_head);
+ 		kfree(dvbdevfops);
+ 		kfree(dvbdev);
+ 		return PTR_ERR(clsdev);
 
 
