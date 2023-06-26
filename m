@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F84873E7C6
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A285C73E8AE
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231425AbjFZSTG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:19:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34096 "EHLO
+        id S231986AbjFZS2X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:28:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231482AbjFZSTB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7A1110D5
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:18:42 -0700 (PDT)
+        with ESMTP id S232156AbjFZS2I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:28:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D03110C1
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:27:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 82B3060F4F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:18:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885BFC433C0;
-        Mon, 26 Jun 2023 18:18:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EF9D60E76
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:27:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA57C433C8;
+        Mon, 26 Jun 2023 18:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803521;
-        bh=16V4H6Wq+emRL2D9kUckP9PavZ9dpDIi62ehlHajSu0=;
+        s=korg; t=1687804051;
+        bh=tggkwkjAdKK5muk6ITWHQ/kRK2R2iDMWEcel+qLmu9k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jxeYTeImU0ghM8GU05hRHqEEPYTWZxwZA/xUKPnyjulON1TZrxyYdkntqil2244aH
-         /QPPNt5IiCDyrSfrD6eKIfF6AzBXd/OMbD4bAoRm3vwqFuf2RSjUu6rfijNJ7HeCeg
-         6VfnqMPA74DmeyI6QioYz0DcIrRo+sWn6AjCp2fE=
+        b=sXbyH4zwbTedMu6VluA/TIJxS46bHjvyGck0KUQPzqCfFgCKDTm213Q8QQuwSw5Gk
+         zTuaWCPaZLPvGgDopwMIc2RJ8ToLT4v7LU+09VfAe6rKXKvgCvPmQQjJC6hOrytKAf
+         lrLa3eYDa74Nut5hgIqxcJOHRSp1BlftL8NcuDHg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 088/199] spi: spi-geni-qcom: correctly handle -EPROBE_DEFER from dma_request_chan()
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 025/170] selftests: mptcp: lib: skip if not below kernel version
 Date:   Mon, 26 Jun 2023 20:09:54 +0200
-Message-ID: <20230626180809.453424293@linuxfoundation.org>
+Message-ID: <20230626180801.680397245@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,39 +55,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit 9d7054fb3ac2e8d252aae1268f20623f244e644f ]
+commit b1a6a38ab8a633546cefae890da842f19e006c74 upstream.
 
-Now spi_geni_grab_gpi_chan() errors are correctly reported, the
--EPROBE_DEFER error should be returned from probe in case the
-GPI dma driver is built as module and/or not probed yet.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-Fixes: b59c122484ec ("spi: spi-geni-qcom: Add support for GPI dma")
-Fixes: 6532582c353f ("spi: spi-geni-qcom: fix error handling in spi_geni_grab_gpi_chan()")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20230615-topic-sm8550-upstream-fix-spi-geni-qcom-probe-v2-1-670c3d9e8c9c@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A new function is now available to easily detect if a feature is
+missing by looking at the kernel version. That's clearly not ideal and
+this kind of check should be avoided as soon as possible. But sometimes,
+there are no external sign that a "feature" is available or not:
+internal behaviours can change without modifying the uAPI and these
+selftests are verifying the internal behaviours. Sometimes, the only
+(easy) way to verify if the feature is present is to run the test but
+then the validation cannot determine if there is a failure with the
+feature or if the feature is missing. Then it looks better to check the
+kernel version instead of having tests that can never fail. In any case,
+we need a solution not to have a whole selftest being marked as failed
+just because one sub-test has failed.
+
+Note that this env var car be set to 1 not to do such check and run the
+linked sub-test: SELFTESTS_MPTCP_LIB_NO_KVERSION_CHECK.
+
+This new helper is going to be used in the following commits. In order
+to ease the backport of such future patches, it would be good if this
+patch is backported up to the introduction of MPTCP selftests, hence the
+Fixes tag below: this type of check was supposed to be done from the
+beginning.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-geni-qcom.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh |   26 +++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index b106faf21a723..baf477383682d 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -646,6 +646,8 @@ static int spi_geni_init(struct spi_geni_master *mas)
- 			geni_se_select_mode(se, GENI_GPI_DMA);
- 			dev_dbg(mas->dev, "Using GPI DMA mode for SPI\n");
- 			break;
-+		} else if (ret == -EPROBE_DEFER) {
-+			goto out_pm;
- 		}
- 		/*
- 		 * in case of failure to get gpi dma channel, we can still do the
--- 
-2.39.2
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -76,3 +76,29 @@ mptcp_lib_kallsyms_doesnt_have() {
+ 
+ 	mptcp_lib_fail_if_expected_feature "${sym} symbol has been found"
+ }
++
++# !!!AVOID USING THIS!!!
++# Features might not land in the expected version and features can be backported
++#
++# $1: kernel version, e.g. 6.3
++mptcp_lib_kversion_ge() {
++	local exp_maj="${1%.*}"
++	local exp_min="${1#*.}"
++	local v maj min
++
++	# If the kernel has backported features, set this env var to 1:
++	if [ "${SELFTESTS_MPTCP_LIB_NO_KVERSION_CHECK:-}" = "1" ]; then
++		return 0
++	fi
++
++	v=$(uname -r | cut -d'.' -f1,2)
++	maj=${v%.*}
++	min=${v#*.}
++
++	if   [ "${maj}" -gt "${exp_maj}" ] ||
++	   { [ "${maj}" -eq "${exp_maj}" ] && [ "${min}" -ge "${exp_min}" ]; }; then
++		return 0
++	fi
++
++	mptcp_lib_fail_if_expected_feature "kernel version ${1} lower than ${v}"
++}
 
 
