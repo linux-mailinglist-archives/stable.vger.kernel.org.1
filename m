@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB95473EA5B
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AE8473EA5C
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:46:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232630AbjFZSqV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58440 "EHLO
+        id S232631AbjFZSqY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:46:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232068AbjFZSqV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:46:21 -0400
+        with ESMTP id S232068AbjFZSqY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:46:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54A5397
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:46:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4568397
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:46:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E5C7960F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:46:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98A1C433C0;
-        Mon, 26 Jun 2023 18:46:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D6E1660EFC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:46:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E300DC433C8;
+        Mon, 26 Jun 2023 18:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805179;
-        bh=18v4T2c8E0N1qbvb6lppMvmLCldA85knI5OjAmtEet4=;
+        s=korg; t=1687805182;
+        bh=lTRwSPHBROFqwLOyaoBLJo3p+gy94bcON+DJtFYbU7U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tMGv9aOuq7+4v4aDFpKOY0yJwzwrQM5V8F3/V5f9YklQBbkW+1VUVuaw7lqhwku8s
-         9rtuE5mrggwGLk3GKeAJHe26RrxHRSRAXfCxOQFuP+yUhWnvEEV+DEgP0WzX91vGR/
-         IQBWLmtZL4Nre2mKfPQByIhtSz+HiCkISw4U2rPA=
+        b=oERD1l0mXl/YIZ5nTfMiz+kv38MdPEeEltxXTHyK18M4HNhoZvOFQXW7ZF+kKcdTK
+         l21AdbGv0rZIrYVh4Wck9ew2uZdLV1aA4U8OFW0dh0ZfEJgnvKWG9zLEORSLUGdi/k
+         1gdTJQg2O2r5Q9Uw2q1SGEwotkbk7ljuuQV39D/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Clark Wang <xiaoning.wang@nxp.com>,
-        Carlos Song <carlos.song@nxp.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 77/81] i2c: imx-lpi2c: fix type char overflow issue when calculating the clock cycle
-Date:   Mon, 26 Jun 2023 20:12:59 +0200
-Message-ID: <20230626180747.549740136@linuxfoundation.org>
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 78/81] netfilter: nftables: statify nft_parse_register()
+Date:   Mon, 26 Jun 2023 20:13:00 +0200
+Message-ID: <20230626180747.590718981@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
 References: <20230626180744.453069285@linuxfoundation.org>
@@ -56,40 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e69b9bc170c6d93ee375a5cbfd15f74c0fb59bdd ]
+commit 08a01c11a5bb3de9b0a9c9b2685867e50eda9910 upstream.
 
-Claim clkhi and clklo as integer type to avoid possible calculation
-errors caused by data overflow.
+This function is not used anymore by any extension, statify it.
 
-Fixes: a55fa9d0e42e ("i2c: imx-lpi2c: add low power i2c bus driver")
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-imx-lpi2c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/netfilter/nf_tables.h |    1 -
+ net/netfilter/nf_tables_api.c     |    3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-index d45ec26d51cb9..c688f11ae5c9f 100644
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -200,8 +200,8 @@ static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
- /* CLKLO = I2C_CLK_RATIO * CLKHI, SETHOLD = CLKHI, DATAVD = CLKHI/2 */
- static int lpi2c_imx_config(struct lpi2c_imx_struct *lpi2c_imx)
- {
--	u8 prescale, filt, sethold, clkhi, clklo, datavd;
--	unsigned int clk_rate, clk_cycle;
-+	u8 prescale, filt, sethold, datavd;
-+	unsigned int clk_rate, clk_cycle, clkhi, clklo;
- 	enum lpi2c_imx_pincfg pincfg;
- 	unsigned int temp;
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -205,7 +205,6 @@ static inline enum nft_registers nft_typ
+ }
  
--- 
-2.39.2
-
+ int nft_parse_u32_check(const struct nlattr *attr, int max, u32 *dest);
+-unsigned int nft_parse_register(const struct nlattr *attr);
+ int nft_dump_register(struct sk_buff *skb, unsigned int attr, unsigned int reg);
+ 
+ int nft_parse_register_load(const struct nlattr *attr, u8 *sreg, u32 len);
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -8492,7 +8492,7 @@ EXPORT_SYMBOL_GPL(nft_parse_u32_check);
+  *	Registers used to be 128 bit wide, these register numbers will be
+  *	mapped to the corresponding 32 bit register numbers.
+  */
+-unsigned int nft_parse_register(const struct nlattr *attr)
++static unsigned int nft_parse_register(const struct nlattr *attr)
+ {
+ 	unsigned int reg;
+ 
+@@ -8504,7 +8504,6 @@ unsigned int nft_parse_register(const st
+ 		return reg + NFT_REG_SIZE / NFT_REG32_SIZE - NFT_REG32_00;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(nft_parse_register);
+ 
+ /**
+  *	nft_dump_register - dump a register value to a netlink attribute
 
 
