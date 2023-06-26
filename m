@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 178A373EA28
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7B5D73E9D2
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232542AbjFZSn6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:43:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56578 "EHLO
+        id S232473AbjFZSk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:40:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232579AbjFZSn5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:57 -0400
+        with ESMTP id S232467AbjFZSkZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:40:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF823122
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF328AC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:40:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77AB160F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8208FC433C0;
-        Mon, 26 Jun 2023 18:43:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6507560F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:40:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DD5C433C8;
+        Mon, 26 Jun 2023 18:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805033;
-        bh=VYLH5n8IPeIldbYbhbsNlQ1X+8ADqiCq0EGLs32y/6M=;
+        s=korg; t=1687804823;
+        bh=z9+qRHCdUaEne/xir7twrimg06NudfRiP0riJtn9RAU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hsGbXv3BYG/RHhf0RFq18cSI10QTBgUuLgtfg9WoRTas25hGR7WkyhSMyn2TeNu1J
-         T32tRrhCi7WQLCV1am16jvQ3tVymQIigpOCR+AkrT29bBtO1ke+MrqHUPow+G5VMYW
-         cZ0fyJdaGH/7bQ3tFrbwvoqZNgzRdVJiEhdYVHMw=
+        b=cVfOJiNcev8JFZnJW9ka+C+2XQlwmFpBQYNXN8iodn3EehIjN9CxwJBlbfmoeAEq8
+         Ds7mNW/lf+ml6njZUtyuhhjSu4YFdjWMf7yqKYLKr+pN+Ew5K+aWg+cxiCzYT3lpf2
+         kEpADUlM/ZmZZLUiZd1V8BU6XsV0NULpuzwo6ebU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>,
-        Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.10 27/81] x86/mm: Avoid using set_pgd() outside of real PGD pages
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 54/96] mmc: sdhci-acpi: fix deferred probing
 Date:   Mon, 26 Jun 2023 20:12:09 +0200
-Message-ID: <20230626180745.588394506@linuxfoundation.org>
+Message-ID: <20230626180749.205805667@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lee Jones <lee@kernel.org>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit d082d48737c75d2b3cc1f972b8c8674c25131534 upstream.
+[ Upstream commit b465dea5e1540c7d7b5211adaf94926980d3014b ]
 
-KPTI keeps around two PGDs: one for userspace and another for the
-kernel. Among other things, set_pgd() contains infrastructure to
-ensure that updates to the kernel PGD are reflected in the user PGD
-as well.
+The driver overrides the error codes returned by platform_get_irq() to
+-EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the
+error codes upstream.
 
-One side-effect of this is that set_pgd() expects to be passed whole
-pages.  Unfortunately, init_trampoline_kaslr() passes in a single entry:
-'trampoline_pgd_entry'.
-
-When KPTI is on, set_pgd() will update 'trampoline_pgd_entry' (an
-8-Byte globally stored [.bss] variable) and will then proceed to
-replicate that value into the non-existent neighboring user page
-(located +4k away), leading to the corruption of other global [.bss]
-stored variables.
-
-Fix it by directly assigning 'trampoline_pgd_entry' and avoiding
-set_pgd().
-
-[ dhansen: tweak subject and changelog ]
-
-Fixes: 0925dda5962e ("x86/mm/KASLR: Use only one PUD entry for real mode trampoline")
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/all/20230614163859.924309-1-lee@kernel.org/g
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b7ba57ecc86 ("mmc: sdhci-acpi: Handle return value of platform_get_irq")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20230617203622.6812-9-s.shtylyov@omp.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/kaslr.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mmc/host/sdhci-acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/mm/kaslr.c
-+++ b/arch/x86/mm/kaslr.c
-@@ -172,10 +172,10 @@ void __meminit init_trampoline_kaslr(voi
- 		set_p4d(p4d_tramp,
- 			__p4d(_KERNPG_TABLE | __pa(pud_page_tramp)));
- 
--		set_pgd(&trampoline_pgd_entry,
--			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp)));
-+		trampoline_pgd_entry =
-+			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp));
- 	} else {
--		set_pgd(&trampoline_pgd_entry,
--			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp)));
-+		trampoline_pgd_entry =
-+			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp));
+diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
+index 8fe65f172a611..f4e15eef70454 100644
+--- a/drivers/mmc/host/sdhci-acpi.c
++++ b/drivers/mmc/host/sdhci-acpi.c
+@@ -910,7 +910,7 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
+ 	host->ops	= &sdhci_acpi_ops_dflt;
+ 	host->irq	= platform_get_irq(pdev, 0);
+ 	if (host->irq < 0) {
+-		err = -EINVAL;
++		err = host->irq;
+ 		goto err_free;
  	}
- }
+ 
+-- 
+2.39.2
+
 
 
