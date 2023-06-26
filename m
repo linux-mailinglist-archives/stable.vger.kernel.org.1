@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96AB873E839
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41B3973E8DA
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231882AbjFZSXx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:23:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38112 "EHLO
+        id S232059AbjFZSac (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:30:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231841AbjFZSX3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:29 -0400
+        with ESMTP id S232140AbjFZS3k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9D8926BD
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3F011708
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DDC7160F4B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:21:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C30C433C8;
-        Mon, 26 Jun 2023 18:21:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 498F860F4E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AAAC433C8;
+        Mon, 26 Jun 2023 18:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803717;
-        bh=dA1nQ76mrOlueHD3jvpGHQbp6p2xAZi//vk6SgLtTU0=;
+        s=korg; t=1687804162;
+        bh=ix6j8afGVxIzL3s2P4mVFN2x2KgsncL7lEv2rQhiVU8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qupeS5mjZMrkl9ErlUWp3RzlaTqttq2PQ9ajfRdWogWW4Kns4lZYxGT6dTiYbL12o
-         5/ey3m96N1YlV88gql0LztfZZQjnN+yF4TLI8cHgTOYGpw8HCRtQWcry4yfo70IG9F
-         uwzVIIp7yXncmNDPk0/vwDbjEdmDQSDrF3G0H2DM=
+        b=bXqMmrUGaqvoe9qkqaSVwox9dvDAvUy0gBA09z+MFPjLaC/4aDaiMBEH0RC5jVngN
+         xa/LpIJLElppV9ub10aLIr4nNxNDMn1dq/8Ut8P7q/T5yzOKfPwFROJYpoOhBbn/7i
+         1NL39ZKNfeU/3OOb2w/Wa6ktZtykqDubpNh1igTE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 125/199] net: dsa: mt7530: fix handling of LLDP frames
-Date:   Mon, 26 Jun 2023 20:10:31 +0200
-Message-ID: <20230626180811.129469753@linuxfoundation.org>
+        patches@lists.linux.dev, Jisheng Zhang <jszhang@kernel.org>,
+        Gabriel Somlo <gsomlo@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 063/170] mmc: litex_mmc: set PROBE_PREFER_ASYNCHRONOUS
+Date:   Mon, 26 Jun 2023 20:10:32 +0200
+Message-ID: <20230626180803.410587710@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,60 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit 8332cf6fd7c7087dbc2067115b33979c9851bbc4 ]
+commit f334ad47683606b682b4166b800d8b372d315436 upstream.
 
-LLDP frames are link-local frames, therefore they must be trapped to the
-CPU port. Currently, the MT753X switches treat LLDP frames as regular
-multicast frames, therefore flooding them to user ports. To fix this, set
-LLDP frames to be trapped to the CPU port(s).
+mmc host drivers should have enabled the asynchronous probe option, but
+it seems like we didn't set it for litex_mmc when introducing litex mmc
+support, so let's set it now.
 
-Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested with linux-on-litex-vexriscv on sipeed tang nano 20K fpga.
+
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Acked-by: Gabriel Somlo <gsomlo@gmail.com>
+Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230617085319.2139-1-jszhang@kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mt7530.c | 4 ++++
- drivers/net/dsa/mt7530.h | 5 +++++
- 2 files changed, 9 insertions(+)
+ drivers/mmc/host/litex_mmc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 40be635d2ecc9..e542f5dbe5831 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -997,6 +997,10 @@ mt753x_trap_frames(struct mt7530_priv *priv)
- 	/* Trap BPDUs to the CPU port(s) */
- 	mt7530_rmw(priv, MT753X_BPC, MT753X_BPDU_PORT_FW_MASK,
- 		   MT753X_BPDU_CPU_ONLY);
-+
-+	/* Trap LLDP frames with :0E MAC DA to the CPU port(s) */
-+	mt7530_rmw(priv, MT753X_RGAC2, MT753X_R0E_PORT_FW_MASK,
-+		   MT753X_R0E_PORT_FW(MT753X_BPDU_CPU_ONLY));
- }
- 
- static int
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index 6b2fc6290ea84..31c0f7156b699 100644
---- a/drivers/net/dsa/mt7530.h
-+++ b/drivers/net/dsa/mt7530.h
-@@ -65,6 +65,11 @@ enum mt753x_id {
- #define MT753X_BPC			0x24
- #define  MT753X_BPDU_PORT_FW_MASK	GENMASK(2, 0)
- 
-+/* Register for :03 and :0E MAC DA frame control */
-+#define MT753X_RGAC2			0x2c
-+#define  MT753X_R0E_PORT_FW_MASK	GENMASK(18, 16)
-+#define  MT753X_R0E_PORT_FW(x)		FIELD_PREP(MT753X_R0E_PORT_FW_MASK, x)
-+
- enum mt753x_bpdu_port_fw {
- 	MT753X_BPDU_FOLLOW_MFC,
- 	MT753X_BPDU_CPU_EXCLUDE = 4,
--- 
-2.39.2
-
+--- a/drivers/mmc/host/litex_mmc.c
++++ b/drivers/mmc/host/litex_mmc.c
+@@ -649,6 +649,7 @@ static struct platform_driver litex_mmc_
+ 	.driver = {
+ 		.name = "litex-mmc",
+ 		.of_match_table = litex_match,
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ 	},
+ };
+ module_platform_driver(litex_mmc_driver);
 
 
