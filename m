@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4154873E921
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7B5C73E85B
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231696AbjFZSct (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:32:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45230 "EHLO
+        id S231733AbjFZSYz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:24:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232265AbjFZSci (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:38 -0400
+        with ESMTP id S232049AbjFZSY3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:24:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADCE810E2
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 344C9270B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C5CC60F39
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E32C433C8;
-        Mon, 26 Jun 2023 18:32:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE48E60F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:23:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8648C433C8;
+        Mon, 26 Jun 2023 18:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804356;
-        bh=ZYGApEylCF+SC6ULFh+ZVTcwL8rOxJfB8prOZi2Q9/U=;
+        s=korg; t=1687803830;
+        bh=RD03h99Z7i3+/28C0q3OKC7flKm44aKMn6olaaLGMg0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vyz0uODPD+HmMQcj17LWJz1SqTv4r5STBqQf/A3RKdmPJdbufEnbCtZ+WEMgKGMpt
-         1kKtYcnkk3XPt+TKb/SF8PwhhGAkga5U03vy7l7eWDdwOaIV0lRDuNIVxYy54JPjfq
-         CEESjkQqxB0MfIcEIeVYNKVie+tDaTjsDKFKEfts=
+        b=VkmAmYoC0NWI69ixZCdbreeyYsyWMiMQGWPwXglA7jaeCsF39YaRYvzlNsO521egH
+         roVYS+gGSAmiAPi8qYX/2ErI3p8vtz8WYEgLse+EZ+SEfb02pO21cHuH3HhpVRg5Un
+         mNGH62a4vzXATTkAfOol8nTXWpbz6d1988Y+6ROI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev, Omar Sandoval <osandov@fb.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/170] arm64: dts: rockchip: fix nEXTRST on SOQuartz
-Date:   Mon, 26 Jun 2023 20:11:37 +0200
-Message-ID: <20230626180806.305285237@linuxfoundation.org>
+Subject: [PATCH 6.3 192/199] x86/unwind/orc: Add ELF section with ORC version identifier
+Date:   Mon, 26 Jun 2023 20:11:38 +0200
+Message-ID: <20230626180814.160044340@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,124 +56,179 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
+From: Omar Sandoval <osandov@fb.com>
 
-[ Upstream commit cf9ae4a0077496e8224d68fc88e3df13dd7e5f37 ]
+[ Upstream commit b9f174c811e3ae4ae8959dc57e6adb9990e913f4 ]
 
-In pre-production prototypes (of which I only know one person
-having one, Peter Geis), GPIO0 pin A5 was tied to the SDMMC
-power enable pin on the CM4 connector. On all production models,
-this is not the case; instead, this pin is used for the nEXTRST
-signal, and the SDMMC power enable pin is always pulled high.
+Commits ffb1b4a41016 ("x86/unwind/orc: Add 'signal' field to ORC
+metadata") and fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in
+two") changed the ORC format. Although ORC is internal to the kernel,
+it's the only way for external tools to get reliable kernel stack traces
+on x86-64. In particular, the drgn debugger [1] uses ORC for stack
+unwinding, and these format changes broke it [2]. As the drgn
+maintainer, I don't care how often or how much the kernel changes the
+ORC format as long as I have a way to detect the change.
 
-Since everyone currently using the SOQuartz device trees will
-want this change, it is made to the tree without splitting the
-trees into two separate ones of which users will then inevitably
-choose the wrong one.
+It suffices to store a version identifier in the vmlinux and kernel
+module ELF files (to use when parsing ORC sections from ELF), and in
+kernel memory (to use when parsing ORC from a core dump+symbol table).
+Rather than hard-coding a version number that needs to be manually
+bumped, Peterz suggested hashing the definitions from orc_types.h. If
+there is a format change that isn't caught by this, the hashing script
+can be updated.
 
-This fixes USB and PCIe on a wide variety of CM4IO-compatible
-boards which use the nEXTRST signal.
+This patch adds an .orc_header allocated ELF section containing the
+20-byte hash to vmlinux and kernel modules, along with the corresponding
+__start_orc_header and __stop_orc_header symbols in vmlinux.
 
-Fixes: 5859b5a9c3ac ("arm64: dts: rockchip: add SoQuartz CM4IO dts")
-Signed-off-by: Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
-Link: https://lore.kernel.org/r/20230421152610.21688-1-frattaroli.nicolas@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+1: https://github.com/osandov/drgn
+2: https://github.com/osandov/drgn/issues/303
+
+Fixes: ffb1b4a41016 ("x86/unwind/orc: Add 'signal' field to ORC metadata")
+Fixes: fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lkml.kernel.org/r/aef9c8dc43915b886a8c48509a12ec1b006ca1ca.1686690801.git.osandov@osandov.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3566-soquartz-cm4.dts | 18 +++++++-----
- .../boot/dts/rockchip/rk3566-soquartz.dtsi    | 29 +++++++++----------
- 2 files changed, 24 insertions(+), 23 deletions(-)
+ arch/x86/Makefile                 | 12 ++++++++++++
+ arch/x86/include/asm/Kbuild       |  1 +
+ arch/x86/include/asm/orc_header.h | 19 +++++++++++++++++++
+ arch/x86/kernel/unwind_orc.c      |  3 +++
+ include/asm-generic/vmlinux.lds.h |  3 +++
+ scripts/mod/modpost.c             |  5 +++++
+ scripts/orc_hash.sh               | 16 ++++++++++++++++
+ 7 files changed, 59 insertions(+)
+ create mode 100644 arch/x86/include/asm/orc_header.h
+ create mode 100644 scripts/orc_hash.sh
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-soquartz-cm4.dts b/arch/arm64/boot/dts/rockchip/rk3566-soquartz-cm4.dts
-index e00568a6be5cc..6ba562b922e6c 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-soquartz-cm4.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-soquartz-cm4.dts
-@@ -28,6 +28,16 @@
- 		regulator-max-microvolt = <5000000>;
- 		vin-supply = <&vcc12v_dcin>;
- 	};
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index b39975977c037..fdc2e3abd6152 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -305,6 +305,18 @@ ifeq ($(RETPOLINE_CFLAGS),)
+ endif
+ endif
+ 
++ifdef CONFIG_UNWINDER_ORC
++orc_hash_h := arch/$(SRCARCH)/include/generated/asm/orc_hash.h
++orc_hash_sh := $(srctree)/scripts/orc_hash.sh
++targets += $(orc_hash_h)
++quiet_cmd_orc_hash = GEN     $@
++      cmd_orc_hash = mkdir -p $(dir $@); \
++		     $(CONFIG_SHELL) $(orc_hash_sh) < $< > $@
++$(orc_hash_h): $(srctree)/arch/x86/include/asm/orc_types.h $(orc_hash_sh) FORCE
++	$(call if_changed,orc_hash)
++archprepare: $(orc_hash_h)
++endif
 +
-+	vcc_sd_pwr: vcc-sd-pwr-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc_sd_pwr";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&vcc3v3_sys>;
-+	};
- };
+ archclean:
+ 	$(Q)rm -rf $(objtree)/arch/i386
+ 	$(Q)rm -rf $(objtree)/arch/x86_64
+diff --git a/arch/x86/include/asm/Kbuild b/arch/x86/include/asm/Kbuild
+index 1e51650b79d7c..4f1ce5fc4e194 100644
+--- a/arch/x86/include/asm/Kbuild
++++ b/arch/x86/include/asm/Kbuild
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
  
- &gmac1 {
-@@ -119,13 +129,7 @@
- };
  
- &sdmmc0 {
--	vmmc-supply = <&sdmmc_pwr>;
--	status = "okay";
--};
--
--&sdmmc_pwr {
--	regulator-min-microvolt = <3300000>;
--	regulator-max-microvolt = <3300000>;
-+	vmmc-supply = <&vcc_sd_pwr>;
- 	status = "okay";
- };
- 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-soquartz.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-soquartz.dtsi
-index 4ceb9a979f6ad..ba56ca2e66c8d 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-soquartz.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-soquartz.dtsi
-@@ -92,16 +92,6 @@
- 		regulator-max-microvolt = <3300000>;
- 		vin-supply = <&vcc5v0_sys>;
- 	};
--
--	sdmmc_pwr: sdmmc-pwr-regulator {
--		compatible = "regulator-fixed";
--		enable-active-high;
--		gpio = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&sdmmc_pwr_h>;
--		regulator-name = "sdmmc_pwr";
--		status = "disabled";
--	};
- };
- 
- &cpu0 {
-@@ -143,6 +133,19 @@
- 	status = "disabled";
- };
- 
-+&gpio0 {
-+	nextrst-hog {
-+		gpio-hog;
-+		/*
-+		 * GPIO_ACTIVE_LOW + output-low here means that the pin is set
-+		 * to high, because output-low decides the value pre-inversion.
-+		 */
-+		gpios = <RK_PA5 GPIO_ACTIVE_LOW>;
-+		line-name = "nEXTRST";
-+		output-low;
-+	};
-+};
++generated-y += orc_hash.h
+ generated-y += syscalls_32.h
+ generated-y += syscalls_64.h
+ generated-y += syscalls_x32.h
+diff --git a/arch/x86/include/asm/orc_header.h b/arch/x86/include/asm/orc_header.h
+new file mode 100644
+index 0000000000000..07bacf3e160ea
+--- /dev/null
++++ b/arch/x86/include/asm/orc_header.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* Copyright (c) Meta Platforms, Inc. and affiliates. */
 +
- &gpu {
- 	mali-supply = <&vdd_gpu>;
- 	status = "okay";
-@@ -485,12 +488,6 @@
- 			rockchip,pins = <2 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>;
- 		};
- 	};
--
--	sdmmc-pwr {
--		sdmmc_pwr_h: sdmmc-pwr-h {
--			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
--		};
--	};
- };
++#ifndef _ORC_HEADER_H
++#define _ORC_HEADER_H
++
++#include <linux/types.h>
++#include <linux/compiler.h>
++#include <asm/orc_hash.h>
++
++/*
++ * The header is currently a 20-byte hash of the ORC entry definition; see
++ * scripts/orc_hash.sh.
++ */
++#define ORC_HEADER					\
++	__used __section(".orc_header") __aligned(4)	\
++	static const u8 orc_header[] = { ORC_HASH }
++
++#endif /* _ORC_HEADER_H */
+diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
+index 37307b40f8daf..c960f250624ab 100644
+--- a/arch/x86/kernel/unwind_orc.c
++++ b/arch/x86/kernel/unwind_orc.c
+@@ -7,6 +7,9 @@
+ #include <asm/unwind.h>
+ #include <asm/orc_types.h>
+ #include <asm/orc_lookup.h>
++#include <asm/orc_header.h>
++
++ORC_HEADER;
  
- &pmu_io_domains {
+ #define orc_warn(fmt, ...) \
+ 	printk_deferred_once(KERN_WARNING "WARNING: " fmt, ##__VA_ARGS__)
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index d1f57e4868ed3..7058b01e9f146 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -839,6 +839,9 @@
+ 
+ #ifdef CONFIG_UNWINDER_ORC
+ #define ORC_UNWIND_TABLE						\
++	.orc_header : AT(ADDR(.orc_header) - LOAD_OFFSET) {		\
++		BOUNDED_SECTION_BY(.orc_header, _orc_header)		\
++	}								\
+ 	. = ALIGN(4);							\
+ 	.orc_unwind_ip : AT(ADDR(.orc_unwind_ip) - LOAD_OFFSET) {	\
+ 		BOUNDED_SECTION_BY(.orc_unwind_ip, _orc_unwind_ip)	\
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 9466b6a2abae4..5b3964b39709f 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -1985,6 +1985,11 @@ static void add_header(struct buffer *b, struct module *mod)
+ 	buf_printf(b, "#include <linux/vermagic.h>\n");
+ 	buf_printf(b, "#include <linux/compiler.h>\n");
+ 	buf_printf(b, "\n");
++	buf_printf(b, "#ifdef CONFIG_UNWINDER_ORC\n");
++	buf_printf(b, "#include <asm/orc_header.h>\n");
++	buf_printf(b, "ORC_HEADER;\n");
++	buf_printf(b, "#endif\n");
++	buf_printf(b, "\n");
+ 	buf_printf(b, "BUILD_SALT;\n");
+ 	buf_printf(b, "BUILD_LTO_INFO;\n");
+ 	buf_printf(b, "\n");
+diff --git a/scripts/orc_hash.sh b/scripts/orc_hash.sh
+new file mode 100644
+index 0000000000000..466611aa0053f
+--- /dev/null
++++ b/scripts/orc_hash.sh
+@@ -0,0 +1,16 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0-or-later
++# Copyright (c) Meta Platforms, Inc. and affiliates.
++
++set -e
++
++printf '%s' '#define ORC_HASH '
++
++awk '
++/^#define ORC_(REG|TYPE)_/ { print }
++/^struct orc_entry {$/ { p=1 }
++p { print }
++/^}/ { p=0 }' |
++	sha1sum |
++	cut -d " " -f 1 |
++	sed 's/\([0-9a-f]\{2\}\)/0x\1,/g'
 -- 
 2.39.2
 
