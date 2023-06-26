@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF39173E7F6
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB5D73E7CF
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231688AbjFZSUk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:20:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35042 "EHLO
+        id S231452AbjFZSTO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231695AbjFZSUf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:20:35 -0400
+        with ESMTP id S231530AbjFZSTJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CE3210E4
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:20:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0735610CB
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2100D60F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B787C433C8;
-        Mon, 26 Jun 2023 18:20:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9961F60F39
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A802FC433C0;
+        Mon, 26 Jun 2023 18:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803628;
-        bh=VYLH5n8IPeIldbYbhbsNlQ1X+8ADqiCq0EGLs32y/6M=;
+        s=korg; t=1687803548;
+        bh=L+4/jXpgVXLoejmE/s8K69GuiFib2xP2AzggdEype/k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eSfwNVxGenSTOLdKZIX0OrRhBVvJmd4P1LM1f26f7cxxvMJ1JkxqsV0DEyNxlUZaf
-         VeDQEduBl3js5mdw1JjSFteUZ2EA535+Dnh+/j/XWgzCPdqkXGvnf7Ty19vu76OKgQ
-         ThSVLYNGdFkF72KAXoSe81V7rfCxjtSb26xYXHk0=
+        b=J5NMVBbE7mUPjOI05jIjurh74AfACTVDn/voBnIovcVMJegI7j9bKt55nt5zodfKH
+         5ccSK880MlbyQ0/KBjidEsQNsr+WV2lKk+QjfOGu0eYfc5NtHh+xQ1d5OFQsxrw72m
+         +sKOzgcPGoekcTOKLGCh01P4Ik6FfsAZK9hzlAVw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>,
-        Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.3 098/199] x86/mm: Avoid using set_pgd() outside of real PGD pages
-Date:   Mon, 26 Jun 2023 20:10:04 +0200
-Message-ID: <20230626180809.928598873@linuxfoundation.org>
+        patches@lists.linux.dev, Miquel Raynal <miquel.raynal@bootlin.com>,
+        Alexander Aring <aahringo@redhat.com>,
+        Chen Aotian <chenaotian2@163.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 099/199] ieee802154: hwsim: Fix possible memory leaks
+Date:   Mon, 26 Jun 2023 20:10:05 +0200
+Message-ID: <20230626180809.971050089@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
 References: <20230626180805.643662628@linuxfoundation.org>
@@ -54,57 +57,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lee Jones <lee@kernel.org>
+From: Chen Aotian <chenaotian2@163.com>
 
-commit d082d48737c75d2b3cc1f972b8c8674c25131534 upstream.
+[ Upstream commit a61675294735570daca3779bd1dbb3715f7232bd ]
 
-KPTI keeps around two PGDs: one for userspace and another for the
-kernel. Among other things, set_pgd() contains infrastructure to
-ensure that updates to the kernel PGD are reflected in the user PGD
-as well.
+After replacing e->info, it is necessary to free the old einfo.
 
-One side-effect of this is that set_pgd() expects to be passed whole
-pages.  Unfortunately, init_trampoline_kaslr() passes in a single entry:
-'trampoline_pgd_entry'.
-
-When KPTI is on, set_pgd() will update 'trampoline_pgd_entry' (an
-8-Byte globally stored [.bss] variable) and will then proceed to
-replicate that value into the non-existent neighboring user page
-(located +4k away), leading to the corruption of other global [.bss]
-stored variables.
-
-Fix it by directly assigning 'trampoline_pgd_entry' and avoiding
-set_pgd().
-
-[ dhansen: tweak subject and changelog ]
-
-Fixes: 0925dda5962e ("x86/mm/KASLR: Use only one PUD entry for real mode trampoline")
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/all/20230614163859.924309-1-lee@kernel.org/g
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f25da51fdc38 ("ieee802154: hwsim: add replacement for fakelb")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: Chen Aotian <chenaotian2@163.com>
+Link: https://lore.kernel.org/r/20230409022048.61223-1-chenaotian2@163.com
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/kaslr.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ieee802154/mac802154_hwsim.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/x86/mm/kaslr.c
-+++ b/arch/x86/mm/kaslr.c
-@@ -172,10 +172,10 @@ void __meminit init_trampoline_kaslr(voi
- 		set_p4d(p4d_tramp,
- 			__p4d(_KERNPG_TABLE | __pa(pud_page_tramp)));
- 
--		set_pgd(&trampoline_pgd_entry,
--			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp)));
-+		trampoline_pgd_entry =
-+			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp));
- 	} else {
--		set_pgd(&trampoline_pgd_entry,
--			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp)));
-+		trampoline_pgd_entry =
-+			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp));
- 	}
- }
+diff --git a/drivers/net/ieee802154/mac802154_hwsim.c b/drivers/net/ieee802154/mac802154_hwsim.c
+index 8445c2189d116..31cba9aa76366 100644
+--- a/drivers/net/ieee802154/mac802154_hwsim.c
++++ b/drivers/net/ieee802154/mac802154_hwsim.c
+@@ -685,7 +685,7 @@ static int hwsim_del_edge_nl(struct sk_buff *msg, struct genl_info *info)
+ static int hwsim_set_edge_lqi(struct sk_buff *msg, struct genl_info *info)
+ {
+ 	struct nlattr *edge_attrs[MAC802154_HWSIM_EDGE_ATTR_MAX + 1];
+-	struct hwsim_edge_info *einfo;
++	struct hwsim_edge_info *einfo, *einfo_old;
+ 	struct hwsim_phy *phy_v0;
+ 	struct hwsim_edge *e;
+ 	u32 v0, v1;
+@@ -723,8 +723,10 @@ static int hwsim_set_edge_lqi(struct sk_buff *msg, struct genl_info *info)
+ 	list_for_each_entry_rcu(e, &phy_v0->edges, list) {
+ 		if (e->endpoint->idx == v1) {
+ 			einfo->lqi = lqi;
+-			rcu_assign_pointer(e->info, einfo);
++			einfo_old = rcu_replace_pointer(e->info, einfo,
++							lockdep_is_held(&hwsim_phys_lock));
+ 			rcu_read_unlock();
++			kfree_rcu(einfo_old, rcu);
+ 			mutex_unlock(&hwsim_phys_lock);
+ 			return 0;
+ 		}
+-- 
+2.39.2
+
 
 
