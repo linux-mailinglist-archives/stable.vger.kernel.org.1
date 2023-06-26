@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBC1A73E9B8
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1C773EA2B
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:44:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232433AbjFZSjR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:39:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52456 "EHLO
+        id S232560AbjFZSoF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:44:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231637AbjFZSjQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4416CC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:15 -0700 (PDT)
+        with ESMTP id S232554AbjFZSoE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:44:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9A597
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:44:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39DAF60F53
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413BAC433C8;
-        Mon, 26 Jun 2023 18:39:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 689DB60E8D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:44:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745FFC433C0;
+        Mon, 26 Jun 2023 18:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804754;
-        bh=CfaFQfla770SxEg3zAb7vGI99dNkxPO+7hWJRkkffgI=;
+        s=korg; t=1687805042;
+        bh=0KK1jfcXl4jDTacNCH/v4dSYab6frae1XwEBIB1ohqo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AKR7onk4YS/Ny6Um6188+Bn4nFeA0dUo4u+0xuBcnOWD+jSGVH3mzXymj34Db9WFv
-         p8dXIhvSf58LpVq7y8dKwqK6wvsUSU0OicIgT3UdfcqRx+I4XY2APk3gUAQHbns0pD
-         5w4K9pGJCXyuMJOD/+Tyu0Crdte+DMYav9wSUm8s=
+        b=THvqrAhztcwgvMbb1cKw/rmUwgyIuJjvtaJ/ZZ3fepP3Nb1vEQjqSesquIBxlYpPC
+         88wMGgB53QXmJsmol7TERsuPoJI2EzEwWQ5UYCL95s9zfb4IomLLWhctzgoMdjbxVh
+         V/gaUoRbmNLJeM+W1n4sNF8CpxWiEziHOPcSow54=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 30/96] regmap: spi-avmm: Fix regmap_bus max_raw_write
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 03/81] tracing: Add tracing_reset_all_online_cpus_unlocked() function
 Date:   Mon, 26 Jun 2023 20:11:45 +0200
-Message-ID: <20230626180748.200508149@linuxfoundation.org>
+Message-ID: <20230626180744.596623070@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,52 +56,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Russ Weight <russell.h.weight@intel.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit c8e796895e2310b6130e7577248da1d771431a77 ]
+commit e18eb8783ec4949adebc7d7b0fdb65f65bfeefd9 upstream.
 
-The max_raw_write member of the regmap_spi_avmm_bus structure is defined
-as:
-	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT
+Currently the tracing_reset_all_online_cpus() requires the
+trace_types_lock held. But only one caller of this function actually has
+that lock held before calling it, and the other just takes the lock so
+that it can call it. More users of this function is needed where the lock
+is not held.
 
-SPI_AVMM_VAL_SIZE == 4 and MAX_WRITE_CNT == 1 so this results in a
-maximum write transfer size of 4 bytes which provides only enough space to
-transfer the address of the target register. It provides no space for the
-value to be transferred. This bug became an issue (divide-by-zero in
-_regmap_raw_write()) after the following was accepted into mainline:
+Add a tracing_reset_all_online_cpus_unlocked() function for the one use
+case that calls it without being held, and also add a lockdep_assert to
+make sure it is held when called.
 
-commit 3981514180c9 ("regmap: Account for register length when chunking")
+Then have tracing_reset_all_online_cpus() take the lock internally, such
+that callers do not need to worry about taking it.
 
-Change max_raw_write to include space (4 additional bytes) for both the
-register address and value:
+Link: https://lkml.kernel.org/r/20221123192741.658273220@goodmis.org
 
-	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT
-
-Fixes: 7f9fb67358a2 ("regmap: add Intel SPI Slave to AVMM Bus Bridge support")
-Reviewed-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
-Signed-off-by: Russ Weight <russell.h.weight@intel.com>
-Link: https://lore.kernel.org/r/20230620202824.380313-1-russell.h.weight@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap-spi-avmm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace.c              |   11 ++++++++++-
+ kernel/trace/trace.h              |    1 +
+ kernel/trace/trace_events.c       |    2 +-
+ kernel/trace/trace_events_synth.c |    2 --
+ 4 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap-spi-avmm.c b/drivers/base/regmap/regmap-spi-avmm.c
-index ad1da83e849fe..67f89937219c3 100644
---- a/drivers/base/regmap/regmap-spi-avmm.c
-+++ b/drivers/base/regmap/regmap-spi-avmm.c
-@@ -666,7 +666,7 @@ static const struct regmap_bus regmap_spi_avmm_bus = {
- 	.reg_format_endian_default = REGMAP_ENDIAN_NATIVE,
- 	.val_format_endian_default = REGMAP_ENDIAN_NATIVE,
- 	.max_raw_read = SPI_AVMM_VAL_SIZE * MAX_READ_CNT,
--	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
-+	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
- 	.free_context = spi_avmm_bridge_ctx_free,
- };
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2178,10 +2178,12 @@ void tracing_reset_online_cpus(struct ar
+ }
  
--- 
-2.39.2
-
+ /* Must have trace_types_lock held */
+-void tracing_reset_all_online_cpus(void)
++void tracing_reset_all_online_cpus_unlocked(void)
+ {
+ 	struct trace_array *tr;
+ 
++	lockdep_assert_held(&trace_types_lock);
++
+ 	list_for_each_entry(tr, &ftrace_trace_arrays, list) {
+ 		if (!tr->clear_trace)
+ 			continue;
+@@ -2193,6 +2195,13 @@ void tracing_reset_all_online_cpus(void)
+ 	}
+ }
+ 
++void tracing_reset_all_online_cpus(void)
++{
++	mutex_lock(&trace_types_lock);
++	tracing_reset_all_online_cpus_unlocked();
++	mutex_unlock(&trace_types_lock);
++}
++
+ /*
+  * The tgid_map array maps from pid to tgid; i.e. the value stored at index i
+  * is the tgid last observed corresponding to pid=i.
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -725,6 +725,7 @@ int tracing_is_enabled(void);
+ void tracing_reset_online_cpus(struct array_buffer *buf);
+ void tracing_reset_current(int cpu);
+ void tracing_reset_all_online_cpus(void);
++void tracing_reset_all_online_cpus_unlocked(void);
+ int tracing_open_generic(struct inode *inode, struct file *filp);
+ int tracing_open_generic_tr(struct inode *inode, struct file *filp);
+ bool tracing_is_disabled(void);
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -2661,7 +2661,7 @@ static void trace_module_remove_events(s
+ 	 * over from this module may be passed to the new module events and
+ 	 * unexpected results may occur.
+ 	 */
+-	tracing_reset_all_online_cpus();
++	tracing_reset_all_online_cpus_unlocked();
+ }
+ 
+ static int trace_module_notify(struct notifier_block *self,
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -1363,7 +1363,6 @@ int synth_event_delete(const char *event
+ 	mutex_unlock(&event_mutex);
+ 
+ 	if (mod) {
+-		mutex_lock(&trace_types_lock);
+ 		/*
+ 		 * It is safest to reset the ring buffer if the module
+ 		 * being unloaded registered any events that were
+@@ -1375,7 +1374,6 @@ int synth_event_delete(const char *event
+ 		 * occur.
+ 		 */
+ 		tracing_reset_all_online_cpus();
+-		mutex_unlock(&trace_types_lock);
+ 	}
+ 
+ 	return ret;
 
 
