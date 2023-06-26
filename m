@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F408E73E911
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B99773E82C
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:23:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232227AbjFZScb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:32:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44842 "EHLO
+        id S231879AbjFZSXm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:23:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232310AbjFZScP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A821BC7
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:31:53 -0700 (PDT)
+        with ESMTP id S231950AbjFZSXW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE9BA171F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 880D460F39
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:31:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E66C433C8;
-        Mon, 26 Jun 2023 18:31:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17AE160F76
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:21:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210EFC433C0;
+        Mon, 26 Jun 2023 18:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804313;
-        bh=VUqQwSKxmehHeQ/TPNpcb6aoDLhDouUUX4cJi1gpLaw=;
+        s=korg; t=1687803708;
+        bh=L0Ggq2lNCEivK3SWsW+C/LiJpC98UjhY2u6R+4ivwQg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aFKkdk3sRTb0Ez1LYoZMsbJNEtbC8OwPgl8Y/Etd0nrKMDtldhV8AmexLcG5w05v3
-         XUaI5k0bsbmoUUIKZU81V1LBcIgvpjQ6KcvAz0JqvJfUm/gZ/TY9mrQtQiYA9I0MyW
-         y4tBI1kQZfgOV5n/12zh7RKD93YbO9wpBMHhp7Io=
+        b=wWoSX9Rd7NRQlDG5k/MsdzWXyNJ3Dp/mVUoArRwQ9YBf969oJLopF6/wsGEwZq6Ky
+         1XNiu6Zehfllc34Ru0GJF3s3c+yei4G4QauquvdVm8JtWjOzvF8JzjYTDaur3diunH
+         0BxSH4qOQPIv8dOrFfA7vkZ0pQeFzN6utKN+IfJU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eduard Zingerman <eddyz87@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Jiawen Wu <jiawenwu@trustnetic.com>,
+        Michael Walle <mwalle@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/170] bpf: track immediate values written to stack by BPF_ST instruction
+Subject: [PATCH 6.3 149/199] gpiolib: Fix irq_domain resource tracking for gpiochip_irqchip_add_domain()
 Date:   Mon, 26 Jun 2023 20:10:55 +0200
-Message-ID: <20230626180804.421423896@linuxfoundation.org>
+Message-ID: <20230626180812.173981939@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,482 +58,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit ecdf985d7615356b78241fdb159c091830ed0380 ]
+[ Upstream commit ff7a1790fbf92f1bdd0966d3f0da3ea808ede876 ]
 
-For aligned stack writes using BPF_ST instruction track stored values
-in a same way BPF_STX is handled, e.g. make sure that the following
-commands produce similar verifier knowledge:
+Up until commit 6a45b0e2589f ("gpiolib: Introduce
+gpiochip_irqchip_add_domain()") all irq_domains were allocated
+by gpiolib itself and thus gpiolib also takes care of freeing it.
 
-  fp[-8] = 42;             r1 = 42;
-                       fp[-8] = r1;
+With gpiochip_irqchip_add_domain() a user of gpiolib can associate an
+irq_domain with the gpio_chip. This irq_domain is not managed by
+gpiolib and therefore must not be freed by gpiolib.
 
-This covers two cases:
- - non-null values written to stack are stored as spill of fake
-   registers;
- - null values written to stack are stored as STACK_ZERO marks.
-
-Previously both cases above used STACK_MISC marks instead.
-
-Some verifier test cases relied on the old logic to obtain STACK_MISC
-marks for some stack values. These test cases are updated in the same
-commit to avoid failures during bisect.
-
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20230214232030.1502829-2-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 713274f1f2c8 ("bpf: Fix verifier id tracking of scalars on spill")
+Fixes: 6a45b0e2589f ("gpiolib: Introduce gpiochip_irqchip_add_domain()")
+Reported-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c                         |  18 ++-
- .../bpf/verifier/bounds_mix_sign_unsign.c     | 110 ++++++++++--------
- 2 files changed, 80 insertions(+), 48 deletions(-)
+ drivers/gpio/gpiolib.c      | 3 ++-
+ include/linux/gpio/driver.h | 8 ++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index a0e573c08f79f..c4ceb4166528b 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3061,6 +3061,11 @@ static void save_register_state(struct bpf_func_state *state,
- 		scrub_spilled_slot(&state->stack[spi].slot_type[i - 1]);
- }
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 1cfddbb3443d0..ce8f71e06eb62 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1716,7 +1716,7 @@ static void gpiochip_irqchip_remove(struct gpio_chip *gc)
+ 	}
  
-+static bool is_bpf_st_mem(struct bpf_insn *insn)
-+{
-+	return BPF_CLASS(insn->code) == BPF_ST && BPF_MODE(insn->code) == BPF_MEM;
-+}
+ 	/* Remove all IRQ mappings and delete the domain */
+-	if (gc->irq.domain) {
++	if (!gc->irq.domain_is_allocated_externally && gc->irq.domain) {
+ 		unsigned int irq;
+ 
+ 		for (offset = 0; offset < gc->ngpio; offset++) {
+@@ -1762,6 +1762,7 @@ int gpiochip_irqchip_add_domain(struct gpio_chip *gc,
+ 
+ 	gc->to_irq = gpiochip_to_irq;
+ 	gc->irq.domain = domain;
++	gc->irq.domain_is_allocated_externally = true;
+ 
+ 	/*
+ 	 * Using barrier() here to prevent compiler from reordering
+diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
+index ccd8a512d8546..b769ff6b00fdd 100644
+--- a/include/linux/gpio/driver.h
++++ b/include/linux/gpio/driver.h
+@@ -244,6 +244,14 @@ struct gpio_irq_chip {
+ 	 */
+ 	bool initialized;
+ 
++	/**
++	 * @domain_is_allocated_externally:
++	 *
++	 * True it the irq_domain was allocated outside of gpiolib, in which
++	 * case gpiolib won't free the irq_domain itself.
++	 */
++	bool domain_is_allocated_externally;
 +
- /* check_stack_{read,write}_fixed_off functions track spill/fill of registers,
-  * stack boundary and alignment are checked in check_mem_access()
-  */
-@@ -3072,8 +3077,9 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- {
- 	struct bpf_func_state *cur; /* state of the current function */
- 	int i, slot = -off - 1, spi = slot / BPF_REG_SIZE, err;
--	u32 dst_reg = env->prog->insnsi[insn_idx].dst_reg;
-+	struct bpf_insn *insn = &env->prog->insnsi[insn_idx];
- 	struct bpf_reg_state *reg = NULL;
-+	u32 dst_reg = insn->dst_reg;
- 
- 	err = grow_stack_state(state, round_up(slot + 1, BPF_REG_SIZE));
- 	if (err)
-@@ -3122,6 +3128,13 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 				return err;
- 		}
- 		save_register_state(state, spi, reg, size);
-+	} else if (!reg && !(off % BPF_REG_SIZE) && is_bpf_st_mem(insn) &&
-+		   insn->imm != 0 && env->bpf_capable) {
-+		struct bpf_reg_state fake_reg = {};
-+
-+		__mark_reg_known(&fake_reg, (u32)insn->imm);
-+		fake_reg.type = SCALAR_VALUE;
-+		save_register_state(state, spi, &fake_reg, size);
- 	} else if (reg && is_spillable_regtype(reg->type)) {
- 		/* register containing pointer is being spilled into stack */
- 		if (size != BPF_REG_SIZE) {
-@@ -3156,7 +3169,8 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 			state->stack[spi].spilled_ptr.live |= REG_LIVE_WRITTEN;
- 
- 		/* when we zero initialize stack slots mark them as such */
--		if (reg && register_is_null(reg)) {
-+		if ((reg && register_is_null(reg)) ||
-+		    (!reg && is_bpf_st_mem(insn) && insn->imm == 0)) {
- 			/* backtracking doesn't work for STACK_ZERO yet. */
- 			err = mark_chain_precision(env, value_regno);
- 			if (err)
-diff --git a/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c b/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c
-index c2aa6f26738b4..bf82b923c5fe5 100644
---- a/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c
-+++ b/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c
-@@ -1,13 +1,14 @@
- {
- 	"bounds checks mixing signed and unsigned, positive bounds",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, 2),
- 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 3),
-@@ -17,20 +18,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 3),
-@@ -40,20 +42,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 2",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 5),
-@@ -65,20 +68,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 3",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 4),
-@@ -89,20 +93,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 4",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, 1),
- 	BPF_ALU64_REG(BPF_AND, BPF_REG_1, BPF_REG_2),
-@@ -112,19 +117,20 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.result = ACCEPT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 5",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 5),
-@@ -135,17 +141,20 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 6",
- 	.insns = {
-+	BPF_MOV64_REG(BPF_REG_9, BPF_REG_1),
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
-+	BPF_MOV64_REG(BPF_REG_1, BPF_REG_9),
- 	BPF_MOV64_IMM(BPF_REG_2, 0),
- 	BPF_MOV64_REG(BPF_REG_3, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_3, -512),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_6, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_4, BPF_REG_6, 5),
-@@ -163,13 +172,14 @@
- {
- 	"bounds checks mixing signed and unsigned, variant 7",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, 1024 * 1024 * 1024),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 3),
-@@ -179,19 +189,20 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.result = ACCEPT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 8",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_2, BPF_REG_1, 2),
-@@ -203,20 +214,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 9",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 10),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_LD_IMM64(BPF_REG_2, -9223372036854775808ULL),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_2, BPF_REG_1, 2),
-@@ -228,19 +240,20 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.result = ACCEPT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 10",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, 0),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_2, BPF_REG_1, 2),
-@@ -252,20 +265,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 11",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
-@@ -278,20 +292,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 12",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -6),
- 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
-@@ -303,20 +318,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 13",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 5),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, 2),
- 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
-@@ -331,7 +347,7 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
-@@ -340,13 +356,14 @@
- 	.insns = {
- 	BPF_LDX_MEM(BPF_W, BPF_REG_9, BPF_REG_1,
- 		    offsetof(struct __sk_buff, mark)),
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_MOV64_IMM(BPF_REG_8, 2),
-@@ -360,20 +377,21 @@
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, -3),
- 	BPF_JMP_IMM(BPF_JA, 0, 0, -7),
- 	},
--	.fixup_map_hash_8b = { 4 },
-+	.fixup_map_hash_8b = { 6 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 15",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 4),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 3),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -6),
- 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
-@@ -387,7 +405,7 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
+ 	/**
+ 	 * @init_hw: optional routine to initialize hardware before
+ 	 * an IRQ chip will be added. This is quite useful when
 -- 
 2.39.2
 
