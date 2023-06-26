@@ -2,52 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F57873E840
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2281B73E90D
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231948AbjFZSX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:23:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38032 "EHLO
+        id S232159AbjFZScV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:32:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231864AbjFZSXi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:38 -0400
+        with ESMTP id S232299AbjFZScG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231CF1993
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65DFC10E7
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:31:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BC4460F4E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:21:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AC5C433C0;
-        Mon, 26 Jun 2023 18:21:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02BA960F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:31:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D39C433C0;
+        Mon, 26 Jun 2023 18:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803690;
-        bh=8DkVQBQ73QrWZW5zuri/braT1uY6yx/R4JM/Q/ezPgc=;
+        s=korg; t=1687804301;
+        bh=e9BN1bGmFY7iZO681oDhauhSqqnPJnGovo/jqsR3Lc4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1JOMf8gOgnx+ZLKa18FjzBVOEQfeJg48QdzFCtCHGq4LV5F38hlvqNNMwivo0zIKL
-         w+bdk2vLwi8YbxkkbKEEBSGKzD/Jkpo2IMAOWG0Xy+79H61cBBNOc11t4+UiRvCi/2
-         bAgwkV+hS8g83lvAo/ZYrDYOhscH6sPGaTT2sAek=
+        b=X6N8i+uTdGVZD1QbOYHXC8og+RQ09xfVHn0GgOrGf4squv86CS/VEKcRdTEVF2nz1
+         2k1qJA8O4sGot09qaBXGZg5tPcvaKH4NdFv2RH4x8t0BIrIjosYT2czVJyfGNvxMlW
+         vKz9K20itp1d2adqF4N6y539XNB/zF3RgFFeMBEw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Larysa Zaremba <larysa.zaremba@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eyal Birger <eyal.birger@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Patrick Rohr <prohr@google.com>,
-        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        patches@lists.linux.dev, Benedict Wong <benedictwong@google.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 144/199] revert "net: align SO_RCVMARK required privileges with SO_MARK"
-Date:   Mon, 26 Jun 2023 20:10:50 +0200
-Message-ID: <20230626180811.931957370@linuxfoundation.org>
+Subject: [PATCH 6.1 082/170] xfrm: Treat already-verified secpath entries as optional
+Date:   Mon, 26 Jun 2023 20:10:51 +0200
+Message-ID: <20230626180804.279480166@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -62,75 +55,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maciej Żenczykowski <maze@google.com>
+From: Benedict Wong <benedictwong@google.com>
 
-[ Upstream commit a9628e88776eb7d045cf46467f1afdd0f7fe72ea ]
+[ Upstream commit 1f8b6df6a997a430b0c48b504638154b520781ad ]
 
-This reverts commit 1f86123b9749 ("net: align SO_RCVMARK required
-privileges with SO_MARK") because the reasoning in the commit message
-is not really correct:
-  SO_RCVMARK is used for 'reading' incoming skb mark (via cmsg), as such
-  it is more equivalent to 'getsockopt(SO_MARK)' which has no priv check
-  and retrieves the socket mark, rather than 'setsockopt(SO_MARK) which
-  sets the socket mark and does require privs.
+This change allows inbound traffic through nested IPsec tunnels to
+successfully match policies and templates, while retaining the secpath
+stack trace as necessary for netfilter policies.
 
-  Additionally incoming skb->mark may already be visible if
-  sysctl_fwmark_reflect and/or sysctl_tcp_fwmark_accept are enabled.
+Specifically, this patch marks secpath entries that have already matched
+against a relevant policy as having been verified, allowing it to be
+treated as optional and skipped after a tunnel decapsulation (during
+which the src/dst/proto/etc may have changed, and the correct policy
+chain no long be resolvable).
 
-  Furthermore, it is easier to block the getsockopt via bpf
-  (either cgroup setsockopt hook, or via syscall filters)
-  then to unblock it if it requires CAP_NET_RAW/ADMIN.
+This approach is taken as opposed to the iteration in b0355dbbf13c,
+where the secpath was cleared, since that breaks subsequent validations
+that rely on the existence of the secpath entries (netfilter policies, or
+transport-in-tunnel mode, where policies remain resolvable).
 
-On Android the socket mark is (among other things) used to store
-the network identifier a socket is bound to.  Setting it is privileged,
-but retrieving it is not.  We'd like unprivileged userspace to be able
-to read the network id of incoming packets (where mark is set via
-iptables [to be moved to bpf])...
-
-An alternative would be to add another sysctl to control whether
-setting SO_RCVMARK is privilged or not.
-(or even a MASK of which bits in the mark can be exposed)
-But this seems like over-engineering...
-
-Note: This is a non-trivial revert, due to later merged commit e42c7beee71d
-("bpf: net: Consider has_current_bpf_ctx() when testing capable() in sk_setsockopt()")
-which changed both 'ns_capable' into 'sockopt_ns_capable' calls.
-
-Fixes: 1f86123b9749 ("net: align SO_RCVMARK required privileges with SO_MARK")
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>
-Cc: Simon Horman <simon.horman@corigine.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Eyal Birger <eyal.birger@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Patrick Rohr <prohr@google.com>
-Signed-off-by: Maciej Żenczykowski <maze@google.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230618103130.51628-1-maze@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b0355dbbf13c ("Fix XFRM-I support for nested ESP tunnels")
+Test: Tested against Android Kernel Unit Tests
+Test: Tested against Android CTS
+Signed-off-by: Benedict Wong <benedictwong@google.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 6 ------
- 1 file changed, 6 deletions(-)
+ include/net/xfrm.h     |  1 +
+ net/xfrm/xfrm_input.c  |  1 +
+ net/xfrm/xfrm_policy.c | 12 ++++++++++++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 3fd71f343c9f2..b34c48f802e98 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1362,12 +1362,6 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
- 		__sock_set_mark(sk, val);
- 		break;
- 	case SO_RCVMARK:
--		if (!sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_RAW) &&
--		    !sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_ADMIN)) {
--			ret = -EPERM;
--			break;
--		}
--
- 		sock_valbool_flag(sk, SOCK_RCVMARK, valbool);
- 		break;
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index dbc81f5eb5538..9ec6f2e92ad3a 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -1039,6 +1039,7 @@ struct xfrm_offload {
+ struct sec_path {
+ 	int			len;
+ 	int			olen;
++	int			verified_cnt;
  
+ 	struct xfrm_state	*xvec[XFRM_MAX_DEPTH];
+ 	struct xfrm_offload	ovec[XFRM_MAX_OFFLOAD_DEPTH];
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 2defd89da700d..ac1a645afa8df 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -131,6 +131,7 @@ struct sec_path *secpath_set(struct sk_buff *skb)
+ 	memset(sp->ovec, 0, sizeof(sp->ovec));
+ 	sp->olen = 0;
+ 	sp->len = 0;
++	sp->verified_cnt = 0;
+ 
+ 	return sp;
+ }
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index e894c269affb1..7b1b93584bdbe 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3274,6 +3274,13 @@ xfrm_policy_ok(const struct xfrm_tmpl *tmpl, const struct sec_path *sp, int star
+ 		if (xfrm_state_ok(tmpl, sp->xvec[idx], family, if_id))
+ 			return ++idx;
+ 		if (sp->xvec[idx]->props.mode != XFRM_MODE_TRANSPORT) {
++			if (idx < sp->verified_cnt) {
++				/* Secpath entry previously verified, consider optional and
++				 * continue searching
++				 */
++				continue;
++			}
++
+ 			if (start == -1)
+ 				start = -2-idx;
+ 			break;
+@@ -3648,6 +3655,9 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
+ 		 * Order is _important_. Later we will implement
+ 		 * some barriers, but at the moment barriers
+ 		 * are implied between each two transformations.
++		 * Upon success, marks secpath entries as having been
++		 * verified to allow them to be skipped in future policy
++		 * checks (e.g. nested tunnels).
+ 		 */
+ 		for (i = xfrm_nr-1, k = 0; i >= 0; i--) {
+ 			k = xfrm_policy_ok(tpp[i], sp, k, family, if_id);
+@@ -3666,6 +3676,8 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
+ 		}
+ 
+ 		xfrm_pols_put(pols, npols);
++		sp->verified_cnt = k;
++
+ 		return 1;
+ 	}
+ 	XFRM_INC_STATS(net, LINUX_MIB_XFRMINPOLBLOCK);
 -- 
 2.39.2
 
