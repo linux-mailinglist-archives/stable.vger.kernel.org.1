@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CCC973E956
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C7E973E891
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:27:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232318AbjFZSe4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:34:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48328 "EHLO
+        id S232133AbjFZS1M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:27:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232341AbjFZSeq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:34:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7530E10F9
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:34:44 -0700 (PDT)
+        with ESMTP id S232068AbjFZS0n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E9962949
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:26:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B4C360F40
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:34:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DAEC433C8;
-        Mon, 26 Jun 2023 18:34:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A801360F58
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:26:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC866C433C0;
+        Mon, 26 Jun 2023 18:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804483;
-        bh=0CVterN2oNR0snu/uDzo3u9HlQDH7EmEEvZabB0r2sE=;
+        s=korg; t=1687803978;
+        bh=4unQ5CooluLlrhjnz4V4S0iXgBW2jpLyCCQZc6t9YZU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ThCWA1ZW1wdtRR8SIB1sEP283VaqX2hpbx7jDt3T9NXLsaeD/erPJodGW4s0vrp1h
-         ZBvbUKxOYSy3w52bT2nBn7Bg9keVaGIUFKF8inTFPAt7qFRKkABMG+BNJVoWuucHZb
-         FYCpG5kTZDFhDg07pqP7inDjD68S73belqNTNvbQ=
+        b=B1wpkg20klZirYqrpe+OumIIf2ZkrM4e/ZrBgf0MUF9mBmrysUDpa5pqnRXe3vEbD
+         iAqVDeqrq0X9Gz6bGCzT0e5hnga6dg91Gh2ZamaJaFir9HqK0HLiaTXeAMs6sG0eUP
+         yYm3s9w/nB+YyPbWxQBI30zzXtJQcdcWGVbr7llo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 144/170] Input: soc_button_array - add invalid acpi_index DMI quirk handling
+        patches@lists.linux.dev, Denis Arefev <arefev@swemel.ru>,
+        Ping Cheng <ping.cheng@wacom.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 30/41] HID: wacom: Add error check to wacom_parse_and_register()
 Date:   Mon, 26 Jun 2023 20:11:53 +0200
-Message-ID: <20230626180807.000307986@linuxfoundation.org>
+Message-ID: <20230626180737.408377567@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
+References: <20230626180736.243379844@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,89 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit 20a99a291d564a559cc2fd013b4824a3bb3f1db7 ]
+[ Upstream commit 16a9c24f24fbe4564284eb575b18cc20586b9270 ]
 
-Some devices have a wrong entry in their button array which points to
-a GPIO which is required in another driver, so soc_button_array must
-not claim it.
+   Added a variable check and
+   transition in case of an error
 
-A specific example of this is the Lenovo Yoga Book X90F / X90L,
-where the PNP0C40 home button entry points to a GPIO which is not
-a home button and which is required by the lenovo-yogabook driver.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Add a DMI quirk table which can specify an ACPI GPIO resource index which
-should be skipped; and add an entry for the Lenovo Yoga Book X90F / X90L
-to this new DMI quirk table.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230414072116.4497-1-hdegoede@redhat.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/soc_button_array.c | 30 +++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/hid/wacom_sys.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/misc/soc_button_array.c b/drivers/input/misc/soc_button_array.c
-index 09489380afda7..e79f5497948b8 100644
---- a/drivers/input/misc/soc_button_array.c
-+++ b/drivers/input/misc/soc_button_array.c
-@@ -108,6 +108,27 @@ static const struct dmi_system_id dmi_use_low_level_irq[] = {
- 	{} /* Terminating entry */
- };
+diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
+index 4e4a3424c1f9f..c50b26a9bc445 100644
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2390,8 +2390,13 @@ static int wacom_parse_and_register(struct wacom *wacom, bool wireless)
+ 		goto fail_quirks;
+ 	}
  
-+/*
-+ * Some devices have a wrong entry which points to a GPIO which is
-+ * required in another driver, so this driver must not claim it.
-+ */
-+static const struct dmi_system_id dmi_invalid_acpi_index[] = {
-+	{
-+		/*
-+		 * Lenovo Yoga Book X90F / X90L, the PNP0C40 home button entry
-+		 * points to a GPIO which is not a home button and which is
-+		 * required by the lenovo-yogabook driver.
-+		 */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
-+		},
-+		.driver_data = (void *)1l,
-+	},
-+	{} /* Terminating entry */
-+};
-+
- /*
-  * Get the Nth GPIO number from the ACPI object.
-  */
-@@ -137,6 +158,8 @@ soc_button_device_create(struct platform_device *pdev,
- 	struct platform_device *pd;
- 	struct gpio_keys_button *gpio_keys;
- 	struct gpio_keys_platform_data *gpio_keys_pdata;
-+	const struct dmi_system_id *dmi_id;
-+	int invalid_acpi_index = -1;
- 	int error, gpio, irq;
- 	int n_buttons = 0;
+-	if (features->device_type & WACOM_DEVICETYPE_WL_MONITOR)
++	if (features->device_type & WACOM_DEVICETYPE_WL_MONITOR) {
+ 		error = hid_hw_open(hdev);
++		if (error) {
++			hid_err(hdev, "hw open failed\n");
++			goto fail_quirks;
++		}
++	}
  
-@@ -154,10 +177,17 @@ soc_button_device_create(struct platform_device *pdev,
- 	gpio_keys = (void *)(gpio_keys_pdata + 1);
- 	n_buttons = 0;
- 
-+	dmi_id = dmi_first_match(dmi_invalid_acpi_index);
-+	if (dmi_id)
-+		invalid_acpi_index = (long)dmi_id->driver_data;
-+
- 	for (info = button_info; info->name; info++) {
- 		if (info->autorepeat != autorepeat)
- 			continue;
- 
-+		if (info->acpi_index == invalid_acpi_index)
-+			continue;
-+
- 		error = soc_button_lookup_gpio(&pdev->dev, info->acpi_index, &gpio, &irq);
- 		if (error || irq < 0) {
- 			/*
+ 	wacom_set_shared_values(wacom_wac);
+ 	devres_close_group(&hdev->dev, wacom);
 -- 
 2.39.2
 
