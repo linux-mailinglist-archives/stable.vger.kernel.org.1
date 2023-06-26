@@ -2,51 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6287C73EA40
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B2A073E9D8
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:40:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232598AbjFZSpG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:45:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57618 "EHLO
+        id S232480AbjFZSko (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:40:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232593AbjFZSpD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:45:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1446DFA
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:45:00 -0700 (PDT)
+        with ESMTP id S232482AbjFZSkn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:40:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D2E102
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:40:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BF7260F7F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:44:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AC0C433A9;
-        Mon, 26 Jun 2023 18:44:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 42AF960F4B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:40:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFC9C433C8;
+        Mon, 26 Jun 2023 18:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805099;
-        bh=AJDQWVt5FKaaCGVhPurGLT4Aub8OZTKqpX4uQNWfWGg=;
+        s=korg; t=1687804841;
+        bh=T7IvSxqxpK1ikItY9Nc9X3zmjDnOnxEZVBeNctXJdR8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fBafsxYVUXkae/6t8GY2MEFwd55zy909uZDe+TznHRUVN36nRQDp+j7jT7dvWUmHK
-         rNjIPBeKJyZ03i8pTHkpC+iRak7ED5Rxf2KiR02rck1pBl/vxs9YInUpKmt8C2zNlN
-         OJBF0d7jYwMmVs5kCZuE0UGuZxMZ3xWBVZDKDl6c=
+        b=Wv60pxhfF8fPMw8Ohbk+94yatvRWyQe//iuX6vGQ6sLZjkjT/2y+N65n9BBxQ9bW+
+         yv9wZAC+yN2nYU5GDBRJ1I8Gel6qM/MUxCNZ7s8ze4W0/RphI3uEN/n1MGXwcHXZb2
+         OtsemaGerYDlv8WkjFF0JomAwRCX/HNW2IQ2vU20=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benedict Wong <benedictwong@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 32/81] xfrm: Treat already-verified secpath entries as optional
+Subject: [PATCH 5.15 59/96] net: dsa: mt7530: fix handling of BPDUs on MT7530 switch
 Date:   Mon, 26 Jun 2023 20:12:14 +0200
-Message-ID: <20230626180745.778707015@linuxfoundation.org>
+Message-ID: <20230626180749.397841575@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,98 +59,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benedict Wong <benedictwong@google.com>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-[ Upstream commit 1f8b6df6a997a430b0c48b504638154b520781ad ]
+[ Upstream commit d7c66073559386b836bded7cdc8b66ee5c049129 ]
 
-This change allows inbound traffic through nested IPsec tunnels to
-successfully match policies and templates, while retaining the secpath
-stack trace as necessary for netfilter policies.
+BPDUs are link-local frames, therefore they must be trapped to the CPU
+port. Currently, the MT7530 switch treats BPDUs as regular multicast
+frames, therefore flooding them to user ports. To fix this, set BPDUs to be
+trapped to the CPU port. Group this on mt7530_setup() and
+mt7531_setup_common() into mt753x_trap_frames() and call that.
 
-Specifically, this patch marks secpath entries that have already matched
-against a relevant policy as having been verified, allowing it to be
-treated as optional and skipped after a tunnel decapsulation (during
-which the src/dst/proto/etc may have changed, and the correct policy
-chain no long be resolvable).
-
-This approach is taken as opposed to the iteration in b0355dbbf13c,
-where the secpath was cleared, since that breaks subsequent validations
-that rely on the existence of the secpath entries (netfilter policies, or
-transport-in-tunnel mode, where policies remain resolvable).
-
-Fixes: b0355dbbf13c ("Fix XFRM-I support for nested ESP tunnels")
-Test: Tested against Android Kernel Unit Tests
-Test: Tested against Android CTS
-Signed-off-by: Benedict Wong <benedictwong@google.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h     |  1 +
- net/xfrm/xfrm_input.c  |  1 +
- net/xfrm/xfrm_policy.c | 12 ++++++++++++
- 3 files changed, 14 insertions(+)
+ drivers/net/dsa/mt7530.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 726a2dbb407f1..7865db2f827e6 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -1034,6 +1034,7 @@ struct xfrm_offload {
- struct sec_path {
- 	int			len;
- 	int			olen;
-+	int			verified_cnt;
- 
- 	struct xfrm_state	*xvec[XFRM_MAX_DEPTH];
- 	struct xfrm_offload	ovec[XFRM_MAX_OFFLOAD_DEPTH];
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index fef99a1c5df10..f3bccab983f05 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -129,6 +129,7 @@ struct sec_path *secpath_set(struct sk_buff *skb)
- 	memset(sp->ovec, 0, sizeof(sp->ovec));
- 	sp->olen = 0;
- 	sp->len = 0;
-+	sp->verified_cnt = 0;
- 
- 	return sp;
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index 4aa3d0cba7b84..f74d9fbd08178 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -993,6 +993,14 @@ static void mt7530_setup_port5(struct dsa_switch *ds, phy_interface_t interface)
+ 	mutex_unlock(&priv->reg_mutex);
  }
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index d3b128b74a382..465d28341ed6d 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3277,6 +3277,13 @@ xfrm_policy_ok(const struct xfrm_tmpl *tmpl, const struct sec_path *sp, int star
- 		if (xfrm_state_ok(tmpl, sp->xvec[idx], family, if_id))
- 			return ++idx;
- 		if (sp->xvec[idx]->props.mode != XFRM_MODE_TRANSPORT) {
-+			if (idx < sp->verified_cnt) {
-+				/* Secpath entry previously verified, consider optional and
-+				 * continue searching
-+				 */
-+				continue;
-+			}
-+
- 			if (start == -1)
- 				start = -2-idx;
- 			break;
-@@ -3688,6 +3695,9 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
- 		 * Order is _important_. Later we will implement
- 		 * some barriers, but at the moment barriers
- 		 * are implied between each two transformations.
-+		 * Upon success, marks secpath entries as having been
-+		 * verified to allow them to be skipped in future policy
-+		 * checks (e.g. nested tunnels).
- 		 */
- 		for (i = xfrm_nr-1, k = 0; i >= 0; i--) {
- 			k = xfrm_policy_ok(tpp[i], sp, k, family, if_id);
-@@ -3706,6 +3716,8 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
- 		}
  
- 		xfrm_pols_put(pols, npols);
-+		sp->verified_cnt = k;
++static void
++mt753x_trap_frames(struct mt7530_priv *priv)
++{
++	/* Trap BPDUs to the CPU port(s) */
++	mt7530_rmw(priv, MT753X_BPC, MT753X_BPDU_PORT_FW_MASK,
++		   MT753X_BPDU_CPU_ONLY);
++}
 +
- 		return 1;
+ static int
+ mt753x_cpu_port_enable(struct dsa_switch *ds, int port)
+ {
+@@ -2194,6 +2202,8 @@ mt7530_setup(struct dsa_switch *ds)
+ 
+ 	priv->p6_interface = PHY_INTERFACE_MODE_NA;
+ 
++	mt753x_trap_frames(priv);
++
+ 	/* Enable and reset MIB counters */
+ 	mt7530_mib_reset(ds);
+ 
+@@ -2300,8 +2310,8 @@ mt7531_setup_common(struct dsa_switch *ds)
+ 			   BIT(cpu_dp->index));
+ 		break;
  	}
- 	XFRM_INC_STATS(net, LINUX_MIB_XFRMINPOLBLOCK);
+-	mt7530_rmw(priv, MT753X_BPC, MT753X_BPDU_PORT_FW_MASK,
+-		   MT753X_BPDU_CPU_ONLY);
++
++	mt753x_trap_frames(priv);
+ 
+ 	/* Enable and reset MIB counters */
+ 	mt7530_mib_reset(ds);
 -- 
 2.39.2
 
