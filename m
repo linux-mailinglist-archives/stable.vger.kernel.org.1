@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59C6073E9AD
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F17173E871
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232438AbjFZSi6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:38:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52134 "EHLO
+        id S232035AbjFZSZ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:25:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232499AbjFZSit (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:38:49 -0400
+        with ESMTP id S232037AbjFZSZj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:25:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2088B1BD2
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:38:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 252A526B9
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B2B9860F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:38:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA04C433C8;
-        Mon, 26 Jun 2023 18:38:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 063F360F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA07C433C9;
+        Mon, 26 Jun 2023 18:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804722;
-        bh=6IrxlZ4T5WeXUxEWoxtrS5UKasJ+AB0rT2xsDWcxRD4=;
+        s=korg; t=1687803888;
+        bh=5MILmWV1rWV7MNCHcwIKZGHGlAyGN+2CyiKNvZDsO9s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BuEp4XOAz14tvhI2ngDdXBDVXEk9BcqSmgDO2220fQPa8wJSeCTWOQ6BWBRkQh5px
-         k+o2Gm6HnFw1P/Dstj1C93EyzwnUz+fZXnnMDSH8IyIvksjcJ7BBEXbarSvtmRkA1V
-         azozpiDYpsOVs9CZcppNxm7plFmPyALKkl3CuKJI=
+        b=kfJpaFFcvGNvjW6xdjijV0pdCMZEdcCdDQ32+tR9IN5sLVpOjuPVOJDeliRR4viUV
+         NiYtmrEA8W+ThmQYRKlqGfF89ns+7syGKyYEI48+AjiPRdGU5B5+56fhL9YxVjWcQi
+         E17DlOGMQK6HCBXLcgIp5OFJNMQbxOBUfpKgz+bY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Wei Hu <weh@microsoft.com>, Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 5.15 20/96] Revert "PCI: hv: Fix a timing issue which causes kdump to fail occasionally"
+        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
+        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+        Xiu Jianfeng <xiujianfeng@huawei.com>,
+        Tejun Heo <tj@kernel.org>
+Subject: [PATCH 4.19 12/41] cgroup: Do not corrupt task iteration when rebinding subsystem
 Date:   Mon, 26 Jun 2023 20:11:35 +0200
-Message-ID: <20230626180747.768180172@linuxfoundation.org>
+Message-ID: <20230626180736.742217409@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
+References: <20230626180736.243379844@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,144 +56,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-commit a847234e24d03d01a9566d1d9dcce018cc018d67 upstream.
+commit 6f363f5aa845561f7ea496d8b1175e3204470486 upstream.
 
-This reverts commit d6af2ed29c7c1c311b96dac989dcb991e90ee195.
+We found a refcount UAF bug as follows:
 
-The statement "the hv_pci_bus_exit() call releases structures of all its
-child devices" in commit d6af2ed29c7c is not true: in the path
-hv_pci_probe() -> hv_pci_enter_d0() -> hv_pci_bus_exit(hdev, true): the
-parameter "keep_devs" is true, so hv_pci_bus_exit() does *not* release the
-child "struct hv_pci_dev *hpdev" that is created earlier in
-pci_devices_present_work() -> new_pcichild_device().
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 1 PID: 342 at lib/refcount.c:25 refcount_warn_saturate+0xa0/0x148
+Workqueue: events cpuset_hotplug_workfn
+Call trace:
+ refcount_warn_saturate+0xa0/0x148
+ __refcount_add.constprop.0+0x5c/0x80
+ css_task_iter_advance_css_set+0xd8/0x210
+ css_task_iter_advance+0xa8/0x120
+ css_task_iter_next+0x94/0x158
+ update_tasks_root_domain+0x58/0x98
+ rebuild_root_domains+0xa0/0x1b0
+ rebuild_sched_domains_locked+0x144/0x188
+ cpuset_hotplug_workfn+0x138/0x5a0
+ process_one_work+0x1e8/0x448
+ worker_thread+0x228/0x3e0
+ kthread+0xe0/0xf0
+ ret_from_fork+0x10/0x20
 
-The commit d6af2ed29c7c was originally made in July 2020 for RHEL 7.7,
-where the old version of hv_pci_bus_exit() was used; when the commit was
-rebased and merged into the upstream, people didn't notice that it's
-not really necessary. The commit itself doesn't cause any issue, but it
-makes hv_pci_probe() more complicated. Revert it to facilitate some
-upcoming changes to hv_pci_probe().
+then a kernel panic will be triggered as below:
 
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Acked-by: Wei Hu <weh@microsoft.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230615044451.5580-5-decui@microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Unable to handle kernel paging request at virtual address 00000000c0000010
+Call trace:
+ cgroup_apply_control_disable+0xa4/0x16c
+ rebind_subsystems+0x224/0x590
+ cgroup_destroy_root+0x64/0x2e0
+ css_free_rwork_fn+0x198/0x2a0
+ process_one_work+0x1d4/0x4bc
+ worker_thread+0x158/0x410
+ kthread+0x108/0x13c
+ ret_from_fork+0x10/0x18
+
+The race that cause this bug can be shown as below:
+
+(hotplug cpu)                | (umount cpuset)
+mutex_lock(&cpuset_mutex)    | mutex_lock(&cgroup_mutex)
+cpuset_hotplug_workfn        |
+ rebuild_root_domains        |  rebind_subsystems
+  update_tasks_root_domain   |   spin_lock_irq(&css_set_lock)
+   css_task_iter_start       |    list_move_tail(&cset->e_cset_node[ss->id]
+   while(css_task_iter_next) |                  &dcgrp->e_csets[ss->id]);
+   css_task_iter_end         |   spin_unlock_irq(&css_set_lock)
+mutex_unlock(&cpuset_mutex)  | mutex_unlock(&cgroup_mutex)
+
+Inside css_task_iter_start/next/end, css_set_lock is hold and then
+released, so when iterating task(left side), the css_set may be moved to
+another list(right side), then it->cset_head points to the old list head
+and it->cset_pos->next points to the head node of new list, which can't
+be used as struct css_set.
+
+To fix this issue, switch from all css_sets to only scgrp's css_sets to
+patch in-flight iterators to preserve correct iteration, and then
+update it->cset_head as well.
+
+Reported-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Link: https://www.spinics.net/lists/cgroups/msg37935.html
+Suggested-by: Michal Koutný <mkoutny@suse.com>
+Link: https://lore.kernel.org/all/20230526114139.70274-1-xiujianfeng@huaweicloud.com/
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Fixes: 2d8f243a5e6e ("cgroup: implement cgroup->e_csets[]")
+Cc: stable@vger.kernel.org # v3.16+
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-hyperv.c |   71 +++++++++++++++++-------------------
- 1 file changed, 34 insertions(+), 37 deletions(-)
+ kernel/cgroup/cgroup.c |   20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -2889,8 +2889,10 @@ static int hv_pci_enter_d0(struct hv_dev
- 	struct pci_bus_d0_entry *d0_entry;
- 	struct hv_pci_compl comp_pkt;
- 	struct pci_packet *pkt;
-+	bool retry = true;
- 	int ret;
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -1652,7 +1652,7 @@ int rebind_subsystems(struct cgroup_root
+ {
+ 	struct cgroup *dcgrp = &dst_root->cgrp;
+ 	struct cgroup_subsys *ss;
+-	int ssid, i, ret;
++	int ssid, ret;
+ 	u16 dfl_disable_ss_mask = 0;
  
-+enter_d0_retry:
- 	/*
- 	 * Tell the host that the bus is ready to use, and moved into the
- 	 * powered-on state.  This includes telling the host which region
-@@ -2917,6 +2919,38 @@ static int hv_pci_enter_d0(struct hv_dev
- 	if (ret)
- 		goto exit;
+ 	lockdep_assert_held(&cgroup_mutex);
+@@ -1696,7 +1696,8 @@ int rebind_subsystems(struct cgroup_root
+ 		struct cgroup_root *src_root = ss->root;
+ 		struct cgroup *scgrp = &src_root->cgrp;
+ 		struct cgroup_subsys_state *css = cgroup_css(scgrp, ss);
+-		struct css_set *cset;
++		struct css_set *cset, *cset_pos;
++		struct css_task_iter *it;
  
-+	/*
-+	 * In certain case (Kdump) the pci device of interest was
-+	 * not cleanly shut down and resource is still held on host
-+	 * side, the host could return invalid device status.
-+	 * We need to explicitly request host to release the resource
-+	 * and try to enter D0 again.
-+	 */
-+	if (comp_pkt.completion_status < 0 && retry) {
-+		retry = false;
-+
-+		dev_err(&hdev->device, "Retrying D0 Entry\n");
-+
-+		/*
-+		 * Hv_pci_bus_exit() calls hv_send_resource_released()
-+		 * to free up resources of its child devices.
-+		 * In the kdump kernel we need to set the
-+		 * wslot_res_allocated to 255 so it scans all child
-+		 * devices to release resources allocated in the
-+		 * normal kernel before panic happened.
-+		 */
-+		hbus->wslot_res_allocated = 255;
-+
-+		ret = hv_pci_bus_exit(hdev, true);
-+
-+		if (ret == 0) {
-+			kfree(pkt);
-+			goto enter_d0_retry;
+ 		WARN_ON(!css || cgroup_css(dcgrp, ss));
+ 
+@@ -1714,9 +1715,22 @@ int rebind_subsystems(struct cgroup_root
+ 		css->cgroup = dcgrp;
+ 
+ 		spin_lock_irq(&css_set_lock);
+-		hash_for_each(css_set_table, i, cset, hlist)
++		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
++		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
++					 e_cset_node[ss->id]) {
+ 			list_move_tail(&cset->e_cset_node[ss->id],
+ 				       &dcgrp->e_csets[ss->id]);
++			/*
++			 * all css_sets of scgrp together in same order to dcgrp,
++			 * patch in-flight iterators to preserve correct iteration.
++			 * since the iterator is always advanced right away and
++			 * finished when it->cset_pos meets it->cset_head, so only
++			 * update it->cset_head is enough here.
++			 */
++			list_for_each_entry(it, &cset->task_iters, iters_node)
++				if (it->cset_head == &scgrp->e_csets[ss->id])
++					it->cset_head = &dcgrp->e_csets[ss->id];
 +		}
-+		dev_err(&hdev->device,
-+			"Retrying D0 failed with ret %d\n", ret);
-+	}
-+
- 	if (comp_pkt.completion_status < 0) {
- 		dev_err(&hdev->device,
- 			"PCI Pass-through VSP failed D0 Entry with status %x\n",
-@@ -3162,7 +3196,6 @@ static int hv_pci_probe(struct hv_device
- 	struct hv_pcibus_device *hbus;
- 	u16 dom_req, dom;
- 	char *name;
--	bool enter_d0_retry = true;
- 	int ret;
+ 		spin_unlock_irq(&css_set_lock);
  
- 	/*
-@@ -3298,47 +3331,11 @@ static int hv_pci_probe(struct hv_device
- 	if (ret)
- 		goto free_fwnode;
- 
--retry:
- 	ret = hv_pci_query_relations(hdev);
- 	if (ret)
- 		goto free_irq_domain;
- 
- 	ret = hv_pci_enter_d0(hdev);
--	/*
--	 * In certain case (Kdump) the pci device of interest was
--	 * not cleanly shut down and resource is still held on host
--	 * side, the host could return invalid device status.
--	 * We need to explicitly request host to release the resource
--	 * and try to enter D0 again.
--	 * Since the hv_pci_bus_exit() call releases structures
--	 * of all its child devices, we need to start the retry from
--	 * hv_pci_query_relations() call, requesting host to send
--	 * the synchronous child device relations message before this
--	 * information is needed in hv_send_resources_allocated()
--	 * call later.
--	 */
--	if (ret == -EPROTO && enter_d0_retry) {
--		enter_d0_retry = false;
--
--		dev_err(&hdev->device, "Retrying D0 Entry\n");
--
--		/*
--		 * Hv_pci_bus_exit() calls hv_send_resources_released()
--		 * to free up resources of its child devices.
--		 * In the kdump kernel we need to set the
--		 * wslot_res_allocated to 255 so it scans all child
--		 * devices to release resources allocated in the
--		 * normal kernel before panic happened.
--		 */
--		hbus->wslot_res_allocated = 255;
--		ret = hv_pci_bus_exit(hdev, true);
--
--		if (ret == 0)
--			goto retry;
--
--		dev_err(&hdev->device,
--			"Retrying D0 failed with ret %d\n", ret);
--	}
- 	if (ret)
- 		goto free_irq_domain;
- 
+ 		/* default hierarchy doesn't enable controllers by default */
 
 
