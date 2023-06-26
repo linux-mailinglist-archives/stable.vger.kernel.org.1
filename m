@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C09E73EA67
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA45273EA55
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232632AbjFZSq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:46:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59106 "EHLO
+        id S232619AbjFZSqF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:46:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232638AbjFZSq5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:46:57 -0400
+        with ESMTP id S232623AbjFZSqD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:46:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2156CCC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:46:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DD7AAC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:46:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9895460F51
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:46:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28A0C433C0;
-        Mon, 26 Jun 2023 18:46:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B80260E8D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:46:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36617C433C9;
+        Mon, 26 Jun 2023 18:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805215;
-        bh=Iho5+NIDC9AnUiaUeD4K159JU0K+DV3z0ixwIxR15FQ=;
+        s=korg; t=1687805161;
+        bh=CPJtvXq+0UcPj+i21l3YUmyr8tluJ4O7kby0EZfq1Rk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fnWc+Pmr2Qb5WKYtaLNPfH5jaY71HuF6gn5IO5Z8t8VbF0r/d/i8tqqPtIA0uNgKj
-         NkCtSIrQRZ0uxrLJGx6srbIkwrV/qUCxXwktwnrKupAaSYyFKSzqijKrei0VukN3OU
-         WBrbVKEkfUmelT6lVO6gCibOmKJ3+XjU3IF0kg/k=
+        b=zJnXRXXOyd9F4yZCDbq7C/N6WGyjpw8cQpfL5MqKDL9NQMVtwbBBFjFvhB+N9NGOl
+         bJiZcnJjoUClP6KZEpFkPMEiMgdkrDQzzOCUdMBpf9DdFXSsMobgKNFtrehcHLCC7d
+         lHwXjqP2IAqoV03X6A0RNs8N2AZdCMOy4AhXPQMk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 70/81] ASoC: nau8824: Add quirk to active-high jack-detect
-Date:   Mon, 26 Jun 2023 20:12:52 +0200
-Message-ID: <20230626180747.299433299@linuxfoundation.org>
+Subject: [PATCH 5.10 71/81] s390/purgatory: disable branch profiling
+Date:   Mon, 26 Jun 2023 20:12:53 +0200
+Message-ID: <20230626180747.331010362@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
 References: <20230626180744.453069285@linuxfoundation.org>
@@ -56,57 +55,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit e384dba03e3294ce7ea69e4da558e9bf8f0e8946 ]
+[ Upstream commit 03c5c83b70dca3729a3eb488e668e5044bd9a5ea ]
 
-Add  entries for Positivo laptops: CW14Q01P, K1424G, N14ZP74G to the
-DMI table, so that  active-high jack-detect will work properly on
-these laptops.
+Avoid linker error for randomly generated config file that
+has CONFIG_BRANCH_PROFILE_NONE enabled and make it similar
+to riscv, x86 and also to commit 4bf3ec384edf ("s390: disable
+branch profiling for vdso").
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Link: https://lore.kernel.org/r/20230529181911.632851-1-edson.drosdeck@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/nau8824.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ arch/s390/purgatory/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/nau8824.c b/sound/soc/codecs/nau8824.c
-index a95fe3fff1db8..9b22219a76937 100644
---- a/sound/soc/codecs/nau8824.c
-+++ b/sound/soc/codecs/nau8824.c
-@@ -1896,6 +1896,30 @@ static const struct dmi_system_id nau8824_quirk_table[] = {
- 		},
- 		.driver_data = (void *)(NAU8824_JD_ACTIVE_HIGH),
- 	},
-+	{
-+		/* Positivo CW14Q01P */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
-+			DMI_MATCH(DMI_BOARD_NAME, "CW14Q01P"),
-+		},
-+		.driver_data = (void *)(NAU8824_JD_ACTIVE_HIGH),
-+	},
-+	{
-+		/* Positivo K1424G */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
-+			DMI_MATCH(DMI_BOARD_NAME, "K1424G"),
-+		},
-+		.driver_data = (void *)(NAU8824_JD_ACTIVE_HIGH),
-+	},
-+	{
-+		/* Positivo N14ZP74G */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
-+			DMI_MATCH(DMI_BOARD_NAME, "N14ZP74G"),
-+		},
-+		.driver_data = (void *)(NAU8824_JD_ACTIVE_HIGH),
-+	},
- 	{}
- };
- 
+diff --git a/arch/s390/purgatory/Makefile b/arch/s390/purgatory/Makefile
+index 21c4ebe29b9a2..a93c9aba834be 100644
+--- a/arch/s390/purgatory/Makefile
++++ b/arch/s390/purgatory/Makefile
+@@ -25,6 +25,7 @@ KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
+ KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
+ KBUILD_CFLAGS += -c -MD -Os -m64 -msoft-float -fno-common
+ KBUILD_CFLAGS += -fno-stack-protector
++KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+ KBUILD_CFLAGS += $(CLANG_FLAGS)
+ KBUILD_CFLAGS += $(call cc-option,-fno-PIE)
+ KBUILD_AFLAGS := $(filter-out -DCC_USING_EXPOLINE,$(KBUILD_AFLAGS))
 -- 
 2.39.2
 
