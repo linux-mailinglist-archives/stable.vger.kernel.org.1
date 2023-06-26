@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B60873E767
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDFF373E776
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:15:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230114AbjFZSO5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:14:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58576 "EHLO
+        id S229828AbjFZSPW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:15:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231552AbjFZSOp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:14:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B7AD10C1
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:14:45 -0700 (PDT)
+        with ESMTP id S229759AbjFZSPV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:15:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5677B10E6
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:15:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AADF960F52
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:14:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE045C433C0;
-        Mon, 26 Jun 2023 18:14:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C90A660F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:15:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9A0C433C0;
+        Mon, 26 Jun 2023 18:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803284;
-        bh=EEgIrj2hFldh456ixCZUq4PUi8lbRH7PEELfX7Ug3K4=;
+        s=korg; t=1687803316;
+        bh=i/P3ARdGPoW+wIi+D/wvlyDeGXM+LpDZa83HIYtpyLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PIE9VlJdKnYUkBqAT/VSXidL51IDXGQVuA6RCOO5unqs0quVLJ0kmUrQuK6I2ss3j
-         aBxCQJlJckB5sAN0bGCl7ZXNPrlLOQZ4vnZFa6TxIY9ObKQP/Gu1qS2oArlGB6dY5q
-         ZwA/bIyfDV73KkuvvOKE28FqcgK4vGAtyki5T09o=
+        b=1exCkjHnj25+ShW36jNMSZMDw1ooKXG/3QgNF/rye3JqNLObVgySjETX4TJywxRG+
+         SqYObDkfVA9/6a7NZ+EZb0y8FcGst4k3rrN0PdMuh/c6NtO3BlZZE7Sh5Zo6+XXa5J
+         pnci/42oPnVpgHDLw4TesGzhoYXXNeQ/FCNCalb8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shyam Prasad N <sprasad@microsoft.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Harry Wentland <Harry.Wentland@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 001/199] cifs: fix status checks in cifs_tree_connect
-Date:   Mon, 26 Jun 2023 20:08:27 +0200
-Message-ID: <20230626180805.707594369@linuxfoundation.org>
+Subject: [PATCH 6.3 002/199] drm/amd/display: Use dc_update_planes_and_stream
+Date:   Mon, 26 Jun 2023 20:08:28 +0200
+Message-ID: <20230626180805.757504509@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
 References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,76 +58,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit 91f4480c41f56f7c723323cf7f581f1d95d9ffbc ]
+[ Upstream commit f7511289821ffccc07579406d6ab520aa11049f5 ]
 
-The ordering of status checks at the beginning of
-cifs_tree_connect is wrong. As a result, a tcon
-which is good may stay marked as needing reconnect
-infinitely.
+[Why & How]
+The old dc_commit_updates_for_stream lacks manipulation for many corner
+cases where the DC feature requires special attention; as a result, it
+starts to show its limitation (e.g., the SubVP feature is not supported
+by it, among other cases). To modernize and unify our internal API, this
+commit replaces the old dc_commit_updates_for_stream with
+dc_update_planes_and_stream, which has more features.
 
-Fixes: 2f0e4f034220 ("cifs: check only tcon status on tcon related functions")
-Cc: stable@vger.kernel.org # 6.3
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Harry Wentland <Harry.Wentland@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: ea2062dd1f03 ("drm/amd/display: fix the system hang while disable PSR")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/connect.c | 9 +++++----
- fs/cifs/dfs.c     | 9 +++++----
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 30 +++++++++----------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index 8e9a672320ab7..1250d156619b7 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -4086,16 +4086,17 @@ int cifs_tree_connect(const unsigned int xid, struct cifs_tcon *tcon, const stru
- 
- 	/* only send once per connect */
- 	spin_lock(&tcon->tc_lock);
-+	if (tcon->status == TID_GOOD) {
-+		spin_unlock(&tcon->tc_lock);
-+		return 0;
-+	}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 289c261ffe876..ae58f24be511c 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2683,10 +2683,12 @@ static void dm_gpureset_commit_state(struct dc_state *dc_state,
+ 			bundle->surface_updates[m].surface->force_full_update =
+ 				true;
+ 		}
+-		dc_commit_updates_for_stream(
+-			dm->dc, bundle->surface_updates,
 +
- 	if (tcon->status != TID_NEW &&
- 	    tcon->status != TID_NEED_TCON) {
- 		spin_unlock(&tcon->tc_lock);
- 		return -EHOSTDOWN;
++		dc_update_planes_and_stream(dm->dc,
++			bundle->surface_updates,
+ 			dc_state->stream_status->plane_count,
+-			dc_state->streams[k], &bundle->stream_update, dc_state);
++			dc_state->streams[k],
++			&bundle->stream_update);
  	}
  
--	if (tcon->status == TID_GOOD) {
--		spin_unlock(&tcon->tc_lock);
--		return 0;
--	}
- 	tcon->status = TID_IN_TCON;
- 	spin_unlock(&tcon->tc_lock);
+ cleanup:
+@@ -8198,12 +8200,11 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 				acrtc_state->stream->link->psr_settings.psr_allow_active)
+ 			amdgpu_dm_psr_disable(acrtc_state->stream);
  
-diff --git a/fs/cifs/dfs.c b/fs/cifs/dfs.c
-index 2f93bf8c3325a..2390b2fedd6a3 100644
---- a/fs/cifs/dfs.c
-+++ b/fs/cifs/dfs.c
-@@ -575,16 +575,17 @@ int cifs_tree_connect(const unsigned int xid, struct cifs_tcon *tcon, const stru
+-		dc_commit_updates_for_stream(dm->dc,
+-						     bundle->surface_updates,
+-						     planes_count,
+-						     acrtc_state->stream,
+-						     &bundle->stream_update,
+-						     dc_state);
++		dc_update_planes_and_stream(dm->dc,
++					    bundle->surface_updates,
++					    planes_count,
++					    acrtc_state->stream,
++					    &bundle->stream_update);
  
- 	/* only send once per connect */
- 	spin_lock(&tcon->tc_lock);
-+	if (tcon->status == TID_GOOD) {
-+		spin_unlock(&tcon->tc_lock);
-+		return 0;
-+	}
-+
- 	if (tcon->status != TID_NEW &&
- 	    tcon->status != TID_NEED_TCON) {
- 		spin_unlock(&tcon->tc_lock);
- 		return -EHOSTDOWN;
+ 		/**
+ 		 * Enable or disable the interrupts on the backend.
+@@ -8741,12 +8742,11 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
+ 
+ 
+ 		mutex_lock(&dm->dc_lock);
+-		dc_commit_updates_for_stream(dm->dc,
+-						     dummy_updates,
+-						     status->plane_count,
+-						     dm_new_crtc_state->stream,
+-						     &stream_update,
+-						     dc_state);
++		dc_update_planes_and_stream(dm->dc,
++					    dummy_updates,
++					    status->plane_count,
++					    dm_new_crtc_state->stream,
++					    &stream_update);
+ 		mutex_unlock(&dm->dc_lock);
  	}
- 
--	if (tcon->status == TID_GOOD) {
--		spin_unlock(&tcon->tc_lock);
--		return 0;
--	}
- 	tcon->status = TID_IN_TCON;
- 	spin_unlock(&tcon->tc_lock);
  
 -- 
 2.39.2
