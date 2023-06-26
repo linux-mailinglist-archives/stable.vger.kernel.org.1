@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 654FE73E7A5
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE1E173E7CD
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231193AbjFZSRN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32906 "EHLO
+        id S231483AbjFZSTM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:19:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbjFZSRM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:17:12 -0400
+        with ESMTP id S231609AbjFZSTH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45FD7CC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:17:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 471E0E72
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6A6160F1D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:17:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC9DC433C0;
-        Mon, 26 Jun 2023 18:17:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4C1260F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE474C433C8;
+        Mon, 26 Jun 2023 18:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803430;
-        bh=cmOIWXKRlm6R0XRISnhNMwNrUVkK9hw0Xev84FwBN/4=;
+        s=korg; t=1687803542;
+        bh=O4uWZHEIB2ex5oRPyCl+gJNG9w1mu1fMHb1by1eSEAI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i80/5gQUySV3ltY0m4KSbvIx09fEEaswVd1lHZarmtOc4ZbhrMc+xN1dsqlKix2qk
-         byiUV2T7/h0e8vRdp56Q4ILQ3Py4LcYrqWRwiWYvcokLnlJK6LeBpbwctvmpSzUXlQ
-         3lddoCBUD7B7bnoZQGOdeLcOZiBlP5LebeVXgvqU=
+        b=scdfs0vuPd5eWFRv5szblKkhcU4RQ0y5WvT7YV50LPeuUAyNNjRyUxLFk3m7GDwl8
+         FC0Kei6tX7wSJXDdyQfZiO/9EGw17hYo3wS0IKb1WcPtHrQc1sJWbUSZdQdLYQuALE
+         odW/vWd2jtkNCA0CteLe93uB17+/Cw8AUerYFApA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bernhard Krug <b.krug@elektronenpumpe.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.3 057/199] thermal/intel/intel_soc_dts_iosf: Fix reporting wrong temperatures
-Date:   Mon, 26 Jun 2023 20:09:23 +0200
-Message-ID: <20230626180808.069859988@linuxfoundation.org>
+        patches@lists.linux.dev, Shuai Hu <hshuai@redhat.com>,
+        Zhenyu Zhang <zhenyzha@redhat.com>,
+        Gavin Shan <gshan@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Peter Xu <peterx@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Shaoqin Huang <shahuang@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.3 058/199] KVM: Avoid illegal stage2 mapping on invalid memory slot
+Date:   Mon, 26 Jun 2023 20:09:24 +0200
+Message-ID: <20230626180808.119337413@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
 References: <20230626180805.643662628@linuxfoundation.org>
@@ -56,42 +61,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Gavin Shan <gshan@redhat.com>
 
-commit 0bb619f9227aa370330d2b309733d74750705053 upstream.
+commit 2230f9e1171a2e9731422a14d1bbc313c0b719d1 upstream.
 
-Since commit 955fb8719efb ("thermal/intel/intel_soc_dts_iosf: Use Intel
-TCC library") intel_soc_dts_iosf is reporting the wrong temperature.
+We run into guest hang in edk2 firmware when KSM is kept as running on
+the host. The edk2 firmware is waiting for status 0x80 from QEMU's pflash
+device (TYPE_PFLASH_CFI01) during the operation of sector erasing or
+buffered write. The status is returned by reading the memory region of
+the pflash device and the read request should have been forwarded to QEMU
+and emulated by it. Unfortunately, the read request is covered by an
+illegal stage2 mapping when the guest hang issue occurs. The read request
+is completed with QEMU bypassed and wrong status is fetched. The edk2
+firmware runs into an infinite loop with the wrong status.
 
-The driver expects tj_max to be in milli-degrees-celcius but after
-the switch to the TCC library this is now in degrees celcius so
-instead of e.g. 90000 it is set to 90 causing a temperature 45
-degrees below tj_max to be reported as -44910 milli-degrees
-instead of as 45000 milli-degrees.
+The illegal stage2 mapping is populated due to same page sharing by KSM
+at (C) even the associated memory slot has been marked as invalid at (B)
+when the memory slot is requested to be deleted. It's notable that the
+active and inactive memory slots can't be swapped when we're in the middle
+of kvm_mmu_notifier_change_pte() because kvm->mn_active_invalidate_count
+is elevated, and kvm_swap_active_memslots() will busy loop until it reaches
+to zero again. Besides, the swapping from the active to the inactive memory
+slots is also avoided by holding &kvm->srcu in __kvm_handle_hva_range(),
+corresponding to synchronize_srcu_expedited() in kvm_swap_active_memslots().
 
-Fix this by adding back the lost factor of 1000.
+  CPU-A                    CPU-B
+  -----                    -----
+                           ioctl(kvm_fd, KVM_SET_USER_MEMORY_REGION)
+                           kvm_vm_ioctl_set_memory_region
+                           kvm_set_memory_region
+                           __kvm_set_memory_region
+                           kvm_set_memslot(kvm, old, NULL, KVM_MR_DELETE)
+                             kvm_invalidate_memslot
+                               kvm_copy_memslot
+                               kvm_replace_memslot
+                               kvm_swap_active_memslots        (A)
+                               kvm_arch_flush_shadow_memslot   (B)
+  same page sharing by KSM
+  kvm_mmu_notifier_invalidate_range_start
+        :
+  kvm_mmu_notifier_change_pte
+    kvm_handle_hva_range
+    __kvm_handle_hva_range
+    kvm_set_spte_gfn            (C)
+        :
+  kvm_mmu_notifier_invalidate_range_end
 
-Fixes: 955fb8719efb ("thermal/intel/intel_soc_dts_iosf: Use Intel TCC library")
-Reported-by: Bernhard Krug <b.krug@elektronenpumpe.de>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Zhang Rui <rui.zhang@intel.com>
-Cc: 6.3+ <stable@vger.kernel.org> # 6.3+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fix the issue by skipping the invalid memory slot at (C) to avoid the
+illegal stage2 mapping so that the read request for the pflash's status
+is forwarded to QEMU and emulated by it. In this way, the correct pflash's
+status can be returned from QEMU to break the infinite loop in the edk2
+firmware.
+
+We tried a git-bisect and the first problematic commit is cd4c71835228 ("
+KVM: arm64: Convert to the gfn-based MMU notifier callbacks"). With this,
+clean_dcache_guest_page() is called after the memory slots are iterated
+in kvm_mmu_notifier_change_pte(). clean_dcache_guest_page() is called
+before the iteration on the memory slots before this commit. This change
+literally enlarges the racy window between kvm_mmu_notifier_change_pte()
+and memory slot removal so that we're able to reproduce the issue in a
+practical test case. However, the issue exists since commit d5d8184d35c9
+("KVM: ARM: Memory virtualization setup").
+
+Cc: stable@vger.kernel.org # v3.9+
+Fixes: d5d8184d35c9 ("KVM: ARM: Memory virtualization setup")
+Reported-by: Shuai Hu <hshuai@redhat.com>
+Reported-by: Zhenyu Zhang <zhenyzha@redhat.com>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+Message-Id: <20230615054259.14911-1-gshan@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/intel/intel_soc_dts_iosf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ virt/kvm/kvm_main.c |   20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
---- a/drivers/thermal/intel/intel_soc_dts_iosf.c
-+++ b/drivers/thermal/intel/intel_soc_dts_iosf.c
-@@ -401,7 +401,7 @@ struct intel_soc_dts_sensors *intel_soc_
- 	spin_lock_init(&sensors->intr_notify_lock);
- 	mutex_init(&sensors->dts_update_lock);
- 	sensors->intr_type = intr_type;
--	sensors->tj_max = tj_max;
-+	sensors->tj_max = tj_max * 1000;
- 	if (intr_type == INTEL_SOC_DTS_INTERRUPT_NONE)
- 		notification = false;
- 	else
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -683,6 +683,24 @@ static __always_inline int kvm_handle_hv
+ 
+ 	return __kvm_handle_hva_range(kvm, &range);
+ }
++
++static bool kvm_change_spte_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
++{
++	/*
++	 * Skipping invalid memslots is correct if and only change_pte() is
++	 * surrounded by invalidate_range_{start,end}(), which is currently
++	 * guaranteed by the primary MMU.  If that ever changes, KVM needs to
++	 * unmap the memslot instead of skipping the memslot to ensure that KVM
++	 * doesn't hold references to the old PFN.
++	 */
++	WARN_ON_ONCE(!READ_ONCE(kvm->mn_active_invalidate_count));
++
++	if (range->slot->flags & KVM_MEMSLOT_INVALID)
++		return false;
++
++	return kvm_set_spte_gfn(kvm, range);
++}
++
+ static void kvm_mmu_notifier_change_pte(struct mmu_notifier *mn,
+ 					struct mm_struct *mm,
+ 					unsigned long address,
+@@ -704,7 +722,7 @@ static void kvm_mmu_notifier_change_pte(
+ 	if (!READ_ONCE(kvm->mmu_invalidate_in_progress))
+ 		return;
+ 
+-	kvm_handle_hva_range(mn, address, address + 1, pte, kvm_set_spte_gfn);
++	kvm_handle_hva_range(mn, address, address + 1, pte, kvm_change_spte_gfn);
+ }
+ 
+ void kvm_mmu_invalidate_begin(struct kvm *kvm, unsigned long start,
 
 
