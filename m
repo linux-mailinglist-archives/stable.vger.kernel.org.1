@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 233EA73E87E
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 834D173E92A
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231974AbjFZS0e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:26:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38012 "EHLO
+        id S232231AbjFZSdJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:33:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231840AbjFZS0N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E99610E7
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:25:25 -0700 (PDT)
+        with ESMTP id S232221AbjFZSdH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:33:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D442D11B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:33:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E392660F56
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:25:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC4EC433C0;
-        Mon, 26 Jun 2023 18:25:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6664860F24
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7415EC433C8;
+        Mon, 26 Jun 2023 18:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803924;
-        bh=xn3NhUOHVX07065STk+IN3fOab0bBqOpLpGcpr36qrM=;
+        s=korg; t=1687804385;
+        bh=OU6nnv2G9WVBthz755bwpd8EJ+LMKuGvk/LoTtkIfD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QhwPOuUzXgIEs2XJrfg8m3ahqgM6HQHdfALAIcFb3HXxi682fk3lGJP2X4QP10gv+
-         DxuxjVL7pEDMEZIjI0V+rZJrP0GgGDp0Ytt1NU7mXnHaK6jpesJAf9DpuFUjZwnPU9
-         CfIIcNCZlxVd4dsG3XXCXpkD3XNy4/r2i1bTDY3g=
+        b=yIcIY3GngKj4wYhx+r+dQSKCc2h0h05DhpLpQ7aJdtPhjKhwuezD+EP/U3jpi80UQ
+         ypNPcSwQROWBDkdE8byFHIkM7cm/ZYA1kGpfxAHw0ktHJCo8ZWVzSMbconcn4Luwh0
+         s0nJScSNNPY1yZb+O5ah26HB4Qp8fiFVwPU+ul4k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 23/41] mmc: sdhci-acpi: fix deferred probing
+Subject: [PATCH 6.1 137/170] media: cec: core: dont set last_initiator if tx in progress
 Date:   Mon, 26 Jun 2023 20:11:46 +0200
-Message-ID: <20230626180737.151602868@linuxfoundation.org>
+Message-ID: <20230626180806.704990310@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
-References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,38 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit b465dea5e1540c7d7b5211adaf94926980d3014b ]
+[ Upstream commit 73af6c7511038249cad3d5f3b44bf8d78ac0f499 ]
 
-The driver overrides the error codes returned by platform_get_irq() to
--EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the
-error codes upstream.
+When a message was received the last_initiator is set to 0xff.
+This will force the signal free time for the next transmit
+to that for a new initiator. However, if a new transmit is
+already in progress, then don't set last_initiator, since
+that's the initiator of the current transmit. Overwriting
+this would cause the signal free time of a following transmit
+to be that of the new initiator instead of a next transmit.
 
-Fixes: 1b7ba57ecc86 ("mmc: sdhci-acpi: Handle return value of platform_get_irq")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20230617203622.6812-9-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/cec/core/cec-adap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
-index 6cc187ce3a329..069b9a07aca5d 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -721,7 +721,7 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
- 	host->ops	= &sdhci_acpi_ops_dflt;
- 	host->irq	= platform_get_irq(pdev, 0);
- 	if (host->irq < 0) {
--		err = -EINVAL;
-+		err = host->irq;
- 		goto err_free;
- 	}
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index ac18707fddcd2..b1512f9c5895c 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -1090,7 +1090,8 @@ void cec_received_msg_ts(struct cec_adapter *adap,
+ 	mutex_lock(&adap->lock);
+ 	dprintk(2, "%s: %*ph\n", __func__, msg->len, msg->msg);
  
+-	adap->last_initiator = 0xff;
++	if (!adap->transmit_in_progress)
++		adap->last_initiator = 0xff;
+ 
+ 	/* Check if this message was for us (directed or broadcast). */
+ 	if (!cec_msg_is_broadcast(msg))
 -- 
 2.39.2
 
