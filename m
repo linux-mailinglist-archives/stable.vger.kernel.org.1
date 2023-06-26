@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1A4273E9BE
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 027B373EA30
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:44:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232447AbjFZSjf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:39:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52602 "EHLO
+        id S232568AbjFZSoV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:44:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232444AbjFZSje (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:34 -0400
+        with ESMTP id S232543AbjFZSoT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:44:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61C65ED
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CA31AC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:44:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA7F160F4F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001AEC433C8;
-        Mon, 26 Jun 2023 18:39:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2181660F4B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:44:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F53C433C0;
+        Mon, 26 Jun 2023 18:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804772;
-        bh=V1aeuxXObHP5fwAg9Nw3YSc27Jjs2aasKMFlzhkHOvI=;
+        s=korg; t=1687805057;
+        bh=x4B5VUxdpBRZZzL6sMJR3BnF8QzAMDxABARCQXOtAtE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0ggtLrvuSD8UeL+eACtIdlddeQXQCtjLR3pwBZTpe7LXUtmiOAWHdeGgrsDvKUAoZ
-         5i97ygAFPHVvFi+NLaVa/fENR4Ckz9tLsQzFtctNn6wKLOeFSMQeDSPxVlXArC5BDt
-         klXckx8HVyxTIFiJ9SGYK7/83CsEUZwGpCK5t6rU=
+        b=IOOlUXQZPFQcDQbBl6T8PKxXn7PFBo2qJogBeUEjaxJVkKsLUsu1Gn5RnPEk8y837
+         ny/BzTeVjQ5aVh+y+rrHQiIAsRnT4hs54jBtBpfO5+dFDlihRbmfTyDJnVA6NQqBJP
+         acaOS1sR5is1AP6ypOR97FWuyn5I3bH+1I2meaUo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 35/96] nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 08/81] selftests: mptcp: join: skip check if MIB counter not supported
 Date:   Mon, 26 Jun 2023 20:11:50 +0200
-Message-ID: <20230626180748.416529272@linuxfoundation.org>
+Message-ID: <20230626180744.791244828@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,56 +55,168 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit 782e53d0c14420858dbf0f8f797973c150d3b6d7 upstream.
+commit 47867f0a7e831e24e5eab3330667ce9682d50fb1 upstream.
 
-In a syzbot stress test that deliberately causes file system errors on
-nilfs2 with a corrupted disk image, it has been reported that
-nilfs_clear_dirty_page() called from nilfs_clear_dirty_pages() can cause a
-general protection fault.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-In nilfs_clear_dirty_pages(), when looking up dirty pages from the page
-cache and calling nilfs_clear_dirty_page() for each dirty page/folio
-retrieved, the back reference from the argument page to "mapping" may have
-been changed to NULL (and possibly others).  It is necessary to check this
-after locking the page/folio.
+One of them is the MPTCP MIB counters introduced in commit fc518953bc9c
+("mptcp: add and use MIB counter infrastructure") and more later. The
+MPTCP Join selftest heavily relies on these counters.
 
-So, fix this issue by not calling nilfs_clear_dirty_page() on a page/folio
-after locking it in nilfs_clear_dirty_pages() if the back reference
-"mapping" from the page/folio is different from the "mapping" that held
-the page/folio just before.
+If a counter is not supported by the kernel, it is not displayed when
+using 'nstat -z'. We can then detect that and skip the verification. A
+new helper (get_counter()) has been added to do the required checks and
+return an error if the counter is not available.
 
-Link: https://lkml.kernel.org/r/20230612021456.3682-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000da4f6b05eb9bf593@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Note that if we expect to have these features available and if
+SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES env var is set to 1, the tests
+will be marked as failed instead of skipped.
+
+This new helper also makes sure we get the exact counter we want to
+avoid issues we had in the past, e.g. with MPTcpExtRmAddr and
+MPTcpExtRmAddrDrop sharing the same prefix. While at it, we uniform the
+way we fetch a MIB counter.
+
+Note for the backports: we rarely change these modified blocks so if
+there is are conflicts, it is very likely because a counter is not used
+in the older kernels and we don't need that chunk.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: b08fbf241064 ("selftests: add test-cases for MPTCP MP_JOIN")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/page.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   65 ++++++++++++++++--------
+ 1 file changed, 44 insertions(+), 21 deletions(-)
 
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -369,7 +369,15 @@ void nilfs_clear_dirty_pages(struct addr
- 			struct page *page = pvec.pages[i];
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -130,6 +130,22 @@ do_ping()
+ 	fi
+ }
  
- 			lock_page(page);
--			nilfs_clear_dirty_page(page, silent);
++# $1: ns ; $2: counter
++get_counter()
++{
++	local ns="${1}"
++	local counter="${2}"
++	local count
 +
-+			/*
-+			 * This page may have been removed from the address
-+			 * space by truncation or invalidation when the lock
-+			 * was acquired.  Skip processing in that case.
-+			 */
-+			if (likely(page->mapping == mapping))
-+				nilfs_clear_dirty_page(page, silent);
++	count=$(ip netns exec ${ns} nstat -asz "${counter}" | awk 'NR==1 {next} {print $2}')
++	if [ -z "${count}" ]; then
++		mptcp_lib_fail_if_expected_feature "${counter} counter"
++		return 1
++	fi
 +
- 			unlock_page(page);
- 		}
- 		pagevec_release(&pvec);
++	echo "${count}"
++}
++
+ do_transfer()
+ {
+ 	listener_ns="$1"
+@@ -291,9 +307,10 @@ chk_join_nr()
+ 	local dump_stats
+ 
+ 	printf "%02u %-36s %s" "$TEST_COUNT" "$msg" "syn"
+-	count=`ip netns exec $ns1 nstat -as | grep MPTcpExtMPJoinSynRx | awk '{print $2}'`
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$syn_nr" ]; then
++	count=$(get_counter ${ns1} "MPTcpExtMPJoinSynRx")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$syn_nr" ]; then
+ 		echo "[fail] got $count JOIN[s] syn expected $syn_nr"
+ 		ret=1
+ 		dump_stats=1
+@@ -302,9 +319,10 @@ chk_join_nr()
+ 	fi
+ 
+ 	echo -n " - synack"
+-	count=`ip netns exec $ns2 nstat -as | grep MPTcpExtMPJoinSynAckRx | awk '{print $2}'`
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$syn_ack_nr" ]; then
++	count=$(get_counter ${ns2} "MPTcpExtMPJoinSynAckRx")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$syn_ack_nr" ]; then
+ 		echo "[fail] got $count JOIN[s] synack expected $syn_ack_nr"
+ 		ret=1
+ 		dump_stats=1
+@@ -313,9 +331,10 @@ chk_join_nr()
+ 	fi
+ 
+ 	echo -n " - ack"
+-	count=`ip netns exec $ns1 nstat -as | grep MPTcpExtMPJoinAckRx | awk '{print $2}'`
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$ack_nr" ]; then
++	count=$(get_counter ${ns1} "MPTcpExtMPJoinAckRx")
++	if [ -z "$count" ]; then
++		echo "[skip]"
++	elif [ "$count" != "$ack_nr" ]; then
+ 		echo "[fail] got $count JOIN[s] ack expected $ack_nr"
+ 		ret=1
+ 		dump_stats=1
+@@ -338,9 +357,10 @@ chk_add_nr()
+ 	local dump_stats
+ 
+ 	printf "%-39s %s" " " "add"
+-	count=`ip netns exec $ns2 nstat -as | grep MPTcpExtAddAddr | awk '{print $2}'`
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$add_nr" ]; then
++	count=$(get_counter ${ns2} "MPTcpExtAddAddr")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$add_nr" ]; then
+ 		echo "[fail] got $count ADD_ADDR[s] expected $add_nr"
+ 		ret=1
+ 		dump_stats=1
+@@ -349,9 +369,10 @@ chk_add_nr()
+ 	fi
+ 
+ 	echo -n " - echo  "
+-	count=`ip netns exec $ns1 nstat -as | grep MPTcpExtEchoAdd | awk '{print $2}'`
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$echo_nr" ]; then
++	count=$(get_counter ${ns1} "MPTcpExtEchoAdd")
++	if [ -z "$count" ]; then
++		echo "[skip]"
++	elif [ "$count" != "$echo_nr" ]; then
+ 		echo "[fail] got $count ADD_ADDR echo[s] expected $echo_nr"
+ 		ret=1
+ 		dump_stats=1
+@@ -375,9 +396,10 @@ chk_rm_nr()
+ 	local dump_stats
+ 
+ 	printf "%-39s %s" " " "rm "
+-	count=`ip netns exec $ns1 nstat -as | grep MPTcpExtRmAddr | awk '{print $2}'`
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$rm_addr_nr" ]; then
++	count=$(get_counter ${ns1} "MPTcpExtRmAddr")
++	if [ -z "$count" ]; then
++		echo -n "[skip]"
++	elif [ "$count" != "$rm_addr_nr" ]; then
+ 		echo "[fail] got $count RM_ADDR[s] expected $rm_addr_nr"
+ 		ret=1
+ 		dump_stats=1
+@@ -386,9 +408,10 @@ chk_rm_nr()
+ 	fi
+ 
+ 	echo -n " - sf    "
+-	count=`ip netns exec $ns2 nstat -as | grep MPTcpExtRmSubflow | awk '{print $2}'`
+-	[ -z "$count" ] && count=0
+-	if [ "$count" != "$rm_subflow_nr" ]; then
++	count=$(get_counter ${ns2} "MPTcpExtRmSubflow")
++	if [ -z "$count" ]; then
++		echo "[skip]"
++	elif [ "$count" != "$rm_subflow_nr" ]; then
+ 		echo "[fail] got $count RM_SUBFLOW[s] expected $rm_subflow_nr"
+ 		ret=1
+ 		dump_stats=1
 
 
