@@ -2,57 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCC0473E205
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 16:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DC3273E253
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 16:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231636AbjFZOXD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 10:23:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38876 "EHLO
+        id S229728AbjFZOmJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 10:42:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231573AbjFZOWo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 10:22:44 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B37DA10D9;
-        Mon, 26 Jun 2023 07:21:52 -0700 (PDT)
-Received: from [10.171.21.113] (unknown [167.220.238.145])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 1FEB521C4246;
-        Mon, 26 Jun 2023 07:20:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1FEB521C4246
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1687789257;
-        bh=aT4WxjZvQVlyUZbGtIL/sXMQJbejtNJ5GcrCdyfwEK0=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=bHiUi781wS9YRpRoVbHkRolr7bAV7yZZx9jvjgsg9sP2gAphz7wOFzdghc1pyZ5+o
-         jRhh5QGY87mLjYz+Y+ZmFaKDIbpMt00mnznobka60cTvMgx+ZnB4LBsunGZgFw3oYt
-         Jd0ve9hCBUDz12vw+Tsnfg4/vCLLG9qJYmzmnJc4=
-Message-ID: <69098dcb-c184-7d93-4045-7ac1bc0ac6d0@linux.microsoft.com>
-Date:   Mon, 26 Jun 2023 19:50:44 +0530
+        with ESMTP id S229526AbjFZOmH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 10:42:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15BEAE7E;
+        Mon, 26 Jun 2023 07:42:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9670060EA5;
+        Mon, 26 Jun 2023 14:42:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5BFC433C0;
+        Mon, 26 Jun 2023 14:42:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687790525;
+        bh=L52cfU8cNq6uou6/bZ8tK6hh1Kl1s94l1tWbXWw/lAo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OaBsPVWCxzitqlENhTyVt6B8OAjiMC63ES5TIBAf5vcRfKr6lyDTte7X/FyHa5pRv
+         VxxxEHlepMRn+2kghdO9gvALQUPGC5HMx9jumJ6sJ7JCeBvjYoUtLhVDz4cP8UBwjA
+         eFiUdCFrHqmb9wBnGpVf8R1IYsSx8RgBa1B6UDQSmKFZQdOEeXWNsemzlQF7TS3glk
+         eWNaxmvrVbN0buJEbOogNS0MVoKxVjYHl1mBI4cUK66tvNVkHiDTUw2IqLCRm91RCl
+         l5M1TiaU2ie3wIMPOuTlL5Gr5PYSj5me4V6tTgHy+DJE6/IIny9RDvpMg2CCmUR27p
+         DHMJblcXS48DA==
+Date:   Mon, 26 Jun 2023 15:41:58 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     Mark Brown <broonie@kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        lkft-triage@lists.linaro.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: arm64: fp-stress: BUG: KFENCE: memory corruption in
+ fpsimd_release_task
+Message-ID: <20230626144157.GA20162@willie-the-truck>
+References: <CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com>
+ <b4bfd69f-2092-4d15-b7ce-b814f5f10ff2@sirena.org.uk>
+ <CA+G9fYv=uyQaJs0JLMmZWLeLH0G5FF7WGcTa7y0bi0nCDfoi+A@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/2 V3 net] net: mana: Fix MANA VF unload when host is
- unresponsive
-Content-Language: en-US
-To:     souradeep chakrabarti <schakrabarti@linux.microsoft.com>,
-        kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
-        sharmaajay@microsoft.com, leon@kernel.org, cai.huoqing@linux.dev,
-        ssengar@linux.microsoft.com, vkuznets@redhat.com,
-        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-Cc:     stable@vger.kernel.org, schakrabarti@microsoft.com
-References: <1687771098-26775-1-git-send-email-schakrabarti@linux.microsoft.com>
- <1687771137-26911-1-git-send-email-schakrabarti@linux.microsoft.com>
-From:   Praveen Kumar <kumarpraveen@linux.microsoft.com>
-In-Reply-To: <1687771137-26911-1-git-send-email-schakrabarti@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-19.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYv=uyQaJs0JLMmZWLeLH0G5FF7WGcTa7y0bi0nCDfoi+A@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,82 +66,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/26/2023 2:48 PM, souradeep chakrabarti wrote:
-> From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+On Thu, May 25, 2023 at 07:21:24PM +0530, Naresh Kamboju wrote:
+> On Tue, 23 May 2023 at 03:42, Mark Brown <broonie@kernel.org> wrote:
+> > On Tue, May 16, 2023 at 11:58:40AM +0530, Naresh Kamboju wrote:
+> > > Test log links:
+> > > ========
+> > >
+> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.28-240-gb82733c0ff99/testrun/17007082/suite/log-parser-test/test/check-kernel-kfence/log
+> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.28-240-gb82733c0ff99/testrun/17007082/suite/log-parser-test/tests/
+> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.28-240-gb82733c0ff99/testrun/17007268/suite/kselftest-arm64/tests/
+> > >
+> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.2-247-g5a952cfef67c/testrun/17015127/suite/log-parser-test/test/check-kernel-bug/log
+> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.2-247-g5a952cfef67c/testrun/17015127/suite/log-parser-test/tests/
+> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.2-247-g5a952cfef67c/testrun/17015127/suite/kselftest-arm64/tests/
+> >
+> > None of these seem to provide me with information like what kernel
+> > config was used but I did manage to find
+> >
+> >   https://storage.tuxsuite.com/public/linaro/lkft/builds/2Pq5NvLiBcWRMuy6lXftDVQMvca/config
+> >
+> > which might be it?  Or one of them?  However even trying to use that I'm
+> > unable to reproduce issues with either the FVP or qemu.
 > 
-> This patch addresses the VF unload issue, where mana_dealloc_queues()
-> gets stuck in infinite while loop, because of host unresponsiveness.
-> It adds a timeout in the while loop, to fix it.
-> 
-> Fixes: ca9c54d2d6a5ab2430c4eda364c77125d62e5e0f (net: mana: Add a driver for
-> Microsoft Azure Network Adapter)
-> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-> ---
-> V2 -> V3:
-> * Splitted the patch in two parts.
-> * Removed the unnecessary braces from mana_dealloc_queues().
-> ---
->  drivers/net/ethernet/microsoft/mana/mana_en.c | 19 +++++++++++++++++--
->  1 file changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index d907727c7b7a..cb5c43c3c47e 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -2329,7 +2329,10 @@ static int mana_dealloc_queues(struct net_device *ndev)
->  {
->  	struct mana_port_context *apc = netdev_priv(ndev);
->  	struct gdma_dev *gd = apc->ac->gdma_dev;
-> +	unsigned long timeout;
->  	struct mana_txq *txq;
-> +	struct sk_buff *skb;
-> +	struct mana_cq *cq;
->  	int i, err;
->  
->  	if (apc->port_is_up)
-> @@ -2348,13 +2351,25 @@ static int mana_dealloc_queues(struct net_device *ndev)
->  	 *
->  	 * Drain all the in-flight TX packets
->  	 */
-> +
-> +	timeout = jiffies + 120 * HZ;
->  	for (i = 0; i < apc->num_queues; i++) {
->  		txq = &apc->tx_qp[i].txq;
-> -
-> -		while (atomic_read(&txq->pending_sends) > 0)
-> +		while (atomic_read(&txq->pending_sends) > 0 &&
-> +		       time_before(jiffies, timeout))
->  			usleep_range(1000, 2000);
->  	}
->  
-> +	for (i = 0; i < apc->num_queues; i++) {
-> +		txq = &apc->tx_qp[i].txq;
-> +		cq = &apc->tx_qp[i].tx_cq;
-> +		while (atomic_read(&txq->pending_sends)) {
-> +			skb = skb_dequeue(&txq->pending_skbs);
-> +			mana_unmap_skb(skb, apc);
-> +			napi_consume_skb(skb, cq->budget);
-> +			atomic_sub(1, &txq->pending_sends);
-> +		}
-> +	}
+> You got the right config file which we are using for testing
+> FVP selftests.
 
-Can we combine these 2 loops into 1 something like this ?
+Sadly, the config link above no longer works (404 file not found).
 
-	for (i = 0; i < apc->num_queues; i++) {
-		txq = &apc->tx_qp[i].txq;
-		cq = &apc->tx_qp[i].tx_cq;
-		while (atomic_read(&txq->pending_sends)) {
-			if (time_before(jiffies, timeout)) {
-				usleep_range(1000, 2000);
-			} else {
-				skb = skb_dequeue(&txq->pending_skbs);
-				mana_unmap_skb(skb, apc);
-				napi_consume_skb(skb, cq->budget);
-				atomic_sub(1, &txq->pending_sends);
-			}
-		}
-	}
->  	/* We're 100% sure the queues can no longer be woken up, because
->  	 * we're sure now mana_poll_tx_cq() can't be running.
->  	 */
+However, I notice that the failure still seems to occur with 6.4:
 
+https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.4/testrun/17767612/suite/log-parser-test/tests/
+
+Please can you point me at the config file for that run? I can't figure
+out which one I need from the web interface.
+
+Will
