@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 225AD73E93E
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 592D973E9CB
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:40:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232280AbjFZSeA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:34:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47902 "EHLO
+        id S232466AbjFZSkP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:40:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232284AbjFZSd7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:33:59 -0400
+        with ESMTP id S232471AbjFZSkN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:40:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1721FDA
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:33:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D073DAC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:40:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9682A60F40
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:33:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E0DC433C0;
-        Mon, 26 Jun 2023 18:33:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6886660EFC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70557C433C0;
+        Mon, 26 Jun 2023 18:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804436;
-        bh=s91xc+b49aRIeahADLlpFRGHjYPIxXCRT0Db06lUIgI=;
+        s=korg; t=1687804811;
+        bh=oWln9belhgx/LvrKwxE+bs+QSjk7FRGBKTwAnqyyOuI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f+4JKL6L1h2dJW3H085hkmB+QesE8bGefpkbPBJZw1xro4hSQLbUyX8I75B3tErNJ
-         9q8D/azD1iYQrKS9bkoSRIbREHzP59pftHkrN9CcvzksWyhDzr6vQs4Qek1fXoawMk
-         J/mnaxEJ6pjiowVJi0mB7T8+e/spMIyxvbU63Qpc=
+        b=NZLrMKREHAbmaqvnQfi6jVSyAvT98wP7vy2HlUQsLha1p8Vccw7uaVo7sbFjNwnWM
+         YDNbesbiXV4crduDtlUJ0DcTlh4zmMwCQZY9xyGXjZ/v8BelcZ1KzZLii+3o3r4P5V
+         D1dphJ+hw+uKVFKQlLZb/lxOUHoMSNJtMYJTW7d0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/170] s390/purgatory: disable branch profiling
+Subject: [PATCH 5.15 50/96] mmc: mvsdio: fix deferred probing
 Date:   Mon, 26 Jun 2023 20:12:05 +0200
-Message-ID: <20230626180807.475253438@linuxfoundation.org>
+Message-ID: <20230626180749.046754183@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,34 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit 03c5c83b70dca3729a3eb488e668e5044bd9a5ea ]
+[ Upstream commit 8d84064da0d4672e74f984e8710f27881137472c ]
 
-Avoid linker error for randomly generated config file that
-has CONFIG_BRANCH_PROFILE_NONE enabled and make it similar
-to riscv, x86 and also to commit 4bf3ec384edf ("s390: disable
-branch profiling for vdso").
+The driver overrides the error codes returned by platform_get_irq() to
+-ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the
+error codes upstream.
 
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20230617203622.6812-5-s.shtylyov@omp.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/purgatory/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/mvsdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/purgatory/Makefile b/arch/s390/purgatory/Makefile
-index d237bc6841cb8..4cbf306b8181f 100644
---- a/arch/s390/purgatory/Makefile
-+++ b/arch/s390/purgatory/Makefile
-@@ -26,6 +26,7 @@ KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
- KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
- KBUILD_CFLAGS += -c -MD -Os -m64 -msoft-float -fno-common
- KBUILD_CFLAGS += -fno-stack-protector
-+KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
- KBUILD_CFLAGS += $(CLANG_FLAGS)
- KBUILD_CFLAGS += $(call cc-option,-fno-PIE)
- KBUILD_AFLAGS := $(filter-out -DCC_USING_EXPOLINE,$(KBUILD_AFLAGS))
+diff --git a/drivers/mmc/host/mvsdio.c b/drivers/mmc/host/mvsdio.c
+index 629efbe639c4f..b4f6a0a2fcb51 100644
+--- a/drivers/mmc/host/mvsdio.c
++++ b/drivers/mmc/host/mvsdio.c
+@@ -704,7 +704,7 @@ static int mvsd_probe(struct platform_device *pdev)
+ 	}
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+-		return -ENXIO;
++		return irq;
+ 
+ 	mmc = mmc_alloc_host(sizeof(struct mvsd_host), &pdev->dev);
+ 	if (!mmc) {
 -- 
 2.39.2
 
