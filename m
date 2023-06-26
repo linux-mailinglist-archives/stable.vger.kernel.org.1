@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 991E673E7C7
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A7EC73E7C8
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231451AbjFZSTH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S231495AbjFZSTH (ORCPT <rfc822;lists+stable@lfdr.de>);
         Mon, 26 Jun 2023 14:19:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34046 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231495AbjFZSTC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD34B10DD
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:18:45 -0700 (PDT)
+        with ESMTP id S231522AbjFZSTD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA27B10EF
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:18:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6196460F1D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2D0C433C8;
-        Mon, 26 Jun 2023 18:18:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D52760F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:18:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E23C433C0;
+        Mon, 26 Jun 2023 18:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803524;
-        bh=rrs4nCHkru8iasTk9B7yIUjabFLcWPWOQER3r64I9c8=;
+        s=korg; t=1687803527;
+        bh=K4QYebQ60DP27ZtCqlZIOQ7hZgXH2RKTld9NEmvCCF8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uYyfj9z1gvlArb6YQDnGhPcvAWq01AdhOZzLn5PLybSZF4dZQ8THBO7/JjEEazN7p
-         lWuj/Vj0/gethZndgtS4Sey+1sp52omitEzYF7OrdQpSJaNey9E2+ZVThtAR3+mwM6
-         UC7Lyr3SuYd61iGdojptElg3qyLqxrhOvQ3wIteU=
+        b=PQlahNIQzBA7+aQMikwzjpQEbdhoqefr4ph/QN/Ghgg54KEty2wOBDgLwX/yq+nEf
+         utd6fnDgFqEFKL+/CWsuA6yGy4/4txFSGaflxzDyFzBoVCvWCHClbgR2lassXJRS11
+         ox7IiUja1Y/x0ggIE5NCjxD53Tp/bMkMVHLbpShc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Starks <jostarks@microsoft.com>,
+        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
         Michael Kelley <mikelley@microsoft.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
         Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.3 062/199] Drivers: hv: vmbus: Fix vmbus_wait_for_unload() to scan present CPUs
-Date:   Mon, 26 Jun 2023 20:09:28 +0200
-Message-ID: <20230626180808.292519267@linuxfoundation.org>
+Subject: [PATCH 6.3 063/199] PCI: hv: Fix a race condition bug in hv_pci_query_relations()
+Date:   Mon, 26 Jun 2023 20:09:29 +0200
+Message-ID: <20230626180808.324407567@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
 References: <20230626180805.643662628@linuxfoundation.org>
@@ -46,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,84 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Kelley <mikelley@microsoft.com>
+From: Dexuan Cui <decui@microsoft.com>
 
-commit 320805ab61e5f1e2a5729ae266e16bec2904050c upstream.
+commit 440b5e3663271b0ffbd4908115044a6a51fb938b upstream.
 
-vmbus_wait_for_unload() may be called in the panic path after other
-CPUs are stopped. vmbus_wait_for_unload() currently loops through
-online CPUs looking for the UNLOAD response message. But the values of
-CONFIG_KEXEC_CORE and crash_kexec_post_notifiers affect the path used
-to stop the other CPUs, and in one of the paths the stopped CPUs
-are removed from cpu_online_mask. This removal happens in both
-x86/x64 and arm64 architectures. In such a case, vmbus_wait_for_unload()
-only checks the panic'ing CPU, and misses the UNLOAD response message
-except when the panic'ing CPU is CPU 0. vmbus_wait_for_unload()
-eventually times out, but only after waiting 100 seconds.
+Since day 1 of the driver, there has been a race between
+hv_pci_query_relations() and survey_child_resources(): during fast
+device hotplug, hv_pci_query_relations() may error out due to
+device-remove and the stack variable 'comp' is no longer valid;
+however, pci_devices_present_work() -> survey_child_resources() ->
+complete() may be running on another CPU and accessing the no-longer-valid
+'comp'. Fix the race by flushing the workqueue before we exit from
+hv_pci_query_relations().
 
-Fix this by looping through *present* CPUs in vmbus_wait_for_unload().
-The cpu_present_mask is not modified by stopping the other CPUs in the
-panic path, nor should it be.
-
-Also, in a CoCo VM the synic_message_page is not allocated in
-hv_synic_alloc(), but is set and cleared in hv_synic_enable_regs()
-and hv_synic_disable_regs() such that it is set only when the CPU is
-online.  If not all present CPUs are online when vmbus_wait_for_unload()
-is called, the synic_message_page might be NULL. Add a check for this.
-
-Fixes: cd95aad55793 ("Drivers: hv: vmbus: handle various crash scenarios")
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 Cc: stable@vger.kernel.org
-Reported-by: John Starks <jostarks@microsoft.com>
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/1684422832-38476-1-git-send-email-mikelley@microsoft.com
+Link: https://lore.kernel.org/r/20230615044451.5580-2-decui@microsoft.com
 Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/channel_mgmt.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/pci/controller/pci-hyperv.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/drivers/hv/channel_mgmt.c
-+++ b/drivers/hv/channel_mgmt.c
-@@ -829,11 +829,22 @@ static void vmbus_wait_for_unload(void)
- 		if (completion_done(&vmbus_connection.unload_event))
- 			goto completed;
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -3308,6 +3308,24 @@ static int hv_pci_query_relations(struct
+ 	if (!ret)
+ 		ret = wait_for_response(hdev, &comp);
  
--		for_each_online_cpu(cpu) {
-+		for_each_present_cpu(cpu) {
- 			struct hv_per_cpu_context *hv_cpu
- 				= per_cpu_ptr(hv_context.cpu_context, cpu);
- 
-+			/*
-+			 * In a CoCo VM the synic_message_page is not allocated
-+			 * in hv_synic_alloc(). Instead it is set/cleared in
-+			 * hv_synic_enable_regs() and hv_synic_disable_regs()
-+			 * such that it is set only when the CPU is online. If
-+			 * not all present CPUs are online, the message page
-+			 * might be NULL, so skip such CPUs.
-+			 */
- 			page_addr = hv_cpu->synic_message_page;
-+			if (!page_addr)
-+				continue;
++	/*
++	 * In the case of fast device addition/removal, it's possible that
++	 * vmbus_sendpacket() or wait_for_response() returns -ENODEV but we
++	 * already got a PCI_BUS_RELATIONS* message from the host and the
++	 * channel callback already scheduled a work to hbus->wq, which can be
++	 * running pci_devices_present_work() -> survey_child_resources() ->
++	 * complete(&hbus->survey_event), even after hv_pci_query_relations()
++	 * exits and the stack variable 'comp' is no longer valid; as a result,
++	 * a hang or a page fault may happen when the complete() calls
++	 * raw_spin_lock_irqsave(). Flush hbus->wq before we exit from
++	 * hv_pci_query_relations() to avoid the issues. Note: if 'ret' is
++	 * -ENODEV, there can't be any more work item scheduled to hbus->wq
++	 * after the flush_workqueue(): see vmbus_onoffer_rescind() ->
++	 * vmbus_reset_channel_cb(), vmbus_rescind_cleanup() ->
++	 * channel->rescind = true.
++	 */
++	flush_workqueue(hbus->wq);
 +
- 			msg = (struct hv_message *)page_addr
- 				+ VMBUS_MESSAGE_SINT;
+ 	return ret;
+ }
  
-@@ -867,11 +878,14 @@ completed:
- 	 * maybe-pending messages on all CPUs to be able to receive new
- 	 * messages after we reconnect.
- 	 */
--	for_each_online_cpu(cpu) {
-+	for_each_present_cpu(cpu) {
- 		struct hv_per_cpu_context *hv_cpu
- 			= per_cpu_ptr(hv_context.cpu_context, cpu);
- 
- 		page_addr = hv_cpu->synic_message_page;
-+		if (!page_addr)
-+			continue;
-+
- 		msg = (struct hv_message *)page_addr + VMBUS_MESSAGE_SINT;
- 		msg->header.message_type = HVMSG_NONE;
- 	}
 
 
