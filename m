@@ -2,50 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F03273E9F1
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D635773EA46
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232078AbjFZSlt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:41:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54378 "EHLO
+        id S232601AbjFZSpU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:45:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232509AbjFZSls (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:41:48 -0400
+        with ESMTP id S230363AbjFZSpS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:45:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6E4DCC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:41:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CCFFAC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:45:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4469E60F45
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:41:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAB3C433C0;
-        Mon, 26 Jun 2023 18:41:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE99960F4B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:45:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5015C433C0;
+        Mon, 26 Jun 2023 18:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804906;
-        bh=OgHqwIY8rGq/HHn1hD0yYLlYuhNWRn90S1CNL2qy43w=;
+        s=korg; t=1687805117;
+        bh=3MFVvBzskfxez+OXlmwnCza4I97JtrDApIf947jMKUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=09zZEsvVsztSllJHYaqVkxNhCk9+XNYrSgmQ1Ahh9Y2x/6ZUFlbB6U/7EDzYJdKbE
-         nN3MBQsYyk5pJ5rTKFmoYBfyzfofvtGiqDcJEabJJPrWeB7DEZdBhoNOrFzPwlJGi5
-         GynuspvdKtng0MLKfx9zjkkrJEjnXiL/ec2ESccI=
+        b=bcCUsferX5N995iUQzw+SpcTvshZcXzIV84nxutpvZrRizh9ej9wKpUFc0JxaWAc8
+         0UImRYW5zgX9vCywZ/ViSbqzT86clMb0pYGsBH8uoErl+Ou8aa7Y+whz5Ub7XcFfCV
+         ED9oF0iKV+0YZw7xAcKFtWEisQE+y2RzC1dWlZX4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Costa Sapuntzakis <costa@purestorage.com>,
-        Randy Jennings <randyj@purestorage.com>,
-        Uday Shankar <ushankar@purestorage.com>,
-        Hannes Reinecke <hare@suse.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 82/96] nvme: double KA polling frequency to avoid KATO with TBKAS on
+Subject: [PATCH 5.10 55/81] netfilter: nfnetlink_osf: fix module autoload
 Date:   Mon, 26 Jun 2023 20:12:37 +0200
-Message-ID: <20230626180750.432609671@linuxfoundation.org>
+Message-ID: <20230626180746.701701245@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,76 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit ea4d453b9ec9ea279c39744cd0ecb47ef48ede35 ]
+[ Upstream commit 62f9a68a36d4441a6c412b81faed102594bc6670 ]
 
-With TBKAS on, the completion of one command can defer sending a
-keep alive for up to twice the delay between successive runs of
-nvme_keep_alive_work. The current delay of KATO / 2 thus makes it
-possible for one command to defer sending a keep alive for up to
-KATO, which can result in the controller detecting a KATO. The following
-trace demonstrates the issue, taking KATO = 8 for simplicity:
+Move the alias from xt_osf to nfnetlink_osf.
 
-1. t = 0: run nvme_keep_alive_work, no keep-alive sent
-2. t = ε: I/O completion seen, set comp_seen = true
-3. t = 4: run nvme_keep_alive_work, see comp_seen == true,
-          skip sending keep-alive, set comp_seen = false
-4. t = 8: run nvme_keep_alive_work, see comp_seen == false,
-          send a keep-alive command.
-
-Here, there is a delay of 8 - ε between receiving a command completion
-and sending the next command. With ε small, the controller is likely to
-detect a keep alive timeout.
-
-Fix this by running nvme_keep_alive_work with a delay of KATO / 4
-whenever TBKAS is on. Going through the above trace now gives us a
-worst-case delay of 4 - ε, which is in line with the recommendation of
-sending a command every KATO / 2 in the NVMe specification.
-
-Reported-by: Costa Sapuntzakis <costa@purestorage.com>
-Reported-by: Randy Jennings <randyj@purestorage.com>
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: f9324952088f ("netfilter: nfnetlink_osf: extract nfnetlink_subsystem code from xt_osf.c")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ net/netfilter/nfnetlink_osf.c | 1 +
+ net/netfilter/xt_osf.c        | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index e5318b38c6624..98a7649a0f061 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1247,9 +1247,25 @@ EXPORT_SYMBOL_NS_GPL(nvme_execute_passthru_rq, NVME_TARGET_PASSTHRU);
-  *   The host should send Keep Alive commands at half of the Keep Alive Timeout
-  *   accounting for transport roundtrip times [..].
-  */
-+static unsigned long nvme_keep_alive_work_period(struct nvme_ctrl *ctrl)
-+{
-+	unsigned long delay = ctrl->kato * HZ / 2;
-+
-+	/*
-+	 * When using Traffic Based Keep Alive, we need to run
-+	 * nvme_keep_alive_work at twice the normal frequency, as one
-+	 * command completion can postpone sending a keep alive command
-+	 * by up to twice the delay between runs.
-+	 */
-+	if (ctrl->ctratt & NVME_CTRL_ATTR_TBKAS)
-+		delay /= 2;
-+	return delay;
-+}
-+
- static void nvme_queue_keep_alive_work(struct nvme_ctrl *ctrl)
- {
--	queue_delayed_work(nvme_wq, &ctrl->ka_work, ctrl->kato * HZ / 2);
-+	queue_delayed_work(nvme_wq, &ctrl->ka_work,
-+			   nvme_keep_alive_work_period(ctrl));
- }
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 51e3953b414c0..9dbaa5ce24e51 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -440,3 +440,4 @@ module_init(nfnl_osf_init);
+ module_exit(nfnl_osf_fini);
  
- static void nvme_keep_alive_end_io(struct request *rq, blk_status_t status)
+ MODULE_LICENSE("GPL");
++MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_OSF);
+diff --git a/net/netfilter/xt_osf.c b/net/netfilter/xt_osf.c
+index e1990baf3a3b7..dc9485854002a 100644
+--- a/net/netfilter/xt_osf.c
++++ b/net/netfilter/xt_osf.c
+@@ -71,4 +71,3 @@ MODULE_AUTHOR("Evgeniy Polyakov <zbr@ioremap.net>");
+ MODULE_DESCRIPTION("Passive OS fingerprint matching.");
+ MODULE_ALIAS("ipt_osf");
+ MODULE_ALIAS("ip6t_osf");
+-MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_OSF);
 -- 
 2.39.2
 
