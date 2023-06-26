@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 344BB73E7D0
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D18B73E8BB
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:29:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231429AbjFZSTP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34120 "EHLO
+        id S232151AbjFZS3D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:29:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231519AbjFZSTN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D008CC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:12 -0700 (PDT)
+        with ESMTP id S232134AbjFZS2s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:28:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B18B2947
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:28:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A63B560F39
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF03EC433C9;
-        Mon, 26 Jun 2023 18:19:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC50960EFC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:28:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8410C433C8;
+        Mon, 26 Jun 2023 18:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803551;
-        bh=lOfkq2W/1Zmj3DtxsmhBZI+VgxP3FTC27/ZfUqUclMo=;
+        s=korg; t=1687804089;
+        bh=I0XL9R/ZmdmMy2WOqtvmlVJBWJSmfMhTytrrngAA8Mg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZmuMjZ5ee+JOe/penihsWc/tKecJxNj1rOfvFGp2h2RHoV3ryKmpxiB16S6eVpI08
-         PTtt1HavoaQdKuT0YCnoD109cA3DoTIhzOG3u/fTkr954XgAHAbfPfC9L+l5P0VKIb
-         vTdyqerWljV1dEWZMaR/ueyKMjVRj0i2/weuMYxo=
+        b=1WTpndH/4eoSgAR+rB66saXYz1BbjmfR93yowxOdS2UdpuZDHHUwxQiwg3g1CnYgX
+         WuDTGiA1MLlz5GiljZt9UPSEL6fOb4Kbj1WjNGvuk4Rcd4DM+wSE84ZOkopm/SRePy
+         pkwkxMcAjy7tFI36RSz3TDBE9JNOXZ+0XeZu9wcI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benedict Wong <benedictwong@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 100/199] xfrm: Treat already-verified secpath entries as optional
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 037/170] selftests: mptcp: diag: skip listen tests if not supported
 Date:   Mon, 26 Jun 2023 20:10:06 +0200
-Message-ID: <20230626180810.022111240@linuxfoundation.org>
+Message-ID: <20230626180802.201372935@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,100 +55,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benedict Wong <benedictwong@google.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit 1f8b6df6a997a430b0c48b504638154b520781ad ]
+commit dc97251bf0b70549c76ba261516c01b8096771c5 upstream.
 
-This change allows inbound traffic through nested IPsec tunnels to
-successfully match policies and templates, while retaining the secpath
-stack trace as necessary for netfilter policies.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-Specifically, this patch marks secpath entries that have already matched
-against a relevant policy as having been verified, allowing it to be
-treated as optional and skipped after a tunnel decapsulation (during
-which the src/dst/proto/etc may have changed, and the correct policy
-chain no long be resolvable).
+One of them is the listen diag dump support introduced by
+commit 4fa39b701ce9 ("mptcp: listen diag dump support").
 
-This approach is taken as opposed to the iteration in b0355dbbf13c,
-where the secpath was cleared, since that breaks subsequent validations
-that rely on the existence of the secpath entries (netfilter policies, or
-transport-in-tunnel mode, where policies remain resolvable).
+It looks like there is no good pre-check to do here, i.e. dedicated
+function available in kallsyms. Instead, we try to get info if nothing
+is returned, the test is marked as skipped.
 
-Fixes: b0355dbbf13c ("Fix XFRM-I support for nested ESP tunnels")
-Test: Tested against Android Kernel Unit Tests
-Test: Tested against Android CTS
-Signed-off-by: Benedict Wong <benedictwong@google.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That's not ideal because something could be wrong with the feature and
+instead of reporting an error, the test could be marked as skipped. If
+we know in advanced that the feature is supposed to be supported, the
+tester can set SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES env var to 1: in
+this case the test will report an error instead of marking the test as
+skipped if nothing is returned.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: f2ae0fa68e28 ("selftests/mptcp: add diag listen tests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xfrm.h     |  1 +
- net/xfrm/xfrm_input.c  |  1 +
- net/xfrm/xfrm_policy.c | 12 ++++++++++++
- 3 files changed, 14 insertions(+)
+ tools/testing/selftests/net/mptcp/diag.sh |   47 +++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 23 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 3e1f70e8e4247..47ecf1d4719b0 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -1049,6 +1049,7 @@ struct xfrm_offload {
- struct sec_path {
- 	int			len;
- 	int			olen;
-+	int			verified_cnt;
+--- a/tools/testing/selftests/net/mptcp/diag.sh
++++ b/tools/testing/selftests/net/mptcp/diag.sh
+@@ -42,27 +42,39 @@ fi
  
- 	struct xfrm_state	*xvec[XFRM_MAX_DEPTH];
- 	struct xfrm_offload	ovec[XFRM_MAX_OFFLOAD_DEPTH];
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index 436d29640ac2c..9f294a20dcece 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -131,6 +131,7 @@ struct sec_path *secpath_set(struct sk_buff *skb)
- 	memset(sp->ovec, 0, sizeof(sp->ovec));
- 	sp->olen = 0;
- 	sp->len = 0;
-+	sp->verified_cnt = 0;
+ __chk_nr()
+ {
+-	local condition="$1"
++	local command="$1"
+ 	local expected=$2
+-	local msg nr
++	local msg="$3"
++	local skip="${4:-SKIP}"
++	local nr
  
- 	return sp;
+-	shift 2
+-	msg=$*
+-	nr=$(ss -inmHMN $ns | $condition)
++	nr=$(eval $command)
+ 
+ 	printf "%-50s" "$msg"
+ 	if [ $nr != $expected ]; then
+-		echo "[ fail ] expected $expected found $nr"
+-		ret=$test_cnt
++		if [ $nr = "$skip" ] && ! mptcp_lib_expect_all_features; then
++			echo "[ skip ] Feature probably not supported"
++		else
++			echo "[ fail ] expected $expected found $nr"
++			ret=$test_cnt
++		fi
+ 	else
+ 		echo "[  ok  ]"
+ 	fi
+ 	test_cnt=$((test_cnt+1))
  }
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 6d15788b51231..ff58ce6c030ca 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3349,6 +3349,13 @@ xfrm_policy_ok(const struct xfrm_tmpl *tmpl, const struct sec_path *sp, int star
- 		if (xfrm_state_ok(tmpl, sp->xvec[idx], family, if_id))
- 			return ++idx;
- 		if (sp->xvec[idx]->props.mode != XFRM_MODE_TRANSPORT) {
-+			if (idx < sp->verified_cnt) {
-+				/* Secpath entry previously verified, consider optional and
-+				 * continue searching
-+				 */
-+				continue;
-+			}
-+
- 			if (start == -1)
- 				start = -2-idx;
- 			break;
-@@ -3723,6 +3730,9 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
- 		 * Order is _important_. Later we will implement
- 		 * some barriers, but at the moment barriers
- 		 * are implied between each two transformations.
-+		 * Upon success, marks secpath entries as having been
-+		 * verified to allow them to be skipped in future policy
-+		 * checks (e.g. nested tunnels).
- 		 */
- 		for (i = xfrm_nr-1, k = 0; i >= 0; i--) {
- 			k = xfrm_policy_ok(tpp[i], sp, k, family, if_id);
-@@ -3741,6 +3751,8 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
- 		}
  
- 		xfrm_pols_put(pols, npols);
-+		sp->verified_cnt = k;
++__chk_msk_nr()
++{
++	local condition=$1
++	shift 1
 +
- 		return 1;
- 	}
- 	XFRM_INC_STATS(net, LINUX_MIB_XFRMINPOLBLOCK);
--- 
-2.39.2
-
++	__chk_nr "ss -inmHMN $ns | $condition" "$@"
++}
++
+ chk_msk_nr()
+ {
+-	__chk_nr "grep -c token:" $*
++	__chk_msk_nr "grep -c token:" "$@"
+ }
+ 
+ wait_msk_nr()
+@@ -100,37 +112,26 @@ wait_msk_nr()
+ 
+ chk_msk_fallback_nr()
+ {
+-		__chk_nr "grep -c fallback" $*
++	__chk_msk_nr "grep -c fallback" "$@"
+ }
+ 
+ chk_msk_remote_key_nr()
+ {
+-		__chk_nr "grep -c remote_key" $*
++	__chk_msk_nr "grep -c remote_key" "$@"
+ }
+ 
+ __chk_listen()
+ {
+ 	local filter="$1"
+ 	local expected=$2
++	local msg="$3"
+ 
+-	shift 2
+-	msg=$*
+-
+-	nr=$(ss -N $ns -Ml "$filter" | grep -c LISTEN)
+-	printf "%-50s" "$msg"
+-
+-	if [ $nr != $expected ]; then
+-		echo "[ fail ] expected $expected found $nr"
+-		ret=$test_cnt
+-	else
+-		echo "[  ok  ]"
+-	fi
++	__chk_nr "ss -N $ns -Ml '$filter' | grep -c LISTEN" "$expected" "$msg" 0
+ }
+ 
+ chk_msk_listen()
+ {
+ 	lport=$1
+-	local msg="check for listen socket"
+ 
+ 	# destination port search should always return empty list
+ 	__chk_listen "dport $lport" 0 "listen match for dport $lport"
 
 
