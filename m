@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F057973E7DF
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B0B73E8EC
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231570AbjFZSUD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:20:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34604 "EHLO
+        id S232206AbjFZSaq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:30:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231721AbjFZSTy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83A6A94
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:53 -0700 (PDT)
+        with ESMTP id S232370AbjFZSaL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE87F171A
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 207D060EFC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2470AC433C0;
-        Mon, 26 Jun 2023 18:19:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5219060F4B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAE7C433C0;
+        Mon, 26 Jun 2023 18:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803592;
-        bh=hhEiur+hRRcMVfgVgFHDp3d7Ojq3kO+TaFm1uCZoSYk=;
+        s=korg; t=1687804209;
+        bh=l15jnZ/i7qE/A3PEVGMmo0QkMs+AmSrGDA1I8OenQxo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D0zSJk56BjzBiuK3UhmtDIwv+x1MH8Iu37018Iz6z4xkNBnmEx/dJH6ZxqtAv8BRR
-         geJTTR5JX80zM7kH3lxEGhj3aietVQfslmsR4xM/JdQyFVmu8hkth70IEx22PKHc1E
-         09Aw0uRVHNiSsmvulct3xtztPiaaMemdmag4FINY=
+        b=Fw2kgyPDKt5CUjE3at3VLITIO/oEkbntsgLd2xW1GqFrivIbb1FiklyqsTaKYc7rG
+         r3D1JGG5kEvfhwlT8GS8RWvuz2dbZudc14+cBJ59hbXUGld5UOX4NCXn+5+qsx/hbp
+         Zr157SzbmHHi8QNccHhJZgdEGbXFs8d1p973bmtA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Wahren <stefan.wahren@i2se.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 113/199] net: qca_spi: Avoid high load if QCA7000 is not available
+        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.1 050/170] PCI: hv: Fix a race condition bug in hv_pci_query_relations()
 Date:   Mon, 26 Jun 2023 20:10:19 +0200
-Message-ID: <20230626180810.608016615@linuxfoundation.org>
+Message-ID: <20230626180802.812101139@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,40 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stefan Wahren <stefan.wahren@i2se.com>
+From: Dexuan Cui <decui@microsoft.com>
 
-[ Upstream commit 92717c2356cb62c89e8a3dc37cbbab2502562524 ]
+commit 440b5e3663271b0ffbd4908115044a6a51fb938b upstream.
 
-In case the QCA7000 is not available via SPI (e.g. in reset),
-the driver will cause a high load. The reason for this is
-that the synchronization is never finished and schedule()
-is never called. Since the synchronization is not timing
-critical, it's safe to drop this from the scheduling condition.
+Since day 1 of the driver, there has been a race between
+hv_pci_query_relations() and survey_child_resources(): during fast
+device hotplug, hv_pci_query_relations() may error out due to
+device-remove and the stack variable 'comp' is no longer valid;
+however, pci_devices_present_work() -> survey_child_resources() ->
+complete() may be running on another CPU and accessing the no-longer-valid
+'comp'. Fix the race by flushing the workqueue before we exit from
+hv_pci_query_relations().
 
-Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230615044451.5580-2-decui@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/qca_spi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pci/controller/pci-hyperv.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index c865a4be05eec..4a1b94e5a8ea9 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -582,8 +582,7 @@ qcaspi_spi_thread(void *data)
- 	while (!kthread_should_stop()) {
- 		set_current_state(TASK_INTERRUPTIBLE);
- 		if ((qca->intr_req == qca->intr_svc) &&
--		    (qca->txr.skb[qca->txr.head] == NULL) &&
--		    (qca->sync == QCASPI_SYNC_READY))
-+		    !qca->txr.skb[qca->txr.head])
- 			schedule();
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -3321,6 +3321,24 @@ static int hv_pci_query_relations(struct
+ 	if (!ret)
+ 		ret = wait_for_response(hdev, &comp);
  
- 		set_current_state(TASK_RUNNING);
--- 
-2.39.2
-
++	/*
++	 * In the case of fast device addition/removal, it's possible that
++	 * vmbus_sendpacket() or wait_for_response() returns -ENODEV but we
++	 * already got a PCI_BUS_RELATIONS* message from the host and the
++	 * channel callback already scheduled a work to hbus->wq, which can be
++	 * running pci_devices_present_work() -> survey_child_resources() ->
++	 * complete(&hbus->survey_event), even after hv_pci_query_relations()
++	 * exits and the stack variable 'comp' is no longer valid; as a result,
++	 * a hang or a page fault may happen when the complete() calls
++	 * raw_spin_lock_irqsave(). Flush hbus->wq before we exit from
++	 * hv_pci_query_relations() to avoid the issues. Note: if 'ret' is
++	 * -ENODEV, there can't be any more work item scheduled to hbus->wq
++	 * after the flush_workqueue(): see vmbus_onoffer_rescind() ->
++	 * vmbus_reset_channel_cb(), vmbus_rescind_cleanup() ->
++	 * channel->rescind = true.
++	 */
++	flush_workqueue(hbus->wq);
++
+ 	return ret;
+ }
+ 
 
 
