@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24ADF73E8FF
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:31:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A982B73E761
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232229AbjFZSbd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:31:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45540 "EHLO
+        id S229871AbjFZSOy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:14:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232231AbjFZSbN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:31:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63F7F198C
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:31:00 -0700 (PDT)
+        with ESMTP id S231264AbjFZSOZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:14:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF0AE171A
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:14:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC11960F4F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBC8C433C0;
-        Mon, 26 Jun 2023 18:30:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B4C060F52
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:14:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78564C433C0;
+        Mon, 26 Jun 2023 18:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804259;
-        bh=hhEiur+hRRcMVfgVgFHDp3d7Ojq3kO+TaFm1uCZoSYk=;
+        s=korg; t=1687803262;
+        bh=vKttgYsGTa1IqvVskRkA35W3aWIXdAtwe/X4nEs6ElI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=muJIMZA67pQQc/vqCdPZDPCOt7/HYYG8iLVnpDWTao3/4+X2PMwNRRZqBb4B0Q5Wd
-         FpDCFIJu0Ps12SmYqI+vXOUnhOUXnuhEftlXzOQf17fOgwvZ7xman8ZudbEHfFvuAg
-         9h/R11PCTNYfmFyXxf32yDIMxFDz3QMJOiEkMhKk=
+        b=PSNhH/bfZUps0cHCVBLWz3vuWSY2+o27N4guc1iiAvkC4ObvdnXqKCx9FLgPLWsfQ
+         E2PftX1OXM7U5d6L7u4uENSWmPLGWVDG5j5DMeSHjDc9kUJD0wYsSfS4KnhLGajcMF
+         Z30daXgTKA+W+LnwABS83X3csrB0flnVLO2piYcU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Wahren <stefan.wahren@i2se.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/170] net: qca_spi: Avoid high load if QCA7000 is not available
-Date:   Mon, 26 Jun 2023 20:11:05 +0200
-Message-ID: <20230626180804.868193679@linuxfoundation.org>
+        patches@lists.linux.dev, John Starks <jostarks@microsoft.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 4.14 04/26] Drivers: hv: vmbus: Fix vmbus_wait_for_unload() to scan present CPUs
+Date:   Mon, 26 Jun 2023 20:11:06 +0200
+Message-ID: <20230626180733.851172577@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
+References: <20230626180733.699092073@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,40 +56,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stefan Wahren <stefan.wahren@i2se.com>
+From: Michael Kelley <mikelley@microsoft.com>
 
-[ Upstream commit 92717c2356cb62c89e8a3dc37cbbab2502562524 ]
+commit 320805ab61e5f1e2a5729ae266e16bec2904050c upstream.
 
-In case the QCA7000 is not available via SPI (e.g. in reset),
-the driver will cause a high load. The reason for this is
-that the synchronization is never finished and schedule()
-is never called. Since the synchronization is not timing
-critical, it's safe to drop this from the scheduling condition.
+vmbus_wait_for_unload() may be called in the panic path after other
+CPUs are stopped. vmbus_wait_for_unload() currently loops through
+online CPUs looking for the UNLOAD response message. But the values of
+CONFIG_KEXEC_CORE and crash_kexec_post_notifiers affect the path used
+to stop the other CPUs, and in one of the paths the stopped CPUs
+are removed from cpu_online_mask. This removal happens in both
+x86/x64 and arm64 architectures. In such a case, vmbus_wait_for_unload()
+only checks the panic'ing CPU, and misses the UNLOAD response message
+except when the panic'ing CPU is CPU 0. vmbus_wait_for_unload()
+eventually times out, but only after waiting 100 seconds.
 
-Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by looping through *present* CPUs in vmbus_wait_for_unload().
+The cpu_present_mask is not modified by stopping the other CPUs in the
+panic path, nor should it be.
+
+Also, in a CoCo VM the synic_message_page is not allocated in
+hv_synic_alloc(), but is set and cleared in hv_synic_enable_regs()
+and hv_synic_disable_regs() such that it is set only when the CPU is
+online.  If not all present CPUs are online when vmbus_wait_for_unload()
+is called, the synic_message_page might be NULL. Add a check for this.
+
+Fixes: cd95aad55793 ("Drivers: hv: vmbus: handle various crash scenarios")
+Cc: stable@vger.kernel.org
+Reported-by: John Starks <jostarks@microsoft.com>
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://lore.kernel.org/r/1684422832-38476-1-git-send-email-mikelley@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/qca_spi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/hv/channel_mgmt.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index c865a4be05eec..4a1b94e5a8ea9 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -582,8 +582,7 @@ qcaspi_spi_thread(void *data)
- 	while (!kthread_should_stop()) {
- 		set_current_state(TASK_INTERRUPTIBLE);
- 		if ((qca->intr_req == qca->intr_svc) &&
--		    (qca->txr.skb[qca->txr.head] == NULL) &&
--		    (qca->sync == QCASPI_SYNC_READY))
-+		    !qca->txr.skb[qca->txr.head])
- 			schedule();
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -803,11 +803,22 @@ static void vmbus_wait_for_unload(void)
+ 		if (completion_done(&vmbus_connection.unload_event))
+ 			goto completed;
  
- 		set_current_state(TASK_RUNNING);
--- 
-2.39.2
-
+-		for_each_online_cpu(cpu) {
++		for_each_present_cpu(cpu) {
+ 			struct hv_per_cpu_context *hv_cpu
+ 				= per_cpu_ptr(hv_context.cpu_context, cpu);
+ 
++			/*
++			 * In a CoCo VM the synic_message_page is not allocated
++			 * in hv_synic_alloc(). Instead it is set/cleared in
++			 * hv_synic_enable_regs() and hv_synic_disable_regs()
++			 * such that it is set only when the CPU is online. If
++			 * not all present CPUs are online, the message page
++			 * might be NULL, so skip such CPUs.
++			 */
+ 			page_addr = hv_cpu->synic_message_page;
++			if (!page_addr)
++				continue;
++
+ 			msg = (struct hv_message *)page_addr
+ 				+ VMBUS_MESSAGE_SINT;
+ 
+@@ -841,11 +852,14 @@ completed:
+ 	 * maybe-pending messages on all CPUs to be able to receive new
+ 	 * messages after we reconnect.
+ 	 */
+-	for_each_online_cpu(cpu) {
++	for_each_present_cpu(cpu) {
+ 		struct hv_per_cpu_context *hv_cpu
+ 			= per_cpu_ptr(hv_context.cpu_context, cpu);
+ 
+ 		page_addr = hv_cpu->synic_message_page;
++		if (!page_addr)
++			continue;
++
+ 		msg = (struct hv_message *)page_addr + VMBUS_MESSAGE_SINT;
+ 		msg->header.message_type = HVMSG_NONE;
+ 	}
 
 
