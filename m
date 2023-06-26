@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83EE473E97A
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6574273E9DC
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:40:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230447AbjFZSga (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:36:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50020 "EHLO
+        id S232489AbjFZSks (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:40:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232389AbjFZSg3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:36:29 -0400
+        with ESMTP id S232481AbjFZSkq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:40:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7381F9B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:36:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CED0CC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:40:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10E6360F45
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:36:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17558C433CA;
-        Mon, 26 Jun 2023 18:36:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2ABA060F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:40:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34036C433C0;
+        Mon, 26 Jun 2023 18:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804587;
-        bh=Nxtd4XMA5ffMm4ysCR0ViB/Or9xadGAZ+fOHNHVy0TQ=;
+        s=korg; t=1687804844;
+        bh=qPdjSeRTJmgO58+2QftlPctk6GmTfbQ6c2FZDO7jRR0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uEOoIofNU/pMVTLFgV1NAauwdn/2VZjfFKLxMICTKrCE5/w3lU9LNuCmLexJROfa6
-         L97xQEKE+GtH09r2mVBVr19WddKqqsIpHjxUbI9j22qREmNoX1xE3C/aGK4S3BI6or
-         PTitzyvH69AFwJA/gkeoDErVsGfTvr5BAZJo1CKw=
+        b=lS2+IIV9CTQeiqx3EhLUkCHAd1gYEsULSks8hvJKK6csOQnkn+ThliMPgm62mxR7e
+         lT9OOP+fux3h8IAqF3tCLs44LT1IcfUigGW/ztKZRHjPQ7TpMpubcSPGR1oDLK2SKE
+         LCAMgDPssd/l/7cMwD7olhButH14mA+PNRPyaO7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev,
+        Ross Lagerwall <ross.lagerwall@citrix.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 35/60] mmc: sh_mmcif: fix deferred probing
-Date:   Mon, 26 Jun 2023 20:12:14 +0200
-Message-ID: <20230626180740.963399688@linuxfoundation.org>
+Subject: [PATCH 5.15 60/96] be2net: Extend xmit workaround to BE3 chip
+Date:   Mon, 26 Jun 2023 20:12:15 +0200
+Message-ID: <20230626180749.439181577@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Ross Lagerwall <ross.lagerwall@citrix.com>
 
-[ Upstream commit 5b067d7f855c61df7f8e2e8ccbcee133c282415e ]
+[ Upstream commit 7580e0a78eb29e7bb1a772eba4088250bbb70d41 ]
 
-The driver overrides the error codes returned by platform_get_irq() to
--ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the
-error codes upstream.
+We have seen a bug where the NIC incorrectly changes the length in the
+IP header of a padded packet to include the padding bytes. The driver
+already has a workaround for this so do the workaround for this NIC too.
+This resolves the issue.
 
-Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20230617203622.6812-11-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+The NIC in question identifies itself as follows:
+
+[    8.828494] be2net 0000:02:00.0: FW version is 10.7.110.31
+[    8.834759] be2net 0000:02:00.0: Emulex OneConnect(be3): PF FLEX10 port 1
+
+02:00.0 Ethernet controller: Emulex Corporation OneConnect 10Gb NIC (be3) (rev 01)
+
+Fixes: ca34fe38f06d ("be2net: fix wrong usage of adapter->generation")
+Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+Link: https://lore.kernel.org/r/20230616164549.2863037-1-ross.lagerwall@citrix.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sh_mmcif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/emulex/benet/be_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
-index 98c575de43c75..ed18c233c7864 100644
---- a/drivers/mmc/host/sh_mmcif.c
-+++ b/drivers/mmc/host/sh_mmcif.c
-@@ -1395,7 +1395,7 @@ static int sh_mmcif_probe(struct platform_device *pdev)
- 	irq[0] = platform_get_irq(pdev, 0);
- 	irq[1] = platform_get_irq_optional(pdev, 1);
- 	if (irq[0] < 0)
--		return -ENXIO;
-+		return irq[0];
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	reg = devm_ioremap_resource(dev, res);
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index 361c1c87c1830..e874b907bfbdf 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -1136,8 +1136,8 @@ static struct sk_buff *be_lancer_xmit_workarounds(struct be_adapter *adapter,
+ 	eth_hdr_len = ntohs(skb->protocol) == ETH_P_8021Q ?
+ 						VLAN_ETH_HLEN : ETH_HLEN;
+ 	if (skb->len <= 60 &&
+-	    (lancer_chip(adapter) || skb_vlan_tag_present(skb)) &&
+-	    is_ipv4_pkt(skb)) {
++	    (lancer_chip(adapter) || BE3_chip(adapter) ||
++	     skb_vlan_tag_present(skb)) && is_ipv4_pkt(skb)) {
+ 		ip = (struct iphdr *)ip_hdr(skb);
+ 		pskb_trim(skb, eth_hdr_len + ntohs(ip->tot_len));
+ 	}
 -- 
 2.39.2
 
