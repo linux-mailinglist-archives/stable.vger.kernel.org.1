@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41D2C73E8A7
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 435B473E7B1
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:17:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231859AbjFZS2O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38194 "EHLO
+        id S231283AbjFZSRp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:17:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232114AbjFZS1n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:27:43 -0400
+        with ESMTP id S231364AbjFZSRp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:17:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A5F02954
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:27:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4F7E74
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:17:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 875A660F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:27:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC49C433C0;
-        Mon, 26 Jun 2023 18:27:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45E6F60F21
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:17:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5470AC433C8;
+        Mon, 26 Jun 2023 18:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804036;
-        bh=opLz/IE6HuML0EPEBNkoNBWypqsBM4bom6q3CeTrcPg=;
+        s=korg; t=1687803462;
+        bh=rETuzVcX12314GtalFMQien40k2C25yqlrDrg5bOBcM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AwCXPJPF4PYjuleqQDsVo9z5jw5KmT4DDWAZ/y6bxj0k5qyJFknpxw9NsLME6GrMv
-         rUWFHcTUcXnRri4pn4isUi7Q3lBkFKGqH3RNeWajjksEJNTjS2eJ7fb06f4n5Uf6qj
-         LS5TPNw4HsJffGTmvNugSUPJuKeGGtQhy1V2paXM=
+        b=w2RSLu/VYjwQd6rJQEvWz421HD5m3VGCYihjDo4wvRjlMyFGaiFA6/9gpykmaHeYY
+         BLF+azllyrvSMpYSTpG4Uh3WL49TOre7b7hmvLQ/JnUHyAocqvBKezj6HBkY61+4YJ
+         rZP5avuiOTyz0hZeWKD6O0Bpy2PIIWKnTgr9ifV8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Florian Lehner <dev@der-flo.net>,
-        Javier Honduvilla Coto <javierhonduco@gmail.com>,
-        Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.1 007/170] mm: Fix copy_from_user_nofault().
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Christoph Paasch <cpaasch@apple.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.3 070/199] mptcp: handle correctly disconnect() failures
 Date:   Mon, 26 Jun 2023 20:09:36 +0200
-Message-ID: <20230626180800.843434879@linuxfoundation.org>
+Message-ID: <20230626180808.600098813@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,86 +56,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit d319f344561de23e810515d109c7278919bff7b0 upstream.
+commit c2b2ae3925b65070adb27d5a31a31c376f26dec7 upstream.
 
-There are several issues with copy_from_user_nofault():
+Currently the mptcp code has assumes that disconnect() can fail only
+at mptcp_sendmsg_fastopen() time - to avoid a deadlock scenario - and
+don't even bother returning an error code.
 
-- access_ok() is designed for user context only and for that reason
-it has WARN_ON_IN_IRQ() which triggers when bpf, kprobe, eprobe
-and perf on ppc are calling it from irq.
+Soon mptcp_disconnect() will handle more error conditions: let's track
+them explicitly.
 
-- it's missing nmi_uaccess_okay() which is a nop on all architectures
-except x86 where it's required.
-The comment in arch/x86/mm/tlb.c explains the details why it's necessary.
-Calling copy_from_user_nofault() from bpf, [ke]probe without this check is not safe.
+As a bonus, explicitly annotate TCP-level disconnect as not failing:
+the mptcp code never blocks for event on the subflows.
 
-- __copy_from_user_inatomic() under CONFIG_HARDENED_USERCOPY is calling
-check_object_size()->__check_object_size()->check_heap_object()->find_vmap_area()->spin_lock()
-which is not safe to do from bpf, [ke]probe and perf due to potential deadlock.
-
-Fix all three issues. At the end the copy_from_user_nofault() becomes
-equivalent to copy_from_user_nmi() from safety point of view with
-a difference in the return value.
-
-Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Florian Lehner <dev@der-flo.net>
-Tested-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Tested-by: Florian Lehner <dev@der-flo.net>
-Link: https://lore.kernel.org/r/20230410174345.4376-2-dev@der-flo.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Cc: Javier Honduvilla Coto <javierhonduco@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: 7d803344fdc3 ("mptcp: fix deadlock in fastopen error path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Christoph Paasch <cpaasch@apple.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/maccess.c  |   16 +++++++++++-----
- mm/usercopy.c |    2 +-
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ net/mptcp/protocol.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/mm/maccess.c
-+++ b/mm/maccess.c
-@@ -5,6 +5,7 @@
- #include <linux/export.h>
- #include <linux/mm.h>
- #include <linux/uaccess.h>
-+#include <asm/tlb.h>
- 
- bool __weak copy_from_kernel_nofault_allowed(const void *unsafe_src,
- 		size_t size)
-@@ -113,11 +114,16 @@ Efault:
- long copy_from_user_nofault(void *dst, const void __user *src, size_t size)
- {
- 	long ret = -EFAULT;
--	if (access_ok(src, size)) {
--		pagefault_disable();
--		ret = __copy_from_user_inatomic(dst, src, size);
--		pagefault_enable();
--	}
-+
-+	if (!__access_ok(src, size))
-+		return ret;
-+
-+	if (!nmi_uaccess_okay())
-+		return ret;
-+
-+	pagefault_disable();
-+	ret = __copy_from_user_inatomic(dst, src, size);
-+	pagefault_enable();
- 
- 	if (ret)
- 		return -EFAULT;
---- a/mm/usercopy.c
-+++ b/mm/usercopy.c
-@@ -172,7 +172,7 @@ static inline void check_heap_object(con
- 		return;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1696,7 +1696,13 @@ static int mptcp_sendmsg_fastopen(struct
+ 		if (ret && ret != -EINPROGRESS && ret != -ERESTARTSYS && ret != -EINTR)
+ 			*copied_syn = 0;
+ 	} else if (ret && ret != -EINPROGRESS) {
+-		mptcp_disconnect(sk, 0);
++		/* The disconnect() op called by tcp_sendmsg_fastopen()/
++		 * __inet_stream_connect() can fail, due to looking check,
++		 * see mptcp_disconnect().
++		 * Attempt it again outside the problematic scope.
++		 */
++		if (!mptcp_disconnect(sk, 0))
++			sk->sk_socket->state = SS_UNCONNECTED;
  	}
  
--	if (is_vmalloc_addr(ptr)) {
-+	if (is_vmalloc_addr(ptr) && !pagefault_disabled()) {
- 		struct vmap_area *area = find_vmap_area(addr);
+ 	return ret;
+@@ -2360,7 +2366,10 @@ static void __mptcp_close_ssk(struct soc
  
- 		if (!area)
+ 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
+ 	if (!dispose_it) {
+-		tcp_disconnect(ssk, 0);
++		/* The MPTCP code never wait on the subflow sockets, TCP-level
++		 * disconnect should never fail
++		 */
++		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
+ 		msk->subflow->state = SS_UNCONNECTED;
+ 		mptcp_subflow_ctx_reset(subflow);
+ 		release_sock(ssk);
+@@ -2787,7 +2796,7 @@ void mptcp_subflow_shutdown(struct sock
+ 			break;
+ 		fallthrough;
+ 	case TCP_SYN_SENT:
+-		tcp_disconnect(ssk, O_NONBLOCK);
++		WARN_ON_ONCE(tcp_disconnect(ssk, O_NONBLOCK));
+ 		break;
+ 	default:
+ 		if (__mptcp_check_fallback(mptcp_sk(sk))) {
+@@ -3047,11 +3056,10 @@ static int mptcp_disconnect(struct sock
+ 
+ 	/* We are on the fastopen error path. We can't call straight into the
+ 	 * subflows cleanup code due to lock nesting (we are already under
+-	 * msk->firstsocket lock). Do nothing and leave the cleanup to the
+-	 * caller.
++	 * msk->firstsocket lock).
+ 	 */
+ 	if (msk->fastopening)
+-		return 0;
++		return -EBUSY;
+ 
+ 	mptcp_listen_inuse_dec(sk);
+ 	inet_sk_state_store(sk, TCP_CLOSE);
 
 
