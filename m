@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D788673E766
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 215A973E904
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:31:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230224AbjFZSO4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:14:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58714 "EHLO
+        id S232329AbjFZSbp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:31:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231315AbjFZSOa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:14:30 -0400
+        with ESMTP id S232220AbjFZSb2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:31:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B080C1987
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:14:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7282B1BD2
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:31:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4529D60F4D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:14:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2E2C433C8;
-        Mon, 26 Jun 2023 18:14:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 083E960F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:31:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DB8C433C0;
+        Mon, 26 Jun 2023 18:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803268;
-        bh=Shv8dSsCM4UdJhoMRep/Rt2uHbDJGcsTdh8G7IKnOnc=;
+        s=korg; t=1687804274;
+        bh=qxe/rOKW83cQ9OOWZXLCtE8DzWX8uT6cRoDc3jgK1dQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uv/WiUQNKdJG73GTxgMWTCJNjOTsr9ilMwMY8wf8gHjFKSzBW1r5jM9cE2RMFBETD
-         s+gn4m+0IFtUBWVGi2+8a9OJSCcqRhn4ZtfC99m6dLJ/6HHvnTVqldG+ku7E4EJLQE
-         sNBOOWAIdMPHw0JgNnQ17EdHB66h3xzoccqlhFAo=
+        b=KhMA4H2H/QTlctg/x1WFBZaCOve8Y53ZL5i/1FbcZr5wP2M3U9g4Msi7pRxz1EUVD
+         OpHjW04JberElP51yax3SVCeTrNW8xMlNNbXyfet4yLlu3frLLoVs/lJAxJLWKBnPm
+         Xq9Mq4jyDWYP/Rhib7X/WJjH2Lms55K3OW0Qx138=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 06/26] nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
-Date:   Mon, 26 Jun 2023 20:11:08 +0200
-Message-ID: <20230626180733.913507569@linuxfoundation.org>
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 100/170] mmc: omap_hsmmc: fix deferred probing
+Date:   Mon, 26 Jun 2023 20:11:09 +0200
+Message-ID: <20230626180805.030279733@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
-References: <20230626180733.699092073@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,56 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit 782e53d0c14420858dbf0f8f797973c150d3b6d7 upstream.
+[ Upstream commit fb51b74a57859b707c3e8055ed0c25a7ca4f6a29 ]
 
-In a syzbot stress test that deliberately causes file system errors on
-nilfs2 with a corrupted disk image, it has been reported that
-nilfs_clear_dirty_page() called from nilfs_clear_dirty_pages() can cause a
-general protection fault.
+The driver overrides the error codes returned by platform_get_irq() to
+-ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the
+error codes upstream.
 
-In nilfs_clear_dirty_pages(), when looking up dirty pages from the page
-cache and calling nilfs_clear_dirty_page() for each dirty page/folio
-retrieved, the back reference from the argument page to "mapping" may have
-been changed to NULL (and possibly others).  It is necessary to check this
-after locking the page/folio.
-
-So, fix this issue by not calling nilfs_clear_dirty_page() on a page/folio
-after locking it in nilfs_clear_dirty_pages() if the back reference
-"mapping" from the page/folio is different from the "mapping" that held
-the page/folio just before.
-
-Link: https://lkml.kernel.org/r/20230612021456.3682-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000da4f6b05eb9bf593@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20230617203622.6812-7-s.shtylyov@omp.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/page.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/mmc/host/omap_hsmmc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -382,7 +382,15 @@ void nilfs_clear_dirty_pages(struct addr
- 			struct page *page = pvec.pages[i];
+diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+index 4bd7447552055..2db3a16e63c48 100644
+--- a/drivers/mmc/host/omap_hsmmc.c
++++ b/drivers/mmc/host/omap_hsmmc.c
+@@ -1791,9 +1791,11 @@ static int omap_hsmmc_probe(struct platform_device *pdev)
+ 	}
  
- 			lock_page(page);
--			nilfs_clear_dirty_page(page, silent);
-+
-+			/*
-+			 * This page may have been removed from the address
-+			 * space by truncation or invalidation when the lock
-+			 * was acquired.  Skip processing in that case.
-+			 */
-+			if (likely(page->mapping == mapping))
-+				nilfs_clear_dirty_page(page, silent);
-+
- 			unlock_page(page);
- 		}
- 		pagevec_release(&pvec);
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	irq = platform_get_irq(pdev, 0);
+-	if (res == NULL || irq < 0)
++	if (!res)
+ 		return -ENXIO;
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0)
++		return irq;
+ 
+ 	base = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(base))
+-- 
+2.39.2
+
 
 
