@@ -2,50 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3A6373E88F
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D7B973EA22
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232040AbjFZS05 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:26:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38314 "EHLO
+        id S231940AbjFZSnl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:43:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232041AbjFZS0i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:38 -0400
+        with ESMTP id S232560AbjFZSni (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B1AC2120
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:26:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 828C1E3
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC0FB60F4F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:26:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D08C433C8;
-        Mon, 26 Jun 2023 18:26:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F56560F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B73C433C0;
+        Mon, 26 Jun 2023 18:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803972;
-        bh=sPLT7ECfxhFm2I/VJRs5KNOFWnQEE5rL1s88HmZWCpg=;
+        s=korg; t=1687805016;
+        bh=CfaFQfla770SxEg3zAb7vGI99dNkxPO+7hWJRkkffgI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=adTKGMET8K+np4EtaBnmGlYACajdI/SvMJ69BCwaNJizsoyxTI2pUbJ+13jnasMXB
-         jwdZfUaosF71RXjig2m6ycaMVK3UoYe8GNlyxPMoX8y6Zg3UbedMV5Iq06WVmA1cdW
-         YS2oEol7kk8++0oUdKfEEw/uXT2ZT05ATMCI2WRk=
+        b=Ce7IqLV1SO6rF45zzipImKEZys66Dg7GCSsPrRonmjP7lSnFTaMT3ucOyAjxABiJX
+         qQPcsxVbTCN7fywDDjTq/DW1g5PLXqHDFskYxUF6BEC+HINvTYRaFW/6QZ6Qn1+tdo
+         5nJzQ15u5/b/dbGJhgGk2t2+znLLhtA8uykcWrxs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Kishon Vijay Abraham I <kvijayab@amd.com>,
-        Vasant Hegde <vasant.hegde@amd.com>,
-        Cyrill Gorcunov <gorcunov@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
+        Russ Weight <russell.h.weight@intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 40/41] x86/apic: Fix kernel panic when booting with intremap=off and x2apic_phys
+Subject: [PATCH 5.10 21/81] regmap: spi-avmm: Fix regmap_bus max_raw_write
 Date:   Mon, 26 Jun 2023 20:12:03 +0200
-Message-ID: <20230626180737.753414340@linuxfoundation.org>
+Message-ID: <20230626180745.339656657@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
-References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,77 +57,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+From: Russ Weight <russell.h.weight@intel.com>
 
-[ Upstream commit 85d38d5810e285d5aec7fb5283107d1da70c12a9 ]
+[ Upstream commit c8e796895e2310b6130e7577248da1d771431a77 ]
 
-When booting with "intremap=off" and "x2apic_phys" on the kernel command
-line, the physical x2APIC driver ends up being used even when x2APIC
-mode is disabled ("intremap=off" disables x2APIC mode). This happens
-because the first compound condition check in x2apic_phys_probe() is
-false due to x2apic_mode == 0 and so the following one returns true
-after default_acpi_madt_oem_check() having already selected the physical
-x2APIC driver.
+The max_raw_write member of the regmap_spi_avmm_bus structure is defined
+as:
+	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT
 
-This results in the following panic:
+SPI_AVMM_VAL_SIZE == 4 and MAX_WRITE_CNT == 1 so this results in a
+maximum write transfer size of 4 bytes which provides only enough space to
+transfer the address of the target register. It provides no space for the
+value to be transferred. This bug became an issue (divide-by-zero in
+_regmap_raw_write()) after the following was accepted into mainline:
 
-   kernel BUG at arch/x86/kernel/apic/io_apic.c:2409!
-   invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-   CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.0-rc2-ver4.1rc2 #2
-   Hardware name: Dell Inc. PowerEdge R6515/07PXPY, BIOS 2.3.6 07/06/2021
-   RIP: 0010:setup_IO_APIC+0x9c/0xaf0
-   Call Trace:
-    <TASK>
-    ? native_read_msr
-    apic_intr_mode_init
-    x86_late_time_init
-    start_kernel
-    x86_64_start_reservations
-    x86_64_start_kernel
-    secondary_startup_64_no_verify
-    </TASK>
+commit 3981514180c9 ("regmap: Account for register length when chunking")
 
-which is:
+Change max_raw_write to include space (4 additional bytes) for both the
+register address and value:
 
-setup_IO_APIC:
-  apic_printk(APIC_VERBOSE, "ENABLING IO-APIC IRQs\n");
-  for_each_ioapic(ioapic)
-  	BUG_ON(mp_irqdomain_create(ioapic));
+	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT
 
-Return 0 to denote that x2APIC has not been enabled when probing the
-physical x2APIC driver.
-
-  [ bp: Massage commit message heavily. ]
-
-Fixes: 9ebd680bd029 ("x86, apic: Use probe routines to simplify apic selection")
-Signed-off-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230616212236.1389-1-dheerajkumar.srivastava@amd.com
+Fixes: 7f9fb67358a2 ("regmap: add Intel SPI Slave to AVMM Bus Bridge support")
+Reviewed-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
+Signed-off-by: Russ Weight <russell.h.weight@intel.com>
+Link: https://lore.kernel.org/r/20230620202824.380313-1-russell.h.weight@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/x2apic_phys.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/base/regmap/regmap-spi-avmm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/x2apic_phys.c b/arch/x86/kernel/apic/x2apic_phys.c
-index 8e70c2ba21b3d..fb17767552ef4 100644
---- a/arch/x86/kernel/apic/x2apic_phys.c
-+++ b/arch/x86/kernel/apic/x2apic_phys.c
-@@ -102,7 +102,10 @@ static void init_x2apic_ldr(void)
+diff --git a/drivers/base/regmap/regmap-spi-avmm.c b/drivers/base/regmap/regmap-spi-avmm.c
+index ad1da83e849fe..67f89937219c3 100644
+--- a/drivers/base/regmap/regmap-spi-avmm.c
++++ b/drivers/base/regmap/regmap-spi-avmm.c
+@@ -666,7 +666,7 @@ static const struct regmap_bus regmap_spi_avmm_bus = {
+ 	.reg_format_endian_default = REGMAP_ENDIAN_NATIVE,
+ 	.val_format_endian_default = REGMAP_ENDIAN_NATIVE,
+ 	.max_raw_read = SPI_AVMM_VAL_SIZE * MAX_READ_CNT,
+-	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
++	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
+ 	.free_context = spi_avmm_bridge_ctx_free,
+ };
  
- static int x2apic_phys_probe(void)
- {
--	if (x2apic_mode && (x2apic_phys || x2apic_fadt_phys()))
-+	if (!x2apic_mode)
-+		return 0;
-+
-+	if (x2apic_phys || x2apic_fadt_phys())
- 		return 1;
- 
- 	return apic == &apic_x2apic_phys;
 -- 
 2.39.2
 
