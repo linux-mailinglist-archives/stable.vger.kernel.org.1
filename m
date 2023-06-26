@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 108C773E955
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EEDC73E899
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232327AbjFZSe4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:34:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48518 "EHLO
+        id S232095AbjFZS10 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:27:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232377AbjFZSeo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:34:44 -0400
+        with ESMTP id S232116AbjFZS1C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:27:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 591D710C1
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:34:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE6A1999
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:26:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB4C060E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:34:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CCEC433C8;
-        Mon, 26 Jun 2023 18:34:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E736D60F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:26:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED729C433C8;
+        Mon, 26 Jun 2023 18:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804477;
-        bh=gJEpnJ0wpWc+ck6hBGw0T6033jqcibRi+Yoz4MudVZA=;
+        s=korg; t=1687804001;
+        bh=mFOcPboIVuuAJGtFNcK7kV9mQjo0V52vXHknO89E3YA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XWWhr7dv+4pYO1Rppyv+WZNF2Qu7F9cvxAGKiWP6AbfGFF66JHOo1n2GyRrMpzUtt
-         flTiPIKmF+GO4SM+2x9oTQCArbvs/CkhXBh6UIZwPuWN3N43FLnxPVv07/jPl+g2op
-         HyFqCS7119ZFNaIbYjhP4Yxvu9I5PHJXXv6X6plA=
+        b=0Tph0W0qukqbg3dTauaFeg8+RcgqRiLNemUc8tI1dLM3RkzGl2uO+VyC89ipQekwg
+         KnB3idIHX6Ci7Wn4tKyCXUotqjEOqYl+U0tfXmP2WB0xGPd977cj8tiPsYWn8NLkA5
+         f8+qZw5BZCbxvFltwLjP0kzjE6PyaNtWkf1nMec8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Costa Sapuntzakis <costa@purestorage.com>,
-        Randy Jennings <randyj@purestorage.com>,
-        Uday Shankar <ushankar@purestorage.com>,
-        Hannes Reinecke <hare@suse.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Simon Horman <simon.horman@corigine.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/170] nvme: check IO start time when deciding to defer KA
+Subject: [PATCH 4.19 28/41] sch_netem: acquire qdisc lock in netem_change()
 Date:   Mon, 26 Jun 2023 20:11:51 +0200
-Message-ID: <20230626180806.912340029@linuxfoundation.org>
+Message-ID: <20230626180737.330781577@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
+References: <20230626180736.243379844@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,105 +61,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 774a9636514764ddc0d072ae0d1d1c01a47e6ddd ]
+[ Upstream commit 2174a08db80d1efeea382e25ac41c4e7511eb6d6 ]
 
-When a command completes, we set a flag which will skip sending a
-keep alive at the next run of nvme_keep_alive_work when TBKAS is on.
-However, if the command was submitted long ago, it's possible that
-the controller may have also restarted its keep alive timer (as a
-result of receiving the command) long ago. The following trace
-demonstrates the issue, assuming TBKAS is on and KATO = 8 for
-simplicity:
+syzbot managed to trigger a divide error [1] in netem.
 
-1. t = 0: submit I/O commands A, B, C, D, E
-2. t = 0.5: commands A, B, C, D, E reach controller, restart its keep
-            alive timer
-3. t = 1: A completes
-4. t = 2: run nvme_keep_alive_work, see recent completion, do nothing
-5. t = 3: B completes
-6. t = 4: run nvme_keep_alive_work, see recent completion, do nothing
-7. t = 5: C completes
-8. t = 6: run nvme_keep_alive_work, see recent completion, do nothing
-9. t = 7: D completes
-10. t = 8: run nvme_keep_alive_work, see recent completion, do nothing
-11. t = 9: E completes
+It could happen if q->rate changes while netem_enqueue()
+is running, since q->rate is read twice.
 
-At this point, 8.5 seconds have passed without restarting the
-controller's keep alive timer, so the controller will detect a keep
-alive timeout.
+It turns out netem_change() always lacked proper synchronization.
 
-Fix this by checking the IO start time when deciding to defer sending a
-keep alive command. Only set comp_seen if the command started after the
-most recent run of nvme_keep_alive_work. With this change, the
-completions of B, C, and D will not set comp_seen and the run of
-nvme_keep_alive_work at t = 4 will send a keep alive.
+[1]
+divide error: 0000 [#1] SMP KASAN
+CPU: 1 PID: 7867 Comm: syz-executor.1 Not tainted 6.1.30-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
+RIP: 0010:div64_u64 include/linux/math64.h:69 [inline]
+RIP: 0010:packet_time_ns net/sched/sch_netem.c:357 [inline]
+RIP: 0010:netem_enqueue+0x2067/0x36d0 net/sched/sch_netem.c:576
+Code: 89 e2 48 69 da 00 ca 9a 3b 42 80 3c 28 00 4c 8b a4 24 88 00 00 00 74 0d 4c 89 e7 e8 c3 4f 3b fd 48 8b 4c 24 18 48 89 d8 31 d2 <49> f7 34 24 49 01 c7 4c 8b 64 24 48 4d 01 f7 4c 89 e3 48 c1 eb 03
+RSP: 0018:ffffc9000dccea60 EFLAGS: 00010246
+RAX: 000001a442624200 RBX: 000001a442624200 RCX: ffff888108a4f000
+RDX: 0000000000000000 RSI: 000000000000070d RDI: 000000000000070d
+RBP: ffffc9000dcceb90 R08: ffffffff849c5e26 R09: fffffbfff10e1297
+R10: 0000000000000000 R11: dffffc0000000001 R12: ffff888108a4f358
+R13: dffffc0000000000 R14: 0000001a8cd9a7ec R15: 0000000000000000
+FS: 00007fa73fe18700(0000) GS:ffff8881f6b00000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fa73fdf7718 CR3: 000000011d36e000 CR4: 0000000000350ee0
+Call Trace:
+<TASK>
+[<ffffffff84714385>] __dev_xmit_skb net/core/dev.c:3931 [inline]
+[<ffffffff84714385>] __dev_queue_xmit+0xcf5/0x3370 net/core/dev.c:4290
+[<ffffffff84d22df2>] dev_queue_xmit include/linux/netdevice.h:3030 [inline]
+[<ffffffff84d22df2>] neigh_hh_output include/net/neighbour.h:531 [inline]
+[<ffffffff84d22df2>] neigh_output include/net/neighbour.h:545 [inline]
+[<ffffffff84d22df2>] ip_finish_output2+0xb92/0x10d0 net/ipv4/ip_output.c:235
+[<ffffffff84d21e63>] __ip_finish_output+0xc3/0x2b0
+[<ffffffff84d10a81>] ip_finish_output+0x31/0x2a0 net/ipv4/ip_output.c:323
+[<ffffffff84d10f14>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
+[<ffffffff84d10f14>] ip_output+0x224/0x2a0 net/ipv4/ip_output.c:437
+[<ffffffff84d123b5>] dst_output include/net/dst.h:444 [inline]
+[<ffffffff84d123b5>] ip_local_out net/ipv4/ip_output.c:127 [inline]
+[<ffffffff84d123b5>] __ip_queue_xmit+0x1425/0x2000 net/ipv4/ip_output.c:542
+[<ffffffff84d12fdc>] ip_queue_xmit+0x4c/0x70 net/ipv4/ip_output.c:556
 
-Reported-by: Costa Sapuntzakis <costa@purestorage.com>
-Reported-by: Randy Jennings <randyj@purestorage.com>
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230620184425.1179809-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 14 +++++++++++++-
- drivers/nvme/host/nvme.h |  1 +
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ net/sched/sch_netem.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index a97f2f21c5321..15eb2ee1be66e 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -395,7 +395,16 @@ void nvme_complete_rq(struct request *req)
- 	trace_nvme_complete_rq(req);
- 	nvme_cleanup_cmd(req);
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 31793af1a77bd..93548b9e07cf1 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -943,6 +943,7 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	if (ret < 0)
+ 		return ret;
  
--	if (ctrl->kas)
-+	/*
-+	 * Completions of long-running commands should not be able to
-+	 * defer sending of periodic keep alives, since the controller
-+	 * may have completed processing such commands a long time ago
-+	 * (arbitrarily close to command submission time).
-+	 * req->deadline - req->timeout is the command submission time
-+	 * in jiffies.
-+	 */
-+	if (ctrl->kas &&
-+	    req->deadline - req->timeout >= ctrl->ka_last_check_time)
- 		ctrl->comp_seen = true;
++	sch_tree_lock(sch);
+ 	/* backup q->clg and q->loss_model */
+ 	old_clg = q->clg;
+ 	old_loss_model = q->loss_model;
+@@ -951,7 +952,7 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 		ret = get_loss_clg(q, tb[TCA_NETEM_LOSS]);
+ 		if (ret) {
+ 			q->loss_model = old_loss_model;
+-			return ret;
++			goto unlock;
+ 		}
+ 	} else {
+ 		q->loss_model = CLG_RANDOM;
+@@ -1018,6 +1019,8 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	/* capping jitter to the range acceptable by tabledist() */
+ 	q->jitter = min_t(s64, abs(q->jitter), INT_MAX);
  
- 	switch (nvme_decide_disposition(req)) {
-@@ -1235,6 +1244,7 @@ static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
- 		return RQ_END_IO_NONE;
- 	}
++unlock:
++	sch_tree_unlock(sch);
+ 	return ret;
  
-+	ctrl->ka_last_check_time = jiffies;
- 	ctrl->comp_seen = false;
- 	spin_lock_irqsave(&ctrl->lock, flags);
- 	if (ctrl->state == NVME_CTRL_LIVE ||
-@@ -1253,6 +1263,8 @@ static void nvme_keep_alive_work(struct work_struct *work)
- 	bool comp_seen = ctrl->comp_seen;
- 	struct request *rq;
- 
-+	ctrl->ka_last_check_time = jiffies;
+ get_table_failure:
+@@ -1027,7 +1030,8 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	 */
+ 	q->clg = old_clg;
+ 	q->loss_model = old_loss_model;
+-	return ret;
 +
- 	if ((ctrl->ctratt & NVME_CTRL_ATTR_TBKAS) && comp_seen) {
- 		dev_dbg(ctrl->device,
- 			"reschedule traffic based keep-alive timer\n");
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 3f82de6060ef7..2aa514c3dfa17 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -323,6 +323,7 @@ struct nvme_ctrl {
- 	struct delayed_work ka_work;
- 	struct delayed_work failfast_work;
- 	struct nvme_command ka_cmd;
-+	unsigned long ka_last_check_time;
- 	struct work_struct fw_act_work;
- 	unsigned long events;
++	goto unlock;
+ }
  
+ static int netem_init(struct Qdisc *sch, struct nlattr *opt,
 -- 
 2.39.2
 
