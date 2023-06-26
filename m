@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3273273E960
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D22873EA16
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232348AbjFZSfW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:35:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49258 "EHLO
+        id S232577AbjFZSn3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:43:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232347AbjFZSfV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:35:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2A629B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:35:20 -0700 (PDT)
+        with ESMTP id S232544AbjFZSnX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA7791BCF
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCF0460F40
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:35:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA83C433CA;
-        Mon, 26 Jun 2023 18:35:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B52560F4F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB4BC433C9;
+        Mon, 26 Jun 2023 18:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804520;
-        bh=y89qHqVN4BjB3k5HM5zexA7wkcRhNsPCAzQ1zu8Jodg=;
+        s=korg; t=1687804981;
+        bh=mQzHtJhgFNfl5m7WlBQbcodzQPLQadexwITC9q3uXHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uoQ1jHNefxR1p0QUiEHgBbu+FBqzbFE2UtuD/KuO9p7Z055Vv7UazQB/EehmGWT44
-         wYvVcKvsieaN05Qkxls2UTiu2n+h3GepjhDwPEl86mh1kR+Ku6+SsD68bYUTPPq8iK
-         JyD4dgALM1C5iEbwNzJV8cnEr6ugFFvbibdn3glg=
+        b=sOrUKK1y1SvYnLviEQJ5srKkdZ/zKjkQD3KFPNer1rFOJKXlbjteWWG2sU4CShLmg
+         O+rJOwaLOKF/1Zktbvz1KBsrTwR0lxjg7piOUAuiP2MjCRDXAP1hi8wmjtl3QrK6d5
+         zHUmQ+Fu/k/8PFbF/KHn6fF0cWcHy1K3xDEDp7qQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,18 +36,18 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Michael Kelley <mikelley@microsoft.com>,
         Vitaly Kuznetsov <vkuznets@redhat.com>,
         Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 5.4 12/60] Drivers: hv: vmbus: Fix vmbus_wait_for_unload() to scan present CPUs
-Date:   Mon, 26 Jun 2023 20:11:51 +0200
-Message-ID: <20230626180740.063459323@linuxfoundation.org>
+Subject: [PATCH 5.10 10/81] Drivers: hv: vmbus: Fix vmbus_wait_for_unload() to scan present CPUs
+Date:   Mon, 26 Jun 2023 20:11:52 +0200
+Message-ID: <20230626180744.870752336@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -95,7 +95,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/hv/channel_mgmt.c
 +++ b/drivers/hv/channel_mgmt.c
-@@ -802,11 +802,22 @@ static void vmbus_wait_for_unload(void)
+@@ -765,11 +765,22 @@ static void vmbus_wait_for_unload(void)
  		if (completion_done(&vmbus_connection.unload_event))
  			goto completed;
  
@@ -119,7 +119,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			msg = (struct hv_message *)page_addr
  				+ VMBUS_MESSAGE_SINT;
  
-@@ -840,11 +851,14 @@ completed:
+@@ -803,11 +814,14 @@ completed:
  	 * maybe-pending messages on all CPUs to be able to receive new
  	 * messages after we reconnect.
  	 */
