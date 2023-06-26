@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E692A73E7E9
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A601073E8B5
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:28:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231530AbjFZSUX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:20:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34880 "EHLO
+        id S232183AbjFZS2w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:28:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231609AbjFZSUV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:20:21 -0400
+        with ESMTP id S232201AbjFZS2V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:28:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A67B94
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:20:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E979826B8
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:27:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2217660F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2967CC433C0;
-        Mon, 26 Jun 2023 18:20:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 80E9B60F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:27:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEDBC433C8;
+        Mon, 26 Jun 2023 18:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803619;
-        bh=oHdapyYavQDDJKy9anQB+/4HPf7n2PV+QxwbAWf0/ek=;
+        s=korg; t=1687804071;
+        bh=dEMGVul993S1sSJCk+tlbrm+EtlkMY7k/D6Qn02tzxU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=poSN1vY7hAIK+hmNJgzAA7/SDDGZ8WNr+NY7gGctmdhTeIAYTLUryYp6euHmpxIdx
-         IvcKbHFiiexEILenh50ojRTNKUoMOjMT+HuW+nIs9Boj1XY0i16etJ864fh1ZY2xqJ
-         YNg7b5ydUCwg6AubpDb09a/k9g/Zk5y/yOydlQ5s=
+        b=X+2+Qba/xUCiYtT4hLWpoxfJ7wsICqlFNfMVpoGFAwu3Dd6YDsknui0ATD1AEuKbW
+         pwfzMyCMZyZLwUBKEtupABkWo8gkD8YZR7xMuTtF8pSkr4rqGRCS9S9E9fuZ/iVuQr
+         QjyXESCY+F2mpucDNHLbeGiatBNUuXHOluUij11g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Powers-Holmes <aholmes@omnom.net>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
-        Diederik de Haas <didi.debian@cknow.org>,
-        Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.3 095/199] arm64: dts: rockchip: Fix rk356x PCIe register and range mappings
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 032/170] selftests: mptcp: join: skip implicit tests if not supported
 Date:   Mon, 26 Jun 2023 20:10:01 +0200
-Message-ID: <20230626180809.788432343@linuxfoundation.org>
+Message-ID: <20230626180801.988987534@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,82 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrew Powers-Holmes <aholmes@omnom.net>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit 568a67e742dfa90b19a23305317164c5c350b71e upstream.
+commit 36c4127ae8dd0ebac6d56d8a1b272dd483471c40 upstream.
 
-The register and range mappings for the PCIe controller in Rockchip's
-RK356x SoCs are incorrect. Replace them with corrected values from the
-vendor BSP sources, updated to match current DT schema.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-These values are also used in u-boot.
+One of them is the support of the implicit endpoints introduced by
+commit d045b9eb95a9 ("mptcp: introduce implicit endpoints").
 
-Fixes: 66b51ea7d70f ("arm64: dts: rockchip: Add rk3568 PCIe2x1 controller")
+It is possible to look for "mptcp_subflow_send_ack" in kallsyms because
+it was needed to introduce the mentioned feature. So we can know in
+advance if the feature is supported instead of trying and accepting any
+results.
+
+Note that here and in the following commits, we re-do the same check for
+each sub-test of the same function for a few reasons. The main one is
+not to break the ID assign to each test in order to be able to easily
+compare results between different kernel versions. Also, we can still
+run a specific test even if it is skipped. Another reason is that it
+makes it clear during the review that a specific subtest will be skipped
+or not under certain conditions. At the end, it looks OK to call the
+exact same helper multiple times: it is not a critical path and it is
+the same code that is executed, not really more cases to maintain.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: 69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Powers-Holmes <aholmes@omnom.net>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Signed-off-by: Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
-Tested-by: Diederik de Haas <didi.debian@cknow.org>
-Link: https://lore.kernel.org/r/20230601132516.153934-1-frattaroli.nicolas@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568.dtsi |   14 ++++++++------
- arch/arm64/boot/dts/rockchip/rk356x.dtsi |    7 ++++---
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-@@ -94,9 +94,10 @@
- 		power-domains = <&power RK3568_PD_PIPE>;
- 		reg = <0x3 0xc0400000 0x0 0x00400000>,
- 		      <0x0 0xfe270000 0x0 0x00010000>,
--		      <0x3 0x7f000000 0x0 0x01000000>;
--		ranges = <0x01000000 0x0 0x3ef00000 0x3 0x7ef00000 0x0 0x00100000>,
--			 <0x02000000 0x0 0x00000000 0x3 0x40000000 0x0 0x3ef00000>;
-+		      <0x0 0xf2000000 0x0 0x00100000>;
-+		ranges = <0x01000000 0x0 0xf2100000 0x0 0xf2100000 0x0 0x00100000>,
-+			 <0x02000000 0x0 0xf2200000 0x0 0xf2200000 0x0 0x01e00000>,
-+			 <0x03000000 0x0 0x40000000 0x3 0x40000000 0x0 0x40000000>;
- 		reg-names = "dbi", "apb", "config";
- 		resets = <&cru SRST_PCIE30X1_POWERUP>;
- 		reset-names = "pipe";
-@@ -146,9 +147,10 @@
- 		power-domains = <&power RK3568_PD_PIPE>;
- 		reg = <0x3 0xc0800000 0x0 0x00400000>,
- 		      <0x0 0xfe280000 0x0 0x00010000>,
--		      <0x3 0xbf000000 0x0 0x01000000>;
--		ranges = <0x01000000 0x0 0x3ef00000 0x3 0xbef00000 0x0 0x00100000>,
--			 <0x02000000 0x0 0x00000000 0x3 0x80000000 0x0 0x3ef00000>;
-+		      <0x0 0xf0000000 0x0 0x00100000>;
-+		ranges = <0x01000000 0x0 0xf0100000 0x0 0xf0100000 0x0 0x00100000>,
-+			 <0x02000000 0x0 0xf0200000 0x0 0xf0200000 0x0 0x01e00000>,
-+			 <0x03000000 0x0 0x40000000 0x3 0x80000000 0x0 0x40000000>;
- 		reg-names = "dbi", "apb", "config";
- 		resets = <&cru SRST_PCIE30X2_POWERUP>;
- 		reset-names = "pipe";
---- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-@@ -952,7 +952,7 @@
- 		compatible = "rockchip,rk3568-pcie";
- 		reg = <0x3 0xc0000000 0x0 0x00400000>,
- 		      <0x0 0xfe260000 0x0 0x00010000>,
--		      <0x3 0x3f000000 0x0 0x01000000>;
-+		      <0x0 0xf4000000 0x0 0x00100000>;
- 		reg-names = "dbi", "apb", "config";
- 		interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
-@@ -982,8 +982,9 @@
- 		phys = <&combphy2 PHY_TYPE_PCIE>;
- 		phy-names = "pcie-phy";
- 		power-domains = <&power RK3568_PD_PIPE>;
--		ranges = <0x01000000 0x0 0x3ef00000 0x3 0x3ef00000 0x0 0x00100000
--			  0x02000000 0x0 0x00000000 0x3 0x00000000 0x0 0x3ef00000>;
-+		ranges = <0x01000000 0x0 0xf4100000 0x0 0xf4100000 0x0 0x00100000>,
-+			 <0x02000000 0x0 0xf4200000 0x0 0xf4200000 0x0 0x01e00000>,
-+			 <0x03000000 0x0 0x40000000 0x3 0x00000000 0x0 0x40000000>;
- 		resets = <&cru SRST_PCIE20_POWERUP>;
- 		reset-names = "pipe";
- 		#address-cells = <3>;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3108,8 +3108,10 @@ userspace_tests()
+ 
+ endpoint_tests()
+ {
++	# subflow_rebuild_header is needed to support the implicit flag
+ 	# userspace pm type prevents add_addr
+-	if reset "implicit EP"; then
++	if reset "implicit EP" &&
++	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 2 2
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+@@ -3129,7 +3131,8 @@ endpoint_tests()
+ 		kill_tests_wait
+ 	fi
+ 
+-	if reset "delete and re-add"; then
++	if reset "delete and re-add" &&
++	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+ 		pm_nl_set_limits $ns1 1 1
+ 		pm_nl_set_limits $ns2 1 1
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
 
 
