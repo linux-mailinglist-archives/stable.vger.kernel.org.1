@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1626973E847
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5AE073E757
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:14:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232038AbjFZSYE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:24:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37408 "EHLO
+        id S230164AbjFZSOO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:14:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231888AbjFZSXt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:49 -0400
+        with ESMTP id S230268AbjFZSOF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:14:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79A381BE2
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEEAD1703
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:14:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 205DF60F58
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:23:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D87C433C8;
-        Mon, 26 Jun 2023 18:23:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E04F60F3E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:14:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C051C433C0;
+        Mon, 26 Jun 2023 18:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803788;
-        bh=dQfhVRkBunwTxmNqhiny34v4o5uLsp3NaqxXhfPS/kI=;
+        s=korg; t=1687803242;
+        bh=oSMXR/HjDE60lLaUFRyr17SQk8tUZHFVAN/RdtCRu3Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S1SmEJIJQZVf2dPruolj7CWlHfkrejfsPgXhqHxAizLGMrdjz0XzPCGoDJX628T6G
-         FraF0SmaFquJtwSPGALIpwviHJxmqFaBz+x6Kw540OocsEZIZ1DRnCPTy9dW2liKEY
-         j/bWDu8RC0xQTtkcZ6sjWOffV32ANu1G2e80Njf4=
+        b=vim1DpJaJ0tp4vYXlt+qK3NjGLtuS3KYctGcQ6RV30FUizmFDHAU+dEIgF17iG2DX
+         rZskGta+PkLcmt3yY8HK1/ztwk9/yUVyBTTOozjKQR9wyW2arSOaOMeuZhnBNU5Qpi
+         qiM1bAsyoyCCsykTslBo66eGAIWkBBUKVfdW8rSQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
+        patches@lists.linux.dev, Vineeth Vijayan <vneethv@linux.ibm.com>,
+        Peter Oberparleiter <oberpar@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 177/199] gfs2: Dont get stuck writing page onto itself under direct I/O
+Subject: [PATCH 4.14 21/26] s390/cio: unregister device when the only path is gone
 Date:   Mon, 26 Jun 2023 20:11:23 +0200
-Message-ID: <20230626180813.507352786@linuxfoundation.org>
+Message-ID: <20230626180734.510329616@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
+References: <20230626180733.699092073@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,79 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Vineeth Vijayan <vneethv@linux.ibm.com>
 
-[ Upstream commit fa58cc888d67e640e354d8b3ceef877ea167b0cf ]
+[ Upstream commit 89c0c62e947a01e7a36b54582fd9c9e346170255 ]
 
-When a direct I/O write is performed, iomap_dio_rw() invalidates the
-part of the page cache which the write is going to before carrying out
-the write.  In the odd case, the direct I/O write will be reading from
-the same page it is writing to.  gfs2 carries out writes with page
-faults disabled, so it should have been obvious that this page
-invalidation can cause iomap_dio_rw() to never make any progress.
-Currently, gfs2 will end up in an endless retry loop in
-gfs2_file_direct_write() instead, though.
+Currently, if the device is offline and all the channel paths are
+either configured or varied offline, the associated subchannel gets
+unregistered. Don't unregister the subchannel, instead unregister
+offline device.
 
-Break this endless loop by limiting the number of retries and falling
-back to buffered I/O after that.
-
-Also simplify should_fault_in_pages() sightly and add a comment to make
-the above case easier to understand.
-
-Reported-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/file.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/s390/cio/device.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
-index 300844f50dcd2..cb62c8f07d1e7 100644
---- a/fs/gfs2/file.c
-+++ b/fs/gfs2/file.c
-@@ -784,9 +784,13 @@ static inline bool should_fault_in_pages(struct iov_iter *i,
- 	if (!user_backed_iter(i))
- 		return false;
- 
-+	/*
-+	 * Try to fault in multiple pages initially.  When that doesn't result
-+	 * in any progress, fall back to a single page.
-+	 */
- 	size = PAGE_SIZE;
- 	offs = offset_in_page(iocb->ki_pos);
--	if (*prev_count != count || !*window_size) {
-+	if (*prev_count != count) {
- 		size_t nr_dirtied;
- 
- 		nr_dirtied = max(current->nr_dirtied_pause -
-@@ -870,6 +874,7 @@ static ssize_t gfs2_file_direct_write(struct kiocb *iocb, struct iov_iter *from,
- 	struct gfs2_inode *ip = GFS2_I(inode);
- 	size_t prev_count = 0, window_size = 0;
- 	size_t written = 0;
-+	bool enough_retries;
- 	ssize_t ret;
- 
- 	/*
-@@ -913,11 +918,17 @@ static ssize_t gfs2_file_direct_write(struct kiocb *iocb, struct iov_iter *from,
- 	if (ret > 0)
- 		written = ret;
- 
-+	enough_retries = prev_count == iov_iter_count(from) &&
-+			 window_size <= PAGE_SIZE;
- 	if (should_fault_in_pages(from, iocb, &prev_count, &window_size)) {
- 		gfs2_glock_dq(gh);
- 		window_size -= fault_in_iov_iter_readable(from, window_size);
--		if (window_size)
--			goto retry;
-+		if (window_size) {
-+			if (!enough_retries)
-+				goto retry;
-+			/* fall back to buffered I/O */
-+			ret = 0;
-+		}
+diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
+index d2203cd178138..6721e984782db 100644
+--- a/drivers/s390/cio/device.c
++++ b/drivers/s390/cio/device.c
+@@ -1357,6 +1357,7 @@ void ccw_device_set_notoper(struct ccw_device *cdev)
+ enum io_sch_action {
+ 	IO_SCH_UNREG,
+ 	IO_SCH_ORPH_UNREG,
++	IO_SCH_UNREG_CDEV,
+ 	IO_SCH_ATTACH,
+ 	IO_SCH_UNREG_ATTACH,
+ 	IO_SCH_ORPH_ATTACH,
+@@ -1389,7 +1390,7 @@ static enum io_sch_action sch_get_action(struct subchannel *sch)
  	}
- out_unlock:
- 	if (gfs2_holder_queued(gh))
+ 	if ((sch->schib.pmcw.pam & sch->opm) == 0) {
+ 		if (ccw_device_notify(cdev, CIO_NO_PATH) != NOTIFY_OK)
+-			return IO_SCH_UNREG;
++			return IO_SCH_UNREG_CDEV;
+ 		return IO_SCH_DISC;
+ 	}
+ 	if (device_is_disconnected(cdev))
+@@ -1451,6 +1452,7 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
+ 	case IO_SCH_ORPH_ATTACH:
+ 		ccw_device_set_disconnected(cdev);
+ 		break;
++	case IO_SCH_UNREG_CDEV:
+ 	case IO_SCH_UNREG_ATTACH:
+ 	case IO_SCH_UNREG:
+ 		if (!cdev)
+@@ -1484,6 +1486,7 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
+ 		if (rc)
+ 			goto out;
+ 		break;
++	case IO_SCH_UNREG_CDEV:
+ 	case IO_SCH_UNREG_ATTACH:
+ 		spin_lock_irqsave(sch->lock, flags);
+ 		if (cdev->private->flags.resuming) {
 -- 
 2.39.2
 
