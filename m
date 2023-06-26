@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F17173E871
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B50C573E9AE
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232035AbjFZSZ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:25:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
+        id S232448AbjFZSi7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:38:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232037AbjFZSZj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:25:39 -0400
+        with ESMTP id S232504AbjFZSit (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:38:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 252A526B9
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E81FAC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:38:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 063F360F40
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA07C433C9;
-        Mon, 26 Jun 2023 18:24:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9245460F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:38:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2A8C433C0;
+        Mon, 26 Jun 2023 18:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803888;
-        bh=5MILmWV1rWV7MNCHcwIKZGHGlAyGN+2CyiKNvZDsO9s=;
+        s=korg; t=1687804725;
+        bh=99qiVGy0SIFILiDN9harjLtfmZel3dxIDsi6mCBJIj4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kfJpaFFcvGNvjW6xdjijV0pdCMZEdcCdDQ32+tR9IN5sLVpOjuPVOJDeliRR4viUV
-         NiYtmrEA8W+ThmQYRKlqGfF89ns+7syGKyYEI48+AjiPRdGU5B5+56fhL9YxVjWcQi
-         E17DlOGMQK6HCBXLcgIp5OFJNMQbxOBUfpKgz+bY=
+        b=WE1Ahi+n1l9NRK1UtFhA2FMOJE5iQ1jLbDU0AwZkOIDSzyi4bGhtM+R4noYsBRvpu
+         HWESG9AL3nqVL7PWp+DYsKvNao5hhoJwgocX0+UA84efYIGTpE3EsAQow/zAVPJAlz
+         QkNxZNKbeJ788K+W5MFqBoB784YrZg+IAPY9aHMk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
-        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-        Xiu Jianfeng <xiujianfeng@huawei.com>,
-        Tejun Heo <tj@kernel.org>
-Subject: [PATCH 4.19 12/41] cgroup: Do not corrupt task iteration when rebinding subsystem
-Date:   Mon, 26 Jun 2023 20:11:35 +0200
-Message-ID: <20230626180736.742217409@linuxfoundation.org>
+        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 5.15 21/96] PCI: hv: Remove the useless hv_pcichild_state from struct hv_pci_dev
+Date:   Mon, 26 Jun 2023 20:11:36 +0200
+Message-ID: <20230626180747.804964858@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
-References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,122 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Dexuan Cui <decui@microsoft.com>
 
-commit 6f363f5aa845561f7ea496d8b1175e3204470486 upstream.
+commit add9195e69c94b32e96f78c2f9cea68f0e850b3f upstream.
 
-We found a refcount UAF bug as follows:
+The hpdev->state is never really useful. The only use in
+hv_pci_eject_device() and hv_eject_device_work() is not really necessary.
 
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 1 PID: 342 at lib/refcount.c:25 refcount_warn_saturate+0xa0/0x148
-Workqueue: events cpuset_hotplug_workfn
-Call trace:
- refcount_warn_saturate+0xa0/0x148
- __refcount_add.constprop.0+0x5c/0x80
- css_task_iter_advance_css_set+0xd8/0x210
- css_task_iter_advance+0xa8/0x120
- css_task_iter_next+0x94/0x158
- update_tasks_root_domain+0x58/0x98
- rebuild_root_domains+0xa0/0x1b0
- rebuild_sched_domains_locked+0x144/0x188
- cpuset_hotplug_workfn+0x138/0x5a0
- process_one_work+0x1e8/0x448
- worker_thread+0x228/0x3e0
- kthread+0xe0/0xf0
- ret_from_fork+0x10/0x20
-
-then a kernel panic will be triggered as below:
-
-Unable to handle kernel paging request at virtual address 00000000c0000010
-Call trace:
- cgroup_apply_control_disable+0xa4/0x16c
- rebind_subsystems+0x224/0x590
- cgroup_destroy_root+0x64/0x2e0
- css_free_rwork_fn+0x198/0x2a0
- process_one_work+0x1d4/0x4bc
- worker_thread+0x158/0x410
- kthread+0x108/0x13c
- ret_from_fork+0x10/0x18
-
-The race that cause this bug can be shown as below:
-
-(hotplug cpu)                | (umount cpuset)
-mutex_lock(&cpuset_mutex)    | mutex_lock(&cgroup_mutex)
-cpuset_hotplug_workfn        |
- rebuild_root_domains        |  rebind_subsystems
-  update_tasks_root_domain   |   spin_lock_irq(&css_set_lock)
-   css_task_iter_start       |    list_move_tail(&cset->e_cset_node[ss->id]
-   while(css_task_iter_next) |                  &dcgrp->e_csets[ss->id]);
-   css_task_iter_end         |   spin_unlock_irq(&css_set_lock)
-mutex_unlock(&cpuset_mutex)  | mutex_unlock(&cgroup_mutex)
-
-Inside css_task_iter_start/next/end, css_set_lock is hold and then
-released, so when iterating task(left side), the css_set may be moved to
-another list(right side), then it->cset_head points to the old list head
-and it->cset_pos->next points to the head node of new list, which can't
-be used as struct css_set.
-
-To fix this issue, switch from all css_sets to only scgrp's css_sets to
-patch in-flight iterators to preserve correct iteration, and then
-update it->cset_head as well.
-
-Reported-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Link: https://www.spinics.net/lists/cgroups/msg37935.html
-Suggested-by: Michal Koutný <mkoutny@suse.com>
-Link: https://lore.kernel.org/all/20230526114139.70274-1-xiujianfeng@huaweicloud.com/
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Fixes: 2d8f243a5e6e ("cgroup: implement cgroup->e_csets[]")
-Cc: stable@vger.kernel.org # v3.16+
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230615044451.5580-4-decui@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/pci/controller/pci-hyperv.c |   12 ------------
+ 1 file changed, 12 deletions(-)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -1652,7 +1652,7 @@ int rebind_subsystems(struct cgroup_root
- {
- 	struct cgroup *dcgrp = &dst_root->cgrp;
- 	struct cgroup_subsys *ss;
--	int ssid, i, ret;
-+	int ssid, ret;
- 	u16 dfl_disable_ss_mask = 0;
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -547,19 +547,10 @@ struct hv_dr_state {
+ 	struct hv_pcidev_description func[];
+ };
  
- 	lockdep_assert_held(&cgroup_mutex);
-@@ -1696,7 +1696,8 @@ int rebind_subsystems(struct cgroup_root
- 		struct cgroup_root *src_root = ss->root;
- 		struct cgroup *scgrp = &src_root->cgrp;
- 		struct cgroup_subsys_state *css = cgroup_css(scgrp, ss);
--		struct css_set *cset;
-+		struct css_set *cset, *cset_pos;
-+		struct css_task_iter *it;
+-enum hv_pcichild_state {
+-	hv_pcichild_init = 0,
+-	hv_pcichild_requirements,
+-	hv_pcichild_resourced,
+-	hv_pcichild_ejecting,
+-	hv_pcichild_maximum
+-};
+-
+ struct hv_pci_dev {
+ 	/* List protected by pci_rescan_remove_lock */
+ 	struct list_head list_entry;
+ 	refcount_t refs;
+-	enum hv_pcichild_state state;
+ 	struct pci_slot *pci_slot;
+ 	struct hv_pcidev_description desc;
+ 	bool reported_missing;
+@@ -2430,8 +2421,6 @@ static void hv_eject_device_work(struct
+ 	hpdev = container_of(work, struct hv_pci_dev, wrk);
+ 	hbus = hpdev->hbus;
  
- 		WARN_ON(!css || cgroup_css(dcgrp, ss));
+-	WARN_ON(hpdev->state != hv_pcichild_ejecting);
+-
+ 	/*
+ 	 * Ejection can come before or after the PCI bus has been set up, so
+ 	 * attempt to find it and tear down the bus state, if it exists.  This
+@@ -2488,7 +2477,6 @@ static void hv_pci_eject_device(struct h
+ 		return;
+ 	}
  
-@@ -1714,9 +1715,22 @@ int rebind_subsystems(struct cgroup_root
- 		css->cgroup = dcgrp;
- 
- 		spin_lock_irq(&css_set_lock);
--		hash_for_each(css_set_table, i, cset, hlist)
-+		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
-+		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
-+					 e_cset_node[ss->id]) {
- 			list_move_tail(&cset->e_cset_node[ss->id],
- 				       &dcgrp->e_csets[ss->id]);
-+			/*
-+			 * all css_sets of scgrp together in same order to dcgrp,
-+			 * patch in-flight iterators to preserve correct iteration.
-+			 * since the iterator is always advanced right away and
-+			 * finished when it->cset_pos meets it->cset_head, so only
-+			 * update it->cset_head is enough here.
-+			 */
-+			list_for_each_entry(it, &cset->task_iters, iters_node)
-+				if (it->cset_head == &scgrp->e_csets[ss->id])
-+					it->cset_head = &dcgrp->e_csets[ss->id];
-+		}
- 		spin_unlock_irq(&css_set_lock);
- 
- 		/* default hierarchy doesn't enable controllers by default */
+-	hpdev->state = hv_pcichild_ejecting;
+ 	get_pcichild(hpdev);
+ 	INIT_WORK(&hpdev->wrk, hv_eject_device_work);
+ 	queue_work(hbus->wq, &hpdev->wrk);
 
 
