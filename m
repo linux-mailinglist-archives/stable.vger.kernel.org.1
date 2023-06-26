@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 216F073E991
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FA6673EA24
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232398AbjFZSh2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51024 "EHLO
+        id S232532AbjFZSno (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:43:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231902AbjFZSh1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:37:27 -0400
+        with ESMTP id S232536AbjFZSno (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3712DA
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:37:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BA3D97
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67DA660F45
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:37:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7339AC433CA;
-        Mon, 26 Jun 2023 18:37:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C44E360F4F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC971C433C0;
+        Mon, 26 Jun 2023 18:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804645;
-        bh=D2GftmIEuMGayFHWQc0knIsXhZD09VHDal1qbFEc/bE=;
+        s=korg; t=1687805022;
+        bh=tZHgfLjBHocg2hzFGgSyjEEIjOmxhRnIKdHVUQjCmHo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XFh6EGFQv/rWCOjIB7pUxNIY7ASlmrNL4Ouurz+sQbxd3WaZ22flXRCrIG8qMz3kv
-         tWGICTN/BG1N1GXPHx+DlgcjW7Gx9Rpf/GI0HyhMK8Gh49+NOX2xmIOWDttaj7IOKx
-         4j9gnrKWTP4vq/30Gaa6lA4QXvLwmFrVCSLDk9gM=
+        b=GMrN36aVZc76sxAOoOH19/vGNfgQInjQLr7XWKawTkigrJWs7yn/e7ZvuOydp+fOr
+         nbMhIRbAaZiH68kee1yjxZrCNPiKsSGT+3oPigiNQM5MFf8Tb7kPhudB4mmwZildsA
+         945vsB0gnUrDiwtuS1dd7EoiCLz6Mat8CchHUlRw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miquel Raynal <miquel.raynal@bootlin.com>,
-        Alexander Aring <aahringo@redhat.com>,
-        Chen Aotian <chenaotian2@163.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 26/60] ieee802154: hwsim: Fix possible memory leaks
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
+        Marek Majkowski <marek@cloudflare.com>
+Subject: [PATCH 5.10 23/81] io_uring/net: save msghdr->msg_control for retries
 Date:   Mon, 26 Jun 2023 20:12:05 +0200
-Message-ID: <20230626180740.598387568@linuxfoundation.org>
+Message-ID: <20230626180745.429110033@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,50 +54,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chen Aotian <chenaotian2@163.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit a61675294735570daca3779bd1dbb3715f7232bd ]
+Commit cac9e4418f4cbd548ccb065b3adcafe073f7f7d2 upstream.
 
-After replacing e->info, it is necessary to free the old einfo.
+If the application sets ->msg_control and we have to later retry this
+command, or if it got queued with IOSQE_ASYNC to begin with, then we
+need to retain the original msg_control value. This is due to the net
+stack overwriting this field with an in-kernel pointer, to copy it
+in. Hitting that path for the second time will now fail the copy from
+user, as it's attempting to copy from a non-user address.
 
-Fixes: f25da51fdc38 ("ieee802154: hwsim: add replacement for fakelb")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: Chen Aotian <chenaotian2@163.com>
-Link: https://lore.kernel.org/r/20230409022048.61223-1-chenaotian2@163.com
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 5.10+
+Link: https://github.com/axboe/liburing/issues/880
+Reported-and-tested-by: Marek Majkowski <marek@cloudflare.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ieee802154/mac802154_hwsim.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ieee802154/mac802154_hwsim.c b/drivers/net/ieee802154/mac802154_hwsim.c
-index 1d181eff0c299..4028cbe275d67 100644
---- a/drivers/net/ieee802154/mac802154_hwsim.c
-+++ b/drivers/net/ieee802154/mac802154_hwsim.c
-@@ -522,7 +522,7 @@ static int hwsim_del_edge_nl(struct sk_buff *msg, struct genl_info *info)
- static int hwsim_set_edge_lqi(struct sk_buff *msg, struct genl_info *info)
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -581,6 +581,7 @@ struct io_sr_msg {
+ 	size_t				len;
+ 	size_t				done_io;
+ 	struct io_buffer		*kbuf;
++	void __user			*msg_control;
+ };
+ 
+ struct io_open {
+@@ -4718,10 +4719,16 @@ static int io_setup_async_msg(struct io_
+ static int io_sendmsg_copy_hdr(struct io_kiocb *req,
+ 			       struct io_async_msghdr *iomsg)
  {
- 	struct nlattr *edge_attrs[MAC802154_HWSIM_EDGE_ATTR_MAX + 1];
--	struct hwsim_edge_info *einfo;
-+	struct hwsim_edge_info *einfo, *einfo_old;
- 	struct hwsim_phy *phy_v0;
- 	struct hwsim_edge *e;
- 	u32 v0, v1;
-@@ -560,8 +560,10 @@ static int hwsim_set_edge_lqi(struct sk_buff *msg, struct genl_info *info)
- 	list_for_each_entry_rcu(e, &phy_v0->edges, list) {
- 		if (e->endpoint->idx == v1) {
- 			einfo->lqi = lqi;
--			rcu_assign_pointer(e->info, einfo);
-+			einfo_old = rcu_replace_pointer(e->info, einfo,
-+							lockdep_is_held(&hwsim_phys_lock));
- 			rcu_read_unlock();
-+			kfree_rcu(einfo_old, rcu);
- 			mutex_unlock(&hwsim_phys_lock);
- 			return 0;
- 		}
--- 
-2.39.2
-
++	struct io_sr_msg *sr = &req->sr_msg;
++	int ret;
++
+ 	iomsg->msg.msg_name = &iomsg->addr;
+ 	iomsg->free_iov = iomsg->fast_iov;
+-	return sendmsg_copy_msghdr(&iomsg->msg, req->sr_msg.umsg,
++	ret = sendmsg_copy_msghdr(&iomsg->msg, req->sr_msg.umsg,
+ 				   req->sr_msg.msg_flags, &iomsg->free_iov);
++	/* save msg_control as sys_sendmsg() overwrites it */
++	sr->msg_control = iomsg->msg.msg_control;
++	return ret;
+ }
+ 
+ static int io_sendmsg_prep_async(struct io_kiocb *req)
+@@ -4778,6 +4785,8 @@ static int io_sendmsg(struct io_kiocb *r
+ 		if (ret)
+ 			return ret;
+ 		kmsg = &iomsg;
++	} else {
++		kmsg->msg.msg_control = sr->msg_control;
+ 	}
+ 
+ 	flags = req->sr_msg.msg_flags;
 
 
