@@ -2,147 +2,229 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AFFD73E346
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 17:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E42373E375
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 17:35:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230200AbjFZP2F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 11:28:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46836 "EHLO
+        id S231158AbjFZPfj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 11:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230061AbjFZP2D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 11:28:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D2E93;
-        Mon, 26 Jun 2023 08:28:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B85160EC2;
-        Mon, 26 Jun 2023 15:28:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96858C433C0;
-        Mon, 26 Jun 2023 15:28:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687793281;
-        bh=S2Kjb13VGnWuBr65aLFEcvkGtLsC7vUg96ml5q0Yt4M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oV1ipiSsjsj94QuaHDixcIUJmKhs+B+wsselM5xY74Mmft1xowMkKld1p/M3W+xEM
-         Ue/Uakvf19dB52lz24gTDq/nV5Mroa2HD61iLHzgRRNjT35OZEQgJ4ZbIvOanGSoHt
-         ajDAz5ju5gkHh5x20AAImHFwmwls1j8ntZU0YGCM=
-Date:   Mon, 26 Jun 2023 17:27:53 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Chandan Babu R <chandan.babu@oracle.com>
-Cc:     sashal@kernel.org, mcgrof@kernel.org, linux-xfs@vger.kernel.org,
-        stable@vger.kernel.org, djwong@kernel.org, amir73il@gmail.com,
-        leah.rumancik@gmail.com
-Subject: Re: [PATCH 5.4] xfs: verify buffer contents when we skip log replay
-Message-ID: <2023062645-swaddling-pushiness-ca7e@gregkh>
-References: <20230626120826.1770707-1-chandan.babu@oracle.com>
+        with ESMTP id S230493AbjFZPf3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 11:35:29 -0400
+Received: from DM6FTOPR00CU001.outbound.protection.outlook.com (mail-centralusazon11020015.outbound.protection.outlook.com [52.101.61.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365CD10DC;
+        Mon, 26 Jun 2023 08:35:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GpYJr5ut5VAdBUs0bqCO7adlSgeOSIJDoFFbZia6nz4ANtPqwAnhKZRCo98DC/0AV7ODDlxtc3IuKasnTr7WeLpRhYTTale/SM05Lfl3hIDHJumluhc8JpLEclwOUH98lUxSlbuh0wdZ2TsykmTUg4l/xKocRvZtoHoqAvnws2y6H+3814JuVPNr9jy7ULkCdi9eqAKg5dPxfPHnkUDj1oSRtP94O1Gk6jwylGQEJ6niMvHTdXEV8DhrXh95iL6MAUgWadTXB9NIDZnyS9pT8nJdAKrKOqqXRfIvlqiXSHlrXuYHKefOzTgZYXX7gqSNivaaSWUBT5BvAM333+tAsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZA6ZbdtABmklBjz1eIO6dJGoKErWzeodjUTh5BMZqqw=;
+ b=WYYNBceJII/blt5TiDVLAqc2YLvnA0y7X39oX2r9ZN07/AWtG92NOL7K3tt9f42non43yNZku7shD4CbvBuIrM1TJDiJDwvDsKte7Oc5o2fiwv5Buj9ppAiEMbZ3HK9r3n3Mx9BIGuuWf/fwHym4JtDOZbEP4Gzsho0MB/Y6xdsC+Q+Kr5xE6ByHyu7nYhuOcMAmd6y0xuLxTWYNOxssLRXNZIgtPALg4PMKB6tmUw24cNm7yoWN6FH07PA4MsPSq5uXBkLgWR+ZIIRr0v8Rcux82rfNReJ9NVbQu6yU9lmUL6aQZwrnNY1uwSu1wNuKsmjdRf16HRANLq2C4tKkVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZA6ZbdtABmklBjz1eIO6dJGoKErWzeodjUTh5BMZqqw=;
+ b=ZDC1ydlmOTFl6Hm/Rtp0LaShltOBZK8bvX+S0ygsvBUWrB8ZQs0PgXpGPXso2ema6lohYSNKVUNsyyieC30E8cXBgrWB/5HWyvlFIVEmGDeUGGYU51Kw+a+2FSAwRGnoNsRrcNoIFnZ7XF0RfVZ2fTdG418orUeOANuwOIp6WV0=
+Received: from BYAPR21MB1688.namprd21.prod.outlook.com (2603:10b6:a02:bf::26)
+ by DM4PR21MB3562.namprd21.prod.outlook.com (2603:10b6:8:a2::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.3; Mon, 26 Jun
+ 2023 15:35:23 +0000
+Received: from BYAPR21MB1688.namprd21.prod.outlook.com
+ ([fe80::7d5d:3139:cf68:64b]) by BYAPR21MB1688.namprd21.prod.outlook.com
+ ([fe80::7d5d:3139:cf68:64b%3]) with mapi id 15.20.6565.001; Mon, 26 Jun 2023
+ 15:35:23 +0000
+From:   "Michael Kelley (LINUX)" <mikelley@microsoft.com>
+To:     souradeep chakrabarti <schakrabarti@linux.microsoft.com>,
+        KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        Dexuan Cui <decui@microsoft.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        Long Li <longli@microsoft.com>,
+        Ajay Sharma <sharmaajay@microsoft.com>,
+        "leon@kernel.org" <leon@kernel.org>,
+        "cai.huoqing@linux.dev" <cai.huoqing@linux.dev>,
+        "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+        "vkuznets@redhat.com" <vkuznets@redhat.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>
+CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Souradeep Chakrabarti <schakrabarti@microsoft.com>
+Subject: RE: [PATCH 1/2 V3 net] net: mana: Fix MANA VF unload when host is
+ unresponsive
+Thread-Topic: [PATCH 1/2 V3 net] net: mana: Fix MANA VF unload when host is
+ unresponsive
+Thread-Index: AQHZqA+YFwPfLlDliEeE2fWQPWksHq+czliAgABmD6A=
+Date:   Mon, 26 Jun 2023 15:35:22 +0000
+Message-ID: <BYAPR21MB1688B43152773B7989353A5ED726A@BYAPR21MB1688.namprd21.prod.outlook.com>
+References: <1687771098-26775-1-git-send-email-schakrabarti@linux.microsoft.com>
+ <1687771137-26911-1-git-send-email-schakrabarti@linux.microsoft.com>
+In-Reply-To: <1687771137-26911-1-git-send-email-schakrabarti@linux.microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=afc6ead2-25d0-4c9b-b92e-5e8523239d00;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-06-26T15:24:13Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BYAPR21MB1688:EE_|DM4PR21MB3562:EE_
+x-ms-office365-filtering-correlation-id: d23a0200-515a-460b-b248-08db765af4da
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Cu1kovn0hFVa4hmjGjHpxrdhWm2mNLkarIZjOssRwIs25wr2iNsSwvw7wShcr5JGsZDXWkz32HUZmoWlaCwHz8dDmke9NJtvml8Ea36u2ZbdytwqtRsghIeT/nqQuPod09zP1cyBlqjvGinbSbTvBUoBjJeOf3FAqUOm/KudtBxj+U8zThktmr446a33viKoo7uGNbAc3XzUs/LEPMihbiDEvRTPmcJmin0N//6WgczdGoSdOg+J7JB7HQ4btQ026Ve5fRfmXjvL1l9XlqLFGddznRItwAlnxaQ1IjTP4QhkOI8j/P8k0TJtbxlp1/iCN16SDsGeqHgeSq9cIDhd1KxUxgCk2TNSSm1hXmHKPYI1KX+O/zr5bZL6iInI4wWMqsYhIo4nV+Nwy4XlE+PElHFmKxiGwitXkHEDISKZEwWskloZkyqO+X+vjYEOQ+UXNq6xWy4Ttfdt/hUpk08w3sYnOUeLOPLyCnjIOnEJGCxvDMC+SbO3abq/6S6Y+tipgn1lDvIOOI5rNF0JP/wneKsME7u5U1JFnaddBrZL3vPyEszMs25cuA9+10ccmAVCU6ek+e5c8RUyUvWG2zX61E01IaZdR1w2ppd8bQI5KBqg+LegHd4Di+FdWGS1cmCr8sj1ikc2wPKXjLAEy9kXGjkbyjEr7IZBhutLbNAkV8uTYwCT/IakVfUylkKsX4m/
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR21MB1688.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(346002)(39860400002)(366004)(376002)(396003)(451199021)(26005)(4326008)(33656002)(8676002)(8936002)(66946007)(66446008)(316002)(66556008)(64756008)(66476007)(76116006)(5660300002)(52536014)(66899021)(7416002)(10290500003)(478600001)(38070700005)(2906002)(55016003)(86362001)(8990500004)(54906003)(41300700001)(82950400001)(7696005)(186003)(6506007)(9686003)(82960400001)(83380400001)(110136005)(107886003)(38100700002)(921005)(122000001)(71200400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?n1R0gWFzDwIjm4bzJe/mF3/WcVWobDaq3AotLfhjxXGufxZHbNBv27Tb+ERy?=
+ =?us-ascii?Q?lCyjHxDoHJP1S8Kkyih1lsD+EXvyD2Up+6sOv4wOan/WdCEywueC+6N5NwNP?=
+ =?us-ascii?Q?RqmM64n2bHkmGFBji4zR8Uw+/m/HDAVkPebHrnLVKgxIh+HcyQUwVPI48gBl?=
+ =?us-ascii?Q?+aTAayBIlI6VE73BClLz/SP79LC1wcgOadoA6gmFvmsw6blBgDoVwCW01K2M?=
+ =?us-ascii?Q?Z1dQWuGpf5O6hrb5Eid/quab2btviIqUDx6+pohMjb2theQ8MvrkwoQhqcRS?=
+ =?us-ascii?Q?1cw7VRs44WHeLr+tskH91VJ9Cmvxh01kDDNkalnjygx312fdyJoKAid40neF?=
+ =?us-ascii?Q?J3KbDEEQVGpA8V261tweI3bIlrmQ17w5u+qVh3OcPoaZDPhyGuES2yQZ2Zwh?=
+ =?us-ascii?Q?5RL6CsSLSLiO8X9ebOKGtAM8Q6k/aj//qkk18j3q5o8dHHRzGDkVh+4/IOL1?=
+ =?us-ascii?Q?1HAKCIfDxFC6a8Y8oArdqkNT2b4ZtdRKviK2tHtgwPyaA2gNAkvCrvKJj1gw?=
+ =?us-ascii?Q?m32dPe9sfbhAJ1pjrO8ncOvJRokjx/JrGBskkZB3W8hCwoWIqjyDJuN5Pu7r?=
+ =?us-ascii?Q?2S2L3Ay9Ubew4Yvv0JI08TysM0YL86qLgSA5DSiJ1taqyo6m8HCZ5fwXB0oa?=
+ =?us-ascii?Q?YA+ERcbTour1HhSbBeWGSP3thTjw9XHGlwNf2xqBBCG7l+22uHdGA0ZEW8l2?=
+ =?us-ascii?Q?HQEC19ObFjsoH/g2qLipC3xovRx45k/d+xagxLLQPLb7OuqwlKA90yqQrIbL?=
+ =?us-ascii?Q?T+F0U4f6190Z4Qvs2GVTuSPsNu3UQVB1IQkVKangLI3y8XmXxzuBjsJo2Adb?=
+ =?us-ascii?Q?jsS9fF6RaNKnPPsOrASNgtRqKt//6TtAQO7U0PzzQYzqc4mVKa8Akenu8E8J?=
+ =?us-ascii?Q?8yStzpqkIOcWvUl/aDpO7/Ylu/v5+bi2lFD9L272DQ/WiHG+9OVkJrlq5rNZ?=
+ =?us-ascii?Q?NPFT0vRgeSZ9tmFs3MS4ovMa7JXTQgE7smvqVgEegVCAelbYQhhY0TL9M9kV?=
+ =?us-ascii?Q?WaXaB+g6hEvAt52m2yT3Ah9v38BlFMcLZUgFH3uXO6tOSCfVip1ciquIZq5d?=
+ =?us-ascii?Q?b7NabPQbrkzwCywWx8DVe3dBSYcC1qfMw6oC3dJ/ChLh6ncLiz30ujzab2zL?=
+ =?us-ascii?Q?XpkyXo77Ld+XuOtwvyzy5b2EvM1CmcY9laZrIYTlPCzwABln+R+MXBj5Sg7h?=
+ =?us-ascii?Q?SuaPIVl990d7GQOhNkBI4TVnxuwkvWKRaJW8k5orYV9x1PvRW37ggeyj1Bnc?=
+ =?us-ascii?Q?Yb4ZFGyv7Gv52ylGYX4rwGMr67SX2gsLu2s5Uci2tliKBFEUdSeyD7sDWUO/?=
+ =?us-ascii?Q?0B4ojUVD54ezTK8eTp64d1FSkE6Ks5Wx7S97aNaSFh7ekCOPBqQSPO0dvWel?=
+ =?us-ascii?Q?n44cxozUj9gENKSE8ff+bmKK9GtRZVOihtEy0hXTC/MN92AfpONjjfA8OKVe?=
+ =?us-ascii?Q?U1aQZ8OUojzCt7kUeCc+5LInv9iTZhBGm7JkeZSp9YZKoQheXmZZS7AmponN?=
+ =?us-ascii?Q?vdJjC6wtENg/BidpcrhqlMCQXyW4qZzBbfSrjxKLD4OaocwklRzyZuN9Di7R?=
+ =?us-ascii?Q?tQMMdSD1R0Ndepu3GJ8Cvv/gX0MaKRHAmSNNgWvpXq5aIPVUrFiUVLLx7Qkr?=
+ =?us-ascii?Q?FQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230626120826.1770707-1-chandan.babu@oracle.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR21MB1688.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d23a0200-515a-460b-b248-08db765af4da
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jun 2023 15:35:22.9964
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dr4cUyw5pTMOyZFF9SsBf9Zy++rp0zvCH34a0V0hGW9RpFJwiZSE46yysgSomqC2x67f11hDXOc7DiOSDL0jOOETf9tg+7M3czfjeyftNgQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR21MB3562
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 26, 2023 at 05:38:26PM +0530, Chandan Babu R wrote:
-> From: "Darrick J. Wong" <djwong@kernel.org>
-> 
-> commit 22ed903eee23a5b174e240f1cdfa9acf393a5210 upstream.
-> 
-> syzbot detected a crash during log recovery:
-> 
-> XFS (loop0): Mounting V5 Filesystem bfdc47fc-10d8-4eed-a562-11a831b3f791
-> XFS (loop0): Torn write (CRC failure) detected at log block 0x180. Truncating head block from 0x200.
-> XFS (loop0): Starting recovery (logdev: internal)
-> ==================================================================
-> BUG: KASAN: slab-out-of-bounds in xfs_btree_lookup_get_block+0x15c/0x6d0 fs/xfs/libxfs/xfs_btree.c:1813
-> Read of size 8 at addr ffff88807e89f258 by task syz-executor132/5074
-> 
-> CPU: 0 PID: 5074 Comm: syz-executor132 Not tainted 6.2.0-rc1-syzkaller #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
-> Call Trace:
->  <TASK>
->  __dump_stack lib/dump_stack.c:88 [inline]
->  dump_stack_lvl+0x1b1/0x290 lib/dump_stack.c:106
->  print_address_description+0x74/0x340 mm/kasan/report.c:306
->  print_report+0x107/0x1f0 mm/kasan/report.c:417
->  kasan_report+0xcd/0x100 mm/kasan/report.c:517
->  xfs_btree_lookup_get_block+0x15c/0x6d0 fs/xfs/libxfs/xfs_btree.c:1813
->  xfs_btree_lookup+0x346/0x12c0 fs/xfs/libxfs/xfs_btree.c:1913
->  xfs_btree_simple_query_range+0xde/0x6a0 fs/xfs/libxfs/xfs_btree.c:4713
->  xfs_btree_query_range+0x2db/0x380 fs/xfs/libxfs/xfs_btree.c:4953
->  xfs_refcount_recover_cow_leftovers+0x2d1/0xa60 fs/xfs/libxfs/xfs_refcount.c:1946
->  xfs_reflink_recover_cow+0xab/0x1b0 fs/xfs/xfs_reflink.c:930
->  xlog_recover_finish+0x824/0x920 fs/xfs/xfs_log_recover.c:3493
->  xfs_log_mount_finish+0x1ec/0x3d0 fs/xfs/xfs_log.c:829
->  xfs_mountfs+0x146a/0x1ef0 fs/xfs/xfs_mount.c:933
->  xfs_fs_fill_super+0xf95/0x11f0 fs/xfs/xfs_super.c:1666
->  get_tree_bdev+0x400/0x620 fs/super.c:1282
->  vfs_get_tree+0x88/0x270 fs/super.c:1489
->  do_new_mount+0x289/0xad0 fs/namespace.c:3145
->  do_mount fs/namespace.c:3488 [inline]
->  __do_sys_mount fs/namespace.c:3697 [inline]
->  __se_sys_mount+0x2d3/0x3c0 fs/namespace.c:3674
->  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
->  do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
->  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-> RIP: 0033:0x7f89fa3f4aca
-> Code: 83 c4 08 5b 5d c3 66 2e 0f 1f 84 00 00 00 00 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007fffd5fb5ef8 EFLAGS: 00000206 ORIG_RAX: 00000000000000a5
-> RAX: ffffffffffffffda RBX: 00646975756f6e2c RCX: 00007f89fa3f4aca
-> RDX: 0000000020000100 RSI: 0000000020009640 RDI: 00007fffd5fb5f10
-> RBP: 00007fffd5fb5f10 R08: 00007fffd5fb5f50 R09: 000000000000970d
-> R10: 0000000000200800 R11: 0000000000000206 R12: 0000000000000004
-> R13: 0000555556c6b2c0 R14: 0000000000200800 R15: 00007fffd5fb5f50
->  </TASK>
-> 
-> The fuzzed image contains an AGF with an obviously garbage
-> agf_refcount_level value of 32, and a dirty log with a buffer log item
-> for that AGF.  The ondisk AGF has a higher LSN than the recovered log
-> item.  xlog_recover_buf_commit_pass2 reads the buffer, compares the
-> LSNs, and decides to skip replay because the ondisk buffer appears to be
-> newer.
-> 
-> Unfortunately, the ondisk buffer is corrupt, but recovery just read the
-> buffer with no buffer ops specified:
-> 
-> 	error = xfs_buf_read(mp->m_ddev_targp, buf_f->blf_blkno,
-> 			buf_f->blf_len, buf_flags, &bp, NULL);
-> 
-> Skipping the buffer leaves its contents in memory unverified.  This sets
-> us up for a kernel crash because xfs_refcount_recover_cow_leftovers
-> reads the buffer (which is still around in XBF_DONE state, so no read
-> verification) and creates a refcountbt cursor of height 32.  This is
-> impossible so we run off the end of the cursor object and crash.
-> 
-> Fix this by invoking the verifier on all skipped buffers and aborting
-> log recovery if the ondisk buffer is corrupt.  It might be smarter to
-> force replay the log item atop the buffer and then see if it'll pass the
-> write verifier (like ext4 does) but for now let's go with the
-> conservative option where we stop immediately.
-> 
-> Link: https://syzkaller.appspot.com/bug?extid=7e9494b8b399902e994e
-> Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-> Reviewed-by: Dave Chinner <dchinner@redhat.com>
-> Signed-off-by: Dave Chinner <david@fromorbit.com>
-> Signed-off-by: Chandan Babu R <chandan.babu@oracle.com>
-> Acked-by: Darrick J. Wong <djwong@kernel.org>
+From: souradeep chakrabarti <schakrabarti@linux.microsoft.com> Sent: Monday=
+, June 26, 2023 2:19 AM
+>=20
+> This patch addresses the VF unload issue, where mana_dealloc_queues()
+> gets stuck in infinite while loop, because of host unresponsiveness.
+> It adds a timeout in the while loop, to fix it.
+
+For a patch series, the cover letter (patch 0 of the series) does not get
+included in the commit log anywhere.   The cover letter can provide
+overall motivation and describe how the patches fit together, but the
+commit message for each patch should be as self-contained as possible.
+
+The commit message here refers to "the VF unload issue", and there's
+no context for understanding what that issue is, though you do provide
+some description in the text following "where". Could you provide a
+commit message that is a bit more self-contained?
+
+Same comment applies to commit message for the 2nd patch of this
+series.
+
+Also, avoid text like "this patch".   See the "Describe your changes"
+section in Documentation/process/submitting-patches.rst where the
+use of imperative mood is mentioned.  If you like, I can provide some
+offline help on writing a good commit message.
+
+Michael
+
+>=20
+> Fixes: ca9c54d2d6a5ab2430c4eda364c77125d62e5e0f (net: mana: Add a driver =
+for
+> Microsoft Azure Network Adapter)
+> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
 > ---
-> Hi Greg,
-> 
-> This is a backport of a patch that has already been merged into 6.1.y,
-> 5.15.y and 5.10.y. I have tested this patch and have not found any new
-> regressions arising because of it. Please commit this patch into 5.4.y
-> tree.
+> V2 -> V3:
+> * Splitted the patch in two parts.
+> * Removed the unnecessary braces from mana_dealloc_queues().
+> ---
+>  drivers/net/ethernet/microsoft/mana/mana_en.c | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c
+> b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> index d907727c7b7a..cb5c43c3c47e 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> @@ -2329,7 +2329,10 @@ static int mana_dealloc_queues(struct net_device *=
+ndev)
+>  {
+>  	struct mana_port_context *apc =3D netdev_priv(ndev);
+>  	struct gdma_dev *gd =3D apc->ac->gdma_dev;
+> +	unsigned long timeout;
+>  	struct mana_txq *txq;
+> +	struct sk_buff *skb;
+> +	struct mana_cq *cq;
+>  	int i, err;
+>=20
+>  	if (apc->port_is_up)
+> @@ -2348,13 +2351,25 @@ static int mana_dealloc_queues(struct net_device =
+*ndev)
+>  	 *
+>  	 * Drain all the in-flight TX packets
+>  	 */
+> +
+> +	timeout =3D jiffies + 120 * HZ;
+>  	for (i =3D 0; i < apc->num_queues; i++) {
+>  		txq =3D &apc->tx_qp[i].txq;
+> -
+> -		while (atomic_read(&txq->pending_sends) > 0)
+> +		while (atomic_read(&txq->pending_sends) > 0 &&
+> +		       time_before(jiffies, timeout))
+>  			usleep_range(1000, 2000);
+>  	}
+>=20
+> +	for (i =3D 0; i < apc->num_queues; i++) {
+> +		txq =3D &apc->tx_qp[i].txq;
+> +		cq =3D &apc->tx_qp[i].tx_cq;
+> +		while (atomic_read(&txq->pending_sends)) {
+> +			skb =3D skb_dequeue(&txq->pending_skbs);
+> +			mana_unmap_skb(skb, apc);
+> +			napi_consume_skb(skb, cq->budget);
+> +			atomic_sub(1, &txq->pending_sends);
+> +		}
+> +	}
+>  	/* We're 100% sure the queues can no longer be woken up, because
+>  	 * we're sure now mana_poll_tx_cq() can't be running.
+>  	 */
+> --
+> 2.34.1
 
-Now queued up, thanks.
-
-greg k-h
