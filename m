@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F4073E8F2
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F16973E7DB
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232267AbjFZSau (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:30:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44526 "EHLO
+        id S231562AbjFZSUB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:20:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232439AbjFZSa3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:29 -0400
+        with ESMTP id S231520AbjFZSTm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08773AC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B285CE8
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A19360F40
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4396C433C0;
-        Mon, 26 Jun 2023 18:30:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 505AC60F39
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56046C433C8;
+        Mon, 26 Jun 2023 18:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804227;
-        bh=XtE5cSi56aanLgRMLi/1rPQ4RKbZ+jG6pCGvL869Ki4=;
+        s=korg; t=1687803580;
+        bh=wFhrg8hnJNJ/MY29E5mKx8BlOwwpIX/G+69TpONV3uM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jmMCLFX89C24inOe0jvnZLMkgWE9vvTeQrvZOtPO27lYCh/PfkSYqD8iNGv52NH46
-         ZHsPKjnO7Au64Z2OZzns9TA3PRjAZzFL3Gth9AngC05YDERjt4jZMFsh6i17NGk/Kj
-         10AmZ+I85qlAfvGrKn+3CTx04wUV1fKPSqY8XTS0=
+        b=HcmqEuigFBS1fbeh4enS6jpvKepk4dkXz8tMwq6JUp2qzt6W7M5a8dQDlCprw15LE
+         RJmfAU7123YeNhpyxFptR6JyCHJDWNzS6YtCgj2oidDkz6yEINT0xvBRKeZ87oJGTD
+         JDGkWgd56UimmDeWBkagbk79i05Sm7w1lSBeXFi4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 046/170] ACPI: sleep: Avoid breaking S3 wakeup due to might_sleep()
+        patches@lists.linux.dev, David Ahern <dsahern@kernel.org>,
+        Magali Lemes <magali.lemes@canonical.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 109/199] selftests: net: fcnal-test: check if FIPS mode is enabled
 Date:   Mon, 26 Jun 2023 20:10:15 +0200
-Message-ID: <20230626180802.604582492@linuxfoundation.org>
+Message-ID: <20230626180810.427931281@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,86 +56,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Magali Lemes <magali.lemes@canonical.com>
 
-commit 22db06337f590d01d79f60f181d8dfe5a9ef9085 upstream.
+[ Upstream commit d7a2fc1437f71cb058c7b11bc33dfc19e4bf277a ]
 
-The addition of might_sleep() to down_timeout() caused the latter to
-enable interrupts unconditionally in some cases, which in turn broke
-the ACPI S3 wakeup path in acpi_suspend_enter(), where down_timeout()
-is called by acpi_disable_all_gpes() via acpi_ut_acquire_mutex().
+There are some MD5 tests which fail when the kernel is in FIPS mode,
+since MD5 is not FIPS compliant. Add a check and only run those tests
+if FIPS mode is not enabled.
 
-Namely, if CONFIG_DEBUG_ATOMIC_SLEEP is set, might_sleep() causes
-might_resched() to be used and if CONFIG_PREEMPT_VOLUNTARY is set,
-this triggers __cond_resched() which may call preempt_schedule_common(),
-so __schedule() gets invoked and it ends up with enabled interrupts (in
-the prev == next case).
-
-Now, enabling interrupts early in the S3 wakeup path causes the kernel
-to crash.
-
-Address this by modifying acpi_suspend_enter() to disable GPEs without
-attempting to acquire the sleeping lock which is not needed in that code
-path anyway.
-
-Fixes: 99409b935c9a ("locking/semaphore: Add might_sleep() to down_*() family")
-Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f0bee1ebb5594 ("fcnal-test: Add TCP MD5 tests")
+Fixes: 5cad8bce26e01 ("fcnal-test: Add TCP MD5 tests for VRF")
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/achware.h |    2 --
- drivers/acpi/sleep.c          |   16 ++++++++++++----
- include/acpi/acpixf.h         |    1 +
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/fcnal-test.sh | 27 ++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
---- a/drivers/acpi/acpica/achware.h
-+++ b/drivers/acpi/acpica/achware.h
-@@ -101,8 +101,6 @@ acpi_status
- acpi_hw_get_gpe_status(struct acpi_gpe_event_info *gpe_event_info,
- 		       acpi_event_status *event_status);
+diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
+index 21ca91473c095..ee6880ac3e5ed 100755
+--- a/tools/testing/selftests/net/fcnal-test.sh
++++ b/tools/testing/selftests/net/fcnal-test.sh
+@@ -92,6 +92,13 @@ NSC_CMD="ip netns exec ${NSC}"
  
--acpi_status acpi_hw_disable_all_gpes(void);
--
- acpi_status acpi_hw_enable_all_runtime_gpes(void);
+ which ping6 > /dev/null 2>&1 && ping6=$(which ping6) || ping6=$(which ping)
  
- acpi_status acpi_hw_enable_all_wakeup_gpes(void);
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -636,11 +636,19 @@ static int acpi_suspend_enter(suspend_st
- 	}
++# Check if FIPS mode is enabled
++if [ -f /proc/sys/crypto/fips_enabled ]; then
++	fips_enabled=`cat /proc/sys/crypto/fips_enabled`
++else
++	fips_enabled=0
++fi
++
+ ################################################################################
+ # utilities
  
- 	/*
--	 * Disable and clear GPE status before interrupt is enabled. Some GPEs
--	 * (like wakeup GPE) haven't handler, this can avoid such GPE misfire.
--	 * acpi_leave_sleep_state will reenable specific GPEs later
-+	 * Disable all GPE and clear their status bits before interrupts are
-+	 * enabled. Some GPEs (like wakeup GPEs) have no handlers and this can
-+	 * prevent them from producing spurious interrups.
-+	 *
-+	 * acpi_leave_sleep_state() will reenable specific GPEs later.
-+	 *
-+	 * Because this code runs on one CPU with disabled interrupts (all of
-+	 * the other CPUs are offline at this time), it need not acquire any
-+	 * sleeping locks which may trigger an implicit preemption point even
-+	 * if there is no contention, so avoid doing that by using a low-level
-+	 * library routine here.
- 	 */
--	acpi_disable_all_gpes();
-+	acpi_hw_disable_all_gpes();
- 	/* Allow EC transactions to happen. */
- 	acpi_ec_unblock_transactions();
+@@ -1216,7 +1223,7 @@ ipv4_tcp_novrf()
+ 	run_cmd nettest -d ${NSA_DEV} -r ${a}
+ 	log_test_addr ${a} $? 1 "No server, device client, local conn"
  
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -751,6 +751,7 @@ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_sta
- 						     acpi_event_status
- 						     *event_status))
- ACPI_HW_DEPENDENT_RETURN_UINT32(u32 acpi_dispatch_gpe(acpi_handle gpe_device, u32 gpe_number))
-+ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_hw_disable_all_gpes(void))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_disable_all_gpes(void))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_enable_all_runtime_gpes(void))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_enable_all_wakeup_gpes(void))
+-	ipv4_tcp_md5_novrf
++	[ "$fips_enabled" = "1" ] || ipv4_tcp_md5_novrf
+ }
+ 
+ ipv4_tcp_vrf()
+@@ -1270,9 +1277,11 @@ ipv4_tcp_vrf()
+ 	log_test_addr ${a} $? 1 "Global server, local connection"
+ 
+ 	# run MD5 tests
+-	setup_vrf_dup
+-	ipv4_tcp_md5
+-	cleanup_vrf_dup
++	if [ "$fips_enabled" = "0" ]; then
++		setup_vrf_dup
++		ipv4_tcp_md5
++		cleanup_vrf_dup
++	fi
+ 
+ 	#
+ 	# enable VRF global server
+@@ -2772,7 +2781,7 @@ ipv6_tcp_novrf()
+ 		log_test_addr ${a} $? 1 "No server, device client, local conn"
+ 	done
+ 
+-	ipv6_tcp_md5_novrf
++	[ "$fips_enabled" = "1" ] || ipv6_tcp_md5_novrf
+ }
+ 
+ ipv6_tcp_vrf()
+@@ -2842,9 +2851,11 @@ ipv6_tcp_vrf()
+ 	log_test_addr ${a} $? 1 "Global server, local connection"
+ 
+ 	# run MD5 tests
+-	setup_vrf_dup
+-	ipv6_tcp_md5
+-	cleanup_vrf_dup
++	if [ "$fips_enabled" = "0" ]; then
++		setup_vrf_dup
++		ipv6_tcp_md5
++		cleanup_vrf_dup
++	fi
+ 
+ 	#
+ 	# enable VRF global server
+-- 
+2.39.2
+
 
 
