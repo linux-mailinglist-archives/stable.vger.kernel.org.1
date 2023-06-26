@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 873FC73E84E
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F4873E8FC
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:31:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231797AbjFZSYQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:24:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38058 "EHLO
+        id S232321AbjFZSbR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:31:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232026AbjFZSX6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CCBF1FCC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:30 -0700 (PDT)
+        with ESMTP id S232297AbjFZSbB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:31:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFDE71FD7
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CD4A60F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:23:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D51C433C0;
-        Mon, 26 Jun 2023 18:23:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02E8960F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8E5C433C8;
+        Mon, 26 Jun 2023 18:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803809;
-        bh=vgy54zVLHfKxQrPWgzf6k7yx1TAALDUu5NoFA/xkWhw=;
+        s=korg; t=1687804250;
+        bh=sSf0vIatUGAH0pQuqh6VfqVownHwOXL2AxjSa1+Qrag=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BonehY+6DjBDpSsNyFDfkCGLnIb3lcWx9d8CtIFGLI5woK0w7cy1JtBOXzPYnP2K9
-         mZIaSMt9VDdIezqQW6TDbFAO/Mo5aMzL/74R0ZkhzYwtplXgje2E3nPQe8UU1I5jA3
-         Yg6p+SdEq9lgFF4BuIIgisan/xA9B0+x2SM4sCv0=
+        b=PmaDHk9wUZocg3zh4KXg8slI5VF6RBO5GZ9g1mWZ6QdhYZaofW56eVFH7Y87V5fvm
+         lgG7lYCrY3Z1QwF0DrW9UtlXfUS2GyThJTki91JPqKtKsPsmlD5B1lE/y2koLoQC8w
+         c1QGXEJWuIFYBRfJgGaaPJ2bh1t8nR3IEOENrICE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 156/199] media: cec: core: disable adapter in cec_devnode_unregister
+Subject: [PATCH 6.1 093/170] xfrm: Linearize the skb after offloading if needed.
 Date:   Mon, 26 Jun 2023 20:11:02 +0200
-Message-ID: <20230626180812.486522309@linuxfoundation.org>
+Message-ID: <20230626180804.747128181@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,74 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit fe4526d99e2e06b08bb80316c3a596ea6a807b75 ]
+[ Upstream commit f015b900bc3285322029b4a7d132d6aeb0e51857 ]
 
-Explicitly disable the CEC adapter in cec_devnode_unregister()
+With offloading enabled, esp_xmit() gets invoked very late, from within
+validate_xmit_xfrm() which is after validate_xmit_skb() validates and
+linearizes the skb if the underlying device does not support fragments.
 
-Usually this does not really do anything important, but for drivers
-that use the CEC pin framework this is needed to properly stop the
-hrtimer. Without this a crash would happen when such a driver is
-unloaded with rmmod.
+esp_output_tail() may add a fragment to the skb while adding the auth
+tag/ IV. Devices without the proper support will then send skb->data
+points to with the correct length so the packet will have garbage at the
+end. A pcap sniffer will claim that the proper data has been sent since
+it parses the skb properly.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+It is not affected with INET_ESP_OFFLOAD disabled.
+
+Linearize the skb after offloading if the sending hardware requires it.
+It was tested on v4, v6 has been adopted.
+
+Fixes: 7785bba299a8d ("esp: Add a software GRO codepath")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c | 5 ++++-
- drivers/media/cec/core/cec-core.c | 2 ++
- drivers/media/cec/core/cec-priv.h | 1 +
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ net/ipv4/esp4_offload.c | 3 +++
+ net/ipv6/esp6_offload.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index 4f5ab3cae8a71..ac18707fddcd2 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -1582,7 +1582,7 @@ static void cec_claim_log_addrs(struct cec_adapter *adap, bool block)
-  *
-  * This function is called with adap->lock held.
-  */
--static int cec_adap_enable(struct cec_adapter *adap)
-+int cec_adap_enable(struct cec_adapter *adap)
- {
- 	bool enable;
- 	int ret = 0;
-@@ -1592,6 +1592,9 @@ static int cec_adap_enable(struct cec_adapter *adap)
- 	if (adap->needs_hpd)
- 		enable = enable && adap->phys_addr != CEC_PHYS_ADDR_INVALID;
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index 3969fa805679c..ee848be59e65a 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -340,6 +340,9 @@ static int esp_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features_
  
-+	if (adap->devnode.unregistered)
-+		enable = false;
-+
- 	if (enable == adap->is_enabled)
- 		return 0;
+ 	secpath_reset(skb);
  
-diff --git a/drivers/media/cec/core/cec-core.c b/drivers/media/cec/core/cec-core.c
-index af358e901b5f3..7e153c5cad04f 100644
---- a/drivers/media/cec/core/cec-core.c
-+++ b/drivers/media/cec/core/cec-core.c
-@@ -191,6 +191,8 @@ static void cec_devnode_unregister(struct cec_adapter *adap)
- 	mutex_lock(&adap->lock);
- 	__cec_s_phys_addr(adap, CEC_PHYS_ADDR_INVALID, false);
- 	__cec_s_log_addrs(adap, NULL, false);
-+	// Disable the adapter (since adap->devnode.unregistered is true)
-+	cec_adap_enable(adap);
- 	mutex_unlock(&adap->lock);
++	if (skb_needs_linearize(skb, skb->dev->features) &&
++	    __skb_linearize(skb))
++		return -ENOMEM;
+ 	return 0;
+ }
  
- 	cdev_device_del(&devnode->cdev, &devnode->dev);
-diff --git a/drivers/media/cec/core/cec-priv.h b/drivers/media/cec/core/cec-priv.h
-index b78df931aa74b..ed1f8c67626bf 100644
---- a/drivers/media/cec/core/cec-priv.h
-+++ b/drivers/media/cec/core/cec-priv.h
-@@ -47,6 +47,7 @@ int cec_monitor_pin_cnt_inc(struct cec_adapter *adap);
- void cec_monitor_pin_cnt_dec(struct cec_adapter *adap);
- int cec_adap_status(struct seq_file *file, void *priv);
- int cec_thread_func(void *_adap);
-+int cec_adap_enable(struct cec_adapter *adap);
- void __cec_s_phys_addr(struct cec_adapter *adap, u16 phys_addr, bool block);
- int __cec_s_log_addrs(struct cec_adapter *adap,
- 		      struct cec_log_addrs *log_addrs, bool block);
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index 242f4295940e6..fc6a5be732634 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -375,6 +375,9 @@ static int esp6_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features
+ 
+ 	secpath_reset(skb);
+ 
++	if (skb_needs_linearize(skb, skb->dev->features) &&
++	    __skb_linearize(skb))
++		return -ENOMEM;
+ 	return 0;
+ }
+ 
 -- 
 2.39.2
 
