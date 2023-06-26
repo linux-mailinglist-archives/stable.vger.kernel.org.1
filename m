@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BAF073E7C5
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 991E673E7C7
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231403AbjFZSTE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:19:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34090 "EHLO
+        id S231451AbjFZSTH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:19:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231476AbjFZSTB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:01 -0400
+        with ESMTP id S231495AbjFZSTC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6ACB10CB
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:18:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD34B10DD
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:18:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 697A260F1D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:18:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FB1C433C9;
-        Mon, 26 Jun 2023 18:18:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6196460F1D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:18:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2D0C433C8;
+        Mon, 26 Jun 2023 18:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803518;
-        bh=8yGq27hEsLLbeqrP7XAuptcDpE5+4toHRfVRgchp2m0=;
+        s=korg; t=1687803524;
+        bh=rrs4nCHkru8iasTk9B7yIUjabFLcWPWOQER3r64I9c8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lY8y4lYa3nE3gxnvi+PJT2sdVbuwCAn5EQm8+taiqEnkIZrceP+QpZapW16XeIDWR
-         l3hDbMNKOBRqgsWSYjR6PmnMdIq6iFwtmP2aHOFKOdXUVLsaQ6wOKQzy+kWVDnD0p6
-         mK6EOLpl8+UxuvsnezZLV+WMgmrBjqo7d5GbjHgk=
+        b=uYyfj9z1gvlArb6YQDnGhPcvAWq01AdhOZzLn5PLybSZF4dZQ8THBO7/JjEEazN7p
+         lWuj/Vj0/gethZndgtS4Sey+1sp52omitEzYF7OrdQpSJaNey9E2+ZVThtAR3+mwM6
+         UC7Lyr3SuYd61iGdojptElg3qyLqxrhOvQ3wIteU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Dexuan Cui <decui@microsoft.com>,
+        patches@lists.linux.dev, John Starks <jostarks@microsoft.com>,
         Michael Kelley <mikelley@microsoft.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
         Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.3 061/199] Drivers: hv: vmbus: Call hv_synic_free() if hv_synic_alloc() fails
-Date:   Mon, 26 Jun 2023 20:09:27 +0200
-Message-ID: <20230626180808.251372962@linuxfoundation.org>
+Subject: [PATCH 6.3 062/199] Drivers: hv: vmbus: Fix vmbus_wait_for_unload() to scan present CPUs
+Date:   Mon, 26 Jun 2023 20:09:28 +0200
+Message-ID: <20230626180808.292519267@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
 References: <20230626180805.643662628@linuxfoundation.org>
@@ -56,50 +56,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Michael Kelley <mikelley@microsoft.com>
 
-commit ec97e112985c2581ee61854a4b74f080f6cdfc2c upstream.
+commit 320805ab61e5f1e2a5729ae266e16bec2904050c upstream.
 
-Commit 572086325ce9 ("Drivers: hv: vmbus: Cleanup synic memory free path")
-says "Any memory allocations that succeeded will be freed when the caller
-cleans up by calling hv_synic_free()", but if the get_zeroed_page() in
-hv_synic_alloc() fails, currently hv_synic_free() is not really called
-in vmbus_bus_init(), consequently there will be a memory leak, e.g.
-hv_context.hv_numa_map is not freed in the error path. Fix this by
-updating the goto labels.
+vmbus_wait_for_unload() may be called in the panic path after other
+CPUs are stopped. vmbus_wait_for_unload() currently loops through
+online CPUs looking for the UNLOAD response message. But the values of
+CONFIG_KEXEC_CORE and crash_kexec_post_notifiers affect the path used
+to stop the other CPUs, and in one of the paths the stopped CPUs
+are removed from cpu_online_mask. This removal happens in both
+x86/x64 and arm64 architectures. In such a case, vmbus_wait_for_unload()
+only checks the panic'ing CPU, and misses the UNLOAD response message
+except when the panic'ing CPU is CPU 0. vmbus_wait_for_unload()
+eventually times out, but only after waiting 100 seconds.
 
-Cc: stable@kernel.org
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Fixes: 4df4cb9e99f8 ("x86/hyperv: Initialize clockevents earlier in CPU onlining")
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/20230504224155.10484-1-decui@microsoft.com
+Fix this by looping through *present* CPUs in vmbus_wait_for_unload().
+The cpu_present_mask is not modified by stopping the other CPUs in the
+panic path, nor should it be.
+
+Also, in a CoCo VM the synic_message_page is not allocated in
+hv_synic_alloc(), but is set and cleared in hv_synic_enable_regs()
+and hv_synic_disable_regs() such that it is set only when the CPU is
+online.  If not all present CPUs are online when vmbus_wait_for_unload()
+is called, the synic_message_page might be NULL. Add a check for this.
+
+Fixes: cd95aad55793 ("Drivers: hv: vmbus: handle various crash scenarios")
+Cc: stable@vger.kernel.org
+Reported-by: John Starks <jostarks@microsoft.com>
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://lore.kernel.org/r/1684422832-38476-1-git-send-email-mikelley@microsoft.com
 Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/vmbus_drv.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/hv/channel_mgmt.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -1525,7 +1525,7 @@ static int vmbus_bus_init(void)
- 	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "hyperv/vmbus:online",
- 				hv_synic_init, hv_synic_cleanup);
- 	if (ret < 0)
--		goto err_cpuhp;
-+		goto err_alloc;
- 	hyperv_cpuhp_online = ret;
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -829,11 +829,22 @@ static void vmbus_wait_for_unload(void)
+ 		if (completion_done(&vmbus_connection.unload_event))
+ 			goto completed;
  
- 	ret = vmbus_connect();
-@@ -1577,9 +1577,8 @@ static int vmbus_bus_init(void)
+-		for_each_online_cpu(cpu) {
++		for_each_present_cpu(cpu) {
+ 			struct hv_per_cpu_context *hv_cpu
+ 				= per_cpu_ptr(hv_context.cpu_context, cpu);
  
- err_connect:
- 	cpuhp_remove_state(hyperv_cpuhp_online);
--err_cpuhp:
--	hv_synic_free();
- err_alloc:
-+	hv_synic_free();
- 	if (vmbus_irq == -1) {
- 		hv_remove_vmbus_handler();
- 	} else {
++			/*
++			 * In a CoCo VM the synic_message_page is not allocated
++			 * in hv_synic_alloc(). Instead it is set/cleared in
++			 * hv_synic_enable_regs() and hv_synic_disable_regs()
++			 * such that it is set only when the CPU is online. If
++			 * not all present CPUs are online, the message page
++			 * might be NULL, so skip such CPUs.
++			 */
+ 			page_addr = hv_cpu->synic_message_page;
++			if (!page_addr)
++				continue;
++
+ 			msg = (struct hv_message *)page_addr
+ 				+ VMBUS_MESSAGE_SINT;
+ 
+@@ -867,11 +878,14 @@ completed:
+ 	 * maybe-pending messages on all CPUs to be able to receive new
+ 	 * messages after we reconnect.
+ 	 */
+-	for_each_online_cpu(cpu) {
++	for_each_present_cpu(cpu) {
+ 		struct hv_per_cpu_context *hv_cpu
+ 			= per_cpu_ptr(hv_context.cpu_context, cpu);
+ 
+ 		page_addr = hv_cpu->synic_message_page;
++		if (!page_addr)
++			continue;
++
+ 		msg = (struct hv_message *)page_addr + VMBUS_MESSAGE_SINT;
+ 		msg->header.message_type = HVMSG_NONE;
+ 	}
 
 
