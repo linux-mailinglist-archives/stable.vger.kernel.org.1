@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84AA673E812
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FCD773E8F4
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231654AbjFZSWS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:22:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36836 "EHLO
+        id S232127AbjFZSav (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:30:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbjFZSWK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:22:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E7731702
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:21:48 -0700 (PDT)
+        with ESMTP id S232041AbjFZSab (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F270499
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 82BE260F57
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:21:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E918C433C8;
-        Mon, 26 Jun 2023 18:21:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D34060F1E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C02C433C0;
+        Mon, 26 Jun 2023 18:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803682;
-        bh=Y3dU+evQdbvEAfFTbXaCTSTe3vJeJZBHTQG3j2EQOtg=;
+        s=korg; t=1687804230;
+        bh=VYLH5n8IPeIldbYbhbsNlQ1X+8ADqiCq0EGLs32y/6M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PZbtPfr4muyYP0FtSDYOw+PSlDiTKQoT/xL18R8dHTy+nuqVjaWvIAJmwu1z4OT4B
-         H4E6Gb4BJ6/GOOHx+MfdRzSshr61oQ6yDvFUht0xzzjjumhVj2uvBl6pj/GfI+8AIQ
-         VNVMVjtUVIro1Ma5pvc8zMe9AbVyk370K/y+i0S4=
+        b=x8onOMc95cdYAHFGnh5EsPOaygfqolRocjDsbaOd+GzrfUQAZJVkNU9p834z1Ifrj
+         0O7yP5bRh493TgyAeugL9OXu9OKMzYsS7pdr1eb9a5GRCPlI+XqzqFGAGbhlV2W6Mv
+         TpposRYbs99qmF3S2x6yBTA50OujiG2djoo85Xgw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Danielle Ratson <danieller@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 141/199] selftests: forwarding: Fix race condition in mirror installation
+        patches@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>,
+        Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 078/170] x86/mm: Avoid using set_pgd() outside of real PGD pages
 Date:   Mon, 26 Jun 2023 20:10:47 +0200
-Message-ID: <20230626180811.788715170@linuxfoundation.org>
+Message-ID: <20230626180804.106833289@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,79 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Danielle Ratson <danieller@nvidia.com>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit c7c059fba6fb19c3bc924925c984772e733cb594 ]
+commit d082d48737c75d2b3cc1f972b8c8674c25131534 upstream.
 
-When mirroring to a gretap in hardware the device expects to be
-programmed with the egress port and all the encapsulating headers. This
-requires the driver to resolve the path the packet will take in the
-software data path and program the device accordingly.
+KPTI keeps around two PGDs: one for userspace and another for the
+kernel. Among other things, set_pgd() contains infrastructure to
+ensure that updates to the kernel PGD are reflected in the user PGD
+as well.
 
-If the path cannot be resolved (in this case because of an unresolved
-neighbor), then mirror installation fails until the path is resolved.
-This results in a race that causes the test to sometimes fail.
+One side-effect of this is that set_pgd() expects to be passed whole
+pages.  Unfortunately, init_trampoline_kaslr() passes in a single entry:
+'trampoline_pgd_entry'.
 
-Fix this by setting the neighbor's state to permanent in a couple of
-tests, so that it is always valid.
+When KPTI is on, set_pgd() will update 'trampoline_pgd_entry' (an
+8-Byte globally stored [.bss] variable) and will then proceed to
+replicate that value into the non-existent neighboring user page
+(located +4k away), leading to the corruption of other global [.bss]
+stored variables.
 
-Fixes: 35c31d5c323f ("selftests: forwarding: Test mirror-to-gretap w/ UL 802.1d")
-Fixes: 239e754af854 ("selftests: forwarding: Test mirror-to-gretap w/ UL 802.1q")
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://lore.kernel.org/r/268816ac729cb6028c7a34d4dda6f4ec7af55333.1687264607.git.petrm@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by directly assigning 'trampoline_pgd_entry' and avoiding
+set_pgd().
+
+[ dhansen: tweak subject and changelog ]
+
+Fixes: 0925dda5962e ("x86/mm/KASLR: Use only one PUD entry for real mode trampoline")
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/all/20230614163859.924309-1-lee@kernel.org/g
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../testing/selftests/net/forwarding/mirror_gre_bridge_1d.sh  | 4 ++++
- .../testing/selftests/net/forwarding/mirror_gre_bridge_1q.sh  | 4 ++++
- 2 files changed, 8 insertions(+)
+ arch/x86/mm/kaslr.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1d.sh b/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1d.sh
-index c5095da7f6bf8..aec752a22e9ec 100755
---- a/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1d.sh
-+++ b/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1d.sh
-@@ -93,12 +93,16 @@ cleanup()
+--- a/arch/x86/mm/kaslr.c
++++ b/arch/x86/mm/kaslr.c
+@@ -172,10 +172,10 @@ void __meminit init_trampoline_kaslr(voi
+ 		set_p4d(p4d_tramp,
+ 			__p4d(_KERNPG_TABLE | __pa(pud_page_tramp)));
  
- test_gretap()
- {
-+	ip neigh replace 192.0.2.130 lladdr $(mac_get $h3) \
-+		 nud permanent dev br2
- 	full_test_span_gre_dir gt4 ingress 8 0 "mirror to gretap"
- 	full_test_span_gre_dir gt4 egress 0 8 "mirror to gretap"
+-		set_pgd(&trampoline_pgd_entry,
+-			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp)));
++		trampoline_pgd_entry =
++			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp));
+ 	} else {
+-		set_pgd(&trampoline_pgd_entry,
+-			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp)));
++		trampoline_pgd_entry =
++			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp));
+ 	}
  }
- 
- test_ip6gretap()
- {
-+	ip neigh replace 2001:db8:2::2 lladdr $(mac_get $h3) \
-+		nud permanent dev br2
- 	full_test_span_gre_dir gt6 ingress 8 0 "mirror to ip6gretap"
- 	full_test_span_gre_dir gt6 egress 0 8 "mirror to ip6gretap"
- }
-diff --git a/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q.sh b/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q.sh
-index 9ff22f28032dd..0cf4c47a46f9b 100755
---- a/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q.sh
-+++ b/tools/testing/selftests/net/forwarding/mirror_gre_bridge_1q.sh
-@@ -90,12 +90,16 @@ cleanup()
- 
- test_gretap()
- {
-+	ip neigh replace 192.0.2.130 lladdr $(mac_get $h3) \
-+		 nud permanent dev br1
- 	full_test_span_gre_dir gt4 ingress 8 0 "mirror to gretap"
- 	full_test_span_gre_dir gt4 egress 0 8 "mirror to gretap"
- }
- 
- test_ip6gretap()
- {
-+	ip neigh replace 2001:db8:2::2 lladdr $(mac_get $h3) \
-+		nud permanent dev br1
- 	full_test_span_gre_dir gt6 ingress 8 0 "mirror to ip6gretap"
- 	full_test_span_gre_dir gt6 egress 0 8 "mirror to ip6gretap"
- }
--- 
-2.39.2
-
 
 
