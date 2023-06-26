@@ -2,45 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF75D73E9C3
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BF8B73E75E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:14:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232450AbjFZSju (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:39:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52758 "EHLO
+        id S229574AbjFZSOm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:14:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232452AbjFZSjt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:49 -0400
+        with ESMTP id S230268AbjFZSOV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:14:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6983DA
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E94BE5B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:14:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B60A60F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3624BC433C0;
-        Mon, 26 Jun 2023 18:39:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C8DC60F45
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:14:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A485BC433C9;
+        Mon, 26 Jun 2023 18:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804787;
-        bh=e0lNJm3iRBZZs6fFDhE/aiDKs8jlAVJyBjcYDD2ZuEs=;
+        s=korg; t=1687803254;
+        bh=2CrKPW+w7p9J0l18Me6JQdySmzAHdzRir3nTzO0/6bc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FDoNRZ6um+anOJzF97KuYwrRVH4AeVLtbw1MM56oR29NfRvqCWpnzg1b96B+gaKiV
-         gbs8rXEl/Luz2iD8WtS6iL+7ZMx7JKn3di0M9zjvdXwNHxtISEjOt+w9WIwS7Lq6uG
-         6BLUfuLhGWGytqwVSR8+3cHYfnQXT/iAF6zJZ2kA=
+        b=b1QLHG5AfXm5a+sBx4Mc4ahSh4YpOxv7SNw1jccKSM7Va0BFQeEgnHDBhvHKEFUH6
+         6nGOJ0dsiYkLnDsH42QbqkNGGaUHEQ+jZAsVSHJl/u8EVgMwpqAnkOdEZU7D7/vl/3
+         +maMsV7wS+9b5L5xfRLt4VN5EeHiZUPnnFF1Cuxk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 12/96] selftests: mptcp: join: use iptables-legacy if available
+        Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Kishon Vijay Abraham I <kvijayab@amd.com>,
+        Vasant Hegde <vasant.hegde@amd.com>,
+        Cyrill Gorcunov <gorcunov@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 25/26] x86/apic: Fix kernel panic when booting with intremap=off and x2apic_phys
 Date:   Mon, 26 Jun 2023 20:11:27 +0200
-Message-ID: <20230626180747.426122856@linuxfoundation.org>
+Message-ID: <20230626180734.690915285@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
+References: <20230626180733.699092073@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,65 +60,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
 
-commit 0c4cd3f86a40028845ad6f8af5b37165666404cd upstream.
+[ Upstream commit 85d38d5810e285d5aec7fb5283107d1da70c12a9 ]
 
-IPTables commands using 'iptables-nft' fail on old kernels, at least
-5.15 because it doesn't see the default IPTables chains:
+When booting with "intremap=off" and "x2apic_phys" on the kernel command
+line, the physical x2APIC driver ends up being used even when x2APIC
+mode is disabled ("intremap=off" disables x2APIC mode). This happens
+because the first compound condition check in x2apic_phys_probe() is
+false due to x2apic_mode == 0 and so the following one returns true
+after default_acpi_madt_oem_check() having already selected the physical
+x2APIC driver.
 
-  $ iptables -L
-  iptables/1.8.2 Failed to initialize nft: Protocol not supported
+This results in the following panic:
 
-As a first step before switching to NFTables, we can use iptables-legacy
-if available.
+   kernel BUG at arch/x86/kernel/apic/io_apic.c:2409!
+   invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+   CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.0-rc2-ver4.1rc2 #2
+   Hardware name: Dell Inc. PowerEdge R6515/07PXPY, BIOS 2.3.6 07/06/2021
+   RIP: 0010:setup_IO_APIC+0x9c/0xaf0
+   Call Trace:
+    <TASK>
+    ? native_read_msr
+    apic_intr_mode_init
+    x86_late_time_init
+    start_kernel
+    x86_64_start_reservations
+    x86_64_start_kernel
+    secondary_startup_64_no_verify
+    </TASK>
 
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 8d014eaa9254 ("selftests: mptcp: add ADD_ADDR timeout test case")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+which is:
+
+setup_IO_APIC:
+  apic_printk(APIC_VERBOSE, "ENABLING IO-APIC IRQs\n");
+  for_each_ioapic(ioapic)
+  	BUG_ON(mp_irqdomain_create(ioapic));
+
+Return 0 to denote that x2APIC has not been enabled when probing the
+physical x2APIC driver.
+
+  [ bp: Massage commit message heavily. ]
+
+Fixes: 9ebd680bd029 ("x86, apic: Use probe routines to simplify apic selection")
+Signed-off-by: Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Kishon Vijay Abraham I <kvijayab@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230616212236.1389-1-dheerajkumar.srivastava@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/kernel/apic/x2apic_phys.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -12,6 +12,8 @@ cinfail=""
- cinsent=""
- cout=""
- ksft_skip=4
-+iptables="iptables"
-+ip6tables="ip6tables"
- timeout_poll=30
- timeout_test=$((timeout_poll * 2 + 1))
- mptcp_connect=""
-@@ -126,9 +128,9 @@ reset_with_add_addr_timeout()
- 	local ip="${1:-4}"
- 	local tables
+diff --git a/arch/x86/kernel/apic/x2apic_phys.c b/arch/x86/kernel/apic/x2apic_phys.c
+index 98716a4be0a7c..fb9abdfc364d1 100644
+--- a/arch/x86/kernel/apic/x2apic_phys.c
++++ b/arch/x86/kernel/apic/x2apic_phys.c
+@@ -95,7 +95,10 @@ static void init_x2apic_ldr(void)
  
--	tables="iptables"
-+	tables="${iptables}"
- 	if [ $ip -eq 6 ]; then
--		tables="ip6tables"
-+		tables="${ip6tables}"
- 	fi
+ static int x2apic_phys_probe(void)
+ {
+-	if (x2apic_mode && (x2apic_phys || x2apic_fadt_phys()))
++	if (!x2apic_mode)
++		return 0;
++
++	if (x2apic_phys || x2apic_fadt_phys())
+ 		return 1;
  
- 	reset
-@@ -171,8 +173,10 @@ if [ $? -ne 0 ];then
- 	exit $ksft_skip
- fi
- 
--iptables -V > /dev/null 2>&1
--if [ $? -ne 0 ];then
-+if iptables-legacy -V &> /dev/null; then
-+	iptables="iptables-legacy"
-+	ip6tables="ip6tables-legacy"
-+elif ! iptables -V &> /dev/null; then
- 	echo "SKIP: Could not run all tests without iptables tool"
- 	exit $ksft_skip
- fi
+ 	return apic == &apic_x2apic_phys;
+-- 
+2.39.2
+
 
 
