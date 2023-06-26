@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E23DB73E926
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B317E73E9B6
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232154AbjFZSc5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:32:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46960 "EHLO
+        id S232440AbjFZSjN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232201AbjFZSc4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:56 -0400
+        with ESMTP id S232432AbjFZSjK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70E2799
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDD69102
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F2EB160F24
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A00C433C0;
-        Mon, 26 Jun 2023 18:32:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8039C60F45
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A1BC433C8;
+        Mon, 26 Jun 2023 18:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804374;
-        bh=SNeHZdA+/GRdBVUx2LtBVyhcwEvjjnPlzJqkO+RKOBU=;
+        s=korg; t=1687804748;
+        bh=RKBTwqm8IhRH8ToEOuNzKUaR5v2pw82o3jABbB6u7JI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K3vY2VDDAuO1XzLjOChJ/yzCXii+zwpFiGECUUkCGXV4t8/iocu5n+dWV/QwAFiu9
-         pEfWqvorlUWUqKZUJqhICKVMRz5acxKIOpg5tzWovlLlcn0RQ5pusAJjNFc2lCKa/M
-         x+T8xKJNu+DqQ4RRWH2hIsdb+DB5xlPw3HKF0WaE=
+        b=Szx9bXMbt5JomFcjViVBlRLfHmO51CMZ15tooa81NS67ihDHn268Nsnj7p4oy+Dbd
+         Iow8YFe/+1SBRNxG15vFGHUCzFWWe8CfpsoN7Gs+pqzB4PG1GJr4cPNZjUviDKUmpB
+         oK0LVKcFl5Eo65YzgGq8LhCrl2eaRV0fS1OanZMk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Steven Price <steven.price@arm.com>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/170] arm64: Add missing Set/Way CMO encodings
+        patches@lists.linux.dev, Matthias May <matthias.may@westermo.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Subject: [PATCH 5.15 28/96] ip_tunnels: allow VXLAN/GENEVE to inherit TOS/TTL from VLAN
 Date:   Mon, 26 Jun 2023 20:11:43 +0200
-Message-ID: <20230626180806.572194366@linuxfoundation.org>
+Message-ID: <20230626180748.118686737@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,43 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Zyngier <maz@kernel.org>
+From: Matthias May <matthias.may@westermo.com>
 
-[ Upstream commit 8d0f019e4c4f2ee2de81efd9bf1c27e9fb3c0460 ]
+commit 7074732c8faee201a245a6f983008a5789c0be33 upstream.
 
-Add the missing Set/Way CMOs that apply to tagged memory.
+The current code allows for VXLAN and GENEVE to inherit the TOS
+respective the TTL when skb-protocol is ETH_P_IP or ETH_P_IPV6.
+However when the payload is VLAN encapsulated, then this inheriting
+does not work, because the visible skb-protocol is of type
+ETH_P_8021Q or ETH_P_8021AD.
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Cornelia Huck <cohuck@redhat.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20230515204601.1270428-2-maz@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead of skb->protocol use skb_protocol().
+
+Signed-off-by: Matthias May <matthias.may@westermo.com>
+Link: https://lore.kernel.org/r/20220721202718.10092-1-matthias.may@westermo.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/sysreg.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/net/ip_tunnels.h |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
-index 7d301700d1a93..3a448ab0924b3 100644
---- a/arch/arm64/include/asm/sysreg.h
-+++ b/arch/arm64/include/asm/sysreg.h
-@@ -111,8 +111,14 @@
- #define SB_BARRIER_INSN			__SYS_BARRIER_INSN(0, 7, 31)
- 
- #define SYS_DC_ISW			sys_insn(1, 0, 7, 6, 2)
-+#define SYS_DC_IGSW			sys_insn(1, 0, 7, 6, 4)
-+#define SYS_DC_IGDSW			sys_insn(1, 0, 7, 6, 6)
- #define SYS_DC_CSW			sys_insn(1, 0, 7, 10, 2)
-+#define SYS_DC_CGSW			sys_insn(1, 0, 7, 10, 4)
-+#define SYS_DC_CGDSW			sys_insn(1, 0, 7, 10, 6)
- #define SYS_DC_CISW			sys_insn(1, 0, 7, 14, 2)
-+#define SYS_DC_CIGSW			sys_insn(1, 0, 7, 14, 4)
-+#define SYS_DC_CIGDSW			sys_insn(1, 0, 7, 14, 6)
- 
- /*
-  * Automatically generated definitions for system registers, the
--- 
-2.39.2
-
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -377,9 +377,11 @@ static inline int ip_tunnel_encap(struct
+ static inline u8 ip_tunnel_get_dsfield(const struct iphdr *iph,
+ 				       const struct sk_buff *skb)
+ {
+-	if (skb->protocol == htons(ETH_P_IP))
++	__be16 payload_protocol = skb_protocol(skb, true);
++
++	if (payload_protocol == htons(ETH_P_IP))
+ 		return iph->tos;
+-	else if (skb->protocol == htons(ETH_P_IPV6))
++	else if (payload_protocol == htons(ETH_P_IPV6))
+ 		return ipv6_get_dsfield((const struct ipv6hdr *)iph);
+ 	else
+ 		return 0;
+@@ -388,9 +390,11 @@ static inline u8 ip_tunnel_get_dsfield(c
+ static inline u8 ip_tunnel_get_ttl(const struct iphdr *iph,
+ 				       const struct sk_buff *skb)
+ {
+-	if (skb->protocol == htons(ETH_P_IP))
++	__be16 payload_protocol = skb_protocol(skb, true);
++
++	if (payload_protocol == htons(ETH_P_IP))
+ 		return iph->ttl;
+-	else if (skb->protocol == htons(ETH_P_IPV6))
++	else if (payload_protocol == htons(ETH_P_IPV6))
+ 		return ((const struct ipv6hdr *)iph)->hop_limit;
+ 	else
+ 		return 0;
 
 
