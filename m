@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 623DF73E878
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BB1573E85C
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232049AbjFZS0T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:26:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37408 "EHLO
+        id S231860AbjFZSYz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:24:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232047AbjFZS0E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2138030D7
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:25:11 -0700 (PDT)
+        with ESMTP id S232059AbjFZSYj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:24:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885031708
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0372260F52
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:25:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 018C6C433C8;
-        Mon, 26 Jun 2023 18:25:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E79F60F4B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8D0C433C9;
+        Mon, 26 Jun 2023 18:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803909;
-        bh=qiKPmjSaXHSgN3O8dhucsfj3hkzZFcO8GO3GJF56XSQ=;
+        s=korg; t=1687803841;
+        bh=zDkmCzoJ4gm1dJ3VkRsGn50ZQ7htLUi14Cd3SrW/GRY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZdRcY+lekpCI14vZiqqDXMhLrOv5fcB0bBV1Q/fqJJ/8Brz9itGrFcW29aClByJbt
-         1IZ2M8wcEJ80zVXpoKZponR3rHHQo7ZLBSBC7omm3UJB9ZxWR5QE9wwV8VtCO1xWPn
-         59sMissNk/qaaEi4G3KpcpTrt6TMtaay9EsMF9jU=
+        b=ECkKTFQhzj1xnGOxs3AEaUyPRH0IKY7nwA7OBK18JNCbarSQGFBhRRJj6iYRZGjTT
+         hNVwvVQwIS8rofuvmnSTcsczBo7HUEXA860Yx1bDpntf9081WbUbjMYB3OhwZBrq3D
+         PaIDLTQ5r5NZNeBtOv5MgIbYlcJAhuJ86iN0wFSo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yangtao Li <tiny.windzz@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 19/41] mmc: mvsdio: convert to devm_platform_ioremap_resource
+        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.3 196/199] KVM: arm64: Restore GICv2-on-GICv3 functionality
 Date:   Mon, 26 Jun 2023 20:11:42 +0200
-Message-ID: <20230626180737.027796631@linuxfoundation.org>
+Message-ID: <20230626180814.344897430@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
-References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,54 +54,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yangtao Li <tiny.windzz@gmail.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 0a337eb168d6cbb85f6b4eb56d1be55e24c80452 ]
+commit 1caa71a7a600f7781ce05ef1e84701c459653663 upstream.
 
-Use devm_platform_ioremap_resource() to simplify code.
+When reworking the vgic locking, the vgic distributor registration
+got simplified, which was a very good cleanup. But just a tad too
+radical, as we now register the *native* vgic only, ignoring the
+GICv2-on-GICv3 that allows pre-historic VMs (or so I thought)
+to run.
 
-Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
-Link: https://lore.kernel.org/r/20191215175120.3290-11-tiny.windzz@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 8d84064da0d4 ("mmc: mvsdio: fix deferred probing")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As it turns out, QEMU still defaults to GICv2 in some cases, and
+this breaks Nathan's setup!
+
+Fix it by propagating the *requested* vgic type rather than the
+host's version.
+
+Fixes: 59112e9c390b ("KVM: arm64: vgic: Fix a circular locking issue")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+link: https://lore.kernel.org/r/20230606221525.GA2269598@dev-arch.thelio-3990X
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mvsdio.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/kvm/vgic/vgic-init.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/host/mvsdio.c b/drivers/mmc/host/mvsdio.c
-index e22bbff89c8d2..3ad8d1108fd08 100644
---- a/drivers/mmc/host/mvsdio.c
-+++ b/drivers/mmc/host/mvsdio.c
-@@ -699,16 +699,14 @@ static int mvsd_probe(struct platform_device *pdev)
- 	struct mmc_host *mmc = NULL;
- 	struct mvsd_host *host = NULL;
- 	const struct mbus_dram_target_info *dram;
--	struct resource *r;
- 	int ret, irq;
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -446,6 +446,7 @@ int vgic_lazy_init(struct kvm *kvm)
+ int kvm_vgic_map_resources(struct kvm *kvm)
+ {
+ 	struct vgic_dist *dist = &kvm->arch.vgic;
++	enum vgic_type type;
+ 	gpa_t dist_base;
+ 	int ret = 0;
  
- 	if (!np) {
- 		dev_err(&pdev->dev, "no DT node\n");
- 		return -ENODEV;
- 	}
--	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	irq = platform_get_irq(pdev, 0);
--	if (!r || irq < 0)
-+	if (irq < 0)
- 		return -ENXIO;
- 
- 	mmc = mmc_alloc_host(sizeof(struct mvsd_host), &pdev->dev);
-@@ -761,7 +759,7 @@ static int mvsd_probe(struct platform_device *pdev)
- 
- 	spin_lock_init(&host->lock);
- 
--	host->base = devm_ioremap_resource(&pdev->dev, r);
-+	host->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(host->base)) {
- 		ret = PTR_ERR(host->base);
+@@ -460,10 +461,13 @@ int kvm_vgic_map_resources(struct kvm *k
+ 	if (!irqchip_in_kernel(kvm))
  		goto out;
--- 
-2.39.2
-
+ 
+-	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V2)
++	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V2) {
+ 		ret = vgic_v2_map_resources(kvm);
+-	else
++		type = VGIC_V2;
++	} else {
+ 		ret = vgic_v3_map_resources(kvm);
++		type = VGIC_V3;
++	}
+ 
+ 	if (ret) {
+ 		__kvm_vgic_destroy(kvm);
+@@ -473,8 +477,7 @@ int kvm_vgic_map_resources(struct kvm *k
+ 	dist_base = dist->vgic_dist_base;
+ 	mutex_unlock(&kvm->arch.config_lock);
+ 
+-	ret = vgic_register_dist_iodev(kvm, dist_base,
+-				       kvm_vgic_global_state.type);
++	ret = vgic_register_dist_iodev(kvm, dist_base, type);
+ 	if (ret) {
+ 		kvm_err("Unable to register VGIC dist MMIO regions\n");
+ 		kvm_vgic_destroy(kvm);
 
 
