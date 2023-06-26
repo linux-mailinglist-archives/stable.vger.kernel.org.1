@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D46EB73E8E5
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8FB373E810
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:22:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232120AbjFZSak (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:30:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44344 "EHLO
+        id S231740AbjFZSWG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232308AbjFZS35 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:57 -0400
+        with ESMTP id S231753AbjFZSVy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:21:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3609A10D5
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C435A19B1
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:21:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB24960E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DD7C433C0;
-        Mon, 26 Jun 2023 18:29:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A073460F4B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:21:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775C0C433C0;
+        Mon, 26 Jun 2023 18:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804195;
-        bh=OzeipN3I+iR/9kL2cyXVLietlRx4UE/bzV8CPzpaz8w=;
+        s=korg; t=1687803667;
+        bh=DMTDXhRO2uxygqwdqULOuq0x0V+zjmWzvLVxrfVvk1A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LHUslleeT07jukepzx0J/2PyovbJYNubukWdFrDJl5xgB41PUoCd/swcy56fg6z7H
-         /vWwfS+ks9/GWUjtAHsLM+Hnyw0DC0AMbOM5yaORa1qk6kBMxwXnUBRQV8xbfG7H0R
-         BYCYb/z0gD21Qfr1pXXC8gx0COhWS3EqUPkdniKE=
+        b=iAp8ZSp1m8vlGmqx+ddvLEQAZInnh3Doh50DEKnAP7hyr4Avqj0zqksoG6+yKTB+W
+         fYHskfmczM5RnR88c3QtL3+IIaPlTL7TfxqVtNP5M5P5f/2QlPOM1MJ1FYRVA2nO4f
+         KHzsA59CVr4S8azdMLbWfCN9sXIOTf9h5Z2rzEM8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Teresa Remmet <t.remmet@phytec.de>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        Francesco Dolcini <francesco.dolcini@toradex.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Praneeth Bajjuri <praneeth@ti.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/170] regulator: pca9450: Fix LDO3OUT and LDO4OUT MASK
-Date:   Mon, 26 Jun 2023 20:10:42 +0200
-Message-ID: <20230626180803.914411253@linuxfoundation.org>
+Subject: [PATCH 6.3 137/199] Revert "net: phy: dp83867: perform soft reset and retain established link"
+Date:   Mon, 26 Jun 2023 20:10:43 +0200
+Message-ID: <20230626180811.616904786@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +58,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Teresa Remmet <t.remmet@phytec.de>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[ Upstream commit 7257d930aadcd62d1c7971ab14f3b1126356abdc ]
+[ Upstream commit a129b41fe0a8b4da828c46b10f5244ca07a3fec3 ]
 
-L3_OUT and L4_OUT Bit fields range from Bit 0:4 and thus the
-mask should be 0x1F instead of 0x0F.
+This reverts commit da9ef50f545f86ffe6ff786174d26500c4db737a.
 
-Fixes: 0935ff5f1f0a ("regulator: pca9450: add pca9450 pmic driver")
-Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Link: https://lore.kernel.org/r/20230614125240.3946519-1-t.remmet@phytec.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This fixes a regression in which the link would come up, but no
+communication was possible.
+
+The reverted commit was also removing a comment about
+DP83867_PHYCR_FORCE_LINK_GOOD, this is not added back in this commits
+since it seems that this is unrelated to the original code change.
+
+Closes: https://lore.kernel.org/all/ZGuDJos8D7N0J6Z2@francesco-nb.int.toradex.com/
+Fixes: da9ef50f545f ("net: phy: dp83867: perform soft reset and retain established link")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Praneeth Bajjuri <praneeth@ti.com>
+Link: https://lore.kernel.org/r/20230619154435.355485-1-francesco@dolcini.it
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/regulator/pca9450.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/dp83867.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/regulator/pca9450.h b/include/linux/regulator/pca9450.h
-index 3c01c2bf84f53..505c908dbb817 100644
---- a/include/linux/regulator/pca9450.h
-+++ b/include/linux/regulator/pca9450.h
-@@ -196,11 +196,11 @@ enum {
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index 9f7ff88200484..76fe7e7d9ac91 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -905,7 +905,7 @@ static int dp83867_phy_reset(struct phy_device *phydev)
+ {
+ 	int err;
  
- /* PCA9450_REG_LDO3_VOLT bits */
- #define LDO3_EN_MASK			0xC0
--#define LDO3OUT_MASK			0x0F
-+#define LDO3OUT_MASK			0x1F
+-	err = phy_write(phydev, DP83867_CTRL, DP83867_SW_RESTART);
++	err = phy_write(phydev, DP83867_CTRL, DP83867_SW_RESET);
+ 	if (err < 0)
+ 		return err;
  
- /* PCA9450_REG_LDO4_VOLT bits */
- #define LDO4_EN_MASK			0xC0
--#define LDO4OUT_MASK			0x0F
-+#define LDO4OUT_MASK			0x1F
- 
- /* PCA9450_REG_LDO5_VOLT bits */
- #define LDO5L_EN_MASK			0xC0
 -- 
 2.39.2
 
