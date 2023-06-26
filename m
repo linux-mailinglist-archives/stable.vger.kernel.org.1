@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4869073E84C
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C88AC73E8F9
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231843AbjFZSYL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:24:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38140 "EHLO
+        id S232285AbjFZSa7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:30:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231846AbjFZSXx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED40E2136
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:24 -0700 (PDT)
+        with ESMTP id S232225AbjFZSaq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7AA0198A
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30A8960F6B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:23:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A8AC433C8;
-        Mon, 26 Jun 2023 18:23:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 568E760F39
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D81EC433C8;
+        Mon, 26 Jun 2023 18:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803797;
-        bh=m5hI0bRa/w5sC9KjMMBOLYi4WpSPEiajo3Mkyvp69WM=;
+        s=korg; t=1687804241;
+        bh=QnsAWiIGc5DFg3WiUAfmD8ul+vWcK0urVQdZLVTnyVs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wiGZnB1yTqLUzSlJrbyztehDc7OJTGeAsSjFAxqLMX2E7js0p7QPlBbvmh/l5GWu6
-         HMoKHqkgYFks3UGO+y6s4Cm+GEr3zrHQCWY11p6yd23dplIogQ+qfJ6Yyxwsp0Ot9I
-         Bg9CZ2T1ws+G+38Y1B5Z1DNGAGGGtTzByY9qzU+Y=
+        b=XqVU0OEW5GAMUmS+HBIRJeCf26eHKbsHBYEayzkoC1dtfXtg/VUcJi8GL3cPLVUwY
+         GFpePb9Q7XxFk+cuBooXuo8tQ1O3zArXaIWoYxUwDedvJHjSpCxgkGQU6W9N+Ibqx4
+         Tf26VDQY3UAvpt8/LdGQONIDskQZzNkCx80b3fLc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Denis Arefev <arefev@swemel.ru>,
-        Ping Cheng <ping.cheng@wacom.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 153/199] HID: wacom: Add error check to wacom_parse_and_register()
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        Magali Lemes <magali.lemes@canonical.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 090/170] selftests: net: tls: check if FIPS mode is enabled
 Date:   Mon, 26 Jun 2023 20:10:59 +0200
-Message-ID: <20230626180812.346982824@linuxfoundation.org>
+Message-ID: <20230626180804.597870124@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,42 +55,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Magali Lemes <magali.lemes@canonical.com>
 
-[ Upstream commit 16a9c24f24fbe4564284eb575b18cc20586b9270 ]
+[ Upstream commit d113c395c67b62fc0d3f2004c0afc406aca0a2b7 ]
 
-   Added a variable check and
-   transition in case of an error
+TLS selftests use the ChaCha20-Poly1305 and SM4 algorithms, which are not
+FIPS compliant. When fips=1, this set of tests fails. Add a check and only
+run these tests if not in FIPS mode.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Fixes: 4f336e88a870 ("selftests/tls: add CHACHA20-POLY1305 to tls selftests")
+Fixes: e506342a03c7 ("selftests/tls: add SM4 GCM/CCM to tls selftests")
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_sys.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/tls.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
-index fb538a6c4add8..aff4a21a46b6a 100644
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2417,8 +2417,13 @@ static int wacom_parse_and_register(struct wacom *wacom, bool wireless)
- 		goto fail_quirks;
- 	}
+diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
+index 2cbb12736596d..c0ad8385441f2 100644
+--- a/tools/testing/selftests/net/tls.c
++++ b/tools/testing/selftests/net/tls.c
+@@ -25,6 +25,8 @@
+ #define TLS_PAYLOAD_MAX_LEN 16384
+ #define SOL_TLS 282
  
--	if (features->device_type & WACOM_DEVICETYPE_WL_MONITOR)
-+	if (features->device_type & WACOM_DEVICETYPE_WL_MONITOR) {
- 		error = hid_hw_open(hdev);
-+		if (error) {
-+			hid_err(hdev, "hw open failed\n");
-+			goto fail_quirks;
-+		}
++static int fips_enabled;
++
+ struct tls_crypto_info_keys {
+ 	union {
+ 		struct tls12_crypto_info_aes_gcm_128 aes128;
+@@ -235,7 +237,7 @@ FIXTURE_VARIANT(tls)
+ {
+ 	uint16_t tls_version;
+ 	uint16_t cipher_type;
+-	bool nopad;
++	bool nopad, fips_non_compliant;
+ };
+ 
+ FIXTURE_VARIANT_ADD(tls, 12_aes_gcm)
+@@ -254,24 +256,28 @@ FIXTURE_VARIANT_ADD(tls, 12_chacha)
+ {
+ 	.tls_version = TLS_1_2_VERSION,
+ 	.cipher_type = TLS_CIPHER_CHACHA20_POLY1305,
++	.fips_non_compliant = true,
+ };
+ 
+ FIXTURE_VARIANT_ADD(tls, 13_chacha)
+ {
+ 	.tls_version = TLS_1_3_VERSION,
+ 	.cipher_type = TLS_CIPHER_CHACHA20_POLY1305,
++	.fips_non_compliant = true,
+ };
+ 
+ FIXTURE_VARIANT_ADD(tls, 13_sm4_gcm)
+ {
+ 	.tls_version = TLS_1_3_VERSION,
+ 	.cipher_type = TLS_CIPHER_SM4_GCM,
++	.fips_non_compliant = true,
+ };
+ 
+ FIXTURE_VARIANT_ADD(tls, 13_sm4_ccm)
+ {
+ 	.tls_version = TLS_1_3_VERSION,
+ 	.cipher_type = TLS_CIPHER_SM4_CCM,
++	.fips_non_compliant = true,
+ };
+ 
+ FIXTURE_VARIANT_ADD(tls, 12_aes_ccm)
+@@ -311,6 +317,9 @@ FIXTURE_SETUP(tls)
+ 	int one = 1;
+ 	int ret;
+ 
++	if (fips_enabled && variant->fips_non_compliant)
++		SKIP(return, "Unsupported cipher in FIPS mode");
++
+ 	tls_crypto_info_init(variant->tls_version, variant->cipher_type,
+ 			     &tls12);
+ 
+@@ -1820,4 +1829,17 @@ TEST(tls_v6ops) {
+ 	close(sfd);
+ }
+ 
++static void __attribute__((constructor)) fips_check(void) {
++	int res;
++	FILE *f;
++
++	f = fopen("/proc/sys/crypto/fips_enabled", "r");
++	if (f) {
++		res = fscanf(f, "%d", &fips_enabled);
++		if (res != 1)
++			ksft_print_msg("ERROR: Couldn't read /proc/sys/crypto/fips_enabled\n");
++		fclose(f);
 +	}
- 
- 	wacom_set_shared_values(wacom_wac);
- 	devres_close_group(&hdev->dev, wacom);
++}
++
+ TEST_HARNESS_MAIN
 -- 
 2.39.2
 
