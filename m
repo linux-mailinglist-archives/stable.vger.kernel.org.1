@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C1FE73E8FB
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 873FC73E84E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231868AbjFZSbH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:31:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45230 "EHLO
+        id S231797AbjFZSYQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:24:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232274AbjFZSa6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:58 -0400
+        with ESMTP id S232026AbjFZSX6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF61019B3
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CCBF1FCC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E92260E76
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2A3C433C8;
-        Mon, 26 Jun 2023 18:30:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CD4A60F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:23:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D51C433C0;
+        Mon, 26 Jun 2023 18:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804247;
-        bh=wFhrg8hnJNJ/MY29E5mKx8BlOwwpIX/G+69TpONV3uM=;
+        s=korg; t=1687803809;
+        bh=vgy54zVLHfKxQrPWgzf6k7yx1TAALDUu5NoFA/xkWhw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xUNQ05SpcYLupLURec6CgczbQ3drrLi4dZFBPkc/aRliRhtsGd3kFbdxPNRqBxsee
-         A2o7dtHQczHcO5icFub1Rmsy2L90EcLpwHOgOd7lQShjOG0mUlZd/zqa5W730rZM+g
-         012LihvAC8uNzSQ1EarnAV18Ei3svN/e/QDutmQc=
+        b=BonehY+6DjBDpSsNyFDfkCGLnIb3lcWx9d8CtIFGLI5woK0w7cy1JtBOXzPYnP2K9
+         mZIaSMt9VDdIezqQW6TDbFAO/Mo5aMzL/74R0ZkhzYwtplXgje2E3nPQe8UU1I5jA3
+         Yg6p+SdEq9lgFF4BuIIgisan/xA9B0+x2SM4sCv0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Ahern <dsahern@kernel.org>,
-        Magali Lemes <magali.lemes@canonical.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/170] selftests: net: fcnal-test: check if FIPS mode is enabled
-Date:   Mon, 26 Jun 2023 20:11:01 +0200
-Message-ID: <20230626180804.702270263@linuxfoundation.org>
+Subject: [PATCH 6.3 156/199] media: cec: core: disable adapter in cec_devnode_unregister
+Date:   Mon, 26 Jun 2023 20:11:02 +0200
+Message-ID: <20230626180812.486522309@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,90 +55,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Magali Lemes <magali.lemes@canonical.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit d7a2fc1437f71cb058c7b11bc33dfc19e4bf277a ]
+[ Upstream commit fe4526d99e2e06b08bb80316c3a596ea6a807b75 ]
 
-There are some MD5 tests which fail when the kernel is in FIPS mode,
-since MD5 is not FIPS compliant. Add a check and only run those tests
-if FIPS mode is not enabled.
+Explicitly disable the CEC adapter in cec_devnode_unregister()
 
-Fixes: f0bee1ebb5594 ("fcnal-test: Add TCP MD5 tests")
-Fixes: 5cad8bce26e01 ("fcnal-test: Add TCP MD5 tests for VRF")
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Usually this does not really do anything important, but for drivers
+that use the CEC pin framework this is needed to properly stop the
+hrtimer. Without this a crash would happen when such a driver is
+unloaded with rmmod.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fcnal-test.sh | 27 ++++++++++++++++-------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/media/cec/core/cec-adap.c | 5 ++++-
+ drivers/media/cec/core/cec-core.c | 2 ++
+ drivers/media/cec/core/cec-priv.h | 1 +
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
-index 21ca91473c095..ee6880ac3e5ed 100755
---- a/tools/testing/selftests/net/fcnal-test.sh
-+++ b/tools/testing/selftests/net/fcnal-test.sh
-@@ -92,6 +92,13 @@ NSC_CMD="ip netns exec ${NSC}"
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index 4f5ab3cae8a71..ac18707fddcd2 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -1582,7 +1582,7 @@ static void cec_claim_log_addrs(struct cec_adapter *adap, bool block)
+  *
+  * This function is called with adap->lock held.
+  */
+-static int cec_adap_enable(struct cec_adapter *adap)
++int cec_adap_enable(struct cec_adapter *adap)
+ {
+ 	bool enable;
+ 	int ret = 0;
+@@ -1592,6 +1592,9 @@ static int cec_adap_enable(struct cec_adapter *adap)
+ 	if (adap->needs_hpd)
+ 		enable = enable && adap->phys_addr != CEC_PHYS_ADDR_INVALID;
  
- which ping6 > /dev/null 2>&1 && ping6=$(which ping6) || ping6=$(which ping)
- 
-+# Check if FIPS mode is enabled
-+if [ -f /proc/sys/crypto/fips_enabled ]; then
-+	fips_enabled=`cat /proc/sys/crypto/fips_enabled`
-+else
-+	fips_enabled=0
-+fi
++	if (adap->devnode.unregistered)
++		enable = false;
 +
- ################################################################################
- # utilities
+ 	if (enable == adap->is_enabled)
+ 		return 0;
  
-@@ -1216,7 +1223,7 @@ ipv4_tcp_novrf()
- 	run_cmd nettest -d ${NSA_DEV} -r ${a}
- 	log_test_addr ${a} $? 1 "No server, device client, local conn"
+diff --git a/drivers/media/cec/core/cec-core.c b/drivers/media/cec/core/cec-core.c
+index af358e901b5f3..7e153c5cad04f 100644
+--- a/drivers/media/cec/core/cec-core.c
++++ b/drivers/media/cec/core/cec-core.c
+@@ -191,6 +191,8 @@ static void cec_devnode_unregister(struct cec_adapter *adap)
+ 	mutex_lock(&adap->lock);
+ 	__cec_s_phys_addr(adap, CEC_PHYS_ADDR_INVALID, false);
+ 	__cec_s_log_addrs(adap, NULL, false);
++	// Disable the adapter (since adap->devnode.unregistered is true)
++	cec_adap_enable(adap);
+ 	mutex_unlock(&adap->lock);
  
--	ipv4_tcp_md5_novrf
-+	[ "$fips_enabled" = "1" ] || ipv4_tcp_md5_novrf
- }
- 
- ipv4_tcp_vrf()
-@@ -1270,9 +1277,11 @@ ipv4_tcp_vrf()
- 	log_test_addr ${a} $? 1 "Global server, local connection"
- 
- 	# run MD5 tests
--	setup_vrf_dup
--	ipv4_tcp_md5
--	cleanup_vrf_dup
-+	if [ "$fips_enabled" = "0" ]; then
-+		setup_vrf_dup
-+		ipv4_tcp_md5
-+		cleanup_vrf_dup
-+	fi
- 
- 	#
- 	# enable VRF global server
-@@ -2772,7 +2781,7 @@ ipv6_tcp_novrf()
- 		log_test_addr ${a} $? 1 "No server, device client, local conn"
- 	done
- 
--	ipv6_tcp_md5_novrf
-+	[ "$fips_enabled" = "1" ] || ipv6_tcp_md5_novrf
- }
- 
- ipv6_tcp_vrf()
-@@ -2842,9 +2851,11 @@ ipv6_tcp_vrf()
- 	log_test_addr ${a} $? 1 "Global server, local connection"
- 
- 	# run MD5 tests
--	setup_vrf_dup
--	ipv6_tcp_md5
--	cleanup_vrf_dup
-+	if [ "$fips_enabled" = "0" ]; then
-+		setup_vrf_dup
-+		ipv6_tcp_md5
-+		cleanup_vrf_dup
-+	fi
- 
- 	#
- 	# enable VRF global server
+ 	cdev_device_del(&devnode->cdev, &devnode->dev);
+diff --git a/drivers/media/cec/core/cec-priv.h b/drivers/media/cec/core/cec-priv.h
+index b78df931aa74b..ed1f8c67626bf 100644
+--- a/drivers/media/cec/core/cec-priv.h
++++ b/drivers/media/cec/core/cec-priv.h
+@@ -47,6 +47,7 @@ int cec_monitor_pin_cnt_inc(struct cec_adapter *adap);
+ void cec_monitor_pin_cnt_dec(struct cec_adapter *adap);
+ int cec_adap_status(struct seq_file *file, void *priv);
+ int cec_thread_func(void *_adap);
++int cec_adap_enable(struct cec_adapter *adap);
+ void __cec_s_phys_addr(struct cec_adapter *adap, u16 phys_addr, bool block);
+ int __cec_s_log_addrs(struct cec_adapter *adap,
+ 		      struct cec_log_addrs *log_addrs, bool block);
 -- 
 2.39.2
 
