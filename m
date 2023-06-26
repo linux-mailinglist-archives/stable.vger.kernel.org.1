@@ -2,99 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3154A73DB21
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 11:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6733B73DB2B
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 11:21:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229487AbjFZJUN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 05:20:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59836 "EHLO
+        id S230154AbjFZJVC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 05:21:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229904AbjFZJTV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 05:19:21 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB5A3C1E;
-        Mon, 26 Jun 2023 02:16:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687771002; x=1719307002;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=63Y0TPem7frMMGW3N/FgR3d/cjkXyqdp+LijdVM6QYA=;
-  b=QSk1xxcr2jgUsY9vkBuh/5wj0nYFU5HO9HZ5QCf5OYH/THgNy1QCFxmC
-   ys+fH+YyfbQdF1ZrfpO9FwrToj+l9K9aOTs9v3y5iB/lxajcMo1ImuSh7
-   nx5QZhw9ndYWQe6YIekKezLlzQlUbR00vvzzOE+5bIl3OaGDdpuvtaK2x
-   D+z5DZsNCfKkOT6TA1g3cyrBqukGD6EVb2+mp6A8kRmNzoYxCYcNceYKa
-   0MHuOotKKjK+iDSAfjX9Y+IcPKIqvRk43tpUXBG7I4iPRm3eKXdSibx5p
-   HoKwqaO7XeRBZ3UeK6JCZNk3m980qi5wM3yIJpSg8GSiYd0oCdtwKPzTz
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10752"; a="345974135"
-X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
-   d="scan'208";a="345974135"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 02:15:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10752"; a="781357838"
-X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
-   d="scan'208";a="781357838"
-Received: from ettammin-mobl1.ger.corp.intel.com (HELO thellstr-mobl1.intel.com) ([10.249.254.105])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 02:15:11 -0700
-From:   =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
-        <thomas.hellstrom@linux.intel.com>
-To:     intel-xe@lists.freedesktop.org
-Cc:     =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
-        <thomas.hellstrom@linux.intel.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= 
-        <ckoenig.leichtzumerken@gmail.com>,
-        dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        intel-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/4] drm/ttm: Don't leak a resource on swapout move error
-Date:   Mon, 26 Jun 2023 11:14:50 +0200
-Message-Id: <20230626091450.14757-5-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230626091450.14757-1-thomas.hellstrom@linux.intel.com>
-References: <20230626091450.14757-1-thomas.hellstrom@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230457AbjFZJUG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 05:20:06 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 16ADC198A;
+        Mon, 26 Jun 2023 02:17:44 -0700 (PDT)
+Received: by linux.microsoft.com (Postfix, from userid 1099)
+        id 609A621C3F2C; Mon, 26 Jun 2023 02:17:43 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 609A621C3F2C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1687771063;
+        bh=rOKa5FGhb2DtzgJz+qz23ZNtLP6CMkP1uTRy0DPG8qg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=JPMkNncr0F9+kMGbGy3r+uJw6J5PmxpUkfNh75rAVDhqIn94+OaL/rYidImL7t5kd
+         XDk3QI158Q0CzvAJkiILrBXFQE4RFN0Bvm7UNoqZwFzC7VU6LQVDaa+Xtw2LAB46rU
+         2dU7ysn4L57YNwJ/jh6a59rKn13kHmWRRYbYNwAA=
+From:   souradeep chakrabarti <schakrabarti@linux.microsoft.com>
+To:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
+        sharmaajay@microsoft.com, leon@kernel.org, cai.huoqing@linux.dev,
+        ssengar@linux.microsoft.com, vkuznets@redhat.com,
+        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Cc:     stable@vger.kernel.org, schakrabarti@microsoft.com,
+        Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Subject: [PATCH 0/2 V3 net] net: mana: Fix MANA VF unload when host is unresponsive
+Date:   Mon, 26 Jun 2023 02:17:38 -0700
+Message-Id: <1687771058-26634-1-git-send-email-schakrabarti@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-If moving the bo to system for swapout failed, we were leaking
-a resource. Fix.
+From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
 
-Fixes: bfa3357ef9ab ("drm/ttm: allocate resource object instead of embedding it v2")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: "Christian König" <ckoenig.leichtzumerken@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.14+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
----
- drivers/gpu/drm/ttm/ttm_bo.c | 1 +
- 1 file changed, 1 insertion(+)
+VF unload gets stuck in MANA driver, when the host is not responding.
+The function mana_dealloc_queues() tries to clear the inflight packets,
+and gets stuck in while loop. Another problem in this scenario is the
+timeout from hwc send request.
+These patch add fix for the same.
+In mana driver we are adding a timeout in the while loop, to fix it.
+Also we are adding a new attribute in mana_context, which gets set when
+mana_hwc_send_request() hits a timeout because of host unresponsiveness.
 
-diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
-index c0e3bbd21d3d..d9a8f227f310 100644
---- a/drivers/gpu/drm/ttm/ttm_bo.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo.c
-@@ -1166,6 +1166,7 @@ int ttm_bo_swapout(struct ttm_buffer_object *bo, struct ttm_operation_ctx *ctx,
- 		ret = ttm_bo_handle_move_mem(bo, evict_mem, true, ctx, &hop);
- 		if (unlikely(ret != 0)) {
- 			WARN(ret == -EMULTIHOP, "Unexpected multihop in swaput - likely driver bug.\n");
-+			ttm_resource_free(bo, &evict_mem);
- 			goto out;
- 		}
- 	}
+Souradeep Chakrabarti (2):
+  net: mana: Fix MANA VF unload when host is unresponsive
+  net: mana: Fix MANA VF unload when host is unresponsive
+
+ .../net/ethernet/microsoft/mana/gdma_main.c   |  4 +++-
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 12 +++++++++++-
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 19 +++++++++++++++++--
+ include/net/mana/mana.h                       |  2 ++
+ 4 files changed, 33 insertions(+), 4 deletions(-)
+
 -- 
-2.40.1
+2.34.1
 
