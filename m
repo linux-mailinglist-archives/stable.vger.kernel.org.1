@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F92B73EA17
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CCC973E956
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232526AbjFZSna (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:43:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55984 "EHLO
+        id S232318AbjFZSe4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:34:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232513AbjFZSnY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E330BED
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:04 -0700 (PDT)
+        with ESMTP id S232341AbjFZSeq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:34:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7530E10F9
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:34:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8086B60F5A
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C59C433C0;
-        Mon, 26 Jun 2023 18:43:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B4C360F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:34:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DAEC433C8;
+        Mon, 26 Jun 2023 18:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804983;
-        bh=yiWm/JB14SXsUtrSyPYICSE592923tjjsSpD59sjIzs=;
+        s=korg; t=1687804483;
+        bh=0CVterN2oNR0snu/uDzo3u9HlQDH7EmEEvZabB0r2sE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dg6XBbhzepQqUr8MtyFKrS/VxxCD2tX7QzpQNwEbrbi7TTHBPLYpwhyJcIZNsyPnv
-         D4mEJh8uWFpkXuiOvbzMPIKVehpZWc3uAEEpxU1wCnxkzo8kJvkaFI22+yA8dghrLb
-         6VLvlnltWMo+THe7paa0nM6eKKyWiI+a2ydZxmXA=
+        b=ThCWA1ZW1wdtRR8SIB1sEP283VaqX2hpbx7jDt3T9NXLsaeD/erPJodGW4s0vrp1h
+         ZBvbUKxOYSy3w52bT2nBn7Bg9keVaGIUFKF8inTFPAt7qFRKkABMG+BNJVoWuucHZb
+         FYCpG5kTZDFhDg07pqP7inDjD68S73belqNTNvbQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 5.10 11/81] PCI: hv: Fix a race condition bug in hv_pci_query_relations()
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 144/170] Input: soc_button_array - add invalid acpi_index DMI quirk handling
 Date:   Mon, 26 Jun 2023 20:11:53 +0200
-Message-ID: <20230626180744.919214316@linuxfoundation.org>
+Message-ID: <20230626180807.000307986@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,57 +55,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 440b5e3663271b0ffbd4908115044a6a51fb938b upstream.
+[ Upstream commit 20a99a291d564a559cc2fd013b4824a3bb3f1db7 ]
 
-Since day 1 of the driver, there has been a race between
-hv_pci_query_relations() and survey_child_resources(): during fast
-device hotplug, hv_pci_query_relations() may error out due to
-device-remove and the stack variable 'comp' is no longer valid;
-however, pci_devices_present_work() -> survey_child_resources() ->
-complete() may be running on another CPU and accessing the no-longer-valid
-'comp'. Fix the race by flushing the workqueue before we exit from
-hv_pci_query_relations().
+Some devices have a wrong entry in their button array which points to
+a GPIO which is required in another driver, so soc_button_array must
+not claim it.
 
-Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230615044451.5580-2-decui@microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A specific example of this is the Lenovo Yoga Book X90F / X90L,
+where the PNP0C40 home button entry points to a GPIO which is not
+a home button and which is required by the lenovo-yogabook driver.
+
+Add a DMI quirk table which can specify an ACPI GPIO resource index which
+should be skipped; and add an entry for the Lenovo Yoga Book X90F / X90L
+to this new DMI quirk table.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230414072116.4497-1-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pci-hyperv.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/input/misc/soc_button_array.c | 30 +++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -2912,6 +2912,24 @@ static int hv_pci_query_relations(struct
- 	if (!ret)
- 		ret = wait_for_response(hdev, &comp);
+diff --git a/drivers/input/misc/soc_button_array.c b/drivers/input/misc/soc_button_array.c
+index 09489380afda7..e79f5497948b8 100644
+--- a/drivers/input/misc/soc_button_array.c
++++ b/drivers/input/misc/soc_button_array.c
+@@ -108,6 +108,27 @@ static const struct dmi_system_id dmi_use_low_level_irq[] = {
+ 	{} /* Terminating entry */
+ };
  
-+	/*
-+	 * In the case of fast device addition/removal, it's possible that
-+	 * vmbus_sendpacket() or wait_for_response() returns -ENODEV but we
-+	 * already got a PCI_BUS_RELATIONS* message from the host and the
-+	 * channel callback already scheduled a work to hbus->wq, which can be
-+	 * running pci_devices_present_work() -> survey_child_resources() ->
-+	 * complete(&hbus->survey_event), even after hv_pci_query_relations()
-+	 * exits and the stack variable 'comp' is no longer valid; as a result,
-+	 * a hang or a page fault may happen when the complete() calls
-+	 * raw_spin_lock_irqsave(). Flush hbus->wq before we exit from
-+	 * hv_pci_query_relations() to avoid the issues. Note: if 'ret' is
-+	 * -ENODEV, there can't be any more work item scheduled to hbus->wq
-+	 * after the flush_workqueue(): see vmbus_onoffer_rescind() ->
-+	 * vmbus_reset_channel_cb(), vmbus_rescind_cleanup() ->
-+	 * channel->rescind = true.
-+	 */
-+	flush_workqueue(hbus->wq);
++/*
++ * Some devices have a wrong entry which points to a GPIO which is
++ * required in another driver, so this driver must not claim it.
++ */
++static const struct dmi_system_id dmi_invalid_acpi_index[] = {
++	{
++		/*
++		 * Lenovo Yoga Book X90F / X90L, the PNP0C40 home button entry
++		 * points to a GPIO which is not a home button and which is
++		 * required by the lenovo-yogabook driver.
++		 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
++		},
++		.driver_data = (void *)1l,
++	},
++	{} /* Terminating entry */
++};
 +
- 	return ret;
- }
+ /*
+  * Get the Nth GPIO number from the ACPI object.
+  */
+@@ -137,6 +158,8 @@ soc_button_device_create(struct platform_device *pdev,
+ 	struct platform_device *pd;
+ 	struct gpio_keys_button *gpio_keys;
+ 	struct gpio_keys_platform_data *gpio_keys_pdata;
++	const struct dmi_system_id *dmi_id;
++	int invalid_acpi_index = -1;
+ 	int error, gpio, irq;
+ 	int n_buttons = 0;
  
+@@ -154,10 +177,17 @@ soc_button_device_create(struct platform_device *pdev,
+ 	gpio_keys = (void *)(gpio_keys_pdata + 1);
+ 	n_buttons = 0;
+ 
++	dmi_id = dmi_first_match(dmi_invalid_acpi_index);
++	if (dmi_id)
++		invalid_acpi_index = (long)dmi_id->driver_data;
++
+ 	for (info = button_info; info->name; info++) {
+ 		if (info->autorepeat != autorepeat)
+ 			continue;
+ 
++		if (info->acpi_index == invalid_acpi_index)
++			continue;
++
+ 		error = soc_button_lookup_gpio(&pdev->dev, info->acpi_index, &gpio, &irq);
+ 		if (error || irq < 0) {
+ 			/*
+-- 
+2.39.2
+
 
 
