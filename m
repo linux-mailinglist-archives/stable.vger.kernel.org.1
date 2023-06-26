@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD11A73E998
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ED9A73E9EE
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:41:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232405AbjFZSht (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:37:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51148 "EHLO
+        id S232502AbjFZSlm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:41:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232400AbjFZSht (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:37:49 -0400
+        with ESMTP id S232509AbjFZSlk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:41:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4715A102
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:37:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2DC0122
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:41:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C665360F3E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:37:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4610C433C8;
-        Mon, 26 Jun 2023 18:37:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B17B60EFC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:41:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614B9C433C9;
+        Mon, 26 Jun 2023 18:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804666;
-        bh=dvZLVkGEa++hSp8Eo2o/6Ny0GI3g+KkcjWoiXhghWGo=;
+        s=korg; t=1687804897;
+        bh=S1IDXCHd/U+Nc2Q9yGCCF+cX+g8D9zoTb8jVqXYpAig=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bxH1ghYQxob7qJoFzFXTEBAIA44Z3koc32bayiAnueyrJpe7v9dff4V6f/PmpMZ/T
-         VAyww4Gh0Pogm4x3PcJ/xJcY7+1Fpmqw3zcHQOYzDg3tfkJqN/Sh7dBtRfyrBEgsu5
-         cGwgz09oDtfEMxRD6TpueCuhkOj3xD2buEgizdmw=
+        b=VAtF4jyz3NMeAuAUfTXla5XuA5avKP3rzY10PoSHJLeWVGXqIJhCTSOlYP8JnaCYa
+         Ti0DUdS8SD8+r+yfLZ0maxRoyFfEWuBFAY9/BYk3/4AJFAzgxrD8ri/+o53j1mEmQh
+         mgTqXytim3Dy05LfqJ7cPb4XBF81xD2W3djIBTIk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Min Li <lm0963hack@gmail.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Inki Dae <inki.dae@samsung.com>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 54/60] drm/exynos: fix race condition UAF in exynos_g2d_exec_ioctl
-Date:   Mon, 26 Jun 2023 20:12:33 +0200
-Message-ID: <20230626180741.775785645@linuxfoundation.org>
+Subject: [PATCH 5.15 79/96] media: cec: core: dont set last_initiator if tx in progress
+Date:   Mon, 26 Jun 2023 20:12:34 +0200
+Message-ID: <20230626180750.294039489@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,35 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Min Li <lm0963hack@gmail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 48bfd02569f5db49cc033f259e66d57aa6efc9a3 ]
+[ Upstream commit 73af6c7511038249cad3d5f3b44bf8d78ac0f499 ]
 
-If it is async, runqueue_node is freed in g2d_runqueue_worker on another
-worker thread. So in extreme cases, if g2d_runqueue_worker runs first, and
-then executes the following if statement, there will be use-after-free.
+When a message was received the last_initiator is set to 0xff.
+This will force the signal free time for the next transmit
+to that for a new initiator. However, if a new transmit is
+already in progress, then don't set last_initiator, since
+that's the initiator of the current transmit. Overwriting
+this would cause the signal free time of a following transmit
+to be that of the new initiator instead of a next transmit.
 
-Signed-off-by: Min Li <lm0963hack@gmail.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_g2d.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/cec/core/cec-adap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_g2d.c b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-index fcee33a43aca3..2df04de7f4354 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-@@ -1332,7 +1332,7 @@ int exynos_g2d_exec_ioctl(struct drm_device *drm_dev, void *data,
- 	/* Let the runqueue know that there is work to do. */
- 	queue_work(g2d->g2d_workq, &g2d->runqueue_work);
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index 67776a0d31e8c..99ede1417d727 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -1086,7 +1086,8 @@ void cec_received_msg_ts(struct cec_adapter *adap,
+ 	mutex_lock(&adap->lock);
+ 	dprintk(2, "%s: %*ph\n", __func__, msg->len, msg->msg);
  
--	if (runqueue_node->async)
-+	if (req->async)
- 		goto out;
+-	adap->last_initiator = 0xff;
++	if (!adap->transmit_in_progress)
++		adap->last_initiator = 0xff;
  
- 	wait_for_completion(&runqueue_node->complete);
+ 	/* Check if this message was for us (directed or broadcast). */
+ 	if (!cec_msg_is_broadcast(msg))
 -- 
 2.39.2
 
