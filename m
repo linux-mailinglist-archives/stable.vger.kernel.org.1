@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6639573E7CE
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D044573E8B0
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:28:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231502AbjFZSTN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:19:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
+        id S232204AbjFZS2d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:28:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231617AbjFZSTH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:07 -0400
+        with ESMTP id S232043AbjFZS2K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:28:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C190E7F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFE0219AB
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:27:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3AEC60F4F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A60C433C8;
-        Mon, 26 Jun 2023 18:19:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 743E560F1E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:27:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C04C433C0;
+        Mon, 26 Jun 2023 18:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803545;
-        bh=VJwSSW7VUjSIMxSRaaQ2XZoVmSOxinwNm4f1SFdGTQE=;
+        s=korg; t=1687804056;
+        bh=P5BQhKun/LDc9HeG2nxgzb6lrj+ddVlJm1Z2p3pt+cU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VbzwgZEGsmqTzshxcSizLB5sJKyhzjuJtDDcErCJ952Hn9Xf1Rm7uaklngwwGRqqe
-         1NV1eRc9mKR8Ggj5U+Zthii3cpVgxJMkdfG3omCLC37YWdp4vC01+QTWx5kuJOL6d7
-         qzOBjTBuIBZVqXRS91izi2fyuOagMym0UlKFEt9U=
+        b=LFlud7Eqq1UliDGQGU3E3Ft8dJWy7hBKsCEW+KPOyCqjzoY7wFJ/X9Eg69Fd3dD4R
+         R2TniFvkL6rfL52TDCwBgjSYM5ZWXsuAV7nKMscV8c7GA3oo+3SUKieOnSzs/Eqq5w
+         mec3o1TrcqGwtpF90QFxvVtcQYo+EEupE5ugX3UY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 090/199] regmap: spi-avmm: Fix regmap_bus max_raw_write
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 027/170] selftests: mptcp: join: helpers to skip tests
 Date:   Mon, 26 Jun 2023 20:09:56 +0200
-Message-ID: <20230626180809.543515215@linuxfoundation.org>
+Message-ID: <20230626180801.765240753@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,52 +55,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Russ Weight <russell.h.weight@intel.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit c8e796895e2310b6130e7577248da1d771431a77 ]
+commit cdb50525345cf5a8359ee391032ef606a7826f08 upstream.
 
-The max_raw_write member of the regmap_spi_avmm_bus structure is defined
-as:
-	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-SPI_AVMM_VAL_SIZE == 4 and MAX_WRITE_CNT == 1 so this results in a
-maximum write transfer size of 4 bytes which provides only enough space to
-transfer the address of the target register. It provides no space for the
-value to be transferred. This bug became an issue (divide-by-zero in
-_regmap_raw_write()) after the following was accepted into mainline:
+Here are some helpers that will be used to mark subtests as skipped if a
+feature is not supported. Marking as a fix for the commit introducing
+this selftest to help with the backports.
 
-commit 3981514180c9 ("regmap: Account for register length when chunking")
+While at it, also check if kallsyms feature is available as it will also
+be used in the following commits to check if MPTCP features are
+available before starting a test.
 
-Change max_raw_write to include space (4 additional bytes) for both the
-register address and value:
-
-	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT
-
-Fixes: 7f9fb67358a2 ("regmap: add Intel SPI Slave to AVMM Bus Bridge support")
-Reviewed-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
-Signed-off-by: Russ Weight <russell.h.weight@intel.com>
-Link: https://lore.kernel.org/r/20230620202824.380313-1-russell.h.weight@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: b08fbf241064 ("selftests: add test-cases for MPTCP MP_JOIN")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap-spi-avmm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   27 ++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/base/regmap/regmap-spi-avmm.c b/drivers/base/regmap/regmap-spi-avmm.c
-index 4c2b94b3e30be..6af692844c196 100644
---- a/drivers/base/regmap/regmap-spi-avmm.c
-+++ b/drivers/base/regmap/regmap-spi-avmm.c
-@@ -660,7 +660,7 @@ static const struct regmap_bus regmap_spi_avmm_bus = {
- 	.reg_format_endian_default = REGMAP_ENDIAN_NATIVE,
- 	.val_format_endian_default = REGMAP_ENDIAN_NATIVE,
- 	.max_raw_read = SPI_AVMM_VAL_SIZE * MAX_READ_CNT,
--	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
-+	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
- 	.free_context = spi_avmm_bridge_ctx_free,
- };
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -137,6 +137,7 @@ cleanup_partial()
+ check_tools()
+ {
+ 	mptcp_lib_check_mptcp
++	mptcp_lib_check_kallsyms
  
--- 
-2.39.2
-
+ 	if ! ip -Version &> /dev/null; then
+ 		echo "SKIP: Could not run test without ip tool"
+@@ -183,6 +184,32 @@ cleanup()
+ 	cleanup_partial
+ }
+ 
++# $1: msg
++print_title()
++{
++	printf "%03u %-36s %s" "${TEST_COUNT}" "${TEST_NAME}" "${1}"
++}
++
++# [ $1: fail msg ]
++mark_as_skipped()
++{
++	local msg="${1:-"Feature not supported"}"
++
++	mptcp_lib_fail_if_expected_feature "${msg}"
++
++	print_title "[ skip ] ${msg}"
++	printf "\n"
++}
++
++# $@: condition
++continue_if()
++{
++	if ! "${@}"; then
++		mark_as_skipped
++		return 1
++	fi
++}
++
+ skip_test()
+ {
+ 	if [ "${#only_tests_ids[@]}" -eq 0 ] && [ "${#only_tests_names[@]}" -eq 0 ]; then
 
 
