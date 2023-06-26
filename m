@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECE5F73E7C0
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B02D673E8C7
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:29:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231372AbjFZSSa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:18:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33838 "EHLO
+        id S232208AbjFZS3g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:29:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231298AbjFZSS2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:18:28 -0400
+        with ESMTP id S232213AbjFZS3W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 334AAE8
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:18:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0261BEE
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:28:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD83460F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:18:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E50C433C8;
-        Mon, 26 Jun 2023 18:18:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1ED1460F39
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:28:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4EDC433C0;
+        Mon, 26 Jun 2023 18:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803507;
-        bh=qdKruKs4HqvA412d4SY2SxCxvl8cXtovmU3hq5Gu8qs=;
+        s=korg; t=1687804124;
+        bh=7CTrHphkJ6u2S+EF3nGoWXIBOjIb8e2bymsPVUtyGFE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sGHVyUgw46/6I0OJEolpW+8WYMVbmV924WwHvpI+Xe7ppI2WAJo+pKeKh7GCrcJ1n
-         McrfqEmaBat40HAeMGesbREVuUNxs9DTns0Chh1LpraIDPXa9uJwQk4obXUxtZaypX
-         VguBoPabfQ1N8IcKYHmPCiaycVEXo92FS9bHxz5c=
+        b=aR0oA7MFZXFywdJeuWjHqsWeVbi0qJE9p9mefTMhAdjFKzqYGBjz4IYdyruZBcExP
+         wmLWu465IiUSa/wfmHgh6chFCDwvArJb/yN8PMP79KdQR5MdM0R/z5vuVvHQ0CINrp
+         JzdRvPPzNX3zz8zWGGXZpZ26R2UACw65HIvf7wpo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.3 084/199] mmc: sunxi: fix deferred probing
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 021/170] selftests: mptcp: sockopt: relax expected returned size
 Date:   Mon, 26 Jun 2023 20:09:50 +0200
-Message-ID: <20230626180809.279080518@linuxfoundation.org>
+Message-ID: <20230626180801.504719639@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +55,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit c2df53c5806cfd746dae08e07bc8c4ad247c3b70 upstream.
+commit 8dee6ca2ac1e5630a7bb6a98bc0b686916fc2000 upstream.
 
-The driver overrides the error codes and IRQ0 returned by platform_get_irq()
-to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the error
-codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
-in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
-so we now can safely ignore it...
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-Fixes: 2408a08583d2 ("mmc: sunxi-mmc: Handle return value of platform_get_irq")
-Cc: stable@vger.kernel.org # v5.19+
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://lore.kernel.org/r/20230617203622.6812-12-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+One of them is the getsockopt(SOL_MPTCP) to get info about the MPTCP
+connections introduced by commit 55c42fa7fa33 ("mptcp: add MPTCP_INFO
+getsockopt") and the following ones.
+
+We cannot guess in advance which sizes the kernel will returned: older
+kernel can returned smaller sizes, e.g. recently the tcp_info structure
+has been modified in commit 71fc704768f6 ("tcp: add rcv_wnd and
+plb_rehash to TCP_INFO") where a new field has been added.
+
+The userspace can also expect a smaller size if it is compiled with old
+uAPI kernel headers.
+
+So for these sizes, we can only check if they are above a certain
+threshold, 0 for the moment. We can also only compared sizes with the
+ones set by the kernel.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: ce9979129a0b ("selftests: mptcp: add mptcp getsockopt test cases")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sunxi-mmc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../selftests/net/mptcp/mptcp_sockopt.c        | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/drivers/mmc/host/sunxi-mmc.c
-+++ b/drivers/mmc/host/sunxi-mmc.c
-@@ -1350,8 +1350,8 @@ static int sunxi_mmc_resource_request(st
- 		return ret;
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.c b/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
+index ae61f39556ca..b35148edbf02 100644
+--- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
+@@ -87,6 +87,10 @@ struct so_state {
+ 	uint64_t tcpi_rcv_delta;
+ };
  
- 	host->irq = platform_get_irq(pdev, 0);
--	if (host->irq <= 0) {
--		ret = -EINVAL;
-+	if (host->irq < 0) {
-+		ret = host->irq;
- 		goto error_disable_mmc;
- 	}
++#ifndef MIN
++#define MIN(a, b) ((a) < (b) ? (a) : (b))
++#endif
++
+ static void die_perror(const char *msg)
+ {
+ 	perror(msg);
+@@ -349,13 +353,14 @@ static void do_getsockopt_tcp_info(struct so_state *s, int fd, size_t r, size_t
+ 			xerror("getsockopt MPTCP_TCPINFO (tries %d, %m)");
  
+ 		assert(olen <= sizeof(ti));
+-		assert(ti.d.size_user == ti.d.size_kernel);
+-		assert(ti.d.size_user == sizeof(struct tcp_info));
++		assert(ti.d.size_kernel > 0);
++		assert(ti.d.size_user ==
++		       MIN(ti.d.size_kernel, sizeof(struct tcp_info)));
+ 		assert(ti.d.num_subflows == 1);
+ 
+ 		assert(olen > (socklen_t)sizeof(struct mptcp_subflow_data));
+ 		olen -= sizeof(struct mptcp_subflow_data);
+-		assert(olen == sizeof(struct tcp_info));
++		assert(olen == ti.d.size_user);
+ 
+ 		if (ti.ti[0].tcpi_bytes_sent == w &&
+ 		    ti.ti[0].tcpi_bytes_received == r)
+@@ -401,13 +406,14 @@ static void do_getsockopt_subflow_addrs(int fd)
+ 		die_perror("getsockopt MPTCP_SUBFLOW_ADDRS");
+ 
+ 	assert(olen <= sizeof(addrs));
+-	assert(addrs.d.size_user == addrs.d.size_kernel);
+-	assert(addrs.d.size_user == sizeof(struct mptcp_subflow_addrs));
++	assert(addrs.d.size_kernel > 0);
++	assert(addrs.d.size_user ==
++	       MIN(addrs.d.size_kernel, sizeof(struct mptcp_subflow_addrs)));
+ 	assert(addrs.d.num_subflows == 1);
+ 
+ 	assert(olen > (socklen_t)sizeof(struct mptcp_subflow_data));
+ 	olen -= sizeof(struct mptcp_subflow_data);
+-	assert(olen == sizeof(struct mptcp_subflow_addrs));
++	assert(olen == addrs.d.size_user);
+ 
+ 	llen = sizeof(local);
+ 	ret = getsockname(fd, (struct sockaddr *)&local, &llen);
+-- 
+2.41.0
+
 
 
