@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC2C473E957
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D86F973EA19
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232330AbjFZSe5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:34:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48224 "EHLO
+        id S232586AbjFZSnd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:43:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232319AbjFZSes (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:34:48 -0400
+        with ESMTP id S231940AbjFZSn0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D24125
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:34:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B45E4B9
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA72460E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:34:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F201DC433C8;
-        Mon, 26 Jun 2023 18:34:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50EB560E8D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A26C433C8;
+        Mon, 26 Jun 2023 18:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804486;
-        bh=xq0pn5t5F9mf/kVVYoBWo2It+9+9nTLmtJpxR4Nyx+o=;
+        s=korg; t=1687804989;
+        bh=79OXk1MlX0eb4aGGhp6Y1hEQb2sICZVYIDzV9nM9Xso=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WynCR4ND5StDkcC/ZDzvwA42J5I2rvAb0IvmjzhyAp0E4yNRWlqQdiL3v+4tUNcnn
-         yySUKYvuUzeGN0xBcnVcjhAyNd5o0Di6Ly97ZwsNX6tiXKBkSdICnLWB2giXMxvazC
-         xyDHYP0lL935yRPnz4TE8rOVs/FgPpjGvmQXiPIQ=
+        b=nzB8v4nHgbdidVv8LAbyaI9hQhw6dv3nOp2IJQXDGBATHk3BFSEYT6JWf0puBjSok
+         hFzv2gmk78kR25kXznKUSjN+IcaE1pN0Q9HoryHJASW1i3FBdKmTWhVQcb9cTvyTr3
+         bqd4nXU2afO7MAz1GsQCKjCdYa65NibeWSsAk+T4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/170] arm64: dts: qcom: sc7280-idp: drop incorrect dai-cells from WCD938x SDW
-Date:   Mon, 26 Jun 2023 20:11:54 +0200
-Message-ID: <20230626180807.033733275@linuxfoundation.org>
+        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 5.10 13/81] PCI: hv: Remove the useless hv_pcichild_state from struct hv_pci_dev
+Date:   Mon, 26 Jun 2023 20:11:55 +0200
+Message-ID: <20230626180745.003030672@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,47 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Dexuan Cui <decui@microsoft.com>
 
-[ Upstream commit ca8fc6814844d8787e7fec61b2544a871ea8b675 ]
+commit add9195e69c94b32e96f78c2f9cea68f0e850b3f upstream.
 
-The WCD938x audio codec Soundwire interface part is not a DAI and does
-not allow sound-dai-cells:
+The hpdev->state is never really useful. The only use in
+hv_pci_eject_device() and hv_eject_device_work() is not really necessary.
 
-  sc7280-idp.dtb: codec@0,4: '#sound-dai-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230220095401.64196-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230615044451.5580-4-decui@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280-idp.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/pci/controller/pci-hyperv.c |   12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi b/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
-index ca50f0ba9b815..1c370dcfe60b9 100644
---- a/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
-@@ -488,7 +488,6 @@
- 	wcd_rx: codec@0,4 {
- 		compatible = "sdw20217010d00";
- 		reg = <0 4>;
--		#sound-dai-cells = <1>;
- 		qcom,rx-port-mapping = <1 2 3 4 5>;
- 	};
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -520,19 +520,10 @@ struct hv_dr_state {
+ 	struct hv_pcidev_description func[];
  };
-@@ -499,7 +498,6 @@
- 	wcd_tx: codec@0,3 {
- 		compatible = "sdw20217010d00";
- 		reg = <0 3>;
--		#sound-dai-cells = <1>;
- 		qcom,tx-port-mapping = <1 2 3 4>;
- 	};
- };
--- 
-2.39.2
-
+ 
+-enum hv_pcichild_state {
+-	hv_pcichild_init = 0,
+-	hv_pcichild_requirements,
+-	hv_pcichild_resourced,
+-	hv_pcichild_ejecting,
+-	hv_pcichild_maximum
+-};
+-
+ struct hv_pci_dev {
+ 	/* List protected by pci_rescan_remove_lock */
+ 	struct list_head list_entry;
+ 	refcount_t refs;
+-	enum hv_pcichild_state state;
+ 	struct pci_slot *pci_slot;
+ 	struct hv_pcidev_description desc;
+ 	bool reported_missing;
+@@ -2378,8 +2369,6 @@ static void hv_eject_device_work(struct
+ 	hpdev = container_of(work, struct hv_pci_dev, wrk);
+ 	hbus = hpdev->hbus;
+ 
+-	WARN_ON(hpdev->state != hv_pcichild_ejecting);
+-
+ 	/*
+ 	 * Ejection can come before or after the PCI bus has been set up, so
+ 	 * attempt to find it and tear down the bus state, if it exists.  This
+@@ -2438,7 +2427,6 @@ static void hv_pci_eject_device(struct h
+ 		return;
+ 	}
+ 
+-	hpdev->state = hv_pcichild_ejecting;
+ 	get_pcichild(hpdev);
+ 	INIT_WORK(&hpdev->wrk, hv_eject_device_work);
+ 	get_hvpcibus(hbus);
 
 
