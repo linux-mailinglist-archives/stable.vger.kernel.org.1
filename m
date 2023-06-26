@@ -2,556 +2,744 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78B8873DFA9
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 14:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E10A73DFDD
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 14:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231219AbjFZMq4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 08:46:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40290 "EHLO
+        id S229667AbjFZM4K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 08:56:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231362AbjFZMqS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 08:46:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E8032968;
-        Mon, 26 Jun 2023 05:45:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 394C260E93;
-        Mon, 26 Jun 2023 12:44:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72EF7C433CA;
-        Mon, 26 Jun 2023 12:44:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687783496;
-        bh=Ncy57+N6zeJbovgyXnpNkb/XFLwOt2/y94yAtCpi6yM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Yo1nR0+ev7gE/gE0BUOPevn0aSgxI6LgC9r9hm8SvFEPBt50IBaWlRugA9+o3UfEi
-         MvzBYzp+fGklxTeY9xgBjAsG1VKfa81vKt1TGFQH2GAvfVk5TZKe8oQSMxpjEF7zki
-         NSip/mMY4RrtRMsB4kcmmbBdV14MekZ32q1k82BDD4yaUkYOpjhQA/Ahs19dYcLq1m
-         XNL8u/QzS92qwhAaVn8HlgUbZONRyMYn2E/SPP02NjFwXWz0mA9KIRHDqsffIZrXDf
-         3MsOUxlFYgCywd3lLy7Ac3qMno3WevwklhCcmTstaEOn95GFgJB6vnCEjmTP1E1Wk8
-         Xk/SJx1uIk9SA==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-4f4b2bc1565so4284456e87.2;
-        Mon, 26 Jun 2023 05:44:56 -0700 (PDT)
-X-Gm-Message-State: AC+VfDxGKv0C55rvjv61tADRjx+NXF8sAd1Zjs9qbf+2VjeK8cMu8Bu+
-        SEvy0wxGYzC7DIP+vau5+lIGBni6mkJFYJNSaG4=
-X-Google-Smtp-Source: ACHHUZ4Lb77dT9iX7qpB7oF6cCgcyq9t2ROwt0AhEU7DbpW7HtbWDHWQvHZ8JP2I/s0OzPlSkbpfPkuIvnFxV/9HkFQ=
-X-Received: by 2002:ac2:4d8e:0:b0:4f8:f4d8:c8d1 with SMTP id
- g14-20020ac24d8e000000b004f8f4d8c8d1mr10840480lfe.2.1687783494352; Mon, 26
- Jun 2023 05:44:54 -0700 (PDT)
+        with ESMTP id S229479AbjFZM4J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 08:56:09 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2585BD8
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 05:56:04 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-19674cab442so2766928fac.3
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 05:56:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1687784163; x=1690376163;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=qtmCVN7SV/XrN7iwJWaOJ8HNJfIFULTyHd9l/jbuGyo=;
+        b=skYv0r2O4lgZ2zj+xBo6ZPVEq67BhpHhT3YqMISGAzxBYaw0k1883vIEXB6f4iqjPi
+         OTOJPlRi27n/poAd85SxlGE3SSZMroKlcIeqp/yPHXd3gJjZcKsBCU1l1L3yOiY0FnBe
+         kn0JVPN9yGstM+VdfIaUAF+EkKe+iPStiCJZjoaeTS4QVKFBiNPDF42ZuTCxiZ6TZdb3
+         w+hGDz0AqYprgBX/E9U0JjbSquxNU6oIjuOLsP6qsP7MHX6T+i4KhU+/T98TYaQP3uU9
+         2Oin7X/VWJ8QiDt+W94NlJHBx+1npU+cqTEYB5/mCUCahdBuNR6ZNsDKx5HxJbp7D0+u
+         S42g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687784163; x=1690376163;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qtmCVN7SV/XrN7iwJWaOJ8HNJfIFULTyHd9l/jbuGyo=;
+        b=dceYMHqj2Sa2F33Wwcl98laZxcAvgLUt1lI39qgGmrXDQIL1DT8azkGxXyxYKJnraj
+         S4eBUTkv5FJk7FKHwc9mtf74MO9u9nvW4Cn8RSb1x1pJK4qzPShPgqDHPaj/WUcvCaxa
+         6fkxKx3kxhWDdOhSyx9SEkYzMq2WKAh07QMNlEgHJvt5VzXHBVFZYHbrOWiJQWJ2h/5l
+         AcB0SfyIlFRiIb2DLq92LlA+oRSiMe1uvwlubM6XkgMbhsujRpyOkckK3v/rQ61y0wSP
+         gf7GoiRgdaCDTcjFenJ1X+j3tTjMlkOPSK49VJZM3x1Ho3bUgQ9yyoIPZBTxMudg1dBL
+         q6Zg==
+X-Gm-Message-State: AC+VfDw1u+qflSLdvta3fIYf33dskjhEgeXwmQNBxt4jDhXHt54fko/F
+        wduk3rnckbQts0XBqwa60oUzjJ9DQjtyVRrsgys=
+X-Google-Smtp-Source: ACHHUZ4RGXPgulC3P3cxBi/PbJ2L4YH6fzuE7GTRgzhv05Hj6nHN58bkwO1HH0I2m1/qrwissJR+/Q==
+X-Received: by 2002:a05:6870:73c1:b0:19f:6950:b191 with SMTP id a1-20020a05687073c100b0019f6950b191mr19514132oan.23.1687784162123;
+        Mon, 26 Jun 2023 05:56:02 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id p38-20020a634f66000000b005535ddd8dcfsm4068342pgl.89.2023.06.26.05.56.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jun 2023 05:56:01 -0700 (PDT)
+Message-ID: <64998ae1.630a0220.cbaa4.6824@mx.google.com>
+Date:   Mon, 26 Jun 2023 05:56:01 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230626074919.1871944-1-chenhuacai@loongson.cn> <CABgObfYLnhW0qrPvFnMW_B9xZzLF6Ysn2uL4w9B815fUNVKK5A@mail.gmail.com>
-In-Reply-To: <CABgObfYLnhW0qrPvFnMW_B9xZzLF6Ysn2uL4w9B815fUNVKK5A@mail.gmail.com>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Mon, 26 Jun 2023 20:44:41 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5N9YFqkDcHwb6q0XC+i2E=1qXgAKARCdPfCFTrD++aBQ@mail.gmail.com>
-Message-ID: <CAAhV-H5N9YFqkDcHwb6q0XC+i2E=1qXgAKARCdPfCFTrD++aBQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: KVM: Fix NULL pointer dereference
-To:     Paolo Bonzini <pbonzini@redhat.com>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, kvm@vger.kernel.org,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LOTS_OF_MONEY,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v6.1.35
+Subject: stable-rc/linux-6.1.y baseline: 134 runs, 12 regressions (v6.1.35)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Paolo,
+stable-rc/linux-6.1.y baseline: 134 runs, 12 regressions (v6.1.35)
 
-On Mon, Jun 26, 2023 at 6:33=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> On Mon, Jun 26, 2023 at 9:59=E2=80=AFAM Huacai Chen <chenhuacai@loongson.=
-cn> wrote:
-> >
-> > After commit 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support") w=
-e
-> > get a NULL pointer dereference when creating a KVM guest:
->
-> To be honest, a bug that needed 2 years to be reproduced is probably a
-> sign that KVM/MIPS has no users. Any objections to removing it
-> altogether?
-I'm very sorry for that, in the past two years I have built MIPS
-kernels with KVM daily, but only tested in QEMU TCG because I cross
-compiled on a x86 machine. Meanwhile, Loongson distros are still using
-the old LTS kernels so nearly no one sees the bug...
+Regressions Summary
+-------------------
 
-But anyway, I want to keep it at present. Sorry for that again.
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+asus-C436FA-Flip-hatch       | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
 
-Huacai
->
-> Paolo
->
-> >
-> > [  146.243409] Starting KVM with MIPS VZ extensions
-> > [  149.849151] CPU 3 Unable to handle kernel paging request at virtual =
-address 0000000000000300, epc =3D=3D ffffffffc06356ec, ra =3D=3D ffffffffc0=
-63568c
-> > [  149.849177] Oops[#1]:
-> > [  149.849182] CPU: 3 PID: 2265 Comm: qemu-system-mip Not tainted 6.4.0=
--rc3+ #1671
-> > [  149.849188] Hardware name: THTF CX TL630 Series/THTF-LS3A4000-7A1000=
--ML4A, BIOS KL4.1F.TF.D.166.201225.R 12/25/2020
-> > [  149.849192] $ 0   : 0000000000000000 000000007400cce0 00000000004000=
-04 ffffffff8119c740
-> > [  149.849209] $ 4   : 000000007400cce1 000000007400cce1 00000000000000=
-00 0000000000000000
-> > [  149.849221] $ 8   : 000000240058bb36 ffffffff81421ac0 00000000000000=
-00 0000000000400dc0
-> > [  149.849233] $12   : 9800000102a07cc8 ffffffff80e40e38 00000000000000=
-01 0000000000400dc0
-> > [  149.849245] $16   : 0000000000000000 9800000106cd0000 9800000106cd00=
-00 9800000100cce000
-> > [  149.849257] $20   : ffffffffc0632b28 ffffffffc05b31b0 9800000100ccca=
-00 0000000000400000
-> > [  149.849269] $24   : 9800000106cd09ce ffffffff802f69d0
-> > [  149.849281] $28   : 9800000102a04000 9800000102a07cd0 98000001106a80=
-00 ffffffffc063568c
-> > [  149.849293] Hi    : 00000335b2111e66
-> > [  149.849295] Lo    : 6668d90061ae0ae9
-> > [  149.849298] epc   : ffffffffc06356ec kvm_vz_vcpu_setup+0xc4/0x328 [k=
-vm]
-> > [  149.849324] ra    : ffffffffc063568c kvm_vz_vcpu_setup+0x64/0x328 [k=
-vm]
-> > [  149.849336] Status: 7400cce3 KX SX UX KERNEL EXL IE
-> > [  149.849351] Cause : 1000000c (ExcCode 03)
-> > [  149.849354] BadVA : 0000000000000300
-> > [  149.849357] PrId  : 0014c004 (ICT Loongson-3)
-> > [  149.849360] Modules linked in: kvm nfnetlink_queue nfnetlink_log nfn=
-etlink fuse sha256_generic libsha256 cfg80211 rfkill binfmt_misc vfat fat s=
-nd_hda_codec_hdmi input_leds led_class snd_hda_intel snd_intel_dspcfg snd_h=
-da_codec snd_hda_core snd_pcm snd_timer snd serio_raw xhci_pci radeon drm_s=
-uballoc_helper drm_display_helper xhci_hcd ip_tables x_tables
-> > [  149.849432] Process qemu-system-mip (pid: 2265, threadinfo=3D0000000=
-0ae2982d2, task=3D0000000038e09ad4, tls=3D000000ffeba16030)
-> > [  149.849439] Stack : 9800000000000003 9800000100ccca00 9800000100ccc0=
-00 ffffffffc062cef4
-> > [  149.849453]         9800000102a07d18 c89b63a7ab338e00 00000000000000=
-00 ffffffff811a0000
-> > [  149.849465]         0000000000000000 9800000106cd0000 ffffffff80e599=
-38 98000001106a8920
-> > [  149.849476]         ffffffff80e57f30 ffffffffc062854c ffffffff811a00=
-00 9800000102bf4240
-> > [  149.849488]         ffffffffc05b0000 ffffffff80e3a798 000000ff780000=
-00 000000ff78000010
-> > [  149.849500]         0000000000000255 98000001021f7de0 98000001023f00=
-78 ffffffff81434000
-> > [  149.849511]         0000000000000000 0000000000000000 9800000102ae00=
-00 980000025e92ae28
-> > [  149.849523]         0000000000000000 c89b63a7ab338e00 00000000000000=
-01 ffffffff8119dce0
-> > [  149.849535]         000000ff78000010 ffffffff804f3d3c 9800000102a07e=
-b0 0000000000000255
-> > [  149.849546]         0000000000000000 ffffffff8049460c 000000ff780000=
-10 0000000000000255
-> > [  149.849558]         ...
-> > [  149.849565] Call Trace:
-> > [  149.849567] [<ffffffffc06356ec>] kvm_vz_vcpu_setup+0xc4/0x328 [kvm]
-> > [  149.849586] [<ffffffffc062cef4>] kvm_arch_vcpu_create+0x184/0x228 [k=
-vm]
-> > [  149.849605] [<ffffffffc062854c>] kvm_vm_ioctl+0x64c/0xf28 [kvm]
-> > [  149.849623] [<ffffffff805209c0>] sys_ioctl+0xc8/0x118
-> > [  149.849631] [<ffffffff80219eb0>] syscall_common+0x34/0x58
-> >
-> > The root cause is the deletion of kvm_mips_commpage_init() leaves vcpu-=
->
-> > arch.cop0 NULL. So fix it by make cop0 from a pointer to an embed objec=
-t.
-> >
-> > Fixes: 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support")
-> > Cc: stable@vger.kernel.org
-> > Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > ---
-> >  arch/mips/include/asm/kvm_host.h |  6 +++---
-> >  arch/mips/kvm/emulate.c          | 22 +++++++++++-----------
-> >  arch/mips/kvm/mips.c             | 16 ++++++++--------
-> >  arch/mips/kvm/trace.h            |  8 ++++----
-> >  arch/mips/kvm/vz.c               | 20 ++++++++++----------
-> >  5 files changed, 36 insertions(+), 36 deletions(-)
-> >
-> > diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/k=
-vm_host.h
-> > index 957121a495f0..04cedf9f8811 100644
-> > --- a/arch/mips/include/asm/kvm_host.h
-> > +++ b/arch/mips/include/asm/kvm_host.h
-> > @@ -317,7 +317,7 @@ struct kvm_vcpu_arch {
-> >         unsigned int aux_inuse;
-> >
-> >         /* COP0 State */
-> > -       struct mips_coproc *cop0;
-> > +       struct mips_coproc cop0;
-> >
-> >         /* Resume PC after MMIO completion */
-> >         unsigned long io_pc;
-> > @@ -698,7 +698,7 @@ static inline bool kvm_mips_guest_can_have_fpu(stru=
-ct kvm_vcpu_arch *vcpu)
-> >  static inline bool kvm_mips_guest_has_fpu(struct kvm_vcpu_arch *vcpu)
-> >  {
-> >         return kvm_mips_guest_can_have_fpu(vcpu) &&
-> > -               kvm_read_c0_guest_config1(vcpu->cop0) & MIPS_CONF1_FP;
-> > +               kvm_read_c0_guest_config1(&vcpu->cop0) & MIPS_CONF1_FP;
-> >  }
-> >
-> >  static inline bool kvm_mips_guest_can_have_msa(struct kvm_vcpu_arch *v=
-cpu)
-> > @@ -710,7 +710,7 @@ static inline bool kvm_mips_guest_can_have_msa(stru=
-ct kvm_vcpu_arch *vcpu)
-> >  static inline bool kvm_mips_guest_has_msa(struct kvm_vcpu_arch *vcpu)
-> >  {
-> >         return kvm_mips_guest_can_have_msa(vcpu) &&
-> > -               kvm_read_c0_guest_config3(vcpu->cop0) & MIPS_CONF3_MSA;
-> > +               kvm_read_c0_guest_config3(&vcpu->cop0) & MIPS_CONF3_MSA=
-;
-> >  }
-> >
-> >  struct kvm_mips_callbacks {
-> > diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-> > index edaec93a1a1f..e64372b8f66a 100644
-> > --- a/arch/mips/kvm/emulate.c
-> > +++ b/arch/mips/kvm/emulate.c
-> > @@ -312,7 +312,7 @@ int kvm_get_badinstrp(u32 *opc, struct kvm_vcpu *vc=
-pu, u32 *out)
-> >   */
-> >  int kvm_mips_count_disabled(struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >
-> >         return  (vcpu->arch.count_ctl & KVM_REG_MIPS_COUNT_CTL_DC) ||
-> >                 (kvm_read_c0_guest_cause(cop0) & CAUSEF_DC);
-> > @@ -384,7 +384,7 @@ static inline ktime_t kvm_mips_count_time(struct kv=
-m_vcpu *vcpu)
-> >   */
-> >  static u32 kvm_mips_read_count_running(struct kvm_vcpu *vcpu, ktime_t =
-now)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         ktime_t expires, threshold;
-> >         u32 count, compare;
-> >         int running;
-> > @@ -444,7 +444,7 @@ static u32 kvm_mips_read_count_running(struct kvm_v=
-cpu *vcpu, ktime_t now)
-> >   */
-> >  u32 kvm_mips_read_count(struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >
-> >         /* If count disabled just read static copy of count */
-> >         if (kvm_mips_count_disabled(vcpu))
-> > @@ -502,7 +502,7 @@ ktime_t kvm_mips_freeze_hrtimer(struct kvm_vcpu *vc=
-pu, u32 *count)
-> >  static void kvm_mips_resume_hrtimer(struct kvm_vcpu *vcpu,
-> >                                     ktime_t now, u32 count)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         u32 compare;
-> >         u64 delta;
-> >         ktime_t expire;
-> > @@ -603,7 +603,7 @@ int kvm_mips_restore_hrtimer(struct kvm_vcpu *vcpu,=
- ktime_t before,
-> >   */
-> >  void kvm_mips_write_count(struct kvm_vcpu *vcpu, u32 count)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         ktime_t now;
-> >
-> >         /* Calculate bias */
-> > @@ -649,7 +649,7 @@ void kvm_mips_init_count(struct kvm_vcpu *vcpu, uns=
-igned long count_hz)
-> >   */
-> >  int kvm_mips_set_count_hz(struct kvm_vcpu *vcpu, s64 count_hz)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         int dc;
-> >         ktime_t now;
-> >         u32 count;
-> > @@ -696,7 +696,7 @@ int kvm_mips_set_count_hz(struct kvm_vcpu *vcpu, s6=
-4 count_hz)
-> >   */
-> >  void kvm_mips_write_compare(struct kvm_vcpu *vcpu, u32 compare, bool a=
-ck)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         int dc;
-> >         u32 old_compare =3D kvm_read_c0_guest_compare(cop0);
-> >         s32 delta =3D compare - old_compare;
-> > @@ -779,7 +779,7 @@ void kvm_mips_write_compare(struct kvm_vcpu *vcpu, =
-u32 compare, bool ack)
-> >   */
-> >  static ktime_t kvm_mips_count_disable(struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         u32 count;
-> >         ktime_t now;
-> >
-> > @@ -806,7 +806,7 @@ static ktime_t kvm_mips_count_disable(struct kvm_vc=
-pu *vcpu)
-> >   */
-> >  void kvm_mips_count_disable_cause(struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >
-> >         kvm_set_c0_guest_cause(cop0, CAUSEF_DC);
-> >         if (!(vcpu->arch.count_ctl & KVM_REG_MIPS_COUNT_CTL_DC))
-> > @@ -826,7 +826,7 @@ void kvm_mips_count_disable_cause(struct kvm_vcpu *=
-vcpu)
-> >   */
-> >  void kvm_mips_count_enable_cause(struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         u32 count;
-> >
-> >         kvm_clear_c0_guest_cause(cop0, CAUSEF_DC);
-> > @@ -852,7 +852,7 @@ void kvm_mips_count_enable_cause(struct kvm_vcpu *v=
-cpu)
-> >   */
-> >  int kvm_mips_set_count_ctl(struct kvm_vcpu *vcpu, s64 count_ctl)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         s64 changed =3D count_ctl ^ vcpu->arch.count_ctl;
-> >         s64 delta;
-> >         ktime_t expire, now;
-> > diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> > index 884be4ef99dc..aa5583a7b05b 100644
-> > --- a/arch/mips/kvm/mips.c
-> > +++ b/arch/mips/kvm/mips.c
-> > @@ -649,7 +649,7 @@ static int kvm_mips_copy_reg_indices(struct kvm_vcp=
-u *vcpu, u64 __user *indices)
-> >  static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
-> >                             const struct kvm_one_reg *reg)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         struct mips_fpu_struct *fpu =3D &vcpu->arch.fpu;
-> >         int ret;
-> >         s64 v;
-> > @@ -761,7 +761,7 @@ static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
-> >  static int kvm_mips_set_reg(struct kvm_vcpu *vcpu,
-> >                             const struct kvm_one_reg *reg)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         struct mips_fpu_struct *fpu =3D &vcpu->arch.fpu;
-> >         s64 v;
-> >         s64 vs[2];
-> > @@ -1086,7 +1086,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,=
- long ext)
-> >  int kvm_cpu_has_pending_timer(struct kvm_vcpu *vcpu)
-> >  {
-> >         return kvm_mips_pending_timer(vcpu) ||
-> > -               kvm_read_c0_guest_cause(vcpu->arch.cop0) & C_TI;
-> > +               kvm_read_c0_guest_cause(&vcpu->arch.cop0) & C_TI;
-> >  }
-> >
-> >  int kvm_arch_vcpu_dump_regs(struct kvm_vcpu *vcpu)
-> > @@ -1110,7 +1110,7 @@ int kvm_arch_vcpu_dump_regs(struct kvm_vcpu *vcpu=
-)
-> >         kvm_debug("\thi: 0x%08lx\n", vcpu->arch.hi);
-> >         kvm_debug("\tlo: 0x%08lx\n", vcpu->arch.lo);
-> >
-> > -       cop0 =3D vcpu->arch.cop0;
-> > +       cop0 =3D &vcpu->arch.cop0;
-> >         kvm_debug("\tStatus: 0x%08x, Cause: 0x%08x\n",
-> >                   kvm_read_c0_guest_status(cop0),
-> >                   kvm_read_c0_guest_cause(cop0));
-> > @@ -1232,7 +1232,7 @@ static int __kvm_mips_handle_exit(struct kvm_vcpu=
- *vcpu)
-> >
-> >         case EXCCODE_TLBS:
-> >                 kvm_debug("TLB ST fault:  cause %#x, status %#x, PC: %p=
-, BadVaddr: %#lx\n",
-> > -                         cause, kvm_read_c0_guest_status(vcpu->arch.co=
-p0), opc,
-> > +                         cause, kvm_read_c0_guest_status(&vcpu->arch.c=
-op0), opc,
-> >                           badvaddr);
-> >
-> >                 ++vcpu->stat.tlbmiss_st_exits;
-> > @@ -1304,7 +1304,7 @@ static int __kvm_mips_handle_exit(struct kvm_vcpu=
- *vcpu)
-> >                 kvm_get_badinstr(opc, vcpu, &inst);
-> >                 kvm_err("Exception Code: %d, not yet handled, @ PC: %p,=
- inst: 0x%08x  BadVaddr: %#lx Status: %#x\n",
-> >                         exccode, opc, inst, badvaddr,
-> > -                       kvm_read_c0_guest_status(vcpu->arch.cop0));
-> > +                       kvm_read_c0_guest_status(&vcpu->arch.cop0));
-> >                 kvm_arch_vcpu_dump_regs(vcpu);
-> >                 run->exit_reason =3D KVM_EXIT_INTERNAL_ERROR;
-> >                 ret =3D RESUME_HOST;
-> > @@ -1377,7 +1377,7 @@ int noinstr kvm_mips_handle_exit(struct kvm_vcpu =
-*vcpu)
-> >  /* Enable FPU for guest and restore context */
-> >  void kvm_own_fpu(struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         unsigned int sr, cfg5;
-> >
-> >         preempt_disable();
-> > @@ -1421,7 +1421,7 @@ void kvm_own_fpu(struct kvm_vcpu *vcpu)
-> >  /* Enable MSA for guest and restore context */
-> >  void kvm_own_msa(struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         unsigned int sr, cfg5;
-> >
-> >         preempt_disable();
-> > diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
-> > index a8c7fd7bf6d2..136c3535a1cb 100644
-> > --- a/arch/mips/kvm/trace.h
-> > +++ b/arch/mips/kvm/trace.h
-> > @@ -322,11 +322,11 @@ TRACE_EVENT_FN(kvm_guest_mode_change,
-> >             ),
-> >
-> >             TP_fast_assign(
-> > -                       __entry->epc =3D kvm_read_c0_guest_epc(vcpu->ar=
-ch.cop0);
-> > +                       __entry->epc =3D kvm_read_c0_guest_epc(&vcpu->a=
-rch.cop0);
-> >                         __entry->pc =3D vcpu->arch.pc;
-> > -                       __entry->badvaddr =3D kvm_read_c0_guest_badvadd=
-r(vcpu->arch.cop0);
-> > -                       __entry->status =3D kvm_read_c0_guest_status(vc=
-pu->arch.cop0);
-> > -                       __entry->cause =3D kvm_read_c0_guest_cause(vcpu=
-->arch.cop0);
-> > +                       __entry->badvaddr =3D kvm_read_c0_guest_badvadd=
-r(&vcpu->arch.cop0);
-> > +                       __entry->status =3D kvm_read_c0_guest_status(&v=
-cpu->arch.cop0);
-> > +                       __entry->cause =3D kvm_read_c0_guest_cause(&vcp=
-u->arch.cop0);
-> >             ),
-> >
-> >             TP_printk("EPC: 0x%08lx PC: 0x%08lx Status: 0x%08x Cause: 0=
-x%08x BadVAddr: 0x%08lx",
-> > diff --git a/arch/mips/kvm/vz.c b/arch/mips/kvm/vz.c
-> > index 3d21cbfa7443..99d5a71e4300 100644
-> > --- a/arch/mips/kvm/vz.c
-> > +++ b/arch/mips/kvm/vz.c
-> > @@ -422,7 +422,7 @@ static void _kvm_vz_restore_htimer(struct kvm_vcpu =
-*vcpu,
-> >   */
-> >  static void kvm_vz_restore_timer(struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         u32 cause, compare;
-> >
-> >         compare =3D kvm_read_sw_gc0_compare(cop0);
-> > @@ -517,7 +517,7 @@ static void _kvm_vz_save_htimer(struct kvm_vcpu *vc=
-pu,
-> >   */
-> >  static void kvm_vz_save_timer(struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         u32 gctl0, compare, cause;
-> >
-> >         gctl0 =3D read_c0_guestctl0();
-> > @@ -863,7 +863,7 @@ static unsigned long mips_process_maar(unsigned int=
- op, unsigned long val)
-> >
-> >  static void kvm_write_maari(struct kvm_vcpu *vcpu, unsigned long val)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >
-> >         val &=3D MIPS_MAARI_INDEX;
-> >         if (val =3D=3D MIPS_MAARI_INDEX)
-> > @@ -876,7 +876,7 @@ static enum emulation_result kvm_vz_gpsi_cop0(union=
- mips_instruction inst,
-> >                                               u32 *opc, u32 cause,
-> >                                               struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         enum emulation_result er =3D EMULATE_DONE;
-> >         u32 rt, rd, sel;
-> >         unsigned long curr_pc;
-> > @@ -1911,7 +1911,7 @@ static int kvm_vz_get_one_reg(struct kvm_vcpu *vc=
-pu,
-> >                               const struct kvm_one_reg *reg,
-> >                               s64 *v)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         unsigned int idx;
-> >
-> >         switch (reg->id) {
-> > @@ -2081,7 +2081,7 @@ static int kvm_vz_get_one_reg(struct kvm_vcpu *vc=
-pu,
-> >         case KVM_REG_MIPS_CP0_MAARI:
-> >                 if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
-> >                         return -EINVAL;
-> > -               *v =3D kvm_read_sw_gc0_maari(vcpu->arch.cop0);
-> > +               *v =3D kvm_read_sw_gc0_maari(&vcpu->arch.cop0);
-> >                 break;
-> >  #ifdef CONFIG_64BIT
-> >         case KVM_REG_MIPS_CP0_XCONTEXT:
-> > @@ -2135,7 +2135,7 @@ static int kvm_vz_set_one_reg(struct kvm_vcpu *vc=
-pu,
-> >                               const struct kvm_one_reg *reg,
-> >                               s64 v)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         unsigned int idx;
-> >         int ret =3D 0;
-> >         unsigned int cur, change;
-> > @@ -2562,7 +2562,7 @@ static void kvm_vz_vcpu_load_tlb(struct kvm_vcpu =
-*vcpu, int cpu)
-> >
-> >  static int kvm_vz_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         bool migrated, all;
-> >
-> >         /*
-> > @@ -2704,7 +2704,7 @@ static int kvm_vz_vcpu_load(struct kvm_vcpu *vcpu=
-, int cpu)
-> >
-> >  static int kvm_vz_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >
-> >         if (current->flags & PF_VCPU)
-> >                 kvm_vz_vcpu_save_wired(vcpu);
-> > @@ -3076,7 +3076,7 @@ static void kvm_vz_vcpu_uninit(struct kvm_vcpu *v=
-cpu)
-> >
-> >  static int kvm_vz_vcpu_setup(struct kvm_vcpu *vcpu)
-> >  {
-> > -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
-> > +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
-> >         unsigned long count_hz =3D 100*1000*1000; /* default to 100 MHz=
- */
-> >
-> >         /*
-> > --
-> > 2.39.3
-> >
->
+asus-CM1400CXA-dalboz        | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+asus-cx9400-volteer          | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+beagle-xm                    | arm    | lab-baylibre    | gcc-10   | omap2p=
+lus_defconfig          | 1          =
+
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+hp-x360-14-G1-sona           | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+hp-x360-14a-cb0001xx-zork    | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+imx6dl-riotboard             | arm    | lab-pengutronix | gcc-10   | multi_=
+v7_defconfig           | 1          =
+
+lenovo-TPad-C13-Yoga-zork    | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+mt8183-kukui-...uniper-sku16 | arm64  | lab-collabora   | gcc-10   | defcon=
+fig+arm64-chromebook   | 2          =
+
+qemu_mips-malta              | mips   | lab-collabora   | gcc-10   | malta_=
+defconfig              | 1          =
+
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.1.y/kern=
+el/v6.1.35/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-6.1.y
+  Describe: v6.1.35
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      e84a4e368abe42cf359fe237f0238820859d5044 =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+asus-C436FA-Flip-hatch       | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/649341ab6f99eb88e030615c
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-C=
+436FA-Flip-hatch.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-C=
+436FA-Flip-hatch.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/649341ab6f99eb88e0306165
+        failing since 83 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-26T08:58:00.712657  <8>[   10.170219] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10909660_1.4.2.3.1>
+
+    2023-06-26T08:58:00.716299  + set +x
+
+    2023-06-26T08:58:00.824074  / # #
+
+    2023-06-26T08:58:00.926198  export SHELL=3D/bin/sh
+
+    2023-06-26T08:58:00.926885  #
+
+    2023-06-26T08:58:01.028205  / # export SHELL=3D/bin/sh. /lava-10909660/=
+environment
+
+    2023-06-26T08:58:01.029028  =
+
+
+    2023-06-26T08:58:01.130531  / # . /lava-10909660/environment/lava-10909=
+660/bin/lava-test-runner /lava-10909660/1
+
+    2023-06-26T08:58:01.131701  =
+
+
+    2023-06-26T08:58:01.137219  / # /lava-10909660/bin/lava-test-runner /la=
+va-10909660/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+asus-CM1400CXA-dalboz        | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/649341ae0c53c664b1306131
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-C=
+M1400CXA-dalboz.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-C=
+M1400CXA-dalboz.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/649341ae0c53c664b130613a
+        failing since 83 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-26T08:54:58.236883  + set<8>[   11.105164] <LAVA_SIGNAL_ENDRUN =
+0_dmesg 10909678_1.4.2.3.1>
+
+    2023-06-26T08:54:58.237033   +x
+
+    2023-06-26T08:54:58.341052  / # #
+
+    2023-06-26T08:54:58.441613  export SHELL=3D/bin/sh
+
+    2023-06-26T08:54:58.441850  #
+
+    2023-06-26T08:54:58.542377  / # export SHELL=3D/bin/sh. /lava-10909678/=
+environment
+
+    2023-06-26T08:54:58.542556  =
+
+
+    2023-06-26T08:54:58.643089  / # . /lava-10909678/environment/lava-10909=
+678/bin/lava-test-runner /lava-10909678/1
+
+    2023-06-26T08:54:58.643357  =
+
+
+    2023-06-26T08:54:58.648454  / # /lava-10909678/bin/lava-test-runner /la=
+va-10909678/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+asus-cx9400-volteer          | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6493419088e255107f306156
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-c=
+x9400-volteer.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-c=
+x9400-volteer.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6493419088e255107f30615f
+        failing since 83 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-26T08:52:54.202274  <8>[   10.880085] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10909649_1.4.2.3.1>
+
+    2023-06-26T08:52:54.205776  + set +x
+
+    2023-06-26T08:52:54.307002  #
+
+    2023-06-26T08:52:54.307261  =
+
+
+    2023-06-26T08:52:54.407856  / # #export SHELL=3D/bin/sh
+
+    2023-06-26T08:52:54.408052  =
+
+
+    2023-06-26T08:52:54.508600  / # export SHELL=3D/bin/sh. /lava-10909649/=
+environment
+
+    2023-06-26T08:52:54.508827  =
+
+
+    2023-06-26T08:52:54.609352  / # . /lava-10909649/environment/lava-10909=
+649/bin/lava-test-runner /lava-10909649/1
+
+    2023-06-26T08:52:54.609637  =
+
+ =
+
+    ... (13 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+beagle-xm                    | arm    | lab-baylibre    | gcc-10   | omap2p=
+lus_defconfig          | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6493409d36c66be82b3061d1
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: omap2plus_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagle-xm.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagle-xm.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6493409d36c66be82b306=
+1d2
+        failing since 13 days (last pass: v6.1.31-40-g7d0a9678d276, first f=
+ail: v6.1.31-266-g8f4f686e321c) =
+
+ =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/649341973bad37172d30613c
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-12b-ca0010nr-n4020-octopus.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-12b-ca0010nr-n4020-octopus.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/649341973bad37172d306145
+        failing since 83 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-26T08:57:09.044392  + set +x
+
+    2023-06-26T08:57:09.050658  <8>[   11.193829] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10909654_1.4.2.3.1>
+
+    2023-06-26T08:57:09.154914  / # #
+
+    2023-06-26T08:57:09.255565  export SHELL=3D/bin/sh
+
+    2023-06-26T08:57:09.255760  #
+
+    2023-06-26T08:57:09.356233  / # export SHELL=3D/bin/sh. /lava-10909654/=
+environment
+
+    2023-06-26T08:57:09.356458  =
+
+
+    2023-06-26T08:57:09.457028  / # . /lava-10909654/environment/lava-10909=
+654/bin/lava-test-runner /lava-10909654/1
+
+    2023-06-26T08:57:09.457351  =
+
+
+    2023-06-26T08:57:09.462363  / # /lava-10909654/bin/lava-test-runner /la=
+va-10909654/1
+ =
+
+    ... (11 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+hp-x360-14-G1-sona           | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6493418fe3ced3d8d23061a2
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-14-G1-sona.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-14-G1-sona.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6493418fe3ced3d8d23061ab
+        failing since 83 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-26T08:55:43.769805  <8>[   10.036530] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10909657_1.4.2.3.1>
+
+    2023-06-26T08:55:43.772952  + set +x
+
+    2023-06-26T08:55:43.874531  #
+
+    2023-06-26T08:55:43.874856  =
+
+
+    2023-06-26T08:55:43.975493  / # #export SHELL=3D/bin/sh
+
+    2023-06-26T08:55:43.975847  =
+
+
+    2023-06-26T08:55:44.076783  / # export SHELL=3D/bin/sh. /lava-10909657/=
+environment
+
+    2023-06-26T08:55:44.076981  =
+
+
+    2023-06-26T08:55:44.177555  / # . /lava-10909657/environment/lava-10909=
+657/bin/lava-test-runner /lava-10909657/1
+
+    2023-06-26T08:55:44.177862  =
+
+ =
+
+    ... (13 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+hp-x360-14a-cb0001xx-zork    | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/649341a03ce7bcbe6e306132
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-14a-cb0001xx-zork.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-14a-cb0001xx-zork.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/649341a03ce7bcbe6e30613b
+        failing since 83 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-26T08:51:28.902010  + set<8>[    8.723961] <LAVA_SIGNAL_ENDRUN =
+0_dmesg 10909633_1.4.2.3.1>
+
+    2023-06-26T08:51:28.902551   +x
+
+    2023-06-26T08:51:29.011033  / # #
+
+    2023-06-26T08:51:29.113327  export SHELL=3D/bin/sh
+
+    2023-06-26T08:51:29.114189  #
+
+    2023-06-26T08:51:29.215427  / # export SHELL=3D/bin/sh. /lava-10909633/=
+environment
+
+    2023-06-26T08:51:29.215626  =
+
+
+    2023-06-26T08:51:29.316124  / # . /lava-10909633/environment/lava-10909=
+633/bin/lava-test-runner /lava-10909633/1
+
+    2023-06-26T08:51:29.316448  =
+
+
+    2023-06-26T08:51:29.320423  / # /lava-10909633/bin/lava-test-runner /la=
+va-10909633/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+imx6dl-riotboard             | arm    | lab-pengutronix | gcc-10   | multi_=
+v7_defconfig           | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6493406df46df3ee36306398
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: multi_v7_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+arm/multi_v7_defconfig/gcc-10/lab-pengutronix/baseline-imx6dl-riotboard.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+arm/multi_v7_defconfig/gcc-10/lab-pengutronix/baseline-imx6dl-riotboard.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6493406df46df3ee363063a1
+        new failure (last pass: v6.1.35-37-g639ecee7e0d3)
+
+    2023-06-26T08:55:30.574503  + set[   14.930645] <LAVA_SIGNAL_ENDRUN 0_d=
+mesg 988060_1.5.2.3.1>
+    2023-06-26T08:55:30.574856   +x
+    2023-06-26T08:55:30.681702  / # #
+    2023-06-26T08:55:30.784123  export SHELL=3D/bin/sh
+    2023-06-26T08:55:30.784777  #
+    2023-06-26T08:55:30.886322  / # export SHELL=3D/bin/sh. /lava-988060/en=
+vironment
+    2023-06-26T08:55:30.887070  =
+
+    2023-06-26T08:55:30.988673  / # . /lava-988060/environment/lava-988060/=
+bin/lava-test-runner /lava-988060/1
+    2023-06-26T08:55:30.989607  =
+
+    2023-06-26T08:55:30.992426  / # /lava-988060/bin/lava-test-runner /lava=
+-988060/1 =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+lenovo-TPad-C13-Yoga-zork    | x86_64 | lab-collabora   | gcc-10   | x86_64=
+_defcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/649341995f5c038e3a30618d
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-lenovo=
+-TPad-C13-Yoga-zork.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-lenovo=
+-TPad-C13-Yoga-zork.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/649341995f5c038e3a306196
+        failing since 83 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-26T08:52:27.362437  <8>[   12.110897] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10909659_1.4.2.3.1>
+
+    2023-06-26T08:52:27.466814  / # #
+
+    2023-06-26T08:52:27.567559  export SHELL=3D/bin/sh
+
+    2023-06-26T08:52:27.567804  #
+
+    2023-06-26T08:52:27.668313  / # export SHELL=3D/bin/sh. /lava-10909659/=
+environment
+
+    2023-06-26T08:52:27.668547  =
+
+
+    2023-06-26T08:52:27.769076  / # . /lava-10909659/environment/lava-10909=
+659/bin/lava-test-runner /lava-10909659/1
+
+    2023-06-26T08:52:27.769406  =
+
+
+    2023-06-26T08:52:27.774783  / # /lava-10909659/bin/lava-test-runner /la=
+va-10909659/1
+
+    2023-06-26T08:52:27.781502  + export 'TESTRUN_ID=3D1_bootrr'
+ =
+
+    ... (11 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+mt8183-kukui-...uniper-sku16 | arm64  | lab-collabora   | gcc-10   | defcon=
+fig+arm64-chromebook   | 2          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64934329246ac2eec8306136
+
+  Results:     166 PASS, 5 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/baseline-mt8183-kukui=
+-jacuzzi-juniper-sku16.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/baseline-mt8183-kukui=
+-jacuzzi-juniper-sku16.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.mt6577-auxadc-probed: https://kernelci.org/test/case/id=
+/64934329246ac2eec8306156
+        failing since 41 days (last pass: v6.1.27, first fail: v6.1.28)
+
+    2023-06-26T09:09:53.706616  /lava-10910080/1/../bin/lava-test-case
+
+    2023-06-26T09:09:53.712773  <8>[   22.947247] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Dmt6577-auxadc-probed RESULT=3Dfail>
+   =
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64934329246ac2eec83061e2
+        failing since 41 days (last pass: v6.1.27, first fail: v6.1.28)
+
+    2023-06-26T09:09:48.271037  + <8>[   17.506740] <LAVA_SIGNAL_ENDRUN 0_d=
+mesg 10910080_1.5.2.3.1>
+
+    2023-06-26T09:09:48.275650  set +x
+
+    2023-06-26T09:09:48.382652  / # #
+
+    2023-06-26T09:09:48.484797  export SHELL=3D/bin/sh
+
+    2023-06-26T09:09:48.485462  #
+
+    2023-06-26T09:09:48.586975  / # export SHELL=3D/bin/sh. /lava-10910080/=
+environment
+
+    2023-06-26T09:09:48.587804  =
+
+
+    2023-06-26T09:09:48.689293  / # . /lava-10910080/environment/lava-10910=
+080/bin/lava-test-runner /lava-10910080/1
+
+    2023-06-26T09:09:48.690550  =
+
+
+    2023-06-26T09:09:48.695766  / # /lava-10910080/bin/lava-test-runner /la=
+va-10910080/1
+ =
+
+    ... (13 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab             | compiler | defcon=
+fig                    | regressions
+-----------------------------+--------+-----------------+----------+-------=
+-----------------------+------------
+qemu_mips-malta              | mips   | lab-collabora   | gcc-10   | malta_=
+defconfig              | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64934048fa86017c6e306136
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: malta_defconfig
+  Compiler:    gcc-10 (mips-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+mips/malta_defconfig/gcc-10/lab-collabora/baseline-qemu_mips-malta.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.35/=
+mips/malta_defconfig/gcc-10/lab-collabora/baseline-qemu_mips-malta.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/mipsel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64934048fa86017c6e306=
+137
+        failing since 2 days (last pass: v6.1.34-90-g7a9de0e648cfb, first f=
+ail: v6.1.34-163-gfbff2eddae9a) =
+
+ =20
