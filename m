@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFFF173E7E1
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F3BB73E8ED
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231591AbjFZSUE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:20:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34666 "EHLO
+        id S232156AbjFZSar (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231530AbjFZSUA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:20:00 -0400
+        with ESMTP id S232409AbjFZSaU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E51B94
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D126E8
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EDD1260F1E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFC6C433C8;
-        Mon, 26 Jun 2023 18:19:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0818460F39
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18AF8C433C0;
+        Mon, 26 Jun 2023 18:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803598;
-        bh=oWln9belhgx/LvrKwxE+bs+QSjk7FRGBKTwAnqyyOuI=;
+        s=korg; t=1687804218;
+        bh=833KK0nc6tkE4aZuu1pU9pr52LLJ5kHhy1L6KRxmO7g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WmBMkD6BBbCMA9druNWU7rDrii7ZnaV5FsXOzNqy0zQpzdb+Yoe6mmGfhuw/nP+AY
-         m/qaa885wbIN+Etep2JxEZx7hSuO4V1pRuu3XAG1ERCLcWBFkOHIEJZfnSS08DSsv7
-         UjJcHopRBo1r5gp97cjOv7j/O/NrrM782zpFzP4Y=
+        b=aVL9vtLvBzXuthwMhHb9CLHLZUm4WpOAEomYhVO8Tow38GhWZD6Ev52hxZqjzW+OB
+         42+AfXHZSMOwOs7EklLR/kG9FpWGrxRyQUrHf439oW1JUv0xxrXRmLZ0bUX6DVWs8S
+         hmRrVdb6tDTatuqCHBFC3ddwXYfC1dKR/Lzp2r8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 115/199] mmc: mvsdio: fix deferred probing
-Date:   Mon, 26 Jun 2023 20:10:21 +0200
-Message-ID: <20230626180810.691040388@linuxfoundation.org>
+        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.1 053/170] PCI: hv: Fix a race condition in hv_irq_unmask() that can cause panic
+Date:   Mon, 26 Jun 2023 20:10:22 +0200
+Message-ID: <20230626180802.942125783@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +55,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Dexuan Cui <decui@microsoft.com>
 
-[ Upstream commit 8d84064da0d4672e74f984e8710f27881137472c ]
+commit 2738d5ab7929a845b654cd171a1e275c37eb428e upstream.
 
-The driver overrides the error codes returned by platform_get_irq() to
--ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the
-error codes upstream.
+When the host tries to remove a PCI device, the host first sends a
+PCI_EJECT message to the guest, and the guest is supposed to gracefully
+remove the PCI device and send a PCI_EJECTION_COMPLETE message to the host;
+the host then sends a VMBus message CHANNELMSG_RESCIND_CHANNELOFFER to
+the guest (when the guest receives this message, the device is already
+unassigned from the guest) and the guest can do some final cleanup work;
+if the guest fails to respond to the PCI_EJECT message within one minute,
+the host sends the VMBus message CHANNELMSG_RESCIND_CHANNELOFFER and
+removes the PCI device forcibly.
 
-Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20230617203622.6812-5-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the case of fast device addition/removal, it's possible that the PCI
+device driver is still configuring MSI-X interrupts when the guest receives
+the PCI_EJECT message; the channel callback calls hv_pci_eject_device(),
+which sets hpdev->state to hv_pcichild_ejecting, and schedules a work
+hv_eject_device_work(); if the PCI device driver is calling
+pci_alloc_irq_vectors() -> ... -> hv_compose_msi_msg(), we can break the
+while loop in hv_compose_msi_msg() due to the updated hpdev->state, and
+leave data->chip_data with its default value of NULL; later, when the PCI
+device driver calls request_irq() -> ... -> hv_irq_unmask(), the guest
+crashes in hv_arch_irq_unmask() due to data->chip_data being NULL.
+
+Fix the issue by not testing hpdev->state in the while loop: when the
+guest receives PCI_EJECT, the device is still assigned to the guest, and
+the guest has one minute to finish the device removal gracefully. We don't
+really need to (and we should not) test hpdev->state in the loop.
+
+Fixes: de0aa7b2f97d ("PCI: hv: Fix 2 hang issues in hv_compose_msi_msg()")
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230615044451.5580-3-decui@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mvsdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/pci-hyperv.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mmc/host/mvsdio.c b/drivers/mmc/host/mvsdio.c
-index 629efbe639c4f..b4f6a0a2fcb51 100644
---- a/drivers/mmc/host/mvsdio.c
-+++ b/drivers/mmc/host/mvsdio.c
-@@ -704,7 +704,7 @@ static int mvsd_probe(struct platform_device *pdev)
- 	}
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
--		return -ENXIO;
-+		return irq;
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -647,6 +647,11 @@ static void hv_arch_irq_unmask(struct ir
+ 	pbus = pdev->bus;
+ 	hbus = container_of(pbus->sysdata, struct hv_pcibus_device, sysdata);
+ 	int_desc = data->chip_data;
++	if (!int_desc) {
++		dev_warn(&hbus->hdev->device, "%s() can not unmask irq %u\n",
++			 __func__, data->irq);
++		return;
++	}
  
- 	mmc = mmc_alloc_host(sizeof(struct mvsd_host), &pdev->dev);
- 	if (!mmc) {
--- 
-2.39.2
-
+ 	spin_lock_irqsave(&hbus->retarget_msi_interrupt_lock, flags);
+ 
+@@ -1915,12 +1920,6 @@ static void hv_compose_msi_msg(struct ir
+ 		hv_pci_onchannelcallback(hbus);
+ 		spin_unlock_irqrestore(&channel->sched_lock, flags);
+ 
+-		if (hpdev->state == hv_pcichild_ejecting) {
+-			dev_err_once(&hbus->hdev->device,
+-				     "the device is being ejected\n");
+-			goto enable_tasklet;
+-		}
+-
+ 		udelay(100);
+ 	}
+ 
 
 
