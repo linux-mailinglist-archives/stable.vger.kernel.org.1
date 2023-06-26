@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FDF573E89B
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6144B73E7B5
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:17:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232169AbjFZS1c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:27:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38032 "EHLO
+        id S231339AbjFZSR5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:17:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232124AbjFZS1Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:27:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A0FD1708
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:26:48 -0700 (PDT)
+        with ESMTP id S231298AbjFZSR4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:17:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC49694
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:17:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A35D460F40
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:26:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91BDC433C0;
-        Mon, 26 Jun 2023 18:26:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A46760F3E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:17:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDDEC433C0;
+        Mon, 26 Jun 2023 18:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804007;
-        bh=1s+3K2boAs13FPzN8Y58AAOHn3J/E5gF7TQ/ZhrrL1w=;
+        s=korg; t=1687803474;
+        bh=QKo343TrisK5KbGRso+3uKdyedADtZanVkz/FhzQEYo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H743W4mSx9zHj9YUxUIi1d9ejIE3YpTkPzmsQqpiEpL6/z5BJgil2NZFeyxoT4HV1
-         eqmoEW+3HBOfs9RwuAC/pqe8vjcwE8ox5zHb28nSbdcuXQxbbAwkNW9SStLTLzqMp6
-         xond+L4ArRy5yRQ1nwzbmQKO7tSpKqB4sxcq0CI4=
+        b=1BF5fPcRcQJl1LNh5D/Bu5HEtbcK8iiglusqP2mjAofbz/BcMZu38FxGH+HTgKr3t
+         k3bOnUMg8qkY4d8RXTIb6vXubp+UB6I0CqLD2QHB+Or6puHs2pn2bejR00sEXFvxBX
+         DqSlqkH2D8Chm4HnzPpbPEd/6uYbcHt5TfWogvak=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chih-Yen Chang <cc85nod@gmail.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 010/170] ksmbd: validate command payload size
-Date:   Mon, 26 Jun 2023 20:09:39 +0200
-Message-ID: <20230626180800.993822956@linuxfoundation.org>
+        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.3 074/199] mptcp: ensure listener is unhashed before updating the sk status
+Date:   Mon, 26 Jun 2023 20:09:40 +0200
+Message-ID: <20230626180808.788586976@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,86 +56,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 2b9b8f3b68edb3d67d79962f02e26dbb5ae3808d upstream.
+commit 57fc0f1ceaa4016354cf6f88533e20b56190e41a upstream.
 
-->StructureSize2 indicates command payload size. ksmbd should validate
-this size with rfc1002 length before accessing it.
-This patch remove unneeded check and add the validation for this.
+The MPTCP protocol access the listener subflow in a lockless
+manner in a couple of places (poll, diag). That works only if
+the msk itself leaves the listener status only after that the
+subflow itself has been closed/disconnected. Otherwise we risk
+deadlock in diag, as reported by Christoph.
 
-[    8.912583] BUG: KASAN: slab-out-of-bounds in ksmbd_smb2_check_message+0x12a/0xc50
-[    8.913051] Read of size 2 at addr ffff88800ac7d92c by task kworker/0:0/7
-...
-[    8.914967] Call Trace:
-[    8.915126]  <TASK>
-[    8.915267]  dump_stack_lvl+0x33/0x50
-[    8.915506]  print_report+0xcc/0x620
-[    8.916558]  kasan_report+0xae/0xe0
-[    8.917080]  kasan_check_range+0x35/0x1b0
-[    8.917334]  ksmbd_smb2_check_message+0x12a/0xc50
-[    8.917935]  ksmbd_verify_smb_message+0xae/0xd0
-[    8.918223]  handle_ksmbd_work+0x192/0x820
-[    8.918478]  process_one_work+0x419/0x760
-[    8.918727]  worker_thread+0x2a2/0x6f0
-[    8.919222]  kthread+0x187/0x1d0
-[    8.919723]  ret_from_fork+0x1f/0x30
-[    8.919954]  </TASK>
+Address the issue ensuring that the first subflow (the listener
+one) is always disconnected before updating the msk socket status.
 
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/407
+Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
 Cc: stable@vger.kernel.org
-Reported-by: Chih-Yen Chang <cc85nod@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2misc.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ net/mptcp/pm_netlink.c |    1 +
+ net/mptcp/protocol.c   |   31 +++++++++++++++++++------------
+ 2 files changed, 20 insertions(+), 12 deletions(-)
 
---- a/fs/ksmbd/smb2misc.c
-+++ b/fs/ksmbd/smb2misc.c
-@@ -351,6 +351,7 @@ int ksmbd_smb2_check_message(struct ksmb
- 	int command;
- 	__u32 clc_len;  /* calculated length */
- 	__u32 len = get_rfc1002_len(work->request_buf);
-+	__u32 req_struct_size;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1047,6 +1047,7 @@ static int mptcp_pm_nl_create_listen_soc
+ 	if (err)
+ 		return err;
  
- 	if (le32_to_cpu(hdr->NextCommand) > 0)
- 		len = le32_to_cpu(hdr->NextCommand);
-@@ -373,17 +374,9 @@ int ksmbd_smb2_check_message(struct ksmb
- 	}
++	inet_sk_state_store(newsk, TCP_LISTEN);
+ 	err = kernel_listen(ssock, backlog);
+ 	if (err)
+ 		return err;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2385,13 +2385,6 @@ static void __mptcp_close_ssk(struct soc
+ 		kfree_rcu(subflow, rcu);
+ 	} else {
+ 		/* otherwise tcp will dispose of the ssk and subflow ctx */
+-		if (ssk->sk_state == TCP_LISTEN) {
+-			tcp_set_state(ssk, TCP_CLOSE);
+-			mptcp_subflow_queue_clean(sk, ssk);
+-			inet_csk_listen_stop(ssk);
+-			mptcp_event_pm_listener(ssk, MPTCP_EVENT_LISTENER_CLOSED);
+-		}
+-
+ 		__tcp_close(ssk, 0);
  
- 	if (smb2_req_struct_sizes[command] != pdu->StructureSize2) {
--		if (command != SMB2_OPLOCK_BREAK_HE &&
--		    (hdr->Status == 0 || pdu->StructureSize2 != SMB2_ERROR_STRUCTURE_SIZE2_LE)) {
--			/* error packets have 9 byte structure size */
--			ksmbd_debug(SMB,
--				    "Illegal request size %u for command %d\n",
--				    le16_to_cpu(pdu->StructureSize2), command);
--			return 1;
--		} else if (command == SMB2_OPLOCK_BREAK_HE &&
--			   hdr->Status == 0 &&
--			   le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_20 &&
--			   le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_21) {
-+		if (command == SMB2_OPLOCK_BREAK_HE &&
-+		    le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_20 &&
-+		    le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_21) {
- 			/* special case for SMB2.1 lease break message */
- 			ksmbd_debug(SMB,
- 				    "Illegal request size %d for oplock break\n",
-@@ -392,6 +385,14 @@ int ksmbd_smb2_check_message(struct ksmb
- 		}
- 	}
+ 		/* close acquired an extra ref */
+@@ -2926,10 +2919,24 @@ static __poll_t mptcp_check_readable(str
+ 	return EPOLLIN | EPOLLRDNORM;
+ }
  
-+	req_struct_size = le16_to_cpu(pdu->StructureSize2) +
-+		__SMB2_HEADER_STRUCTURE_SIZE;
-+	if (command == SMB2_LOCK_HE)
-+		req_struct_size -= sizeof(struct smb2_lock_element);
+-static void mptcp_listen_inuse_dec(struct sock *sk)
++static void mptcp_check_listen_stop(struct sock *sk)
+ {
+-	if (inet_sk_state_load(sk) == TCP_LISTEN)
+-		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
++	struct sock *ssk;
 +
-+	if (req_struct_size > len + 1)
-+		return 1;
++	if (inet_sk_state_load(sk) != TCP_LISTEN)
++		return;
 +
- 	if (smb2_calc_size(hdr, &clc_len))
- 		return 1;
++	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
++	ssk = mptcp_sk(sk)->first;
++	if (WARN_ON_ONCE(!ssk || inet_sk_state_load(ssk) != TCP_LISTEN))
++		return;
++
++	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
++	mptcp_subflow_queue_clean(sk, ssk);
++	inet_csk_listen_stop(ssk);
++	mptcp_event_pm_listener(ssk, MPTCP_EVENT_LISTENER_CLOSED);
++	tcp_set_state(ssk, TCP_CLOSE);
++	release_sock(ssk);
+ }
  
+ bool __mptcp_close(struct sock *sk, long timeout)
+@@ -2942,7 +2949,7 @@ bool __mptcp_close(struct sock *sk, long
+ 	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
+ 
+ 	if ((1 << sk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE)) {
+-		mptcp_listen_inuse_dec(sk);
++		mptcp_check_listen_stop(sk);
+ 		inet_sk_state_store(sk, TCP_CLOSE);
+ 		goto cleanup;
+ 	}
+@@ -3056,7 +3063,7 @@ static int mptcp_disconnect(struct sock
+ 	if (msk->fastopening)
+ 		return -EBUSY;
+ 
+-	mptcp_listen_inuse_dec(sk);
++	mptcp_check_listen_stop(sk);
+ 	inet_sk_state_store(sk, TCP_CLOSE);
+ 
+ 	mptcp_stop_timer(sk);
 
 
