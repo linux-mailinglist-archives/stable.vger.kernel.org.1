@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E952C73E852
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C1FE73E8FB
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:31:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231960AbjFZSYU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:24:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
+        id S231868AbjFZSbH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:31:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231993AbjFZSX4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:56 -0400
+        with ESMTP id S232274AbjFZSa6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0D9D295C
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF61019B3
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10DED60F56
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:23:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1933CC433C0;
-        Mon, 26 Jun 2023 18:23:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E92260E76
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2A3C433C8;
+        Mon, 26 Jun 2023 18:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803806;
-        bh=UUu1StOTrnywNSnI1ET77NI5c2yanT+lQF7XZliwvy4=;
+        s=korg; t=1687804247;
+        bh=wFhrg8hnJNJ/MY29E5mKx8BlOwwpIX/G+69TpONV3uM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KUnl7Jor5XNSu9UxFK4YDXdZPA0MDWdudLMUZKvWxI2887BNF1eQ0L0EH0SbN6cEe
-         xdH1JIFu110cM/62rLcw2YUwYn+nh6zKb56F5omRjqB77DAI/Ram3NkyHnpg8lKTsa
-         4/6IvuDO29Y/2uds86JP2xbITH5w19Xod2QcYfyY=
+        b=xUNQ05SpcYLupLURec6CgczbQ3drrLi4dZFBPkc/aRliRhtsGd3kFbdxPNRqBxsee
+         A2o7dtHQczHcO5icFub1Rmsy2L90EcLpwHOgOd7lQShjOG0mUlZd/zqa5W730rZM+g
+         012LihvAC8uNzSQ1EarnAV18Ei3svN/e/QDutmQc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, David Ahern <dsahern@kernel.org>,
+        Magali Lemes <magali.lemes@canonical.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 155/199] smb3: missing null check in SMB2_change_notify
+Subject: [PATCH 6.1 092/170] selftests: net: fcnal-test: check if FIPS mode is enabled
 Date:   Mon, 26 Jun 2023 20:11:01 +0200
-Message-ID: <20230626180812.437516753@linuxfoundation.org>
+Message-ID: <20230626180804.702270263@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,37 +56,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steve French <stfrench@microsoft.com>
+From: Magali Lemes <magali.lemes@canonical.com>
 
-[ Upstream commit b535cc796a4b4942cd189652588e8d37c1f5925a ]
+[ Upstream commit d7a2fc1437f71cb058c7b11bc33dfc19e4bf277a ]
 
-If plen is null when passed in, we only checked for null
-in one of the two places where it could be used. Although
-plen is always valid (not null) for current callers of the
-SMB2_change_notify function, this change makes it more consistent.
+There are some MD5 tests which fail when the kernel is in FIPS mode,
+since MD5 is not FIPS compliant. Add a check and only run those tests
+if FIPS mode is not enabled.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/all/202305251831.3V1gbbFs-lkp@intel.com/
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: f0bee1ebb5594 ("fcnal-test: Add TCP MD5 tests")
+Fixes: 5cad8bce26e01 ("fcnal-test: Add TCP MD5 tests for VRF")
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2pdu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/fcnal-test.sh | 27 ++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index 02228a590cd54..a2a95cd113df8 100644
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -3777,7 +3777,7 @@ SMB2_change_notify(const unsigned int xid, struct cifs_tcon *tcon,
- 		if (*out_data == NULL) {
- 			rc = -ENOMEM;
- 			goto cnotify_exit;
--		} else
-+		} else if (plen)
- 			*plen = le32_to_cpu(smb_rsp->OutputBufferLength);
- 	}
+diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
+index 21ca91473c095..ee6880ac3e5ed 100755
+--- a/tools/testing/selftests/net/fcnal-test.sh
++++ b/tools/testing/selftests/net/fcnal-test.sh
+@@ -92,6 +92,13 @@ NSC_CMD="ip netns exec ${NSC}"
  
+ which ping6 > /dev/null 2>&1 && ping6=$(which ping6) || ping6=$(which ping)
+ 
++# Check if FIPS mode is enabled
++if [ -f /proc/sys/crypto/fips_enabled ]; then
++	fips_enabled=`cat /proc/sys/crypto/fips_enabled`
++else
++	fips_enabled=0
++fi
++
+ ################################################################################
+ # utilities
+ 
+@@ -1216,7 +1223,7 @@ ipv4_tcp_novrf()
+ 	run_cmd nettest -d ${NSA_DEV} -r ${a}
+ 	log_test_addr ${a} $? 1 "No server, device client, local conn"
+ 
+-	ipv4_tcp_md5_novrf
++	[ "$fips_enabled" = "1" ] || ipv4_tcp_md5_novrf
+ }
+ 
+ ipv4_tcp_vrf()
+@@ -1270,9 +1277,11 @@ ipv4_tcp_vrf()
+ 	log_test_addr ${a} $? 1 "Global server, local connection"
+ 
+ 	# run MD5 tests
+-	setup_vrf_dup
+-	ipv4_tcp_md5
+-	cleanup_vrf_dup
++	if [ "$fips_enabled" = "0" ]; then
++		setup_vrf_dup
++		ipv4_tcp_md5
++		cleanup_vrf_dup
++	fi
+ 
+ 	#
+ 	# enable VRF global server
+@@ -2772,7 +2781,7 @@ ipv6_tcp_novrf()
+ 		log_test_addr ${a} $? 1 "No server, device client, local conn"
+ 	done
+ 
+-	ipv6_tcp_md5_novrf
++	[ "$fips_enabled" = "1" ] || ipv6_tcp_md5_novrf
+ }
+ 
+ ipv6_tcp_vrf()
+@@ -2842,9 +2851,11 @@ ipv6_tcp_vrf()
+ 	log_test_addr ${a} $? 1 "Global server, local connection"
+ 
+ 	# run MD5 tests
+-	setup_vrf_dup
+-	ipv6_tcp_md5
+-	cleanup_vrf_dup
++	if [ "$fips_enabled" = "0" ]; then
++		setup_vrf_dup
++		ipv6_tcp_md5
++		cleanup_vrf_dup
++	fi
+ 
+ 	#
+ 	# enable VRF global server
 -- 
 2.39.2
 
