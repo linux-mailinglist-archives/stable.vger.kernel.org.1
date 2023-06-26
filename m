@@ -2,45 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E38E73E1FD
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 16:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCC0473E205
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 16:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231586AbjFZOV4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 10:21:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40484 "EHLO
+        id S231636AbjFZOXD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 10:23:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231530AbjFZOVg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 10:21:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEFA91FFF
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 07:20:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EF93160C8B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 14:19:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34EEC433C0;
-        Mon, 26 Jun 2023 14:19:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687789177;
-        bh=kJpWEeiegQThLDXmUkPo2S9LTx01D3spUzG8Tymht+8=;
-        h=Subject:To:Cc:From:Date:From;
-        b=JSmYQrV/U7PAS7Nqx0kQYCJaX3q9ebL8SY56bYg+oy4qIutDDhErmWk1T8sTQOXx9
-         Av3oYcUwdE4RavWXUISXJPFquXOn7GXJooYrXlfdK9zlPPcomggU4nUOvPJT2LyVlW
-         l5maxKxd4NhauD8X3ZxDKwh8nOJM2VItOUvd1QfA=
-Subject: FAILED: patch "[PATCH] wifi: iwlwifi: mvm: spin_lock_bh() to fix lockdep regression" failed to apply to 6.1-stable tree
-To:     hughd@google.com, johannes.berg@intel.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 26 Jun 2023 16:19:34 +0200
-Message-ID: <2023062633-grip-headway-6fcc@gregkh>
+        with ESMTP id S231573AbjFZOWo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 10:22:44 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B37DA10D9;
+        Mon, 26 Jun 2023 07:21:52 -0700 (PDT)
+Received: from [10.171.21.113] (unknown [167.220.238.145])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 1FEB521C4246;
+        Mon, 26 Jun 2023 07:20:49 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1FEB521C4246
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1687789257;
+        bh=aT4WxjZvQVlyUZbGtIL/sXMQJbejtNJ5GcrCdyfwEK0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=bHiUi781wS9YRpRoVbHkRolr7bAV7yZZx9jvjgsg9sP2gAphz7wOFzdghc1pyZ5+o
+         jRhh5QGY87mLjYz+Y+ZmFaKDIbpMt00mnznobka60cTvMgx+ZnB4LBsunGZgFw3oYt
+         Jd0ve9hCBUDz12vw+Tsnfg4/vCLLG9qJYmzmnJc4=
+Message-ID: <69098dcb-c184-7d93-4045-7ac1bc0ac6d0@linux.microsoft.com>
+Date:   Mon, 26 Jun 2023 19:50:44 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/2 V3 net] net: mana: Fix MANA VF unload when host is
+ unresponsive
+Content-Language: en-US
+To:     souradeep chakrabarti <schakrabarti@linux.microsoft.com>,
+        kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
+        sharmaajay@microsoft.com, leon@kernel.org, cai.huoqing@linux.dev,
+        ssengar@linux.microsoft.com, vkuznets@redhat.com,
+        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Cc:     stable@vger.kernel.org, schakrabarti@microsoft.com
+References: <1687771098-26775-1-git-send-email-schakrabarti@linux.microsoft.com>
+ <1687771137-26911-1-git-send-email-schakrabarti@linux.microsoft.com>
+From:   Praveen Kumar <kumarpraveen@linux.microsoft.com>
+In-Reply-To: <1687771137-26911-1-git-send-email-schakrabarti@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-19.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,107 +60,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 6/26/2023 2:48 PM, souradeep chakrabarti wrote:
+> From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+> 
+> This patch addresses the VF unload issue, where mana_dealloc_queues()
+> gets stuck in infinite while loop, because of host unresponsiveness.
+> It adds a timeout in the while loop, to fix it.
+> 
+> Fixes: ca9c54d2d6a5ab2430c4eda364c77125d62e5e0f (net: mana: Add a driver for
+> Microsoft Azure Network Adapter)
+> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+> ---
+> V2 -> V3:
+> * Splitted the patch in two parts.
+> * Removed the unnecessary braces from mana_dealloc_queues().
+> ---
+>  drivers/net/ethernet/microsoft/mana/mana_en.c | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> index d907727c7b7a..cb5c43c3c47e 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> @@ -2329,7 +2329,10 @@ static int mana_dealloc_queues(struct net_device *ndev)
+>  {
+>  	struct mana_port_context *apc = netdev_priv(ndev);
+>  	struct gdma_dev *gd = apc->ac->gdma_dev;
+> +	unsigned long timeout;
+>  	struct mana_txq *txq;
+> +	struct sk_buff *skb;
+> +	struct mana_cq *cq;
+>  	int i, err;
+>  
+>  	if (apc->port_is_up)
+> @@ -2348,13 +2351,25 @@ static int mana_dealloc_queues(struct net_device *ndev)
+>  	 *
+>  	 * Drain all the in-flight TX packets
+>  	 */
+> +
+> +	timeout = jiffies + 120 * HZ;
+>  	for (i = 0; i < apc->num_queues; i++) {
+>  		txq = &apc->tx_qp[i].txq;
+> -
+> -		while (atomic_read(&txq->pending_sends) > 0)
+> +		while (atomic_read(&txq->pending_sends) > 0 &&
+> +		       time_before(jiffies, timeout))
+>  			usleep_range(1000, 2000);
+>  	}
+>  
+> +	for (i = 0; i < apc->num_queues; i++) {
+> +		txq = &apc->tx_qp[i].txq;
+> +		cq = &apc->tx_qp[i].tx_cq;
+> +		while (atomic_read(&txq->pending_sends)) {
+> +			skb = skb_dequeue(&txq->pending_skbs);
+> +			mana_unmap_skb(skb, apc);
+> +			napi_consume_skb(skb, cq->budget);
+> +			atomic_sub(1, &txq->pending_sends);
+> +		}
+> +	}
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Can we combine these 2 loops into 1 something like this ?
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x f1a0898b5d6a77d332d036da03bad6fa9770de5b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062633-grip-headway-6fcc@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From f1a0898b5d6a77d332d036da03bad6fa9770de5b Mon Sep 17 00:00:00 2001
-From: Hugh Dickins <hughd@google.com>
-Date: Fri, 9 Jun 2023 14:29:39 -0700
-Subject: [PATCH] wifi: iwlwifi: mvm: spin_lock_bh() to fix lockdep regression
-
-Lockdep on 6.4-rc on ThinkPad X1 Carbon 5th says
-=====================================================
-WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
-6.4.0-rc5 #1 Not tainted
------------------------------------------------------
-kworker/3:1/49 [HC0[0]:SC0[4]:HE1:SE0] is trying to acquire:
-ffff8881066fa368 (&mvm_sta->deflink.lq_sta.rs_drv.pers.lock){+.+.}-{2:2}, at: rs_drv_get_rate+0x46/0xe7
-
-and this task is already holding:
-ffff8881066f80a8 (&sta->rate_ctrl_lock){+.-.}-{2:2}, at: rate_control_get_rate+0xbd/0x126
-which would create a new lock dependency:
- (&sta->rate_ctrl_lock){+.-.}-{2:2} -> (&mvm_sta->deflink.lq_sta.rs_drv.pers.lock){+.+.}-{2:2}
-
-but this new dependency connects a SOFTIRQ-irq-safe lock:
- (&sta->rate_ctrl_lock){+.-.}-{2:2}
-etc. etc. etc.
-
-Changing the spin_lock() in rs_drv_get_rate() to spin_lock_bh() was not
-enough to pacify lockdep, but changing them all on pers.lock has worked.
-
-Fixes: a8938bc881d2 ("wifi: iwlwifi: mvm: Add locking to the rate read flow")
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Link: https://lore.kernel.org/r/79ffcc22-9775-cb6d-3ffd-1a517c40beef@google.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-index 23266d0c9ce4..9a20468345e4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-@@ -2692,7 +2692,7 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
- 
- 	lq_sta = mvm_sta;
- 
--	spin_lock(&lq_sta->pers.lock);
-+	spin_lock_bh(&lq_sta->pers.lock);
- 	iwl_mvm_hwrate_to_tx_rate_v1(lq_sta->last_rate_n_flags,
- 				     info->band, &info->control.rates[0]);
- 	info->control.rates[0].count = 1;
-@@ -2707,7 +2707,7 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
- 		iwl_mvm_hwrate_to_tx_rate_v1(last_ucode_rate, info->band,
- 					     &txrc->reported_rate);
- 	}
--	spin_unlock(&lq_sta->pers.lock);
-+	spin_unlock_bh(&lq_sta->pers.lock);
- }
- 
- static void *rs_drv_alloc_sta(void *mvm_rate, struct ieee80211_sta *sta,
-@@ -3264,11 +3264,11 @@ void iwl_mvm_rs_tx_status(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	/* If it's locked we are in middle of init flow
- 	 * just wait for next tx status to update the lq_sta data
- 	 */
--	if (!spin_trylock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock))
-+	if (!spin_trylock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock))
- 		return;
- 
- 	__iwl_mvm_rs_tx_status(mvm, sta, tid, info, ndp);
--	spin_unlock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
-+	spin_unlock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
- }
- 
- #ifdef CONFIG_MAC80211_DEBUGFS
-@@ -4117,9 +4117,9 @@ void iwl_mvm_rs_rate_init(struct iwl_mvm *mvm,
- 	} else {
- 		struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
- 
--		spin_lock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
-+		spin_lock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
- 		rs_drv_rate_init(mvm, sta, band);
--		spin_unlock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
-+		spin_unlock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
- 	}
- }
- 
+	for (i = 0; i < apc->num_queues; i++) {
+		txq = &apc->tx_qp[i].txq;
+		cq = &apc->tx_qp[i].tx_cq;
+		while (atomic_read(&txq->pending_sends)) {
+			if (time_before(jiffies, timeout)) {
+				usleep_range(1000, 2000);
+			} else {
+				skb = skb_dequeue(&txq->pending_skbs);
+				mana_unmap_skb(skb, apc);
+				napi_consume_skb(skb, cq->budget);
+				atomic_sub(1, &txq->pending_sends);
+			}
+		}
+	}
+>  	/* We're 100% sure the queues can no longer be woken up, because
+>  	 * we're sure now mana_poll_tx_cq() can't be running.
+>  	 */
 
