@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C041773E90F
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FF8A73E813
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232333AbjFZScZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:32:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45256 "EHLO
+        id S231659AbjFZSWf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:22:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232343AbjFZScK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53B7710E2
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:31:48 -0700 (PDT)
+        with ESMTP id S231657AbjFZSWe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:22:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A1D1BC8
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:22:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD72160F4B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:31:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5216C433C8;
-        Mon, 26 Jun 2023 18:31:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B07E60F39
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:21:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D58C433C0;
+        Mon, 26 Jun 2023 18:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804307;
-        bh=BJHmlv6GZ9jVSSSOmNlHAbElbDp+Uooz+KmXYXq9a14=;
+        s=korg; t=1687803699;
+        bh=p2c/fsZVR1q17O9Mbz59vsNHZuabw0cBqcIoKlMHk7E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qLF+oE5LlOWzf/h4KsYDDliBySlfbfziuSrStMjbRP/8g8wxT+YFgYUBfMEqFi0ZV
-         TGJRYZhims9S/fOhTx/VASXppKh3uxRrYzVE52yGkmKH5G6IUllDUHwlQTfvlKGgBp
-         9Q6ULo49/6a2Qqvk6KBGZyH/iyEUqGN5uq91HVpw=
+        b=h0nEgHVJvlKhho73g3JNoQNAfau0ycYrdNzqyMg5mYEDml7n5a2GEB4iXLrXs5pTN
+         rmxVV5DKj15x+ENQzjch7jhHsV6bCFS6pyAbZqgILdHP5wXZ+m4RKU4YF1V9BmRgQe
+         Q+utJ11n3Mu6Z6QCcTrWFomrRmqqB3Im9CROCG3M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benedict Wong <benedictwong@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/170] xfrm: Ensure policies always checked on XFRM-I input path
+Subject: [PATCH 6.3 147/199] gpio: sifive: add missing check for platform_get_irq
 Date:   Mon, 26 Jun 2023 20:10:53 +0200
-Message-ID: <20230626180804.352480781@linuxfoundation.org>
+Message-ID: <20230626180812.074150556@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,109 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benedict Wong <benedictwong@google.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit a287f5b0cfc6804c5b12a4be13c7c9fe27869e90 ]
+[ Upstream commit c1bcb976d8feb107ff2c12caaf12ac5e70f44d5f ]
 
-This change adds methods in the XFRM-I input path that ensures that
-policies are checked prior to processing of the subsequent decapsulated
-packet, after which the relevant policies may no longer be resolvable
-(due to changing src/dst/proto/etc).
+Add the missing check for platform_get_irq() and return error code
+if it fails.
 
-Notably, raw ESP/AH packets did not perform policy checks inherently,
-whereas all other encapsulated packets (UDP, TCP encapsulated) do policy
-checks after calling xfrm_input handling in the respective encapsulation
-layer.
+The returned error code will be dealed with in
+builtin_platform_driver(sifive_gpio_driver) and the driver will not
+be registered.
 
-Fixes: b0355dbbf13c ("Fix XFRM-I support for nested ESP tunnels")
-Test: Verified with additional Android Kernel Unit tests
-Test: Verified against Android CTS
-Signed-off-by: Benedict Wong <benedictwong@google.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: f52d6d8b43e5 ("gpio: sifive: To get gpio irq offset from device tree data")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_interface_core.c | 54 +++++++++++++++++++++++++++++++---
- 1 file changed, 50 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-sifive.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
-index 5a67b120c4dbd..94a3609548b11 100644
---- a/net/xfrm/xfrm_interface_core.c
-+++ b/net/xfrm/xfrm_interface_core.c
-@@ -310,6 +310,52 @@ static void xfrmi_scrub_packet(struct sk_buff *skb, bool xnet)
- 	skb->mark = 0;
- }
+diff --git a/drivers/gpio/gpio-sifive.c b/drivers/gpio/gpio-sifive.c
+index bc5660f61c570..0f1e1226ebbe8 100644
+--- a/drivers/gpio/gpio-sifive.c
++++ b/drivers/gpio/gpio-sifive.c
+@@ -221,8 +221,12 @@ static int sifive_gpio_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
  
-+static int xfrmi_input(struct sk_buff *skb, int nexthdr, __be32 spi,
-+		       int encap_type, unsigned short family)
-+{
-+	struct sec_path *sp;
-+
-+	sp = skb_sec_path(skb);
-+	if (sp && (sp->len || sp->olen) &&
-+	    !xfrm_policy_check(NULL, XFRM_POLICY_IN, skb, family))
-+		goto discard;
-+
-+	XFRM_SPI_SKB_CB(skb)->family = family;
-+	if (family == AF_INET) {
-+		XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct iphdr, daddr);
-+		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = NULL;
-+	} else {
-+		XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
-+		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = NULL;
+-	for (i = 0; i < ngpio; i++)
+-		chip->irq_number[i] = platform_get_irq(pdev, i);
++	for (i = 0; i < ngpio; i++) {
++		ret = platform_get_irq(pdev, i);
++		if (ret < 0)
++			return ret;
++		chip->irq_number[i] = ret;
 +	}
-+
-+	return xfrm_input(skb, nexthdr, spi, encap_type);
-+discard:
-+	kfree_skb(skb);
-+	return 0;
-+}
-+
-+static int xfrmi4_rcv(struct sk_buff *skb)
-+{
-+	return xfrmi_input(skb, ip_hdr(skb)->protocol, 0, 0, AF_INET);
-+}
-+
-+static int xfrmi6_rcv(struct sk_buff *skb)
-+{
-+	return xfrmi_input(skb, skb_network_header(skb)[IP6CB(skb)->nhoff],
-+			   0, 0, AF_INET6);
-+}
-+
-+static int xfrmi4_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
-+{
-+	return xfrmi_input(skb, nexthdr, spi, encap_type, AF_INET);
-+}
-+
-+static int xfrmi6_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
-+{
-+	return xfrmi_input(skb, nexthdr, spi, encap_type, AF_INET6);
-+}
-+
- static int xfrmi_rcv_cb(struct sk_buff *skb, int err)
- {
- 	const struct xfrm_mode *inner_mode;
-@@ -937,8 +983,8 @@ static struct pernet_operations xfrmi_net_ops = {
- };
  
- static struct xfrm6_protocol xfrmi_esp6_protocol __read_mostly = {
--	.handler	=	xfrm6_rcv,
--	.input_handler	=	xfrm_input,
-+	.handler	=	xfrmi6_rcv,
-+	.input_handler	=	xfrmi6_input,
- 	.cb_handler	=	xfrmi_rcv_cb,
- 	.err_handler	=	xfrmi6_err,
- 	.priority	=	10,
-@@ -988,8 +1034,8 @@ static struct xfrm6_tunnel xfrmi_ip6ip_handler __read_mostly = {
- #endif
- 
- static struct xfrm4_protocol xfrmi_esp4_protocol __read_mostly = {
--	.handler	=	xfrm4_rcv,
--	.input_handler	=	xfrm_input,
-+	.handler	=	xfrmi4_rcv,
-+	.input_handler	=	xfrmi4_input,
- 	.cb_handler	=	xfrmi_rcv_cb,
- 	.err_handler	=	xfrmi4_err,
- 	.priority	=	10,
+ 	ret = bgpio_init(&chip->gc, dev, 4,
+ 			 chip->base + SIFIVE_GPIO_INPUT_VAL,
 -- 
 2.39.2
 
