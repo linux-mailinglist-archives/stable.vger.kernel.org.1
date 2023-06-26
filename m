@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E732F73EA07
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF2D73EA0A
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:42:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229653AbjFZSme (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:42:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54990 "EHLO
+        id S230000AbjFZSmq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:42:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232538AbjFZSm2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:42:28 -0400
+        with ESMTP id S232563AbjFZSme (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:42:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AD9C19A5
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:42:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B41610B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:42:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2178060F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:42:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3F2C433C0;
-        Mon, 26 Jun 2023 18:42:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E14860F4B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:42:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F794C433C0;
+        Mon, 26 Jun 2023 18:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804942;
-        bh=qWmMBOZMGkRLT6BQk090qvnWS2KcOxcFhciIQWtT4v0=;
+        s=korg; t=1687804945;
+        bh=AZ8Q9VAYM223LUexf8dbA47go9hxrVRQN86tSdl0m4s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S8iySukoZO7Y0LzBHE8lrOgV3lBoZysRSt72SfoY8YK8ByZY2v6K2j09pQmIOPbnH
-         w3RIBHL9CysWRt+vp7XSMgi3kBb9Rt8/1vws3BDoPqjpmgWpUl+s+llUAWGtzby7eE
-         qBmm1Pu0c/Uc5giTSCQfdN6ZSdLM29rg2MbHynd0=
+        b=OM0qSChmo2neHqiOOw/Q5/4EX9jPpGzbZ/p4sLUJp/lZSW8SjCf4Qw6S/YK6hyQAL
+         MyONT6sR+i4shyUmQu5C5f6wer9ruBa3PWcXCwj3b79arzXtvO6j6ShTG/Enpo7ryb
+         FrgHlXEKxaAuw0lEXPXCep2Yei1UcDF7rsTgK1Ls=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Min Li <lm0963hack@gmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        Andrey Smetanin <asmetanin@yandex-team.ru>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 93/96] drm/radeon: fix race condition UAF in radeon_gem_set_domain_ioctl
-Date:   Mon, 26 Jun 2023 20:12:48 +0200
-Message-ID: <20230626180750.916121310@linuxfoundation.org>
+Subject: [PATCH 5.15 94/96] vhost_net: revert upend_idx only on retriable error
+Date:   Mon, 26 Jun 2023 20:12:49 +0200
+Message-ID: <20230626180750.967675598@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
 References: <20230626180746.943455203@linuxfoundation.org>
@@ -57,49 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Min Li <lm0963hack@gmail.com>
+From: Andrey Smetanin <asmetanin@yandex-team.ru>
 
-[ Upstream commit 982b173a6c6d9472730c3116051977e05d17c8c5 ]
+[ Upstream commit 1f5d2e3bab16369d5d4b4020a25db4ab1f4f082c ]
 
-Userspace can race to free the gobj(robj converted from), robj should not
-be accessed again after drm_gem_object_put, otherwith it will result in
-use-after-free.
+Fix possible virtqueue used buffers leak and corresponding stuck
+in case of temporary -EIO from sendmsg() which is produced by
+tun driver while backend device is not up.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Min Li <lm0963hack@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+In case of no-retriable error and zcopy do not revert upend_idx
+to pass packet data (that is update used_idx in corresponding
+vhost_zerocopy_signal_used()) as if packet data has been
+transferred successfully.
+
+v2: set vq->heads[ubuf->desc].len equal to VHOST_DMA_DONE_LEN
+in case of fake successful transmit.
+
+Signed-off-by: Andrey Smetanin <asmetanin@yandex-team.ru>
+Message-Id: <20230424204411.24888-1-asmetanin@yandex-team.ru>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Andrey Smetanin <asmetanin@yandex-team.ru>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_gem.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/vhost/net.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_gem.c b/drivers/gpu/drm/radeon/radeon_gem.c
-index a36a4f2c76b09..57218263ef3b1 100644
---- a/drivers/gpu/drm/radeon/radeon_gem.c
-+++ b/drivers/gpu/drm/radeon/radeon_gem.c
-@@ -456,7 +456,6 @@ int radeon_gem_set_domain_ioctl(struct drm_device *dev, void *data,
- 	struct radeon_device *rdev = dev->dev_private;
- 	struct drm_radeon_gem_set_domain *args = data;
- 	struct drm_gem_object *gobj;
--	struct radeon_bo *robj;
- 	int r;
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 32148f0112004..00f10d3402590 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -933,13 +933,18 @@ static void handle_tx_zerocopy(struct vhost_net *net, struct socket *sock)
  
- 	/* for now if someone requests domain CPU -
-@@ -469,13 +468,12 @@ int radeon_gem_set_domain_ioctl(struct drm_device *dev, void *data,
- 		up_read(&rdev->exclusive_lock);
- 		return -ENOENT;
- 	}
--	robj = gem_to_radeon_bo(gobj);
- 
- 	r = radeon_gem_set_domain(gobj, args->read_domains, args->write_domain);
- 
- 	drm_gem_object_put(gobj);
- 	up_read(&rdev->exclusive_lock);
--	r = radeon_gem_handle_lockup(robj->rdev, r);
-+	r = radeon_gem_handle_lockup(rdev, r);
- 	return r;
- }
- 
+ 		err = sock->ops->sendmsg(sock, &msg, len);
+ 		if (unlikely(err < 0)) {
++			bool retry = err == -EAGAIN || err == -ENOMEM || err == -ENOBUFS;
++
+ 			if (zcopy_used) {
+ 				if (vq->heads[ubuf->desc].len == VHOST_DMA_IN_PROGRESS)
+ 					vhost_net_ubuf_put(ubufs);
+-				nvq->upend_idx = ((unsigned)nvq->upend_idx - 1)
+-					% UIO_MAXIOV;
++				if (retry)
++					nvq->upend_idx = ((unsigned)nvq->upend_idx - 1)
++						% UIO_MAXIOV;
++				else
++					vq->heads[ubuf->desc].len = VHOST_DMA_DONE_LEN;
+ 			}
+-			if (err == -EAGAIN || err == -ENOMEM || err == -ENOBUFS) {
++			if (retry) {
+ 				vhost_discard_vq_desc(vq, 1);
+ 				vhost_net_enable_vq(net, vq);
+ 				break;
 -- 
 2.39.2
 
