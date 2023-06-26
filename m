@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5213573E8D7
+	by mail.lfdr.de (Postfix) with ESMTP id A49D673E8D8
 	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231979AbjFZSab (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S232039AbjFZSab (ORCPT <rfc822;lists+stable@lfdr.de>);
         Mon, 26 Jun 2023 14:30:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43634 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232058AbjFZS3g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C711B10D2
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:17 -0700 (PDT)
+        with ESMTP id S232127AbjFZS3i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC4A10FB
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5CFF560F40
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66198C433C8;
-        Mon, 26 Jun 2023 18:29:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54C8460F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60378C433C8;
+        Mon, 26 Jun 2023 18:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804156;
-        bh=YLDlcn8d1wU++9sA69WzYD9f17Zjw5cI41OSqaosmD8=;
+        s=korg; t=1687804159;
+        bh=F4Fov9c1gQrz7jghtVneAvVJDKLt0AAP3W/pqdwPAuY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NyXs5dAf/cA/VTfyNefSKFwm7e9q9pMVFV1eJZwbyZTye6omBhm9F/7tyNxaVi4lp
-         yg7iwnCE989DB3b75Q6UiCDFv34LfU+XH2yezut9cb7zqsthyag2CDePtQQxnR3urI
-         /ijIf7P2xpcQuCCYYx2rTq6sUBXMZixqNHrPN2Cs=
+        b=HiKhbTKBKsQrA0cWIU28plaz1czs6IatbCyHFrY2s6YV/MRPsENWGglfJ/iEvRfQ7
+         YlTem7kCcyItFjKMDAUW1rL4pFb4ngf87Dt/PtFFBCDZDPodeLDrHKgzfPFaluwQow
+         J63m/dgkns7AajKMjG13431Cy3AtotI+56uy4k5I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
-        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-        Xiu Jianfeng <xiujianfeng@huawei.com>,
+        patches@lists.linux.dev,
+        syzbot <syzbot+2ab700fe1829880a2ec6@syzkaller.appspotmail.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
         Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.1 061/170] cgroup: Do not corrupt task iteration when rebinding subsystem
-Date:   Mon, 26 Jun 2023 20:10:30 +0200
-Message-ID: <20230626180803.321140175@linuxfoundation.org>
+Subject: [PATCH 6.1 062/170] cgroup,freezer: hold cpu_hotplug_lock before freezer_mutex in freezer_css_{online,offline}()
+Date:   Mon, 26 Jun 2023 20:10:31 +0200
+Message-ID: <20230626180803.362954133@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
 References: <20230626180800.476539630@linuxfoundation.org>
@@ -46,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,122 +56,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 6f363f5aa845561f7ea496d8b1175e3204470486 upstream.
+commit f0cc749254d12c78e93dae3b27b21dc9546843d0 upstream.
 
-We found a refcount UAF bug as follows:
+syzbot is again reporting circular locking dependency between
+cpu_hotplug_lock and freezer_mutex. Do like what we did with
+commit 57dcd64c7e036299 ("cgroup,freezer: hold cpu_hotplug_lock
+before freezer_mutex").
 
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 1 PID: 342 at lib/refcount.c:25 refcount_warn_saturate+0xa0/0x148
-Workqueue: events cpuset_hotplug_workfn
-Call trace:
- refcount_warn_saturate+0xa0/0x148
- __refcount_add.constprop.0+0x5c/0x80
- css_task_iter_advance_css_set+0xd8/0x210
- css_task_iter_advance+0xa8/0x120
- css_task_iter_next+0x94/0x158
- update_tasks_root_domain+0x58/0x98
- rebuild_root_domains+0xa0/0x1b0
- rebuild_sched_domains_locked+0x144/0x188
- cpuset_hotplug_workfn+0x138/0x5a0
- process_one_work+0x1e8/0x448
- worker_thread+0x228/0x3e0
- kthread+0xe0/0xf0
- ret_from_fork+0x10/0x20
-
-then a kernel panic will be triggered as below:
-
-Unable to handle kernel paging request at virtual address 00000000c0000010
-Call trace:
- cgroup_apply_control_disable+0xa4/0x16c
- rebind_subsystems+0x224/0x590
- cgroup_destroy_root+0x64/0x2e0
- css_free_rwork_fn+0x198/0x2a0
- process_one_work+0x1d4/0x4bc
- worker_thread+0x158/0x410
- kthread+0x108/0x13c
- ret_from_fork+0x10/0x18
-
-The race that cause this bug can be shown as below:
-
-(hotplug cpu)                | (umount cpuset)
-mutex_lock(&cpuset_mutex)    | mutex_lock(&cgroup_mutex)
-cpuset_hotplug_workfn        |
- rebuild_root_domains        |  rebind_subsystems
-  update_tasks_root_domain   |   spin_lock_irq(&css_set_lock)
-   css_task_iter_start       |    list_move_tail(&cset->e_cset_node[ss->id]
-   while(css_task_iter_next) |                  &dcgrp->e_csets[ss->id]);
-   css_task_iter_end         |   spin_unlock_irq(&css_set_lock)
-mutex_unlock(&cpuset_mutex)  | mutex_unlock(&cgroup_mutex)
-
-Inside css_task_iter_start/next/end, css_set_lock is hold and then
-released, so when iterating task(left side), the css_set may be moved to
-another list(right side), then it->cset_head points to the old list head
-and it->cset_pos->next points to the head node of new list, which can't
-be used as struct css_set.
-
-To fix this issue, switch from all css_sets to only scgrp's css_sets to
-patch in-flight iterators to preserve correct iteration, and then
-update it->cset_head as well.
-
-Reported-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Link: https://www.spinics.net/lists/cgroups/msg37935.html
-Suggested-by: Michal Koutný <mkoutny@suse.com>
-Link: https://lore.kernel.org/all/20230526114139.70274-1-xiujianfeng@huaweicloud.com/
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Fixes: 2d8f243a5e6e ("cgroup: implement cgroup->e_csets[]")
-Cc: stable@vger.kernel.org # v3.16+
+Reported-by: syzbot <syzbot+2ab700fe1829880a2ec6@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=2ab700fe1829880a2ec6
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: syzbot <syzbot+2ab700fe1829880a2ec6@syzkaller.appspotmail.com>
+Fixes: f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
+Cc: stable@vger.kernel.org # v6.1+
 Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ kernel/cgroup/legacy_freezer.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -1782,7 +1782,7 @@ int rebind_subsystems(struct cgroup_root
+--- a/kernel/cgroup/legacy_freezer.c
++++ b/kernel/cgroup/legacy_freezer.c
+@@ -108,16 +108,18 @@ static int freezer_css_online(struct cgr
+ 	struct freezer *freezer = css_freezer(css);
+ 	struct freezer *parent = parent_freezer(freezer);
+ 
++	cpus_read_lock();
+ 	mutex_lock(&freezer_mutex);
+ 
+ 	freezer->state |= CGROUP_FREEZER_ONLINE;
+ 
+ 	if (parent && (parent->state & CGROUP_FREEZING)) {
+ 		freezer->state |= CGROUP_FREEZING_PARENT | CGROUP_FROZEN;
+-		static_branch_inc(&freezer_active);
++		static_branch_inc_cpuslocked(&freezer_active);
+ 	}
+ 
+ 	mutex_unlock(&freezer_mutex);
++	cpus_read_unlock();
+ 	return 0;
+ }
+ 
+@@ -132,14 +134,16 @@ static void freezer_css_offline(struct c
  {
- 	struct cgroup *dcgrp = &dst_root->cgrp;
- 	struct cgroup_subsys *ss;
--	int ssid, i, ret;
-+	int ssid, ret;
- 	u16 dfl_disable_ss_mask = 0;
+ 	struct freezer *freezer = css_freezer(css);
  
- 	lockdep_assert_held(&cgroup_mutex);
-@@ -1826,7 +1826,8 @@ int rebind_subsystems(struct cgroup_root
- 		struct cgroup_root *src_root = ss->root;
- 		struct cgroup *scgrp = &src_root->cgrp;
- 		struct cgroup_subsys_state *css = cgroup_css(scgrp, ss);
--		struct css_set *cset;
-+		struct css_set *cset, *cset_pos;
-+		struct css_task_iter *it;
++	cpus_read_lock();
+ 	mutex_lock(&freezer_mutex);
  
- 		WARN_ON(!css || cgroup_css(dcgrp, ss));
+ 	if (freezer->state & CGROUP_FREEZING)
+-		static_branch_dec(&freezer_active);
++		static_branch_dec_cpuslocked(&freezer_active);
  
-@@ -1844,9 +1845,22 @@ int rebind_subsystems(struct cgroup_root
- 		css->cgroup = dcgrp;
+ 	freezer->state = 0;
  
- 		spin_lock_irq(&css_set_lock);
--		hash_for_each(css_set_table, i, cset, hlist)
-+		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
-+		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
-+					 e_cset_node[ss->id]) {
- 			list_move_tail(&cset->e_cset_node[ss->id],
- 				       &dcgrp->e_csets[ss->id]);
-+			/*
-+			 * all css_sets of scgrp together in same order to dcgrp,
-+			 * patch in-flight iterators to preserve correct iteration.
-+			 * since the iterator is always advanced right away and
-+			 * finished when it->cset_pos meets it->cset_head, so only
-+			 * update it->cset_head is enough here.
-+			 */
-+			list_for_each_entry(it, &cset->task_iters, iters_node)
-+				if (it->cset_head == &scgrp->e_csets[ss->id])
-+					it->cset_head = &dcgrp->e_csets[ss->id];
-+		}
- 		spin_unlock_irq(&css_set_lock);
+ 	mutex_unlock(&freezer_mutex);
++	cpus_read_unlock();
+ }
  
- 		if (ss->css_rstat_flush) {
+ static void freezer_css_free(struct cgroup_subsys_state *css)
 
 
