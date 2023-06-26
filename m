@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C16E773E98D
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CE4173EA3E
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:45:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230290AbjFZShR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:37:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50922 "EHLO
+        id S232603AbjFZSo6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:44:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231305AbjFZShQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:37:16 -0400
+        with ESMTP id S232601AbjFZSo5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:44:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A40E7102
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:37:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49150E5F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:44:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ABDE260F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:37:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52E7C433C9;
-        Mon, 26 Jun 2023 18:37:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE15160F53
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:44:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D519FC433C0;
+        Mon, 26 Jun 2023 18:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804634;
-        bh=WojL8egNg8VQgEXFo1FB9It8jiQ2ip8ME0OModaYAJo=;
+        s=korg; t=1687805093;
+        bh=Eo2HMq07GjgSuscQQerdVPpwjLcHok6rSjPwII3umdI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s//bxR9xNE38nU8aLvJr+l/sr376X5FqjTB9rHxjOA6xrSqLlvxaQ/Jf3r6ydNz98
-         UFNm25wZle/8pggYrLKHOYD9FSLPQ05yDUfKTsg5TtlblwqzrM/pLk5DUNsNeoM1Qa
-         DAz26XZ+m+9wIa3l7zHu762X73Ke8h9chQaJoUJM=
+        b=gJcTP9jImn+8F8SwiWqmkRK9GhsXuhh9T0H5Hu6EDDNtZPkZLjp3ZUX2GEcVuglUI
+         gtgKzyR6UPJyCHStXKOuvPezpg60+N/jbWJJ3QgXV4yUXkTLremcAGMsqoTFqOXlY3
+         NUaBLIlQVhAIZPcF9cZ0qms0oKepkhz1yfgaFuT0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 50/60] s390/cio: unregister device when the only path is gone
-Date:   Mon, 26 Jun 2023 20:12:29 +0200
-Message-ID: <20230626180741.631065898@linuxfoundation.org>
+Subject: [PATCH 5.10 48/81] mmc: sh_mmcif: fix deferred probing
+Date:   Mon, 26 Jun 2023 20:12:30 +0200
+Message-ID: <20230626180746.426647836@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,60 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vineeth Vijayan <vneethv@linux.ibm.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit 89c0c62e947a01e7a36b54582fd9c9e346170255 ]
+[ Upstream commit 5b067d7f855c61df7f8e2e8ccbcee133c282415e ]
 
-Currently, if the device is offline and all the channel paths are
-either configured or varied offline, the associated subchannel gets
-unregistered. Don't unregister the subchannel, instead unregister
-offline device.
+The driver overrides the error codes returned by platform_get_irq() to
+-ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the
+error codes upstream.
 
-Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20230617203622.6812-11-s.shtylyov@omp.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/device.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sh_mmcif.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
-index 23e9227e60fd7..d7ca75efb49fb 100644
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -1385,6 +1385,7 @@ void ccw_device_set_notoper(struct ccw_device *cdev)
- enum io_sch_action {
- 	IO_SCH_UNREG,
- 	IO_SCH_ORPH_UNREG,
-+	IO_SCH_UNREG_CDEV,
- 	IO_SCH_ATTACH,
- 	IO_SCH_UNREG_ATTACH,
- 	IO_SCH_ORPH_ATTACH,
-@@ -1417,7 +1418,7 @@ static enum io_sch_action sch_get_action(struct subchannel *sch)
- 	}
- 	if ((sch->schib.pmcw.pam & sch->opm) == 0) {
- 		if (ccw_device_notify(cdev, CIO_NO_PATH) != NOTIFY_OK)
--			return IO_SCH_UNREG;
-+			return IO_SCH_UNREG_CDEV;
- 		return IO_SCH_DISC;
- 	}
- 	if (device_is_disconnected(cdev))
-@@ -1479,6 +1480,7 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
- 	case IO_SCH_ORPH_ATTACH:
- 		ccw_device_set_disconnected(cdev);
- 		break;
-+	case IO_SCH_UNREG_CDEV:
- 	case IO_SCH_UNREG_ATTACH:
- 	case IO_SCH_UNREG:
- 		if (!cdev)
-@@ -1512,6 +1514,7 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
- 		if (rc)
- 			goto out;
- 		break;
-+	case IO_SCH_UNREG_CDEV:
- 	case IO_SCH_UNREG_ATTACH:
- 		spin_lock_irqsave(sch->lock, flags);
- 		if (cdev->private->flags.resuming) {
+diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
+index e5e457037235a..5dec9e239c9bf 100644
+--- a/drivers/mmc/host/sh_mmcif.c
++++ b/drivers/mmc/host/sh_mmcif.c
+@@ -1398,7 +1398,7 @@ static int sh_mmcif_probe(struct platform_device *pdev)
+ 	irq[0] = platform_get_irq(pdev, 0);
+ 	irq[1] = platform_get_irq_optional(pdev, 1);
+ 	if (irq[0] < 0)
+-		return -ENXIO;
++		return irq[0];
+ 
+ 	reg = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(reg))
 -- 
 2.39.2
 
