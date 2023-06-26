@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2729073EA41
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA2CD73E9ED
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232593AbjFZSpG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:45:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57632 "EHLO
+        id S232504AbjFZSlh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:41:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232605AbjFZSpE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:45:04 -0400
+        with ESMTP id S232502AbjFZSlg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:41:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A56E122
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:45:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C152CFA
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:41:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C491360E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:45:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0815C433C8;
-        Mon, 26 Jun 2023 18:45:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54F7960F45
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:41:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4FDC433C8;
+        Mon, 26 Jun 2023 18:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805102;
-        bh=SIX+pzaLS2MU86ITBjsEE8C1aTHUnUzmil2W4GDwUaY=;
+        s=korg; t=1687804894;
+        bh=l10l9PI1AupypbNd6CoKWuXRTlCF9QNESmH42w8cKyg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UAvqMWSyluKzonjtVaMI7qlDYviNoZjb4VF29/aoTj9N0xqgTqZa2Pil7gZ74m1Ry
-         zYVPGnSV92aEcrB4igke9bmh8cfJPYD+j+Dtx8B9SK0oSkx81iNAUu843JIwtJU6Up
-         MzojHMfwHAZlmo1gqhdvT1CP3W9DDRLCAZ11cfJ8=
+        b=yXQc1seUoc3QUWXcDNip5DKN0fZCHPenyMyOY5jXD0WLMqNCIP3xeRoIfwrgi0mOe
+         gcF03wpeaO1NslguBuCi7iNn1Pku2P/Wnaq4rBQY7jbLHh78YoSh/xfmw4grNEYq1J
+         x2z6UtPX8CoXhz2haMf4YqlKoPzDSqJntxDjTTFw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Terin Stock <terin@cloudflare.com>,
-        Julian Anastasov <ja@ssi.bg>, Simon Horman <horms@kernel.org>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Steven Price <steven.price@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 50/81] ipvs: align inner_mac_header for encapsulation
-Date:   Mon, 26 Jun 2023 20:12:32 +0200
-Message-ID: <20230626180746.504429247@linuxfoundation.org>
+Subject: [PATCH 5.15 78/96] arm64: Add missing Set/Way CMO encodings
+Date:   Mon, 26 Jun 2023 20:12:33 +0200
+Message-ID: <20230626180750.255767565@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,80 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Terin Stock <terin@cloudflare.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit d7fce52fdf96663ddc2eb21afecff3775588612a ]
+[ Upstream commit 8d0f019e4c4f2ee2de81efd9bf1c27e9fb3c0460 ]
 
-When using encapsulation the original packet's headers are copied to the
-inner headers. This preserves the space for an inner mac header, which
-is not used by the inner payloads for the encapsulation types supported
-by IPVS. If a packet is using GUE or GRE encapsulation and needs to be
-segmented, flow can be passed to __skb_udp_tunnel_segment() which
-calculates a negative tunnel header length. A negative tunnel header
-length causes pskb_may_pull() to fail, dropping the packet.
+Add the missing Set/Way CMOs that apply to tagged memory.
 
-This can be observed by attaching probes to ip_vs_in_hook(),
-__dev_queue_xmit(), and __skb_udp_tunnel_segment():
-
-    perf probe --add '__dev_queue_xmit skb->inner_mac_header \
-    skb->inner_network_header skb->mac_header skb->network_header'
-    perf probe --add '__skb_udp_tunnel_segment:7 tnl_hlen'
-    perf probe -m ip_vs --add 'ip_vs_in_hook skb->inner_mac_header \
-    skb->inner_network_header skb->mac_header skb->network_header'
-
-These probes the headers and tunnel header length for packets which
-traverse the IPVS encapsulation path. A TCP packet can be forced into
-the segmentation path by being smaller than a calculated clamped MSS,
-but larger than the advertised MSS.
-
-    probe:ip_vs_in_hook: inner_mac_header=0x0 inner_network_header=0x0 mac_header=0x44 network_header=0x52
-    probe:ip_vs_in_hook: inner_mac_header=0x44 inner_network_header=0x52 mac_header=0x44 network_header=0x32
-    probe:dev_queue_xmit: inner_mac_header=0x44 inner_network_header=0x52 mac_header=0x44 network_header=0x32
-    probe:__skb_udp_tunnel_segment_L7: tnl_hlen=-2
-
-When using veth-based encapsulation, the interfaces are set to be
-mac-less, which does not preserve space for an inner mac header. This
-prevents this issue from occurring.
-
-In our real-world testing of sending a 32KB file we observed operation
-time increasing from ~75ms for veth-based encapsulation to over 1.5s
-using IPVS encapsulation due to retries from dropped packets.
-
-This changeset modifies the packet on the encapsulation path in
-ip_vs_tunnel_xmit() and ip_vs_tunnel_xmit_v6() to remove the inner mac
-header offset. This fixes UDP segmentation for both encapsulation types,
-and corrects the inner headers for any IPIP flows that may use it.
-
-Fixes: 84c0d5e96f3a ("ipvs: allow tunneling with gue encapsulation")
-Signed-off-by: Terin Stock <terin@cloudflare.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20230515204601.1270428-2-maz@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_xmit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/include/asm/sysreg.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-index d2e5a8f644b80..cd2130e98836b 100644
---- a/net/netfilter/ipvs/ip_vs_xmit.c
-+++ b/net/netfilter/ipvs/ip_vs_xmit.c
-@@ -1225,6 +1225,7 @@ ip_vs_tunnel_xmit(struct sk_buff *skb, struct ip_vs_conn *cp,
- 	skb->transport_header = skb->network_header;
+diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+index f79f3720e4cbe..543eb08fa8e5f 100644
+--- a/arch/arm64/include/asm/sysreg.h
++++ b/arch/arm64/include/asm/sysreg.h
+@@ -109,8 +109,14 @@
+ #define SB_BARRIER_INSN			__SYS_BARRIER_INSN(0, 7, 31)
  
- 	skb_set_inner_ipproto(skb, next_protocol);
-+	skb_set_inner_mac_header(skb, skb_inner_network_offset(skb));
+ #define SYS_DC_ISW			sys_insn(1, 0, 7, 6, 2)
++#define SYS_DC_IGSW			sys_insn(1, 0, 7, 6, 4)
++#define SYS_DC_IGDSW			sys_insn(1, 0, 7, 6, 6)
+ #define SYS_DC_CSW			sys_insn(1, 0, 7, 10, 2)
++#define SYS_DC_CGSW			sys_insn(1, 0, 7, 10, 4)
++#define SYS_DC_CGDSW			sys_insn(1, 0, 7, 10, 6)
+ #define SYS_DC_CISW			sys_insn(1, 0, 7, 14, 2)
++#define SYS_DC_CIGSW			sys_insn(1, 0, 7, 14, 4)
++#define SYS_DC_CIGDSW			sys_insn(1, 0, 7, 14, 6)
  
- 	if (tun_type == IP_VS_CONN_F_TUNNEL_TYPE_GUE) {
- 		bool check = false;
-@@ -1373,6 +1374,7 @@ ip_vs_tunnel_xmit_v6(struct sk_buff *skb, struct ip_vs_conn *cp,
- 	skb->transport_header = skb->network_header;
- 
- 	skb_set_inner_ipproto(skb, next_protocol);
-+	skb_set_inner_mac_header(skb, skb_inner_network_offset(skb));
- 
- 	if (tun_type == IP_VS_CONN_F_TUNNEL_TYPE_GUE) {
- 		bool check = false;
+ /*
+  * System registers, organised loosely by encoding but grouped together
 -- 
 2.39.2
 
