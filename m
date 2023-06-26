@@ -2,45 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92A1A73E928
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B0673E96F
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:36:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232201AbjFZSdF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:33:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47074 "EHLO
+        id S232362AbjFZSgB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:36:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232221AbjFZSdC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:33:02 -0400
+        with ESMTP id S232365AbjFZSgA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:36:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C90C94
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:33:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D6FAC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:35:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7D9160F3E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:33:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA08C433C0;
-        Mon, 26 Jun 2023 18:32:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF85A60F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:35:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B193BC433C8;
+        Mon, 26 Jun 2023 18:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804380;
-        bh=vgy54zVLHfKxQrPWgzf6k7yx1TAALDUu5NoFA/xkWhw=;
+        s=korg; t=1687804558;
+        bh=g5YYxPU/SVLQupiy2ypeCxNWYb61mfRrUNSJY1SDZSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J0jNIkqFCm3rPXOIXY6cehutBQJLXBfjhDdJKQ+Yrj5mNFetmB9WPhiW4jMjN/+/K
-         DXY1Ol6QdTQ/xNYkQnXxo7CcWUpnjVEm82EmDzUe/HYxiA+oByClICPwd8iV4yUngd
-         4WHTUjRPQnEzGz3rOlflJ8Dawl6RkwGx20AmTLik=
+        b=ljzfMcM6ITQGiGKeATe3g7qVAM92FfjlHK+hcWcu7+oAgrrTIDri0jJjQYV/GQtc+
+         ds7ru4OW11/BLCsFa3G/SSjVOfWQWn3Qwn10QXpn3bL9EUFgl7ne8jwSpDDnj1kXXf
+         b/3AG2cqzzIWQzKUnGGgdIxtQqK8VTt7Dr25KwUo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/170] media: cec: core: disable adapter in cec_devnode_unregister
+        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
+        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dave Young <dyoung@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Philipp Rudo <prudo@redhat.com>,
+        Ross Zwisler <zwisler@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 06/60] x86/purgatory: remove PGO flags
 Date:   Mon, 26 Jun 2023 20:11:45 +0200
-Message-ID: <20230626180806.664533332@linuxfoundation.org>
+Message-ID: <20230626180739.805376303@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
+References: <20230626180739.558575012@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,76 +74,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit fe4526d99e2e06b08bb80316c3a596ea6a807b75 ]
+commit 97b6b9cbba40a21c1d9a344d5c1991f8cfbf136e upstream.
 
-Explicitly disable the CEC adapter in cec_devnode_unregister()
+If profile-guided optimization is enabled, the purgatory ends up with
+multiple .text sections.  This is not supported by kexec and crashes the
+system.
 
-Usually this does not really do anything important, but for drivers
-that use the CEC pin framework this is needed to properly stop the
-hrtimer. Without this a crash would happen when such a driver is
-unloaded with rmmod.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-2-b05c520b7296@chromium.org
+Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Cc: <stable@vger.kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Philipp Rudo <prudo@redhat.com>
+Cc: Ross Zwisler <zwisler@google.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Rix <trix@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ricardo Ribalda Delgado <ribalda@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/core/cec-adap.c | 5 ++++-
- drivers/media/cec/core/cec-core.c | 2 ++
- drivers/media/cec/core/cec-priv.h | 1 +
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/purgatory/Makefile |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index 4f5ab3cae8a71..ac18707fddcd2 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -1582,7 +1582,7 @@ static void cec_claim_log_addrs(struct cec_adapter *adap, bool block)
-  *
-  * This function is called with adap->lock held.
-  */
--static int cec_adap_enable(struct cec_adapter *adap)
-+int cec_adap_enable(struct cec_adapter *adap)
- {
- 	bool enable;
- 	int ret = 0;
-@@ -1592,6 +1592,9 @@ static int cec_adap_enable(struct cec_adapter *adap)
- 	if (adap->needs_hpd)
- 		enable = enable && adap->phys_addr != CEC_PHYS_ADDR_INVALID;
+--- a/arch/x86/purgatory/Makefile
++++ b/arch/x86/purgatory/Makefile
+@@ -14,6 +14,11 @@ $(obj)/sha256.o: $(srctree)/lib/crypto/s
  
-+	if (adap->devnode.unregistered)
-+		enable = false;
+ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
+ 
++# When profile-guided optimization is enabled, llvm emits two different
++# overlapping text sections, which is not supported by kexec. Remove profile
++# optimization flags.
++KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
 +
- 	if (enable == adap->is_enabled)
- 		return 0;
+ LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined -nostdlib -z nodefaultlib
+ targets += purgatory.ro
  
-diff --git a/drivers/media/cec/core/cec-core.c b/drivers/media/cec/core/cec-core.c
-index af358e901b5f3..7e153c5cad04f 100644
---- a/drivers/media/cec/core/cec-core.c
-+++ b/drivers/media/cec/core/cec-core.c
-@@ -191,6 +191,8 @@ static void cec_devnode_unregister(struct cec_adapter *adap)
- 	mutex_lock(&adap->lock);
- 	__cec_s_phys_addr(adap, CEC_PHYS_ADDR_INVALID, false);
- 	__cec_s_log_addrs(adap, NULL, false);
-+	// Disable the adapter (since adap->devnode.unregistered is true)
-+	cec_adap_enable(adap);
- 	mutex_unlock(&adap->lock);
- 
- 	cdev_device_del(&devnode->cdev, &devnode->dev);
-diff --git a/drivers/media/cec/core/cec-priv.h b/drivers/media/cec/core/cec-priv.h
-index b78df931aa74b..ed1f8c67626bf 100644
---- a/drivers/media/cec/core/cec-priv.h
-+++ b/drivers/media/cec/core/cec-priv.h
-@@ -47,6 +47,7 @@ int cec_monitor_pin_cnt_inc(struct cec_adapter *adap);
- void cec_monitor_pin_cnt_dec(struct cec_adapter *adap);
- int cec_adap_status(struct seq_file *file, void *priv);
- int cec_thread_func(void *_adap);
-+int cec_adap_enable(struct cec_adapter *adap);
- void __cec_s_phys_addr(struct cec_adapter *adap, u16 phys_addr, bool block);
- int __cec_s_log_addrs(struct cec_adapter *adap,
- 		      struct cec_log_addrs *log_addrs, bool block);
--- 
-2.39.2
-
 
 
