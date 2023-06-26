@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA6773E74F
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BC1E73E843
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229969AbjFZSOA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:14:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56518 "EHLO
+        id S231954AbjFZSYB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230058AbjFZSNp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:13:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C4E3198C
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:13:43 -0700 (PDT)
+        with ESMTP id S232009AbjFZSXo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 785731BC7
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AD6A60F51
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:13:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F78C433C0;
-        Mon, 26 Jun 2023 18:13:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 47F9460F7A
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:22:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D84C433C0;
+        Mon, 26 Jun 2023 18:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803222;
-        bh=C+7t1mrgPlpYYMk5TwLT8REVaqGEg0d/uW1IlD46v2c=;
+        s=korg; t=1687803773;
+        bh=RmyQEvId7Q4D1NdxNMNyeH1BnQPNLsCs5kZZNV1k3l0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=INOH2/L4i1fXVgAmNHI8CGC2XdWKrTkIn906U3Ebb40sCCOMkRtJ/DkANZ8HyRYfd
-         As9yxI+lbUkZnL7prF6D+UZFVhlS8TCU/d3DTl8z3c8kL6kp2fVAw1iOHOlhVhvKwV
-         xFrXcOsfhBfe9eZmdXp5o2k9g+lINWcU33RMt36Y=
+        b=ZbrF5PrfYaClUZWGqBGsO6KoWutcw+f/IZetvkQGTdtmLXUxD9kcah/tnGlQx3rWp
+         eDrTo0nVq79cABiPfqKyLnBA2sYQR0nS1ESYbJ4UuG9AXdY7jPTGmRJsb5Z/q1bxMc
+         v+rR+VwchfurJJA9+6073aS/NW6GoF04UM8zFrds=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maurizio Lombardi <mlombard@redhat.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 15/26] scsi: target: iscsi: Prevent login threads from racing between each other
-Date:   Mon, 26 Jun 2023 20:11:17 +0200
-Message-ID: <20230626180734.273619823@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Rander Wang <rander.wang@intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 172/199] soundwire: dmi-quirks: add new mapping for HP Spectre x360
+Date:   Mon, 26 Jun 2023 20:11:18 +0200
+Message-ID: <20230626180813.266266740@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
-References: <20230626180733.699092073@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,68 +57,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 2a737d3b8c792400118d6cf94958f559de9c5e59 ]
+[ Upstream commit 700581ede41d029403feec935df4616309696fd7 ]
 
-The tpg->np_login_sem is a semaphore that is used to serialize the login
-process when multiple login threads run concurrently against the same
-target portal group.
+A BIOS/DMI update seems to have broken some devices, let's add a new
+mapping.
 
-The iscsi_target_locate_portal() function finds the tpg, calls
-iscsit_access_np() against the np_login_sem semaphore and saves the tpg
-pointer in conn->tpg;
-
-If iscsi_target_locate_portal() fails, the caller will check for the
-conn->tpg pointer and, if it's not NULL, then it will assume that
-iscsi_target_locate_portal() called iscsit_access_np() on the semaphore.
-
-Make sure that conn->tpg gets initialized only if iscsit_access_np() was
-successful, otherwise iscsit_deaccess_np() may end up being called against
-a semaphore we never took, allowing more than one thread to access the same
-tpg.
-
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Link: https://lore.kernel.org/r/20230508162219.1731964-4-mlombard@redhat.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://github.com/thesofproject/linux/issues/4323
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Rander Wang <rander.wang@intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20230515074859.3097-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target_nego.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/soundwire/dmi-quirks.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
-index 07335357418c8..d94f711afee07 100644
---- a/drivers/target/iscsi/iscsi_target_nego.c
-+++ b/drivers/target/iscsi/iscsi_target_nego.c
-@@ -1067,6 +1067,7 @@ int iscsi_target_locate_portal(
- 	iscsi_target_set_sock_callbacks(conn);
- 
- 	login->np = np;
-+	conn->tpg = NULL;
- 
- 	login_req = (struct iscsi_login_req *) login->req;
- 	payload_length = ntoh24(login_req->dlength);
-@@ -1136,7 +1137,6 @@ int iscsi_target_locate_portal(
- 	 */
- 	sessiontype = strncmp(s_buf, DISCOVERY, 9);
- 	if (!sessiontype) {
--		conn->tpg = iscsit_global->discovery_tpg;
- 		if (!login->leading_connection)
- 			goto get_target;
- 
-@@ -1153,9 +1153,11 @@ int iscsi_target_locate_portal(
- 		 * Serialize access across the discovery struct iscsi_portal_group to
- 		 * process login attempt.
- 		 */
-+		conn->tpg = iscsit_global->discovery_tpg;
- 		if (iscsit_access_np(np, conn->tpg) < 0) {
- 			iscsit_tx_login_rsp(conn, ISCSI_STATUS_CLS_TARGET_ERR,
- 				ISCSI_LOGIN_STATUS_SVC_UNAVAILABLE);
-+			conn->tpg = NULL;
- 			ret = -1;
- 			goto out;
- 		}
+diff --git a/drivers/soundwire/dmi-quirks.c b/drivers/soundwire/dmi-quirks.c
+index 58ea013fa918a..2a1096dab63d3 100644
+--- a/drivers/soundwire/dmi-quirks.c
++++ b/drivers/soundwire/dmi-quirks.c
+@@ -99,6 +99,13 @@ static const struct dmi_system_id adr_remap_quirk_table[] = {
+ 		},
+ 		.driver_data = (void *)intel_tgl_bios,
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_BOARD_NAME, "8709"),
++		},
++		.driver_data = (void *)intel_tgl_bios,
++	},
+ 	{
+ 		/* quirk used for NUC15 'Bishop County' LAPBC510 and LAPBC710 skews */
+ 		.matches = {
 -- 
 2.39.2
 
