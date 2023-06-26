@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 182C873E8FA
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E952C73E852
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232262AbjFZSbD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:31:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44796 "EHLO
+        id S231960AbjFZSYU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:24:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232263AbjFZSau (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:50 -0400
+        with ESMTP id S231993AbjFZSX4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB7FCC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:30:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0D9D295C
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E68A60F53
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:30:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522B3C433C9;
-        Mon, 26 Jun 2023 18:30:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10DED60F56
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:23:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1933CC433C0;
+        Mon, 26 Jun 2023 18:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804244;
-        bh=jdYWIxzs82q9RpCJpDa9hlI+5258VOn35quQwpRlC1o=;
+        s=korg; t=1687803806;
+        bh=UUu1StOTrnywNSnI1ET77NI5c2yanT+lQF7XZliwvy4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YwiFLxFjB7QQvr8WueZdg70jYdERhbZqr7RsFwbEyG0IVWaZQKDohZqSSNAadvHtw
-         MjXdTStiFdm7LFsNJskjvVIiAuWgaRuOD6nOEDn3+QNbjUNErVr10GAu5NDPrZz89J
-         hBewavfPvH/rB8o1/a0MffO6fhse2hYJpsPXI/xQ=
+        b=KUnl7Jor5XNSu9UxFK4YDXdZPA0MDWdudLMUZKvWxI2887BNF1eQ0L0EH0SbN6cEe
+         xdH1JIFu110cM/62rLcw2YUwYn+nh6zKb56F5omRjqB77DAI/Ram3NkyHnpg8lKTsa
+         4/6IvuDO29Y/2uds86JP2xbITH5w19Xod2QcYfyY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Ahern <dsahern@kernel.org>,
-        Magali Lemes <magali.lemes@canonical.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Steve French <stfrench@microsoft.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/170] selftests: net: vrf-xfrm-tests: change authentication and encryption algos
-Date:   Mon, 26 Jun 2023 20:11:00 +0200
-Message-ID: <20230626180804.649824161@linuxfoundation.org>
+Subject: [PATCH 6.3 155/199] smb3: missing null check in SMB2_change_notify
+Date:   Mon, 26 Jun 2023 20:11:01 +0200
+Message-ID: <20230626180812.437516753@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,105 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Magali Lemes <magali.lemes@canonical.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit cb43c60e64ca67fcc9d23bd08f51d2ab8209d9d7 ]
+[ Upstream commit b535cc796a4b4942cd189652588e8d37c1f5925a ]
 
-The vrf-xfrm-tests tests use the hmac(md5) and cbc(des3_ede)
-algorithms for performing authentication and encryption, respectively.
-This causes the tests to fail when fips=1 is set, since these algorithms
-are not allowed in FIPS mode. Therefore, switch from hmac(md5) and
-cbc(des3_ede) to hmac(sha1) and cbc(aes), which are FIPS compliant.
+If plen is null when passed in, we only checked for null
+in one of the two places where it could be used. Although
+plen is always valid (not null) for current callers of the
+SMB2_change_notify function, this change makes it more consistent.
 
-Fixes: 3f251d741150 ("selftests: Add tests for vrf and xfrms")
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/all/202305251831.3V1gbbFs-lkp@intel.com/
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/vrf-xfrm-tests.sh | 32 +++++++++----------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ fs/cifs/smb2pdu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/vrf-xfrm-tests.sh b/tools/testing/selftests/net/vrf-xfrm-tests.sh
-index 184da81f554ff..452638ae8aed8 100755
---- a/tools/testing/selftests/net/vrf-xfrm-tests.sh
-+++ b/tools/testing/selftests/net/vrf-xfrm-tests.sh
-@@ -264,60 +264,60 @@ setup_xfrm()
- 	ip -netns host1 xfrm state add src ${HOST1_4} dst ${HOST2_4} \
- 	    proto esp spi ${SPI_1} reqid 0 mode tunnel \
- 	    replay-window 4 replay-oseq 0x4 \
--	    auth-trunc 'hmac(md5)' ${AUTH_1} 96 \
--	    enc 'cbc(des3_ede)' ${ENC_1} \
-+	    auth-trunc 'hmac(sha1)' ${AUTH_1} 96 \
-+	    enc 'cbc(aes)' ${ENC_1} \
- 	    sel src ${h1_4} dst ${h2_4} ${devarg}
- 
- 	ip -netns host2 xfrm state add src ${HOST1_4} dst ${HOST2_4} \
- 	    proto esp spi ${SPI_1} reqid 0 mode tunnel \
- 	    replay-window 4 replay-oseq 0x4 \
--	    auth-trunc 'hmac(md5)' ${AUTH_1} 96 \
--	    enc 'cbc(des3_ede)' ${ENC_1} \
-+	    auth-trunc 'hmac(sha1)' ${AUTH_1} 96 \
-+	    enc 'cbc(aes)' ${ENC_1} \
- 	    sel src ${h1_4} dst ${h2_4}
- 
- 
- 	ip -netns host1 xfrm state add src ${HOST2_4} dst ${HOST1_4} \
- 	    proto esp spi ${SPI_2} reqid 0 mode tunnel \
- 	    replay-window 4 replay-oseq 0x4 \
--	    auth-trunc 'hmac(md5)' ${AUTH_2} 96 \
--	    enc 'cbc(des3_ede)' ${ENC_2} \
-+	    auth-trunc 'hmac(sha1)' ${AUTH_2} 96 \
-+	    enc 'cbc(aes)' ${ENC_2} \
- 	    sel src ${h2_4} dst ${h1_4} ${devarg}
- 
- 	ip -netns host2 xfrm state add src ${HOST2_4} dst ${HOST1_4} \
- 	    proto esp spi ${SPI_2} reqid 0 mode tunnel \
- 	    replay-window 4 replay-oseq 0x4 \
--	    auth-trunc 'hmac(md5)' ${AUTH_2} 96 \
--	    enc 'cbc(des3_ede)' ${ENC_2} \
-+	    auth-trunc 'hmac(sha1)' ${AUTH_2} 96 \
-+	    enc 'cbc(aes)' ${ENC_2} \
- 	    sel src ${h2_4} dst ${h1_4}
- 
- 
- 	ip -6 -netns host1 xfrm state add src ${HOST1_6} dst ${HOST2_6} \
- 	    proto esp spi ${SPI_1} reqid 0 mode tunnel \
- 	    replay-window 4 replay-oseq 0x4 \
--	    auth-trunc 'hmac(md5)' ${AUTH_1} 96 \
--	    enc 'cbc(des3_ede)' ${ENC_1} \
-+	    auth-trunc 'hmac(sha1)' ${AUTH_1} 96 \
-+	    enc 'cbc(aes)' ${ENC_1} \
- 	    sel src ${h1_6} dst ${h2_6} ${devarg}
- 
- 	ip -6 -netns host2 xfrm state add src ${HOST1_6} dst ${HOST2_6} \
- 	    proto esp spi ${SPI_1} reqid 0 mode tunnel \
- 	    replay-window 4 replay-oseq 0x4 \
--	    auth-trunc 'hmac(md5)' ${AUTH_1} 96 \
--	    enc 'cbc(des3_ede)' ${ENC_1} \
-+	    auth-trunc 'hmac(sha1)' ${AUTH_1} 96 \
-+	    enc 'cbc(aes)' ${ENC_1} \
- 	    sel src ${h1_6} dst ${h2_6}
- 
- 
- 	ip -6 -netns host1 xfrm state add src ${HOST2_6} dst ${HOST1_6} \
- 	    proto esp spi ${SPI_2} reqid 0 mode tunnel \
- 	    replay-window 4 replay-oseq 0x4 \
--	    auth-trunc 'hmac(md5)' ${AUTH_2} 96 \
--	    enc 'cbc(des3_ede)' ${ENC_2} \
-+	    auth-trunc 'hmac(sha1)' ${AUTH_2} 96 \
-+	    enc 'cbc(aes)' ${ENC_2} \
- 	    sel src ${h2_6} dst ${h1_6} ${devarg}
- 
- 	ip -6 -netns host2 xfrm state add src ${HOST2_6} dst ${HOST1_6} \
- 	    proto esp spi ${SPI_2} reqid 0 mode tunnel \
- 	    replay-window 4 replay-oseq 0x4 \
--	    auth-trunc 'hmac(md5)' ${AUTH_2} 96 \
--	    enc 'cbc(des3_ede)' ${ENC_2} \
-+	    auth-trunc 'hmac(sha1)' ${AUTH_2} 96 \
-+	    enc 'cbc(aes)' ${ENC_2} \
- 	    sel src ${h2_6} dst ${h1_6}
- }
+diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
+index 02228a590cd54..a2a95cd113df8 100644
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -3777,7 +3777,7 @@ SMB2_change_notify(const unsigned int xid, struct cifs_tcon *tcon,
+ 		if (*out_data == NULL) {
+ 			rc = -ENOMEM;
+ 			goto cnotify_exit;
+-		} else
++		} else if (plen)
+ 			*plen = le32_to_cpu(smb_rsp->OutputBufferLength);
+ 	}
  
 -- 
 2.39.2
