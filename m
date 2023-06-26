@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67DC273E915
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C59873E86A
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:25:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232251AbjFZSch (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:32:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45422 "EHLO
+        id S232063AbjFZSZm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:25:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232185AbjFZScV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:32:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 406562723
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:32:05 -0700 (PDT)
+        with ESMTP id S232062AbjFZSZW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:25:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F6C2D4A
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2182660F39
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5A6C433C8;
-        Mon, 26 Jun 2023 18:32:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BAD560F5D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3135CC433C8;
+        Mon, 26 Jun 2023 18:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804324;
-        bh=Girculq8WNjdGq0XvLOlu4PytQvEU9ZgR4wgY9fPMog=;
+        s=korg; t=1687803876;
+        bh=3FkqOXNbYIBgDjIiFIHHZIAfxF/Ou7ED+aYCdk5snCs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KoZsrUhpRJgcsaLH/P4/WyX5vwAaduYmZjA9Wewz8sT1yoaJ37jMuPM8P2KyQ/MMe
-         jWxyTZhOI+boP/c1hmNWLK9/bMMk7O/BZ5nwSAEKRY/8c2JVpvl2XJ4wgPay5FVlh8
-         i/5FR/4+qoCAxg/2gXdKownFHGZb2JR+1EVOIT1s=
+        b=bckonpQhl4jzi6umvW064RTby2HVh3jv6zl9fwEvEhUDF/UK65CHrQktRqJXCJhBh
+         0BrrrZjBebHINoFDmz3d3Pt8GPwxHnWF7xA+z3yS2sPpEWF3//8Y4nAZx44rasSf2Q
+         UYMFAI953KHQi1RWqse5SYtL1x5B+5OkRT8PbsD0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/170] netfilter: nfnetlink_osf: fix module autoload
+        patches@lists.linux.dev,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        "Sayed, Karimuddin" <karimuddin.sayed@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>,
+        Sayed@vger.kernel.org
+Subject: [PATCH 6.3 181/199] ALSA: hda/realtek: Add "Intel Reference board" and "NUC 13" SSID in the ALC256
 Date:   Mon, 26 Jun 2023 20:11:27 +0200
-Message-ID: <20230626180805.856215838@linuxfoundation.org>
+Message-ID: <20230626180813.704027960@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,38 +58,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sayed, Karimuddin <karimuddin.sayed@intel.com>
 
-[ Upstream commit 62f9a68a36d4441a6c412b81faed102594bc6670 ]
+[ Upstream commit 1a93f10c5b12bd766a537b24a50fca5373467303 ]
 
-Move the alias from xt_osf to nfnetlink_osf.
+Add "Intel Reference boad" and "Intel NUC 13" SSID in the alc256.
+  Enable jack headset volume buttons
 
-Fixes: f9324952088f ("netfilter: nfnetlink_osf: extract nfnetlink_subsystem code from xt_osf.c")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Signed-off-by: Sayed, Karimuddin <karimuddin.sayed@intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230602193812.66768-1-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 1 +
- net/netfilter/xt_osf.c        | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index ee6840bd59337..8f1bfa6ccc2d9 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -439,3 +439,4 @@ module_init(nfnl_osf_init);
- module_exit(nfnl_osf_fini);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 920e44ba998a5..eb049014f87ac 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9594,6 +9594,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x10ec, 0x124c, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x1252, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x10ec, 0x1254, "Intel Reference board", ALC295_FIXUP_CHROME_BOOK),
++	SND_PCI_QUIRK(0x10ec, 0x12cc, "Intel Reference board", ALC225_FIXUP_HEADSET_JACK),
+ 	SND_PCI_QUIRK(0x10f7, 0x8338, "Panasonic CF-SZ6", ALC269_FIXUP_HEADSET_MODE),
+ 	SND_PCI_QUIRK(0x144d, 0xc109, "Samsung Ativ book 9 (NP900X3G)", ALC269_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x144d, 0xc169, "Samsung Notebook 9 Pen (NP930SBE-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
+@@ -9814,6 +9815,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
++	SND_PCI_QUIRK(0x8086, 0x3038, "Intel NUC 13", ALC225_FIXUP_HEADSET_JACK),
+ 	SND_PCI_QUIRK(0xf111, 0x0001, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
  
- MODULE_LICENSE("GPL");
-+MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_OSF);
-diff --git a/net/netfilter/xt_osf.c b/net/netfilter/xt_osf.c
-index e1990baf3a3b7..dc9485854002a 100644
---- a/net/netfilter/xt_osf.c
-+++ b/net/netfilter/xt_osf.c
-@@ -71,4 +71,3 @@ MODULE_AUTHOR("Evgeniy Polyakov <zbr@ioremap.net>");
- MODULE_DESCRIPTION("Passive OS fingerprint matching.");
- MODULE_ALIAS("ipt_osf");
- MODULE_ALIAS("ip6t_osf");
--MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_OSF);
+ #if 0
 -- 
 2.39.2
 
