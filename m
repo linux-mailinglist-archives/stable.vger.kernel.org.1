@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8B873E7D4
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97AE873E8BE
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:29:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231513AbjFZSTW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:19:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34294 "EHLO
+        id S232198AbjFZS3O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:29:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231482AbjFZSTV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:21 -0400
+        with ESMTP id S232207AbjFZS2z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:28:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93B499
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CA41715
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:28:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F2F760F4D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C050C433C8;
-        Mon, 26 Jun 2023 18:19:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD46660F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:28:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69DAC433C0;
+        Mon, 26 Jun 2023 18:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803559;
-        bh=Hvl/mQyThRdD9ButtZMhVUgxXtKcwlbSIb4GSy4nPCc=;
+        s=korg; t=1687804098;
+        bh=8tv5oM6vRsiAtmHxDxsSG1W5kaOzt3DQqvfezAMBi2I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BypKMc3l09nbRFqyLVc0478VcMyd+CljTHplTDZC1hbS+0l/9DyEN77bYCslgoad9
-         W10uTxkwKWXhH91hWgWlDP6AFOdE0cMz1r/4eQjgzjXyd2toKIXxNxETThhgDWNEya
-         3JXeuz8SJfgfbY6+KYfj24tEdj330jjOpmKWm1bE=
+        b=ZcksviJlgTqW7e5Vt8GnOZ6AalwKfIBDn29U6CAk3S8pKj7BSu9ySAzZF0ger6vjG
+         ZswBOhy5zfmUcon+2hPYTcSB7P2r6s+8cf0yyOc2Jv9S+WKn+LowBY/9ZCF9oClRbo
+         WZcV/HaaPJaAyRJ/lKiXTvi9cmeAXYN/9xSRE/6k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 103/199] xfrm: add missed call to delete offloaded policies
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 040/170] selftests: mptcp: join: skip userspace PM tests if not supported
 Date:   Mon, 26 Jun 2023 20:10:09 +0200
-Message-ID: <20230626180810.160323167@linuxfoundation.org>
+Message-ID: <20230626180802.337840182@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,46 +55,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit bf06fcf4be0feefebd27deb8b60ad262f4230489 ]
+commit f2b492b04a167261e1c38eb76f78fb4294473a49 upstream.
 
-Offloaded policies are deleted through two flows: netdev is going
-down and policy flush.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-In both cases, the code lacks relevant call to delete offloaded policy.
+One of them is the support of the userspace PM introduced by commit
+4638de5aefe5 ("mptcp: handle local addrs announced by userspace PMs")
+and the following ones.
 
-Fixes: 919e43fad516 ("xfrm: add an interface to offload policy")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It is possible to look for the MPTCP pm_type's sysctl knob to know in
+advance if the userspace PM is available.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: 5ac1d2d63451 ("selftests: mptcp: Add tests for userspace PM type")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_policy.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   26 +++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index ff58ce6c030ca..e7617c9959c31 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -1831,6 +1831,7 @@ int xfrm_policy_flush(struct net *net, u8 type, bool task_valid)
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -79,7 +79,7 @@ init_partial()
+ 		ip netns add $netns || exit $ksft_skip
+ 		ip -net $netns link set lo up
+ 		ip netns exec $netns sysctl -q net.mptcp.enabled=1
+-		ip netns exec $netns sysctl -q net.mptcp.pm_type=0
++		ip netns exec $netns sysctl -q net.mptcp.pm_type=0 2>/dev/null || true
+ 		ip netns exec $netns sysctl -q net.ipv4.conf.all.rp_filter=0
+ 		ip netns exec $netns sysctl -q net.ipv4.conf.default.rp_filter=0
+ 		if [ $checksum -eq 1 ]; then
+@@ -3059,7 +3059,8 @@ fail_tests()
+ userspace_tests()
+ {
+ 	# userspace pm type prevents add_addr
+-	if reset "userspace pm type prevents add_addr"; then
++	if reset "userspace pm type prevents add_addr" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns1
+ 		pm_nl_set_limits $ns1 0 2
+ 		pm_nl_set_limits $ns2 0 2
+@@ -3070,7 +3071,8 @@ userspace_tests()
+ 	fi
  
- 		__xfrm_policy_unlink(pol, dir);
- 		spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
-+		xfrm_dev_policy_delete(pol);
- 		cnt++;
- 		xfrm_audit_policy_delete(pol, 1, task_valid);
- 		xfrm_policy_kill(pol);
-@@ -1869,6 +1870,7 @@ int xfrm_dev_policy_flush(struct net *net, struct net_device *dev,
+ 	# userspace pm type does not echo add_addr without daemon
+-	if reset "userspace pm no echo w/o daemon"; then
++	if reset "userspace pm no echo w/o daemon" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns2
+ 		pm_nl_set_limits $ns1 0 2
+ 		pm_nl_set_limits $ns2 0 2
+@@ -3081,7 +3083,8 @@ userspace_tests()
+ 	fi
  
- 		__xfrm_policy_unlink(pol, dir);
- 		spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
-+		xfrm_dev_policy_delete(pol);
- 		cnt++;
- 		xfrm_audit_policy_delete(pol, 1, task_valid);
- 		xfrm_policy_kill(pol);
--- 
-2.39.2
-
+ 	# userspace pm type rejects join
+-	if reset "userspace pm type rejects join"; then
++	if reset "userspace pm type rejects join" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns1
+ 		pm_nl_set_limits $ns1 1 1
+ 		pm_nl_set_limits $ns2 1 1
+@@ -3091,7 +3094,8 @@ userspace_tests()
+ 	fi
+ 
+ 	# userspace pm type does not send join
+-	if reset "userspace pm type does not send join"; then
++	if reset "userspace pm type does not send join" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns2
+ 		pm_nl_set_limits $ns1 1 1
+ 		pm_nl_set_limits $ns2 1 1
+@@ -3101,7 +3105,8 @@ userspace_tests()
+ 	fi
+ 
+ 	# userspace pm type prevents mp_prio
+-	if reset "userspace pm type prevents mp_prio"; then
++	if reset "userspace pm type prevents mp_prio" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns1
+ 		pm_nl_set_limits $ns1 1 1
+ 		pm_nl_set_limits $ns2 1 1
+@@ -3112,7 +3117,8 @@ userspace_tests()
+ 	fi
+ 
+ 	# userspace pm type prevents rm_addr
+-	if reset "userspace pm type prevents rm_addr"; then
++	if reset "userspace pm type prevents rm_addr" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns1
+ 		set_userspace_pm $ns2
+ 		pm_nl_set_limits $ns1 0 1
+@@ -3124,7 +3130,8 @@ userspace_tests()
+ 	fi
+ 
+ 	# userspace pm add & remove address
+-	if reset "userspace pm add & remove address"; then
++	if reset "userspace pm add & remove address" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns1
+ 		pm_nl_set_limits $ns2 1 1
+ 		run_tests $ns1 $ns2 10.0.1.1 0 userspace_1 0 slow
+@@ -3134,7 +3141,8 @@ userspace_tests()
+ 	fi
+ 
+ 	# userspace pm create destroy subflow
+-	if reset "userspace pm create destroy subflow"; then
++	if reset "userspace pm create destroy subflow" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns2
+ 		pm_nl_set_limits $ns1 0 1
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 userspace_1 slow
 
 
