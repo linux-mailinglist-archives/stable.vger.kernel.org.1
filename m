@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8667F73EA42
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD11A73E998
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:37:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230021AbjFZSpI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:45:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57624 "EHLO
+        id S232405AbjFZSht (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:37:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232601AbjFZSpH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:45:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BD7997
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:45:06 -0700 (PDT)
+        with ESMTP id S232400AbjFZSht (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:37:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4715A102
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:37:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C453C60EFC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:45:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFE7C433C8;
-        Mon, 26 Jun 2023 18:45:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C665360F3E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:37:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4610C433C8;
+        Mon, 26 Jun 2023 18:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805105;
-        bh=iti1Hd1jW+hO1GJQ/zErADDHuXMBP5Z6ADmdtG/bdkA=;
+        s=korg; t=1687804666;
+        bh=dvZLVkGEa++hSp8Eo2o/6Ny0GI3g+KkcjWoiXhghWGo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zfocP7Op2wkve8DYRkDlIdQRLfaIcT+2mgVgZy8Nh+sM3VEOTlsWsOnm72khzHKNh
-         a2fn/Sp/glIMUBQg0OnHhNqKltLxv+H/N9MfMao2Xt7iJpcYyV892Z8njfHs7KmMlH
-         w5eDzV/AeKIjb9bdkxPB2aj4Kt+rfbzDh/kCBHas=
+        b=bxH1ghYQxob7qJoFzFXTEBAIA44Z3koc32bayiAnueyrJpe7v9dff4V6f/PmpMZ/T
+         VAyww4Gh0Pogm4x3PcJ/xJcY7+1Fpmqw3zcHQOYzDg3tfkJqN/Sh7dBtRfyrBEgsu5
+         cGwgz09oDtfEMxRD6TpueCuhkOj3xD2buEgizdmw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <olteanv@gmail.com>,
-        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Min Li <lm0963hack@gmail.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Inki Dae <inki.dae@samsung.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 51/81] net: dsa: mt7530: fix trapping frames on non-MT7621 SoC MT7530 switch
+Subject: [PATCH 5.4 54/60] drm/exynos: fix race condition UAF in exynos_g2d_exec_ioctl
 Date:   Mon, 26 Jun 2023 20:12:33 +0200
-Message-ID: <20230626180746.540812464@linuxfoundation.org>
+Message-ID: <20230626180741.775785645@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
+References: <20230626180739.558575012@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,39 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Min Li <lm0963hack@gmail.com>
 
-[ Upstream commit 4ae90f90e4909e3014e2dc6a0627964617a7b824 ]
+[ Upstream commit 48bfd02569f5db49cc033f259e66d57aa6efc9a3 ]
 
-All MT7530 switch IP variants share the MT7530_MFC register, but the
-current driver only writes it for the switch variant that is integrated in
-the MT7621 SoC. Modify the code to include all MT7530 derivatives.
+If it is async, runqueue_node is freed in g2d_runqueue_worker on another
+worker thread. So in extreme cases, if g2d_runqueue_worker runs first, and
+then executes the following if statement, there will be use-after-free.
 
-Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
-Suggested-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Min Li <lm0963hack@gmail.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mt7530.c | 2 +-
+ drivers/gpu/drm/exynos/exynos_drm_g2d.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index d3b42adef057b..4056ca4255be7 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -966,7 +966,7 @@ mt753x_cpu_port_enable(struct dsa_switch *ds, int port)
- 	mt7530_rmw(priv, MT7530_MFC, UNM_FFP_MASK, UNM_FFP(BIT(port)));
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_g2d.c b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
+index fcee33a43aca3..2df04de7f4354 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_g2d.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
+@@ -1332,7 +1332,7 @@ int exynos_g2d_exec_ioctl(struct drm_device *drm_dev, void *data,
+ 	/* Let the runqueue know that there is work to do. */
+ 	queue_work(g2d->g2d_workq, &g2d->runqueue_work);
  
- 	/* Set CPU port number */
--	if (priv->id == ID_MT7621)
-+	if (priv->id == ID_MT7530 || priv->id == ID_MT7621)
- 		mt7530_rmw(priv, MT7530_MFC, CPU_MASK, CPU_EN | CPU_PORT(port));
+-	if (runqueue_node->async)
++	if (req->async)
+ 		goto out;
  
- 	/* CPU port gets connected to all user ports of
+ 	wait_for_completion(&runqueue_node->complete);
 -- 
 2.39.2
 
