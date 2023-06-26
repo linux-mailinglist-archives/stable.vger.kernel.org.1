@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B24173E93A
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 053E073EA20
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232281AbjFZSds (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:33:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47594 "EHLO
+        id S232562AbjFZSnj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:43:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232284AbjFZSdq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:33:46 -0400
+        with ESMTP id S232587AbjFZSnd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A3BEDA
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:33:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A426188
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E637160F4F
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:33:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5B3C433C0;
-        Mon, 26 Jun 2023 18:33:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 18FDE60F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0A0C433C9;
+        Mon, 26 Jun 2023 18:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804424;
-        bh=9gVndDDGD3GB5YZiZTn+lErzwx67qIfGPxOubXPSXPE=;
+        s=korg; t=1687805007;
+        bh=1UEem9+E1Ke7px4AOB820028SD0me/udWEw4Cncwyn4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XXdu4IcyvTZn/coqQ44C9ApXwOvBfA8FSJG1c2A7phmNPATOD2uVPxfO7eweUZqNo
-         SEzma20a8amKUYWqegvsMkgYVEmXfrcmhjfI83hYiB9d8WfODnX+iSVCBsSeszmS+P
-         YLmD1oqN80Rt5856U8pn+GjWAnleJnFCm789zXWU=
+        b=v0MngFFRqsO7kX+ZeZ6Ccymkpo7HTV9Oe197jMu64wAXckegDm0EKJ+e4Xp3oVvyE
+         PURk6dRrCpGp4JAt/KdRA85+DDqJiPNQMbRwlMra6x9yXRT+oWkm1BpOq88XeUExRg
+         BuXZ0FSnnpPsxmbJhcddzFH/FMEvo7Lpt3OSshcU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 152/170] soundwire: qcom: add proper error paths in qcom_swrm_startup()
+        patches@lists.linux.dev, Matthias May <matthias.may@westermo.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Subject: [PATCH 5.10 19/81] ip_tunnels: allow VXLAN/GENEVE to inherit TOS/TTL from VLAN
 Date:   Mon, 26 Jun 2023 20:12:01 +0200
-Message-ID: <20230626180807.294002752@linuxfoundation.org>
+Message-ID: <20230626180745.256990713@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,63 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Matthias May <matthias.may@westermo.com>
 
-[ Upstream commit 99e09b9c0ab43346c52f2787ca4e5c4b1798362e ]
+commit 7074732c8faee201a245a6f983008a5789c0be33 upstream.
 
-Reverse actions in qcom_swrm_startup() error paths to avoid leaking
-stream memory and keeping runtime PM unbalanced.
+The current code allows for VXLAN and GENEVE to inherit the TOS
+respective the TTL when skb-protocol is ETH_P_IP or ETH_P_IPV6.
+However when the payload is VLAN encapsulated, then this inheriting
+does not work, because the visible skb-protocol is of type
+ETH_P_8021Q or ETH_P_8021AD.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230517163736.997553-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead of skb->protocol use skb_protocol().
+
+Signed-off-by: Matthias May <matthias.may@westermo.com>
+Link: https://lore.kernel.org/r/20220721202718.10092-1-matthias.may@westermo.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/qcom.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ include/net/ip_tunnels.h |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
-index 21c50972047f5..b2eb3090f4b46 100644
---- a/drivers/soundwire/qcom.c
-+++ b/drivers/soundwire/qcom.c
-@@ -1090,8 +1090,10 @@ static int qcom_swrm_startup(struct snd_pcm_substream *substream,
- 	}
- 
- 	sruntime = sdw_alloc_stream(dai->name);
--	if (!sruntime)
--		return -ENOMEM;
-+	if (!sruntime) {
-+		ret = -ENOMEM;
-+		goto err_alloc;
-+	}
- 
- 	ctrl->sruntime[dai->id] = sruntime;
- 
-@@ -1101,12 +1103,19 @@ static int qcom_swrm_startup(struct snd_pcm_substream *substream,
- 		if (ret < 0 && ret != -ENOTSUPP) {
- 			dev_err(dai->dev, "Failed to set sdw stream on %s\n",
- 				codec_dai->name);
--			sdw_release_stream(sruntime);
--			return ret;
-+			goto err_set_stream;
- 		}
- 	}
- 
- 	return 0;
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -378,9 +378,11 @@ static inline int ip_tunnel_encap(struct
+ static inline u8 ip_tunnel_get_dsfield(const struct iphdr *iph,
+ 				       const struct sk_buff *skb)
+ {
+-	if (skb->protocol == htons(ETH_P_IP))
++	__be16 payload_protocol = skb_protocol(skb, true);
 +
-+err_set_stream:
-+	sdw_release_stream(sruntime);
-+err_alloc:
-+	pm_runtime_mark_last_busy(ctrl->dev);
-+	pm_runtime_put_autosuspend(ctrl->dev);
++	if (payload_protocol == htons(ETH_P_IP))
+ 		return iph->tos;
+-	else if (skb->protocol == htons(ETH_P_IPV6))
++	else if (payload_protocol == htons(ETH_P_IPV6))
+ 		return ipv6_get_dsfield((const struct ipv6hdr *)iph);
+ 	else
+ 		return 0;
+@@ -389,9 +391,11 @@ static inline u8 ip_tunnel_get_dsfield(c
+ static inline u8 ip_tunnel_get_ttl(const struct iphdr *iph,
+ 				       const struct sk_buff *skb)
+ {
+-	if (skb->protocol == htons(ETH_P_IP))
++	__be16 payload_protocol = skb_protocol(skb, true);
 +
-+	return ret;
- }
- 
- static void qcom_swrm_shutdown(struct snd_pcm_substream *substream,
--- 
-2.39.2
-
++	if (payload_protocol == htons(ETH_P_IP))
+ 		return iph->ttl;
+-	else if (skb->protocol == htons(ETH_P_IPV6))
++	else if (payload_protocol == htons(ETH_P_IPV6))
+ 		return ((const struct ipv6hdr *)iph)->hop_limit;
+ 	else
+ 		return 0;
 
 
