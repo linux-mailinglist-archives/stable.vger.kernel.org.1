@@ -2,221 +2,314 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DB3473E03C
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 15:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40E7073E161
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 16:02:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjFZNLe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 09:11:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58180 "EHLO
+        id S230305AbjFZOCK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 10:02:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229625AbjFZNLd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 09:11:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DEF498;
-        Mon, 26 Jun 2023 06:11:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 96E8A60E75;
-        Mon, 26 Jun 2023 13:11:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6ED5C433C8;
-        Mon, 26 Jun 2023 13:11:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687785091;
-        bh=QWLhY0WmgE3ZgYjbHZWwDgy3RC+cobEngYywAsB2rbk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YvtoOULIkY8ThUrAIHWVodHnqdwU+JErImxeJGmzYo7XJPTBstGcCwT40iZSxa6um
-         Xas1S+mzFiuJy2dOT9vD3M2cqtD0jsZCtRR5wbOdodYHFVmuD6epegUQ7CaiLZBZuZ
-         hUEkjvtkPKYPX5FKjQG4WT3vQpVw2sx+IXNaxAP6MMSQ+5KrEVSm9+I69Tj7rcan81
-         WnKpV1GbvQctRiVxqNv0B3uakgx7Zt7jhsypCjbsNiVg7VE3gxIHKdcJLXw15Obt9r
-         r84TeKOc40SvwVdquxLOiGRQClKwoS5GK0Tb1DzvZGbiYMO7LHl7W0ZRAvo0VhCX+P
-         ByFSE32nZwbIg==
-Date:   Mon, 26 Jun 2023 06:11:29 -0700
-From:   Jaegeuk Kim <jaegeuk@kernel.org>
-To:     Chao Yu <chao@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, stable@vger.kernel.org
-Subject: Re: [f2fs-dev] [PATCH] f2fs: remove i_xattr_sem to avoid deadlock
- and fix the original issue
-Message-ID: <ZJmOgRADvLP/4rMJ@google.com>
-References: <20230613233940.3643362-1-jaegeuk@kernel.org>
- <e5788348-b547-8e10-21af-90544f3aa75c@kernel.org>
- <d0ec4a04-ab81-7e71-ad56-5b22e1815919@kernel.org>
+        with ESMTP id S230000AbjFZOCJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 10:02:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05BEBDD
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 07:01:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1687788085;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2y6qtyWy9IckWDMv65TOkYb/0eahHLsrQ1yR5Rwyltc=;
+        b=Nyl+th/iHf5dq5f8PunVRuMLr1QPjoYwmkcFQeoUM7VbZ6mpQwXHZQL7UEJDMvloLdK7ME
+        CGETSbwNzPyvgI4aoqrAExKXQ5Xa/Bf55KAloN2Oh1yCxSGRCJ5boWbXsVvbaHHh7/uPNg
+        lW6OaE3y7qYMG+n8mPZ8LyEN0Bi+/og=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-JvkzeGYiObiaCDJSKp_wfg-1; Mon, 26 Jun 2023 10:01:23 -0400
+X-MC-Unique: JvkzeGYiObiaCDJSKp_wfg-1
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-6b723b017cfso2840242a34.2
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 07:01:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687788082; x=1690380082;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2y6qtyWy9IckWDMv65TOkYb/0eahHLsrQ1yR5Rwyltc=;
+        b=JzPplxcTPmTp5gyc3OBdg+BF0lboi9DjrE3hwyv253I3MbOwOBkmeYSLPJfl5sqNRB
+         je3nrSCEzw63DdYAQFPwjU/e4HS8OBbA+rQySMRNqJDok508i2Wd7irHETCtsH2BSK9u
+         fR+CwQTDzXnOR3eTXkFP2CoBSn547O0onO+EHo4GAWnMkbH8PdJllJfSh0f6M90QQAUq
+         ANBZi7hS+XJmHDKrKQkEt68aEIxlJiNGegYEOCMMsVlb7QKW/wM9FClwy/ecwI3BAZSC
+         CPfNUE45wu7qF9zNqoUBu4LBzG/V0DKk18CEK4l5CYHtryuxRpEMgW0b6mKybIgk2+D/
+         k7Ig==
+X-Gm-Message-State: AC+VfDxbpJW+V8f7EdZ7zlrOI13uol07jUb9X0/o+d3WXCqDhQ/YKgmM
+        uuuo0rmRmjIZd1CdHoyF4Em0ofiMPkJvW4WhiHugnLixMzYHiWrbYmd3hMatYlqzxr4OwAzh3ZI
+        OY+YvloWtrYpnVx1wIHoq4Xbr6Ce1RSkT
+X-Received: by 2002:a05:6358:9faa:b0:132:d3b1:c34d with SMTP id fy42-20020a0563589faa00b00132d3b1c34dmr5814279rwb.17.1687788082223;
+        Mon, 26 Jun 2023 07:01:22 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7E3dXMlEJO/KnS5Zst6laAFwkuPszf/RngrTBNuJRfbqBYRKYLcwxwIcEgXGYvlbnNmuXkUtBvJ3IyDyZ3dKI=
+X-Received: by 2002:a05:6358:9faa:b0:132:d3b1:c34d with SMTP id
+ fy42-20020a0563589faa00b00132d3b1c34dmr5814197rwb.17.1687788080340; Mon, 26
+ Jun 2023 07:01:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d0ec4a04-ab81-7e71-ad56-5b22e1815919@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230621-logitech-fixes-v1-1-32e70933c0b0@redhat.com> <df4cc4a907c6d617036aea6da6f06de6bba30ca1.camel@hadess.net>
+In-Reply-To: <df4cc4a907c6d617036aea6da6f06de6bba30ca1.camel@hadess.net>
+From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Date:   Mon, 26 Jun 2023 16:01:09 +0200
+Message-ID: <CAO-hwJJCvVUKgxZVwnksd7t5By6vc4UBzAOARS1WcNkbs2XWTA@mail.gmail.com>
+Subject: Re: [PATCH] HID: logitech-hidpp: rework one more time the retries attempts
+To:     Bastien Nocera <hadess@hadess.net>
+Cc:     =?UTF-8?Q?Filipe_La=C3=ADns?= <lains@riseup.net>,
+        Jiri Kosina <jikos@kernel.org>, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 06/25, Chao Yu wrote:
-> On 2023/6/25 15:26, Chao Yu wrote:
-> > One concern below:
-> > 
-> > Thread A:                    Thread B:
-> > - f2fs_getxattr
-> >   - lookup_all_xattrs
-> >    - read_inline_xattr
-> >     - f2fs_get_node_page(ino)
-> >     - memcpy inline xattr
-> >     - f2fs_put_page
-> >                          - f2fs_setxattr
-> >                           - __f2fs_setxattr
-> >                            - __f2fs_setxattr
-> >                             - write_all_xattrs
-> >                              - write xnode and inode
-> >    ---> inline xattr may out of update here.
-> >    - read_xattr_block
-> >     - f2fs_get_node_page(xnid)
-> >     - memcpy xnode xattr
-> >     - f2fs_put_page
-> > 
-> > Do we need to keep xattr_{get,set} being atomical operation?
-> 
-> It seems xfstest starts to complain w/ below message...
+On Sun, Jun 25, 2023 at 10:30=E2=80=AFAM Bastien Nocera <hadess@hadess.net>=
+ wrote:
+>
+> On Wed, 2023-06-21 at 11:42 +0200, Benjamin Tissoires wrote:
+> > Make the code looks less like Pascal.
+>
+> Honestly, while this was written in jest in an email is fine, putting
+> this in the commit message is quite insulting.
+>
+> The "retry" patch tried to fix real world problems by making minimal
+> code changes, eg. avoiding the review problem that the present patch
+> has, and even then, all of us missed the logic bug.
+>
+> I also haven't written any Pascal code since 1996.
 
-I don't see any failure. Which test do you see?
+Apologies for that. I honestly took Linus' remark to myself only,
+because I was fixing your fix on my original code.
+And while initially fixing your for loop, I should have realized that
+this was very hard to follow, because of the "if (sth; sth < 1 && foo
+&& bar; sth+=3D1)".
 
-> 
-> [ 3400.856443] F2FS-fs (vdc): inode (2187) has invalid last xattr entry, entry_size: 21468
-> [ 3400.864042] F2FS-fs (vdc): inode (1595) has invalid last xattr entry, entry_size: 26580
-> [ 3400.865764] F2FS-fs (vdc): inode (2187) has invalid last xattr entry, entry_size: 21468
-> [ 3400.880067] F2FS-fs (vdc): inode (9839) has corrupted xattr
-> [ 3400.880714] F2FS-fs (vdc): inode (10855) has corrupted xattr
-> 
-> Thanks,
-> 
-> > 
-> > Thanks,
-> > 
-> > > 
-> > > I think we don't need to truncate xattr pages eagerly which introduces lots of
-> > > data races without big benefits.
-> > > 
-> > > Cc: <stable@vger.kernel.org>
-> > > Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-> > > ---
-> > >   fs/f2fs/f2fs.h  |  1 -
-> > >   fs/f2fs/super.c |  1 -
-> > >   fs/f2fs/xattr.c | 31 ++++++++-----------------------
-> > >   3 files changed, 8 insertions(+), 25 deletions(-)
-> > > 
-> > > diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-> > > index 3f5b161dd743..7b9af2d51656 100644
-> > > --- a/fs/f2fs/f2fs.h
-> > > +++ b/fs/f2fs/f2fs.h
-> > > @@ -838,7 +838,6 @@ struct f2fs_inode_info {
-> > >       /* avoid racing between foreground op and gc */
-> > >       struct f2fs_rwsem i_gc_rwsem[2];
-> > > -    struct f2fs_rwsem i_xattr_sem; /* avoid racing between reading and changing EAs */
-> > >       int i_extra_isize;        /* size of extra space located in i_addr */
-> > >       kprojid_t i_projid;        /* id for project quota */
-> > > diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-> > > index 1b2c788ed80d..c917fa771f0e 100644
-> > > --- a/fs/f2fs/super.c
-> > > +++ b/fs/f2fs/super.c
-> > > @@ -1418,7 +1418,6 @@ static struct inode *f2fs_alloc_inode(struct super_block *sb)
-> > >       INIT_LIST_HEAD(&fi->gdirty_list);
-> > >       init_f2fs_rwsem(&fi->i_gc_rwsem[READ]);
-> > >       init_f2fs_rwsem(&fi->i_gc_rwsem[WRITE]);
-> > > -    init_f2fs_rwsem(&fi->i_xattr_sem);
-> > >       /* Will be used by directory only */
-> > >       fi->i_dir_level = F2FS_SB(sb)->dir_level;
-> > > diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-> > > index 213805d3592c..bdc8a55085a2 100644
-> > > --- a/fs/f2fs/xattr.c
-> > > +++ b/fs/f2fs/xattr.c
-> > > @@ -433,7 +433,7 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
-> > >   {
-> > >       struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
-> > >       size_t inline_size = inline_xattr_size(inode);
-> > > -    struct page *in_page = NULL;
-> > > +    struct page *in_page = ipage;
-> > >       void *xattr_addr;
-> > >       void *inline_addr = NULL;
-> > >       struct page *xpage;
-> > > @@ -446,29 +446,19 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
-> > >       /* write to inline xattr */
-> > >       if (inline_size) {
-> > > -        if (ipage) {
-> > > -            inline_addr = inline_xattr_addr(inode, ipage);
-> > > -        } else {
-> > > +        if (!in_page) {
-> > >               in_page = f2fs_get_node_page(sbi, inode->i_ino);
-> > >               if (IS_ERR(in_page)) {
-> > >                   f2fs_alloc_nid_failed(sbi, new_nid);
-> > >                   return PTR_ERR(in_page);
-> > >               }
-> > > -            inline_addr = inline_xattr_addr(inode, in_page);
-> > >           }
-> > > +        inline_addr = inline_xattr_addr(inode, in_page);
-> > > -        f2fs_wait_on_page_writeback(ipage ? ipage : in_page,
-> > > -                            NODE, true, true);
-> > > -        /* no need to use xattr node block */
-> > > +        f2fs_wait_on_page_writeback(in_page, NODE, true, true);
-> > >           if (hsize <= inline_size) {
-> > > -            err = f2fs_truncate_xattr_node(inode);
-> > > -            f2fs_alloc_nid_failed(sbi, new_nid);
-> > > -            if (err) {
-> > > -                f2fs_put_page(in_page, 1);
-> > > -                return err;
-> > > -            }
-> > >               memcpy(inline_addr, txattr_addr, inline_size);
-> > > -            set_page_dirty(ipage ? ipage : in_page);
-> > > +            set_page_dirty(in_page);
-> > >               goto in_page_out;
-> > >           }
-> > >       }
-> > > @@ -502,12 +492,13 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
-> > >       memcpy(xattr_addr, txattr_addr + inline_size, VALID_XATTR_BLOCK_SIZE);
-> > >       if (inline_size)
-> > > -        set_page_dirty(ipage ? ipage : in_page);
-> > > +        set_page_dirty(in_page);
-> > >       set_page_dirty(xpage);
-> > >       f2fs_put_page(xpage, 1);
-> > >   in_page_out:
-> > > -    f2fs_put_page(in_page, 1);
-> > > +    if (in_page != ipage)
-> > > +        f2fs_put_page(in_page, 1);
-> > >       return err;
-> > >   }
-> > > @@ -528,10 +519,8 @@ int f2fs_getxattr(struct inode *inode, int index, const char *name,
-> > >       if (len > F2FS_NAME_LEN)
-> > >           return -ERANGE;
-> > > -    f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
-> > >       error = lookup_all_xattrs(inode, ipage, index, len, name,
-> > >                   &entry, &base_addr, &base_size, &is_inline);
-> > > -    f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
-> > >       if (error)
-> > >           return error;
-> > > @@ -565,9 +554,7 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
-> > >       int error;
-> > >       size_t rest = buffer_size;
-> > > -    f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
-> > >       error = read_all_xattrs(inode, NULL, &base_addr);
-> > > -    f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
-> > >       if (error)
-> > >           return error;
-> > > @@ -794,9 +781,7 @@ int f2fs_setxattr(struct inode *inode, int index, const char *name,
-> > >       f2fs_balance_fs(sbi, true);
-> > >       f2fs_lock_op(sbi);
-> > > -    f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
-> > >       err = __f2fs_setxattr(inode, index, name, value, size, ipage, flags);
-> > > -    f2fs_up_write(&F2FS_I(inode)->i_xattr_sem);
-> > >       f2fs_unlock_op(sbi);
-> > >       f2fs_update_time(sbi, REQ_TIME);
-> > 
-> > 
-> > _______________________________________________
-> > Linux-f2fs-devel mailing list
-> > Linux-f2fs-devel@lists.sourceforge.net
-> > https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
+I'll amend v2
+
+>
+> > Extract the internal code inside a helper function, fix the
+> > initialization of the parameters used in the helper function
+> > (`hidpp->answer_available` was not reset and `*response` wasn't too),
+>
+> "wasn't either".
+>
+> > and use a `do {...} while();` loop.
+> >
+> > Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when device
+> > is busy")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+> > ---
+> > as requested by
+> > https://lore.kernel.org/all/CAHk-=3DwiMbF38KCNhPFiargenpSBoecSXTLQACKS2=
+UMyo_Vu2ww@mail.gmail.com/
+> > This is a rewrite of that particular piece of code.
+> > ---
+> >  drivers/hid/hid-logitech-hidpp.c | 102 +++++++++++++++++++++++------
+> > ----------
+> >  1 file changed, 61 insertions(+), 41 deletions(-)
+> >
+> > diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-
+> > logitech-hidpp.c
+> > index dfe8e09a18de..3d1ffe199f08 100644
+> > --- a/drivers/hid/hid-logitech-hidpp.c
+> > +++ b/drivers/hid/hid-logitech-hidpp.c
+> > @@ -275,21 +275,20 @@ static int __hidpp_send_report(struct
+> > hid_device *hdev,
+> >  }
+> >
+> >  /*
+> > - * hidpp_send_message_sync() returns 0 in case of success, and
+> > something else
+> > - * in case of a failure.
+> > - * - If ' something else' is positive, that means that an error has
+> > been raised
+> > - *   by the protocol itself.
+> > - * - If ' something else' is negative, that means that we had a
+> > classic error
+> > - *   (-ENOMEM, -EPIPE, etc...)
+> > + * Effectively send the message to the device, waiting for its
+> > answer.
+> > + *
+> > + * Must be called with hidpp->send_mutex locked
+> > + *
+> > + * Same return protocol than hidpp_send_message_sync():
+> > + * - success on 0
+> > + * - negative error means transport error
+> > + * - positive value means protocol error
+> >   */
+> > -static int hidpp_send_message_sync(struct hidpp_device *hidpp,
+> > +static int __do_hidpp_send_message_sync(struct hidpp_device *hidpp,
+> >         struct hidpp_report *message,
+> >         struct hidpp_report *response)
+> >  {
+> > -       int ret =3D -1;
+> > -       int max_retries =3D 3;
+> > -
+> > -       mutex_lock(&hidpp->send_mutex);
+> > +       int ret;
+> >
+> >         hidpp->send_receive_buf =3D response;
+> >         hidpp->answer_available =3D false;
+> > @@ -300,41 +299,62 @@ static int hidpp_send_message_sync(struct
+> > hidpp_device *hidpp,
+> >          */
+> >         *response =3D *message;
+> >
+> > -       for (; max_retries !=3D 0 && ret; max_retries--) {
+> > -               ret =3D __hidpp_send_report(hidpp->hid_dev, message);
+> > +       ret =3D __hidpp_send_report(hidpp->hid_dev, message);
+> > +       if (ret) {
+> > +               dbg_hid("__hidpp_send_report returned err: %d\n",
+> > ret);
+> > +               memset(response, 0, sizeof(struct hidpp_report));
+> > +               return ret;
+> > +       }
+> >
+> > -               if (ret) {
+> > -                       dbg_hid("__hidpp_send_report returned err:
+> > %d\n", ret);
+> > -                       memset(response, 0, sizeof(struct
+> > hidpp_report));
+> > -                       break;
+> > -               }
+> > +       if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
+> > +                               5*HZ)) {
+> > +               dbg_hid("%s:timeout waiting for response\n",
+> > __func__);
+> > +               memset(response, 0, sizeof(struct hidpp_report));
+> > +               return -ETIMEDOUT;
+> > +       }
+> >
+> > -               if (!wait_event_timeout(hidpp->wait, hidpp-
+> > >answer_available,
+> > -                                       5*HZ)) {
+> > -                       dbg_hid("%s:timeout waiting for response\n",
+> > __func__);
+> > -                       memset(response, 0, sizeof(struct
+> > hidpp_report));
+> > -                       ret =3D -ETIMEDOUT;
+> > -                       break;
+> > -               }
+> > +       if (response->report_id =3D=3D REPORT_ID_HIDPP_SHORT &&
+> > +           response->rap.sub_id =3D=3D HIDPP_ERROR) {
+> > +               ret =3D response->rap.params[1];
+> > +               dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
+> > +               return ret;
+> > +       }
+> >
+> > -               if (response->report_id =3D=3D REPORT_ID_HIDPP_SHORT &&
+> > -                   response->rap.sub_id =3D=3D HIDPP_ERROR) {
+> > -                       ret =3D response->rap.params[1];
+> > -                       dbg_hid("%s:got hidpp error %02X\n",
+> > __func__, ret);
+> > +       if ((response->report_id =3D=3D REPORT_ID_HIDPP_LONG ||
+> > +            response->report_id =3D=3D REPORT_ID_HIDPP_VERY_LONG) &&
+> > +           response->fap.feature_index =3D=3D HIDPP20_ERROR) {
+> > +               ret =3D response->fap.params[1];
+> > +               dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__,
+> > ret);
+> > +               return ret;
+> > +       }
+> > +
+> > +       return 0;
+> > +}
+> > +
+> > +/*
+> > + * hidpp_send_message_sync() returns 0 in case of success, and
+> > something else
+> > + * in case of a failure.
+> > + * - If ' something else' is positive, that means that an error has
+> > been raised
+> > + *   by the protocol itself.
+> > + * - If ' something else' is negative, that means that we had a
+> > classic error
+> > + *   (-ENOMEM, -EPIPE, etc...)
+>
+> Do we really need to re-explain the possible return values that were
+> already explained above __do_hidpp_send_message_sync()?
+
+Right, maybe we don't need to duplicate the comment after all.
+
+>
+> If we do, why don't also do it for hidpp_send_fap_command_sync() and
+> hidpp_send_rap_command_sync(), or their callers?
+
+In a way it would make sense to do, because this is non standard.
+
+>
+> If it's absolutely necessary, a "see __do_hidpp_send_message_sync()"
+> should be enough.
+
+Good point.
+
+>
+> I've double-checked that none of the existing callers expected a
+> partially filled in "response" struct on error.
+>
+> Reviewed-by: Bastien Nocera <hadess@hadess.net>
+
+Thanks!
+
+Cheers,
+Benjamin
+
+>
+> > + */
+> > +static int hidpp_send_message_sync(struct hidpp_device *hidpp,
+> > +       struct hidpp_report *message,
+> > +       struct hidpp_report *response)
+> > +{
+> > +       int ret;
+> > +       int max_retries =3D 3;
+> > +
+> > +       mutex_lock(&hidpp->send_mutex);
+> > +
+> > +       do {
+> > +               ret =3D __do_hidpp_send_message_sync(hidpp, message,
+> > response);
+> > +               if (ret !=3D HIDPP20_ERROR_BUSY)
+> >                         break;
+> > -               }
+> >
+> > -               if ((response->report_id =3D=3D REPORT_ID_HIDPP_LONG ||
+> > -                    response->report_id =3D=3D
+> > REPORT_ID_HIDPP_VERY_LONG) &&
+> > -                   response->fap.feature_index =3D=3D HIDPP20_ERROR) {
+> > -                       ret =3D response->fap.params[1];
+> > -                       if (ret !=3D HIDPP20_ERROR_BUSY) {
+> > -                               dbg_hid("%s:got hidpp 2.0 error
+> > %02X\n", __func__, ret);
+> > -                               break;
+> > -                       }
+> > -                       dbg_hid("%s:got busy hidpp 2.0 error %02X,
+> > retrying\n", __func__, ret);
+> > -               }
+> > -       }
+> > +               dbg_hid("%s:got busy hidpp 2.0 error %02X,
+> > retrying\n", __func__, ret);
+> > +       } while (--max_retries);
+> >
+> >         mutex_unlock(&hidpp->send_mutex);
+> >         return ret;
+> >
+> > ---
+> > base-commit: b98ec211af5508457e2b1c4cc99373630a83fa81
+> > change-id: 20230621-logitech-fixes-a4c0e66ea2ad
+> >
+> > Best regards,
+>
+
