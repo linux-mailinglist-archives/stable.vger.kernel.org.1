@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A66C673E968
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D6F473EA1C
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232354AbjFZSfk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49378 "EHLO
+        id S232531AbjFZSnf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:43:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232349AbjFZSfj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:35:39 -0400
+        with ESMTP id S232181AbjFZSn3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8E2794
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:35:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D0D10F4
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 49B6C60F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:35:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548A9C433C8;
-        Mon, 26 Jun 2023 18:35:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 061C460F53
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AD9C433C0;
+        Mon, 26 Jun 2023 18:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804537;
-        bh=0eh7nofSpwcno2LS6edFu+94qkgm6VJIKaYAfVFriXs=;
+        s=korg; t=1687804998;
+        bh=tlWDpZOBMBJau3gg17bF5NgoRIAh0n2DcCMYYFyqnPo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AIyWN9tNaeDklklqHCFE6M1nXN/fODa7LWLjnfFTEcgvSTyHepgg9bWRBpDkp70N+
-         8mvIxabHNFLfzMMeP25oX1mq5ItVYqKNIlutVMZ7tATQXD46pNm5X7TatKNUPTR1XO
-         brtjELRX5QKNKAWwBsiAlDtK5q/iO65t+PBTT6g8=
+        b=xNH6mtf7WPEAXpJJHAl1qyyxdSioICAUFuSxhZkbVxc+kci40CM2LFoCnyi4lsbZK
+         fMeXocO4xOfnvBAaSMK+Ra5G1ivwFk641LsVPl3cr+qTg1LKs9IV0RicUjoFsOGoRu
+         ElGQQJCdZnXycSbHfHHy59IOD/VnpRZpHCJE5TFs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 18/60] nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
-Date:   Mon, 26 Jun 2023 20:11:57 +0200
-Message-ID: <20230626180740.300273097@linuxfoundation.org>
+        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 16/81] mmc: sdhci-msm: Disable broken 64-bit DMA on MSM8916
+Date:   Mon, 26 Jun 2023 20:11:58 +0200
+Message-ID: <20230626180745.119049776@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,56 +55,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Stephan Gerhold <stephan@gerhold.net>
 
-commit 782e53d0c14420858dbf0f8f797973c150d3b6d7 upstream.
+commit e6f9e590b72e12bbb86b1b8be7e1981f357392ad upstream.
 
-In a syzbot stress test that deliberately causes file system errors on
-nilfs2 with a corrupted disk image, it has been reported that
-nilfs_clear_dirty_page() called from nilfs_clear_dirty_pages() can cause a
-general protection fault.
+While SDHCI claims to support 64-bit DMA on MSM8916 it does not seem to
+be properly functional. It is not immediately obvious because SDHCI is
+usually used with IOMMU bypassed on this SoC, and all physical memory
+has 32-bit addresses. But when trying to enable the IOMMU it quickly
+fails with an error such as the following:
 
-In nilfs_clear_dirty_pages(), when looking up dirty pages from the page
-cache and calling nilfs_clear_dirty_page() for each dirty page/folio
-retrieved, the back reference from the argument page to "mapping" may have
-been changed to NULL (and possibly others).  It is necessary to check this
-after locking the page/folio.
+  arm-smmu 1e00000.iommu: Unhandled context fault:
+    fsr=0x402, iova=0xfffff200, fsynr=0xe0000, cbfrsynra=0x140, cb=3
+  mmc1: ADMA error: 0x02000000
+  mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+  mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00002e02
+  mmc1: sdhci: Blk size:  0x00000008 | Blk cnt:  0x00000000
+  mmc1: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+  mmc1: sdhci: Present:   0x03f80206 | Host ctl: 0x00000019
+  mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+  mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000007
+  mmc1: sdhci: Timeout:   0x0000000a | Int stat: 0x00000001
+  mmc1: sdhci: Int enab:  0x03ff900b | Sig enab: 0x03ff100b
+  mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+  mmc1: sdhci: Caps:      0x322dc8b2 | Caps_1:   0x00008007
+  mmc1: sdhci: Cmd:       0x0000333a | Max curr: 0x00000000
+  mmc1: sdhci: Resp[0]:   0x00000920 | Resp[1]:  0x5b590000
+  mmc1: sdhci: Resp[2]:   0xe6487f80 | Resp[3]:  0x0a404094
+  mmc1: sdhci: Host ctl2: 0x00000008
+  mmc1: sdhci: ADMA Err:  0x00000001 | ADMA Ptr: 0x0000000ffffff224
+  mmc1: sdhci_msm: ----------- VENDOR REGISTER DUMP -----------
+  mmc1: sdhci_msm: DLL sts: 0x00000000 | DLL cfg:  0x60006400 | DLL cfg2: 0x00000000
+  mmc1: sdhci_msm: DLL cfg3: 0x00000000 | DLL usr ctl:  0x00000000 | DDR cfg: 0x00000000
+  mmc1: sdhci_msm: Vndr func: 0x00018a9c | Vndr func2 : 0xf88018a8 Vndr func3: 0x00000000
+  mmc1: sdhci: ============================================
+  mmc1: sdhci: fffffffff200: DMA 0x0000ffffffffe100, LEN 0x0008, Attr=0x21
+  mmc1: sdhci: fffffffff20c: DMA 0x0000000000000000, LEN 0x0000, Attr=0x03
 
-So, fix this issue by not calling nilfs_clear_dirty_page() on a page/folio
-after locking it in nilfs_clear_dirty_pages() if the back reference
-"mapping" from the page/folio is different from the "mapping" that held
-the page/folio just before.
+Looking closely it's obvious that only the 32-bit part of the address
+(0xfffff200) arrives at the SMMU, the higher 16-bit (0xffff...) get
+lost somewhere. This might not be a limitation of the SDHCI itself but
+perhaps the bus/interconnect it is connected to, or even the connection
+to the SMMU.
 
-Link: https://lkml.kernel.org/r/20230612021456.3682-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000da4f6b05eb9bf593@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Work around this by setting SDHCI_QUIRK2_BROKEN_64_BIT_DMA to avoid
+using 64-bit addresses.
+
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230518-msm8916-64bit-v1-1-5694b0f35211@gerhold.net
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/page.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-msm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -370,7 +370,15 @@ void nilfs_clear_dirty_pages(struct addr
- 			struct page *page = pvec.pages[i];
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -2228,6 +2228,9 @@ static inline void sdhci_msm_get_of_prop
+ 		msm_host->ddr_config = DDR_CONFIG_POR_VAL;
  
- 			lock_page(page);
--			nilfs_clear_dirty_page(page, silent);
+ 	of_property_read_u32(node, "qcom,dll-config", &msm_host->dll_config);
 +
-+			/*
-+			 * This page may have been removed from the address
-+			 * space by truncation or invalidation when the lock
-+			 * was acquired.  Skip processing in that case.
-+			 */
-+			if (likely(page->mapping == mapping))
-+				nilfs_clear_dirty_page(page, silent);
-+
- 			unlock_page(page);
- 		}
- 		pagevec_release(&pvec);
++	if (of_device_is_compatible(node, "qcom,msm8916-sdhci"))
++		host->quirks2 |= SDHCI_QUIRK2_BROKEN_64_BIT_DMA;
+ }
+ 
+ static int sdhci_msm_gcc_reset(struct device *dev, struct sdhci_host *host)
 
 
