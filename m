@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A802473E8DE
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B83173E807
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232094AbjFZSae (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42936 "EHLO
+        id S231861AbjFZSVD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:21:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232163AbjFZS3m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC7DA173C
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:29 -0700 (PDT)
+        with ESMTP id S231669AbjFZSUk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:20:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8059B10CC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:20:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5112960E76
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55142C433C9;
-        Mon, 26 Jun 2023 18:29:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 042CD60F39
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AE9C433C0;
+        Mon, 26 Jun 2023 18:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804168;
-        bh=k5yIwWUOiXY51QZt+ouJl1gvH/3GOOz/nkPonUESGxo=;
+        s=korg; t=1687803637;
+        bh=AmBA0ztjgbDoXZgNFJzWMe5QfpwUXIMNVABa6zYbQTY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ff6CqSlZTq00HHsgPCH3TZV516RaIVGoPcYG0d3dC4fMPDslCDEOk7ocFfaRfM8g7
-         Fq5Fx86rCq5u6NKlT+yXLsvRkY5HwABNrlh9XMCooYgJjGiEO8Xrn1Huh/jyN2/YKW
-         +9GBrRCgt2DFY8avax9D5fc7BFpIH1QkJTXzsKVM=
+        b=dseAQZdqpneTFY00E9fgA3+Y1Sm2UbWo6LMiMeJrkXZI8T7yq7bdLytmN+sZFsGuE
+         uK0nZ2yEGeC/2FKWlEoly+z5fP/JW707cLsABYnT2QZ65H+h9iS9R4XD84s6SpGzk3
+         Lxsha3UL/Etv3Bp63FVrqNSsWKOqneNN/ucHZ44I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 065/170] mmc: meson-gx: remove redundant mmc_request_done() call from irq context
-Date:   Mon, 26 Jun 2023 20:10:34 +0200
-Message-ID: <20230626180803.501958212@linuxfoundation.org>
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 129/199] netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain
+Date:   Mon, 26 Jun 2023 20:10:35 +0200
+Message-ID: <20230626180811.313211561@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,98 +54,176 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Hundebøll <martin@geanix.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 3c40eb8145325b0f5b93b8a169146078cb2c49d6 upstream.
+[ Upstream commit 26b5a5712eb85e253724e56a54c17f8519bd8e4e ]
 
-The call to mmc_request_done() can schedule, so it must not be called
-from irq context. Wake the irq thread if it needs to be called, and let
-its existing logic do its work.
+Add a new state to deal with rule expressions deactivation from the
+newrule error path, otherwise the anonymous set remains in the list in
+inactive state for the next generation. Mark the set/chain transaction
+as unbound so the abort path releases this object, set it as inactive in
+the next generation so it is not reachable anymore from this transaction
+and reference counter is dropped.
 
-Fixes the following kernel bug, which appears when running an RT patched
-kernel on the AmLogic Meson AXG A113X SoC:
-[   11.111407] BUG: scheduling while atomic: kworker/0:1H/75/0x00010001
-[   11.111438] Modules linked in:
-[   11.111451] CPU: 0 PID: 75 Comm: kworker/0:1H Not tainted 6.4.0-rc3-rt2-rtx-00081-gfd07f41ed6b4-dirty #1
-[   11.111461] Hardware name: RTX AXG A113X Linux Platform Board (DT)
-[   11.111469] Workqueue: kblockd blk_mq_run_work_fn
-[   11.111492] Call trace:
-[   11.111497]  dump_backtrace+0xac/0xe8
-[   11.111510]  show_stack+0x18/0x28
-[   11.111518]  dump_stack_lvl+0x48/0x60
-[   11.111530]  dump_stack+0x18/0x24
-[   11.111537]  __schedule_bug+0x4c/0x68
-[   11.111548]  __schedule+0x80/0x574
-[   11.111558]  schedule_loop+0x2c/0x50
-[   11.111567]  schedule_rtlock+0x14/0x20
-[   11.111576]  rtlock_slowlock_locked+0x468/0x730
-[   11.111587]  rt_spin_lock+0x40/0x64
-[   11.111596]  __wake_up_common_lock+0x5c/0xc4
-[   11.111610]  __wake_up+0x18/0x24
-[   11.111620]  mmc_blk_mq_req_done+0x68/0x138
-[   11.111633]  mmc_request_done+0x104/0x118
-[   11.111644]  meson_mmc_request_done+0x38/0x48
-[   11.111654]  meson_mmc_irq+0x128/0x1f0
-[   11.111663]  __handle_irq_event_percpu+0x70/0x114
-[   11.111674]  handle_irq_event_percpu+0x18/0x4c
-[   11.111683]  handle_irq_event+0x80/0xb8
-[   11.111691]  handle_fasteoi_irq+0xa4/0x120
-[   11.111704]  handle_irq_desc+0x20/0x38
-[   11.111712]  generic_handle_domain_irq+0x1c/0x28
-[   11.111721]  gic_handle_irq+0x8c/0xa8
-[   11.111735]  call_on_irq_stack+0x24/0x4c
-[   11.111746]  do_interrupt_handler+0x88/0x94
-[   11.111757]  el1_interrupt+0x34/0x64
-[   11.111769]  el1h_64_irq_handler+0x18/0x24
-[   11.111779]  el1h_64_irq+0x64/0x68
-[   11.111786]  __add_wait_queue+0x0/0x4c
-[   11.111795]  mmc_blk_rw_wait+0x84/0x118
-[   11.111804]  mmc_blk_mq_issue_rq+0x5c4/0x654
-[   11.111814]  mmc_mq_queue_rq+0x194/0x214
-[   11.111822]  blk_mq_dispatch_rq_list+0x3ac/0x528
-[   11.111834]  __blk_mq_sched_dispatch_requests+0x340/0x4d0
-[   11.111847]  blk_mq_sched_dispatch_requests+0x38/0x70
-[   11.111858]  blk_mq_run_work_fn+0x3c/0x70
-[   11.111865]  process_one_work+0x17c/0x1f0
-[   11.111876]  worker_thread+0x1d4/0x26c
-[   11.111885]  kthread+0xe4/0xf4
-[   11.111894]  ret_from_fork+0x10/0x20
-
-Fixes: 51c5d8447bd7 ("MMC: meson: initial support for GX platforms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Hundebøll <martin@geanix.com>
-Link: https://lore.kernel.org/r/20230607082713.517157-1-martin@geanix.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1240eb93f061 ("netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/meson-gx-mmc.c |   10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ include/net/netfilter/nf_tables.h |  2 ++
+ net/netfilter/nf_tables_api.c     | 45 ++++++++++++++++++++++++++-----
+ net/netfilter/nft_immediate.c     |  3 +++
+ 3 files changed, 43 insertions(+), 7 deletions(-)
 
---- a/drivers/mmc/host/meson-gx-mmc.c
-+++ b/drivers/mmc/host/meson-gx-mmc.c
-@@ -1007,11 +1007,8 @@ static irqreturn_t meson_mmc_irq(int irq
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 91bf88dab245f..55c14754e5e4e 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -901,6 +901,7 @@ struct nft_expr_type {
  
- 		if (data && !cmd->error)
- 			data->bytes_xfered = data->blksz * data->blocks;
--		if (meson_mmc_bounce_buf_read(data) ||
--		    meson_mmc_get_next_command(cmd))
--			ret = IRQ_WAKE_THREAD;
--		else
--			ret = IRQ_HANDLED;
-+
-+		return IRQ_WAKE_THREAD;
- 	}
+ enum nft_trans_phase {
+ 	NFT_TRANS_PREPARE,
++	NFT_TRANS_PREPARE_ERROR,
+ 	NFT_TRANS_ABORT,
+ 	NFT_TRANS_COMMIT,
+ 	NFT_TRANS_RELEASE
+@@ -1096,6 +1097,7 @@ int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
+ 			 struct nft_set_elem *elem);
+ int nft_set_catchall_validate(const struct nft_ctx *ctx, struct nft_set *set);
+ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
++void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
  
- out:
-@@ -1023,9 +1020,6 @@ out:
- 		writel(start, host->regs + SD_EMMC_START);
- 	}
- 
--	if (ret == IRQ_HANDLED)
--		meson_mmc_request_done(host->mmc, cmd->mrq);
--
- 	return ret;
+ enum nft_chain_types {
+ 	NFT_CHAIN_T_DEFAULT = 0,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 281ee688128ab..837925cf0b848 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -171,7 +171,8 @@ static void nft_trans_destroy(struct nft_trans *trans)
+ 	kfree(trans);
  }
  
+-static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++static void __nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set,
++				 bool bind)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct net *net = ctx->net;
+@@ -185,17 +186,28 @@ static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWSET:
+ 			if (nft_trans_set(trans) == set)
+-				nft_trans_set_bound(trans) = true;
++				nft_trans_set_bound(trans) = bind;
+ 			break;
+ 		case NFT_MSG_NEWSETELEM:
+ 			if (nft_trans_elem_set(trans) == set)
+-				nft_trans_elem_set_bound(trans) = true;
++				nft_trans_elem_set_bound(trans) = bind;
+ 			break;
+ 		}
+ 	}
+ }
+ 
+-static void nft_chain_trans_bind(const struct nft_ctx *ctx, struct nft_chain *chain)
++static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	return __nft_set_trans_bind(ctx, set, true);
++}
++
++static void nft_set_trans_unbind(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	return __nft_set_trans_bind(ctx, set, false);
++}
++
++static void __nft_chain_trans_bind(const struct nft_ctx *ctx,
++				   struct nft_chain *chain, bool bind)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct net *net = ctx->net;
+@@ -209,16 +221,22 @@ static void nft_chain_trans_bind(const struct nft_ctx *ctx, struct nft_chain *ch
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWCHAIN:
+ 			if (nft_trans_chain(trans) == chain)
+-				nft_trans_chain_bound(trans) = true;
++				nft_trans_chain_bound(trans) = bind;
+ 			break;
+ 		case NFT_MSG_NEWRULE:
+ 			if (trans->ctx.chain == chain)
+-				nft_trans_rule_bound(trans) = true;
++				nft_trans_rule_bound(trans) = bind;
+ 			break;
+ 		}
+ 	}
+ }
+ 
++static void nft_chain_trans_bind(const struct nft_ctx *ctx,
++				 struct nft_chain *chain)
++{
++	__nft_chain_trans_bind(ctx, chain, true);
++}
++
+ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
+ {
+ 	if (!nft_chain_binding(chain))
+@@ -237,6 +255,11 @@ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
+ 	return 0;
+ }
+ 
++void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
++{
++	__nft_chain_trans_bind(ctx, chain, false);
++}
++
+ static int nft_netdev_register_hooks(struct net *net,
+ 				     struct list_head *hook_list)
+ {
+@@ -3821,7 +3844,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (flow)
+ 		nft_flow_rule_destroy(flow);
+ err_release_rule:
+-	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
++	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE_ERROR);
+ 	nf_tables_rule_destroy(&ctx, rule);
+ err_release_expr:
+ 	for (i = 0; i < n; i++) {
+@@ -5114,6 +5137,13 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 			      enum nft_trans_phase phase)
+ {
+ 	switch (phase) {
++	case NFT_TRANS_PREPARE_ERROR:
++		nft_set_trans_unbind(ctx, set);
++		if (nft_set_is_anonymous(set))
++			nft_deactivate_next(ctx->net, set);
++
++		set->use--;
++		break;
+ 	case NFT_TRANS_PREPARE:
+ 		if (nft_set_is_anonymous(set))
+ 			nft_deactivate_next(ctx->net, set);
+@@ -7626,6 +7656,7 @@ void nf_tables_deactivate_flowtable(const struct nft_ctx *ctx,
+ 				    enum nft_trans_phase phase)
+ {
+ 	switch (phase) {
++	case NFT_TRANS_PREPARE_ERROR:
+ 	case NFT_TRANS_PREPARE:
+ 	case NFT_TRANS_ABORT:
+ 	case NFT_TRANS_RELEASE:
+diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
+index 0492a04064f11..3d76ebfe8939b 100644
+--- a/net/netfilter/nft_immediate.c
++++ b/net/netfilter/nft_immediate.c
+@@ -150,6 +150,9 @@ static void nft_immediate_deactivate(const struct nft_ctx *ctx,
+ 				nft_rule_expr_deactivate(&chain_ctx, rule, phase);
+ 
+ 			switch (phase) {
++			case NFT_TRANS_PREPARE_ERROR:
++				nf_tables_unbind_chain(ctx, chain);
++				fallthrough;
+ 			case NFT_TRANS_PREPARE:
+ 				nft_deactivate_next(ctx->net, chain);
+ 				break;
+-- 
+2.39.2
+
 
 
