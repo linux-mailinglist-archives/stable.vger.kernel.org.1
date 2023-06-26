@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F5473E7C2
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 199FE73E8C8
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:29:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231463AbjFZSS6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:18:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33876 "EHLO
+        id S232210AbjFZS3h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:29:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231379AbjFZSSf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:18:35 -0400
+        with ESMTP id S232116AbjFZS3X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17987E8
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:18:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71899211B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:28:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A88C960F1D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:18:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09A3C433C0;
-        Mon, 26 Jun 2023 18:18:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E4F660F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:28:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B4FC433C0;
+        Mon, 26 Jun 2023 18:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803510;
-        bh=m/PTfAR0LgpyYyFwU7cPLcBR6f0exJXTFY8O+56Z0rs=;
+        s=korg; t=1687804127;
+        bh=lCzTTXsK9F3LiXP1DIfPcuSePbR6FNxIucFb5rRfXm8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xCSBzDRQB3fGcvQBymCvhjz5eTjbp6FHlOmdstJ2eHuTGaxo6Cv2bcNrN0mrkO/aC
-         gOlK2DfYjLQ/TYSG9eVgZFMRR3DoUnK1ntrJtWjH2GeXqzUOHsywqRnGYJTrlA/eR7
-         H/qDU8jMh4whkSDyqdaRWcLu5epXlxJtIBH0gi30=
+        b=r8ZQflPVmpanzQcWeILkGd2URUQ25PN37RQ5iyUaBz0lAPywiv6GL2T2iQJCXYk9e
+         ZzAqm6aDmBLsSqlK5t6PfRelrta4SmUX+Y3uI7LEmIDm4WWcRULT25ml5jh8XeFfZ0
+         fxW6Ff2m4Fz/N94bHuGI2nv2+WzTFuUToyz+Z33U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.3 085/199] mmc: meson-gx: fix deferred probing
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 022/170] selftests: mptcp: sockopt: skip getsockopt checks if not supported
 Date:   Mon, 26 Jun 2023 20:09:51 +0200
-Message-ID: <20230626180809.329305015@linuxfoundation.org>
+Message-ID: <20230626180801.547524090@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit b8ada54fa1b83f3b6480d4cced71354301750153 upstream.
+commit c6f7eccc519837ebde1d099d9610c4f1d5bd975e upstream.
 
-The driver overrides the error codes and IRQ0 returned by platform_get_irq()
-to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the error
-codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
-in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
-so we now can safely ignore it...
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-Fixes: cbcaac6d7dd2 ("mmc: meson-gx-mmc: Fix platform_get_irq's error checking")
-Cc: stable@vger.kernel.org # v5.19+
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20230617203622.6812-3-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+One of them is the getsockopt(SOL_MPTCP) to get info about the MPTCP
+connections introduced by commit 55c42fa7fa33 ("mptcp: add MPTCP_INFO
+getsockopt") and the following ones.
+
+It is possible to look for "mptcp_diag_fill_info" in kallsyms because
+it is introduced by the mentioned feature. So we can know in advance if
+the feature is supported and skip the sub-test if not.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: ce9979129a0b ("selftests: mptcp: add mptcp getsockopt test cases")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/meson-gx-mmc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_sockopt.sh |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/mmc/host/meson-gx-mmc.c
-+++ b/drivers/mmc/host/meson-gx-mmc.c
-@@ -1202,8 +1202,8 @@ static int meson_mmc_probe(struct platfo
- 		return PTR_ERR(host->regs);
+--- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+@@ -84,6 +84,7 @@ cleanup()
+ }
  
- 	host->irq = platform_get_irq(pdev, 0);
--	if (host->irq <= 0)
--		return -EINVAL;
-+	if (host->irq < 0)
-+		return host->irq;
+ mptcp_lib_check_mptcp
++mptcp_lib_check_kallsyms
  
- 	cd_irq = platform_get_irq_optional(pdev, 1);
- 	mmc_gpio_set_cd_irq(mmc, cd_irq);
+ ip -Version > /dev/null 2>&1
+ if [ $? -ne 0 ];then
+@@ -248,6 +249,11 @@ do_mptcp_sockopt_tests()
+ {
+ 	local lret=0
+ 
++	if ! mptcp_lib_kallsyms_has "mptcp_diag_fill_info$"; then
++		echo "INFO: MPTCP sockopt not supported: SKIP"
++		return
++	fi
++
+ 	ip netns exec "$ns_sbox" ./mptcp_sockopt
+ 	lret=$?
+ 
 
 
