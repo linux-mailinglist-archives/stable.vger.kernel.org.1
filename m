@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A328673EA4E
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 692F273E9DE
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232613AbjFZSpo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:45:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58014 "EHLO
+        id S232507AbjFZSk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:40:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232030AbjFZSpn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:45:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C42D797
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:45:41 -0700 (PDT)
+        with ESMTP id S232502AbjFZSkx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:40:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE77D19F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:40:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52C9260F51
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:45:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578E9C433C0;
-        Mon, 26 Jun 2023 18:45:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44E2460F4B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:40:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A255C433C8;
+        Mon, 26 Jun 2023 18:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805140;
-        bh=mWPblunin0s9M4b2wYpZ0JV+S1yfMvanpnOt/N99Rqc=;
+        s=korg; t=1687804850;
+        bh=eiS2tlQ9izjZW6OvCh2stvg5oqA1/lLw3O6VqNqaQyc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GCpq9p5dbW1Dwt02abb27ibg/ttXznyaPKWMc+FsrSUqeV8WcHSZKKzkx0K1fJm73
-         7D5eMQ7Jx0xcvpqeoSxENBgr947s9GXbQOZnRrZ4eSbI5WZ3rSXXxds/+a6iMGO2Pr
-         IJ9BCD530pnM1h7J+qG/obQvOgFJvM1yxi1ZpPsA=
+        b=bSBg7oAmjOqpL3gvyIxYVQrjrzmLF9Lw1FCoC+zYGfl/+hDCraUoNUu5Hk5+RpiyN
+         OjfFMkw2ynfsdbxNev1LFxRHPwhtZFh8+2CwSv/EHw4lH84ST167ueWkDZTF8V9RLI
+         Qh3J5w6f43jfTXOsxDgBYtAHrEjwnBmSrsGu9DKQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eduard Zingerman <eddyz87@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 35/81] bpf: track immediate values written to stack by BPF_ST instruction
+Subject: [PATCH 5.15 62/96] netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain
 Date:   Mon, 26 Jun 2023 20:12:17 +0200
-Message-ID: <20230626180745.901386340@linuxfoundation.org>
+Message-ID: <20230626180749.514800542@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,482 +54,174 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit ecdf985d7615356b78241fdb159c091830ed0380 ]
+[ Upstream commit 26b5a5712eb85e253724e56a54c17f8519bd8e4e ]
 
-For aligned stack writes using BPF_ST instruction track stored values
-in a same way BPF_STX is handled, e.g. make sure that the following
-commands produce similar verifier knowledge:
+Add a new state to deal with rule expressions deactivation from the
+newrule error path, otherwise the anonymous set remains in the list in
+inactive state for the next generation. Mark the set/chain transaction
+as unbound so the abort path releases this object, set it as inactive in
+the next generation so it is not reachable anymore from this transaction
+and reference counter is dropped.
 
-  fp[-8] = 42;             r1 = 42;
-                       fp[-8] = r1;
-
-This covers two cases:
- - non-null values written to stack are stored as spill of fake
-   registers;
- - null values written to stack are stored as STACK_ZERO marks.
-
-Previously both cases above used STACK_MISC marks instead.
-
-Some verifier test cases relied on the old logic to obtain STACK_MISC
-marks for some stack values. These test cases are updated in the same
-commit to avoid failures during bisect.
-
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20230214232030.1502829-2-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 713274f1f2c8 ("bpf: Fix verifier id tracking of scalars on spill")
+Fixes: 1240eb93f061 ("netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c                         |  18 ++-
- .../bpf/verifier/bounds_mix_sign_unsign.c     | 110 ++++++++++--------
- 2 files changed, 80 insertions(+), 48 deletions(-)
+ include/net/netfilter/nf_tables.h |  2 ++
+ net/netfilter/nf_tables_api.c     | 45 ++++++++++++++++++++++++++-----
+ net/netfilter/nft_immediate.c     |  3 +++
+ 3 files changed, 43 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index fd2082a9bf81b..4fca456ba27a9 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2318,6 +2318,11 @@ static void save_register_state(struct bpf_func_state *state,
- 		scrub_spilled_slot(&state->stack[spi].slot_type[i - 1]);
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 1a879140f9966..603c156da210b 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -863,6 +863,7 @@ struct nft_expr_type {
+ 
+ enum nft_trans_phase {
+ 	NFT_TRANS_PREPARE,
++	NFT_TRANS_PREPARE_ERROR,
+ 	NFT_TRANS_ABORT,
+ 	NFT_TRANS_COMMIT,
+ 	NFT_TRANS_RELEASE
+@@ -1041,6 +1042,7 @@ int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
+ 			 struct nft_set_elem *elem);
+ int nft_set_catchall_validate(const struct nft_ctx *ctx, struct nft_set *set);
+ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
++void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
+ 
+ enum nft_chain_types {
+ 	NFT_CHAIN_T_DEFAULT = 0,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 83828c530b439..120b885fb44a6 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -171,7 +171,8 @@ static void nft_trans_destroy(struct nft_trans *trans)
+ 	kfree(trans);
  }
  
-+static bool is_bpf_st_mem(struct bpf_insn *insn)
+-static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++static void __nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set,
++				 bool bind)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct net *net = ctx->net;
+@@ -185,17 +186,28 @@ static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWSET:
+ 			if (nft_trans_set(trans) == set)
+-				nft_trans_set_bound(trans) = true;
++				nft_trans_set_bound(trans) = bind;
+ 			break;
+ 		case NFT_MSG_NEWSETELEM:
+ 			if (nft_trans_elem_set(trans) == set)
+-				nft_trans_elem_set_bound(trans) = true;
++				nft_trans_elem_set_bound(trans) = bind;
+ 			break;
+ 		}
+ 	}
+ }
+ 
+-static void nft_chain_trans_bind(const struct nft_ctx *ctx, struct nft_chain *chain)
++static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
 +{
-+	return BPF_CLASS(insn->code) == BPF_ST && BPF_MODE(insn->code) == BPF_MEM;
++	return __nft_set_trans_bind(ctx, set, true);
 +}
 +
- /* check_stack_{read,write}_fixed_off functions track spill/fill of registers,
-  * stack boundary and alignment are checked in check_mem_access()
-  */
-@@ -2329,8 +2334,9 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- {
- 	struct bpf_func_state *cur; /* state of the current function */
- 	int i, slot = -off - 1, spi = slot / BPF_REG_SIZE, err;
--	u32 dst_reg = env->prog->insnsi[insn_idx].dst_reg;
-+	struct bpf_insn *insn = &env->prog->insnsi[insn_idx];
- 	struct bpf_reg_state *reg = NULL;
-+	u32 dst_reg = insn->dst_reg;
- 
- 	err = realloc_func_state(state, round_up(slot + 1, BPF_REG_SIZE),
- 				 state->acquired_refs, true);
-@@ -2379,6 +2385,13 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 				return err;
- 		}
- 		save_register_state(state, spi, reg, size);
-+	} else if (!reg && !(off % BPF_REG_SIZE) && is_bpf_st_mem(insn) &&
-+		   insn->imm != 0 && env->bpf_capable) {
-+		struct bpf_reg_state fake_reg = {};
++static void nft_set_trans_unbind(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	return __nft_set_trans_bind(ctx, set, false);
++}
 +
-+		__mark_reg_known(&fake_reg, (u32)insn->imm);
-+		fake_reg.type = SCALAR_VALUE;
-+		save_register_state(state, spi, &fake_reg, size);
- 	} else if (reg && is_spillable_regtype(reg->type)) {
- 		/* register containing pointer is being spilled into stack */
- 		if (size != BPF_REG_SIZE) {
-@@ -2413,7 +2426,8 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 			state->stack[spi].spilled_ptr.live |= REG_LIVE_WRITTEN;
++static void __nft_chain_trans_bind(const struct nft_ctx *ctx,
++				   struct nft_chain *chain, bool bind)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct net *net = ctx->net;
+@@ -209,16 +221,22 @@ static void nft_chain_trans_bind(const struct nft_ctx *ctx, struct nft_chain *ch
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWCHAIN:
+ 			if (nft_trans_chain(trans) == chain)
+-				nft_trans_chain_bound(trans) = true;
++				nft_trans_chain_bound(trans) = bind;
+ 			break;
+ 		case NFT_MSG_NEWRULE:
+ 			if (trans->ctx.chain == chain)
+-				nft_trans_rule_bound(trans) = true;
++				nft_trans_rule_bound(trans) = bind;
+ 			break;
+ 		}
+ 	}
+ }
  
- 		/* when we zero initialize stack slots mark them as such */
--		if (reg && register_is_null(reg)) {
-+		if ((reg && register_is_null(reg)) ||
-+		    (!reg && is_bpf_st_mem(insn) && insn->imm == 0)) {
- 			/* backtracking doesn't work for STACK_ZERO yet. */
- 			err = mark_chain_precision(env, value_regno);
- 			if (err)
-diff --git a/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c b/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c
-index c2aa6f26738b4..bf82b923c5fe5 100644
---- a/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c
-+++ b/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c
-@@ -1,13 +1,14 @@
++static void nft_chain_trans_bind(const struct nft_ctx *ctx,
++				 struct nft_chain *chain)
++{
++	__nft_chain_trans_bind(ctx, chain, true);
++}
++
+ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
  {
- 	"bounds checks mixing signed and unsigned, positive bounds",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, 2),
- 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 3),
-@@ -17,20 +18,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
+ 	if (!nft_chain_binding(chain))
+@@ -237,6 +255,11 @@ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
+ 	return 0;
+ }
+ 
++void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
++{
++	__nft_chain_trans_bind(ctx, chain, false);
++}
++
+ static int nft_netdev_register_hooks(struct net *net,
+ 				     struct list_head *hook_list)
  {
- 	"bounds checks mixing signed and unsigned",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 3),
-@@ -40,20 +42,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
+@@ -3612,7 +3635,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (flow)
+ 		nft_flow_rule_destroy(flow);
+ err_release_rule:
+-	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
++	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE_ERROR);
+ 	nf_tables_rule_destroy(&ctx, rule);
+ err_release_expr:
+ 	for (i = 0; i < n; i++) {
+@@ -4893,6 +4916,13 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 			      enum nft_trans_phase phase)
  {
- 	"bounds checks mixing signed and unsigned, variant 2",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 5),
-@@ -65,20 +68,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
+ 	switch (phase) {
++	case NFT_TRANS_PREPARE_ERROR:
++		nft_set_trans_unbind(ctx, set);
++		if (nft_set_is_anonymous(set))
++			nft_deactivate_next(ctx->net, set);
++
++		set->use--;
++		break;
+ 	case NFT_TRANS_PREPARE:
+ 		if (nft_set_is_anonymous(set))
+ 			nft_deactivate_next(ctx->net, set);
+@@ -7337,6 +7367,7 @@ void nf_tables_deactivate_flowtable(const struct nft_ctx *ctx,
+ 				    enum nft_trans_phase phase)
  {
- 	"bounds checks mixing signed and unsigned, variant 3",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 4),
-@@ -89,20 +93,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 4",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, 1),
- 	BPF_ALU64_REG(BPF_AND, BPF_REG_1, BPF_REG_2),
-@@ -112,19 +117,20 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.result = ACCEPT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 5",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 5),
-@@ -135,17 +141,20 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 6",
- 	.insns = {
-+	BPF_MOV64_REG(BPF_REG_9, BPF_REG_1),
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
-+	BPF_MOV64_REG(BPF_REG_1, BPF_REG_9),
- 	BPF_MOV64_IMM(BPF_REG_2, 0),
- 	BPF_MOV64_REG(BPF_REG_3, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_3, -512),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_6, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_4, BPF_REG_6, 5),
-@@ -163,13 +172,14 @@
- {
- 	"bounds checks mixing signed and unsigned, variant 7",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, 1024 * 1024 * 1024),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 3),
-@@ -179,19 +189,20 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.result = ACCEPT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 8",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_2, BPF_REG_1, 2),
-@@ -203,20 +214,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 9",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 10),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_LD_IMM64(BPF_REG_2, -9223372036854775808ULL),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_2, BPF_REG_1, 2),
-@@ -228,19 +240,20 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.result = ACCEPT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 10",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, 0),
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_2, BPF_REG_1, 2),
-@@ -252,20 +265,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 11",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
-@@ -278,20 +292,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 12",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -6),
- 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
-@@ -303,20 +318,21 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 13",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 5),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, 2),
- 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
-@@ -331,7 +347,7 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
-@@ -340,13 +356,14 @@
- 	.insns = {
- 	BPF_LDX_MEM(BPF_W, BPF_REG_9, BPF_REG_1,
- 		    offsetof(struct __sk_buff, mark)),
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -1),
- 	BPF_MOV64_IMM(BPF_REG_8, 2),
-@@ -360,20 +377,21 @@
- 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, -3),
- 	BPF_JMP_IMM(BPF_JA, 0, 0, -7),
- 	},
--	.fixup_map_hash_8b = { 4 },
-+	.fixup_map_hash_8b = { 6 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
- {
- 	"bounds checks mixing signed and unsigned, variant 15",
- 	.insns = {
-+	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
-+	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
--	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 4),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
-+	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 3),
- 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
- 	BPF_MOV64_IMM(BPF_REG_2, -6),
- 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
-@@ -387,7 +405,7 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_8b = { 3 },
-+	.fixup_map_hash_8b = { 5 },
- 	.errstr = "unbounded min value",
- 	.result = REJECT,
- },
+ 	switch (phase) {
++	case NFT_TRANS_PREPARE_ERROR:
+ 	case NFT_TRANS_PREPARE:
+ 	case NFT_TRANS_ABORT:
+ 	case NFT_TRANS_RELEASE:
+diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
+index 9d4248898ce4b..6b0efab4fad09 100644
+--- a/net/netfilter/nft_immediate.c
++++ b/net/netfilter/nft_immediate.c
+@@ -150,6 +150,9 @@ static void nft_immediate_deactivate(const struct nft_ctx *ctx,
+ 				nft_rule_expr_deactivate(&chain_ctx, rule, phase);
+ 
+ 			switch (phase) {
++			case NFT_TRANS_PREPARE_ERROR:
++				nf_tables_unbind_chain(ctx, chain);
++				fallthrough;
+ 			case NFT_TRANS_PREPARE:
+ 				nft_deactivate_next(ctx->net, chain);
+ 				break;
 -- 
 2.39.2
 
