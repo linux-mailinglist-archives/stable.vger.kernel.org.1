@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D55C73E98A
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C86C73EA3A
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229457AbjFZShH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:37:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50824 "EHLO
+        id S232574AbjFZSor (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:44:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229762AbjFZShH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:37:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 443BA10B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:37:06 -0700 (PDT)
+        with ESMTP id S232608AbjFZSon (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:44:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7198810B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:44:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D470760F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:37:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21ABC433C8;
-        Mon, 26 Jun 2023 18:37:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DFA2D60F51
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:44:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8A1C433C8;
+        Mon, 26 Jun 2023 18:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804625;
-        bh=XwERnW4Pnic3eOpM/mKDTGDmoa4xHYVBZQbDvRPgLAs=;
+        s=korg; t=1687805081;
+        bh=pQns4SttK3iPAYZKZeTvQ+NlSsNOrLEhqmKRuHUQxPE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bp8LO5xHx3yYI7vvPEICcIux6oynRdmrEkDmQytkzGkw9VyXSa6+AO+69I0mT90RG
-         4T5Seojdeo6oN6ywnJ6VflHUl4gGE09Zp0zUQutenLf+tjzRd29c3Kq3A1mEL92CrN
-         sevVyu+COuQQG1PbqxHVzbyh/Nr/mBUV1XIZN9r4=
+        b=HXL27W1pwZoJStlB27nX6ntpcDTUV2X8hCHlfrkHyGXc+tmyT2ARWeMTu1gn1NVEK
+         zgVBSwluXyLM1Wvs4Ztk9GkY2BfZqEJyH8vcikZYeiz60e5v8xOJW2fH68rhdvyr35
+         W3tjpDi3DSza/3IWJTuAm9euOxG+CvDCqULlO1Yc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 47/60] media: cec: core: dont set last_initiator if tx in progress
+Subject: [PATCH 5.10 44/81] mmc: omap: fix deferred probing
 Date:   Mon, 26 Jun 2023 20:12:26 +0200
-Message-ID: <20230626180741.516461543@linuxfoundation.org>
+Message-ID: <20230626180746.274460594@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit 73af6c7511038249cad3d5f3b44bf8d78ac0f499 ]
+[ Upstream commit aedf4ba1ad00aaa94c1b66c73ecaae95e2564b95 ]
 
-When a message was received the last_initiator is set to 0xff.
-This will force the signal free time for the next transmit
-to that for a new initiator. However, if a new transmit is
-already in progress, then don't set last_initiator, since
-that's the initiator of the current transmit. Overwriting
-this would cause the signal free time of a following transmit
-to be that of the new initiator instead of a next transmit.
+The driver overrides the error codes returned by platform_get_irq() to
+-ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the
+error codes upstream.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20230617203622.6812-6-s.shtylyov@omp.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/cec-adap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/host/omap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/cec/cec-adap.c b/drivers/media/cec/cec-adap.c
-index c665f7d20c448..4c1770b8128cb 100644
---- a/drivers/media/cec/cec-adap.c
-+++ b/drivers/media/cec/cec-adap.c
-@@ -1077,7 +1077,8 @@ void cec_received_msg_ts(struct cec_adapter *adap,
- 	mutex_lock(&adap->lock);
- 	dprintk(2, "%s: %*ph\n", __func__, msg->len, msg->msg);
+diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
+index 6aa0537f1f847..eb978b75d8e78 100644
+--- a/drivers/mmc/host/omap.c
++++ b/drivers/mmc/host/omap.c
+@@ -1344,7 +1344,7 @@ static int mmc_omap_probe(struct platform_device *pdev)
  
--	adap->last_initiator = 0xff;
-+	if (!adap->transmit_in_progress)
-+		adap->last_initiator = 0xff;
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+-		return -ENXIO;
++		return irq;
  
- 	/* Check if this message was for us (directed or broadcast). */
- 	if (!cec_msg_is_broadcast(msg))
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	host->virt_base = devm_ioremap_resource(&pdev->dev, res);
 -- 
 2.39.2
 
