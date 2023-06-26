@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 706DB73E8E7
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BAE273E811
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232125AbjFZSan (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:30:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44372 "EHLO
+        id S231757AbjFZSWH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:22:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232321AbjFZSaA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:30:00 -0400
+        with ESMTP id S231713AbjFZSV4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:21:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3910F10E7
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9839B1BCE
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:21:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AED6A60F40
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96E8C433C8;
-        Mon, 26 Jun 2023 18:29:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BC1660F52
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:21:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997DFC433C0;
+        Mon, 26 Jun 2023 18:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804198;
-        bh=VJwSSW7VUjSIMxSRaaQ2XZoVmSOxinwNm4f1SFdGTQE=;
+        s=korg; t=1687803670;
+        bh=Z4KiCw03x0j+LJGQG3xk0KceWDlSs4YQs1yWnzzY5eU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pEpqm71ECciZfAEcpJB1w+JhOPjzAcm9RmdLjX451rFb72idbUGbKBMJE25GHtuSL
-         KdEZybaOQZLhSDhVydxTRJn2JVo7q9zoIEELRasJs8qyujMa5305jwqP0aZggkuqGt
-         wNMWTIlOA1Gygu1FkuFUyCcCVgfR+xRZlzEs4fr8=
+        b=wW+N0vSAj/0bdBzf1CUckcrxM2MisJGP8jnyCGA70z3NfoMZrAJwYR/Z4J9htsNTp
+         iB6XKn/zBDRJVSYOYlvwdzRztaVVu3PvGhMokYSQXks/fFZmgrsS/dJ1d/nDNHvaX3
+         pyizRTVSOemz1YL+h6064nvR06dhUwmGWxDTRs2w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthew Gerlach <matthew.gerlach@linux.intel.com>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Yonghong Song <yhs@meta.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/170] regmap: spi-avmm: Fix regmap_bus max_raw_write
-Date:   Mon, 26 Jun 2023 20:10:43 +0200
-Message-ID: <20230626180803.957537454@linuxfoundation.org>
+Subject: [PATCH 6.3 138/199] bpf/btf: Accept function names that contain dots
+Date:   Mon, 26 Jun 2023 20:10:44 +0200
+Message-ID: <20230626180811.658404027@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,50 +58,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Russ Weight <russell.h.weight@intel.com>
+From: Florent Revest <revest@chromium.org>
 
-[ Upstream commit c8e796895e2310b6130e7577248da1d771431a77 ]
+[ Upstream commit 9724160b3942b0a967b91a59f81da5593f28b8ba ]
 
-The max_raw_write member of the regmap_spi_avmm_bus structure is defined
-as:
-	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT
+When building a kernel with LLVM=1, LLVM_IAS=0 and CONFIG_KASAN=y, LLVM
+leaves DWARF tags for the "asan.module_ctor" & co symbols. In turn,
+pahole creates BTF_KIND_FUNC entries for these and this makes the BTF
+metadata validation fail because they contain a dot.
 
-SPI_AVMM_VAL_SIZE == 4 and MAX_WRITE_CNT == 1 so this results in a
-maximum write transfer size of 4 bytes which provides only enough space to
-transfer the address of the target register. It provides no space for the
-value to be transferred. This bug became an issue (divide-by-zero in
-_regmap_raw_write()) after the following was accepted into mainline:
+In a dramatic turn of event, this BTF verification failure can cause
+the netfilter_bpf initialization to fail, causing netfilter_core to
+free the netfilter_helper hashmap and netfilter_ftp to trigger a
+use-after-free. The risk of u-a-f in netfilter will be addressed
+separately but the existence of "asan.module_ctor" debug info under some
+build conditions sounds like a good enough reason to accept functions
+that contain dots in BTF.
 
-commit 3981514180c9 ("regmap: Account for register length when chunking")
+Although using only LLVM=1 is the recommended way to compile clang-based
+kernels, users can certainly do LLVM=1, LLVM_IAS=0 as well and we still
+try to support that combination according to Nick. To clarify:
 
-Change max_raw_write to include space (4 additional bytes) for both the
-register address and value:
+  - > v5.10 kernel, LLVM=1 (LLVM_IAS=0 is not the default) is recommended,
+    but user can still have LLVM=1, LLVM_IAS=0 to trigger the issue
 
-	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT
+  - <= 5.10 kernel, LLVM=1 (LLVM_IAS=0 is the default) is recommended in
+    which case GNU as will be used
 
-Fixes: 7f9fb67358a2 ("regmap: add Intel SPI Slave to AVMM Bus Bridge support")
-Reviewed-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
-Signed-off-by: Russ Weight <russell.h.weight@intel.com>
-Link: https://lore.kernel.org/r/20230620202824.380313-1-russell.h.weight@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 1dc92851849c ("bpf: kernel side support for BTF Var and DataSec")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Cc: Yonghong Song <yhs@meta.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Link: https://lore.kernel.org/bpf/20230615145607.3469985-1-revest@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-spi-avmm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/btf.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap-spi-avmm.c b/drivers/base/regmap/regmap-spi-avmm.c
-index 4c2b94b3e30be..6af692844c196 100644
---- a/drivers/base/regmap/regmap-spi-avmm.c
-+++ b/drivers/base/regmap/regmap-spi-avmm.c
-@@ -660,7 +660,7 @@ static const struct regmap_bus regmap_spi_avmm_bus = {
- 	.reg_format_endian_default = REGMAP_ENDIAN_NATIVE,
- 	.val_format_endian_default = REGMAP_ENDIAN_NATIVE,
- 	.max_raw_read = SPI_AVMM_VAL_SIZE * MAX_READ_CNT,
--	.max_raw_write = SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
-+	.max_raw_write = SPI_AVMM_REG_SIZE + SPI_AVMM_VAL_SIZE * MAX_WRITE_CNT,
- 	.free_context = spi_avmm_bridge_ctx_free,
- };
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 46bce5577fb48..3cc3232f8c334 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -735,13 +735,12 @@ static bool btf_name_offset_valid(const struct btf *btf, u32 offset)
+ 	return offset < btf->hdr.str_len;
+ }
  
+-static bool __btf_name_char_ok(char c, bool first, bool dot_ok)
++static bool __btf_name_char_ok(char c, bool first)
+ {
+ 	if ((first ? !isalpha(c) :
+ 		     !isalnum(c)) &&
+ 	    c != '_' &&
+-	    ((c == '.' && !dot_ok) ||
+-	      c != '.'))
++	    c != '.')
+ 		return false;
+ 	return true;
+ }
+@@ -758,20 +757,20 @@ static const char *btf_str_by_offset(const struct btf *btf, u32 offset)
+ 	return NULL;
+ }
+ 
+-static bool __btf_name_valid(const struct btf *btf, u32 offset, bool dot_ok)
++static bool __btf_name_valid(const struct btf *btf, u32 offset)
+ {
+ 	/* offset must be valid */
+ 	const char *src = btf_str_by_offset(btf, offset);
+ 	const char *src_limit;
+ 
+-	if (!__btf_name_char_ok(*src, true, dot_ok))
++	if (!__btf_name_char_ok(*src, true))
+ 		return false;
+ 
+ 	/* set a limit on identifier length */
+ 	src_limit = src + KSYM_NAME_LEN;
+ 	src++;
+ 	while (*src && src < src_limit) {
+-		if (!__btf_name_char_ok(*src, false, dot_ok))
++		if (!__btf_name_char_ok(*src, false))
+ 			return false;
+ 		src++;
+ 	}
+@@ -779,17 +778,14 @@ static bool __btf_name_valid(const struct btf *btf, u32 offset, bool dot_ok)
+ 	return !*src;
+ }
+ 
+-/* Only C-style identifier is permitted. This can be relaxed if
+- * necessary.
+- */
+ static bool btf_name_valid_identifier(const struct btf *btf, u32 offset)
+ {
+-	return __btf_name_valid(btf, offset, false);
++	return __btf_name_valid(btf, offset);
+ }
+ 
+ static bool btf_name_valid_section(const struct btf *btf, u32 offset)
+ {
+-	return __btf_name_valid(btf, offset, true);
++	return __btf_name_valid(btf, offset);
+ }
+ 
+ static const char *__btf_name_by_offset(const struct btf *btf, u32 offset)
+@@ -4450,7 +4446,7 @@ static s32 btf_var_check_meta(struct btf_verifier_env *env,
+ 	}
+ 
+ 	if (!t->name_off ||
+-	    !__btf_name_valid(env->btf, t->name_off, true)) {
++	    !__btf_name_valid(env->btf, t->name_off)) {
+ 		btf_verifier_log_type(env, t, "Invalid name");
+ 		return -EINVAL;
+ 	}
 -- 
 2.39.2
 
