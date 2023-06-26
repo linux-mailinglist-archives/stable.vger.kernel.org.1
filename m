@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 017FB73E74A
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90AF373E909
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjFZSNz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56418 "EHLO
+        id S232276AbjFZScN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:32:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231377AbjFZSNi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:13:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C872810E7
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:13:33 -0700 (PDT)
+        with ESMTP id S232335AbjFZSbq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:31:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802A826BE
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:31:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6529C60F24
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:13:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDAAC433C8;
-        Mon, 26 Jun 2023 18:13:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D14F60F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:31:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA51C433C0;
+        Mon, 26 Jun 2023 18:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803212;
-        bh=M0x5sOh7BFzkJ3oKdGCF5EZ+JMkIwFsKRXGsKDzS1N8=;
+        s=korg; t=1687804289;
+        bh=02B7X0mR8SYqTGWVbufD0XfUuV8jpkCcOmFxRmax6Qw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XWOE6lw3WQ0dRyCBS88RL8/xbhtsO9KI4NW5Y1ER2NaVBwqG1weAdFFKDy7krLOJJ
-         4YN1Lq/eINor4z2U47jEsY9nTnDbhRRv+q5rLiTwD8y9yWI+cEoDIi6cdaUcFIRXPf
-         MEIRLK0fIwKd+7a0kZGa+qK5Pj8/4/dlBB4psXMQ=
+        b=fj+67yF3kIn3mqVV5+EZ203fcA8KUgaFdbTXCNRzYivzHcUPwQyibJq6Yy51AglOV
+         8kUhpMPXzGLryN+XbLiiMLiEdZONHaQKuDn/Zlm8rJDassxo1olFQV+/y6lWaN11GC
+         aVU7OgIczhch+CQPO0hMnIZKDRABSCHbUWfNihsY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev, Terin Stock <terin@cloudflare.com>,
+        Julian Anastasov <ja@ssi.bg>, Simon Horman <horms@kernel.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 12/26] mmc: usdhi60rol0: fix deferred probing
+Subject: [PATCH 6.1 105/170] ipvs: align inner_mac_header for encapsulation
 Date:   Mon, 26 Jun 2023 20:11:14 +0200
-Message-ID: <20230626180734.148870571@linuxfoundation.org>
+Message-ID: <20230626180805.244997408@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
-References: <20230626180733.699092073@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,41 +56,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Terin Stock <terin@cloudflare.com>
 
-[ Upstream commit 413db499730248431c1005b392e8ed82c4fa19bf ]
+[ Upstream commit d7fce52fdf96663ddc2eb21afecff3775588612a ]
 
-The driver overrides the error codes returned by platform_get_irq_byname()
-to -ENODEV, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing.  Switch to propagating error
-codes upstream.
+When using encapsulation the original packet's headers are copied to the
+inner headers. This preserves the space for an inner mac header, which
+is not used by the inner payloads for the encapsulation types supported
+by IPVS. If a packet is using GUE or GRE encapsulation and needs to be
+segmented, flow can be passed to __skb_udp_tunnel_segment() which
+calculates a negative tunnel header length. A negative tunnel header
+length causes pskb_may_pull() to fail, dropping the packet.
 
-Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20230617203622.6812-13-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+This can be observed by attaching probes to ip_vs_in_hook(),
+__dev_queue_xmit(), and __skb_udp_tunnel_segment():
+
+    perf probe --add '__dev_queue_xmit skb->inner_mac_header \
+    skb->inner_network_header skb->mac_header skb->network_header'
+    perf probe --add '__skb_udp_tunnel_segment:7 tnl_hlen'
+    perf probe -m ip_vs --add 'ip_vs_in_hook skb->inner_mac_header \
+    skb->inner_network_header skb->mac_header skb->network_header'
+
+These probes the headers and tunnel header length for packets which
+traverse the IPVS encapsulation path. A TCP packet can be forced into
+the segmentation path by being smaller than a calculated clamped MSS,
+but larger than the advertised MSS.
+
+    probe:ip_vs_in_hook: inner_mac_header=0x0 inner_network_header=0x0 mac_header=0x44 network_header=0x52
+    probe:ip_vs_in_hook: inner_mac_header=0x44 inner_network_header=0x52 mac_header=0x44 network_header=0x32
+    probe:dev_queue_xmit: inner_mac_header=0x44 inner_network_header=0x52 mac_header=0x44 network_header=0x32
+    probe:__skb_udp_tunnel_segment_L7: tnl_hlen=-2
+
+When using veth-based encapsulation, the interfaces are set to be
+mac-less, which does not preserve space for an inner mac header. This
+prevents this issue from occurring.
+
+In our real-world testing of sending a 32KB file we observed operation
+time increasing from ~75ms for veth-based encapsulation to over 1.5s
+using IPVS encapsulation due to retries from dropped packets.
+
+This changeset modifies the packet on the encapsulation path in
+ip_vs_tunnel_xmit() and ip_vs_tunnel_xmit_v6() to remove the inner mac
+header offset. This fixes UDP segmentation for both encapsulation types,
+and corrects the inner headers for any IPIP flows that may use it.
+
+Fixes: 84c0d5e96f3a ("ipvs: allow tunneling with gue encapsulation")
+Signed-off-by: Terin Stock <terin@cloudflare.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/usdhi6rol0.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/netfilter/ipvs/ip_vs_xmit.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
-index d27ee9eb2eacf..27459eab0ed09 100644
---- a/drivers/mmc/host/usdhi6rol0.c
-+++ b/drivers/mmc/host/usdhi6rol0.c
-@@ -1749,8 +1749,10 @@ static int usdhi6_probe(struct platform_device *pdev)
- 	irq_cd = platform_get_irq_byname(pdev, "card detect");
- 	irq_sd = platform_get_irq_byname(pdev, "data");
- 	irq_sdio = platform_get_irq_byname(pdev, "SDIO");
--	if (irq_sd < 0 || irq_sdio < 0)
--		return -ENODEV;
-+	if (irq_sd < 0)
-+		return irq_sd;
-+	if (irq_sdio < 0)
-+		return irq_sdio;
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index 0291713798842..7243079ef3546 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -1225,6 +1225,7 @@ ip_vs_tunnel_xmit(struct sk_buff *skb, struct ip_vs_conn *cp,
+ 	skb->transport_header = skb->network_header;
  
- 	mmc = mmc_alloc_host(sizeof(struct usdhi6_host), dev);
- 	if (!mmc)
+ 	skb_set_inner_ipproto(skb, next_protocol);
++	skb_set_inner_mac_header(skb, skb_inner_network_offset(skb));
+ 
+ 	if (tun_type == IP_VS_CONN_F_TUNNEL_TYPE_GUE) {
+ 		bool check = false;
+@@ -1373,6 +1374,7 @@ ip_vs_tunnel_xmit_v6(struct sk_buff *skb, struct ip_vs_conn *cp,
+ 	skb->transport_header = skb->network_header;
+ 
+ 	skb_set_inner_ipproto(skb, next_protocol);
++	skb_set_inner_mac_header(skb, skb_inner_network_offset(skb));
+ 
+ 	if (tun_type == IP_VS_CONN_F_TUNNEL_TYPE_GUE) {
+ 		bool check = false;
 -- 
 2.39.2
 
