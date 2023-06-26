@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A208973E8B4
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E692A73E7E9
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232171AbjFZS2v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:28:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43148 "EHLO
+        id S231530AbjFZSUX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:20:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232177AbjFZS2U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:28:20 -0400
+        with ESMTP id S231609AbjFZSUV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:20:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04ADA26AF
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:27:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A67B94
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:20:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AFA460F1E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:27:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A4DC433C8;
-        Mon, 26 Jun 2023 18:27:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2217660F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2967CC433C0;
+        Mon, 26 Jun 2023 18:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804069;
-        bh=mnLwhkLgtJUzV8eeD1anU2S0uXsMsZ/aT+fqyuItZ3M=;
+        s=korg; t=1687803619;
+        bh=oHdapyYavQDDJKy9anQB+/4HPf7n2PV+QxwbAWf0/ek=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xAtfWl0+343PRwi98Pbc8ZmT9Y16o7d3WPPI1IBARAwPtirkLsTi5QpibH7sE0TRC
-         GYG6+6vzYFe2lEpqnRD6v6DXJ0vQo5SHGxbmZDKnFG+o7VrzxSN9tbhPKIfFfRCP5I
-         5QnjD+iBe/sDFkPLTgSTOrsqROwIKbFhHwGSdV6I=
+        b=poSN1vY7hAIK+hmNJgzAA7/SDDGZ8WNr+NY7gGctmdhTeIAYTLUryYp6euHmpxIdx
+         IvcKbHFiiexEILenh50ojRTNKUoMOjMT+HuW+nIs9Boj1XY0i16etJ864fh1ZY2xqJ
+         YNg7b5ydUCwg6AubpDb09a/k9g/Zk5y/yOydlQ5s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 031/170] selftests: mptcp: join: support RM_ADDR for used endpoints or not
-Date:   Mon, 26 Jun 2023 20:10:00 +0200
-Message-ID: <20230626180801.941610964@linuxfoundation.org>
+        patches@lists.linux.dev, Andrew Powers-Holmes <aholmes@omnom.net>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
+        Diederik de Haas <didi.debian@cknow.org>,
+        Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.3 095/199] arm64: dts: rockchip: Fix rk356x PCIe register and range mappings
+Date:   Mon, 26 Jun 2023 20:10:01 +0200
+Message-ID: <20230626180809.788432343@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,50 +57,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Andrew Powers-Holmes <aholmes@omnom.net>
 
-commit 425ba803124b90cb9124d99f13b372a89dc151d9 upstream.
+commit 568a67e742dfa90b19a23305317164c5c350b71e upstream.
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting all MPTCP features.
+The register and range mappings for the PCIe controller in Rockchip's
+RK356x SoCs are incorrect. Replace them with corrected values from the
+vendor BSP sources, updated to match current DT schema.
 
-At some points, a new feature caused internal behaviour changes we are
-verifying in the selftests, see the Fixes tag below. It was not a UAPI
-change but because in these selftests, we check some internal
-behaviours, it is normal we have to adapt them from time to time after
-having added some features.
+These values are also used in u-boot.
 
-It looks like there is no external sign we can use to predict the
-expected behaviour. Instead of accepting different behaviours and thus
-not really checking for the expected behaviour, we are looking here for
-a specific kernel version. That's not ideal but it looks better than
-removing the test because it cannot support older kernel versions.
-
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 6fa0174a7c86 ("mptcp: more careful RM_ADDR generation")
+Fixes: 66b51ea7d70f ("arm64: dts: rockchip: Add rk3568 PCIe2x1 controller")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Andrew Powers-Holmes <aholmes@omnom.net>
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Signed-off-by: Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
+Tested-by: Diederik de Haas <didi.debian@cknow.org>
+Link: https://lore.kernel.org/r/20230601132516.153934-1-frattaroli.nicolas@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3568.dtsi |   14 ++++++++------
+ arch/arm64/boot/dts/rockchip/rk356x.dtsi |    7 ++++---
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2329,7 +2329,12 @@ remove_tests()
- 		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
- 		run_tests $ns1 $ns2 10.0.1.1 0 -8 -8 slow
- 		chk_join_nr 3 3 3
--		chk_rm_nr 0 3 simult
-+
-+		if mptcp_lib_kversion_ge 5.18; then
-+			chk_rm_nr 0 3 simult
-+		else
-+			chk_rm_nr 3 3
-+		fi
- 	fi
- 
- 	# addresses flush
+--- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+@@ -94,9 +94,10 @@
+ 		power-domains = <&power RK3568_PD_PIPE>;
+ 		reg = <0x3 0xc0400000 0x0 0x00400000>,
+ 		      <0x0 0xfe270000 0x0 0x00010000>,
+-		      <0x3 0x7f000000 0x0 0x01000000>;
+-		ranges = <0x01000000 0x0 0x3ef00000 0x3 0x7ef00000 0x0 0x00100000>,
+-			 <0x02000000 0x0 0x00000000 0x3 0x40000000 0x0 0x3ef00000>;
++		      <0x0 0xf2000000 0x0 0x00100000>;
++		ranges = <0x01000000 0x0 0xf2100000 0x0 0xf2100000 0x0 0x00100000>,
++			 <0x02000000 0x0 0xf2200000 0x0 0xf2200000 0x0 0x01e00000>,
++			 <0x03000000 0x0 0x40000000 0x3 0x40000000 0x0 0x40000000>;
+ 		reg-names = "dbi", "apb", "config";
+ 		resets = <&cru SRST_PCIE30X1_POWERUP>;
+ 		reset-names = "pipe";
+@@ -146,9 +147,10 @@
+ 		power-domains = <&power RK3568_PD_PIPE>;
+ 		reg = <0x3 0xc0800000 0x0 0x00400000>,
+ 		      <0x0 0xfe280000 0x0 0x00010000>,
+-		      <0x3 0xbf000000 0x0 0x01000000>;
+-		ranges = <0x01000000 0x0 0x3ef00000 0x3 0xbef00000 0x0 0x00100000>,
+-			 <0x02000000 0x0 0x00000000 0x3 0x80000000 0x0 0x3ef00000>;
++		      <0x0 0xf0000000 0x0 0x00100000>;
++		ranges = <0x01000000 0x0 0xf0100000 0x0 0xf0100000 0x0 0x00100000>,
++			 <0x02000000 0x0 0xf0200000 0x0 0xf0200000 0x0 0x01e00000>,
++			 <0x03000000 0x0 0x40000000 0x3 0x80000000 0x0 0x40000000>;
+ 		reg-names = "dbi", "apb", "config";
+ 		resets = <&cru SRST_PCIE30X2_POWERUP>;
+ 		reset-names = "pipe";
+--- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+@@ -952,7 +952,7 @@
+ 		compatible = "rockchip,rk3568-pcie";
+ 		reg = <0x3 0xc0000000 0x0 0x00400000>,
+ 		      <0x0 0xfe260000 0x0 0x00010000>,
+-		      <0x3 0x3f000000 0x0 0x01000000>;
++		      <0x0 0xf4000000 0x0 0x00100000>;
+ 		reg-names = "dbi", "apb", "config";
+ 		interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
+ 			     <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
+@@ -982,8 +982,9 @@
+ 		phys = <&combphy2 PHY_TYPE_PCIE>;
+ 		phy-names = "pcie-phy";
+ 		power-domains = <&power RK3568_PD_PIPE>;
+-		ranges = <0x01000000 0x0 0x3ef00000 0x3 0x3ef00000 0x0 0x00100000
+-			  0x02000000 0x0 0x00000000 0x3 0x00000000 0x0 0x3ef00000>;
++		ranges = <0x01000000 0x0 0xf4100000 0x0 0xf4100000 0x0 0x00100000>,
++			 <0x02000000 0x0 0xf4200000 0x0 0xf4200000 0x0 0x01e00000>,
++			 <0x03000000 0x0 0x40000000 0x3 0x00000000 0x0 0x40000000>;
+ 		resets = <&cru SRST_PCIE20_POWERUP>;
+ 		reset-names = "pipe";
+ 		#address-cells = <3>;
 
 
