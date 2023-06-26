@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB5D273E971
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A046C73E87F
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232374AbjFZSgH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:36:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49804 "EHLO
+        id S232082AbjFZS0f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:26:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232373AbjFZSgG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:36:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3357E9B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:36:05 -0700 (PDT)
+        with ESMTP id S231979AbjFZS0P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806AC1FF3
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:25:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD43060F24
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C6DC433C8;
-        Mon, 26 Jun 2023 18:36:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E04A460F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:25:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEB3C433C0;
+        Mon, 26 Jun 2023 18:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804564;
-        bh=iWLEbjyzYrV+chiF0vHRz9H9W1XQXVsQUNJ/de8yI5g=;
+        s=korg; t=1687803927;
+        bh=BnY9tEwl581+ZH4RcY8BDKcQ4ZemhFuZDyycVn4W940=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E7J7yyXzodMvBIsDeHkA/xhc7irSJX10se5mmaID48E855HbvByV7oVZ8lizeaq9c
-         DIJUvZs8luN+dUDwdUDnPu5sV+LA/jQa87wrgErEkpEe5Sl/qZQw+FWdh100EF0LC7
-         lhxccQiVo2OimVcNeJ3PhbkqAQJxtYuz9KBjlNDs=
+        b=SeLP3jD3ZEp5x9dqUlYKOa+eHI88/N6DDNF+xn2E5bjYwbYHTDJLsRF+dc4thr9zY
+         b1dmJ+UVDPIpNfmSTZA00v4Go+83G6cHuylun/kqjNZnO7QnJAmCa0t2/hSo+0/1uJ
+         rAmKHjp4WYUGaPZFMmM1vWoTsAinnuglC2hR0qxc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Sean Young <sean@mess.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Ovidiu Panait <ovidiu.panait@windriver.com>
-Subject: [PATCH 5.4 08/60] media: dvbdev: Fix memleak in dvb_register_device
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 24/41] mmc: usdhi60rol0: fix deferred probing
 Date:   Mon, 26 Jun 2023 20:11:47 +0200
-Message-ID: <20230626180739.897780657@linuxfoundation.org>
+Message-ID: <20230626180737.191679319@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
+References: <20230626180736.243379844@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,33 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit 167faadfcf9339088910e9e85a1b711fcbbef8e9 upstream.
+[ Upstream commit 413db499730248431c1005b392e8ed82c4fa19bf ]
 
-When device_create() fails, dvbdev and dvbdevfops should
-be freed just like when dvb_register_media_device() fails.
+The driver overrides the error codes returned by platform_get_irq_byname()
+to -ENODEV, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing.  Switch to propagating error
+codes upstream.
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20230617203622.6812-13-s.shtylyov@omp.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvbdev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mmc/host/usdhi6rol0.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -545,6 +545,9 @@ int dvb_register_device(struct dvb_adapt
- 	if (IS_ERR(clsdev)) {
- 		pr_err("%s: failed to create device dvb%d.%s%d (%ld)\n",
- 		       __func__, adap->num, dnames[type], id, PTR_ERR(clsdev));
-+		dvb_media_device_free(dvbdev);
-+		kfree(dvbdevfops);
-+		kfree(dvbdev);
- 		return PTR_ERR(clsdev);
- 	}
- 	dprintk("DVB: register adapter%d/%s%d @ minor: %i (0x%02x)\n",
+diff --git a/drivers/mmc/host/usdhi6rol0.c b/drivers/mmc/host/usdhi6rol0.c
+index b88728b686e8a..e436f7e7a3ee0 100644
+--- a/drivers/mmc/host/usdhi6rol0.c
++++ b/drivers/mmc/host/usdhi6rol0.c
+@@ -1749,8 +1749,10 @@ static int usdhi6_probe(struct platform_device *pdev)
+ 	irq_cd = platform_get_irq_byname(pdev, "card detect");
+ 	irq_sd = platform_get_irq_byname(pdev, "data");
+ 	irq_sdio = platform_get_irq_byname(pdev, "SDIO");
+-	if (irq_sd < 0 || irq_sdio < 0)
+-		return -ENODEV;
++	if (irq_sd < 0)
++		return irq_sd;
++	if (irq_sdio < 0)
++		return irq_sdio;
+ 
+ 	mmc = mmc_alloc_host(sizeof(struct usdhi6_host), dev);
+ 	if (!mmc)
+-- 
+2.39.2
+
 
 
