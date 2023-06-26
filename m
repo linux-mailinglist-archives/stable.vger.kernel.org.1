@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9812573E95F
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1A4273E9BE
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232350AbjFZSfU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:35:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49228 "EHLO
+        id S232447AbjFZSjf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:39:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232347AbjFZSfT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:35:19 -0400
+        with ESMTP id S232444AbjFZSje (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78DD94
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:35:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61C65ED
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C7A7660E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:35:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13C2C433C9;
-        Mon, 26 Jun 2023 18:35:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA7F160F4F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001AEC433C8;
+        Mon, 26 Jun 2023 18:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804517;
-        bh=UCyr2ie/rM1BwnUrAk3j7pLpi+M3epYGd7Dw+ZCbKoQ=;
+        s=korg; t=1687804772;
+        bh=V1aeuxXObHP5fwAg9Nw3YSc27Jjs2aasKMFlzhkHOvI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d3pqzRjtjWqIB+7qjOo+ySgbXuI55WlE3RKvzLp2tFjNABCR7X3OGCtyd/43A5ofu
-         V2iNSiE5cvv6Al3Q1QP7KwL3cwjWX9OsZ9IJENffB1dCKaMutS1vRaMcGQpI729EMS
-         CJRvraggj1TedIGMAxBUzOL9IMAnTuhq4wf2XekA=
+        b=0ggtLrvuSD8UeL+eACtIdlddeQXQCtjLR3pwBZTpe7LXUtmiOAWHdeGgrsDvKUAoZ
+         5i97ygAFPHVvFi+NLaVa/fENR4Ckz9tLsQzFtctNn6wKLOeFSMQeDSPxVlXArC5BDt
+         klXckx8HVyxTIFiJ9SGYK7/83CsEUZwGpCK5t6rU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+31837fe952932efc8fb9@syzkaller.appspotmail.com,
+        syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 11/60] nilfs2: fix buffer corruption due to concurrent device reads
+Subject: [PATCH 5.15 35/96] nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
 Date:   Mon, 26 Jun 2023 20:11:50 +0200
-Message-ID: <20230626180740.011847575@linuxfoundation.org>
+Message-ID: <20230626180748.416529272@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,145 +58,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 679bd7ebdd315bf457a4740b306ae99f1d0a403d upstream.
+commit 782e53d0c14420858dbf0f8f797973c150d3b6d7 upstream.
 
-As a result of analysis of a syzbot report, it turned out that in three
-cases where nilfs2 allocates block device buffers directly via sb_getblk,
-concurrent reads to the device can corrupt the allocated buffers.
+In a syzbot stress test that deliberately causes file system errors on
+nilfs2 with a corrupted disk image, it has been reported that
+nilfs_clear_dirty_page() called from nilfs_clear_dirty_pages() can cause a
+general protection fault.
 
-Nilfs2 uses sb_getblk for segment summary blocks, that make up a log
-header, and the super root block, that is the trailer, and when moving and
-writing the second super block after fs resize.
+In nilfs_clear_dirty_pages(), when looking up dirty pages from the page
+cache and calling nilfs_clear_dirty_page() for each dirty page/folio
+retrieved, the back reference from the argument page to "mapping" may have
+been changed to NULL (and possibly others).  It is necessary to check this
+after locking the page/folio.
 
-In any of these, since the uptodate flag is not set when storing metadata
-to be written in the allocated buffers, the stored metadata will be
-overwritten if a device read of the same block occurs concurrently before
-the write.  This causes metadata corruption and misbehavior in the log
-write itself, causing warnings in nilfs_btree_assign() as reported.
+So, fix this issue by not calling nilfs_clear_dirty_page() on a page/folio
+after locking it in nilfs_clear_dirty_pages() if the back reference
+"mapping" from the page/folio is different from the "mapping" that held
+the page/folio just before.
 
-Fix these issues by setting an uptodate flag on the buffer head on the
-first or before modifying each buffer obtained with sb_getblk, and
-clearing the flag on failure.
-
-When setting the uptodate flag, the lock_buffer/unlock_buffer pair is used
-to perform necessary exclusive control, and the buffer is filled to ensure
-that uninitialized bytes are not mixed into the data read from others.  As
-for buffers for segment summary blocks, they are filled incrementally, so
-if the uptodate flag was unset on their allocation, set the flag and zero
-fill the buffer once at that point.
-
-Also, regarding the superblock move routine, the starting point of the
-memset call to zerofill the block is incorrectly specified, which can
-cause a buffer overflow on file systems with block sizes greater than
-4KiB.  In addition, if the superblock is moved within a large block, it is
-necessary to assume the possibility that the data in the superblock will
-be destroyed by zero-filling before copying.  So fix these potential
-issues as well.
-
-Link: https://lkml.kernel.org/r/20230609035732.20426-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20230612021456.3682-1-konishi.ryusuke@gmail.com
 Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+31837fe952932efc8fb9@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/00000000000030000a05e981f475@google.com
+Reported-by: syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/000000000000da4f6b05eb9bf593@google.com
 Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/segbuf.c  |    6 ++++++
- fs/nilfs2/segment.c |    7 +++++++
- fs/nilfs2/super.c   |   23 ++++++++++++++++++++++-
- 3 files changed, 35 insertions(+), 1 deletion(-)
+ fs/nilfs2/page.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/fs/nilfs2/segbuf.c
-+++ b/fs/nilfs2/segbuf.c
-@@ -101,6 +101,12 @@ int nilfs_segbuf_extend_segsum(struct ni
- 	if (unlikely(!bh))
- 		return -ENOMEM;
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -369,7 +369,15 @@ void nilfs_clear_dirty_pages(struct addr
+ 			struct page *page = pvec.pages[i];
  
-+	lock_buffer(bh);
-+	if (!buffer_uptodate(bh)) {
-+		memset(bh->b_data, 0, bh->b_size);
-+		set_buffer_uptodate(bh);
-+	}
-+	unlock_buffer(bh);
- 	nilfs_segbuf_add_segsum_buffer(segbuf, bh);
- 	return 0;
- }
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -984,10 +984,13 @@ static void nilfs_segctor_fill_in_super_
- 	unsigned int isz, srsz;
- 
- 	bh_sr = NILFS_LAST_SEGBUF(&sci->sc_segbufs)->sb_super_root;
+ 			lock_page(page);
+-			nilfs_clear_dirty_page(page, silent);
 +
-+	lock_buffer(bh_sr);
- 	raw_sr = (struct nilfs_super_root *)bh_sr->b_data;
- 	isz = nilfs->ns_inode_size;
- 	srsz = NILFS_SR_BYTES(isz);
- 
-+	raw_sr->sr_sum = 0;  /* Ensure initialization within this update */
- 	raw_sr->sr_bytes = cpu_to_le16(srsz);
- 	raw_sr->sr_nongc_ctime
- 		= cpu_to_le64(nilfs_doing_gc() ?
-@@ -1001,6 +1004,8 @@ static void nilfs_segctor_fill_in_super_
- 	nilfs_write_inode_common(nilfs->ns_sufile, (void *)raw_sr +
- 				 NILFS_SR_SUFILE_OFFSET(isz), 1);
- 	memset((void *)raw_sr + srsz, 0, nilfs->ns_blocksize - srsz);
-+	set_buffer_uptodate(bh_sr);
-+	unlock_buffer(bh_sr);
- }
- 
- static void nilfs_redirty_inodes(struct list_head *head)
-@@ -1778,6 +1783,7 @@ static void nilfs_abort_logs(struct list
- 	list_for_each_entry(segbuf, logs, sb_list) {
- 		list_for_each_entry(bh, &segbuf->sb_segsum_buffers,
- 				    b_assoc_buffers) {
-+			clear_buffer_uptodate(bh);
- 			if (bh->b_page != bd_page) {
- 				if (bd_page)
- 					end_page_writeback(bd_page);
-@@ -1789,6 +1795,7 @@ static void nilfs_abort_logs(struct list
- 				    b_assoc_buffers) {
- 			clear_buffer_async_write(bh);
- 			if (bh == segbuf->sb_super_root) {
-+				clear_buffer_uptodate(bh);
- 				if (bh->b_page != bd_page) {
- 					end_page_writeback(bd_page);
- 					bd_page = bh->b_page;
---- a/fs/nilfs2/super.c
-+++ b/fs/nilfs2/super.c
-@@ -367,10 +367,31 @@ static int nilfs_move_2nd_super(struct s
- 		goto out;
- 	}
- 	nsbp = (void *)nsbh->b_data + offset;
--	memset(nsbp, 0, nilfs->ns_blocksize);
- 
-+	lock_buffer(nsbh);
- 	if (sb2i >= 0) {
-+		/*
-+		 * The position of the second superblock only changes by 4KiB,
-+		 * which is larger than the maximum superblock data size
-+		 * (= 1KiB), so there is no need to use memmove() to allow
-+		 * overlap between source and destination.
-+		 */
- 		memcpy(nsbp, nilfs->ns_sbp[sb2i], nilfs->ns_sbsize);
++			/*
++			 * This page may have been removed from the address
++			 * space by truncation or invalidation when the lock
++			 * was acquired.  Skip processing in that case.
++			 */
++			if (likely(page->mapping == mapping))
++				nilfs_clear_dirty_page(page, silent);
 +
-+		/*
-+		 * Zero fill after copy to avoid overwriting in case of move
-+		 * within the same block.
-+		 */
-+		memset(nsbh->b_data, 0, offset);
-+		memset((void *)nsbp + nilfs->ns_sbsize, 0,
-+		       nsbh->b_size - offset - nilfs->ns_sbsize);
-+	} else {
-+		memset(nsbh->b_data, 0, nsbh->b_size);
-+	}
-+	set_buffer_uptodate(nsbh);
-+	unlock_buffer(nsbh);
-+
-+	if (sb2i >= 0) {
- 		brelse(nilfs->ns_sbh[sb2i]);
- 		nilfs->ns_sbh[sb2i] = nsbh;
- 		nilfs->ns_sbp[sb2i] = nsbp;
+ 			unlock_page(page);
+ 		}
+ 		pagevec_release(&pvec);
 
 
