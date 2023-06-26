@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BC3773E89F
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 243CF73E7BA
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:18:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232099AbjFZS1o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:27:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38032 "EHLO
+        id S230487AbjFZSSN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:18:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232122AbjFZS1a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:27:30 -0400
+        with ESMTP id S231378AbjFZSSL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:18:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF9472130
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:26:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9F80ED
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:18:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D57F60F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:26:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DB1C433C8;
-        Mon, 26 Jun 2023 18:26:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 34CFE60F45
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:18:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E0CC433C9;
+        Mon, 26 Jun 2023 18:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804018;
-        bh=D0zZBGq7+jwn8lW4SJbamJJBlhamxxsvd+QSsXqkCqo=;
+        s=korg; t=1687803489;
+        bh=ix6j8afGVxIzL3s2P4mVFN2x2KgsncL7lEv2rQhiVU8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2DzHpV5ZygcWDfV+meUC4VzN1GHpQcDsOiZtvTNLanmGdcIGrFrZkv6aDNL4eaqHN
-         cPd1WZYF+cDi0G8GI2FklgqjMaTKIUgNBd9IxKHRL7T1isHuG9nHnbE59NkBmhMSFG
-         +Q5QS2hhOr5jqI9ocPPZQ6mf0laqrWUN8LJ6tZPM=
+        b=URLnr107OSYvtJWgmjL4Kr2SGClHGkp9qusuNVun00UzfAYQJNUjajNjiuzQa2O/N
+         BljHqjM2ChZjblBDOU9vpC60tzMQNJU98zTVLOHzxfCQTLBBFngojbNJLCY/AsGIrr
+         TQrJy1FtNObpsSwICKOU3adhSRGburCavF2HpjbU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 014/170] selftests: mptcp: remove duplicated entries in usage
-Date:   Mon, 26 Jun 2023 20:09:43 +0200
-Message-ID: <20230626180801.197139853@linuxfoundation.org>
+        patches@lists.linux.dev, Jisheng Zhang <jszhang@kernel.org>,
+        Gabriel Somlo <gsomlo@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.3 078/199] mmc: litex_mmc: set PROBE_PREFER_ASYNCHRONOUS
+Date:   Mon, 26 Jun 2023 20:09:44 +0200
+Message-ID: <20230626180808.985366280@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,62 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit 0a85264e48b642d360720589fdb837a3643fb9b0 upstream.
+commit f334ad47683606b682b4166b800d8b372d315436 upstream.
 
-mptcp_connect tool was printing some duplicated entries when showing how
-to use it: -j -l -r
+mmc host drivers should have enabled the asynchronous probe option, but
+it seems like we didn't set it for litex_mmc when introducing litex mmc
+support, so let's set it now.
 
-While at it, I also:
+Tested with linux-on-litex-vexriscv on sipeed tang nano 20K fpga.
 
- - moved the very few entries that were not sorted,
-
- - added -R that was missing since
-   commit 8a4b910d005d ("mptcp: selftests: add rcvbuf set option"),
-
- - removed the -u parameter that has been removed in
-   commit f730b65c9d85 ("selftests: mptcp: try to set mptcp ulp mode in different sk states").
-
-No need to backport this, it is just an internal tool used by our
-selftests. The help menu is mainly useful for MPTCP kernel devs.
-
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Acked-by: Gabriel Somlo <gsomlo@gmail.com>
+Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230617085319.2139-1-jszhang@kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mmc/host/litex_mmc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -98,8 +98,8 @@ static struct cfg_sockopt_types cfg_sock
- static void die_usage(void)
- {
- 	fprintf(stderr, "Usage: mptcp_connect [-6] [-c cmsg] [-f offset] [-i file] [-I num] [-j] [-l] "
--		"[-m mode] [-M mark] [-o option] [-p port] [-P mode] [-j] [-l] [-r num] "
--		"[-s MPTCP|TCP] [-S num] [-r num] [-t num] [-T num] [-u] [-w sec] connect_address\n");
-+		"[-m mode] [-M mark] [-o option] [-p port] [-P mode] [-r num] [-R num] "
-+		"[-s MPTCP|TCP] [-S num] [-t num] [-T num] [-w sec] connect_address\n");
- 	fprintf(stderr, "\t-6 use ipv6\n");
- 	fprintf(stderr, "\t-c cmsg -- test cmsg type <cmsg>\n");
- 	fprintf(stderr, "\t-f offset -- stop the I/O after receiving and sending the specified amount "
-@@ -118,13 +118,13 @@ static void die_usage(void)
- 	fprintf(stderr, "\t-p num -- use port num\n");
- 	fprintf(stderr,
- 		"\t-P [saveWithPeek|saveAfterPeek] -- save data with/after MSG_PEEK form tcp socket\n");
--	fprintf(stderr, "\t-t num -- set poll timeout to num\n");
--	fprintf(stderr, "\t-T num -- set expected runtime to num ms\n");
- 	fprintf(stderr, "\t-r num -- enable slow mode, limiting each write to num bytes "
- 		"-- for remove addr tests\n");
- 	fprintf(stderr, "\t-R num -- set SO_RCVBUF to num\n");
- 	fprintf(stderr, "\t-s [MPTCP|TCP] -- use mptcp(default) or tcp sockets\n");
- 	fprintf(stderr, "\t-S num -- set SO_SNDBUF to num\n");
-+	fprintf(stderr, "\t-t num -- set poll timeout to num\n");
-+	fprintf(stderr, "\t-T num -- set expected runtime to num ms\n");
- 	fprintf(stderr, "\t-w num -- wait num sec before closing the socket\n");
- 	exit(1);
- }
+--- a/drivers/mmc/host/litex_mmc.c
++++ b/drivers/mmc/host/litex_mmc.c
+@@ -649,6 +649,7 @@ static struct platform_driver litex_mmc_
+ 	.driver = {
+ 		.name = "litex-mmc",
+ 		.of_match_table = litex_match,
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ 	},
+ };
+ module_platform_driver(litex_mmc_driver);
 
 
