@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 835A773E7F3
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12A9673E8B7
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:28:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231734AbjFZSUj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:20:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35052 "EHLO
+        id S232046AbjFZS2y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:28:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231669AbjFZSUd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:20:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8993310CC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:20:26 -0700 (PDT)
+        with ESMTP id S232207AbjFZS2e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:28:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8925272D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:27:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2741D60F4E
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312F7C433CA;
-        Mon, 26 Jun 2023 18:20:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 40B1E60F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:27:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A98C433C0;
+        Mon, 26 Jun 2023 18:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803625;
-        bh=gPolrfdBPnL3mLsoNRkQ39dUXLqo9Hm6fob8gOjGjo4=;
+        s=korg; t=1687804077;
+        bh=uFKABKoYF5aFMRzcXGvn1qTVU1cAjR5OWIX5SgZHpMA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mUDiGMI0m23kCpS81gEwhd0ahrHTfkRjGOsDJ2jpCuRun1nr/p3xG77b0u/FumN3v
-         0REsC2PIMklgWrF9w8KCSuBEmiEvxLB8qM+0Ubi1/ynDJWVNsgyziwL2QKEiGg7yYO
-         OQctcC21v09EwJupQmojBtKnBapEc9S5+Vj9yNVw=
+        b=AKCi9x5wwyPz0sGITUtAWAVl2K/X34KmqKfpzuBAYU6FNtA3HF5fBSkmipAUnmReu
+         a4IhBCdItJRs9NmaPkYP7rshdfQ2irodtLcdijj5DX+tesvLkCVnuvzRWIE9vNdZbk
+         a2g/h9OTxozOU2CX/A9+0MYkrCy9BddEJELgQfYM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Querijn Voet <querijnqyn@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.3 097/199] io_uring/poll: serialize poll linked timer start with poll removal
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 034/170] selftests: mptcp: join: skip fullmesh flag tests if not supported
 Date:   Mon, 26 Jun 2023 20:10:03 +0200
-Message-ID: <20230626180809.884844269@linuxfoundation.org>
+Message-ID: <20230626180802.077872523@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,71 +55,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-Commit ef7dfac51d8ed961b742218f526bd589f3900a59 upstream.
+commit 9db34c4294af9999edc773d96744e2d2d4eb5060 upstream.
 
-We selectively grab the ctx->uring_lock for poll update/removal, but
-we really should grab it from the start to fully synchronize with
-linked timeouts. Normally this is indeed the case, but if requests
-are forced async by the application, we don't fully cover removal
-and timer disarm within the uring_lock.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-Make this simpler by having consistent locking state for poll removal.
+One of them is the support of the fullmesh flag for the in-kernel PM
+introduced by commit 2843ff6f36db ("mptcp: remote addresses fullmesh")
+and commit 1a0d6136c5f0 ("mptcp: local addresses fullmesh").
 
-Cc: stable@vger.kernel.org # 6.1+
-Reported-by: Querijn Voet <querijnqyn@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+It looks like there is no easy external sign we can use to predict the
+expected behaviour. We could add the flag and then check if it has been
+added but for that, and for each fullmesh test, we would need to setup a
+new environment, do the checks, clean it and then only start the test
+from yet another clean environment. To keep it simple and avoid
+introducing new issues, we look for a specific kernel version. That's
+not ideal but an acceptable solution for this case.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: 6a0653b96f5d ("selftests: mptcp: add fullmesh setting tests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/poll.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -977,8 +977,9 @@ int io_poll_remove(struct io_kiocb *req,
- 	struct io_hash_bucket *bucket;
- 	struct io_kiocb *preq;
- 	int ret2, ret = 0;
--	bool locked;
-+	bool locked = true;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2936,7 +2936,8 @@ fullmesh_tests()
+ 	fi
  
-+	io_ring_submit_lock(ctx, issue_flags);
- 	preq = io_poll_find(ctx, true, &cd, &ctx->cancel_table, &bucket);
- 	ret2 = io_poll_disarm(preq);
- 	if (bucket)
-@@ -990,12 +991,10 @@ int io_poll_remove(struct io_kiocb *req,
- 		goto out;
- 	}
+ 	# set fullmesh flag
+-	if reset "set fullmesh flag test"; then
++	if reset "set fullmesh flag test" &&
++	   continue_if mptcp_lib_kversion_ge 5.18; then
+ 		pm_nl_set_limits $ns1 4 4
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags subflow
+ 		pm_nl_set_limits $ns2 4 4
+@@ -2946,7 +2947,8 @@ fullmesh_tests()
+ 	fi
  
--	io_ring_submit_lock(ctx, issue_flags);
- 	preq = io_poll_find(ctx, true, &cd, &ctx->cancel_table_locked, &bucket);
- 	ret2 = io_poll_disarm(preq);
- 	if (bucket)
- 		spin_unlock(&bucket->lock);
--	io_ring_submit_unlock(ctx, issue_flags);
- 	if (ret2) {
- 		ret = ret2;
- 		goto out;
-@@ -1019,7 +1018,7 @@ found:
- 		if (poll_update->update_user_data)
- 			preq->cqe.user_data = poll_update->new_user_data;
+ 	# set nofullmesh flag
+-	if reset "set nofullmesh flag test"; then
++	if reset "set nofullmesh flag test" &&
++	   continue_if mptcp_lib_kversion_ge 5.18; then
+ 		pm_nl_set_limits $ns1 4 4
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags subflow,fullmesh
+ 		pm_nl_set_limits $ns2 4 4
+@@ -2956,7 +2958,8 @@ fullmesh_tests()
+ 	fi
  
--		ret2 = io_poll_add(preq, issue_flags);
-+		ret2 = io_poll_add(preq, issue_flags & ~IO_URING_F_UNLOCKED);
- 		/* successfully updated, don't complete poll request */
- 		if (!ret2 || ret2 == -EIOCBQUEUED)
- 			goto out;
-@@ -1027,9 +1026,9 @@ found:
+ 	# set backup,fullmesh flags
+-	if reset "set backup,fullmesh flags test"; then
++	if reset "set backup,fullmesh flags test" &&
++	   continue_if mptcp_lib_kversion_ge 5.18; then
+ 		pm_nl_set_limits $ns1 4 4
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags subflow
+ 		pm_nl_set_limits $ns2 4 4
+@@ -2967,7 +2970,8 @@ fullmesh_tests()
+ 	fi
  
- 	req_set_fail(preq);
- 	io_req_set_res(preq, -ECANCELED, 0);
--	locked = !(issue_flags & IO_URING_F_UNLOCKED);
- 	io_req_task_complete(preq, &locked);
- out:
-+	io_ring_submit_unlock(ctx, issue_flags);
- 	if (ret < 0) {
- 		req_set_fail(req);
- 		return ret;
+ 	# set nobackup,nofullmesh flags
+-	if reset "set nobackup,nofullmesh flags test"; then
++	if reset "set nobackup,nofullmesh flags test" &&
++	   continue_if mptcp_lib_kversion_ge 5.18; then
+ 		pm_nl_set_limits $ns1 4 4
+ 		pm_nl_set_limits $ns2 4 4
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup,fullmesh
 
 
