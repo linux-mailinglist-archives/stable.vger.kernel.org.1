@@ -2,47 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4493173E9B4
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF2E973EA32
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231651AbjFZSjL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:39:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51964 "EHLO
+        id S232575AbjFZSo1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:44:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232440AbjFZSjI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:08 -0400
+        with ESMTP id S232574AbjFZSo0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:44:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC0EE75
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672F4B9;
+        Mon, 26 Jun 2023 11:44:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A988E60F45
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B182CC433C0;
-        Mon, 26 Jun 2023 18:39:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E847F60F30;
+        Mon, 26 Jun 2023 18:44:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C134CC433C8;
+        Mon, 26 Jun 2023 18:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804743;
-        bh=CfGs8KqBsb5yWV+CN9mKBDez900wrXj8B5x1yQqnQdo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yzl/1OgLSPglQOPN4SfsAgKUZeXRPTGUqXshTTdtEjyCaL9JgYIAGwkyeQuLWu9wl
-         YROOxBUyyHG863aBagW/KR+BA0OB95XhdsQKweVSnQYl85jwrxxR/kGIDPCrmK1FE9
-         5DXdw+p6HIdnQt+C0RWafAMqq9fxB4xMs0p8I61w=
+        s=korg; t=1687805063;
+        bh=2tojs1BJAiHzd59kX2EReAbrI/4H8YS5Gslz6CT3s+U=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NxEElAwXRRliXb0J18o2o7qZblmN0AtXdrzq8eWVFI/CXKZKomjpl1CXV9fUigu4O
+         GYHXyfhqyOXDusIFfkalMEb10CaCnuC4DRai70O+OAGnFygzP9YzE1/xwcFR6xoe6C
+         zsHSDNEN8/4nWJ9Ck+EOR//ZqYoiW2YMnb9bSZPw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 26/96] mmc: meson-gx: remove redundant mmc_request_done() call from irq context
-Date:   Mon, 26 Jun 2023 20:11:41 +0200
-Message-ID: <20230626180748.018616829@linuxfoundation.org>
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: [PATCH 5.10 00/81] 5.10.186-rc1 review
+Date:   Mon, 26 Jun 2023 20:11:42 +0200
+Message-ID: <20230626180744.453069285@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
-User-Agent: quilt/0.67
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.186-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.10.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.10.186-rc1
+X-KernelTest-Deadline: 2023-06-28T18:07+00:00
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -55,98 +64,376 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Hundebøll <martin@geanix.com>
+This is the start of the stable review cycle for the 5.10.186 release.
+There are 81 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-commit 3c40eb8145325b0f5b93b8a169146078cb2c49d6 upstream.
+Responses should be made by Wed, 28 Jun 2023 18:07:23 +0000.
+Anything received after that time might be too late.
 
-The call to mmc_request_done() can schedule, so it must not be called
-from irq context. Wake the irq thread if it needs to be called, and let
-its existing logic do its work.
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.186-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+and the diffstat can be found below.
 
-Fixes the following kernel bug, which appears when running an RT patched
-kernel on the AmLogic Meson AXG A113X SoC:
-[   11.111407] BUG: scheduling while atomic: kworker/0:1H/75/0x00010001
-[   11.111438] Modules linked in:
-[   11.111451] CPU: 0 PID: 75 Comm: kworker/0:1H Not tainted 6.4.0-rc3-rt2-rtx-00081-gfd07f41ed6b4-dirty #1
-[   11.111461] Hardware name: RTX AXG A113X Linux Platform Board (DT)
-[   11.111469] Workqueue: kblockd blk_mq_run_work_fn
-[   11.111492] Call trace:
-[   11.111497]  dump_backtrace+0xac/0xe8
-[   11.111510]  show_stack+0x18/0x28
-[   11.111518]  dump_stack_lvl+0x48/0x60
-[   11.111530]  dump_stack+0x18/0x24
-[   11.111537]  __schedule_bug+0x4c/0x68
-[   11.111548]  __schedule+0x80/0x574
-[   11.111558]  schedule_loop+0x2c/0x50
-[   11.111567]  schedule_rtlock+0x14/0x20
-[   11.111576]  rtlock_slowlock_locked+0x468/0x730
-[   11.111587]  rt_spin_lock+0x40/0x64
-[   11.111596]  __wake_up_common_lock+0x5c/0xc4
-[   11.111610]  __wake_up+0x18/0x24
-[   11.111620]  mmc_blk_mq_req_done+0x68/0x138
-[   11.111633]  mmc_request_done+0x104/0x118
-[   11.111644]  meson_mmc_request_done+0x38/0x48
-[   11.111654]  meson_mmc_irq+0x128/0x1f0
-[   11.111663]  __handle_irq_event_percpu+0x70/0x114
-[   11.111674]  handle_irq_event_percpu+0x18/0x4c
-[   11.111683]  handle_irq_event+0x80/0xb8
-[   11.111691]  handle_fasteoi_irq+0xa4/0x120
-[   11.111704]  handle_irq_desc+0x20/0x38
-[   11.111712]  generic_handle_domain_irq+0x1c/0x28
-[   11.111721]  gic_handle_irq+0x8c/0xa8
-[   11.111735]  call_on_irq_stack+0x24/0x4c
-[   11.111746]  do_interrupt_handler+0x88/0x94
-[   11.111757]  el1_interrupt+0x34/0x64
-[   11.111769]  el1h_64_irq_handler+0x18/0x24
-[   11.111779]  el1h_64_irq+0x64/0x68
-[   11.111786]  __add_wait_queue+0x0/0x4c
-[   11.111795]  mmc_blk_rw_wait+0x84/0x118
-[   11.111804]  mmc_blk_mq_issue_rq+0x5c4/0x654
-[   11.111814]  mmc_mq_queue_rq+0x194/0x214
-[   11.111822]  blk_mq_dispatch_rq_list+0x3ac/0x528
-[   11.111834]  __blk_mq_sched_dispatch_requests+0x340/0x4d0
-[   11.111847]  blk_mq_sched_dispatch_requests+0x38/0x70
-[   11.111858]  blk_mq_run_work_fn+0x3c/0x70
-[   11.111865]  process_one_work+0x17c/0x1f0
-[   11.111876]  worker_thread+0x1d4/0x26c
-[   11.111885]  kthread+0xe4/0xf4
-[   11.111894]  ret_from_fork+0x10/0x20
+thanks,
 
-Fixes: 51c5d8447bd7 ("MMC: meson: initial support for GX platforms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Hundebøll <martin@geanix.com>
-Link: https://lore.kernel.org/r/20230607082713.517157-1-martin@geanix.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/mmc/host/meson-gx-mmc.c |   10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+greg k-h
 
---- a/drivers/mmc/host/meson-gx-mmc.c
-+++ b/drivers/mmc/host/meson-gx-mmc.c
-@@ -981,11 +981,8 @@ static irqreturn_t meson_mmc_irq(int irq
- 	if (status & (IRQ_END_OF_CHAIN | IRQ_RESP_STATUS)) {
- 		if (data && !cmd->error)
- 			data->bytes_xfered = data->blksz * data->blocks;
--		if (meson_mmc_bounce_buf_read(data) ||
--		    meson_mmc_get_next_command(cmd))
--			ret = IRQ_WAKE_THREAD;
--		else
--			ret = IRQ_HANDLED;
-+
-+		return IRQ_WAKE_THREAD;
- 	}
- 
- out:
-@@ -997,9 +994,6 @@ out:
- 		writel(start, host->regs + SD_EMMC_START);
- 	}
- 
--	if (ret == IRQ_HANDLED)
--		meson_mmc_request_done(host->mmc, cmd->mrq);
--
- 	return ret;
- }
- 
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.10.186-rc1
+
+Florent Revest <revest@chromium.org>
+    bpf/btf: Accept function names that contain dots
+
+Pablo Neira Ayuso <pablo@netfilter.org>
+    netfilter: nf_tables: hold mutex on netns pre_exit path
+
+Pablo Neira Ayuso <pablo@netfilter.org>
+    netfilter: nf_tables: validate registers coming from userspace.
+
+Pablo Neira Ayuso <pablo@netfilter.org>
+    netfilter: nftables: statify nft_parse_register()
+
+Clark Wang <xiaoning.wang@nxp.com>
+    i2c: imx-lpi2c: fix type char overflow issue when calculating the clock cycle
+
+Dheeraj Kumar Srivastava <dheerajkumar.srivastava@amd.com>
+    x86/apic: Fix kernel panic when booting with intremap=off and x2apic_phys
+
+Min Li <lm0963hack@gmail.com>
+    drm/radeon: fix race condition UAF in radeon_gem_set_domain_ioctl
+
+Min Li <lm0963hack@gmail.com>
+    drm/exynos: fix race condition UAF in exynos_g2d_exec_ioctl
+
+Inki Dae <inki.dae@samsung.com>
+    drm/exynos: vidi: fix a wrong error return
+
+Linus Walleij <linus.walleij@linaro.org>
+    ARM: dts: Fix erroneous ADS touchscreen polarities
+
+Alexander Gordeev <agordeev@linux.ibm.com>
+    s390/purgatory: disable branch profiling
+
+Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+    ASoC: nau8824: Add quirk to active-high jack-detect
+
+Herve Codina <herve.codina@bootlin.com>
+    ASoC: simple-card: Add missing of_node_put() in case of error
+
+Clark Wang <xiaoning.wang@nxp.com>
+    spi: lpspi: disable lpspi module irq in DMA mode
+
+Vineeth Vijayan <vneethv@linux.ibm.com>
+    s390/cio: unregister device when the only path is gone
+
+Hans de Goede <hdegoede@redhat.com>
+    Input: soc_button_array - add invalid acpi_index DMI quirk handling
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    usb: gadget: udc: fix NULL dereference in remove()
+
+Osama Muhammad <osmtendev@gmail.com>
+    nfcsim.c: Fix error checking for debugfs_create_dir
+
+Hans Verkuil <hverkuil-cisco@xs4all.nl>
+    media: cec: core: don't set last_initiator if tx in progress
+
+Marc Zyngier <maz@kernel.org>
+    arm64: Add missing Set/Way CMO encodings
+
+Denis Arefev <arefev@swemel.ru>
+    HID: wacom: Add error check to wacom_parse_and_register()
+
+Maurizio Lombardi <mlombard@redhat.com>
+    scsi: target: iscsi: Prevent login threads from racing between each other
+
+Jiawen Wu <jiawenwu@trustnetic.com>
+    gpiolib: Fix GPIO chip IRQ initialization restriction
+
+Marc Zyngier <maz@kernel.org>
+    gpio: Allow per-parent interrupt data
+
+Eric Dumazet <edumazet@google.com>
+    sch_netem: acquire qdisc lock in netem_change()
+
+Francesco Dolcini <francesco.dolcini@toradex.com>
+    Revert "net: phy: dp83867: perform soft reset and retain established link"
+
+Pablo Neira Ayuso <pablo@netfilter.org>
+    netfilter: nfnetlink_osf: fix module autoload
+
+Pablo Neira Ayuso <pablo@netfilter.org>
+    netfilter: nf_tables: disallow element updates of bound anonymous sets
+
+Pablo Neira Ayuso <pablo@netfilter.org>
+    netfilter: nft_set_pipapo: .walk does not deal with generations
+
+Ross Lagerwall <ross.lagerwall@citrix.com>
+    be2net: Extend xmit workaround to BE3 chip
+
+Arınç ÜNAL <arinc.unal@arinc9.com>
+    net: dsa: mt7530: fix trapping frames on non-MT7621 SoC MT7530 switch
+
+Terin Stock <terin@cloudflare.com>
+    ipvs: align inner_mac_header for encapsulation
+
+Sergey Shtylyov <s.shtylyov@omp.ru>
+    mmc: usdhi60rol0: fix deferred probing
+
+Sergey Shtylyov <s.shtylyov@omp.ru>
+    mmc: sh_mmcif: fix deferred probing
+
+Sergey Shtylyov <s.shtylyov@omp.ru>
+    mmc: sdhci-acpi: fix deferred probing
+
+Sergey Shtylyov <s.shtylyov@omp.ru>
+    mmc: owl: fix deferred probing
+
+Sergey Shtylyov <s.shtylyov@omp.ru>
+    mmc: omap_hsmmc: fix deferred probing
+
+Sergey Shtylyov <s.shtylyov@omp.ru>
+    mmc: omap: fix deferred probing
+
+Sergey Shtylyov <s.shtylyov@omp.ru>
+    mmc: mvsdio: fix deferred probing
+
+Sergey Shtylyov <s.shtylyov@omp.ru>
+    mmc: mtk-sd: fix deferred probing
+
+Stefan Wahren <stefan.wahren@i2se.com>
+    net: qca_spi: Avoid high load if QCA7000 is not available
+
+Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+    xfrm: Linearize the skb after offloading if needed.
+
+Magali Lemes <magali.lemes@canonical.com>
+    selftests: net: fcnal-test: check if FIPS mode is enabled
+
+Magali Lemes <magali.lemes@canonical.com>
+    selftests: net: vrf-xfrm-tests: change authentication and encryption algos
+
+Maciej Żenczykowski <maze@google.com>
+    xfrm: fix inbound ipv4/udp/esp packets to UDPv6 dualstack sockets
+
+Maxim Mikityanskiy <maxim@isovalent.com>
+    bpf: Fix verifier id tracking of scalars on spill
+
+Eduard Zingerman <eddyz87@gmail.com>
+    bpf: track immediate values written to stack by BPF_ST instruction
+
+Benedict Wong <benedictwong@google.com>
+    xfrm: Ensure policies always checked on XFRM-I input path
+
+Eyal Birger <eyal.birger@gmail.com>
+    xfrm: interface: rename xfrm_interface.c to xfrm_interface_core.c
+
+Benedict Wong <benedictwong@google.com>
+    xfrm: Treat already-verified secpath entries as optional
+
+Chen Aotian <chenaotian2@163.com>
+    ieee802154: hwsim: Fix possible memory leaks
+
+Roberto Sassu <roberto.sassu@huawei.com>
+    memfd: check for non-NULL file_seals in memfd_create() syscall
+
+Xiaoming Ni <nixiaoming@huawei.com>
+    sysctl: move some boundary constants from sysctl.c to sysctl_vals
+
+Suren Baghdasaryan <surenb@google.com>
+    mm/pagealloc: sysctl: change watermark_scale_factor max limit to 30%
+
+Lee Jones <lee@kernel.org>
+    x86/mm: Avoid using set_pgd() outside of real PGD pages
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
+
+Jens Axboe <axboe@kernel.dk>
+    io_uring/net: disable partial retries for recvmsg with cmsg
+
+Jens Axboe <axboe@kernel.dk>
+    io_uring/net: clear msg_controllen on partial sendmsg retry
+
+Jens Axboe <axboe@kernel.dk>
+    io_uring/net: save msghdr->msg_control for retries
+
+Rafael Aquini <aquini@redhat.com>
+    writeback: fix dereferencing NULL mapping->host on writeback_page_template
+
+Russ Weight <russell.h.weight@intel.com>
+    regmap: spi-avmm: Fix regmap_bus max_raw_write
+
+Teresa Remmet <t.remmet@phytec.de>
+    regulator: pca9450: Fix LDO3OUT and LDO4OUT MASK
+
+Matthias May <matthias.may@westermo.com>
+    ip_tunnels: allow VXLAN/GENEVE to inherit TOS/TTL from VLAN
+
+Christophe Kerello <christophe.kerello@foss.st.com>
+    mmc: mmci: stm32: fix max busy timeout calculation
+
+Martin Hundebøll <martin@geanix.com>
+    mmc: meson-gx: remove redundant mmc_request_done() call from irq context
+
+Stephan Gerhold <stephan@gerhold.net>
+    mmc: sdhci-msm: Disable broken 64-bit DMA on MSM8916
+
+Xiu Jianfeng <xiujianfeng@huawei.com>
+    cgroup: Do not corrupt task iteration when rebinding subsystem
+
+Dexuan Cui <decui@microsoft.com>
+    PCI: hv: Fix a race condition in hv_irq_unmask() that can cause panic
+
+Dexuan Cui <decui@microsoft.com>
+    PCI: hv: Remove the useless hv_pcichild_state from struct hv_pci_dev
+
+Dexuan Cui <decui@microsoft.com>
+    Revert "PCI: hv: Fix a timing issue which causes kdump to fail occasionally"
+
+Dexuan Cui <decui@microsoft.com>
+    PCI: hv: Fix a race condition bug in hv_pci_query_relations()
+
+Michael Kelley <mikelley@microsoft.com>
+    Drivers: hv: vmbus: Fix vmbus_wait_for_unload() to scan present CPUs
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: fix buffer corruption due to concurrent device reads
+
+Matthieu Baerts <matthieu.baerts@tessares.net>
+    selftests: mptcp: join: skip check if MIB counter not supported
+
+Matthieu Baerts <matthieu.baerts@tessares.net>
+    selftests: mptcp: pm nl: remove hardcoded default limits
+
+Matthieu Baerts <matthieu.baerts@tessares.net>
+    selftests: mptcp: lib: skip if not below kernel version
+
+Matthieu Baerts <matthieu.baerts@tessares.net>
+    selftests: mptcp: lib: skip if missing symbol
+
+Thomas Gleixner <tglx@linutronix.de>
+    tick/common: Align tick period during sched_timer setup
+
+Steven Rostedt (Google) <rostedt@goodmis.org>
+    tracing: Add tracing_reset_all_online_cpus_unlocked() function
+
+Peilin Ye <peilin.ye@bytedance.com>
+    net/sched: Refactor qdisc_graft() for ingress and clsact Qdiscs
+
+Tom Chung <chiahsuan.chung@amd.com>
+    drm/amd/display: fix the system hang while disable PSR
+
+
+-------------
+
+Diffstat:
+
+ Documentation/admin-guide/sysctl/vm.rst            |   2 +-
+ Makefile                                           |   4 +-
+ arch/arm/boot/dts/am57xx-cl-som-am57x.dts          |   2 +-
+ arch/arm/boot/dts/at91sam9261ek.dts                |   2 +-
+ arch/arm/boot/dts/imx7d-pico-hobbit.dts            |   2 +-
+ arch/arm/boot/dts/imx7d-sdb.dts                    |   2 +-
+ arch/arm/boot/dts/omap3-cm-t3x.dtsi                |   2 +-
+ arch/arm/boot/dts/omap3-devkit8000-lcd-common.dtsi |   2 +-
+ arch/arm/boot/dts/omap3-lilly-a83x.dtsi            |   2 +-
+ arch/arm/boot/dts/omap3-overo-common-lcd35.dtsi    |   2 +-
+ arch/arm/boot/dts/omap3-overo-common-lcd43.dtsi    |   2 +-
+ arch/arm/boot/dts/omap3-pandora-common.dtsi        |   2 +-
+ arch/arm/boot/dts/omap5-cm-t54.dts                 |   2 +-
+ arch/arm64/include/asm/sysreg.h                    |   6 ++
+ arch/s390/purgatory/Makefile                       |   1 +
+ arch/x86/kernel/apic/x2apic_phys.c                 |   5 +-
+ arch/x86/mm/kaslr.c                                |   8 +-
+ drivers/base/regmap/regmap-spi-avmm.c              |   2 +-
+ drivers/gpio/gpiolib.c                             |  17 +++-
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  |   9 +-
+ drivers/gpu/drm/exynos/exynos_drm_g2d.c            |   2 +-
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c           |   2 -
+ drivers/gpu/drm/radeon/radeon_gem.c                |   4 +-
+ drivers/hid/wacom_sys.c                            |   7 +-
+ drivers/hv/channel_mgmt.c                          |  18 +++-
+ drivers/i2c/busses/i2c-imx-lpi2c.c                 |   4 +-
+ drivers/input/misc/soc_button_array.c              |  30 ++++++
+ drivers/media/cec/core/cec-adap.c                  |   3 +-
+ drivers/mmc/host/meson-gx-mmc.c                    |  10 +-
+ drivers/mmc/host/mmci.c                            |   3 +-
+ drivers/mmc/host/mtk-sd.c                          |   2 +-
+ drivers/mmc/host/mvsdio.c                          |   2 +-
+ drivers/mmc/host/omap.c                            |   2 +-
+ drivers/mmc/host/omap_hsmmc.c                      |   6 +-
+ drivers/mmc/host/owl-mmc.c                         |   2 +-
+ drivers/mmc/host/sdhci-acpi.c                      |   2 +-
+ drivers/mmc/host/sdhci-msm.c                       |   3 +
+ drivers/mmc/host/sh_mmcif.c                        |   2 +-
+ drivers/mmc/host/usdhi6rol0.c                      |   6 +-
+ drivers/net/dsa/mt7530.c                           |   2 +-
+ drivers/net/ethernet/emulex/benet/be_main.c        |   4 +-
+ drivers/net/ethernet/qualcomm/qca_spi.c            |   3 +-
+ drivers/net/ieee802154/mac802154_hwsim.c           |   6 +-
+ drivers/net/phy/dp83867.c                          |   2 +-
+ drivers/nfc/nfcsim.c                               |   4 -
+ drivers/pci/controller/pci-hyperv.c                | 112 +++++++++++----------
+ drivers/s390/cio/device.c                          |   5 +-
+ drivers/spi/spi-fsl-lpspi.c                        |   7 +-
+ drivers/target/iscsi/iscsi_target_nego.c           |   4 +-
+ drivers/usb/gadget/udc/amd5536udc_pci.c            |   3 +
+ fs/nilfs2/page.c                                   |  10 +-
+ fs/nilfs2/segbuf.c                                 |   6 ++
+ fs/nilfs2/segment.c                                |   7 ++
+ fs/nilfs2/super.c                                  |  25 ++++-
+ fs/proc/proc_sysctl.c                              |   2 +-
+ include/linux/gpio/driver.h                        |  19 +++-
+ include/linux/regulator/pca9450.h                  |   4 +-
+ include/linux/sysctl.h                             |  13 ++-
+ include/net/ip_tunnels.h                           |  12 ++-
+ include/net/netfilter/nf_tables.h                  |   1 -
+ include/net/xfrm.h                                 |   1 +
+ include/trace/events/writeback.h                   |   2 +-
+ io_uring/io_uring.c                                |  15 ++-
+ kernel/bpf/btf.c                                   |  20 ++--
+ kernel/bpf/verifier.c                              |  21 +++-
+ kernel/cgroup/cgroup.c                             |  20 +++-
+ kernel/sysctl.c                                    |  44 ++++----
+ kernel/time/tick-common.c                          |  13 +--
+ kernel/time/tick-sched.c                           |  13 ++-
+ kernel/trace/trace.c                               |  11 +-
+ kernel/trace/trace.h                               |   1 +
+ kernel/trace/trace_events.c                        |   2 +-
+ kernel/trace/trace_events_synth.c                  |   2 -
+ mm/memfd.c                                         |   3 +-
+ net/ipv4/esp4_offload.c                            |   3 +
+ net/ipv4/xfrm4_input.c                             |   1 +
+ net/ipv6/esp6_offload.c                            |   3 +
+ net/ipv6/xfrm6_input.c                             |   3 +
+ net/netfilter/ipvs/ip_vs_xmit.c                    |   2 +
+ net/netfilter/nf_tables_api.c                      |  41 ++++----
+ net/netfilter/nfnetlink_osf.c                      |   1 +
+ net/netfilter/nft_set_pipapo.c                     |   6 +-
+ net/netfilter/xt_osf.c                             |   1 -
+ net/sched/sch_api.c                                |  20 ++--
+ net/sched/sch_netem.c                              |   8 +-
+ net/xfrm/Makefile                                  |   2 +
+ net/xfrm/xfrm_input.c                              |   1 +
+ .../{xfrm_interface.c => xfrm_interface_core.c}    |  54 +++++++++-
+ net/xfrm/xfrm_policy.c                             |  12 +++
+ sound/soc/codecs/nau8824.c                         |  24 +++++
+ sound/soc/generic/simple-card.c                    |   1 +
+ .../bpf/verifier/bounds_mix_sign_unsign.c          | 110 +++++++++++---------
+ tools/testing/selftests/net/fcnal-test.sh          |  27 +++--
+ tools/testing/selftests/net/mptcp/config           |   1 +
+ tools/testing/selftests/net/mptcp/mptcp_join.sh    |  65 ++++++++----
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     |  64 ++++++++++++
+ tools/testing/selftests/net/mptcp/pm_netlink.sh    |  12 ++-
+ tools/testing/selftests/net/vrf-xfrm-tests.sh      |  32 +++---
+ 98 files changed, 763 insertions(+), 336 deletions(-)
 
 
