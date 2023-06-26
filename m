@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA7573E9E7
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 930FC73E96B
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:35:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232500AbjFZSlU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53870 "EHLO
+        id S232364AbjFZSft (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:35:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232505AbjFZSlT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:41:19 -0400
+        with ESMTP id S232362AbjFZSfs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:35:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB7A8187
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:41:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D730C94
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:35:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E33260F45
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:41:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88255C433C0;
-        Mon, 26 Jun 2023 18:41:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F37F60F24
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:35:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC11C433C8;
+        Mon, 26 Jun 2023 18:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804876;
-        bh=gdasKYzgKq3xo1PycJLrWJ3t2Z2hJ7sAmD3PN7XHBQc=;
+        s=korg; t=1687804546;
+        bh=pbElzT0knfLf0iH3ecE7byXZZCrei3QmW3UVR7vHEDM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tLIPThAnTBjLn8QEordVSom4QmRFphbNQ30cwJsozndhCLJO+RoMibXMX48y5cn5H
-         Atx2qibqcz1TtdCM6RNP1/UyKJWByPparipyX5tvwOZbtURGz7q9b7I5Oux5isVjIT
-         TxyIajRQs6OYpgPScfkuLzdypREc+La8bo8bsgck=
+        b=1xPbR9en5btY7YHmHK90CY6eAbOAe0foqSWwPDnn3Of/qngiSo1SCkbihFHOwJzB0
+         LBdfkazyc/DM6/bWZuGFWUFH5LgMC+cUlJOrdF4O6Y8CxkWrf74ScOSArtCqqDdk7E
+         nBYUmenlz4iZ2YIJZqaP00auvY2qAN1QNCKhefBc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxim Mikityanskiy <maxim@isovalent.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Yonghong Song <yhs@fb.com>, Sasha Levin <sashal@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>
-Subject: [PATCH 5.15 44/96] bpf: Fix verifier id tracking of scalars on spill
+        patches@lists.linux.dev, "Paulo Alcantara (SUSE)" <pc@cjr.nz>,
+        Aurelien Aptel <aaptel@suse.com>,
+        Steve French <stfrench@microsoft.com>,
+        Rishabh Bhatnagar <risbhat@amazon.com>
+Subject: [PATCH 5.4 20/60] cifs: Get rid of kstrdup_const()d paths
 Date:   Mon, 26 Jun 2023 20:11:59 +0200
-Message-ID: <20230626180748.784462243@linuxfoundation.org>
+Message-ID: <20230626180740.387801285@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
+References: <20230626180739.558575012@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,71 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxim Mikityanskiy <maxim@isovalent.com>
+From: "Paulo Alcantara (SUSE)" <pc@cjr.nz>
 
-[ Upstream commit 713274f1f2c896d37017efee333fd44149710119 ]
+commit 199c6bdfb04b71d88a7765e08285885fbca60df4 upstream.
 
-The following scenario describes a bug in the verifier where it
-incorrectly concludes about equivalent scalar IDs which could lead to
-verifier bypass in privileged mode:
+The DFS cache API is mostly used with heap allocated strings.
 
-1. Prepare a 32-bit rogue number.
-2. Put the rogue number into the upper half of a 64-bit register, and
-   roll a random (unknown to the verifier) bit in the lower half. The
-   rest of the bits should be zero (although variations are possible).
-3. Assign an ID to the register by MOVing it to another arbitrary
-   register.
-4. Perform a 32-bit spill of the register, then perform a 32-bit fill to
-   another register. Due to a bug in the verifier, the ID will be
-   preserved, although the new register will contain only the lower 32
-   bits, i.e. all zeros except one random bit.
-
-At this point there are two registers with different values but the same
-ID, which means the integrity of the verifier state has been corrupted.
-
-5. Compare the new 32-bit register with 0. In the branch where it's
-   equal to 0, the verifier will believe that the original 64-bit
-   register is also 0, because it has the same ID, but its actual value
-   still contains the rogue number in the upper half.
-   Some optimizations of the verifier prevent the actual bypass, so
-   extra care is needed: the comparison must be between two registers,
-   and both branches must be reachable (this is why one random bit is
-   needed). Both branches are still suitable for the bypass.
-6. Right shift the original register by 32 bits to pop the rogue number.
-7. Use the rogue number as an offset with any pointer. The verifier will
-   believe that the offset is 0, while in reality it's the given number.
-
-The fix is similar to the 32-bit BPF_MOV handling in check_alu_op for
-SCALAR_VALUE. If the spill is narrowing the actual register value, don't
-keep the ID, make sure it's reset to 0.
-
-Fixes: 354e8f1970f8 ("bpf: Support <8-byte scalar spill and refill")
-Signed-off-by: Maxim Mikityanskiy <maxim@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Andrii Nakryiko <andrii@kernel.org> # Checked veristat delta
-Acked-by: Yonghong Song <yhs@fb.com>
-Link: https://lore.kernel.org/bpf/20230607123951.558971-2-maxtram95@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+Reviewed-by: Aurelien Aptel <aaptel@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Rishabh Bhatnagar <risbhat@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/cifs/dfs_cache.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 9d7a6bf5f7c1f..4f2271f27a1db 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2725,6 +2725,9 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 				return err;
- 		}
- 		save_register_state(state, spi, reg, size);
-+		/* Break the relation on a narrowing spill. */
-+		if (fls64(reg->umax_value) > BITS_PER_BYTE * size)
-+			state->stack[spi].spilled_ptr.id = 0;
- 	} else if (!reg && !(off % BPF_REG_SIZE) && is_bpf_st_mem(insn) &&
- 		   insn->imm != 0 && env->bpf_capable) {
- 		struct bpf_reg_state fake_reg = {};
--- 
-2.39.2
-
+--- a/fs/cifs/dfs_cache.c
++++ b/fs/cifs/dfs_cache.c
+@@ -131,7 +131,7 @@ static inline void flush_cache_ent(struc
+ 		return;
+ 
+ 	hlist_del_init_rcu(&ce->hlist);
+-	kfree_const(ce->path);
++	kfree(ce->path);
+ 	free_tgts(ce);
+ 	cache_count--;
+ 	call_rcu(&ce->rcu, free_cache_entry);
+@@ -420,7 +420,7 @@ static struct cache_entry *alloc_cache_e
+ 	if (!ce)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	ce->path = kstrdup_const(path, GFP_KERNEL);
++	ce->path = kstrndup(path, strlen(path), GFP_KERNEL);
+ 	if (!ce->path) {
+ 		kmem_cache_free(cache_slab, ce);
+ 		return ERR_PTR(-ENOMEM);
+@@ -430,7 +430,7 @@ static struct cache_entry *alloc_cache_e
+ 
+ 	rc = copy_ref_data(refs, numrefs, ce, NULL);
+ 	if (rc) {
+-		kfree_const(ce->path);
++		kfree(ce->path);
+ 		kmem_cache_free(cache_slab, ce);
+ 		ce = ERR_PTR(rc);
+ 	}
 
 
