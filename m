@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60E9F73EA26
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 870B673E993
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:37:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232536AbjFZSnv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:43:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56514 "EHLO
+        id S232402AbjFZShh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:37:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232550AbjFZSnu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:50 -0400
+        with ESMTP id S232397AbjFZShh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:37:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16F2DFA
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87EE610B
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:37:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 999D260F45
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1694C433C8;
-        Mon, 26 Jun 2023 18:43:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4940260EFC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:37:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5666FC433C9;
+        Mon, 26 Jun 2023 18:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687805028;
-        bh=E1fO1tt4fUwGv2DQigrQHa/p/so8o+gzWkZ7OFxdBao=;
+        s=korg; t=1687804651;
+        bh=9EHA7wpKoQkm/gBkTD7OJToA5q0VCenpIPgB6e2CyA8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hi0EHrkOSS96zIdvUfVmiegI7UDz+hGxeqRE/caLXGUU/uvDzgIoKk6uFhYqhNhlC
-         gfAxdm2bZxRRnn732d3ZCnbMe46yY5aAr51mtMmbkPEsh0R9c/JbVmme2PwpgjYbjU
-         Pd5FEczJhh7b23luBjQ4+7a6wgTBRuXTuYxSP3go=
+        b=eHKkmYNFxmWI2Rgai6Crv1N7hJWbygIv9NeY3HuLI9SCgoJf1G/zyFTdKgkHuLR4B
+         PRXZPkVMzTiKDoSAIJA5C43crcj1Vdb2NpqudN7Ay+5HMpBeLv2OLYHQIxfp95/Dyu
+         0riIKyF+pThwiedsesi4yHOulV3QiJ78xl9w7Slg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Metzmacher <metze@samba.org>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 25/81] io_uring/net: disable partial retries for recvmsg with cmsg
+        patches@lists.linux.dev, Stefan Wahren <stefan.wahren@i2se.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 28/60] net: qca_spi: Avoid high load if QCA7000 is not available
 Date:   Mon, 26 Jun 2023 20:12:07 +0200
-Message-ID: <20230626180745.519692460@linuxfoundation.org>
+Message-ID: <20230626180740.681813718@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
+References: <20230626180739.558575012@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,38 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Stefan Wahren <stefan.wahren@i2se.com>
 
-Commit 78d0d2063bab954d19a1696feae4c7706a626d48 upstream.
+[ Upstream commit 92717c2356cb62c89e8a3dc37cbbab2502562524 ]
 
-We cannot sanely handle partial retries for recvmsg if we have cmsg
-attached. If we don't, then we'd just be overwriting the initial cmsg
-header on retries. Alternatively we could increment and handle this
-appropriately, but it doesn't seem worth the complication.
+In case the QCA7000 is not available via SPI (e.g. in reset),
+the driver will cause a high load. The reason for this is
+that the synchronization is never finished and schedule()
+is never called. Since the synchronization is not timing
+critical, it's safe to drop this from the scheduling condition.
 
-Move the MSG_WAITALL check into the non-multishot case while at it,
-since MSG_WAITALL is explicitly disabled for multishot anyway.
-
-Link: https://lore.kernel.org/io-uring/0b0d4411-c8fd-4272-770b-e030af6919a0@kernel.dk/
-Cc: stable@vger.kernel.org # 5.10+
-Reported-by: Stefan Metzmacher <metze@samba.org>
-Reviewed-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/qualcomm/qca_spi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -5053,7 +5053,7 @@ static int io_recvmsg(struct io_kiocb *r
- 	flags = req->sr_msg.msg_flags;
- 	if (force_nonblock)
- 		flags |= MSG_DONTWAIT;
--	if (flags & MSG_WAITALL)
-+	if (flags & MSG_WAITALL && !kmsg->msg.msg_controllen)
- 		min_ret = iov_iter_count(&kmsg->msg.msg_iter);
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index 15591ad5fe4ea..db6817de24a14 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -574,8 +574,7 @@ qcaspi_spi_thread(void *data)
+ 	while (!kthread_should_stop()) {
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 		if ((qca->intr_req == qca->intr_svc) &&
+-		    (qca->txr.skb[qca->txr.head] == NULL) &&
+-		    (qca->sync == QCASPI_SYNC_READY))
++		    !qca->txr.skb[qca->txr.head])
+ 			schedule();
  
- 	ret = __sys_recvmsg_sock(sock, &kmsg->msg, req->sr_msg.umsg,
+ 		set_current_state(TASK_RUNNING);
+-- 
+2.39.2
+
 
 
