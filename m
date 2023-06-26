@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A0873E9A5
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EADD73E845
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232430AbjFZSiZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:38:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51620 "EHLO
+        id S231964AbjFZSYC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:24:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232428AbjFZSiX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:38:23 -0400
+        with ESMTP id S232014AbjFZSXq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0BFEAC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:38:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1308B10C1
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 573AE60F45
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:38:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6448CC433C8;
-        Mon, 26 Jun 2023 18:38:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F220160F79
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:23:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D86C433C9;
+        Mon, 26 Jun 2023 18:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804701;
-        bh=M26HKupsejBWg5UI81erau+TMbQIXTHPjsVtfGpMoss=;
+        s=korg; t=1687803782;
+        bh=FxyDFM80gAodbMr/Zh0mljDGdPjue49EbrEZmedq9oU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nryGU42j3wyDAUFsMqd9O3ZV0Je7O2vEvVb3iOzlhaCnw0r62tPnW9Rf0ATMb2yHq
-         2M56fcAk+FcgiNGV5ZwXzi/uSGGYsupl7VZ2JgoMb5h2Sm1oNrXZVDnWf0rMgkpwS2
-         2x1GU+lkknEznAK8d1ryLKCFrzs2sD26JkJGq2eA=
+        b=J6shyNAB+4EHklxvTnjGMf9xWYCdDLp+rU4kyJxFx5xSb1hXqU9SHMpPfWFoCf2lN
+         k6yfp1GAzIslkbyRD0n8teQr/CFieSrLAPQ1OqdU6kFdWDj2WPfvGq9oYBsFwagrW9
+         hox8qQ9QaTX1pZT0k935oQnXShnLlg36ft0hwRPs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Harry Wentland <Harry.Wentland@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 05/96] drm/amd/display: Use dc_update_planes_and_stream
-Date:   Mon, 26 Jun 2023 20:11:20 +0200
-Message-ID: <20230626180747.161922880@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 175/199] ASoC: nau8824: Add quirk to active-high jack-detect
+Date:   Mon, 26 Jun 2023 20:11:21 +0200
+Message-ID: <20230626180813.416348181@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,81 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-commit f7511289821ffccc07579406d6ab520aa11049f5 upstream.
+[ Upstream commit e384dba03e3294ce7ea69e4da558e9bf8f0e8946 ]
 
-[Why & How]
-The old dc_commit_updates_for_stream lacks manipulation for many corner
-cases where the DC feature requires special attention; as a result, it
-starts to show its limitation (e.g., the SubVP feature is not supported
-by it, among other cases). To modernize and unify our internal API, this
-commit replaces the old dc_commit_updates_for_stream with
-dc_update_planes_and_stream, which has more features.
+Add  entries for Positivo laptops: CW14Q01P, K1424G, N14ZP74G to the
+DMI table, so that  active-high jack-detect will work properly on
+these laptops.
 
-Reviewed-by: Harry Wentland <Harry.Wentland@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Link: https://lore.kernel.org/r/20230529181911.632851-1-edson.drosdeck@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   30 +++++++++++-----------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ sound/soc/codecs/nau8824.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2550,10 +2550,12 @@ static void dm_gpureset_commit_state(str
- 			bundle->surface_updates[m].surface->force_full_update =
- 				true;
- 		}
--		dc_commit_updates_for_stream(
--			dm->dc, bundle->surface_updates,
-+
-+		dc_update_planes_and_stream(dm->dc,
-+			bundle->surface_updates,
- 			dc_state->stream_status->plane_count,
--			dc_state->streams[k], &bundle->stream_update, dc_state);
-+			dc_state->streams[k],
-+			&bundle->stream_update);
- 	}
+diff --git a/sound/soc/codecs/nau8824.c b/sound/soc/codecs/nau8824.c
+index 4f19fd9b65d11..5a4db8944d06a 100644
+--- a/sound/soc/codecs/nau8824.c
++++ b/sound/soc/codecs/nau8824.c
+@@ -1903,6 +1903,30 @@ static const struct dmi_system_id nau8824_quirk_table[] = {
+ 		},
+ 		.driver_data = (void *)(NAU8824_MONO_SPEAKER),
+ 	},
++	{
++		/* Positivo CW14Q01P */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
++			DMI_MATCH(DMI_BOARD_NAME, "CW14Q01P"),
++		},
++		.driver_data = (void *)(NAU8824_JD_ACTIVE_HIGH),
++	},
++	{
++		/* Positivo K1424G */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
++			DMI_MATCH(DMI_BOARD_NAME, "K1424G"),
++		},
++		.driver_data = (void *)(NAU8824_JD_ACTIVE_HIGH),
++	},
++	{
++		/* Positivo N14ZP74G */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
++			DMI_MATCH(DMI_BOARD_NAME, "N14ZP74G"),
++		},
++		.driver_data = (void *)(NAU8824_JD_ACTIVE_HIGH),
++	},
+ 	{}
+ };
  
- cleanup:
-@@ -9238,12 +9240,11 @@ static void amdgpu_dm_commit_planes(stru
- 		}
- 		mutex_lock(&dm->dc_lock);
- 
--		dc_commit_updates_for_stream(dm->dc,
--						     bundle->surface_updates,
--						     planes_count,
--						     acrtc_state->stream,
--						     &bundle->stream_update,
--						     dc_state);
-+		dc_update_planes_and_stream(dm->dc,
-+					    bundle->surface_updates,
-+					    planes_count,
-+					    acrtc_state->stream,
-+					    &bundle->stream_update);
- 
- 		/**
- 		 * Enable or disable the interrupts on the backend.
-@@ -9669,12 +9670,11 @@ static void amdgpu_dm_atomic_commit_tail
- 
- 
- 		mutex_lock(&dm->dc_lock);
--		dc_commit_updates_for_stream(dm->dc,
--						     dummy_updates,
--						     status->plane_count,
--						     dm_new_crtc_state->stream,
--						     &stream_update,
--						     dc_state);
-+		dc_update_planes_and_stream(dm->dc,
-+					    dummy_updates,
-+					    status->plane_count,
-+					    dm_new_crtc_state->stream,
-+					    &stream_update);
- 		mutex_unlock(&dm->dc_lock);
- 	}
- 
+-- 
+2.39.2
+
 
 
