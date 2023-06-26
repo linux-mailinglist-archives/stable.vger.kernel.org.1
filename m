@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB45073E99E
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:38:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A85AF73EA49
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232409AbjFZSiH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:38:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51398 "EHLO
+        id S230363AbjFZSp2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:45:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232406AbjFZSiG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:38:06 -0400
+        with ESMTP id S232607AbjFZSp1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:45:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE73DA
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:38:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4DADFA
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:45:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7409860E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:38:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC62C433C8;
-        Mon, 26 Jun 2023 18:38:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CF5360F56
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:45:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8000EC433C8;
+        Mon, 26 Jun 2023 18:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804683;
-        bh=1B/HTmtjUh8zPzNnyQ7IHoYpiFw291K65cXdnB6nkyo=;
+        s=korg; t=1687805125;
+        bh=LLCvYwMHEXWm5SuHxbVaJMRG/uwMYoTI9uLtZG+eGPI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vKYoHj9KVH45/4gy6L/BdWduE6mnHPeg5/lF1Mv78hWlL/y/9w3+v9idbis3GpkOn
-         om2FZEMZMVhRSIbAVyaal0GU31pP+axEKaJHux7EQBaOy8UpEKgd45i/SiCoCLM7Lr
-         vlCDUWAECzafG/2S9eOGX9xg0ngjjXP3B5FPCRbw=
+        b=W2t7Qjtn6ymT8osSLcXufq64uk6CRkbV8OENxOartpReplY+5LiJkWvepqy7Rvw15
+         cBJU7/eqnaFSJo5z9wvEcA+y3d267JTsTHftqG3gfH3L78dlmr8BcH7zsBtWYgBk9H
+         0GoWOQTPQNzvYv2EjQqNuXa5dFea3POmbEbZs6Go=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Darrick J. Wong" <djwong@kernel.org>,
-        Dave Chinner <dchinner@redhat.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Chandan Babu R <chandan.babu@oracle.com>
-Subject: [PATCH 5.4 60/60] xfs: verify buffer contents when we skip log replay
-Date:   Mon, 26 Jun 2023 20:12:39 +0200
-Message-ID: <20230626180742.017312565@linuxfoundation.org>
+        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 58/81] gpio: Allow per-parent interrupt data
+Date:   Mon, 26 Jun 2023 20:12:40 +0200
+Message-ID: <20230626180746.832452734@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,111 +56,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 22ed903eee23a5b174e240f1cdfa9acf393a5210 upstream.
+[ Upstream commit cfe6807d82e97e81c3209dca9448f091e1448a57 ]
 
-syzbot detected a crash during log recovery:
+The core gpiolib code is able to deal with multiple interrupt parents
+for a single gpio irqchip. It however only allows a single piece
+of data to be conveyed to all flow handlers (either the gpio_chip
+or some other, driver-specific data).
 
-XFS (loop0): Mounting V5 Filesystem bfdc47fc-10d8-4eed-a562-11a831b3f791
-XFS (loop0): Torn write (CRC failure) detected at log block 0x180. Truncating head block from 0x200.
-XFS (loop0): Starting recovery (logdev: internal)
-==================================================================
-BUG: KASAN: slab-out-of-bounds in xfs_btree_lookup_get_block+0x15c/0x6d0 fs/xfs/libxfs/xfs_btree.c:1813
-Read of size 8 at addr ffff88807e89f258 by task syz-executor132/5074
+This means that drivers have to go through some interesting dance
+to find the correct context, something that isn't great in interrupt
+context (see aebdc8abc9db86e2bd33070fc2f961012fff74b4 for a prime
+example).
 
-CPU: 0 PID: 5074 Comm: syz-executor132 Not tainted 6.2.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1b1/0x290 lib/dump_stack.c:106
- print_address_description+0x74/0x340 mm/kasan/report.c:306
- print_report+0x107/0x1f0 mm/kasan/report.c:417
- kasan_report+0xcd/0x100 mm/kasan/report.c:517
- xfs_btree_lookup_get_block+0x15c/0x6d0 fs/xfs/libxfs/xfs_btree.c:1813
- xfs_btree_lookup+0x346/0x12c0 fs/xfs/libxfs/xfs_btree.c:1913
- xfs_btree_simple_query_range+0xde/0x6a0 fs/xfs/libxfs/xfs_btree.c:4713
- xfs_btree_query_range+0x2db/0x380 fs/xfs/libxfs/xfs_btree.c:4953
- xfs_refcount_recover_cow_leftovers+0x2d1/0xa60 fs/xfs/libxfs/xfs_refcount.c:1946
- xfs_reflink_recover_cow+0xab/0x1b0 fs/xfs/xfs_reflink.c:930
- xlog_recover_finish+0x824/0x920 fs/xfs/xfs_log_recover.c:3493
- xfs_log_mount_finish+0x1ec/0x3d0 fs/xfs/xfs_log.c:829
- xfs_mountfs+0x146a/0x1ef0 fs/xfs/xfs_mount.c:933
- xfs_fs_fill_super+0xf95/0x11f0 fs/xfs/xfs_super.c:1666
- get_tree_bdev+0x400/0x620 fs/super.c:1282
- vfs_get_tree+0x88/0x270 fs/super.c:1489
- do_new_mount+0x289/0xad0 fs/namespace.c:3145
- do_mount fs/namespace.c:3488 [inline]
- __do_sys_mount fs/namespace.c:3697 [inline]
- __se_sys_mount+0x2d3/0x3c0 fs/namespace.c:3674
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f89fa3f4aca
-Code: 83 c4 08 5b 5d c3 66 2e 0f 1f 84 00 00 00 00 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fffd5fb5ef8 EFLAGS: 00000206 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00646975756f6e2c RCX: 00007f89fa3f4aca
-RDX: 0000000020000100 RSI: 0000000020009640 RDI: 00007fffd5fb5f10
-RBP: 00007fffd5fb5f10 R08: 00007fffd5fb5f50 R09: 000000000000970d
-R10: 0000000000200800 R11: 0000000000000206 R12: 0000000000000004
-R13: 0000555556c6b2c0 R14: 0000000000200800 R15: 00007fffd5fb5f50
- </TASK>
+Instead, offer an optional way for a pinctrl/gpio driver to provide
+an array of pointers which gets used to provide the correct context
+to the flow handler.
 
-The fuzzed image contains an AGF with an obviously garbage
-agf_refcount_level value of 32, and a dirty log with a buffer log item
-for that AGF.  The ondisk AGF has a higher LSN than the recovered log
-item.  xlog_recover_buf_commit_pass2 reads the buffer, compares the
-LSNs, and decides to skip replay because the ondisk buffer appears to be
-newer.
-
-Unfortunately, the ondisk buffer is corrupt, but recovery just read the
-buffer with no buffer ops specified:
-
-	error = xfs_buf_read(mp->m_ddev_targp, buf_f->blf_blkno,
-			buf_f->blf_len, buf_flags, &bp, NULL);
-
-Skipping the buffer leaves its contents in memory unverified.  This sets
-us up for a kernel crash because xfs_refcount_recover_cow_leftovers
-reads the buffer (which is still around in XBF_DONE state, so no read
-verification) and creates a refcountbt cursor of height 32.  This is
-impossible so we run off the end of the cursor object and crash.
-
-Fix this by invoking the verifier on all skipped buffers and aborting
-log recovery if the ondisk buffer is corrupt.  It might be smarter to
-force replay the log item atop the buffer and then see if it'll pass the
-write verifier (like ext4 does) but for now let's go with the
-conservative option where we stop immediately.
-
-Link: https://syzkaller.appspot.com/bug?extid=7e9494b8b399902e994e
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Dave Chinner <david@fromorbit.com>
-Signed-off-by: Chandan Babu R <chandan.babu@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20211026175815.52703-2-joey.gouly@arm.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: 8c00914e5438 ("gpiolib: Fix GPIO chip IRQ initialization restriction")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_log_recover.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpio/gpiolib.c      |  9 +++++++--
+ include/linux/gpio/driver.h | 19 +++++++++++++++++--
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2783,6 +2783,16 @@ xlog_recover_buffer_pass2(
- 	if (lsn && lsn != -1 && XFS_LSN_CMP(lsn, current_lsn) >= 0) {
- 		trace_xfs_log_recover_buf_skip(log, buf_f);
- 		xlog_recover_validate_buf_type(mp, bp, buf_f, NULLCOMMITLSN);
-+
-+		/*
-+		 * We're skipping replay of this buffer log item due to the log
-+		 * item LSN being behind the ondisk buffer.  Verify the buffer
-+		 * contents since we aren't going to run the write verifier.
-+		 */
-+		if (bp->b_ops) {
-+			bp->b_ops->verify_read(bp);
-+			error = bp->b_error;
-+		}
- 		goto out_release;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 3e01a3ac652d1..7ac86037a4191 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1595,9 +1595,14 @@ static int gpiochip_add_irqchip(struct gpio_chip *gc,
  	}
  
+ 	if (gc->irq.parent_handler) {
+-		void *data = gc->irq.parent_handler_data ?: gc;
+-
+ 		for (i = 0; i < gc->irq.num_parents; i++) {
++			void *data;
++
++			if (gc->irq.per_parent_data)
++				data = gc->irq.parent_handler_data_array[i];
++			else
++				data = gc->irq.parent_handler_data ?: gc;
++
+ 			/*
+ 			 * The parent IRQ chip is already using the chip_data
+ 			 * for this IRQ chip, so our callbacks simply use the
+diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
+index 0552a9859a01e..64c93a36a3a92 100644
+--- a/include/linux/gpio/driver.h
++++ b/include/linux/gpio/driver.h
+@@ -168,11 +168,18 @@ struct gpio_irq_chip {
+ 
+ 	/**
+ 	 * @parent_handler_data:
++	 * @parent_handler_data_array:
+ 	 *
+ 	 * Data associated, and passed to, the handler for the parent
+-	 * interrupt.
++	 * interrupt. Can either be a single pointer if @per_parent_data
++	 * is false, or an array of @num_parents pointers otherwise.  If
++	 * @per_parent_data is true, @parent_handler_data_array cannot be
++	 * NULL.
+ 	 */
+-	void *parent_handler_data;
++	union {
++		void *parent_handler_data;
++		void **parent_handler_data_array;
++	};
+ 
+ 	/**
+ 	 * @num_parents:
+@@ -203,6 +210,14 @@ struct gpio_irq_chip {
+ 	 */
+ 	bool threaded;
+ 
++	/**
++	 * @per_parent_data:
++	 *
++	 * True if parent_handler_data_array describes a @num_parents
++	 * sized array to be used as parent data.
++	 */
++	bool per_parent_data;
++
+ 	/**
+ 	 * @init_hw: optional routine to initialize hardware before
+ 	 * an IRQ chip will be added. This is quite useful when
+-- 
+2.39.2
+
 
 
