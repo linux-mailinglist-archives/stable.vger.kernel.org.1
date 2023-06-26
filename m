@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BD3673E92B
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2278D73E844
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232244AbjFZSdP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:33:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47206 "EHLO
+        id S232013AbjFZSYC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:24:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232242AbjFZSdK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:33:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D837FAC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:33:09 -0700 (PDT)
+        with ESMTP id S231960AbjFZSXq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B517E7F
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 72C6160F24
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:33:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C20C433C8;
-        Mon, 26 Jun 2023 18:33:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E9F5760F66
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:22:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057A8C433C9;
+        Mon, 26 Jun 2023 18:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804388;
-        bh=IQCHX5haFxfgrjAssA0YLTFwJoXVSpCrVbfGFT44hk8=;
+        s=korg; t=1687803779;
+        bh=oL/zh7i/hSXwrGKNTavv9AXBuIVM0dmjjSCpdnWImu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n2F+iVrd0thFFVdk7Ofx7RZZdx3vWjo42OOuMKcW5cUz7Hhln3I+QtnNK7/jo71nZ
-         hkjzsEnyxzLWH9Nhz3o4/VTR0pUDZ4P2mMzbIBvxe1qLqho82tJvmSJdOc9fIQJS4i
-         nunbRQMzz/GWWqAaduzL50UOMbZlsFIen3lrNMmU=
+        b=ibN/hcpGp6m3Mg0F9f3o/yx/9EZSiqfoT4Ov1CXYHwjzGTkTR+E1/xt82nj6/voEo
+         FepcwZWWGUnKKONfKJeROjkwZeBlLUhPdG8K42JuBzMKWz1i21PIHgr/0asJPiKeHe
+         GLLUDPbgkYu15HMPCcEHdzhjULIHKqB5M0avoRlI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Hao Yao <hao.yao@intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/170] netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain
+Subject: [PATCH 6.3 174/199] platform/x86: int3472: Avoid crash in unregistering regulator gpio
 Date:   Mon, 26 Jun 2023 20:11:20 +0200
-Message-ID: <20230626180805.506134599@linuxfoundation.org>
+Message-ID: <20230626180813.367620711@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,174 +56,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Hao Yao <hao.yao@intel.com>
 
-[ Upstream commit 26b5a5712eb85e253724e56a54c17f8519bd8e4e ]
+[ Upstream commit fb109fba728407fa4a84d659b5cb87cd8399d7b3 ]
 
-Add a new state to deal with rule expressions deactivation from the
-newrule error path, otherwise the anonymous set remains in the list in
-inactive state for the next generation. Mark the set/chain transaction
-as unbound so the abort path releases this object, set it as inactive in
-the next generation so it is not reachable anymore from this transaction
-and reference counter is dropped.
+When int3472 is loaded before GPIO driver, acpi_get_and_request_gpiod()
+failed but the returned gpio descriptor is not NULL, it will cause panic
+in later gpiod_put(), so set the gpio_desc to NULL in register error
+handling to avoid such crash.
 
-Fixes: 1240eb93f061 ("netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Hao Yao <hao.yao@intel.com>
+Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+Link: https://lore.kernel.org/r/20230524035135.90315-1-bingbu.cao@intel.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |  2 ++
- net/netfilter/nf_tables_api.c     | 45 ++++++++++++++++++++++++++-----
- net/netfilter/nft_immediate.c     |  3 +++
- 3 files changed, 43 insertions(+), 7 deletions(-)
+ .../platform/x86/intel/int3472/clk_and_regulator.c  | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index c13a84c0b4965..984f7d3087735 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -895,6 +895,7 @@ struct nft_expr_type {
+diff --git a/drivers/platform/x86/intel/int3472/clk_and_regulator.c b/drivers/platform/x86/intel/int3472/clk_and_regulator.c
+index 1086c3d834945..399f0623ca1b5 100644
+--- a/drivers/platform/x86/intel/int3472/clk_and_regulator.c
++++ b/drivers/platform/x86/intel/int3472/clk_and_regulator.c
+@@ -101,9 +101,11 @@ int skl_int3472_register_clock(struct int3472_discrete_device *int3472,
  
- enum nft_trans_phase {
- 	NFT_TRANS_PREPARE,
-+	NFT_TRANS_PREPARE_ERROR,
- 	NFT_TRANS_ABORT,
- 	NFT_TRANS_COMMIT,
- 	NFT_TRANS_RELEASE
-@@ -1089,6 +1090,7 @@ int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
- 			 struct nft_set_elem *elem);
- int nft_set_catchall_validate(const struct nft_ctx *ctx, struct nft_set *set);
- int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
-+void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
+ 	int3472->clock.ena_gpio = acpi_get_and_request_gpiod(path, agpio->pin_table[0],
+ 							     "int3472,clk-enable");
+-	if (IS_ERR(int3472->clock.ena_gpio))
+-		return dev_err_probe(int3472->dev, PTR_ERR(int3472->clock.ena_gpio),
+-				     "getting clk-enable GPIO\n");
++	if (IS_ERR(int3472->clock.ena_gpio)) {
++		ret = PTR_ERR(int3472->clock.ena_gpio);
++		int3472->clock.ena_gpio = NULL;
++		return dev_err_probe(int3472->dev, ret, "getting clk-enable GPIO\n");
++	}
  
- enum nft_chain_types {
- 	NFT_CHAIN_T_DEFAULT = 0,
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 8f8e315691dde..72bb2b3977480 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -171,7 +171,8 @@ static void nft_trans_destroy(struct nft_trans *trans)
- 	kfree(trans);
- }
- 
--static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
-+static void __nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set,
-+				 bool bind)
- {
- 	struct nftables_pernet *nft_net;
- 	struct net *net = ctx->net;
-@@ -185,17 +186,28 @@ static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
- 		switch (trans->msg_type) {
- 		case NFT_MSG_NEWSET:
- 			if (nft_trans_set(trans) == set)
--				nft_trans_set_bound(trans) = true;
-+				nft_trans_set_bound(trans) = bind;
- 			break;
- 		case NFT_MSG_NEWSETELEM:
- 			if (nft_trans_elem_set(trans) == set)
--				nft_trans_elem_set_bound(trans) = true;
-+				nft_trans_elem_set_bound(trans) = bind;
- 			break;
- 		}
+ 	if (polarity == GPIO_ACTIVE_LOW)
+ 		gpiod_toggle_active_low(int3472->clock.ena_gpio);
+@@ -199,8 +201,9 @@ int skl_int3472_register_regulator(struct int3472_discrete_device *int3472,
+ 	int3472->regulator.gpio = acpi_get_and_request_gpiod(path, agpio->pin_table[0],
+ 							     "int3472,regulator");
+ 	if (IS_ERR(int3472->regulator.gpio)) {
+-		dev_err(int3472->dev, "Failed to get regulator GPIO line\n");
+-		return PTR_ERR(int3472->regulator.gpio);
++		ret = PTR_ERR(int3472->regulator.gpio);
++		int3472->regulator.gpio = NULL;
++		return dev_err_probe(int3472->dev, ret, "getting regulator GPIO\n");
  	}
- }
  
--static void nft_chain_trans_bind(const struct nft_ctx *ctx, struct nft_chain *chain)
-+static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
-+{
-+	return __nft_set_trans_bind(ctx, set, true);
-+}
-+
-+static void nft_set_trans_unbind(const struct nft_ctx *ctx, struct nft_set *set)
-+{
-+	return __nft_set_trans_bind(ctx, set, false);
-+}
-+
-+static void __nft_chain_trans_bind(const struct nft_ctx *ctx,
-+				   struct nft_chain *chain, bool bind)
- {
- 	struct nftables_pernet *nft_net;
- 	struct net *net = ctx->net;
-@@ -209,16 +221,22 @@ static void nft_chain_trans_bind(const struct nft_ctx *ctx, struct nft_chain *ch
- 		switch (trans->msg_type) {
- 		case NFT_MSG_NEWCHAIN:
- 			if (nft_trans_chain(trans) == chain)
--				nft_trans_chain_bound(trans) = true;
-+				nft_trans_chain_bound(trans) = bind;
- 			break;
- 		case NFT_MSG_NEWRULE:
- 			if (trans->ctx.chain == chain)
--				nft_trans_rule_bound(trans) = true;
-+				nft_trans_rule_bound(trans) = bind;
- 			break;
- 		}
- 	}
- }
- 
-+static void nft_chain_trans_bind(const struct nft_ctx *ctx,
-+				 struct nft_chain *chain)
-+{
-+	__nft_chain_trans_bind(ctx, chain, true);
-+}
-+
- int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
- {
- 	if (!nft_chain_binding(chain))
-@@ -237,6 +255,11 @@ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
- 	return 0;
- }
- 
-+void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain)
-+{
-+	__nft_chain_trans_bind(ctx, chain, false);
-+}
-+
- static int nft_netdev_register_hooks(struct net *net,
- 				     struct list_head *hook_list)
- {
-@@ -3709,7 +3732,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (flow)
- 		nft_flow_rule_destroy(flow);
- err_release_rule:
--	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
-+	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE_ERROR);
- 	nf_tables_rule_destroy(&ctx, rule);
- err_release_expr:
- 	for (i = 0; i < n; i++) {
-@@ -4990,6 +5013,13 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      enum nft_trans_phase phase)
- {
- 	switch (phase) {
-+	case NFT_TRANS_PREPARE_ERROR:
-+		nft_set_trans_unbind(ctx, set);
-+		if (nft_set_is_anonymous(set))
-+			nft_deactivate_next(ctx->net, set);
-+
-+		set->use--;
-+		break;
- 	case NFT_TRANS_PREPARE:
- 		if (nft_set_is_anonymous(set))
- 			nft_deactivate_next(ctx->net, set);
-@@ -7494,6 +7524,7 @@ void nf_tables_deactivate_flowtable(const struct nft_ctx *ctx,
- 				    enum nft_trans_phase phase)
- {
- 	switch (phase) {
-+	case NFT_TRANS_PREPARE_ERROR:
- 	case NFT_TRANS_PREPARE:
- 	case NFT_TRANS_ABORT:
- 	case NFT_TRANS_RELEASE:
-diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
-index 457fc1e218410..900e75e8c3465 100644
---- a/net/netfilter/nft_immediate.c
-+++ b/net/netfilter/nft_immediate.c
-@@ -150,6 +150,9 @@ static void nft_immediate_deactivate(const struct nft_ctx *ctx,
- 				nft_rule_expr_deactivate(&chain_ctx, rule, phase);
- 
- 			switch (phase) {
-+			case NFT_TRANS_PREPARE_ERROR:
-+				nf_tables_unbind_chain(ctx, chain);
-+				fallthrough;
- 			case NFT_TRANS_PREPARE:
- 				nft_deactivate_next(ctx->net, chain);
- 				break;
+ 	/* Ensure the pin is in output mode and non-active state */
 -- 
 2.39.2
 
