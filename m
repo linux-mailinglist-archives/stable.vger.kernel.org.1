@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB1573E85C
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DDFF73E9B5
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231860AbjFZSYz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:24:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38288 "EHLO
+        id S232425AbjFZSjM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:39:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232059AbjFZSYj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:24:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885031708
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:24:02 -0700 (PDT)
+        with ESMTP id S232442AbjFZSjJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:39:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF411122
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:39:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E79F60F4B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:24:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8D0C433C9;
-        Mon, 26 Jun 2023 18:24:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AA2660F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:39:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AE8C433C0;
+        Mon, 26 Jun 2023 18:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803841;
-        bh=zDkmCzoJ4gm1dJ3VkRsGn50ZQ7htLUi14Cd3SrW/GRY=;
+        s=korg; t=1687804746;
+        bh=8gHV8AHvNYiogcKy7vhbDKr7kWbDaNO9tY2+/KsbvMg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ECkKTFQhzj1xnGOxs3AEaUyPRH0IKY7nwA7OBK18JNCbarSQGFBhRRJj6iYRZGjTT
-         hNVwvVQwIS8rofuvmnSTcsczBo7HUEXA860Yx1bDpntf9081WbUbjMYB3OhwZBrq3D
-         PaIDLTQ5r5NZNeBtOv5MgIbYlcJAhuJ86iN0wFSo=
+        b=tzq6P/cht3Uaoh5GK0tJL2B98/2sMaLvmfy4ShHi3gypJ3+sevfxdrPM7I8zW6Ry+
+         PwP1gRV5ocOIxnxGAIdkHkKj8AcwbydmOO5HG9E+0mVXZjv9srzEq9QVt6LNHmLVzX
+         ASByx5bifkoG8HL6+Stu4FrjKzkZAxPBHGxZsyFg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.3 196/199] KVM: arm64: Restore GICv2-on-GICv3 functionality
+        patches@lists.linux.dev, Yann Gautier <yann.gautier@foss.st.com>,
+        Christophe Kerello <christophe.kerello@foss.st.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 27/96] mmc: mmci: stm32: fix max busy timeout calculation
 Date:   Mon, 26 Jun 2023 20:11:42 +0200
-Message-ID: <20230626180814.344897430@linuxfoundation.org>
+Message-ID: <20230626180748.068776247@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,67 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Zyngier <maz@kernel.org>
+From: Christophe Kerello <christophe.kerello@foss.st.com>
 
-commit 1caa71a7a600f7781ce05ef1e84701c459653663 upstream.
+commit 47b3ad6b7842f49d374a01b054a4b1461a621bdc upstream.
 
-When reworking the vgic locking, the vgic distributor registration
-got simplified, which was a very good cleanup. But just a tad too
-radical, as we now register the *native* vgic only, ignoring the
-GICv2-on-GICv3 that allows pre-historic VMs (or so I thought)
-to run.
+The way that the timeout is currently calculated could lead to a u64
+timeout value in mmci_start_command(). This value is then cast in a u32
+register that leads to mmc erase failed issue with some SD cards.
 
-As it turns out, QEMU still defaults to GICv2 in some cases, and
-this breaks Nathan's setup!
-
-Fix it by propagating the *requested* vgic type rather than the
-host's version.
-
-Fixes: 59112e9c390b ("KVM: arm64: vgic: Fix a circular locking issue")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-link: https://lore.kernel.org/r/20230606221525.GA2269598@dev-arch.thelio-3990X
+Fixes: 8266c585f489 ("mmc: mmci: add hardware busy timeout feature")
+Signed-off-by: Yann Gautier <yann.gautier@foss.st.com>
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230613134146.418016-1-yann.gautier@foss.st.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-init.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/mmc/host/mmci.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -446,6 +446,7 @@ int vgic_lazy_init(struct kvm *kvm)
- int kvm_vgic_map_resources(struct kvm *kvm)
- {
- 	struct vgic_dist *dist = &kvm->arch.vgic;
-+	enum vgic_type type;
- 	gpa_t dist_base;
- 	int ret = 0;
+--- a/drivers/mmc/host/mmci.c
++++ b/drivers/mmc/host/mmci.c
+@@ -1729,7 +1729,8 @@ static void mmci_set_max_busy_timeout(st
+ 		return;
  
-@@ -460,10 +461,13 @@ int kvm_vgic_map_resources(struct kvm *k
- 	if (!irqchip_in_kernel(kvm))
- 		goto out;
+ 	if (host->variant->busy_timeout && mmc->actual_clock)
+-		max_busy_timeout = ~0UL / (mmc->actual_clock / MSEC_PER_SEC);
++		max_busy_timeout = U32_MAX / DIV_ROUND_UP(mmc->actual_clock,
++							  MSEC_PER_SEC);
  
--	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V2)
-+	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V2) {
- 		ret = vgic_v2_map_resources(kvm);
--	else
-+		type = VGIC_V2;
-+	} else {
- 		ret = vgic_v3_map_resources(kvm);
-+		type = VGIC_V3;
-+	}
- 
- 	if (ret) {
- 		__kvm_vgic_destroy(kvm);
-@@ -473,8 +477,7 @@ int kvm_vgic_map_resources(struct kvm *k
- 	dist_base = dist->vgic_dist_base;
- 	mutex_unlock(&kvm->arch.config_lock);
- 
--	ret = vgic_register_dist_iodev(kvm, dist_base,
--				       kvm_vgic_global_state.type);
-+	ret = vgic_register_dist_iodev(kvm, dist_base, type);
- 	if (ret) {
- 		kvm_err("Unable to register VGIC dist MMIO regions\n");
- 		kvm_vgic_destroy(kvm);
+ 	mmc->max_busy_timeout = max_busy_timeout;
+ }
 
 
