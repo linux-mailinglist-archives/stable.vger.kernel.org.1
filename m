@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81A7E73EA05
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9950173EA61
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:46:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbjFZSm3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:42:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54682 "EHLO
+        id S232637AbjFZSqj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:46:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232553AbjFZSmV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:42:21 -0400
+        with ESMTP id S232634AbjFZSqi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:46:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B456A10FC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:42:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072E1FA
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:46:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 288E360F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:42:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33566C433C8;
-        Mon, 26 Jun 2023 18:42:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9347B60F30
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:46:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1D7C433C8;
+        Mon, 26 Jun 2023 18:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804936;
-        bh=XFn1afc3CoB5JTiXT23yatsipLgYi74pLHBf8rgy/9A=;
+        s=korg; t=1687805197;
+        bh=gOlwZNLr8Saa3uQulc+67b8HfRPJx8sctzYSPSUTjig=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1TbOBiISpRes3vPdyqgQnuciXQuM5JRL5KB22FBJ6Dc+5rZ0WitzSflx4t2RT5uRs
-         pOLOXLic2LrLWkc5aC8dobXQRC7MKr1APcAcQGHVRjfRvhL1qqCuJoXuAPQA11VpLQ
-         73vKyPdgzN9JKEUjGmtrzwINDgQU441GV57RDHVE=
+        b=ggQrh0OoXYvEW+tQeaDy4MDiR1MLpcoPf3MfYyByldulgGlVOVvQ6DC/iFKmHYeFq
+         aMm4wdUMkO6uTcrfLZNPcgZX71ViMlftLVK0Md2V1q5oSX7TBvjXQ1CaadNv8dSTpk
+         eJ8N4Fw8UuVQ6kOneJOc3vBJXTh0hLcNaMRVO2vE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Inki Dae <inki.dae@samsung.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
+        patches@lists.linux.dev, Osama Muhammad <osmtendev@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 91/96] drm/exynos: vidi: fix a wrong error return
+Subject: [PATCH 5.10 64/81] nfcsim.c: Fix error checking for debugfs_create_dir
 Date:   Mon, 26 Jun 2023 20:12:46 +0200
-Message-ID: <20230626180750.819576304@linuxfoundation.org>
+Message-ID: <20230626180747.069907123@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Inki Dae <inki.dae@samsung.com>
+From: Osama Muhammad <osmtendev@gmail.com>
 
-[ Upstream commit 4a059559809fd1ddbf16f847c4d2237309c08edf ]
+[ Upstream commit 9b9e46aa07273ceb96866b2e812b46f1ee0b8d2f ]
 
-Fix a wrong error return by dropping an error return.
+This patch fixes the error checking in nfcsim.c.
+The DebugFS kernel API is developed in
+a way that the caller can safely ignore the errors that
+occur during the creation of DebugFS nodes.
 
-When vidi driver is remvoed, if ctx->raw_edid isn't same as fake_edid_info
-then only what we have to is to free ctx->raw_edid so that driver removing
-can work correctly - it's not an error case.
-
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/nfc/nfcsim.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index e5662bdcbbde3..e96436e11a36c 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -468,8 +468,6 @@ static int vidi_remove(struct platform_device *pdev)
- 	if (ctx->raw_edid != (struct edid *)fake_edid_info) {
- 		kfree(ctx->raw_edid);
- 		ctx->raw_edid = NULL;
+diff --git a/drivers/nfc/nfcsim.c b/drivers/nfc/nfcsim.c
+index dd27c85190d34..b42d386350b72 100644
+--- a/drivers/nfc/nfcsim.c
++++ b/drivers/nfc/nfcsim.c
+@@ -336,10 +336,6 @@ static struct dentry *nfcsim_debugfs_root;
+ static void nfcsim_debugfs_init(void)
+ {
+ 	nfcsim_debugfs_root = debugfs_create_dir("nfcsim", NULL);
 -
--		return -EINVAL;
- 	}
+-	if (!nfcsim_debugfs_root)
+-		pr_err("Could not create debugfs entry\n");
+-
+ }
  
- 	component_del(&pdev->dev, &vidi_component_ops);
+ static void nfcsim_debugfs_remove(void)
 -- 
 2.39.2
 
