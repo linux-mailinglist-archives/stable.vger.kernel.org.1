@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D6F073E966
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6197573E958
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:34:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232359AbjFZSff (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:35:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49328 "EHLO
+        id S232319AbjFZSe5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:34:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232055AbjFZSfe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:35:34 -0400
+        with ESMTP id S232349AbjFZSeu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:34:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D23ED94
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:35:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41B1DCC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:34:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64C0560F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:35:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCC5C433C9;
-        Mon, 26 Jun 2023 18:35:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC56160F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:34:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79F2C433C0;
+        Mon, 26 Jun 2023 18:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804531;
-        bh=11Qs/pxTgm+da5i+O7GC+r8g6TgLnr3h7fqcDQyrH3s=;
+        s=korg; t=1687804489;
+        bh=mUxNQIpFKdSgsyHlBzfJ0C9SyAreXeP8ZCKjpVVDC/M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mTygWMsEvHVlAYbkeerGh5tVZxt/f7gndcFuvDZiqzo69uTH+HUU+3/yKzXhUDQaY
-         8LRaT4wGvXGj/x9AVX+TImNP2PCvXbUr0hnEKisRl3yY8UuDCHAh7VBfhuhUDfX4F4
-         wNCjqC1DfmILbifRfgQErJtPYFigZca6wvjCrL8s=
+        b=OlXn6CZ+tf8KFGfgBdSAFY+SCc96sHaFr+HWFmztVMS4hkFTayxyQxATRjXppBh3w
+         fP0YGJTc9mlNHYKhkTa12Ww+gnSRrC7DxlA+jLimUoKBk74GEabsZ4nnmWdXSqzPLm
+         2QWKuM+doVIWlOw0iU/4deVddJZsMIHxEWKhdVUE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matthias May <matthias.may@westermo.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Subject: [PATCH 5.4 16/60] ip_tunnels: allow VXLAN/GENEVE to inherit TOS/TTL from VLAN
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 146/170] arm64: dts: qcom: sc7280-qcard: drop incorrect dai-cells from WCD938x SDW
 Date:   Mon, 26 Jun 2023 20:11:55 +0200
-Message-ID: <20230626180740.220824140@linuxfoundation.org>
+Message-ID: <20230626180807.074954277@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,56 +58,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthias May <matthias.may@westermo.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 7074732c8faee201a245a6f983008a5789c0be33 upstream.
+[ Upstream commit 16bd455d0897d1b8b7a9aee2ed51d75b14a34563 ]
 
-The current code allows for VXLAN and GENEVE to inherit the TOS
-respective the TTL when skb-protocol is ETH_P_IP or ETH_P_IPV6.
-However when the payload is VLAN encapsulated, then this inheriting
-does not work, because the visible skb-protocol is of type
-ETH_P_8021Q or ETH_P_8021AD.
+The WCD938x audio codec Soundwire interface part is not a DAI and does
+not allow sound-dai-cells:
 
-Instead of skb->protocol use skb_protocol().
+  sc7280-herobrine-crd.dtb: codec@0,4: '#sound-dai-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Signed-off-by: Matthias May <matthias.may@westermo.com>
-Link: https://lore.kernel.org/r/20220721202718.10092-1-matthias.may@westermo.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230220095401.64196-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_tunnels.h |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -374,9 +374,11 @@ static inline int ip_tunnel_encap(struct
- static inline u8 ip_tunnel_get_dsfield(const struct iphdr *iph,
- 				       const struct sk_buff *skb)
- {
--	if (skb->protocol == htons(ETH_P_IP))
-+	__be16 payload_protocol = skb_protocol(skb, true);
-+
-+	if (payload_protocol == htons(ETH_P_IP))
- 		return iph->tos;
--	else if (skb->protocol == htons(ETH_P_IPV6))
-+	else if (payload_protocol == htons(ETH_P_IPV6))
- 		return ipv6_get_dsfield((const struct ipv6hdr *)iph);
- 	else
- 		return 0;
-@@ -385,9 +387,11 @@ static inline u8 ip_tunnel_get_dsfield(c
- static inline u8 ip_tunnel_get_ttl(const struct iphdr *iph,
- 				       const struct sk_buff *skb)
- {
--	if (skb->protocol == htons(ETH_P_IP))
-+	__be16 payload_protocol = skb_protocol(skb, true);
-+
-+	if (payload_protocol == htons(ETH_P_IP))
- 		return iph->ttl;
--	else if (skb->protocol == htons(ETH_P_IPV6))
-+	else if (payload_protocol == htons(ETH_P_IPV6))
- 		return ((const struct ipv6hdr *)iph)->hop_limit;
- 	else
- 		return 0;
+diff --git a/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi b/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi
+index f7665b3799233..c358abc052eb8 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi
+@@ -418,7 +418,6 @@
+ 	wcd_rx: codec@0,4 {
+ 		compatible = "sdw20217010d00";
+ 		reg = <0 4>;
+-		#sound-dai-cells = <1>;
+ 		qcom,rx-port-mapping = <1 2 3 4 5>;
+ 	};
+ };
+@@ -427,7 +426,6 @@
+ 	wcd_tx: codec@0,3 {
+ 		compatible = "sdw20217010d00";
+ 		reg = <0 3>;
+-		#sound-dai-cells = <1>;
+ 		qcom,tx-port-mapping = <1 2 3 4>;
+ 	};
+ };
+-- 
+2.39.2
+
 
 
