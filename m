@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D6F473EA1C
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7175073E9E6
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:41:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232531AbjFZSnf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:43:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55426 "EHLO
+        id S232492AbjFZSlS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:41:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232181AbjFZSn3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:29 -0400
+        with ESMTP id S232493AbjFZSlR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:41:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D0D10F4
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11009CC
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:41:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 061C460F53
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AD9C433C0;
-        Mon, 26 Jun 2023 18:43:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8823D60F45
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:41:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC0AC433C0;
+        Mon, 26 Jun 2023 18:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804998;
-        bh=tlWDpZOBMBJau3gg17bF5NgoRIAh0n2DcCMYYFyqnPo=;
+        s=korg; t=1687804874;
+        bh=A7R/cC/4bnd3PSBE18dGWU4Va1blHu3yDAuhMMXiHHc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xNH6mtf7WPEAXpJJHAl1qyyxdSioICAUFuSxhZkbVxc+kci40CM2LFoCnyi4lsbZK
-         fMeXocO4xOfnvBAaSMK+Ra5G1ivwFk641LsVPl3cr+qTg1LKs9IV0RicUjoFsOGoRu
-         ElGQQJCdZnXycSbHfHHy59IOD/VnpRZpHCJE5TFs=
+        b=O7NgqqYeJOlCycAn6ezlNzgS4XC6GEtZXamOzsxBgRU4qsZV/oyvu3V6v/IJuskZf
+         o2SakGgaZVzawv16yaDYDgWTZIT0qqGxIl+vZAWlBXWCDKFygPS69QHyqWvn2N/80w
+         iYnQH0mH0+b+f03wqfiPZZOL714xLH4xqlXcE0IU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 16/81] mmc: sdhci-msm: Disable broken 64-bit DMA on MSM8916
+        patches@lists.linux.dev, Eduard Zingerman <eddyz87@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 43/96] bpf: track immediate values written to stack by BPF_ST instruction
 Date:   Mon, 26 Jun 2023 20:11:58 +0200
-Message-ID: <20230626180745.119049776@linuxfoundation.org>
+Message-ID: <20230626180748.733855427@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
-References: <20230626180744.453069285@linuxfoundation.org>
+In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
+References: <20230626180746.943455203@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,73 +55,484 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stephan Gerhold <stephan@gerhold.net>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit e6f9e590b72e12bbb86b1b8be7e1981f357392ad upstream.
+[ Upstream commit ecdf985d7615356b78241fdb159c091830ed0380 ]
 
-While SDHCI claims to support 64-bit DMA on MSM8916 it does not seem to
-be properly functional. It is not immediately obvious because SDHCI is
-usually used with IOMMU bypassed on this SoC, and all physical memory
-has 32-bit addresses. But when trying to enable the IOMMU it quickly
-fails with an error such as the following:
+For aligned stack writes using BPF_ST instruction track stored values
+in a same way BPF_STX is handled, e.g. make sure that the following
+commands produce similar verifier knowledge:
 
-  arm-smmu 1e00000.iommu: Unhandled context fault:
-    fsr=0x402, iova=0xfffff200, fsynr=0xe0000, cbfrsynra=0x140, cb=3
-  mmc1: ADMA error: 0x02000000
-  mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
-  mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00002e02
-  mmc1: sdhci: Blk size:  0x00000008 | Blk cnt:  0x00000000
-  mmc1: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
-  mmc1: sdhci: Present:   0x03f80206 | Host ctl: 0x00000019
-  mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
-  mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000007
-  mmc1: sdhci: Timeout:   0x0000000a | Int stat: 0x00000001
-  mmc1: sdhci: Int enab:  0x03ff900b | Sig enab: 0x03ff100b
-  mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
-  mmc1: sdhci: Caps:      0x322dc8b2 | Caps_1:   0x00008007
-  mmc1: sdhci: Cmd:       0x0000333a | Max curr: 0x00000000
-  mmc1: sdhci: Resp[0]:   0x00000920 | Resp[1]:  0x5b590000
-  mmc1: sdhci: Resp[2]:   0xe6487f80 | Resp[3]:  0x0a404094
-  mmc1: sdhci: Host ctl2: 0x00000008
-  mmc1: sdhci: ADMA Err:  0x00000001 | ADMA Ptr: 0x0000000ffffff224
-  mmc1: sdhci_msm: ----------- VENDOR REGISTER DUMP -----------
-  mmc1: sdhci_msm: DLL sts: 0x00000000 | DLL cfg:  0x60006400 | DLL cfg2: 0x00000000
-  mmc1: sdhci_msm: DLL cfg3: 0x00000000 | DLL usr ctl:  0x00000000 | DDR cfg: 0x00000000
-  mmc1: sdhci_msm: Vndr func: 0x00018a9c | Vndr func2 : 0xf88018a8 Vndr func3: 0x00000000
-  mmc1: sdhci: ============================================
-  mmc1: sdhci: fffffffff200: DMA 0x0000ffffffffe100, LEN 0x0008, Attr=0x21
-  mmc1: sdhci: fffffffff20c: DMA 0x0000000000000000, LEN 0x0000, Attr=0x03
+  fp[-8] = 42;             r1 = 42;
+                       fp[-8] = r1;
 
-Looking closely it's obvious that only the 32-bit part of the address
-(0xfffff200) arrives at the SMMU, the higher 16-bit (0xffff...) get
-lost somewhere. This might not be a limitation of the SDHCI itself but
-perhaps the bus/interconnect it is connected to, or even the connection
-to the SMMU.
+This covers two cases:
+ - non-null values written to stack are stored as spill of fake
+   registers;
+ - null values written to stack are stored as STACK_ZERO marks.
 
-Work around this by setting SDHCI_QUIRK2_BROKEN_64_BIT_DMA to avoid
-using 64-bit addresses.
+Previously both cases above used STACK_MISC marks instead.
 
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230518-msm8916-64bit-v1-1-5694b0f35211@gerhold.net
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Some verifier test cases relied on the old logic to obtain STACK_MISC
+marks for some stack values. These test cases are updated in the same
+commit to avoid failures during bisect.
+
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20230214232030.1502829-2-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: 713274f1f2c8 ("bpf: Fix verifier id tracking of scalars on spill")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/bpf/verifier.c                         |  18 ++-
+ .../bpf/verifier/bounds_mix_sign_unsign.c     | 110 ++++++++++--------
+ 2 files changed, 80 insertions(+), 48 deletions(-)
 
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -2228,6 +2228,9 @@ static inline void sdhci_msm_get_of_prop
- 		msm_host->ddr_config = DDR_CONFIG_POR_VAL;
- 
- 	of_property_read_u32(node, "qcom,dll-config", &msm_host->dll_config);
-+
-+	if (of_device_is_compatible(node, "qcom,msm8916-sdhci"))
-+		host->quirks2 |= SDHCI_QUIRK2_BROKEN_64_BIT_DMA;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 27fd331aefe57..9d7a6bf5f7c1f 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2659,6 +2659,11 @@ static void save_register_state(struct bpf_func_state *state,
+ 		scrub_spilled_slot(&state->stack[spi].slot_type[i - 1]);
  }
  
- static int sdhci_msm_gcc_reset(struct device *dev, struct sdhci_host *host)
++static bool is_bpf_st_mem(struct bpf_insn *insn)
++{
++	return BPF_CLASS(insn->code) == BPF_ST && BPF_MODE(insn->code) == BPF_MEM;
++}
++
+ /* check_stack_{read,write}_fixed_off functions track spill/fill of registers,
+  * stack boundary and alignment are checked in check_mem_access()
+  */
+@@ -2670,8 +2675,9 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
+ {
+ 	struct bpf_func_state *cur; /* state of the current function */
+ 	int i, slot = -off - 1, spi = slot / BPF_REG_SIZE, err;
+-	u32 dst_reg = env->prog->insnsi[insn_idx].dst_reg;
++	struct bpf_insn *insn = &env->prog->insnsi[insn_idx];
+ 	struct bpf_reg_state *reg = NULL;
++	u32 dst_reg = insn->dst_reg;
+ 
+ 	err = grow_stack_state(state, round_up(slot + 1, BPF_REG_SIZE));
+ 	if (err)
+@@ -2719,6 +2725,13 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
+ 				return err;
+ 		}
+ 		save_register_state(state, spi, reg, size);
++	} else if (!reg && !(off % BPF_REG_SIZE) && is_bpf_st_mem(insn) &&
++		   insn->imm != 0 && env->bpf_capable) {
++		struct bpf_reg_state fake_reg = {};
++
++		__mark_reg_known(&fake_reg, (u32)insn->imm);
++		fake_reg.type = SCALAR_VALUE;
++		save_register_state(state, spi, &fake_reg, size);
+ 	} else if (reg && is_spillable_regtype(reg->type)) {
+ 		/* register containing pointer is being spilled into stack */
+ 		if (size != BPF_REG_SIZE) {
+@@ -2753,7 +2766,8 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
+ 			state->stack[spi].spilled_ptr.live |= REG_LIVE_WRITTEN;
+ 
+ 		/* when we zero initialize stack slots mark them as such */
+-		if (reg && register_is_null(reg)) {
++		if ((reg && register_is_null(reg)) ||
++		    (!reg && is_bpf_st_mem(insn) && insn->imm == 0)) {
+ 			/* backtracking doesn't work for STACK_ZERO yet. */
+ 			err = mark_chain_precision(env, value_regno);
+ 			if (err)
+diff --git a/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c b/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c
+index c2aa6f26738b4..bf82b923c5fe5 100644
+--- a/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c
++++ b/tools/testing/selftests/bpf/verifier/bounds_mix_sign_unsign.c
+@@ -1,13 +1,14 @@
+ {
+ 	"bounds checks mixing signed and unsigned, positive bounds",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, 2),
+ 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 3),
+@@ -17,20 +18,21 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, -1),
+ 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 3),
+@@ -40,20 +42,21 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 2",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, -1),
+ 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 5),
+@@ -65,20 +68,21 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 3",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, -1),
+ 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 4),
+@@ -89,20 +93,21 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 4",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, 1),
+ 	BPF_ALU64_REG(BPF_AND, BPF_REG_1, BPF_REG_2),
+@@ -112,19 +117,20 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.result = ACCEPT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 5",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, -1),
+ 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 5),
+@@ -135,17 +141,20 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 6",
+ 	.insns = {
++	BPF_MOV64_REG(BPF_REG_9, BPF_REG_1),
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
++	BPF_MOV64_REG(BPF_REG_1, BPF_REG_9),
+ 	BPF_MOV64_IMM(BPF_REG_2, 0),
+ 	BPF_MOV64_REG(BPF_REG_3, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_3, -512),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_6, -1),
+ 	BPF_JMP_REG(BPF_JGT, BPF_REG_4, BPF_REG_6, 5),
+@@ -163,13 +172,14 @@
+ {
+ 	"bounds checks mixing signed and unsigned, variant 7",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, 1024 * 1024 * 1024),
+ 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, 3),
+@@ -179,19 +189,20 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.result = ACCEPT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 8",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, -1),
+ 	BPF_JMP_REG(BPF_JGT, BPF_REG_2, BPF_REG_1, 2),
+@@ -203,20 +214,21 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 9",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 10),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_LD_IMM64(BPF_REG_2, -9223372036854775808ULL),
+ 	BPF_JMP_REG(BPF_JGT, BPF_REG_2, BPF_REG_1, 2),
+@@ -228,19 +240,20 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.result = ACCEPT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 10",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, 0),
+ 	BPF_JMP_REG(BPF_JGT, BPF_REG_2, BPF_REG_1, 2),
+@@ -252,20 +265,21 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 11",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, -1),
+ 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
+@@ -278,20 +292,21 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 12",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 9),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, -6),
+ 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
+@@ -303,20 +318,21 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 13",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 6),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 5),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, 2),
+ 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
+@@ -331,7 +347,7 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+@@ -340,13 +356,14 @@
+ 	.insns = {
+ 	BPF_LDX_MEM(BPF_W, BPF_REG_9, BPF_REG_1,
+ 		    offsetof(struct __sk_buff, mark)),
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 8),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 7),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, -1),
+ 	BPF_MOV64_IMM(BPF_REG_8, 2),
+@@ -360,20 +377,21 @@
+ 	BPF_JMP_REG(BPF_JGT, BPF_REG_1, BPF_REG_2, -3),
+ 	BPF_JMP_IMM(BPF_JA, 0, 0, -7),
+ 	},
+-	.fixup_map_hash_8b = { 4 },
++	.fixup_map_hash_8b = { 6 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+ {
+ 	"bounds checks mixing signed and unsigned, variant 15",
+ 	.insns = {
++	BPF_EMIT_CALL(BPF_FUNC_ktime_get_ns),
++	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
+ 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
+ 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+ 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
+ 	BPF_LD_MAP_FD(BPF_REG_1, 0),
+ 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
+-	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 4),
+-	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, -8),
++	BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, 0, 3),
+ 	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
+ 	BPF_MOV64_IMM(BPF_REG_2, -6),
+ 	BPF_JMP_REG(BPF_JGE, BPF_REG_2, BPF_REG_1, 2),
+@@ -387,7 +405,7 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.fixup_map_hash_8b = { 3 },
++	.fixup_map_hash_8b = { 5 },
+ 	.errstr = "unbounded min value",
+ 	.result = REJECT,
+ },
+-- 
+2.39.2
+
 
 
