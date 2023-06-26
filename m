@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E857273E885
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:26:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71DB173E859
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:24:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbjFZS0k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:26:40 -0400
+        id S232026AbjFZSYl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:24:41 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232110AbjFZS0V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:26:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 917E92943
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:25:46 -0700 (PDT)
+        with ESMTP id S231959AbjFZSYU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:24:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D87D2D73
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:23:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 22B6560F18
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:25:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3356FC433C0;
-        Mon, 26 Jun 2023 18:25:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BFEF60F18
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:23:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0965DC433C8;
+        Mon, 26 Jun 2023 18:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803945;
-        bh=pjKTmWTxXTtSCggtG5QcHuMj0EZAPgQ5bJmgahUltsU=;
+        s=korg; t=1687803824;
+        bh=WX97hGv7nM7zOSIgNl2gsNEkMonhpFfsgn9gTcWRj4Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VT/yCcnp+VD0j11qZxoiq9kGanlUXtZLIN95DmHp2pIAx5Y6e6mrvHVssGrlseGH+
-         Mi0zWJq4nx0x7GByIr/T+TTYTOeggfvXG+KyOxEQ/TQ9z11jGTQRw8jWpi5pCf/Z9t
-         4h5lsN+SGeEve6oKZDz8nCZXlB5xgdyzpObDAtR8=
+        b=S4350LlrqdSKXJkPwiFE8059djAniiK6S17bKc5sws+CG0+NydE2XgATJJAYjm5QZ
+         +8ZeEXqQEJGyXNEgEAvxcWCYeFnxjbeS3SG4vpAalsncpj41Hc/69LUvUXjcOMTWxx
+         WBkvM7P2r208ypx1scikI1Xiz5XgQvKy2ziAjxjw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+7d50f1e54a12ba3aeae2@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 05/41] nilfs2: reject devices with insufficient block count
+        patches@lists.linux.dev, Simon Horman <horms@kernel.org>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Tharun Kumar P <tharunkumar.pasumarthi@microchip.com>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 182/199] i2c: mchp-pci1xxxx: Avoid cast to incompatible function type
 Date:   Mon, 26 Jun 2023 20:11:28 +0200
-Message-ID: <20230626180736.459127679@linuxfoundation.org>
+Message-ID: <20230626180813.753453935@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
-References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,105 +57,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Simon Horman <horms@kernel.org>
 
-commit 92c5d1b860e9581d64baca76779576c0ab0d943d upstream.
+[ Upstream commit 7ebfd881abe9e0ea9557b29dab6aa28d294fabb4 ]
 
-The current sanity check for nilfs2 geometry information lacks checks for
-the number of segments stored in superblocks, so even for device images
-that have been destructively truncated or have an unusually high number of
-segments, the mount operation may succeed.
+Rather than casting pci1xxxx_i2c_shutdown to an incompatible function type,
+update the type to match that expected by __devm_add_action.
 
-This causes out-of-bounds block I/O on file system block reads or log
-writes to the segments, the latter in particular causing
-"a_ops->writepages" to repeatedly fail, resulting in sync_inodes_sb() to
-hang.
+Reported by clang-16 with W-1:
 
-Fix this issue by checking the number of segments stored in the superblock
-and avoiding mounting devices that can cause out-of-bounds accesses.  To
-eliminate the possibility of overflow when calculating the number of
-blocks required for the device from the number of segments, this also adds
-a helper function to calculate the upper bound on the number of segments
-and inserts a check using it.
+ .../i2c-mchp-pci1xxxx.c:1159:29: error: cast from 'void (*)(struct pci1xxxx_i2c *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+         ret = devm_add_action(dev, (void (*)(void *))pci1xxxx_i2c_shutdown, i2c);
+                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ./include/linux/device.h:251:29: note: expanded from macro 'devm_add_action'
+         __devm_add_action(release, action, data, #action)
+                                   ^~~~~~
 
-Link: https://lkml.kernel.org/r/20230526021332.3431-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+7d50f1e54a12ba3aeae2@syzkaller.appspotmail.com
-  Link: https://syzkaller.appspot.com/bug?extid=7d50f1e54a12ba3aeae2
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+No functional change intended.
+Compile tested only.
+
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Tharun Kumar P<tharunkumar.pasumarthi@microchip.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/the_nilfs.c |   44 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-mchp-pci1xxxx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/the_nilfs.c
-+++ b/fs/nilfs2/the_nilfs.c
-@@ -375,6 +375,18 @@ unsigned long nilfs_nrsvsegs(struct the_
- 				  100));
- }
+diff --git a/drivers/i2c/busses/i2c-mchp-pci1xxxx.c b/drivers/i2c/busses/i2c-mchp-pci1xxxx.c
+index b21ffd6df9276..5ef136c3ecb12 100644
+--- a/drivers/i2c/busses/i2c-mchp-pci1xxxx.c
++++ b/drivers/i2c/busses/i2c-mchp-pci1xxxx.c
+@@ -1118,8 +1118,10 @@ static int pci1xxxx_i2c_resume(struct device *dev)
+ static DEFINE_SIMPLE_DEV_PM_OPS(pci1xxxx_i2c_pm_ops, pci1xxxx_i2c_suspend,
+ 			 pci1xxxx_i2c_resume);
  
-+/**
-+ * nilfs_max_segment_count - calculate the maximum number of segments
-+ * @nilfs: nilfs object
-+ */
-+static u64 nilfs_max_segment_count(struct the_nilfs *nilfs)
-+{
-+	u64 max_count = U64_MAX;
-+
-+	do_div(max_count, nilfs->ns_blocks_per_segment);
-+	return min_t(u64, max_count, ULONG_MAX);
-+}
-+
- void nilfs_set_nsegments(struct the_nilfs *nilfs, unsigned long nsegs)
+-static void pci1xxxx_i2c_shutdown(struct pci1xxxx_i2c *i2c)
++static void pci1xxxx_i2c_shutdown(void *data)
  {
- 	nilfs->ns_nsegments = nsegs;
-@@ -384,6 +396,8 @@ void nilfs_set_nsegments(struct the_nilf
- static int nilfs_store_disk_layout(struct the_nilfs *nilfs,
- 				   struct nilfs_super_block *sbp)
- {
-+	u64 nsegments, nblocks;
++	struct pci1xxxx_i2c *i2c = data;
 +
- 	if (le32_to_cpu(sbp->s_rev_level) < NILFS_MIN_SUPP_REV) {
- 		nilfs_msg(nilfs->ns_sb, KERN_ERR,
- 			  "unsupported revision (superblock rev.=%d.%d, current rev.=%d.%d). Please check the version of mkfs.nilfs(2).",
-@@ -430,7 +444,35 @@ static int nilfs_store_disk_layout(struc
- 		return -EINVAL;
- 	}
- 
--	nilfs_set_nsegments(nilfs, le64_to_cpu(sbp->s_nsegments));
-+	nsegments = le64_to_cpu(sbp->s_nsegments);
-+	if (nsegments > nilfs_max_segment_count(nilfs)) {
-+		nilfs_msg(nilfs->ns_sb, KERN_ERR,
-+			  "segment count %llu exceeds upper limit (%llu segments)",
-+			  (unsigned long long)nsegments,
-+			  (unsigned long long)nilfs_max_segment_count(nilfs));
-+		return -EINVAL;
-+	}
-+
-+	nblocks = (u64)i_size_read(nilfs->ns_sb->s_bdev->bd_inode) >>
-+		nilfs->ns_sb->s_blocksize_bits;
-+	if (nblocks) {
-+		u64 min_block_count = nsegments * nilfs->ns_blocks_per_segment;
-+		/*
-+		 * To avoid failing to mount early device images without a
-+		 * second superblock, exclude that block count from the
-+		 * "min_block_count" calculation.
-+		 */
-+
-+		if (nblocks < min_block_count) {
-+			nilfs_msg(nilfs->ns_sb, KERN_ERR,
-+				  "total number of segment blocks %llu exceeds device size (%llu blocks)",
-+				  (unsigned long long)min_block_count,
-+				  (unsigned long long)nblocks);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	nilfs_set_nsegments(nilfs, nsegments);
- 	nilfs->ns_crc_seed = le32_to_cpu(sbp->s_crc_seed);
- 	return 0;
+ 	pci1xxxx_i2c_config_padctrl(i2c, false);
+ 	pci1xxxx_i2c_configure_core_reg(i2c, false);
  }
+@@ -1156,7 +1158,7 @@ static int pci1xxxx_i2c_probe_pci(struct pci_dev *pdev,
+ 	init_completion(&i2c->i2c_xfer_done);
+ 	pci1xxxx_i2c_init(i2c);
+ 
+-	ret = devm_add_action(dev, (void (*)(void *))pci1xxxx_i2c_shutdown, i2c);
++	ret = devm_add_action(dev, pci1xxxx_i2c_shutdown, i2c);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.39.2
+
 
 
