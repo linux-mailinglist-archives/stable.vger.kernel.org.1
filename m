@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B63D673E8C0
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6239073E7D7
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:19:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232111AbjFZS3V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:29:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43622 "EHLO
+        id S231526AbjFZSTb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:19:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232114AbjFZS3A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:00 -0400
+        with ESMTP id S231520AbjFZSTa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:19:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 457232977
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:28:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B76F7ED
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:19:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B819760F4B
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:28:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EAFC433C8;
-        Mon, 26 Jun 2023 18:28:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A6EE60E8D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:19:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55027C433C8;
+        Mon, 26 Jun 2023 18:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804104;
-        bh=74WxVjDl3k9wjXHifVnu7oti0a2MKo6Bi+2zdzH9+II=;
+        s=korg; t=1687803568;
+        bh=M4O/k72JoEPPpUeXmm5VNOs5Kb7+gg1vFbFArzBcQzk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rc6rqLnZ9RetR4B9BNyFGrZPAT1IrLGSwLp/Xks6qSVTR2s3eQrL/EKZ6wOcLnb43
-         /shmMgKA6V+YYKI7TyC94IeZQAZBYM1zUzGEYmXE/Hyzo1GRNdZ3Lk6INJNIYqKwoc
-         UUhYCzLkvLRLSiak9I8vyrY4xOn9nipLVQVp90NU=
+        b=wBY12hTfB0j1uQb8OP9kt2U55XnfiHPrGdenVBUpnI37f0aPjDjzEtPyL39YFNvwR
+         4A3JeGRvcZLR/85QjZqkRsnjP+ciWY3fZn0Tt8YSWA9Bmt7BmVpjz0LPkIZt+jHTLE
+         20AvGkcp8Y2nW/HxSMWQIv4WVB5KPTiO9jGWMwUs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH 6.1 042/170] selftests: mptcp: join: fix "userspace pm add & remove address"
-Date:   Mon, 26 Jun 2023 20:10:11 +0200
-Message-ID: <20230626180802.417459999@linuxfoundation.org>
+        patches@lists.linux.dev, Yonghong Song <yhs@fb.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 106/199] bpf: Fix a bpf_jit_dump issue for x86_64 with sysctl bpf_jit_enable.
+Date:   Mon, 26 Jun 2023 20:10:12 +0200
+Message-ID: <20230626180810.304671738@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,46 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Yonghong Song <yhs@fb.com>
 
-It looks like this test was broken in v6.1 after the backport of commit
-48d73f609dcc ("selftests: mptcp: update userspace pm addr tests").
+[ Upstream commit ad96f1c9138e0897bee7f7c5e54b3e24f8b62f57 ]
 
-It was not working because the commit ad3493746ebe ("selftests: mptcp:
-add test-cases for mixed v4/v6 subflows") is not in v6.1. This commit
-changes how the connections are being created in mptcp_join.sh selftest:
-with IPv6 support always enabled. But then in v6.1, the server still
-create IPv4 only connections, so without the v4-mapped-v6 format with
-the "::ffff:" prefix like we have in v6.3.
+The sysctl net/core/bpf_jit_enable does not work now due to commit
+1022a5498f6f ("bpf, x86_64: Use bpf_jit_binary_pack_alloc"). The
+commit saved the jitted insns into 'rw_image' instead of 'image'
+which caused bpf_jit_dump not dumping proper content.
 
-The modification here adds a support for connections created in v4 as
-well so it fixes the issue in v6.1. This patch is not needed for the
-selftests in v6.3 because only IPv6 listening sockets are being created.
+With 'echo 2 > /proc/sys/net/core/bpf_jit_enable', run
+'./test_progs -t fentry_test'. Without this patch, one of jitted
+image for one particular prog is:
 
-Fixes: 8f0ba8ec18f5 ("selftests: mptcp: update userspace pm addr tests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  flen=17 proglen=92 pass=4 image=0000000014c64883 from=test_progs pid=1807
+  00000000: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+  00000010: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+  00000020: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+  00000030: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+  00000040: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+  00000050: cc cc cc cc cc cc cc cc cc cc cc cc
+
+With this patch, the jitte image for the same prog is:
+
+  flen=17 proglen=92 pass=4 image=00000000b90254b7 from=test_progs pid=1809
+  00000000: f3 0f 1e fa 0f 1f 44 00 00 66 90 55 48 89 e5 f3
+  00000010: 0f 1e fa 31 f6 48 8b 57 00 48 83 fa 07 75 2b 48
+  00000020: 8b 57 10 83 fa 09 75 22 48 8b 57 08 48 81 e2 ff
+  00000030: 00 00 00 48 83 fa 08 75 11 48 8b 7f 18 be 01 00
+  00000040: 00 00 48 83 ff 0a 74 02 31 f6 48 bf 18 d0 14 00
+  00000050: 00 c9 ff ff 48 89 77 00 31 c0 c9 c3
+
+Fixes: 1022a5498f6f ("bpf, x86_64: Use bpf_jit_binary_pack_alloc")
+Signed-off-by: Yonghong Song <yhs@fb.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/bpf/20230609005439.3173569-1-yhs@fb.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/net/bpf_jit_comp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -946,11 +946,12 @@ do_transfer()
- 				sp=$(grep "type:10" "$evts_ns1" |
- 				     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
- 				da=$(grep "type:10" "$evts_ns1" |
--				     sed -n 's/.*\(daddr6:\)\([0-9a-f:.]*\).*$/\2/p;q')
-+				     sed -n 's/.*\(daddr[46]:\)\([0-9a-f:.]*\).*$/\2/p;q')
-+				echo "$da" | grep -q ":" && addr="::ffff:$addr"
- 				dp=$(grep "type:10" "$evts_ns1" |
- 				     sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q')
- 				ip netns exec ${listener_ns} ./pm_nl_ctl rem token $tk id $id
--				ip netns exec ${listener_ns} ./pm_nl_ctl dsf lip "::ffff:$addr" \
-+				ip netns exec ${listener_ns} ./pm_nl_ctl dsf lip "$addr" \
- 							lport $sp rip $da rport $dp token $tk
- 			fi
+diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
+index 1056bbf55b172..438adb695daab 100644
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -2570,7 +2570,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 	}
  
+ 	if (bpf_jit_enable > 1)
+-		bpf_jit_dump(prog->len, proglen, pass + 1, image);
++		bpf_jit_dump(prog->len, proglen, pass + 1, rw_image);
+ 
+ 	if (image) {
+ 		if (!prog->is_func || extra_pass) {
+-- 
+2.39.2
+
 
 
