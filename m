@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6D3D73E827
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B93B473E8DC
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231938AbjFZSXi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:23:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38168 "EHLO
+        id S232081AbjFZSad (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:30:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231864AbjFZSXU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 314262106
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:22:56 -0700 (PDT)
+        with ESMTP id S232237AbjFZS3k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA75E171A
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB6C860F59
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:22:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE350C433C0;
-        Mon, 26 Jun 2023 18:21:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6727760F40
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F87C433C0;
+        Mon, 26 Jun 2023 18:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803720;
-        bh=e2itqH4VnKEr9lkbZHGPfvdN0KJPi1HsptEDuBhSnIY=;
+        s=korg; t=1687804165;
+        bh=l6jq4AWYsTS/9DUqimOVYFxnnorLO2AQi0pi5c4bjyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0LUuU+9Q+m9Gld618XWODHjFLLfK+fTo9l6u4Hv1wElalSjK9rIsjJpTXx5MoBDpo
-         A0S/2Pn28Orh+nM47OtCQhmyGBAWP60IruawwclxF04ayIPjhDSU9QSPZXBf3fcx5f
-         2O1rfSOhtKgIcLF4rIZYdkaITb2dZRfTkujJeYoM=
+        b=QfFHseL+S/pepIWbxJXQi5jCJKIFlCY00V2dzSP0Usi2W4sU9BpWbffgGoEDUAunv
+         /QzUnxJa24CSZKgPuJHbrLlpuEWwwIvRUu+zVDAbb+Ho/DwflYHffhf8n8LuPNCE9w
+         r/BCwtNOftIcMPGR8F2ZXF1VPUuXjPm3SP02xo5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <olteanv@gmail.com>,
-        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 126/199] net: dsa: introduce preferred_default_local_cpu_port and use on MT7530
-Date:   Mon, 26 Jun 2023 20:10:32 +0200
-Message-ID: <20230626180811.179746292@linuxfoundation.org>
+        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 064/170] mmc: sdhci-msm: Disable broken 64-bit DMA on MSM8916
+Date:   Mon, 26 Jun 2023 20:10:33 +0200
+Message-ID: <20230626180803.446181485@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,176 +55,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <olteanv@gmail.com>
+From: Stephan Gerhold <stephan@gerhold.net>
 
-[ Upstream commit b79d7c14f48083abb3fb061370c0c64a569edf4c ]
+commit e6f9e590b72e12bbb86b1b8be7e1981f357392ad upstream.
 
-Since the introduction of the OF bindings, DSA has always had a policy that
-in case multiple CPU ports are present in the device tree, the numerically
-smallest one is always chosen.
+While SDHCI claims to support 64-bit DMA on MSM8916 it does not seem to
+be properly functional. It is not immediately obvious because SDHCI is
+usually used with IOMMU bypassed on this SoC, and all physical memory
+has 32-bit addresses. But when trying to enable the IOMMU it quickly
+fails with an error such as the following:
 
-The MT7530 switch family, except the switch on the MT7988 SoC, has 2 CPU
-ports, 5 and 6, where port 6 is preferable on the MT7531BE switch because
-it has higher bandwidth.
+  arm-smmu 1e00000.iommu: Unhandled context fault:
+    fsr=0x402, iova=0xfffff200, fsynr=0xe0000, cbfrsynra=0x140, cb=3
+  mmc1: ADMA error: 0x02000000
+  mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+  mmc1: sdhci: Sys addr:  0x00000000 | Version:  0x00002e02
+  mmc1: sdhci: Blk size:  0x00000008 | Blk cnt:  0x00000000
+  mmc1: sdhci: Argument:  0x00000000 | Trn mode: 0x00000013
+  mmc1: sdhci: Present:   0x03f80206 | Host ctl: 0x00000019
+  mmc1: sdhci: Power:     0x0000000f | Blk gap:  0x00000000
+  mmc1: sdhci: Wake-up:   0x00000000 | Clock:    0x00000007
+  mmc1: sdhci: Timeout:   0x0000000a | Int stat: 0x00000001
+  mmc1: sdhci: Int enab:  0x03ff900b | Sig enab: 0x03ff100b
+  mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000000
+  mmc1: sdhci: Caps:      0x322dc8b2 | Caps_1:   0x00008007
+  mmc1: sdhci: Cmd:       0x0000333a | Max curr: 0x00000000
+  mmc1: sdhci: Resp[0]:   0x00000920 | Resp[1]:  0x5b590000
+  mmc1: sdhci: Resp[2]:   0xe6487f80 | Resp[3]:  0x0a404094
+  mmc1: sdhci: Host ctl2: 0x00000008
+  mmc1: sdhci: ADMA Err:  0x00000001 | ADMA Ptr: 0x0000000ffffff224
+  mmc1: sdhci_msm: ----------- VENDOR REGISTER DUMP -----------
+  mmc1: sdhci_msm: DLL sts: 0x00000000 | DLL cfg:  0x60006400 | DLL cfg2: 0x00000000
+  mmc1: sdhci_msm: DLL cfg3: 0x00000000 | DLL usr ctl:  0x00000000 | DDR cfg: 0x00000000
+  mmc1: sdhci_msm: Vndr func: 0x00018a9c | Vndr func2 : 0xf88018a8 Vndr func3: 0x00000000
+  mmc1: sdhci: ============================================
+  mmc1: sdhci: fffffffff200: DMA 0x0000ffffffffe100, LEN 0x0008, Attr=0x21
+  mmc1: sdhci: fffffffff20c: DMA 0x0000000000000000, LEN 0x0000, Attr=0x03
 
-The MT7530 driver developers had 3 options:
-- to modify DSA when the MT7531 switch support was introduced, such as to
-  prefer the better port
-- to declare both CPU ports in device trees as CPU ports, and live with the
-  sub-optimal performance resulting from not preferring the better port
-- to declare just port 6 in the device tree as a CPU port
+Looking closely it's obvious that only the 32-bit part of the address
+(0xfffff200) arrives at the SMMU, the higher 16-bit (0xffff...) get
+lost somewhere. This might not be a limitation of the SDHCI itself but
+perhaps the bus/interconnect it is connected to, or even the connection
+to the SMMU.
 
-Of course they chose the path of least resistance (3rd option), kicking the
-can down the road. The hardware description in the device tree is supposed
-to be stable - developers are not supposed to adopt the strategy of
-piecemeal hardware description, where the device tree is updated in
-lockstep with the features that the kernel currently supports.
+Work around this by setting SDHCI_QUIRK2_BROKEN_64_BIT_DMA to avoid
+using 64-bit addresses.
 
-Now, as a result of the fact that they did that, any attempts to modify the
-device tree and describe both CPU ports as CPU ports would make DSA change
-its default selection from port 6 to 5, effectively resulting in a
-performance degradation visible to users with the MT7531BE switch as can be
-seen below.
-
-Without preferring port 6:
-
-[ ID][Role] Interval           Transfer     Bitrate         Retr
-[  5][TX-C]   0.00-20.00  sec   374 MBytes   157 Mbits/sec  734    sender
-[  5][TX-C]   0.00-20.00  sec   373 MBytes   156 Mbits/sec    receiver
-[  7][RX-C]   0.00-20.00  sec  1.81 GBytes   778 Mbits/sec    0    sender
-[  7][RX-C]   0.00-20.00  sec  1.81 GBytes   777 Mbits/sec    receiver
-
-With preferring port 6:
-
-[ ID][Role] Interval           Transfer     Bitrate         Retr
-[  5][TX-C]   0.00-20.00  sec  1.99 GBytes   856 Mbits/sec  273    sender
-[  5][TX-C]   0.00-20.00  sec  1.99 GBytes   855 Mbits/sec    receiver
-[  7][RX-C]   0.00-20.00  sec  1.72 GBytes   737 Mbits/sec   15    sender
-[  7][RX-C]   0.00-20.00  sec  1.71 GBytes   736 Mbits/sec    receiver
-
-Using one port for WAN and the other ports for LAN is a very popular use
-case which is what this test emulates.
-
-As such, this change proposes that we retroactively modify stable kernels
-(which don't support the modification of the CPU port assignments, so as to
-let user space fix the problem and restore the throughput) to keep the
-mt7530 driver preferring port 6 even with device trees where the hardware
-is more fully described.
-
-Fixes: c288575f7810 ("net: dsa: mt7530: Add the support of MT7531 switch")
-Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230518-msm8916-64bit-v1-1-5694b0f35211@gerhold.net
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mt7530.c | 15 +++++++++++++++
- include/net/dsa.h        |  8 ++++++++
- net/dsa/dsa.c            | 24 +++++++++++++++++++++++-
- 3 files changed, 46 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-msm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index e542f5dbe5831..566545b6554ba 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -419,6 +419,20 @@ static void mt7530_pll_setup(struct mt7530_priv *priv)
- 	core_set(priv, CORE_TRGMII_GSW_CLK_CG, REG_GSWCK_EN);
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -2486,6 +2486,9 @@ static inline void sdhci_msm_get_of_prop
+ 		msm_host->ddr_config = DDR_CONFIG_POR_VAL;
+ 
+ 	of_property_read_u32(node, "qcom,dll-config", &msm_host->dll_config);
++
++	if (of_device_is_compatible(node, "qcom,msm8916-sdhci"))
++		host->quirks2 |= SDHCI_QUIRK2_BROKEN_64_BIT_DMA;
  }
  
-+/* If port 6 is available as a CPU port, always prefer that as the default,
-+ * otherwise don't care.
-+ */
-+static struct dsa_port *
-+mt753x_preferred_default_local_cpu_port(struct dsa_switch *ds)
-+{
-+	struct dsa_port *cpu_dp = dsa_to_port(ds, 6);
-+
-+	if (dsa_port_is_cpu(cpu_dp))
-+		return cpu_dp;
-+
-+	return NULL;
-+}
-+
- /* Setup port 6 interface mode and TRGMII TX circuit */
- static int
- mt7530_pad_clk_setup(struct dsa_switch *ds, phy_interface_t interface)
-@@ -3191,6 +3205,7 @@ static int mt753x_set_mac_eee(struct dsa_switch *ds, int port,
- static const struct dsa_switch_ops mt7530_switch_ops = {
- 	.get_tag_protocol	= mtk_get_tag_protocol,
- 	.setup			= mt753x_setup,
-+	.preferred_default_local_cpu_port = mt753x_preferred_default_local_cpu_port,
- 	.get_strings		= mt7530_get_strings,
- 	.get_ethtool_stats	= mt7530_get_ethtool_stats,
- 	.get_sset_count		= mt7530_get_sset_count,
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index a15f17a38eca6..def06ef676dd8 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -973,6 +973,14 @@ struct dsa_switch_ops {
- 			       struct phy_device *phy);
- 	void	(*port_disable)(struct dsa_switch *ds, int port);
- 
-+	/*
-+	 * Compatibility between device trees defining multiple CPU ports and
-+	 * drivers which are not OK to use by default the numerically smallest
-+	 * CPU port of a switch for its local ports. This can return NULL,
-+	 * meaning "don't know/don't care".
-+	 */
-+	struct dsa_port *(*preferred_default_local_cpu_port)(struct dsa_switch *ds);
-+
- 	/*
- 	 * Port's MAC EEE settings
- 	 */
-diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-index e5f156940c671..6cd8607a3928f 100644
---- a/net/dsa/dsa.c
-+++ b/net/dsa/dsa.c
-@@ -402,6 +402,24 @@ static int dsa_tree_setup_default_cpu(struct dsa_switch_tree *dst)
- 	return 0;
- }
- 
-+static struct dsa_port *
-+dsa_switch_preferred_default_local_cpu_port(struct dsa_switch *ds)
-+{
-+	struct dsa_port *cpu_dp;
-+
-+	if (!ds->ops->preferred_default_local_cpu_port)
-+		return NULL;
-+
-+	cpu_dp = ds->ops->preferred_default_local_cpu_port(ds);
-+	if (!cpu_dp)
-+		return NULL;
-+
-+	if (WARN_ON(!dsa_port_is_cpu(cpu_dp) || cpu_dp->ds != ds))
-+		return NULL;
-+
-+	return cpu_dp;
-+}
-+
- /* Perform initial assignment of CPU ports to user ports and DSA links in the
-  * fabric, giving preference to CPU ports local to each switch. Default to
-  * using the first CPU port in the switch tree if the port does not have a CPU
-@@ -409,12 +427,16 @@ static int dsa_tree_setup_default_cpu(struct dsa_switch_tree *dst)
-  */
- static int dsa_tree_setup_cpu_ports(struct dsa_switch_tree *dst)
- {
--	struct dsa_port *cpu_dp, *dp;
-+	struct dsa_port *preferred_cpu_dp, *cpu_dp, *dp;
- 
- 	list_for_each_entry(cpu_dp, &dst->ports, list) {
- 		if (!dsa_port_is_cpu(cpu_dp))
- 			continue;
- 
-+		preferred_cpu_dp = dsa_switch_preferred_default_local_cpu_port(cpu_dp->ds);
-+		if (preferred_cpu_dp && preferred_cpu_dp != cpu_dp)
-+			continue;
-+
- 		/* Prefer a local CPU port */
- 		dsa_switch_for_each_port(dp, cpu_dp->ds) {
- 			/* Prefer the first local CPU port found */
--- 
-2.39.2
-
+ static int sdhci_msm_gcc_reset(struct device *dev, struct sdhci_host *host)
 
 
