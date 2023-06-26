@@ -2,54 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14DA373E822
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D970A73E900
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231927AbjFZSXU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:23:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37734 "EHLO
+        id S232245AbjFZSbi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:31:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231797AbjFZSXD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:23:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C491707
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:22:38 -0700 (PDT)
+        with ESMTP id S232295AbjFZSbR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:31:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FA5110C1
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:31:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FAB360F58
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:21:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B127C433C0;
-        Mon, 26 Jun 2023 18:21:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA08460E76
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:31:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67C1C433C0;
+        Mon, 26 Jun 2023 18:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687803684;
-        bh=smyZdL5ee86kJ3+kmLSfZD3L3ijeQnQ7ASqNsAvwRuA=;
+        s=korg; t=1687804262;
+        bh=u1JjxdzQLojSgdKqg6LD1W1egvWlWQYgVBHv7T0xZsM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IdDVZbvcUEiHy9jMMstx8LneQ7FAIOUW3YDz2DO9Qyp7voOvG8Y9owm0LZg3D8IXh
-         rhauT9eaB0hZpucyHa2Y1hIX7kA17AdxNqB4j94U9wezPf/AV7xAvIthuTgbW2Ka1V
-         M17VIm7JkBlrQw/ksidF8YT7O9BHetirAhrhXgRc=
+        b=ewThv28S1F58rifg+9lotzg15IBloRupdo5Y7h0aLepqCRRp9vm7WaYPbCq8qFBPJ
+         7ERTw808CxD0STPanK4qKZutn5MrI4LQdE2xA4yhFc5FOfepGSfe9qOr+EhInEYAbE
+         JFYnHMmmR6USWB7FTpnylzD4H3nUqKPz30z9Eaog=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Allen Zhong <allen@atr.me>,
-        Patil Rajesh Reddy <Patil.Reddy@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
+        Marc-Andr Lureau <marcandre.lureau@redhat.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 142/199] platform/x86/amd/pmf: Register notify handler only if SPS is enabled
+Subject: [PATCH 6.1 079/170] memfd: check for non-NULL file_seals in memfd_create() syscall
 Date:   Mon, 26 Jun 2023 20:10:48 +0200
-Message-ID: <20230626180811.840887575@linuxfoundation.org>
+Message-ID: <20230626180804.159880487@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
-References: <20230626180805.643662628@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,103 +57,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 146b6f6855e7656e8329910606595220c761daac ]
+[ Upstream commit 935d44acf621aa0688fef8312dec3e5940f38f4e ]
 
-Power source notify handler is getting registered even when none of the
-PMF feature in enabled leading to a crash.
+Ensure that file_seals is non-NULL before using it in the memfd_create()
+syscall.  One situation in which memfd_file_seals_ptr() could return a
+NULL pointer when CONFIG_SHMEM=n, oopsing the kernel.
 
-...
-[   22.592162] Call Trace:
-[   22.592164]  <TASK>
-[   22.592164]  ? rcu_note_context_switch+0x5e0/0x660
-[   22.592166]  ? __warn+0x81/0x130
-[   22.592171]  ? rcu_note_context_switch+0x5e0/0x660
-[   22.592172]  ? report_bug+0x171/0x1a0
-[   22.592175]  ? prb_read_valid+0x1b/0x30
-[   22.592177]  ? handle_bug+0x3c/0x80
-[   22.592178]  ? exc_invalid_op+0x17/0x70
-[   22.592179]  ? asm_exc_invalid_op+0x1a/0x20
-[   22.592182]  ? rcu_note_context_switch+0x5e0/0x660
-[   22.592183]  ? acpi_ut_delete_object_desc+0x86/0xb0
-[   22.592186]  ? acpi_ut_update_ref_count.part.0+0x22d/0x930
-[   22.592187]  __schedule+0xc0/0x1410
-[   22.592189]  ? ktime_get+0x3c/0xa0
-[   22.592191]  ? lapic_next_event+0x1d/0x30
-[   22.592193]  ? hrtimer_start_range_ns+0x25b/0x350
-[   22.592196]  schedule+0x5e/0xd0
-[   22.592197]  schedule_hrtimeout_range_clock+0xbe/0x140
-[   22.592199]  ? __pfx_hrtimer_wakeup+0x10/0x10
-[   22.592200]  usleep_range_state+0x64/0x90
-[   22.592203]  amd_pmf_send_cmd+0x106/0x2a0 [amd_pmf bddfe0fe3712aaa99acce3d5487405c5213c6616]
-[   22.592207]  amd_pmf_update_slider+0x56/0x1b0 [amd_pmf bddfe0fe3712aaa99acce3d5487405c5213c6616]
-[   22.592210]  amd_pmf_set_sps_power_limits+0x72/0x80 [amd_pmf bddfe0fe3712aaa99acce3d5487405c5213c6616]
-[   22.592213]  amd_pmf_pwr_src_notify_call+0x49/0x90 [amd_pmf bddfe0fe3712aaa99acce3d5487405c5213c6616]
-[   22.592216]  notifier_call_chain+0x5a/0xd0
-[   22.592218]  atomic_notifier_call_chain+0x32/0x50
-...
-
-Fix this by moving the registration of source change notify handler only
-when SPS(Static Slider) is advertised as supported.
-
-Reported-by: Allen Zhong <allen@atr.me>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217571
-Fixes: 4c71ae414474 ("platform/x86/amd/pmf: Add support SPS PMF feature")
-Tested-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://lore.kernel.org/r/20230622060309.310001-1-Shyam-sundar.S-k@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lkml.kernel.org/r/20230607132427.2867435-1-roberto.sassu@huaweicloud.com
+Fixes: 47b9012ecdc7 ("shmem: add sealing support to hugetlb-backed memfd")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Marc-Andr Lureau <marcandre.lureau@redhat.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/core.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ mm/memfd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
-index dc9803e1a4b9b..73d2357e32f8e 100644
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -297,6 +297,8 @@ static void amd_pmf_init_features(struct amd_pmf_dev *dev)
- 	/* Enable Static Slider */
- 	if (is_apmf_func_supported(dev, APMF_FUNC_STATIC_SLIDER_GRANULAR)) {
- 		amd_pmf_init_sps(dev);
-+		dev->pwr_src_notifier.notifier_call = amd_pmf_pwr_src_notify_call;
-+		power_supply_reg_notifier(&dev->pwr_src_notifier);
- 		dev_dbg(dev->dev, "SPS enabled and Platform Profiles registered\n");
+diff --git a/mm/memfd.c b/mm/memfd.c
+index 08f5f8304746f..b0104b49bf82c 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -328,7 +328,8 @@ SYSCALL_DEFINE2(memfd_create,
+ 
+ 	if (flags & MFD_ALLOW_SEALING) {
+ 		file_seals = memfd_file_seals_ptr(file);
+-		*file_seals &= ~F_SEAL_SEAL;
++		if (file_seals)
++			*file_seals &= ~F_SEAL_SEAL;
  	}
  
-@@ -315,8 +317,10 @@ static void amd_pmf_init_features(struct amd_pmf_dev *dev)
- 
- static void amd_pmf_deinit_features(struct amd_pmf_dev *dev)
- {
--	if (is_apmf_func_supported(dev, APMF_FUNC_STATIC_SLIDER_GRANULAR))
-+	if (is_apmf_func_supported(dev, APMF_FUNC_STATIC_SLIDER_GRANULAR)) {
-+		power_supply_unreg_notifier(&dev->pwr_src_notifier);
- 		amd_pmf_deinit_sps(dev);
-+	}
- 
- 	if (is_apmf_func_supported(dev, APMF_FUNC_AUTO_MODE)) {
- 		amd_pmf_deinit_auto_mode(dev);
-@@ -399,9 +403,6 @@ static int amd_pmf_probe(struct platform_device *pdev)
- 	apmf_install_handler(dev);
- 	amd_pmf_dbgfs_register(dev);
- 
--	dev->pwr_src_notifier.notifier_call = amd_pmf_pwr_src_notify_call;
--	power_supply_reg_notifier(&dev->pwr_src_notifier);
--
- 	dev_info(dev->dev, "registered PMF device successfully\n");
- 
- 	return 0;
-@@ -411,7 +412,6 @@ static int amd_pmf_remove(struct platform_device *pdev)
- {
- 	struct amd_pmf_dev *dev = platform_get_drvdata(pdev);
- 
--	power_supply_unreg_notifier(&dev->pwr_src_notifier);
- 	amd_pmf_deinit_features(dev);
- 	apmf_acpi_deinit(dev);
- 	amd_pmf_dbgfs_unregister(dev);
+ 	fd_install(fd, file);
 -- 
 2.39.2
 
