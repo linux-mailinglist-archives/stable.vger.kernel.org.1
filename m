@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D76B73E8E0
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5115B73E80D
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:21:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232076AbjFZSaj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43644 "EHLO
+        id S231793AbjFZSVt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:21:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232268AbjFZS3v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:29:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40BFE125
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:29:50 -0700 (PDT)
+        with ESMTP id S231917AbjFZSVd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:21:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94B6A295C
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:21:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB88260E8D
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:29:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BBDC433CA;
-        Mon, 26 Jun 2023 18:29:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69C1160F4E
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:20:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733B5C433C8;
+        Mon, 26 Jun 2023 18:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804189;
-        bh=tYyfMgHnGAZxaUDYFsbmAarf858ivoPyM2VJuOtueCM=;
+        s=korg; t=1687803657;
+        bh=8Pf0VeINT0n5rT+ycPQQ1i5dgnm6Sc5PK8LY/K5mIKc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lXZQq7mnoknZ4z4lXVsC9LKs3N65wVrCH4XxqAoCtDulF9hu/9Oebskex8mnNIYXP
-         yLbvZczTsgeNyvtlyccLxMLJ3gkKbNmYVrJGNKX1LASK0Whme03JckYqpH7ui7961w
-         l8JmgpQzLCZrVo7/FCBgksHf63OSvMolH/qyEPL4=
+        b=Wjlbw3Gvgb8Fb7I8uUWpw7H83X9ugtFZaR4RlWdNXhOuTCf/x+bdGxGDuaMSKfvVE
+         /QYzxVIPFJf5LPOGdpfqrNU3dR4VOEezuVQjAHsR17giarStNIr4fM/H+6UF5cVUXV
+         J4x4L8U6nBRFeSbyYISjWDTmQ8aFkgXRY4DMTJXM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 071/170] wifi: iwlwifi: pcie: Handle SO-F device for PCI id 0x7AF0
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 134/199] netfilter: nf_tables: reject unbound chain set before commit phase
 Date:   Mon, 26 Jun 2023 20:10:40 +0200
-Message-ID: <20230626180803.820775778@linuxfoundation.org>
+Message-ID: <20230626180811.501345768@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+References: <20230626180805.643662628@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,34 +54,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 4e9f0ec38852c18faa9689322e758575af33e5d4 upstream.
+[ Upstream commit 62e1e94b246e685d89c3163aaef4b160e42ceb02 ]
 
-Add support for AX1690i and AX1690s devices with
-PCIE id 0x7AF0.
+Use binding list to track set transaction and to check for unbound
+chains before entering the commit phase.
 
-Cc: stable@vger.kernel.org # 6.1+
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://lore.kernel.org/r/20230619150233.461290-2-johannes@sipsolutions.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Bail out if chain binding remain unused before entering the commit
+step.
+
+Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nf_tables_api.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -547,6 +547,8 @@ static const struct iwl_dev_info iwl_dev
- 	IWL_DEV_INFO(0x54F0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
- 	IWL_DEV_INFO(0x7A70, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
- 	IWL_DEV_INFO(0x7A70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
-+	IWL_DEV_INFO(0x7AF0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
-+	IWL_DEV_INFO(0x7AF0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 2e3a374db1b9f..f065542750376 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -372,6 +372,11 @@ static void nft_trans_commit_list_add_tail(struct net *net, struct nft_trans *tr
+ 		    nft_set_is_anonymous(nft_trans_set(trans)))
+ 			list_add_tail(&trans->binding_list, &nft_net->binding_list);
+ 		break;
++	case NFT_MSG_NEWCHAIN:
++		if (!nft_trans_chain_update(trans) &&
++		    nft_chain_binding(nft_trans_chain(trans)))
++			list_add_tail(&trans->binding_list, &nft_net->binding_list);
++		break;
+ 	}
  
- 	IWL_DEV_INFO(0x271C, 0x0214, iwl9260_2ac_cfg, iwl9260_1_name),
- 	IWL_DEV_INFO(0x7E40, 0x1691, iwl_cfg_ma_a0_gf4_a0, iwl_ax411_killer_1690s_name),
+ 	list_add_tail(&trans->list, &nft_net->commit_list);
+@@ -9419,6 +9424,14 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 				return -EINVAL;
+ 			}
+ 			break;
++		case NFT_MSG_NEWCHAIN:
++			if (!nft_trans_chain_update(trans) &&
++			    nft_chain_binding(nft_trans_chain(trans)) &&
++			    !nft_trans_chain_bound(trans)) {
++				pr_warn_once("nftables ruleset with unbound chain\n");
++				return -EINVAL;
++			}
++			break;
+ 		}
+ 	}
+ 
+-- 
+2.39.2
+
 
 
