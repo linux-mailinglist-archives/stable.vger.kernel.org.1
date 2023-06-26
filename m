@@ -2,44 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4F6F73E9E9
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 108C773E955
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232501AbjFZSl0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53954 "EHLO
+        id S232327AbjFZSe4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:34:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232502AbjFZSlZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:41:25 -0400
+        with ESMTP id S232377AbjFZSeo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:34:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13C8CCC
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:41:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 591D710C1
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:34:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A38B260F30
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:41:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FACC433C0;
-        Mon, 26 Jun 2023 18:41:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB4C060E8D
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:34:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CCEC433C8;
+        Mon, 26 Jun 2023 18:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804883;
-        bh=VYLH5n8IPeIldbYbhbsNlQ1X+8ADqiCq0EGLs32y/6M=;
+        s=korg; t=1687804477;
+        bh=gJEpnJ0wpWc+ck6hBGw0T6033jqcibRi+Yoz4MudVZA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E95AijEAL/K+H+yer8VhA8pHFly90c4/gg5vA43gnu6VkSZqMzLvz5YF9m+OW6U75
-         9fGInAqcNVxb3GNLQXN37BOjPzQWFLMNbYWgKJ0OwAAFvJz3Bka1B3lQwKwHWYhRCP
-         ydmwLBIvOXnYjGyp4jUmxr1Zf3tKT//ia6O7dI24=
+        b=XWWhr7dv+4pYO1Rppyv+WZNF2Qu7F9cvxAGKiWP6AbfGFF66JHOo1n2GyRrMpzUtt
+         flTiPIKmF+GO4SM+2x9oTQCArbvs/CkhXBh6UIZwPuWN3N43FLnxPVv07/jPl+g2op
+         HyFqCS7119ZFNaIbYjhP4Yxvu9I5PHJXXv6X6plA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>,
-        Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.15 36/96] x86/mm: Avoid using set_pgd() outside of real PGD pages
+        patches@lists.linux.dev, Costa Sapuntzakis <costa@purestorage.com>,
+        Randy Jennings <randyj@purestorage.com>,
+        Uday Shankar <ushankar@purestorage.com>,
+        Hannes Reinecke <hare@suse.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 142/170] nvme: check IO start time when deciding to defer KA
 Date:   Mon, 26 Jun 2023 20:11:51 +0200
-Message-ID: <20230626180748.459708552@linuxfoundation.org>
+Message-ID: <20230626180806.912340029@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-References: <20230626180746.943455203@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+References: <20230626180800.476539630@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +60,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lee Jones <lee@kernel.org>
+From: Uday Shankar <ushankar@purestorage.com>
 
-commit d082d48737c75d2b3cc1f972b8c8674c25131534 upstream.
+[ Upstream commit 774a9636514764ddc0d072ae0d1d1c01a47e6ddd ]
 
-KPTI keeps around two PGDs: one for userspace and another for the
-kernel. Among other things, set_pgd() contains infrastructure to
-ensure that updates to the kernel PGD are reflected in the user PGD
-as well.
+When a command completes, we set a flag which will skip sending a
+keep alive at the next run of nvme_keep_alive_work when TBKAS is on.
+However, if the command was submitted long ago, it's possible that
+the controller may have also restarted its keep alive timer (as a
+result of receiving the command) long ago. The following trace
+demonstrates the issue, assuming TBKAS is on and KATO = 8 for
+simplicity:
 
-One side-effect of this is that set_pgd() expects to be passed whole
-pages.  Unfortunately, init_trampoline_kaslr() passes in a single entry:
-'trampoline_pgd_entry'.
+1. t = 0: submit I/O commands A, B, C, D, E
+2. t = 0.5: commands A, B, C, D, E reach controller, restart its keep
+            alive timer
+3. t = 1: A completes
+4. t = 2: run nvme_keep_alive_work, see recent completion, do nothing
+5. t = 3: B completes
+6. t = 4: run nvme_keep_alive_work, see recent completion, do nothing
+7. t = 5: C completes
+8. t = 6: run nvme_keep_alive_work, see recent completion, do nothing
+9. t = 7: D completes
+10. t = 8: run nvme_keep_alive_work, see recent completion, do nothing
+11. t = 9: E completes
 
-When KPTI is on, set_pgd() will update 'trampoline_pgd_entry' (an
-8-Byte globally stored [.bss] variable) and will then proceed to
-replicate that value into the non-existent neighboring user page
-(located +4k away), leading to the corruption of other global [.bss]
-stored variables.
+At this point, 8.5 seconds have passed without restarting the
+controller's keep alive timer, so the controller will detect a keep
+alive timeout.
 
-Fix it by directly assigning 'trampoline_pgd_entry' and avoiding
-set_pgd().
+Fix this by checking the IO start time when deciding to defer sending a
+keep alive command. Only set comp_seen if the command started after the
+most recent run of nvme_keep_alive_work. With this change, the
+completions of B, C, and D will not set comp_seen and the run of
+nvme_keep_alive_work at t = 4 will send a keep alive.
 
-[ dhansen: tweak subject and changelog ]
-
-Fixes: 0925dda5962e ("x86/mm/KASLR: Use only one PUD entry for real mode trampoline")
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/all/20230614163859.924309-1-lee@kernel.org/g
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Costa Sapuntzakis <costa@purestorage.com>
+Reported-by: Randy Jennings <randyj@purestorage.com>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/kaslr.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/nvme/host/core.c | 14 +++++++++++++-
+ drivers/nvme/host/nvme.h |  1 +
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
---- a/arch/x86/mm/kaslr.c
-+++ b/arch/x86/mm/kaslr.c
-@@ -172,10 +172,10 @@ void __meminit init_trampoline_kaslr(voi
- 		set_p4d(p4d_tramp,
- 			__p4d(_KERNPG_TABLE | __pa(pud_page_tramp)));
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index a97f2f21c5321..15eb2ee1be66e 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -395,7 +395,16 @@ void nvme_complete_rq(struct request *req)
+ 	trace_nvme_complete_rq(req);
+ 	nvme_cleanup_cmd(req);
  
--		set_pgd(&trampoline_pgd_entry,
--			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp)));
-+		trampoline_pgd_entry =
-+			__pgd(_KERNPG_TABLE | __pa(p4d_page_tramp));
- 	} else {
--		set_pgd(&trampoline_pgd_entry,
--			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp)));
-+		trampoline_pgd_entry =
-+			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp));
+-	if (ctrl->kas)
++	/*
++	 * Completions of long-running commands should not be able to
++	 * defer sending of periodic keep alives, since the controller
++	 * may have completed processing such commands a long time ago
++	 * (arbitrarily close to command submission time).
++	 * req->deadline - req->timeout is the command submission time
++	 * in jiffies.
++	 */
++	if (ctrl->kas &&
++	    req->deadline - req->timeout >= ctrl->ka_last_check_time)
+ 		ctrl->comp_seen = true;
+ 
+ 	switch (nvme_decide_disposition(req)) {
+@@ -1235,6 +1244,7 @@ static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
+ 		return RQ_END_IO_NONE;
  	}
- }
+ 
++	ctrl->ka_last_check_time = jiffies;
+ 	ctrl->comp_seen = false;
+ 	spin_lock_irqsave(&ctrl->lock, flags);
+ 	if (ctrl->state == NVME_CTRL_LIVE ||
+@@ -1253,6 +1263,8 @@ static void nvme_keep_alive_work(struct work_struct *work)
+ 	bool comp_seen = ctrl->comp_seen;
+ 	struct request *rq;
+ 
++	ctrl->ka_last_check_time = jiffies;
++
+ 	if ((ctrl->ctratt & NVME_CTRL_ATTR_TBKAS) && comp_seen) {
+ 		dev_dbg(ctrl->device,
+ 			"reschedule traffic based keep-alive timer\n");
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 3f82de6060ef7..2aa514c3dfa17 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -323,6 +323,7 @@ struct nvme_ctrl {
+ 	struct delayed_work ka_work;
+ 	struct delayed_work failfast_work;
+ 	struct nvme_command ka_cmd;
++	unsigned long ka_last_check_time;
+ 	struct work_struct fw_act_work;
+ 	unsigned long events;
+ 
+-- 
+2.39.2
+
 
 
