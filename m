@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2075073E963
-	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F92B73EA17
+	for <lists+stable@lfdr.de>; Mon, 26 Jun 2023 20:43:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232355AbjFZSfa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 26 Jun 2023 14:35:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49282 "EHLO
+        id S232526AbjFZSna (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 26 Jun 2023 14:43:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232351AbjFZSfZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:35:25 -0400
+        with ESMTP id S232513AbjFZSnY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 26 Jun 2023 14:43:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F8F94
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:35:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E330BED
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 11:43:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D467360F45
-        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:35:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCB9C433C9;
-        Mon, 26 Jun 2023 18:35:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8086B60F5A
+        for <stable@vger.kernel.org>; Mon, 26 Jun 2023 18:43:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C59C433C0;
+        Mon, 26 Jun 2023 18:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687804523;
-        bh=82xGpOVH54AnMaWSXZBWl6v/5XCa+08je46aBq4owL4=;
+        s=korg; t=1687804983;
+        bh=yiWm/JB14SXsUtrSyPYICSE592923tjjsSpD59sjIzs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yV0QwTlRxJuTzc6Y1rx6VHOkcidCQZYEjGhWpV2rTH/4b/MBJ40o+8JZTPVB+JLCL
-         fPlhhZ0LNxjWzflrfp2Z7jL8FZ3837ftMe4Cs1qZ3gwTIc4H8ODy8VBGnLJAeKF0Q3
-         OcykrsU3yVHEhmCwfu4lz+I4lbNGx6iWoCNHuAgg=
+        b=Dg6XBbhzepQqUr8MtyFKrS/VxxCD2tX7QzpQNwEbrbi7TTHBPLYpwhyJcIZNsyPnv
+         D4mEJh8uWFpkXuiOvbzMPIKVehpZWc3uAEEpxU1wCnxkzo8kJvkaFI22+yA8dghrLb
+         6VLvlnltWMo+THe7paa0nM6eKKyWiI+a2ydZxmXA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Michael Kelley <mikelley@microsoft.com>,
         Lorenzo Pieralisi <lpieralisi@kernel.org>,
         Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 5.4 13/60] PCI: hv: Fix a race condition bug in hv_pci_query_relations()
-Date:   Mon, 26 Jun 2023 20:11:52 +0200
-Message-ID: <20230626180740.103953591@linuxfoundation.org>
+Subject: [PATCH 5.10 11/81] PCI: hv: Fix a race condition bug in hv_pci_query_relations()
+Date:   Mon, 26 Jun 2023 20:11:53 +0200
+Message-ID: <20230626180744.919214316@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626180739.558575012@linuxfoundation.org>
-References: <20230626180739.558575012@linuxfoundation.org>
+In-Reply-To: <20230626180744.453069285@linuxfoundation.org>
+References: <20230626180744.453069285@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -83,7 +83,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/pci/controller/pci-hyperv.c
 +++ b/drivers/pci/controller/pci-hyperv.c
-@@ -2739,6 +2739,24 @@ static int hv_pci_query_relations(struct
+@@ -2912,6 +2912,24 @@ static int hv_pci_query_relations(struct
  	if (!ret)
  		ret = wait_for_response(hdev, &comp);
  
