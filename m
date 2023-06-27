@@ -2,160 +2,217 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AF25740591
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 23:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CD6374059C
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 23:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229923AbjF0V2o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 17:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36116 "EHLO
+        id S230128AbjF0Vcb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 17:32:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbjF0V2n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 17:28:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AECBF5;
-        Tue, 27 Jun 2023 14:28:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BDA3061233;
-        Tue, 27 Jun 2023 21:28:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A61C433CC;
-        Tue, 27 Jun 2023 21:28:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687901321;
-        bh=OafCvthRtEiRdBBCDx7oq4YlYCXLBNwqs0QHZRTmIb8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WNHnNPwyINedj0Xi/GK/WRVtr+QPUA7zgH7xzT1SFoagTucmdMlTvsqCW6fqS0J+t
-         C+GmRxWpRP9iyvzeA11fYrpBqRbOujdmp9Oyj34AsMyV6uuFVB0YFvVsKymL78/d6R
-         a5/2PISHZv6bFkuZvwUh7GQZ+GheCZoTPl22bq1V/rhGNfMV4UgLhawCtDOcXjxnFx
-         Y5EDw4ySZ+iYmXyrhGxi+YtrlW+sCQA1uTCiwCoGa0ArdJ+IUsJET7rEDhRZsJvqZ9
-         kDhte2YL4t2YHYg+7KVdYD2+UG/wTNu3rj2zym/vhdDOGHKb41d2I6y7xeecZBlaql
-         NTp6PFrId9O5A==
-Date:   Tue, 27 Jun 2023 14:28:39 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Huacai Chen <chenhuacai@kernel.org>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        stable@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH] MIPS: Loongson: Fix build error when make modules_install
-Message-ID: <20230627212839.GA1806408@dev-arch.thelio-3990X>
-References: <20230626075047.1872818-1-chenhuacai@loongson.cn>
- <20230626160720.GA2174263@dev-arch.thelio-3990X>
- <CAAhV-H6nyXa+wG-J50d=FrHX=4saVNAePW8HHQ2hm+EsGR9Umw@mail.gmail.com>
+        with ESMTP id S230119AbjF0Vc2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 17:32:28 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B04842733;
+        Tue, 27 Jun 2023 14:32:25 -0700 (PDT)
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35RK5XVn023745;
+        Tue, 27 Jun 2023 21:31:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=lVnKVJNPV9Gjqt2fkdbZE+xqsGqMzIL23kgZqqThCQw=;
+ b=kQDFHtmh5lt+Qyo4xWTDrL/Br/M6aSMR1IhZMukG06nwznk78QK54Bxr+M1Wzxi3l8+j
+ 0tYiUp33pecRazWEvBBDGeYf5UeGmQJrpE9VurvkOhXFS2tmxvTjW04St/Y7y5erhhAq
+ mVTubOfSFpZLZsoW+LebDJd/NJj+SZyLFcJSHvC62ilKFY5bLfqLLPfh0ZMHZdbdI2Jr
+ 5DCnWzPVPIRkZYRm0ZlxNwG+1LvprCBaAgT8bW0FJpywetIwroPkTQQeAnZmG85kGXiz
+ ST7pFlQcaooQvFvCk9xOVZ4QLLi6Rl1ZjbidavYfjjO/+mShlSIbITAvMWzTPgESZja5 +w== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rdrhcp6s4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 27 Jun 2023 21:31:48 +0000
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 35RKg95H008706;
+        Tue, 27 Jun 2023 21:31:47 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2108.outbound.protection.outlook.com [104.47.58.108])
+        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3rdpx55sa6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 27 Jun 2023 21:31:47 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Yy6ejyvS4taL420CFXfG5V+w8iERoOhNfmkw5ZCk3MFEbSLEVUb/Xyfjw+QDNP6bBwdCNVBY3Tfmh/E4aQ9NC+MBL4q6XW5FWTUo4GoKxr6Kyyr7Y08ITwf16DaqCeB1kIWRiCyz65ChcLEam3UXSLw0MrYatbrSoicXUOrnJnC1zD3RfDWB8JJ1dH5FTrpJkIX5FpgTnsnF9pGDcJZSSqLjAIBhEia4XhwL183l2V6G0PJAawQXlYY6U2Lq6W2PQ6fZvmpS2bEPlEx2YehOv1LvwOuK3ObGC9M3bnUpuVXU6DL54N4DLOp3snYKjORWkYZXkvF3kcvK7Un8vs6/Fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lVnKVJNPV9Gjqt2fkdbZE+xqsGqMzIL23kgZqqThCQw=;
+ b=lCoiqaBwPQO9Y4+M0lc2w3ka7OrNNCP9v0Rw0vRsbAzhjWFVRgLthWPC7cERPaBUAwtEzF6xK/2Ao5QNwxFFLRKCpA1QbrRvHh1wam0YiOcZeu8BXdz8c8f8K72wwimGV/fzeC6TyEVMX2JHpjn6NgOAPMfKOW6GlLGyl4BjOXTK2jkS0+W/u6pj4R+yN+RBly6rwI+adT8KOjvwlzJiTWP4Yg0pcnwl7Yjf3dU4AZQscsgLfkQAK0FAeZNQJCnVw22qhAuopCHUjdzKlGbx3gtjdxvRIh7J5CfAxoAOBvo5xRJJbdzUs0OExGIDPsbdWEjh2PXHaIH6c/tEmSVZ5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lVnKVJNPV9Gjqt2fkdbZE+xqsGqMzIL23kgZqqThCQw=;
+ b=Wa3z8PZ/wo2SMrxBfJW5QMjzHHO9kEB5kmC52l3pjlMGBhsi+ntl4N6WWPXL3sWtVXQCB/vz4QNGcn0bjhlUowPriDVePclBBZMhahqpvU8YfTEwYwk5OkNqFghcgvnhBwb3/BcnFaXzWtgaYZFUz4rSIqzGYWg9yLyw3wqCjHQ=
+Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
+ by PH0PR10MB4600.namprd10.prod.outlook.com (2603:10b6:510:36::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.15; Tue, 27 Jun
+ 2023 21:31:45 +0000
+Received: from PH8PR10MB6290.namprd10.prod.outlook.com
+ ([fe80::9bee:4705:4313:2532]) by PH8PR10MB6290.namprd10.prod.outlook.com
+ ([fe80::9bee:4705:4313:2532%5]) with mapi id 15.20.6521.023; Tue, 27 Jun 2023
+ 21:31:44 +0000
+Message-ID: <98015e39-dc8a-d892-974f-a73f10331dcc@oracle.com>
+Date:   Wed, 28 Jun 2023 03:01:32 +0530
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH 4.14 00/26] 4.14.320-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        Vegard Nossum <vegard.nossum@oracle.com>
+References: <20230626180733.699092073@linuxfoundation.org>
+From:   Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20230626180733.699092073@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TY2PR02CA0005.apcprd02.prod.outlook.com
+ (2603:1096:404:56::17) To PH8PR10MB6290.namprd10.prod.outlook.com
+ (2603:10b6:510:1c1::7)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAhV-H6nyXa+wG-J50d=FrHX=4saVNAePW8HHQ2hm+EsGR9Umw@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|PH0PR10MB4600:EE_
+X-MS-Office365-Filtering-Correlation-Id: 79dba2d7-c8c6-40af-09da-08db7755e775
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: l6d4CNlU31itzjk6QbMsaHs7TCCOMjSKkbmANFVcrIckZNsssmCzq0ais/ERzHW1q+QzMGhICv+9yWasA3ZeSxHlUIMgmrdvI3OIY5XaE0ecdK/UssvyVi60ZgvRUtlicT44uegHHjbq8mehNZeAWrq4lVFEcT64JZ49TZOHLhIixOwtIx3FFJKdAhEbGKaH8VEWeqkCLq69LZyq9qjJlSts1TPavtaGxUs5U5RLvJu3iQOzQ6QpLoBbu4Ebz294tuo2dPWe6D/BdIhVQfIWAZ0X8WOZCtxo8AGnFNQVv3aqoYiO5C1Tq4aZMfq06MNX1lziJfUfhsnuKW/BMeoz1f//FHn+EG2C3yoSfwIjroUHNEJUlysph2grfUOYW5YPCmkhAs926dhNYH15ualDCuQDNRL+SA0Z232DOnSq08zWqkb55dOA6FawuO3l9/LdL7rr/cBSFlwWM480iesR8xR1IYEEx2iaL4k7GHS6bJy9myv1YxChq1Ff7vuZoQk/C6uNbxG57tJhYrytw1CxlFWpvCBSyfwfHEsUDob++GLLdVWKyL6nZb+yfIka86yDeoPXhlgU+uM8VD+QUii/tJmebZzaQr6P8U9An0Eza3gX4jnNmSaylAdWkWqWPav30SwN70LaJ+aBAvL+5DsMag==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(376002)(136003)(346002)(366004)(39860400002)(451199021)(2906002)(4744005)(186003)(2616005)(66556008)(66476007)(4326008)(66946007)(6666004)(316002)(478600001)(7416002)(5660300002)(6512007)(26005)(107886003)(6506007)(8936002)(53546011)(6486002)(41300700001)(8676002)(966005)(38100700002)(36756003)(31696002)(86362001)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QXo4SDVqSTJkQkE2dmhoWm12RlNSNzBXdHRucjZGRFpiSTZtK2lTMDFPeXNa?=
+ =?utf-8?B?US9TREdTNWQ1eUtPV1RBTWtKNHVqdU9FREkvdUxoVXVZNlRGWjQzT01EWUdX?=
+ =?utf-8?B?SkVqRFBsbElVaEVTL2VPaXlXWCtnN1Nyd0c5b1JONXlMTlNVV2FKLzFkbGdC?=
+ =?utf-8?B?bElYVk16Q1VzVnJMT0VvdFRTYlB5NVBRa0RWVHU0VEFjQ0xlRE9OV0ozT0hN?=
+ =?utf-8?B?Yk5tY3g0SVNOT25PRXc4S2F3Qm9JKzNOdm04bmU3cnZJY0FjeFJrbmZlTGZM?=
+ =?utf-8?B?OTFHRGRXT2U2Skg0NWd5VGYzYzVIdEd3Qk9jTWZSbTdodXBjR25ESDFlL29F?=
+ =?utf-8?B?OUVCZHBDYis1VzFRc0dGdU9naHVLblUyaDFrME42UDIyemVya0prS3Avc2lX?=
+ =?utf-8?B?MVgzTXdaMU1IRmgvTWZ4LzdSL2R0UDkrTkFySjlJUjRVVnZ4d3h6Z3BYbmpS?=
+ =?utf-8?B?Lzk4TmdUMGFQSVNyME40aXIzZTNjazEyZzAvUkxCNzNYVVNSMnlvZU9aem5z?=
+ =?utf-8?B?V0ttSHBQZ2RRbzVrdzloTEFMVG8wYjhxWUVyd2tad3lmby9uYmg2RndZNGJa?=
+ =?utf-8?B?dm1teGx4MjljRS83RHd1UHVhZEpjc1BJT3ZRTUU0VFUwa3NFWUVYWUEzaDJW?=
+ =?utf-8?B?YW5hM3l4QjVZV3dFY2N5cUlhYUhzVHRMVU02bXl0YmxDeW1mMUpFYTRMd0J5?=
+ =?utf-8?B?b0p1U3VKdml2YldWMURJMjE0aVAyRmR3b3YvdVNrdkkvRkhQNE40d2VuNHE1?=
+ =?utf-8?B?UktTREtvMXptL1pxVDRSSzlEbFo5by9ubmt1NllQcHhlTnVsVnoreHI3d0FW?=
+ =?utf-8?B?ZHRhdWJNWkZ6dDR2Y2tNOUJMeE5qRHRBWjdGNUtmTjlFT3pEdWlKeXRoMFJh?=
+ =?utf-8?B?M0RidW5lbXlENW9iTnlQYWhSTHMza0UwblhwOHQ0WXRITzFTWlFIWkR6TG5x?=
+ =?utf-8?B?aUhQdUoxMXhGZEtjUmc0Ti9tQTNLUDYvY2NmSC9SQTFOd1FBaHBxMkpYQ2Mv?=
+ =?utf-8?B?eDJqNzJhNzVDWk1tdHhlRi9JeVRrRnVML3BuOVkzVVJLdHhyWnpTSUYrc05l?=
+ =?utf-8?B?a1NwbTJ5VGJqNXZXVUp1RXF1UkdCbTdBSTVYN0RNbXpWQXRSUmpXNzk3cnQw?=
+ =?utf-8?B?UzdVQXNCbzAyY0IwZ3JtN0pTMW9ucWtiQzFtWUc4Q1hJZTdETm5lSXFrNUhS?=
+ =?utf-8?B?ckdnTE5lTmlERFYxRlNPTDJFMXlwSER4RGl0WkhtRkZwdjE5R3BQQlZ0bXdU?=
+ =?utf-8?B?R2xZTDJiUEhvNGNHWlkxN2QzZnlpR3k5UUt2TSs0MU9ZaU1QTTZld0pNMHpM?=
+ =?utf-8?B?cmE4a2tsUncydWkyR3FURTc4RmZPbXlldFlEdFB5WXhFWWw4UktvL1lsM3BM?=
+ =?utf-8?B?V0hidUo1NGEvNDV3djA1U3NzdzgxMnFPdTI3ZzIrc3JLSFc4akJvaC8raUwz?=
+ =?utf-8?B?SWIvWmc2dmhsM3d1YnltYStaV1RxNUNLMDFCeGJTQTlLamxmdkszY2Nzb1NV?=
+ =?utf-8?B?WHpveDI5SDVNaEI4d1BEbndzWG9iTjIweG1RTlg1UVlhV0w0bllveVBicWdF?=
+ =?utf-8?B?bWRreU1DLzFjNm5meVJZVmd0N09ERXU5OUlIN0l6cXVxYTd0Wm0ybmRLeHNS?=
+ =?utf-8?B?S0Q3S0RKOXBVcUVpSmdnOXhJc2IvVi92TVJIVUI3OCsxNDFaZVRoOW5ROVB4?=
+ =?utf-8?B?eTd0UmFET3ZPRmYwTEZUYlJPVVR2MkNTc1RCYXBWZFNMR0R2UmhFTVExSENx?=
+ =?utf-8?B?QkVtd1FrSWNhbC9VYisyV255alo3UkZRV1E5ZmRxRWlvb1lqL0JDL21nVVFx?=
+ =?utf-8?B?Z2d3a1lkWCtlb3RhQ05mODNZNTFsRHErUWVCUVJCWk04NkRYWkdORWI3RmlT?=
+ =?utf-8?B?WHRtclI4SEtqU2xmdkIwb0xKQXhJTzV3dWVMVVBuUGJEMFVYRG9aSTE1Q3Z5?=
+ =?utf-8?B?VGVXSVBYWEN6OHBQdXdHdk9oa3NVZUVmK3hlVVpsSDRXdjNCc3VOM1UxdGVE?=
+ =?utf-8?B?b3RvUTAzcXY1VnVROHA1UFdLTkp2ZngxUktka0EzQVhDNnp6TVNNWHlYL2Vo?=
+ =?utf-8?B?MWNvMG1HM1VpeGNTaU9YejV0U3FBTUdHZ2lJN1BoQjFGK3NKTnNBb0JFNzB3?=
+ =?utf-8?B?U3RHOUM5ejJiNzJMWDBNa1FvWHZHTXNJSWtFMHZTcnJ6ejFGZ1luOFV4MWEv?=
+ =?utf-8?Q?DJtPUXA2rYdgmTCPIPDN6c4=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?N0R1ZXFrYTYyWnc3NURoOWp4ZXhQK2Z5MEFpcTgwcnpKWGV2L2ZSWDhrMXFu?=
+ =?utf-8?B?Zm1PVkw1c1ZHeHQyWEl5WEdkellZWWl4bkRORTdXMTB1MGFYcW40ejBjdldN?=
+ =?utf-8?B?cDdVWndSYXRnNUtpOWlYUUVseGo2NkRJNytVL0ZjUnNQTlB0QlFkS29xcWlj?=
+ =?utf-8?B?a1ViaUo5a3h4WEVZWXg2ejJ4Q2c4UU1IeHF0clAzWForOXhwaWpjMG5ZSjFW?=
+ =?utf-8?B?b3hXVmZQUytqYk5XWGFSeHhveGMvbW1GajJHZmNrUXUyY3hkQjB1ZFdFNUtv?=
+ =?utf-8?B?dVorUldTMTI3VGsxSEV0OEZ6YkIydmIvd2tWYmt0WEJRUnpZYVB4K1hGVzZW?=
+ =?utf-8?B?OXJ2eUYzb3RwRzhZcFNBYm5lY0IxdXlEbmFqLzRlQXEwdWJBdXE1RFcza1Fz?=
+ =?utf-8?B?VnhIZUNHdEd6bzdFeUViYzVkMFE1TkNzSTJjOENVdUNtTUVDVGEzZ0d6d2Fr?=
+ =?utf-8?B?Nk9mRVBvb0haZGxFMXNYUXNId0ExZEhoVitqQlNQUHVJdWd0ajRoNnZkZktH?=
+ =?utf-8?B?YUw4RGRnd3NxVjBQbGVVeE04UTJkVXhoK0NQWEdzZEluc3M3c3I1SW4xUEFY?=
+ =?utf-8?B?Z0NicjBPcmdHYS9vTHZ5czlVTi8wU0p4SmlCd0NPTmtCamNXbU5SM0JWODE3?=
+ =?utf-8?B?c3haZFlZWEppbXlSMnR2bW9sdkc5aG1CQ2V1YjZOdmpDbTFzTWg0cmJzNkV6?=
+ =?utf-8?B?YUJkQThCU1B2L1IvS3k3bnlTSmdWWTdtaDFsTHN4R1YxUkxIUm9WUEhXNkk0?=
+ =?utf-8?B?RWlnSTlJNjlMUEp2dGVJU01acGN2QVVZNTZDcmpURDlBaXEzZTJjNk1BdWl2?=
+ =?utf-8?B?Unh2UTBaOWpLUGNSU0NVQkVPQkZRbGNLQ3p1dVd5aUhHakhSYTVHNlhyYlds?=
+ =?utf-8?B?S1JsdnNSY1l3L212OEczanFaMzZVenlTZEIvV3JNbWN5NU9Cc1lPakVxbWFX?=
+ =?utf-8?B?Y2dTY3BJM1ZMWUFGYUVoNmJLV2czZHR1M3RWRXR5R21NUXZVYzlHRjQ0OHZJ?=
+ =?utf-8?B?elg4R1lCZHRwNXRzUnZTa3NXOWFzRlR0RUNYOXI1YXBnSEpNTUhmSG1rVUxx?=
+ =?utf-8?B?ZlkzbmdUTXVrSW5ua0xxTHpmdys1NjdLUDdvZ1VVcW5lWkl3REhNaWNvWFBD?=
+ =?utf-8?B?RTVQYU5UTGZNdDI1VGZjRWFKQS9lbkN5ejBuSXhIdU1VR0VaWE1UZHY4NUlr?=
+ =?utf-8?B?MEd5ZllyWi9mR1RKTzQ3QVRwdnJIb09HTGRHQ3JNYmhqczVvSlBlVEx0ZURR?=
+ =?utf-8?B?Z0NSYWQ4ZG9UNGtISlo5dVVEK1ZrWGZQc0doQTlXUGZsV3EyUllSQUJvaDZp?=
+ =?utf-8?B?OGZWN3VyaGxVZ3lMWjJiSnVMd2krNEFsRkVmZGdSYkdYVWRhb1RtUHA5aUtk?=
+ =?utf-8?B?K2xYT3RLbEZiQ2F1TG41bEVjTG40S1pGVDB2cWxiNXRxTUxScENVUlp2YTd1?=
+ =?utf-8?B?VVByS21zZE10WUNjMXNLaDc5ME0wb1pYK1lhVStPOU56Q1lwQjZaWnJZNDk5?=
+ =?utf-8?B?QlJRSGZyYkNvOVFtR2tYUlhKRmZ1NkpURkM3MmR6dUx1Q210ay96QVFwYkQ5?=
+ =?utf-8?Q?7ddmCsBdPHeM+h2M1UBUjkzKbwvyvdyggyXzeWkXzh2X6D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79dba2d7-c8c6-40af-09da-08db7755e775
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2023 21:31:44.4659
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2YMDak4tTIK3KHqKhMARcGQSOACFKZs23IXhOLHnqumJB3ERtIhcVeouxxcrkF3OqmbHWB6paNIfzqb047SCnfWqJsXYLt4vCwbKl8dtGsLRMdykumm7zq48H1JgTgrp
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4600
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-27_14,2023-06-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=996 adultscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306270196
+X-Proofpoint-GUID: ikcvmijHkCqUGOSkNp0phBH-RyH7MNzk
+X-Proofpoint-ORIG-GUID: ikcvmijHkCqUGOSkNp0phBH-RyH7MNzk
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Huacai,
+Hi Greg,
 
-+ Masahiro
-
-On Tue, Jun 27, 2023 at 11:11:27AM +0800, Huacai Chen wrote:
-> Hi, Nathan,
+On 26/06/23 11:41 pm, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.14.320 release.
+> There are 26 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> On Tue, Jun 27, 2023 at 12:07 AM Nathan Chancellor <nathan@kernel.org> wrote:
-> >
-> > On Mon, Jun 26, 2023 at 03:50:47PM +0800, Huacai Chen wrote:
-> > > After commit 0e96ea5c3eb5904e5dc2f ("MIPS: Loongson64: Clean up use of
-> > > cc-ifversion") we get a build error when make modules_install:
-> > >
-> > > cc1: error: '-mloongson-mmi' must be used with '-mhard-float'
-> > >
-> > > The reason is when make modules_install, 'call cc-option' doesn't work
-> > > in $(KBUILD_CFLAGS) of 'CHECKFLAGS'. Then there is no -mno-loongson-mmi
-> > > applied and -march=loongson3a enable MMI instructions.
-> >
-> > The first sentence does not make much sense to me, specifically "in
-> > $(KBUILD_CFLAGS) of 'CHECKFLAGS'". What configuration and build command
-> > reproduces this? I do not see how '-mno-loongson-mmi' would fail to get
-> > added to cflags-y after 0e96ea5c3eb5, which should have had no
-> > functional change... I don't want to hang this change up since there is
-> > real breakage but I want to make sure we fully understand why
-> > 0e96ea5c3eb5 broke things and why this patch resolves it.
-> Please use loongson3_defconfig to build a loongson kernel with
-> toolchains from here [1]:
-> 'make' will succeed, but there is a build error when 'make
-> modules_install'. And you should be careful because 'make
-> modules_install' doesn't stop when the error occurs.
+> Responses should be made by Wed, 28 Jun 2023 18:07:23 +0000.
+> Anything received after that time might be too late.
+> 
+No problems seen on aarch64.
 
-Excellent, thank you! I understand what is going on here and your patch
-should work to resolve it (although I think the commit message should be
-flushed out a little more with the following details) but I am curious
-if Masahiro has any thoughts around this.
+Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-As you note, the error message comes from the CHECKFLAGS invocation of
-$(CC) but it has no impact on the final result of modules_install, it is
-purely a cosmetic issue from what I can tell. The error occurs because
-cc-option is defined in scripts/Makefile.compiler, which is not included
-in Makefile when running modules_install, as install targets are not
-supposed to require the compiler; see commit 805b2e1d427a ("kbuild:
-include Makefile.compiler only when compiler is needed"). As a result,
-the call to check for '-mno-loongson-mmi' just never happens.
-
-It would nice if '-mno-loongson-mmi' could be added unconditionally when
-using GCC but I can see that the flag has only existed since 9.x, so we
-do need to keep the cc-option call.
-
-I am fine with your change as long as it includes some of the above
-information (basically noting that while the original change should have
-been equivalent, the requirement of '-mno-loongson-mmi' when using
-certain Loongson '-march=' values with '-msoft-float' means that those
-Loongson '-march=' values need to be called with cc-option as well),
-even if clang will incur two more cc-option calls as a result (not the
-end of the world).
-
-Additionally, it seems like the same issue will occur when running
-modules_install when CONFIG_CPU_LOONGSON2E or CONFIG_CPU_LOONGSON2F are
-enabled, which I guess I also broke in commit 13ceb48bc19c ("MIPS:
-Loongson2ef: Remove unnecessary {as,cc}-option calls") :/
-
-Sorry again for the breakage and thanks for the fix!
-
-Cheers,
-Nathan
-
-> > > Fix this by partially reverting to the old logic, use 'call cc-option'
-> > > to conditionally apply -march=loongson3a and -march=mips64r2.
-> > >
-> > > Fixes: 0e96ea5c3eb5904e5dc2f ("MIPS: Loongson64: Clean up use of cc-ifversion")
-> > > Cc: stable@vger.kernel.org
-> > > Cc: Nathan Chancellor <nathan@kernel.org>
-> > > Cc: Nick Desaulniers <ndesaulniers@google.com>
-> > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > ---
-> > >  arch/mips/Makefile | 5 +----
-> > >  1 file changed, 1 insertion(+), 4 deletions(-)
-> > >
-> > > diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> > > index a7a4ee66a9d3..7fb76d12829e 100644
-> > > --- a/arch/mips/Makefile
-> > > +++ b/arch/mips/Makefile
-> > > @@ -186,11 +186,8 @@ cflags-$(CONFIG_CPU_LOONGSON2F) += -march=loongson2f -Wa,--trap
-> > >  # Some -march= flags enable MMI instructions, and GCC complains about that
-> > >  # support being enabled alongside -msoft-float. Thus explicitly disable MMI.
-> > >  cflags-$(CONFIG_CPU_LOONGSON2EF) += $(call cc-option,-mno-loongson-mmi)
-> > > -ifdef CONFIG_CPU_LOONGSON64
-> > >  cflags-$(CONFIG_CPU_LOONGSON64)      += -Wa,--trap
-> > > -cflags-$(CONFIG_CC_IS_GCC) += -march=loongson3a
-> > > -cflags-$(CONFIG_CC_IS_CLANG) += -march=mips64r2
-> > > -endif
-> > > +cflags-$(CONFIG_CPU_LOONGSON64) += $(call cc-option,-march=loongson3a,-march=mips64r2)
-> > >  cflags-$(CONFIG_CPU_LOONGSON64) += $(call cc-option,-mno-loongson-mmi)
-> > >
-> > >  cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)       += $(call cc-option,-mfix-r4000,)
-> > > --
-> > > 2.39.3
-> > >
+Thanks,
+Harshit
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.320-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
