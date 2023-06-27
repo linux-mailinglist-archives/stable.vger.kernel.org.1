@@ -2,106 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C78C73FBAE
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 14:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBD6473FBCC
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 14:11:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231799AbjF0MGJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 08:06:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34062 "EHLO
+        id S230211AbjF0MLl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 08:11:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231793AbjF0MGH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 08:06:07 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C265173C;
-        Tue, 27 Jun 2023 05:06:05 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f954d78bf8so6269823e87.3;
-        Tue, 27 Jun 2023 05:06:05 -0700 (PDT)
+        with ESMTP id S229926AbjF0MLj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 08:11:39 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FF8F1999;
+        Tue, 27 Jun 2023 05:11:30 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2b44eddb52dso68402271fa.3;
+        Tue, 27 Jun 2023 05:11:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687867564; x=1690459564;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+M3NXPsx45UfjIfs1rUQSv4UcGmUhSpn+D7x2X92Y5o=;
-        b=QVXvpiPjbiJFFCL4yOuXURwwSJsFzIdGVCKvku+kqCU8/WDEY3Rq2fAMBk9A7xrCAY
-         kouTIJxKnV9HftD9ixVxSFqxHj798JkNOxSOxf6+lKj1S/p3ejhf0ZAWp/+iPQ1KGmfW
-         PTR+fpNplsU7zyCXjzz4zjcnzT30PZwfDCv9WSD8R/0Mu6Wii9hcxpBc4fR6W+mfq2r0
-         Vu/MAd/G/kxuLngDyG0uWXqz9ohBfWovsHB+8N6/mJgq3t04+G40LQhINxQdkiuqVwOg
-         hMWiDyBnw0sEiOI6P2FlHyu8UNyMPvQZB1Q6ilmdMj8zd5kHp1MddqpTc5mqBrfwGDQl
-         m3BA==
+        d=gmail.com; s=20221208; t=1687867888; x=1690459888;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=m+9Bx4TaQDJ3xq08eT0W/lsQ80FM8Zc2O+5nzMh3Mbo=;
+        b=JbbZCJ2BqPgX1sSqAcw6+/Q+fKxtIkuZAhlJvOq+Gxb5aa+FlAupckRTe72hlmabLM
+         jrIhE54Dc1w5BgRzDEwax4tOJ1jqkP+cqBAbxtV0FWX4cS3QolOeYatPbJxryiBki5pF
+         /8TKZxZIfuApMnaXINYQcH4oBq9iZfVJr/N8+CoMBehUwlYGZgoFn0c/6heGXonCzmge
+         VwOFQM+E1KcH9xNgP6J/siqrJ41p7/Ta+c9KHmO/i4tJVLvFKw61KKRgdrzyvheaSg6r
+         E8i54/QpP5RvzPECuIyfUJUVgNhSVAsD6xG3/GBXDynHlBx9NrV6g2luE/A715uGgsgQ
+         ZuKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687867564; x=1690459564;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1687867888; x=1690459888;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+M3NXPsx45UfjIfs1rUQSv4UcGmUhSpn+D7x2X92Y5o=;
-        b=gwj6z4nVGFCxSSd7dPRprTdt+4ajyF7Y+bCnN4K9Y+nwKOueZc6/6PT6PFOvIWhJjd
-         xHimRS5fTvlYOnDFFlKcBNsgaNhqUayx2qMwKeC4PRGdTbxP+FgYd4/8vE2t7UJjJKu1
-         4RCZnC8wFDCJwjdXMxTopgoQT1eAFRHPoEuH0hbyI0tah2q13whuUo3fNKqKuRFuuRNv
-         K0nEVCU0AjLPKlAhNS20D6Fao62dxnsuk5GLcAsbV+g9P2rAJwpS5alB2LxlFDGqiDeW
-         vQH1qjs6oaWrKCiFo+vPRawDStkocubKNerxyFisHy5a6Yq3RAt1d3FiGqUVfspiElsm
-         Rrkg==
-X-Gm-Message-State: AC+VfDzBRQg48GXqlaFVEWoXxPGUtq1EW5Tu90COrDlfVpKBTm+2nBhj
-        ShlQNiqHJIk148lGWuNW6f5GWJTAO14=
-X-Google-Smtp-Source: ACHHUZ6mIukkgHhmP/8KDJzcpRgaK4+DpT2UKABHTVa6xvx+z0Vr6B/HBPlCedBPGV6SktvFQCcoOg==
-X-Received: by 2002:a19:2d01:0:b0:4f8:7568:e94b with SMTP id k1-20020a192d01000000b004f87568e94bmr13356375lfj.56.1687867563265;
-        Tue, 27 Jun 2023 05:06:03 -0700 (PDT)
-Received: from saproj-Latitude-5501.yandex.net ([2a02:6b8:0:51e:5298:c58:431:de13])
-        by smtp.gmail.com with ESMTPSA id q13-20020ac2514d000000b004fb771a5b2dsm701924lfd.1.2023.06.27.05.06.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jun 2023 05:06:02 -0700 (PDT)
-From:   Sergei Antonov <saproj@gmail.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     Sergei Antonov <saproj@gmail.com>,
-        Jonas Jensen <jonas.jensen@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH] mmc: moxart: read scr register without changing byte order
-Date:   Tue, 27 Jun 2023 15:05:49 +0300
-Message-Id: <20230627120549.2400325-1-saproj@gmail.com>
-X-Mailer: git-send-email 2.37.2
+        bh=m+9Bx4TaQDJ3xq08eT0W/lsQ80FM8Zc2O+5nzMh3Mbo=;
+        b=SE3qSXVlRK68WoReUY8ElVZx/OzSfR05xef/mKAVBzvCMNC52lIB0YEIQibIN/MLcV
+         ei2JgH0VverDsjxg8N1cs38OT5Cyr37BZKQJoiTZO+ibHXBpo6K35qsU2p4zipbU298B
+         07bB2qZET2cFrdCqpTLN2GqXZJzmIF0YRfH/mRHOm/WG2r2e2iKecfJ1yV6AZl0gznAT
+         ysVC4lj+ZrxcppTYI02u9Numc5WFfNaIil898jRTff45Bj14lYhr0+TAMVXw81SHMJ8I
+         Uv5i5BYxxDhY+/Fk3j+r86RtDEIgJXPE/TXO2u+uy95/TfX8Uj2AfVnl8a1GP6cqJoL/
+         kxoA==
+X-Gm-Message-State: AC+VfDxIZFWBy3wBHMJiww5tD8ovRXHh/PD6Dp0lMLj6HyDQu1UMpSDg
+        KB2mFR6Ec0lEoDK2HW5kzvCZaRlFj+oEKO8g+ZPLu/eyiH8=
+X-Google-Smtp-Source: ACHHUZ6QmNH58jaElLeCDDDtY0mwdr4Fv3G38Z/Cogx36Jvwe3Kf7I51aE1f0hJAKpZmUMIWq9PFzZYpN+yzUUZxlRs=
+X-Received: by 2002:a2e:a0ce:0:b0:2b5:974f:37e with SMTP id
+ f14-20020a2ea0ce000000b002b5974f037emr7150286ljm.19.1687867888080; Tue, 27
+ Jun 2023 05:11:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230627120549.2400325-1-saproj@gmail.com>
+In-Reply-To: <20230627120549.2400325-1-saproj@gmail.com>
+From:   Sergei Antonov <saproj@gmail.com>
+Date:   Tue, 27 Jun 2023 15:11:17 +0300
+Message-ID: <CABikg9yoY7rQ4gmBi7YACx0e+1xU3bLWVPho7xsre4HkXctf6g@mail.gmail.com>
+Subject: Re: [PATCH] mmc: moxart: read scr register without changing byte order
+To:     linux-mmc@vger.kernel.org, ulf.hansson@linaro.org
+Cc:     Jonas Jensen <jonas.jensen@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,BODY_SINGLE_WORD,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SCC_BODY_SINGLE_WORD,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Conversion from big-endian to native is done in a common function
-mmc_app_send_scr(). Converting in moxart_transfer_pio() is extra.
-Double conversion on a LE system returns an incorrect SCR value,
-leads to errors:
-
-mmc0: unrecognised SCR structure version 8
-
-Fixes: 1b66e94e6b99 ("mmc: moxart: Add MOXA ART SD/MMC driver")
-Signed-off-by: Sergei Antonov <saproj@gmail.com>
-Cc: Jonas Jensen <jonas.jensen@gmail.com>
-Cc: stable@vger.kernel.org
----
- drivers/mmc/host/moxart-mmc.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
-
-diff --git a/drivers/mmc/host/moxart-mmc.c b/drivers/mmc/host/moxart-mmc.c
-index 2d002c81dcf3..d0d6ffcf78d4 100644
---- a/drivers/mmc/host/moxart-mmc.c
-+++ b/drivers/mmc/host/moxart-mmc.c
-@@ -338,13 +338,7 @@ static void moxart_transfer_pio(struct moxart_host *host)
- 				return;
- 			}
- 			for (len = 0; len < remain && len < host->fifo_width;) {
--				/* SCR data must be read in big endian. */
--				if (data->mrq->cmd->opcode == SD_APP_SEND_SCR)
--					*sgp = ioread32be(host->base +
--							  REG_DATA_WINDOW);
--				else
--					*sgp = ioread32(host->base +
--							REG_DATA_WINDOW);
-+				*sgp = ioread32(host->base + REG_DATA_WINDOW);
- 				sgp++;
- 				len += 4;
- 			}
--- 
-2.37.2
-
++ulf.hansson@linaro.org
