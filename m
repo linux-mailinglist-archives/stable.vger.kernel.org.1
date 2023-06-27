@@ -2,98 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B09BB73FCFF
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 15:40:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88B3973FD4A
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 15:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229740AbjF0NkS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 09:40:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40746 "EHLO
+        id S229844AbjF0N65 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 09:58:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbjF0NkR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 09:40:17 -0400
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 163C12D54
-        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 06:40:17 -0700 (PDT)
-Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-40079620a83so267651cf.0
-        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 06:40:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687873216; x=1690465216;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=60sdZ0/W1BRmGu6AlZA3f3b1XPfOStvjGcXbJFjRxEw=;
-        b=LPlHfy8cooHiNrwPDxEBAv8dW97XNWe6zYTx1dvItxzz5KxOo2mjJhREUqnO+60d/m
-         3SCN2BDwX0CTvlmJBKTeGgqMapjeO0cU+tYU2OkTs3PrAEAZhug6yDdMXeqY6ogFnWk2
-         ye4FmZPtyFQX0H1THD641fZ9A3nciqX/YGq7zeFHVCBf2OMvEEiGlIx+xfMHGhzo1+XR
-         zrQGEnQ7zTddWpP/iZQZJsnD/mAxZ3s1b6TweApQkGBfUzdGkGmcqo3Qte/T59dfY7JX
-         LuSHEqi4Emwz/yU0Ab+isEyO7ZIRUvDn98g+1apPw4+4w8vQNjzFQCoAsq6deyPee7Gs
-         ujkw==
+        with ESMTP id S229608AbjF0N64 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 09:58:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1453211B
+        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 06:58:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1687874288;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Zqq7h7cm69/C9ev3ZJHDEt0CRQFqksZRkCslwkFy7X0=;
+        b=VcTS+A5r18iKFjeh14trXJ6/+z/d3ThSkhaJf3VFTGpRCIvE/funRXROmUyDbomKKKo8zj
+        g6sfRqf9He1BxLxZeGs5sy3M54jVAq2JUe8hvTsXCDJ7AuS/SHnqURgVunFNRt5B5ngV35
+        bOWRzgjSNGXGKwGOO03L99jXt4MvpTE=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-478-cMUFO0VxPXCC1CdtiydLUg-1; Tue, 27 Jun 2023 09:58:07 -0400
+X-MC-Unique: cMUFO0VxPXCC1CdtiydLUg-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2b6af6868baso6656721fa.2
+        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 06:58:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687873216; x=1690465216;
+        d=1e100.net; s=20221208; t=1687874285; x=1690466285;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=60sdZ0/W1BRmGu6AlZA3f3b1XPfOStvjGcXbJFjRxEw=;
-        b=TJ6eQfdbU7u1OlMWxjTfD9h6R0hZ/evAATbfiyCr+ZjTbfJBp8i4bqn3eqHiy0LuWw
-         yU0kWFSIn7AiZ1gke8c+PPt4xHMiWmf+9b8wd37L4J/ndlJ5k14HcbCY1VlUtXTg6AQi
-         GZ+hk7iA4Sb409ay8K1/BxC2dCXUnMBfrmOzj+ku3Eij8YHyckFomqyO207lChz29m6K
-         zgHbNkt9RYjD9FE4PdxANj/CEQgIGhmiSU+TTafTMwsX8T9eRHRx3z0SfPelgUEBariT
-         LrDtEL2iaMuxUrVo0bMFcCwaNHPH0kVqFNhaUzfjw3YsHv92Xa/1dxiNai+8q264xADr
-         m58A==
-X-Gm-Message-State: AC+VfDyBm8b8pbUQqK6pS3mKVNhJ5vJvsgSmV+jYUmzlrMThNDYPcpfg
-        qtIVlPpO1adYOX7DSFM6vUhMlDcEpB2C7nhn1IK6wA==
-X-Google-Smtp-Source: ACHHUZ5RX8NhvP7wSDLlGP3QTsJ5bkWcPYFYot8aZjT7gCTVzb7MfhLej0NrJFTLFtduzg3q3TXCM4Hsn3cfIbhwyCI=
-X-Received: by 2002:ac8:4e83:0:b0:3de:1aaa:42f5 with SMTP id
- 3-20020ac84e83000000b003de1aaa42f5mr577703qtp.15.1687873215789; Tue, 27 Jun
- 2023 06:40:15 -0700 (PDT)
+        bh=Zqq7h7cm69/C9ev3ZJHDEt0CRQFqksZRkCslwkFy7X0=;
+        b=Z/za7TS7o0EEaQSL9FqJIPWdEOZxo9heSEl4CGprv6smeykDxlpuTaAilaKHRGkizH
+         A4nEZoYD3N6Iw7Gul7vEZKY0WPj0tp4ZW908wNuOS90NFk9O0tHP6EoNuEajoAUmHq2w
+         66Hin4P0GT2wTzirzjsYha3wziL7jQ2knZkQ6Npaj7aU9cMxJcpbm5DBRyFDYndwxsws
+         /IDPfr4Ye++/N3RMkJsir4jVpQsJ/loLBRePwXfHrb6YL//OCg4UCYriYQny55B962IC
+         iXZwQFR5n/i58ASrRmdp7zWNO4CPUc/OSCclAN+yyib5Nkw71lNFCC31t1ARKr3TT6oD
+         R2Sg==
+X-Gm-Message-State: AC+VfDw0TdbBxvp1P+Sr4XsMqZbWMWzytwzBgibVyPuUFlUPJKsVHVgs
+        6ehNIStNkcgx0JwOHCtKM2rxq3UqOxy5SM3+GblIHojzttCkULFr1TlZ4b6XtRKwUgBJ770DDfq
+        50ylqTzT2TrLt7+LcrAdcKpeHOiYA3St3K7NqX6VQ
+X-Received: by 2002:a05:651c:203:b0:2b6:b79e:7628 with SMTP id y3-20020a05651c020300b002b6b79e7628mr498626ljn.53.1687874285647;
+        Tue, 27 Jun 2023 06:58:05 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7DFztL2jcY/RWHezsy++5n18bc5MaVukjSzTzTVdz0P+6IjrmGuInhOxwUP7Bgwnm8EKJoHTYc2nvctiTfgUI=
+X-Received: by 2002:a05:651c:203:b0:2b6:b79e:7628 with SMTP id
+ y3-20020a05651c020300b002b6b79e7628mr498612ljn.53.1687874285358; Tue, 27 Jun
+ 2023 06:58:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230627035000.1295254-1-moritzf@google.com> <ZJrc5xjeHp5vYtAO@boxer>
- <35db66a9-d478-4b15-ad30-bfc4cded0b5c@lunn.ch>
-In-Reply-To: <35db66a9-d478-4b15-ad30-bfc4cded0b5c@lunn.ch>
-From:   Moritz Fischer <moritzf@google.com>
-Date:   Tue, 27 Jun 2023 15:40:04 +0200
-Message-ID: <CAFyOScpRDOvVrCsrwdxFstoNf1tOEnGbPSt5XDM1PKhCDyUGaw@mail.gmail.com>
-Subject: Re: [PATCH net v3] net: lan743x: Don't sleep in atomic context
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
-        edumazet@google.com, davem@davemloft.net,
-        bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
-        mdf@kernel.org, stable@vger.kernel.org
+References: <20230627070101.170876-1-xiubli@redhat.com>
+In-Reply-To: <20230627070101.170876-1-xiubli@redhat.com>
+From:   Milind Changire <mchangir@redhat.com>
+Date:   Tue, 27 Jun 2023 19:27:29 +0530
+Message-ID: <CAED=hWCAMVX-Y8GDCU7VOSEgB_aBZxZWqdjdVsF6_jAzdAfyMA@mail.gmail.com>
+Subject: Re: [PATCH] ceph: don't let check_caps skip sending responses for
+ revoke msgs
+To:     xiubli@redhat.com
+Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, stable@vger.kernel.org,
+        Patrick Donnelly <pdonnell@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Andrew,
-
-On Tue, Jun 27, 2023 at 3:07=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+On Tue, Jun 27, 2023 at 12:33=E2=80=AFPM <xiubli@redhat.com> wrote:
 >
-> > > +static int lan743x_csr_wait_for_bit_atomic(struct lan743x_adapter *a=
-dapter,
-> >
-> > adapter is not used in readx_poll_timeout_atomic() call, right?
-> > can be removed.
+> From: Xiubo Li <xiubli@redhat.com>
 >
-> I thought that when i first looked at an earlier version of this
-> patch. But LAN743X_CSR_READ_OP is not what you think :-(
-
-Yeah, it's not great / confusing. I tried to keep it the same as the
-rest of the file when fixing the bug.
-
-I can see if I can clean it up across the file in a follow up.
+> If just before the revoke request, which will increase the 'seq', is
+> sent out the clients released the corresponding caps and sent out
+> the cap update request to MDS with old 'seq', the mds will miss
+> checking the seqs and calculating the caps.
 >
->        Andrew
+> We should always send an ack for revoke requests.
 
-Do you want me to send a v4 with an updated commit message?
+I think the commit message needs to be rephrased for better
+understanding to something like:
 
-Thanks,
-Moritz
+If a client sends out a cap update request with the old 'seq' just
+before a pending cap revoke request, then the MDS might miscalculate
+the 'seqs' and caps. It's therefore always a good idea to ack the cap
+revoke request with the bumped up 'seq'.
+
+Xiubo, please let me know if this sounds okay to you.
+
+
+>
+> Cc: stable@vger.kernel.org
+> Cc: Patrick Donnelly <pdonnell@redhat.com>
+> URL: https://tracker.ceph.com/issues/61782
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> ---
+>  fs/ceph/caps.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+> index 1052885025b3..eee2fbca3430 100644
+> --- a/fs/ceph/caps.c
+> +++ b/fs/ceph/caps.c
+> @@ -3737,6 +3737,15 @@ static void handle_cap_grant(struct inode *inode,
+>         }
+>         BUG_ON(cap->issued & ~cap->implemented);
+>
+> +       /* don't let check_caps skip sending a response to MDS for revoke=
+ msgs */
+> +       if (le32_to_cpu(grant->op) =3D=3D CEPH_CAP_OP_REVOKE) {
+> +               cap->mds_wanted =3D 0;
+> +               if (cap =3D=3D ci->i_auth_cap)
+> +                       check_caps =3D 1; /* check auth cap only */
+> +               else
+> +                       check_caps =3D 2; /* check all caps */
+> +       }
+> +
+>         if (extra_info->inline_version > 0 &&
+>             extra_info->inline_version >=3D ci->i_inline_version) {
+>                 ci->i_inline_version =3D extra_info->inline_version;
+> --
+> 2.40.1
+>
+
+
+--=20
+Milind
+
