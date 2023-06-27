@@ -2,51 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77B2074018F
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 18:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D9AD7401F0
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 19:15:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230424AbjF0Qo3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 12:44:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32774 "EHLO
+        id S229732AbjF0RPM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 13:15:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbjF0Qo2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 12:44:28 -0400
+        with ESMTP id S229995AbjF0RPL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 13:15:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BFFE97;
-        Tue, 27 Jun 2023 09:44:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 147AB1FF0;
+        Tue, 27 Jun 2023 10:15:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 225C3611E4;
-        Tue, 27 Jun 2023 16:44:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D740DC433C0;
-        Tue, 27 Jun 2023 16:44:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 96CA7611DD;
+        Tue, 27 Jun 2023 17:15:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C4DC433C0;
+        Tue, 27 Jun 2023 17:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687884266;
-        bh=lHpE7is/FZcQr+hDU6WcWf9dfsLK5ZXUTlGo/Cptkaw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VY+hhdpFmdc935OmKzseZ1dgmGT0CymD+28Bt3tziPVxEilu4rKvy5y8Vqpe3qhhG
-         RWYXsXlVuCTBMew1JuSb9PAvEjwwdM/ocuY9rizMxh5HBo0utu0YApFNi1qms8P9Pu
-         ohZpvFwytPjJCF2JqiWHbcHzlH/AIHLkvrbkpyZkcdfJ/wZd/NY15eynAKOvfzxP7P
-         fA6isFbK4J3ksTW5+RhkA1WgrH6+eyWZwVz9oo3p/9j/8Vd1sMUy+yEmvvH0qp1qCI
-         XFyIfbY5qDsGzlsotH9z6hJo8wGp+eVyQJvk1gOo+SMVOp4UL52kGrDb1BbVtyDqY1
-         qHNgzl5AyBfVQ==
-From:   SeongJae Park <sj@kernel.org>
-To:     SeongJae Park <sj@kernel.org>
-Cc:     Jiri Olsa <olsajiri@gmail.com>, martin.lau@linux.dev,
-        ast@kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alexander Egorenkov <Alexander.Egorenkov@ibm.com>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] btf: warn but return no error for NULL btf from __register_btf_kfunc_id_set()
-Date:   Tue, 27 Jun 2023 16:44:24 +0000
-Message-Id: <20230627164424.81241-1-sj@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230627163750.81178-1-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        s=k20201202; t=1687886105;
+        bh=t9t1/a06KinouPCACcUuUpceqv6hMh2a6Tw4XIcjN4c=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=WsQ45bPsRfyitg7EavXXk3MVtRFks+vihvVXxuENZTdS+E8wbhnMxkwCFii6JmAA3
+         IhCahkSjnnSQcMCU8sZSmNFccI5E67IqphG+pkebqKJNbDU+CBJ2Lte8sIK9KMLUvA
+         tXJ6BLFwGsxZBj2F6q7twe8DnjPvo9LO4YG374IQBHpyEKwx9Oq31iT5L7m0vDodhA
+         CS+wCu6sT/5eA9m53Gg9phGk+yvrO6pfL+sGdJcmr6qpEUVrhaj4vXQX6aYcTn2OW9
+         6tWG1yLTtvlv2rgjWOQXlII0l2g8Pk9t7n2pr783ZtbPnUmXYHeCa+8wKqSpAuvs8+
+         /VWyWTKx7wK5Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1qECHP-008sHp-7W;
+        Tue, 27 Jun 2023 18:15:03 +0100
+Date:   Tue, 27 Jun 2023 18:14:58 +0100
+Message-ID: <86cz1gygh9.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Oliver Upton <oliver.upton@linux.dev>
+Cc:     kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        kvm@vger.kernel.org, James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: timers: Use CNTHCTL_EL2 when setting non-CNTKCTL_EL1 bits
+In-Reply-To: <ZJsQAFlsx0GssfL2@linux.dev>
+References: <20230627140557.544885-1-maz@kernel.org>
+        <ZJsQAFlsx0GssfL2@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,49 +69,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 27 Jun 2023 16:37:50 +0000 SeongJae Park <sj@kernel.org> wrote:
-
-> Hi Jiri,
+On Tue, 27 Jun 2023 17:36:16 +0100,
+Oliver Upton <oliver.upton@linux.dev> wrote:
 > 
-> On Tue, 27 Jun 2023 18:20:39 +0200 Jiri Olsa <olsajiri@gmail.com> wrote:
-> 
-> > On Mon, Jun 26, 2023 at 06:11:20PM +0000, SeongJae Park wrote:
-> > > __register_btf_kfunc_id_set() assumes .BTF to be part of the module's
-> > > .ko file if CONFIG_DEBUG_INFO_BTF is enabled.  If that's not the case,
-> > > the function prints an error message and return an error.  As a result,
-> > > such modules cannot be loaded.
-> > > 
-> > > However, the section could be stripped out during a build process.  It
-> > > would be better to let the modules loaded, because their basic
-> > > functionalities have no problem[1], though the BTF functionalities will
-> > > not be supported.  Make the function to lower the level of the message
-> > > from error to warn, and return no error.
-> > > 
-> > > [1] https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
-> > > 
-> > > Reported-by: Alexander Egorenkov <Alexander.Egorenkov@ibm.com>
-> > > Link: https://lore.kernel.org/bpf/87y228q66f.fsf@oc8242746057.ibm.com/
-> > > Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-> > > Link: https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
-> > > Fixes: dee872e124e8 ("bpf: Populate kfunc BTF ID sets in struct btf")
+> On Tue, Jun 27, 2023 at 03:05:57PM +0100, Marc Zyngier wrote:
+> > It recently appeared that, whien running VHE, there is a notable
+> > difference between using CNTKCTL_EL1 and CNTHCTL_EL2, despite what
+> > the architecture documents:
 > > 
-> > should it be this one in Fixes instead?
-> >   c446fdacb10d bpf: fix register_btf_kfunc_id_set for !CONFIG_DEBUG_INFO_BTF
+> > - When accessed from EL2, bits [19:18] and [16:10] same bits have
+> >   the same assignment as CNTHCTL_EL2
+> > - When accessed from EL1, bits [19:18] and [16:10] are RES0
+> > 
+> > It is all OK, until you factor in NV, where the EL2 guest runs at EL1.
+> > In this configuration, CNTKCTL_EL11 doesn't trap, nor ends up in
+> > the VNCR page. This means that any write from the guest affecting
+> > CNTHCTL_EL2 using CNTKCTL_EL1 ends up losing some state. Not good.
+> > 
+> > The fix it obvious: don't use CNTKCTL_EL1 if you want to change bits
+> > that are not part of the EL1 definition of CNTKCTL_EL1, and use
+> > CNTHCTL_EL2 instead. This doesn't change anything for a bare-metal OS,
+> > and fixes it when running under NV. The NV hypervisor will itself
+> > have to work harder to merge the two accessors.
+> > 
+> > Note that there is a pending update to the architecture to address
+> > this issue by making the affected bits UNKNOWN when CNTKCTL_EL1 is
+> > user from EL2 with VHE enabled.
+> > 
+> > Fixes: c605ee245097 ("KVM: arm64: timers: Allow physical offset without CNTPOFF_EL2")
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > Cc: stable@vger.kernel.org # v6.4
 > 
-> The commit c446fdacb10d was trying to fix commit dee872e124e8, which this patch
-> is claiming to fix, by relaxing the check.  Nevertheless, it seems the check
-> need to further relaxed, and therefore I wrote this patch.
-> 
-> For the reason, I was thinking this patch is directly fixing c446fdacb10d, but
-> is also fixing a problem originally introduced by dee872e124e8.   Nevertheless,
-> as the dee872e124e8 also has the Fixes tag, I think your suggestion makes
+> Looks good. I'll probably open a fixes branch around -rc1 and pick this
+> patch up then.
 
-s/dee872e124e8 also has /c446fdacb10d also has /
+Awesome, thanks.
 
-Sorry if it made anyone be confused.
+(/me goes back to encoding FGT handling by hand... :-/)
 
+	M.
 
-Thanks,
-SJ
-
-[...]
+-- 
+Without deviation from the norm, progress is not possible.
