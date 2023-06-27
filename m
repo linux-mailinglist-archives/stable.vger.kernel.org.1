@@ -2,93 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 236DD73FF8C
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 17:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BE1F7400C3
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 18:21:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232330AbjF0PUp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 11:20:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42490 "EHLO
+        id S231365AbjF0QVY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 12:21:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230444AbjF0PUo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 11:20:44 -0400
-X-Greylist: delayed 378 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 27 Jun 2023 08:20:42 PDT
-Received: from forward205b.mail.yandex.net (forward205b.mail.yandex.net [178.154.239.152])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3AD81735;
-        Tue, 27 Jun 2023 08:20:42 -0700 (PDT)
-Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d103])
-        by forward205b.mail.yandex.net (Yandex) with ESMTP id 5D6E96751F;
-        Tue, 27 Jun 2023 18:14:27 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2929:0:640:5f6e:0])
-        by forward103c.mail.yandex.net (Yandex) with ESMTP id B861460024;
-        Tue, 27 Jun 2023 18:14:21 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id KENE8w0DV4Y0-RAocMuF0;
-        Tue, 27 Jun 2023 18:14:21 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687878861;
-        bh=6YvjUD6AxvMQ0iz8tQiHRTDEHNd8AITV9R1JP2bRykM=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=Tfhs9+qQH5DrHNkLDKTBBZAj5ntTJZ8dcXLAalkffxlN4bAL4VY0jAMF1iuAfOehR
-         kx5HiDCKVTtpqfVgyKtOTClIMj1UOK/MloWibK7mVqRhkLkjZ39F1CaVpuGXTUq6fT
-         gRHJ8/7uVoY99Y25Y57YwxA4d6dLrSW56zYB5hlA=
-Authentication-Results: mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>,
+        with ESMTP id S231462AbjF0QVJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 12:21:09 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A60A3591;
+        Tue, 27 Jun 2023 09:20:44 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-51cff235226so45278a12.0;
+        Tue, 27 Jun 2023 09:20:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687882843; x=1690474843;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d6dcOHsJQgpksMKnRP4FYw4su0q3QNatEqCaxVPjHrs=;
+        b=UbzhqNFwDvC31obTcEjFweFhdR50GuCSbHXQcGPTJDxq/1how9bl6YUMBKh6PLZMBG
+         QC8ahwIIrAci1ZfdjHUTJKt/1t40kQkDXbXbnChLqnJYrPM/DBgzE9hTS96vXbvMSGY2
+         OeWoPGmsx6Lb8G36Ee4H/f4/6+RkLVFX8XwEwODahPIEZIjHX6+ufGCDGVg04Z1f78eM
+         7RLAgidAQeWEbeZxiRDg3IqptRINunrtJCmBz5nOGsJx5YHW/cgfHCuQuDLUPAtmLbkl
+         izoGyzS3HRuWwz9VbBwFCoVWcMmpOfMhgEegomaq0J6x/KqU5pOT6JMw6QV8aAT/QqPw
+         Szpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687882843; x=1690474843;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d6dcOHsJQgpksMKnRP4FYw4su0q3QNatEqCaxVPjHrs=;
+        b=hZyF4cVsod+ROf7D2h6kP3vJeokDq7tLMocmBz3LQEblrHFM+v1esaamMYw96JNXmQ
+         Jycc6AmM9G2vxZtBtkkADCt6xedUO3qr3WiKvX8CyhhbP06kDkMZQdqcwke/0KExdztS
+         BqDk0wSNDlYIo6caSotG6B4yVZ+J9CtgmNQsKvR2mUVvM6rumL+q8taI0trT6Z71zcBs
+         OiAh8MekQUlSIBbdADeffvzIkwe0X+HwgZN5kfP+rFm9hbFGdW6cK1ucb27MMLIiHpx2
+         7sDrZuV7rVqlWCO94TgZ6RmeCte38NDMiGwlcHRsaCn9PULUusA1WatG6o/aJGJogae7
+         I+rA==
+X-Gm-Message-State: AC+VfDw+1jLXhRXhfsD9WjdTL87ftGcpI6bNS1qTZkZ+ot76xIs7RCAT
+        MhSC852cLCMi0ga4kD4xJngKXHEqq23Ld7km
+X-Google-Smtp-Source: ACHHUZ5pIG6VTyBZ8yAbebNwTnq+PYqWCyK4mDhwR+HXUwcL/YN0yrKmSE/mA4rArjH9he4bggqUaQ==
+X-Received: by 2002:aa7:cd65:0:b0:51d:89b2:7d8d with SMTP id ca5-20020aa7cd65000000b0051d89b27d8dmr8954054edb.15.1687882842757;
+        Tue, 27 Jun 2023 09:20:42 -0700 (PDT)
+Received: from krava (net-93-65-241-219.cust.vodafonedsl.it. [93.65.241.219])
+        by smtp.gmail.com with ESMTPSA id a17-20020a50ff11000000b0051a4fcf7187sm3854474edu.62.2023.06.27.09.20.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jun 2023 09:20:42 -0700 (PDT)
+From:   Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date:   Tue, 27 Jun 2023 18:20:39 +0200
+To:     SeongJae Park <sj@kernel.org>
+Cc:     martin.lau@linux.dev, ast@kernel.org, bpf@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexander Egorenkov <Alexander.Egorenkov@ibm.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
         stable@vger.kernel.org
-Subject: [PATCH] [v2] wifi: b43: fix cordic arithmetic
-Date:   Tue, 27 Jun 2023 18:13:53 +0300
-Message-ID: <20230627151411.92749-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <ef4750f8-8de5-dbfc-2c0b-3400d30d83e5@lwfinger.net>
-References: <ef4750f8-8de5-dbfc-2c0b-3400d30d83e5@lwfinger.net>
+Subject: Re: [PATCH] btf: warn but return no error for NULL btf from
+ __register_btf_kfunc_id_set()
+Message-ID: <ZJsMVxGVCJoF19wQ@krava>
+References: <20230626181120.7086-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230626181120.7086-1-sj@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In 'lpphy_start_tx_tone()', 'CORDIC_FLOAT((sample.i * max) & 0xFF)'
-is invalid because it is (<32-bit> & 0xff) shifted right by 15 bits
-and so always evaluates to zero. Looking through brcmsmac's
-'wlc_lcnphy_start_tx_tone()', the result should be masked instead,
-i. e. 'CORDIC_FLOAT(sample[i].max) & 0xFF'.
+On Mon, Jun 26, 2023 at 06:11:20PM +0000, SeongJae Park wrote:
+> __register_btf_kfunc_id_set() assumes .BTF to be part of the module's
+> .ko file if CONFIG_DEBUG_INFO_BTF is enabled.  If that's not the case,
+> the function prints an error message and return an error.  As a result,
+> such modules cannot be loaded.
+> 
+> However, the section could be stripped out during a build process.  It
+> would be better to let the modules loaded, because their basic
+> functionalities have no problem[1], though the BTF functionalities will
+> not be supported.  Make the function to lower the level of the message
+> from error to warn, and return no error.
+> 
+> [1] https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
+> 
+> Reported-by: Alexander Egorenkov <Alexander.Egorenkov@ibm.com>
+> Link: https://lore.kernel.org/bpf/87y228q66f.fsf@oc8242746057.ibm.com/
+> Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+> Link: https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
+> Fixes: dee872e124e8 ("bpf: Populate kfunc BTF ID sets in struct btf")
 
-Fixes: 6f98e62a9f1b ("b43: update cordic code to match current specs")
+should it be this one in Fixes instead?
+  c446fdacb10d bpf: fix register_btf_kfunc_id_set for !CONFIG_DEBUG_INFO_BTF
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+other than that looks good
 
-Cc: stable@vger.kernel.org
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v2: add Cc: stable and Fixes: (Larry Finger)
----
- drivers/net/wireless/broadcom/b43/phy_lp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Acked-by: Jiri Olsa <jolsa@kernel.org>
 
-diff --git a/drivers/net/wireless/broadcom/b43/phy_lp.c b/drivers/net/wireless/broadcom/b43/phy_lp.c
-index 0e5c076e7544..e8ef04e509aa 100644
---- a/drivers/net/wireless/broadcom/b43/phy_lp.c
-+++ b/drivers/net/wireless/broadcom/b43/phy_lp.c
-@@ -1788,8 +1788,8 @@ static void lpphy_start_tx_tone(struct b43_wldev *dev, s32 freq, u16 max)
- 	for (i = 0; i < samples; i++) {
- 		sample = cordic_calc_iq(CORDIC_FIXED(theta));
- 		theta += rotation;
--		buf[i] = CORDIC_FLOAT((sample.i * max) & 0xFF) << 8;
--		buf[i] |= CORDIC_FLOAT((sample.q * max) & 0xFF);
-+		buf[i] = (u16)((CORDIC_FLOAT(sample.i * max) & 0xFF) << 8);
-+		buf[i] |= (u16)(CORDIC_FLOAT(sample.q * max) & 0xFF);
- 	}
- 
- 	b43_lptab_write_bulk(dev, B43_LPTAB16(5, 0), samples, buf);
--- 
-2.41.0
+jirka
 
+> Cc: <stable@vger.kernel.org> # 5.17.x
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  kernel/bpf/btf.c | 12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
+> 
+> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+> index 6b682b8e4b50..d683f034996f 100644
+> --- a/kernel/bpf/btf.c
+> +++ b/kernel/bpf/btf.c
+> @@ -7848,14 +7848,10 @@ static int __register_btf_kfunc_id_set(enum btf_kfunc_hook hook,
+>  
+>  	btf = btf_get_module_btf(kset->owner);
+>  	if (!btf) {
+> -		if (!kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF)) {
+> -			pr_err("missing vmlinux BTF, cannot register kfuncs\n");
+> -			return -ENOENT;
+> -		}
+> -		if (kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF_MODULES)) {
+> -			pr_err("missing module BTF, cannot register kfuncs\n");
+> -			return -ENOENT;
+> -		}
+> +		if (!kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF))
+> +			pr_warn("missing vmlinux BTF, cannot register kfuncs\n");
+> +		if (kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF_MODULES))
+> +			pr_warn("missing module BTF, cannot register kfuncs\n");
+>  		return 0;
+>  	}
+>  	if (IS_ERR(btf))
+> -- 
+> 2.25.1
+> 
+> 
