@@ -2,150 +2,246 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CD837406F5
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 01:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 264A37406FB
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 01:54:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbjF0Xs3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 19:48:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50018 "EHLO
+        id S229647AbjF0XyS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 19:54:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbjF0Xs3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 19:48:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E4EA199E
-        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 16:47:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687909661;
+        with ESMTP id S229497AbjF0XyS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 19:54:18 -0400
+X-Greylist: delayed 26272 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 27 Jun 2023 16:54:16 PDT
+Received: from out-59.mta0.migadu.com (out-59.mta0.migadu.com [IPv6:2001:41d0:1004:224b::3b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05C381B2
+        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 16:54:15 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1687910053;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=p5tWvEnlmXukdOzBaVvF5tNsi5RYXX4F3T1gzeDRE1U=;
-        b=hLPxX2CVsYuAbQUUe4Ely1HG12sSWt21vFPa54hsZGAEzxoQizMvMN153Jmy8M1S7DFu1Z
-        dyF+kSuIeKudWb4ixBYRHpqNrn7UwlIKjJJzEZnsRU2bmxl/OMRA7PgNqbG1G1lnYvKoDc
-        jnNNs1sllOAKotajYBjInIFy+vHIxsQ=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-108-pl5MHLnhMG6bYL3g7Wir0w-1; Tue, 27 Jun 2023 19:47:39 -0400
-X-MC-Unique: pl5MHLnhMG6bYL3g7Wir0w-1
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-1b80865352bso1932815ad.0
-        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 16:47:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687909659; x=1690501659;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p5tWvEnlmXukdOzBaVvF5tNsi5RYXX4F3T1gzeDRE1U=;
-        b=A08/AFsnD5TlzzDvIbQV7JzQgWKX2Y+Q2RBnx62YQ6DM5w+L1k5fR8Cqw2ZkAlPsJX
-         njgYu59lLytpXK3ELQGsPShQEBRoGmUZkIwEoaeekF8a0fvCj5E0AdW95c6587qXpsPD
-         7iPDC1WyWo4hGgWK7Qfw588s/bWf7sbavIZZG5gRc+7nZhmz8sJWspSD/92+dBU4ODxu
-         GE6ZoG+X5OWvCjIGz1ed5NqpxL3UW91A1gvP8ibYq+vTYuyVD9uDJuOFgDMSBNIMVG0C
-         mFhqT8BB0R+E+VIxTU74MfySgQ5x4ACtaSIroKya6MGBzr734cx1gbk8jYTqC+NTp15O
-         Suug==
-X-Gm-Message-State: AC+VfDxjMh7Tdi0jS2uwoZQOLQQHyqd1CpiZIzzOxqYm7JKTHchnxQsH
-        P3jOCA3U1LHG1x00wAF0jCYxWekEjNpYzDyKRdSBo0ztOztgEiYD6/MKZzrbfk69PIkLIf5vq0s
-        tnz20ig/LHzIlVOkO
-X-Received: by 2002:a17:903:2343:b0:1b5:674d:2aa5 with SMTP id c3-20020a170903234300b001b5674d2aa5mr14923085plh.13.1687909658918;
-        Tue, 27 Jun 2023 16:47:38 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6CqylpYf1D1YvxjOr/FiwXzRr1Zjo1GdpTzMi1IjHCXr5turKAdMTmed7U8sU3JLvLExrSTw==
-X-Received: by 2002:a17:903:2343:b0:1b5:674d:2aa5 with SMTP id c3-20020a170903234300b001b5674d2aa5mr14923071plh.13.1687909658568;
-        Tue, 27 Jun 2023 16:47:38 -0700 (PDT)
-Received: from [10.72.13.91] ([209.132.188.80])
-        by smtp.gmail.com with ESMTPSA id o11-20020a170902bccb00b001a0448731c2sm6473755pls.47.2023.06.27.16.47.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jun 2023 16:47:38 -0700 (PDT)
-Message-ID: <b4f3c2d2-14e6-f400-bb8d-0a6287b56084@redhat.com>
-Date:   Wed, 28 Jun 2023 07:47:33 +0800
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=cF/wr1was1oyQHrMlmR5pi1PQlTNkA8/sWuK4ociIUU=;
+        b=FkYrHepVv1KwwR9c5fu0g/me7dQaH4qeTSN98rWlRsx/EEYqA9sBCdSo0nLjkk2QVMR31+
+        uhBTWSVWITbGFUdt/pymDkS/Dj0hjeKXWEHOPYWGIDyRgDWBOyA7YXrKF69MA/19UwS1GP
+        erlcppp0DisA1cBro70M4+IZkNgq6xY=
+From:   Oliver Upton <oliver.upton@linux.dev>
+To:     kvmarm@lists.linux.dev
+Cc:     Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Reiji Watanabe <reijiw@google.com>,
+        Oliver Upton <oliver.upton@linux.dev>, stable@vger.kernel.org,
+        Yu Zhao <yuzhao@google.com>
+Subject: [PATCH v2] KVM: arm64: Correctly handle page aging notifiers for unaligned memslot
+Date:   Tue, 27 Jun 2023 23:54:05 +0000
+Message-ID: <20230627235405.4069823-1-oliver.upton@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] ceph: don't let check_caps skip sending responses for
- revoke msgs
-Content-Language: en-US
-To:     Milind Changire <mchangir@redhat.com>
-Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, stable@vger.kernel.org,
-        Patrick Donnelly <pdonnell@redhat.com>
-References: <20230627070101.170876-1-xiubli@redhat.com>
- <CAED=hWCAMVX-Y8GDCU7VOSEgB_aBZxZWqdjdVsF6_jAzdAfyMA@mail.gmail.com>
-From:   Xiubo Li <xiubli@redhat.com>
-In-Reply-To: <CAED=hWCAMVX-Y8GDCU7VOSEgB_aBZxZWqdjdVsF6_jAzdAfyMA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Userspace is allowed to select any PAGE_SIZE aligned hva to back guest
+memory. This is even the case with hugepages, although it is a rather
+suboptimal configuration as PTE level mappings are used at stage-2.
 
-On 6/27/23 21:57, Milind Changire wrote:
-> On Tue, Jun 27, 2023 at 12:33 PM <xiubli@redhat.com> wrote:
->> From: Xiubo Li <xiubli@redhat.com>
->>
->> If just before the revoke request, which will increase the 'seq', is
->> sent out the clients released the corresponding caps and sent out
->> the cap update request to MDS with old 'seq', the mds will miss
->> checking the seqs and calculating the caps.
->>
->> We should always send an ack for revoke requests.
-> I think the commit message needs to be rephrased for better
-> understanding to something like:
->
-> If a client sends out a cap update request with the old 'seq' just
-> before a pending cap revoke request, then the MDS might miscalculate
-> the 'seqs' and caps. It's therefore always a good idea to ack the cap
-> revoke request with the bumped up 'seq'.
->
-> Xiubo, please let me know if this sounds okay to you.
->
-Milind,
+The arm64 page aging handlers have an assumption that the specified
+range is exactly one page/block of memory, which in the aforementioned
+case is not necessarily true. All together this leads to the WARN() in
+kvm_age_gfn() firing.
 
-Yeah, this looks much better.
+However, the WARN is only part of the issue as the table walkers visit
+at most a single leaf PTE. For hugepage-backed memory in a memslot that
+isn't hugepage-aligned, page aging entirely misses accesses to the
+hugepage beyond the first page in the memslot.
 
-I will update it.
+Add a new walker dedicated to handling page aging MMU notifiers capable
+of walking a range of PTEs. Convert kvm(_test)_age_gfn() over to the new
+walker and drop the WARN that caught the issue in the first place. The
+implementation of this walker was inspired by the test_clear_young()
+implementation by Yu Zhao [*], but repurposed to address a bug in the
+existing aging implementation.
 
-Thanks
+Cc: stable@vger.kernel.org # v5.15
+Fixes: 056aad67f836 ("kvm: arm/arm64: Rework gpa callback handlers")
+Link: https://lore.kernel.org/kvmarm/20230526234435.662652-6-yuzhao@google.com/
+Co-developed-by: Yu Zhao <yuzhao@google.com>
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: Reiji Watanabe <reijiw@google.com>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+---
+ arch/arm64/include/asm/kvm_pgtable.h | 26 ++++++------------
+ arch/arm64/kvm/hyp/pgtable.c         | 41 ++++++++++++++++++++++------
+ arch/arm64/kvm/mmu.c                 | 18 ++++++------
+ 3 files changed, 49 insertions(+), 36 deletions(-)
 
-- Xiubo
+diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
+index dc3c072e862f..75f437e8cd15 100644
+--- a/arch/arm64/include/asm/kvm_pgtable.h
++++ b/arch/arm64/include/asm/kvm_pgtable.h
+@@ -556,22 +556,26 @@ int kvm_pgtable_stage2_wrprotect(struct kvm_pgtable *pgt, u64 addr, u64 size);
+ kvm_pte_t kvm_pgtable_stage2_mkyoung(struct kvm_pgtable *pgt, u64 addr);
+ 
+ /**
+- * kvm_pgtable_stage2_mkold() - Clear the access flag in a page-table entry.
++ * kvm_pgtable_stage2_test_clear_young() - Test and optionally clear the access
++ *					   flag in a page-table entry.
+  * @pgt:	Page-table structure initialised by kvm_pgtable_stage2_init*().
+  * @addr:	Intermediate physical address to identify the page-table entry.
++ * @size:	Size of the address range to visit.
++ * @mkold:	True if the access flag should be cleared.
+  *
+  * The offset of @addr within a page is ignored.
+  *
+- * If there is a valid, leaf page-table entry used to translate @addr, then
+- * clear the access flag in that entry.
++ * Tests and conditionally clears the access flag for every valid, leaf
++ * page-table entry used to translate the range [@addr, @addr + @size).
+  *
+  * Note that it is the caller's responsibility to invalidate the TLB after
+  * calling this function to ensure that the updated permissions are visible
+  * to the CPUs.
+  *
+- * Return: The old page-table entry prior to clearing the flag, 0 on failure.
++ * Return: True if any of the visited PTEs had the access flag set.
+  */
+-kvm_pte_t kvm_pgtable_stage2_mkold(struct kvm_pgtable *pgt, u64 addr);
++bool kvm_pgtable_stage2_test_clear_young(struct kvm_pgtable *pgt, u64 addr,
++					 u64 size, bool mkold);
+ 
+ /**
+  * kvm_pgtable_stage2_relax_perms() - Relax the permissions enforced by a
+@@ -593,18 +597,6 @@ kvm_pte_t kvm_pgtable_stage2_mkold(struct kvm_pgtable *pgt, u64 addr);
+ int kvm_pgtable_stage2_relax_perms(struct kvm_pgtable *pgt, u64 addr,
+ 				   enum kvm_pgtable_prot prot);
+ 
+-/**
+- * kvm_pgtable_stage2_is_young() - Test whether a page-table entry has the
+- *				   access flag set.
+- * @pgt:	Page-table structure initialised by kvm_pgtable_stage2_init*().
+- * @addr:	Intermediate physical address to identify the page-table entry.
+- *
+- * The offset of @addr within a page is ignored.
+- *
+- * Return: True if the page-table entry has the access flag set, false otherwise.
+- */
+-bool kvm_pgtable_stage2_is_young(struct kvm_pgtable *pgt, u64 addr);
+-
+ /**
+  * kvm_pgtable_stage2_flush_range() - Clean and invalidate data cache to Point
+  * 				      of Coherency for guest stage-2 address
+diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+index 5282cb9ca4cf..5d701e9adf5c 100644
+--- a/arch/arm64/kvm/hyp/pgtable.c
++++ b/arch/arm64/kvm/hyp/pgtable.c
+@@ -1153,25 +1153,48 @@ kvm_pte_t kvm_pgtable_stage2_mkyoung(struct kvm_pgtable *pgt, u64 addr)
+ 	return pte;
+ }
+ 
+-kvm_pte_t kvm_pgtable_stage2_mkold(struct kvm_pgtable *pgt, u64 addr)
++struct stage2_age_data {
++	bool	mkold;
++	bool	young;
++};
++
++static int stage2_age_walker(const struct kvm_pgtable_visit_ctx *ctx,
++			     enum kvm_pgtable_walk_flags visit)
+ {
+-	kvm_pte_t pte = 0;
+-	stage2_update_leaf_attrs(pgt, addr, 1, 0, KVM_PTE_LEAF_ATTR_LO_S2_AF,
+-				 &pte, NULL, 0);
++	kvm_pte_t new = ctx->old & ~KVM_PTE_LEAF_ATTR_LO_S2_AF;
++	struct stage2_age_data *data = ctx->arg;
++
++	if (!kvm_pte_valid(ctx->old) || new == ctx->old)
++		return 0;
++
++	data->young = true;
++
++	if (data->mkold && !stage2_try_set_pte(ctx, new))
++		return -EAGAIN;
++
+ 	/*
+ 	 * "But where's the TLBI?!", you scream.
+ 	 * "Over in the core code", I sigh.
+ 	 *
+ 	 * See the '->clear_flush_young()' callback on the KVM mmu notifier.
+ 	 */
+-	return pte;
++	return 0;
+ }
+ 
+-bool kvm_pgtable_stage2_is_young(struct kvm_pgtable *pgt, u64 addr)
++bool kvm_pgtable_stage2_test_clear_young(struct kvm_pgtable *pgt, u64 addr,
++					 u64 size, bool mkold)
+ {
+-	kvm_pte_t pte = 0;
+-	stage2_update_leaf_attrs(pgt, addr, 1, 0, 0, &pte, NULL, 0);
+-	return pte & KVM_PTE_LEAF_ATTR_LO_S2_AF;
++	struct stage2_age_data data = {
++		.mkold		= mkold,
++	};
++	struct kvm_pgtable_walker walker = {
++		.cb		= stage2_age_walker,
++		.arg		= &data,
++		.flags		= KVM_PGTABLE_WALK_LEAF,
++	};
++
++	WARN_ON(kvm_pgtable_walk(pgt, addr, size, &walker));
++	return data.young;
+ }
+ 
+ int kvm_pgtable_stage2_relax_perms(struct kvm_pgtable *pgt, u64 addr,
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 3b9d4d24c361..8a7e9381710e 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1639,27 +1639,25 @@ bool kvm_set_spte_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ {
+ 	u64 size = (range->end - range->start) << PAGE_SHIFT;
+-	kvm_pte_t kpte;
+-	pte_t pte;
+ 
+ 	if (!kvm->arch.mmu.pgt)
+ 		return false;
+ 
+-	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
+-
+-	kpte = kvm_pgtable_stage2_mkold(kvm->arch.mmu.pgt,
+-					range->start << PAGE_SHIFT);
+-	pte = __pte(kpte);
+-	return pte_valid(pte) && pte_young(pte);
++	return kvm_pgtable_stage2_test_clear_young(kvm->arch.mmu.pgt,
++						   range->start << PAGE_SHIFT,
++						   size, true);
+ }
+ 
+ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ {
++	u64 size = (range->end - range->start) << PAGE_SHIFT;
++
+ 	if (!kvm->arch.mmu.pgt)
+ 		return false;
+ 
+-	return kvm_pgtable_stage2_is_young(kvm->arch.mmu.pgt,
+-					   range->start << PAGE_SHIFT);
++	return kvm_pgtable_stage2_test_clear_young(kvm->arch.mmu.pgt,
++						   range->start << PAGE_SHIFT,
++						   size, false);
+ }
+ 
+ phys_addr_t kvm_mmu_get_httbr(void)
 
-
->> Cc: stable@vger.kernel.org
->> Cc: Patrick Donnelly <pdonnell@redhat.com>
->> URL: https://tracker.ceph.com/issues/61782
->> Signed-off-by: Xiubo Li <xiubli@redhat.com>
->> ---
->>   fs/ceph/caps.c | 9 +++++++++
->>   1 file changed, 9 insertions(+)
->>
->> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
->> index 1052885025b3..eee2fbca3430 100644
->> --- a/fs/ceph/caps.c
->> +++ b/fs/ceph/caps.c
->> @@ -3737,6 +3737,15 @@ static void handle_cap_grant(struct inode *inode,
->>          }
->>          BUG_ON(cap->issued & ~cap->implemented);
->>
->> +       /* don't let check_caps skip sending a response to MDS for revoke msgs */
->> +       if (le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
->> +               cap->mds_wanted = 0;
->> +               if (cap == ci->i_auth_cap)
->> +                       check_caps = 1; /* check auth cap only */
->> +               else
->> +                       check_caps = 2; /* check all caps */
->> +       }
->> +
->>          if (extra_info->inline_version > 0 &&
->>              extra_info->inline_version >= ci->i_inline_version) {
->>                  ci->i_inline_version = extra_info->inline_version;
->> --
->> 2.40.1
->>
->
+base-commit: 44c026a73be8038f03dbdeef028b642880cf1511
+-- 
+2.41.0.178.g377b9f9a00-goog
 
