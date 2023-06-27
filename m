@@ -2,50 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6131173FF01
+	by mail.lfdr.de (Postfix) with ESMTP id AA98473FF02
 	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 16:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232204AbjF0Oxu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 10:53:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54274 "EHLO
+        id S232229AbjF0Oxv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 10:53:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232059AbjF0Oxa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 10:53:30 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A5F430F3;
-        Tue, 27 Jun 2023 07:51:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=grZGX8JELpOIKZjXlliOgEI/DJc38Q546m4p6RZBCpM=; b=R49xoCj2QcPcOYNbLkV444Qwnp
-        vHN3xtMJ/uhKF5VZnJPMpKEWskxF2mBMxp7SqIZpcg5kC+CchRVA9oTBp59RuUjmBIGXKu2gfdSnW
-        8bjqo5/WN4geMWzeKypRE1tP5cl6WwlZop5oL5zclyaEEu4PIrljTLzVQ7oRuTgr+EnU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qEA1y-0002Rm-HB; Tue, 27 Jun 2023 16:50:58 +0200
-Date:   Tue, 27 Jun 2023 16:50:58 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc:     Moritz Fischer <moritzf@google.com>, netdev@vger.kernel.org,
-        pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
-        davem@davemloft.net, bryan.whitehead@microchip.com,
-        UNGLinuxDriver@microchip.com, mdf@kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH net v3] net: lan743x: Don't sleep in atomic context
-Message-ID: <9a42d3d3-a142-4e4a-811b-0b3b931e798b@lunn.ch>
-References: <20230627035000.1295254-1-moritzf@google.com>
- <ZJrc5xjeHp5vYtAO@boxer>
- <35db66a9-d478-4b15-ad30-bfc4cded0b5c@lunn.ch>
- <CAFyOScpRDOvVrCsrwdxFstoNf1tOEnGbPSt5XDM1PKhCDyUGaw@mail.gmail.com>
- <ZJr1Ifp9cOlfcqbE@boxer>
+        with ESMTP id S232225AbjF0Oxb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 10:53:31 -0400
+Received: from mail.antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF4E3A97;
+        Tue, 27 Jun 2023 07:51:27 -0700 (PDT)
+Date:   Tue, 27 Jun 2023 16:51:24 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
+        s=202107; t=1687877484;
+        bh=wXUQtZVgfYhyDqxLhdLtDzymcx0OLSLqnv6P9wLxFVo=;
+        h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
+         From:from:in-reply-to:in-reply-to:message-id:mime-version:
+         references:reply-to:Sender:Subject:Subject:To:To;
+        b=l6S0ELkdL0JkwFMCaQUjtEbmfe0TmoTrw5/hZvMTwq06Ec6G3Ni+XuKoajaWv1zIG
+         GyL+w+SBPivlwrTG4ZJsi4oZiJrFCfNtySvWkx70bUl7hkdXsJcm99xsmF8bkEpk75
+         e0iSHCntcgg47kCn1gDRSwHvZ3xJ7vzLXVrtA6MQJv/dvhMUZDyvMjmSF+JRCoPytD
+         zko1P+J+JLS1jL3hOFQx7ZXNaxNSvqZbg72SrSOfyHDyUgs1oIjIAF4ZdiREFefCjW
+         X11+DE0kYEbPb8t4TX2WQYzq+kWji2kjbp4RGydu9Hj5EnUqTgW/vN83gexlFIlJLV
+         WOWGCgO+DssXA==
+From:   Markus Reichelt <lkt+2023@mareichelt.com>
+To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.3 000/199] 6.3.10-rc1 review
+Message-ID: <20230627145124.GA19483@pc21.mareichelt.com>
+Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230626180805.643662628@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZJr1Ifp9cOlfcqbE@boxer>
+In-Reply-To: <20230626180805.643662628@linuxfoundation.org>
+Organization: still stuck in reorganization mode
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,24 +49,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> Side note would be that I don't see much value in iopoll.h's macros
-> returning
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
+> This is the start of the stable review cycle for the 6.3.10 release.
+> There are 199 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> 	(cond) ? 0 : -ETIMEDOUT; \
-> 
-> this could be just !!cond but given the count of the callsites...probably
-> better to leave it as is.
+> Responses should be made by Wed, 28 Jun 2023 18:07:23 +0000.
+> Anything received after that time might be too late.
 
-The general pattern everywhere in linux is:
+Hi Greg
 
-    err = foo(bar);
-    if (err)
-        return err;
+6.3.10-rc1
 
-We want functions to return meaningful error codes, otherwise the
-caller needs to figure out an error code and return it. Having iopoll
-return an error code means we have consistency. Otherwise i would
-expect some developers to decide on EIO, ETIMEDOUT, EINVAL, maybe
-ENXIO?
+compiles, boots and runs here on x86_64
+(AMD Ryzen 5 PRO 4650G, Slackware64-15.0)
 
-	Andrew
+Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
