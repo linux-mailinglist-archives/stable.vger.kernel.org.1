@@ -2,138 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BE1F7400C3
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 18:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E17D740162
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 18:36:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231365AbjF0QVY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 12:21:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43362 "EHLO
+        id S229797AbjF0Qg1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 12:36:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231462AbjF0QVJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 12:21:09 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A60A3591;
-        Tue, 27 Jun 2023 09:20:44 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-51cff235226so45278a12.0;
-        Tue, 27 Jun 2023 09:20:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687882843; x=1690474843;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=d6dcOHsJQgpksMKnRP4FYw4su0q3QNatEqCaxVPjHrs=;
-        b=UbzhqNFwDvC31obTcEjFweFhdR50GuCSbHXQcGPTJDxq/1how9bl6YUMBKh6PLZMBG
-         QC8ahwIIrAci1ZfdjHUTJKt/1t40kQkDXbXbnChLqnJYrPM/DBgzE9hTS96vXbvMSGY2
-         OeWoPGmsx6Lb8G36Ee4H/f4/6+RkLVFX8XwEwODahPIEZIjHX6+ufGCDGVg04Z1f78eM
-         7RLAgidAQeWEbeZxiRDg3IqptRINunrtJCmBz5nOGsJx5YHW/cgfHCuQuDLUPAtmLbkl
-         izoGyzS3HRuWwz9VbBwFCoVWcMmpOfMhgEegomaq0J6x/KqU5pOT6JMw6QV8aAT/QqPw
-         Szpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687882843; x=1690474843;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d6dcOHsJQgpksMKnRP4FYw4su0q3QNatEqCaxVPjHrs=;
-        b=hZyF4cVsod+ROf7D2h6kP3vJeokDq7tLMocmBz3LQEblrHFM+v1esaamMYw96JNXmQ
-         Jycc6AmM9G2vxZtBtkkADCt6xedUO3qr3WiKvX8CyhhbP06kDkMZQdqcwke/0KExdztS
-         BqDk0wSNDlYIo6caSotG6B4yVZ+J9CtgmNQsKvR2mUVvM6rumL+q8taI0trT6Z71zcBs
-         OiAh8MekQUlSIBbdADeffvzIkwe0X+HwgZN5kfP+rFm9hbFGdW6cK1ucb27MMLIiHpx2
-         7sDrZuV7rVqlWCO94TgZ6RmeCte38NDMiGwlcHRsaCn9PULUusA1WatG6o/aJGJogae7
-         I+rA==
-X-Gm-Message-State: AC+VfDw+1jLXhRXhfsD9WjdTL87ftGcpI6bNS1qTZkZ+ot76xIs7RCAT
-        MhSC852cLCMi0ga4kD4xJngKXHEqq23Ld7km
-X-Google-Smtp-Source: ACHHUZ5pIG6VTyBZ8yAbebNwTnq+PYqWCyK4mDhwR+HXUwcL/YN0yrKmSE/mA4rArjH9he4bggqUaQ==
-X-Received: by 2002:aa7:cd65:0:b0:51d:89b2:7d8d with SMTP id ca5-20020aa7cd65000000b0051d89b27d8dmr8954054edb.15.1687882842757;
-        Tue, 27 Jun 2023 09:20:42 -0700 (PDT)
-Received: from krava (net-93-65-241-219.cust.vodafonedsl.it. [93.65.241.219])
-        by smtp.gmail.com with ESMTPSA id a17-20020a50ff11000000b0051a4fcf7187sm3854474edu.62.2023.06.27.09.20.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jun 2023 09:20:42 -0700 (PDT)
-From:   Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date:   Tue, 27 Jun 2023 18:20:39 +0200
-To:     SeongJae Park <sj@kernel.org>
-Cc:     martin.lau@linux.dev, ast@kernel.org, bpf@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexander Egorenkov <Alexander.Egorenkov@ibm.com>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] btf: warn but return no error for NULL btf from
- __register_btf_kfunc_id_set()
-Message-ID: <ZJsMVxGVCJoF19wQ@krava>
-References: <20230626181120.7086-1-sj@kernel.org>
+        with ESMTP id S229923AbjF0Qg0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 12:36:26 -0400
+Received: from out-22.mta0.migadu.com (out-22.mta0.migadu.com [91.218.175.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91CC0E3
+        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 09:36:25 -0700 (PDT)
+Date:   Tue, 27 Jun 2023 16:36:16 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1687883781;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=TdPWXSyjblV3/5xOatcCVLPo7q0/XX1p8z7/HRrMyY4=;
+        b=EXIZVy5J6MxGX9EQ+OKpXpnnjbw5vcyBncQrLh1i58J5rK3yZEUFuI1CpFoLhqMING/XeP
+        KXHTTGtwb2mpSmLdpYfZnQfT8KEgSBAzQk7Yr6uodNnP/9VUfXRhrmcb6YtTumqyh/1+1j
+        WQz0gZ20fj54qKqWLkxZptQhaLjcGAQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Oliver Upton <oliver.upton@linux.dev>
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        kvm@vger.kernel.org, James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: timers: Use CNTHCTL_EL2 when setting
+ non-CNTKCTL_EL1 bits
+Message-ID: <ZJsQAFlsx0GssfL2@linux.dev>
+References: <20230627140557.544885-1-maz@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230626181120.7086-1-sj@kernel.org>
+In-Reply-To: <20230627140557.544885-1-maz@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 26, 2023 at 06:11:20PM +0000, SeongJae Park wrote:
-> __register_btf_kfunc_id_set() assumes .BTF to be part of the module's
-> .ko file if CONFIG_DEBUG_INFO_BTF is enabled.  If that's not the case,
-> the function prints an error message and return an error.  As a result,
-> such modules cannot be loaded.
+On Tue, Jun 27, 2023 at 03:05:57PM +0100, Marc Zyngier wrote:
+> It recently appeared that, whien running VHE, there is a notable
+> difference between using CNTKCTL_EL1 and CNTHCTL_EL2, despite what
+> the architecture documents:
 > 
-> However, the section could be stripped out during a build process.  It
-> would be better to let the modules loaded, because their basic
-> functionalities have no problem[1], though the BTF functionalities will
-> not be supported.  Make the function to lower the level of the message
-> from error to warn, and return no error.
+> - When accessed from EL2, bits [19:18] and [16:10] same bits have
+>   the same assignment as CNTHCTL_EL2
+> - When accessed from EL1, bits [19:18] and [16:10] are RES0
 > 
-> [1] https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
+> It is all OK, until you factor in NV, where the EL2 guest runs at EL1.
+> In this configuration, CNTKCTL_EL11 doesn't trap, nor ends up in
+> the VNCR page. This means that any write from the guest affecting
+> CNTHCTL_EL2 using CNTKCTL_EL1 ends up losing some state. Not good.
 > 
-> Reported-by: Alexander Egorenkov <Alexander.Egorenkov@ibm.com>
-> Link: https://lore.kernel.org/bpf/87y228q66f.fsf@oc8242746057.ibm.com/
-> Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-> Link: https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
-> Fixes: dee872e124e8 ("bpf: Populate kfunc BTF ID sets in struct btf")
+> The fix it obvious: don't use CNTKCTL_EL1 if you want to change bits
+> that are not part of the EL1 definition of CNTKCTL_EL1, and use
+> CNTHCTL_EL2 instead. This doesn't change anything for a bare-metal OS,
+> and fixes it when running under NV. The NV hypervisor will itself
+> have to work harder to merge the two accessors.
+> 
+> Note that there is a pending update to the architecture to address
+> this issue by making the affected bits UNKNOWN when CNTKCTL_EL1 is
+> user from EL2 with VHE enabled.
+> 
+> Fixes: c605ee245097 ("KVM: arm64: timers: Allow physical offset without CNTPOFF_EL2")
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Cc: stable@vger.kernel.org # v6.4
 
-should it be this one in Fixes instead?
-  c446fdacb10d bpf: fix register_btf_kfunc_id_set for !CONFIG_DEBUG_INFO_BTF
+Looks good. I'll probably open a fixes branch around -rc1 and pick this
+patch up then.
 
-other than that looks good
-
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-
-jirka
-
-> Cc: <stable@vger.kernel.org> # 5.17.x
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->  kernel/bpf/btf.c | 12 ++++--------
->  1 file changed, 4 insertions(+), 8 deletions(-)
-> 
-> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-> index 6b682b8e4b50..d683f034996f 100644
-> --- a/kernel/bpf/btf.c
-> +++ b/kernel/bpf/btf.c
-> @@ -7848,14 +7848,10 @@ static int __register_btf_kfunc_id_set(enum btf_kfunc_hook hook,
->  
->  	btf = btf_get_module_btf(kset->owner);
->  	if (!btf) {
-> -		if (!kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF)) {
-> -			pr_err("missing vmlinux BTF, cannot register kfuncs\n");
-> -			return -ENOENT;
-> -		}
-> -		if (kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF_MODULES)) {
-> -			pr_err("missing module BTF, cannot register kfuncs\n");
-> -			return -ENOENT;
-> -		}
-> +		if (!kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF))
-> +			pr_warn("missing vmlinux BTF, cannot register kfuncs\n");
-> +		if (kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF_MODULES))
-> +			pr_warn("missing module BTF, cannot register kfuncs\n");
->  		return 0;
->  	}
->  	if (IS_ERR(btf))
-> -- 
-> 2.25.1
-> 
-> 
+-- 
+Thanks,
+Oliver
