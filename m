@@ -2,129 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6D9673FA2A
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 12:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C78C73FBAE
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 14:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbjF0KZs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 06:25:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44266 "EHLO
+        id S231799AbjF0MGJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 08:06:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230479AbjF0KZN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 06:25:13 -0400
-Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1A8D3AA3;
-        Tue, 27 Jun 2023 03:23:53 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id A7DB4186677E;
-        Tue, 27 Jun 2023 13:23:51 +0300 (MSK)
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id nhyyPPXG8I23; Tue, 27 Jun 2023 13:23:51 +0300 (MSK)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id 079BA1866712;
-        Tue, 27 Jun 2023 13:23:51 +0300 (MSK)
-X-Virus-Scanned: amavisd-new at astralinux.ru
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id GJLLlds1rppm; Tue, 27 Jun 2023 13:23:50 +0300 (MSK)
-Received: from anastasia-huawei.. (unknown [89.222.134.55])
-        by mail.astralinux.ru (Postfix) with ESMTPSA id 23BD41865B39;
-        Tue, 27 Jun 2023 13:23:49 +0300 (MSK)
-From:   Anastasia Belova <abelova@astralinux.ru>
-To:     stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Anastasia Belova <abelova@astralinux.ru>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Xiaomeng Tong <xiam0nd.tong@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        lvc-project@linuxtesting.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.10 1/1] media: atomisp: fix "variable dereferenced before check 'asd'"
-Date:   Tue, 27 Jun 2023 13:23:34 +0300
-Message-Id: <20230627102334.18781-2-abelova@astralinux.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230627102334.18781-1-abelova@astralinux.ru>
-References: <20230627102334.18781-1-abelova@astralinux.ru>
+        with ESMTP id S231793AbjF0MGH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 08:06:07 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C265173C;
+        Tue, 27 Jun 2023 05:06:05 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f954d78bf8so6269823e87.3;
+        Tue, 27 Jun 2023 05:06:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687867564; x=1690459564;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+M3NXPsx45UfjIfs1rUQSv4UcGmUhSpn+D7x2X92Y5o=;
+        b=QVXvpiPjbiJFFCL4yOuXURwwSJsFzIdGVCKvku+kqCU8/WDEY3Rq2fAMBk9A7xrCAY
+         kouTIJxKnV9HftD9ixVxSFqxHj798JkNOxSOxf6+lKj1S/p3ejhf0ZAWp/+iPQ1KGmfW
+         PTR+fpNplsU7zyCXjzz4zjcnzT30PZwfDCv9WSD8R/0Mu6Wii9hcxpBc4fR6W+mfq2r0
+         Vu/MAd/G/kxuLngDyG0uWXqz9ohBfWovsHB+8N6/mJgq3t04+G40LQhINxQdkiuqVwOg
+         hMWiDyBnw0sEiOI6P2FlHyu8UNyMPvQZB1Q6ilmdMj8zd5kHp1MddqpTc5mqBrfwGDQl
+         m3BA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687867564; x=1690459564;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+M3NXPsx45UfjIfs1rUQSv4UcGmUhSpn+D7x2X92Y5o=;
+        b=gwj6z4nVGFCxSSd7dPRprTdt+4ajyF7Y+bCnN4K9Y+nwKOueZc6/6PT6PFOvIWhJjd
+         xHimRS5fTvlYOnDFFlKcBNsgaNhqUayx2qMwKeC4PRGdTbxP+FgYd4/8vE2t7UJjJKu1
+         4RCZnC8wFDCJwjdXMxTopgoQT1eAFRHPoEuH0hbyI0tah2q13whuUo3fNKqKuRFuuRNv
+         K0nEVCU0AjLPKlAhNS20D6Fao62dxnsuk5GLcAsbV+g9P2rAJwpS5alB2LxlFDGqiDeW
+         vQH1qjs6oaWrKCiFo+vPRawDStkocubKNerxyFisHy5a6Yq3RAt1d3FiGqUVfspiElsm
+         Rrkg==
+X-Gm-Message-State: AC+VfDzBRQg48GXqlaFVEWoXxPGUtq1EW5Tu90COrDlfVpKBTm+2nBhj
+        ShlQNiqHJIk148lGWuNW6f5GWJTAO14=
+X-Google-Smtp-Source: ACHHUZ6mIukkgHhmP/8KDJzcpRgaK4+DpT2UKABHTVa6xvx+z0Vr6B/HBPlCedBPGV6SktvFQCcoOg==
+X-Received: by 2002:a19:2d01:0:b0:4f8:7568:e94b with SMTP id k1-20020a192d01000000b004f87568e94bmr13356375lfj.56.1687867563265;
+        Tue, 27 Jun 2023 05:06:03 -0700 (PDT)
+Received: from saproj-Latitude-5501.yandex.net ([2a02:6b8:0:51e:5298:c58:431:de13])
+        by smtp.gmail.com with ESMTPSA id q13-20020ac2514d000000b004fb771a5b2dsm701924lfd.1.2023.06.27.05.06.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jun 2023 05:06:02 -0700 (PDT)
+From:   Sergei Antonov <saproj@gmail.com>
+To:     linux-mmc@vger.kernel.org
+Cc:     Sergei Antonov <saproj@gmail.com>,
+        Jonas Jensen <jonas.jensen@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH] mmc: moxart: read scr register without changing byte order
+Date:   Tue, 27 Jun 2023 15:05:49 +0300
+Message-Id: <20230627120549.2400325-1-saproj@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tsuchiya Yuto <kitakar@gmail.com>
+Conversion from big-endian to native is done in a common function
+mmc_app_send_scr(). Converting in moxart_transfer_pio() is extra.
+Double conversion on a LE system returns an incorrect SCR value,
+leads to errors:
 
-commit ac56760a8bbb4e654b2fd54e5de79dd5d72f937d upstream.
+mmc0: unrecognised SCR structure version 8
 
-There are two occurrences where the variable 'asd' is dereferenced
-before check. Fix this issue by using the variable after the check.
-
-Link: https://lore.kernel.org/linux-media/20211122074122.GA6581@kili/
-
-Link: https://lore.kernel.org/linux-media/20211201141904.47231-1-kitakar@=
-gmail.com
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Fixes: 1b66e94e6b99 ("mmc: moxart: Add MOXA ART SD/MMC driver")
+Signed-off-by: Sergei Antonov <saproj@gmail.com>
+Cc: Jonas Jensen <jonas.jensen@gmail.com>
+Cc: stable@vger.kernel.org
 ---
- drivers/staging/media/atomisp/pci/atomisp_cmd.c   | 3 ++-
- drivers/staging/media/atomisp/pci/atomisp_ioctl.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/mmc/host/moxart-mmc.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/staging/media/atomisp/pci/atomisp_cmd.c b/drivers/st=
-aging/media/atomisp/pci/atomisp_cmd.c
-index 20c19e08968e..613bd9620224 100644
---- a/drivers/staging/media/atomisp/pci/atomisp_cmd.c
-+++ b/drivers/staging/media/atomisp/pci/atomisp_cmd.c
-@@ -5243,7 +5243,7 @@ static int atomisp_set_fmt_to_isp(struct video_devi=
-ce *vdev,
- 	int (*configure_pp_input)(struct atomisp_sub_device *asd,
- 				  unsigned int width, unsigned int height) =3D
- 				      configure_pp_input_nop;
--	u16 stream_index =3D atomisp_source_pad_to_stream_id(asd, source_pad);
-+	u16 stream_index;
- 	const struct atomisp_in_fmt_conv *fc;
- 	int ret, i;
-=20
-@@ -5252,6 +5252,7 @@ static int atomisp_set_fmt_to_isp(struct video_devi=
-ce *vdev,
- 			__func__, vdev->name);
- 		return -EINVAL;
- 	}
-+	stream_index =3D atomisp_source_pad_to_stream_id(asd, source_pad);
-=20
- 	v4l2_fh_init(&fh.vfh, vdev);
-=20
-diff --git a/drivers/staging/media/atomisp/pci/atomisp_ioctl.c b/drivers/=
-staging/media/atomisp/pci/atomisp_ioctl.c
-index 8a0648fd7c81..4615e4cae718 100644
---- a/drivers/staging/media/atomisp/pci/atomisp_ioctl.c
-+++ b/drivers/staging/media/atomisp/pci/atomisp_ioctl.c
-@@ -1123,7 +1123,7 @@ int __atomisp_reqbufs(struct file *file, void *fh,
- 	struct ia_css_frame *frame;
- 	struct videobuf_vmalloc_memory *vm_mem;
- 	u16 source_pad =3D atomisp_subdev_source_pad(vdev);
--	u16 stream_id =3D atomisp_source_pad_to_stream_id(asd, source_pad);
-+	u16 stream_id;
- 	int ret =3D 0, i =3D 0;
-=20
- 	if (!asd) {
-@@ -1131,6 +1131,7 @@ int __atomisp_reqbufs(struct file *file, void *fh,
- 			__func__, vdev->name);
- 		return -EINVAL;
- 	}
-+	stream_id =3D atomisp_source_pad_to_stream_id(asd, source_pad);
-=20
- 	if (req->count =3D=3D 0) {
- 		mutex_lock(&pipe->capq.vb_lock);
---=20
-2.39.0
+diff --git a/drivers/mmc/host/moxart-mmc.c b/drivers/mmc/host/moxart-mmc.c
+index 2d002c81dcf3..d0d6ffcf78d4 100644
+--- a/drivers/mmc/host/moxart-mmc.c
++++ b/drivers/mmc/host/moxart-mmc.c
+@@ -338,13 +338,7 @@ static void moxart_transfer_pio(struct moxart_host *host)
+ 				return;
+ 			}
+ 			for (len = 0; len < remain && len < host->fifo_width;) {
+-				/* SCR data must be read in big endian. */
+-				if (data->mrq->cmd->opcode == SD_APP_SEND_SCR)
+-					*sgp = ioread32be(host->base +
+-							  REG_DATA_WINDOW);
+-				else
+-					*sgp = ioread32(host->base +
+-							REG_DATA_WINDOW);
++				*sgp = ioread32(host->base + REG_DATA_WINDOW);
+ 				sgp++;
+ 				len += 4;
+ 			}
+-- 
+2.37.2
 
