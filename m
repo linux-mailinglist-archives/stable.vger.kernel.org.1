@@ -2,101 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A0137404FE
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 22:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5621A74055E
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 23:01:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230372AbjF0U2v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 16:28:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46844 "EHLO
+        id S230313AbjF0VBS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 17:01:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230331AbjF0U2u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 16:28:50 -0400
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 080B926BF
-        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 13:28:49 -0700 (PDT)
-Received: by mail-il1-x12f.google.com with SMTP id e9e14a558f8ab-345b155fa0aso8268145ab.1
-        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 13:28:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1687897728; x=1690489728;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PFLrb4WV2M4S89RJ5tGpysGkvtpZPYvXfwu8Q/oJAtk=;
-        b=YqGAEVAB7jKY3SC7JMS+YVlGCMX3bcVrEjuve8PF40RpF5EQXfMiKRzEisKlIoDjiZ
-         EwIwa+P4b2OvYAHRGqWpivlALLBlzKRWraPtNato/tW1mRff5lW4YJrCJx/mSG5elsif
-         9lU1eNeWLShQXNeyrpCXNtFkGVKh1IW9i/VFI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687897728; x=1690489728;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PFLrb4WV2M4S89RJ5tGpysGkvtpZPYvXfwu8Q/oJAtk=;
-        b=V1Ni9vR3YsDP3iJRG5+rw2IjGye5/N3XGM+eB1vPO3w/YXo9lNm8oveZl6m/2kij5C
-         Z/LSufIPqcuaJ+2wXO15sN0CUsSDIabzHr1oAxEiEc+lR24n3ZWFsnRjPNK5jyvEd5/6
-         oaS/8HVGK5hOZojTpGeLvnUMMLGD6vAD56jHuUpi2KDwOoOLDXrEAOwgZMe5SPjg41jE
-         NGT/OVXx8N8HW2S4uaHzngymaCJhqnp+Y51X1hCXl2jeUCQxs8Zgsv8ry+AODSQNGwmo
-         7IbkJMu08df76IJdZRgYcQXoABB/TYYicFWQHOAeEV1C3vXPvbR8qisZhA+SjAnCXS16
-         N1OQ==
-X-Gm-Message-State: AC+VfDyV2bR2rJ0EIiSakqVhHHXVRCQWk6mpW2ymgSoOJnzKGoEFWxKS
-        jeUhR+PaZHcCN/EcaI0cpUEBZQ==
-X-Google-Smtp-Source: ACHHUZ4CnWXfi9m6352atFGPgRiUKQ3JmiGDS7T3mcdhVwx+G6CYu1eAyxSrRz6q3TcqDXotxz0Gcg==
-X-Received: by 2002:a92:d08a:0:b0:345:8373:4ca8 with SMTP id h10-20020a92d08a000000b0034583734ca8mr10285835ilh.27.1687897728420;
-        Tue, 27 Jun 2023 13:28:48 -0700 (PDT)
-Received: from localhost (30.23.70.34.bc.googleusercontent.com. [34.70.23.30])
-        by smtp.gmail.com with UTF8SMTPSA id k11-20020a02c64b000000b0042ae80a56d6sm387463jan.73.2023.06.27.13.28.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jun 2023 13:28:48 -0700 (PDT)
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>,
-        Kees Cook <keescook@chromium.org>
-Cc:     dm-devel@redhat.com, linux-kernel@vger.kernel.org,
-        Matthias Kaehlcke <mka@chromium.org>, stable@vger.kernel.org
-Subject: [PATCH] dm: verity-loadpin: Add NULL pointer check for 'bdev' parameter
-Date:   Tue, 27 Jun 2023 20:28:01 +0000
-Message-ID: <20230627202800.1.Id63f7f59536d20f1ab83e1abdc1fda1471c7d031@changeid>
-X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+        with ESMTP id S230171AbjF0VBR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 17:01:17 -0400
+Received: from qproxy6-pub.mail.unifiedlayer.com (qproxy6-pub.mail.unifiedlayer.com [69.89.23.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 915F11FD7
+        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 14:01:15 -0700 (PDT)
+Received: from outbound-ss-761.bluehost.com (outbound-ss-761.bluehost.com [74.220.211.250])
+        by qproxy6.mail.unifiedlayer.com (Postfix) with ESMTP id EF9B98033F1C
+        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 21:01:14 +0000 (UTC)
+Received: from cmgw11.mail.unifiedlayer.com (unknown [10.0.90.126])
+        by progateway8.mail.pro1.eigbox.com (Postfix) with ESMTP id 79ACC10052AEF
+        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 21:01:14 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id EFoIqFUOIJQbpEFoIqR4FW; Tue, 27 Jun 2023 21:01:14 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=TrojOBbh c=1 sm=1 tr=0 ts=649b4e1a
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10:nop_charset_1
+ a=of4jigFt-DYA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=rk1l2mXW63bgfV5RT+AktSRQGUCFyMbOSRPrG+EAksk=; b=P1XxE2oy0BFOIEj2+XgIS3MBXZ
+        Y6qaxiPxwnAc8aut3jQBHEkdsVZi5XaUuOxVaPs/mn5XaNv89lXP5whl/IUrXfBWRJ9gqDmrtYzEP
+        WXKa4cr90LVWdgmzjsakOW3de7Qn1dWL9FpXe9tnv+DwecDj4xUJe5X17jnv+vFDksWZApn0y1Hdu
+        RA56ZOI/k4xbvG7YzHX/y/PnyySyKI458mHkMINFJ5b+sd2Mq6UqV8FN5R8PzsWZnocmdniNHoHwc
+        4NjE6cFxILGwv+YUNsy103D81jXm88sFT6tTZmhTKkcxWumHIuL9lEpSYSaQnkUS29Or+NLwnhKOh
+        +VXWOR9Q==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:45656 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <re@w6rz.net>)
+        id 1qEFoH-003oAQ-7K;
+        Tue, 27 Jun 2023 15:01:13 -0600
+Subject: Re: [PATCH 6.1 000/170] 6.1.36-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230626180800.476539630@linuxfoundation.org>
+In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <4d050557-ec87-bb74-6de4-5cfc2e292389@w6rz.net>
+Date:   Tue, 27 Jun 2023 14:01:10 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qEFoH-003oAQ-7K
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:45656
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Add a NULL check for the 'bdev' parameter of
-dm_verity_loadpin_is_bdev_trusted(). The function is called
-by loadpin_check(), which passes the block device that
-corresponds to the super block of the file system from which
-a file is being loaded. Generally a super_block structure has
-an associated block device, however that is not always the
-case (e.g. tmpfs).
+On 6/26/23 11:09 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.36 release.
+> There are 170 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 28 Jun 2023 18:07:23 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.36-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Cc: stable@vger.kernel.org # v6.0+
-Fixes: b6c1c5745ccc ("dm: Add verity helpers for LoadPin")
-Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
----
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
- drivers/md/dm-verity-loadpin.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/md/dm-verity-loadpin.c b/drivers/md/dm-verity-loadpin.c
-index 4f78cc55c251..0666699b6858 100644
---- a/drivers/md/dm-verity-loadpin.c
-+++ b/drivers/md/dm-verity-loadpin.c
-@@ -58,6 +58,9 @@ bool dm_verity_loadpin_is_bdev_trusted(struct block_device *bdev)
- 	int srcu_idx;
- 	bool trusted = false;
- 
-+	if (bdev == NULL)
-+		return false;
-+
- 	if (list_empty(&dm_verity_loadpin_trusted_root_digests))
- 		return false;
- 
--- 
-2.41.0.255.g8b1d071c50-goog
+Tested-by: Ron Economos <re@w6rz.net>
 
