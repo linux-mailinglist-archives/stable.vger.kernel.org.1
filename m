@@ -2,138 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88B3973FD4A
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 15:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAAE373FD56
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 16:06:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbjF0N65 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 09:58:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50104 "EHLO
+        id S231230AbjF0OGQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 10:06:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbjF0N64 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 09:58:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1453211B
-        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 06:58:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687874288;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Zqq7h7cm69/C9ev3ZJHDEt0CRQFqksZRkCslwkFy7X0=;
-        b=VcTS+A5r18iKFjeh14trXJ6/+z/d3ThSkhaJf3VFTGpRCIvE/funRXROmUyDbomKKKo8zj
-        g6sfRqf9He1BxLxZeGs5sy3M54jVAq2JUe8hvTsXCDJ7AuS/SHnqURgVunFNRt5B5ngV35
-        bOWRzgjSNGXGKwGOO03L99jXt4MvpTE=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-478-cMUFO0VxPXCC1CdtiydLUg-1; Tue, 27 Jun 2023 09:58:07 -0400
-X-MC-Unique: cMUFO0VxPXCC1CdtiydLUg-1
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2b6af6868baso6656721fa.2
-        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 06:58:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687874285; x=1690466285;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Zqq7h7cm69/C9ev3ZJHDEt0CRQFqksZRkCslwkFy7X0=;
-        b=Z/za7TS7o0EEaQSL9FqJIPWdEOZxo9heSEl4CGprv6smeykDxlpuTaAilaKHRGkizH
-         A4nEZoYD3N6Iw7Gul7vEZKY0WPj0tp4ZW908wNuOS90NFk9O0tHP6EoNuEajoAUmHq2w
-         66Hin4P0GT2wTzirzjsYha3wziL7jQ2knZkQ6Npaj7aU9cMxJcpbm5DBRyFDYndwxsws
-         /IDPfr4Ye++/N3RMkJsir4jVpQsJ/loLBRePwXfHrb6YL//OCg4UCYriYQny55B962IC
-         iXZwQFR5n/i58ASrRmdp7zWNO4CPUc/OSCclAN+yyib5Nkw71lNFCC31t1ARKr3TT6oD
-         R2Sg==
-X-Gm-Message-State: AC+VfDw0TdbBxvp1P+Sr4XsMqZbWMWzytwzBgibVyPuUFlUPJKsVHVgs
-        6ehNIStNkcgx0JwOHCtKM2rxq3UqOxy5SM3+GblIHojzttCkULFr1TlZ4b6XtRKwUgBJ770DDfq
-        50ylqTzT2TrLt7+LcrAdcKpeHOiYA3St3K7NqX6VQ
-X-Received: by 2002:a05:651c:203:b0:2b6:b79e:7628 with SMTP id y3-20020a05651c020300b002b6b79e7628mr498626ljn.53.1687874285647;
-        Tue, 27 Jun 2023 06:58:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7DFztL2jcY/RWHezsy++5n18bc5MaVukjSzTzTVdz0P+6IjrmGuInhOxwUP7Bgwnm8EKJoHTYc2nvctiTfgUI=
-X-Received: by 2002:a05:651c:203:b0:2b6:b79e:7628 with SMTP id
- y3-20020a05651c020300b002b6b79e7628mr498612ljn.53.1687874285358; Tue, 27 Jun
- 2023 06:58:05 -0700 (PDT)
+        with ESMTP id S229608AbjF0OGO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 10:06:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4779211B;
+        Tue, 27 Jun 2023 07:06:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C7BF611AA;
+        Tue, 27 Jun 2023 14:06:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6ECC433C0;
+        Tue, 27 Jun 2023 14:06:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687874772;
+        bh=gdCzgZa5ZO1KjKZiWh8H9VlbmneP5crniKuqd9ftXpA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=JqLTHeB9AMvnOWFw5aeGpHjDGpwjIdN0SoZoj1GjiIQt4WcSML2TQuki3WZ84FCuv
+         GoPtFRULJguonwIqOZ5TQL7kl8EvNrSAaqUouy64vBc/lYwBV2tZJv/JN3lpwe/71s
+         8azeJiy+YP0VG4ukxI4RcIS4/8aEWPxVu2UknWjEQ8GGzIafxMvFMPh5vgyJAOGkcs
+         PB6YakR+Nu+a8mTMKdGOL6APGVKbgMXtG6FGIewhGtoMQsj+PLoqQNDamTdreGlWNE
+         HPQiGtpWKFSp6G49Yz9LM9wcn5REaOF1LtQJtD2nj5q3YGCeG8dsD3fvygj5Iak4H0
+         mJ/b+/zCgBttA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1qE9Kc-008oTQ-Ju;
+        Tue, 27 Jun 2023 15:06:10 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        kvm@vger.kernel.org
+Cc:     James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org
+Subject: [PATCH] KVM: arm64: timers: Use CNTHCTL_EL2 when setting non-CNTKCTL_EL1 bits
+Date:   Tue, 27 Jun 2023 15:05:57 +0100
+Message-Id: <20230627140557.544885-1-maz@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230627070101.170876-1-xiubli@redhat.com>
-In-Reply-To: <20230627070101.170876-1-xiubli@redhat.com>
-From:   Milind Changire <mchangir@redhat.com>
-Date:   Tue, 27 Jun 2023 19:27:29 +0530
-Message-ID: <CAED=hWCAMVX-Y8GDCU7VOSEgB_aBZxZWqdjdVsF6_jAzdAfyMA@mail.gmail.com>
-Subject: Re: [PATCH] ceph: don't let check_caps skip sending responses for
- revoke msgs
-To:     xiubli@redhat.com
-Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, stable@vger.kernel.org,
-        Patrick Donnelly <pdonnell@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, james.morse@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jun 27, 2023 at 12:33=E2=80=AFPM <xiubli@redhat.com> wrote:
->
-> From: Xiubo Li <xiubli@redhat.com>
->
-> If just before the revoke request, which will increase the 'seq', is
-> sent out the clients released the corresponding caps and sent out
-> the cap update request to MDS with old 'seq', the mds will miss
-> checking the seqs and calculating the caps.
->
-> We should always send an ack for revoke requests.
+It recently appeared that, whien running VHE, there is a notable
+difference between using CNTKCTL_EL1 and CNTHCTL_EL2, despite what
+the architecture documents:
 
-I think the commit message needs to be rephrased for better
-understanding to something like:
+- When accessed from EL2, bits [19:18] and [16:10] same bits have
+  the same assignment as CNTHCTL_EL2
+- When accessed from EL1, bits [19:18] and [16:10] are RES0
 
-If a client sends out a cap update request with the old 'seq' just
-before a pending cap revoke request, then the MDS might miscalculate
-the 'seqs' and caps. It's therefore always a good idea to ack the cap
-revoke request with the bumped up 'seq'.
+It is all OK, until you factor in NV, where the EL2 guest runs at EL1.
+In this configuration, CNTKCTL_EL11 doesn't trap, nor ends up in
+the VNCR page. This means that any write from the guest affecting
+CNTHCTL_EL2 using CNTKCTL_EL1 ends up losing some state. Not good.
 
-Xiubo, please let me know if this sounds okay to you.
+The fix it obvious: don't use CNTKCTL_EL1 if you want to change bits
+that are not part of the EL1 definition of CNTKCTL_EL1, and use
+CNTHCTL_EL2 instead. This doesn't change anything for a bare-metal OS,
+and fixes it when running under NV. The NV hypervisor will itself
+have to work harder to merge the two accessors.
 
+Note that there is a pending update to the architecture to address
+this issue by making the affected bits UNKNOWN when CNTKCTL_EL1 is
+user from EL2 with VHE enabled.
 
->
-> Cc: stable@vger.kernel.org
-> Cc: Patrick Donnelly <pdonnell@redhat.com>
-> URL: https://tracker.ceph.com/issues/61782
-> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> ---
->  fs/ceph/caps.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-> index 1052885025b3..eee2fbca3430 100644
-> --- a/fs/ceph/caps.c
-> +++ b/fs/ceph/caps.c
-> @@ -3737,6 +3737,15 @@ static void handle_cap_grant(struct inode *inode,
->         }
->         BUG_ON(cap->issued & ~cap->implemented);
->
-> +       /* don't let check_caps skip sending a response to MDS for revoke=
- msgs */
-> +       if (le32_to_cpu(grant->op) =3D=3D CEPH_CAP_OP_REVOKE) {
-> +               cap->mds_wanted =3D 0;
-> +               if (cap =3D=3D ci->i_auth_cap)
-> +                       check_caps =3D 1; /* check auth cap only */
-> +               else
-> +                       check_caps =3D 2; /* check all caps */
-> +       }
-> +
->         if (extra_info->inline_version > 0 &&
->             extra_info->inline_version >=3D ci->i_inline_version) {
->                 ci->i_inline_version =3D extra_info->inline_version;
-> --
-> 2.40.1
->
+Fixes: c605ee245097 ("KVM: arm64: timers: Allow physical offset without CNTPOFF_EL2")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org # v6.4
+---
+ arch/arm64/kvm/arch_timer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-
---=20
-Milind
+diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
+index 0696732fa38c..6dcdae4d38cb 100644
+--- a/arch/arm64/kvm/arch_timer.c
++++ b/arch/arm64/kvm/arch_timer.c
+@@ -827,8 +827,8 @@ static void timer_set_traps(struct kvm_vcpu *vcpu, struct timer_map *map)
+ 	assign_clear_set_bit(tpt, CNTHCTL_EL1PCEN << 10, set, clr);
+ 	assign_clear_set_bit(tpc, CNTHCTL_EL1PCTEN << 10, set, clr);
+ 
+-	/* This only happens on VHE, so use the CNTKCTL_EL1 accessor */
+-	sysreg_clear_set(cntkctl_el1, clr, set);
++	/* This only happens on VHE, so use the CNTHCTL_EL2 accessor. */
++	sysreg_clear_set(cnthctl_el2, clr, set);
+ }
+ 
+ void kvm_timer_vcpu_load(struct kvm_vcpu *vcpu)
+@@ -1563,7 +1563,7 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
+ void kvm_timer_init_vhe(void)
+ {
+ 	if (cpus_have_final_cap(ARM64_HAS_ECV_CNTPOFF))
+-		sysreg_clear_set(cntkctl_el1, 0, CNTHCTL_ECV);
++		sysreg_clear_set(cnthctl_el2, 0, CNTHCTL_ECV);
+ }
+ 
+ int kvm_arm_timer_set_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr)
+-- 
+2.34.1
 
