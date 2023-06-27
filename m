@@ -2,68 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EFF173FF07
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 16:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 236DD73FF8C
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 17:20:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232278AbjF0Oyb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 10:54:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54266 "EHLO
+        id S232330AbjF0PUp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 11:20:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232289AbjF0OyF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 10:54:05 -0400
-Received: from mail.antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6987D49C3;
-        Tue, 27 Jun 2023 07:52:13 -0700 (PDT)
-Date:   Tue, 27 Jun 2023 16:52:11 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
-        s=202107; t=1687877531;
-        bh=Ceg2GVyvtcvBWxaVPck8lb0T3Xyl4Ach3MoS8G9MEx4=;
-        h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-         Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
-         From:from:in-reply-to:in-reply-to:message-id:mime-version:
-         references:reply-to:Sender:Subject:Subject:To:To;
-        b=xbwZGOWwV69eofRXsTdTsWuYztOxEfzOsdXyI7rOkrhqJ0MUkm5XPOkFw0jJ5s2bu
-         iHJBKm9zldasT+cp50W9jBM6A13GrDcNf2cc3B8qrWUDyr57X8xb9AKiCrbxLWaci3
-         JPY0HKL6jht4bWJBmJY3I6lT67FD3FI/+LOcNdoD3N/0zBLuoUBcAyJOFhwNuFTS5i
-         cWZLP1KQrZ6DsmxRZ14wIiDrJwL2wfrHv2s8am0vjC88M7bc0WdP0LK6OULYQL2wfN
-         JqnWWvQ0a+dGcVVp4VcIO1TufeNy5Vw9AFiNOZepoG6+taWaQOyZlkMtMiOb1sPbxU
-         Jo09rLpcD7AJw==
-From:   Markus Reichelt <lkt+2023@mareichelt.com>
-To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.1 000/170] 6.1.36-rc1 review
-Message-ID: <20230627145211.GB19483@pc21.mareichelt.com>
-Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230626180800.476539630@linuxfoundation.org>
+        with ESMTP id S230444AbjF0PUo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 11:20:44 -0400
+X-Greylist: delayed 378 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 27 Jun 2023 08:20:42 PDT
+Received: from forward205b.mail.yandex.net (forward205b.mail.yandex.net [178.154.239.152])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3AD81735;
+        Tue, 27 Jun 2023 08:20:42 -0700 (PDT)
+Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d103])
+        by forward205b.mail.yandex.net (Yandex) with ESMTP id 5D6E96751F;
+        Tue, 27 Jun 2023 18:14:27 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2929:0:640:5f6e:0])
+        by forward103c.mail.yandex.net (Yandex) with ESMTP id B861460024;
+        Tue, 27 Jun 2023 18:14:21 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id KENE8w0DV4Y0-RAocMuF0;
+        Tue, 27 Jun 2023 18:14:21 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687878861;
+        bh=6YvjUD6AxvMQ0iz8tQiHRTDEHNd8AITV9R1JP2bRykM=;
+        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+        b=Tfhs9+qQH5DrHNkLDKTBBZAj5ntTJZ8dcXLAalkffxlN4bAL4VY0jAMF1iuAfOehR
+         kx5HiDCKVTtpqfVgyKtOTClIMj1UOK/MloWibK7mVqRhkLkjZ39F1CaVpuGXTUq6fT
+         gRHJ8/7uVoY99Y25Y57YwxA4d6dLrSW56zYB5hlA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>,
+        stable@vger.kernel.org
+Subject: [PATCH] [v2] wifi: b43: fix cordic arithmetic
+Date:   Tue, 27 Jun 2023 18:13:53 +0300
+Message-ID: <20230627151411.92749-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <ef4750f8-8de5-dbfc-2c0b-3400d30d83e5@lwfinger.net>
+References: <ef4750f8-8de5-dbfc-2c0b-3400d30d83e5@lwfinger.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-Organization: still stuck in reorganization mode
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+In 'lpphy_start_tx_tone()', 'CORDIC_FLOAT((sample.i * max) & 0xFF)'
+is invalid because it is (<32-bit> & 0xff) shifted right by 15 bits
+and so always evaluates to zero. Looking through brcmsmac's
+'wlc_lcnphy_start_tx_tone()', the result should be masked instead,
+i. e. 'CORDIC_FLOAT(sample[i].max) & 0xFF'.
 
-> This is the start of the stable review cycle for the 6.1.36 release.
-> There are 170 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 28 Jun 2023 18:07:23 +0000.
-> Anything received after that time might be too late.
+Fixes: 6f98e62a9f1b ("b43: update cordic code to match current specs")
 
-Hi Greg
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-6.1.36-rc1
+Cc: stable@vger.kernel.org
+Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v2: add Cc: stable and Fixes: (Larry Finger)
+---
+ drivers/net/wireless/broadcom/b43/phy_lp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-compiles, boots and runs here on x86_64
-(AMD Ryzen 5 PRO 4650G, Slackware64-15.0)
+diff --git a/drivers/net/wireless/broadcom/b43/phy_lp.c b/drivers/net/wireless/broadcom/b43/phy_lp.c
+index 0e5c076e7544..e8ef04e509aa 100644
+--- a/drivers/net/wireless/broadcom/b43/phy_lp.c
++++ b/drivers/net/wireless/broadcom/b43/phy_lp.c
+@@ -1788,8 +1788,8 @@ static void lpphy_start_tx_tone(struct b43_wldev *dev, s32 freq, u16 max)
+ 	for (i = 0; i < samples; i++) {
+ 		sample = cordic_calc_iq(CORDIC_FIXED(theta));
+ 		theta += rotation;
+-		buf[i] = CORDIC_FLOAT((sample.i * max) & 0xFF) << 8;
+-		buf[i] |= CORDIC_FLOAT((sample.q * max) & 0xFF);
++		buf[i] = (u16)((CORDIC_FLOAT(sample.i * max) & 0xFF) << 8);
++		buf[i] |= (u16)(CORDIC_FLOAT(sample.q * max) & 0xFF);
+ 	}
+ 
+ 	b43_lptab_write_bulk(dev, B43_LPTAB16(5, 0), samples, buf);
+-- 
+2.41.0
 
-Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
