@@ -2,98 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1232673FCFA
-	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 15:39:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B09BB73FCFF
+	for <lists+stable@lfdr.de>; Tue, 27 Jun 2023 15:40:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230167AbjF0NjQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 27 Jun 2023 09:39:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39872 "EHLO
+        id S229740AbjF0NkS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 27 Jun 2023 09:40:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjF0NjQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 09:39:16 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8BE52D7B;
-        Tue, 27 Jun 2023 06:39:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1687873152; x=1719409152;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LbkL7tXxwlJdWU6yvK9qq0d59PKW1IuqSiGV1lLmpm0=;
-  b=ndQ/vj8ylgz9jEFgs+e/Xn4dXl3AVllj9jwCdIGIGNqvmGqB5hmG5Yiq
-   IZEyEzvJtQzEn6AZXYTDEcE7UwqqLGz8ulhT8QaNDEA2xD60ffPQgvdI1
-   zOiZ3u5/75y07Oedl2Zts/j2WaIeMnmlS2nvdJi41aAfFRT7ElqzVf4Ff
-   RYihkDqdfKEwBF8H5oUx1/4jjFBuSeJr+UhhyztNZkr/aIejGuotjHxtI
-   B8ucJV0/SXwIu7RJGXVk/0RwRI35jCO2UCn3Ioy4Cf88REB+Z3J8fKq98
-   oVsI9oxI3e5WO0CrjlWt8yi26Gwehc8DwxqukRkw1c8MdRY49KnubOnMM
-   g==;
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
-   d="asc'?scan'208";a="222147104"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 27 Jun 2023 06:39:10 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Tue, 27 Jun 2023 06:38:47 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Tue, 27 Jun 2023 06:38:45 -0700
-Date:   Tue, 27 Jun 2023 14:38:17 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
-        <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>
-Subject: Re: [PATCH 6.1 000/170] 6.1.36-rc1 review
-Message-ID: <20230627-paying-untangled-02a11b535346@wendy>
-References: <20230626180800.476539630@linuxfoundation.org>
+        with ESMTP id S229488AbjF0NkR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 27 Jun 2023 09:40:17 -0400
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 163C12D54
+        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 06:40:17 -0700 (PDT)
+Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-40079620a83so267651cf.0
+        for <stable@vger.kernel.org>; Tue, 27 Jun 2023 06:40:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1687873216; x=1690465216;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=60sdZ0/W1BRmGu6AlZA3f3b1XPfOStvjGcXbJFjRxEw=;
+        b=LPlHfy8cooHiNrwPDxEBAv8dW97XNWe6zYTx1dvItxzz5KxOo2mjJhREUqnO+60d/m
+         3SCN2BDwX0CTvlmJBKTeGgqMapjeO0cU+tYU2OkTs3PrAEAZhug6yDdMXeqY6ogFnWk2
+         ye4FmZPtyFQX0H1THD641fZ9A3nciqX/YGq7zeFHVCBf2OMvEEiGlIx+xfMHGhzo1+XR
+         zrQGEnQ7zTddWpP/iZQZJsnD/mAxZ3s1b6TweApQkGBfUzdGkGmcqo3Qte/T59dfY7JX
+         LuSHEqi4Emwz/yU0Ab+isEyO7ZIRUvDn98g+1apPw4+4w8vQNjzFQCoAsq6deyPee7Gs
+         ujkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687873216; x=1690465216;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=60sdZ0/W1BRmGu6AlZA3f3b1XPfOStvjGcXbJFjRxEw=;
+        b=TJ6eQfdbU7u1OlMWxjTfD9h6R0hZ/evAATbfiyCr+ZjTbfJBp8i4bqn3eqHiy0LuWw
+         yU0kWFSIn7AiZ1gke8c+PPt4xHMiWmf+9b8wd37L4J/ndlJ5k14HcbCY1VlUtXTg6AQi
+         GZ+hk7iA4Sb409ay8K1/BxC2dCXUnMBfrmOzj+ku3Eij8YHyckFomqyO207lChz29m6K
+         zgHbNkt9RYjD9FE4PdxANj/CEQgIGhmiSU+TTafTMwsX8T9eRHRx3z0SfPelgUEBariT
+         LrDtEL2iaMuxUrVo0bMFcCwaNHPH0kVqFNhaUzfjw3YsHv92Xa/1dxiNai+8q264xADr
+         m58A==
+X-Gm-Message-State: AC+VfDyBm8b8pbUQqK6pS3mKVNhJ5vJvsgSmV+jYUmzlrMThNDYPcpfg
+        qtIVlPpO1adYOX7DSFM6vUhMlDcEpB2C7nhn1IK6wA==
+X-Google-Smtp-Source: ACHHUZ5RX8NhvP7wSDLlGP3QTsJ5bkWcPYFYot8aZjT7gCTVzb7MfhLej0NrJFTLFtduzg3q3TXCM4Hsn3cfIbhwyCI=
+X-Received: by 2002:ac8:4e83:0:b0:3de:1aaa:42f5 with SMTP id
+ 3-20020ac84e83000000b003de1aaa42f5mr577703qtp.15.1687873215789; Tue, 27 Jun
+ 2023 06:40:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="c+jIQADTZPCON90F"
-Content-Disposition: inline
-In-Reply-To: <20230626180800.476539630@linuxfoundation.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230627035000.1295254-1-moritzf@google.com> <ZJrc5xjeHp5vYtAO@boxer>
+ <35db66a9-d478-4b15-ad30-bfc4cded0b5c@lunn.ch>
+In-Reply-To: <35db66a9-d478-4b15-ad30-bfc4cded0b5c@lunn.ch>
+From:   Moritz Fischer <moritzf@google.com>
+Date:   Tue, 27 Jun 2023 15:40:04 +0200
+Message-ID: <CAFyOScpRDOvVrCsrwdxFstoNf1tOEnGbPSt5XDM1PKhCDyUGaw@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: lan743x: Don't sleep in atomic context
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+        edumazet@google.com, davem@davemloft.net,
+        bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+        mdf@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---c+jIQADTZPCON90F
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi Andrew,
 
-On Mon, Jun 26, 2023 at 08:09:29PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.36 release.
-> There are 170 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Jun 27, 2023 at 3:07=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > > +static int lan743x_csr_wait_for_bit_atomic(struct lan743x_adapter *a=
+dapter,
+> >
+> > adapter is not used in readx_poll_timeout_atomic() call, right?
+> > can be removed.
+>
+> I thought that when i first looked at an earlier version of this
+> patch. But LAN743X_CSR_READ_OP is not what you think :-(
 
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Yeah, it's not great / confusing. I tried to keep it the same as the
+rest of the file when fixing the bug.
 
-Cheers,
-Conor.
+I can see if I can clean it up across the file in a follow up.
+>
+>        Andrew
 
---c+jIQADTZPCON90F
-Content-Type: application/pgp-signature; name="signature.asc"
+Do you want me to send a v4 with an updated commit message?
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZJrmSAAKCRB4tDGHoIJi
-0m/kAQCZItFJPvjCZjQq6mgT6kT1CMX+57+otcs5NeszzWM10gD/e9c5NGstRzP9
-FGV0I520y2b/1Y6fKCso6XXNSgY7gww=
-=Q0Sj
------END PGP SIGNATURE-----
-
---c+jIQADTZPCON90F--
+Thanks,
+Moritz
