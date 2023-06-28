@@ -2,74 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 754617417ED
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 20:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C7F6741804
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 20:30:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230216AbjF1SVn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 14:21:43 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217]:56240 "EHLO
+        id S231203AbjF1Sa3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 14:30:29 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217]:34600 "EHLO
         dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231538AbjF1SVh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 14:21:37 -0400
+        with ESMTP id S229662AbjF1Sa1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 14:30:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C424361403;
-        Wed, 28 Jun 2023 18:21:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7604C433C8;
-        Wed, 28 Jun 2023 18:21:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A96F361423
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 18:30:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3F5C433C8;
+        Wed, 28 Jun 2023 18:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687976496;
-        bh=QCiRNpvCjRMEbgvpzeXiqnZIZU08GxFBBYgBZdY5tDc=;
+        s=korg; t=1687977026;
+        bh=PmtejHBVnsfKbfKOpRegpS/0lrIXPAcjAXYUgPxOXCM=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RrevFurZ03NOPYg79TiatLkR5xncPxFtmCuJHVwYKjFD0Ak1rdz3qB0NdKLrs2jon
-         59BsdFSfUWhXnJSOrt4jR82GrU1RHrAzMZW5w6Dh9Rdr7SYftApXGimGBk6/GoLC5G
-         K2O21funxsuqGwa8ZVBG14QYpFAkEsPOMHScjFdU=
-Date:   Wed, 28 Jun 2023 20:21:33 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Anastasia Belova <abelova@astralinux.ru>
-Cc:     stable@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Xiaomeng Tong <xiam0nd.tong@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        lvc-project@linuxtesting.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: Re: [PATCH 5.10 1/1] media: atomisp: fix "variable dereferenced
- before check 'asd'"
-Message-ID: <2023062825-oops-unguided-501f@gregkh>
-References: <20230627102334.18781-1-abelova@astralinux.ru>
- <20230627102334.18781-2-abelova@astralinux.ru>
+        b=YHE2hIRaL4PxVWCgHPpbKDQVJMjxIerbjmZVGjS09c9S9WsaVJ+Vz08CtatFrb6Hk
+         z6uA+XbHdMQM0/RosA7Lg+ZKIxW0eayf7uacAsM6nh0qqGfnC1uLx0z2FoxvtxVyq6
+         zczZHJLHM+vXEGU6R63jLZDxZhKXDswNZYc86q3Y=
+Date:   Wed, 28 Jun 2023 20:30:15 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jane Chu <jane.chu@oracle.com>
+Cc:     stable@vger.kernel.org, tony.luck@intel.com,
+        dan.j.williams@intel.com, naoya.horiguchi@nec.com,
+        linmiaohe@huawei.com, glider@google.com
+Subject: Re: [5.15/6.1-stable PATCH] Copy-on-write hwpoison recovery
+Message-ID: <2023062803-expulsion-shrubs-4b49@gregkh>
+References: <20230626230221.3064291-1-jane.chu@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230627102334.18781-2-abelova@astralinux.ru>
+In-Reply-To: <20230626230221.3064291-1-jane.chu@oracle.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jun 27, 2023 at 01:23:34PM +0300, Anastasia Belova wrote:
-> From: Tsuchiya Yuto <kitakar@gmail.com>
+On Mon, Jun 26, 2023 at 05:02:17PM -0600, Jane Chu wrote:
+> I was able to reproduce crash on 5.15.y kernel during COW, and
+> when the grandchild process attempts a write to a private page
+> inherited from the child process and the private page contains
+> a memory uncorrectable error. The way to reproduce is described
+> in Tony's patch, using his ras-tools/einj_mem_uc.
+> And the patch series fixed the panic issue in 5.15.y.
 > 
-> commit ac56760a8bbb4e654b2fd54e5de79dd5d72f937d upstream.
+> Followed here is the backport of Tony patch series to stable 5.15
+> and stable 6.1. Both backport have encountered trivial conflicts
+> due to missing dependencies, details are provided in each patch.
 > 
-> There are two occurrences where the variable 'asd' is dereferenced
-> before check. Fix this issue by using the variable after the check.
-> 
-> Link: https://lore.kernel.org/linux-media/20211122074122.GA6581@kili/
-> 
-> Link: https://lore.kernel.org/linux-media/20211201141904.47231-1-kitakar@gmail.com
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-> ---
->  drivers/staging/media/atomisp/pci/atomisp_cmd.c   | 3 ++-
->  drivers/staging/media/atomisp/pci/atomisp_ioctl.c | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
+> Please let me know whether the backport is acceptable.
 
-Now queued up, thanks.
+Looks good to me, all now queued up, thanks!
 
 greg k-h
