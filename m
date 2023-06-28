@@ -2,111 +2,170 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE215740B27
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 10:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D42E4740AE2
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 10:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232198AbjF1IWr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 04:22:47 -0400
-Received: from qproxy2-pub.mail.unifiedlayer.com ([69.89.16.161]:51873 "EHLO
-        qproxy2-pub.mail.unifiedlayer.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234443AbjF1IQT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 04:16:19 -0400
-Received: from alt-proxy28.mail.unifiedlayer.com (alt-proxy28.mail.unifiedlayer.com [74.220.216.123])
-        by qproxy2.mail.unifiedlayer.com (Postfix) with ESMTP id EBD6A8027F46
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 07:27:10 +0000 (UTC)
-Received: from cmgw14.mail.unifiedlayer.com (unknown [10.0.90.129])
-        by progateway1.mail.pro1.eigbox.com (Postfix) with ESMTP id D9D891003A120
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 07:27:09 +0000 (UTC)
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTP
-        id EPa1q8MMQLmMcEPa1q4UkU; Wed, 28 Jun 2023 07:27:09 +0000
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.4 cv=GtGHRm5C c=1 sm=1 tr=0 ts=649be0cd
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10:nop_charset_1
- a=of4jigFt-DYA:10:nop_rcvd_month_year
- a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=EQbkGBY0Drc2aUyH78u9WpO5Y+VD/CrnpeIbXLGwLqw=; b=sZJJ5PDyGD4QmwN3GWko5Y3vXu
-        rVKgzaO5Ya4BX6ksQuWFly0dql3FcKC9PZwzoGbiXJXb2VtOpFToOJbyx4/P3CrBwITXKMciDsgnM
-        f0xKq+fH86rYFFI2Xy0XCB+xf+SzemkNBViKZlByVX+QCuKQyi8BAz0ksbnsSjmueedsXK/5tQnXz
-        aLl2RWMJOHmPF/5tWdv/DzMZdRtF89JF9sLU7O1QYg/SYdeDd0aYale8ZuztqtbucqVFeyxr7m6Lr
-        YPgoBS7lBgNUSBfMipzSFo1KKiptRBfhCJvd2r+yT0ic0dx0r7TvsCxtaa9VRG8DoyxoNpcn0sMkW
-        ElYw9+zQ==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:45726 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.95)
-        (envelope-from <re@w6rz.net>)
-        id 1qEPa0-003RMo-Fx;
-        Wed, 28 Jun 2023 01:27:08 -0600
-Subject: Re: [PATCH 5.15 00/96] 5.15.119-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230626180746.943455203@linuxfoundation.org>
-In-Reply-To: <20230626180746.943455203@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <f7b841bf-0edd-243a-38aa-2213fcec3ec1@w6rz.net>
-Date:   Wed, 28 Jun 2023 00:27:06 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S233872AbjF1IMk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 04:12:40 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217]:51716 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233752AbjF1IJv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 04:09:51 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA9726132E;
+        Wed, 28 Jun 2023 07:34:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35155C433CB;
+        Wed, 28 Jun 2023 07:34:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687937685;
+        bh=1RvYG/zNfvaMvzYdsiasDFPUFxo2X7mXbyQadTutm14=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=H1RUK0rPadZYlBM2PFBs8Y0zb/rFJtcnbd93GXhOMrDxiioXfaMYeAd7wReRjzdIJ
+         5c2d+9mB3qnRUAmgYHBuRW7U/Noyj0Kf916vuTKLEH29vtLN9OBZG0warX9jo9TLfu
+         +1mL1UsWSs/jzhPKDy9eqDrte27NWRt6UOFApwBwA18eF/xKj1xV8EBizjvuD7mISE
+         F8VBNyCWr84HEhddggLUfgN5ttYZqqw8MnL2mJfDrLmFKyRZlt5KKJlulxIKC+2O5/
+         G4gIsWLxQpyFkOBiQ7uaM+iq/VWY5BPgoVPQ85wr7nmGDou3+LC9FEQO4JCzRfRw3W
+         vHAjecBBlNjGA==
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-991aac97802so447145066b.1;
+        Wed, 28 Jun 2023 00:34:45 -0700 (PDT)
+X-Gm-Message-State: AC+VfDxAYnTgj7qb3u7386i7C0IAOBrP9iQGf7wjQVhVWIZIPwBTEiWM
+        J75zbNlcVIq3Atw/Vf+TRisbSX/7/RNLeX7BWTk=
+X-Google-Smtp-Source: ACHHUZ6JL3g1iyyrEhvtgl6EfKUhA+/PI4WX7hcVO+KzuuEGLTNZV4wFqRkqjAXpyVuNwo4/H31vvrP4Aght7wyWGN8=
+X-Received: by 2002:a17:907:80c:b0:974:1d8b:ca5f with SMTP id
+ wv12-20020a170907080c00b009741d8bca5fmr30253899ejb.9.1687937683374; Wed, 28
+ Jun 2023 00:34:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1qEPa0-003RMo-Fx
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:45726
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
+References: <20230626074919.1871944-1-chenhuacai@loongson.cn> <961c855a-81ea-c628-3e67-81877a748027@linaro.org>
+In-Reply-To: <961c855a-81ea-c628-3e67-81877a748027@linaro.org>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Wed, 28 Jun 2023 15:34:31 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7FL73KQiciTUCSwzOBQ9KDH5bfwbChV3oe+A+qpx=gsg@mail.gmail.com>
+Message-ID: <CAAhV-H7FL73KQiciTUCSwzOBQ9KDH5bfwbChV3oe+A+qpx=gsg@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: KVM: Fix NULL pointer dereference
+To:     =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc:     Huacai Chen <chenhuacai@loongson.cn>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        linux-mips@vger.kernel.org, kvm@vger.kernel.org,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/26/23 11:11 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.119 release.
-> There are 96 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 28 Jun 2023 18:07:23 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.119-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi, Philippe,
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+On Mon, Jun 26, 2023 at 6:28=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> On 26/6/23 09:49, Huacai Chen wrote:
+> > After commit 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support") w=
+e
+> > get a NULL pointer dereference when creating a KVM guest:
+> >
+> > [  146.243409] Starting KVM with MIPS VZ extensions
+> > [  149.849151] CPU 3 Unable to handle kernel paging request at virtual =
+address 0000000000000300, epc =3D=3D ffffffffc06356ec, ra =3D=3D ffffffffc0=
+63568c
+> > [  149.849177] Oops[#1]:
+> > [  149.849182] CPU: 3 PID: 2265 Comm: qemu-system-mip Not tainted 6.4.0=
+-rc3+ #1671
+> > [  149.849188] Hardware name: THTF CX TL630 Series/THTF-LS3A4000-7A1000=
+-ML4A, BIOS KL4.1F.TF.D.166.201225.R 12/25/2020
+> > [  149.849192] $ 0   : 0000000000000000 000000007400cce0 00000000004000=
+04 ffffffff8119c740
+> > [  149.849209] $ 4   : 000000007400cce1 000000007400cce1 00000000000000=
+00 0000000000000000
+> > [  149.849221] $ 8   : 000000240058bb36 ffffffff81421ac0 00000000000000=
+00 0000000000400dc0
+> > [  149.849233] $12   : 9800000102a07cc8 ffffffff80e40e38 00000000000000=
+01 0000000000400dc0
+> > [  149.849245] $16   : 0000000000000000 9800000106cd0000 9800000106cd00=
+00 9800000100cce000
+> > [  149.849257] $20   : ffffffffc0632b28 ffffffffc05b31b0 9800000100ccca=
+00 0000000000400000
+> > [  149.849269] $24   : 9800000106cd09ce ffffffff802f69d0
+> > [  149.849281] $28   : 9800000102a04000 9800000102a07cd0 98000001106a80=
+00 ffffffffc063568c
+> > [  149.849293] Hi    : 00000335b2111e66
+> > [  149.849295] Lo    : 6668d90061ae0ae9
+> > [  149.849298] epc   : ffffffffc06356ec kvm_vz_vcpu_setup+0xc4/0x328 [k=
+vm]
+> > [  149.849324] ra    : ffffffffc063568c kvm_vz_vcpu_setup+0x64/0x328 [k=
+vm]
+> > [  149.849336] Status: 7400cce3 KX SX UX KERNEL EXL IE
+> > [  149.849351] Cause : 1000000c (ExcCode 03)
+> > [  149.849354] BadVA : 0000000000000300
+> > [  149.849357] PrId  : 0014c004 (ICT Loongson-3)
+> > [  149.849360] Modules linked in: kvm nfnetlink_queue nfnetlink_log nfn=
+etlink fuse sha256_generic libsha256 cfg80211 rfkill binfmt_misc vfat fat s=
+nd_hda_codec_hdmi input_leds led_class snd_hda_intel snd_intel_dspcfg snd_h=
+da_codec snd_hda_core snd_pcm snd_timer snd serio_raw xhci_pci radeon drm_s=
+uballoc_helper drm_display_helper xhci_hcd ip_tables x_tables
+> > [  149.849432] Process qemu-system-mip (pid: 2265, threadinfo=3D0000000=
+0ae2982d2, task=3D0000000038e09ad4, tls=3D000000ffeba16030)
+> > [  149.849439] Stack : 9800000000000003 9800000100ccca00 9800000100ccc0=
+00 ffffffffc062cef4
+> > [  149.849453]         9800000102a07d18 c89b63a7ab338e00 00000000000000=
+00 ffffffff811a0000
+> > [  149.849465]         0000000000000000 9800000106cd0000 ffffffff80e599=
+38 98000001106a8920
+> > [  149.849476]         ffffffff80e57f30 ffffffffc062854c ffffffff811a00=
+00 9800000102bf4240
+> > [  149.849488]         ffffffffc05b0000 ffffffff80e3a798 000000ff780000=
+00 000000ff78000010
+> > [  149.849500]         0000000000000255 98000001021f7de0 98000001023f00=
+78 ffffffff81434000
+> > [  149.849511]         0000000000000000 0000000000000000 9800000102ae00=
+00 980000025e92ae28
+> > [  149.849523]         0000000000000000 c89b63a7ab338e00 00000000000000=
+01 ffffffff8119dce0
+> > [  149.849535]         000000ff78000010 ffffffff804f3d3c 9800000102a07e=
+b0 0000000000000255
+> > [  149.849546]         0000000000000000 ffffffff8049460c 000000ff780000=
+10 0000000000000255
+> > [  149.849558]         ...
+> > [  149.849565] Call Trace:
+> > [  149.849567] [<ffffffffc06356ec>] kvm_vz_vcpu_setup+0xc4/0x328 [kvm]
+> > [  149.849586] [<ffffffffc062cef4>] kvm_arch_vcpu_create+0x184/0x228 [k=
+vm]
+> > [  149.849605] [<ffffffffc062854c>] kvm_vm_ioctl+0x64c/0xf28 [kvm]
+> > [  149.849623] [<ffffffff805209c0>] sys_ioctl+0xc8/0x118
+> > [  149.849631] [<ffffffff80219eb0>] syscall_common+0x34/0x58
+> >
+> > The root cause is the deletion of kvm_mips_commpage_init() leaves vcpu-=
+>
+> > arch.cop0 NULL. So fix it by make cop0 from a pointer to an embed objec=
+t.
+>
+> "by making ... to an embedded object."
+OK, thanks.
 
-Tested-by: Ron Economos <re@w6rz.net>
+>
+> >
+> > Fixes: 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support")
+> > Cc: stable@vger.kernel.org
+>
+> Reported-by: Yu Zhao <yuzhao@google.com>
+OK, thanks.
 
+>
+> > Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+> >   arch/mips/include/asm/kvm_host.h |  6 +++---
+> >   arch/mips/kvm/emulate.c          | 22 +++++++++++-----------
+> >   arch/mips/kvm/mips.c             | 16 ++++++++--------
+> >   arch/mips/kvm/trace.h            |  8 ++++----
+> >   arch/mips/kvm/vz.c               | 20 ++++++++++----------
+> >   5 files changed, 36 insertions(+), 36 deletions(-)
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+OK, thanks.
+
+Huacai
+>
