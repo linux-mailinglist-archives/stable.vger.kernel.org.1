@@ -2,68 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D148F740D2C
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 11:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D70F740DC8
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 11:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbjF1JjI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 05:39:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48954 "EHLO
+        id S232593AbjF1JvZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 05:51:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231404AbjF1JYd (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Wed, 28 Jun 2023 05:24:33 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A541BF9
-        for <Stable@vger.kernel.org>; Wed, 28 Jun 2023 02:24:31 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-313e714342cso4609228f8f.0
-        for <Stable@vger.kernel.org>; Wed, 28 Jun 2023 02:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687944269; x=1690536269;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wzKXpMccA6UrwHtXvOGSFvI/x46V/z1bpRu3rF0Fgs0=;
-        b=fueU1DULpIywX2DaDQQk0rGXg3PtSBos/iW8JpD9Vgn8gH+xHWp/h0QRyukEI7O19n
-         zm6aK/HjiOtVtDnYJOaFMUvOhdbBp42M8K0RL1WMTCaWgLu7TuX6X0HSUl8E5ohHg/cJ
-         7hOyN1YGptCx7M2Kg9BpiVSukjKpVpaQeT/dqBlFAqG01ISxfbd1sS3ab+mmme8B95r/
-         Fw7lYhPsitYBBrKLtJwiFm4MJV1MGMWOxKVo1KPOV6rKYvO0eq7GQgA1vRUPQ/3ZKX4I
-         PGIgGxKgUefcJQV08RH9cHKNJP6V8+ERX2wOcQIQhtZjeSbSgLcDzuGTv91NBllPb1ss
-         DWXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687944269; x=1690536269;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wzKXpMccA6UrwHtXvOGSFvI/x46V/z1bpRu3rF0Fgs0=;
-        b=EIxN7nUl+ta4gwQOe6smobAB60K7vCk9H54llWdJf22U9au+wa0tm+JDJKQKcyoTDf
-         wOc26Jxo6KTi8fatfyWTOJgCY7fOR8WdwKxxe5r5lWbI3R0vId9BcyQ7knQQetDorNOZ
-         QlxQRw+mltiEeG56pMmUEE7PpiSeDFeMpGLy84xWbyp7RG+tjbc791kJy2Ups1YWkjd/
-         xh1N77S/N9vaXyb6kQ4sVenRWteTQFFTzY65o7nzW4tWlyeld3W/tNSgMKFQ0GaEvF34
-         HfpAGEdGyFWATBEmiapq3qmbRMuJxcVY1xn5rly3OOf0mujDVAB+ZM8XQ+F+0xd9e/yE
-         29Ng==
-X-Gm-Message-State: AC+VfDwiryfv1CpZLqyr1Aj+7TJfG7xabs8jUzg54lIr0wA6OpE3flOx
-        w+1k8e5RUqMS+sNMHmnpfPH8RQ==
-X-Google-Smtp-Source: ACHHUZ54XNFWh70xItwrsXJjQNsNfbm1HM+SarGY7nLeMvIhA+uyrvqHtA6D65tWQXSWo7WG4YGACA==
-X-Received: by 2002:a5d:4e50:0:b0:313:eb47:b7b3 with SMTP id r16-20020a5d4e50000000b00313eb47b7b3mr9446659wrt.66.1687944269482;
-        Wed, 28 Jun 2023 02:24:29 -0700 (PDT)
-Received: from localhost.localdomain ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id o18-20020a056000011200b00313f9085119sm5500091wrx.113.2023.06.28.02.24.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jun 2023 02:24:28 -0700 (PDT)
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-To:     broonie@kernel.org
-Cc:     johan+linaro@kernel.org, perex@perex.cz, tiwai@suse.com,
-        lgirdwood@gmail.com, ckeepax@opensource.cirrus.com,
-        kuninori.morimoto.gx@renesas.com, linux-kernel@vger.kernel.org,
-        pierre-louis.bossart@linux.intel.com, alsa-devel@alsa-project.org,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Stable@vger.kernel.org
-Subject: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device number
-Date:   Wed, 28 Jun 2023 10:24:04 +0100
-Message-Id: <20230628092404.13927-1-srinivas.kandagatla@linaro.org>
-X-Mailer: git-send-email 2.21.0
+        with ESMTP id S231926AbjF1J00 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 05:26:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0548B30C7;
+        Wed, 28 Jun 2023 02:25:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8480461297;
+        Wed, 28 Jun 2023 09:25:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54109C433C0;
+        Wed, 28 Jun 2023 09:25:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1687944326;
+        bh=MC/0Hid37V8silvu6DDDlDg78Xt9YOT3wKNoU/5xV4Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=BUNuc22LslwCeeCBva2mXDffKmgSTc5t9e1CI9cg/5AJ2DHr0kR1M0Qc2ehouuDWS
+         DxBkfXw+p+Z8b9eLNi96Oj8nCcJfNA9h2FUg3Y4X1khugmCzB8cSDM+WX1AdbaUtkF
+         oKiRJ8ZWbaOl7GiMgpLS9CPXn/HjBXD3jS219QTw=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org
+Cc:     lwn@lwn.net, jslaby@suse.cz,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 4.14.320
+Date:   Wed, 28 Jun 2023 11:25:22 +0200
+Message-ID: <2023062823-mulch-skeleton-4071@gregkh>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -72,33 +50,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-For some reason we ended up with a setup without this flag.
-This resulted in inconsistent sound card devices numbers which
- are also not starting as expected at dai_link->id.
- (Ex: MultiMedia1 pcm ended up with device number 4 instead of 0)
+I'm announcing the release of the 4.14.320 kernel.
 
-With this patch patch now the MultiMedia1 PCM ends up with device number 0
-as expected.
+All users of the 4.14 kernel series must upgrade.
 
-Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
----
- sound/soc/qcom/qdsp6/q6apm-dai.c | 1 +
- 1 file changed, 1 insertion(+)
+The updated 4.14.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.14.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-diff --git a/sound/soc/qcom/qdsp6/q6apm-dai.c b/sound/soc/qcom/qdsp6/q6apm-dai.c
-index 5eb0b864c740..c90db6daabbd 100644
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -840,6 +840,7 @@ static const struct snd_soc_component_driver q6apm_fe_dai_component = {
- 	.pointer	= q6apm_dai_pointer,
- 	.trigger	= q6apm_dai_trigger,
- 	.compress_ops	= &q6apm_dai_compress_ops,
-+	.use_dai_pcm_id = true,
- };
- 
- static int q6apm_dai_probe(struct platform_device *pdev)
--- 
-2.21.0
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile                                    |    2 -
+ arch/arm64/include/asm/sysreg.h             |    6 +++
+ arch/x86/kernel/apic/x2apic_phys.c          |    5 ++-
+ drivers/gpu/drm/exynos/exynos_drm_g2d.c     |    2 -
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c    |    2 -
+ drivers/gpu/drm/radeon/radeon_gem.c         |    4 --
+ drivers/hid/wacom_sys.c                     |    7 +++-
+ drivers/hv/channel_mgmt.c                   |   18 ++++++++++-
+ drivers/i2c/busses/i2c-imx-lpi2c.c          |    4 +-
+ drivers/mmc/host/mtk-sd.c                   |    2 -
+ drivers/mmc/host/omap.c                     |    2 -
+ drivers/mmc/host/omap_hsmmc.c               |    6 ++-
+ drivers/mmc/host/usdhi6rol0.c               |    6 ++-
+ drivers/net/ethernet/emulex/benet/be_main.c |    4 +-
+ drivers/net/ethernet/qualcomm/qca_spi.c     |    3 -
+ drivers/nfc/nfcsim.c                        |    4 --
+ drivers/s390/cio/device.c                   |    5 ++-
+ drivers/target/iscsi/iscsi_target_nego.c    |    4 +-
+ drivers/tty/serial/lantiq.c                 |    1 
+ drivers/usb/gadget/udc/amd5536udc_pci.c     |    3 +
+ drivers/video/fbdev/imsttfb.c               |    6 +++
+ fs/nilfs2/page.c                            |   10 +++++-
+ fs/nilfs2/segbuf.c                          |    6 +++
+ fs/nilfs2/segment.c                         |    7 ++++
+ fs/nilfs2/super.c                           |   23 ++++++++++++++
+ fs/nilfs2/the_nilfs.c                       |   44 +++++++++++++++++++++++++++-
+ kernel/cgroup/cgroup.c                      |   20 ++++++++++--
+ net/ipv4/esp4_offload.c                     |    3 +
+ net/ipv6/esp6_offload.c                     |    3 +
+ net/netfilter/nf_tables_api.c               |    7 +++-
+ 30 files changed, 181 insertions(+), 38 deletions(-)
+
+Bernhard Seibold (1):
+      serial: lantiq: add missing interrupt ack
+
+Clark Wang (1):
+      i2c: imx-lpi2c: fix type char overflow issue when calculating the clock cycle
+
+Dan Carpenter (1):
+      usb: gadget: udc: fix NULL dereference in remove()
+
+Denis Arefev (1):
+      HID: wacom: Add error check to wacom_parse_and_register()
+
+Dheeraj Kumar Srivastava (1):
+      x86/apic: Fix kernel panic when booting with intremap=off and x2apic_phys
+
+Greg Kroah-Hartman (1):
+      Linux 4.14.320
+
+Helge Deller (1):
+      fbdev: imsttfb: Release framebuffer and dealloc cmap on error path
+
+Inki Dae (1):
+      drm/exynos: vidi: fix a wrong error return
+
+Marc Zyngier (1):
+      arm64: Add missing Set/Way CMO encodings
+
+Maurizio Lombardi (1):
+      scsi: target: iscsi: Prevent login threads from racing between each other
+
+Michael Kelley (1):
+      Drivers: hv: vmbus: Fix vmbus_wait_for_unload() to scan present CPUs
+
+Min Li (2):
+      drm/exynos: fix race condition UAF in exynos_g2d_exec_ioctl
+      drm/radeon: fix race condition UAF in radeon_gem_set_domain_ioctl
+
+Osama Muhammad (1):
+      nfcsim.c: Fix error checking for debugfs_create_dir
+
+Pablo Neira Ayuso (1):
+      netfilter: nf_tables: disallow element updates of bound anonymous sets
+
+Ross Lagerwall (1):
+      be2net: Extend xmit workaround to BE3 chip
+
+Ryusuke Konishi (3):
+      nilfs2: reject devices with insufficient block count
+      nilfs2: fix buffer corruption due to concurrent device reads
+      nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
+
+Sebastian Andrzej Siewior (1):
+      xfrm: Linearize the skb after offloading if needed.
+
+Sergey Shtylyov (4):
+      mmc: mtk-sd: fix deferred probing
+      mmc: omap: fix deferred probing
+      mmc: omap_hsmmc: fix deferred probing
+      mmc: usdhi60rol0: fix deferred probing
+
+Stefan Wahren (1):
+      net: qca_spi: Avoid high load if QCA7000 is not available
+
+Vineeth Vijayan (1):
+      s390/cio: unregister device when the only path is gone
+
+Xiu Jianfeng (1):
+      cgroup: Do not corrupt task iteration when rebinding subsystem
 
