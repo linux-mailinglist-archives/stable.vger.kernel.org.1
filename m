@@ -2,173 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E93CF74162E
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 18:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAD317416AD
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 18:46:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbjF1QT7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 12:19:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37522 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbjF1QT6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 12:19:58 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78B2B10FD
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 09:19:57 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-666edfc50deso61889b3a.0
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 09:19:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1687969196; x=1690561196;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fw5aTO1d9ggGqDYBxoeFXQWYj0GAegn2HiHH8abPXKI=;
-        b=WHpnTDYNevMXVJt+XALh05ku2BIj5pi3JvjYk7mwTeDZMn0P25iG9L6xR9BYOHNZM4
-         8CuFzL4mchHaiMd2/DwLL6Ui9k8JJR3Y8KUJ/Xi8OoIYpCJVgyttTG7yHltiNhg0nXb/
-         Oa1kwAFPicxDTTVTl2FIXkN3STQd1tlH/+/c6QElZyFBB9lXlBD7Nlf+ZXRwqP2Vdv5c
-         Zzy01DfjiUEu1iiU9pqqQ1VbMqX5GDecF9bVZ9SsXT7sgWHsWW9ciOhlRNaAdmJ7tiLe
-         4iu65OOmOOfpR++d/TWd6DoUKVbGThE+8S7EYojo7lORWZYDSzZpeqryQTVePpjGaiCJ
-         vBhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687969196; x=1690561196;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fw5aTO1d9ggGqDYBxoeFXQWYj0GAegn2HiHH8abPXKI=;
-        b=jVZNQKQ6EipeRfO4tAB0FXbnsnTg7SA1Qyr8qc3XXFbnHOFNI8Vfa8LSUCLHj1Uf/T
-         Rw51CkwoWiYxq7w19GQgmd34z/oIctPbRacWrP408S96Ho4bTa8JAtYUYKlUZUwVGGtz
-         01tV+7LDNrt8Z6du9gOz4AyeJoGtwASBjMUfYXdhVWh/XJmmXsnjtu1ELRxmSwbNxJdz
-         coYMNpE7xqUl0kumxiYAiPoLuNa5PGZogt4OnyYG6m3TMrE/Sh3Hdo8gliBNKxQNbb9O
-         5X+YCIQHWf0srpM1kBU5N7mITIzE2rnDmS+DHM0tFrYUmVbFctdqNmm8jB8IbdWxTTiR
-         uw0A==
-X-Gm-Message-State: AC+VfDzrpj2pzkaCE2bKR0ovuKLN5rlBQAcc68Wfp7PsxNNcqj6TlhL9
-        9856SPbIr4ZyJX5RGd8Wr7R9DnuJJzQMqd74zV1v7w==
-X-Google-Smtp-Source: ACHHUZ6VAy4anS9OA+hLSOtnUi+6BXM6dV9BWqPfPWIc9DyJ1e17gfa+rFr3SHzvB65z/CtaZsvgKg==
-X-Received: by 2002:a05:6a00:3986:b0:67f:d5e7:4604 with SMTP id fi6-20020a056a00398600b0067fd5e74604mr2240345pfb.13.1687969196568;
-        Wed, 28 Jun 2023 09:19:56 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id f9-20020aa782c9000000b00634b91326a9sm7467651pfn.143.2023.06.28.09.19.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jun 2023 09:19:55 -0700 (PDT)
-Message-ID: <649c5dab.a70a0220.635c1.de9d@mx.google.com>
-Date:   Wed, 28 Jun 2023 09:19:55 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        id S231404AbjF1QqP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 12:46:15 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217]:41430 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231290AbjF1QqO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 12:46:14 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B418613E2;
+        Wed, 28 Jun 2023 16:46:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF24C433C9;
+        Wed, 28 Jun 2023 16:46:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687970773;
+        bh=Anh7J4kRhla0M1qr85cZBcy7HHbIz4mqCgOTHfAu7b4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jjWMAEUDSlBwfrfqiCEyfcuBYUqTlz/wwd8ni3Lu7xzaEwKOtQ9FP/L9et5oyjVVJ
+         ZgEmyFeNGrWs84CYZANfS8F0unnD0CWsQyPUjzVlxc9S5ZYyGA0QdYyBCdbdGDIgL5
+         NBszENm6/4vgSOv2dcK4+mWK0RCdyO8ikAxKJkL30Pc+LmNCAY4oKzF+wvoUMv4TJN
+         vFemQWAni9uVer6e2IFtc9+0Bn3sNFbxbPEj5I1GzKjXhc6rhin82rZeUfQ8IHbyUx
+         uk/s4bO9MhQ6bHDAlW4WUzKyjOXZeUwVRTX99QLpk4jtEoVuBmN2SR6blmjERdOiyY
+         9WFcjPJKmXOiA==
+From:   SeongJae Park <sj@kernel.org>
+To:     martin.lau@linux.dev
+Cc:     SeongJae Park <sj@kernel.org>, Alexander.Egorenkov@ibm.com,
+        ast@kernel.org, memxor@gmail.com, olsajiri@gmail.com,
+        bpf@vger.kernel.org, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>
+Subject: [PATCH v2] btf: warn but return no error for NULL btf from __register_btf_kfunc_id_set()
+Date:   Wed, 28 Jun 2023 16:46:11 +0000
+Message-Id: <20230628164611.83038-1-sj@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: test
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-6.3.y
-X-Kernelci-Kernel: v6.3.10
-Subject: stable-rc/linux-6.3.y baseline: 120 runs, 2 regressions (v6.3.10)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.3.y baseline: 120 runs, 2 regressions (v6.3.10)
+__register_btf_kfunc_id_set() assumes .BTF to be part of the module's
+.ko file if CONFIG_DEBUG_INFO_BTF is enabled.  If that's not the case,
+the function prints an error message and return an error.  As a result,
+such modules cannot be loaded.
 
-Regressions Summary
--------------------
+However, the section could be stripped out during a build process.  It
+would be better to let the modules loaded, because their basic
+functionalities have no problem[1], though the BTF functionalities will
+not be supported.  Make the function to lower the level of the message
+from error to warn, and return no error.
 
-platform                     | arch  | lab           | compiler | defconfig=
-                  | regressions
------------------------------+-------+---------------+----------+----------=
-------------------+------------
-mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig=
-+arm64-chromebook | 1          =
+[1] https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
 
-qemu_mips-malta              | mips  | lab-collabora | gcc-10   | malta_def=
-config            | 1          =
+Reported-by: Alexander Egorenkov <Alexander.Egorenkov@ibm.com>
+Link: https://lore.kernel.org/bpf/87y228q66f.fsf@oc8242746057.ibm.com/
+Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
+Fixes: c446fdacb10d ("bpf: fix register_btf_kfunc_id_set for !CONFIG_DEBUG_INFO_BTF")
+Cc: <stable@vger.kernel.org> # 5.18.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+---
+Changes from v1
+(https://lore.kernel.org/all/20230626181120.7086-1-sj@kernel.org/)
+- Fix Fixes: tag (Jiri Olsa)
+- Add 'Acked-by: ' from Jiri Olsa
 
+ kernel/bpf/btf.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.3.y/kern=
-el/v6.3.10/plan/baseline/
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 6b682b8e4b50..d683f034996f 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -7848,14 +7848,10 @@ static int __register_btf_kfunc_id_set(enum btf_kfunc_hook hook,
+ 
+ 	btf = btf_get_module_btf(kset->owner);
+ 	if (!btf) {
+-		if (!kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF)) {
+-			pr_err("missing vmlinux BTF, cannot register kfuncs\n");
+-			return -ENOENT;
+-		}
+-		if (kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF_MODULES)) {
+-			pr_err("missing module BTF, cannot register kfuncs\n");
+-			return -ENOENT;
+-		}
++		if (!kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF))
++			pr_warn("missing vmlinux BTF, cannot register kfuncs\n");
++		if (kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF_MODULES))
++			pr_warn("missing module BTF, cannot register kfuncs\n");
+ 		return 0;
+ 	}
+ 	if (IS_ERR(btf))
+-- 
+2.25.1
 
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-6.3.y
-  Describe: v6.3.10
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      28ae0a748c161ed01e2f43018beb978c74e12a0d =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch  | lab           | compiler | defconfig=
-                  | regressions
------------------------------+-------+---------------+----------+----------=
-------------------+------------
-mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig=
-+arm64-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/649c292ccfdae93c8fd7d66b
-
-  Results:     164 PASS, 8 FAIL, 0 SKIP
-  Full config: defconfig+arm64-chromebook
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.10/=
-arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/baseline-mt8183-kukui=
--jacuzzi-juniper-sku16.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.10/=
-arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/baseline-mt8183-kukui=
--jacuzzi-juniper-sku16.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.mtk-thermal-probed: https://kernelci.org/test/case/id/6=
-49c292ccfdae93c8fd7d673
-        failing since 9 days (last pass: v6.3.8-183-g3a50d9e7217ca, first f=
-ail: v6.3.8-187-g6b902997c5c2b)
-
-    2023-06-28T12:35:39.064094  /lava-10937367/1/../bin/lava-test-case
-
-    2023-06-28T12:35:39.074990  <8>[   28.616515] <LAVA_SIGNAL_TESTCASE TES=
-T_CASE_ID=3Dmtk-thermal-probed RESULT=3Dfail>
-   =
-
- =
-
-
-
-platform                     | arch  | lab           | compiler | defconfig=
-                  | regressions
------------------------------+-------+---------------+----------+----------=
-------------------+------------
-qemu_mips-malta              | mips  | lab-collabora | gcc-10   | malta_def=
-config            | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/649c24a2d1c96b2749d7d60d
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: malta_defconfig
-  Compiler:    gcc-10 (mips-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.10/=
-mips/malta_defconfig/gcc-10/lab-collabora/baseline-qemu_mips-malta.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.10/=
-mips/malta_defconfig/gcc-10/lab-collabora/baseline-qemu_mips-malta.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/mipsel/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/649c24a2d1c96b2749d7d=
-60e
-        new failure (last pass: v6.3.9) =
-
- =20
