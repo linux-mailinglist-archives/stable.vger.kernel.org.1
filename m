@@ -2,112 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEC31740B5E
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 10:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92AE2740BDC
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 10:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233991AbjF1I1H convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 28 Jun 2023 04:27:07 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.85.151]:35238 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234028AbjF1IZA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 04:25:00 -0400
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-128-vlZ0-3KkNdaZvqYiTvu37Q-1; Wed, 28 Jun 2023 09:24:56 +0100
-X-MC-Unique: vlZ0-3KkNdaZvqYiTvu37Q-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 28 Jun
- 2023 09:24:55 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Wed, 28 Jun 2023 09:24:55 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Dmitry Antipov' <dmantipov@yandex.ru>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Kalle Valo" <kvalo@kernel.org>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] [v2] wifi: b43: fix cordic arithmetic
-Thread-Topic: [PATCH] [v2] wifi: b43: fix cordic arithmetic
-Thread-Index: AQHZqQsGGmQjvdKBv0W33H1tLjOZ1K+f3QLw
-Date:   Wed, 28 Jun 2023 08:24:55 +0000
-Message-ID: <d0825edd2a3c4bbba72685340f547c9e@AcuMS.aculab.com>
-References: <ef4750f8-8de5-dbfc-2c0b-3400d30d83e5@lwfinger.net>
- <20230627151411.92749-1-dmantipov@yandex.ru>
-In-Reply-To: <20230627151411.92749-1-dmantipov@yandex.ru>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S232975AbjF1Iwj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 04:52:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43892 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236152AbjF1IpB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 04:45:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C374694;
+        Wed, 28 Jun 2023 01:36:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC0FC6126B;
+        Wed, 28 Jun 2023 08:36:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27BBC433C8;
+        Wed, 28 Jun 2023 08:36:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687941376;
+        bh=OIo+iQ1NbQ0Q/3QbREXXSDKg5tSJjXYtebmMPeule1o=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=qRhjFW5caRw09aD/J+66ROTCSqmKTZzlbW1fyj9VQ6DVlRaIGj9lVOw8OeudEqznx
+         TprARDTLZqJDdjbMvXOlqqaaqh+KQ97Ly9rpSl7EAaYCYYsZ2RGUbDoX31r1mLfzZz
+         Kmm4QWQp5eR7W3S4274x98TxURU19IOD8owD4Twb4dux+RrGjxGyvr/S4x3MydVJcs
+         OpS59BHGH1s6GHGNZE4xZoj0XGlTXFMlv2hneGHzO+pJV1Ym6RNorxkWdpiJjirWsd
+         y5XoiQjl9O9stmv4aMjaKkCCUnQMWZFEOXpuAK/VHMq8I/gDZFXJrR4LJ33/mvY96Q
+         J568AcMf4LTXA==
+Message-ID: <e4ee00c4-c20a-4613-87ec-3b144d6252ed@kernel.org>
+Date:   Wed, 28 Jun 2023 16:36:13 +0800
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] f2fs: fix deadlock in i_xattr_sem and inode page lock
+ and fix the original issue
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+To:     Jaegeuk Kim <jaegeuk@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net, stable@vger.kernel.org
+References: <20230613233940.3643362-1-jaegeuk@kernel.org>
+ <e5788348-b547-8e10-21af-90544f3aa75c@kernel.org>
+ <ZJvqZTX1SIwvDCUn@google.com>
+From:   Chao Yu <chao@kernel.org>
+In-Reply-To: <ZJvqZTX1SIwvDCUn@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Antipov
-> Sent: 27 June 2023 16:14
+On 2023/6/28 16:08, Jaegeuk Kim wrote:
+> Thread #1:
 > 
-> In 'lpphy_start_tx_tone()', 'CORDIC_FLOAT((sample.i * max) & 0xFF)'
-> is invalid because it is (<32-bit> & 0xff) shifted right by 15 bits
-> and so always evaluates to zero. Looking through brcmsmac's
-> 'wlc_lcnphy_start_tx_tone()', the result should be masked instead,
-> i. e. 'CORDIC_FLOAT(sample[i].max) & 0xFF'.
+> [122554.641906][   T92]  f2fs_getxattr+0xd4/0x5fc
+>      -> waiting for f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
 > 
-> Fixes: 6f98e62a9f1b ("b43: update cordic code to match current specs")
+> [122554.641927][   T92]  __f2fs_get_acl+0x50/0x284
+> [122554.641948][   T92]  f2fs_init_acl+0x84/0x54c
+> [122554.641969][   T92]  f2fs_init_inode_metadata+0x460/0x5f0
+> [122554.641990][   T92]  f2fs_add_inline_entry+0x11c/0x350
+>      -> Locked dir->inode_page by f2fs_get_node_page()
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> [122554.642009][   T92]  f2fs_do_add_link+0x100/0x1e4
+> [122554.642025][   T92]  f2fs_create+0xf4/0x22c
+> [122554.642047][   T92]  vfs_create+0x130/0x1f4
 > 
-> Cc: stable@vger.kernel.org
-> Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Thread #2:
+> 
+> [123996.386358][   T92]  __get_node_page+0x8c/0x504
+>      -> waiting for dir->inode_page lock
+> 
+> [123996.386383][   T92]  read_all_xattrs+0x11c/0x1f4
+> [123996.386405][   T92]  __f2fs_setxattr+0xcc/0x528
+> [123996.386424][   T92]  f2fs_setxattr+0x158/0x1f4
+>      -> f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
+> 
+> [123996.386443][   T92]  __f2fs_set_acl+0x328/0x430
+> [123996.386618][   T92]  f2fs_set_acl+0x38/0x50
+> [123996.386642][   T92]  posix_acl_chmod+0xc8/0x1c8
+> [123996.386669][   T92]  f2fs_setattr+0x5e0/0x6bc
+> [123996.386689][   T92]  notify_change+0x4d8/0x580
+> [123996.386717][   T92]  chmod_common+0xd8/0x184
+> [123996.386748][   T92]  do_fchmodat+0x60/0x124
+> [123996.386766][   T92]  __arm64_sys_fchmodat+0x28/0x3c
+
+Back to the race condition, my question is why we can chmod on inode before
+it has been created?
+
+Thanks,
+
+> 
+> Fixes: 27161f13e3c3 "f2fs: avoid race in between read xattr & write xattr"
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 > ---
-> v2: add Cc: stable and Fixes: (Larry Finger)
-> ---
->  drivers/net/wireless/broadcom/b43/phy_lp.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>   fs/f2fs/dir.c   | 9 ++++++++-
+>   fs/f2fs/xattr.c | 6 ++++--
+>   2 files changed, 12 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/net/wireless/broadcom/b43/phy_lp.c b/drivers/net/wireless/broadcom/b43/phy_lp.c
-> index 0e5c076e7544..e8ef04e509aa 100644
-> --- a/drivers/net/wireless/broadcom/b43/phy_lp.c
-> +++ b/drivers/net/wireless/broadcom/b43/phy_lp.c
-> @@ -1788,8 +1788,8 @@ static void lpphy_start_tx_tone(struct b43_wldev *dev, s32 freq, u16 max)
->  	for (i = 0; i < samples; i++) {
->  		sample = cordic_calc_iq(CORDIC_FIXED(theta));
->  		theta += rotation;
-> -		buf[i] = CORDIC_FLOAT((sample.i * max) & 0xFF) << 8;
-> -		buf[i] |= CORDIC_FLOAT((sample.q * max) & 0xFF);
-> +		buf[i] = (u16)((CORDIC_FLOAT(sample.i * max) & 0xFF) << 8);
-> +		buf[i] |= (u16)(CORDIC_FLOAT(sample.q * max) & 0xFF);
-
-What are the (u16) casts for?
-This code is actually called exactly once with max == 100.
-The .i and .q are the sine and cosine << 16 (signed).
-The CORDIC_FLOAT() is basically >> 16 (not 15) so the result should
-be between -100 and +100.
-The & 0xFF is there to strip the sign.
-The sin+cos are then packed into a short[] then unpacked to be
-written to the hardware later.
-
->  	}
-> 
->  	b43_lptab_write_bulk(dev, B43_LPTAB16(5, 0), samples, buf);
-
-Don't open the bag of worms that contains the above :-)
-
-	David
-
-> --
-> 2.41.0
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+> diff --git a/fs/f2fs/dir.c b/fs/f2fs/dir.c
+> index 887e55988450..d635c58cf5a3 100644
+> --- a/fs/f2fs/dir.c
+> +++ b/fs/f2fs/dir.c
+> @@ -775,8 +775,15 @@ int f2fs_add_dentry(struct inode *dir, const struct f2fs_filename *fname,
+>   {
+>   	int err = -EAGAIN;
+>   
+> -	if (f2fs_has_inline_dentry(dir))
+> +	if (f2fs_has_inline_dentry(dir)) {
+> +		/*
+> +		 * Should get i_xattr_sem to keep the lock order:
+> +		 * i_xattr_sem -> inode_page lock used by f2fs_setxattr.
+> +		 */
+> +		f2fs_down_read(&F2FS_I(dir)->i_xattr_sem);
+>   		err = f2fs_add_inline_entry(dir, fname, inode, ino, mode);
+> +		f2fs_up_read(&F2FS_I(dir)->i_xattr_sem);
+> +	}
+>   	if (err == -EAGAIN)
+>   		err = f2fs_add_regular_entry(dir, fname, inode, ino, mode);
+>   
+> diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+> index 213805d3592c..476b186b90a6 100644
+> --- a/fs/f2fs/xattr.c
+> +++ b/fs/f2fs/xattr.c
+> @@ -528,10 +528,12 @@ int f2fs_getxattr(struct inode *inode, int index, const char *name,
+>   	if (len > F2FS_NAME_LEN)
+>   		return -ERANGE;
+>   
+> -	f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+> +	if (!ipage)
+> +		f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+>   	error = lookup_all_xattrs(inode, ipage, index, len, name,
+>   				&entry, &base_addr, &base_size, &is_inline);
+> -	f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+> +	if (!ipage)
+> +		f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+>   	if (error)
+>   		return error;
+>   
