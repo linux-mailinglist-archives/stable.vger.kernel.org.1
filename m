@@ -2,150 +2,176 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92AE2740BDC
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 10:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1685740BDD
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 10:53:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232975AbjF1Iwj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 04:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43892 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236152AbjF1IpB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 04:45:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C374694;
-        Wed, 28 Jun 2023 01:36:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC0FC6126B;
-        Wed, 28 Jun 2023 08:36:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27BBC433C8;
-        Wed, 28 Jun 2023 08:36:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687941376;
-        bh=OIo+iQ1NbQ0Q/3QbREXXSDKg5tSJjXYtebmMPeule1o=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=qRhjFW5caRw09aD/J+66ROTCSqmKTZzlbW1fyj9VQ6DVlRaIGj9lVOw8OeudEqznx
-         TprARDTLZqJDdjbMvXOlqqaaqh+KQ97Ly9rpSl7EAaYCYYsZ2RGUbDoX31r1mLfzZz
-         Kmm4QWQp5eR7W3S4274x98TxURU19IOD8owD4Twb4dux+RrGjxGyvr/S4x3MydVJcs
-         OpS59BHGH1s6GHGNZE4xZoj0XGlTXFMlv2hneGHzO+pJV1Ym6RNorxkWdpiJjirWsd
-         y5XoiQjl9O9stmv4aMjaKkCCUnQMWZFEOXpuAK/VHMq8I/gDZFXJrR4LJ33/mvY96Q
-         J568AcMf4LTXA==
-Message-ID: <e4ee00c4-c20a-4613-87ec-3b144d6252ed@kernel.org>
-Date:   Wed, 28 Jun 2023 16:36:13 +0800
+        id S233260AbjF1IxM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 04:53:12 -0400
+Received: from mout.gmx.net ([212.227.15.19]:60829 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233497AbjF1Itt (ORCPT <rfc822;stable@vger.kernel.org>);
+        Wed, 28 Jun 2023 04:49:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=s31663417; t=1687942153; x=1688546953; i=georgmueller@gmx.net;
+ bh=IqMVZAVcC6oao8CL+MjCeJoklvxUgAe2/NirNejdy8k=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=PO8Q4Ymw00tef3JsmohZqScnvZgOjJEDD2HoBmWtQtZE+v+v51lAFQdFVZSRZ7cnB2YQf+x
+ E9kG9ah0x1qhzu3FUokpHBEt5s5OyHbHw0T+mCx1oY4gFkUMQmspKbsKdFFETIPFVFfUesSyM
+ wr2esT8BE5cVde5TEEwZAA77jejx32t0Il6b6mQugoAG5HyC/7X+WNYmqhD/gLdrSbAEkM6xM
+ b6MOaBE7plfFg0qZuaLz8fUieuAvx96LXCszfG6cxQm50zxGL7j8BCUpUdlXwF8fnfY4srXmA
+ 41pYAYBFt9eMl8c5AX1LphfboMNb2xr4+Kvljb70Ato8DxF1JeSw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from nb-georg.intra.allegro-packets.com ([79.246.84.17]) by
+ mail.gmx.net (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MMXUD-1qWEjH3txv-00JYeE; Wed, 28 Jun 2023 10:49:13 +0200
+From:   =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc:     =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
+        regressions@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH v3 1/2] perf probe: add test for regression introduced by switch to die_get_decl_file
+Date:   Wed, 28 Jun 2023 10:45:50 +0200
+Message-ID: <20230628084551.1860532-5-georgmueller@gmx.net>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230628084551.1860532-3-georgmueller@gmx.net>
+References: <20230628084551.1860532-3-georgmueller@gmx.net>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2] f2fs: fix deadlock in i_xattr_sem and inode page lock
- and fix the original issue
-Content-Language: en-US
-To:     Jaegeuk Kim <jaegeuk@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, stable@vger.kernel.org
-References: <20230613233940.3643362-1-jaegeuk@kernel.org>
- <e5788348-b547-8e10-21af-90544f3aa75c@kernel.org>
- <ZJvqZTX1SIwvDCUn@google.com>
-From:   Chao Yu <chao@kernel.org>
-In-Reply-To: <ZJvqZTX1SIwvDCUn@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:kdGhZgfEbflE33yA0vvf/egN3okf3RDeYUzy9I3XmrQKqp64kyS
+ ZCvjqt1Xy+L+i1hzZVR81GnnkNfmju/AsraIyz+mWKnhh9N5VuagyCScGL2w9LPg4NjBQcz
+ EwblKYezTE3IrCTrFCNtb2NwDCLMoMNesms8vojdlshKazRJwK/TOBbEGmoq0YWGPQaR2hQ
+ LTs0uVDzI8AgoL9qxAxiw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:uPxKcZocKN8=;Y+mmy4nqoTka2UdcxmCpU7DmPmq
+ wGchdmvx3cXXWQFZ9snoG9/sVicxe2kCdS2a+8J/2l4vMJ00hLy/SRd5PWAnxbj45Z8w78bsn
+ xAk135uApf75LznxzgE774U+D2w77fxfPSl7ShCacM3Ml/SaX2NERbuh2+M4JIRrxkwT8Gjoh
+ NizRog2VM1udzCFVjBwY49vI4UlqFYi1T90k3deuJTjHlOMo1QBsybEWTZ2SLMcJlD1L4QACV
+ Mv/srZdKY5NrIvM8r8gNxQZZXirTvcwSKRJp3s9fkenYw/6VeiwWCemhgmmXblRQxFxEiTYhJ
+ jbFyQix+nQAz3Lhk/c5PhxEhO+zrBIxeNyRTBXCmppKMhtPMxDnEyb9L4X8NAsE4hEU/jl2TW
+ 0VWAKuIE0mLH596zFaLmp91DZil7VgEJpMQhHxfYtCRwr8msG6XT6tkokeYky7byxhfk8N2i8
+ jIqlJ41FkAS45FGEZ+Wd6X3fuZbIhEVgdEpCSBb/rSyohM7q0WAaVtYzEjOZ1nZAtRHheJ+iB
+ RroTy9QXdtIuBXDbTK5/aCOa+GUnoXn34mB2YGRrntQi5GhmOfmZwqsQuouoeQ8BwxKTfiKTp
+ uvqEN+CtAwvb4P8Kz+XPXs3NOdADGU9xOEm9hRiwpn/RbgujmLcpDxRWnRbLNDtRb+1QPAUwU
+ wFCKdPsND4RyRBshTTJzpNep/9clb9Cxq7Ydw15j/3IEXW7PlTTnhR1UC8NtMHnq/GuzsctCA
+ kD9VDwNX2QuZIpobLaI87hcEUbkOJY90Z5ti0PBywK+XJQQaE2RSxs54Q6wXQLZlU5mEF17x5
+ Mxgq7AXCmaS/iU3FtVU9t6SHAYu9nfIs6FHaydOJWCJQEzOZx3NzqheV4nMUXujfuPhO8ti9S
+ L7H9VNIdVui7Zr2k8CPJSOJoWuLYK8WBK9gYu/uOv7CBW/cUDsV54Z+2+g+4j8++ges6bKLVE
+ f82fEE2aAwJNzXgQNcwDQjw9lDU=
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023/6/28 16:08, Jaegeuk Kim wrote:
-> Thread #1:
-> 
-> [122554.641906][   T92]  f2fs_getxattr+0xd4/0x5fc
->      -> waiting for f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
-> 
-> [122554.641927][   T92]  __f2fs_get_acl+0x50/0x284
-> [122554.641948][   T92]  f2fs_init_acl+0x84/0x54c
-> [122554.641969][   T92]  f2fs_init_inode_metadata+0x460/0x5f0
-> [122554.641990][   T92]  f2fs_add_inline_entry+0x11c/0x350
->      -> Locked dir->inode_page by f2fs_get_node_page()
-> 
-> [122554.642009][   T92]  f2fs_do_add_link+0x100/0x1e4
-> [122554.642025][   T92]  f2fs_create+0xf4/0x22c
-> [122554.642047][   T92]  vfs_create+0x130/0x1f4
-> 
-> Thread #2:
-> 
-> [123996.386358][   T92]  __get_node_page+0x8c/0x504
->      -> waiting for dir->inode_page lock
-> 
-> [123996.386383][   T92]  read_all_xattrs+0x11c/0x1f4
-> [123996.386405][   T92]  __f2fs_setxattr+0xcc/0x528
-> [123996.386424][   T92]  f2fs_setxattr+0x158/0x1f4
->      -> f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
-> 
-> [123996.386443][   T92]  __f2fs_set_acl+0x328/0x430
-> [123996.386618][   T92]  f2fs_set_acl+0x38/0x50
-> [123996.386642][   T92]  posix_acl_chmod+0xc8/0x1c8
-> [123996.386669][   T92]  f2fs_setattr+0x5e0/0x6bc
-> [123996.386689][   T92]  notify_change+0x4d8/0x580
-> [123996.386717][   T92]  chmod_common+0xd8/0x184
-> [123996.386748][   T92]  do_fchmodat+0x60/0x124
-> [123996.386766][   T92]  __arm64_sys_fchmodat+0x28/0x3c
+This patch adds a test to validate that perf probe works for binaries
+where DWARF info is split into multiple CUs
 
-Back to the race condition, my question is why we can chmod on inode before
-it has been created?
+Signed-off-by: Georg M=C3=BCller <georgmueller@gmx.net>
+Link: https://lore.kernel.org/r/5a00d5a5-7be7-ef8a-4044-9a16249fff25@gmx.n=
+et/
+Cc: stable@vger.kernel.org
+=2D--
+ .../shell/test_uprobe_from_different_cu.sh    | 77 +++++++++++++++++++
+ 1 file changed, 77 insertions(+)
+ create mode 100755 tools/perf/tests/shell/test_uprobe_from_different_cu.s=
+h
 
-Thanks,
+diff --git a/tools/perf/tests/shell/test_uprobe_from_different_cu.sh b/too=
+ls/perf/tests/shell/test_uprobe_from_different_cu.sh
+new file mode 100755
+index 000000000000..00d2e0e2e0c2
+=2D-- /dev/null
++++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+@@ -0,0 +1,77 @@
++#!/bin/bash
++# test perf probe of function from different CU
++# SPDX-License-Identifier: GPL-2.0
++
++set -e
++
++temp_dir=3D$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
++
++cleanup()
++{
++	trap - EXIT TERM INT
++	if [[ "${temp_dir}" =3D~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
++		echo "--- Cleaning up ---"
++		perf probe -x ${temp_dir}/testfile -d foo
++		rm -f "${temp_dir}/"*
++		rmdir "${temp_dir}"
++	fi
++}
++
++trap_cleanup()
++{
++        cleanup
++        exit 1
++}
++
++trap trap_cleanup EXIT TERM INT
++
++cat > ${temp_dir}/testfile-foo.h << EOF
++struct t
++{
++  int *p;
++  int c;
++};
++
++extern int foo (int i, struct t *t);
++EOF
++
++cat > ${temp_dir}/testfile-foo.c << EOF
++#include "testfile-foo.h"
++
++int
++foo (int i, struct t *t)
++{
++  int j, res =3D 0;
++  for (j =3D 0; j < i && j < t->c; j++)
++    res +=3D t->p[j];
++
++  return res;
++}
++EOF
++
++cat > ${temp_dir}/testfile-main.c << EOF
++#include "testfile-foo.h"
++
++static struct t g;
++
++int
++main (int argc, char **argv)
++{
++  int i;
++  int j[argc];
++  g.c =3D argc;
++  g.p =3D j;
++  for (i =3D 0; i < argc; i++)
++    j[i] =3D (int) argv[i][0];
++  return foo (3, &g);
++}
++EOF
++
++gcc -g -Og -flto -c ${temp_dir}/testfile-foo.c -o ${temp_dir}/testfile-fo=
+o.o
++gcc -g -Og -c ${temp_dir}/testfile-main.c -o ${temp_dir}/testfile-main.o
++gcc -g -Og -o ${temp_dir}/testfile ${temp_dir}/testfile-foo.o ${temp_dir}=
+/testfile-main.o
++
++perf probe -x ${temp_dir}/testfile --funcs foo
++perf probe -x ${temp_dir}/testfile foo
++
++cleanup
+=2D-
+2.41.0
 
-> 
-> Fixes: 27161f13e3c3 "f2fs: avoid race in between read xattr & write xattr"
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-> ---
->   fs/f2fs/dir.c   | 9 ++++++++-
->   fs/f2fs/xattr.c | 6 ++++--
->   2 files changed, 12 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/f2fs/dir.c b/fs/f2fs/dir.c
-> index 887e55988450..d635c58cf5a3 100644
-> --- a/fs/f2fs/dir.c
-> +++ b/fs/f2fs/dir.c
-> @@ -775,8 +775,15 @@ int f2fs_add_dentry(struct inode *dir, const struct f2fs_filename *fname,
->   {
->   	int err = -EAGAIN;
->   
-> -	if (f2fs_has_inline_dentry(dir))
-> +	if (f2fs_has_inline_dentry(dir)) {
-> +		/*
-> +		 * Should get i_xattr_sem to keep the lock order:
-> +		 * i_xattr_sem -> inode_page lock used by f2fs_setxattr.
-> +		 */
-> +		f2fs_down_read(&F2FS_I(dir)->i_xattr_sem);
->   		err = f2fs_add_inline_entry(dir, fname, inode, ino, mode);
-> +		f2fs_up_read(&F2FS_I(dir)->i_xattr_sem);
-> +	}
->   	if (err == -EAGAIN)
->   		err = f2fs_add_regular_entry(dir, fname, inode, ino, mode);
->   
-> diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-> index 213805d3592c..476b186b90a6 100644
-> --- a/fs/f2fs/xattr.c
-> +++ b/fs/f2fs/xattr.c
-> @@ -528,10 +528,12 @@ int f2fs_getxattr(struct inode *inode, int index, const char *name,
->   	if (len > F2FS_NAME_LEN)
->   		return -ERANGE;
->   
-> -	f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
-> +	if (!ipage)
-> +		f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
->   	error = lookup_all_xattrs(inode, ipage, index, len, name,
->   				&entry, &base_addr, &base_size, &is_inline);
-> -	f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
-> +	if (!ipage)
-> +		f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
->   	if (error)
->   		return error;
->   
