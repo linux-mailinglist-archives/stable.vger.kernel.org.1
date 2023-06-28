@@ -2,139 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F99741ACE
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 23:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5641741B0D
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 23:41:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231750AbjF1VZu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 17:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58642 "EHLO
+        id S229690AbjF1Vlt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 17:41:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbjF1VZ2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 17:25:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64DD1359B
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 14:22:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687987376;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fP84djK5erd2GrrGFYuKnbHCuXvHXjeqzaJ4gXaZwiY=;
-        b=RfW679b+zBmntmSbQc29Eq0WngafEXD0JXEmfdq+i7cjp/l48aDU8tkfFhAJprZ8rz80AB
-        zoYjmh45DlmkLHdbpVI6CDdkQNZmEsJ3d5f2IkORKSA5tLhLPJZh/2Ukkn8F5kGDnEaUuo
-        Ez1D0vt+w5pg/xhRFF6+50qVF3OnQoM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-44--gm-qtCGPi6OjurVHlGWVw-1; Wed, 28 Jun 2023 17:22:55 -0400
-X-MC-Unique: -gm-qtCGPi6OjurVHlGWVw-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-313ecc94e23so714f8f.0
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 14:22:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687987374; x=1690579374;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fP84djK5erd2GrrGFYuKnbHCuXvHXjeqzaJ4gXaZwiY=;
-        b=ROpV0/SrKB9Vzrj4LXvtBG42VHRKHVu9h0Os8k2wiSg5zELIGOGT+BPqHgJVmfVtAc
-         8pu99aAJw1qgzM9LERL2fR0gYUH5jEjff3PQorH6gMKogmttQPML9cKb5TCPtUC/klY1
-         8ZlFr5STeFbsAA+1CxWw2GKz4Duz+L7C9vo2xBG+6KataXVLzf1XnGjujWlZ4GtlKMU6
-         kNGw+Y5LsFYB5NKqAVozmgHAxPXzGKnc7XckA5tMbwi8+C0AYkzSWcSdWloA4LtlXbMt
-         dn0hx9WHyIlFlxcYHKLJNNv5yF17FSP+IYoahFTOReOX0Ic2TgJkJf80EGLPbuPz1n8M
-         hqdQ==
-X-Gm-Message-State: AC+VfDyiI63cAnK6LLU5kCSn03TLn2emCe0Vbo5lEYOvUmRo1uNDE2i2
-        uMF8ujP6oIIMVXCjPBrQK0OZv2K7CJ4KUsMYh1dY55JqsQuDGBV+e0HoECo4ZzqN4qQ1qjJH4AR
-        jNRJ4zF6Dc59P9Q7i
-X-Received: by 2002:a05:6000:151:b0:314:a77:b6c0 with SMTP id r17-20020a056000015100b003140a77b6c0mr2925787wrx.1.1687987373884;
-        Wed, 28 Jun 2023 14:22:53 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5dTARVZLT46r+M/QXdzbg3Pfto134Vfy7ETRKzO1nDBcz+HGLvTECmnUAAxcjTyp3OM3kxvg==
-X-Received: by 2002:a05:6000:151:b0:314:a77:b6c0 with SMTP id r17-20020a056000015100b003140a77b6c0mr2925773wrx.1.1687987373643;
-        Wed, 28 Jun 2023 14:22:53 -0700 (PDT)
-Received: from kherbst.pingu ([95.90.48.30])
-        by smtp.gmail.com with ESMTPSA id r3-20020adfda43000000b0030ae3a6be4asm14294323wrl.72.2023.06.28.14.22.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jun 2023 14:22:52 -0700 (PDT)
-From:   Karol Herbst <kherbst@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        Karol Herbst <kherbst@redhat.com>,
-        Ben Skeggs <bskeggs@redhat.com>, Lyude Paul <lyude@redhat.com>,
-        stable@vger.kernel.org
-Subject: [PATCH 3/3] drm/nouveau/disp: verify mode on atomic_check
-Date:   Wed, 28 Jun 2023 23:22:48 +0200
-Message-ID: <20230628212248.3798605-3-kherbst@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230628212248.3798605-1-kherbst@redhat.com>
-References: <20230628212248.3798605-1-kherbst@redhat.com>
+        with ESMTP id S229487AbjF1Vls (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 17:41:48 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 570959F
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 14:41:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1687988494; x=1688593294; i=deller@gmx.de;
+ bh=P0ySrlluaBLMmJk4f2GQ+fXipC1OuPBh4hunAUA5kgw=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=S1IzEyC61ni6AMWFvX33nm85FQzdCIER/AufODHMkZAy5ny7Q6Vq0pHfkOmW7ffSjH+JJN0
+ CUAIQTWTiwrV0Da77Drtl+42GiZjiKCLAij/Jg+yUKQppKeUBoF+XjhDo/jkpK0h8ssXC7a7s
+ BuyhFJTnJ4UshMXA+b8itwDlCzwiRi0ebVJzpHnzNM5vcVv8vVwSmOOHIS93TvLaLkPT68Ig2
+ Cvf0eQqXLzW1+XSTh4lnhNd5GGij1CWAyoTQ/j3v3Pk2WcL2drkxAtc3wDcZMJEkmAdY8Qmlv
+ 6wsepmqC7ZQDtepoZ72JL30yyGp0Hqsd5SozlnXk984Nd+pfaIPA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.152.41]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M72oH-1q7lYn0eZ5-008cti; Wed, 28
+ Jun 2023 23:41:34 +0200
+Message-ID: <2b0316ee-d5be-9f86-14d1-debb1e756e54@gmx.de>
+Date:   Wed, 28 Jun 2023 23:41:33 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 4.14 19/26] fbdev: imsttfb: Release framebuffer and
+ dealloc cmap on error path
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+References: <20230626180733.699092073@linuxfoundation.org>
+ <20230626180734.413046667@linuxfoundation.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20230626180734.413046667@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:T54BKfgFEMv2Oyz8mxRBRP7uSUeu0KFNEqE4aw1enoM8WbtCUmm
+ QWcx/dEk4t0dyrcXt7m1zR6E69Va+JOG6Auung3GDW/AhxM5iKVNMu8kyXFPxrGGpSpz/gH
+ fiygtqAKRe65xp39uUTr4fIzv32H3I6XfTcz0UZ7evTldgK6GAubK7rdYHZbB5/9Opny9Rw
+ SIASxSrWDGWm5ct+Bfcug==
+UI-OutboundReport: notjunk:1;M01:P0:/9jSRT5O9D4=;pLr6DRTh/i9+GSM/vgZlK0HuWg3
+ r3Gx3SdVAUFMs0C9ZMzF4M9rU0tt7jsaZaV+CsXBg56Rm9O75/EVgL6Pa6fGJW4l12MNZx0UB
+ MnzcZLxpnOQD0Vn6Momwxl3tEgba/GfnvUEiJjPnKiBzWiGgZM7Bbde+LeVaLkCJYiwCC6Eom
+ xFzDgQazRNO/5m/E0LSlM4EzokE7mNxB0Tlrmgad8e+VVMJxsfdX9MJpjqjcPuNKLgMfD0Jc9
+ Cv4WZbGLt5L2XK50ZfFk+gccIo4BdhprAJJvZUD3xf1jD9Sgf+3r/IgxIz4tCJhpPOheE1SdU
+ ZVJwIabDD//9NyNk+et5v6u/9h91eloUVx4OP/H0oPRmr3KEkRcQh8XvLjvQBJCSqckhaBama
+ +go46Cy6e2KHaAIPIRDaXGPKAdoabmb3I8USbuF7ijb7jA51KKkAsRDbm3h0cZvvhAk/erLjc
+ SjuNlzfKn0nxuc/ZmN1tcPSqeOZkk8OSrIvpOCzKWiHjBnM+SpZ60NSPrDbhEC8G2ZFl0oXca
+ C9dK3hdbIa8AIpqmnmIe3wRvD/LumcSf+IVp/qlzZapR3tdrhFLCz1l9dkzDPkSw4xGKLjQst
+ doHn8enfzQx01Yu2YVg3hoWRbssZP+tWka2UHiNhSRw2WiNBN4juCSU65KFo/JI23YX2fF+ml
+ y6mnHboIVH9FPSW5OPmxYnUl3ugKwEf2m6uH0oDBTW8kEviLAL9CNRdmqNQJzw5485acDPAM2
+ Pm55l7rv/KDhITmp3kvYMpPbdo+0yVAeKzaRLHOx1ys0WHUJVKl4diMe8AESZZRZ/Mc9NhEyM
+ XELRbq0HcGa48HTSUwJXXiP2+89EBl8osQXXPUdxbWUOh9n12R8MSDl/q+tQUUfd+ONa60WGM
+ zJ58r7w1qq9QiasxI+K0sK/5kfA2CY/2HyQfYl6UYUb19N1CqnWR4w3ubVEltJ52fIwVM/+F+
+ am0ozg==
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-We have to verify the selected mode as Userspace might request one which
-we can't configure the GPU for.
+Hi Greg & Sasha,
 
-X with the modesetting DDX is adding a bunch of modes, some so far outside
-of hardware limits that things simply break.
+The patch below landed in 4.14-stable and breaks build with this error:
 
-Sadly we can't fix X this way as on start it sticks to one mode and
-ignores any error and there is really nothing we can do about this, but at
-least this way we won't let the GPU run into any errors caused by a non
-supported display mode.
+drivers/video/fbdev/imsttfb.c:1457:3: error: void function 'init_imstt' sh=
+ould not return a value [-Wreturn-type]
+                    return -ENODEV;
+                    ^      ~~~~~~~
+    1 error generated.
 
-However this does prevent X from switching to such a mode, which to be
-fair is an improvement as well.
 
-Seen on one of my Tesla GPUs with a connected 4K display.
+I suggest to simply drop (revert) it again from the v4.14-stable tree.
+Shall I send a revert-patch, or can you do it manually?
 
-Link: https://gitlab.freedesktop.org/drm/nouveau/-/issues/199
-Cc: Ben Skeggs <bskeggs@redhat.com>
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Karol Herbst <kherbst@redhat.com>
----
- drivers/gpu/drm/nouveau/nouveau_connector.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+Helge
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index 22c42a5e184d..edf490c1490c 100644
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -1114,6 +1114,25 @@ nouveau_connector_atomic_check(struct drm_connector *connector, struct drm_atomi
- 	struct drm_connector_state *conn_state =
- 		drm_atomic_get_new_connector_state(state, connector);
- 
-+	/* As we can get any random mode from Userspace, we have to make sure the to be set mode
-+	 * is valid and does not violate hardware constraints as we rely on it being sane.
-+	 */
-+	if (conn_state->crtc) {
-+		struct drm_crtc_state *crtc_state =
-+			drm_atomic_get_crtc_state(state, conn_state->crtc);
-+
-+		if (IS_ERR(crtc_state))
-+			return PTR_ERR(crtc_state);
-+
-+		if (crtc_state->enable && (crtc_state->mode_changed ||
-+					   crtc_state->connectors_changed)) {
-+			struct drm_display_mode *mode = &crtc_state->mode;
-+
-+			if (connector->helper_private->mode_valid(connector, mode) != MODE_OK)
-+				return -EINVAL;
-+		}
-+	}
-+
- 	if (!nv_conn->dp_encoder || !nv50_has_mst(nouveau_drm(connector->dev)))
- 		return 0;
- 
--- 
-2.41.0
+
+
+On 6/26/23 20:11, Greg Kroah-Hartman wrote:
+> From: Helge Deller <deller@gmx.de>
+>
+> [ Upstream commit 5cf9a090a39c97f4506b7b53739d469b1c05a7e9 ]
+>
+> Add missing cleanups in error path.
+>
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   drivers/video/fbdev/imsttfb.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/video/fbdev/imsttfb.c b/drivers/video/fbdev/imsttfb=
+.c
+> index ecdcf358ad5ea..6589d5f0a5a40 100644
+> --- a/drivers/video/fbdev/imsttfb.c
+> +++ b/drivers/video/fbdev/imsttfb.c
+> @@ -1452,9 +1452,13 @@ static void init_imstt(struct fb_info *info)
+>   	              FBINFO_HWACCEL_FILLRECT |
+>   	              FBINFO_HWACCEL_YPAN;
+>
+> -	fb_alloc_cmap(&info->cmap, 0, 0);
+> +	if (fb_alloc_cmap(&info->cmap, 0, 0)) {
+> +		framebuffer_release(info);
+> +		return -ENODEV;
+> +	}
+>
+>   	if (register_framebuffer(info) < 0) {
+> +		fb_dealloc_cmap(&info->cmap);
+>   		framebuffer_release(info);
+>   		return;
+>   	}
 
