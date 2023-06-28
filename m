@@ -2,61 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01E89740B62
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 10:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79BDC740C92
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 11:24:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233972AbjF1I1O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 04:27:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40046 "EHLO
+        id S229747AbjF1JXp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 05:23:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234241AbjF1IZJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 04:25:09 -0400
+        with ESMTP id S233286AbjF1IIu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 04:08:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 804574201;
-        Wed, 28 Jun 2023 01:14:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C663AA6;
+        Wed, 28 Jun 2023 01:07:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 354656132F;
-        Wed, 28 Jun 2023 07:37:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CD1C43395;
-        Wed, 28 Jun 2023 07:37:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72FD26125F;
+        Wed, 28 Jun 2023 08:07:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72539C433C8;
+        Wed, 28 Jun 2023 08:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687937821;
-        bh=FHd2lTbvsIIzHQmCcMNd3oy0ZJaK0w1A6wsgplCYx0Y=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=epi3Q9iu50HKC/yrjUTLCNGFjXwatUn07RqG5KEcnk5iICVsWh8vTqMgNZFsP/vug
-         3+HkNGr33pAMFS4gWSgIIVxRk/UVvtFWZClfqQ5WWNayoynyyZ6nv4dzQviGv3v0qE
-         iu3OH6yE5fKUwX0UF1CJDnamufoAdAEQEzNWGalNT6OI31Jcphms3/Iz0TT7hjpwMd
-         Al6Dvy7YMKls0dz3YCgR1HXVfprvtqcpIl99CQxGQQFfX6NC2Bd2IiXN+woaWIB/8a
-         OOyF2K3QGEOMe/lNwv+nM/DBIOM1TaW8cgwCVAwmpsFy17bqBKFgczugdKl6PmpPaH
-         b7DbX9rmZVU6A==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-51d884a22e7so5306688a12.3;
-        Wed, 28 Jun 2023 00:37:01 -0700 (PDT)
-X-Gm-Message-State: AC+VfDwwYnwOaDz0P3eyqjbiY1z9F72YdEmNo7NhwUR2iFymOU4plO+U
-        pLFMhbAHqcoHZSdYwej+6Laos88Q6fbe1sy8u0U=
-X-Google-Smtp-Source: ACHHUZ6NB5UruUH/V0e7QCYg9qAl4dtFgcinn2A4NlMDpQnIZXsZ+O8yFsnpArkDKOcNDewJivafbdv7a7wjyVxNDSA=
-X-Received: by 2002:a50:ef01:0:b0:51d:adc5:22c1 with SMTP id
- m1-20020a50ef01000000b0051dadc522c1mr2565093eds.36.1687937819590; Wed, 28 Jun
- 2023 00:36:59 -0700 (PDT)
+        s=k20201202; t=1687939636;
+        bh=IOSxMIm++J/AtvG+30u6yhS8IDwIG/Uc3jBJXaL2v1k=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZJeqKGgVWg5IBQHSCInLraK5jpK5xXuP6otl/gct3F4+5nWR4zd2ROPP+cAILOXCs
+         LIhaNN/35LDYehBBBm6cL2ZTEW6e4H0hp9egR1zSqoqeFmGxNKQX8T6lRAIAs/Z8vI
+         iUV1Gft01eER0aYZYL01KgzOev0M36fSykrcU95DrvbMxIyJcWzEJ8QBvf9JWrlLuu
+         LJcycs+ldlaQNuFuvG+c8aM0EkqM0ZNF24/wYnxeRVukMTwAwf7OtxLmJ1uHDJkzlI
+         sV2XASFW8pWhoe30lJYXuLUjKnX8iqxVWP+YlzWQT8nnLpAMghv8tluO1lHZMTwui8
+         VsnVAIMgGl3tw==
+Date:   Wed, 28 Jun 2023 01:07:14 -0700
+From:   Jaegeuk Kim <jaegeuk@kernel.org>
+To:     Chao Yu <chao@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net, stable@vger.kernel.org
+Subject: Re: [f2fs-dev] [PATCH] f2fs: remove i_xattr_sem to avoid deadlock
+ and fix the original issue
+Message-ID: <ZJvqMpWiit24BnXL@google.com>
+References: <20230613233940.3643362-1-jaegeuk@kernel.org>
+ <e5788348-b547-8e10-21af-90544f3aa75c@kernel.org>
+ <d0ec4a04-ab81-7e71-ad56-5b22e1815919@kernel.org>
+ <ZJmOgRADvLP/4rMJ@google.com>
+ <8a370c8e-3b5f-5ea7-5839-76896d1ec69e@kernel.org>
 MIME-Version: 1.0
-References: <20230626075047.1872818-1-chenhuacai@loongson.cn>
- <20230626160720.GA2174263@dev-arch.thelio-3990X> <CAAhV-H6nyXa+wG-J50d=FrHX=4saVNAePW8HHQ2hm+EsGR9Umw@mail.gmail.com>
- <20230627212839.GA1806408@dev-arch.thelio-3990X>
-In-Reply-To: <20230627212839.GA1806408@dev-arch.thelio-3990X>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Wed, 28 Jun 2023 15:36:47 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5VDvNnBixrm9nhKeSQ1pj9N-fkW-cRY99OpduVd=5+Mw@mail.gmail.com>
-Message-ID: <CAAhV-H5VDvNnBixrm9nhKeSQ1pj9N-fkW-cRY99OpduVd=5+Mw@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Loongson: Fix build error when make modules_install
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        stable@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8a370c8e-3b5f-5ea7-5839-76896d1ec69e@kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -67,127 +60,175 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Nathan,
+On 06/27, Chao Yu wrote:
+> On 2023/6/26 21:11, Jaegeuk Kim wrote:
+> > On 06/25, Chao Yu wrote:
+> > > On 2023/6/25 15:26, Chao Yu wrote:
+> > > > One concern below:
+> > > > 
+> > > > Thread A:                    Thread B:
+> > > > - f2fs_getxattr
+> > > >    - lookup_all_xattrs
+> > > >     - read_inline_xattr
+> > > >      - f2fs_get_node_page(ino)
+> > > >      - memcpy inline xattr
+> > > >      - f2fs_put_page
+> > > >                           - f2fs_setxattr
+> > > >                            - __f2fs_setxattr
+> > > >                             - __f2fs_setxattr
+> > > >                              - write_all_xattrs
+> > > >                               - write xnode and inode
+> > > >     ---> inline xattr may out of update here.
+> > > >     - read_xattr_block
+> > > >      - f2fs_get_node_page(xnid)
+> > > >      - memcpy xnode xattr
+> > > >      - f2fs_put_page
+> > > > 
+> > > > Do we need to keep xattr_{get,set} being atomical operation?
+> > > 
+> > > It seems xfstest starts to complain w/ below message...
+> > 
+> > I don't see any failure. Which test do you see?
+> 
+> 051, 083, ... 467, 642
+> 
+> Testcase doesn't fail, but kernel log shows inode has corrupted xattr.
 
-On Wed, Jun 28, 2023 at 5:28=E2=80=AFAM Nathan Chancellor <nathan@kernel.or=
-g> wrote:
->
-> Hi Huacai,
->
-> + Masahiro
->
-> On Tue, Jun 27, 2023 at 11:11:27AM +0800, Huacai Chen wrote:
-> > Hi, Nathan,
-> >
-> > On Tue, Jun 27, 2023 at 12:07=E2=80=AFAM Nathan Chancellor <nathan@kern=
-el.org> wrote:
-> > >
-> > > On Mon, Jun 26, 2023 at 03:50:47PM +0800, Huacai Chen wrote:
-> > > > After commit 0e96ea5c3eb5904e5dc2f ("MIPS: Loongson64: Clean up use=
- of
-> > > > cc-ifversion") we get a build error when make modules_install:
-> > > >
-> > > > cc1: error: '-mloongson-mmi' must be used with '-mhard-float'
-> > > >
-> > > > The reason is when make modules_install, 'call cc-option' doesn't w=
-ork
-> > > > in $(KBUILD_CFLAGS) of 'CHECKFLAGS'. Then there is no -mno-loongson=
--mmi
-> > > > applied and -march=3Dloongson3a enable MMI instructions.
-> > >
-> > > The first sentence does not make much sense to me, specifically "in
-> > > $(KBUILD_CFLAGS) of 'CHECKFLAGS'". What configuration and build comma=
-nd
-> > > reproduces this? I do not see how '-mno-loongson-mmi' would fail to g=
-et
-> > > added to cflags-y after 0e96ea5c3eb5, which should have had no
-> > > functional change... I don't want to hang this change up since there =
-is
-> > > real breakage but I want to make sure we fully understand why
-> > > 0e96ea5c3eb5 broke things and why this patch resolves it.
-> > Please use loongson3_defconfig to build a loongson kernel with
-> > toolchains from here [1]:
-> > 'make' will succeed, but there is a build error when 'make
-> > modules_install'. And you should be careful because 'make
-> > modules_install' doesn't stop when the error occurs.
->
-> Excellent, thank you! I understand what is going on here and your patch
-> should work to resolve it (although I think the commit message should be
-> flushed out a little more with the following details) but I am curious
-> if Masahiro has any thoughts around this.
->
-> As you note, the error message comes from the CHECKFLAGS invocation of
-> $(CC) but it has no impact on the final result of modules_install, it is
-> purely a cosmetic issue from what I can tell. The error occurs because
-> cc-option is defined in scripts/Makefile.compiler, which is not included
-> in Makefile when running modules_install, as install targets are not
-> supposed to require the compiler; see commit 805b2e1d427a ("kbuild:
-> include Makefile.compiler only when compiler is needed"). As a result,
-> the call to check for '-mno-loongson-mmi' just never happens.
->
-> It would nice if '-mno-loongson-mmi' could be added unconditionally when
-> using GCC but I can see that the flag has only existed since 9.x, so we
-> do need to keep the cc-option call.
->
-> I am fine with your change as long as it includes some of the above
-> information (basically noting that while the original change should have
-> been equivalent, the requirement of '-mno-loongson-mmi' when using
-> certain Loongson '-march=3D' values with '-msoft-float' means that those
-> Loongson '-march=3D' values need to be called with cc-option as well),
-> even if clang will incur two more cc-option calls as a result (not the
-> end of the world).
->
-> Additionally, it seems like the same issue will occur when running
-> modules_install when CONFIG_CPU_LOONGSON2E or CONFIG_CPU_LOONGSON2F are
-> enabled, which I guess I also broke in commit 13ceb48bc19c ("MIPS:
-> Loongson2ef: Remove unnecessary {as,cc}-option calls") :/
->
-> Sorry again for the breakage and thanks for the fix!
-OK, I will update the commit message and fix for LOONGSON2EF together.
+I got it. It seems I had to fix the above issue only while keeping the sem. :(
 
-Huacai
->
-> Cheers,
-> Nathan
->
-> > > > Fix this by partially reverting to the old logic, use 'call cc-opti=
-on'
-> > > > to conditionally apply -march=3Dloongson3a and -march=3Dmips64r2.
-> > > >
-> > > > Fixes: 0e96ea5c3eb5904e5dc2f ("MIPS: Loongson64: Clean up use of cc=
--ifversion")
-> > > > Cc: stable@vger.kernel.org
-> > > > Cc: Nathan Chancellor <nathan@kernel.org>
-> > > > Cc: Nick Desaulniers <ndesaulniers@google.com>
-> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > ---
-> > > >  arch/mips/Makefile | 5 +----
-> > > >  1 file changed, 1 insertion(+), 4 deletions(-)
-> > > >
-> > > > diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> > > > index a7a4ee66a9d3..7fb76d12829e 100644
-> > > > --- a/arch/mips/Makefile
-> > > > +++ b/arch/mips/Makefile
-> > > > @@ -186,11 +186,8 @@ cflags-$(CONFIG_CPU_LOONGSON2F) +=3D -march=3D=
-loongson2f -Wa,--trap
-> > > >  # Some -march=3D flags enable MMI instructions, and GCC complains =
-about that
-> > > >  # support being enabled alongside -msoft-float. Thus explicitly di=
-sable MMI.
-> > > >  cflags-$(CONFIG_CPU_LOONGSON2EF) +=3D $(call cc-option,-mno-loongs=
-on-mmi)
-> > > > -ifdef CONFIG_CPU_LOONGSON64
-> > > >  cflags-$(CONFIG_CPU_LOONGSON64)      +=3D -Wa,--trap
-> > > > -cflags-$(CONFIG_CC_IS_GCC) +=3D -march=3Dloongson3a
-> > > > -cflags-$(CONFIG_CC_IS_CLANG) +=3D -march=3Dmips64r2
-> > > > -endif
-> > > > +cflags-$(CONFIG_CPU_LOONGSON64) +=3D $(call cc-option,-march=3Dloo=
-ngson3a,-march=3Dmips64r2)
-> > > >  cflags-$(CONFIG_CPU_LOONGSON64) +=3D $(call cc-option,-mno-loongso=
-n-mmi)
-> > > >
-> > > >  cflags-$(CONFIG_CPU_R4000_WORKAROUNDS)       +=3D $(call cc-option=
-,-mfix-r4000,)
-> > > > --
-> > > > 2.39.3
-> > > >
+> 
+> > 
+> > > 
+> > > [ 3400.856443] F2FS-fs (vdc): inode (2187) has invalid last xattr entry, entry_size: 21468
+> > > [ 3400.864042] F2FS-fs (vdc): inode (1595) has invalid last xattr entry, entry_size: 26580
+> > > [ 3400.865764] F2FS-fs (vdc): inode (2187) has invalid last xattr entry, entry_size: 21468
+> > > [ 3400.880067] F2FS-fs (vdc): inode (9839) has corrupted xattr
+> > > [ 3400.880714] F2FS-fs (vdc): inode (10855) has corrupted xattr
+> > > 
+> > > Thanks,
+> > > 
+> > > > 
+> > > > Thanks,
+> > > > 
+> > > > > 
+> > > > > I think we don't need to truncate xattr pages eagerly which introduces lots of
+> > > > > data races without big benefits.
+> > > > > 
+> > > > > Cc: <stable@vger.kernel.org>
+> > > > > Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+> > > > > ---
+> > > > >    fs/f2fs/f2fs.h  |  1 -
+> > > > >    fs/f2fs/super.c |  1 -
+> > > > >    fs/f2fs/xattr.c | 31 ++++++++-----------------------
+> > > > >    3 files changed, 8 insertions(+), 25 deletions(-)
+> > > > > 
+> > > > > diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+> > > > > index 3f5b161dd743..7b9af2d51656 100644
+> > > > > --- a/fs/f2fs/f2fs.h
+> > > > > +++ b/fs/f2fs/f2fs.h
+> > > > > @@ -838,7 +838,6 @@ struct f2fs_inode_info {
+> > > > >        /* avoid racing between foreground op and gc */
+> > > > >        struct f2fs_rwsem i_gc_rwsem[2];
+> > > > > -    struct f2fs_rwsem i_xattr_sem; /* avoid racing between reading and changing EAs */
+> > > > >        int i_extra_isize;        /* size of extra space located in i_addr */
+> > > > >        kprojid_t i_projid;        /* id for project quota */
+> > > > > diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+> > > > > index 1b2c788ed80d..c917fa771f0e 100644
+> > > > > --- a/fs/f2fs/super.c
+> > > > > +++ b/fs/f2fs/super.c
+> > > > > @@ -1418,7 +1418,6 @@ static struct inode *f2fs_alloc_inode(struct super_block *sb)
+> > > > >        INIT_LIST_HEAD(&fi->gdirty_list);
+> > > > >        init_f2fs_rwsem(&fi->i_gc_rwsem[READ]);
+> > > > >        init_f2fs_rwsem(&fi->i_gc_rwsem[WRITE]);
+> > > > > -    init_f2fs_rwsem(&fi->i_xattr_sem);
+> > > > >        /* Will be used by directory only */
+> > > > >        fi->i_dir_level = F2FS_SB(sb)->dir_level;
+> > > > > diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+> > > > > index 213805d3592c..bdc8a55085a2 100644
+> > > > > --- a/fs/f2fs/xattr.c
+> > > > > +++ b/fs/f2fs/xattr.c
+> > > > > @@ -433,7 +433,7 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+> > > > >    {
+> > > > >        struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+> > > > >        size_t inline_size = inline_xattr_size(inode);
+> > > > > -    struct page *in_page = NULL;
+> > > > > +    struct page *in_page = ipage;
+> > > > >        void *xattr_addr;
+> > > > >        void *inline_addr = NULL;
+> > > > >        struct page *xpage;
+> > > > > @@ -446,29 +446,19 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+> > > > >        /* write to inline xattr */
+> > > > >        if (inline_size) {
+> > > > > -        if (ipage) {
+> > > > > -            inline_addr = inline_xattr_addr(inode, ipage);
+> > > > > -        } else {
+> > > > > +        if (!in_page) {
+> > > > >                in_page = f2fs_get_node_page(sbi, inode->i_ino);
+> > > > >                if (IS_ERR(in_page)) {
+> > > > >                    f2fs_alloc_nid_failed(sbi, new_nid);
+> > > > >                    return PTR_ERR(in_page);
+> > > > >                }
+> > > > > -            inline_addr = inline_xattr_addr(inode, in_page);
+> > > > >            }
+> > > > > +        inline_addr = inline_xattr_addr(inode, in_page);
+> > > > > -        f2fs_wait_on_page_writeback(ipage ? ipage : in_page,
+> > > > > -                            NODE, true, true);
+> > > > > -        /* no need to use xattr node block */
+> > > > > +        f2fs_wait_on_page_writeback(in_page, NODE, true, true);
+> > > > >            if (hsize <= inline_size) {
+> > > > > -            err = f2fs_truncate_xattr_node(inode);
+> > > > > -            f2fs_alloc_nid_failed(sbi, new_nid);
+> > > > > -            if (err) {
+> > > > > -                f2fs_put_page(in_page, 1);
+> > > > > -                return err;
+> > > > > -            }
+> > > > >                memcpy(inline_addr, txattr_addr, inline_size);
+> > > > > -            set_page_dirty(ipage ? ipage : in_page);
+> > > > > +            set_page_dirty(in_page);
+> > > > >                goto in_page_out;
+> > > > >            }
+> > > > >        }
+> > > > > @@ -502,12 +492,13 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+> > > > >        memcpy(xattr_addr, txattr_addr + inline_size, VALID_XATTR_BLOCK_SIZE);
+> > > > >        if (inline_size)
+> > > > > -        set_page_dirty(ipage ? ipage : in_page);
+> > > > > +        set_page_dirty(in_page);
+> > > > >        set_page_dirty(xpage);
+> > > > >        f2fs_put_page(xpage, 1);
+> > > > >    in_page_out:
+> > > > > -    f2fs_put_page(in_page, 1);
+> > > > > +    if (in_page != ipage)
+> > > > > +        f2fs_put_page(in_page, 1);
+> > > > >        return err;
+> > > > >    }
+> > > > > @@ -528,10 +519,8 @@ int f2fs_getxattr(struct inode *inode, int index, const char *name,
+> > > > >        if (len > F2FS_NAME_LEN)
+> > > > >            return -ERANGE;
+> > > > > -    f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+> > > > >        error = lookup_all_xattrs(inode, ipage, index, len, name,
+> > > > >                    &entry, &base_addr, &base_size, &is_inline);
+> > > > > -    f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+> > > > >        if (error)
+> > > > >            return error;
+> > > > > @@ -565,9 +554,7 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
+> > > > >        int error;
+> > > > >        size_t rest = buffer_size;
+> > > > > -    f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+> > > > >        error = read_all_xattrs(inode, NULL, &base_addr);
+> > > > > -    f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+> > > > >        if (error)
+> > > > >            return error;
+> > > > > @@ -794,9 +781,7 @@ int f2fs_setxattr(struct inode *inode, int index, const char *name,
+> > > > >        f2fs_balance_fs(sbi, true);
+> > > > >        f2fs_lock_op(sbi);
+> > > > > -    f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
+> > > > >        err = __f2fs_setxattr(inode, index, name, value, size, ipage, flags);
+> > > > > -    f2fs_up_write(&F2FS_I(inode)->i_xattr_sem);
+> > > > >        f2fs_unlock_op(sbi);
+> > > > >        f2fs_update_time(sbi, REQ_TIME);
+> > > > 
+> > > > 
+> > > > _______________________________________________
+> > > > Linux-f2fs-devel mailing list
+> > > > Linux-f2fs-devel@lists.sourceforge.net
+> > > > https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
