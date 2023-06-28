@@ -2,73 +2,236 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 549A2740BE0
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 10:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB4DB740AB7
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 10:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234056AbjF1Ixd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 04:53:33 -0400
-Received: from mail-lf1-f45.google.com ([209.85.167.45]:38389 "EHLO
-        mail-lf1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234689AbjF1Ij1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 04:39:27 -0400
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-4fb87828386so420418e87.1
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 01:39:26 -0700 (PDT)
+        id S232993AbjF1IKz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 04:10:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35832 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233136AbjF1IFu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 04:05:50 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B31B2D7D
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 01:04:30 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-666683eb028so2978266b3a.0
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 01:04:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1687939469; x=1690531469;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FSn4tuQbZU5tpej8ySDKdoCTz3C/VKUeJEIDXrI8ApI=;
+        b=hZo1J2W8cbHelkQCqrgjEa8u/Q1nTclZ2KybjHjINOdwzP5R6p/do+LRSiFO1HnUM8
+         QxJNeh1yDSW3zMW4SxHtNkKx0mdXtgUidrCFv5d5jepI592zOMFPKZ733X+O/GnKFqWf
+         92L30zeHYCze5HzoogWZTLTCQt7VEsWiCq7dUPJmSWiVqf5aQCGecLKwQwNpYOZQSY7U
+         B4MT2QU2FciG6M9V5tQeJv8uPg4WJGUUC1Ktrsd8hR1CZV2NJemlgFUnrkgyxfaqsvXl
+         3XulW0+BgWxGy9sHrGYbVddFdESujTKpwNiA63oQhPf0li9tgTS+XL54K06yczuph3Ie
+         yzqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687941566; x=1690533566;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1pZbFxIcZMSIDGAB65+74vd6qFZmRBObj/WnklXfrb8=;
-        b=UXF89aZGFZeSF7vbFfKisfHpwEgK1EPoJx3QaUDbG4D0zG3VdmCYCW1M6jFsrw40bL
-         brrc7XjMF+ehAbipQlX8jNC4RbKhpKq97j6a6dOjV8Hnfs7zD/sSSiZA0jfjZW3xWjCK
-         RCUKcsHJvSxEuhnfNaVpmg5rqBCT5n5uq+FsyB36Zk+50I94l9D7g0fSZZFFvZ4JtbSE
-         7l331klWHxqY9mGS1Tx7ObPs0CM2TXcEHTHeGg4TpclvszPfLbCQhm+v58R3eu+yYa1a
-         5RFuiMYd9ef8ch2bdqp2HlcsAxxJFYlBoOtYMBr/iXsW8NnNs/FoCtPaaCNBSuojDBYI
-         KV+A==
-X-Gm-Message-State: AC+VfDyI4v4IzFpYf++Id8lP4uZ9vrmFllNDbT6szEBDaGGMhAI6LE4G
-        GbAUYuRhg7f+JBdTJ/poR/0Xt+cUuuA=
-X-Google-Smtp-Source: ACHHUZ51mLFVptgVLuS8G/S4W7bTQGVCBD2vo+fQonFZNX7WnhyX548DdNPJEq1uJDaC2rQnv6Pq0w==
-X-Received: by 2002:a05:6402:520d:b0:516:463d:8a10 with SMTP id s13-20020a056402520d00b00516463d8a10mr3397057edd.3.1687934681205;
-        Tue, 27 Jun 2023 23:44:41 -0700 (PDT)
-Received: from [192.168.64.192] (bzq-219-42-90.isdn.bezeqint.net. [62.219.42.90])
-        by smtp.gmail.com with ESMTPSA id 25-20020a05600c029900b003f42158288dsm15773817wmk.20.2023.06.27.23.44.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jun 2023 23:44:40 -0700 (PDT)
-Message-ID: <8dc6852e-ee90-ed64-1d3e-9ecdc9f4473b@grimberg.me>
-Date:   Wed, 28 Jun 2023 09:44:38 +0300
+        d=1e100.net; s=20221208; t=1687939469; x=1690531469;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FSn4tuQbZU5tpej8ySDKdoCTz3C/VKUeJEIDXrI8ApI=;
+        b=cXn456C3GLzVDeac+74ij1OxNjKOpcqQN0vD0SJPZbm0Ec1Lh4wTtBSgTn8MBC5P5t
+         1H2V1TwF+J9dxtwYqirniu7w3FhZg82UVNOl4d3ldxryexisg+lfbK+im803hNCEHu4K
+         JxJgEDNmhLrGz7kBz10TvyN/H1PHCOzWqUV6PKEVMKYso0PhDSiooejCVUJAm4Law8xo
+         iIyicopvVtCsBBRS1iKG+UP7M0bkrFFMU951a0kG7uBlWcX54Hv4VCuuCcGXVy0XUNjg
+         3SIWG/8zhtK5UP+5fVxqwN/1zAOHSikaaUzuHz1IVPRAuPII1pqCUWieBLbES10TvtFI
+         D5Ig==
+X-Gm-Message-State: AC+VfDx1XnkV6rP6hPkCQ7EbQMaZC6eY0DaE2HNbCjviklf3gRHAwroI
+        oWisUjZvaZy2lk/x+LCBy7r/CMqFuYbFaTvwreuHcJ9AN3iZW9F4gZSucQ==
+X-Google-Smtp-Source: ACHHUZ7t44iUD/uayELXJZDpQD9e5qu/zLWUfEGQ4HOTGsdJOeGEWwlqjUuEh6jUUU001f88X4GQWC028YZtissqo8E=
+X-Received: by 2002:a67:f309:0:b0:443:6052:43a7 with SMTP id
+ p9-20020a67f309000000b00443605243a7mr3835859vsf.32.1687935587369; Tue, 27 Jun
+ 2023 23:59:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] nvme: mark ctrl as DEAD if removing from error recovery
-Content-Language: en-US
-To:     Ming Lei <ming.lei@redhat.com>, Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>, linux-nvme@lists.infradead.org
-Cc:     Yi Zhang <yi.zhang@redhat.com>,
-        Chunguang Xu <brookxu.cn@gmail.com>, stable@vger.kernel.org
-References: <20230628031234.1916897-1-ming.lei@redhat.com>
-From:   Sagi Grimberg <sagi@grimberg.me>
-In-Reply-To: <20230628031234.1916897-1-ming.lei@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20230626180736.243379844@linuxfoundation.org>
+In-Reply-To: <20230626180736.243379844@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 28 Jun 2023 12:29:23 +0530
+Message-ID: <CA+G9fYvdQOWt6uq4CHViVfiOzP9dOcvES_0vRCgsSg-p1qkpCQ@mail.gmail.com>
+Subject: Re: [PATCH 4.19 00/41] 4.19.288-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, 26 Jun 2023 at 23:56, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 4.19.288 release.
+> There are 41 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 28 Jun 2023 18:07:23 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
+4.19.288-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-4.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> namespace's request queue is frozen and quiesced during error recovering,
-> writeback IO is blocked in bio_queue_enter(), so fsync_bdev() <- del_gendisk()
-> can't move on, and causes IO hang. Removal could be from sysfs, hard
-> unplug or error handling.
-> 
-> Fix this kind of issue by marking controller as DEAD if removal breaks
-> error recovery.
-> 
-> This ways is reasonable too, because controller can't be recovered any
-> more after being removed.
 
-This looks fine to me Ming,
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-I still want your patches for tcp/rdma that move the freeze.
-If you are not planning to send them, I swear I will :)
+## Build
+* kernel: 4.19.288-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-4.19.y
+* git commit: d46c55c4b242c7dc4d40b4b2a0fb5dbac24ae5cd
+* git describe: v4.19.287-42-gd46c55c4b242
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19=
+.287-42-gd46c55c4b242
+
+## Test Regressions (compared to v4.19.287)
+
+## Metric Regressions (compared to v4.19.287)
+
+## Test Fixes (compared to v4.19.287)
+
+## Metric Fixes (compared to v4.19.287)
+
+## Test result summary
+total: 65773, pass: 51942, fail: 1892, skip: 11895, xfail: 44
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 111 total, 106 passed, 5 failed
+* arm64: 37 total, 32 passed, 5 failed
+* i386: 21 total, 18 passed, 3 failed
+* mips: 22 total, 22 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 24 total, 24 passed, 0 failed
+* s390: 6 total, 6 passed, 0 failed
+* sh: 12 total, 12 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 31 total, 26 passed, 5 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
