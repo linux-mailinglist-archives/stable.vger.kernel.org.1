@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D9467418F7
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 21:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7878B7418F8
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 21:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231767AbjF1TkU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 15:40:20 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217]:60126 "EHLO
+        id S231732AbjF1TkX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 15:40:23 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217]:60196 "EHLO
         dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbjF1TkR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 15:40:17 -0400
+        with ESMTP id S231359AbjF1TkV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 15:40:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5866361455
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 19:40:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE98C433C8;
-        Wed, 28 Jun 2023 19:40:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F360361453
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 19:40:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A02C433C8;
+        Wed, 28 Jun 2023 19:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687981216;
-        bh=yBKzzDFda3dfGvG8Mh744BD/d8I8bR7GrLHPjBI/yOw=;
+        s=korg; t=1687981220;
+        bh=fgFbRjg5QkpX8ufZ3rSjeX+RyRjkt6EgHOQyuW8y/Js=;
         h=Subject:To:Cc:From:Date:From;
-        b=bMSixw/4mY5Fz0lPZfxQZUfJJAtRCyjptvrHjzJlohaPvSDxqsybFgMCBX9BBXjTr
-         AJxBUlzu2f4zQgQwMv/mVF508YwztU2D81vTcQkQyMYmjxjpwbNFm83mNhadHMiOIj
-         MmlZ92eMWVrgBI7Q069o/LyPS8CD9J2bD02erPPg=
-Subject: FAILED: patch "[PATCH] x86/smp: Cure kexec() vs. mwait_play_dead() breakage" failed to apply to 5.4-stable tree
+        b=VreoJO3yeqM2ovPiIohlXKN6EOmUTear7mPEoJYpsKr+09eh4YIsnRgmgxCxuxxns
+         YviyYNeV2Ozj3zCyOp2T429Z1RowH5ZqdxG4J22MDsfnhu8zqm38dvvo+f3J0Hadhh
+         k352GIYay3I4ktkB5eEi4kAI99vdTjPGOzN1DHSw=
+Subject: FAILED: patch "[PATCH] x86/smp: Cure kexec() vs. mwait_play_dead() breakage" failed to apply to 4.19-stable tree
 To:     tglx@linutronix.de, ashok.raj@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 28 Jun 2023 21:40:11 +0200
-Message-ID: <2023062811-ambush-finishing-abd6@gregkh>
+Date:   Wed, 28 Jun 2023 21:40:12 +0200
+Message-ID: <2023062812-bloated-equal-cc64@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -40,19 +40,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x d7893093a7417527c0d73c9832244e65c9d0114f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062811-ambush-finishing-abd6@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062812-bloated-equal-cc64@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
