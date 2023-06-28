@@ -2,177 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE9B6741C23
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 01:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B4A741C81
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 01:33:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230463AbjF1XE6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 19:04:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57540 "EHLO
+        id S231547AbjF1Xdn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 19:33:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231633AbjF1XEt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 19:04:49 -0400
-Received: from bee.birch.relay.mailchannels.net (bee.birch.relay.mailchannels.net [23.83.209.14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B806410FE
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 16:04:47 -0700 (PDT)
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id 1628B200BB9
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 23:04:46 +0000 (UTC)
-Received: from pdx1-sub0-mail-a212.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id AE9B9200BA2
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 23:04:45 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1687993485; a=rsa-sha256;
-        cv=none;
-        b=quA9YlaepaOlJ1GRjPFUVxwrco97kgG/FfeNzK7Q5nidnRo9Eaf05dVbvNsgY2pAxdrAjM
-        8Ks7OuhMDW1CzFucxjYtDF8O4n25xTarphzNfOrircErzhjJMquEUYo5R5AjtHV4qerv4e
-        TrjitygtEJ1ZenWcH47KvOCAXuFWeMM7K1mD1c5IwgEry6CuC4O4ufr7HFpZ7KfZYSTKpR
-        0NtzXtbh27QE7vXRtyGdejveJkQ8b9ZXP+XxBMp88ehwKyqyOR4bpQIiRlXH2/VJUrlUPz
-        HhaBmSpQELXGK/ggPtxshrNuqypYBmLTwOGzbO1ivxLHyGV7SskFNC7hEDveZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1687993485;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         dkim-signature; bh=1bezz8N3KbI2RDwtxQgXeC2aSa6AQr1ssVT8f/HSD7c=;
-        b=JJrh1j2ZFZlBCIF9v2oBbKVIGNlbTro1T4GFuwMFqpInCPbrz3pp/VLi0A/adCDqxAcsJt
-        fa52bJYXHTf5l3wHe10IUl5s9qEeplZ8DrFwGCXu/ntstRCHMiefgmeDZxDfYjPWBSjJkH
-        5/4PfTOLQO73DrzCbFZJsEQ1HAk99EfhujQzrcTbrJppDc6TfgIbeZojpiiP1jJQr7M3om
-        eqg/Kw7SVu0xQ/U8xN1Eon8NtoQc+AlXrd1lFLD3+gYOBp5kZUrZA3uwRri0lp7IFhuqws
-        t+Uejf5sStc/h5uQO3bHN88l7iGbx3IoRuAdcOI5Vp0tNFGUmEvigo8TQiWARg==
-ARC-Authentication-Results: i=1;
-        rspamd-85899d6fcc-r85vc;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MailChannels-Auth-Id: dreamhost
-X-Desert-Left: 716c4b4860b097e3_1687993485926_66195201
-X-MC-Loop-Signature: 1687993485926:145886681
-X-MC-Ingress-Time: 1687993485925
-Received: from pdx1-sub0-mail-a212.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.125.42.143 (trex/6.9.1);
-        Wed, 28 Jun 2023 23:04:45 +0000
-Received: from kmjvbox (c-73-93-64-36.hsd1.ca.comcast.net [73.93.64.36])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kjlx@templeofstupid.com)
-        by pdx1-sub0-mail-a212.dreamhost.com (Postfix) with ESMTPSA id 4Qrxx92yZFzVH
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 16:04:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
-        s=dreamhost; t=1687993485;
-        bh=1bezz8N3KbI2RDwtxQgXeC2aSa6AQr1ssVT8f/HSD7c=;
-        h=Date:From:To:Cc:Subject:Content-Type;
-        b=bQGKtWBVcJQXNFdt1DkrCY0yT1t953eisQY6VO81dz/dypDKC2tT1vO9UgodeZbl9
-         UVoIYIQObhTv/hwNWBB7poYs4oURaceYNeO0jS9leL4HKSJWUlf+gaibTFbTQuy9Dl
-         67B14oPfc11MY0REwlQSdOhHP3e7Cj5fIHppRzuE=
-Received: from johansen (uid 1000)
-        (envelope-from kjlx@templeofstupid.com)
-        id e003b
-        by kmjvbox (DragonFly Mail Agent v0.12);
-        Wed, 28 Jun 2023 16:04:35 -0700
-Date:   Wed, 28 Jun 2023 16:04:35 -0700
-From:   Krister Johansen <kjlx@templeofstupid.com>
-To:     stable@vger.kernel.org
-Cc:     Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        David Reaver <me@davidreaver.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Michael Petlan <mpetlan@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 5.15.y] perf symbols: Symbol lookup with kcore can fail if
- multiple segments match stext
-Message-ID: <20230628230435.GD1918@templeofstupid.com>
+        with ESMTP id S231237AbjF1Xdl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 19:33:41 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5D51BDF
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 16:33:39 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-576a9507a9bso1331737b3.1
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 16:33:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1687995219; x=1690587219;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZeFclnybHgjxTOJvmelojoFKWa74D7B3w2LzJzAqi/8=;
+        b=bjSJ0idhFa+IRPNbT6obSo/V4vKw15Iykq6aysGwuFPw1bbZsGp9RIxCNuwJkiSTDR
+         IvG7xVs5w7hbfjzsg7617aoDRmYmKJpNzBhR16ScbcHJ/NyNQdgdhgmb6jbbmXzdMyjg
+         kC4WCC0eP9ulrHNH+rjKgoES3ejj8RJiEZzCk6ZckYlyJC9U9Gt8wq29T4S3k8Var6iB
+         yXyGJjGizHu9gFYp9KTahVyKKRxbQDsKSrz11Q0dLYVLQI03m7QKT/vRz0d1YebVi1pz
+         10k99SdHPIfLytVcnh9ZdxlOBHfcUevsBaFnfhGvDtwW5eO3wm+irP8o9hgG81IAPV1k
+         BKVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687995219; x=1690587219;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZeFclnybHgjxTOJvmelojoFKWa74D7B3w2LzJzAqi/8=;
+        b=RKmn5yyV/wwrgx57Q2zjC2j7u8BT1VC1+BWyCGUqs7E8vi2Qug67I1RaGR+6YNzyal
+         Qd3NcnADx3MiTZD/MoC/NvX/FDbZhB3BxkUfDx4ZJI9+SH5KmUmGrWXvH3NSGtHT8j69
+         Jat1Bvja7d4LA+qYjmHkUlNL330VDkFrHUOfBfDKwgv/4bP7cg9TuZWB2q1H7q8mXgaj
+         udgPO4SYohijRAIua/TTExXRdW6e+vctkVhpKWmJ1Cx6JdPDyMHW9EjjX7svNac50Gun
+         BCc9uC4fTIk3h23TKrLOYgGJKUnwAjkQUSzlCfe8hhGcXgPzVK2a/np/thgoRFTWcIKA
+         QtZQ==
+X-Gm-Message-State: ABy/qLaI64JZmH7OVKWUpAau0JcTvvhumoMHUVkTW0BJZfRG7uGtzTWs
+        8hhQ6W3G6nN2PBb5Uvq6ODBhBIz/9nIlnnUmI1lC
+X-Google-Smtp-Source: APBJJlEO2TPsqir3D6Z32iv7ak8OuBRgDSLoI/e9iKnRB9mBiMglQvnRpl4nfj2y3W0ksi8BClwzcKtw0xnLFatyjA0=
+X-Received: by 2002:a81:520c:0:b0:573:284d:6476 with SMTP id
+ g12-20020a81520c000000b00573284d6476mr3280323ywb.1.1687995218787; Wed, 28 Jun
+ 2023 16:33:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+References: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
+ <2023060156-precision-prorate-ce46@gregkh> <20259cf7-d50d-4eca-482b-3a89cc94df7b@amazon.com>
+ <2023060148-levers-freight-5b11@gregkh> <CAHC9VhQ6W4hq3B122BxcrD6h6_-Q1AguFYYLjAbB6ALCbmzDoQ@mail.gmail.com>
+ <2023060102-chatter-happening-f7a5@gregkh> <CAHC9VhRuc5jSK7xODqtBvhUmunov+PVVQyLb8oDP8k0pLq_P-g@mail.gmail.com>
+ <2023062846-outback-posting-dfbd@gregkh>
+In-Reply-To: <2023062846-outback-posting-dfbd@gregkh>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Wed, 28 Jun 2023 19:33:27 -0400
+Message-ID: <CAHC9VhQfWNxP80PRHMM44fkMx8fnuPJ2VyR-mA1WMLwsAevRuA@mail.gmail.com>
+Subject: Re: Possible build time regression affecting stable kernels
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Luiz Capitulino <luizcap@amazon.com>, sashal@kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 1c249565426e3a9940102c0ba9f63914f7cda73d upstream.
+On Wed, Jun 28, 2023 at 2:33=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+> On Thu, Jun 01, 2023 at 02:39:00PM -0400, Paul Moore wrote:
 
-This problem was encountered on an arm64 system with a lot of memory.
-Without kernel debug symbols installed, and with both kcore and kallsyms
-available, perf managed to get confused and returned "unknown" for all
-of the kernel symbols that it tried to look up.
+...
 
-On this system, stext fell within the vmalloc segment.  The kcore symbol
-matching code tries to find the first segment that contains stext and
-uses that to replace the segment generated from just the kallsyms
-information.  In this case, however, there were two: a very large
-vmalloc segment, and the text segment.  This caused perf to get confused
-because multiple overlapping segments were inserted into the RB tree
-that holds the discovered segments.  However, that alone wasn't
-sufficient to cause the problem. Even when we could find the segment,
-the offsets were adjusted in such a way that the newly generated symbols
-didn't line up with the instruction addresses in the trace.  The most
-obvious solution would be to consult which segment type is text from
-kcore, but this information is not exposed to users.
+> > We definitely have different opinions on where the -stable bug fix
+> > threshold lies.  I am of the opinion that every -stable backport
+> > carries risk, and I consider that when deciding if a commit should be
+> > marked for -stable.  I do not believe that every bug fix, or every
+> > commit with a 'Fixes:' tag, should be backported to -stable.
+>
+> Ok, I'll not argue here, but it feels like there is a lack of changes
+> for some of these portions of the kernel that end up in stable kernels.
+> I'll trust you on this.
 
-Instead, select the smallest matching segment that contains stext
-instead of the first matching segment.  This allows us to match the text
-segment instead of vmalloc, if one is contained within the other.
+I don't know what to say here ... aside from the previously discussed
+difference of opinion regarding stable tags, we just haven't had many
+bad bugs in the LSM layer, SELinux, or audit the past few years.  I'd
+like to claim better code, better review, yadda yadda but in reality
+I'm sure it's just dumb luck.
 
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: David Reaver <me@davidreaver.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: http://lore.kernel.org/lkml/20230125183418.GD1963@templeofstupid.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
----
- tools/perf/util/symbol.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+> So, can I get a directory list or file list of what we should be
+> ignoring for the AUTOSEL and "Fixes: only" tools to be ignoring?
 
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index b1e5fd99e38a..80c54196e0e4 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -1357,10 +1357,23 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
- 
- 	/* Find the kernel map using the '_stext' symbol */
- 	if (!kallsyms__get_function_start(kallsyms_filename, "_stext", &stext)) {
-+		u64 replacement_size = 0;
-+
- 		list_for_each_entry(new_map, &md.maps, node) {
--			if (stext >= new_map->start && stext < new_map->end) {
-+			u64 new_size = new_map->end - new_map->start;
-+
-+			if (!(stext >= new_map->start && stext < new_map->end))
-+				continue;
-+
-+			/*
-+			 * On some architectures, ARM64 for example, the kernel
-+			 * text can get allocated inside of the vmalloc segment.
-+			 * Select the smallest matching segment, in case stext
-+			 * falls within more than one in the list.
-+			 */
-+			if (!replacement_map || new_size < replacement_size) {
- 				replacement_map = new_map;
--				break;
-+				replacement_size = new_size;
- 			}
- 		}
- 	}
--- 
-2.25.1
+I've been trying to ensure that the files/directories entries in
+MAINTAINERS are current, so that is probably as good a place as any to
+pull that info.  Do the stable tools use that info already?  In other
+words, if we update the entries in MAINTAINERS should we also notify
+you guys, or will you get it automatically?
 
+Regardless, here is a list:
+
+* Audit
+include/asm-generic/audit_*.h
+include/linux/audit.h
+include/linux/audit_arch.h
+include/uapi/linux/audit.h
+kernel/audit*
+lib/*audit.c
+
+* LSM layer
+security/
+(NOTE: the individual sub-dirs under security/ belong to the
+individual LSMs, not the LSM layer)
+
+* SELinux
+include/trace/events/avc.h
+include/uapi/linux/selinux_netlink.h
+scripts/selinux/
+security/selinux/
+
+--=20
+paul-moore.com
