@@ -2,126 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1418B740BDA
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 10:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9936740C94
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 11:24:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232762AbjF1Iwd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 04:52:33 -0400
-Received: from mout.gmx.net ([212.227.15.19]:45821 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233129AbjF1Itp (ORCPT <rfc822;stable@vger.kernel.org>);
-        Wed, 28 Jun 2023 04:49:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=s31663417; t=1687942157; x=1688546957; i=georgmueller@gmx.net;
- bh=7EYxf2mbjFZfjlwtXaTopEVdIniSJTqMoHEmr5pnAAQ=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=jbLHvXBonqIsNYqv0cmDGf/lc9iYbCb+tMrlV+CXWUXPsekXscsvvKbMjufE1ptSNfrYxR1
- UyMXqBzcrvlrlb5o1IRC+BVc9tA0YsXhValMK+n64dPvKKMcw7SvuNQsb6rkzxI0YUziAQAQy
- 1o9ws4uxeZ0gpB5a9se8wxayp/VS57iSM+m1Y2Pmks+pL2Nr8H5KObuc4UUMY8WlzpqAzRsD1
- rqU+NlODhWyL2W2vJ6vsjy5t6GLogH7hjtOf50hmhuxA5nfB+43ecTycsMki+16j/J/UNnGTf
- YuwpVXKc1d/vbskYnHyXG+0jczHi0tW7uhp+SsCT2K9im+M/fHrw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from nb-georg.intra.allegro-packets.com ([79.246.84.17]) by
- mail.gmx.net (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1Msq2E-1puR8P1nKq-00tBRZ; Wed, 28 Jun 2023 10:49:17 +0200
-From:   =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc:     =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
-        regressions@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH v3 2/2] perf probe: read DWARF files from the correct CU
-Date:   Wed, 28 Jun 2023 10:45:51 +0200
-Message-ID: <20230628084551.1860532-6-georgmueller@gmx.net>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230628084551.1860532-3-georgmueller@gmx.net>
-References: <20230628084551.1860532-3-georgmueller@gmx.net>
+        id S230113AbjF1JXw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 05:23:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:32300 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235625AbjF1I6a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 04:58:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1687942663;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=pe+jjfKxz11wLuvZzVRewm2FezAhqYeJMcaF+IP9YH8=;
+        b=gpwQIxsqqwmjpIfIap7c/2pEcWvX5ItFDO15I4N4g4cXi/LzxL9e3nNbzKfQvgl3T0jV85
+        QA2SbQVTDALqnGXQB0xAqP7+qZhUzYklFGN0yMsunJD9Rp2G5nE1dutlgYZdWL7Ro5p1AQ
+        Wv/8Ycf++WqjtLQjqIkrHrMYikwcS4I=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-190-YOnzTgHhNNuEobnMD9jveA-1; Wed, 28 Jun 2023 04:57:42 -0400
+X-MC-Unique: YOnzTgHhNNuEobnMD9jveA-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-97542592eb9so318013966b.2
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 01:57:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687942660; x=1690534660;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pe+jjfKxz11wLuvZzVRewm2FezAhqYeJMcaF+IP9YH8=;
+        b=fLb+phAMiVtru/l9GAL5Z1Y4yC/HWVfe72BvVLil6XQ9d9v9jCrRDUb10ZMig65iv0
+         Z2lO9WNRiViHnvcd8WJVpecrDKBu9I7jb3bHx2jtp14ai45CN0Vx+GXZc01g7IF08oRR
+         rkjH87n6+cpoBaqAiwoTYmm7z9+wEkHOLYMtN7rpHt7pTOPIW78ZhWDhf0E1dHaOdN2f
+         uST5zXJwXo/XHEdc54aM3q/7Bbee/QyugPkA5eFcWClXql9L09IGt/nJ4TSO2Tz/sEV6
+         9F9fsXlleyXrmZbK1UdA7tbx26KSFBK/OVrkuJtKb43GRAGe9aGjxBuOfvfOpBnpDqn8
+         ZYlQ==
+X-Gm-Message-State: AC+VfDwwsUU6xBnN5t7mVwwHsJUad6juAclJrmgBw5YH+g07GgzLyIc+
+        OoTKFzNovXXtk79bEQYKKkR1dfrLSE9ZyZxUMMkZU8qtpWV8+yPCe0sjX8Xpd26aYCKb5DiB2t3
+        A5F4Q/LO5ss5TEcxni/gM1jy3AGkI92+xCOnbvl3J
+X-Received: by 2002:a17:906:7ce:b0:98d:4000:1bf9 with SMTP id m14-20020a17090607ce00b0098d40001bf9mr14076795ejc.65.1687942660552;
+        Wed, 28 Jun 2023 01:57:40 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7C28t1OVHXAkRO7tKFv1yONqy8s0GBAmrR2XaJybhPqyMVrBEApAGlqbTyQJr0fvlc4rnOpXpNGgqiEZ9wh7g=
+X-Received: by 2002:a17:906:7ce:b0:98d:4000:1bf9 with SMTP id
+ m14-20020a17090607ce00b0098d40001bf9mr14076782ejc.65.1687942660267; Wed, 28
+ Jun 2023 01:57:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20230627235709.201132-1-xiubli@redhat.com>
+In-Reply-To: <20230627235709.201132-1-xiubli@redhat.com>
+From:   Milind Changire <mchangir@redhat.com>
+Date:   Wed, 28 Jun 2023 14:27:04 +0530
+Message-ID: <CAED=hWDrnyMZXuVhsjWTnfpGza5YLWz3qkfi8cKu4HMTPnoa_Q@mail.gmail.com>
+Subject: Re: [PATCH v2] ceph: don't let check_caps skip sending responses for
+ revoke msgs
+To:     xiubli@redhat.com
+Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, stable@vger.kernel.org,
+        Patrick Donnelly <pdonnell@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Cb82SGcEsrL11zuH0JhYn8EPvv7SYgVIiYe39ozfB6jCOHBRCG3
- tdBkdi7oMnRW+phUL09ePfExRcxv1JtDBLya3Woi1NpS/u2jFhx1jcsiuFRqmkSVLzmnqbe
- bwyisMG9/BYJriHw3Mf4q8UuPv3OyvXg2esjKwIzlywis/rh3EhFh+Sh1s0HqD0zPm0yQOY
- 7UNmWN3HPHoS4XPyv+9Cg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lcY/W0j30Co=;e7msvmEaR+Q9xqySdxbTx8k8St5
- BOvJXLrzS5VRpHvvuT1aMLe4qblAsZeqsHSyXNQBnfDYnx+XknZJgVsr9ZFuGlFVSyu1RQaYY
- NBzSp3SxlUwSjwUK0vyMaS1ENVzkesXBAw0iFkUHaz98HWRMgW+LqZF9k7dxLRONffu+AnaSr
- LN9S3iPhOy+ByS2cV53aPdWF5AWly1iNIG7Ydm/VepxRdwLq9xqQ7GVgx3nx79xNYylws3t9m
- 6BjaLY3geW3davNGhyUbWmRWtPqsfArZwuqv+ahKdLRrya39fZdq6XOqMdWZ94KlZdvWgdkOX
- vgFqH23DqvhJlGRy6+S3TPGfOnqHgymMidK27BF2FaXriit2OGC2hfxhx9xHMUW7LPxh9Z695
- d/1G/mB/i+x5ddSjSpXQBEr2SlsEy2PXBcGWhi5srm7c2296Aqm0Q7pR8HsorvA/Kz7ITBlr6
- EGgE+5dC4k6Iay/2D0ZjPQuBRMaLojzmOskpnmoNhbueCxVxrvVro8jGniSzU3qGZUVyxZ6lL
- Tk7nnqu8TR1RGMCnzjCVYQfX8N8SCdvnQGidZxuOSTVeZfzViIxyD4TCDoV0nWlUQb7tcvXd+
- xyujVGIwReFJ6SkfX7SkRPxPxU0lxxEEaCVfKWlRX464ieccxO9PumWXC1tbEqfgWqP3nSqdu
- s3hCrBXsdvn0BWdn8DOZWIabNqfKJXg+u5kTj5QsYgmI20d32LGTHKgKUiDhT9zbcpmgQBlj8
- x2G6ossF6QZhOcZ/S9JJJOWl5ZQyd0lEBXs+8NRf7PYryP6SOroAcI7M0z1fQZhI9AGzzL4fb
- CVEymTXwgKAoVyo9+I/kS3Ca05Hh8KfW1Z7MbfPL0Ah8ulKph89Lr2EVDnooztVUaXiyML4EN
- o/sJviXjoALTHcR5cJw+O2RCP3bb1ydbH/bA8UWEklxJnFNBprYR36JR5sgAnw11NqaOKZ1S8
- c6QLcpQW7nc6X+nUMvACIWYYPmg=
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-After switching from dwarf_decl_file() to die_get_decl_file(), it is not
-possible to add probes for certain functions:
+Looks good to me.
 
- $ perf probe -x /usr/lib/systemd/systemd-logind match_unit_removed
- A function DIE doesn't have decl_line. Maybe broken DWARF?
- A function DIE doesn't have decl_line. Maybe broken DWARF?
- Probe point 'match_unit_removed' not found.
-    Error: Failed to add events.
+Reviewed-by: Milind Changire <mchangir@redhat.com>
 
-The problem is that die_get_decl_file() uses the wrong CU to search for
-the file. elfutils commit e1db5cdc9f has some good explanation for this:
+On Wed, Jun 28, 2023 at 5:29=E2=80=AFAM <xiubli@redhat.com> wrote:
+>
+> From: Xiubo Li <xiubli@redhat.com>
+>
+> If a client sends out a cap-update request with the old 'seq' just
+> before a pending cap revoke request, then the MDS might miscalculate
+> the 'seqs' and caps. It's therefore always a good idea to ack the
+> cap revoke request with the bumped up 'seq'.
+>
+> Cc: stable@vger.kernel.org
+> Cc: Patrick Donnelly <pdonnell@redhat.com>
+> URL: https://tracker.ceph.com/issues/61782
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> ---
+>
+> V2:
+> - Rephrased the commit comment for better understanding from Milind
+>
+>
+>  fs/ceph/caps.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+> index 1052885025b3..eee2fbca3430 100644
+> --- a/fs/ceph/caps.c
+> +++ b/fs/ceph/caps.c
+> @@ -3737,6 +3737,15 @@ static void handle_cap_grant(struct inode *inode,
+>         }
+>         BUG_ON(cap->issued & ~cap->implemented);
+>
+> +       /* don't let check_caps skip sending a response to MDS for revoke=
+ msgs */
+> +       if (le32_to_cpu(grant->op) =3D=3D CEPH_CAP_OP_REVOKE) {
+> +               cap->mds_wanted =3D 0;
+> +               if (cap =3D=3D ci->i_auth_cap)
+> +                       check_caps =3D 1; /* check auth cap only */
+> +               else
+> +                       check_caps =3D 2; /* check all caps */
+> +       }
+> +
+>         if (extra_info->inline_version > 0 &&
+>             extra_info->inline_version >=3D ci->i_inline_version) {
+>                 ci->i_inline_version =3D extra_info->inline_version;
+> --
+> 2.40.1
+>
 
-    dwarf_decl_file uses dwarf_attr_integrate to get the DW_AT_decl_file
-    attribute. This means the attribute might come from a different DIE
-    in a different CU. If so, we need to use the CU associated with the
-    attribute, not the original DIE, to resolve the file name.
 
-This patch uses the same source of information as elfutils: use attribute
-DW_AT_decl_file and use this CU to search for the file.
-
-Fixes: dc9a5d2ccd5c ("perf probe: Fix to get declared file name from clang=
- DWARF5")
-Signed-off-by: Georg M=C3=BCller <georgmueller@gmx.net>
-Link: https://lore.kernel.org/r/5a00d5a5-7be7-ef8a-4044-9a16249fff25@gmx.n=
-et/
-Cc: stable@vger.kernel.org
-=2D--
- tools/perf/util/dwarf-aux.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
-index b07414409771..137b3ed9897b 100644
-=2D-- a/tools/perf/util/dwarf-aux.c
-+++ b/tools/perf/util/dwarf-aux.c
-@@ -478,8 +478,10 @@ static const char *die_get_file_name(Dwarf_Die *dw_di=
-e, int idx)
- {
- 	Dwarf_Die cu_die;
- 	Dwarf_Files *files;
-+	Dwarf_Attribute attr_mem;
-
--	if (idx < 0 || !dwarf_diecu(dw_die, &cu_die, NULL, NULL) ||
-+	if (idx < 0 || !dwarf_attr_integrate(dw_die, DW_AT_decl_file, &attr_mem)=
- ||
-+	    !dwarf_cu_die(attr_mem.cu, &cu_die, NULL, NULL, NULL, NULL, NULL, NU=
-LL) ||
- 	    dwarf_getsrcfiles(&cu_die, &files, NULL) !=3D 0)
- 		return NULL;
-
-=2D-
-2.41.0
+--=20
+Milind
 
