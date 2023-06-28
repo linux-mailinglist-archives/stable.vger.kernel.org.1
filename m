@@ -2,72 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E172B7417D9
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 20:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE73E7417E4
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 20:21:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231148AbjF1SQa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 14:16:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48558 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230436AbjF1SQ3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 14:16:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB60C19B9
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 11:16:28 -0700 (PDT)
+        id S231641AbjF1SU5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 14:20:57 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217]:55640 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231787AbjF1SUr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 14:20:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53A3561414
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 18:16:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5589FC433C0;
-        Wed, 28 Jun 2023 18:16:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FC356141D
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 18:20:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260BCC433C8;
+        Wed, 28 Jun 2023 18:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687976187;
-        bh=pJUjNmizPlYRdDtgUt1CKwizLnAxB/dR98cGZBnO0dg=;
+        s=korg; t=1687976446;
+        bh=bJsJLEf+O0tPy+gL1RctMXdMQmyPG0v4a2Z9VNfyGBE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MmdyxLRi3DKjoVOLLZYzcxoo9g2JXACjNzvWEi+3a1z+8KOgSoBZUlJIdZrjaNAfa
-         NHjILaT4svCrdfdO5/P+axJ3WWPv2OCmcnzWMO6LlON41hT8D9b/znT9WI5uDRnLnR
-         AwoKsT9W/kSc7H6oMvfI91WXIaS0LQuSPkzSAnIY=
-Date:   Wed, 28 Jun 2023 20:16:25 +0200
+        b=aHgGz6D9MzzvCdWZXA2psnmHHN3dF+txf+kHTjRAJTHImEigmv8rge2P306W9sA3n
+         jEFQRIJsccymWtca9eVaA1JFYs+neVfgHCIRh846NtVquUWDSW5E3A+XAcxypVVyFS
+         BuhkOvTAolRDd69RJdswA+QcPZPyNrKOOcpvw00Q=
+Date:   Wed, 28 Jun 2023 20:20:43 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: Regression in 6.1.35 / 6.3.9
-Message-ID: <2023062808-mangy-vineyard-4f66@gregkh>
-References: <MN0PR12MB6101C52C4B7FB00702A996EBE224A@MN0PR12MB6101.namprd12.prod.outlook.com>
+To:     Matthieu Baerts <matthieu.baerts@tessares.net>
+Cc:     stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Mat Martineau <martineau@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 5.15.y] mptcp: consolidate fallback and non fallback
+ state machine
+Message-ID: <2023062828-affiliate-overlook-8535@gregkh>
+References: <2023062315-example-anger-442b@gregkh>
+ <20230627132557.2266416-1-matthieu.baerts@tessares.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <MN0PR12MB6101C52C4B7FB00702A996EBE224A@MN0PR12MB6101.namprd12.prod.outlook.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+In-Reply-To: <20230627132557.2266416-1-matthieu.baerts@tessares.net>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 28, 2023 at 05:56:01PM +0000, Limonciello, Mario wrote:
-> [Public]
+On Tue, Jun 27, 2023 at 03:25:57PM +0200, Matthieu Baerts wrote:
+> From: Paolo Abeni <pabeni@redhat.com>
 > 
-> Hi,
->  A regression was reported in 6.4-rc6 that monitor resolutions are no longer present for anything but native resolution on eDP panels.  This specific change backported into stable at 6.1.35 and 6.3.9:
-> e749dd10e5f29 ("drm/amd/display: edp do not add non-edid timings")
+> commit 81c1d029016001f994ce1c46849c5e9900d8eab8 upstream.
 > 
-> After discussing it with the original author, they submitted a revert commit for review:
-> https://patchwork.freedesktop.org/patch/544273/
+> An orphaned msk releases the used resources via the worker,
+> when the latter first see the msk in CLOSED status.
 > 
-> I suggested the revert also CC stable, and I expect this will go up in 6.5-rc1, but given the timing of the merge window and the original issue hit the stable trees, can we revert it sooner in the stable
-> trees to avoid exposing the regression to more people?
+> If the msk status transitions to TCP_CLOSE in the release callback
+> invoked by the worker's final release_sock(), such instance of the
+> workqueue will not take any action.
+> 
+> Additionally the MPTCP code prevents scheduling the worker once the
+> socket reaches the CLOSE status: such msk resources will be leaked.
+> 
+> The only code path that can trigger the above scenario is the
+> __mptcp_check_send_data_fin() in fallback mode.
+> 
+> Address the issue removing the special handling of fallback socket
+> in __mptcp_check_send_data_fin(), consolidating the state machine
+> for fallback and non fallback socket.
+> 
+> Since non-fallback sockets do not send and do not receive data_fin,
+> the mptcp code can update the msk internal status to match the next
+> step in the SM every time data fin (ack) should be generated or
+> received.
+> 
+> As a consequence we can remove a bunch of checks for fallback from
+> the fastpath.
+> 
+> Fixes: 6e628cd3a8f7 ("mptcp: use mptcp release_cb for delayed tasks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> Reviewed-by: Mat Martineau <martineau@kernel.org>
+> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+> ---
+> Conflicting with:
+> - 0522b424c4c2 ("mptcp: add do_check_data_fin to replace copied")
+> - 3e5014909b56 ("mptcp: cleanup MPJ subflow list handling")
+> 
+> I took the new modifications but leaving the old variable name for
+> "copied" instead of "do_check_data_fin" and the calls to
+> __mptcp_flush_join_list()
+> 
+> Applied on top of d2efde0d1c2e ("Linux 5.15.119-rc1").
+> 
+> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-As the submitted patch had the wrong git id, it might be good to be able
-to take a real one?  I can take it once it shows up in linux-next if
-it's really going to be going into 6.5, but I need a stable git id for
-it.
-
-thanks,
+All backports now queued up, thanks.
 
 greg k-h
