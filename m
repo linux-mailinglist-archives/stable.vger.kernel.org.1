@@ -2,61 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7F6741804
-	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 20:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF93D741807
+	for <lists+stable@lfdr.de>; Wed, 28 Jun 2023 20:31:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231203AbjF1Sa3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 14:30:29 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217]:34600 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229662AbjF1Sa1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 14:30:27 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A96F361423
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 18:30:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3F5C433C8;
-        Wed, 28 Jun 2023 18:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687977026;
-        bh=PmtejHBVnsfKbfKOpRegpS/0lrIXPAcjAXYUgPxOXCM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YHE2hIRaL4PxVWCgHPpbKDQVJMjxIerbjmZVGjS09c9S9WsaVJ+Vz08CtatFrb6Hk
-         z6uA+XbHdMQM0/RosA7Lg+ZKIxW0eayf7uacAsM6nh0qqGfnC1uLx0z2FoxvtxVyq6
-         zczZHJLHM+vXEGU6R63jLZDxZhKXDswNZYc86q3Y=
-Date:   Wed, 28 Jun 2023 20:30:15 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jane Chu <jane.chu@oracle.com>
-Cc:     stable@vger.kernel.org, tony.luck@intel.com,
-        dan.j.williams@intel.com, naoya.horiguchi@nec.com,
-        linmiaohe@huawei.com, glider@google.com
-Subject: Re: [5.15/6.1-stable PATCH] Copy-on-write hwpoison recovery
-Message-ID: <2023062803-expulsion-shrubs-4b49@gregkh>
-References: <20230626230221.3064291-1-jane.chu@oracle.com>
+        id S230487AbjF1Sbp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 14:31:45 -0400
+Received: from out4-smtp.messagingengine.com ([66.111.4.28]:48453 "EHLO
+        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229941AbjF1Sbn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 14:31:43 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 2B1F95C01EB;
+        Wed, 28 Jun 2023 14:31:43 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Wed, 28 Jun 2023 14:31:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1687977103; x=1688063503; bh=JJ
+        8A5RWcyl1scz/K2Ger4aToKVFg8VkiR1tPU5FsSag=; b=K7QDnX6dKijyHALqGc
+        DvstsLWTSqQV9gURPBfEaNdcw2EWzmjfedeBSQ/4MAs/v6zSufsbeEeS1Zob9mWK
+        CTArJ4YZuHSiA0s1v6UknulKU1+xVSldYmt83rexOnHVclZd4QRZv2gtv8V5gals
+        +D2BHMvulIyj18H6nLs7AoLcBWvzbViLTnzdFapEr3vo8sCIJpzjdWi8rSz+iq0Y
+        zO/U9GI+T7cgDx94MuhHH2xwZ2l9D8YwXVNYO06wiO1NkQZPj8lwq+dhTl9MBC6w
+        rcZhiAtERmQfNUMb6STFxNfGL5A3Hy3mrfDxzupVuA0A4QW/Km+yzJ0qAet7DJUC
+        2cpw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1687977103; x=1688063503; bh=JJ8A5RWcyl1sc
+        z/K2Ger4aToKVFg8VkiR1tPU5FsSag=; b=TTVpZcTbDJxcX/2LHybvbOl7QaXAg
+        jhlBYrszR9zWNBy7B3l9YESBwjqrnnuP65wkXHvU2CQHHrikOuno8hKlaq6QIOpq
+        kltjsLDiIhNEJFHvWJDJP9EvjybOxL3YG0ZACihT0nq5cdbqYZx8cQTkpDlePUB4
+        sym+csiB81qVgM2N1LVBmUStDbrQh/Mi1J9n3syJZYXU/JHa3uHfwm+N1IZx5fnS
+        vufbmbkY7MlXDhu0I3u+tdI5LGnWzIJarbIYlNwClSQOC0hZyTLlSytb6stbJT0N
+        K2ZWORsrcI8cQpO7qA8BtbrLtXh9yAXCR4Ltx5aavo7QBv8MLpheCKzUw==
+X-ME-Sender: <xms:jnycZOn5OybT29WMh_8Nu9ecDEPN1h7jNycf-vrSJG1NrF7f_a7E3Q>
+    <xme:jnycZF3a0uLL9Nn_QdK_G-Uu5Z_1ct7-X9r269tzvWdFuUQs4JBewHMnfnbcu7V29
+    BeTMaKB3lVRrg>
+X-ME-Received: <xmr:jnycZMrfEu_0c_E_bxkzG2rMKs3tlpQc2ebIIHujErcgxcu3QCmHQ6ELmPzEvdaQoAxiUPWgi4RCcwSBhLLztzFEhbqJknId78jnwg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtddvgdduvdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:jnycZCkxNH-wDF4S8GsuoRaLIYpAdoLGMLcYcPdFm3RarK-buhbVdQ>
+    <xmx:jnycZM2IcylwcT4JF01eg8J8ecSxO7Gev50i_0oOKHKwiA9GiPOvFg>
+    <xmx:jnycZJsJ_NbAtXRxlp-4xnUw1BxFtfXL4gnSXUU8OLmBRpPW-BDNHw>
+    <xmx:j3ycZCOW8r5Z8JC0TFCXrA5nn1fZS9VMXGJ5p4mKrPoCjy6Zjirlqw>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 28 Jun 2023 14:31:42 -0400 (EDT)
+Date:   Wed, 28 Jun 2023 20:31:40 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Dragos-Marian Panait <dragos.panait@windriver.com>
+Cc:     stable@vger.kernel.org, Yang Lan <lanyang0908@gmail.com>,
+        Bob Peterson <rpeterso@redhat.com>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        cluster-devel@redhat.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5.4] gfs2: Don't deref jdesc in evict
+Message-ID: <2023062832-snuggle-casino-7f9e@gregkh>
+References: <20230628133052.1796173-1-dragos.panait@windriver.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230626230221.3064291-1-jane.chu@oracle.com>
+In-Reply-To: <20230628133052.1796173-1-dragos.panait@windriver.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 26, 2023 at 05:02:17PM -0600, Jane Chu wrote:
-> I was able to reproduce crash on 5.15.y kernel during COW, and
-> when the grandchild process attempts a write to a private page
-> inherited from the child process and the private page contains
-> a memory uncorrectable error. The way to reproduce is described
-> in Tony's patch, using his ras-tools/einj_mem_uc.
-> And the patch series fixed the panic issue in 5.15.y.
+On Wed, Jun 28, 2023 at 04:30:52PM +0300, Dragos-Marian Panait wrote:
+> From: Bob Peterson <rpeterso@redhat.com>
 > 
-> Followed here is the backport of Tony patch series to stable 5.15
-> and stable 6.1. Both backport have encountered trivial conflicts
-> due to missing dependencies, details are provided in each patch.
+> [ Upstream commit 504a10d9e46bc37b23d0a1ae2f28973c8516e636 ]
 > 
-> Please let me know whether the backport is acceptable.
+> On corrupt gfs2 file systems the evict code can try to reference the
+> journal descriptor structure, jdesc, after it has been freed and set to
+> NULL. The sequence of events is:
+> 
+> init_journal()
+> ...
+> fail_jindex:
+>    gfs2_jindex_free(sdp); <------frees journals, sets jdesc = NULL
+>       if (gfs2_holder_initialized(&ji_gh))
+>          gfs2_glock_dq_uninit(&ji_gh);
+> fail:
+>    iput(sdp->sd_jindex); <--references jdesc in evict_linked_inode
+>       evict()
+>          gfs2_evict_inode()
+>             evict_linked_inode()
+>                ret = gfs2_trans_begin(sdp, 0, sdp->sd_jdesc->jd_blocks);
+> <------references the now freed/zeroed sd_jdesc pointer.
+> 
+> The call to gfs2_trans_begin is done because the truncate_inode_pages
+> call can cause gfs2 events that require a transaction, such as removing
+> journaled data (jdata) blocks from the journal.
+> 
+> This patch fixes the problem by adding a check for sdp->sd_jdesc to
+> function gfs2_evict_inode. In theory, this should only happen to corrupt
+> gfs2 file systems, when gfs2 detects the problem, reports it, then tries
+> to evict all the system inodes it has read in up to that point.
+> 
+> Reported-by: Yang Lan <lanyang0908@gmail.com>
+> Signed-off-by: Bob Peterson <rpeterso@redhat.com>
+> Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+> [DP: adjusted context]
+> Signed-off-by: Dragos-Marian Panait <dragos.panait@windriver.com>
+> ---
+>  fs/gfs2/super.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
-Looks good to me, all now queued up, thanks!
+All now queued up, thanks.
 
 greg k-h
