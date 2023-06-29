@@ -2,80 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58CED742E41
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 22:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29220742EA9
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 22:43:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230085AbjF2U04 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 16:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39412 "EHLO
+        id S229991AbjF2Umy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 16:42:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229972AbjF2U04 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 16:26:56 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D99062134;
-        Thu, 29 Jun 2023 13:26:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688070410; x=1688675210; i=rwarsow@gmx.de;
- bh=CiL9J12qxOBUwf6qGkjvihfgMOUph9VndZwiTtNAWYg=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=sm0xAt9XodyAMOBtRxz0TJ/2YyNPLXbZSZ0BAF79yo/5ViLV/uICc6K0ZEWdMKu5pWMHsZT
- lqyIRk6qdweL3YbBFL6/DkX+Wg7DftBM3d8rxLmQtPtobCsaenvFJjV1h6euRNF9ZO8Rw/kMp
- UqN6w68aEBW5EjZ85/r5tYERvQ9CxaI60Zq/5xDGomzOfbiuFMWddhMOiFyUzMlh30izG2Rl6
- w5pRjciRG+ZwvQipXHY6rr1YVcNhjZcmfoHKAuficAocPwe0QNv/ZzLeSz1gipGaFVumVdNK3
- 4maZKLFOOMNQT4PaZ1tvzK+Rb2jdw6DSgti1gLHCjDIj0XfpsYbA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.34.89]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MwQT9-1pvnJf09yP-00sJyU; Thu, 29
- Jun 2023 22:26:50 +0200
-Message-ID: <99c95822-6f4a-feec-b0a0-f8c5dc1022db@gmx.de>
-Date:   Thu, 29 Jun 2023 22:26:49 +0200
+        with ESMTP id S229575AbjF2Umw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 16:42:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8DB830EC
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 13:41:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1688071317;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Y1w2wveQj5ZjtvSYiiPZCbehKWVYDK8itGEibs3X60w=;
+        b=RDNnQW0v+Gx8qJnb9kuirXyMARnYI6ku+1+ujDv4rfvDlSHLz/k7CTFzwgzTGEjoQtoEPm
+        ZFONSr/Q7bDT0ElvTE7sM5ikQP6tJBAXhyFRsgnlFNhPSniGuWJcdrt8epb7/KJcl6YZTl
+        e9UWyi/tU/4QvFGP8jpc1VM+asFCJuY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-396-OIXoYfhEM3SMriDDhuPqcQ-1; Thu, 29 Jun 2023 16:41:51 -0400
+X-MC-Unique: OIXoYfhEM3SMriDDhuPqcQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1DC6A803FDF;
+        Thu, 29 Jun 2023 20:41:51 +0000 (UTC)
+Received: from cantor.redhat.com (unknown [10.2.17.42])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A1012C00049;
+        Thu, 29 Jun 2023 20:41:49 +0000 (UTC)
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Peter Huewe <peterhuewe@gmx.de>, stable@vger.kernel.org,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        Sachin Sant <sachinp@linux.ibm.com>
+Subject: [PATCH] tpm: return false from tpm_amd_is_rng_defective on non-x86 platforms
+Date:   Thu, 29 Jun 2023 13:41:47 -0700
+Message-Id: <20230629204147.1852823-1-jsnitsel@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:/WnyCb4hLfRPjkKu+SP5zsovDro9uaPi+5KRHENKvUPpKQULqnh
- coaaAHfzxW0TjhQxYHjgMk+LiJTZUZ6hhcl5JjZNoP0mHfgQPTi3HK7GdE1HoSsBPrnbB1o
- pTCbLD8E53Npyb/umMVxkTpuHl/POrOMXzge1zTJY/wohS9zKWhnazmNhkPxy22XYPfanxE
- OHjFosc+Rlu/S2nyF5p6Q==
-UI-OutboundReport: notjunk:1;M01:P0:0fa3S42ZzSA=;f6nv4iMIu80syZvRne8ArnHUNPL
- HdC+x5hZxNlkS1U8pe7mREKLX6pEXhRwTb21mM/qn36tX0WwFHWLYy0cndthFIWTJuXtCuNB6
- AOiCcSb/cBKzq3Xf/1j9CBdOrXDOKOahc2536M/bWF9onUQr0xL340CYxnB+TWw+VfaAxciL1
- tlKfKJET+ogeiBDAun+i8XDInpg46C49ldoYCZ+z30fnj5Kn7p1/aadhDotQEDcwCo5VK0QBL
- 88Tl2TfEE9vRTwplNiOmEThmb0vh2ftK7aaarmXA4T90HeShsG78lsaQxP8DQjtgdyc3Yq9OT
- V07YhjwHmFUE8bz3ug69pjdJfdLGI1PdfxZODbWPGOARgxR5/gNnGhcQSdXCEP3MRmbxk6ypg
- nNUEdhO0c614YiFMeYPc+Qk6n1N8WZfusb01KXPHYKU+ttdNBJY8hVWLNh4ySGLlfaOkRrDhX
- MBajJm407+KtMXIip+rxCrXb82SAxk8Qj7gaNCr0SeTzp4BFEkllP6H8XvoF32kg8/3+yVlvT
- tjXAaVjDDrefvU4HZnZy91vhVhGKjrLj7Dx+de3VMMq5SvPttr+axunVSnCngMPSNf1EhVVfa
- FicKAdmO075fUuiI5TOO9O1jshmPSfA3r4ldc4Y0y0lT7M0tX3ue/rtkZKzCjrxWefU5SPyy8
- NxmKBHYlKNuQz+yMbgfmj22UBLpMKCy2bLch4OScIDkDZOGIDuNsZxYdETO4yLbPOAr9RdGmD
- RGKOexSst/ZLF7hLw5jWr+KsOpvAr2jSyeJjNDaP1hKThMdoNqDThK9hPcHRlTfgxOQlLFHi4
- tWTzfcSc56S14oBETS2Vv7fAsWH8I04NIfuqrtHBHQnklh6Py+pkNXJeV35mzUpVmBHwq9Idf
- Lpk0V+5CYv2E+/n1DdE/xza3uqVQtaYCFtUXQMvsLgqxB/jObuCeoOja3hgSlKbZ4Eo65mqTz
- /yK6OaaacgNbG4jkbyNr5Y8TQqA=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+tpm_amd_is_rng_defective is for dealing with an issue related to the
+AMD firmware TPM, so on non-x86 architectures just have it inline and
+return false.
 
-6.4.1-rc1
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Peter Huewe <peterhuewe@gmx.de>
+Cc: stable@vger.kernel.org
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Reported-by: Aneesh Kumar K. V <aneesh.kumar@linux.ibm.com>
+Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+Closes: https://lore.kernel.org/lkml/99B81401-DB46-49B9-B321-CF832B50CAC3@linux.ibm.com/
+Fixes: f1324bbc4011 ("tpm: disable hwrng for fTPM on some AMD designs")
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+---
+ drivers/char/tpm/tpm-chip.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake, i5-11400)
-
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+index cd48033b804a..cf5499e51999 100644
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -518,6 +518,7 @@ static int tpm_add_legacy_sysfs(struct tpm_chip *chip)
+  * 6.x.y.z series: 6.0.18.6 +
+  * 3.x.y.z series: 3.57.y.5 +
+  */
++#ifdef CONFIG_X86
+ static bool tpm_amd_is_rng_defective(struct tpm_chip *chip)
+ {
+ 	u32 val1, val2;
+@@ -566,6 +567,12 @@ static bool tpm_amd_is_rng_defective(struct tpm_chip *chip)
+ 
+ 	return true;
+ }
++#else
++static inline bool tpm_amd_is_rng_defective(struct tpm_chip *chip)
++{
++	return false;
++}
++#endif /* CONFIG_X86 */
+ 
+ static int tpm_hwrng_read(struct hwrng *rng, void *data, size_t max, bool wait)
+ {
+-- 
+2.38.1
 
