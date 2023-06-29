@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B25F3742C46
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC4DB742C31
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232248AbjF2SpV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:45:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58110 "EHLO
+        id S232300AbjF2Sr1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:47:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232987AbjF2SpA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:45:00 -0400
+        with ESMTP id S232745AbjF2SrH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:47:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C9D03C03
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:44:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E53202D55
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:47:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45294615E9
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54556C433C0;
-        Thu, 29 Jun 2023 18:44:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F028615E2
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:47:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4221BC433C8;
+        Thu, 29 Jun 2023 18:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064290;
-        bh=lgzFCTmY0EVjo4QybnW3Wwz0UzDhTGBDhg+X43bqxgU=;
+        s=korg; t=1688064421;
+        bh=RZBDDT/RdEJIL5rNi3jrEECSEQ4P0H6KNvIMekKpX7A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bom8FQl+9WxTi/8BgxNBcKkb1pQViqYhqt8ET+IVsMURy8LRrt4BOUvdzAEbQep/1
-         L6gFvwCqrPn96OdE9Aml7+lWhb0GpCYLKEIDkfP8r5985YG3R6uQz5yNg/OLZTlJw9
-         rS9Xy+lG1tifykDpiFuNqrFLxQKv0KjMcEusB0po=
+        b=CC73XmyOHitkkSJNDxpB/n6WgIja0TPNjZkK7/MfIGUCarFUU2lYkYsTC68erXkd2
+         enawE3MsxgDFQ8ceoQnEidEHxJBBgp6X0vrQEg5hz1W7MrGbRx+/OHRZSDBp2BYmeJ
+         fYs7IkITeLOM55L3avBzKa0XqjGRArfnbTarx25s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Samuel Mendoza-Jonas <samjonas@amazon.com>,
-        David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH 6.1 14/30] mm: introduce new lock_mm_and_find_vma() page fault helper
-Date:   Thu, 29 Jun 2023 20:43:33 +0200
-Message-ID: <20230629184152.229690063@linuxfoundation.org>
+        patches@lists.linux.dev, Tony Battersby <tonyb@cybernetics.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Ashok Raj <ashok.raj@intel.com>
+Subject: [PATCH 6.3 04/29] x86/smp: Make stop_other_cpus() more robust
+Date:   Thu, 29 Jun 2023 20:43:34 +0200
+Message-ID: <20230629184151.910531195@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
-References: <20230629184151.651069086@linuxfoundation.org>
+In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
+References: <20230629184151.705870770@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,298 +56,235 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit c2508ec5a58db67093f4fb8bf89a9a7c53a109e9 upstream.
+commit 1f5e7eb7868e42227ac426c96d437117e6e06e8e upstream.
 
-.. and make x86 use it.
+Tony reported intermittent lockups on poweroff. His analysis identified the
+wbinvd() in stop_this_cpu() as the culprit. This was added to ensure that
+on SME enabled machines a kexec() does not leave any stale data in the
+caches when switching from encrypted to non-encrypted mode or vice versa.
 
-This basically extracts the existing x86 "find and expand faulting vma"
-code, but extends it to also take the mmap lock for writing in case we
-actually do need to expand the vma.
+That wbinvd() is conditional on the SME feature bit which is read directly
+from CPUID. But that readout does not check whether the CPUID leaf is
+available or not. If it's not available the CPU will return the value of
+the highest supported leaf instead. Depending on the content the "SME" bit
+might be set or not.
 
-We've historically short-circuited that case, and have some rather ugly
-special logic to serialize the stack segment expansion (since we only
-hold the mmap lock for reading) that doesn't match the normal VM
-locking.
+That's incorrect but harmless. Making the CPUID readout conditional makes
+the observed hangs go away, but it does not fix the underlying problem:
 
-That slight violation of locking worked well, right up until it didn't:
-the maple tree code really does want proper locking even for simple
-extension of an existing vma.
+CPU0					CPU1
 
-So extract the code for "look up the vma of the fault" from x86, fix it
-up to do the necessary write locking, and make it available as a helper
-function for other architectures that can use the common helper.
+ stop_other_cpus()
+   send_IPIs(REBOOT);			stop_this_cpu()
+   while (num_online_cpus() > 1);         set_online(false);
+   proceed... -> hang
+				          wbinvd()
 
-Note: I say "common helper", but it really only handles the normal
-stack-grows-down case.  Which is all architectures except for PA-RISC
-and IA64.  So some rare architectures can't use the helper, but if they
-care they'll just need to open-code this logic.
+WBINVD is an expensive operation and if multiple CPUs issue it at the same
+time the resulting delays are even larger.
 
-It's also worth pointing out that this code really would like to have an
-optimistic "mmap_upgrade_trylock()" to make it quicker to go from a
-read-lock (for the common case) to taking the write lock (for having to
-extend the vma) in the normal single-threaded situation where there is
-no other locking activity.
+But CPU0 already observed num_online_cpus() going down to 1 and proceeds
+which causes the system to hang.
 
-But that _is_ all the very uncommon special case, so while it would be
-nice to have such an operation, it probably doesn't matter in reality.
-I did put in the skeleton code for such a possible future expansion,
-even if it only acts as pseudo-documentation for what we're doing.
+This issue exists independent of WBINVD, but the delays caused by WBINVD
+make it more prominent.
 
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-[6.1: Ignore CONFIG_PER_VMA_LOCK context]
-Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Make this more robust by adding a cpumask which is initialized to the
+online CPU mask before sending the IPIs and CPUs clear their bit in
+stop_this_cpu() after the WBINVD completed. Check for that cpumask to
+become empty in stop_other_cpus() instead of watching num_online_cpus().
+
+The cpumask cannot plug all holes either, but it's better than a raw
+counter and allows to restrict the NMI fallback IPI to be sent only the
+CPUs which have not reported within the timeout window.
+
+Fixes: 08f253ec3767 ("x86/cpu: Clear SME feature flag when not in use")
+Reported-by: Tony Battersby <tonyb@cybernetics.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/3817d810-e0f1-8ef8-0bbd-663b919ca49b@cybernetics.com
+Link: https://lore.kernel.org/r/87h6r770bv.ffs@tglx
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Kconfig    |    1 
- arch/x86/mm/fault.c |   52 ----------------------
- include/linux/mm.h  |    2 
- mm/Kconfig          |    4 +
- mm/memory.c         |  121 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 130 insertions(+), 50 deletions(-)
+ arch/x86/include/asm/cpu.h |    2 +
+ arch/x86/kernel/process.c  |   23 +++++++++++++++-
+ arch/x86/kernel/smp.c      |   62 +++++++++++++++++++++++++++++----------------
+ 3 files changed, 64 insertions(+), 23 deletions(-)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -271,6 +271,7 @@ config X86
- 	select HAVE_GENERIC_VDSO
- 	select HOTPLUG_SMT			if SMP
- 	select IRQ_FORCED_THREADING
-+	select LOCK_MM_AND_FIND_VMA
- 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
- 	select NEED_PER_CPU_PAGE_FIRST_CHUNK
- 	select NEED_SG_DMA_LENGTH
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -900,12 +900,6 @@ __bad_area(struct pt_regs *regs, unsigne
- 	__bad_area_nosemaphore(regs, error_code, address, pkey, si_code);
- }
+--- a/arch/x86/include/asm/cpu.h
++++ b/arch/x86/include/asm/cpu.h
+@@ -98,4 +98,6 @@ extern u64 x86_read_arch_cap_msr(void);
+ int intel_find_matching_signature(void *mc, unsigned int csig, int cpf);
+ int intel_microcode_sanity_check(void *mc, bool print_err, int hdr_type);
  
--static noinline void
--bad_area(struct pt_regs *regs, unsigned long error_code, unsigned long address)
--{
--	__bad_area(regs, error_code, address, 0, SEGV_MAPERR);
--}
--
- static inline bool bad_area_access_from_pkeys(unsigned long error_code,
- 		struct vm_area_struct *vma)
- {
-@@ -1354,51 +1348,10 @@ void do_user_addr_fault(struct pt_regs *
- 	}
++extern struct cpumask cpus_stop_mask;
++
+ #endif /* _ASM_X86_CPU_H */
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -752,13 +752,23 @@ bool xen_set_default_idle(void)
+ }
  #endif
  
--	/*
--	 * Kernel-mode access to the user address space should only occur
--	 * on well-defined single instructions listed in the exception
--	 * tables.  But, an erroneous kernel fault occurring outside one of
--	 * those areas which also holds mmap_lock might deadlock attempting
--	 * to validate the fault against the address space.
--	 *
--	 * Only do the expensive exception table search when we might be at
--	 * risk of a deadlock.  This happens if we
--	 * 1. Failed to acquire mmap_lock, and
--	 * 2. The access did not originate in userspace.
--	 */
--	if (unlikely(!mmap_read_trylock(mm))) {
--		if (!user_mode(regs) && !search_exception_tables(regs->ip)) {
--			/*
--			 * Fault from code in kernel from
--			 * which we do not expect faults.
--			 */
--			bad_area_nosemaphore(regs, error_code, address);
--			return;
--		}
- retry:
--		mmap_read_lock(mm);
--	} else {
--		/*
--		 * The above down_read_trylock() might have succeeded in
--		 * which case we'll have missed the might_sleep() from
--		 * down_read():
--		 */
--		might_sleep();
--	}
--
--	vma = find_vma(mm, address);
-+	vma = lock_mm_and_find_vma(mm, address, regs);
- 	if (unlikely(!vma)) {
--		bad_area(regs, error_code, address);
--		return;
--	}
--	if (likely(vma->vm_start <= address))
--		goto good_area;
--	if (unlikely(!(vma->vm_flags & VM_GROWSDOWN))) {
--		bad_area(regs, error_code, address);
--		return;
--	}
--	if (unlikely(expand_stack(vma, address))) {
--		bad_area(regs, error_code, address);
-+		bad_area_nosemaphore(regs, error_code, address);
++struct cpumask cpus_stop_mask;
++
+ void __noreturn stop_this_cpu(void *dummy)
+ {
++	unsigned int cpu = smp_processor_id();
++
+ 	local_irq_disable();
++
+ 	/*
+-	 * Remove this CPU:
++	 * Remove this CPU from the online mask and disable it
++	 * unconditionally. This might be redundant in case that the reboot
++	 * vector was handled late and stop_other_cpus() sent an NMI.
++	 *
++	 * According to SDM and APM NMIs can be accepted even after soft
++	 * disabling the local APIC.
+ 	 */
+-	set_cpu_online(smp_processor_id(), false);
++	set_cpu_online(cpu, false);
+ 	disable_local_APIC();
+ 	mcheck_cpu_clear(this_cpu_ptr(&cpu_info));
+ 
+@@ -776,6 +786,15 @@ void __noreturn stop_this_cpu(void *dumm
+ 	 */
+ 	if (cpuid_eax(0x8000001f) & BIT(0))
+ 		native_wbinvd();
++
++	/*
++	 * This brings a cache line back and dirties it, but
++	 * native_stop_other_cpus() will overwrite cpus_stop_mask after it
++	 * observed that all CPUs reported stop. This write will invalidate
++	 * the related cache line on this CPU.
++	 */
++	cpumask_clear_cpu(cpu, &cpus_stop_mask);
++
+ 	for (;;) {
+ 		/*
+ 		 * Use native_halt() so that memory contents don't change
+--- a/arch/x86/kernel/smp.c
++++ b/arch/x86/kernel/smp.c
+@@ -27,6 +27,7 @@
+ #include <asm/mmu_context.h>
+ #include <asm/proto.h>
+ #include <asm/apic.h>
++#include <asm/cpu.h>
+ #include <asm/idtentry.h>
+ #include <asm/nmi.h>
+ #include <asm/mce.h>
+@@ -146,31 +147,43 @@ static int register_stop_handler(void)
+ 
+ static void native_stop_other_cpus(int wait)
+ {
+-	unsigned long flags;
+-	unsigned long timeout;
++	unsigned int cpu = smp_processor_id();
++	unsigned long flags, timeout;
+ 
+ 	if (reboot_force)
  		return;
+ 
+-	/*
+-	 * Use an own vector here because smp_call_function
+-	 * does lots of things not suitable in a panic situation.
+-	 */
++	/* Only proceed if this is the first CPU to reach this code */
++	if (atomic_cmpxchg(&stopping_cpu, -1, cpu) != -1)
++		return;
+ 
+ 	/*
+-	 * We start by using the REBOOT_VECTOR irq.
+-	 * The irq is treated as a sync point to allow critical
+-	 * regions of code on other cpus to release their spin locks
+-	 * and re-enable irqs.  Jumping straight to an NMI might
+-	 * accidentally cause deadlocks with further shutdown/panic
+-	 * code.  By syncing, we give the cpus up to one second to
+-	 * finish their work before we force them off with the NMI.
++	 * 1) Send an IPI on the reboot vector to all other CPUs.
++	 *
++	 *    The other CPUs should react on it after leaving critical
++	 *    sections and re-enabling interrupts. They might still hold
++	 *    locks, but there is nothing which can be done about that.
++	 *
++	 * 2) Wait for all other CPUs to report that they reached the
++	 *    HLT loop in stop_this_cpu()
++	 *
++	 * 3) If #2 timed out send an NMI to the CPUs which did not
++	 *    yet report
++	 *
++	 * 4) Wait for all other CPUs to report that they reached the
++	 *    HLT loop in stop_this_cpu()
++	 *
++	 * #3 can obviously race against a CPU reaching the HLT loop late.
++	 * That CPU will have reported already and the "have all CPUs
++	 * reached HLT" condition will be true despite the fact that the
++	 * other CPU is still handling the NMI. Again, there is no
++	 * protection against that as "disabled" APICs still respond to
++	 * NMIs.
+ 	 */
+-	if (num_online_cpus() > 1) {
+-		/* did someone beat us here? */
+-		if (atomic_cmpxchg(&stopping_cpu, -1, safe_smp_processor_id()) != -1)
+-			return;
++	cpumask_copy(&cpus_stop_mask, cpu_online_mask);
++	cpumask_clear_cpu(cpu, &cpus_stop_mask);
+ 
++	if (!cpumask_empty(&cpus_stop_mask)) {
+ 		/* sync above data before sending IRQ */
+ 		wmb();
+ 
+@@ -183,12 +196,12 @@ static void native_stop_other_cpus(int w
+ 		 * CPUs reach shutdown state.
+ 		 */
+ 		timeout = USEC_PER_SEC;
+-		while (num_online_cpus() > 1 && timeout--)
++		while (!cpumask_empty(&cpus_stop_mask) && timeout--)
+ 			udelay(1);
  	}
  
-@@ -1406,7 +1359,6 @@ retry:
- 	 * Ok, we have a good vm_area for this memory access, so
- 	 * we can handle it..
- 	 */
--good_area:
- 	if (unlikely(access_error(error_code, vma))) {
- 		bad_area_access_error(regs, error_code, address, vma);
- 		return;
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1932,6 +1932,8 @@ void unmap_mapping_pages(struct address_
- 		pgoff_t start, pgoff_t nr, bool even_cows);
- void unmap_mapping_range(struct address_space *mapping,
- 		loff_t const holebegin, loff_t const holelen, int even_cows);
-+struct vm_area_struct *lock_mm_and_find_vma(struct mm_struct *mm,
-+		unsigned long address, struct pt_regs *regs);
- #else
- static inline vm_fault_t handle_mm_fault(struct vm_area_struct *vma,
- 					 unsigned long address, unsigned int flags,
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1150,6 +1150,10 @@ config LRU_GEN_STATS
- 	  This option has a per-memcg and per-node memory overhead.
- # }
+ 	/* if the REBOOT_VECTOR didn't work, try with the NMI */
+-	if (num_online_cpus() > 1) {
++	if (!cpumask_empty(&cpus_stop_mask)) {
+ 		/*
+ 		 * If NMI IPI is enabled, try to register the stop handler
+ 		 * and send the IPI. In any case try to wait for the other
+@@ -200,7 +213,8 @@ static void native_stop_other_cpus(int w
  
-+config LOCK_MM_AND_FIND_VMA
-+	bool
-+	depends on !STACK_GROWSUP
+ 			pr_emerg("Shutting down cpus with NMI\n");
+ 
+-			apic_send_IPI_allbutself(NMI_VECTOR);
++			for_each_cpu(cpu, &cpus_stop_mask)
++				apic->send_IPI(cpu, NMI_VECTOR);
+ 		}
+ 		/*
+ 		 * Don't wait longer than 10 ms if the caller didn't
+@@ -208,7 +222,7 @@ static void native_stop_other_cpus(int w
+ 		 * one or more CPUs do not reach shutdown state.
+ 		 */
+ 		timeout = USEC_PER_MSEC * 10;
+-		while (num_online_cpus() > 1 && (wait || timeout--))
++		while (!cpumask_empty(&cpus_stop_mask) && (wait || timeout--))
+ 			udelay(1);
+ 	}
+ 
+@@ -216,6 +230,12 @@ static void native_stop_other_cpus(int w
+ 	disable_local_APIC();
+ 	mcheck_cpu_clear(this_cpu_ptr(&cpu_info));
+ 	local_irq_restore(flags);
 +
- source "mm/damon/Kconfig"
- 
- endmenu
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5258,6 +5258,127 @@ vm_fault_t handle_mm_fault(struct vm_are
++	/*
++	 * Ensure that the cpus_stop_mask cache lines are invalidated on
++	 * the other CPUs. See comment vs. SME in stop_this_cpu().
++	 */
++	cpumask_clear(&cpus_stop_mask);
  }
- EXPORT_SYMBOL_GPL(handle_mm_fault);
  
-+#ifdef CONFIG_LOCK_MM_AND_FIND_VMA
-+#include <linux/extable.h>
-+
-+static inline bool get_mmap_lock_carefully(struct mm_struct *mm, struct pt_regs *regs)
-+{
-+	/* Even if this succeeds, make it clear we *might* have slept */
-+	if (likely(mmap_read_trylock(mm))) {
-+		might_sleep();
-+		return true;
-+	}
-+
-+	if (regs && !user_mode(regs)) {
-+		unsigned long ip = instruction_pointer(regs);
-+		if (!search_exception_tables(ip))
-+			return false;
-+	}
-+
-+	mmap_read_lock(mm);
-+	return true;
-+}
-+
-+static inline bool mmap_upgrade_trylock(struct mm_struct *mm)
-+{
-+	/*
-+	 * We don't have this operation yet.
-+	 *
-+	 * It should be easy enough to do: it's basically a
-+	 *    atomic_long_try_cmpxchg_acquire()
-+	 * from RWSEM_READER_BIAS -> RWSEM_WRITER_LOCKED, but
-+	 * it also needs the proper lockdep magic etc.
-+	 */
-+	return false;
-+}
-+
-+static inline bool upgrade_mmap_lock_carefully(struct mm_struct *mm, struct pt_regs *regs)
-+{
-+	mmap_read_unlock(mm);
-+	if (regs && !user_mode(regs)) {
-+		unsigned long ip = instruction_pointer(regs);
-+		if (!search_exception_tables(ip))
-+			return false;
-+	}
-+	mmap_write_lock(mm);
-+	return true;
-+}
-+
-+/*
-+ * Helper for page fault handling.
-+ *
-+ * This is kind of equivalend to "mmap_read_lock()" followed
-+ * by "find_extend_vma()", except it's a lot more careful about
-+ * the locking (and will drop the lock on failure).
-+ *
-+ * For example, if we have a kernel bug that causes a page
-+ * fault, we don't want to just use mmap_read_lock() to get
-+ * the mm lock, because that would deadlock if the bug were
-+ * to happen while we're holding the mm lock for writing.
-+ *
-+ * So this checks the exception tables on kernel faults in
-+ * order to only do this all for instructions that are actually
-+ * expected to fault.
-+ *
-+ * We can also actually take the mm lock for writing if we
-+ * need to extend the vma, which helps the VM layer a lot.
-+ */
-+struct vm_area_struct *lock_mm_and_find_vma(struct mm_struct *mm,
-+			unsigned long addr, struct pt_regs *regs)
-+{
-+	struct vm_area_struct *vma;
-+
-+	if (!get_mmap_lock_carefully(mm, regs))
-+		return NULL;
-+
-+	vma = find_vma(mm, addr);
-+	if (likely(vma && (vma->vm_start <= addr)))
-+		return vma;
-+
-+	/*
-+	 * Well, dang. We might still be successful, but only
-+	 * if we can extend a vma to do so.
-+	 */
-+	if (!vma || !(vma->vm_flags & VM_GROWSDOWN)) {
-+		mmap_read_unlock(mm);
-+		return NULL;
-+	}
-+
-+	/*
-+	 * We can try to upgrade the mmap lock atomically,
-+	 * in which case we can continue to use the vma
-+	 * we already looked up.
-+	 *
-+	 * Otherwise we'll have to drop the mmap lock and
-+	 * re-take it, and also look up the vma again,
-+	 * re-checking it.
-+	 */
-+	if (!mmap_upgrade_trylock(mm)) {
-+		if (!upgrade_mmap_lock_carefully(mm, regs))
-+			return NULL;
-+
-+		vma = find_vma(mm, addr);
-+		if (!vma)
-+			goto fail;
-+		if (vma->vm_start <= addr)
-+			goto success;
-+		if (!(vma->vm_flags & VM_GROWSDOWN))
-+			goto fail;
-+	}
-+
-+	if (expand_stack(vma, addr))
-+		goto fail;
-+
-+success:
-+	mmap_write_downgrade(mm);
-+	return vma;
-+
-+fail:
-+	mmap_write_unlock(mm);
-+	return NULL;
-+}
-+#endif
-+
- #ifndef __PAGETABLE_P4D_FOLDED
  /*
-  * Allocate p4d page table.
 
 
