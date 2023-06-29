@@ -2,80 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B4C0742B09
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 19:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28881742B22
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 19:23:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232178AbjF2RGp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 13:06:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51968 "EHLO
+        id S230504AbjF2RXC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 13:23:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232081AbjF2RGn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 13:06:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B7C3586;
-        Thu, 29 Jun 2023 10:06:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C476615AF;
-        Thu, 29 Jun 2023 17:06:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C2AC433C0;
-        Thu, 29 Jun 2023 17:06:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688058401;
-        bh=snyLsXHVhbxKXmXIpWLRNYYMnAJeU7sVB5JSeB+DrS0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eU9MBbQ6pFaX4UtoGXg8D3oGSWg/xo6SYHzJH+Ucnv2yJQW19cnnrN/ZbvJ23CKeJ
-         8R5P855h/17RbJnwyLFiHE84xkxCooGl6r7OGHwm8TMdFoA0CaYbXKZG7BG7fUM/AV
-         gZgXoih6qQlA9se4M1PAnjlrBF/Kd5OfF8oROf1UKSUL7+DvZYk/jtc7QXRhhCKY2Y
-         vw3kq9wL2j2bXI/BJmHkkZxcNFEirC0uvJRzS02ZZqjI093R17cy3NczCK+eNAlXXV
-         5EX5THE32sAIH4ufXljJBCGP/NafhCxV9f4B9zCcCH4GrqrB4oM+t2SA2wxQS6KOs2
-         T9QcHXxtP/8Bw==
-Date:   Thu, 29 Jun 2023 10:06:39 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Haiyang Zhang <haiyangz@microsoft.com>
-Cc:     Paolo Abeni <pabeni@redhat.com>,
-        "longli@linuxonhyperv.com" <longli@linuxonhyperv.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Long Li <longli@microsoft.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [Patch v3] net: mana: Batch ringing RX queue doorbell on
- receiving packets
-Message-ID: <20230629100639.140925ab@kernel.org>
-In-Reply-To: <PH7PR21MB3116276E09BFD0950FB0FB49CA25A@PH7PR21MB3116.namprd21.prod.outlook.com>
-References: <1687823827-15850-1-git-send-email-longli@linuxonhyperv.com>
-        <36c95dd6babb2202f70594d5dde13493af62dcad.camel@redhat.com>
-        <PH7PR21MB3116276E09BFD0950FB0FB49CA25A@PH7PR21MB3116.namprd21.prod.outlook.com>
+        with ESMTP id S229865AbjF2RW7 (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Thu, 29 Jun 2023 13:22:59 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AC4D10C9;
+        Thu, 29 Jun 2023 10:22:58 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.west.internal (Postfix) with ESMTP id 42FED320099B;
+        Thu, 29 Jun 2023 13:22:56 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Thu, 29 Jun 2023 13:22:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1688059375; x=1688145775; bh=Cw
+        E2wcHANU3ek6A8gHn/xl6f0ODbgDTZqECgroPgqbw=; b=KmPDis3AAUdV73TLXo
+        3OgDknDtNClg5x81qOb965Qm5cYr8IvBdXhGCvghC6eXv81fiE9fG56quzNDzZst
+        /45f3i/zaf2LLN5iCHJQZ/RK3D1QpoqRKUl+8v1fSucJTUF6UJfVar0BDZCQ20Hn
+        l+liTEg46Hsd1sng3DdI97pvvFC3kwBWeDW3nwt/uejkcN0J/mk/Y1a8yJDS8bqa
+        JMIAxG1Gnlpsr2aM/GkAJzYUPxYnlfZSJ7ZZs6WeYDdcEX6dmVN2SHx0DfUmQX73
+        G3/KbHUY0HSz5fHQkbbibFsIsYYtYvP9Y4nJ7mqAHyX83IHBR3X55NcLf7C5gli7
+        p6xg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1688059375; x=1688145775; bh=CwE2wcHANU3ek
+        6A8gHn/xl6f0ODbgDTZqECgroPgqbw=; b=P60oOGRwftxmCUZrRzMi4jW32xc8n
+        x/eFQb0AcAT1TPGPGifej8BeSyum6UHdShIH8Vel+XbjhTR6dFf6fx7hhL9eYBHC
+        8AxQHRCA40a+Q3uWnXXz5wYSAgyTbjqkEjfI8xiy8QVcpXMJy9WWReqY2RA84cCp
+        iGz5Lv/Sb8T2zUE0+ISKl2EI4124iK2EICFrWM3mG4XV0hFRnJHrWmi8Ljtg2xhc
+        VNaBBAhLyGJZq/4zvRjcmREb60gX9pXeNRgxuGni8h4vTsd/Bfbbkp8fH8aNDhg6
+        ubhKsArA6i2l9ey7ciIKEqbX0PU9A/Roz60ygeg9HF4tQ2CLdynNmpM7A==
+X-ME-Sender: <xms:7r2dZPDLxq62M1kBStgKsfRuxemXsMrZzXVBnqFElAp05hW8nJmkZA>
+    <xme:7r2dZFiRFG8Vyjfyo5GhZZyIwFPE8E0ULnZ1F0bEAKRiKa5s8MlxBpnlzf35RQiKx
+    qOf15zr3vC0aA>
+X-ME-Received: <xmr:7r2dZKlK1wqTzcXBRUtDDIvakYJooS_zGMyatWd4F6tGlD1OsJtLccEUQulqVE9rJAhJ5BUgmn8kdxg-RZShi0K_UonVJHaFC8H3ww>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeggdduuddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:7r2dZBwMbrF4faEtgoZSd7eeg0wEP9Tyhwjf0jLldB286bmYrr_RrA>
+    <xmx:7r2dZEQU0Bhnx465BF7A7M9TFiqIYiSbFYJ6-6EjLteV3BCe3mu5oA>
+    <xmx:7r2dZEZVZKrU2X_BeAWA3KAVFrEfgS6uSQJJTwTqYP8MvMsHwG9Wvw>
+    <xmx:772dZDCeQFPJcEKuRI0bDql2RgH-aTbX7IKfOHr2q36_TPqSiQbNRA>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 29 Jun 2023 13:22:53 -0400 (EDT)
+Date:   Thu, 29 Jun 2023 19:22:51 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        johan+linaro@kernel.org, perex@perex.cz, tiwai@suse.com,
+        lgirdwood@gmail.com, ckeepax@opensource.cirrus.com,
+        kuninori.morimoto.gx@renesas.com, linux-kernel@vger.kernel.org,
+        pierre-louis.bossart@linux.intel.com, alsa-devel@alsa-project.org,
+        Stable@vger.kernel.org
+Subject: Re: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device
+ number
+Message-ID: <2023062958-thumping-ambulance-7a2f@gregkh>
+References: <20230628092404.13927-1-srinivas.kandagatla@linaro.org>
+ <c22fcc94-aa41-4ffd-bfe8-f0b9f15a76c0@sirena.org.uk>
+ <2023062940-snore-brick-419b@gregkh>
+ <9699a960-74b0-4064-b264-6cde06cd16fc@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9699a960-74b0-4064-b264-6cde06cd16fc@sirena.org.uk>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 29 Jun 2023 16:53:42 +0000 Haiyang Zhang wrote:
-> This web page shows the net-next is "open":
-> http://vger.kernel.org/~davem/net-next.html
+On Thu, Jun 29, 2023 at 05:16:44PM +0100, Mark Brown wrote:
+> On Thu, Jun 29, 2023 at 06:06:05PM +0200, Greg KH wrote:
+> > On Thu, Jun 29, 2023 at 04:43:57PM +0100, Mark Brown wrote:
 > 
-> Is this still the right place to check net-next status?
+> > > Won't this be an ABI change?  That seems like it'd disrupt things in
+> > > stable.
+> 
+> > ABI changes should disrupt things just the same in Linus's tree, why is
+> > stable any different?
+> 
+> This is a numbering resulting from enumeration thing so it gets to be
+> like the issues we've had with the order in which block and ethernet
+> devices appear, it's on the edge the extent to which people might be
+> relying on it.  If it's causing some problem as is and there's a reason
+> to do something (see the first half of my reply...) but the case gets
+> even harder to make with stable.
 
-We're working on fixing it. Unfortunately it's a private page and most
-of the netdev maintainers don't have access to changing it :(
+It shouldn't matter for stable or not, if the change is acceptable in
+Linus's tree, with the userspace visable change, then it should be
+acceptable in any active stable branch as well.  There is no difference
+here for userspace api/abi rules.
+
+thanks,
+
+greg k-h
