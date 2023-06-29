@@ -2,115 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAEF0742A3B
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 18:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6AE2742A42
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 18:07:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231680AbjF2QGR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 12:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35714 "EHLO
+        id S232096AbjF2QHc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 12:07:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232006AbjF2QGO (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Thu, 29 Jun 2023 12:06:14 -0400
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41521731;
-        Thu, 29 Jun 2023 09:06:12 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.west.internal (Postfix) with ESMTP id C3FFE320090C;
-        Thu, 29 Jun 2023 12:06:10 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Thu, 29 Jun 2023 12:06:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1688054770; x=1688141170; bh=aQ
-        l6t/V3Yr9WqaPI64E3eafGxIBMivgTwolzo540MwQ=; b=zKcmx+AoZpC4z76nNs
-        jG6GaVixiTyXGVMnxIuLTSn/nwq6i9nM26CQiWIxSO4z+x8Ufz+nDhBUGEKu2QBz
-        0Zvn3iaXQ7jlN4ny0U7uDxRcei5Cn8r4pA20t2eWjLmNN6cZoBbC5Ew3x69u5ClB
-        ZrthhvRp1nwk8MpQZccABzjxXkNlDg7b5rBQwf1sXViaj1QaHAwZQ/zhOOYCmFY1
-        0N2hcom3ZgCJo4W0aCUQY/N1LiqmXjoHS59CZAGKTVQlngYNnOpDEF+I3j85mIhN
-        4WXz5g3ZJ6hQ+Pw8yXbuTLXak7Ww2cSSJp6WTQLOm54nrElIG/RgV8kQgjmlZXc1
-        tklA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1688054770; x=1688141170; bh=aQl6t/V3Yr9Wq
-        aPI64E3eafGxIBMivgTwolzo540MwQ=; b=K9MmruBbgYjYAAi0g6IMntUQNx8fY
-        4Cwicx2o37fK2cckgB985dbDs1ZVgtNuMUOwUf7s//f8EIjcYBHRDF/tSS8yiOnf
-        Y62GyL3RNl2OZe7Waim285CpdqSVlyrdWqRrPokz6useu6bkXipKKrnXV6G80+oY
-        7Lg1s3W1HIawaHhVq2A4doj9KwaJM/jdbh0dmPTaNn/kZrPbS6OTqAnuzEotT20/
-        x+CzekSbobd2YnggL3qOFC0DfAXqzuI+CQNelQIsbkX+ZkgoCIAjuuxe3WSzhzrJ
-        XqFlCEKCbDrdnARzLPMtb9qLFE5uXsl6eB5UGSITMGcsNSpcHK9MH51HQ==
-X-ME-Sender: <xms:8KudZMedTBkWyxppC0_grAdJxIkMaNOyhaVN6z_BqqJ80s6J7zwHkw>
-    <xme:8KudZOMTyuiKyTRA6ZUsZ2Y2Pwg6uhiqEDRdEJCQZRgh2w9gQ-5DkW_WE2reKYGZW
-    RNvTU0KxDTBdw>
-X-ME-Received: <xmr:8KudZNjBjNJFS-kQ-10MuiVDarsV3C2Q0Q7CsWML-ZM41bWONYMmk6rowi-ddqTTmtII_3pl4ycTffKA0vg17o7BtsAtk7TTPVSwQg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeggdeljecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
-    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomh
-X-ME-Proxy: <xmx:8KudZB8FGmQ-ZnMNAuePDpb2Ipsp0yOHMigWww0-vhnhLyzWrPFa9A>
-    <xmx:8KudZIvMhdZ3qvXqt2-F3miAvHhwal9jLP_BYX_C10mcIcw368mJdw>
-    <xmx:8KudZIGVxyePNZCrbdRR_zP-pX02xCQRrNWG3_MzORZSXAd49mFZ9g>
-    <xmx:8qudZIcnH18b3PjwV_8t_Iu4LRAbbysytcgLtbtHAFW4eQMjZq7ahQ>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 29 Jun 2023 12:06:07 -0400 (EDT)
-Date:   Thu, 29 Jun 2023 18:06:05 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        johan+linaro@kernel.org, perex@perex.cz, tiwai@suse.com,
-        lgirdwood@gmail.com, ckeepax@opensource.cirrus.com,
-        kuninori.morimoto.gx@renesas.com, linux-kernel@vger.kernel.org,
-        pierre-louis.bossart@linux.intel.com, alsa-devel@alsa-project.org,
-        Stable@vger.kernel.org
-Subject: Re: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device
- number
-Message-ID: <2023062940-snore-brick-419b@gregkh>
-References: <20230628092404.13927-1-srinivas.kandagatla@linaro.org>
- <c22fcc94-aa41-4ffd-bfe8-f0b9f15a76c0@sirena.org.uk>
+        with ESMTP id S232035AbjF2QHa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 12:07:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E7E41FD2
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 09:07:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B09706157B
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 16:07:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889C3C433C0;
+        Thu, 29 Jun 2023 16:07:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1688054848;
+        bh=m0B4NXa1LCIZ/nj2T82ikQC2cC2ycFK6Db3ynJMcbK8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oRviszAAwtFLQ76IqSjYNS17oiPV/YX/bSY4TKbh8nQ8yAELgxMyfSTTI/wy9FGss
+         hp5aNJF52LcMzP/uxhpA+e/iDlESAUATrate3jY0R9cSk33AMY+3IDBJPy66PnIEmX
+         G2ICjMfB0eVUcFd65S4zYIjHIkr556mhyTXVnWJs=
+Date:   Thu, 29 Jun 2023 18:07:25 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Luiz Capitulino <luizcap@amazon.com>, sashal@kernel.org,
+        stable@vger.kernel.org
+Subject: Re: Possible build time regression affecting stable kernels
+Message-ID: <2023062943-cognitive-basin-2261@gregkh>
+References: <2023060156-precision-prorate-ce46@gregkh>
+ <20259cf7-d50d-4eca-482b-3a89cc94df7b@amazon.com>
+ <2023060148-levers-freight-5b11@gregkh>
+ <CAHC9VhQ6W4hq3B122BxcrD6h6_-Q1AguFYYLjAbB6ALCbmzDoQ@mail.gmail.com>
+ <2023060102-chatter-happening-f7a5@gregkh>
+ <CAHC9VhRuc5jSK7xODqtBvhUmunov+PVVQyLb8oDP8k0pLq_P-g@mail.gmail.com>
+ <2023062846-outback-posting-dfbd@gregkh>
+ <CAHC9VhQfWNxP80PRHMM44fkMx8fnuPJ2VyR-mA1WMLwsAevRuA@mail.gmail.com>
+ <2023062955-wing-front-553b@gregkh>
+ <CAHC9VhQ5Mx_BMuTCyMFKeTWkgZsoXxAipzx6YQhrrhNu61_awA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <c22fcc94-aa41-4ffd-bfe8-f0b9f15a76c0@sirena.org.uk>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHC9VhQ5Mx_BMuTCyMFKeTWkgZsoXxAipzx6YQhrrhNu61_awA@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 29, 2023 at 04:43:57PM +0100, Mark Brown wrote:
-> On Wed, Jun 28, 2023 at 10:24:04AM +0100, Srinivas Kandagatla wrote:
-> > For some reason we ended up with a setup without this flag.
-> > This resulted in inconsistent sound card devices numbers which
-> >  are also not starting as expected at dai_link->id.
-> >  (Ex: MultiMedia1 pcm ended up with device number 4 instead of 0)
+On Thu, Jun 29, 2023 at 11:55:12AM -0400, Paul Moore wrote:
+> On Thu, Jun 29, 2023 at 4:43 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > On Wed, Jun 28, 2023 at 07:33:27PM -0400, Paul Moore wrote:
+> > > > So, can I get a directory list or file list of what we should be
+> > > > ignoring for the AUTOSEL and "Fixes: only" tools to be ignoring?
+> > >
+> > > I've been trying to ensure that the files/directories entries in
+> > > MAINTAINERS are current, so that is probably as good a place as any to
+> > > pull that info.  Do the stable tools use that info already?  In other
+> > > words, if we update the entries in MAINTAINERS should we also notify
+> > > you guys, or will you get it automatically?
+> >
+> > We do not use (or at least I don't, I can't speak for Sasha here, but
+> > odds are we should unify this now), the MAINTAINERS file for this, but
+> > rather a list like you provided below, thanks.
 > 
-> Why is this a problem?
+> Fair enough, if we ever have any significant restructuring I'll try to
+> remember to update the stable folks.  Although I'm guessing such a
+> change would likely end up being self-reporting anyway.
 > 
-> > With this patch patch now the MultiMedia1 PCM ends up with device number 0
-> > as expected.
-> > 
-> > Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
-> > Cc: <Stable@vger.kernel.org>
+> > > Regardless, here is a list:
+> > >
+> > > * Audit
+> > > include/asm-generic/audit_*.h
+> > > include/linux/audit.h
+> > > include/linux/audit_arch.h
+> > > include/uapi/linux/audit.h
+> > > kernel/audit*
+> > > lib/*audit.c
+> > >
+> > > * LSM layer
+> > > security/
+> > > (NOTE: the individual sub-dirs under security/ belong to the
+> > > individual LSMs, not the LSM layer)
+> >
+> > So security/*.c would cover this, not below that, right?
 > 
-> Won't this be an ABI change?  That seems like it'd disrupt things in
-> stable.
+> Yes, that should work.
+> 
+> > > * SELinux
+> > > include/trace/events/avc.h
+> > > include/uapi/linux/selinux_netlink.h
+> > > scripts/selinux/
+> > > security/selinux/
+> >
+> > Looks good, thanks for this.
+> 
+> Thanks for maintaining the exception list.
 
-ABI changes should disrupt things just the same in Linus's tree, why is
-stable any different?
+Cool, it's maintained here:
+	https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list
+
+if it's ever needed to be updated in the future.
 
 thanks,
 
 greg k-h
-
