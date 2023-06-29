@@ -2,162 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7705E741DAB
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 03:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A11E741DD8
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 03:59:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231248AbjF2Bfb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 21:35:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43102 "EHLO
+        id S231496AbjF2B7N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 21:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229840AbjF2Bfa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 21:35:30 -0400
-Received: from cheetah.elm.relay.mailchannels.net (cheetah.elm.relay.mailchannels.net [23.83.212.34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F001E4B
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 18:35:29 -0700 (PDT)
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id 7F558141405
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:35:28 +0000 (UTC)
-Received: from pdx1-sub0-mail-a212.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id 0DE21141E8B
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:35:28 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1688002528; a=rsa-sha256;
-        cv=none;
-        b=ogTjgi71Rwm0qJ+z/XZLK2Q5di+165lca6rEzzibdhdr14nJW6JHPUDf/fwUMFwotfVEID
-        0inedcwBVUkDQRnmh0pmV3fi0j1vl4JGRu+KsatPulF1rz3bVGOSHgk+VJAPQurWzG4rfC
-        qwqmKby1wtyxRi/pHJmP2tIHHIgkSOqvOLm6ePoOjpRqfTrz/8OGYR1k0ATUzsaTWzQnEX
-        5ASy01SFyk3iM2VgrXIhvOAYD6gkHqzWo1bhAvj7yTzAVgi1mvKDFtEpVKrdyOt19IkZv3
-        wUWR8XUS7YZruK1GKNM2hMI9kkAL6X7eEVRY1SBfepiUePFLHQ4iTvwB8UvRuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1688002528;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references:dkim-signature;
-        bh=dFnzrv6aiZPQiCnyjlwkJ/c5UV0bY0knoSpXD/8sdww=;
-        b=9RmAY4v+5cTfo7FJ/w9eDQd6Us/9I00PBmoL/4PFmCePPikdN58lf3sud5O8RzcU/6T0cc
-        SlLbEupNfVhVTQww2UhsgBnKGaN0nNh3WdQCoqbMTZTJJM5/AqDQjqlawy1z0TP6uSeQAZ
-        FC7oSd9+E2VYhf8TzJlRrbKSlvm2z3panKbEHtBmQLjr9cEY9pXe6Vftx5rQroe/9l2WD5
-        UQ/ARzJbb+v4lKbYzMRHch5qmnsq9qLr7cPI3S9NBKdH06fIGzqYKHM9cRH0ml4+eDFhk9
-        ZXwZiPK2Q0mSkAPU0wlBHJ3kfVhm+dWpHXe7J52l1ydroAjNkb6jNTBXA91kqA==
-ARC-Authentication-Results: i=1;
-        rspamd-9fcc56855-lfnmh;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MC-Relay: Good
-X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MailChannels-Auth-Id: dreamhost
-X-Grain-Print: 7f6791fc105ef33a_1688002528308_3056925537
-X-MC-Loop-Signature: 1688002528308:1508754637
-X-MC-Ingress-Time: 1688002528308
-Received: from pdx1-sub0-mail-a212.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.127.59.48 (trex/6.9.1);
-        Thu, 29 Jun 2023 01:35:28 +0000
-Received: from kmjvbox (c-73-93-64-36.hsd1.ca.comcast.net [73.93.64.36])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kjlx@templeofstupid.com)
-        by pdx1-sub0-mail-a212.dreamhost.com (Postfix) with ESMTPSA id 4Qs1H35YBqzl7
-        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 18:35:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
-        s=dreamhost; t=1688002527;
-        bh=dFnzrv6aiZPQiCnyjlwkJ/c5UV0bY0knoSpXD/8sdww=;
-        h=Date:From:To:Cc:Subject:Content-Type;
-        b=f0rgp7PTgrSQdx241SWlhNzH6en/IeMiGygT7NiUqYT/Y8njR26vUAUSOss2lPvKW
-         I7WjkrHu93FKg8sb3WrpFZ6cgOybOC8UuzTBHMGey02dVaUo3T824cZPN//BiczGfc
-         DEG98lSv6/SiZRlshvnrVxb1XoTjhDQZOqK3HcjI=
-Received: from johansen (uid 1000)
-        (envelope-from kjlx@templeofstupid.com)
-        id e003b
-        by kmjvbox (DragonFly Mail Agent v0.12);
-        Wed, 28 Jun 2023 18:35:08 -0700
-Date:   Wed, 28 Jun 2023 18:35:08 -0700
-From:   Krister Johansen <kjlx@templeofstupid.com>
-To:     stable@vger.kernel.org
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Yonghong Song <yhs@fb.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 5.15.y v2] bpf: ensure main program has an extable
-Message-ID: <20230629013508.GF1918@templeofstupid.com>
-References: <20230628230339.GB1918@templeofstupid.com>
+        with ESMTP id S231494AbjF2B7K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 21:59:10 -0400
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08982681;
+        Wed, 28 Jun 2023 18:59:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1688003949; x=1719539949;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Z5ADgpgRcm7ildcG3JRpr/Zcwf95I9lu4+eIDLt2QIQ=;
+  b=hikrSbtCH2THGVDVNMfIqYzS9KMdkZyiZeAZi4CmawK2tsOoglkgKkmu
+   +rG3RFSzU2z0j0nTjY8aIyZ1bMcjClPUwfnxXOnw84XJxPV8XH/XC2NFs
+   uGHf0PSHvShuz/cQ/N6T8eNnEVdOTT3REL6JCNYxUrd1QK841dvZIlQtd
+   E=;
+X-IronPort-AV: E=Sophos;i="6.01,167,1684800000"; 
+   d="scan'208";a="348439320"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-pdx-2a-m6i4x-1cca8d67.us-west-2.amazon.com) ([10.25.36.210])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2023 01:59:09 +0000
+Received: from EX19MTAUWA002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-pdx-2a-m6i4x-1cca8d67.us-west-2.amazon.com (Postfix) with ESMTPS id 24CC08064F;
+        Thu, 29 Jun 2023 01:59:08 +0000 (UTC)
+Received: from EX19D001UWA002.ant.amazon.com (10.13.138.236) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 29 Jun 2023 01:59:07 +0000
+Received: from u46989501580c5c.ant.amazon.com (10.88.130.162) by
+ EX19D001UWA002.ant.amazon.com (10.13.138.236) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Thu, 29 Jun 2023 01:59:06 +0000
+From:   Samuel Mendoza-Jonas <samjonas@amazon.com>
+To:     <netdev@vger.kernel.org>
+CC:     Stewart Smith <trawets@amazon.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        David Ahern <dsahern@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        <linux-kernel@vger.kernel.org>, <benh@amazon.com>,
+        <stable@vger.kernel.org>,
+        Samuel Mendoza-Jonas <samjonas@amazon.com>
+Subject: [PATCH net] net/ipv6: Reduce chance of collisions in inet6_hashfn()
+Date:   Wed, 28 Jun 2023 18:58:44 -0700
+Message-ID: <20230629015844.800280-1-samjonas@amazon.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230628230339.GB1918@templeofstupid.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.88.130.162]
+X-ClientProxiedBy: EX19D041UWA002.ant.amazon.com (10.13.139.121) To
+ EX19D001UWA002.ant.amazon.com (10.13.138.236)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 0108a4e9f3584a7a2c026d1601b0682ff7335d95 upstream.
+From: Stewart Smith <trawets@amazon.com>
 
-When subprograms are in use, the main program is not jit'd after the
-subprograms because jit_subprogs sets a value for prog->bpf_func upon
-success.  Subsequent calls to the JIT are bypassed when this value is
-non-NULL.  This leads to a situation where the main program and its
-func[0] counterpart are both in the bpf kallsyms tree, but only func[0]
-has an extable.  Extables are only created during JIT.  Now there are
-two nearly identical program ksym entries in the tree, but only one has
-an extable.  Depending upon how the entries are placed, there's a chance
-that a fault will call search_extable on the aux with the NULL entry.
+For both IPv4 and IPv6 incoming TCP connections are tracked in a hash
+table with a hash over the source & destination addresses and ports.
+However, the IPv6 hash is insufficient and can lead to a high rate of
+collisions.
 
-Since jit_subprogs already copies state from func[0] to the main
-program, include the extable pointer in this state duplication.
-Additionally, ensure that the copy of the main program in func[0] is not
-added to the bpf_prog_kallsyms table. Instead, let the main program get
-added later in bpf_prog_load().  This ensures there is only a single
-copy of the main program in the kallsyms table, and that its tag matches
-the tag observed by tooling like bpftool.
+The IPv6 hash used an XOR to fit everything into the 96 bits for the
+fast jenkins hash, meaning it is possible for an external entity to
+ensure the hash collides, thus falling back to a linear search in the
+bucket, which is slow.
+
+We take the approach of hash half the data; hash the other half; and
+then hash them together. We do this with 3x jenkins hashes rather than
+2x to calculate the hashing value for the connection covering the full
+length of the addresses and ports.
+
+While this may look like it adds overhead, the reality of modern CPUs
+means that this is unmeasurable in real world scenarios.
+
+In simulating with llvm-mca, the increase in cycles for the hashing code
+was ~5 cycles on Skylake (from a base of ~50), and an extra ~9 on
+Nehalem (base of ~62).
+
+In commit dd6d2910c5e0 ("netfilter: conntrack: switch to siphash")
+netfilter switched from a jenkins hash to a siphash, but even the faster
+hsiphash is a more significant overhead (~20-30%) in some preliminary
+testing. So, in this patch, we keep to the more conservative approach to
+ensure we don't add much overhead per SYN.
+
+In testing, this results in a consistently even spread across the
+connection buckets. In both testing and real-world scenarios, we have
+not found any measurable performance impact.
 
 Cc: stable@vger.kernel.org
-Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function programs")
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Acked-by: Yonghong Song <yhs@fb.com>
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Tested-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Link: https://lore.kernel.org/r/6de9b2f4b4724ef56efbb0339daaa66c8b68b1e7.1686616663.git.kjlx@templeofstupid.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Fixes: 08dcdbf6a7b9 ("ipv6: use a stronger hash for tcp")
+Fixes: b3da2cf37c5c ("[INET]: Use jhash + random secret for ehash.")
+Signed-off-by: Stewart Smith <trawets@amazon.com>
+Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
 ---
- kernel/bpf/verifier.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/net/ipv6.h          | 4 +---
+ net/ipv6/inet6_hashtables.c | 5 ++++-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 4f2271f27a1d..7a70595c3c15 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -12588,9 +12588,10 @@ static int jit_subprogs(struct bpf_verifier_env *env)
- 	}
+diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+index 7332296eca44..f9bb54869d82 100644
+--- a/include/net/ipv6.h
++++ b/include/net/ipv6.h
+@@ -752,9 +752,7 @@ static inline u32 ipv6_addr_hash(const struct in6_addr *a)
+ /* more secured version of ipv6_addr_hash() */
+ static inline u32 __ipv6_addr_jhash(const struct in6_addr *a, const u32 initval)
+ {
+-	u32 v = (__force u32)a->s6_addr32[0] ^ (__force u32)a->s6_addr32[1];
+-
+-	return jhash_3words(v,
++	return jhash_3words((__force u32)a->s6_addr32[1],
+ 			    (__force u32)a->s6_addr32[2],
+ 			    (__force u32)a->s6_addr32[3],
+ 			    initval);
+diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
+index b64b49012655..bb7198081974 100644
+--- a/net/ipv6/inet6_hashtables.c
++++ b/net/ipv6/inet6_hashtables.c
+@@ -33,7 +33,10 @@ u32 inet6_ehashfn(const struct net *net,
+ 	net_get_random_once(&inet6_ehash_secret, sizeof(inet6_ehash_secret));
+ 	net_get_random_once(&ipv6_hash_secret, sizeof(ipv6_hash_secret));
  
- 	/* finally lock prog and jit images for all functions and
--	 * populate kallsysm
-+	 * populate kallsysm. Begin at the first subprogram, since
-+	 * bpf_prog_load will add the kallsyms for the main program.
- 	 */
--	for (i = 0; i < env->subprog_cnt; i++) {
-+	for (i = 1; i < env->subprog_cnt; i++) {
- 		bpf_prog_lock_ro(func[i]);
- 		bpf_prog_kallsyms_add(func[i]);
- 	}
-@@ -12615,6 +12616,8 @@ static int jit_subprogs(struct bpf_verifier_env *env)
+-	lhash = (__force u32)laddr->s6_addr32[3];
++	lhash = jhash_3words((__force u32)laddr->s6_addr32[3],
++			    (((u32)lport) << 16) | (__force u32)fport,
++			    (__force u32)faddr->s6_addr32[0],
++			    ipv6_hash_secret);
+ 	fhash = __ipv6_addr_jhash(faddr, ipv6_hash_secret);
  
- 	prog->jited = 1;
- 	prog->bpf_func = func[0]->bpf_func;
-+	prog->aux->extable = func[0]->aux->extable;
-+	prog->aux->num_exentries = func[0]->aux->num_exentries;
- 	prog->aux->func = func;
- 	prog->aux->func_cnt = env->subprog_cnt;
- 	bpf_prog_jit_attempt_done(prog);
+ 	return __inet6_ehashfn(lhash, lport, fhash, fport,
 -- 
 2.25.1
 
