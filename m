@@ -2,50 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3164742569
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 14:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EED9A742670
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 14:30:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230330AbjF2MKJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 08:10:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49336 "EHLO
+        id S229459AbjF2MaR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 08:30:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231566AbjF2MKG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 08:10:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4EF7BC
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 05:10:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AE7A6153B
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 12:10:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AABEC433C8;
-        Thu, 29 Jun 2023 12:10:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688040604;
-        bh=4pLJqW81xARU74oR2QmpvC2RfXivxqTltCUN4mU7viQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RV4LYY6cMrN+9Imd4jqTfUO34QQ88ainMeYE9vBZJOexf4aYK7pEkxAdD08JNuF34
-         0GXIqYfCTG921KT0yqEgL2WJXB+/+XetQ/ly8vbNKfQjvKFCJOvzAU50pJEp/k9UUc
-         sRuOEhuiGEt8sAwRbz/OdAy0Lae6wjgErnZHL8vw=
-Date:   Thu, 29 Jun 2023 14:10:01 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Krister Johansen <kjlx@templeofstupid.com>
-Cc:     stable@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Yonghong Song <yhs@fb.com>
-Subject: Re: [PATCH 5.15.y v2] bpf: ensure main program has an extable
-Message-ID: <2023062954-oppressor-curled-50ed@gregkh>
-References: <20230628230339.GB1918@templeofstupid.com>
- <20230629013508.GF1918@templeofstupid.com>
+        with ESMTP id S231593AbjF2MaF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 08:30:05 -0400
+Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2511010FD;
+        Thu, 29 Jun 2023 05:30:04 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.30.67.143])
+        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4QsHpH3xrtz4f3kpX;
+        Thu, 29 Jun 2023 20:29:59 +0800 (CST)
+Received: from ubuntu20.huawei.com (unknown [10.67.174.33])
+        by APP1 (Coremail) with SMTP id cCh0CgDHLCcveZ1kP+JxMA--.20756S2;
+        Thu, 29 Jun 2023 20:30:00 +0800 (CST)
+From:   "GONG, Ruiqi" <gongruiqi@huaweicloud.com>
+To:     Corey Minyard <minyard@acm.org>, Yi Yang <yiyang13@huawei.com>
+Cc:     openipmi-developer@lists.sourceforge.net,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Wang Weiyang <wangweiyang2@huawei.com>,
+        Xiu Jianfeng <xiujianfeng@huawei.com>, gongruiqi1@huawei.com
+Subject: [PATCH] ipmi_si: fix a memleak in try_smi_init()
+Date:   Thu, 29 Jun 2023 20:33:28 +0800
+Message-Id: <20230629123328.2402075-1-gongruiqi@huaweicloud.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230629013508.GF1918@templeofstupid.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: cCh0CgDHLCcveZ1kP+JxMA--.20756S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZFWDZFyxCFy3try8Gry5CFg_yoW8uryxp3
+        y5u34DCr4kJr47Ca17Xry7uF98Ja1DCF4UKF47Cw1UXF1DWFyjgr10q3ya9ryDKr4FqF4f
+        Arsruw4rt3yUCw7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUgKb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+        0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+        6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+        Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCj
+        c4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
+        CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1x
+        MIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_WFyUJV
+        Cq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBI
+        daVFxhVjvjDU0xZFpf9x07UWE__UUUUU=
+X-CM-SenderInfo: pjrqw2pxltxq5kxd4v5lfo033gof0z/
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,40 +59,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 28, 2023 at 06:35:08PM -0700, Krister Johansen wrote:
-> commit 0108a4e9f3584a7a2c026d1601b0682ff7335d95 upstream.
-> 
-> When subprograms are in use, the main program is not jit'd after the
-> subprograms because jit_subprogs sets a value for prog->bpf_func upon
-> success.  Subsequent calls to the JIT are bypassed when this value is
-> non-NULL.  This leads to a situation where the main program and its
-> func[0] counterpart are both in the bpf kallsyms tree, but only func[0]
-> has an extable.  Extables are only created during JIT.  Now there are
-> two nearly identical program ksym entries in the tree, but only one has
-> an extable.  Depending upon how the entries are placed, there's a chance
-> that a fault will call search_extable on the aux with the NULL entry.
-> 
-> Since jit_subprogs already copies state from func[0] to the main
-> program, include the extable pointer in this state duplication.
-> Additionally, ensure that the copy of the main program in func[0] is not
-> added to the bpf_prog_kallsyms table. Instead, let the main program get
-> added later in bpf_prog_load().  This ensures there is only a single
-> copy of the main program in the kallsyms table, and that its tag matches
-> the tag observed by tooling like bpftool.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function programs")
-> Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-> Acked-by: Yonghong Song <yhs@fb.com>
-> Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> Tested-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> Link: https://lore.kernel.org/r/6de9b2f4b4724ef56efbb0339daaa66c8b68b1e7.1686616663.git.kjlx@templeofstupid.com
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-> ---
->  kernel/bpf/verifier.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+From: Yi Yang <yiyang13@huawei.com>
 
-Now queued up, thanks.
+Kmemleak reported the following leak info in try_smi_init():
 
-greg k-h
+unreferenced object 0xffff00018ecf9400 (size 1024):
+  comm "modprobe", pid 2707763, jiffies 4300851415 (age 773.308s)
+  backtrace:
+    [<000000004ca5b312>] __kmalloc+0x4b8/0x7b0
+    [<00000000953b1072>] try_smi_init+0x148/0x5dc [ipmi_si]
+    [<000000006460d325>] 0xffff800081b10148
+    [<0000000039206ea5>] do_one_initcall+0x64/0x2a4
+    [<00000000601399ce>] do_init_module+0x50/0x300
+    [<000000003c12ba3c>] load_module+0x7a8/0x9e0
+    [<00000000c246fffe>] __se_sys_init_module+0x104/0x180
+    [<00000000eea99093>] __arm64_sys_init_module+0x24/0x30
+    [<0000000021b1ef87>] el0_svc_common.constprop.0+0x94/0x250
+    [<0000000070f4f8b7>] do_el0_svc+0x48/0xe0
+    [<000000005a05337f>] el0_svc+0x24/0x3c
+    [<000000005eb248d6>] el0_sync_handler+0x160/0x164
+    [<0000000030a59039>] el0_sync+0x160/0x180
+
+The problem was that when an error occurred before handlers registration
+and after allocating `new_smi->si_sm`, the variable wouldn't be freed in
+the error handling afterwards since `shutdown_smi()` hadn't been
+registered yet. Fix it by adding a `kfree()` in the error handling path
+in `try_smi_init()`.
+
+Cc: stable@vger.kernel.org # 4.19+
+Fixes: 7960f18a5647 ("ipmi_si: Convert over to a shutdown handler")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Co-developed-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
+Signed-off-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
+---
+ drivers/char/ipmi/ipmi_si_intf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
+index abddd7e43a9a..5cd031f3fc97 100644
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -2082,6 +2082,11 @@ static int try_smi_init(struct smi_info *new_smi)
+ 		new_smi->io.io_cleanup = NULL;
+ 	}
+ 
++	if (rv && new_smi->si_sm) {
++		kfree(new_smi->si_sm);
++		new_smi->si_sm = NULL;
++	}
++
+ 	return rv;
+ }
+ 
+-- 
+2.25.1
+
