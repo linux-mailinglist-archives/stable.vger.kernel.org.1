@@ -2,141 +2,201 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 925C4742396
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 12:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AAB87423BE
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 12:11:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232094AbjF2KBo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 06:01:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
+        id S229840AbjF2KLD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 06:11:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232224AbjF2J7j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 05:59:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1F73AA1;
-        Thu, 29 Jun 2023 02:57:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D24886150B;
-        Thu, 29 Jun 2023 09:57:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38882C433C8;
-        Thu, 29 Jun 2023 09:57:17 +0000 (UTC)
-Date:   Thu, 29 Jun 2023 10:57:14 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Peter Collingbourne <pcc@google.com>
-Cc:     Will Deacon <will@kernel.org>, akpm@linux-foundation.org,
-        Qun-wei Lin =?utf-8?B?KOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        "david@redhat.com" <david@redhat.com>,
-        Chinwen Chang =?utf-8?B?KOW8temMpuaWhyk=?= 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        Kuan-Ying Lee =?utf-8?B?KOadjuWGoOepjik=?= 
-        <Kuan-Ying.Lee@mediatek.com>,
-        Casper Li =?utf-8?B?KOadjuS4reamrik=?= <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] mm: Call arch_swap_restore() from do_swap_page()
-Message-ID: <ZJ1VersqnJcMXMyi@arm.com>
-References: <20230523004312.1807357-1-pcc@google.com>
- <20230523004312.1807357-2-pcc@google.com>
- <20230605140554.GC21212@willie-the-truck>
- <CAMn1gO4k=rg96GVsPW6Aaz12c7hS0TYcgVR7y38x7pUsbfwg5A@mail.gmail.com>
+        with ESMTP id S231728AbjF2KI6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 06:08:58 -0400
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6158644A8
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 03:05:42 -0700 (PDT)
+Received: by mail-qt1-x829.google.com with SMTP id d75a77b69052e-401f4408955so194391cf.1
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 03:05:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1688033141; x=1690625141;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=53kXaqEUom5GCaioc4bl7JRGZ5sp8FvMcIkzS408jNI=;
+        b=oUcEzcSDnOtplpv6jr7yAxIcwth23qX90Q/ADDC/r0ol4cdG/0WFE/LdRD6cVTtjrl
+         YrCH4cLIHg22THQELbD30RZlUqdNrkkZcp7Qmc7Pdb1JVZYlqoq1NtcoabY1L0QAixuA
+         Zt1b5DGKDC0jUHCrb0L8d1+zIeaCmOi0zh64cs15dSnj9/ifjwlx8CwRWbAq1BV/aMt4
+         pHgGBIe/8l5JQV692ZFmrsguXxN9NEC0e0s8f0qgl0OmP3vYrm3Jv2Y+Yvo0YeIDG+ql
+         XPUM6dQZcHRzRQq8FC9R83l8YMuRN8gD7ywdVokBWyY1I+LNYXmWSDz6E0LjbaQkFJoF
+         THzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688033141; x=1690625141;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=53kXaqEUom5GCaioc4bl7JRGZ5sp8FvMcIkzS408jNI=;
+        b=jo0b0LlnuSBp1xR2NBk81npKQxCQeclEGEYDYe8ny4FEEnF77+UuEAgYlg3NOvFftz
+         iyxot24YX60JYOSKx5+JTY8MfEmAwS3p1VdxyFoft85FZoVnmKOFCIDXYbztOuLidaBr
+         6Gnfen1/5B+NzP3YWX4Eoep0cUdtzLOmy986AxunMsjZEdwzk8b5ecKRFb8DOAsMsL3D
+         o7XaCJEVSVSIeTJ/9p+nOY+BYrs0IImJ1YW3nXGg6BYTTR2ReqOCiazk3L3u6riYR8NE
+         LeErMgjqvV5fPTLo9VcXRjUy589Ixj14Wpr5lVq2bBJPgHHDmY2s+xw9/K7AS5CoFO8t
+         2cjg==
+X-Gm-Message-State: AC+VfDxSKDokeU0imUIw/ZaOpY5mhZZMknB0I/meJ/euFZ6ktv45MCVu
+        vBsloGMXL+0/ZONB+P3IDN577cGElTdpLrbhpu5t1w==
+X-Google-Smtp-Source: ACHHUZ4cDKzyvP+R/YnJL96VIhWmdoovDKEZEFSvG71MjFqTZDs/6dSXFDfbObtnZQUeifbTFq5sMUFwBMdAezyQsMg=
+X-Received: by 2002:a05:622a:1393:b0:3de:1aaa:42f5 with SMTP id
+ o19-20020a05622a139300b003de1aaa42f5mr480089qtk.15.1688033140929; Thu, 29 Jun
+ 2023 03:05:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMn1gO4k=rg96GVsPW6Aaz12c7hS0TYcgVR7y38x7pUsbfwg5A@mail.gmail.com>
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230629015844.800280-1-samjonas@amazon.com>
+In-Reply-To: <20230629015844.800280-1-samjonas@amazon.com>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Thu, 29 Jun 2023 12:05:29 +0200
+Message-ID: <CANn89i+6d9K1VwNK1Joc-Yb_4jAfV_YFzk=z_K2_Oy+xJHSn_g@mail.gmail.com>
+Subject: Re: [PATCH net] net/ipv6: Reduce chance of collisions in inet6_hashfn()
+To:     Samuel Mendoza-Jonas <samjonas@amazon.com>
+Cc:     netdev@vger.kernel.org, Stewart Smith <trawets@amazon.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        benh@amazon.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 05, 2023 at 10:41:12AM -0700, Peter Collingbourne wrote:
-> On Mon, Jun 5, 2023 at 7:06 AM Will Deacon <will@kernel.org> wrote:
-> > On Mon, May 22, 2023 at 05:43:08PM -0700, Peter Collingbourne wrote:
-> > > Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
-> > > the call to swap_free() before the call to set_pte_at(), which meant that
-> > > the MTE tags could end up being freed before set_pte_at() had a chance
-> > > to restore them. Fix it by adding a call to the arch_swap_restore() hook
-> > > before the call to swap_free().
-> > >
-> > > Signed-off-by: Peter Collingbourne <pcc@google.com>
-> > > Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
-> > > Cc: <stable@vger.kernel.org> # 6.1
-> > > Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
-> > > Reported-by: Qun-wei Lin (林群崴) <Qun-wei.Lin@mediatek.com>
-> > > Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.camel@mediatek.com/
-> > > Acked-by: David Hildenbrand <david@redhat.com>
-> > > Acked-by: "Huang, Ying" <ying.huang@intel.com>
-> > > Reviewed-by: Steven Price <steven.price@arm.com>
-> > > Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> > > ---
-> > > v2:
-> > > - Call arch_swap_restore() directly instead of via arch_do_swap_page()
-> > >
-> > >  mm/memory.c | 7 +++++++
-> > >  1 file changed, 7 insertions(+)
-> > >
-> > > diff --git a/mm/memory.c b/mm/memory.c
-> > > index f69fbc251198..fc25764016b3 100644
-> > > --- a/mm/memory.c
-> > > +++ b/mm/memory.c
-> > > @@ -3932,6 +3932,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> > >               }
-> > >       }
-> > >
-> > > +     /*
-> > > +      * Some architectures may have to restore extra metadata to the page
-> > > +      * when reading from swap. This metadata may be indexed by swap entry
-> > > +      * so this must be called before swap_free().
-> > > +      */
-> > > +     arch_swap_restore(entry, folio);
-> > > +
-> > >       /*
-> > >        * Remove the swap entry and conditionally try to free up the swapcache.
-> > >        * We're already holding a reference on the page but haven't mapped it
-> >
-> > It looks like the intention is for this patch to land in 6.4, whereas the
-> > other two in the series could go in later, right? If so, I was expecting
-> > Andrew to pick this one up but he's not actually on CC. I've added him now,
-> > but you may want to send this as a separate fix so it's obvious what needs
-> > picking up for this cycle.
-> 
-> I was expecting that this whole series could be picked up in mm. There
-> was a previous attempt to apply v3 of this series to mm, but that
-> failed because a dependent patch (commit c4c597f1b367 ("arm64: mte: Do
-> not set PG_mte_tagged if tags were not initialized")) hadn't been
-> merged into Linus's master branch yet. The series should be good to go
-> in now that that patch has been merged.
+On Thu, Jun 29, 2023 at 3:59=E2=80=AFAM Samuel Mendoza-Jonas
+<samjonas@amazon.com> wrote:
+>
+> From: Stewart Smith <trawets@amazon.com>
+>
+> For both IPv4 and IPv6 incoming TCP connections are tracked in a hash
+> table with a hash over the source & destination addresses and ports.
+> However, the IPv6 hash is insufficient and can lead to a high rate of
+> collisions.
+>
+> The IPv6 hash used an XOR to fit everything into the 96 bits for the
+> fast jenkins hash, meaning it is possible for an external entity to
+> ensure the hash collides, thus falling back to a linear search in the
+> bucket, which is slow.
+>
+> We take the approach of hash half the data; hash the other half; and
+> then hash them together. We do this with 3x jenkins hashes rather than
+> 2x to calculate the hashing value for the connection covering the full
+> length of the addresses and ports.
+>
 
-Did this series fall through the cracks? I can't see it in linux-next
-(or maybe my grep'ing failed). The commit mentioned above is in 6.4-rc3
-AFAICT. Unfortunately Andrew was not cc'ed on the initial post, Will
-added him later, so he likely missed it. For reference, the series is
-here:
+...
 
-https://lore.kernel.org/r/20230523004312.1807357-1-pcc@google.com/
+> While this may look like it adds overhead, the reality of modern CPUs
+> means that this is unmeasurable in real world scenarios.
+>
+> In simulating with llvm-mca, the increase in cycles for the hashing code
+> was ~5 cycles on Skylake (from a base of ~50), and an extra ~9 on
+> Nehalem (base of ~62).
+>
+> In commit dd6d2910c5e0 ("netfilter: conntrack: switch to siphash")
+> netfilter switched from a jenkins hash to a siphash, but even the faster
+> hsiphash is a more significant overhead (~20-30%) in some preliminary
+> testing. So, in this patch, we keep to the more conservative approach to
+> ensure we don't add much overhead per SYN.
+>
+> In testing, this results in a consistently even spread across the
+> connection buckets. In both testing and real-world scenarios, we have
+> not found any measurable performance impact.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 08dcdbf6a7b9 ("ipv6: use a stronger hash for tcp")
+> Fixes: b3da2cf37c5c ("[INET]: Use jhash + random secret for ehash.")
+> Signed-off-by: Stewart Smith <trawets@amazon.com>
+> Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
+> ---
+>  include/net/ipv6.h          | 4 +---
+>  net/ipv6/inet6_hashtables.c | 5 ++++-
+>  2 files changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+> index 7332296eca44..f9bb54869d82 100644
+> --- a/include/net/ipv6.h
+> +++ b/include/net/ipv6.h
+> @@ -752,9 +752,7 @@ static inline u32 ipv6_addr_hash(const struct in6_add=
+r *a)
+>  /* more secured version of ipv6_addr_hash() */
+>  static inline u32 __ipv6_addr_jhash(const struct in6_addr *a, const u32 =
+initval)
+>  {
+> -       u32 v =3D (__force u32)a->s6_addr32[0] ^ (__force u32)a->s6_addr3=
+2[1];
+> -
+> -       return jhash_3words(v,
+> +       return jhash_3words((__force u32)a->s6_addr32[1],
+>                             (__force u32)a->s6_addr32[2],
+>                             (__force u32)a->s6_addr32[3],
+>                             initval);
 
-Andrew, what's your preference for this series? I'd like at least the
-first patch to go into 6.5 as a fix. The second patch seems to be fairly
-low risk and I'm happy for the third arm64 patch/cleanup to go in
-6.5-rc1 (but it depends on the second patch). If you prefer, I can pick
-them up and send a pull request to Linus next week before -rc1.
-Otherwise you (or I) can queue the first patch and leave the other two
-for 6.6.
+Hmmm... see my following comment.
 
-Thanks.
+> diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
+> index b64b49012655..bb7198081974 100644
+> --- a/net/ipv6/inet6_hashtables.c
+> +++ b/net/ipv6/inet6_hashtables.c
+> @@ -33,7 +33,10 @@ u32 inet6_ehashfn(const struct net *net,
+>         net_get_random_once(&inet6_ehash_secret, sizeof(inet6_ehash_secre=
+t));
+>         net_get_random_once(&ipv6_hash_secret, sizeof(ipv6_hash_secret));
+>
+> -       lhash =3D (__force u32)laddr->s6_addr32[3];
+> +       lhash =3D jhash_3words((__force u32)laddr->s6_addr32[3],
+> +                           (((u32)lport) << 16) | (__force u32)fport,
+> +                           (__force u32)faddr->s6_addr32[0],
+> +                           ipv6_hash_secret);
 
--- 
-Catalin
+This seems wrong to me.
+
+Reusing ipv6_hash_secret and other keys twice is not good, I am sure
+some security researchers
+would love this...
+
+Please just change __ipv6_addr_jhash(), so that all users can benefit
+from a more secure version ?
+It also leaves lhash / fhash names relevant here.
+
+We will probably have to switch to sip (or other stronger hash than
+jhash)  at some point, it is a tradeoff.
+
+We might also add a break in the loop when a bucket exceeds a given
+safety length,
+because attackers can eventually exploit hashes after some point.
+
+The following patch looks much saner to me.
+
+diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+index 7332296eca44b84dca1bbecb545f6824a0e8ed3d..2acc4c808d45d1c1bb1c5076e79=
+842e136203e4c
+100644
+--- a/include/net/ipv6.h
++++ b/include/net/ipv6.h
+@@ -752,12 +752,8 @@ static inline u32 ipv6_addr_hash(const struct in6_addr=
+ *a)
+ /* more secured version of ipv6_addr_hash() */
+ static inline u32 __ipv6_addr_jhash(const struct in6_addr *a, const
+u32 initval)
+ {
+-       u32 v =3D (__force u32)a->s6_addr32[0] ^ (__force u32)a->s6_addr32[=
+1];
+-
+-       return jhash_3words(v,
+-                           (__force u32)a->s6_addr32[2],
+-                           (__force u32)a->s6_addr32[3],
+-                           initval);
++       return jhash2((__force const u32 *)a->s6_addr32,
++                     ARRAY_SIZE(a->s6_addr32), initval);
+ }
