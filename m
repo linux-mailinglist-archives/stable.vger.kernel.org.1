@@ -2,118 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B1D674204C
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 08:24:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62CD77420AB
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 08:50:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231838AbjF2GYt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 02:24:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39594 "EHLO
+        id S230284AbjF2Gt5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 02:49:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231543AbjF2GYs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 02:24:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9AE32D54;
-        Wed, 28 Jun 2023 23:24:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        with ESMTP id S231563AbjF2Gtc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 02:49:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED0BB2D5B
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 23:48:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1688021311;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=hPvuAAm3tIsvzZqwXQpG7D9fP9x0u3xCzy3W397eHSk=;
+        b=ANTUhvQaxp9D51BMbBIiD9BN3WQ74YOHEV8mTeiDBZXxaJwvQSmDu79wSO7QMgp8XkSxKO
+        VgOLRmR1cc/6xjgk5G8hHuQHXm2YNJ7fVzxzRZZbPCzm6kubcghMicNLE2nGT/Y+bNqkpx
+        eHbF/5BMTCg8ztUYT9gS45KXu317LOQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-553-DTpJf1FyMd2wDSL1UeWtkw-1; Thu, 29 Jun 2023 02:48:28 -0400
+X-MC-Unique: DTpJf1FyMd2wDSL1UeWtkw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F287614C9;
-        Thu, 29 Jun 2023 06:24:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6523C433C8;
-        Thu, 29 Jun 2023 06:24:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688019886;
-        bh=iOOjD3A+S8SeXAoZrFqMF28gFRwFGFeW1oMEvRjrMaA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=TmnLvFIkk2zxqAL6gSfDhRSGvxPyVFX1fmGu2VALfl8cjLa845fOoMbV0T1cGyn2k
-         7DVfYdpRCEQ+9QUpY0ii8gJL2F+dPPV1oUTG9X2Ktxuu33I3F0TTKWKGBjYPhZpQ2J
-         4f51fLD8TAjr1SnbNQhIiB5OmMwkKH+2lr7Whao+1vvaQdiJ7ZnHyY75HB3QkXRSPJ
-         wKq0eoMUu9IAOW2BbeY3pK06/vSVJY6FETNUQj3RHwfGOoH+1kaLvHm0cHnOQVxf46
-         1A0jIk75cimDrl6qL4OX7lEgidjTk1IBSJTVOedEKC3PezqNpaiEeaW19TqcGBOnVe
-         O+47jyhschJDA==
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-51d884a22e7so350692a12.3;
-        Wed, 28 Jun 2023 23:24:46 -0700 (PDT)
-X-Gm-Message-State: AC+VfDyd+zduiFW7kPhk66Ilbdie4Fbi3x11GjozRySGOjnkDx2uyJ/E
-        9PkeHtc/VqtucxE7qvxS7YDTGy1wZ2KmuEcPSXs=
-X-Google-Smtp-Source: ACHHUZ40VDkZdsHx4o3RM3KAXJpZxn6DsufG+PQoL4Y5YjvJzzruyD4+H/YNHJSSjYs6VHUkkJyUanUQ5J/RNjpxRmI=
-X-Received: by 2002:a05:6402:5157:b0:51d:a724:48d6 with SMTP id
- n23-20020a056402515700b0051da72448d6mr5056544edd.37.1688019884938; Wed, 28
- Jun 2023 23:24:44 -0700 (PDT)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 931ED1044591;
+        Thu, 29 Jun 2023 06:48:27 +0000 (UTC)
+Received: from localhost (ovpn-8-27.pek2.redhat.com [10.72.8.27])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B8857492C13;
+        Thu, 29 Jun 2023 06:48:26 +0000 (UTC)
+From:   Ming Lei <ming.lei@redhat.com>
+To:     Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+        Keith Busch <kbusch@kernel.org>, linux-nvme@lists.infradead.org
+Cc:     Yi Zhang <yi.zhang@redhat.com>,
+        Chunguang Xu <brookxu.cn@gmail.com>,
+        Ming Lei <ming.lei@redhat.com>, stable@vger.kernel.org
+Subject: [PATCH V2] nvme: mark ctrl as DEAD if removing from error recovery
+Date:   Thu, 29 Jun 2023 14:48:18 +0800
+Message-Id: <20230629064818.2070586-1-ming.lei@redhat.com>
 MIME-Version: 1.0
-References: <CABgObfYLnhW0qrPvFnMW_B9xZzLF6Ysn2uL4w9B815fUNVKK5A@mail.gmail.com>
- <20230629000729.1223067-1-yuzhao@google.com>
-In-Reply-To: <20230629000729.1223067-1-yuzhao@google.com>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Thu, 29 Jun 2023 14:24:32 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H73BgeU=Vw+X+R+1pTrbZb_y9WLy66iu9=d3SXXeD0SBw@mail.gmail.com>
-Message-ID: <CAAhV-H73BgeU=Vw+X+R+1pTrbZb_y9WLy66iu9=d3SXXeD0SBw@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: KVM: Fix NULL pointer dereference
-To:     Yu Zhao <yuzhao@google.com>
-Cc:     pbonzini@redhat.com, chenhuacai@loongson.cn,
-        jiaxun.yang@flygoat.com, kvm@vger.kernel.org,
-        linux-mips@vger.kernel.org, stable@vger.kernel.org,
-        tsbogend@alpha.franken.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Zhao,
+namespace's request queue is frozen and quiesced during error recovering,
+writeback IO is blocked in bio_queue_enter(), so fsync_bdev() <- del_gendisk()
+can't move on, and causes IO hang. Removal could be from sysfs, hard
+unplug or error handling.
 
-On Thu, Jun 29, 2023 at 8:07=E2=80=AFAM Yu Zhao <yuzhao@google.com> wrote:
->
-> On Mon, Jun 26, 2023 at 6:33 AM Paolo Bonzini <pbonzini@redhat.com> wrote=
-:
-> >
-> > On Mon, Jun 26, 2023 at 9:59 AM Huacai Chen <chenhuacai@loongson.cn> wr=
-ote:
-> > >
-> > > After commit 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support")=
- we
-> > > get a NULL pointer dereference when creating a KVM guest:
-> >
-> > To be honest, a bug that needed 2 years to be reproduced is probably a
-> > sign that KVM/MIPS has no users. Any objections to removing it
-> > altogether?
->
-> ACK:
-> 1. It's still broken after this patch [1]. The most well-tested MIPS
->    distros, i.e., Debian/OpenWrt, have CONFIG_KVM=3Dn. (The latter doesn'=
-t
->    even provide the QEMU package on MIPS.)
-> 2. Burden on QEMU dev. There is no guarantee that QEMU would work with
->    KVM even if we could fix the kernel -- it actually does not until
->    v8.0 [1], which is by luck:
->
->    commit a844873512400fae6bed9e87694dc96ff2f15f39
->    Author: Paolo Bonzini <pbonzini@redhat.com>
->    Date:   Sun Dec 18 01:06:45 2022 +0100
->
->        mips: Remove support for trap and emulate KVM
->
->        This support was limited to the Malta board, drop it.
->        I do not have a machine that can run VZ KVM, so I am assuming
->        that it works for -M malta as well.
->
->    (The latest Debian stable only ships v7.2.)
->
-> [1] https://lore.kernel.org/r/ZI0R76Fx25Q2EThZ@google.com/
-My testbed is Loongson-3A4000 host + Loongson-3A4000 guest + Qemu8.0,
-both TCG and KVM works.
+Fix this kind of issue by marking controller as DEAD if removal breaks
+error recovery.
 
-Some thoughts:
-1, I think your host is malta, but you cannot use a malta host to boot
-a Loongson guest, at least their kernels use different page sizes.
-2, commit a844873512400fae6bed9e87694dc96f remove the TE KVM, so if
-you are trying VZ KVM (but it seems you are using TE KVM), it can
-break nothing.
+This ways is reasonable too, because controller can't be recovered any
+more after being removed.
 
-Huacai
+Cc: stable@vger.kernel.org
+Reported-by: Chunguang Xu <brookxu.cn@gmail.com>
+Closes: https://lore.kernel.org/linux-nvme/cover.1685350577.git.chunguang.xu@shopee.com/
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+---
+V2:
+	- patch style fix, as suggested by Christoph
+	- document this handling
+
+ drivers/nvme/host/core.c | 9 ++++++++-
+ drivers/nvme/host/nvme.h | 1 +
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index fdfcf2781c85..1419eb35b47a 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -567,6 +567,7 @@ bool nvme_change_ctrl_state(struct nvme_ctrl *ctrl,
+ 	}
+ 
+ 	if (changed) {
++		ctrl->old_state = ctrl->state;
+ 		ctrl->state = new_state;
+ 		wake_up_all(&ctrl->state_wq);
+ 	}
+@@ -4054,8 +4055,14 @@ void nvme_remove_namespaces(struct nvme_ctrl *ctrl)
+ 	 * disconnected. In that case, we won't be able to flush any data while
+ 	 * removing the namespaces' disks; fail all the queues now to avoid
+ 	 * potentially having to clean up the failed sync later.
++	 *
++	 * If this removal happens during error recovering, resetting part
++	 * may not be started, or controller isn't be recovered completely,
++	 * so we have to treat controller as DEAD for avoiding IO hang since
++	 * queues can be left as frozen and quiesced.
+ 	 */
+-	if (ctrl->state == NVME_CTRL_DEAD) {
++	if (ctrl->state == NVME_CTRL_DEAD ||
++	    ctrl->old_state != NVME_CTRL_LIVE) {
+ 		nvme_mark_namespaces_dead(ctrl);
+ 		nvme_unquiesce_io_queues(ctrl);
+ 	}
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 9a98c14c552a..ce67856d4d4f 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -254,6 +254,7 @@ struct nvme_ctrl {
+ 	bool comp_seen;
+ 	bool identified;
+ 	enum nvme_ctrl_state state;
++	enum nvme_ctrl_state old_state;
+ 	spinlock_t lock;
+ 	struct mutex scan_lock;
+ 	const struct nvme_ctrl_ops *ops;
+-- 
+2.40.1
+
