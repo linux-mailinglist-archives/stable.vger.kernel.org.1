@@ -2,121 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 467597421D0
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 10:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FCA874226C
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 10:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231633AbjF2ILR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 04:11:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43794 "EHLO
+        id S232425AbjF2ImY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Thu, 29 Jun 2023 04:42:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232781AbjF2IKK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 04:10:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 157953583
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:01:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688025692;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Y/6Z9IyTZ3gYwMwh6hWnQa+ZR/r0uRjbWfb8R9LOY2k=;
-        b=d5Bnw3uROnX1JwSDnh/vvPI3Z+AxOAC/yC9Khh7mYEvu2xeb22PUCnihuiXsFEVGmjIINe
-        CqzmdQ15JaT+Lkl9mskjJQOybYEEzhj8AYgQTHQPXSoajpeEjPzkUh0D+JpRPAfNtzSNlb
-        aN/p2Uty1za5c7SKrv3WukdTUq9p3So=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-558-1gM1cA_FPXSC1Yr4jRqLJg-1; Thu, 29 Jun 2023 04:01:28 -0400
-X-MC-Unique: 1gM1cA_FPXSC1Yr4jRqLJg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0FDF93C10152;
-        Thu, 29 Jun 2023 08:01:28 +0000 (UTC)
-Received: from ovpn-8-18.pek2.redhat.com (ovpn-8-27.pek2.redhat.com [10.72.8.27])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 027472166B25;
-        Thu, 29 Jun 2023 08:01:22 +0000 (UTC)
-Date:   Thu, 29 Jun 2023 16:01:16 +0800
-From:   Ming Lei <ming.lei@redhat.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Sagi Grimberg <sagi@grimberg.me>, Keith Busch <kbusch@kernel.org>,
-        linux-nvme@lists.infradead.org, Yi Zhang <yi.zhang@redhat.com>,
-        Chunguang Xu <brookxu.cn@gmail.com>, stable@vger.kernel.org,
-        ming.lei@redhat.com
-Subject: Re: [PATCH V2] nvme: mark ctrl as DEAD if removing from error
- recovery
-Message-ID: <ZJ06TLaXjyFPpU65@ovpn-8-18.pek2.redhat.com>
-References: <20230629064818.2070586-1-ming.lei@redhat.com>
- <20230629073305.GA19464@lst.de>
+        with ESMTP id S232421AbjF2IlR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 04:41:17 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA46C4203
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:38:12 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-86-mCyGUWdvOzqOD0rili5ykg-1; Thu, 29 Jun 2023 09:38:10 +0100
+X-MC-Unique: mCyGUWdvOzqOD0rili5ykg-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 29 Jun
+ 2023 09:38:09 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Thu, 29 Jun 2023 09:38:09 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Sameer Pujar' <spujar@nvidia.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "perex@perex.cz" <perex@perex.cz>,
+        "tiwai@suse.com" <tiwai@suse.com>
+CC:     "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
+        "mkumard@nvidia.com" <mkumard@nvidia.com>,
+        "sheetal@nvidia.com" <sheetal@nvidia.com>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Oder Chiou <oder_chiou@realtek.com>
+Subject: RE: [PATCH v2 3/5] ASoC: rt5640: Fix sleep in atomic context
+Thread-Topic: [PATCH v2 3/5] ASoC: rt5640: Fix sleep in atomic context
+Thread-Index: AQHZqkh8hA8hSCOxA0KruUap8XcLma+hdFow
+Date:   Thu, 29 Jun 2023 08:38:09 +0000
+Message-ID: <bae9f041867e4625ad293d284566bb4f@AcuMS.aculab.com>
+References: <1688015537-31682-1-git-send-email-spujar@nvidia.com>
+ <1688015537-31682-4-git-send-email-spujar@nvidia.com>
+In-Reply-To: <1688015537-31682-4-git-send-email-spujar@nvidia.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230629073305.GA19464@lst.de>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,PDS_BAD_THREAD_QP_64,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 29, 2023 at 09:33:05AM +0200, Christoph Hellwig wrote:
-> On Thu, Jun 29, 2023 at 02:48:18PM +0800, Ming Lei wrote:
-> > @@ -4054,8 +4055,14 @@ void nvme_remove_namespaces(struct nvme_ctrl *ctrl)
-> >  	 * disconnected. In that case, we won't be able to flush any data while
-> >  	 * removing the namespaces' disks; fail all the queues now to avoid
-> >  	 * potentially having to clean up the failed sync later.
-> > +	 *
-> > +	 * If this removal happens during error recovering, resetting part
-> > +	 * may not be started, or controller isn't be recovered completely,
-> > +	 * so we have to treat controller as DEAD for avoiding IO hang since
-> > +	 * queues can be left as frozen and quiesced.
-> >  	 */
-> > -	if (ctrl->state == NVME_CTRL_DEAD) {
-> > +	if (ctrl->state == NVME_CTRL_DEAD ||
-> > +	    ctrl->old_state != NVME_CTRL_LIVE) {
-> >  		nvme_mark_namespaces_dead(ctrl);
-> >  		nvme_unquiesce_io_queues(ctrl);
+From: Sameer Pujar
+> Sent: 29 June 2023 06:12
 > 
-> Thanks for the comment and style, but I really still think doing
-> the state check was wrong to start with, and adding a check on the
-> old state makes things significantly worse.  Can we try to brainstorm
-> on how do this properly?
+> Following prints are observed while testing audio on Jetson AGX Orin which
+> has onboard RT5640 audio codec:
+> 
+>   BUG: sleeping function called from invalid context at kernel/workqueue.c:3027
+>   in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/0
+>   preempt_count: 10001, expected: 0
+>   RCU nest depth: 0, expected: 0
+>   ------------[ cut here ]------------
+>   WARNING: CPU: 0 PID: 0 at kernel/irq/handle.c:159 __handle_irq_event_percpu+0x1e0/0x270
+>   ---[ end trace ad1c64905aac14a6 ]-
+> 
+> The IRQ handler rt5640_irq() runs in interrupt context and can sleep
+> during cancel_delayed_work_sync().
+> 
+> Fix this by running IRQ handler, rt5640_irq(), in thread context.
+> Hence replace request_irq() calls with devm_request_threaded_irq().
 
-Removal comes during error recovery, and the old state is just for figuring
-out this situation, and I think it is documented clearly, and same with
-the change itself.
+My 'gut feel' is that this will just move the problem elsewhere.
 
-We need to fix it in one simple way for -stable and downstream, so I'd
-suggest to apply the simple fix first.
+If the ISR is responsible for adding audio buffers (etc) then it is
+also not unlikely that the scheduling delays in running a threaded ISR
+will cause audio glitches if the system is busy.
 
 > 
-> I think we need to first figure out how to balance the quiesce/unquiesce
-> calls, the placement of the nvme_mark_namespaces_dead call should
-> be the simple part.
+> Fixes: 051dade34695 ("ASoC: rt5640: Fix the wrong state of JD1 and JD2")
+> Cc: stable@vger.kernel.org
+> Cc: Oder Chiou <oder_chiou@realtek.com>
+> Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+> ---
+>  sound/soc/codecs/rt5640.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
+> index 0ed4fa2..e24ed75 100644
+> --- a/sound/soc/codecs/rt5640.c
+> +++ b/sound/soc/codecs/rt5640.c
+> @@ -2567,9 +2567,10 @@ static void rt5640_enable_jack_detect(struct snd_soc_component *component,
+>  	if (jack_data && jack_data->use_platform_clock)
+>  		rt5640->use_platform_clock = jack_data->use_platform_clock;
+> 
+> -	ret = request_irq(rt5640->irq, rt5640_irq,
+> -			  IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+> -			  "rt5640", rt5640);
+> +	ret = devm_request_threaded_irq(component->dev, rt5640->irq,
+> +					NULL, rt5640_irq,
+> +					IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+> +					"rt5640", rt5640);
 
-The root cause is that nvme driver takes 2 stage error recovery(teardown and
-reset), both two are run from different contexts. The teardown part freezes
-and quiesces queues, and reset stage does the unfreeze and unquiesce part.
-Device removal can come any time, maybe before starting the reset, and maybe
-during resetting, so it is hard to balance the two pair APIs if not calling
-them in same context. And it has been one long-term issue.
+You need a comment saying this must be a threaded IRQ because the ISR
+calls cancel_delayed_work_sync().
 
-I am working to move freeze to reset handler[1], which can balance
-freeze API.
+	David
 
-For quiesce API, I think it still need to be done unconditionally
-when removing NSs.
+>  	if (ret) {
+>  		dev_warn(component->dev, "Failed to reguest IRQ %d: %d\n", rt5640->irq, ret);
+>  		rt5640_disable_jack_detect(component);
+> @@ -2622,8 +2623,9 @@ static void rt5640_enable_hda_jack_detect(
+> 
+>  	rt5640->jack = jack;
+> 
+> -	ret = request_irq(rt5640->irq, rt5640_irq,
+> -			  IRQF_TRIGGER_RISING | IRQF_ONESHOT, "rt5640", rt5640);
+> +	ret = devm_request_threaded_irq(component->dev, rt5640->irq,
+> +					NULL, rt5640_irq, IRQF_TRIGGER_RISING | IRQF_ONESHOT,
+> +					"rt5640", rt5640);
+>  	if (ret) {
+>  		dev_warn(component->dev, "Failed to reguest IRQ %d: %d\n", rt5640->irq, ret);
+>  		rt5640->irq = -ENXIO;
+> --
+> 2.7.4
 
-But this kind of work can't be fix candidate for -stable or downstream cause
-the change is bigger & more complicated.
-
-[1] https://lore.kernel.org/linux-block/5bddeeb5-39d2-7cec-70ac-e3c623a8fca6@grimberg.me/T/#mfc96266b63eec3e4154f6843be72e5186a4055dc
-
-
-Thanks, 
-Ming
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
