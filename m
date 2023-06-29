@@ -2,117 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28881742B22
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 19:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 791F0742B50
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 19:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230504AbjF2RXC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 13:23:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54476 "EHLO
+        id S232356AbjF2RdY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 13:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229865AbjF2RW7 (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Thu, 29 Jun 2023 13:22:59 -0400
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AC4D10C9;
-        Thu, 29 Jun 2023 10:22:58 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id 42FED320099B;
-        Thu, 29 Jun 2023 13:22:56 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Thu, 29 Jun 2023 13:22:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1688059375; x=1688145775; bh=Cw
-        E2wcHANU3ek6A8gHn/xl6f0ODbgDTZqECgroPgqbw=; b=KmPDis3AAUdV73TLXo
-        3OgDknDtNClg5x81qOb965Qm5cYr8IvBdXhGCvghC6eXv81fiE9fG56quzNDzZst
-        /45f3i/zaf2LLN5iCHJQZ/RK3D1QpoqRKUl+8v1fSucJTUF6UJfVar0BDZCQ20Hn
-        l+liTEg46Hsd1sng3DdI97pvvFC3kwBWeDW3nwt/uejkcN0J/mk/Y1a8yJDS8bqa
-        JMIAxG1Gnlpsr2aM/GkAJzYUPxYnlfZSJ7ZZs6WeYDdcEX6dmVN2SHx0DfUmQX73
-        G3/KbHUY0HSz5fHQkbbibFsIsYYtYvP9Y4nJ7mqAHyX83IHBR3X55NcLf7C5gli7
-        p6xg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1688059375; x=1688145775; bh=CwE2wcHANU3ek
-        6A8gHn/xl6f0ODbgDTZqECgroPgqbw=; b=P60oOGRwftxmCUZrRzMi4jW32xc8n
-        x/eFQb0AcAT1TPGPGifej8BeSyum6UHdShIH8Vel+XbjhTR6dFf6fx7hhL9eYBHC
-        8AxQHRCA40a+Q3uWnXXz5wYSAgyTbjqkEjfI8xiy8QVcpXMJy9WWReqY2RA84cCp
-        iGz5Lv/Sb8T2zUE0+ISKl2EI4124iK2EICFrWM3mG4XV0hFRnJHrWmi8Ljtg2xhc
-        VNaBBAhLyGJZq/4zvRjcmREb60gX9pXeNRgxuGni8h4vTsd/Bfbbkp8fH8aNDhg6
-        ubhKsArA6i2l9ey7ciIKEqbX0PU9A/Roz60ygeg9HF4tQ2CLdynNmpM7A==
-X-ME-Sender: <xms:7r2dZPDLxq62M1kBStgKsfRuxemXsMrZzXVBnqFElAp05hW8nJmkZA>
-    <xme:7r2dZFiRFG8Vyjfyo5GhZZyIwFPE8E0ULnZ1F0bEAKRiKa5s8MlxBpnlzf35RQiKx
-    qOf15zr3vC0aA>
-X-ME-Received: <xmr:7r2dZKlK1wqTzcXBRUtDDIvakYJooS_zGMyatWd4F6tGlD1OsJtLccEUQulqVE9rJAhJ5BUgmn8kdxg-RZShi0K_UonVJHaFC8H3ww>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeggdduuddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:7r2dZBwMbrF4faEtgoZSd7eeg0wEP9Tyhwjf0jLldB286bmYrr_RrA>
-    <xmx:7r2dZEQU0Bhnx465BF7A7M9TFiqIYiSbFYJ6-6EjLteV3BCe3mu5oA>
-    <xmx:7r2dZEZVZKrU2X_BeAWA3KAVFrEfgS6uSQJJTwTqYP8MvMsHwG9Wvw>
-    <xmx:772dZDCeQFPJcEKuRI0bDql2RgH-aTbX7IKfOHr2q36_TPqSiQbNRA>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 29 Jun 2023 13:22:53 -0400 (EDT)
-Date:   Thu, 29 Jun 2023 19:22:51 +0200
-From:   Greg KH <greg@kroah.com>
+        with ESMTP id S232526AbjF2RdP (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Thu, 29 Jun 2023 13:33:15 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0801C3A9E
+        for <Stable@vger.kernel.org>; Thu, 29 Jun 2023 10:33:13 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-313fb7f0f80so1028724f8f.2
+        for <Stable@vger.kernel.org>; Thu, 29 Jun 2023 10:33:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688059991; x=1690651991;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=EZxvYIZuxAB+lwUWpz3iVved5/FIuiHwGeX7NNNfKPs=;
+        b=oXBlUOCsey6+rQUYnSJFVtS5AWj+TbJrKzuUNlXTOUDDPjK+vhhuNDtuh7MyHlBUsP
+         Ukjnxt4TxiOim3clDHs754DtEm602HxHBTOIFJ0b+NopLsIPE7rA6+oD7LY51iHYJR+m
+         20c1zNfsyGl1cEqDtSLlm2/WFFdvFlgAXUdIIuHRpGLhBRs7n6Vo6gIFhGFosIPlOi4S
+         yXGkdGT17L0B9ls3SA7mR8Ki+y/tYlW9/UAiFJkGqX9DfynoLqqQm+0tLR8EkHpzejP+
+         ACbLaqzMjnVZAM3SRHoK93fl0XcLt5aKHocBM8O01XqnbrNSQzYssz1m6CnwHxWqyscx
+         rFkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688059991; x=1690651991;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EZxvYIZuxAB+lwUWpz3iVved5/FIuiHwGeX7NNNfKPs=;
+        b=KWOFEeYBV5ZYhRUm+v4NxnNkgrhpsOOiLSv+nstf2f4ZBykYfLJKESamNiIkGbiFb2
+         HQm5ukbXcGSn3/or+fCyyebCkQOjtZdCfqa2lJsNYYl1NXtd5P3U9LHTXhTLjYSxYTYD
+         QHg9dl4CqzUNDCWs4y6wSurhmThYpe0NupeOnwy88N7bgSp/m32z8vQHVBMCT93IUJ8O
+         z1ZihZa6kVVFqhQWVHSVHQ8VzKBPB+tx5QewBLhkOkrkxDlbNFl7WDRmdICtgzjW0zEG
+         Omle78XojP5ZO6crR4lKwhY4GWK6SiO7gEVSysJr9o44scQxBSVKLLo+UkuU0H+i/FAa
+         BZCA==
+X-Gm-Message-State: ABy/qLZRHDVAyYK8rDJJj8Qxj7BqdrvNKLzh3eZhYFsVl8zwyW+8HJnR
+        3diEJ2cqcHSJjHlqtbx59gs6sg==
+X-Google-Smtp-Source: APBJJlE8XZRIPMaI6hNQHvv0XXg37ddZC1ZtloaleapPkcO90Mg1HZkMU3CBxM8wYYCsAhqtCIVBew==
+X-Received: by 2002:adf:fd43:0:b0:314:77a:c2b2 with SMTP id h3-20020adffd43000000b00314077ac2b2mr223834wrs.32.1688059991220;
+        Thu, 29 Jun 2023 10:33:11 -0700 (PDT)
+Received: from [192.168.1.195] ([5.133.47.210])
+        by smtp.googlemail.com with ESMTPSA id c1-20020a05600c0ac100b003fba6a0c881sm7762482wmr.43.2023.06.29.10.33.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Jun 2023 10:33:10 -0700 (PDT)
+Message-ID: <77b348f7-0475-5e16-95e1-0e5831408d2b@linaro.org>
+Date:   Thu, 29 Jun 2023 18:33:09 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: Re: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device
+ number
 To:     Mark Brown <broonie@kernel.org>
-Cc:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        johan+linaro@kernel.org, perex@perex.cz, tiwai@suse.com,
+Cc:     johan+linaro@kernel.org, perex@perex.cz, tiwai@suse.com,
         lgirdwood@gmail.com, ckeepax@opensource.cirrus.com,
         kuninori.morimoto.gx@renesas.com, linux-kernel@vger.kernel.org,
         pierre-louis.bossart@linux.intel.com, alsa-devel@alsa-project.org,
         Stable@vger.kernel.org
-Subject: Re: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device
- number
-Message-ID: <2023062958-thumping-ambulance-7a2f@gregkh>
 References: <20230628092404.13927-1-srinivas.kandagatla@linaro.org>
  <c22fcc94-aa41-4ffd-bfe8-f0b9f15a76c0@sirena.org.uk>
- <2023062940-snore-brick-419b@gregkh>
- <9699a960-74b0-4064-b264-6cde06cd16fc@sirena.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9699a960-74b0-4064-b264-6cde06cd16fc@sirena.org.uk>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Language: en-US
+In-Reply-To: <c22fcc94-aa41-4ffd-bfe8-f0b9f15a76c0@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 29, 2023 at 05:16:44PM +0100, Mark Brown wrote:
-> On Thu, Jun 29, 2023 at 06:06:05PM +0200, Greg KH wrote:
-> > On Thu, Jun 29, 2023 at 04:43:57PM +0100, Mark Brown wrote:
-> 
-> > > Won't this be an ABI change?  That seems like it'd disrupt things in
-> > > stable.
-> 
-> > ABI changes should disrupt things just the same in Linus's tree, why is
-> > stable any different?
-> 
-> This is a numbering resulting from enumeration thing so it gets to be
-> like the issues we've had with the order in which block and ethernet
-> devices appear, it's on the edge the extent to which people might be
-> relying on it.  If it's causing some problem as is and there's a reason
-> to do something (see the first half of my reply...) but the case gets
-> even harder to make with stable.
 
-It shouldn't matter for stable or not, if the change is acceptable in
-Linus's tree, with the userspace visable change, then it should be
-acceptable in any active stable branch as well.  There is no difference
-here for userspace api/abi rules.
 
-thanks,
+On 29/06/2023 16:43, Mark Brown wrote:
+> On Wed, Jun 28, 2023 at 10:24:04AM +0100, Srinivas Kandagatla wrote:
+>> For some reason we ended up with a setup without this flag.
+>> This resulted in inconsistent sound card devices numbers which
+>>   are also not starting as expected at dai_link->id.
+>>   (Ex: MultiMedia1 pcm ended up with device number 4 instead of 0)
+> 
+> Why is this a problem?
 
-greg k-h
+In existing Qualcomm setup the backend pcm are added first, which 
+results in frontend pcms getting pcm numbers after this.
+
+For example: with 3 backend dailinks in DT we have frontend pcm start at 
+3. Now if we add new backend dai-link in DT we now have frontend pcm 
+start at 4.
+
+This is a bug in qualcomm driver.
+
+> 
+>> With this patch patch now the MultiMedia1 PCM ends up with device number 0
+>> as expected.
+>>
+>> Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+>> Cc: <Stable@vger.kernel.org>
+> 
+> Won't this be an ABI change?  That seems like it'd disrupt things in
+> stable.
+Yes, but this is a real bug. without fixing this also results in abi(pcm 
+number) change when we add new backend dai-link. I have also sent fix 
+for UCM to handle this.
+
+
+--srini
