@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37AF5742C1A
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94BF8742C30
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232316AbjF2Spo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:45:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57978 "EHLO
+        id S232502AbjF2Sqt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232367AbjF2Sph (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:45:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8EF30F7
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:45:36 -0700 (PDT)
+        with ESMTP id S232591AbjF2Sqi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:46:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94EC42681
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:46:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9E8E615C8
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:45:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C220BC433C0;
-        Thu, 29 Jun 2023 18:45:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2686615DC
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:46:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BDBC433C8;
+        Thu, 29 Jun 2023 18:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064335;
-        bh=gY4Tk7R0VRwZcMUrdUuLk8sFAR3TIsakYI6YsOaPSC0=;
+        s=korg; t=1688064395;
+        bh=uQXXioqfHrA46LL6kPa6D9PucZrzLvSau3uLt56zMhY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vuVH9BLLIxRfG80LD3w9dBfln/4YAShyyGr0TePa6lQbJVsURN6QhWnlMeuqjUOqp
-         PSs+Uz9FD8UzfDgkBISXCk/UZXc6Yyc3Fx+C0wJZm74X+lBU5n/QC1OnLhTgRvpyRW
-         nH5KGRFCoQC/13skqclhvTQorT+ezFHoPC2+WrLo=
+        b=axCIY4WVBrnUkjqpQ2Tb3fZOenz3K+kwKHLnA7yL9BkB5MAphBlsMEgVrgTFiSrMu
+         fk1gBe9i1fc3pBYgOElPMUugSHAgC/t70pVLruWE+8jr5T0sS2L8aezt/HiyLaes/5
+         daX+5DA6V084EYIQ+1KOwtRNJYDmNwe8M6+c6ByY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jason Gerecke <jason.gerecke@wacom.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.1 28/30] HID: wacom: Use ktime_t rather than int when dealing with timestamps
-Date:   Thu, 29 Jun 2023 20:43:47 +0200
-Message-ID: <20230629184152.774275021@linuxfoundation.org>
+        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.3 18/29] arm/mm: Convert to using lock_mm_and_find_vma()
+Date:   Thu, 29 Jun 2023 20:43:48 +0200
+Message-ID: <20230629184152.465126960@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
-References: <20230629184151.651069086@linuxfoundation.org>
+In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
+References: <20230629184151.705870770@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,70 +54,136 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Ben Hutchings <ben@decadent.org.uk>
 
-commit 9a6c0e28e215535b2938c61ded54603b4e5814c5 upstream.
+commit 8b35ca3e45e35a26a21427f35d4093606e93ad0a upstream.
 
-Code which interacts with timestamps needs to use the ktime_t type
-returned by functions like ktime_get. The int type does not offer
-enough space to store these values, and attempting to use it is a
-recipe for problems. In this particular case, overflows would occur
-when calculating/storing timestamps leading to incorrect values being
-reported to userspace. In some cases these bad timestamps cause input
-handling in userspace to appear hung.
+arm has an additional check for address < FIRST_USER_ADDRESS before
+expanding the stack.  Since FIRST_USER_ADDRESS is defined everywhere
+(generally as 0), move that check to the generic expand_downwards().
 
-Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/901
-Fixes: 17d793f3ed53 ("HID: wacom: insert timestamp to packed Bluetooth (BT) events")
-CC: stable@vger.kernel.org
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Reviewed-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Link: https://lore.kernel.org/r/20230608213828.2108-1-jason.gerecke@wacom.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |    6 +++---
- drivers/hid/wacom_wac.h |    2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/Kconfig    |    1 
+ arch/arm/mm/fault.c |   63 +++++++++++-----------------------------------------
+ mm/mmap.c           |    2 -
+ 3 files changed, 16 insertions(+), 50 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1309,7 +1309,7 @@ static void wacom_intuos_pro2_bt_pen(str
- 	struct input_dev *pen_input = wacom->pen_input;
- 	unsigned char *data = wacom->data;
- 	int number_of_valid_frames = 0;
--	int time_interval = 15000000;
-+	ktime_t time_interval = 15000000;
- 	ktime_t time_packet_received = ktime_get();
- 	int i;
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -125,6 +125,7 @@ config ARM
+ 	select HAVE_UID16
+ 	select HAVE_VIRT_CPU_ACCOUNTING_GEN
+ 	select IRQ_FORCED_THREADING
++	select LOCK_MM_AND_FIND_VMA
+ 	select MODULES_USE_ELF_REL
+ 	select NEED_DMA_MAP_STATE
+ 	select OF_EARLY_FLATTREE if OF
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -232,37 +232,11 @@ static inline bool is_permission_fault(u
+ 	return false;
+ }
  
-@@ -1343,7 +1343,7 @@ static void wacom_intuos_pro2_bt_pen(str
- 	if (number_of_valid_frames) {
- 		if (wacom->hid_data.time_delayed)
- 			time_interval = ktime_get() - wacom->hid_data.time_delayed;
--		time_interval /= number_of_valid_frames;
-+		time_interval = div_u64(time_interval, number_of_valid_frames);
- 		wacom->hid_data.time_delayed = time_packet_received;
+-static vm_fault_t __kprobes
+-__do_page_fault(struct mm_struct *mm, unsigned long addr, unsigned int flags,
+-		unsigned long vma_flags, struct pt_regs *regs)
+-{
+-	struct vm_area_struct *vma = find_vma(mm, addr);
+-	if (unlikely(!vma))
+-		return VM_FAULT_BADMAP;
+-
+-	if (unlikely(vma->vm_start > addr)) {
+-		if (!(vma->vm_flags & VM_GROWSDOWN))
+-			return VM_FAULT_BADMAP;
+-		if (addr < FIRST_USER_ADDRESS)
+-			return VM_FAULT_BADMAP;
+-		if (expand_stack(vma, addr))
+-			return VM_FAULT_BADMAP;
+-	}
+-
+-	/*
+-	 * ok, we have a good vm_area for this memory access, check the
+-	 * permissions on the VMA allow for the fault which occurred.
+-	 */
+-	if (!(vma->vm_flags & vma_flags))
+-		return VM_FAULT_BADACCESS;
+-
+-	return handle_mm_fault(vma, addr & PAGE_MASK, flags, regs);
+-}
+-
+ static int __kprobes
+ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ {
+ 	struct mm_struct *mm = current->mm;
++	struct vm_area_struct *vma;
+ 	int sig, code;
+ 	vm_fault_t fault;
+ 	unsigned int flags = FAULT_FLAG_DEFAULT;
+@@ -301,31 +275,21 @@ do_page_fault(unsigned long addr, unsign
+ 
+ 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
+ 
+-	/*
+-	 * As per x86, we may deadlock here.  However, since the kernel only
+-	 * validly references user space from well defined areas of the code,
+-	 * we can bug out early if this is from code which shouldn't.
+-	 */
+-	if (!mmap_read_trylock(mm)) {
+-		if (!user_mode(regs) && !search_exception_tables(regs->ARM_pc))
+-			goto no_context;
+ retry:
+-		mmap_read_lock(mm);
+-	} else {
+-		/*
+-		 * The above down_read_trylock() might have succeeded in
+-		 * which case, we'll have missed the might_sleep() from
+-		 * down_read()
+-		 */
+-		might_sleep();
+-#ifdef CONFIG_DEBUG_VM
+-		if (!user_mode(regs) &&
+-		    !search_exception_tables(regs->ARM_pc))
+-			goto no_context;
+-#endif
++	vma = lock_mm_and_find_vma(mm, addr, regs);
++	if (unlikely(!vma)) {
++		fault = VM_FAULT_BADMAP;
++		goto bad_area;
  	}
  
-@@ -1354,7 +1354,7 @@ static void wacom_intuos_pro2_bt_pen(str
- 		bool range = frame[0] & 0x20;
- 		bool invert = frame[0] & 0x10;
- 		int frames_number_reversed = number_of_valid_frames - i - 1;
--		int event_timestamp = time_packet_received - frames_number_reversed * time_interval;
-+		ktime_t event_timestamp = time_packet_received - frames_number_reversed * time_interval;
+-	fault = __do_page_fault(mm, addr, flags, vm_flags, regs);
++	/*
++	 * ok, we have a good vm_area for this memory access, check the
++	 * permissions on the VMA allow for the fault which occurred.
++	 */
++	if (!(vma->vm_flags & vm_flags))
++		fault = VM_FAULT_BADACCESS;
++	else
++		fault = handle_mm_fault(vma, addr & PAGE_MASK, flags, regs);
  
- 		if (!valid)
- 			continue;
---- a/drivers/hid/wacom_wac.h
-+++ b/drivers/hid/wacom_wac.h
-@@ -324,7 +324,7 @@ struct hid_data {
- 	int ps_connected;
- 	bool pad_input_event_flag;
- 	unsigned short sequence_number;
--	int time_delayed;
-+	ktime_t time_delayed;
- };
+ 	/* If we need to retry but a fatal signal is pending, handle the
+ 	 * signal first. We do not need to release the mmap_lock because
+@@ -356,6 +320,7 @@ retry:
+ 	if (likely(!(fault & (VM_FAULT_ERROR | VM_FAULT_BADMAP | VM_FAULT_BADACCESS))))
+ 		return 0;
  
- struct wacom_remote_data {
++bad_area:
+ 	/*
+ 	 * If we are in kernel mode at this point, we
+ 	 * have no context to handle this fault with.
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1999,7 +1999,7 @@ int expand_downwards(struct vm_area_stru
+ 	int error = 0;
+ 
+ 	address &= PAGE_MASK;
+-	if (address < mmap_min_addr)
++	if (address < mmap_min_addr || address < FIRST_USER_ADDRESS)
+ 		return -EPERM;
+ 
+ 	/* Enforce stack_guard_gap */
 
 
