@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC5CD742C2B
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D64AC742C34
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232460AbjF2SqD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:46:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58854 "EHLO
+        id S231784AbjF2SpO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:45:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232447AbjF2SqB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:46:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E33C2681
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:46:00 -0700 (PDT)
+        with ESMTP id S232952AbjF2Soz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:44:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 370073AA1
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:44:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D284615E2
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:45:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE96C433C8;
-        Thu, 29 Jun 2023 18:45:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C0647615E7
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:44:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6DBC433C8;
+        Thu, 29 Jun 2023 18:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064358;
-        bh=nWgWPGv8CBwLY98GMC+Y6sSczCH5PlqgIQz6Ff4XSPU=;
+        s=korg; t=1688064279;
+        bh=4OkHtDS3GIPBNXpx314FO0/jEro6ZzGkwNmvjCsMeo8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RP1tXjutwrfP3xvN2OGpbsx1r9Ki/0CLFNbINnrHuJZ4apRp9CdtlK2/4IPWQebuz
-         7rxvjRwJZ+VgOi3BGONodaUOMNFTmU4XQOcOnuCkowl4G1uiB8FSDSFbkBft6qAUw6
-         ABFVDryySCAGCimy9elNo9p96XkhZIvMKfdilLbs=
+        b=eU2vv3WWBImceFZugvau/PTCtGn5VNEEGzmLhqG1Ez1LyMidw1Li0AQ/wxbGqutQ/
+         aG50dlkIjlixO/dm1KvGyv8Rp2mCvzzA4VSlOCJsTiSlS1qQm+aI5YNhIAjQeTv8/t
+         V1ykjOtBvvxGgb4/ZVyLElRikL5YlXYSMbHe+/Kc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+        Ashok Raj <ashok.raj@intel.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 09/30] x86/smp: Remove pointless wmb()s from native_stop_other_cpus()
-Date:   Thu, 29 Jun 2023 20:43:28 +0200
-Message-ID: <20230629184152.036404214@linuxfoundation.org>
+Subject: [PATCH 6.1 10/30] x86/smp: Use dedicated cache-line for mwait_play_dead()
+Date:   Thu, 29 Jun 2023 20:43:29 +0200
+Message-ID: <20230629184152.082833510@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
 References: <20230629184151.651069086@linuxfoundation.org>
@@ -44,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,46 +57,89 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 2affa6d6db28855e6340b060b809c23477aa546e upstream.
+commit f9c9987bf52f4e42e940ae217333ebb5a4c3b506 upstream.
 
-The wmb()s before sending the IPIs are not synchronizing anything.
+Monitoring idletask::thread_info::flags in mwait_play_dead() has been an
+obvious choice as all what is needed is a cache line which is not written
+by other CPUs.
 
-If at all then the apic IPI functions have to provide or act as appropriate
-barriers.
+But there is a use case where a "dead" CPU needs to be brought out of
+MWAIT: kexec().
 
-Remove these cargo cult barriers which have no explanation of what they are
-synchronizing.
+This is required as kexec() can overwrite text, pagetables, stacks and the
+monitored cacheline of the original kernel. The latter causes MWAIT to
+resume execution which obviously causes havoc on the kexec kernel which
+results usually in triple faults.
+
+Use a dedicated per CPU storage to prepare for that.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
 Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230615193330.378358382@linutronix.de
+Link: https://lore.kernel.org/r/20230615193330.434553750@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/smp.c |    6 ------
- 1 file changed, 6 deletions(-)
+ arch/x86/kernel/smpboot.c |   24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
---- a/arch/x86/kernel/smp.c
-+++ b/arch/x86/kernel/smp.c
-@@ -184,9 +184,6 @@ static void native_stop_other_cpus(int w
- 	cpumask_clear_cpu(cpu, &cpus_stop_mask);
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -99,6 +99,17 @@ EXPORT_PER_CPU_SYMBOL(cpu_die_map);
+ DEFINE_PER_CPU_READ_MOSTLY(struct cpuinfo_x86, cpu_info);
+ EXPORT_PER_CPU_SYMBOL(cpu_info);
  
- 	if (!cpumask_empty(&cpus_stop_mask)) {
--		/* sync above data before sending IRQ */
--		wmb();
++struct mwait_cpu_dead {
++	unsigned int	control;
++	unsigned int	status;
++};
++
++/*
++ * Cache line aligned data for mwait_play_dead(). Separate on purpose so
++ * that it's unlikely to be touched by other CPUs.
++ */
++static DEFINE_PER_CPU_ALIGNED(struct mwait_cpu_dead, mwait_cpu_dead);
++
+ /* Logical package management. We might want to allocate that dynamically */
+ unsigned int __max_logical_packages __read_mostly;
+ EXPORT_SYMBOL(__max_logical_packages);
+@@ -1746,10 +1757,10 @@ EXPORT_SYMBOL_GPL(cond_wakeup_cpu0);
+  */
+ static inline void mwait_play_dead(void)
+ {
++	struct mwait_cpu_dead *md = this_cpu_ptr(&mwait_cpu_dead);
+ 	unsigned int eax, ebx, ecx, edx;
+ 	unsigned int highest_cstate = 0;
+ 	unsigned int highest_subcstate = 0;
+-	void *mwait_ptr;
+ 	int i;
+ 
+ 	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
+@@ -1784,13 +1795,6 @@ static inline void mwait_play_dead(void)
+ 			(highest_subcstate - 1);
+ 	}
+ 
+-	/*
+-	 * This should be a memory location in a cache line which is
+-	 * unlikely to be touched by other processors.  The actual
+-	 * content is immaterial as it is not actually modified in any way.
+-	 */
+-	mwait_ptr = &current_thread_info()->flags;
 -
- 		apic_send_IPI_allbutself(REBOOT_VECTOR);
+ 	wbinvd();
  
- 		/*
-@@ -208,9 +205,6 @@ static void native_stop_other_cpus(int w
- 		 * CPUs to stop.
+ 	while (1) {
+@@ -1802,9 +1806,9 @@ static inline void mwait_play_dead(void)
+ 		 * case where we return around the loop.
  		 */
- 		if (!smp_no_nmi_ipi && !register_stop_handler()) {
--			/* Sync above data before sending IRQ */
--			wmb();
--
- 			pr_emerg("Shutting down cpus with NMI\n");
+ 		mb();
+-		clflush(mwait_ptr);
++		clflush(md);
+ 		mb();
+-		__monitor(mwait_ptr, 0, 0);
++		__monitor(md, 0, 0);
+ 		mb();
+ 		__mwait(eax, 0);
  
- 			for_each_cpu(cpu, &cpus_stop_mask)
 
 
