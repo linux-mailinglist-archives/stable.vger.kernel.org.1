@@ -2,160 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C0F8741FAA
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 07:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B1D674204C
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 08:24:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231894AbjF2FOU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 01:14:20 -0400
-Received: from mail-co1nam11on2076.outbound.protection.outlook.com ([40.107.220.76]:12352
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231204AbjF2FNN (ORCPT <rfc822;stable@vger.kernel.org>);
-        Thu, 29 Jun 2023 01:13:13 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IYeLgwkG4AVB8twE1ROuyZ8oMdsjso/46GalHGj3YYf3RjbWk2KoOMWmaeyl4J7+j85rCaZw2UDn30oLIRhTvv0uNxSeykhUKnHMQ/8kVkMoyV+/bC8Ogr3zFRqUhqYn6MsoDdDiIo4VXpiHuaZiL/AZHpmmAaP6H9boiyDf58hkOwThU8p+WmzC9euWx604pJoNIwcx+A+vwXYwKie+m6nWwu8lFX+Tl10wy9CqFkpufNJK3wIghZ+PkJUw7xkRQR6QjR0XpckKAQrybgHYgJUAckb5xnSU1YB3CRDOXsDtOH9muegbkBXT5x1ncqgjmXBOq+JxZPHo5dPfrhzFEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jGrVWp+S+O/NaInoHUg2uGXRtbSVDGzMISV7CfhHRhM=;
- b=jwJsnd4Y/vFXIJsZG8s4Duj/nx9PGdzOamRvyelamXKHs4C+YqKqiaWv2/OtRP1nRx9Dm4LKTjSeS97T2d3AEYDew+wSmdAL4iQvnK1uN+hYbDvuZlt1GDIWn9sGMCds2wZgPBjaGLPvq7pZzLZVl2VaSj0VcN8KJkMyupQXTmrUmj3m44q762yay2KvyzUTfhO9ZkLtwDmKnJIJicPs2+PYULIvcclEGaDy1lZe1h59r3aqSso5jSq3cHYvilClQ3tTeJwVaNvEEEu4zJcJvjKJxyeWN45SMXHGuqkEQqk+8Pc7yqYYtZIg2hy1QmW/ipuXM7DmM1BYvaGNZvhbIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jGrVWp+S+O/NaInoHUg2uGXRtbSVDGzMISV7CfhHRhM=;
- b=C5WMKVvN5MWrYp3wQPxKwyLagEl9QzfJ2gYkNAfMebP46cVkmMc0TIqVQxYLbRqo/MaiMrnFd4QnQG1J1JHXyVKN1cvjzlPHVjRdQ9nCfzcYMrqzJhRF6AgEAB6ZliWCOgHBgmcyuWGVLXo3xdlLXTN0qsXPiGBuZxI0Ma26xxZGWgO6BHgG/Me3WzSUgpExnis1EFRMDqkSJDqa85/52aqSLPFs71NvWAFIBVbrm6VRBI1KNOvD4LegQuJ3Xt3YDXPBMaTELUtbT5BKNnPsdd55LWOb2ZfqY8CtzqbccodF5WsFJoPZLk5yS2+2U4uRvMLWvGLrTx2NFVx96/1kVQ==
-Received: from DM6PR13CA0042.namprd13.prod.outlook.com (2603:10b6:5:134::19)
- by SA1PR12MB7102.namprd12.prod.outlook.com (2603:10b6:806:29f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Thu, 29 Jun
- 2023 05:13:09 +0000
-Received: from DM6NAM11FT021.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:134:cafe::9b) by DM6PR13CA0042.outlook.office365.com
- (2603:10b6:5:134::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.8 via Frontend
- Transport; Thu, 29 Jun 2023 05:13:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- DM6NAM11FT021.mail.protection.outlook.com (10.13.173.76) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6500.49 via Frontend Transport; Thu, 29 Jun 2023 05:13:08 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Wed, 28 Jun 2023
- 22:12:57 -0700
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.37; Wed, 28 Jun 2023 22:12:57 -0700
-Received: from audio.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server id 15.2.986.37 via Frontend
- Transport; Wed, 28 Jun 2023 22:12:53 -0700
-From:   Sameer Pujar <spujar@nvidia.com>
-To:     <broonie@kernel.org>, <robh+dt@kernel.org>, <krzk+dt@kernel.org>,
-        <thierry.reding@gmail.com>, <lgirdwood@gmail.com>,
-        <perex@perex.cz>, <tiwai@suse.com>
-CC:     <jonathanh@nvidia.com>, <mkumard@nvidia.com>, <sheetal@nvidia.com>,
-        <spujar@nvidia.com>, <alsa-devel@alsa-project.org>,
-        <devicetree@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH v2 5/5] arm64: tegra: Update AHUB clock parent and rate
-Date:   Thu, 29 Jun 2023 10:42:17 +0530
-Message-ID: <1688015537-31682-6-git-send-email-spujar@nvidia.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1688015537-31682-1-git-send-email-spujar@nvidia.com>
-References: <1688015537-31682-1-git-send-email-spujar@nvidia.com>
+        id S231838AbjF2GYt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 02:24:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39594 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231543AbjF2GYs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 02:24:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9AE32D54;
+        Wed, 28 Jun 2023 23:24:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F287614C9;
+        Thu, 29 Jun 2023 06:24:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6523C433C8;
+        Thu, 29 Jun 2023 06:24:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688019886;
+        bh=iOOjD3A+S8SeXAoZrFqMF28gFRwFGFeW1oMEvRjrMaA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=TmnLvFIkk2zxqAL6gSfDhRSGvxPyVFX1fmGu2VALfl8cjLa845fOoMbV0T1cGyn2k
+         7DVfYdpRCEQ+9QUpY0ii8gJL2F+dPPV1oUTG9X2Ktxuu33I3F0TTKWKGBjYPhZpQ2J
+         4f51fLD8TAjr1SnbNQhIiB5OmMwkKH+2lr7Whao+1vvaQdiJ7ZnHyY75HB3QkXRSPJ
+         wKq0eoMUu9IAOW2BbeY3pK06/vSVJY6FETNUQj3RHwfGOoH+1kaLvHm0cHnOQVxf46
+         1A0jIk75cimDrl6qL4OX7lEgidjTk1IBSJTVOedEKC3PezqNpaiEeaW19TqcGBOnVe
+         O+47jyhschJDA==
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-51d884a22e7so350692a12.3;
+        Wed, 28 Jun 2023 23:24:46 -0700 (PDT)
+X-Gm-Message-State: AC+VfDyd+zduiFW7kPhk66Ilbdie4Fbi3x11GjozRySGOjnkDx2uyJ/E
+        9PkeHtc/VqtucxE7qvxS7YDTGy1wZ2KmuEcPSXs=
+X-Google-Smtp-Source: ACHHUZ40VDkZdsHx4o3RM3KAXJpZxn6DsufG+PQoL4Y5YjvJzzruyD4+H/YNHJSSjYs6VHUkkJyUanUQ5J/RNjpxRmI=
+X-Received: by 2002:a05:6402:5157:b0:51d:a724:48d6 with SMTP id
+ n23-20020a056402515700b0051da72448d6mr5056544edd.37.1688019884938; Wed, 28
+ Jun 2023 23:24:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT021:EE_|SA1PR12MB7102:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2285d522-abbc-4074-a500-08db785f8755
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9X2/hemBpqeNgMUeMbKlWZPHhT5FZ7xtQZGqTudFDg0dsn5Iru9c/qeb+24ZlckMf4YLfXd4cBiMIoxmpQvaw+saRrUlku/trjx9o4U70t5L6jl5mSDMb/RtjAPUfU7KbNxgQ5UTMfs/FUf0ZU5K+n5qKH2WqIlkEy+T7UYBdOlOs5Ms50QcwtcRxTdwBri/YsuvKM6IJkbJBx5qMkvBnTXNXR14b3meOiaxsC2XYW4i50qr2FY51te5vEoVzgT7NEUPxEeeQr6/ns3vclDc+C+TwY3024TBXn5Z7hKoi/CxijudSAA2RZOMDB6a6XU3F0dFl7pRHdmx9Z8OU14WgijITBD9ZIYdGKW19oi7Zz+6ngoMef+w0/hUWL6IbIEtWc/zGRT/6g97PxW4Y+v2nZOhnhq9W/5YIkIjimabuqsYz0LEUHmri3RnKMB/FaTnqsbFXo4N33HB34lixNZrxPfQ+IWZpAEPoPrgiL4mkQps4ohCYueMmQhQE4bIUlb3IHG0y9OVNZ6u81tkBy4Dsx+twidHznJLVOcrDS0d42VVUXkMhRaQ+GXN0EljFG61yXQg4u/0+/Rlwgn7vGhCzmtKuwfqMcXQ5D7LP5ZAv/EbdF8WF2+6srWfV7WF25ZElZMTdXSjMiEi9TZVuLnODKdFovFZpaKRacf9stXKXREbPWxlOcDVWWHDT5MknjIcLCdvdW/Ioe7QQ/QwYqUyBD5U95pdlp4SXEr1wKOfxXk=
-X-Forefront-Antispam-Report: CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230028)(4636009)(346002)(39860400002)(396003)(136003)(376002)(451199021)(46966006)(36840700001)(40470700004)(82310400005)(36860700001)(36756003)(356005)(5660300002)(86362001)(41300700001)(7416002)(70206006)(8936002)(8676002)(40480700001)(40460700003)(82740400003)(316002)(7636003)(4326008)(70586007)(110136005)(478600001)(47076005)(15650500001)(2906002)(426003)(26005)(54906003)(186003)(336012)(7696005)(83380400001)(2616005)(6666004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 05:13:08.8476
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2285d522-abbc-4074-a500-08db785f8755
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT021.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7102
+References: <CABgObfYLnhW0qrPvFnMW_B9xZzLF6Ysn2uL4w9B815fUNVKK5A@mail.gmail.com>
+ <20230629000729.1223067-1-yuzhao@google.com>
+In-Reply-To: <20230629000729.1223067-1-yuzhao@google.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Thu, 29 Jun 2023 14:24:32 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H73BgeU=Vw+X+R+1pTrbZb_y9WLy66iu9=d3SXXeD0SBw@mail.gmail.com>
+Message-ID: <CAAhV-H73BgeU=Vw+X+R+1pTrbZb_y9WLy66iu9=d3SXXeD0SBw@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: KVM: Fix NULL pointer dereference
+To:     Yu Zhao <yuzhao@google.com>
+Cc:     pbonzini@redhat.com, chenhuacai@loongson.cn,
+        jiaxun.yang@flygoat.com, kvm@vger.kernel.org,
+        linux-mips@vger.kernel.org, stable@vger.kernel.org,
+        tsbogend@alpha.franken.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-I2S data sanity test failures are seen at lower AHUB clock rates
-on Tegra234. The Tegra194 uses the same clock relationship for AHUB
-and it is likely that similar issues would be seen. Thus update the
-AHUB clock parent and rates here as well for Tegra194, Tegra186
-and Tegra210.
+Hi, Zhao,
 
-Fixes: 177208f7b06d ("arm64: tegra: Add DT binding for AHUB components")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sameer Pujar <spujar@nvidia.com>
----
- arch/arm64/boot/dts/nvidia/tegra186.dtsi | 3 ++-
- arch/arm64/boot/dts/nvidia/tegra194.dtsi | 3 ++-
- arch/arm64/boot/dts/nvidia/tegra210.dtsi | 3 ++-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+On Thu, Jun 29, 2023 at 8:07=E2=80=AFAM Yu Zhao <yuzhao@google.com> wrote:
+>
+> On Mon, Jun 26, 2023 at 6:33 AM Paolo Bonzini <pbonzini@redhat.com> wrote=
+:
+> >
+> > On Mon, Jun 26, 2023 at 9:59 AM Huacai Chen <chenhuacai@loongson.cn> wr=
+ote:
+> > >
+> > > After commit 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support")=
+ we
+> > > get a NULL pointer dereference when creating a KVM guest:
+> >
+> > To be honest, a bug that needed 2 years to be reproduced is probably a
+> > sign that KVM/MIPS has no users. Any objections to removing it
+> > altogether?
+>
+> ACK:
+> 1. It's still broken after this patch [1]. The most well-tested MIPS
+>    distros, i.e., Debian/OpenWrt, have CONFIG_KVM=3Dn. (The latter doesn'=
+t
+>    even provide the QEMU package on MIPS.)
+> 2. Burden on QEMU dev. There is no guarantee that QEMU would work with
+>    KVM even if we could fix the kernel -- it actually does not until
+>    v8.0 [1], which is by luck:
+>
+>    commit a844873512400fae6bed9e87694dc96ff2f15f39
+>    Author: Paolo Bonzini <pbonzini@redhat.com>
+>    Date:   Sun Dec 18 01:06:45 2022 +0100
+>
+>        mips: Remove support for trap and emulate KVM
+>
+>        This support was limited to the Malta board, drop it.
+>        I do not have a machine that can run VZ KVM, so I am assuming
+>        that it works for -M malta as well.
+>
+>    (The latest Debian stable only ships v7.2.)
+>
+> [1] https://lore.kernel.org/r/ZI0R76Fx25Q2EThZ@google.com/
+My testbed is Loongson-3A4000 host + Loongson-3A4000 guest + Qemu8.0,
+both TCG and KVM works.
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra186.dtsi b/arch/arm64/boot/dts/nvidia/tegra186.dtsi
-index 7e4c496f..2b3bb5d 100644
---- a/arch/arm64/boot/dts/nvidia/tegra186.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra186.dtsi
-@@ -135,7 +135,8 @@
- 			clocks = <&bpmp TEGRA186_CLK_AHUB>;
- 			clock-names = "ahub";
- 			assigned-clocks = <&bpmp TEGRA186_CLK_AHUB>;
--			assigned-clock-parents = <&bpmp TEGRA186_CLK_PLL_A_OUT0>;
-+			assigned-clock-parents = <&bpmp TEGRA186_CLK_PLLP_OUT0>;
-+			assigned-clock-rates = <81600000>;
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x02900800 0x02900800 0x11800>;
-diff --git a/arch/arm64/boot/dts/nvidia/tegra194.dtsi b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-index 154fc8c..33f92b7 100644
---- a/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-@@ -231,7 +231,8 @@
- 				clocks = <&bpmp TEGRA194_CLK_AHUB>;
- 				clock-names = "ahub";
- 				assigned-clocks = <&bpmp TEGRA194_CLK_AHUB>;
--				assigned-clock-parents = <&bpmp TEGRA194_CLK_PLLA_OUT0>;
-+				assigned-clock-parents = <&bpmp TEGRA194_CLK_PLLP_OUT0>;
-+				assigned-clock-rates = <81600000>;
- 				status = "disabled";
- 
- 				#address-cells = <2>;
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210.dtsi b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-index 617583f..e7b4e30 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-@@ -1386,7 +1386,8 @@
- 			clocks = <&tegra_car TEGRA210_CLK_D_AUDIO>;
- 			clock-names = "ahub";
- 			assigned-clocks = <&tegra_car TEGRA210_CLK_D_AUDIO>;
--			assigned-clock-parents = <&tegra_car TEGRA210_CLK_PLL_A_OUT0>;
-+			assigned-clock-parents = <&tegra_car TEGRA210_CLK_PLL_P>;
-+			assigned-clock-rates = <81600000>;
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x702d0000 0x702d0000 0x0000e400>;
--- 
-2.7.4
+Some thoughts:
+1, I think your host is malta, but you cannot use a malta host to boot
+a Loongson guest, at least their kernels use different page sizes.
+2, commit a844873512400fae6bed9e87694dc96f remove the TE KVM, so if
+you are trying VZ KVM (but it seems you are using TE KVM), it can
+break nothing.
 
+Huacai
