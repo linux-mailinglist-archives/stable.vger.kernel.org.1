@@ -2,58 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08447742B6B
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 19:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C552742BAE
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:00:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229991AbjF2RnH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 13:43:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33862 "EHLO
+        id S229609AbjF2SAu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:00:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229609AbjF2RnG (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Thu, 29 Jun 2023 13:43:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B2F61B1;
-        Thu, 29 Jun 2023 10:43:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1842C615A0;
-        Thu, 29 Jun 2023 17:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260B1C433C8;
-        Thu, 29 Jun 2023 17:43:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688060583;
-        bh=V0qOlSWOHFdUJBrnvcm/PQeKhRzaF57NyRNow0c11k8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YuNoCsqM9ReRiaGyA5ytN3QwAUueul5O8O1wCoDJaNq7G9gSCsPX0mznPtslOkyp+
-         n8mGu0EjvWTL/7nRV3lFwez4OukXd3QdNLSUJYc30EiwhKa7qg8326oIKkztYra7EZ
-         kHtKbLvJS4UVKlrnqovbCdSmX8HtWEzrha3UWjIQraS94YBEguubq1dM0AJFnzB8Vg
-         5gxMgMJ8qC/sVjVMeixuAuDjbVpojZXdQuJS/Yqeu2T1u8Kc2woeZhRQRH9PqkscRd
-         Bn6XO+DQ4feXXo+Kx1TvvipEafsdo1b1R+6R7H02PRhXX8Gpuakhys3DADnXLDfR7x
-         sGs91kfTKENxg==
-Date:   Thu, 29 Jun 2023 18:42:57 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc:     johan+linaro@kernel.org, perex@perex.cz, tiwai@suse.com,
-        lgirdwood@gmail.com, ckeepax@opensource.cirrus.com,
-        kuninori.morimoto.gx@renesas.com, linux-kernel@vger.kernel.org,
-        pierre-louis.bossart@linux.intel.com, alsa-devel@alsa-project.org,
-        Stable@vger.kernel.org
-Subject: Re: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device
- number
-Message-ID: <8c3be94e-56c0-4820-853d-669e90969c24@sirena.org.uk>
-References: <20230628092404.13927-1-srinivas.kandagatla@linaro.org>
- <c22fcc94-aa41-4ffd-bfe8-f0b9f15a76c0@sirena.org.uk>
- <77b348f7-0475-5e16-95e1-0e5831408d2b@linaro.org>
+        with ESMTP id S231407AbjF2SAt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:00:49 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08AFAE49
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:00:47 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-51d9c71fb4bso1010228a12.2
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:00:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares.net; s=google; t=1688061645; x=1690653645;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7xpjbvJqSJwxqXLuc+xTBRlnVHjTEeJDSlKVXCaXSlg=;
+        b=IEoLj6z/shC+UvIMOYRiqceQEQivpyp5wRlMbvlvWRXIm/yuPCh8jQVO6WH4TyLVjz
+         pk/4R0kZo0qRZPpT2tD04gyTx4plsfSiPkbezJmvYCFYIvpH7aM1tupp4WC3vFl9S3Ob
+         s0jjDsvjkeLIFl8LVYqWgGgBCzKWPKssSsl7xg8chQe8opFyuSswhvNjoROlW2ceAoz2
+         G4/EvRK+hzrIreINDhPqxSziQ2I8/DTUGhEL9ekEuqMdnv5wRrST6+nRNUmS+F+CBjo/
+         cutHkFM1JWoo+3bsPfHHCTB0CcvgHfmKqjM7Ug0rK/8vpC+pLANopjGxu4y8FuEAPsyP
+         R1nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688061645; x=1690653645;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7xpjbvJqSJwxqXLuc+xTBRlnVHjTEeJDSlKVXCaXSlg=;
+        b=BDwQFvXQRsnTW6i6w3kvXnSbzQryfVbtLHC4NiIti0KMXjRV/QDeTnxAZq0FTOvFrQ
+         se2lc1bdhvdecLY50LML5pzDZNZUGS1aAlzUR3CBVe9GI8GTnPwo30h4PGCOFK7q/QJv
+         GUz/8Ffo+eUohWuBXeBuHeANmKeAVMrDmiJOPC9p8K4HBABmPrfY3edVJhmEiGBp09v7
+         dYmOyWS+Se/WLCqrOHWDtN9o+Kfa+OyWXJ2baMjOQpi/uYmnlBVA1Ks5QfJND2DXuDp5
+         SvNstAOV3UN/vEBaMmDLXZc0RDEabTlSHlSiCVVwfhe1C+nWekOHeHSvGrDU4uQeR/ih
+         +pmQ==
+X-Gm-Message-State: AC+VfDwwGjQrbzXrUGhDjbUnp2C+xrGf9TrDPDW7Ycu3bEJPP+jNzWLC
+        5DZkK/8wM6L8DsF2bsdaVb0Gmw==
+X-Google-Smtp-Source: ACHHUZ4bPd4nSzfKusJuqGLzv6fRN8ynOeAU1PU96oM+oSvNtLReeOrqicVBLOSLNCUfPWGRzMQUQw==
+X-Received: by 2002:a50:ee96:0:b0:51a:3472:9ee0 with SMTP id f22-20020a50ee96000000b0051a34729ee0mr27872141edr.29.1688061645425;
+        Thu, 29 Jun 2023 11:00:45 -0700 (PDT)
+Received: from [10.120.18.108] ([84.17.46.13])
+        by smtp.gmail.com with ESMTPSA id c13-20020aa7c98d000000b0051dd4daf13fsm1290848edt.30.2023.06.29.11.00.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Jun 2023 11:00:45 -0700 (PDT)
+Message-ID: <062b7104-b536-2b09-acae-3f99d57368dd@tessares.net>
+Date:   Thu, 29 Jun 2023 20:00:29 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bypcLNqvoaiunsId"
-Content-Disposition: inline
-In-Reply-To: <77b348f7-0475-5e16-95e1-0e5831408d2b@linaro.org>
-X-Cookie: Surprise due today.  Also the rent.
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: FAILED: patch "[PATCH] mptcp: fix possible divide by zero in
+ recvmsg()" failed to apply to 5.10-stable tree
+Content-Language: en-GB
+To:     gregkh@linuxfoundation.org, pabeni@redhat.com, cpaasch@apple.com,
+        kuba@kernel.org
+Cc:     stable@vger.kernel.org
+References: <2023062349-nerd-rupture-49ab@gregkh>
+From:   Matthieu Baerts <matthieu.baerts@tessares.net>
+In-Reply-To: <2023062349-nerd-rupture-49ab@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,66 +75,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Greg,
 
---bypcLNqvoaiunsId
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 23/06/2023 11:30, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 5.10-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 0ad529d9fd2bfa3fc619552a8d2fb2f2ef0bce2e
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062349-nerd-rupture-49ab@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
-On Thu, Jun 29, 2023 at 06:33:09PM +0100, Srinivas Kandagatla wrote:
-> On 29/06/2023 16:43, Mark Brown wrote:
-> > On Wed, Jun 28, 2023 at 10:24:04AM +0100, Srinivas Kandagatla wrote:
+Thank you for the notification.
 
-> > > For some reason we ended up with a setup without this flag.
-> > > This resulted in inconsistent sound card devices numbers which
-> > >   are also not starting as expected at dai_link->id.
-> > >   (Ex: MultiMedia1 pcm ended up with device number 4 instead of 0)
+I think we can drop this patch for v5.10. The infrastructure in the code
+is not there (mptcp_disconnect()) and the risk is very low: we only saw
+the issue recently, maybe only visible in newer versions due to other
+features.
 
-> > Why is this a problem?
+So no need to do anything here for v5.10.
 
-> In existing Qualcomm setup the backend pcm are added first, which results=
- in
-> frontend pcms getting pcm numbers after this.
-
-> For example: with 3 backend dailinks in DT we have frontend pcm start at =
-3.
-> Now if we add new backend dai-link in DT we now have frontend pcm start at
-> 4.
-
-> This is a bug in qualcomm driver.
-
-Why is this an actual problem rather than just being a bit ugly?  What
-is the negative consequence of having a PCM with this number?
-
-> > > With this patch patch now the MultiMedia1 PCM ends up with device num=
-ber 0
-> > > as expected.
-> > >=20
-> > > Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
-> > > Cc: <Stable@vger.kernel.org>
-> >=20
-> > Won't this be an ABI change?  That seems like it'd disrupt things in
-> > stable.
-
-> Yes, but this is a real bug. without fixing this also results in abi(pcm
-> number) change when we add new backend dai-link. I have also sent fix for
-> UCM to handle this.
-
-I'm still not clear why you believe this to be a bug.
-
---bypcLNqvoaiunsId
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSdwqAACgkQJNaLcl1U
-h9BKfQf+JaDl48bnioUDhQMuI6KqIfybuy9qh+7M+gWOmuwGSdFJwByoifsnUGPL
-9KOh0gRw6dNjOwFtQ2CKSdedM+9+gUDhm3dLe9JNt7SC3x2Cf9e6RVPZVZdwVKLi
-N9bG7Ci9yGDg1OlNpE0tdu5ocoui2v3HAQyaKlTCBUskQPP1urHgNgz73L5pfXsp
-+mJR5GtZMwxnYejkE/IKc0gJP/IgPwqcxwb929ppfxx2mH4wFS2lMx0YwtrG1i1N
-LEg/sMGXl0mnileFhSpDedb5hViiGOckQr+Gs7IPSiMVjwAKsp/NluD4p9uSTTsl
-CdSgGlutumZ4wOhHt21s5hq4iqrrqw==
-=Ygv3
------END PGP SIGNATURE-----
-
---bypcLNqvoaiunsId--
+Cheers,
+Matt
+-- 
+Tessares | Belgium | Hybrid Access Solutions
+www.tessares.net
