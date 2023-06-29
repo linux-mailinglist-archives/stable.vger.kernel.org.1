@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6156742C50
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37AF5742C1A
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232328AbjF2Sqi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:46:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59340 "EHLO
+        id S232316AbjF2Spo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:45:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232516AbjF2Sqe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:46:34 -0400
+        with ESMTP id S232367AbjF2Sph (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:45:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 655222D62
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:46:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8EF30F7
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:45:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0B77615C8
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:46:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F902C433C0;
-        Thu, 29 Jun 2023 18:46:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D9E8E615C8
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:45:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C220BC433C0;
+        Thu, 29 Jun 2023 18:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064392;
-        bh=q4QgX88nY5GlBeD/nDeNJifjnaQWs/h3KxsMaM9W7vc=;
+        s=korg; t=1688064335;
+        bh=gY4Tk7R0VRwZcMUrdUuLk8sFAR3TIsakYI6YsOaPSC0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BanrOZHPJh7F8XXyQaBMP+J0fr2zhq7IIbsd8om8CH3lN3+RZLhxUX2r0bePXrgc4
-         7WdfC4W2IxxXkoi0QUut31BwiDGMuDtPDgvCKoDwDEG60KCALYDN1x1iF0t2sVW33K
-         nLpq1P2dIwYFN1mqkmep7/g8UDNjmRWG+Hpe2Djk=
+        b=vuVH9BLLIxRfG80LD3w9dBfln/4YAShyyGr0TePa6lQbJVsURN6QhWnlMeuqjUOqp
+         PSs+Uz9FD8UzfDgkBISXCk/UZXc6Yyc3Fx+C0wJZm74X+lBU5n/QC1OnLhTgRvpyRW
+         nH5KGRFCoQC/13skqclhvTQorT+ezFHoPC2+WrLo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.3 17/29] riscv/mm: Convert to using lock_mm_and_find_vma()
+        patches@lists.linux.dev, Jason Gerecke <jason.gerecke@wacom.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.1 28/30] HID: wacom: Use ktime_t rather than int when dealing with timestamps
 Date:   Thu, 29 Jun 2023 20:43:47 +0200
-Message-ID: <20230629184152.426115008@linuxfoundation.org>
+Message-ID: <20230629184152.774275021@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
-References: <20230629184151.705870770@linuxfoundation.org>
+In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
+References: <20230629184151.651069086@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,95 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ben Hutchings <ben@decadent.org.uk>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-commit 7267ef7b0b77f4ed23b7b3c87d8eca7bd9c2d007 upstream.
+commit 9a6c0e28e215535b2938c61ded54603b4e5814c5 upstream.
 
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Code which interacts with timestamps needs to use the ktime_t type
+returned by functions like ktime_get. The int type does not offer
+enough space to store these values, and attempting to use it is a
+recipe for problems. In this particular case, overflows would occur
+when calculating/storing timestamps leading to incorrect values being
+reported to userspace. In some cases these bad timestamps cause input
+handling in userspace to appear hung.
+
+Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/901
+Fixes: 17d793f3ed53 ("HID: wacom: insert timestamp to packed Bluetooth (BT) events")
+CC: stable@vger.kernel.org
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Reviewed-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Link: https://lore.kernel.org/r/20230608213828.2108-1-jason.gerecke@wacom.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig    |    1 +
- arch/riscv/mm/fault.c |   31 +++++++++++++------------------
- 2 files changed, 14 insertions(+), 18 deletions(-)
+ drivers/hid/wacom_wac.c |    6 +++---
+ drivers/hid/wacom_wac.h |    2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -119,6 +119,7 @@ config RISCV
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select IRQ_DOMAIN
- 	select IRQ_FORCED_THREADING
-+	select LOCK_MM_AND_FIND_VMA
- 	select MODULES_USE_ELF_RELA if MODULES
- 	select MODULE_SECTIONS if MODULES
- 	select OF
---- a/arch/riscv/mm/fault.c
-+++ b/arch/riscv/mm/fault.c
-@@ -83,13 +83,13 @@ static inline void mm_fault_error(struct
- 	BUG();
- }
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1309,7 +1309,7 @@ static void wacom_intuos_pro2_bt_pen(str
+ 	struct input_dev *pen_input = wacom->pen_input;
+ 	unsigned char *data = wacom->data;
+ 	int number_of_valid_frames = 0;
+-	int time_interval = 15000000;
++	ktime_t time_interval = 15000000;
+ 	ktime_t time_packet_received = ktime_get();
+ 	int i;
  
--static inline void bad_area(struct pt_regs *regs, struct mm_struct *mm, int code, unsigned long addr)
-+static inline void
-+bad_area_nosemaphore(struct pt_regs *regs, int code, unsigned long addr)
- {
- 	/*
- 	 * Something tried to access memory that isn't in our memory map.
- 	 * Fix it, but check if it's kernel or user first.
- 	 */
--	mmap_read_unlock(mm);
- 	/* User mode accesses just cause a SIGSEGV */
- 	if (user_mode(regs)) {
- 		do_trap(regs, SIGSEGV, code, addr);
-@@ -99,6 +99,15 @@ static inline void bad_area(struct pt_re
- 	no_context(regs, addr);
- }
- 
-+static inline void
-+bad_area(struct pt_regs *regs, struct mm_struct *mm, int code,
-+	 unsigned long addr)
-+{
-+	mmap_read_unlock(mm);
-+
-+	bad_area_nosemaphore(regs, code, addr);
-+}
-+
- static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long addr)
- {
- 	pgd_t *pgd, *pgd_k;
-@@ -286,23 +295,10 @@ asmlinkage void do_page_fault(struct pt_
- 	else if (cause == EXC_INST_PAGE_FAULT)
- 		flags |= FAULT_FLAG_INSTRUCTION;
- retry:
--	mmap_read_lock(mm);
--	vma = find_vma(mm, addr);
-+	vma = lock_mm_and_find_vma(mm, addr, regs);
- 	if (unlikely(!vma)) {
- 		tsk->thread.bad_cause = cause;
--		bad_area(regs, mm, code, addr);
--		return;
--	}
--	if (likely(vma->vm_start <= addr))
--		goto good_area;
--	if (unlikely(!(vma->vm_flags & VM_GROWSDOWN))) {
--		tsk->thread.bad_cause = cause;
--		bad_area(regs, mm, code, addr);
--		return;
--	}
--	if (unlikely(expand_stack(vma, addr))) {
--		tsk->thread.bad_cause = cause;
--		bad_area(regs, mm, code, addr);
-+		bad_area_nosemaphore(regs, code, addr);
- 		return;
+@@ -1343,7 +1343,7 @@ static void wacom_intuos_pro2_bt_pen(str
+ 	if (number_of_valid_frames) {
+ 		if (wacom->hid_data.time_delayed)
+ 			time_interval = ktime_get() - wacom->hid_data.time_delayed;
+-		time_interval /= number_of_valid_frames;
++		time_interval = div_u64(time_interval, number_of_valid_frames);
+ 		wacom->hid_data.time_delayed = time_packet_received;
  	}
  
-@@ -310,7 +306,6 @@ retry:
- 	 * Ok, we have a good vm_area for this memory access, so
- 	 * we can handle it.
- 	 */
--good_area:
- 	code = SEGV_ACCERR;
+@@ -1354,7 +1354,7 @@ static void wacom_intuos_pro2_bt_pen(str
+ 		bool range = frame[0] & 0x20;
+ 		bool invert = frame[0] & 0x10;
+ 		int frames_number_reversed = number_of_valid_frames - i - 1;
+-		int event_timestamp = time_packet_received - frames_number_reversed * time_interval;
++		ktime_t event_timestamp = time_packet_received - frames_number_reversed * time_interval;
  
- 	if (unlikely(access_error(cause, vma))) {
+ 		if (!valid)
+ 			continue;
+--- a/drivers/hid/wacom_wac.h
++++ b/drivers/hid/wacom_wac.h
+@@ -324,7 +324,7 @@ struct hid_data {
+ 	int ps_connected;
+ 	bool pad_input_event_flag;
+ 	unsigned short sequence_number;
+-	int time_delayed;
++	ktime_t time_delayed;
+ };
+ 
+ struct wacom_remote_data {
 
 
