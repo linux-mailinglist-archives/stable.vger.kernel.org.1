@@ -2,137 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EA377422C0
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 10:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47563742316
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 11:20:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232200AbjF2Iz3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 04:55:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59536 "EHLO
+        id S229978AbjF2JUY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 05:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232084AbjF2Iz1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 04:55:27 -0400
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 927B4132
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:55:26 -0700 (PDT)
-Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-40079620a83so249931cf.0
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:55:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688028925; x=1690620925;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iLSx+IibbbFO3eoieeQ0ahfVThh114dnzZVKXKMPytk=;
-        b=R2NV18E8eGwxVId5xlR/et2NMPrHy1x+Kd+uELH+C5Z6QLpMYj53Qtd7NTe9vvl+dI
-         Qz3QcKegMT+55v+aeQa1kcAditI7nAaLBuyZM36+iROvkx/Isysw4+FpbXNHPqMj1FeI
-         oT2OOGnrHaVltLlVP6bzc3Ozs6/shKr0q8SwhLrNYIukwWaTuZR3eNqInxz5lqdCoebt
-         NI1331PyQr7S3udY7/lXE2ywGPgw3VenPkcMV3AUyh0CGZKodnZbRFidaf5FPw9ZGzDv
-         DnTw7PgFj2s0wesachAMtBi+s+f18ndCrF1epkmhe4DNSXnUzz7wIetew2t0A35ZwZ6O
-         0KhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688028925; x=1690620925;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iLSx+IibbbFO3eoieeQ0ahfVThh114dnzZVKXKMPytk=;
-        b=fqBGE/M/clXbcSSwjcerF5SzOUa5Xlheh7dFGJK3OESKFppmSdofo0PN4ZGJzK+4Hq
-         xSPko2aY32uu8RRKK6nbJHebSyHSgjcUaHRV5eAKOXV/lKN/FWJ3cIGiQ2L/agMjRjDi
-         imMIQ11PKWRz3fKA4CYLHZxb35iuuxJ1GTFQk+/kozl9xSebMJ+/P5yLLG3oaADhPwZD
-         gQ9Of7HHA5zLhA9zLCMT4KwOScP9q5gy7RkWxtUvMgW2s9i8eVvTfoL/Y6lZ/If+/+2y
-         z2fzbiCfrY+2jqhGoo7rJeH/L7+SerGhiLUOMajPoRy/YglizeMtUlCORCV8PEybRVgN
-         VLMw==
-X-Gm-Message-State: AC+VfDz+TurzA1fGmCZnQEUb0fyD30AHrR04p9O4zTlduwhlbAVNh7Xs
-        rjc5ruxVwU2oF/atDApnG64uws9cCwKtKTYdp1gDnQ==
-X-Google-Smtp-Source: ACHHUZ4FMOfJIC0Hituk7BUmqP60oyWZYdWSfPJ2bAwb5vMGv+QKSdp3IUJlDw0dUODOJYWbC85JxkhSlHkovKXXUMY=
-X-Received: by 2002:ac8:5882:0:b0:3e0:c2dd:fd29 with SMTP id
- t2-20020ac85882000000b003e0c2ddfd29mr450540qta.4.1688028925505; Thu, 29 Jun
- 2023 01:55:25 -0700 (PDT)
+        with ESMTP id S229891AbjF2JUW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 05:20:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37EA1107
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 02:20:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF456614C0
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 09:20:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1789FC433C9;
+        Thu, 29 Jun 2023 09:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688030421;
+        bh=sjrhlxMoc3gMI+6YuwBO+Xl5zd/guz3kTM9x73kxq5c=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=eIea9TTtxrkRQxhJ1gdDnA2cjP6IXlLy3ZL8VD0rolkFQXuD99lrPLSpABAkDLRUI
+         KEgLn6I3Mdlo7MTJZW98tVMYFYc3qzIt/zXXat9RGIBA8waFSiswEm5FGHPAwyhHbF
+         vTK9KUv/qhUpmRGBj/sUZObI9qW2TI+EV2jJxprduanXBpHQpVc7CjFXg+XlhuJmRA
+         JdT+4mRxaxV7GbSCaPVxE8aYXHtTih/MPRy0WD8BdxfZ1lOMjgsEDa2OUf0pQiKMYi
+         5FjdQ5uiShVcX89m/OLbnJEa03wZ5HqSllc+MSPibMA3+6vgneRV+qBPYFMfNug5+P
+         7TswPHR3Sifow==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id EF516C41671;
+        Thu, 29 Jun 2023 09:20:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <CABgObfYLnhW0qrPvFnMW_B9xZzLF6Ysn2uL4w9B815fUNVKK5A@mail.gmail.com>
- <20230629000729.1223067-1-yuzhao@google.com> <CAAhV-H73BgeU=Vw+X+R+1pTrbZb_y9WLy66iu9=d3SXXeD0SBw@mail.gmail.com>
-In-Reply-To: <CAAhV-H73BgeU=Vw+X+R+1pTrbZb_y9WLy66iu9=d3SXXeD0SBw@mail.gmail.com>
-From:   Yu Zhao <yuzhao@google.com>
-Date:   Thu, 29 Jun 2023 02:54:49 -0600
-Message-ID: <CAOUHufYHANwC-YZ0W5D89spuA693-PKnZ+9JwkNEN05AagUETw@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: KVM: Fix NULL pointer dereference
-To:     Huacai Chen <chenhuacai@kernel.org>
-Cc:     pbonzini@redhat.com, chenhuacai@loongson.cn,
-        jiaxun.yang@flygoat.com, kvm@vger.kernel.org,
-        linux-mips@vger.kernel.org, stable@vger.kernel.org,
-        tsbogend@alpha.franken.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: lan743x: Don't sleep in atomic context
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168803042097.16415.15204725768156666010.git-patchwork-notify@kernel.org>
+Date:   Thu, 29 Jun 2023 09:20:20 +0000
+References: <20230627035000.1295254-1-moritzf@google.com>
+In-Reply-To: <20230627035000.1295254-1-moritzf@google.com>
+To:     Moritz Fischer <moritzf@google.com>
+Cc:     netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+        edumazet@google.com, davem@davemloft.net,
+        bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+        mdf@kernel.org, stable@vger.kernel.org
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 29, 2023 at 12:24=E2=80=AFAM Huacai Chen <chenhuacai@kernel.org=
-> wrote:
->
-> Hi, Zhao,
->
-> On Thu, Jun 29, 2023 at 8:07=E2=80=AFAM Yu Zhao <yuzhao@google.com> wrote=
-:
-> >
-> > On Mon, Jun 26, 2023 at 6:33 AM Paolo Bonzini <pbonzini@redhat.com> wro=
-te:
-> > >
-> > > On Mon, Jun 26, 2023 at 9:59 AM Huacai Chen <chenhuacai@loongson.cn> =
-wrote:
-> > > >
-> > > > After commit 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support=
-") we
-> > > > get a NULL pointer dereference when creating a KVM guest:
-> > >
-> > > To be honest, a bug that needed 2 years to be reproduced is probably =
-a
-> > > sign that KVM/MIPS has no users. Any objections to removing it
-> > > altogether?
-> >
-> > ACK:
-> > 1. It's still broken after this patch [1]. The most well-tested MIPS
-> >    distros, i.e., Debian/OpenWrt, have CONFIG_KVM=3Dn. (The latter does=
-n't
-> >    even provide the QEMU package on MIPS.)
-> > 2. Burden on QEMU dev. There is no guarantee that QEMU would work with
-> >    KVM even if we could fix the kernel -- it actually does not until
-> >    v8.0 [1], which is by luck:
-> >
-> >    commit a844873512400fae6bed9e87694dc96ff2f15f39
-> >    Author: Paolo Bonzini <pbonzini@redhat.com>
-> >    Date:   Sun Dec 18 01:06:45 2022 +0100
-> >
-> >        mips: Remove support for trap and emulate KVM
-> >
-> >        This support was limited to the Malta board, drop it.
-> >        I do not have a machine that can run VZ KVM, so I am assuming
-> >        that it works for -M malta as well.
-> >
-> >    (The latest Debian stable only ships v7.2.)
-> >
-> > [1] https://lore.kernel.org/r/ZI0R76Fx25Q2EThZ@google.com/
-> My testbed is Loongson-3A4000 host + Loongson-3A4000 guest + Qemu8.0,
-> both TCG and KVM works.
+Hello:
 
-I tried TCG too, as reported in the link above, and had no luck.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-> Some thoughts:
-> 1, I think your host is malta, but you cannot use a malta host to boot
-> a Loongson guest, at least their kernels use different page sizes.
+On Tue, 27 Jun 2023 03:50:00 +0000 you wrote:
+> dev_set_rx_mode() grabs a spin_lock, and the lan743x implementation
+> proceeds subsequently to go to sleep using readx_poll_timeout().
+> 
+> Introduce a helper wrapping the readx_poll_timeout_atomic() function
+> and use it to replace the calls to readx_polL_timeout().
+> 
+> Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
+> Cc: stable@vger.kernel.org
+> Cc: Bryan Whitehead <bryan.whitehead@microchip.com>
+> Cc: UNGLinuxDriver@microchip.com
+> Signed-off-by: Moritz Fischer <moritzf@google.com>
+> 
+> [...]
 
-Good to know. Thanks.
+Here is the summary with links:
+  - [net,v3] net: lan743x: Don't sleep in atomic context
+    https://git.kernel.org/netdev/net/c/7a8227b2e76b
 
-> 2, commit a844873512400fae6bed9e87694dc96f remove the TE KVM, so if
-> you are trying VZ KVM (but it seems you are using TE KVM), it can
-> break nothing.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-I fully understand :) I was trying to point out that QEMU/KVM had been
-broken for over 2 years -- neither TE (removed from KVM) nor VZ works
-with 7.2, which is probably why you used 8.0 too -- until that commit
-*accidentally* fixed VZ (it was supposed to be a cleanup, not a fix).
+
