@@ -2,77 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E39987426F6
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 15:07:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2FA37420AA
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 08:49:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231269AbjF2NHm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 09:07:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37976 "EHLO
+        id S230198AbjF2Gty (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 02:49:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230463AbjF2NHk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 09:07:40 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A52AE5B;
-        Thu, 29 Jun 2023 06:07:39 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-5700b37da3fso6354837b3.1;
-        Thu, 29 Jun 2023 06:07:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688044058; x=1690636058;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wPSxkQ87Wj6qniPEz0gaxOYEsfrmKpTYI5B1z/x1Q/E=;
-        b=pRt8FyE0SHlF09fUC9ODK2Vr6aEhF/P0G//O4CcWe7G7LojqTyZWFjBO8X2Wb7AT6U
-         j6+aPz0s/M2bojNmAvy8Ed66XhCejVbSZOuaCDdD0s3EoHDiJn4nxrvLDsfbJxVrASTj
-         S5uDe0AfRfELn/YR4YTXSQl4CUqrOqxG+TI7TX1pDelAgUfaP81Di8JZPpY9+Ug6RTkG
-         sK1uinoNp4bVLPBPzsxvSSAIxFA4gxMtWBUSuFbRz4OxgenaoL3PbjUvKyGwXN4XQn36
-         ZhplCx2/KcBmUOSikviEw10MhIZnb9E1B6YMTWuK62lWwsx4ZyA3gEo6cNhLmzfhGhnT
-         cqfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688044058; x=1690636058;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wPSxkQ87Wj6qniPEz0gaxOYEsfrmKpTYI5B1z/x1Q/E=;
-        b=ZbxTXZGoNMpHoC/tcuQ1TjWhh9QWC/bMFV9mr5abFQ7SuuunVwq+AbUBdpUIIdfy/t
-         V/i5gPml8zs4DLPhMXeajLtPMyTfJDSST3Uzf3mypJZGcu+iv65kTHg1n8neH+BbEp2P
-         7nUCcnfAlph2fj0lugKAgPfnN4WJKoHRUKNfsAn5pT2KT3AvN+oYSquXRkVwXzKEW7C7
-         vAHPhxiA6EYK2SJY4y0sJEjiaSxMm0NNfB+HU8ZLT9xChKo3heRwL4qvG+yJI26WgFNi
-         8hwLmN9ZBqVWb+OpQDPwROFTNLVc5/9LjQ/Bg9K52ZxwmVBesH71u2Nj4d5YQ3sIhZMo
-         NIwQ==
-X-Gm-Message-State: AC+VfDycchZF+qbKvHFQGlfRkcVas7St+pzgkuX8JdtptLkFUU0eHBeR
-        qOXE+tjRYemTNZHCh+AeXBL+ezlIyg==
-X-Google-Smtp-Source: ACHHUZ54T815K5oIlgXBu7Fku65efK/HxXSIeluhK4sRy7j7+hmNGzHsx7+ZAukAbz641fT7BgoaVw==
-X-Received: by 2002:a0d:ea52:0:b0:56d:34:893c with SMTP id t79-20020a0dea52000000b0056d0034893cmr28070174ywe.4.1688044058502;
-        Thu, 29 Jun 2023 06:07:38 -0700 (PDT)
-Received: from serve.minyard.net (serve.minyard.net. [2001:470:b8f6:1b::1])
-        by smtp.gmail.com with ESMTPSA id d186-20020a8168c3000000b00577139f85dfsm637868ywc.22.2023.06.29.06.07.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jun 2023 06:07:37 -0700 (PDT)
-Sender: Corey Minyard <tcminyard@gmail.com>
-Received: from mail.minyard.net (unknown [IPv6:2001:470:b8f6:1b:91d3:5aa:3c41:6715])
-        by serve.minyard.net (Postfix) with ESMTPSA id 06203180044;
-        Thu, 29 Jun 2023 13:07:36 +0000 (UTC)
-Date:   Thu, 29 Jun 2023 08:07:34 -0500
-From:   Corey Minyard <minyard@acm.org>
-To:     "GONG, Ruiqi" <gongruiqi@huaweicloud.com>
-Cc:     Yi Yang <yiyang13@huawei.com>,
-        openipmi-developer@lists.sourceforge.net,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Wang Weiyang <wangweiyang2@huawei.com>,
-        Xiu Jianfeng <xiujianfeng@huawei.com>, gongruiqi1@huawei.com
-Subject: Re: [PATCH] ipmi_si: fix a memleak in try_smi_init()
-Message-ID: <ZJ2CFthVKdr0U29K@mail.minyard.net>
-Reply-To: minyard@acm.org
-References: <20230629123328.2402075-1-gongruiqi@huaweicloud.com>
+        with ESMTP id S232101AbjF2GtQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 02:49:16 -0400
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A862D55
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 23:49:12 -0700 (PDT)
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20230629064908epoutp046403724b17c0b2906dc2138159160910~tDnkkQTKd2733227332epoutp04B
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 06:49:08 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20230629064908epoutp046403724b17c0b2906dc2138159160910~tDnkkQTKd2733227332epoutp04B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1688021348;
+        bh=KEpV/SR7y0dLoMKT0bZXWc67BvkeWQIdOruf7uuQ4ZA=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=ZFlwTvt+QAg75S4wkBhao5iElvEXV9mFlH/JmQo6tg7cQ3LlJhcVaX9/a1NOdSj5T
+         StArv0llErKSXLZQbVlW9ElxnT5V832Gk4Dto2/LOKjqykPdja0C0YBKIiRtOmDaSI
+         9bWE/U9bv+hQs9P/8Yiz1QYcSG7aU25UQoHZ4E7Y=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+        20230629064908epcas5p40d0c100961b82debe6e742d08f3db5ba~tDnkBsHPj1752417524epcas5p4c;
+        Thu, 29 Jun 2023 06:49:08 +0000 (GMT)
+Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.179]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 4Qs8Dy2KlJz4x9Px; Thu, 29 Jun
+        2023 06:49:06 +0000 (GMT)
+Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
+        epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        5F.35.55173.2692D946; Thu, 29 Jun 2023 15:49:06 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+        20230629062728epcas5p2bb48fea42a380039c0eb06c19a44aad1~tDUpsFQG-2800828008epcas5p2I;
+        Thu, 29 Jun 2023 06:27:28 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20230629062728epsmtrp2f7f3edcfa873ad996c2bb7067cf9c52a~tDUprEaJV3223132231epsmtrp2d;
+        Thu, 29 Jun 2023 06:27:28 +0000 (GMT)
+X-AuditID: b6c32a50-df1ff7000001d785-74-649d296246d5
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        A2.B7.30535.0542D946; Thu, 29 Jun 2023 15:27:28 +0900 (KST)
+Received: from ubuntu.. (unknown [109.105.118.54]) by epsmtip1.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20230629062727epsmtip1ca4ed67758bcd5b83b2a1396a6185aba~tDUoSgo3u1157711577epsmtip1O;
+        Thu, 29 Jun 2023 06:27:27 +0000 (GMT)
+From:   Min Li <min15.li@samsung.com>
+To:     axboe@kernel.dk, willy@infradead.org, hch@lst.de,
+        dlemoal@kernel.org, gregkh@linuxfoundation.org
+Cc:     linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Min Li <min15.li@samsung.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>
+Subject: [PATCH v5] block: add check that partition length needs to be
+ aligned with block size
+Date:   Thu, 29 Jun 2023 14:25:17 +0000
+Message-Id: <20230629142517.121241-1-min15.li@samsung.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230629123328.2402075-1-gongruiqi@huaweicloud.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrIJsWRmVeSWpSXmKPExsWy7bCmpm6S5twUgzl3+S1W3+1ns3iw396i
+        efF6Nosbx98xW8x9fYnFYuXqo0wWT6/OYrLYe0vb4vKuOWwWy1d1MFmcnfCB1WLBxkeMFr9/
+        AMVurLvK4sDnsXmFlsfls6Uem1Z1snnsn7uG3WP3zQY2j97md2wefVtWMXp83iQXwBGVbZOR
+        mpiSWqSQmpecn5KZl26r5B0c7xxvamZgqGtoaWGupJCXmJtqq+TiE6DrlpkDdLSSQlliTilQ
+        KCCxuFhJ386mKL+0JFUhI7+4xFYptSAlp8CkQK84Mbe4NC9dLy+1xMrQwMDIFKgwITtj543p
+        zAUtIhXzmhpZGxhnCXQxcnJICJhI7L53mqmLkYtDSGAPo8SRDTNZIZxPjBKPls6Fcr4xSjw4
+        2MkC09K8ciIjiC0ksJdRYvcaMYii54wSB1oXAs3i4GATUJbYttQHpEZEIE1iacdPNpAaZoG5
+        jBIXF7YxgSSEBRIkNp/+wAZiswioSkx4NA9sAa+AlcT0H+2MEMvkJfYfPMsMEReUODnzCVgN
+        M1C8eetsZpChEgJTOSSOPJnFBNHgIvHy6BRWCFtY4tXxLewQtpTE53d72UCOkxAolnj5Iwwi
+        XCOx+9ttqFZriW3r14HdzyygKbF+lz5EWFZi6ql1TBBr+SR6fz+BKueV2DEPxlaS+HvhHNTJ
+        EhKL9z+EusBDYvvJ86yQsIqV+Db3KusERvlZSL6ZheSbWQibFzAyr2KUSi0ozk1PTTYtMNTN
+        Sy2HR2xyfu4mRnDa1QrYwbh6w1+9Q4xMHIyHGCU4mJVEeG+/mZ0ixJuSWFmVWpQfX1Sak1p8
+        iNEUGMYTmaVEk/OBiT+vJN7QxNLAxMzMzMTS2MxQSZz3nntnipBAemJJanZqakFqEUwfEwen
+        VAPTmso9Ih+OqLE/NJxw/eOb3VdvPbDcu4/rlNOpE4cdTAts3sidvOzi92DB55kaXPO+8yXw
+        uPyTvGNnu3TCdevt8xjeTEu5UuRofHZZ0uw4y5ibe57onGefJ95txu3s0jL3+kWFK11Tl2++
+        4uPu9Co1WLtXUvrtr9YPIRka8+6KKHrYOrxJVI5vCxXnrZ5z5YVOlndUftLuSqu0kzvr7EPF
+        uNrNnf/Iv1r3+viu71yVLoeibWa4sBQfUta83mO9egbb1CN+H9YqzrZb6yTvtvWiw8lpbRzX
+        RUI2fJkdNd3q2CLWh7oHOTydvwrcLzJ/4i/ns3OJ+seLAg5Z60wSP6aGnG5S6fzyQb5hl7zd
+        Z4lIJZbijERDLeai4kQA6EKnVkQEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrNLMWRmVeSWpSXmKPExsWy7bCSnG6AytwUgzlXFCxW3+1ns3iw396i
+        efF6Nosbx98xW8x9fYnFYuXqo0wWT6/OYrLYe0vb4vKuOWwWy1d1MFmcnfCB1WLBxkeMFr9/
+        AMVurLvK4sDnsXmFlsfls6Uem1Z1snnsn7uG3WP3zQY2j97md2wefVtWMXp83iQXwBHFZZOS
+        mpNZllqkb5fAlbHzxnTmghaRinlNjawNjLMEuhg5OSQETCSaV05kBLGFBHYzSmx/bQsRl5A4
+        P+8XG4QtLLHy33P2LkYuoJqnjBLXDt8Fcjg42ASUJbYt9QExRQRyJFZ89wcpYRZYyChxe/pL
+        VpBeYYE4ia9tXWDzWQRUJSY8mscCYvMKWElM/9HOCDFfXmL/wbPMEHFBiZMzn4DVMAPFm7fO
+        Zp7AyDcLSWoWktQCRqZVjJKpBcW56bnFhgVGeanlesWJucWleel6yfm5mxjB4a+ltYNxz6oP
+        eocYmTgYDzFKcDArifDefjM7RYg3JbGyKrUoP76oNCe1+BCjNAeLkjjvt9e9KUIC6Yklqdmp
+        qQWpRTBZJg5OqQamMxeYThjtebJG6d22zQeaZlo3ST9UEPV9PvPX2afbXx+vfcDLteH/TukX
+        OYesLzKlbny16oGypscH7hUFV/gXyHA1l+menG2bc8/3y8+uz73LlCeJ77x2gG1D0JwN/+YI
+        sF7/bn7VJOsVW2J5stDSCeyChlNvTf679NPXcL6yhoUHDHP3njixfkLqVdGU3W+yme+9LZi4
+        /9z1WXoKs/t1H0xrNtofuPtzw59triaFLCx7riZ+ENj9b3lS5gJXjnePWfz9DJ5prrP4kbn5
+        Q9bNI0dn7gq62/xh/fddD1Z6lMfdPz/Z/lppe06KRP0bzY5N7Jl6tlV18VIL/VKLNrpfSoxX
+        dFg/9dn5CWw2zfb5mnlKLMUZiYZazEXFiQD7Hgea7gIAAA==
+X-CMS-MailID: 20230629062728epcas5p2bb48fea42a380039c0eb06c19a44aad1
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20230629062728epcas5p2bb48fea42a380039c0eb06c19a44aad1
+References: <CGME20230629062728epcas5p2bb48fea42a380039c0eb06c19a44aad1@epcas5p2.samsung.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,65 +117,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 29, 2023 at 08:33:28PM +0800, GONG, Ruiqi wrote:
-> From: Yi Yang <yiyang13@huawei.com>
-> 
-> Kmemleak reported the following leak info in try_smi_init():
-> 
-> unreferenced object 0xffff00018ecf9400 (size 1024):
->   comm "modprobe", pid 2707763, jiffies 4300851415 (age 773.308s)
->   backtrace:
->     [<000000004ca5b312>] __kmalloc+0x4b8/0x7b0
->     [<00000000953b1072>] try_smi_init+0x148/0x5dc [ipmi_si]
->     [<000000006460d325>] 0xffff800081b10148
->     [<0000000039206ea5>] do_one_initcall+0x64/0x2a4
->     [<00000000601399ce>] do_init_module+0x50/0x300
->     [<000000003c12ba3c>] load_module+0x7a8/0x9e0
->     [<00000000c246fffe>] __se_sys_init_module+0x104/0x180
->     [<00000000eea99093>] __arm64_sys_init_module+0x24/0x30
->     [<0000000021b1ef87>] el0_svc_common.constprop.0+0x94/0x250
->     [<0000000070f4f8b7>] do_el0_svc+0x48/0xe0
->     [<000000005a05337f>] el0_svc+0x24/0x3c
->     [<000000005eb248d6>] el0_sync_handler+0x160/0x164
->     [<0000000030a59039>] el0_sync+0x160/0x180
-> 
-> The problem was that when an error occurred before handlers registration
-> and after allocating `new_smi->si_sm`, the variable wouldn't be freed in
-> the error handling afterwards since `shutdown_smi()` hadn't been
-> registered yet. Fix it by adding a `kfree()` in the error handling path
-> in `try_smi_init()`.
+Before calling add partition or resize partition, there is no check
+on whether the length is aligned with the logical block size.
+If the logical block size of the disk is larger than 512 bytes,
+then the partition size maybe not the multiple of the logical block size,
+and when the last sector is read, bio_truncate() will adjust the bio size,
+resulting in an IO error if the size of the read command is smaller than
+the logical block size.If integrity data is supported, this will also
+result in a null pointer dereference when calling bio_integrity_free.
 
-Thanks, I have included this.  And thanks for handling the stable thing,
-too.
+Cc: stable@vger.kernel.org
+Signed-off-by: Min Li <min15.li@samsung.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
 
--corey
+---
+Changes from v1:
 
-> 
-> Cc: stable@vger.kernel.org # 4.19+
-> Fixes: 7960f18a5647 ("ipmi_si: Convert over to a shutdown handler")
-> Signed-off-by: Yi Yang <yiyang13@huawei.com>
-> Co-developed-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
-> Signed-off-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
-> ---
->  drivers/char/ipmi/ipmi_si_intf.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
-> index abddd7e43a9a..5cd031f3fc97 100644
-> --- a/drivers/char/ipmi/ipmi_si_intf.c
-> +++ b/drivers/char/ipmi/ipmi_si_intf.c
-> @@ -2082,6 +2082,11 @@ static int try_smi_init(struct smi_info *new_smi)
->  		new_smi->io.io_cleanup = NULL;
->  	}
->  
-> +	if (rv && new_smi->si_sm) {
-> +		kfree(new_smi->si_sm);
-> +		new_smi->si_sm = NULL;
-> +	}
-> +
->  	return rv;
->  }
->  
-> -- 
-> 2.25.1
-> 
+- Add a space after /* and before */.
+- Move length alignment check before the "start = p.start >> SECTOR_SHIFT"
+- Move check for p.start being aligned together with this length alignment check.
+
+Changes from v2:
+
+- Add the assignment on the first line and merge the two lines into one.
+
+Changes from v3:
+
+- Change the blksz to unsigned int.
+- Add check if p.start and p.length are negative.
+
+Changes from v4:
+
+- Remove the local variable blksz and use bdev_logical_block_size(bdev) directly.
+---
+ block/ioctl.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 3be11941fb2d..0e8723c1a807 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -18,7 +18,7 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+ {
+ 	struct gendisk *disk = bdev->bd_disk;
+ 	struct blkpg_partition p;
+-	long long start, length;
++	sector_t start, length;
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+@@ -33,14 +33,17 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+ 	if (op == BLKPG_DEL_PARTITION)
+ 		return bdev_del_partition(disk, p.pno);
+ 
++	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
++		return -EINVAL;
++	/* Check that the partition is aligned to the block size */
++	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
++		return -EINVAL;
++
+ 	start = p.start >> SECTOR_SHIFT;
+ 	length = p.length >> SECTOR_SHIFT;
+ 
+ 	switch (op) {
+ 	case BLKPG_ADD_PARTITION:
+-		/* check if partition is aligned to blocksize */
+-		if (p.start & (bdev_logical_block_size(bdev) - 1))
+-			return -EINVAL;
+ 		return bdev_add_partition(disk, p.pno, start, length);
+ 	case BLKPG_RESIZE_PARTITION:
+ 		return bdev_resize_partition(disk, p.pno, start, length);
+-- 
+2.34.1
+
