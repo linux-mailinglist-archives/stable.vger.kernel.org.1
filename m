@@ -2,50 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94BF8742C30
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 880E1742C74
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232502AbjF2Sqt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:46:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59340 "EHLO
+        id S232632AbjF2StX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232591AbjF2Sqi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:46:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94EC42681
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:46:37 -0700 (PDT)
+        with ESMTP id S232908AbjF2StL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:49:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 787A43AB3;
+        Thu, 29 Jun 2023 11:48:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B2686615DC
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:46:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BDBC433C8;
-        Thu, 29 Jun 2023 18:46:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 035A4615C8;
+        Thu, 29 Jun 2023 18:48:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0556C433C0;
+        Thu, 29 Jun 2023 18:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064395;
-        bh=uQXXioqfHrA46LL6kPa6D9PucZrzLvSau3uLt56zMhY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=axCIY4WVBrnUkjqpQ2Tb3fZOenz3K+kwKHLnA7yL9BkB5MAphBlsMEgVrgTFiSrMu
-         fk1gBe9i1fc3pBYgOElPMUugSHAgC/t70pVLruWE+8jr5T0sS2L8aezt/HiyLaes/5
-         daX+5DA6V084EYIQ+1KOwtRNJYDmNwe8M6+c6ByY=
+        s=korg; t=1688064537;
+        bh=ZfTLEH6IjyRqkwQp/uGdkTaLb9wo3gFLL56KATPt0pU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=gLkWbuBU/g0Xy9wl5ZpzKztYTQUK5j55MsdRgFtUaWtRQ9D8iW0rLhSIG19Lt2KT5
+         Xe5CNtMX9N1owHxM9yUvULG0ppYBPj7/2Slfx+CPY25g8buK+FAKEoemYWbtU076/T
+         zXNDpOHcQ8sD3SOcSs0JAClLmLrrNa77NLSxNBB4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.3 18/29] arm/mm: Convert to using lock_mm_and_find_vma()
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: [PATCH 6.4 00/28] 6.4.1-rc1 review
 Date:   Thu, 29 Jun 2023 20:43:48 +0200
-Message-ID: <20230629184152.465126960@linuxfoundation.org>
+Message-ID: <20230629184151.888604958@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
-References: <20230629184151.705870770@linuxfoundation.org>
-User-Agent: quilt/0.67
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.1-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.4.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.4.1-rc1
+X-KernelTest-Deadline: 2023-07-01T18:41+00:00
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,136 +64,185 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ben Hutchings <ben@decadent.org.uk>
+This is the start of the stable review cycle for the 6.4.1 release.
+There are 28 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-commit 8b35ca3e45e35a26a21427f35d4093606e93ad0a upstream.
+Responses should be made by Sat, 01 Jul 2023 18:41:39 +0000.
+Anything received after that time might be too late.
 
-arm has an additional check for address < FIRST_USER_ADDRESS before
-expanding the stack.  Since FIRST_USER_ADDRESS is defined everywhere
-(generally as 0), move that check to the generic expand_downwards().
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.1-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+and the diffstat can be found below.
 
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/arm/Kconfig    |    1 
- arch/arm/mm/fault.c |   63 +++++++++++-----------------------------------------
- mm/mmap.c           |    2 -
- 3 files changed, 16 insertions(+), 50 deletions(-)
+thanks,
 
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -125,6 +125,7 @@ config ARM
- 	select HAVE_UID16
- 	select HAVE_VIRT_CPU_ACCOUNTING_GEN
- 	select IRQ_FORCED_THREADING
-+	select LOCK_MM_AND_FIND_VMA
- 	select MODULES_USE_ELF_REL
- 	select NEED_DMA_MAP_STATE
- 	select OF_EARLY_FLATTREE if OF
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -232,37 +232,11 @@ static inline bool is_permission_fault(u
- 	return false;
- }
- 
--static vm_fault_t __kprobes
--__do_page_fault(struct mm_struct *mm, unsigned long addr, unsigned int flags,
--		unsigned long vma_flags, struct pt_regs *regs)
--{
--	struct vm_area_struct *vma = find_vma(mm, addr);
--	if (unlikely(!vma))
--		return VM_FAULT_BADMAP;
--
--	if (unlikely(vma->vm_start > addr)) {
--		if (!(vma->vm_flags & VM_GROWSDOWN))
--			return VM_FAULT_BADMAP;
--		if (addr < FIRST_USER_ADDRESS)
--			return VM_FAULT_BADMAP;
--		if (expand_stack(vma, addr))
--			return VM_FAULT_BADMAP;
--	}
--
--	/*
--	 * ok, we have a good vm_area for this memory access, check the
--	 * permissions on the VMA allow for the fault which occurred.
--	 */
--	if (!(vma->vm_flags & vma_flags))
--		return VM_FAULT_BADACCESS;
--
--	return handle_mm_fault(vma, addr & PAGE_MASK, flags, regs);
--}
--
- static int __kprobes
- do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
- {
- 	struct mm_struct *mm = current->mm;
-+	struct vm_area_struct *vma;
- 	int sig, code;
- 	vm_fault_t fault;
- 	unsigned int flags = FAULT_FLAG_DEFAULT;
-@@ -301,31 +275,21 @@ do_page_fault(unsigned long addr, unsign
- 
- 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
- 
--	/*
--	 * As per x86, we may deadlock here.  However, since the kernel only
--	 * validly references user space from well defined areas of the code,
--	 * we can bug out early if this is from code which shouldn't.
--	 */
--	if (!mmap_read_trylock(mm)) {
--		if (!user_mode(regs) && !search_exception_tables(regs->ARM_pc))
--			goto no_context;
- retry:
--		mmap_read_lock(mm);
--	} else {
--		/*
--		 * The above down_read_trylock() might have succeeded in
--		 * which case, we'll have missed the might_sleep() from
--		 * down_read()
--		 */
--		might_sleep();
--#ifdef CONFIG_DEBUG_VM
--		if (!user_mode(regs) &&
--		    !search_exception_tables(regs->ARM_pc))
--			goto no_context;
--#endif
-+	vma = lock_mm_and_find_vma(mm, addr, regs);
-+	if (unlikely(!vma)) {
-+		fault = VM_FAULT_BADMAP;
-+		goto bad_area;
- 	}
- 
--	fault = __do_page_fault(mm, addr, flags, vm_flags, regs);
-+	/*
-+	 * ok, we have a good vm_area for this memory access, check the
-+	 * permissions on the VMA allow for the fault which occurred.
-+	 */
-+	if (!(vma->vm_flags & vm_flags))
-+		fault = VM_FAULT_BADACCESS;
-+	else
-+		fault = handle_mm_fault(vma, addr & PAGE_MASK, flags, regs);
- 
- 	/* If we need to retry but a fatal signal is pending, handle the
- 	 * signal first. We do not need to release the mmap_lock because
-@@ -356,6 +320,7 @@ retry:
- 	if (likely(!(fault & (VM_FAULT_ERROR | VM_FAULT_BADMAP | VM_FAULT_BADACCESS))))
- 		return 0;
- 
-+bad_area:
- 	/*
- 	 * If we are in kernel mode at this point, we
- 	 * have no context to handle this fault with.
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1999,7 +1999,7 @@ int expand_downwards(struct vm_area_stru
- 	int error = 0;
- 
- 	address &= PAGE_MASK;
--	if (address < mmap_min_addr)
-+	if (address < mmap_min_addr || address < FIRST_USER_ADDRESS)
- 		return -EPERM;
- 
- 	/* Enforce stack_guard_gap */
+greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.4.1-rc1
+
+Ricardo Cañuelo <ricardo.canuelo@collabora.com>
+    Revert "thermal/drivers/mediatek: Use devm_of_iomap to avoid resource leak in mtk_thermal_probe"
+
+Mike Hommey <mh@glandium.org>
+    HID: logitech-hidpp: add HIDPP_QUIRK_DELAYED_INIT for the T651.
+
+Ludvig Michaelsson <ludvig.michaelsson@yubico.com>
+    HID: hidraw: fix data race on device refcount
+
+Zhang Shurong <zhang_shurong@foxmail.com>
+    fbdev: fix potential OOB read in fast_imageblit()
+
+Hugh Dickins <hughd@google.com>
+    mm/khugepaged: fix regression in collapse_file()
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    gup: add warning if some caller would seem to want stack expansion
+
+Jason Gerecke <jason.gerecke@wacom.com>
+    HID: wacom: Use ktime_t rather than int when dealing with timestamps
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    mm: always expand the stack with the mmap write lock held
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    execve: expand new process stack manually ahead of time
+
+Liam R. Howlett <Liam.Howlett@oracle.com>
+    mm: make find_extend_vma() fail if write lock not held
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    powerpc/mm: convert coprocessor fault to lock_mm_and_find_vma()
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    mm/fault: convert remaining simple cases to lock_mm_and_find_vma()
+
+Ben Hutchings <ben@decadent.org.uk>
+    arm/mm: Convert to using lock_mm_and_find_vma()
+
+Ben Hutchings <ben@decadent.org.uk>
+    riscv/mm: Convert to using lock_mm_and_find_vma()
+
+Ben Hutchings <ben@decadent.org.uk>
+    mips/mm: Convert to using lock_mm_and_find_vma()
+
+Michael Ellerman <mpe@ellerman.id.au>
+    powerpc/mm: Convert to using lock_mm_and_find_vma()
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    arm64/mm: Convert to using lock_mm_and_find_vma()
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    mm: make the page fault mmap locking killable
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    mm: introduce new 'lock_mm_and_find_vma()' page fault helper
+
+Peng Zhang <zhangpeng.00@bytedance.com>
+    maple_tree: fix potential out-of-bounds access in mas_wr_end_piv()
+
+Oliver Hartkopp <socketcan@hartkopp.net>
+    can: isotp: isotp_sendmsg(): fix return error fix on TX path
+
+Wyes Karny <wyes.karny@amd.com>
+    cpufreq: amd-pstate: Make amd-pstate EPP driver name hyphenated
+
+Thomas Gleixner <tglx@linutronix.de>
+    x86/smp: Cure kexec() vs. mwait_play_dead() breakage
+
+Thomas Gleixner <tglx@linutronix.de>
+    x86/smp: Use dedicated cache-line for mwait_play_dead()
+
+Thomas Gleixner <tglx@linutronix.de>
+    x86/smp: Remove pointless wmb()s from native_stop_other_cpus()
+
+Tony Battersby <tonyb@cybernetics.com>
+    x86/smp: Dont access non-existing CPUID leaf
+
+Thomas Gleixner <tglx@linutronix.de>
+    x86/smp: Make stop_other_cpus() more robust
+
+Borislav Petkov (AMD) <bp@alien8.de>
+    x86/microcode/AMD: Load late on both threads too
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                  |   4 +-
+ arch/alpha/Kconfig                        |   1 +
+ arch/alpha/mm/fault.c                     |  13 +--
+ arch/arc/Kconfig                          |   1 +
+ arch/arc/mm/fault.c                       |  11 +--
+ arch/arm/Kconfig                          |   1 +
+ arch/arm/mm/fault.c                       |  63 ++++-----------
+ arch/arm64/Kconfig                        |   1 +
+ arch/arm64/mm/fault.c                     |  47 ++---------
+ arch/csky/Kconfig                         |   1 +
+ arch/csky/mm/fault.c                      |  22 ++----
+ arch/hexagon/Kconfig                      |   1 +
+ arch/hexagon/mm/vm_fault.c                |  18 +----
+ arch/ia64/mm/fault.c                      |  36 ++-------
+ arch/loongarch/Kconfig                    |   1 +
+ arch/loongarch/mm/fault.c                 |  16 ++--
+ arch/m68k/mm/fault.c                      |   9 ++-
+ arch/microblaze/mm/fault.c                |   5 +-
+ arch/mips/Kconfig                         |   1 +
+ arch/mips/mm/fault.c                      |  12 +--
+ arch/nios2/Kconfig                        |   1 +
+ arch/nios2/mm/fault.c                     |  17 +---
+ arch/openrisc/mm/fault.c                  |   5 +-
+ arch/parisc/mm/fault.c                    |  23 +++---
+ arch/powerpc/Kconfig                      |   1 +
+ arch/powerpc/mm/copro_fault.c             |  14 +---
+ arch/powerpc/mm/fault.c                   |  39 +--------
+ arch/riscv/Kconfig                        |   1 +
+ arch/riscv/mm/fault.c                     |  31 +++-----
+ arch/s390/mm/fault.c                      |   5 +-
+ arch/sh/Kconfig                           |   1 +
+ arch/sh/mm/fault.c                        |  17 +---
+ arch/sparc/Kconfig                        |   1 +
+ arch/sparc/mm/fault_32.c                  |  32 ++------
+ arch/sparc/mm/fault_64.c                  |   8 +-
+ arch/um/kernel/trap.c                     |  11 +--
+ arch/x86/Kconfig                          |   1 +
+ arch/x86/include/asm/cpu.h                |   2 +
+ arch/x86/include/asm/smp.h                |   2 +
+ arch/x86/kernel/cpu/microcode/amd.c       |   2 +-
+ arch/x86/kernel/process.c                 |  28 ++++++-
+ arch/x86/kernel/smp.c                     |  73 ++++++++++-------
+ arch/x86/kernel/smpboot.c                 |  81 ++++++++++++++++---
+ arch/x86/mm/fault.c                       |  52 +-----------
+ arch/xtensa/Kconfig                       |   1 +
+ arch/xtensa/mm/fault.c                    |  14 +---
+ drivers/cpufreq/amd-pstate.c              |   2 +-
+ drivers/hid/hid-logitech-hidpp.c          |   2 +-
+ drivers/hid/hidraw.c                      |   9 ++-
+ drivers/hid/wacom_wac.c                   |   6 +-
+ drivers/hid/wacom_wac.h                   |   2 +-
+ drivers/iommu/amd/iommu_v2.c              |   4 +-
+ drivers/iommu/iommu-sva.c                 |   2 +-
+ drivers/thermal/mediatek/auxadc_thermal.c |  14 +---
+ drivers/video/fbdev/core/sysimgblt.c      |   2 +-
+ fs/binfmt_elf.c                           |   6 +-
+ fs/exec.c                                 |  38 +++++----
+ include/linux/mm.h                        |  16 ++--
+ lib/maple_tree.c                          |  11 +--
+ mm/Kconfig                                |   4 +
+ mm/gup.c                                  |  14 +++-
+ mm/khugepaged.c                           |   7 +-
+ mm/memory.c                               | 127 ++++++++++++++++++++++++++++++
+ mm/mmap.c                                 | 121 ++++++++++++++++++++++++----
+ mm/nommu.c                                |  17 ++--
+ net/can/isotp.c                           |   5 +-
+ 66 files changed, 605 insertions(+), 531 deletions(-)
 
 
