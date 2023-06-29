@@ -2,56 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43570742C4E
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E482742C4C
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232566AbjF2Srn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:47:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59530 "EHLO
+        id S229522AbjF2SpR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:45:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232971AbjF2SrX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:47:23 -0400
+        with ESMTP id S232400AbjF2So5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:44:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C31853A94;
-        Thu, 29 Jun 2023 11:47:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0DF63AB5
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:44:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D90D615F2;
-        Thu, 29 Jun 2023 18:47:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444B7C433C8;
-        Thu, 29 Jun 2023 18:47:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A25D615DC
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:44:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D49BC433C0;
+        Thu, 29 Jun 2023 18:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064438;
-        bh=KoMhA/n/R3l++NGlCzCt9v8kT/2pZO8vg9+y/PjwuCA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=lEyLlXWdNLwTyWUZOhMj8LOGRzW9qQdneCIM95w/U0T/UmwxH9N00HrkhN/acX+lI
-         o8L/V8LCHY7hh6S/vyuj3rnBe76GF938ChYZ50M2Tkhc43BFUCBaeUSmIKhNwvq6qT
-         v8p4xobnB6R13eLRNKGuAZnjVI7g215PfULcrdfU=
+        s=korg; t=1688064285;
+        bh=SBpJEaxIBW27NpG4jj49S37Xo0TdoWjAdQJZDZWp6LY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=cgvdfHER8r2XsWMIfLCu4WyENGtOIg2TcAdKa35R7t14SI27Io+D9Z0KTThcpYIE6
+         VKb9benTqggPYzZ3ziMYy4mYuuhVhviOmXhvBCyY8LTT40RLc+67YYW8Iyjwrw5e6p
+         HwzMpFLNbI34lMzdlePt9etV4yVrJzDtPvmFuBPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: [PATCH 6.3 00/29] 6.3.11-rc1 review
-Date:   Thu, 29 Jun 2023 20:43:30 +0200
-Message-ID: <20230629184151.705870770@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Carsten Schmidt <carsten.schmidt-achim@t-online.de>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 12/30] can: isotp: isotp_sendmsg(): fix return error fix on TX path
+Date:   Thu, 29 Jun 2023 20:43:31 +0200
+Message-ID: <20230629184152.148923620@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
+In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
+References: <20230629184151.651069086@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.11-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.3.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.3.11-rc1
-X-KernelTest-Deadline: 2023-07-01T18:41+00:00
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -64,187 +56,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is the start of the stable review cycle for the 6.3.11 release.
-There are 29 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-Responses should be made by Sat, 01 Jul 2023 18:41:39 +0000.
-Anything received after that time might be too late.
+commit e38910c0072b541a91954682c8b074a93e57c09b upstream.
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.11-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
-and the diffstat can be found below.
+With commit d674a8f123b4 ("can: isotp: isotp_sendmsg(): fix return
+error on FC timeout on TX path") the missing correct return value in
+the case of a protocol error was introduced.
 
-thanks,
+But the way the error value has been read and sent to the user space
+does not follow the common scheme to clear the error after reading
+which is provided by the sock_error() function. This leads to an error
+report at the following write() attempt although everything should be
+working.
 
-greg k-h
+Fixes: d674a8f123b4 ("can: isotp: isotp_sendmsg(): fix return error on FC timeout on TX path")
+Reported-by: Carsten Schmidt <carsten.schmidt-achim@t-online.de>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://lore.kernel.org/all/20230607072708.38809-1-socketcan@hartkopp.net
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/can/isotp.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.3.11-rc1
-
-Ricardo Cañuelo <ricardo.canuelo@collabora.com>
-    Revert "thermal/drivers/mediatek: Use devm_of_iomap to avoid resource leak in mtk_thermal_probe"
-
-Mike Hommey <mh@glandium.org>
-    HID: logitech-hidpp: add HIDPP_QUIRK_DELAYED_INIT for the T651.
-
-Jason Gerecke <jason.gerecke@wacom.com>
-    HID: wacom: Use ktime_t rather than int when dealing with timestamps
-
-Ludvig Michaelsson <ludvig.michaelsson@yubico.com>
-    HID: hidraw: fix data race on device refcount
-
-Zhang Shurong <zhang_shurong@foxmail.com>
-    fbdev: fix potential OOB read in fast_imageblit()
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    gup: add warning if some caller would seem to want stack expansion
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    mm: always expand the stack with the mmap write lock held
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    execve: expand new process stack manually ahead of time
-
-Liam R. Howlett <Liam.Howlett@oracle.com>
-    mm: make find_extend_vma() fail if write lock not held
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    powerpc/mm: convert coprocessor fault to lock_mm_and_find_vma()
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    mm/fault: convert remaining simple cases to lock_mm_and_find_vma()
-
-Ben Hutchings <ben@decadent.org.uk>
-    arm/mm: Convert to using lock_mm_and_find_vma()
-
-Ben Hutchings <ben@decadent.org.uk>
-    riscv/mm: Convert to using lock_mm_and_find_vma()
-
-Ben Hutchings <ben@decadent.org.uk>
-    mips/mm: Convert to using lock_mm_and_find_vma()
-
-Michael Ellerman <mpe@ellerman.id.au>
-    powerpc/mm: Convert to using lock_mm_and_find_vma()
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    arm64/mm: Convert to using lock_mm_and_find_vma()
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    mm: make the page fault mmap locking killable
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    mm: introduce new 'lock_mm_and_find_vma()' page fault helper
-
-Peng Zhang <zhangpeng.00@bytedance.com>
-    maple_tree: fix potential out-of-bounds access in mas_wr_end_piv()
-
-Oliver Hartkopp <socketcan@hartkopp.net>
-    can: isotp: isotp_sendmsg(): fix return error fix on TX path
-
-Wyes Karny <wyes.karny@amd.com>
-    cpufreq: amd-pstate: Make amd-pstate EPP driver name hyphenated
-
-Thomas Gleixner <tglx@linutronix.de>
-    x86/smp: Cure kexec() vs. mwait_play_dead() breakage
-
-Thomas Gleixner <tglx@linutronix.de>
-    x86/smp: Use dedicated cache-line for mwait_play_dead()
-
-Thomas Gleixner <tglx@linutronix.de>
-    x86/smp: Remove pointless wmb()s from native_stop_other_cpus()
-
-Tony Battersby <tonyb@cybernetics.com>
-    x86/smp: Dont access non-existing CPUID leaf
-
-Thomas Gleixner <tglx@linutronix.de>
-    x86/smp: Make stop_other_cpus() more robust
-
-Borislav Petkov (AMD) <bp@alien8.de>
-    x86/microcode/AMD: Load late on both threads too
-
-David Woodhouse <dwmw@amazon.co.uk>
-    mm/mmap: Fix error return in do_vmi_align_munmap()
-
-Liam R. Howlett <Liam.Howlett@oracle.com>
-    mm/mmap: Fix error path in do_vmi_align_munmap()
-
-
--------------
-
-Diffstat:
-
- Makefile                                  |   4 +-
- arch/alpha/Kconfig                        |   1 +
- arch/alpha/mm/fault.c                     |  13 +--
- arch/arc/Kconfig                          |   1 +
- arch/arc/mm/fault.c                       |  11 +--
- arch/arm/Kconfig                          |   1 +
- arch/arm/mm/fault.c                       |  63 +++---------
- arch/arm64/Kconfig                        |   1 +
- arch/arm64/mm/fault.c                     |  44 ++-------
- arch/csky/Kconfig                         |   1 +
- arch/csky/mm/fault.c                      |  22 +----
- arch/hexagon/Kconfig                      |   1 +
- arch/hexagon/mm/vm_fault.c                |  18 +---
- arch/ia64/mm/fault.c                      |  36 ++-----
- arch/loongarch/Kconfig                    |   1 +
- arch/loongarch/mm/fault.c                 |  16 ++--
- arch/m68k/mm/fault.c                      |   9 +-
- arch/microblaze/mm/fault.c                |   5 +-
- arch/mips/Kconfig                         |   1 +
- arch/mips/mm/fault.c                      |  12 +--
- arch/nios2/Kconfig                        |   1 +
- arch/nios2/mm/fault.c                     |  17 +---
- arch/openrisc/mm/fault.c                  |   5 +-
- arch/parisc/mm/fault.c                    |  23 +++--
- arch/powerpc/Kconfig                      |   1 +
- arch/powerpc/mm/copro_fault.c             |  14 +--
- arch/powerpc/mm/fault.c                   |  39 +-------
- arch/riscv/Kconfig                        |   1 +
- arch/riscv/mm/fault.c                     |  31 +++---
- arch/s390/mm/fault.c                      |   5 +-
- arch/sh/Kconfig                           |   1 +
- arch/sh/mm/fault.c                        |  17 +---
- arch/sparc/Kconfig                        |   1 +
- arch/sparc/mm/fault_32.c                  |  32 ++-----
- arch/sparc/mm/fault_64.c                  |   8 +-
- arch/um/kernel/trap.c                     |  11 ++-
- arch/x86/Kconfig                          |   1 +
- arch/x86/include/asm/cpu.h                |   2 +
- arch/x86/include/asm/smp.h                |   2 +
- arch/x86/kernel/cpu/microcode/amd.c       |   2 +-
- arch/x86/kernel/process.c                 |  28 +++++-
- arch/x86/kernel/smp.c                     |  73 ++++++++------
- arch/x86/kernel/smpboot.c                 |  81 ++++++++++++++--
- arch/x86/mm/fault.c                       |  52 +---------
- arch/xtensa/Kconfig                       |   1 +
- arch/xtensa/mm/fault.c                    |  14 +--
- drivers/cpufreq/amd-pstate.c              |   2 +-
- drivers/hid/hid-logitech-hidpp.c          |   2 +-
- drivers/hid/hidraw.c                      |   9 +-
- drivers/hid/wacom_wac.c                   |   6 +-
- drivers/hid/wacom_wac.h                   |   2 +-
- drivers/iommu/amd/iommu_v2.c              |   4 +-
- drivers/iommu/iommu-sva.c                 |   2 +-
- drivers/thermal/mediatek/auxadc_thermal.c |  14 +--
- drivers/video/fbdev/core/sysimgblt.c      |   2 +-
- fs/binfmt_elf.c                           |   6 +-
- fs/exec.c                                 |  38 ++++----
- include/linux/mm.h                        |  16 ++--
- lib/maple_tree.c                          |  11 ++-
- mm/Kconfig                                |   4 +
- mm/gup.c                                  |  14 ++-
- mm/memory.c                               | 127 +++++++++++++++++++++++++
- mm/mmap.c                                 | 153 +++++++++++++++++++++++-------
- mm/nommu.c                                |  17 ++--
- net/can/isotp.c                           |   5 +-
- 65 files changed, 614 insertions(+), 544 deletions(-)
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -1079,8 +1079,9 @@ wait_free_buffer:
+ 		if (err)
+ 			goto err_event_drop;
+ 
+-		if (sk->sk_err)
+-			return -sk->sk_err;
++		err = sock_error(sk);
++		if (err)
++			return err;
+ 	}
+ 
+ 	return size;
 
 
