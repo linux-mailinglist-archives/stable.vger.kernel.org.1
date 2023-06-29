@@ -2,100 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98EEE74235C
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 11:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 925C4742396
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 12:01:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231902AbjF2JkC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 05:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
+        id S232094AbjF2KBo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 06:01:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbjF2Jjo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 05:39:44 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 295D4ED
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 02:39:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688031571; x=1688636371; i=deller@gmx.de;
- bh=15Ugg2PE4uz+Ae1gXK2MHkOYgcvo2EPSZTEHkpk9oQ4=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=d0xnAv+Z9hJJAk0zSxU9J5nZgE3WDTCX/ZGH3t0g4Ly3CWeGd4igtS8EzbiiSvPswfnDsbz
- 2ZuZOUnigLIHyDL5nF/UYr7uAE1bR/7XHG+sRwFDu1MNkZ/AyOY2GCx8SWmB0zELUEDKzCEWb
- SSS23nNkJMLy35C2ecKW/v9ljmm/MeMwrAje8MtgQwDljiD5XBXLJs9O4iwj1y+POsUCtEAtO
- n27VLNWUTn2rGwkcfkBy590AfzOSC09wOOpmEPPcUirzzuYlOf+03yf1Kj99tHT4B3xkI51gV
- xdkw/hr6IYsJKQtouFSLX10M/9/Rpn2RijWI/YPR/gObU3faNj6A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.146.6]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MN5eX-1qUxvi0NnB-00J65B; Thu, 29
- Jun 2023 11:39:31 +0200
-Message-ID: <c1c90ed4-7b06-dabd-0186-3fff344961e3@gmx.de>
-Date:   Thu, 29 Jun 2023 11:39:30 +0200
+        with ESMTP id S232224AbjF2J7j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 05:59:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1F73AA1;
+        Thu, 29 Jun 2023 02:57:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D24886150B;
+        Thu, 29 Jun 2023 09:57:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38882C433C8;
+        Thu, 29 Jun 2023 09:57:17 +0000 (UTC)
+Date:   Thu, 29 Jun 2023 10:57:14 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Peter Collingbourne <pcc@google.com>
+Cc:     Will Deacon <will@kernel.org>, akpm@linux-foundation.org,
+        Qun-wei Lin =?utf-8?B?KOael+e+pOW0tCk=?= 
+        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        "surenb@google.com" <surenb@google.com>,
+        "david@redhat.com" <david@redhat.com>,
+        Chinwen Chang =?utf-8?B?KOW8temMpuaWhyk=?= 
+        <chinwen.chang@mediatek.com>,
+        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
+        Kuan-Ying Lee =?utf-8?B?KOadjuWGoOepjik=?= 
+        <Kuan-Ying.Lee@mediatek.com>,
+        Casper Li =?utf-8?B?KOadjuS4reamrik=?= <casper.li@mediatek.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        vincenzo.frascino@arm.com,
+        Alexandru Elisei <alexandru.elisei@arm.com>,
+        eugenis@google.com, Steven Price <steven.price@arm.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] mm: Call arch_swap_restore() from do_swap_page()
+Message-ID: <ZJ1VersqnJcMXMyi@arm.com>
+References: <20230523004312.1807357-1-pcc@google.com>
+ <20230523004312.1807357-2-pcc@google.com>
+ <20230605140554.GC21212@willie-the-truck>
+ <CAMn1gO4k=rg96GVsPW6Aaz12c7hS0TYcgVR7y38x7pUsbfwg5A@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 4.14 19/26] fbdev: imsttfb: Release framebuffer and
- dealloc cmap on error path
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Sasha Levin <sashal@kernel.org>
-References: <20230626180733.699092073@linuxfoundation.org>
- <20230626180734.413046667@linuxfoundation.org>
- <2b0316ee-d5be-9f86-14d1-debb1e756e54@gmx.de>
- <2023062922-unweave-configure-a094@gregkh>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <2023062922-unweave-configure-a094@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:q+v/ZldwntjwaodqgqwR8Gg4fODZjrcBN+rlyr3+Lgw/vI4K/b8
- TZzcnTigE9OtOvKkOKI7+HKjD0jQdGJ3m9naI1ZD10pCFKcj81InpDsgLC7cySm8oiXvFH4
- blNAKZIvZ+JWF/kcqdL9p9S4Omjf2B2xhKv8SX+lKN42aoH3Z6WqoSEZMBJOn1K5N+OEBKV
- q1afscSk7Nvf0xUFYccYA==
-UI-OutboundReport: notjunk:1;M01:P0:tsYH57k5TH8=;Sl0GzEe5mPUO5v6R3/acIel9vkb
- hLRwuUUak69IX3fc7HX4shClr1CtSsfo3lXKl68F0P33E5Opi0mHe+/8p9xO+hstfhZ8wGCrn
- ZfbvyxSHHORHA/5JQqQo81PrpCw4D+hO/xgCAo2RK0BkCWX+rbqZ7bxvXPIR7uWPAhT0+5AaT
- 8jBCqVWSdcSlK076F7xyAMagVNIbaRootQPCFKTVILMGVVw2RgUYFsFKB8HvHe/LkomFrlcko
- jO3eO2fLEzYewx2JGn5hCZkuojHJ/Xeq2Y5qU4hVOoaobdzf9IfbeIQhW8tM3QjueAWaLdRha
- WNKyLJ5bFgnWrYgXBAm6ySDpAAmEOki7uvMLCeSYgokvPuPMr2ttCbIKwnhYVs+ScLqtUYck2
- j2hMsac6s9JALSowirV8MHkQenuxiZAthnKx2BG04I3GVWE0qiVz2VvgYgoEXvfbXBu7AZh4l
- tSg4SYHmpUi/cSCVPo97OUUe5Tf3aVXEtDGkyP1L+RZrRCp79Ylmg7LmetNNtY/HnrA293etV
- 99fHUVkt3WGueEhMl5elLjRbC/hL+UUy3J461Uzlaytd11276daSDBDNHIbg5w/4sft5eEonD
- qxzpx3I11//3zu9wDs9KW4FjtM5dbs5Mi2iGzj3Ger4ZO3wOnmvAX3z9991h0TO6Trhif24zL
- KU+f+d4Q6cyi0OuuOz0M+xtvFMs0fGcCe1JSgN7PYkFa0aAiDEYssIZeu1bmbntgJ0o5ORGfF
- Qx6E5xYw8IPBaajO+IFJLTRyEsYGVMfxcEHjgx12RJE8YKR3MgPZrgFyS5YlVi7x0+cYEKwn/
- FucWMvpIuFibopBq+rO7CMrDUalTsxYbWIY6CmOPouSMiGIdflhJoMNAiOwne4R+GPB1zvuZc
- yQpfdgXVmPJOGWYYjv29YYSv09CaT21QMHGIRd57IXQoG6QUk3YNCiLyJLvjyY7tI29Yimoel
- 0eE7tQ==
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMn1gO4k=rg96GVsPW6Aaz12c7hS0TYcgVR7y38x7pUsbfwg5A@mail.gmail.com>
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/29/23 09:06, Greg Kroah-Hartman wrote:
-> On Wed, Jun 28, 2023 at 11:41:33PM +0200, Helge Deller wrote:
->> Hi Greg & Sasha,
->>
->> The patch below landed in 4.14-stable and breaks build with this error:
->>
->> drivers/video/fbdev/imsttfb.c:1457:3: error: void function 'init_imstt'=
- should not return a value [-Wreturn-type]
->>                     return -ENODEV;
->>                     ^      ~~~~~~~
->>     1 error generated.
->>
->>
->> I suggest to simply drop (revert) it again from the v4.14-stable tree.
->> Shall I send a revert-patch, or can you do it manually?
->
-> How about just fix it up by changing the line to "return;" instead?
+On Mon, Jun 05, 2023 at 10:41:12AM -0700, Peter Collingbourne wrote:
+> On Mon, Jun 5, 2023 at 7:06 AM Will Deacon <will@kernel.org> wrote:
+> > On Mon, May 22, 2023 at 05:43:08PM -0700, Peter Collingbourne wrote:
+> > > Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
+> > > the call to swap_free() before the call to set_pte_at(), which meant that
+> > > the MTE tags could end up being freed before set_pte_at() had a chance
+> > > to restore them. Fix it by adding a call to the arch_swap_restore() hook
+> > > before the call to swap_free().
+> > >
+> > > Signed-off-by: Peter Collingbourne <pcc@google.com>
+> > > Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
+> > > Cc: <stable@vger.kernel.org> # 6.1
+> > > Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
+> > > Reported-by: Qun-wei Lin (林群崴) <Qun-wei.Lin@mediatek.com>
+> > > Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.camel@mediatek.com/
+> > > Acked-by: David Hildenbrand <david@redhat.com>
+> > > Acked-by: "Huang, Ying" <ying.huang@intel.com>
+> > > Reviewed-by: Steven Price <steven.price@arm.com>
+> > > Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> > > ---
+> > > v2:
+> > > - Call arch_swap_restore() directly instead of via arch_do_swap_page()
+> > >
+> > >  mm/memory.c | 7 +++++++
+> > >  1 file changed, 7 insertions(+)
+> > >
+> > > diff --git a/mm/memory.c b/mm/memory.c
+> > > index f69fbc251198..fc25764016b3 100644
+> > > --- a/mm/memory.c
+> > > +++ b/mm/memory.c
+> > > @@ -3932,6 +3932,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> > >               }
+> > >       }
+> > >
+> > > +     /*
+> > > +      * Some architectures may have to restore extra metadata to the page
+> > > +      * when reading from swap. This metadata may be indexed by swap entry
+> > > +      * so this must be called before swap_free().
+> > > +      */
+> > > +     arch_swap_restore(entry, folio);
+> > > +
+> > >       /*
+> > >        * Remove the swap entry and conditionally try to free up the swapcache.
+> > >        * We're already holding a reference on the page but haven't mapped it
+> >
+> > It looks like the intention is for this patch to land in 6.4, whereas the
+> > other two in the series could go in later, right? If so, I was expecting
+> > Andrew to pick this one up but he's not actually on CC. I've added him now,
+> > but you may want to send this as a separate fix so it's obvious what needs
+> > picking up for this cycle.
+> 
+> I was expecting that this whole series could be picked up in mm. There
+> was a previous attempt to apply v3 of this series to mm, but that
+> failed because a dependent patch (commit c4c597f1b367 ("arm64: mte: Do
+> not set PG_mte_tagged if tags were not initialized")) hadn't been
+> merged into Linus's master branch yet. The series should be good to go
+> in now that that patch has been merged.
 
-Sure.
-I'll send a patch.
+Did this series fall through the cracks? I can't see it in linux-next
+(or maybe my grep'ing failed). The commit mentioned above is in 6.4-rc3
+AFAICT. Unfortunately Andrew was not cc'ed on the initial post, Will
+added him later, so he likely missed it. For reference, the series is
+here:
 
-Helge
+https://lore.kernel.org/r/20230523004312.1807357-1-pcc@google.com/
 
+Andrew, what's your preference for this series? I'd like at least the
+first patch to go into 6.5 as a fix. The second patch seems to be fairly
+low risk and I'm happy for the third arm64 patch/cleanup to go in
+6.5-rc1 (but it depends on the second patch). If you prefer, I can pick
+them up and send a pull request to Linus next week before -rc1.
+Otherwise you (or I) can queue the first patch and leave the other two
+for 6.6.
+
+Thanks.
+
+-- 
+Catalin
