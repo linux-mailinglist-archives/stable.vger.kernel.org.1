@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CBA3742C51
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BC59742C26
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231718AbjF2Spm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:45:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57990 "EHLO
+        id S232437AbjF2SqZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:46:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232307AbjF2SpU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:45:20 -0400
+        with ESMTP id S232590AbjF2SqT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:46:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF97358A
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:45:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AB3D2D62
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:46:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E55A6615F7
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:45:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ECBC433C8;
-        Thu, 29 Jun 2023 18:45:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 52217615F2
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:46:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626C6C433C0;
+        Thu, 29 Jun 2023 18:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064317;
-        bh=FlB5wt17aW/pqUoY1V5Nd/8hzbTss0vAB6qfu/wIMuA=;
+        s=korg; t=1688064373;
+        bh=mdKHyyOmcSb/8yit3LIQA/AUvP/8zd3bVwjGdfFr9vk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x0jUHHgNZ6RukymviK2lgArvQ9vIV3rUc6WQMcjTOKc1zp5KIwizlNYvnxjKxir5m
-         AL3lqeTP8OCdaEZi56ja3w/2rOTnD5+PnwLxrTVEIRUQ7+34HoDWjViiHL0bUaQzvJ
-         RLdx0y1cSFvRImj/8lJ75b8c8YsRit3wLcNBWfh8=
+        b=shCWUUq+lWQA+zg2oNxeGbOrxz+hQ4qEeOOx3NtQqtjjeesNfnoPHpMTriVX72xi4
+         NdHgyvx1lFafrQ2syntsNGFFnr+o1AQN/VL3tYmmbNJEWdByX7RV2O3IXhJ5NKhcoZ
+         R2azz3pH4Ysi2QjWV5BxvltBBqhzjXcNVuqs4Ai4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Samuel Mendoza-Jonas <samjonas@amazon.com>,
-        David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH 6.1 22/30] powerpc/mm: convert coprocessor fault to lock_mm_and_find_vma()
+        patches@lists.linux.dev, Peng Zhang <zhangpeng.00@bytedance.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.3 11/29] maple_tree: fix potential out-of-bounds access in mas_wr_end_piv()
 Date:   Thu, 29 Jun 2023 20:43:41 +0200
-Message-ID: <20230629184152.564594083@linuxfoundation.org>
+Message-ID: <20230629184152.195278807@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
-References: <20230629184151.651069086@linuxfoundation.org>
+In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
+References: <20230629184151.705870770@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,49 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Peng Zhang <zhangpeng.00@bytedance.com>
 
-commit 2cd76c50d0b41cec5c87abfcdf25b236a2793fb6 upstream.
+commit cd00dd2585c4158e81fdfac0bbcc0446afbad26d upstream.
 
-This is one of the simple cases, except there's no pt_regs pointer.
-Which is fine, as lock_mm_and_find_vma() is set up to work fine with a
-NULL pt_regs.
+Check the write offset end bounds before using it as the offset into the
+pivot array.  This avoids a possible out-of-bounds access on the pivot
+array if the write extends to the last slot in the node, in which case the
+node maximum should be used as the end pivot.
 
-Powerpc already enabled LOCK_MM_AND_FIND_VMA for the main CPU faulting,
-so we can just use the helper without any extra work.
+akpm: this doesn't affect any current callers, but new users of mapletree
+may encounter this problem if backported into earlier kernels, so let's
+fix it in -stable kernels in case of this.
 
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://lkml.kernel.org/r/20230506024752.2550-1-zhangpeng.00@bytedance.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/mm/copro_fault.c |   14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ lib/maple_tree.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/arch/powerpc/mm/copro_fault.c
-+++ b/arch/powerpc/mm/copro_fault.c
-@@ -33,19 +33,11 @@ int copro_handle_mm_fault(struct mm_stru
- 	if (mm->pgd == NULL)
- 		return -EFAULT;
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -4287,11 +4287,13 @@ done:
  
--	mmap_read_lock(mm);
--	ret = -EFAULT;
--	vma = find_vma(mm, ea);
-+	vma = lock_mm_and_find_vma(mm, ea, NULL);
- 	if (!vma)
--		goto out_unlock;
--
--	if (ea < vma->vm_start) {
--		if (!(vma->vm_flags & VM_GROWSDOWN))
--			goto out_unlock;
--		if (expand_stack(vma, ea))
--			goto out_unlock;
--	}
-+		return -EFAULT;
+ static inline void mas_wr_end_piv(struct ma_wr_state *wr_mas)
+ {
+-	while ((wr_mas->mas->last > wr_mas->end_piv) &&
+-	       (wr_mas->offset_end < wr_mas->node_end))
+-		wr_mas->end_piv = wr_mas->pivots[++wr_mas->offset_end];
++	while ((wr_mas->offset_end < wr_mas->node_end) &&
++	       (wr_mas->mas->last > wr_mas->pivots[wr_mas->offset_end]))
++		wr_mas->offset_end++;
  
-+	ret = -EFAULT;
- 	is_write = dsisr & DSISR_ISSTORE;
- 	if (is_write) {
- 		if (!(vma->vm_flags & VM_WRITE))
+-	if (wr_mas->mas->last > wr_mas->end_piv)
++	if (wr_mas->offset_end < wr_mas->node_end)
++		wr_mas->end_piv = wr_mas->pivots[wr_mas->offset_end];
++	else
+ 		wr_mas->end_piv = wr_mas->mas->max;
+ }
+ 
+@@ -4448,7 +4450,6 @@ static inline void *mas_wr_store_entry(s
+ 	}
+ 
+ 	/* At this point, we are at the leaf node that needs to be altered. */
+-	wr_mas->end_piv = wr_mas->r_max;
+ 	mas_wr_end_piv(wr_mas);
+ 
+ 	if (!wr_mas->entry)
 
 
