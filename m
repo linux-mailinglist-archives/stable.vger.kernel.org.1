@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 303DB742C32
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5B11742C24
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232348AbjF2Sr7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:47:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60122 "EHLO
+        id S232606AbjF2Sru (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:47:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232698AbjF2Srn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:47:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A049E30F1
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:47:42 -0700 (PDT)
+        with ESMTP id S232624AbjF2Sre (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:47:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDCB4358A
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:47:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36ED1615E2
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:47:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4890AC433C8;
-        Thu, 29 Jun 2023 18:47:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 94BFB615C8
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:47:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91C3C433C0;
+        Thu, 29 Jun 2023 18:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064461;
-        bh=ZPGdGVKre/DQRYIjAuFNKYcUSrHkA87kPu5Wtc3VfXw=;
+        s=korg; t=1688064450;
+        bh=uyCPzF55xLLSWPsZNyKSaqBE17orEXR6eneY6+2TBT0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IuVDq3opAlxVwHXnmopGdMNuQ2ZhWTQPyFXhKWuKGuDR+hfzxEqoBM7kGkEbXcuL5
-         msE++Fwa92onq4L2RIDohvF5ZWZlcfuAhFoBLLTjZNpJ8FuKF1KdXwkb87ZwkML3K4
-         Lfl3Xjdb82Irb+BefRnP4BP2cAM6MuUrS5UDC/GU=
+        b=WsRwgSHh1hbNBwCpfEPHHjxbxwxreQy/Cr8IoS+v3zKn/EAHdASFXlkt+urckzJ4L
+         qXt5se5pYLbCMSs4jkCJJ4n+fIkmkqPgtvO9pXMwH1PAHVKgbmEAAAoDQigyci4SMf
+         X/bnYK6wm6Ady3iU19ZqTo1Rx1FLnIeO6IwdqoFQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.4 11/28] mm: make the page fault mmap locking killable
+        =?UTF-8?q?Ricardo=20Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.3 29/29] Revert "thermal/drivers/mediatek: Use devm_of_iomap to avoid resource leak in mtk_thermal_probe"
 Date:   Thu, 29 Jun 2023 20:43:59 +0200
-Message-ID: <20230629184152.335480900@linuxfoundation.org>
+Message-ID: <20230629184152.877634136@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.888604958@linuxfoundation.org>
-References: <20230629184151.888604958@linuxfoundation.org>
+In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
+References: <20230629184151.705870770@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,46 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
 
-commit eda0047296a16d65a7f2bc60a408f70d178b2014 upstream.
+commit 86edac7d3888c715fe3a81bd61f3617ecfe2e1dd upstream.
 
-This is done as a separate patch from introducing the new
-lock_mm_and_find_vma() helper, because while it's an obvious change,
-it's not what x86 used to do in this area.
+This reverts commit f05c7b7d9ea9477fcc388476c6f4ade8c66d2d26.
 
-We already abort the page fault on fatal signals anyway, so why should
-we wait for the mmap lock only to then abort later? With the new helper
-function that returns without the lock held on failure anyway, this is
-particularly easy and straightforward.
+That change was causing a regression in the generic-adc-thermal-probed
+bootrr test as reported in the kernelci-results list [1].
+A proper rework will take longer, so revert it for now.
 
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[1] https://groups.io/g/kernelci-results/message/42660
+
+Fixes: f05c7b7d9ea9 ("thermal/drivers/mediatek: Use devm_of_iomap to avoid resource leak in mtk_thermal_probe")
+Signed-off-by: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230525121811.3360268-1-ricardo.canuelo@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/thermal/mediatek/auxadc_thermal.c |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5279,8 +5279,7 @@ static inline bool get_mmap_lock_careful
- 			return false;
+--- a/drivers/thermal/mediatek/auxadc_thermal.c
++++ b/drivers/thermal/mediatek/auxadc_thermal.c
+@@ -1142,12 +1142,7 @@ static int mtk_thermal_probe(struct plat
+ 		return -ENODEV;
  	}
  
--	mmap_read_lock(mm);
--	return true;
-+	return !mmap_read_lock_killable(mm);
- }
+-	auxadc_base = devm_of_iomap(&pdev->dev, auxadc, 0, NULL);
+-	if (IS_ERR(auxadc_base)) {
+-		of_node_put(auxadc);
+-		return PTR_ERR(auxadc_base);
+-	}
+-
++	auxadc_base = of_iomap(auxadc, 0);
+ 	auxadc_phys_base = of_get_phys_base(auxadc);
  
- static inline bool mmap_upgrade_trylock(struct mm_struct *mm)
-@@ -5304,8 +5303,7 @@ static inline bool upgrade_mmap_lock_car
- 		if (!search_exception_tables(ip))
- 			return false;
+ 	of_node_put(auxadc);
+@@ -1163,12 +1158,7 @@ static int mtk_thermal_probe(struct plat
+ 		return -ENODEV;
  	}
--	mmap_write_lock(mm);
--	return true;
-+	return !mmap_write_lock_killable(mm);
- }
  
- /*
+-	apmixed_base = devm_of_iomap(&pdev->dev, apmixedsys, 0, NULL);
+-	if (IS_ERR(apmixed_base)) {
+-		of_node_put(apmixedsys);
+-		return PTR_ERR(apmixed_base);
+-	}
+-
++	apmixed_base = of_iomap(apmixedsys, 0);
+ 	apmixed_phys_base = of_get_phys_base(apmixedsys);
+ 
+ 	of_node_put(apmixedsys);
 
 
