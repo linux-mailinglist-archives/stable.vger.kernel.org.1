@@ -2,100 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BE26742288
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 10:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EA377422C0
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 10:55:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232832AbjF2IpU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 04:45:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52810 "EHLO
+        id S232200AbjF2Iz3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 04:55:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232418AbjF2Ioa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 04:44:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D526D30F1
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:43:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65C4761502
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 08:43:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E527C433C9;
-        Thu, 29 Jun 2023 08:43:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688028214;
-        bh=1T7s2ZlorAEL0e5E5qBlSn3AXS4qK2ztbuGXqHOKEqw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bFoyM9yELEBey2u8ug0XBEcmhy/d7dFborxGplWnPAqG1FZPkoWpWX2vygRWKaJaf
-         0+uzdegvGmrG7DDkX2cLEjKJxiQhmqHEDhA3budc9tw+qm87A/V/FRTY8Jyv9IsSmN
-         dMVvv83xsKRiGM1LHpw1EnGlfPwqSzSr0bYJwX1U=
-Date:   Thu, 29 Jun 2023 10:43:31 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     Luiz Capitulino <luizcap@amazon.com>, sashal@kernel.org,
-        stable@vger.kernel.org
-Subject: Re: Possible build time regression affecting stable kernels
-Message-ID: <2023062955-wing-front-553b@gregkh>
-References: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
- <2023060156-precision-prorate-ce46@gregkh>
- <20259cf7-d50d-4eca-482b-3a89cc94df7b@amazon.com>
- <2023060148-levers-freight-5b11@gregkh>
- <CAHC9VhQ6W4hq3B122BxcrD6h6_-Q1AguFYYLjAbB6ALCbmzDoQ@mail.gmail.com>
- <2023060102-chatter-happening-f7a5@gregkh>
- <CAHC9VhRuc5jSK7xODqtBvhUmunov+PVVQyLb8oDP8k0pLq_P-g@mail.gmail.com>
- <2023062846-outback-posting-dfbd@gregkh>
- <CAHC9VhQfWNxP80PRHMM44fkMx8fnuPJ2VyR-mA1WMLwsAevRuA@mail.gmail.com>
+        with ESMTP id S232084AbjF2Iz1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 04:55:27 -0400
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 927B4132
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:55:26 -0700 (PDT)
+Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-40079620a83so249931cf.0
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:55:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1688028925; x=1690620925;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iLSx+IibbbFO3eoieeQ0ahfVThh114dnzZVKXKMPytk=;
+        b=R2NV18E8eGwxVId5xlR/et2NMPrHy1x+Kd+uELH+C5Z6QLpMYj53Qtd7NTe9vvl+dI
+         Qz3QcKegMT+55v+aeQa1kcAditI7nAaLBuyZM36+iROvkx/Isysw4+FpbXNHPqMj1FeI
+         oT2OOGnrHaVltLlVP6bzc3Ozs6/shKr0q8SwhLrNYIukwWaTuZR3eNqInxz5lqdCoebt
+         NI1331PyQr7S3udY7/lXE2ywGPgw3VenPkcMV3AUyh0CGZKodnZbRFidaf5FPw9ZGzDv
+         DnTw7PgFj2s0wesachAMtBi+s+f18ndCrF1epkmhe4DNSXnUzz7wIetew2t0A35ZwZ6O
+         0KhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688028925; x=1690620925;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iLSx+IibbbFO3eoieeQ0ahfVThh114dnzZVKXKMPytk=;
+        b=fqBGE/M/clXbcSSwjcerF5SzOUa5Xlheh7dFGJK3OESKFppmSdofo0PN4ZGJzK+4Hq
+         xSPko2aY32uu8RRKK6nbJHebSyHSgjcUaHRV5eAKOXV/lKN/FWJ3cIGiQ2L/agMjRjDi
+         imMIQ11PKWRz3fKA4CYLHZxb35iuuxJ1GTFQk+/kozl9xSebMJ+/P5yLLG3oaADhPwZD
+         gQ9Of7HHA5zLhA9zLCMT4KwOScP9q5gy7RkWxtUvMgW2s9i8eVvTfoL/Y6lZ/If+/+2y
+         z2fzbiCfrY+2jqhGoo7rJeH/L7+SerGhiLUOMajPoRy/YglizeMtUlCORCV8PEybRVgN
+         VLMw==
+X-Gm-Message-State: AC+VfDz+TurzA1fGmCZnQEUb0fyD30AHrR04p9O4zTlduwhlbAVNh7Xs
+        rjc5ruxVwU2oF/atDApnG64uws9cCwKtKTYdp1gDnQ==
+X-Google-Smtp-Source: ACHHUZ4FMOfJIC0Hituk7BUmqP60oyWZYdWSfPJ2bAwb5vMGv+QKSdp3IUJlDw0dUODOJYWbC85JxkhSlHkovKXXUMY=
+X-Received: by 2002:ac8:5882:0:b0:3e0:c2dd:fd29 with SMTP id
+ t2-20020ac85882000000b003e0c2ddfd29mr450540qta.4.1688028925505; Thu, 29 Jun
+ 2023 01:55:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHC9VhQfWNxP80PRHMM44fkMx8fnuPJ2VyR-mA1WMLwsAevRuA@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <CABgObfYLnhW0qrPvFnMW_B9xZzLF6Ysn2uL4w9B815fUNVKK5A@mail.gmail.com>
+ <20230629000729.1223067-1-yuzhao@google.com> <CAAhV-H73BgeU=Vw+X+R+1pTrbZb_y9WLy66iu9=d3SXXeD0SBw@mail.gmail.com>
+In-Reply-To: <CAAhV-H73BgeU=Vw+X+R+1pTrbZb_y9WLy66iu9=d3SXXeD0SBw@mail.gmail.com>
+From:   Yu Zhao <yuzhao@google.com>
+Date:   Thu, 29 Jun 2023 02:54:49 -0600
+Message-ID: <CAOUHufYHANwC-YZ0W5D89spuA693-PKnZ+9JwkNEN05AagUETw@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: KVM: Fix NULL pointer dereference
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     pbonzini@redhat.com, chenhuacai@loongson.cn,
+        jiaxun.yang@flygoat.com, kvm@vger.kernel.org,
+        linux-mips@vger.kernel.org, stable@vger.kernel.org,
+        tsbogend@alpha.franken.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 28, 2023 at 07:33:27PM -0400, Paul Moore wrote:
-> > So, can I get a directory list or file list of what we should be
-> > ignoring for the AUTOSEL and "Fixes: only" tools to be ignoring?
-> 
-> I've been trying to ensure that the files/directories entries in
-> MAINTAINERS are current, so that is probably as good a place as any to
-> pull that info.  Do the stable tools use that info already?  In other
-> words, if we update the entries in MAINTAINERS should we also notify
-> you guys, or will you get it automatically?
+On Thu, Jun 29, 2023 at 12:24=E2=80=AFAM Huacai Chen <chenhuacai@kernel.org=
+> wrote:
+>
+> Hi, Zhao,
+>
+> On Thu, Jun 29, 2023 at 8:07=E2=80=AFAM Yu Zhao <yuzhao@google.com> wrote=
+:
+> >
+> > On Mon, Jun 26, 2023 at 6:33 AM Paolo Bonzini <pbonzini@redhat.com> wro=
+te:
+> > >
+> > > On Mon, Jun 26, 2023 at 9:59 AM Huacai Chen <chenhuacai@loongson.cn> =
+wrote:
+> > > >
+> > > > After commit 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support=
+") we
+> > > > get a NULL pointer dereference when creating a KVM guest:
+> > >
+> > > To be honest, a bug that needed 2 years to be reproduced is probably =
+a
+> > > sign that KVM/MIPS has no users. Any objections to removing it
+> > > altogether?
+> >
+> > ACK:
+> > 1. It's still broken after this patch [1]. The most well-tested MIPS
+> >    distros, i.e., Debian/OpenWrt, have CONFIG_KVM=3Dn. (The latter does=
+n't
+> >    even provide the QEMU package on MIPS.)
+> > 2. Burden on QEMU dev. There is no guarantee that QEMU would work with
+> >    KVM even if we could fix the kernel -- it actually does not until
+> >    v8.0 [1], which is by luck:
+> >
+> >    commit a844873512400fae6bed9e87694dc96ff2f15f39
+> >    Author: Paolo Bonzini <pbonzini@redhat.com>
+> >    Date:   Sun Dec 18 01:06:45 2022 +0100
+> >
+> >        mips: Remove support for trap and emulate KVM
+> >
+> >        This support was limited to the Malta board, drop it.
+> >        I do not have a machine that can run VZ KVM, so I am assuming
+> >        that it works for -M malta as well.
+> >
+> >    (The latest Debian stable only ships v7.2.)
+> >
+> > [1] https://lore.kernel.org/r/ZI0R76Fx25Q2EThZ@google.com/
+> My testbed is Loongson-3A4000 host + Loongson-3A4000 guest + Qemu8.0,
+> both TCG and KVM works.
 
-We do not use (or at least I don't, I can't speak for Sasha here, but
-odds are we should unify this now), the MAINTAINERS file for this, but
-rather a list like you provided below, thanks.
+I tried TCG too, as reported in the link above, and had no luck.
 
-> Regardless, here is a list:
-> 
-> * Audit
-> include/asm-generic/audit_*.h
-> include/linux/audit.h
-> include/linux/audit_arch.h
-> include/uapi/linux/audit.h
-> kernel/audit*
-> lib/*audit.c
-> 
-> * LSM layer
-> security/
-> (NOTE: the individual sub-dirs under security/ belong to the
-> individual LSMs, not the LSM layer)
+> Some thoughts:
+> 1, I think your host is malta, but you cannot use a malta host to boot
+> a Loongson guest, at least their kernels use different page sizes.
 
-So security/*.c would cover this, not below that, right?
+Good to know. Thanks.
 
-> * SELinux
-> include/trace/events/avc.h
-> include/uapi/linux/selinux_netlink.h
-> scripts/selinux/
-> security/selinux/
+> 2, commit a844873512400fae6bed9e87694dc96f remove the TE KVM, so if
+> you are trying VZ KVM (but it seems you are using TE KVM), it can
+> break nothing.
 
-Looks good, thanks for this.
-
-greg k-h
+I fully understand :) I was trying to point out that QEMU/KVM had been
+broken for over 2 years -- neither TE (removed from KVM) nor VZ works
+with 7.2, which is probably why you used 8.0 too -- until that commit
+*accidentally* fixed VZ (it was supposed to be a cleanup, not a fix).
