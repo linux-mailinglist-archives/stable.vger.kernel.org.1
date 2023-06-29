@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0A33742C75
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56727742C3C
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232605AbjF2StV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:49:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33112 "EHLO
+        id S232484AbjF2Srr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:47:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232969AbjF2StK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:49:10 -0400
+        with ESMTP id S232488AbjF2Sr3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:47:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B29E3AA7
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:48:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E6592D62
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:47:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C2ABF61575
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:48:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CB1C433C0;
-        Thu, 29 Jun 2023 18:48:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5799615C8
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:47:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D222DC433C8;
+        Thu, 29 Jun 2023 18:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064534;
-        bh=4NvKQeRYA1WfxzHUitway+95HOYw1Z7kO+UNKSXrfjk=;
+        s=korg; t=1688064447;
+        bh=zXC782oxtZOMhTfhgA8oJrTT74rTFF9F+enP7bDyRxU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u28eKUFepvzgzGlnOEKMec5+aSA1vsm649nN6evvBvQy503hqLyhHw3yYEU4E7H+O
-         frdqcdWGSnWCHllsnhJVcTo5PFhb9DD1vdGycyxAmfukIB2gpPpI+SjjwB90cEPeD9
-         XmC9COhJIvqFGIL9F7S77m2A6zzAycxQ3+w98CFM=
+        b=L/jquRbDxHBTVoCDX3N29d4RyELzJOWrvdLGhXDTdu5/LyIGzvTwJC0B4TW9FGOg/
+         PS1NJCV/PEGR9WMFSPYZ0g5JscjRZn1to+YzgS1UFoeyL2iaG9Ysv7GZl9O2emkSCj
+         PgpN0viB3ELSIsqAieLngjMlCPwYOyOLSgLW5dOA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peng Zhang <zhangpeng.00@bytedance.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 09/28] maple_tree: fix potential out-of-bounds access in mas_wr_end_piv()
-Date:   Thu, 29 Jun 2023 20:43:57 +0200
-Message-ID: <20230629184152.256585483@linuxfoundation.org>
+        patches@lists.linux.dev, Mike Hommey <mh@glandium.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Subject: [PATCH 6.3 28/29] HID: logitech-hidpp: add HIDPP_QUIRK_DELAYED_INIT for the T651.
+Date:   Thu, 29 Jun 2023 20:43:58 +0200
+Message-ID: <20230629184152.842499216@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.888604958@linuxfoundation.org>
-References: <20230629184151.888604958@linuxfoundation.org>
+In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
+References: <20230629184151.705870770@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,57 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peng Zhang <zhangpeng.00@bytedance.com>
+From: Mike Hommey <mh@glandium.org>
 
-commit cd00dd2585c4158e81fdfac0bbcc0446afbad26d upstream.
+commit 5fe251112646d8626818ea90f7af325bab243efa upstream.
 
-Check the write offset end bounds before using it as the offset into the
-pivot array.  This avoids a possible out-of-bounds access on the pivot
-array if the write extends to the last slot in the node, in which case the
-node maximum should be used as the end pivot.
+commit 498ba2069035 ("HID: logitech-hidpp: Don't restart communication if
+not necessary") put restarting communication behind that flag, and this
+was apparently necessary on the T651, but the flag was not set for it.
 
-akpm: this doesn't affect any current callers, but new users of mapletree
-may encounter this problem if backported into earlier kernels, so let's
-fix it in -stable kernels in case of this.
-
-Link: https://lkml.kernel.org/r/20230506024752.2550-1-zhangpeng.00@bytedance.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 498ba2069035 ("HID: logitech-hidpp: Don't restart communication if not necessary")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Hommey <mh@glandium.org>
+Link: https://lore.kernel.org/r/20230617230957.6mx73th4blv7owqk@glandium.org
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/maple_tree.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -4263,11 +4263,13 @@ done:
- 
- static inline void mas_wr_end_piv(struct ma_wr_state *wr_mas)
- {
--	while ((wr_mas->mas->last > wr_mas->end_piv) &&
--	       (wr_mas->offset_end < wr_mas->node_end))
--		wr_mas->end_piv = wr_mas->pivots[++wr_mas->offset_end];
-+	while ((wr_mas->offset_end < wr_mas->node_end) &&
-+	       (wr_mas->mas->last > wr_mas->pivots[wr_mas->offset_end]))
-+		wr_mas->offset_end++;
- 
--	if (wr_mas->mas->last > wr_mas->end_piv)
-+	if (wr_mas->offset_end < wr_mas->node_end)
-+		wr_mas->end_piv = wr_mas->pivots[wr_mas->offset_end];
-+	else
- 		wr_mas->end_piv = wr_mas->mas->max;
- }
- 
-@@ -4424,7 +4426,6 @@ static inline void *mas_wr_store_entry(s
- 	}
- 
- 	/* At this point, we are at the leaf node that needs to be altered. */
--	wr_mas->end_piv = wr_mas->r_max;
- 	mas_wr_end_piv(wr_mas);
- 
- 	if (!wr_mas->entry)
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -4364,7 +4364,7 @@ static const struct hid_device_id hidpp_
+ 	{ /* wireless touchpad T651 */
+ 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH,
+ 		USB_DEVICE_ID_LOGITECH_T651),
+-	  .driver_data = HIDPP_QUIRK_CLASS_WTP },
++	  .driver_data = HIDPP_QUIRK_CLASS_WTP | HIDPP_QUIRK_DELAYED_INIT },
+ 	{ /* Mouse Logitech Anywhere MX */
+ 	  LDJ_DEVICE(0x1017), .driver_data = HIDPP_QUIRK_HI_RES_SCROLL_1P0 },
+ 	{ /* Mouse logitech M560 */
 
 
