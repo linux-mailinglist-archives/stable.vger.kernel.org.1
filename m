@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFAF742C39
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B691C742C43
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232585AbjF2Srf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:47:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59800 "EHLO
+        id S232344AbjF2SpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:45:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232934AbjF2SrO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:47:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1566F3598
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:47:13 -0700 (PDT)
+        with ESMTP id S232432AbjF2SpE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:45:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A705430DD
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:45:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F79F615E4
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:47:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB8BC433C0;
-        Thu, 29 Jun 2023 18:47:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3977D615E2
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:45:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4D6C433C0;
+        Thu, 29 Jun 2023 18:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064430;
-        bh=h5PR7Wgwhi1iyTKlrso8SOYcxZPqeKgx78DJMRlDUd8=;
+        s=korg; t=1688064302;
+        bh=kHrZyKYmoMSOYrteXKh2gfRvHhi0Ct+2sUuOGcPif5c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=apYaLJP+MHTqzi+XFdtVqnjIMrRuXeZRLRIWlu51YI8JrOzs0GmR2alp1HqzagXiT
-         B67qrGhvcxAHAyVLlgX7i/xyp6alALLsVmh0XSO/627ZTf+0upDTz87MP0yCtmHzLZ
-         WaUtWf4zfGLcGfU0/bXrz71LCaYOQJIufS7uvoho=
+        b=Ljfhtq63aMmLMdYx7KwjMvBwhTpMxIjSpUm3++NsE3LpYEnHbrvUhJbYO9ZvimD4r
+         GQ4Efv27Nn78ZTzfR2nY5/5Snz2C01T9QPVew/IiENdgw6MHaWG1hEeFYxKkwefTzv
+         IGLKlh1xI3Ls6YBLaYxDTbBt8HjhqgOnh7F8ZffM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
-        Ashok Raj <ashok.raj@intel.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.3 07/29] x86/smp: Use dedicated cache-line for mwait_play_dead()
+        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Samuel Mendoza-Jonas <samjonas@amazon.com>,
+        David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH 6.1 18/30] mips/mm: Convert to using lock_mm_and_find_vma()
 Date:   Thu, 29 Jun 2023 20:43:37 +0200
-Message-ID: <20230629184152.044147986@linuxfoundation.org>
+Message-ID: <20230629184152.399096719@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
-References: <20230629184151.705870770@linuxfoundation.org>
+In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
+References: <20230629184151.651069086@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,91 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Ben Hutchings <ben@decadent.org.uk>
 
-commit f9c9987bf52f4e42e940ae217333ebb5a4c3b506 upstream.
+commit 4bce37a68ff884e821a02a731897a8119e0c37b7 upstream.
 
-Monitoring idletask::thread_info::flags in mwait_play_dead() has been an
-obvious choice as all what is needed is a cache line which is not written
-by other CPUs.
-
-But there is a use case where a "dead" CPU needs to be brought out of
-MWAIT: kexec().
-
-This is required as kexec() can overwrite text, pagetables, stacks and the
-monitored cacheline of the original kernel. The latter causes MWAIT to
-resume execution which obviously causes havoc on the kexec kernel which
-results usually in triple faults.
-
-Use a dedicated per CPU storage to prepare for that.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Ashok Raj <ashok.raj@intel.com>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230615193330.434553750@linutronix.de
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/smpboot.c |   24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ arch/mips/Kconfig    |    1 +
+ arch/mips/mm/fault.c |   12 ++----------
+ 2 files changed, 3 insertions(+), 10 deletions(-)
 
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -101,6 +101,17 @@ EXPORT_PER_CPU_SYMBOL(cpu_die_map);
- DEFINE_PER_CPU_READ_MOSTLY(struct cpuinfo_x86, cpu_info);
- EXPORT_PER_CPU_SYMBOL(cpu_info);
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -94,6 +94,7 @@ config MIPS
+ 	select HAVE_VIRT_CPU_ACCOUNTING_GEN if 64BIT || !SMP
+ 	select IRQ_FORCED_THREADING
+ 	select ISA if EISA
++	select LOCK_MM_AND_FIND_VMA
+ 	select MODULES_USE_ELF_REL if MODULES
+ 	select MODULES_USE_ELF_RELA if MODULES && 64BIT
+ 	select PERF_USE_VMALLOC
+--- a/arch/mips/mm/fault.c
++++ b/arch/mips/mm/fault.c
+@@ -99,21 +99,13 @@ static void __do_page_fault(struct pt_re
  
-+struct mwait_cpu_dead {
-+	unsigned int	control;
-+	unsigned int	status;
-+};
-+
-+/*
-+ * Cache line aligned data for mwait_play_dead(). Separate on purpose so
-+ * that it's unlikely to be touched by other CPUs.
-+ */
-+static DEFINE_PER_CPU_ALIGNED(struct mwait_cpu_dead, mwait_cpu_dead);
-+
- /* Logical package management. We might want to allocate that dynamically */
- unsigned int __max_logical_packages __read_mostly;
- EXPORT_SYMBOL(__max_logical_packages);
-@@ -1750,10 +1761,10 @@ EXPORT_SYMBOL_GPL(cond_wakeup_cpu0);
+ 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
+ retry:
+-	mmap_read_lock(mm);
+-	vma = find_vma(mm, address);
++	vma = lock_mm_and_find_vma(mm, address, regs);
+ 	if (!vma)
+-		goto bad_area;
+-	if (vma->vm_start <= address)
+-		goto good_area;
+-	if (!(vma->vm_flags & VM_GROWSDOWN))
+-		goto bad_area;
+-	if (expand_stack(vma, address))
+-		goto bad_area;
++		goto bad_area_nosemaphore;
+ /*
+  * Ok, we have a good vm_area for this memory access, so
+  * we can handle it..
   */
- static inline void mwait_play_dead(void)
- {
-+	struct mwait_cpu_dead *md = this_cpu_ptr(&mwait_cpu_dead);
- 	unsigned int eax, ebx, ecx, edx;
- 	unsigned int highest_cstate = 0;
- 	unsigned int highest_subcstate = 0;
--	void *mwait_ptr;
- 	int i;
+-good_area:
+ 	si_code = SEGV_ACCERR;
  
- 	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
-@@ -1788,13 +1799,6 @@ static inline void mwait_play_dead(void)
- 			(highest_subcstate - 1);
- 	}
- 
--	/*
--	 * This should be a memory location in a cache line which is
--	 * unlikely to be touched by other processors.  The actual
--	 * content is immaterial as it is not actually modified in any way.
--	 */
--	mwait_ptr = &current_thread_info()->flags;
--
- 	wbinvd();
- 
- 	while (1) {
-@@ -1806,9 +1810,9 @@ static inline void mwait_play_dead(void)
- 		 * case where we return around the loop.
- 		 */
- 		mb();
--		clflush(mwait_ptr);
-+		clflush(md);
- 		mb();
--		__monitor(mwait_ptr, 0, 0);
-+		__monitor(md, 0, 0);
- 		mb();
- 		__mwait(eax, 0);
- 
+ 	if (write) {
 
 
