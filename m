@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F781742C58
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CBA3742C51
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232288AbjF2SqR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58968 "EHLO
+        id S231718AbjF2Spm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:45:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232105AbjF2SqP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:46:15 -0400
+        with ESMTP id S232307AbjF2SpU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:45:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E911F3594
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:46:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF97358A
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:45:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 13CE1615C8
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:46:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25EDDC433C8;
-        Thu, 29 Jun 2023 18:46:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E55A6615F7
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:45:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ECBC433C8;
+        Thu, 29 Jun 2023 18:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064370;
-        bh=SBpJEaxIBW27NpG4jj49S37Xo0TdoWjAdQJZDZWp6LY=;
+        s=korg; t=1688064317;
+        bh=FlB5wt17aW/pqUoY1V5Nd/8hzbTss0vAB6qfu/wIMuA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zqAmdmGT6EqA4xOWMnkRETW3pqAU6MHhy64LN729SEmi9yz38AYgTTSl0/czWXPZe
-         4eu+bfwaMJKnsxGwY2fQ0iWqektqmF2pIuQUUUnPIGbO4t02Sbo2b/aJb5zmv92rDe
-         GurjZuzpVdaiWNSxJVzgv/ptE1M1WOPyMlt9pxoo=
+        b=x0jUHHgNZ6RukymviK2lgArvQ9vIV3rUc6WQMcjTOKc1zp5KIwizlNYvnxjKxir5m
+         AL3lqeTP8OCdaEZi56ja3w/2rOTnD5+PnwLxrTVEIRUQ7+34HoDWjViiHL0bUaQzvJ
+         RLdx0y1cSFvRImj/8lJ75b8c8YsRit3wLcNBWfh8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Carsten Schmidt <carsten.schmidt-achim@t-online.de>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.3 10/29] can: isotp: isotp_sendmsg(): fix return error fix on TX path
-Date:   Thu, 29 Jun 2023 20:43:40 +0200
-Message-ID: <20230629184152.163425483@linuxfoundation.org>
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Samuel Mendoza-Jonas <samjonas@amazon.com>,
+        David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH 6.1 22/30] powerpc/mm: convert coprocessor fault to lock_mm_and_find_vma()
+Date:   Thu, 29 Jun 2023 20:43:41 +0200
+Message-ID: <20230629184152.564594083@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
-References: <20230629184151.705870770@linuxfoundation.org>
+In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
+References: <20230629184151.651069086@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,44 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit e38910c0072b541a91954682c8b074a93e57c09b upstream.
+commit 2cd76c50d0b41cec5c87abfcdf25b236a2793fb6 upstream.
 
-With commit d674a8f123b4 ("can: isotp: isotp_sendmsg(): fix return
-error on FC timeout on TX path") the missing correct return value in
-the case of a protocol error was introduced.
+This is one of the simple cases, except there's no pt_regs pointer.
+Which is fine, as lock_mm_and_find_vma() is set up to work fine with a
+NULL pt_regs.
 
-But the way the error value has been read and sent to the user space
-does not follow the common scheme to clear the error after reading
-which is provided by the sock_error() function. This leads to an error
-report at the following write() attempt although everything should be
-working.
+Powerpc already enabled LOCK_MM_AND_FIND_VMA for the main CPU faulting,
+so we can just use the helper without any extra work.
 
-Fixes: d674a8f123b4 ("can: isotp: isotp_sendmsg(): fix return error on FC timeout on TX path")
-Reported-by: Carsten Schmidt <carsten.schmidt-achim@t-online.de>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://lore.kernel.org/all/20230607072708.38809-1-socketcan@hartkopp.net
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/isotp.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/powerpc/mm/copro_fault.c |   14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -1079,8 +1079,9 @@ wait_free_buffer:
- 		if (err)
- 			goto err_event_drop;
+--- a/arch/powerpc/mm/copro_fault.c
++++ b/arch/powerpc/mm/copro_fault.c
+@@ -33,19 +33,11 @@ int copro_handle_mm_fault(struct mm_stru
+ 	if (mm->pgd == NULL)
+ 		return -EFAULT;
  
--		if (sk->sk_err)
--			return -sk->sk_err;
-+		err = sock_error(sk);
-+		if (err)
-+			return err;
- 	}
+-	mmap_read_lock(mm);
+-	ret = -EFAULT;
+-	vma = find_vma(mm, ea);
++	vma = lock_mm_and_find_vma(mm, ea, NULL);
+ 	if (!vma)
+-		goto out_unlock;
+-
+-	if (ea < vma->vm_start) {
+-		if (!(vma->vm_flags & VM_GROWSDOWN))
+-			goto out_unlock;
+-		if (expand_stack(vma, ea))
+-			goto out_unlock;
+-	}
++		return -EFAULT;
  
- 	return size;
++	ret = -EFAULT;
+ 	is_write = dsisr & DSISR_ISSTORE;
+ 	if (is_write) {
+ 		if (!(vma->vm_flags & VM_WRITE))
 
 
