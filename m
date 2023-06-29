@@ -2,130 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23C36742280
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 10:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BE26742288
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 10:45:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232566AbjF2Ioh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 04:44:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52972 "EHLO
+        id S232832AbjF2IpU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 04:45:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231929AbjF2In6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 04:43:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9799A2961
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:42:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688028159;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Y7uH2v60++wlSFd3mdA5C25peNy3bqIH/P5Zip2EcJY=;
-        b=Alr/EKmhy79bwZ4O9Q7RJfYzqgYu7h5Af1xyuy8aVNI1RCX674wCfylb/e5nxm7S1sBPIf
-        M/+pIMQ5unn9KQ2tSpBxLCbCwazE8QO9w4nk70IJ25SSfoHh7EpKl0cbshZRZkbF9NBEt7
-        XFcJaXoUnBQBj9WFzQPWquMapAQXY5A=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-Rh_Pv2LlOSqqKSCUdv-uNw-1; Thu, 29 Jun 2023 04:42:38 -0400
-X-MC-Unique: Rh_Pv2LlOSqqKSCUdv-uNw-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-313e542e2f5so38682f8f.1
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:42:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688028157; x=1690620157;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y7uH2v60++wlSFd3mdA5C25peNy3bqIH/P5Zip2EcJY=;
-        b=AjTnMOUHNgO0cI+/tLYcW3TnuJT+zz0teSIEOov8b0SLPNqa3GaAibthBQH1piuRBp
-         r5TgwdpRziImcuhUJJa3v4UQHniB6Zlqh1+D2BVDhMKEzUe3//eKp+6A3gX/MocGTUZm
-         AREhTcY273Z5Rc5h1jGu/R1gHtZEOjbljZ7rTZ6KfwBNi+0I4FNWnrJkvLMdIsH3QXG1
-         hmoiNwDqA6PmsQZl85N1PVqWQR2gQpjzkWiON+Q87cOybgu+0hlnTAbOME4AB+czVutS
-         hX9J2XTDPbJAqz9U7ao4AM39ttC67aAMJq5qN5EMOQN2n2lIEWBqYJMPHY42ShVYRqKH
-         g/LA==
-X-Gm-Message-State: AC+VfDz0Ch/r/5wpN19tGx7Jra+X5bmPbUoiyZWeQx/NCNGLOWPBHfk6
-        n40P6bMG1TjPZ9UL8/wLb6NNk2uLniT8Bh55ujYSj4GWf12+ud5SorXUCGmiKINUAiwlMOWdQcu
-        yKlprYfGFnLdcW890
-X-Received: by 2002:a1c:ed17:0:b0:3f5:f543:d81f with SMTP id l23-20020a1ced17000000b003f5f543d81fmr38947296wmh.3.1688028157032;
-        Thu, 29 Jun 2023 01:42:37 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6+iH2URekcBBIFaPW3s8y3AcFdwpt0qhkGkVRHNjX6kI62bNLzHfSyF8zFoO0Ym2TuJLWyPg==
-X-Received: by 2002:a1c:ed17:0:b0:3f5:f543:d81f with SMTP id l23-20020a1ced17000000b003f5f543d81fmr38947276wmh.3.1688028156751;
-        Thu, 29 Jun 2023 01:42:36 -0700 (PDT)
-Received: from gerbillo.redhat.com (146-241-231-196.dyn.eolo.it. [146.241.231.196])
-        by smtp.gmail.com with ESMTPSA id r15-20020adfe68f000000b003111025ec67sm15279253wrm.25.2023.06.29.01.42.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jun 2023 01:42:36 -0700 (PDT)
-Message-ID: <36c95dd6babb2202f70594d5dde13493af62dcad.camel@redhat.com>
-Subject: Re: [Patch v3] net: mana: Batch ringing RX queue doorbell on
- receiving packets
-From:   Paolo Abeni <pabeni@redhat.com>
-To:     longli@linuxonhyperv.com, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Long Li <longli@microsoft.com>, stable@vger.kernel.org
-Date:   Thu, 29 Jun 2023 10:42:34 +0200
-In-Reply-To: <1687823827-15850-1-git-send-email-longli@linuxonhyperv.com>
-References: <1687823827-15850-1-git-send-email-longli@linuxonhyperv.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        with ESMTP id S232418AbjF2Ioa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 04:44:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D526D30F1
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 01:43:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 65C4761502
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 08:43:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E527C433C9;
+        Thu, 29 Jun 2023 08:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1688028214;
+        bh=1T7s2ZlorAEL0e5E5qBlSn3AXS4qK2ztbuGXqHOKEqw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bFoyM9yELEBey2u8ug0XBEcmhy/d7dFborxGplWnPAqG1FZPkoWpWX2vygRWKaJaf
+         0+uzdegvGmrG7DDkX2cLEjKJxiQhmqHEDhA3budc9tw+qm87A/V/FRTY8Jyv9IsSmN
+         dMVvv83xsKRiGM1LHpw1EnGlfPwqSzSr0bYJwX1U=
+Date:   Thu, 29 Jun 2023 10:43:31 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Luiz Capitulino <luizcap@amazon.com>, sashal@kernel.org,
+        stable@vger.kernel.org
+Subject: Re: Possible build time regression affecting stable kernels
+Message-ID: <2023062955-wing-front-553b@gregkh>
+References: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
+ <2023060156-precision-prorate-ce46@gregkh>
+ <20259cf7-d50d-4eca-482b-3a89cc94df7b@amazon.com>
+ <2023060148-levers-freight-5b11@gregkh>
+ <CAHC9VhQ6W4hq3B122BxcrD6h6_-Q1AguFYYLjAbB6ALCbmzDoQ@mail.gmail.com>
+ <2023060102-chatter-happening-f7a5@gregkh>
+ <CAHC9VhRuc5jSK7xODqtBvhUmunov+PVVQyLb8oDP8k0pLq_P-g@mail.gmail.com>
+ <2023062846-outback-posting-dfbd@gregkh>
+ <CAHC9VhQfWNxP80PRHMM44fkMx8fnuPJ2VyR-mA1WMLwsAevRuA@mail.gmail.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHC9VhQfWNxP80PRHMM44fkMx8fnuPJ2VyR-mA1WMLwsAevRuA@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 2023-06-26 at 16:57 -0700, longli@linuxonhyperv.com wrote:
-> From: Long Li <longli@microsoft.com>
->=20
-> It's inefficient to ring the doorbell page every time a WQE is posted to
-> the received queue. Excessive MMIO writes result in CPU spending more
-> time waiting on LOCK instructions (atomic operations), resulting in
-> poor scaling performance.
->=20
-> Move the code for ringing doorbell page to where after we have posted all
-> WQEs to the receive queue during a callback from napi_poll().
->=20
-> With this change, tests showed an improvement from 120G/s to 160G/s on a
-> 200G physical link, with 16 or 32 hardware queues.
->=20
-> Tests showed no regression in network latency benchmarks on single
-> connection.
->=20
-> While we are making changes in this code path, change the code for
-> ringing doorbell to set the WQE_COUNT to 0 for Receive Queue. The
-> hardware specification specifies that it should set to 0. Although
-> currently the hardware doesn't enforce the check, in the future releases
-> it may do.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network=
- Adapter (MANA)")
+On Wed, Jun 28, 2023 at 07:33:27PM -0400, Paul Moore wrote:
+> > So, can I get a directory list or file list of what we should be
+> > ignoring for the AUTOSEL and "Fixes: only" tools to be ignoring?
+> 
+> I've been trying to ensure that the files/directories entries in
+> MAINTAINERS are current, so that is probably as good a place as any to
+> pull that info.  Do the stable tools use that info already?  In other
+> words, if we update the entries in MAINTAINERS should we also notify
+> you guys, or will you get it automatically?
 
-Uhmmm... this looks like a performance improvement to me, more suitable
-for the net-next tree ?!? (Note that net-next is closed now).
+We do not use (or at least I don't, I can't speak for Sasha here, but
+odds are we should unify this now), the MAINTAINERS file for this, but
+rather a list like you provided below, thanks.
 
-In any case you must avoid empty lines in the tag area.
+> Regardless, here is a list:
+> 
+> * Audit
+> include/asm-generic/audit_*.h
+> include/linux/audit.h
+> include/linux/audit_arch.h
+> include/uapi/linux/audit.h
+> kernel/audit*
+> lib/*audit.c
+> 
+> * LSM layer
+> security/
+> (NOTE: the individual sub-dirs under security/ belong to the
+> individual LSMs, not the LSM layer)
 
-If you really intend targeting the -net tree, please repost fixing the
-above and explicitly specifying the target tree in the subj prefix.
+So security/*.c would cover this, not below that, right?
 
-thanks!
+> * SELinux
+> include/trace/events/avc.h
+> include/uapi/linux/selinux_netlink.h
+> scripts/selinux/
+> security/selinux/
 
-Paolo
+Looks good, thanks for this.
 
+greg k-h
