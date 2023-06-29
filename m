@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12B3C742C7C
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02419742C5A
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232988AbjF2StN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:49:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33042 "EHLO
+        id S232487AbjF2SsB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:48:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232989AbjF2StD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:49:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCBCB35B7
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:48:43 -0700 (PDT)
+        with ESMTP id S232682AbjF2Srg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:47:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10F3B3586
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:47:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5023861575
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:48:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B32C433C0;
-        Thu, 29 Jun 2023 18:48:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CD9661575
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:47:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC16C433C9;
+        Thu, 29 Jun 2023 18:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064522;
-        bh=wprpR5vsL8Tkyx59QGLchOvsOP0SywRICz1Hn/D583E=;
+        s=korg; t=1688064452;
+        bh=jGuwhosPqR+8otm7NNUjp6JfVxgUTuY+fcRDuzgsDJY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gR12F/fo2e9OYdIi+ygsQEq3YnDnejnaddtq/ruq9ARU8Im4XUtkuQkAiW9CgzGcf
-         kHrzwjX2AlLFo6c8T/q5SfedJMreqAgRfjrV8TPKuHETsnByc/bL5bM3oUtTpzGfFF
-         VtGeuza+2xbqYyccF7jNh+/1XhoOR4Derblxen7k=
+        b=XrnfFL3mBHnfEr1cfGgnACLO3KQxMf6oyOJPATBmYdw/8Qs/qesbszOhQCtyEGL6t
+         tCaJBcyPTwfCIUkbbqy0T2JhSUlQf7I4B5fCV/h/jcY3tNz2AYuxrjK7pr9Rjq7zuA
+         SiRqMtQ3oYh8Gjpr6lqlBD6Fs++UKbyl/EN19lUs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-        Wyes Karny <wyes.karny@amd.com>, Huang Rui <ray.huang@amd.com>,
-        Perry Yuan <Perry.Yuan@amd.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.4 07/28] cpufreq: amd-pstate: Make amd-pstate EPP driver name hyphenated
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.3 25/29] fbdev: fix potential OOB read in fast_imageblit()
 Date:   Thu, 29 Jun 2023 20:43:55 +0200
-Message-ID: <20230629184152.180763295@linuxfoundation.org>
+Message-ID: <20230629184152.738910643@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.888604958@linuxfoundation.org>
-References: <20230629184151.888604958@linuxfoundation.org>
+In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
+References: <20230629184151.705870770@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,36 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wyes Karny <wyes.karny@amd.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit f4aad639302a07454dcb23b408dcadf8a9efb031 upstream.
+commit c2d22806aecb24e2de55c30a06e5d6eb297d161d upstream.
 
-amd-pstate passive mode driver is hyphenated. So make amd-pstate active
-mode driver consistent with that rename "amd_pstate_epp" to
-"amd-pstate-epp".
+There is a potential OOB read at fast_imageblit, for
+"colortab[(*src >> 4)]" can become a negative value due to
+"const char *s = image->data, *src".
+This change makes sure the index for colortab always positive
+or zero.
 
-Fixes: ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
-Cc: All applicable <stable@vger.kernel.org>
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Wyes Karny <wyes.karny@amd.com>
-Acked-by: Huang Rui <ray.huang@amd.com>
-Reviewed-by: Perry Yuan <Perry.Yuan@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Similar commit:
+https://patchwork.kernel.org/patch/11746067
+
+Potential bug report:
+https://groups.google.com/g/syzkaller-bugs/c/9ubBXKeKXf4/m/k-QXy4UgAAAJ
+
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/amd-pstate.c |    2 +-
+ drivers/video/fbdev/core/sysimgblt.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -1356,7 +1356,7 @@ static struct cpufreq_driver amd_pstate_
- 	.online		= amd_pstate_epp_cpu_online,
- 	.suspend	= amd_pstate_epp_suspend,
- 	.resume		= amd_pstate_epp_resume,
--	.name		= "amd_pstate_epp",
-+	.name		= "amd-pstate-epp",
- 	.attr		= amd_pstate_epp_attr,
- };
- 
+--- a/drivers/video/fbdev/core/sysimgblt.c
++++ b/drivers/video/fbdev/core/sysimgblt.c
+@@ -189,7 +189,7 @@ static void fast_imageblit(const struct
+ 	u32 fgx = fgcolor, bgx = bgcolor, bpp = p->var.bits_per_pixel;
+ 	u32 ppw = 32/bpp, spitch = (image->width + 7)/8;
+ 	u32 bit_mask, eorx, shift;
+-	const char *s = image->data, *src;
++	const u8 *s = image->data, *src;
+ 	u32 *dst;
+ 	const u32 *tab;
+ 	size_t tablen;
 
 
