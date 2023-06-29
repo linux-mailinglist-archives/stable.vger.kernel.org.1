@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3255B742C18
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89E23742C49
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232480AbjF2SpV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:45:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58112 "EHLO
+        id S232313AbjF2SpY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:45:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232990AbjF2SpA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:45:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFCC02D62
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:44:57 -0700 (PDT)
+        with ESMTP id S232867AbjF2SpD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:45:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9415030C5
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:45:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46FC2615E2
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:44:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59999C433C8;
-        Thu, 29 Jun 2023 18:44:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B9E6615E8
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:45:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A008C433C0;
+        Thu, 29 Jun 2023 18:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064296;
-        bh=ftY2B0Lm3XkRVDXFZ36sxKwa9zZmnhLED56S4O4Wg8s=;
+        s=korg; t=1688064299;
+        bh=GzBpmpcCQ/ren2w5bT7TM84mZzzc2TbezAsv4tluHlQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JCL8D30L7k31oD3lTFMRVnhQvoc/wzPOeSiJCYNQhWRB4nlrGzb1dldVs3k1xSuQe
-         ikHPaIC0AQQrdWHO4Qm0HhKGjPgFa/CTf4pbu8eL4aFapnDCRJRB+RLebdGyPQrOck
-         GQhnyAWqnfUtvNl/PMO4qgtkCWwcGBWF2ScRgmpA=
+        b=z/WJQAgUMIBmJk0bhDMZaXKcAQT2oEDWOtUm+OdutUN14q+U7lAzNU/h7ZG6I/dHM
+         pOU2vSoBHPCKspcH+YCRXjf/901bKwFyvtEciT8TapKKJ0WPVC7Tf5pfNfU5w68VKI
+         E0Ch3dI0eSI81o3Cun7+d2SivjiafFVrG/lhZ9do=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
+        patches@lists.linux.dev, Michael Ellerman <mpe@ellerman.id.au>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Samuel Mendoza-Jonas <samjonas@amazon.com>,
-        David Woodhouse <dwmw@amazon.co.uk>,
-        Suren Baghdasaryan <surenb@google.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>
-Subject: [PATCH 6.1 16/30] arm64/mm: Convert to using lock_mm_and_find_vma()
-Date:   Thu, 29 Jun 2023 20:43:35 +0200
-Message-ID: <20230629184152.325743401@linuxfoundation.org>
+        David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH 6.1 17/30] powerpc/mm: Convert to using lock_mm_and_find_vma()
+Date:   Thu, 29 Jun 2023 20:43:36 +0200
+Message-ID: <20230629184152.358926096@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
 References: <20230629184151.651069086@linuxfoundation.org>
@@ -48,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,120 +56,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit ae870a68b5d13d67cf4f18d47bb01ee3fee40acb upstream.
+commit e6fe228c4ffafdfc970cf6d46883a1f481baf7ea upstream.
 
-This converts arm64 to use the new page fault helper.  It was very
-straightforward, but still needed a fix for the "obvious" conversion I
-initially did.  Thanks to Suren for the fix and testing.
-
-Fixed-and-tested-by: Suren Baghdasaryan <surenb@google.com>
-Unnecessary-code-removal-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-[6.1: Ignore CONFIG_PER_VMA_LOCK context]
 Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/Kconfig    |    1 +
- arch/arm64/mm/fault.c |   46 +++++++++-------------------------------------
- 2 files changed, 10 insertions(+), 37 deletions(-)
+ arch/powerpc/Kconfig    |    1 +
+ arch/powerpc/mm/fault.c |   41 ++++-------------------------------------
+ 2 files changed, 5 insertions(+), 37 deletions(-)
 
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -211,6 +211,7 @@ config ARM64
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -257,6 +257,7 @@ config PPC
  	select IRQ_DOMAIN
  	select IRQ_FORCED_THREADING
- 	select KASAN_VMALLOC if KASAN
+ 	select KASAN_VMALLOC			if KASAN && MODULES
 +	select LOCK_MM_AND_FIND_VMA
- 	select MODULES_USE_ELF_RELA
- 	select NEED_DMA_MAP_STATE
- 	select NEED_SG_DMA_LENGTH
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -483,27 +483,14 @@ static void do_bad_area(unsigned long fa
- #define VM_FAULT_BADMAP		((__force vm_fault_t)0x010000)
- #define VM_FAULT_BADACCESS	((__force vm_fault_t)0x020000)
+ 	select MMU_GATHER_PAGE_SIZE
+ 	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MMU_GATHER_MERGE_VMAS
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -84,11 +84,6 @@ static int __bad_area(struct pt_regs *re
+ 	return __bad_area_nosemaphore(regs, address, si_code);
+ }
  
--static vm_fault_t __do_page_fault(struct mm_struct *mm, unsigned long addr,
-+static vm_fault_t __do_page_fault(struct mm_struct *mm,
-+				  struct vm_area_struct *vma, unsigned long addr,
- 				  unsigned int mm_flags, unsigned long vm_flags,
- 				  struct pt_regs *regs)
+-static noinline int bad_area(struct pt_regs *regs, unsigned long address)
+-{
+-	return __bad_area(regs, address, SEGV_MAPERR);
+-}
+-
+ static noinline int bad_access_pkey(struct pt_regs *regs, unsigned long address,
+ 				    struct vm_area_struct *vma)
  {
--	struct vm_area_struct *vma = find_vma(mm, addr);
--
--	if (unlikely(!vma))
--		return VM_FAULT_BADMAP;
--
- 	/*
- 	 * Ok, we have a good vm_area for this memory access, so we can handle
- 	 * it.
+@@ -481,40 +476,12 @@ static int ___do_page_fault(struct pt_re
+ 	 * we will deadlock attempting to validate the fault against the
+ 	 * address space.  Luckily the kernel only validly references user
+ 	 * space from well defined areas of code, which are listed in the
+-	 * exceptions table.
+-	 *
+-	 * As the vast majority of faults will be valid we will only perform
+-	 * the source reference check when there is a possibility of a deadlock.
+-	 * Attempt to lock the address space, if we cannot we then validate the
+-	 * source.  If this is invalid we can skip the address space check,
+-	 * thus avoiding the deadlock.
 -	 */
--	if (unlikely(vma->vm_start > addr)) {
--		if (!(vma->vm_flags & VM_GROWSDOWN))
--			return VM_FAULT_BADMAP;
--		if (expand_stack(vma, addr))
--			return VM_FAULT_BADMAP;
--	}
+-	if (unlikely(!mmap_read_trylock(mm))) {
+-		if (!is_user && !search_exception_tables(regs->nip))
+-			return bad_area_nosemaphore(regs, address);
 -
--	/*
- 	 * Check that the permissions on the VMA allow for the fault which
- 	 * occurred.
- 	 */
-@@ -535,6 +522,7 @@ static int __kprobes do_page_fault(unsig
- 	unsigned long vm_flags;
- 	unsigned int mm_flags = FAULT_FLAG_DEFAULT;
- 	unsigned long addr = untagged_addr(far);
-+	struct vm_area_struct *vma;
- 
- 	if (kprobe_page_fault(regs, esr))
- 		return 0;
-@@ -585,31 +573,14 @@ static int __kprobes do_page_fault(unsig
- 
- 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
- 
--	/*
--	 * As per x86, we may deadlock here. However, since the kernel only
--	 * validly references user space from well defined areas of the code,
--	 * we can bug out early if this is from code which shouldn't.
--	 */
--	if (!mmap_read_trylock(mm)) {
--		if (!user_mode(regs) && !search_exception_tables(regs->pc))
--			goto no_context;
++	 * exceptions table. lock_mm_and_find_vma() handles that logic.
++	 */
  retry:
 -		mmap_read_lock(mm);
 -	} else {
 -		/*
--		 * The above mmap_read_trylock() might have succeeded in which
--		 * case, we'll have missed the might_sleep() from down_read().
+-		 * The above down_read_trylock() might have succeeded in
+-		 * which case we'll have missed the might_sleep() from
+-		 * down_read():
 -		 */
 -		might_sleep();
--#ifdef CONFIG_DEBUG_VM
--		if (!user_mode(regs) && !search_exception_tables(regs->pc)) {
--			mmap_read_unlock(mm);
--			goto no_context;
--		}
--#endif
-+	vma = lock_mm_and_find_vma(mm, addr, regs);
-+	if (unlikely(!vma)) {
-+		fault = VM_FAULT_BADMAP;
-+		goto done;
- 	}
+-	}
+-
+-	vma = find_vma(mm, address);
++	vma = lock_mm_and_find_vma(mm, address, regs);
+ 	if (unlikely(!vma))
+-		return bad_area(regs, address);
+-
+-	if (unlikely(vma->vm_start > address)) {
+-		if (unlikely(!(vma->vm_flags & VM_GROWSDOWN)))
+-			return bad_area(regs, address);
+-
+-		if (unlikely(expand_stack(vma, address)))
+-			return bad_area(regs, address);
+-	}
++		return bad_area_nosemaphore(regs, address);
  
--	fault = __do_page_fault(mm, addr, mm_flags, vm_flags, regs);
-+	fault = __do_page_fault(mm, vma, addr, mm_flags, vm_flags, regs);
- 
- 	/* Quick path to respond to signals */
- 	if (fault_signal_pending(fault, regs)) {
-@@ -628,6 +599,7 @@ retry:
- 	}
- 	mmap_read_unlock(mm);
- 
-+done:
- 	/*
- 	 * Handle the "normal" (no error) case first.
- 	 */
+ 	if (unlikely(access_pkey_error(is_write, is_exec,
+ 				       (error_code & DSISR_KEYFAULT), vma)))
 
 
