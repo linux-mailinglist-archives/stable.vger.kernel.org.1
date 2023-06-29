@@ -2,112 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67282742FC8
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 23:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B971274302E
+	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 00:11:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230446AbjF2V4Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 17:56:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34216 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230085AbjF2V4X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 17:56:23 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223DA30C5
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 14:56:22 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-51dec0b6fecso401867a12.1
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 14:56:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1688075780; x=1690667780;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YOf/JougOyhsOkb+dRe1n/eQScesKh9WdkdB5A99fRk=;
-        b=dps2aQjRsOXr/g4E2iSUfNcqKD1mHXWZ6ONP5IMR3oSFjwhakhw7A5juUsLZTP8pck
-         bALZOCQImGAvmlg8eN0TfsDBRHjwvinGpEx7eeHFaLbrl27tv9F6CmkODLcuvnii8653
-         W0zQpdZb92H72YEaiGbUS0VOlDPLagz6/8pjl9+Sq5vgnJuCWiiP8RL8MNdiCEiaakDB
-         tcmUtdurnJZ5q/nOLdw5hkBJnFjBiBcP1CkkQbZhDxoY8UUHxqzVXKOuxnaRPwYk5q5m
-         hHpkEHEjHbnYPiVFFcpIQIH9XZ/uYxotgwEEcimdkmPhMxg2TfWrSwLoipB29MP97s7E
-         pQTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688075780; x=1690667780;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YOf/JougOyhsOkb+dRe1n/eQScesKh9WdkdB5A99fRk=;
-        b=UMJHG1SMvTrHU7MKqVsPqEVo0+uLGfzUa2DqjpxkSKSKZNtU35T2otVEPUntzv2ykE
-         FSlctQfli6BO9LAC5h87BsYDGCTIbaW7cwSNdIdZPSWkIBInKgrP4ya3Kny0jdse4y9G
-         5qo0L9EgJvDuxC3vDlWpOGQXD9XiCDskfBjSHFHqMys1xXQIa7r3S42ibYTRjrpKsyh0
-         1Oc6jZgfnJT1rRmc/2QMZzRkR/oZh7RG04QfTuodnhZW+oDeHRIi3gZnnEiLAG1jV5tX
-         TdcOAT4ln2oFOBaPOeQVvhdWEcjvTY59PlCtbVTr/SqdBOdTaYDZkgw07aFW2+lHMqF+
-         9cDA==
-X-Gm-Message-State: ABy/qLbubHtDekopYxSCvP3vNDsAOgmvbmvQYz9c3dsAcGCba1swOvY+
-        0347CMOrSIZ0e8CkdiWRZy64mcz1VW8KboFcYKlG0w==
-X-Google-Smtp-Source: APBJJlFNR0w1BjJGgwrHeJAqiblVmG1i91+46JqLPZi03yOqFYxDfY+UqfovKXnkj4grIoEqvKwIxkiezjLHq/RQy6A=
-X-Received: by 2002:aa7:c152:0:b0:51d:e4a3:3c8a with SMTP id
- r18-20020aa7c152000000b0051de4a33c8amr321502edp.3.1688075780431; Thu, 29 Jun
- 2023 14:56:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230629184151.651069086@linuxfoundation.org>
-In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
-From:   ogasawara takeshi <takeshi.ogasawara@futuring-girl.com>
-Date:   Fri, 30 Jun 2023 06:56:09 +0900
-Message-ID: <CAKL4bV4hMiGuZ9c2MmbToy=pbMFmL6fHji4zOh4h0G2m0FGMUA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/30] 6.1.37-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+        id S232170AbjF2WKD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 18:10:03 -0400
+Received: from linux.microsoft.com ([13.77.154.182]:41668 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232213AbjF2WJ4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 18:09:56 -0400
+Received: by linux.microsoft.com (Postfix, from userid 1004)
+        id 5149E208396A; Thu, 29 Jun 2023 15:09:55 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5149E208396A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxonhyperv.com;
+        s=default; t=1688076595;
+        bh=BKDtaYT+zbLI1TSAymoJ7YKaz9ZHdNfBW0iqigA2SuE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=HQloIh6EgT3FUTVcllOIP2gKT7M5f4+4HRbIFevacgN7I4uhqpwc39c3Sen7pmFKg
+         rQUbY+b+gzQDnvOgsPoyhBKqBrTROXo+howV8WJOHt0pH5lVX1qZ/15GtDCFkhz2dD
+         6HlL3tzecMbH8/hixVgOhVXrRxH7pQrDCTUF8UnE=
+From:   longli@linuxonhyperv.com
+To:     "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Shradha Gupta <shradhagupta@linux.microsoft.com>,
+        Ajay Sharma <sharmaajay@microsoft.com>,
+        Shachar Raindel <shacharr@microsoft.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     linux-rdma@vger.kernel.org, Long Li <longli@microsoft.com>,
+        stable@vger.kernel.org
+Subject: [PATCH net v4 1/2] net: mana: Batch ringing RX queue doorbell on receiving packets
+Date:   Thu, 29 Jun 2023 15:09:30 -0700
+Message-Id: <1688076571-24938-2-git-send-email-longli@linuxonhyperv.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1688076571-24938-1-git-send-email-longli@linuxonhyperv.com>
+References: <1688076571-24938-1-git-send-email-longli@linuxonhyperv.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+From: Long Li <longli@microsoft.com>
 
-On Fri, Jun 30, 2023 at 3:46=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.37 release.
-> There are 30 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 01 Jul 2023 18:41:39 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.37-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+It's inefficient to ring the doorbell page every time a WQE is posted to
+the received queue. Excessive MMIO writes result in CPU spending more
+time waiting on LOCK instructions (atomic operations), resulting in
+poor scaling performance.
 
-6.1.37-rc1 tested.
+Move the code for ringing doorbell page to where after we have posted all
+WQEs to the receive queue during a callback from napi_poll().
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+With this change, tests showed an improvement from 120G/s to 160G/s on a
+200G physical link, with 16 or 32 hardware queues.
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64), arch linux)
+Tests showed no regression in network latency benchmarks on single
+connection.
 
-Thanks
+Cc: stable@vger.kernel.org
+Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Long Li <longli@microsoft.com>
+---
+Change log:
+v2:
+Check for comp_read > 0 as it might be negative on completion error.
+Set rq.wqe_cnt to 0 according to BNIC spec.
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+v3:
+Add details in the commit on the reason of performance increase and test numbers.
+Add details in the commit on why rq.wqe_cnt should be set to 0 according to hardware spec.
+Add "Reviewed-by" from Haiyang and Dexuan.
+
+v4:
+Split the original patch into two: one for batching doorbell, one for setting the correct wqe count
+
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index cd4d5ceb9f2d..1d8abe63fcb8 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1383,8 +1383,8 @@ static void mana_post_pkt_rxq(struct mana_rxq *rxq)
+ 
+ 	recv_buf_oob = &rxq->rx_oobs[curr_index];
+ 
+-	err = mana_gd_post_and_ring(rxq->gdma_rq, &recv_buf_oob->wqe_req,
+-				    &recv_buf_oob->wqe_inf);
++	err = mana_gd_post_work_request(rxq->gdma_rq, &recv_buf_oob->wqe_req,
++					&recv_buf_oob->wqe_inf);
+ 	if (WARN_ON_ONCE(err))
+ 		return;
+ 
+@@ -1654,6 +1654,12 @@ static void mana_poll_rx_cq(struct mana_cq *cq)
+ 		mana_process_rx_cqe(rxq, cq, &comp[i]);
+ 	}
+ 
++	if (comp_read > 0) {
++		struct gdma_context *gc = rxq->gdma_rq->gdma_dev->gdma_context;
++
++		mana_gd_wq_ring_doorbell(gc, rxq->gdma_rq);
++	}
++
+ 	if (rxq->xdp_flush)
+ 		xdp_do_flush();
+ }
+-- 
+2.34.1
+
