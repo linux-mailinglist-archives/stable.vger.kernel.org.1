@@ -2,167 +2,591 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91AAA7428C6
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 16:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 863387428FC
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 16:59:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231245AbjF2Opy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 10:45:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40496 "EHLO
+        id S232311AbjF2O7V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 10:59:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232101AbjF2Opw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 10:45:52 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796081FC1
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 07:45:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688049943; x=1688654743; i=deller@gmx.de;
- bh=rDlTuoc/BYBeiJLtz0AJlgi3bKHeeaAVXLl91gSaSog=;
- h=X-UI-Sender-Class:Date:From:To:Subject;
- b=l8RucVJ+HFlZcMGAw78F4LpJ0Ala/b50CxuUCXUuISQ3kpEYHB4TPYmGV+nOoDlp7N3wTmZ
- ri/xi4pxZNl+uaGh7+nGv1l8gbNP2l8Lwee4O+hr3+ecwDFjh/DyAcV2GzUqyatWCgMoJMZ4Q
- QG7eOEmxfdxYtvHpsHor4bfPsctuR2Vo5nGXUmWpwfLqkjsA/oNKQMBzDrKnm46u/SMvtbqIB
- 8xq1UKKK1KlfF3qLczmJTXw4zWrOD7Uj6/gmpy3T9muEw/glPlxRE2QY0bmalrrmRqJsHjdJY
- uDjSRRVTubW+evk2EdRRR+KNCTqVJgPgJiW8lqQZUvjDPTLI+Oaw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.146.6]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MulmF-1pxUfs0lrn-00rsx5; Thu, 29
- Jun 2023 16:45:43 +0200
-Date:   Thu, 29 Jun 2023 16:45:41 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH][for-4.14] fbdev: imsttfb: Fix use after free bug in
- imsttfb_probe
-Message-ID: <ZJ2ZFfH6qos5MFjm@p100>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:OBujH1zUkLZdfemmp84AbkLYuDQGIy3A9axinAzfF/plio5ANDK
- AUGKeOsYCKP9K4xOK3EZHVBoMduo9/DQRTop/gOWA7AUYOWh7p9B9CZvrrZKuYpxAryCR2e
- 3/uUNkBNZ/dn4v3sGmipatp6xKGRbSQOqj6HbARQaFwQ2C4fmb09Lgh3yH8Y0CyqyCLF0ZS
- q4RrnXy8oI6hJojoQrnGA==
-UI-OutboundReport: notjunk:1;M01:P0:dyeA5wQ7i58=;qG+iEtFi5EK3i62aG5kxsdEl8cA
- jXE3RsRpOMAS8epGHMl9lwvdJWN/12iD1InqG5+HR9jsd40hYfEo33zshmPi/dh5NJsFgofxt
- F0HcdqmtTJB2fnd2QpHhcGY6VUjX8xxWygEJ3mhlEo6JcKRESKAjKFlQ2gzwIyzPIQYtOJszV
- QrBxmaXuDfTwDK9epQ3fVMxQFnTC08RwJUsKdYLBtiyZnXm44dI70506qD6W1MBbCk0e8zJc2
- bYuxDShm1URyZaLLwajclBw2ydS5ttx6sCaYwgkJ5w/So6zrR1H3LXctf2VA9g2QGREvwJWPM
- x5Bl2DCeloqdbZ6LnrCc/W2lwoKVjn/lnGzhkIvrKQurgt7wBa5MDuxWjT+g28MuFxu5Okf1Q
- 7OTcmql5l1rSkyMT6JbUWm91cG4DJH8Rd3WGNyqdO1aYtQTgrYD86SHCA9WFNnzJDNzhKpiPo
- cl/mpaLwNNFnUOXYt55oOCKwVEeISFhRNipm+XhtPQnS6l9b/v+NMvP9e0e2d7NcRHamN/C0B
- 8t453Nrca07jRqY7PU/Aih9RTb8Rbkglbyo7GUwOH8xtBpq7rxFa0pI9J3/k3B3679xXhi/7d
- hTcquCSTRx4MQXsxSTx018pVqXY6t8GTJDHLOeZq+nN9CZeRhx4gEQYiYIjWeji9JnsgqSvYw
- lTSLfBn8nvQ652G2ji3E5VZCTcncz2SM2NecUUMn7D1CJF0V+fPZIOPVdWe5mqFht0Y+LtNEl
- Yya+D5hP8/a/vFPGfs0uZk9kdJnyCMCH5u5F/pQAxSYcgXl1Xb5sLY94r7IB7yiMgQsPKYtcj
- OTpi1tKo4LsWq/vdboY4FsCuqUNN2XcVMVGSbRNoV5D+KWfFM+X6y57A3ELIaeLN263ruMj9W
- sGrK3prqGtcyjv1MNFaqbc9ODvmPJ8IBLtq3yDQ66YENTM/bMKb2lf8M3K6P9Y+qwQEjTCjt1
- h/uSWQ==
+        with ESMTP id S231461AbjF2O7T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 10:59:19 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B91C92D56;
+        Thu, 29 Jun 2023 07:59:17 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id F1E835C0494;
+        Thu, 29 Jun 2023 10:59:16 -0400 (EDT)
+Received: from imap44 ([10.202.2.94])
+  by compute2.internal (MEProxy); Thu, 29 Jun 2023 10:59:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+        cc:cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1688050756; x=1688137156; bh=4RA89kqZ3S+rJWn5LuAjD6umi6utLV4mDPm
+        YeJZiOEI=; b=EZoZQz0byfbeFauuzWXjEkpbPBhjVIc2tNhUQylUAN2f+43Gurt
+        n+t+9/77hHAgOuso3N/L6VfdwZXxIrci7vH/+fou0vjAqFssxWu/NF7S0nyLbYtt
+        GY5IFVJx1fYKzicsqG9QCjrj410b/gQU2jDGsU/xJzUnV4P0chMEhEgbq3ONibTL
+        LhwzN+AV9WKCoELJ+8QgCbCZDzdHyZDrY3PFzIwS5eNpPhgGGaMnCikPoNJkp5Ni
+        V26Ts/lWguvH307ajOf/eaevwj5BxI/XI61UjipnM79mWXE9JrPVrFZPAuh9XpSi
+        Ds54TRh5W2yfE2vtY7yenR35xj+dd3wmqyQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1688050756; x=1688137156; bh=4RA89kqZ3S+rJWn5LuAjD6umi6utLV4mDPm
+        YeJZiOEI=; b=EPyW1skajWX9WAXYUoPKesSBByK/voz212W+yYCev++NRdnO/qF
+        r9pdF06GJXY4g/S+a5VE+uiDbZ85F9crT09vRg72e8uz22p/bl9S1E0zm7Yo/DL1
+        ik9FgzOh6h/+eRnQ+lsoJX/QBnBv77ANi8BZeeSh4iC7HtKh/FrrTa+wpkJX4Dlb
+        criFFkUydyrZ3pdFaC877A/2cq7V7q1B4F36lYjxMMsTvpoYmqDtxtiDA529HZ5e
+        cy3znDpiEBt6vAy01rb0cB9B+7dCWgJDDkjPLJkSIGQYORhwAR1qrYXGjy4cEqvG
+        Ui/DVBnE4E7Xsr2J5+2c+Lp8drke+BKQ1wA==
+X-ME-Sender: <xms:RJydZGMnii_hqdvxP_FGiKQo7PaWTSgfI5iLPxrEFb-dTS49ppmSqw>
+    <xme:RJydZE_Tb87f-zdIA6cPqeXCCVi0KcLsNMv8N0gGCvrbxblA7zs_rfWgvL8OfujrV
+    zyd6XgM4QGglynQjt0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeggdekfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedflfhi
+    rgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+    eqnecuggftrfgrthhtvghrnhepudduveffgeffteeiffdtfedtfeetjeffueejhefffefh
+    heeuudeitdethfekkedvnecuffhomhgrihhnpedufhdrthhfnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhl
+    hihgohgrthdrtghomh
+X-ME-Proxy: <xmx:RJydZNRKqqPcxBMo5nagLNXam3mwUFxh5IYl2_igZn93NjvRSka1FQ>
+    <xmx:RJydZGvAD8d2hkKOiXE91aebPe1qI2q9nuRQs5w3Pip_VK7qASl5nQ>
+    <xmx:RJydZOfTfFGw_82oPF683gqhzv6KYcLp8rd8W8joKxr0RGY3ZcLcZQ>
+    <xmx:RJydZN4Bx0ZmZTWguhc8FY8e3AnPoChFLvhRpyGZkm6CxBRMIjfuEA>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id ECBBC36A0073; Thu, 29 Jun 2023 10:59:15 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-499-gf27bbf33e2-fm-20230619.001-gf27bbf33
+Mime-Version: 1.0
+Message-Id: <f588f39d-0af7-4ab2-b28e-b53de1fc9d6b@app.fastmail.com>
+In-Reply-To: <CABgObfYLnhW0qrPvFnMW_B9xZzLF6Ysn2uL4w9B815fUNVKK5A@mail.gmail.com>
+References: <20230626074919.1871944-1-chenhuacai@loongson.cn>
+ <CABgObfYLnhW0qrPvFnMW_B9xZzLF6Ysn2uL4w9B815fUNVKK5A@mail.gmail.com>
+Date:   Thu, 29 Jun 2023 22:58:53 +0800
+From:   "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To:     "Paolo Bonzini" <pbonzini@redhat.com>,
+        "Huacai Chen" <chenhuacai@loongson.cn>
+Cc:     "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+        "Huacai Chen" <chenhuacai@kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        kvm@vger.kernel.org,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: KVM: Fix NULL pointer dereference
+Content-Type: text/plain;charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LOTS_OF_MONEY,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
 
-below is the manual backport of an upstream patch to fix the build failure
-in kernel v4.14 in imsttfb.c.
 
-It's not sufficient to just return from init_imstt() as the kernel then
-may crash later when it tries to access the non-existent framebuffer or
-cmap. Instead return failure to imsttfb_probe() so that the kernel
-will skip using that hardware/driver.
+=E5=9C=A82023=E5=B9=B46=E6=9C=8826=E6=97=A5=E5=85=AD=E6=9C=88 =E4=B8=8B=E5=
+=8D=886:33=EF=BC=8CPaolo Bonzini=E5=86=99=E9=81=93=EF=BC=9A
+> On Mon, Jun 26, 2023 at 9:59=E2=80=AFAM Huacai Chen <chenhuacai@loongs=
+on.cn> wrote:
+>>
+>> After commit 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support")=
+ we
+>> get a NULL pointer dereference when creating a KVM guest:
+>
+> To be honest, a bug that needed 2 years to be reproduced is probably a
+> sign that KVM/MIPS has no users. Any objections to removing it
+> altogether?
 
-Can you please apply this patch to the v4.14 stable queue?
+I am frequently doing boot test with QEMU & using MIPS KVM to test kerne=
+l on Loongson.
 
-Thanks,
-Helge
+Though I haven't upgrade host kernel for a while, that's why the issue w=
+asn't caught by me.
 
-=2D----------
-From: Zheng Wang <zyytlz.wz@163.com>
+Also AFAIK there are several Loongson cloud service still using KVM.
 
-This is a manual backport of upstream patch c75f5a55061091030a13fef71b9995=
-b89bc86213
-to fix a build error in imsttfb.c in kernel v4.14.
+So I don't want to see it go.
 
-A use-after-free bug may occur if init_imstt invokes framebuffer_release
-and free the info ptr. The caller, imsttfb_probe didn't notice that and
-still keep the ptr as private data in pdev.
+Thanks
+Jiaxun=20
 
-If we remove the driver which will call imsttfb_remove to make cleanup,
-UAF happens.
+>
+> Paolo
+>
+>>
+>> [  146.243409] Starting KVM with MIPS VZ extensions
+>> [  149.849151] CPU 3 Unable to handle kernel paging request at virtua=
+l address 0000000000000300, epc =3D=3D ffffffffc06356ec, ra =3D=3D fffff=
+fffc063568c
+>> [  149.849177] Oops[#1]:
+>> [  149.849182] CPU: 3 PID: 2265 Comm: qemu-system-mip Not tainted 6.4=
+.0-rc3+ #1671
+>> [  149.849188] Hardware name: THTF CX TL630 Series/THTF-LS3A4000-7A10=
+00-ML4A, BIOS KL4.1F.TF.D.166.201225.R 12/25/2020
+>> [  149.849192] $ 0   : 0000000000000000 000000007400cce0 000000000040=
+0004 ffffffff8119c740
+>> [  149.849209] $ 4   : 000000007400cce1 000000007400cce1 000000000000=
+0000 0000000000000000
+>> [  149.849221] $ 8   : 000000240058bb36 ffffffff81421ac0 000000000000=
+0000 0000000000400dc0
+>> [  149.849233] $12   : 9800000102a07cc8 ffffffff80e40e38 000000000000=
+0001 0000000000400dc0
+>> [  149.849245] $16   : 0000000000000000 9800000106cd0000 9800000106cd=
+0000 9800000100cce000
+>> [  149.849257] $20   : ffffffffc0632b28 ffffffffc05b31b0 9800000100cc=
+ca00 0000000000400000
+>> [  149.849269] $24   : 9800000106cd09ce ffffffff802f69d0
+>> [  149.849281] $28   : 9800000102a04000 9800000102a07cd0 98000001106a=
+8000 ffffffffc063568c
+>> [  149.849293] Hi    : 00000335b2111e66
+>> [  149.849295] Lo    : 6668d90061ae0ae9
+>> [  149.849298] epc   : ffffffffc06356ec kvm_vz_vcpu_setup+0xc4/0x328 =
+[kvm]
+>> [  149.849324] ra    : ffffffffc063568c kvm_vz_vcpu_setup+0x64/0x328 =
+[kvm]
+>> [  149.849336] Status: 7400cce3 KX SX UX KERNEL EXL IE
+>> [  149.849351] Cause : 1000000c (ExcCode 03)
+>> [  149.849354] BadVA : 0000000000000300
+>> [  149.849357] PrId  : 0014c004 (ICT Loongson-3)
+>> [  149.849360] Modules linked in: kvm nfnetlink_queue nfnetlink_log n=
+fnetlink fuse sha256_generic libsha256 cfg80211 rfkill binfmt_misc vfat =
+fat snd_hda_codec_hdmi input_leds led_class snd_hda_intel snd_intel_dspc=
+fg snd_hda_codec snd_hda_core snd_pcm snd_timer snd serio_raw xhci_pci r=
+adeon drm_suballoc_helper drm_display_helper xhci_hcd ip_tables x_tables
+>> [  149.849432] Process qemu-system-mip (pid: 2265, threadinfo=3D00000=
+000ae2982d2, task=3D0000000038e09ad4, tls=3D000000ffeba16030)
+>> [  149.849439] Stack : 9800000000000003 9800000100ccca00 9800000100cc=
+c000 ffffffffc062cef4
+>> [  149.849453]         9800000102a07d18 c89b63a7ab338e00 000000000000=
+0000 ffffffff811a0000
+>> [  149.849465]         0000000000000000 9800000106cd0000 ffffffff80e5=
+9938 98000001106a8920
+>> [  149.849476]         ffffffff80e57f30 ffffffffc062854c ffffffff811a=
+0000 9800000102bf4240
+>> [  149.849488]         ffffffffc05b0000 ffffffff80e3a798 000000ff7800=
+0000 000000ff78000010
+>> [  149.849500]         0000000000000255 98000001021f7de0 98000001023f=
+0078 ffffffff81434000
+>> [  149.849511]         0000000000000000 0000000000000000 9800000102ae=
+0000 980000025e92ae28
+>> [  149.849523]         0000000000000000 c89b63a7ab338e00 000000000000=
+0001 ffffffff8119dce0
+>> [  149.849535]         000000ff78000010 ffffffff804f3d3c 9800000102a0=
+7eb0 0000000000000255
+>> [  149.849546]         0000000000000000 ffffffff8049460c 000000ff7800=
+0010 0000000000000255
+>> [  149.849558]         ...
+>> [  149.849565] Call Trace:
+>> [  149.849567] [<ffffffffc06356ec>] kvm_vz_vcpu_setup+0xc4/0x328 [kvm]
+>> [  149.849586] [<ffffffffc062cef4>] kvm_arch_vcpu_create+0x184/0x228 =
+[kvm]
+>> [  149.849605] [<ffffffffc062854c>] kvm_vm_ioctl+0x64c/0xf28 [kvm]
+>> [  149.849623] [<ffffffff805209c0>] sys_ioctl+0xc8/0x118
+>> [  149.849631] [<ffffffff80219eb0>] syscall_common+0x34/0x58
+>>
+>> The root cause is the deletion of kvm_mips_commpage_init() leaves vcp=
+u->
+>> arch.cop0 NULL. So fix it by make cop0 from a pointer to an embed obj=
+ect.
+>>
+>> Fixes: 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support")
+>> Cc: stable@vger.kernel.org
+>> Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>> ---
+>>  arch/mips/include/asm/kvm_host.h |  6 +++---
+>>  arch/mips/kvm/emulate.c          | 22 +++++++++++-----------
+>>  arch/mips/kvm/mips.c             | 16 ++++++++--------
+>>  arch/mips/kvm/trace.h            |  8 ++++----
+>>  arch/mips/kvm/vz.c               | 20 ++++++++++----------
+>>  5 files changed, 36 insertions(+), 36 deletions(-)
+>>
+>> diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm=
+/kvm_host.h
+>> index 957121a495f0..04cedf9f8811 100644
+>> --- a/arch/mips/include/asm/kvm_host.h
+>> +++ b/arch/mips/include/asm/kvm_host.h
+>> @@ -317,7 +317,7 @@ struct kvm_vcpu_arch {
+>>         unsigned int aux_inuse;
+>>
+>>         /* COP0 State */
+>> -       struct mips_coproc *cop0;
+>> +       struct mips_coproc cop0;
+>>
+>>         /* Resume PC after MMIO completion */
+>>         unsigned long io_pc;
+>> @@ -698,7 +698,7 @@ static inline bool kvm_mips_guest_can_have_fpu(st=
+ruct kvm_vcpu_arch *vcpu)
+>>  static inline bool kvm_mips_guest_has_fpu(struct kvm_vcpu_arch *vcpu)
+>>  {
+>>         return kvm_mips_guest_can_have_fpu(vcpu) &&
+>> -               kvm_read_c0_guest_config1(vcpu->cop0) & MIPS_CONF1_FP;
+>> +               kvm_read_c0_guest_config1(&vcpu->cop0) & MIPS_CONF1_F=
+P;
+>>  }
+>>
+>>  static inline bool kvm_mips_guest_can_have_msa(struct kvm_vcpu_arch =
+*vcpu)
+>> @@ -710,7 +710,7 @@ static inline bool kvm_mips_guest_can_have_msa(st=
+ruct kvm_vcpu_arch *vcpu)
+>>  static inline bool kvm_mips_guest_has_msa(struct kvm_vcpu_arch *vcpu)
+>>  {
+>>         return kvm_mips_guest_can_have_msa(vcpu) &&
+>> -               kvm_read_c0_guest_config3(vcpu->cop0) & MIPS_CONF3_MS=
+A;
+>> +               kvm_read_c0_guest_config3(&vcpu->cop0) & MIPS_CONF3_M=
+SA;
+>>  }
+>>
+>>  struct kvm_mips_callbacks {
+>> diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
+>> index edaec93a1a1f..e64372b8f66a 100644
+>> --- a/arch/mips/kvm/emulate.c
+>> +++ b/arch/mips/kvm/emulate.c
+>> @@ -312,7 +312,7 @@ int kvm_get_badinstrp(u32 *opc, struct kvm_vcpu *=
+vcpu, u32 *out)
+>>   */
+>>  int kvm_mips_count_disabled(struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>
+>>         return  (vcpu->arch.count_ctl & KVM_REG_MIPS_COUNT_CTL_DC) ||
+>>                 (kvm_read_c0_guest_cause(cop0) & CAUSEF_DC);
+>> @@ -384,7 +384,7 @@ static inline ktime_t kvm_mips_count_time(struct =
+kvm_vcpu *vcpu)
+>>   */
+>>  static u32 kvm_mips_read_count_running(struct kvm_vcpu *vcpu, ktime_=
+t now)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         ktime_t expires, threshold;
+>>         u32 count, compare;
+>>         int running;
+>> @@ -444,7 +444,7 @@ static u32 kvm_mips_read_count_running(struct kvm=
+_vcpu *vcpu, ktime_t now)
+>>   */
+>>  u32 kvm_mips_read_count(struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>
+>>         /* If count disabled just read static copy of count */
+>>         if (kvm_mips_count_disabled(vcpu))
+>> @@ -502,7 +502,7 @@ ktime_t kvm_mips_freeze_hrtimer(struct kvm_vcpu *=
+vcpu, u32 *count)
+>>  static void kvm_mips_resume_hrtimer(struct kvm_vcpu *vcpu,
+>>                                     ktime_t now, u32 count)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         u32 compare;
+>>         u64 delta;
+>>         ktime_t expire;
+>> @@ -603,7 +603,7 @@ int kvm_mips_restore_hrtimer(struct kvm_vcpu *vcp=
+u, ktime_t before,
+>>   */
+>>  void kvm_mips_write_count(struct kvm_vcpu *vcpu, u32 count)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         ktime_t now;
+>>
+>>         /* Calculate bias */
+>> @@ -649,7 +649,7 @@ void kvm_mips_init_count(struct kvm_vcpu *vcpu, u=
+nsigned long count_hz)
+>>   */
+>>  int kvm_mips_set_count_hz(struct kvm_vcpu *vcpu, s64 count_hz)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         int dc;
+>>         ktime_t now;
+>>         u32 count;
+>> @@ -696,7 +696,7 @@ int kvm_mips_set_count_hz(struct kvm_vcpu *vcpu, =
+s64 count_hz)
+>>   */
+>>  void kvm_mips_write_compare(struct kvm_vcpu *vcpu, u32 compare, bool=
+ ack)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         int dc;
+>>         u32 old_compare =3D kvm_read_c0_guest_compare(cop0);
+>>         s32 delta =3D compare - old_compare;
+>> @@ -779,7 +779,7 @@ void kvm_mips_write_compare(struct kvm_vcpu *vcpu=
+, u32 compare, bool ack)
+>>   */
+>>  static ktime_t kvm_mips_count_disable(struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         u32 count;
+>>         ktime_t now;
+>>
+>> @@ -806,7 +806,7 @@ static ktime_t kvm_mips_count_disable(struct kvm_=
+vcpu *vcpu)
+>>   */
+>>  void kvm_mips_count_disable_cause(struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>
+>>         kvm_set_c0_guest_cause(cop0, CAUSEF_DC);
+>>         if (!(vcpu->arch.count_ctl & KVM_REG_MIPS_COUNT_CTL_DC))
+>> @@ -826,7 +826,7 @@ void kvm_mips_count_disable_cause(struct kvm_vcpu=
+ *vcpu)
+>>   */
+>>  void kvm_mips_count_enable_cause(struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         u32 count;
+>>
+>>         kvm_clear_c0_guest_cause(cop0, CAUSEF_DC);
+>> @@ -852,7 +852,7 @@ void kvm_mips_count_enable_cause(struct kvm_vcpu =
+*vcpu)
+>>   */
+>>  int kvm_mips_set_count_ctl(struct kvm_vcpu *vcpu, s64 count_ctl)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         s64 changed =3D count_ctl ^ vcpu->arch.count_ctl;
+>>         s64 delta;
+>>         ktime_t expire, now;
+>> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+>> index 884be4ef99dc..aa5583a7b05b 100644
+>> --- a/arch/mips/kvm/mips.c
+>> +++ b/arch/mips/kvm/mips.c
+>> @@ -649,7 +649,7 @@ static int kvm_mips_copy_reg_indices(struct kvm_v=
+cpu *vcpu, u64 __user *indices)
+>>  static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
+>>                             const struct kvm_one_reg *reg)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         struct mips_fpu_struct *fpu =3D &vcpu->arch.fpu;
+>>         int ret;
+>>         s64 v;
+>> @@ -761,7 +761,7 @@ static int kvm_mips_get_reg(struct kvm_vcpu *vcpu,
+>>  static int kvm_mips_set_reg(struct kvm_vcpu *vcpu,
+>>                             const struct kvm_one_reg *reg)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         struct mips_fpu_struct *fpu =3D &vcpu->arch.fpu;
+>>         s64 v;
+>>         s64 vs[2];
+>> @@ -1086,7 +1086,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kv=
+m, long ext)
+>>  int kvm_cpu_has_pending_timer(struct kvm_vcpu *vcpu)
+>>  {
+>>         return kvm_mips_pending_timer(vcpu) ||
+>> -               kvm_read_c0_guest_cause(vcpu->arch.cop0) & C_TI;
+>> +               kvm_read_c0_guest_cause(&vcpu->arch.cop0) & C_TI;
+>>  }
+>>
+>>  int kvm_arch_vcpu_dump_regs(struct kvm_vcpu *vcpu)
+>> @@ -1110,7 +1110,7 @@ int kvm_arch_vcpu_dump_regs(struct kvm_vcpu *vc=
+pu)
+>>         kvm_debug("\thi: 0x%08lx\n", vcpu->arch.hi);
+>>         kvm_debug("\tlo: 0x%08lx\n", vcpu->arch.lo);
+>>
+>> -       cop0 =3D vcpu->arch.cop0;
+>> +       cop0 =3D &vcpu->arch.cop0;
+>>         kvm_debug("\tStatus: 0x%08x, Cause: 0x%08x\n",
+>>                   kvm_read_c0_guest_status(cop0),
+>>                   kvm_read_c0_guest_cause(cop0));
+>> @@ -1232,7 +1232,7 @@ static int __kvm_mips_handle_exit(struct kvm_vc=
+pu *vcpu)
+>>
+>>         case EXCCODE_TLBS:
+>>                 kvm_debug("TLB ST fault:  cause %#x, status %#x, PC: =
+%p, BadVaddr: %#lx\n",
+>> -                         cause, kvm_read_c0_guest_status(vcpu->arch.=
+cop0), opc,
+>> +                         cause, kvm_read_c0_guest_status(&vcpu->arch=
+.cop0), opc,
+>>                           badvaddr);
+>>
+>>                 ++vcpu->stat.tlbmiss_st_exits;
+>> @@ -1304,7 +1304,7 @@ static int __kvm_mips_handle_exit(struct kvm_vc=
+pu *vcpu)
+>>                 kvm_get_badinstr(opc, vcpu, &inst);
+>>                 kvm_err("Exception Code: %d, not yet handled, @ PC: %=
+p, inst: 0x%08x  BadVaddr: %#lx Status: %#x\n",
+>>                         exccode, opc, inst, badvaddr,
+>> -                       kvm_read_c0_guest_status(vcpu->arch.cop0));
+>> +                       kvm_read_c0_guest_status(&vcpu->arch.cop0));
+>>                 kvm_arch_vcpu_dump_regs(vcpu);
+>>                 run->exit_reason =3D KVM_EXIT_INTERNAL_ERROR;
+>>                 ret =3D RESUME_HOST;
+>> @@ -1377,7 +1377,7 @@ int noinstr kvm_mips_handle_exit(struct kvm_vcp=
+u *vcpu)
+>>  /* Enable FPU for guest and restore context */
+>>  void kvm_own_fpu(struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         unsigned int sr, cfg5;
+>>
+>>         preempt_disable();
+>> @@ -1421,7 +1421,7 @@ void kvm_own_fpu(struct kvm_vcpu *vcpu)
+>>  /* Enable MSA for guest and restore context */
+>>  void kvm_own_msa(struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         unsigned int sr, cfg5;
+>>
+>>         preempt_disable();
+>> diff --git a/arch/mips/kvm/trace.h b/arch/mips/kvm/trace.h
+>> index a8c7fd7bf6d2..136c3535a1cb 100644
+>> --- a/arch/mips/kvm/trace.h
+>> +++ b/arch/mips/kvm/trace.h
+>> @@ -322,11 +322,11 @@ TRACE_EVENT_FN(kvm_guest_mode_change,
+>>             ),
+>>
+>>             TP_fast_assign(
+>> -                       __entry->epc =3D kvm_read_c0_guest_epc(vcpu->=
+arch.cop0);
+>> +                       __entry->epc =3D kvm_read_c0_guest_epc(&vcpu-=
+>arch.cop0);
+>>                         __entry->pc =3D vcpu->arch.pc;
+>> -                       __entry->badvaddr =3D kvm_read_c0_guest_badva=
+ddr(vcpu->arch.cop0);
+>> -                       __entry->status =3D kvm_read_c0_guest_status(=
+vcpu->arch.cop0);
+>> -                       __entry->cause =3D kvm_read_c0_guest_cause(vc=
+pu->arch.cop0);
+>> +                       __entry->badvaddr =3D kvm_read_c0_guest_badva=
+ddr(&vcpu->arch.cop0);
+>> +                       __entry->status =3D kvm_read_c0_guest_status(=
+&vcpu->arch.cop0);
+>> +                       __entry->cause =3D kvm_read_c0_guest_cause(&v=
+cpu->arch.cop0);
+>>             ),
+>>
+>>             TP_printk("EPC: 0x%08lx PC: 0x%08lx Status: 0x%08x Cause:=
+ 0x%08x BadVAddr: 0x%08lx",
+>> diff --git a/arch/mips/kvm/vz.c b/arch/mips/kvm/vz.c
+>> index 3d21cbfa7443..99d5a71e4300 100644
+>> --- a/arch/mips/kvm/vz.c
+>> +++ b/arch/mips/kvm/vz.c
+>> @@ -422,7 +422,7 @@ static void _kvm_vz_restore_htimer(struct kvm_vcp=
+u *vcpu,
+>>   */
+>>  static void kvm_vz_restore_timer(struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         u32 cause, compare;
+>>
+>>         compare =3D kvm_read_sw_gc0_compare(cop0);
+>> @@ -517,7 +517,7 @@ static void _kvm_vz_save_htimer(struct kvm_vcpu *=
+vcpu,
+>>   */
+>>  static void kvm_vz_save_timer(struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         u32 gctl0, compare, cause;
+>>
+>>         gctl0 =3D read_c0_guestctl0();
+>> @@ -863,7 +863,7 @@ static unsigned long mips_process_maar(unsigned i=
+nt op, unsigned long val)
+>>
+>>  static void kvm_write_maari(struct kvm_vcpu *vcpu, unsigned long val)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>
+>>         val &=3D MIPS_MAARI_INDEX;
+>>         if (val =3D=3D MIPS_MAARI_INDEX)
+>> @@ -876,7 +876,7 @@ static enum emulation_result kvm_vz_gpsi_cop0(uni=
+on mips_instruction inst,
+>>                                               u32 *opc, u32 cause,
+>>                                               struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         enum emulation_result er =3D EMULATE_DONE;
+>>         u32 rt, rd, sel;
+>>         unsigned long curr_pc;
+>> @@ -1911,7 +1911,7 @@ static int kvm_vz_get_one_reg(struct kvm_vcpu *=
+vcpu,
+>>                               const struct kvm_one_reg *reg,
+>>                               s64 *v)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         unsigned int idx;
+>>
+>>         switch (reg->id) {
+>> @@ -2081,7 +2081,7 @@ static int kvm_vz_get_one_reg(struct kvm_vcpu *=
+vcpu,
+>>         case KVM_REG_MIPS_CP0_MAARI:
+>>                 if (!cpu_guest_has_maar || cpu_guest_has_dyn_maar)
+>>                         return -EINVAL;
+>> -               *v =3D kvm_read_sw_gc0_maari(vcpu->arch.cop0);
+>> +               *v =3D kvm_read_sw_gc0_maari(&vcpu->arch.cop0);
+>>                 break;
+>>  #ifdef CONFIG_64BIT
+>>         case KVM_REG_MIPS_CP0_XCONTEXT:
+>> @@ -2135,7 +2135,7 @@ static int kvm_vz_set_one_reg(struct kvm_vcpu *=
+vcpu,
+>>                               const struct kvm_one_reg *reg,
+>>                               s64 v)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         unsigned int idx;
+>>         int ret =3D 0;
+>>         unsigned int cur, change;
+>> @@ -2562,7 +2562,7 @@ static void kvm_vz_vcpu_load_tlb(struct kvm_vcp=
+u *vcpu, int cpu)
+>>
+>>  static int kvm_vz_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         bool migrated, all;
+>>
+>>         /*
+>> @@ -2704,7 +2704,7 @@ static int kvm_vz_vcpu_load(struct kvm_vcpu *vc=
+pu, int cpu)
+>>
+>>  static int kvm_vz_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>
+>>         if (current->flags & PF_VCPU)
+>>                 kvm_vz_vcpu_save_wired(vcpu);
+>> @@ -3076,7 +3076,7 @@ static void kvm_vz_vcpu_uninit(struct kvm_vcpu =
+*vcpu)
+>>
+>>  static int kvm_vz_vcpu_setup(struct kvm_vcpu *vcpu)
+>>  {
+>> -       struct mips_coproc *cop0 =3D vcpu->arch.cop0;
+>> +       struct mips_coproc *cop0 =3D &vcpu->arch.cop0;
+>>         unsigned long count_hz =3D 100*1000*1000; /* default to 100 M=
+Hz */
+>>
+>>         /*
+>> --
+>> 2.39.3
+>>
 
-Fix it by return error code if bad case happens in init_imstt.
-
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/drivers/video/fbdev/imsttfb.c b/drivers/video/fbdev/imsttfb.c
-index 6589d5f0a5a4..eaaa5f1c0f6f 100644
-=2D-- a/drivers/video/fbdev/imsttfb.c
-+++ b/drivers/video/fbdev/imsttfb.c
-@@ -1348,7 +1348,7 @@ static struct fb_ops imsttfb_ops =3D {
- 	.fb_ioctl 	=3D imsttfb_ioctl,
- };
-
--static void init_imstt(struct fb_info *info)
-+static int init_imstt(struct fb_info *info)
- {
- 	struct imstt_par *par =3D info->par;
- 	__u32 i, tmp, *ip, *end;
-@@ -1420,7 +1420,7 @@ static void init_imstt(struct fb_info *info)
- 	    || !(compute_imstt_regvals(par, info->var.xres, info->var.yres))) {
- 		printk("imsttfb: %ux%ux%u not supported\n", info->var.xres, info->var.y=
-res, info->var.bits_per_pixel);
- 		framebuffer_release(info);
--		return;
-+		return -ENODEV;
- 	}
-
- 	sprintf(info->fix.id, "IMS TT (%s)", par->ramdac =3D=3D IBM ? "IBM" : "T=
-VP");
-@@ -1460,12 +1460,13 @@ static void init_imstt(struct fb_info *info)
- 	if (register_framebuffer(info) < 0) {
- 		fb_dealloc_cmap(&info->cmap);
- 		framebuffer_release(info);
--		return;
-+		return -ENODEV;
- 	}
-
- 	tmp =3D (read_reg_le32(par->dc_regs, SSTATUS) & 0x0f00) >> 8;
- 	fb_info(info, "%s frame buffer; %uMB vram; chip version %u\n",
- 		info->fix.id, info->fix.smem_len >> 20, tmp);
-+	return 0;
- }
-
- static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id=
- *ent)
-@@ -1474,6 +1475,7 @@ static int imsttfb_probe(struct pci_dev *pdev, const=
- struct pci_device_id *ent)
- 	struct imstt_par *par;
- 	struct fb_info *info;
- 	struct device_node *dp;
-+	int ret;
-
- 	dp =3D pci_device_to_OF_node(pdev);
- 	if(dp)
-@@ -1525,10 +1527,10 @@ static int imsttfb_probe(struct pci_dev *pdev, con=
-st struct pci_device_id *ent)
- 	par->cmap_regs_phys =3D addr + 0x840000;
- 	par->cmap_regs =3D (__u8 *)ioremap(addr + 0x840000, 0x1000);
- 	info->pseudo_palette =3D par->palette;
--	init_imstt(info);
--
--	pci_set_drvdata(pdev, info);
--	return 0;
-+	ret =3D init_imstt(info);
-+	if (!ret)
-+		pci_set_drvdata(pdev, info);
-+	return ret;
- }
-
- static void imsttfb_remove(struct pci_dev *pdev)
+--=20
+- Jiaxun
