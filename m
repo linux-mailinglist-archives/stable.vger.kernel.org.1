@@ -2,58 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF9A741CA2
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 01:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 097B3741CBF
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 02:07:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232844AbjF1Xx7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 28 Jun 2023 19:53:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45550 "EHLO
+        id S232073AbjF2AHh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 28 Jun 2023 20:07:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232827AbjF1Xx4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 19:53:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503CF26B7;
-        Wed, 28 Jun 2023 16:53:55 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3054C614A3;
-        Wed, 28 Jun 2023 23:53:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1585C433C8;
-        Wed, 28 Jun 2023 23:53:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687996434;
-        bh=F6vzXPCW6Woeq9Ou3mqYh6g7Dx1xrVdicCI0ov5Kx/k=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=uKigdqY91w/tOLpSPGtAvr1bKQNqQqiEQbKjcQQVpMYu0k17Es7skS5uVjhwnGxdt
-         1RRAIqyaXyyAO8PZr53kKNYWBK498BLPy00hnI4L3+9/8PHm/tA0COPMn/T5xpHMiv
-         TYvmi7X1mwVMKdoQVZbamE/u7pskmaipcT2UOCCvSHLgOTeupN+EoicGUl5uwjvV1X
-         Ms+X2skOBYCo5P8n1oB+03fiBJEZi9eJtrtkIO4HEXMwfuhLdz87BIDiJoICMs/HmS
-         td0VPo9NehDeLO3nuDsyVxhDXjE5otU3MrkzVI9vP0PLu+Ti91n97vXqvBU9G9JaMQ
-         +MYL0/Gourb9A==
-Message-ID: <f170e2ae-a416-7a0b-ff52-f446eaf78ab9@kernel.org>
-Date:   Thu, 29 Jun 2023 08:53:52 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/2] mpt3sas: Perform additional retries if Doorbell read
- returns 0
-Content-Language: en-US
-To:     Ranjan Kumar <ranjan.kumar@broadcom.com>,
-        linux-scsi@vger.kernel.org, martin.petersen@oracle.com
-Cc:     sathya.prakash@broadcom.com, sreekanth.reddy@broadcom.com,
-        stable@vger.kernel.org
-References: <20230628070511.27774-1-ranjan.kumar@broadcom.com>
- <20230628070511.27774-2-ranjan.kumar@broadcom.com>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20230628070511.27774-2-ranjan.kumar@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        with ESMTP id S232047AbjF2AHf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 28 Jun 2023 20:07:35 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 463CE10CC
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 17:07:34 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-bd476ef40e0so81110276.1
+        for <stable@vger.kernel.org>; Wed, 28 Jun 2023 17:07:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1687997253; x=1690589253;
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=y7BDMelFHS828Gj3Jm/ECh2KqRe+91Z0DpptCQV7DWE=;
+        b=kUqAqDda2Svnwq/zSU//baQEjxc3NMFXdEatX2cUPPN68abtt+InYbI76hoyyurxfw
+         BXRlUUJQdlDMGiZVjJ5TPc0ISCuLUdJeTVzdykj0YHrSe2u4pnVN66GgMk8/tyn3kCaE
+         6wzjAV1oScnEzGF8kOHArYjK0c8Q/sMV+c0YDQ5IXd2j6ADhUcg8DuAFqpLIgPCLIy7y
+         LCPCV/EWaOKi6i2nVPzzIMqakvvpdnyzX4ggQISzW1Q97S1W60/o7qh7NeblcFuYqXgu
+         eTsXuzOAqYVUfGbA3Vb7rlEvi9cYe5ADlshzaz7zWhcGg5q9oy3yuubXwrITlyK9ugYs
+         tzCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687997253; x=1690589253;
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y7BDMelFHS828Gj3Jm/ECh2KqRe+91Z0DpptCQV7DWE=;
+        b=Za/xptz7kkX+8zG8dHkcKgdeevR37qBwv2GmbL79EVKp/JEYA/K2cWK8sXpNMRgeyh
+         v5Pfjag00jOc7m9u0fvPTv2Cgf8bFlCf6itL4pUouYBuNYFSglxGieWrOmoUBap+YetB
+         CpvcIulP9km6w+n1hSzA6lVstOSy1bQdRbeLM1H1SKIJ7F2ojwz0CKwHd7SRLxg/17x5
+         da5NMiB2X6LbEwjw6WQe6y68100rNgZQQdBatXlHRp6xoIHwLkzmA+xXTFmqR9u+9vnv
+         yFs7Zfgzr8wvMF8HyOsLJJvIUV0FbcyELUDHsqLVqhwGije07bIa0hc1EdQRXnVnjLVf
+         Yjyw==
+X-Gm-Message-State: AC+VfDyJluPq/wQ6pePg6FuR2IVLIbKIbnEou2OlFSHuLkgGu1trZyzY
+        YNu5UxO/7rG28xN34M4qc8kz+NOhYvc=
+X-Google-Smtp-Source: ACHHUZ4rTa2Gl9EiG5FsV5n/MmFToH0Y6Cew6nawSOxBMM6+9Q8g3vkCg/XV8+C1bVN12QctCBzyvXhdHbA=
+X-Received: from yuzhao.bld.corp.google.com ([2620:15c:183:202:76f0:18c9:8d89:3977])
+ (user=yuzhao job=sendgmr) by 2002:a25:11c4:0:b0:c2a:b486:1085 with SMTP id
+ 187-20020a2511c4000000b00c2ab4861085mr2517826ybr.10.1687997253510; Wed, 28
+ Jun 2023 17:07:33 -0700 (PDT)
+Date:   Wed, 28 Jun 2023 18:07:29 -0600
+In-Reply-To: <CABgObfYLnhW0qrPvFnMW_B9xZzLF6Ysn2uL4w9B815fUNVKK5A@mail.gmail.com>
+Message-Id: <20230629000729.1223067-1-yuzhao@google.com>
+Mime-Version: 1.0
+References: <CABgObfYLnhW0qrPvFnMW_B9xZzLF6Ysn2uL4w9B815fUNVKK5A@mail.gmail.com>
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+Subject: Re: [PATCH] MIPS: KVM: Fix NULL pointer dereference
+From:   Yu Zhao <yuzhao@google.com>
+To:     pbonzini@redhat.com
+Cc:     chenhuacai@kernel.org, chenhuacai@loongson.cn,
+        jiaxun.yang@flygoat.com, kvm@vger.kernel.org,
+        linux-mips@vger.kernel.org, stable@vger.kernel.org,
+        tsbogend@alpha.franken.de
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,53 +69,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/28/23 16:05, Ranjan Kumar wrote:
-> Doorbell and Host diagnostic registers could return 0 even
-> after 3 retries and that leads to occasional resets of the
-> controllers, hence increased the retry count to thirty.
+On Mon, Jun 26, 2023 at 6:33 AM Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> On Mon, Jun 26, 2023 at 9:59 AM Huacai Chen <chenhuacai@loongson.cn> wrote:
+> >
+> > After commit 45c7e8af4a5e3f0bea4ac209 ("MIPS: Remove KVM_TE support") we
+> > get a NULL pointer dereference when creating a KVM guest:
+>
+> To be honest, a bug that needed 2 years to be reproduced is probably a
+> sign that KVM/MIPS has no users. Any objections to removing it
+> altogether?
 
-The magic value "3" for retry count was already that, magic. Why would things
-work better with 30 ? What is the reasoning ? Isn't a udelay needed to avoid
-that many retries ?
+ACK:
+1. It's still broken after this patch [1]. The most well-tested MIPS
+   distros, i.e., Debian/OpenWrt, have CONFIG_KVM=n. (The latter doesn't
+   even provide the QEMU package on MIPS.)
+2. Burden on QEMU dev. There is no guarantee that QEMU would work with
+   KVM even if we could fix the kernel -- it actually does not until
+   v8.0 [1], which is by luck:
 
-> 
-> Fixes: b899202901a8 ("mpt3sas: Add separate function for aero doorbell reads ")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+   commit a844873512400fae6bed9e87694dc96ff2f15f39
+   Author: Paolo Bonzini <pbonzini@redhat.com>
+   Date:   Sun Dec 18 01:06:45 2022 +0100
+   
+       mips: Remove support for trap and emulate KVM
+       
+       This support was limited to the Malta board, drop it.
+       I do not have a machine that can run VZ KVM, so I am assuming
+       that it works for -M malta as well.
 
-[..]
+   (The latest Debian stable only ships v7.2.)
 
-> diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.h b/drivers/scsi/mpt3sas/mpt3sas_base.h
-> index 05364aa15ecd..3b8ec4fd2d21 100644
-> --- a/drivers/scsi/mpt3sas/mpt3sas_base.h
-> +++ b/drivers/scsi/mpt3sas/mpt3sas_base.h
-> @@ -160,6 +160,8 @@
->  
->  #define IOC_OPERATIONAL_WAIT_COUNT	10
->  
-> +#define READL_RETRY_COUNT_OF_THIRTY	30
-> +#define READL_RETRY_COUNT_OF_THREE	3
-
-Less than ideal naming I think. If the values need to be changed again, a lot of
-code will need to change. What about soemthing like:
-
-#define READL_RETRY_COUNT	30
-#define READL_RETRY_SHORT_COUNT	3
-
->  /*
->   * NVMe defines
->   */
-> @@ -994,7 +996,7 @@ typedef void (*NVME_BUILD_PRP)(struct MPT3SAS_ADAPTER *ioc, u16 smid,
->  typedef void (*PUT_SMID_IO_FP_HIP) (struct MPT3SAS_ADAPTER *ioc, u16 smid,
->  	u16 funcdep);
->  typedef void (*PUT_SMID_DEFAULT) (struct MPT3SAS_ADAPTER *ioc, u16 smid);
-> -typedef u32 (*BASE_READ_REG) (const volatile void __iomem *addr);
-> +typedef u32 (*BASE_READ_REG) (const volatile void __iomem *addr, u8 retry_count);
->  /*
->   * To get high iops reply queue's msix index when high iops mode is enabled
->   * else get the msix index of general reply queues.
-
--- 
-Damien Le Moal
-Western Digital Research
-
+[1] https://lore.kernel.org/r/ZI0R76Fx25Q2EThZ@google.com/
