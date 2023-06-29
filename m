@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94B3A742C52
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E435742C23
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232709AbjF2Srh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:47:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
+        id S232209AbjF2Sp0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:45:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232573AbjF2SrQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:47:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E14E3594
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:47:14 -0700 (PDT)
+        with ESMTP id S232584AbjF2SpH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:45:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A817330DF
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:45:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A88B615F2
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:47:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F300C433C0;
-        Thu, 29 Jun 2023 18:47:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 270E361575
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:45:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392C4C433C8;
+        Thu, 29 Jun 2023 18:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064432;
-        bh=3xnK1hpynKmNkUpN6jq4fH0lA409V7kHZTMMkGAkZbc=;
+        s=korg; t=1688064305;
+        bh=TLBGj4dqfLU3IcziBijSAv3P3ZcbkS9Q766oMjASvus=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CjSO1LSA2KZPa0T29wivcjQCX5wvSSFCY/C6Xres+flD48w0bKl0OJXA2i/g9ELrB
-         Bgjk5OHDrp4cMEEy87LuECZbCDN8zT6YPKJW77A4k4U6psHNBA+Fgu5QYF3C9UhEsq
-         jYEkGRCd2XNIFKRziZ/YlKeI4vh0bT6f6756FyrY=
+        b=hCHkP9fapYcPRrqyGK8k0RsJfWsZP/CGYpBwx+DbHpJ+n4ScAhd8nylkmXUqn2+d7
+         /uwJiSx95Q32FPqoxWskNQw9nZORGgqpKUeSTYEwbPmWF1MBywDYbSLqw1xqcn1Q/R
+         OU4nuQ0ZeY0JzJKekOCCXpF8F/GcN42L8l5ikYD8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ashok Raj <ashok.raj@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.3 08/29] x86/smp: Cure kexec() vs. mwait_play_dead() breakage
+        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Samuel Mendoza-Jonas <samjonas@amazon.com>,
+        David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH 6.1 19/30] riscv/mm: Convert to using lock_mm_and_find_vma()
 Date:   Thu, 29 Jun 2023 20:43:38 +0200
-Message-ID: <20230629184152.080539377@linuxfoundation.org>
+Message-ID: <20230629184152.447109443@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
-References: <20230629184151.705870770@linuxfoundation.org>
+In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
+References: <20230629184151.651069086@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,179 +56,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Ben Hutchings <ben@decadent.org.uk>
 
-commit d7893093a7417527c0d73c9832244e65c9d0114f upstream.
+commit 7267ef7b0b77f4ed23b7b3c87d8eca7bd9c2d007 upstream.
 
-TLDR: It's a mess.
-
-When kexec() is executed on a system with offline CPUs, which are parked in
-mwait_play_dead() it can end up in a triple fault during the bootup of the
-kexec kernel or cause hard to diagnose data corruption.
-
-The reason is that kexec() eventually overwrites the previous kernel's text,
-page tables, data and stack. If it writes to the cache line which is
-monitored by a previously offlined CPU, MWAIT resumes execution and ends
-up executing the wrong text, dereferencing overwritten page tables or
-corrupting the kexec kernels data.
-
-Cure this by bringing the offlined CPUs out of MWAIT into HLT.
-
-Write to the monitored cache line of each offline CPU, which makes MWAIT
-resume execution. The written control word tells the offlined CPUs to issue
-HLT, which does not have the MWAIT problem.
-
-That does not help, if a stray NMI, MCE or SMI hits the offlined CPUs as
-those make it come out of HLT.
-
-A follow up change will put them into INIT, which protects at least against
-NMI and SMI.
-
-Fixes: ea53069231f9 ("x86, hotplug: Use mwait to offline a processor, fix the legacy case")
-Reported-by: Ashok Raj <ashok.raj@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Ashok Raj <ashok.raj@intel.com>
-Reviewed-by: Ashok Raj <ashok.raj@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230615193330.492257119@linutronix.de
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[6.1: Kconfig context]
+Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/smp.h |    2 +
- arch/x86/kernel/smp.c      |    5 +++
- arch/x86/kernel/smpboot.c  |   59 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 66 insertions(+)
+ arch/riscv/Kconfig    |    1 +
+ arch/riscv/mm/fault.c |   31 +++++++++++++------------------
+ 2 files changed, 14 insertions(+), 18 deletions(-)
 
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -131,6 +131,8 @@ void wbinvd_on_cpu(int cpu);
- int wbinvd_on_all_cpus(void);
- void cond_wakeup_cpu0(void);
- 
-+void smp_kick_mwait_play_dead(void);
-+
- void native_smp_send_reschedule(int cpu);
- void native_send_call_func_ipi(const struct cpumask *mask);
- void native_send_call_func_single_ipi(int cpu);
---- a/arch/x86/kernel/smp.c
-+++ b/arch/x86/kernel/smp.c
-@@ -21,6 +21,7 @@
- #include <linux/interrupt.h>
- #include <linux/cpu.h>
- #include <linux/gfp.h>
-+#include <linux/kexec.h>
- 
- #include <asm/mtrr.h>
- #include <asm/tlbflush.h>
-@@ -157,6 +158,10 @@ static void native_stop_other_cpus(int w
- 	if (atomic_cmpxchg(&stopping_cpu, -1, cpu) != -1)
- 		return;
- 
-+	/* For kexec, ensure that offline CPUs are out of MWAIT and in HLT */
-+	if (kexec_in_progress)
-+		smp_kick_mwait_play_dead();
-+
- 	/*
- 	 * 1) Send an IPI on the reboot vector to all other CPUs.
- 	 *
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -53,6 +53,7 @@
- #include <linux/tboot.h>
- #include <linux/gfp.h>
- #include <linux/cpuidle.h>
-+#include <linux/kexec.h>
- #include <linux/numa.h>
- #include <linux/pgtable.h>
- #include <linux/overflow.h>
-@@ -106,6 +107,9 @@ struct mwait_cpu_dead {
- 	unsigned int	status;
- };
- 
-+#define CPUDEAD_MWAIT_WAIT	0xDEADBEEF
-+#define CPUDEAD_MWAIT_KEXEC_HLT	0x4A17DEAD
-+
- /*
-  * Cache line aligned data for mwait_play_dead(). Separate on purpose so
-  * that it's unlikely to be touched by other CPUs.
-@@ -168,6 +172,10 @@ static void smp_callin(void)
- {
- 	int cpuid;
- 
-+	/* Mop up eventual mwait_play_dead() wreckage */
-+	this_cpu_write(mwait_cpu_dead.status, 0);
-+	this_cpu_write(mwait_cpu_dead.control, 0);
-+
- 	/*
- 	 * If waken up by an INIT in an 82489DX configuration
- 	 * cpu_callout_mask guarantees we don't get here before
-@@ -1799,6 +1807,10 @@ static inline void mwait_play_dead(void)
- 			(highest_subcstate - 1);
- 	}
- 
-+	/* Set up state for the kexec() hack below */
-+	md->status = CPUDEAD_MWAIT_WAIT;
-+	md->control = CPUDEAD_MWAIT_WAIT;
-+
- 	wbinvd();
- 
- 	while (1) {
-@@ -1816,10 +1828,57 @@ static inline void mwait_play_dead(void)
- 		mb();
- 		__mwait(eax, 0);
- 
-+		if (READ_ONCE(md->control) == CPUDEAD_MWAIT_KEXEC_HLT) {
-+			/*
-+			 * Kexec is about to happen. Don't go back into mwait() as
-+			 * the kexec kernel might overwrite text and data including
-+			 * page tables and stack. So mwait() would resume when the
-+			 * monitor cache line is written to and then the CPU goes
-+			 * south due to overwritten text, page tables and stack.
-+			 *
-+			 * Note: This does _NOT_ protect against a stray MCE, NMI,
-+			 * SMI. They will resume execution at the instruction
-+			 * following the HLT instruction and run into the problem
-+			 * which this is trying to prevent.
-+			 */
-+			WRITE_ONCE(md->status, CPUDEAD_MWAIT_KEXEC_HLT);
-+			while(1)
-+				native_halt();
-+		}
-+
- 		cond_wakeup_cpu0();
- 	}
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -114,6 +114,7 @@ config RISCV
+ 	select HAVE_RSEQ
+ 	select IRQ_DOMAIN
+ 	select IRQ_FORCED_THREADING
++	select LOCK_MM_AND_FIND_VMA
+ 	select MODULES_USE_ELF_RELA if MODULES
+ 	select MODULE_SECTIONS if MODULES
+ 	select OF
+--- a/arch/riscv/mm/fault.c
++++ b/arch/riscv/mm/fault.c
+@@ -83,13 +83,13 @@ static inline void mm_fault_error(struct
+ 	BUG();
  }
  
-+/*
-+ * Kick all "offline" CPUs out of mwait on kexec(). See comment in
-+ * mwait_play_dead().
-+ */
-+void smp_kick_mwait_play_dead(void)
+-static inline void bad_area(struct pt_regs *regs, struct mm_struct *mm, int code, unsigned long addr)
++static inline void
++bad_area_nosemaphore(struct pt_regs *regs, int code, unsigned long addr)
+ {
+ 	/*
+ 	 * Something tried to access memory that isn't in our memory map.
+ 	 * Fix it, but check if it's kernel or user first.
+ 	 */
+-	mmap_read_unlock(mm);
+ 	/* User mode accesses just cause a SIGSEGV */
+ 	if (user_mode(regs)) {
+ 		do_trap(regs, SIGSEGV, code, addr);
+@@ -99,6 +99,15 @@ static inline void bad_area(struct pt_re
+ 	no_context(regs, addr);
+ }
+ 
++static inline void
++bad_area(struct pt_regs *regs, struct mm_struct *mm, int code,
++	 unsigned long addr)
 +{
-+	u32 newstate = CPUDEAD_MWAIT_KEXEC_HLT;
-+	struct mwait_cpu_dead *md;
-+	unsigned int cpu, i;
++	mmap_read_unlock(mm);
 +
-+	for_each_cpu_andnot(cpu, cpu_present_mask, cpu_online_mask) {
-+		md = per_cpu_ptr(&mwait_cpu_dead, cpu);
-+
-+		/* Does it sit in mwait_play_dead() ? */
-+		if (READ_ONCE(md->status) != CPUDEAD_MWAIT_WAIT)
-+			continue;
-+
-+		/* Wait up to 5ms */
-+		for (i = 0; READ_ONCE(md->status) != newstate && i < 1000; i++) {
-+			/* Bring it out of mwait */
-+			WRITE_ONCE(md->control, newstate);
-+			udelay(5);
-+		}
-+
-+		if (READ_ONCE(md->status) != newstate)
-+			pr_err_once("CPU%u is stuck in mwait_play_dead()\n", cpu);
-+	}
++	bad_area_nosemaphore(regs, code, addr);
 +}
 +
- void hlt_play_dead(void)
+ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long addr)
  {
- 	if (__this_cpu_read(cpu_info.x86) >= 4)
+ 	pgd_t *pgd, *pgd_k;
+@@ -281,23 +290,10 @@ asmlinkage void do_page_fault(struct pt_
+ 	else if (cause == EXC_INST_PAGE_FAULT)
+ 		flags |= FAULT_FLAG_INSTRUCTION;
+ retry:
+-	mmap_read_lock(mm);
+-	vma = find_vma(mm, addr);
++	vma = lock_mm_and_find_vma(mm, addr, regs);
+ 	if (unlikely(!vma)) {
+ 		tsk->thread.bad_cause = cause;
+-		bad_area(regs, mm, code, addr);
+-		return;
+-	}
+-	if (likely(vma->vm_start <= addr))
+-		goto good_area;
+-	if (unlikely(!(vma->vm_flags & VM_GROWSDOWN))) {
+-		tsk->thread.bad_cause = cause;
+-		bad_area(regs, mm, code, addr);
+-		return;
+-	}
+-	if (unlikely(expand_stack(vma, addr))) {
+-		tsk->thread.bad_cause = cause;
+-		bad_area(regs, mm, code, addr);
++		bad_area_nosemaphore(regs, code, addr);
+ 		return;
+ 	}
+ 
+@@ -305,7 +301,6 @@ retry:
+ 	 * Ok, we have a good vm_area for this memory access, so
+ 	 * we can handle it.
+ 	 */
+-good_area:
+ 	code = SEGV_ACCERR;
+ 
+ 	if (unlikely(access_error(cause, vma))) {
 
 
