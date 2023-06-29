@@ -2,125 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7AFB7429FD
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 17:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAEF0742A3B
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 18:06:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232103AbjF2Pz0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 11:55:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59778 "EHLO
+        id S231680AbjF2QGR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 12:06:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231718AbjF2PzZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 11:55:25 -0400
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5E8010FB
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 08:55:23 -0700 (PDT)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-570877f7838so8389637b3.0
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 08:55:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1688054123; x=1690646123;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GIsDwhiyJ0pTpu0UYiy2IDAtImTwe3J7ATR6MXDg+hE=;
-        b=H86jsrap+OdTRaFtAQzo66Gv3ijAD7UHMOZ1e6tZ6ZuqwBf/N4ozMQeaMTFpw2MEGQ
-         ArMnrtm0ED8ELvHY/rjXMOn0BgPwEz/+V5MKVDX3qbD5cH6upe8awvQ2GF9GoPu7o+2H
-         jut5eOZnSHsuf+F6z0Fr+gXAFWNlaykcZ6zHfeL5ncfF/+MzAM0is60mKF8FhcYEQGd0
-         WRz4BE/XD2kM4GYsr2/cAQ7fjVvtX08DacvXIg9SibGlLrVFT3lMTD87XUoyrbB7YQQS
-         M0mC7aCxrjJd0hm7LU1fkOiIopuj3EtabxoFvo7Jxl1AVkPNpLq9to2BOQopvhJRwvML
-         vy1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688054123; x=1690646123;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GIsDwhiyJ0pTpu0UYiy2IDAtImTwe3J7ATR6MXDg+hE=;
-        b=ewSEt66pFmv9yH6+dFp3FG95RRSA2xGRcO4/LMmF9OjHcCmauen5hBavDwmzwug7bt
-         8gGMbod2TAEWhgiIelTLhCTteNKD4PlDg4wGQJNQs9l3Q7QKVWwevwWbpS4EAo5rZOYc
-         YntY5Eaz5Ymmkabnu78f5gBBbmvpWkSgCSih3C0S0RYWx3DeTrc3lDIKdqteF+IyO1hq
-         4oco3XyPQIzdW10T80ff1DYO06XxPA/J11uSZQx+WxVnb7/G3C5GSym0ajXFWfXiMbpX
-         n3dri4FKOEsXe2U646jce1/1YSjUc0vzgSYX9wPQkX2inzrCgCTnDTiWvLHkS+w9xyBR
-         I87g==
-X-Gm-Message-State: AC+VfDxSe+fGX8aTxaop9T+BTiOKas++zj85nRSDTYawxv2Q69bffuQt
-        zqwdU4kQfd/eehvUsW6iBZ1kx3H1t7/y6huWzR+Y
-X-Google-Smtp-Source: ACHHUZ4aMI8cozC5G9yyRAEOlD2SHN/GC6qUW4YWrO+RpoNGi5HSOEeCgXxJk+4o6Had7C1DOaulqjbPiGHH+vY1qek=
-X-Received: by 2002:a0d:eb93:0:b0:56d:805:1507 with SMTP id
- u141-20020a0deb93000000b0056d08051507mr41021708ywe.16.1688054122976; Thu, 29
- Jun 2023 08:55:22 -0700 (PDT)
+        with ESMTP id S232006AbjF2QGO (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Thu, 29 Jun 2023 12:06:14 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41521731;
+        Thu, 29 Jun 2023 09:06:12 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id C3FFE320090C;
+        Thu, 29 Jun 2023 12:06:10 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Thu, 29 Jun 2023 12:06:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1688054770; x=1688141170; bh=aQ
+        l6t/V3Yr9WqaPI64E3eafGxIBMivgTwolzo540MwQ=; b=zKcmx+AoZpC4z76nNs
+        jG6GaVixiTyXGVMnxIuLTSn/nwq6i9nM26CQiWIxSO4z+x8Ufz+nDhBUGEKu2QBz
+        0Zvn3iaXQ7jlN4ny0U7uDxRcei5Cn8r4pA20t2eWjLmNN6cZoBbC5Ew3x69u5ClB
+        ZrthhvRp1nwk8MpQZccABzjxXkNlDg7b5rBQwf1sXViaj1QaHAwZQ/zhOOYCmFY1
+        0N2hcom3ZgCJo4W0aCUQY/N1LiqmXjoHS59CZAGKTVQlngYNnOpDEF+I3j85mIhN
+        4WXz5g3ZJ6hQ+Pw8yXbuTLXak7Ww2cSSJp6WTQLOm54nrElIG/RgV8kQgjmlZXc1
+        tklA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1688054770; x=1688141170; bh=aQl6t/V3Yr9Wq
+        aPI64E3eafGxIBMivgTwolzo540MwQ=; b=K9MmruBbgYjYAAi0g6IMntUQNx8fY
+        4Cwicx2o37fK2cckgB985dbDs1ZVgtNuMUOwUf7s//f8EIjcYBHRDF/tSS8yiOnf
+        Y62GyL3RNl2OZe7Waim285CpdqSVlyrdWqRrPokz6useu6bkXipKKrnXV6G80+oY
+        7Lg1s3W1HIawaHhVq2A4doj9KwaJM/jdbh0dmPTaNn/kZrPbS6OTqAnuzEotT20/
+        x+CzekSbobd2YnggL3qOFC0DfAXqzuI+CQNelQIsbkX+ZkgoCIAjuuxe3WSzhzrJ
+        XqFlCEKCbDrdnARzLPMtb9qLFE5uXsl6eB5UGSITMGcsNSpcHK9MH51HQ==
+X-ME-Sender: <xms:8KudZMedTBkWyxppC0_grAdJxIkMaNOyhaVN6z_BqqJ80s6J7zwHkw>
+    <xme:8KudZOMTyuiKyTRA6ZUsZ2Y2Pwg6uhiqEDRdEJCQZRgh2w9gQ-5DkW_WE2reKYGZW
+    RNvTU0KxDTBdw>
+X-ME-Received: <xmr:8KudZNjBjNJFS-kQ-10MuiVDarsV3C2Q0Q7CsWML-ZM41bWONYMmk6rowi-ddqTTmtII_3pl4ycTffKA0vg17o7BtsAtk7TTPVSwQg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeggdeljecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
+    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomh
+X-ME-Proxy: <xmx:8KudZB8FGmQ-ZnMNAuePDpb2Ipsp0yOHMigWww0-vhnhLyzWrPFa9A>
+    <xmx:8KudZIvMhdZ3qvXqt2-F3miAvHhwal9jLP_BYX_C10mcIcw368mJdw>
+    <xmx:8KudZIGVxyePNZCrbdRR_zP-pX02xCQRrNWG3_MzORZSXAd49mFZ9g>
+    <xmx:8qudZIcnH18b3PjwV_8t_Iu4LRAbbysytcgLtbtHAFW4eQMjZq7ahQ>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 29 Jun 2023 12:06:07 -0400 (EDT)
+Date:   Thu, 29 Jun 2023 18:06:05 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        johan+linaro@kernel.org, perex@perex.cz, tiwai@suse.com,
+        lgirdwood@gmail.com, ckeepax@opensource.cirrus.com,
+        kuninori.morimoto.gx@renesas.com, linux-kernel@vger.kernel.org,
+        pierre-louis.bossart@linux.intel.com, alsa-devel@alsa-project.org,
+        Stable@vger.kernel.org
+Subject: Re: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device
+ number
+Message-ID: <2023062940-snore-brick-419b@gregkh>
+References: <20230628092404.13927-1-srinivas.kandagatla@linaro.org>
+ <c22fcc94-aa41-4ffd-bfe8-f0b9f15a76c0@sirena.org.uk>
 MIME-Version: 1.0
-References: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
- <2023060156-precision-prorate-ce46@gregkh> <20259cf7-d50d-4eca-482b-3a89cc94df7b@amazon.com>
- <2023060148-levers-freight-5b11@gregkh> <CAHC9VhQ6W4hq3B122BxcrD6h6_-Q1AguFYYLjAbB6ALCbmzDoQ@mail.gmail.com>
- <2023060102-chatter-happening-f7a5@gregkh> <CAHC9VhRuc5jSK7xODqtBvhUmunov+PVVQyLb8oDP8k0pLq_P-g@mail.gmail.com>
- <2023062846-outback-posting-dfbd@gregkh> <CAHC9VhQfWNxP80PRHMM44fkMx8fnuPJ2VyR-mA1WMLwsAevRuA@mail.gmail.com>
- <2023062955-wing-front-553b@gregkh>
-In-Reply-To: <2023062955-wing-front-553b@gregkh>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 29 Jun 2023 11:55:12 -0400
-Message-ID: <CAHC9VhQ5Mx_BMuTCyMFKeTWkgZsoXxAipzx6YQhrrhNu61_awA@mail.gmail.com>
-Subject: Re: Possible build time regression affecting stable kernels
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Luiz Capitulino <luizcap@amazon.com>, sashal@kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c22fcc94-aa41-4ffd-bfe8-f0b9f15a76c0@sirena.org.uk>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 29, 2023 at 4:43=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
-> On Wed, Jun 28, 2023 at 07:33:27PM -0400, Paul Moore wrote:
-> > > So, can I get a directory list or file list of what we should be
-> > > ignoring for the AUTOSEL and "Fixes: only" tools to be ignoring?
-> >
-> > I've been trying to ensure that the files/directories entries in
-> > MAINTAINERS are current, so that is probably as good a place as any to
-> > pull that info.  Do the stable tools use that info already?  In other
-> > words, if we update the entries in MAINTAINERS should we also notify
-> > you guys, or will you get it automatically?
->
-> We do not use (or at least I don't, I can't speak for Sasha here, but
-> odds are we should unify this now), the MAINTAINERS file for this, but
-> rather a list like you provided below, thanks.
+On Thu, Jun 29, 2023 at 04:43:57PM +0100, Mark Brown wrote:
+> On Wed, Jun 28, 2023 at 10:24:04AM +0100, Srinivas Kandagatla wrote:
+> > For some reason we ended up with a setup without this flag.
+> > This resulted in inconsistent sound card devices numbers which
+> >  are also not starting as expected at dai_link->id.
+> >  (Ex: MultiMedia1 pcm ended up with device number 4 instead of 0)
+> 
+> Why is this a problem?
+> 
+> > With this patch patch now the MultiMedia1 PCM ends up with device number 0
+> > as expected.
+> > 
+> > Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+> > Cc: <Stable@vger.kernel.org>
+> 
+> Won't this be an ABI change?  That seems like it'd disrupt things in
+> stable.
 
-Fair enough, if we ever have any significant restructuring I'll try to
-remember to update the stable folks.  Although I'm guessing such a
-change would likely end up being self-reporting anyway.
+ABI changes should disrupt things just the same in Linus's tree, why is
+stable any different?
 
-> > Regardless, here is a list:
-> >
-> > * Audit
-> > include/asm-generic/audit_*.h
-> > include/linux/audit.h
-> > include/linux/audit_arch.h
-> > include/uapi/linux/audit.h
-> > kernel/audit*
-> > lib/*audit.c
-> >
-> > * LSM layer
-> > security/
-> > (NOTE: the individual sub-dirs under security/ belong to the
-> > individual LSMs, not the LSM layer)
->
-> So security/*.c would cover this, not below that, right?
+thanks,
 
-Yes, that should work.
+greg k-h
 
-> > * SELinux
-> > include/trace/events/avc.h
-> > include/uapi/linux/selinux_netlink.h
-> > scripts/selinux/
-> > security/selinux/
->
-> Looks good, thanks for this.
-
-Thanks for maintaining the exception list.
-
---=20
-paul-moore.com
