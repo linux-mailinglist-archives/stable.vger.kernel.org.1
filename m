@@ -2,62 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C855742A56
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 18:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC9E742A70
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 18:16:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231956AbjF2QLd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 12:11:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37518 "EHLO
+        id S232138AbjF2QQy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 12:16:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231794AbjF2QLd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 12:11:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C9B89E;
-        Thu, 29 Jun 2023 09:11:32 -0700 (PDT)
+        with ESMTP id S231984AbjF2QQx (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Thu, 29 Jun 2023 12:16:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06ED8A1;
+        Thu, 29 Jun 2023 09:16:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B86A86157B;
-        Thu, 29 Jun 2023 16:11:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96951C433C0;
-        Thu, 29 Jun 2023 16:11:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FAB96156D;
+        Thu, 29 Jun 2023 16:16:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D71C433C8;
+        Thu, 29 Jun 2023 16:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688055091;
-        bh=poaFO3/bPh14xOgLxoo80j/K9Q/PKlqqhRQVP/H2PzY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qux7W8jRi3usYygYWoKQ80BcrBb8GJWqLvuGuwL8lbBwBavexsXOYZo/YD8NXuGDQ
-         d1242atZe6+maXcqWu2UAnmYyd7J7+MA4DN1eT1MDIHRkyEzElW6VSEb3knMaRxKVW
-         XEppM1gEwcAG3KvCTuYd1XN0lhyMaDdVi+bDG9Xza9K/Yxe3evXQMuZbe1q8stHxpw
-         jFl+XugO0YcGPCK7GH6CqDyUXfsresz9YrZfrbnLfuigc4HXzyiy3N4mFJYza82u5e
-         UronuKaEFZqz/r813jLP8q4qjeNA/rQDcvX4hMDW6iDW1hqjlUjnGMF6i94Uc3bgst
-         bhOgvbvlqGHhA==
-Date:   Thu, 29 Jun 2023 09:11:29 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     longli@linuxonhyperv.com
-Cc:     Paolo Abeni <pabeni@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, linux-rdma@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Long Li <longli@microsoft.com>,
-        stable@vger.kernel.org
-Subject: Re: [Patch v3] net: mana: Batch ringing RX queue doorbell on
- receiving packets
-Message-ID: <20230629091129.19217388@kernel.org>
-In-Reply-To: <36c95dd6babb2202f70594d5dde13493af62dcad.camel@redhat.com>
-References: <1687823827-15850-1-git-send-email-longli@linuxonhyperv.com>
-        <36c95dd6babb2202f70594d5dde13493af62dcad.camel@redhat.com>
+        s=k20201202; t=1688055412;
+        bh=RyrvUeSls0qvEKZJFoV24QIDqfyNFR3a9bEQhu56rhU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=i1/e5Mlxfsmwuko+4qXrz9N4uq2VK/X1Fk2A4GyX1SoMGZXg6YAYLjnC4s/tdwImf
+         gQeOzq8r66+glvUi7Cafu3rcunkJzaBRr2GDZDzAfuCAeEIdDRMIjtKbH06QB0NlL7
+         u6WcqL7EDUviSWEdGlNosZ50rn/ocLoT1+iv3tPfSKZ9BNLFpjOrarKi0SUDvmMTER
+         +pRP917Z08QQzGYBeInW4oej+M+aOzUThA1N/HwVrTnA/YQtEZZX6RvrzucosebSDc
+         LhP7fHdU5qs/B1uRbg1kLb3p519Q+EQ4Q43EvtuhxMwGTviphgBJGbJ11WGgjhlObY
+         RnjBO+5vlalXg==
+Date:   Thu, 29 Jun 2023 17:16:44 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Greg KH <greg@kroah.com>
+Cc:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        johan+linaro@kernel.org, perex@perex.cz, tiwai@suse.com,
+        lgirdwood@gmail.com, ckeepax@opensource.cirrus.com,
+        kuninori.morimoto.gx@renesas.com, linux-kernel@vger.kernel.org,
+        pierre-louis.bossart@linux.intel.com, alsa-devel@alsa-project.org,
+        Stable@vger.kernel.org
+Subject: Re: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device
+ number
+Message-ID: <9699a960-74b0-4064-b264-6cde06cd16fc@sirena.org.uk>
+References: <20230628092404.13927-1-srinivas.kandagatla@linaro.org>
+ <c22fcc94-aa41-4ffd-bfe8-f0b9f15a76c0@sirena.org.uk>
+ <2023062940-snore-brick-419b@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="waVp8T61GontOc/b"
+Content-Disposition: inline
+In-Reply-To: <2023062940-snore-brick-419b@gregkh>
+X-Cookie: Surprise due today.  Also the rent.
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,12 +63,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 29 Jun 2023 10:42:34 +0200 Paolo Abeni wrote:
-> > While we are making changes in this code path, change the code for
-> > ringing doorbell to set the WQE_COUNT to 0 for Receive Queue. The
-> > hardware specification specifies that it should set to 0. Although
-> > currently the hardware doesn't enforce the check, in the future releases
-> > it may do.
 
-And please split this cleanup into a separate patch, it doesn't sound
-like it has to be done as part of the optimization.
+--waVp8T61GontOc/b
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, Jun 29, 2023 at 06:06:05PM +0200, Greg KH wrote:
+> On Thu, Jun 29, 2023 at 04:43:57PM +0100, Mark Brown wrote:
+
+> > Won't this be an ABI change?  That seems like it'd disrupt things in
+> > stable.
+
+> ABI changes should disrupt things just the same in Linus's tree, why is
+> stable any different?
+
+This is a numbering resulting from enumeration thing so it gets to be
+like the issues we've had with the order in which block and ethernet
+devices appear, it's on the edge the extent to which people might be
+relying on it.  If it's causing some problem as is and there's a reason
+to do something (see the first half of my reply...) but the case gets
+even harder to make with stable.
+
+--waVp8T61GontOc/b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSdrmwACgkQJNaLcl1U
+h9D4vwf/fXMdNGrJPn2JH9J6748ugvE0hNd8LXepjctqeXsD5EzrA7KlHE+5Hcqj
+FTGN1gBEhcjOp9fSqdi/mELLWVe2MXlYtyXv5iO5RU2Z9OJu1XjrSM6Jnx0ljKnu
+D5oXlY6ai/ohFCHiOO1Zbk1pDyLeUvfG+D/bAOWroHjlQVPYXZwKxINuwK1MfeAj
+wEWnl9DMSGWK6/PN7dNtapwreM1RN+a5k7REd9jFH4jVPBmX17YhEYBBEb41TBVR
+u7fZZBEYo0Ja0TfAdEc601yfdqpe0N4AAL+aav/EaMA93JVnhhvugFqbFxIc6ArF
+1x/LABsliWTKZpEoKyjLdGRba/zVUw==
+=W9gZ
+-----END PGP SIGNATURE-----
+
+--waVp8T61GontOc/b--
