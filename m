@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BA02742C55
-	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3255B742C18
+	for <lists+stable@lfdr.de>; Thu, 29 Jun 2023 20:48:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232521AbjF2Sra (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 14:47:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59906 "EHLO
+        id S232480AbjF2SpV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 14:45:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232602AbjF2SrI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:47:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E29FC30F7
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:47:06 -0700 (PDT)
+        with ESMTP id S232990AbjF2SpA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 14:45:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFCC02D62
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 11:44:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 09665615F7
-        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:47:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E20DC433C9;
-        Thu, 29 Jun 2023 18:47:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 46FC2615E2
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 18:44:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59999C433C8;
+        Thu, 29 Jun 2023 18:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688064424;
-        bh=KwJhJRMPcVtMuCcclKSBmy8Ae22JXVyH8g50wqBsRqg=;
+        s=korg; t=1688064296;
+        bh=ftY2B0Lm3XkRVDXFZ36sxKwa9zZmnhLED56S4O4Wg8s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K6Rmz8KfD91OPC5mcWkApUEyvlggLJ97jaGBo8rZDTRxOX+HdnywmYlRyEVTTyBJD
-         ozUidipGgZoKfbxTv7xAFC4w1yC1nVzOzZOx0UJMbV/uBqoV/8KolOi+dTlFWPsPSv
-         s9O9nACvUH/sd59DH5cDARV0QBAZSkPMT08S2Irs=
+        b=JCL8D30L7k31oD3lTFMRVnhQvoc/wzPOeSiJCYNQhWRB4nlrGzb1dldVs3k1xSuQe
+         ikHPaIC0AQQrdWHO4Qm0HhKGjPgFa/CTf4pbu8eL4aFapnDCRJRB+RLebdGyPQrOck
+         GQhnyAWqnfUtvNl/PMO4qgtkCWwcGBWF2ScRgmpA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Battersby <tonyb@cybernetics.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.3 05/29] x86/smp: Dont access non-existing CPUID leaf
+        patches@lists.linux.dev,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Samuel Mendoza-Jonas <samjonas@amazon.com>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Suren Baghdasaryan <surenb@google.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>
+Subject: [PATCH 6.1 16/30] arm64/mm: Convert to using lock_mm_and_find_vma()
 Date:   Thu, 29 Jun 2023 20:43:35 +0200
-Message-ID: <20230629184151.960818053@linuxfoundation.org>
+Message-ID: <20230629184152.325743401@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629184151.705870770@linuxfoundation.org>
-References: <20230629184151.705870770@linuxfoundation.org>
+In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
+References: <20230629184151.651069086@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,63 +58,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 9b040453d4440659f33dc6f0aa26af418ebfe70b upstream.
+commit ae870a68b5d13d67cf4f18d47bb01ee3fee40acb upstream.
 
-stop_this_cpu() tests CPUID leaf 0x8000001f::EAX unconditionally. Intel
-CPUs return the content of the highest supported leaf when a non-existing
-leaf is read, while AMD CPUs return all zeros for unsupported leafs.
+This converts arm64 to use the new page fault helper.  It was very
+straightforward, but still needed a fix for the "obvious" conversion I
+initially did.  Thanks to Suren for the fix and testing.
 
-So the result of the test on Intel CPUs is lottery.
-
-While harmless it's incorrect and causes the conditional wbinvd() to be
-issued where not required.
-
-Check whether the leaf is supported before reading it.
-
-[ tglx: Adjusted changelog ]
-
-Fixes: 08f253ec3767 ("x86/cpu: Clear SME feature flag when not in use")
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/3817d810-e0f1-8ef8-0bbd-663b919ca49b@cybernetics.com
-Link: https://lore.kernel.org/r/20230615193330.322186388@linutronix.de
+Fixed-and-tested-by: Suren Baghdasaryan <surenb@google.com>
+Unnecessary-code-removal-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[6.1: Ignore CONFIG_PER_VMA_LOCK context]
+Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/process.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/Kconfig    |    1 +
+ arch/arm64/mm/fault.c |   46 +++++++++-------------------------------------
+ 2 files changed, 10 insertions(+), 37 deletions(-)
 
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -756,6 +756,7 @@ struct cpumask cpus_stop_mask;
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -211,6 +211,7 @@ config ARM64
+ 	select IRQ_DOMAIN
+ 	select IRQ_FORCED_THREADING
+ 	select KASAN_VMALLOC if KASAN
++	select LOCK_MM_AND_FIND_VMA
+ 	select MODULES_USE_ELF_RELA
+ 	select NEED_DMA_MAP_STATE
+ 	select NEED_SG_DMA_LENGTH
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -483,27 +483,14 @@ static void do_bad_area(unsigned long fa
+ #define VM_FAULT_BADMAP		((__force vm_fault_t)0x010000)
+ #define VM_FAULT_BADACCESS	((__force vm_fault_t)0x020000)
  
- void __noreturn stop_this_cpu(void *dummy)
+-static vm_fault_t __do_page_fault(struct mm_struct *mm, unsigned long addr,
++static vm_fault_t __do_page_fault(struct mm_struct *mm,
++				  struct vm_area_struct *vma, unsigned long addr,
+ 				  unsigned int mm_flags, unsigned long vm_flags,
+ 				  struct pt_regs *regs)
  {
-+	struct cpuinfo_x86 *c = this_cpu_ptr(&cpu_info);
- 	unsigned int cpu = smp_processor_id();
- 
- 	local_irq_disable();
-@@ -770,7 +771,7 @@ void __noreturn stop_this_cpu(void *dumm
- 	 */
- 	set_cpu_online(cpu, false);
- 	disable_local_APIC();
--	mcheck_cpu_clear(this_cpu_ptr(&cpu_info));
-+	mcheck_cpu_clear(c);
- 
+-	struct vm_area_struct *vma = find_vma(mm, addr);
+-
+-	if (unlikely(!vma))
+-		return VM_FAULT_BADMAP;
+-
  	/*
- 	 * Use wbinvd on processors that support SME. This provides support
-@@ -784,7 +785,7 @@ void __noreturn stop_this_cpu(void *dumm
- 	 * Test the CPUID bit directly because the machine might've cleared
- 	 * X86_FEATURE_SME due to cmdline options.
+ 	 * Ok, we have a good vm_area for this memory access, so we can handle
+ 	 * it.
+-	 */
+-	if (unlikely(vma->vm_start > addr)) {
+-		if (!(vma->vm_flags & VM_GROWSDOWN))
+-			return VM_FAULT_BADMAP;
+-		if (expand_stack(vma, addr))
+-			return VM_FAULT_BADMAP;
+-	}
+-
+-	/*
+ 	 * Check that the permissions on the VMA allow for the fault which
+ 	 * occurred.
  	 */
--	if (cpuid_eax(0x8000001f) & BIT(0))
-+	if (c->extended_cpuid_level >= 0x8000001f && (cpuid_eax(0x8000001f) & BIT(0)))
- 		native_wbinvd();
+@@ -535,6 +522,7 @@ static int __kprobes do_page_fault(unsig
+ 	unsigned long vm_flags;
+ 	unsigned int mm_flags = FAULT_FLAG_DEFAULT;
+ 	unsigned long addr = untagged_addr(far);
++	struct vm_area_struct *vma;
  
+ 	if (kprobe_page_fault(regs, esr))
+ 		return 0;
+@@ -585,31 +573,14 @@ static int __kprobes do_page_fault(unsig
+ 
+ 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
+ 
+-	/*
+-	 * As per x86, we may deadlock here. However, since the kernel only
+-	 * validly references user space from well defined areas of the code,
+-	 * we can bug out early if this is from code which shouldn't.
+-	 */
+-	if (!mmap_read_trylock(mm)) {
+-		if (!user_mode(regs) && !search_exception_tables(regs->pc))
+-			goto no_context;
+ retry:
+-		mmap_read_lock(mm);
+-	} else {
+-		/*
+-		 * The above mmap_read_trylock() might have succeeded in which
+-		 * case, we'll have missed the might_sleep() from down_read().
+-		 */
+-		might_sleep();
+-#ifdef CONFIG_DEBUG_VM
+-		if (!user_mode(regs) && !search_exception_tables(regs->pc)) {
+-			mmap_read_unlock(mm);
+-			goto no_context;
+-		}
+-#endif
++	vma = lock_mm_and_find_vma(mm, addr, regs);
++	if (unlikely(!vma)) {
++		fault = VM_FAULT_BADMAP;
++		goto done;
+ 	}
+ 
+-	fault = __do_page_fault(mm, addr, mm_flags, vm_flags, regs);
++	fault = __do_page_fault(mm, vma, addr, mm_flags, vm_flags, regs);
+ 
+ 	/* Quick path to respond to signals */
+ 	if (fault_signal_pending(fault, regs)) {
+@@ -628,6 +599,7 @@ retry:
+ 	}
+ 	mmap_read_unlock(mm);
+ 
++done:
  	/*
+ 	 * Handle the "normal" (no error) case first.
+ 	 */
 
 
