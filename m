@@ -2,138 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20232743053
-	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 00:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AA5E743060
+	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 00:25:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232096AbjF2WTB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 29 Jun 2023 18:19:01 -0400
-Received: from mail-dm6nam12on2093.outbound.protection.outlook.com ([40.107.243.93]:54400
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229742AbjF2WTA (ORCPT <rfc822;stable@vger.kernel.org>);
-        Thu, 29 Jun 2023 18:19:00 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=M4t8W6RxZaXMigf7Yymv3hitPccwmuov+U5MzK6e75Morc6ZC/m8K8psqp0HB+YCX6llD5V86O6mAVREPyS9tubDVx19fDdrrrP899l0UbOjO7vg0V/rizWo1Mp+pjQBlmhkMv3DJ5el4XjsEO0MFDqeL3bpCYqjmZu8tCsrh2t+ul590SILq7J5fL21TLTjRf8Ke/dO+vY1gqBadfof4MiKNkK80c3wOD9e82bUvfwh8hCtajNcp0RF24b6edB7GDmYKnlN3VpwY6t0kUwwpnz0NzHvtc56iDySUOcz9dkcLLWL6vroGBXjDRN1T6zgN0rcLJOQTnrZ6aaLkGizWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E7b5eK+1FlT8N4cDtSMAcch85nDINSCqGoTTYvnUGVo=;
- b=dJaklesJY3tJ3dhS6vrii2K7DlJBRZZlBVeAYHzY0ugep0KFqdvHCopvvjnAngNpE+YGUFo/+NvPOD45jLg5updSQgoiyMBsCJIGcXvxBH9Sk4zZVGorh5biCk6VccRLZsdf4p4lzNGp9u5EJPxuG8JnfHWQisOeBitnKDcp8MOlMuPTpV2yorlUsBWPHG0JLKP+Wxz6IcUsXHW2vIpDMUxxu2wN+oU5tWxwLlrJAlJZf1a6Z+BimKUQO7UsO34QbZUmhboz/DGU0QsRgZ1Gqr+c8MbjKYlbmZHKUk/NZkIprE55+OkpS905/3CtchBY8NY8JHV59xNfHTjQr7vWUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E7b5eK+1FlT8N4cDtSMAcch85nDINSCqGoTTYvnUGVo=;
- b=F7QbCVFOgyXv4KqyUW8Y5y9rRoKj4mx5GFVNZOFTfKcz7+7ai5YRHsnGx6e2ckDtgaAQHjEY0qlf7eqmijUgSCkjCMMWhjDTpRhFmfI37tNjp4zieDiIGMHsIBMt2LNEAgO657CbXUjmKJfgHEuBIya9Sx0QijYft+DzqZQ2DVg=
-Received: from BYAPR21MB1688.namprd21.prod.outlook.com (2603:10b6:a02:bf::26)
- by IA1PR21MB3472.namprd21.prod.outlook.com (2603:10b6:208:3e3::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.4; Thu, 29 Jun
- 2023 22:18:56 +0000
-Received: from BYAPR21MB1688.namprd21.prod.outlook.com
- ([fe80::7d5d:3139:cf68:64b]) by BYAPR21MB1688.namprd21.prod.outlook.com
- ([fe80::7d5d:3139:cf68:64b%3]) with mapi id 15.20.6565.005; Thu, 29 Jun 2023
- 22:18:56 +0000
-From:   "Michael Kelley (LINUX)" <mikelley@microsoft.com>
-To:     Sasha Levin <sashal@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-        KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH AUTOSEL 6.3 07/17] arm64/hyperv: Use
- CPUHP_AP_HYPERV_ONLINE state to fix CPU online sequencing
-Thread-Topic: [PATCH AUTOSEL 6.3 07/17] arm64/hyperv: Use
- CPUHP_AP_HYPERV_ONLINE state to fix CPU online sequencing
-Thread-Index: AQHZqrwVgYW4CVLgJEC2yQxsCXSETK+iWaqQ
-Date:   Thu, 29 Jun 2023 22:18:56 +0000
-Message-ID: <BYAPR21MB16886629B821C5D846125004D725A@BYAPR21MB1688.namprd21.prod.outlook.com>
-References: <20230629190049.907558-1-sashal@kernel.org>
- <20230629190049.907558-7-sashal@kernel.org>
-In-Reply-To: <20230629190049.907558-7-sashal@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=d7c21818-d6b3-4a59-9aa3-04c16dc7696b;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-06-29T22:18:01Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BYAPR21MB1688:EE_|IA1PR21MB3472:EE_
-x-ms-office365-filtering-correlation-id: 8df8411f-50fc-4ff7-8a15-08db78eed47d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: w9sGlOtE0YN+42BC2YuBphICJWjNc2cM/OJOcOk5RaB3OorCoZZVok18JOxqoDzoUWzxdUmJff+8rYR9KzCm0egwzMD2GLm6dl0o7HIXQS45ft0bfCBEhwXIrLc0U/Pbc77XjYYk7oOJo1p0Iba6tbkmxK4TgwF7sdPUiSQdI1s74pc5Vw45+RmJdLR5EEJL0kxdxcbmGLgmUvE5kysPlJlu8AC9xnO+QE5lqSk3vNYYBbvpQHKzySAInFMMhynRkaE25UAOh9o0DHUCw+1QqW0IywCO38+7JhXfOfVogn/+Xk52nkRNLqnYsRtFBp0kVwBz3YKkyYnRM6n0pBFVGTj93BAv3yXhnNXprvHaBDlVhC4eZSRzOoNcX5z8fAB2TRSKPU0TyEzkfSN2UwlklJ7lsG9K7r3nFoCohvUtA6yCoeqE5mCI5KzDbZdh/62AhZlB2D+EjyJyS416ycS9AnvkOjHN7ugz0mPuJlIJlucY/7IKCFn5CoIt7OgfHbcL7e+piWH6JQ8vzHRurahOgK/lrBHh2M+97S/SBYUtHz9PuL1TqTWvkJmq1jvdJI8jSbaSAElAPFp68Y+inOSufvRbu2ax9iz8m3i+GAKRl2cf7zJqY4yphkaYYuevug5ZZSsIHpHzdmbKETbi0NDKrOkwAkCCylw46zWYwyIuKqU=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR21MB1688.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(39860400002)(376002)(136003)(396003)(346002)(451199021)(9686003)(186003)(26005)(6506007)(41300700001)(7696005)(83380400001)(478600001)(10290500003)(110136005)(82960400001)(82950400001)(54906003)(71200400001)(122000001)(38100700002)(64756008)(66556008)(55016003)(66476007)(66446008)(76116006)(66946007)(4326008)(316002)(5660300002)(52536014)(86362001)(33656002)(4744005)(38070700005)(2906002)(8676002)(8936002)(8990500004);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?eT/sx2DqS3dEaPCUunfupkwq7for0s6ILx5f7P4+obdbB2eTMJfE4EvrjqHU?=
- =?us-ascii?Q?ErfhCIslGLt+1IxpSbRJTFq7gbCblHz/ZmRKxlFh9LrN7Bv8synJ/pOo1KNX?=
- =?us-ascii?Q?hfmr6C77UyLPr/OBchdjLFcs5tkXl40+ToGTlyv6xv66gMKLuxzG2KB0/0Fu?=
- =?us-ascii?Q?/dRU0COP6ei2azjOBKt99/AjihzHTTo/xEc5CyV4wjq9PegiALxMfJ0rfTPH?=
- =?us-ascii?Q?1/aQiVyzadGebXsQ3BdX5nRr5WpNHPVAjvGxiloAIVExudmGzHacqI40ldiV?=
- =?us-ascii?Q?+ZqgHH8lQGajNvYALoo1sTe7rd0MnBjDQs/9o9Dx44M9MZkEZdTD+DVOfnNX?=
- =?us-ascii?Q?LxxhoTOrbdcRncx99TEwA+aHKQt6KYF7gYqHiuPi06HpbnVLeR1ESqYovRnH?=
- =?us-ascii?Q?VEkzykayzhJzfZtGF2O2gs84aA414ATIDuqA9KLam5DCqj4UQprP2V1vcsb4?=
- =?us-ascii?Q?X0YIqBS8U+g2NXCUkqPic/RkJ4Ntk+4OeguvRrLurS351mr12+iJBBf+eAlF?=
- =?us-ascii?Q?JVLIDNdqNP9iiFBzdXeUHffc3wpt3szTzthmyfHXYuTZ9kscTFBdBcjG4zW3?=
- =?us-ascii?Q?8tL/H7/UsYgS9zvOPNGNOCu5TqODYfpERXykQ67Dheg63kyrkZlAGvAVfkPf?=
- =?us-ascii?Q?QjkjOcFJ4BAmWcrMjdY8KFzi4PMHrktAeIm7N1ll8ZtYr3IHYeT+RZbD6/QL?=
- =?us-ascii?Q?auI2cwlkX1mJ/C36X63E99dA7Ni0uoYut3FZN0hGu2Nze4cgE/scACKQO+re?=
- =?us-ascii?Q?az8MjlKWqjFJiq3aVmJVT/0xsEyMvvDOzsVDbRDLVn6kR3wJm6bhCvqa5/5q?=
- =?us-ascii?Q?MuR8uMj71M8/2tG0IU6Q0Mw7MkiCQpHoeluhYm1oi9uRrEVuOgJ2ICym22zD?=
- =?us-ascii?Q?/Fx6LcsvSCwqKcHeukpYOsRmETkGkqpmYI71rL2weDGxteWcR39HtdPHxDq8?=
- =?us-ascii?Q?FtltkSzhfv4bcU6Q5E/lyoR1OKQ5PoOKyiG9JlCYZSMvXErMpDjLxF/ngTPd?=
- =?us-ascii?Q?bZm9sBKsPwDL8jmY4mHzcuQp6Ie4RcFK5DAwJy97iha7/KOK5LRrrbWg3mAu?=
- =?us-ascii?Q?vzdXy7VOwPyTmF6F/sqmEPNjlCuCKsgFEzMHw8y2TDqcS/aNMA8BTCMGTQhk?=
- =?us-ascii?Q?aA8cnL9QT6LGJjTjw7FHrkUuTjATmXndXE6Hm3WwERpVmnfI08t7ckWd16Jo?=
- =?us-ascii?Q?QbbretA7HnQ6rt7vw4FrNo/dI6L9YNm3bGbS25TlRRsGw3GWJxCpfJcmuWg2?=
- =?us-ascii?Q?gou4Jtx/MmHPM4k4ASnkk8J2vRxek7I1fB407eSC9N4g7knQiNlksPDWycDq?=
- =?us-ascii?Q?BIkxM+gNbBf6Zj6sPq1P2PkZNDfM53GVwYOHGJmBuG19wLO5YN/h7sw/2DBI?=
- =?us-ascii?Q?vRasdEFsdfBtEY1Tt17Qk9a6ASB4HCOdax5uki7lFotrANo5KG+QnR3+tybB?=
- =?us-ascii?Q?8fxj6ZZniTRc/eGVhY4K68S5YnMSH9G+POnBBXGl3j4Ng7oBKBww3O0URDnQ?=
- =?us-ascii?Q?zeoIveNen+3EDZD3lSMZSqO43ghE80R+PpBhCO83hkgDZAcapWCOYY7HTkEW?=
- =?us-ascii?Q?GIiO4C5MvbQukdYO9y5z5fmfxJLb5/ouaB0QbYc3+u70iUVdyANgzqm11mY0?=
- =?us-ascii?Q?ug=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S230385AbjF2WZy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 29 Jun 2023 18:25:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40416 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230119AbjF2WZy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 29 Jun 2023 18:25:54 -0400
+Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1F5D2D62
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 15:25:52 -0700 (PDT)
+Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-1b01b43577fso1023992fac.0
+        for <stable@vger.kernel.org>; Thu, 29 Jun 2023 15:25:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688077552; x=1690669552;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7VVwwX9nrMtDElUTnksCD2hg1pI6WoLui9hZmUXkOUA=;
+        b=Cfs4r+3s2G+oZHEEH9djQBz/4niZR/nRv7oITEeuxXy9yc60cdW+HiGgXqBrzYrPM5
+         RBVCviYxVc9gPRZXtjKNMjIuENGu2pJ8qjIuQHF+aznANdAk3BoxfKvVh4pKOyvZFWa1
+         x6fPGUt7aVne9mouyw6xk+YjGo+yIpeXWa5JigKh1uRdjwRP2AOH8z+Gf0gwnab3eVsN
+         DU1rwW41gB6TAxThhK2ze0S+pqKe3tlbO8WyqTGExzKEemomds5h/WY8pYjauqS9QnOr
+         WyQWfgzQVigPo1brWfpaaq1XSZLJJBTw5kWgvHW16QE69VQ/3KinzVrpsB3UY2jpO8+q
+         SE8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688077552; x=1690669552;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7VVwwX9nrMtDElUTnksCD2hg1pI6WoLui9hZmUXkOUA=;
+        b=PSkqO89VnEqwm/IPGAELBHIe93PuwURoe1ihaC5qEmM5nPBN/1NuWuw7XyjksaaavL
+         XEBKVLwfOIWgi/JUNmKtj0FLPjQxdhmJgOHhBRJZsms+r+2QIQswgarM3HQyeaVYlOaA
+         x113bMHmeLkR/GnP/XVWVuln44s/Jv2Db58LjIQGfjPoXDBCN6psuD2lTHOB0O0HHDsn
+         wUrYcWcDbBZKzeN3PxtrPsN95/R1xjSV7o12DYwS8+2q+8HpSf/IolVHdYpPr1zKeOr4
+         ziPDCWJdbDGjKct5wOtNI8q6h6urMiOJRV1jLFkoteSI6oOdM4NbiQNpp7BsAfnB0ToP
+         wFpg==
+X-Gm-Message-State: ABy/qLb2G2Fa9MCdzUGg58jG37YjID1i6ubH6x/P95VlsdVieKB6bjLj
+        V6HKfevLtGP+DALhS0hQkISFKtEW2u5Qsz3Z6+ue4g==
+X-Google-Smtp-Source: APBJJlFx9uA/lUNE2OdWk+UeiIFn0pq5/dwhD/X5fjiA+mq6gLzQ/Hxb60CSmTsJt7uZQ+kheHPbEjiOe5RLarRxLaQ=
+X-Received: by 2002:a05:6870:56ac:b0:1ad:1984:9620 with SMTP id
+ p44-20020a05687056ac00b001ad19849620mr1523464oao.43.1688077552177; Thu, 29
+ Jun 2023 15:25:52 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR21MB1688.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8df8411f-50fc-4ff7-8a15-08db78eed47d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jun 2023 22:18:56.5392
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Q25LxnvwRrB1fMPgTbuSLVW+vAEmRIrDwQCLL0+ZO7MQQZW5ats1s3wFsYsAMVjtZ44DIUHnzqUULxfS7iPZA1z1hsteYgnn6QebRQBArV4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR21MB3472
+References: <20230629184151.651069086@linuxfoundation.org>
+In-Reply-To: <20230629184151.651069086@linuxfoundation.org>
+From:   =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date:   Thu, 29 Jun 2023 16:25:40 -0600
+Message-ID: <CAEUSe7-xC90CGpJjQD4w10ea=nXMiGhsFouhaa8fVK5W-WJJJQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/30] 6.1.37-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sasha Levin <sashal@kernel.org> Sent: Thursday, June 29, 2023 12:01 P=
-M
->=20
-> From: Michael Kelley <mikelley@microsoft.com>
->=20
-> [ Upstream commit 52ae076c3a9b366b6fa9f7c7e67aed8b28716ed9 ]
->=20
-> State CPUHP_AP_HYPERV_ONLINE has been introduced to correctly sequence th=
-e
-> initialization of hyperv_pcpu_input_arg. Use this new state for Hyper-V
-> initialization so that hyperv_pcpu_input_arg is allocated early enough.
->=20
+Hello!
 
-State CPUHP_AP_HYPERV_ONLINE was introduced in 6.4.  There's no need
-to backport this patch to stable releases.
+On Thu, 29 Jun 2023 at 12:46, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> This is the start of the stable review cycle for the 6.1.37 release.
+> There are 30 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 01 Jul 2023 18:41:39 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.37-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Michael
+Early report of failures.
+
+SPARC and PA-RISC both fail to build (GCC-8 and GCC-11).
+
+For SPARC:
+* allnoconfig
+* defconfig
+* tinyconfig
+
+-----8<-----
+/builds/linux/arch/sparc/mm/fault_32.c: In function 'force_user_fault':
+/builds/linux/arch/sparc/mm/fault_32.c:312:49: error: 'regs'
+undeclared (first use in this function)
+  312 |         vma =3D lock_mm_and_find_vma(mm, address, regs);
+      |                                                 ^~~~
+/builds/linux/arch/sparc/mm/fault_32.c:312:49: note: each undeclared
+identifier is reported only once for each function it appears in
+make[4]: *** [/builds/linux/scripts/Makefile.build:250:
+arch/sparc/mm/fault_32.o] Error 1
+make[4]: Target 'arch/sparc/mm/' not remade because of errors.
+----->8-----
+
+For PA-RISC:
+* allnoconfig
+* tinyconfig
+
+-----8<-----
+/builds/linux/arch/parisc/mm/fault.c: In function 'do_page_fault':
+/builds/linux/arch/parisc/mm/fault.c:292:22: error: 'prev' undeclared
+(first use in this function)
+  292 |                 if (!prev || !(prev->vm_flags & VM_GROWSUP))
+      |                      ^~~~
+/builds/linux/arch/parisc/mm/fault.c:292:22: note: each undeclared
+identifier is reported only once for each function it appears in
+make[4]: *** [/builds/linux/scripts/Makefile.build:250:
+arch/parisc/mm/fault.o] Error 1
+make[4]: Target 'arch/parisc/mm/' not remade because of errors.
+----->8-----
+
+Greetings!
+
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
