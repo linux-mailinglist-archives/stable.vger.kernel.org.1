@@ -2,69 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C590E743967
-	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 12:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 061397439BB
+	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 12:41:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232185AbjF3Kds (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 30 Jun 2023 06:33:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
+        id S232855AbjF3KlM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 30 Jun 2023 06:41:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232048AbjF3Kdp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 06:33:45 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9B230DD
-        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 03:33:44 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b69dcf45faso28042411fa.0
-        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 03:33:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1688121223; x=1690713223;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WMvg4+xf/FpT2l2ger0oTsMzr40HAUi9gV+dNJ+SQAU=;
-        b=ptIyYvAGr7z2ddcaHcOP+a5GUrlPfF7+kvw9taw+/uSBqODpirNaXfrjvvaah2YJO4
-         1I+MABWWd1CMrpSEEL8XCWF+dfhQzuerODUen0VCYKl61KpU4edsHLHSNb/e/8KWVpku
-         iNLrIGxlbqQy2MJ2uLDoqkplGXbaoeRbvFubhmM+C1vjdZzT36cvY2cLUfGGOAlthxMy
-         Kh158t2XgN9f6kdlcWlCDAev77ibQ4onJGwHEAzLSGieQ3K/ZWUP8R3qYUdsxz2QhyET
-         f4xJYykbgbt91ep0t8+htl6DigRVG61IO8UFbqxQubKQCzQxU/VD0s+nXv4n4DdCNVjA
-         ythA==
+        with ESMTP id S232921AbjF3Kkx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 06:40:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A41094692
+        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 03:38:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1688121425;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mSmMChIzFsnctBY/ntNdQM0sRE6MR8Uu4qXuBm6oUrY=;
+        b=JnMlmMVKS4zCLulyXJVbyCYj6CPvxAAU+eZZcTlSkQqN6QhtJnMDdqNL7t610BVCMO6RKV
+        V+tN2R2Fy3lnI4p7zeXrAcVMoxWKAWVQAUESsk/npHuKRwkxqyWVtR1bHbuSJ6kKBSj6BX
+        NEuiwcf4Wbb0hFCFJONtBHRAdtEXNrY=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-226-D_ibHnNRP3alY9rI0HawCw-1; Fri, 30 Jun 2023 06:37:04 -0400
+X-MC-Unique: D_ibHnNRP3alY9rI0HawCw-1
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-401df9d2dc4so3975061cf.0
+        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 03:37:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688121223; x=1690713223;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WMvg4+xf/FpT2l2ger0oTsMzr40HAUi9gV+dNJ+SQAU=;
-        b=j6PjInC56vdG6pAmGSPADfa31YQnCY6nJAxypfaUwfhC17JPi0Dnh6VwXiQ7mfH4xH
-         hqMgEcfEDEgkwCmlbK8t0WSX9S++q08gx079mAPgb0yHj96bWu+PuxL6gPUSY+HKuHfG
-         4LIwc6GTWh92gtruQmKbbovD4l1BOmggXFjoa5p1z8uvdEanOMfTPVcuwiXYKch+pRpx
-         +LFoZ+i+05V3On1v4NIivi9uanB90eq39/wBuslkXuIRzEy0iXaosy1F7huQo6vGWCnN
-         jkaZk1Z2duolaWUbnek7DinsjuKqzQuHI2EETqT23I7NELinWS6oNbfZtghB1z3gg1YG
-         SGbA==
-X-Gm-Message-State: ABy/qLZogp2h9JU9ZLyuip+UgC07d+N8XyIpaV+uH5nlzM5qLZVA2E2V
-        WVGHRRZ8rIuKfij6KcZOPfhlVDj4VWk50Bg3YyOE8Q==
-X-Google-Smtp-Source: APBJJlG2u/xyzuJ84ph37p/iQTjUyhcv/0ujEisW8iOXdWjzS2aHJnQdoa55ieUt9lpi45BGDEBdxvotYQGcYJ/euZE=
-X-Received: by 2002:a2e:9b0b:0:b0:2b6:a5bd:da2d with SMTP id
- u11-20020a2e9b0b000000b002b6a5bdda2dmr1739785lji.27.1688121222628; Fri, 30
- Jun 2023 03:33:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230630072124.944461414@linuxfoundation.org>
-In-Reply-To: <20230630072124.944461414@linuxfoundation.org>
-From:   ogasawara takeshi <takeshi.ogasawara@futuring-girl.com>
-Date:   Fri, 30 Jun 2023 19:33:31 +0900
-Message-ID: <CAKL4bV5Dhh3n0cLnd7wvgheMOrodFkCLa-RpzK9f3NW+n0jsKQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/33] 6.1.37-rc3 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
+        d=1e100.net; s=20221208; t=1688121423; x=1690713423;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mSmMChIzFsnctBY/ntNdQM0sRE6MR8Uu4qXuBm6oUrY=;
+        b=C15XreruKMPPwbXYbV0T9BbQVoM/QGfK0vZTROcuvUMzNEk+RnYHUihHR6S6T/BByp
+         Wj8gL5lclGe0d4jpU533xN4sdSiiQ/xaJew2vmYtKovHy0YQvjAygR+eutceO1Ke8TO+
+         +skG4Y3fWaFOEpLVVsRA1FSsJUQRLFWQF0JBnp7FvyBjUckwcArq67/MoLO1N40JuVpU
+         PxkkDzeU08jyRm2LNAv+RfDFi4cjH++hOrPzURxIqB/mvNvrM4FAO8jVZmUhrL3p0UNh
+         ehP73OY3Lf2ZGOD8IKd5a9FTjC5dYsxcMmnpyFpRxjVNETzII2uhW4Pv9KY6yApkZg0i
+         lk4A==
+X-Gm-Message-State: AC+VfDwQdBK5grvVj2ca8Ysegqx6MkPQLdCloT0hv4cE3bSSQEO23p9K
+        SKdOicn2bNWdDFs/Fa9Jh5S+3KIKHH+0fS4GTK7v1fqIUFjNr9OHCV4MZbIGDKU/Tw5YAVX5x/c
+        J8Bj/JSDgd9ZeXVFL
+X-Received: by 2002:a05:622a:1819:b0:400:a9a4:8517 with SMTP id t25-20020a05622a181900b00400a9a48517mr2536794qtc.4.1688121423745;
+        Fri, 30 Jun 2023 03:37:03 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7dr4NVZJGnbWpLNO5IGOyHWOg9Nxt/DgSxcc/RdlVezoQPlU7ziI3vkR1ZVcAPcj0V3cyAZg==
+X-Received: by 2002:a05:622a:1819:b0:400:a9a4:8517 with SMTP id t25-20020a05622a181900b00400a9a48517mr2536779qtc.4.1688121423483;
+        Fri, 30 Jun 2023 03:37:03 -0700 (PDT)
+Received: from gerbillo.redhat.com (146-241-247-156.dyn.eolo.it. [146.241.247.156])
+        by smtp.gmail.com with ESMTPSA id cc23-20020a05622a411700b003f7fd3ce69fsm5015184qtb.59.2023.06.30.03.37.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jun 2023 03:37:03 -0700 (PDT)
+Message-ID: <e5c3e5e5033290c2228bbad0307334a964eb065e.camel@redhat.com>
+Subject: Re: [Patch v3] net: mana: Batch ringing RX queue doorbell on
+ receiving packets
+From:   Paolo Abeni <pabeni@redhat.com>
+To:     Long Li <longli@microsoft.com>,
+        "longli@linuxonhyperv.com" <longli@linuxonhyperv.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Ajay Sharma <sharmaajay@microsoft.com>,
+        Dexuan Cui <decui@microsoft.com>,
+        KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Date:   Fri, 30 Jun 2023 12:36:58 +0200
+In-Reply-To: <PH7PR21MB3263B266E381BA15DCE45820CE25A@PH7PR21MB3263.namprd21.prod.outlook.com>
+References: <1687823827-15850-1-git-send-email-longli@linuxonhyperv.com>
+         <36c95dd6babb2202f70594d5dde13493af62dcad.camel@redhat.com>
+         <PH7PR21MB3263B266E381BA15DCE45820CE25A@PH7PR21MB3263.namprd21.prod.outlook.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,41 +95,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+On Thu, 2023-06-29 at 18:18 +0000, Long Li wrote:
+> > Subject: Re: [Patch v3] net: mana: Batch ringing RX queue doorbell
+> > on receiving
+> > packets
+> >=20
+> > On Mon, 2023-06-26 at 16:57 -0700, longli@linuxonhyperv.com wrote:
+> > > From: Long Li <longli@microsoft.com>
+> > >=20
+> > > It's inefficient to ring the doorbell page every time a WQE is
+> > > posted
+> > > to the received queue. Excessive MMIO writes result in CPU
+> > > spending
+> > > more time waiting on LOCK instructions (atomic operations),
+> > > resulting
+> > > in poor scaling performance.
+> > >=20
+> > > Move the code for ringing doorbell page to where after we have
+> > > posted
+> > > all WQEs to the receive queue during a callback from napi_poll().
+> > >=20
+> > > With this change, tests showed an improvement from 120G/s to
+> > > 160G/s on
+> > > a 200G physical link, with 16 or 32 hardware queues.
+> > >=20
+> > > Tests showed no regression in network latency benchmarks on
+> > > single
+> > > connection.
+> > >=20
+> > > While we are making changes in this code path, change the code
+> > > for
+> > > ringing doorbell to set the WQE_COUNT to 0 for Receive Queue. The
+> > > hardware specification specifies that it should set to 0.
+> > > Although
+> > > currently the hardware doesn't enforce the check, in the future
+> > > releases it may do.
+> > >=20
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure
+> > > Network Adapter (MANA)")
+> >=20
+> > Uhmmm... this looks like a performance improvement to me, more
+> > suitable for
+> > the net-next tree ?!? (Note that net-next is closed now).
+>=20
+> This issue is a blocker for usage on 200G physical link. I think it
+> can be categorized as a fix.
 
-On Fri, Jun 30, 2023 at 4:32=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.37 release.
-> There are 33 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 02 Jul 2023 07:21:12 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.37-rc3.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Let me ask the question the other way around: is there any specific
+reason to have this fix into 6.5 and all the way back to 5.13?
+Especially the latest bit (CC-ing stable) looks at least debatable.
 
-6.1.37-rc3 tested.
+Thanks,
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+Paolo
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64), arch linux)
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
