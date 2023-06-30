@@ -2,52 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CA187433FD
-	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 07:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22844743402
+	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 07:21:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231315AbjF3FTI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 30 Jun 2023 01:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36204 "EHLO
+        id S229459AbjF3FVd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 30 Jun 2023 01:21:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbjF3FTH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 01:19:07 -0400
+        with ESMTP id S231824AbjF3FVW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 01:21:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B109D2D69;
-        Thu, 29 Jun 2023 22:19:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23C192D78;
+        Thu, 29 Jun 2023 22:21:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E9CE61646;
-        Fri, 30 Jun 2023 05:19:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F98C433C8;
-        Fri, 30 Jun 2023 05:19:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B43D161644;
+        Fri, 30 Jun 2023 05:21:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DB1C433C0;
+        Fri, 30 Jun 2023 05:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688102345;
-        bh=9WAerDza2Qnn3P62OfZsT48hc0EJLnAWZ95RVqQztHE=;
+        s=korg; t=1688102478;
+        bh=8Ef5WYOUOB2AfTmhfbQVbF6OgLVgkrEM1qir2bZFwy0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bj1wRc9qRbvlI64FZuFI0cxHidJIRw4skwQXlee2y71uOkzv4+ff1yoJjF7ewBLba
-         gNBhsERuHcFKCTMgZN+U37ERwzjBAEX33BJ5fxkk2itluUfwYojSZ0FoIFvmJtG4p6
-         OLdo2Nyt2f9YLGqVeQnUXunD6SFLwgKpcJytoJJo=
-Date:   Fri, 30 Jun 2023 07:19:03 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.3 00/29] 6.3.11-rc1 review
-Message-ID: <2023063037-matrix-urologist-030d@gregkh>
-References: <20230629184151.705870770@linuxfoundation.org>
- <CAEUSe7__cNqH6d1D96m8XriVckS9MnL6CRfd+iTYXnNkqu9nvQ@mail.gmail.com>
+        b=F/ThVpgqdR4bTPAGDcwcoqRvSuB7IH0y33T5SYkqhwf8BR/46VvONOeKW34M7qCCR
+         xaWzCJd2z7/zX5Wxiq8GukOlK4yBCU5iLX03FvIoFMoUVf8MIFxR9l9Embky0anB8a
+         x3WdHqrnpnzBpqo4t/4gWy0mW79VhdWObGSfNB3w=
+Date:   Fri, 30 Jun 2023 07:21:15 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Li Huafei <lihuafei1@huawei.com>
+Cc:     stable@vger.kernel.org, mhiramat@kernel.org, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+        sashal@kernel.org, peterz@infradead.org,
+        linux-kernel@vger.kernel.org, xukuohai@huawei.com
+Subject: Re: [PATCH 5.10] kprobes/x86: Fix kprobe debug exception handling
+ logic
+Message-ID: <2023063039-dotted-improper-7b3c@gregkh>
+References: <20230630020845.227939-1-lihuafei1@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEUSe7__cNqH6d1D96m8XriVckS9MnL6CRfd+iTYXnNkqu9nvQ@mail.gmail.com>
+In-Reply-To: <20230630020845.227939-1-lihuafei1@huawei.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -58,46 +54,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 29, 2023 at 03:54:03PM -0600, Daniel Díaz wrote:
-> Hello!
+On Fri, Jun 30, 2023 at 10:08:45AM +0800, Li Huafei wrote:
+> We get the following crash caused by a null pointer access:
 > 
-> Early report of failures.
+>  BUG: kernel NULL pointer dereference, address: 0000000000000000
+>  ...
+>  RIP: 0010:resume_execution+0x35/0x190
+>  ...
+>  Call Trace:
+>   <#DB>
+>   kprobe_debug_handler+0x41/0xd0
+>   exc_debug+0xe5/0x1b0
+>   asm_exc_debug+0x19/0x30
+>  RIP: 0010:copy_from_kernel_nofault.part.0+0x55/0xc0
+>  ...
+>   </#DB>
+>   process_fetch_insn+0xfb/0x720
+>   kprobe_trace_func+0x199/0x2c0
+>   ? kernel_clone+0x5/0x2f0
+>   kprobe_dispatcher+0x3d/0x60
+>   aggr_pre_handler+0x40/0x80
+>   ? kernel_clone+0x1/0x2f0
+>   kprobe_ftrace_handler+0x82/0xf0
+>   ? __se_sys_clone+0x65/0x90
+>   ftrace_ops_assist_func+0x86/0x110
+>   ? rcu_nocb_try_bypass+0x1f3/0x370
+>   0xffffffffc07e60c8
+>   ? kernel_clone+0x1/0x2f0
+>   kernel_clone+0x5/0x2f0
 > 
-> Arm64 fails with GCC-11 on the following configurations:
-> * lkftconfig
-> * lkftconfig-64k_page_size
-> * lkftconfig-debug
-> * lkftconfig-debug-kmemleak
-> * lkftconfig-kasan
-> * lkftconfig-kselftest
-> * lkftconfig-kunit
-> * lkftconfig-libgpiod
-> * lkftconfig-perf
-> * lkftconfig-rcutorture
+> The analysis reveals that kprobe and hardware breakpoints conflict in
+> the use of debug exceptions.
 > 
-> lkftconfig is basically defconfig + a few fragments [1]. The suffixes
-> mean that we're enabling a few other kconfigs.
+> If we set a hardware breakpoint on a memory address and also have a
+> kprobe event to fetch the memory at this address. Then when kprobe
+> triggers, it goes to read the memory and triggers hardware breakpoint
+> monitoring. This time, since kprobe handles debug exceptions earlier
+> than hardware breakpoints, it will cause kprobe to incorrectly assume
+> that the exception is a kprobe trigger.
 > 
-> Failure:
-> -----8<-----
-> /builds/linux/arch/arm64/mm/fault.c: In function 'do_page_fault':
-> /builds/linux/arch/arm64/mm/fault.c:576:9: error: 'vma' undeclared
-> (first use in this function); did you mean 'vmap'?
->   576 |         vma = lock_mm_and_find_vma(mm, addr, regs);
->       |         ^~~
->       |         vmap
-> /builds/linux/arch/arm64/mm/fault.c:576:9: note: each undeclared
-> identifier is reported only once for each function it appears in
-> /builds/linux/arch/arm64/mm/fault.c:579:17: error: label 'done' used
-> but not defined
->   579 |                 goto done;
->       |                 ^~~~
-> make[4]: *** [/builds/linux/scripts/Makefile.build:252:
-> arch/arm64/mm/fault.o] Error 1
-> make[4]: Target 'arch/arm64/mm/' not remade because of errors.
-> ----->8-----
+> Notice that after the mainline commit 6256e668b7af ("x86/kprobes: Use
+> int3 instead of debug trap for single-step"), kprobe no longer uses
+> debug trap, avoiding the conflict with hardware breakpoints here. This
+> commit is to remove the IRET that returns to kernel, not to fix the
+> problem we have here. Also there are a bunch of merge conflicts when
+> trying to apply this commit to older kernels, so fixing it directly in
+> older kernels is probably a better option.
 
-Is this also failing in Linus's tree?
+What is the list of commits that it would take to resolve this in these
+kernels?  We would almost always prefer to do that instead of taking
+changes that are not upstream.
 
 thanks,
 
