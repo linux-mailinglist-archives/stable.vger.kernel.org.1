@@ -2,52 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 263527443B9
-	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 23:03:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F79174442F
+	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 23:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232375AbjF3VC6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 30 Jun 2023 17:02:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58500 "EHLO
+        id S232646AbjF3V7g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 30 Jun 2023 17:59:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230388AbjF3VC4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 17:02:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B90FD3AB6;
-        Fri, 30 Jun 2023 14:02:55 -0700 (PDT)
+        with ESMTP id S231888AbjF3V7e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 17:59:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AB7C4227;
+        Fri, 30 Jun 2023 14:59:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5832861812;
-        Fri, 30 Jun 2023 21:02:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF1CC433C0;
-        Fri, 30 Jun 2023 21:02:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B994B617FF;
+        Fri, 30 Jun 2023 21:59:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119B7C433C8;
+        Fri, 30 Jun 2023 21:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688158974;
-        bh=JcRoUVFNM9/6PR4mDTjNnE2muKhhGvnoeEasmT4br1g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=byinquFCr/Gggvsv/R7A6N614gv3EUx+4dmFXAZ0rdYEOYUAaZ5fnniEEAPyS6JHA
-         n6kp6jaizk1QTx7gyAbl30ZH9jidBOv1qFDjQy7mm4+zaJirNeeC7HkKGOC17av1lr
-         jYfbWFNbe6en6ziR8GSr5LTX6ziEpA2v2XQhxzDI1kMCCCKHSE7XUQkdb+K9aaC/He
-         GMk4oItAKiyRjJcHhOIzFD4NTmokq96vZS/TWbCJsZm/1XJg2A7zi5cBE8DfyDNn3M
-         F17bf4dQko3kkURaNgauZR9oJrDbqOuxge9fhH4S7LBn27lrsPDA1E1SESju5saP8Z
-         xrup+9a4lckFw==
-From:   SeongJae Park <sj@kernel.org>
-To:     Daniel Borkmann <daniel@iogearbox.net>
-Cc:     SeongJae Park <sj@kernel.org>, martin.lau@linux.dev,
-        Alexander.Egorenkov@ibm.com, ast@kernel.org, memxor@gmail.com,
-        olsajiri@gmail.com, bpf@vger.kernel.org, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>
-Subject: Re: [PATCH v2] btf: warn but return no error for NULL btf from __register_btf_kfunc_id_set()
-Date:   Fri, 30 Jun 2023 21:02:51 +0000
-Message-Id: <20230630210251.126928-1-sj@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <75483b53-bd8e-692e-ed18-a4c87cf20a1b@iogearbox.net>
-References: 
+        s=k20201202; t=1688162366;
+        bh=4CzdQn4ciJqKeDlkI0KBYAkchYKjJViZEWBLKEznCcI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GcehTUwmbgNoxCn5YEanOegVLp2qgAyGRTKDq4K6M+wNpSs0ggjGj4HStjCczb5WB
+         AZJdh7GgORV2paYXwzJPbFOc44+cn+Z0C4MhcvHgcDSbFiF5FmDUGrvDVMr36YifLz
+         42049RufavE4z2wdHRnHchYCWFB9KicX3OW7pBu8KbZP3hpBseyOeeeQ2+AzNp7elG
+         vJ3QOt/FgI+kzDqmgFzBL7tLGyPUQqLGirSEoq+n/vMvr+GDJdAQZiU68cNHNySOTM
+         zd5p+6pPCajsn53qeLmbtbJ6GQWFB/Er3WEARIQbDfbXSQ8WgQWElK0SmTcIZLFlIW
+         8dV9YkYpT6HHw==
+Date:   Fri, 30 Jun 2023 14:59:24 -0700
+From:   Jaegeuk Kim <jaegeuk@kernel.org>
+To:     Chao Yu <chao@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [f2fs-dev] [PATCH v2] f2fs: fix deadlock in i_xattr_sem and
+ inode page lock and fix the original issue
+Message-ID: <ZJ9QPLd6LF9dy5bm@google.com>
+References: <20230613233940.3643362-1-jaegeuk@kernel.org>
+ <e5788348-b547-8e10-21af-90544f3aa75c@kernel.org>
+ <ZJvqZTX1SIwvDCUn@google.com>
+ <e4ee00c4-c20a-4613-87ec-3b144d6252ed@kernel.org>
+ <ZJx8/0eOB4PcftQe@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZJx8/0eOB4PcftQe@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,74 +59,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 30 Jun 2023 22:52:24 +0200 Daniel Borkmann <daniel@iogearbox.net> wrote:
-
-> On 6/30/23 9:48 PM, SeongJae Park wrote:
-> > On Fri, 30 Jun 2023 16:53:38 +0200 Daniel Borkmann <daniel@iogearbox.net> wrote:
-> >> On 6/28/23 6:46 PM, SeongJae Park wrote:
-> >>> __register_btf_kfunc_id_set() assumes .BTF to be part of the module's
-> >>> .ko file if CONFIG_DEBUG_INFO_BTF is enabled.  If that's not the case,
-> >>> the function prints an error message and return an error.  As a result,
-> >>> such modules cannot be loaded.
-> >>>
-> >>> However, the section could be stripped out during a build process.  It
-> >>> would be better to let the modules loaded, because their basic
-> >>> functionalities have no problem[1], though the BTF functionalities will
-> >>> not be supported.  Make the function to lower the level of the message
-> >>> from error to warn, and return no error.
-> >>>
-> >>> [1] https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
-> >>>
-> >>> Reported-by: Alexander Egorenkov <Alexander.Egorenkov@ibm.com>
-> >>> Link: https://lore.kernel.org/bpf/87y228q66f.fsf@oc8242746057.ibm.com/
-> >>> Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-> >>> Link: https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
-> >>> Fixes: c446fdacb10d ("bpf: fix register_btf_kfunc_id_set for !CONFIG_DEBUG_INFO_BTF")
-> >>> Cc: <stable@vger.kernel.org> # 5.18.x
-> >>> Signed-off-by: SeongJae Park <sj@kernel.org>
-> >>> Acked-by: Jiri Olsa <jolsa@kernel.org>
-> >>
-> >> I presume this one is targeted at bpf (rather than bpf-next) tree, right?
+On 06/28, Jaegeuk Kim wrote:
+> On 06/28, Chao Yu wrote:
+> > On 2023/6/28 16:08, Jaegeuk Kim wrote:
+> > > Thread #1:
+> > > 
+> > > [122554.641906][   T92]  f2fs_getxattr+0xd4/0x5fc
+> > >      -> waiting for f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+> > > 
+> > > [122554.641927][   T92]  __f2fs_get_acl+0x50/0x284
+> > > [122554.641948][   T92]  f2fs_init_acl+0x84/0x54c
+> > > [122554.641969][   T92]  f2fs_init_inode_metadata+0x460/0x5f0
+> > > [122554.641990][   T92]  f2fs_add_inline_entry+0x11c/0x350
+> > >      -> Locked dir->inode_page by f2fs_get_node_page()
+> > > 
+> > > [122554.642009][   T92]  f2fs_do_add_link+0x100/0x1e4
+> > > [122554.642025][   T92]  f2fs_create+0xf4/0x22c
+> > > [122554.642047][   T92]  vfs_create+0x130/0x1f4
+> > > 
+> > > Thread #2:
+> > > 
+> > > [123996.386358][   T92]  __get_node_page+0x8c/0x504
+> > >      -> waiting for dir->inode_page lock
+> > > 
+> > > [123996.386383][   T92]  read_all_xattrs+0x11c/0x1f4
+> > > [123996.386405][   T92]  __f2fs_setxattr+0xcc/0x528
+> > > [123996.386424][   T92]  f2fs_setxattr+0x158/0x1f4
+> > >      -> f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
+> > > 
+> > > [123996.386443][   T92]  __f2fs_set_acl+0x328/0x430
+> > > [123996.386618][   T92]  f2fs_set_acl+0x38/0x50
+> > > [123996.386642][   T92]  posix_acl_chmod+0xc8/0x1c8
+> > > [123996.386669][   T92]  f2fs_setattr+0x5e0/0x6bc
+> > > [123996.386689][   T92]  notify_change+0x4d8/0x580
+> > > [123996.386717][   T92]  chmod_common+0xd8/0x184
+> > > [123996.386748][   T92]  do_fchmodat+0x60/0x124
+> > > [123996.386766][   T92]  __arm64_sys_fchmodat+0x28/0x3c
 > > 
-> > You're correct.  It's not urgent for us, but I would prefer it to be merged
-> > into all affected kernels as early as possible.
+> > Back to the race condition, my question is why we can chmod on inode before
+> > it has been created?
 > 
-> Ok, sounds good, bpf tree it is then.
-> 
-> >>> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-> >>> index 6b682b8e4b50..d683f034996f 100644
-> >>> --- a/kernel/bpf/btf.c
-> >>> +++ b/kernel/bpf/btf.c
-> >>> @@ -7848,14 +7848,10 @@ static int __register_btf_kfunc_id_set(enum btf_kfunc_hook hook,
-> >>>    
-> >>>    	btf = btf_get_module_btf(kset->owner);
-> >>>    	if (!btf) {
-> >>> -		if (!kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF)) {
-> >>> -			pr_err("missing vmlinux BTF, cannot register kfuncs\n");
-> >>> -			return -ENOENT;
-> >>> -		}
-> >>
-> >> Why the above one needs to be changed? Do you also run into this case? vmlinux BTF
-> >> should be built-in in this case. I understand it's rather the one below for BTF +
-> >> modules instead, no?
-> > 
-> > Again, you're correct.  This change is not really needed.  I was interpreting
-> > Kumar's suggestion merely into code without thinking about his real meaning,
-> > sorry.  I will restore this in the next spin.
-> 
-> Perfect, I think after your v3 respin it should be good to land.
+> This is touching the directory.
 
-Thank you!  I will send it by tomorrow, to give people enough time to comment.
-If you don't want to wait, please let me know :)
+Chao,
 
-Also, please note that this will not cleanly applicable on 6.1.y.  I will
-provide the backport to stable@ as soon as this is merged into the mainline.
-
+Do you have other concern? Otherwise, I'll include this into the next pull
+request.
 
 Thanks,
-SJ
 
 > 
-> Thanks,
-> Daniel
+> > 
+> > Thanks,
+> > 
+> > > 
+> > > Fixes: 27161f13e3c3 "f2fs: avoid race in between read xattr & write xattr"
+> > > Cc: <stable@vger.kernel.org>
+> > > Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+> > > ---
+> > >   fs/f2fs/dir.c   | 9 ++++++++-
+> > >   fs/f2fs/xattr.c | 6 ++++--
+> > >   2 files changed, 12 insertions(+), 3 deletions(-)
+> > > 
+> > > diff --git a/fs/f2fs/dir.c b/fs/f2fs/dir.c
+> > > index 887e55988450..d635c58cf5a3 100644
+> > > --- a/fs/f2fs/dir.c
+> > > +++ b/fs/f2fs/dir.c
+> > > @@ -775,8 +775,15 @@ int f2fs_add_dentry(struct inode *dir, const struct f2fs_filename *fname,
+> > >   {
+> > >   	int err = -EAGAIN;
+> > > -	if (f2fs_has_inline_dentry(dir))
+> > > +	if (f2fs_has_inline_dentry(dir)) {
+> > > +		/*
+> > > +		 * Should get i_xattr_sem to keep the lock order:
+> > > +		 * i_xattr_sem -> inode_page lock used by f2fs_setxattr.
+> > > +		 */
+> > > +		f2fs_down_read(&F2FS_I(dir)->i_xattr_sem);
+> > >   		err = f2fs_add_inline_entry(dir, fname, inode, ino, mode);
+> > > +		f2fs_up_read(&F2FS_I(dir)->i_xattr_sem);
+> > > +	}
+> > >   	if (err == -EAGAIN)
+> > >   		err = f2fs_add_regular_entry(dir, fname, inode, ino, mode);
+> > > diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+> > > index 213805d3592c..476b186b90a6 100644
+> > > --- a/fs/f2fs/xattr.c
+> > > +++ b/fs/f2fs/xattr.c
+> > > @@ -528,10 +528,12 @@ int f2fs_getxattr(struct inode *inode, int index, const char *name,
+> > >   	if (len > F2FS_NAME_LEN)
+> > >   		return -ERANGE;
+> > > -	f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+> > > +	if (!ipage)
+> > > +		f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+> > >   	error = lookup_all_xattrs(inode, ipage, index, len, name,
+> > >   				&entry, &base_addr, &base_size, &is_inline);
+> > > -	f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+> > > +	if (!ipage)
+> > > +		f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+> > >   	if (error)
+> > >   		return error;
 > 
+> 
+> _______________________________________________
+> Linux-f2fs-devel mailing list
+> Linux-f2fs-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
