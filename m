@@ -2,77 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70973743483
-	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 07:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04D4C74348D
+	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 07:50:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232048AbjF3Fno (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 30 Jun 2023 01:43:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47076 "EHLO
+        id S230453AbjF3FuZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 30 Jun 2023 01:50:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232345AbjF3FnW (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Fri, 30 Jun 2023 01:43:22 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D9ED3C12
-        for <Stable@vger.kernel.org>; Thu, 29 Jun 2023 22:42:46 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3fa94ea1caaso12825555e9.1
-        for <Stable@vger.kernel.org>; Thu, 29 Jun 2023 22:42:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688103764; x=1690695764;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6H3Wh/u4h8U2hzhBkBZKlb9dLwPhiKplGCFao13VLdY=;
-        b=ShY6QgMY+8oJf4I7rAttvpNGVQ1KvQO/4cKxqAcCdPX3+c5ECpQdewFuLRgXapjvu8
-         khi9gPU2b6GQ9lg2FxW7pZxFaXzO62pXVGV541qdVr5jZ6kraRVWjEWNWXHAnxoXzQuE
-         L10OL4rxncrXQV+MzzZz/NTA4XFLPq+YbEUzF7ZppyhlwnM2vyTxjzbVFIrEyPkcJh4i
-         ja+KoAhJZ0vxv/ExTeb845+K9nmBAjJJ3+F7q37dNFdAEApf9IQELKQXJf7XupzAALUG
-         UHirCJ8jbV4CAFd6eTJi0pHjTitwx88z0yC+/JhDVkE6r+pFZjijQ8sUgawvXl4zcJdg
-         ZRQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688103764; x=1690695764;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6H3Wh/u4h8U2hzhBkBZKlb9dLwPhiKplGCFao13VLdY=;
-        b=E3+cdunRnXkx5dVb1eivj/1JJC9YN+t0o4cfdA4IlY3N30QntpfBpDSGlnfJepFt3r
-         gH2+5l+YjM8t+d8j6qexo2v8YtlExafeGLxZbAnUeWlAUZXFNM8FG6yCUiNJ5sIBu0rt
-         sz3Yl73ZPCCYCPPKvs9JWqcqRkCBaYnXr4WUYTxe0jpMI2KwOGcdhXK1rsfLSHfdQwQL
-         MabRigyYAhyzEnYsK3lM0Gcqc6QVj/mMTMttbvd4JbR0zefBgP80o/xkPNBs9aRB2E3A
-         fHR+wXPy664FLnsbVUld1wxFnrzLa/xWNEn2HjsAslppcSUckGSaEegA4f6Ow58yzyiZ
-         HbTw==
-X-Gm-Message-State: AC+VfDz21Yd6g/J2MzU13Advi70nxaJApKzIIAwDXwC7/mnrG/s+XBS9
-        ne50S9A+Nvxi3b4PUVVpZPinjQ==
-X-Google-Smtp-Source: ACHHUZ75GbpqF6qcI9T1fiIIeKEFp0E/418uzdIfmYjFysVRcoVBsW9k2qMDWpjsSwcEN4eu8hG26g==
-X-Received: by 2002:a7b:c7cf:0:b0:3fa:9741:5b73 with SMTP id z15-20020a7bc7cf000000b003fa97415b73mr1581327wmk.10.1688103764148;
-        Thu, 29 Jun 2023 22:42:44 -0700 (PDT)
-Received: from [192.168.1.195] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id z2-20020a5d6542000000b00313eee8c080sm13821824wrv.98.2023.06.29.22.42.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Jun 2023 22:42:43 -0700 (PDT)
-Message-ID: <5fe3cbfe-645a-185b-9c88-5da56cfd7114@linaro.org>
-Date:   Fri, 30 Jun 2023 06:42:42 +0100
+        with ESMTP id S229508AbjF3FuX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 01:50:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C318CEC;
+        Thu, 29 Jun 2023 22:50:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 460F8616BD;
+        Fri, 30 Jun 2023 05:50:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1336BC433C8;
+        Fri, 30 Jun 2023 05:50:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1688104221;
+        bh=ESK2G48YltYCxadHZpYQGs+sh5/rH0av8mftNPwo74w=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=zzgSDOpSRmMfnHUxxICmQO7XNFeYAmAZ0dt9gyjPGuUpC4S3Ks+JemIjUHr5Dqcve
+         3tMucQ4Z5T9Cd1DlaPFdAumMhO0PnTKuKJpXE2gwLmPVTtmtoBxLcn66PbDFFCg5ny
+         yqvmk4YSRWCZ9vyRZGX3xzCZvc0pMjPLGKorh19g=
+Date:   Fri, 30 Jun 2023 07:50:18 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.3 00/29] 6.3.11-rc1 review
+Message-ID: <2023063057-viewpoint-bottle-aec6@gregkh>
+References: <20230629184151.705870770@linuxfoundation.org>
+ <CAEUSe7__cNqH6d1D96m8XriVckS9MnL6CRfd+iTYXnNkqu9nvQ@mail.gmail.com>
+ <2023063037-matrix-urologist-030d@gregkh>
+ <CAEUSe7-K199dv5_11O877i4pWYtCkaZU2zrsfVo4-QnNPdPQ+A@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device
- number
-Content-Language: en-US
-To:     Mark Brown <broonie@kernel.org>
-Cc:     johan+linaro@kernel.org, perex@perex.cz, tiwai@suse.com,
-        lgirdwood@gmail.com, ckeepax@opensource.cirrus.com,
-        kuninori.morimoto.gx@renesas.com, linux-kernel@vger.kernel.org,
-        pierre-louis.bossart@linux.intel.com, alsa-devel@alsa-project.org,
-        Stable@vger.kernel.org
-References: <20230628092404.13927-1-srinivas.kandagatla@linaro.org>
- <c22fcc94-aa41-4ffd-bfe8-f0b9f15a76c0@sirena.org.uk>
- <77b348f7-0475-5e16-95e1-0e5831408d2b@linaro.org>
- <8c3be94e-56c0-4820-853d-669e90969c24@sirena.org.uk>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <8c3be94e-56c0-4820-853d-669e90969c24@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEUSe7-K199dv5_11O877i4pWYtCkaZU2zrsfVo4-QnNPdPQ+A@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -81,34 +60,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Thu, Jun 29, 2023 at 11:25:13PM -0600, Daniel Díaz wrote:
+> Hello!
+> 
+> On Thu, 29 Jun 2023 at 23:19, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> > On Thu, Jun 29, 2023 at 03:54:03PM -0600, Daniel Díaz wrote:
+> > > Hello!
+> > >
+> > > Early report of failures.
+> > >
+> > > Arm64 fails with GCC-11 on the following configurations:
+> > > * lkftconfig
+> > > * lkftconfig-64k_page_size
+> > > * lkftconfig-debug
+> > > * lkftconfig-debug-kmemleak
+> > > * lkftconfig-kasan
+> > > * lkftconfig-kselftest
+> > > * lkftconfig-kunit
+> > > * lkftconfig-libgpiod
+> > > * lkftconfig-perf
+> > > * lkftconfig-rcutorture
+> > >
+> > > lkftconfig is basically defconfig + a few fragments [1]. The suffixes
+> > > mean that we're enabling a few other kconfigs.
+> > >
+> > > Failure:
+> > > -----8<-----
+> > > /builds/linux/arch/arm64/mm/fault.c: In function 'do_page_fault':
+> > > /builds/linux/arch/arm64/mm/fault.c:576:9: error: 'vma' undeclared
+> > > (first use in this function); did you mean 'vmap'?
+> > >   576 |         vma = lock_mm_and_find_vma(mm, addr, regs);
+> > >       |         ^~~
+> > >       |         vmap
+> > > /builds/linux/arch/arm64/mm/fault.c:576:9: note: each undeclared
+> > > identifier is reported only once for each function it appears in
+> > > /builds/linux/arch/arm64/mm/fault.c:579:17: error: label 'done' used
+> > > but not defined
+> > >   579 |                 goto done;
+> > >       |                 ^~~~
+> > > make[4]: *** [/builds/linux/scripts/Makefile.build:252:
+> > > arch/arm64/mm/fault.o] Error 1
+> > > make[4]: Target 'arch/arm64/mm/' not remade because of errors.
+> > > ----->8-----
+> >
+> > Is this also failing in Linus's tree?
+> 
+> (Sorry for the previous top-post.)
+> 
+> No, only here on 6.3.
 
+Ok, found the problem, will push out a -rc2 now, thanks for the quick
+notice!
 
-On 29/06/2023 18:42, Mark Brown wrote:
-> On Thu, Jun 29, 2023 at 06:33:09PM +0100, Srinivas Kandagatla wrote:
->> On 29/06/2023 16:43, Mark Brown wrote:
->>> On Wed, Jun 28, 2023 at 10:24:04AM +0100, Srinivas Kandagatla wrote:
-> 
->>>> For some reason we ended up with a setup without this flag.
->>>> This resulted in inconsistent sound card devices numbers which
->>>>    are also not starting as expected at dai_link->id.
->>>>    (Ex: MultiMedia1 pcm ended up with device number 4 instead of 0)
-> 
->>> Why is this a problem?
-> 
->> In existing Qualcomm setup the backend pcm are added first, which results in
->> frontend pcms getting pcm numbers after this.
-> 
->> For example: with 3 backend dailinks in DT we have frontend pcm start at 3.
->> Now if we add new backend dai-link in DT we now have frontend pcm start at
->> 4.
-> 
->> This is a bug in qualcomm driver.
-> 
-> Why is this an actual problem rather than just being a bit ugly?  What
-> is the negative consequence of having a PCM with this number?
-
-Yes, it is ugly but also breaks the existing UCM as the pcm device 
-numbers keep changing.
-Which is why I refereed it as bug in the driver.
-
---srini
+greg k-h
