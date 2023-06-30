@@ -2,135 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D796743C6B
-	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 15:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 276BE743C8D
+	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 15:20:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232532AbjF3NKg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 30 Jun 2023 09:10:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41804 "EHLO
+        id S231794AbjF3NUA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 30 Jun 2023 09:20:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232445AbjF3NKY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 09:10:24 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E503AAB
-        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 06:10:22 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-66767d628e2so1471149b3a.2
-        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 06:10:22 -0700 (PDT)
+        with ESMTP id S232480AbjF3NTt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 09:19:49 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42BB43C07;
+        Fri, 30 Jun 2023 06:19:46 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4fb73ba3b5dso3082676e87.1;
+        Fri, 30 Jun 2023 06:19:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1688130621; x=1690722621;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=JTinVZ4l/62OGmgbLEdVrVFDe45t1zlPBygq7Z8ozCA=;
-        b=OUuOVNGoIPzlBfA08ad+3V2YSsLJz8N0umkLe/JOVYILOOzYzyx7N0/sW+J27qCnSq
-         A9Py343hnh5V9/RcUhXE+Nt+m0I2yX1qvEv1/Ss2PN1q2XoSzO9h9ONQkIdn+4GKZrN0
-         iDiX5zSX0VbbcTUOi1pHjfFuRbrE31ktb5a9fQwCHYBVJytVbwQlrg4xKXiL/ysD9J33
-         10b0qhMP1LjmE9lQAiB4VcNZ52oWwHrAaIQmOjW29OeamsNmh/dc+Qtb6s9ZXZ9bluFe
-         3n/nWOg7OBdPU4lYllbjUwxPMGIByA9sE048vg8b6Yj70coHb6B7942tZs4owQQ4G2Np
-         /f7Q==
+        d=gmail.com; s=20221208; t=1688131184; x=1690723184;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5XR5ShywBTsDhxqrqnPNPImYwgLwdolYpfqjtsu6y5c=;
+        b=gbCKNNtsQLcsUQlFs7+FLhqKUlnLm6Slc2QEcI/BGBoYVuKCOskfPLDyj+GqU4SJ2P
+         mYqPGSi1xo4kNoxm8HjFV13PS/gaMZd3xWUDAaPJk8OaOUc3XzNi6eFA/cPuSPO//FCq
+         HUsUgy5PMTVNddYkKfRFCS+jG5yIYsbJaxjlvosLzQtlFF8omDptyqNAMRnQJ6+1VIVj
+         T0A1zXu6ygfYwNJr7uCSaVhyy49JPcddqe8fOlnxqhCU97wDPNg1O6lcQgmurdU1zJoZ
+         KVEzB8ny0xFnhn22u5Aa5UZZacpog6ysnqmWuSDSfGovQGjiL2k2CUJX3S5hikZOSjCp
+         QTmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688130621; x=1690722621;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1688131184; x=1690723184;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=JTinVZ4l/62OGmgbLEdVrVFDe45t1zlPBygq7Z8ozCA=;
-        b=IEGbJN8bXoG3ry2qktIGWJjc1GtNk0YPviSd7r44yF6KSkXBORNlxJ7FzmHtrYrqgf
-         kmTNhT7ggh757L41u5cOe0RmnI4Fom7cVjLAlYjDVAzjNAwl2X5SjuHMwbFUkGtY9D/K
-         wiu8cJI4EvONpEb2NehWkCDp9H8JRiOpf/y1TXlPv9j1EIR3gDqlPY19G8069RlHeO8f
-         d5cuG4z9OBHYheybUzTmRgviiza9MA8Ou6ynSIOuYypoQEWiGAyO/4ZDtVMIn2RaxYsR
-         nxqZZtgMxsDaQ/Kb7VQsjo6EOGcz7fMosvW7yUTg9V1JF2O6s2fsdzDSGr67Gpxd0sPV
-         9f8Q==
-X-Gm-Message-State: ABy/qLai+CkHVT7X5PAdi5rA1075tNOnXjUfSP26MCXRvfNhkdfgdVY6
-        rsTn6CJKTAigQ+VPR1aswypB7/+IQKRi5ignHw6LgA==
-X-Google-Smtp-Source: APBJJlE1KxNOXGilBPE9YP1qFss402e3KyTlCdFlcmS1i5oo+EaDcA38Gpt3UICmr77qPeNbcGAQjg==
-X-Received: by 2002:a05:6a00:1402:b0:681:6169:e403 with SMTP id l2-20020a056a00140200b006816169e403mr2443601pfu.8.1688130621427;
-        Fri, 30 Jun 2023 06:10:21 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id 205-20020a6218d6000000b0063d44634d8csm314124pfy.71.2023.06.30.06.10.20
+        bh=5XR5ShywBTsDhxqrqnPNPImYwgLwdolYpfqjtsu6y5c=;
+        b=EywyvrP3xBo3GaIcG8lJqfqahvE8sSimHNjtssuN+Qoncsh6j9qo5nr8x2wcvLg/fQ
+         O8KYhtcGz6IYcPkDFtm6BGOTwcicW6METv5MvlYHWaviq2I3ExJI7UFCTNqI2HOSSdYP
+         Eqf8E/nepBfMZu4On3egf4VWW3/sPKw9UZ1dZ1wa4SsuFgv+oUGVW4CMF1Ozeme3AMk9
+         QeFEfry/fP6PnIvAsE2VgzQhzDpqwjCHN1QUNjB560hs2hUarkpG/OjkDo/NYzRQ7HaT
+         2pPGH/igYuhV+cI4Rt8EMEAA8bPhJJqxh8F0ROC5uzrAKnsShS/O5rprkPfNKruQSMvN
+         3sQA==
+X-Gm-Message-State: ABy/qLZ8VKAVCI0QSMe0EJmA33YMOz8HrwL/vywFrkgw4CTzdnR7FKn2
+        XyK2OKFIZ1NdhdlhX9Xx++leukrcAj6TaQ==
+X-Google-Smtp-Source: APBJJlHbqV544RedYUwZYHpNe0Ten97YJSL9QE5S+bJRvvt/iFa6ErJQZ384JcSCGnOLJSySwE28mw==
+X-Received: by 2002:a05:6512:3b8b:b0:4fb:774f:9a84 with SMTP id g11-20020a0565123b8b00b004fb774f9a84mr2822368lfv.13.1688131183984;
+        Fri, 30 Jun 2023 06:19:43 -0700 (PDT)
+Received: from A13PC04R.einet.ad.eivd.ch ([193.134.219.72])
+        by smtp.googlemail.com with ESMTPSA id bc23-20020a056402205700b0051d9dbf5edfsm4749059edb.55.2023.06.30.06.19.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jun 2023 06:10:20 -0700 (PDT)
-Message-ID: <649ed43c.620a0220.ecff5.064f@mx.google.com>
-Date:   Fri, 30 Jun 2023 06:10:20 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Fri, 30 Jun 2023 06:19:43 -0700 (PDT)
+From:   Rick Wertenbroek <rick.wertenbroek@gmail.com>
+To:     alberto.dassatti@heig.vd.ch
+Cc:     dlemoal@kernel.org, Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        stable@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] PCI: rockchip: Use 64-bit mask on MSI 64-bit PCI address
+Date:   Fri, 30 Jun 2023 15:17:52 +0200
+Message-Id: <20230630131753.1549685-1-rick.wertenbroek@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v6.3.10-33-g45e606c9f23d
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-6.3.y
-Subject: stable-rc/linux-6.3.y baseline: 114 runs,
- 1 regressions (v6.3.10-33-g45e606c9f23d)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.3.y baseline: 114 runs, 1 regressions (v6.3.10-33-g45e606=
-c9f23d)
+A 32-bit mask was used on the 64-bit PCI address used for mapping MSIs.
+This would result in the upper 32 bits being unintentionally zeroed and
+MSIs getting mapped to incorrect PCI addresses if the address had any
+of the upper bits set.
 
-Regressions Summary
--------------------
+Replace 32-bit mask by appropriate 64-bit mask and rename 32-bit mask
+for clarity.
 
-platform  | arch | lab          | compiler | defconfig           | regressi=
-ons
-----------+------+--------------+----------+---------------------+---------=
+Fixes: dc73ed0f1b8b ("PCI: rockchip: Fix window mapping and address translation for endpoint")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-pci/8d19e5b7-8fa0-44a4-90e2-9bb06f5eb694@moroto.mountain/
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Cc: stable@vger.kernel.org
 ---
-beagle-xm | arm  | lab-baylibre | gcc-10   | omap2plus_defconfig | 1       =
-   =
+ drivers/pci/controller/pcie-rockchip-ep.c | 12 ++++++------
+ drivers/pci/controller/pcie-rockchip.h    |  6 +++---
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
+index 0af0e965fb57..313face6a87f 100644
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -354,7 +354,7 @@ static int rockchip_pcie_ep_send_msi_irq(struct rockchip_pcie_ep *ep, u8 fn,
+ 	struct rockchip_pcie *rockchip = &ep->rockchip;
+ 	u32 flags, mme, data, data_mask;
+ 	u8 msi_count;
+-	u64 pci_addr;
++	u64 pci_addr, pci_addr_mask = GENMASK(63, 8);
+ 	u32 r;
+ 
+ 	/* Check MSI enable bit */
+@@ -391,18 +391,18 @@ static int rockchip_pcie_ep_send_msi_irq(struct rockchip_pcie_ep *ep, u8 fn,
+ 				       PCI_MSI_ADDRESS_LO);
+ 
+ 	/* Set the outbound region if needed. */
+-	if (unlikely(ep->irq_pci_addr != (pci_addr & PCIE_ADDR_MASK) ||
++	if (unlikely(ep->irq_pci_addr != (pci_addr & pci_addr_mask) ||
+ 		     ep->irq_pci_fn != fn)) {
+ 		r = rockchip_ob_region(ep->irq_phys_addr);
+ 		rockchip_pcie_prog_ep_ob_atu(rockchip, fn, r,
+ 					     ep->irq_phys_addr,
+-					     pci_addr & PCIE_ADDR_MASK,
+-					     ~PCIE_ADDR_MASK + 1);
+-		ep->irq_pci_addr = (pci_addr & PCIE_ADDR_MASK);
++					     pci_addr & pci_addr_mask,
++					     ~pci_addr_mask + 1);
++		ep->irq_pci_addr = (pci_addr & pci_addr_mask);
+ 		ep->irq_pci_fn = fn;
+ 	}
+ 
+-	writew(data, ep->irq_cpu_addr + (pci_addr & ~PCIE_ADDR_MASK));
++	writew(data, ep->irq_cpu_addr + (pci_addr & ~pci_addr_mask));
+ 	return 0;
+ }
+ 
+diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
+index fe0333778fd9..2d7b05f07b7e 100644
+--- a/drivers/pci/controller/pcie-rockchip.h
++++ b/drivers/pci/controller/pcie-rockchip.h
+@@ -158,11 +158,11 @@
+ #define PCIE_RC_CONFIG_THP_CAP		(PCIE_RC_CONFIG_BASE + 0x274)
+ #define   PCIE_RC_CONFIG_THP_CAP_NEXT_MASK	GENMASK(31, 20)
+ 
+-#define PCIE_ADDR_MASK			0xffffff00
++#define PCIE_LO_ADDR_MASK		GENMASK(31, 8)
+ #define PCIE_CORE_AXI_CONF_BASE		0xc00000
+ #define PCIE_CORE_OB_REGION_ADDR0	(PCIE_CORE_AXI_CONF_BASE + 0x0)
+ #define   PCIE_CORE_OB_REGION_ADDR0_NUM_BITS	0x3f
+-#define   PCIE_CORE_OB_REGION_ADDR0_LO_ADDR	PCIE_ADDR_MASK
++#define   PCIE_CORE_OB_REGION_ADDR0_LO_ADDR	PCIE_LO_ADDR_MASK
+ #define PCIE_CORE_OB_REGION_ADDR1	(PCIE_CORE_AXI_CONF_BASE + 0x4)
+ #define PCIE_CORE_OB_REGION_DESC0	(PCIE_CORE_AXI_CONF_BASE + 0x8)
+ #define PCIE_CORE_OB_REGION_DESC1	(PCIE_CORE_AXI_CONF_BASE + 0xc)
+@@ -170,7 +170,7 @@
+ #define PCIE_CORE_AXI_INBOUND_BASE	0xc00800
+ #define PCIE_RP_IB_ADDR0		(PCIE_CORE_AXI_INBOUND_BASE + 0x0)
+ #define   PCIE_CORE_IB_REGION_ADDR0_NUM_BITS	0x3f
+-#define   PCIE_CORE_IB_REGION_ADDR0_LO_ADDR	PCIE_ADDR_MASK
++#define   PCIE_CORE_IB_REGION_ADDR0_LO_ADDR	PCIE_LO_ADDR_MASK
+ #define PCIE_RP_IB_ADDR1		(PCIE_CORE_AXI_INBOUND_BASE + 0x4)
+ 
+ /* Size of one AXI Region (not Region 0) */
+-- 
+2.25.1
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.3.y/kern=
-el/v6.3.10-33-g45e606c9f23d/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-6.3.y
-  Describe: v6.3.10-33-g45e606c9f23d
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      45e606c9f23d18a36b9c799e8b7d2cf5bf750021 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform  | arch | lab          | compiler | defconfig           | regressi=
-ons
-----------+------+--------------+----------+---------------------+---------=
----
-beagle-xm | arm  | lab-baylibre | gcc-10   | omap2plus_defconfig | 1       =
-   =
-
-
-  Details:     https://kernelci.org/test/plan/id/649e9b60ff2afa93d0bb2a7d
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.10-=
-33-g45e606c9f23d/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagl=
-e-xm.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.10-=
-33-g45e606c9f23d/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagl=
-e-xm.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/649e9b60ff2afa93d0bb2=
-a7e
-        new failure (last pass: v6.3.10-31-ge236789dc329) =
-
- =20
