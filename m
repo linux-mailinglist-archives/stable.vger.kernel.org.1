@@ -2,105 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EBD1743E48
-	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 17:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D012D7440D9
+	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 19:07:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232516AbjF3PHl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 30 Jun 2023 11:07:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59788 "EHLO
+        id S229511AbjF3RHs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 30 Jun 2023 13:07:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232235AbjF3PHj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 11:07:39 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AAE110D8
-        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 08:07:37 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1b852785a65so12934895ad.0
-        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 08:07:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=heitbaum.com; s=google; t=1688137656; x=1690729656;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8EnuOO6oK/ZVqVGz3O9HMiKg2lC4Al7i/4UAuVg8htY=;
-        b=PDNb3JOlAYukvjfbvtQ8ZLFvnbUoRaeNLFtvnAXu5kbH/6T7dn4pTHw5k8zpwiETGL
-         v9PQYHRTz9ctIdIWj9bV9ajKu870gPZlcBRKrZcjLhCY+tLRhybDb33Z+Fd1QgoVy920
-         KIdd1JfBuwockiY6424G/jo7krbCswaHzVaKg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688137656; x=1690729656;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8EnuOO6oK/ZVqVGz3O9HMiKg2lC4Al7i/4UAuVg8htY=;
-        b=TViV7vfUZ12LeFgl4PIm6C7yNzJp7dCXwWJQXAeWBifgL57KMKcr8TpIfouOTCyN+O
-         Uq45wpT3R6sGk1gyGt1MoFrFSlKR1ivISVSWwmp10H2KUg4LscveCApaUZIEZhFFCDck
-         fXJSa4NvU9Sid1uYekiQ74l8QTaZHmTaETV7ggN4BFc33sUJrvX01zWfIEUi5MLE7u3A
-         iQ0os50ycJDZdlW+tUdAhr5+dzcR03/esH0tJcILvL1sOE9RLhJM8lMZNAS0Z5p0a6wA
-         IjECRCr+B2i1JHn8pb+dHxEoAUHBUKeI+KcKV4MEaI80ST62BP7fbm3AroTeUtbQZ+D/
-         C4GQ==
-X-Gm-Message-State: AC+VfDzgnOzVvCfpw2HjRwKWNcgPRDtRjbdhQ9LYc+BRMEW1CoMOKTsA
-        zaICB4597BdyZHulbI7C9eJkig==
-X-Google-Smtp-Source: ACHHUZ5iqx/PxCy9A0NgfSEXCrVRwBebxEv2MkEa873Y9HdaqjtDpTpqnWXbi6zOPsH61dYoDU2WJA==
-X-Received: by 2002:a17:902:c411:b0:1b6:92f0:b6f5 with SMTP id k17-20020a170902c41100b001b692f0b6f5mr10240571plk.14.1688137656539;
-        Fri, 30 Jun 2023 08:07:36 -0700 (PDT)
-Received: from 88b90ce288d3 ([122.199.31.3])
-        by smtp.gmail.com with ESMTPSA id x12-20020a170902820c00b001b3d7205401sm10867637pln.303.2023.06.30.08.07.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jun 2023 08:07:35 -0700 (PDT)
-Date:   Fri, 30 Jun 2023 15:07:27 +0000
-From:   Rudi Heitbaum <rudi@heitbaum.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.4 00/31] 6.4.1-rc3 review
-Message-ID: <ZJ7vr/OtdYiwqLy2@88b90ce288d3>
-References: <20230630072101.040486316@linuxfoundation.org>
+        with ESMTP id S232435AbjF3RHr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 13:07:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D21B0;
+        Fri, 30 Jun 2023 10:07:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 71616617C5;
+        Fri, 30 Jun 2023 17:07:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F0AC433C9;
+        Fri, 30 Jun 2023 17:07:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688144865;
+        bh=mCCqTczvbpDnqWTAvLPO/6kWxxjHeQDe26aZLtloYdE=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=UM4iaIMNjeGFHSr6jpk65rhBWYTWOBGR9ga+vIaTLbDwgbBLIS7zZHW+6IUdDu2YE
+         Hli3gQlcyH6RGMyGTETWeh7ViiIPrETDFBDcz93hKpwcXwtulf3S6/1FwCjpTl/L7o
+         m8HWagxcqZzoL2XNxBkE7FggT0+MfFitq5vBAfTPEVg7/Y9MU43iU025uu/X4rTJZM
+         n3ecGBMeSR/VLeWdlxbCF6xAtRuGgc/rCbWUUGav694pIwR9ZOj9I6jUZ3j/6Vs8tL
+         NS+xyMr9/4McfRMoGF6q2OjWhlddMXgs83dyl01jAGiEZ8fQINJwsbG5PuhXFXmopM
+         Iluq0yWQoX3cg==
+From:   Mark Brown <broonie@kernel.org>
+To:     Johan Hovold <johan+linaro@kernel.org>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Steev Klimaszewski <steev@kali.org>
+In-Reply-To: <20230630120318.6571-1-johan+linaro@kernel.org>
+References: <20230630120318.6571-1-johan+linaro@kernel.org>
+Subject: Re: [PATCH] ASoC: codecs: wcd938x: fix codec initialisation race
+Message-Id: <168814486382.50974.15112012461000088627.b4-ty@kernel.org>
+Date:   Fri, 30 Jun 2023 18:07:43 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230630072101.040486316@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-c6835
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jun 30, 2023 at 09:33:31AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.1 release.
-> There are 31 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri, 30 Jun 2023 14:03:18 +0200, Johan Hovold wrote:
+> Make sure to resume the codec and soundwire device before trying to read
+> the codec variant and configure the device during component probe.
 > 
-> Responses should be made by Sun, 02 Jul 2023 07:20:45 +0000.
-> Anything received after that time might be too late.
+> This specifically avoids interpreting (a masked and shifted) -EBUSY
+> errno as the variant:
+> 
+> 	wcd938x_codec audio-codec: ASoC: error at soc_component_read_no_lock on audio-codec for register: [0x000034b0] -16
+> 
+> [...]
 
-Hi Greg,
+Applied to
 
-6.4.1-rc3 tested.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Run tested on:
-- Allwinner H6 (Tanix TX6)
-- Intel Alder Lake x86_64 (nuc12 i7-1260P)
+Thanks!
 
-In addition - build tested for:
-- Allwinner A64
-- Allwinner H3
-- Allwinner H5
-- NXP iMX6
-- NXP iMX8
-- Qualcomm Dragonboard
-- Rockchip RK3288
-- Rockchip RK3328
-- Rockchip RK3399pro
-- Samsung Exynos
+[1/1] ASoC: codecs: wcd938x: fix codec initialisation race
+      commit: 85a61b1ce461a3f62f1019e5e6423c393c542bff
 
-Tested-by: Rudi Heitbaum <rudi@heitbaum.com>
---
-Rudi
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
