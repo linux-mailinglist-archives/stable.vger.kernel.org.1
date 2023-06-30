@@ -2,121 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A48AC7438F6
-	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 12:07:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C590E743967
+	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 12:33:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232435AbjF3KHd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 30 Jun 2023 06:07:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53704 "EHLO
+        id S232185AbjF3Kds (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 30 Jun 2023 06:33:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233053AbjF3KHa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 06:07:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B9384204;
-        Fri, 30 Jun 2023 03:07:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CCFB6170B;
-        Fri, 30 Jun 2023 10:07:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BE5C433C0;
-        Fri, 30 Jun 2023 10:07:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688119625;
-        bh=dRTq5GwVmzPLKyaKbw23kgA98h3wm06ktUQGye1ZKaY=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=fOtZKOvDVMoHj53Mx+Gy2LoFyyPmdIwT32O71yXb2Ehtqebk+gPyiRV5jGGGYA1fM
-         vQBd/9NbGQVNmfCHFMxjVqzdd4+YKiLVOe2YDTuVToChdJa4HXCu2m9DsqTDouCRVy
-         KwwiPbZYx/iOnVzdS0R8CNDFA+x1AbUpElvJhZBOYQzF3UKU7vpZIiZrBz11yx2ulK
-         e9AA85m24IfeJO3WDJ1DXlEFCTOvZ2ZrUqRd8GxdH8DmYcedTRr1+Nuo+hyYRM06Ma
-         JsCJxVVICp+CZDck9Xgcy+EQeeW0kz1eHEJoElv9WJQdqklenA15EtRRxV8T4HMPmb
-         CW7GkzK+xY3sg==
-Mime-Version: 1.0
+        with ESMTP id S232048AbjF3Kdp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 06:33:45 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9B230DD
+        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 03:33:44 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b69dcf45faso28042411fa.0
+        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 03:33:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1688121223; x=1690713223;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WMvg4+xf/FpT2l2ger0oTsMzr40HAUi9gV+dNJ+SQAU=;
+        b=ptIyYvAGr7z2ddcaHcOP+a5GUrlPfF7+kvw9taw+/uSBqODpirNaXfrjvvaah2YJO4
+         1I+MABWWd1CMrpSEEL8XCWF+dfhQzuerODUen0VCYKl61KpU4edsHLHSNb/e/8KWVpku
+         iNLrIGxlbqQy2MJ2uLDoqkplGXbaoeRbvFubhmM+C1vjdZzT36cvY2cLUfGGOAlthxMy
+         Kh158t2XgN9f6kdlcWlCDAev77ibQ4onJGwHEAzLSGieQ3K/ZWUP8R3qYUdsxz2QhyET
+         f4xJYykbgbt91ep0t8+htl6DigRVG61IO8UFbqxQubKQCzQxU/VD0s+nXv4n4DdCNVjA
+         ythA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688121223; x=1690713223;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WMvg4+xf/FpT2l2ger0oTsMzr40HAUi9gV+dNJ+SQAU=;
+        b=j6PjInC56vdG6pAmGSPADfa31YQnCY6nJAxypfaUwfhC17JPi0Dnh6VwXiQ7mfH4xH
+         hqMgEcfEDEgkwCmlbK8t0WSX9S++q08gx079mAPgb0yHj96bWu+PuxL6gPUSY+HKuHfG
+         4LIwc6GTWh92gtruQmKbbovD4l1BOmggXFjoa5p1z8uvdEanOMfTPVcuwiXYKch+pRpx
+         +LFoZ+i+05V3On1v4NIivi9uanB90eq39/wBuslkXuIRzEy0iXaosy1F7huQo6vGWCnN
+         jkaZk1Z2duolaWUbnek7DinsjuKqzQuHI2EETqT23I7NELinWS6oNbfZtghB1z3gg1YG
+         SGbA==
+X-Gm-Message-State: ABy/qLZogp2h9JU9ZLyuip+UgC07d+N8XyIpaV+uH5nlzM5qLZVA2E2V
+        WVGHRRZ8rIuKfij6KcZOPfhlVDj4VWk50Bg3YyOE8Q==
+X-Google-Smtp-Source: APBJJlG2u/xyzuJ84ph37p/iQTjUyhcv/0ujEisW8iOXdWjzS2aHJnQdoa55ieUt9lpi45BGDEBdxvotYQGcYJ/euZE=
+X-Received: by 2002:a2e:9b0b:0:b0:2b6:a5bd:da2d with SMTP id
+ u11-20020a2e9b0b000000b002b6a5bdda2dmr1739785lji.27.1688121222628; Fri, 30
+ Jun 2023 03:33:42 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230630072124.944461414@linuxfoundation.org>
+In-Reply-To: <20230630072124.944461414@linuxfoundation.org>
+From:   ogasawara takeshi <takeshi.ogasawara@futuring-girl.com>
+Date:   Fri, 30 Jun 2023 19:33:31 +0900
+Message-ID: <CAKL4bV5Dhh3n0cLnd7wvgheMOrodFkCLa-RpzK9f3NW+n0jsKQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/33] 6.1.37-rc3 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Fri, 30 Jun 2023 13:07:00 +0300
-Message-Id: <CTPWGNGECE0A.7MSU6S60YWDK@suppilovahvero>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>,
-        "Peter Huewe" <peterhuewe@gmx.de>, <stable@vger.kernel.org>,
-        "Linux regressions mailing list" <regressions@lists.linux.dev>,
-        "Mario Limonciello" <mario.limonciello@amd.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        "Sachin Sant" <sachinp@linux.ibm.com>
-Subject: Re: [PATCH] tpm: return false from tpm_amd_is_rng_defective on
- non-x86 platforms
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Jerry Snitselaar" <jsnitsel@redhat.com>,
-        <linux-kernel@vger.kernel.org>, <linux-integrity@vger.kernel.org>
-X-Mailer: aerc 0.14.0
-References: <20230629204147.1852823-1-jsnitsel@redhat.com>
-In-Reply-To: <20230629204147.1852823-1-jsnitsel@redhat.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu Jun 29, 2023 at 11:41 PM EEST, Jerry Snitselaar wrote:
-> tpm_amd_is_rng_defective is for dealing with an issue related to the
-> AMD firmware TPM, so on non-x86 architectures just have it inline and
-> return false.
+Hi Greg
+
+On Fri, Jun 30, 2023 at 4:32=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Peter Huewe <peterhuewe@gmx.de>
-> Cc: stable@vger.kernel.org
-> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
-> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> Reported-by: Aneesh Kumar K. V <aneesh.kumar@linux.ibm.com>
-> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-> Closes: https://lore.kernel.org/lkml/99B81401-DB46-49B9-B321-CF832B50CAC3=
-@linux.ibm.com/
-> Fixes: f1324bbc4011 ("tpm: disable hwrng for fTPM on some AMD designs")
-> Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
-> ---
->  drivers/char/tpm/tpm-chip.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> This is the start of the stable review cycle for the 6.1.37 release.
+> There are 33 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-> index cd48033b804a..cf5499e51999 100644
-> --- a/drivers/char/tpm/tpm-chip.c
-> +++ b/drivers/char/tpm/tpm-chip.c
-> @@ -518,6 +518,7 @@ static int tpm_add_legacy_sysfs(struct tpm_chip *chip=
-)
->   * 6.x.y.z series: 6.0.18.6 +
->   * 3.x.y.z series: 3.57.y.5 +
->   */
-> +#ifdef CONFIG_X86
->  static bool tpm_amd_is_rng_defective(struct tpm_chip *chip)
->  {
->  	u32 val1, val2;
-> @@ -566,6 +567,12 @@ static bool tpm_amd_is_rng_defective(struct tpm_chip=
- *chip)
-> =20
->  	return true;
->  }
-> +#else
-> +static inline bool tpm_amd_is_rng_defective(struct tpm_chip *chip)
-> +{
-> +	return false;
-> +}
-> +#endif /* CONFIG_X86 */
-> =20
->  static int tpm_hwrng_read(struct hwrng *rng, void *data, size_t max, boo=
-l wait)
->  {
-> --=20
-> 2.38.1
+> Responses should be made by Sun, 02 Jul 2023 07:21:12 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.37-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Sanity check, this was the right patch, right?
+6.1.37-rc3 tested.
 
-I'll apply it.
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-BR, Jarkko
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64), arch linux)
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
