@@ -2,151 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 061397439BB
-	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 12:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BCF7743AE6
+	for <lists+stable@lfdr.de>; Fri, 30 Jun 2023 13:34:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232855AbjF3KlM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 30 Jun 2023 06:41:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37208 "EHLO
+        id S232366AbjF3Ld4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 30 Jun 2023 07:33:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232921AbjF3Kkx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 06:40:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A41094692
-        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 03:38:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688121425;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mSmMChIzFsnctBY/ntNdQM0sRE6MR8Uu4qXuBm6oUrY=;
-        b=JnMlmMVKS4zCLulyXJVbyCYj6CPvxAAU+eZZcTlSkQqN6QhtJnMDdqNL7t610BVCMO6RKV
-        V+tN2R2Fy3lnI4p7zeXrAcVMoxWKAWVQAUESsk/npHuKRwkxqyWVtR1bHbuSJ6kKBSj6BX
-        NEuiwcf4Wbb0hFCFJONtBHRAdtEXNrY=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-D_ibHnNRP3alY9rI0HawCw-1; Fri, 30 Jun 2023 06:37:04 -0400
-X-MC-Unique: D_ibHnNRP3alY9rI0HawCw-1
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-401df9d2dc4so3975061cf.0
-        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 03:37:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688121423; x=1690713423;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mSmMChIzFsnctBY/ntNdQM0sRE6MR8Uu4qXuBm6oUrY=;
-        b=C15XreruKMPPwbXYbV0T9BbQVoM/QGfK0vZTROcuvUMzNEk+RnYHUihHR6S6T/BByp
-         Wj8gL5lclGe0d4jpU533xN4sdSiiQ/xaJew2vmYtKovHy0YQvjAygR+eutceO1Ke8TO+
-         +skG4Y3fWaFOEpLVVsRA1FSsJUQRLFWQF0JBnp7FvyBjUckwcArq67/MoLO1N40JuVpU
-         PxkkDzeU08jyRm2LNAv+RfDFi4cjH++hOrPzURxIqB/mvNvrM4FAO8jVZmUhrL3p0UNh
-         ehP73OY3Lf2ZGOD8IKd5a9FTjC5dYsxcMmnpyFpRxjVNETzII2uhW4Pv9KY6yApkZg0i
-         lk4A==
-X-Gm-Message-State: AC+VfDwQdBK5grvVj2ca8Ysegqx6MkPQLdCloT0hv4cE3bSSQEO23p9K
-        SKdOicn2bNWdDFs/Fa9Jh5S+3KIKHH+0fS4GTK7v1fqIUFjNr9OHCV4MZbIGDKU/Tw5YAVX5x/c
-        J8Bj/JSDgd9ZeXVFL
-X-Received: by 2002:a05:622a:1819:b0:400:a9a4:8517 with SMTP id t25-20020a05622a181900b00400a9a48517mr2536794qtc.4.1688121423745;
-        Fri, 30 Jun 2023 03:37:03 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7dr4NVZJGnbWpLNO5IGOyHWOg9Nxt/DgSxcc/RdlVezoQPlU7ziI3vkR1ZVcAPcj0V3cyAZg==
-X-Received: by 2002:a05:622a:1819:b0:400:a9a4:8517 with SMTP id t25-20020a05622a181900b00400a9a48517mr2536779qtc.4.1688121423483;
-        Fri, 30 Jun 2023 03:37:03 -0700 (PDT)
-Received: from gerbillo.redhat.com (146-241-247-156.dyn.eolo.it. [146.241.247.156])
-        by smtp.gmail.com with ESMTPSA id cc23-20020a05622a411700b003f7fd3ce69fsm5015184qtb.59.2023.06.30.03.37.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jun 2023 03:37:03 -0700 (PDT)
-Message-ID: <e5c3e5e5033290c2228bbad0307334a964eb065e.camel@redhat.com>
-Subject: Re: [Patch v3] net: mana: Batch ringing RX queue doorbell on
- receiving packets
-From:   Paolo Abeni <pabeni@redhat.com>
-To:     Long Li <longli@microsoft.com>,
-        "longli@linuxonhyperv.com" <longli@linuxonhyperv.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Date:   Fri, 30 Jun 2023 12:36:58 +0200
-In-Reply-To: <PH7PR21MB3263B266E381BA15DCE45820CE25A@PH7PR21MB3263.namprd21.prod.outlook.com>
-References: <1687823827-15850-1-git-send-email-longli@linuxonhyperv.com>
-         <36c95dd6babb2202f70594d5dde13493af62dcad.camel@redhat.com>
-         <PH7PR21MB3263B266E381BA15DCE45820CE25A@PH7PR21MB3263.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        with ESMTP id S229957AbjF3Ldz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 07:33:55 -0400
+Received: from qproxy2-pub.mail.unifiedlayer.com (qproxy2-pub.mail.unifiedlayer.com [69.89.16.161])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A68801FE4
+        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 04:33:54 -0700 (PDT)
+Received: from gproxy2-pub.mail.unifiedlayer.com (gproxy2-pub.mail.unifiedlayer.com [69.89.18.3])
+        by qproxy2.mail.unifiedlayer.com (Postfix) with ESMTP id 4E51B802CB64
+        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 11:33:54 +0000 (UTC)
+Received: from cmgw11.mail.unifiedlayer.com (unknown [10.0.90.126])
+        by progateway4.mail.pro1.eigbox.com (Postfix) with ESMTP id 45E1110048081
+        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 11:33:52 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id FCNsqbiiaJQbpFCNsqmwHt; Fri, 30 Jun 2023 11:33:52 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=TrojOBbh c=1 sm=1 tr=0 ts=649ebda0
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10:nop_charset_1
+ a=of4jigFt-DYA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=-9oEWi-u3mcIJ7S_yvsA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=BGDfyEhGvWQ1M2sCGoseCz7mjNya4SHRKvcGlhzF9YI=; b=tDvrfze1t1v9qxxQ1HzNL0w2wV
+        2NCmCpWhCuk2d3i1wwcmd1VoHi+QflLJOaIAN7Mhq3vC7BLZbhmDgQg5Eyd2Aukze+3bAwAguEMjU
+        JBKfNOqQ2d8j4/YEm0WPcvsYoYasMfksKSPXp2c5YF5aXcSIWxS1Y+YXVeMqsgEbdDktWB12hqU3w
+        h8usd6ns3Jrd4POaYLFR01zuRwIKj4OzjHA/YV7Jnbwcyy5PF/0cDDLSu3OJSylnGVDiTvd+Yq2lM
+        G5oKXFPExR0DlNbnO8CPQK2SnlLoHQluByLS/e9X4Zk3V/9dQatQyeylWRxMZ2nsmNWL4ygJcCKaN
+        57rTe3gg==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:46126 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <re@w6rz.net>)
+        id 1qFCNq-001qhA-PN;
+        Fri, 30 Jun 2023 05:33:50 -0600
+Subject: Re: [PATCH 6.4 00/31] 6.4.1-rc3 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230630072101.040486316@linuxfoundation.org>
+In-Reply-To: <20230630072101.040486316@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <4a77ab37-a2f6-f916-0805-e46ad755b7f2@w6rz.net>
+Date:   Fri, 30 Jun 2023 04:33:48 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qFCNq-001qhA-PN
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:46126
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 2023-06-29 at 18:18 +0000, Long Li wrote:
-> > Subject: Re: [Patch v3] net: mana: Batch ringing RX queue doorbell
-> > on receiving
-> > packets
-> >=20
-> > On Mon, 2023-06-26 at 16:57 -0700, longli@linuxonhyperv.com wrote:
-> > > From: Long Li <longli@microsoft.com>
-> > >=20
-> > > It's inefficient to ring the doorbell page every time a WQE is
-> > > posted
-> > > to the received queue. Excessive MMIO writes result in CPU
-> > > spending
-> > > more time waiting on LOCK instructions (atomic operations),
-> > > resulting
-> > > in poor scaling performance.
-> > >=20
-> > > Move the code for ringing doorbell page to where after we have
-> > > posted
-> > > all WQEs to the receive queue during a callback from napi_poll().
-> > >=20
-> > > With this change, tests showed an improvement from 120G/s to
-> > > 160G/s on
-> > > a 200G physical link, with 16 or 32 hardware queues.
-> > >=20
-> > > Tests showed no regression in network latency benchmarks on
-> > > single
-> > > connection.
-> > >=20
-> > > While we are making changes in this code path, change the code
-> > > for
-> > > ringing doorbell to set the WQE_COUNT to 0 for Receive Queue. The
-> > > hardware specification specifies that it should set to 0.
-> > > Although
-> > > currently the hardware doesn't enforce the check, in the future
-> > > releases it may do.
-> > >=20
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure
-> > > Network Adapter (MANA)")
-> >=20
-> > Uhmmm... this looks like a performance improvement to me, more
-> > suitable for
-> > the net-next tree ?!? (Note that net-next is closed now).
->=20
-> This issue is a blocker for usage on 200G physical link. I think it
-> can be categorized as a fix.
+On 6/30/23 12:33 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.1 release.
+> There are 31 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 02 Jul 2023 07:20:45 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.1-rc3.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Let me ask the question the other way around: is there any specific
-reason to have this fix into 6.5 and all the way back to 5.13?
-Especially the latest bit (CC-ing stable) looks at least debatable.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Thanks,
-
-Paolo
+Tested-by: Ron Economos <re@w6rz.net>
 
