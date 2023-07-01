@@ -2,75 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0028A7445F8
-	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 04:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32E0474461D
+	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 04:38:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229632AbjGACAs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 30 Jun 2023 22:00:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38052 "EHLO
+        id S229558AbjGACh4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 30 Jun 2023 22:37:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjGACAr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 22:00:47 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9471F4204
-        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 19:00:45 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id d75a77b69052e-40345bf4875so129531cf.0
-        for <stable@vger.kernel.org>; Fri, 30 Jun 2023 19:00:45 -0700 (PDT)
+        with ESMTP id S229735AbjGAChm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 22:37:42 -0400
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E7FE44B0;
+        Fri, 30 Jun 2023 19:35:31 -0700 (PDT)
+Received: by mail-qk1-x730.google.com with SMTP id af79cd13be357-765a6bbddd6so233229185a.0;
+        Fri, 30 Jun 2023 19:35:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688176844; x=1690768844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1688178930; x=1690770930;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WaVezS/+JQV57xvj5fNb4PPthEyQc/LQbKbtQJe4ZRE=;
-        b=7w9aLGYKNTt6D1+bVMbb17RhF8C+rRNuaw4vyDbyVH/CM6nwWV0boif3sYwGJo9L5O
-         Aml+t3Ivaiif3sg+0+LmHVHef4DWzM1qS4opcO256p36DkAN0Jqzkxi2WFQ/slnOdNIE
-         9F/OcLhhBwNH3v/vETYX0v4nytkvdb0z/niLQvHOAdNmOTO72e2wciUcmurDCgrWjOKb
-         XIA4FVOSBkKk0Eha1MPYj94oylEB32FPjQFycq1M2g2DxgtS+LbB/DhyqiC6M/l+6v6J
-         Tg52d9yDjPeWWeNYK4f1wqPD/LcAzNWlFSlDpdFw0jnVZHAjrPkV0+qAtttc3jrkUq3l
-         JBwQ==
+        bh=0z2JwK1RrLjO9rd7bUAW0h8yDPkiVe+KUjRl/TttWdo=;
+        b=RJ6uk2LkUUdpHJxoGZsLheBAoPGgdMejv/jD37sHByR8Mdb2SDnV9KGNxwUxvrM4JZ
+         y/alIuH7vSSUvJl24tVndCm755nKVL3FopivY1CNG9ByPwCYhVSZDuW6iCR9hJjg+1DE
+         GEoh0rn6izPL+v7xn00FavCIzjKFL9SUHlEw2k/6R9ykt67Yf0Cl5gIRjbIV/4I/3VP0
+         r6H09WYaZGjAa5DeIHXb82CagkMQXL3U0BaEzZFpS/VOM7viGc7PvvZD2VCHae/4BfnQ
+         4hZ7EGXet6J9z6NJliqH5qcOpACHtDkg6FI3iS8YPgtBkvROz3+dJe/zZPg4HWz/Y+wx
+         TlYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688176844; x=1690768844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1688178930; x=1690770930;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WaVezS/+JQV57xvj5fNb4PPthEyQc/LQbKbtQJe4ZRE=;
-        b=cbUPueFXYxKJXjLhBAbjgUYWZw/lZs8/6+2t6WT1b9kCDUF31sIhHUn0EYVaejD3Yg
-         8zfMoQieoaDLGFUme+sU7TOBUbg4VEZohwyG/FdPTwPtrGmFax/+O9PPlnyTC+kE0iLD
-         cLEqQwIuBi5JeuKhvP5k9WrA5yUiSvW/pGQyqUg/SGBfC/l3Sts97J6kYz5+Ef85eBqw
-         TNx8TCj6ObAvRakOyBMMNAQArVb0Gr51crrHjC0rZveDnBoxDcCjl6aF+1d5uQrA2TcF
-         51jlJ8xbdfTRllq8ot3UcLEJKLtzA9Uj+a3kiYrXU8gTPUtvEJAE4ERNXkzNc/Y/MFAJ
-         KV4A==
-X-Gm-Message-State: ABy/qLabKYSd7/LbQqT0VGTXnGpphN/Euikq/ty1/8wl3NFswBVsgeHK
-        bpoofho+/+IAUx8W7DXRwEvvRmjoP/typSaQcY449g==
-X-Google-Smtp-Source: APBJJlF/PwfmDQkOlM6jVa2cWWmHy5HoMqgsdTRC/CcUnKrpKXeYKOyCfH4m/A7nSSAT8wSFlGI2qcQFw95gSjfKtuA=
-X-Received: by 2002:ac8:5b05:0:b0:3ef:5f97:258f with SMTP id
- m5-20020ac85b05000000b003ef5f97258fmr78788qtw.16.1688176844468; Fri, 30 Jun
- 2023 19:00:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230629015844.800280-1-samjonas@amazon.com> <CANn89i+6d9K1VwNK1Joc-Yb_4jAfV_YFzk=z_K2_Oy+xJHSn_g@mail.gmail.com>
- <182D446E-8871-4811-9275-98FF067B1BA9@amazon.com>
-In-Reply-To: <182D446E-8871-4811-9275-98FF067B1BA9@amazon.com>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Sat, 1 Jul 2023 04:00:33 +0200
-Message-ID: <CANn89i+oEvhGgtD6OrFFKXiRT3WD3uPRpNJLN6Qm2_HWaBVzrg@mail.gmail.com>
-Subject: Re: [PATCH net] net/ipv6: Reduce chance of collisions in inet6_hashfn()
-To:     "Smith, Stewart" <trawets@amazon.com>,
-        Amit Klein <aksecurity@gmail.com>
-Cc:     "Mendoza-Jonas, Samuel" <samjonas@amazon.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Herrenschmidt, Benjamin" <benh@amazon.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        bh=0z2JwK1RrLjO9rd7bUAW0h8yDPkiVe+KUjRl/TttWdo=;
+        b=Ym0tyNdrxU17szIz0pO0wlHTWNVFBMCnW7ubUm2LTZW+g6TxpaQnHdoR+5mcJVu4Sj
+         Z6tmKFm0XJQOUSQTrqNh4+rsFRQm7JiaQrb2rEZxwvZZ6aZI6Q7R3C0oHkgbccYIqrX8
+         75r9hGH7WDAjivBjAdTuqRA9ceQBlooOuGqP/QnPNU6sr48Jc0ms0HN3tDpBBZQgrAx8
+         qsfBHzsu7iK6u+UYgWIw0qLLARVLVKI7UFzo7tUx7AbWC5QZopBHl3ABL099Kwu79aPW
+         UERjsgJeRoRTZrneQ2VSZAkm2A0eIAa7fH3+smRmvVGOYoTHN/BhjSIunUq2mJP/ilVy
+         X7pQ==
+X-Gm-Message-State: AC+VfDxl4CE1OpJhunx662ICaTGEYG8TdS5/d8hLNWytuJ0oZMsVofUA
+        bvNoO1oxY7fXuYF3yQpB9Ko=
+X-Google-Smtp-Source: ACHHUZ5AeASuq18tzxZAjVAgnmo2eS+teacxv7pTfdVV2/3zL+UqpyodBAa3HHw8BaOZrrONckNjuw==
+X-Received: by 2002:a05:620a:4082:b0:767:954:a743 with SMTP id f2-20020a05620a408200b007670954a743mr5120547qko.51.1688178930463;
+        Fri, 30 Jun 2023 19:35:30 -0700 (PDT)
+Received: from xplor.waratah.dyndns.org (222-152-184-54-fibre.sparkbb.co.nz. [222.152.184.54])
+        by smtp.gmail.com with ESMTPSA id s11-20020a62e70b000000b00663ab37ff74sm10030026pfh.72.2023.06.30.19.35.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jun 2023 19:35:30 -0700 (PDT)
+Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
+        id 673CB360319; Sat,  1 Jul 2023 14:35:26 +1200 (NZST)
+From:   Michael Schmitz <schmitzmic@gmail.com>
+To:     linux-block@vger.kernel.org, axboe@kernel.dk
+Cc:     linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de,
+        geert@linux-m68k.org, hch@lst.de, martin@lichtvoll.de,
+        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH] block: bugfix for Amiga partition overflow check patch
+Date:   Sat,  1 Jul 2023 14:35:24 +1200
+Message-Id: <20230701023524.7434-1-schmitzmic@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,141 +68,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jul 1, 2023 at 2:26=E2=80=AFAM Smith, Stewart <trawets@amazon.com> =
-wrote:
->
->
->
-> > On Jun 29, 2023, at 3:05 AM, Eric Dumazet <edumazet@google.com> wrote:
-> >
-> >
-> > On Thu, Jun 29, 2023 at 3:59=E2=80=AFAM Samuel Mendoza-Jonas
-> > <samjonas@amazon.com> wrote:
-> >>
-> >> From: Stewart Smith <trawets@amazon.com>
-> >>
-> >> For both IPv4 and IPv6 incoming TCP connections are tracked in a hash
-> >> table with a hash over the source & destination addresses and ports.
-> >> However, the IPv6 hash is insufficient and can lead to a high rate of
-> >> collisions.
-> >>
-> >> The IPv6 hash used an XOR to fit everything into the 96 bits for the
-> >> fast jenkins hash, meaning it is possible for an external entity to
-> >> ensure the hash collides, thus falling back to a linear search in the
-> >> bucket, which is slow.
-> >>
-> >> We take the approach of hash half the data; hash the other half; and
-> >> then hash them together. We do this with 3x jenkins hashes rather than
-> >> 2x to calculate the hashing value for the connection covering the full
-> >> length of the addresses and ports.
-> >>
-> >
-> > ...
-> >
-> >> While this may look like it adds overhead, the reality of modern CPUs
-> >> means that this is unmeasurable in real world scenarios.
-> >>
-> >> In simulating with llvm-mca, the increase in cycles for the hashing co=
-de
-> >> was ~5 cycles on Skylake (from a base of ~50), and an extra ~9 on
-> >> Nehalem (base of ~62).
-> >>
-> >> In commit dd6d2910c5e0 ("netfilter: conntrack: switch to siphash")
-> >> netfilter switched from a jenkins hash to a siphash, but even the fast=
-er
-> >> hsiphash is a more significant overhead (~20-30%) in some preliminary
-> >> testing. So, in this patch, we keep to the more conservative approach =
-to
-> >> ensure we don't add much overhead per SYN.
-> >>
-> >> In testing, this results in a consistently even spread across the
-> >> connection buckets. In both testing and real-world scenarios, we have
-> >> not found any measurable performance impact.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> Fixes: 08dcdbf6a7b9 ("ipv6: use a stronger hash for tcp")
-> >> Fixes: b3da2cf37c5c ("[INET]: Use jhash + random secret for ehash.")
-> >> Signed-off-by: Stewart Smith <trawets@amazon.com>
-> >> Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
-> >> ---
-> >> include/net/ipv6.h          | 4 +---
-> >> net/ipv6/inet6_hashtables.c | 5 ++++-
-> >> 2 files changed, 5 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-> >> index 7332296eca44..f9bb54869d82 100644
-> >> --- a/include/net/ipv6.h
-> >> +++ b/include/net/ipv6.h
-> >> @@ -752,9 +752,7 @@ static inline u32 ipv6_addr_hash(const struct in6_=
-addr *a)
-> >> /* more secured version of ipv6_addr_hash() */
-> >> static inline u32 __ipv6_addr_jhash(const struct in6_addr *a, const u3=
-2 initval)
-> >> {
-> >> -       u32 v =3D (__force u32)a->s6_addr32[0] ^ (__force u32)a->s6_ad=
-dr32[1];
-> >> -
-> >> -       return jhash_3words(v,
-> >> +       return jhash_3words((__force u32)a->s6_addr32[1],
-> >>                            (__force u32)a->s6_addr32[2],
-> >>                            (__force u32)a->s6_addr32[3],
-> >>                            initval);
-> >
-> > Hmmm... see my following comment.
-> >
-> >> diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
-> >> index b64b49012655..bb7198081974 100644
-> >> --- a/net/ipv6/inet6_hashtables.c
-> >> +++ b/net/ipv6/inet6_hashtables.c
-> >> @@ -33,7 +33,10 @@ u32 inet6_ehashfn(const struct net *net,
-> >>        net_get_random_once(&inet6_ehash_secret, sizeof(inet6_ehash_sec=
-ret));
-> >>        net_get_random_once(&ipv6_hash_secret, sizeof(ipv6_hash_secret)=
-);
-> >>
-> >> -       lhash =3D (__force u32)laddr->s6_addr32[3];
-> >> +       lhash =3D jhash_3words((__force u32)laddr->s6_addr32[3],
-> >> +                           (((u32)lport) << 16) | (__force u32)fport,
-> >> +                           (__force u32)faddr->s6_addr32[0],
-> >> +                           ipv6_hash_secret);
-> >
-> > This seems wrong to me.
-> >
-> > Reusing ipv6_hash_secret and other keys twice is not good, I am sure
-> > some security researchers
-> > would love this...
->
-> My personal math here is nowhere near what=E2=80=99s needed to work out i=
-f it=E2=80=99s a problem or not, it passed the =E2=80=9CAm I a complete idi=
-ot here?=E2=80=9D question of someone much smarter than me in the area, but=
- that=E2=80=99s not sustained scrutiny of course. It=E2=80=99s quite possib=
-le there=E2=80=99s something there given enough time to noodle on it.
->
-> > Please just change __ipv6_addr_jhash(), so that all users can benefit
-> > from a more secure version ?
-> > It also leaves lhash / fhash names relevant here.
-> >
-> > We will probably have to switch to sip (or other stronger hash than
-> > jhash)  at some point, it is a tradeoff.
->
-> Probably to a hsiphash?
->
-> When using the same kind of sim with llvm-mca, hsiphash appears to be abo=
-ut the same number of cycles as jhash2 you suggest, so maybe we should just=
- go there and be done with it?
->
-> I put my tests and output up at https://github.com/stewartsmith/inet6_has=
-hfn-sim
->
-> I=E2=80=99ll throw some traffic at the hsiphash and see if we can observe=
- a difference.
->
-> If nobody is madly complaining about netfilter switching to it as of dd6d=
-2910c5e071a8683827df1a89e527aa5145ab, then it may be fine, but will throw s=
-ome more benchmarks at it.
->
+Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
+fails the 'blk>0' test in the partition block loop if a
+value of (signed int) -1 is used to mark the end of the
+partition block list.
 
-Make sure to include Amit Klein <aksecurity@gmail.com> to the next
-round, he will "do the maths" for sure :)
+This bug was introduced in patch 3 of my prior Amiga partition
+support fixes series, and spotted by Christian Zigotzky when
+testing the latest block updates.
 
-Thanks.
+Explicitly cast 'blk' to signed int to allow use of -1 to
+terminate the partition block linked list.
+
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Fixes: b6f3f28f60 ("Linux 6.4")
+Message-ID: 024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+Cc: <stable@vger.kernel.org> # 6.4
+Link: https://lore.kernel.org/r/024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+---
+ block/partitions/amiga.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
+index ed222b9c901b..506921095412 100644
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -90,7 +90,7 @@ int amiga_partition(struct parsed_partitions *state)
+ 	}
+ 	blk = be32_to_cpu(rdb->rdb_PartitionList);
+ 	put_dev_sector(sect);
+-	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
++	for (part = 1; (s32) blk>0 && part<=16; part++, put_dev_sector(sect)) {
+ 		/* Read in terms partition table understands */
+ 		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
+ 			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
+-- 
+2.17.1
+
