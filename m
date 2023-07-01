@@ -2,158 +2,244 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18C1A74472C
-	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 08:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95C457447AB
+	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 09:23:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbjGAGuz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 1 Jul 2023 02:50:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46826 "EHLO
+        id S229548AbjGAHXM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 1 Jul 2023 03:23:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230450AbjGAGuU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 02:50:20 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AC14EC7;
-        Fri, 30 Jun 2023 23:44:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1688193642; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=Dj/B0mgRrKrLnMXtlkOiDHBrQ8XKKmSpVKf9xMaQ1k9i7r604s7yFWhszgPdQLl6jR
-    gKstS2vd7YC0l0yyvHUmmVCRtcAUHB62ZR2mw+5Cm9+lpzjt7/e8t2VsXpfwP0N/Lf4K
-    QUFND+sFhm4k3mtY1SfzmsW1uBa+26/mVrdggL8zewlHPlf6gY140LQC2MjXBbswy9rf
-    DvByc9qup2raI9oZ96R7NayVrTJ12nctK3ZaL3Qm/cB+6HgUUaZ0ykr0X+ruHHqHSZl6
-    QUKrwpS5QgqXL1qaQMTasOqQVIDbfemhF0Bo4Stwtt9s3kDVY4Xc1LwQw2iMTdDj1jOe
-    pXZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1688193642;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Geopluaz3TDcYvhoF+eKUr/b/1qwY3K/34g5xOAaUv0=;
-    b=PknmAxBhkNqodBGezqBzR57eXS/t2+5hbSDEQByusu6Lim1S9x/38QHqYASP6qxVqR
-    i3Z3TbuvuXA4nEkV0jOITE77CItUMkUxuNqyLU6aIe0H3Ro13Qgl8J/y7i5cRVfzzCPv
-    jzPiaO3nnbP72ZNUuDFHH1jR/5RjWurk0TBuvoMw2QCggK+Nw0ZAZYrCgjRgADVMtNid
-    keqHYt3IFHrQVOHJEk4B1e31s/KMaK/re8BNCdgMAwlB/fJBmFWuTlzolNFiQCAPNIbZ
-    1F07ZujRrtPGL09VaL7YNVCRGx8YKTlEgrbGIiUU8wXj/57z0X15aINGjISAKzqvuJqx
-    dtkw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1688193642;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Geopluaz3TDcYvhoF+eKUr/b/1qwY3K/34g5xOAaUv0=;
-    b=RdUp8H2aheIHUCvCztydQrF53l0f9iumSjPciOeEYcz82te1mCCCWzUpaNJNwdN9n7
-    jzU9HOC/UsExanBfxoEdF10nZ2iebUCNp04z9ko3K5QLgBePcPGtxJMb0bC7lxbSOnha
-    kX7WCvCEHNQdIMD/xIh2G6IENTI/dUbjzKmrVtC8FmwOZIKOIqo06qkYyGe/JN4r85wI
-    y98SDLdYcX4N3hZXu0YayoxtbPYc/H3ALD1ZeCUj/oOHhzQEaQlzULwx1ZWYvgNDaMAj
-    HSVRRQ+928SsWL1vs3UHZg0r00+dynoh+ycUI/E95rDDR2/dd07CXWADRtX5qMyDGGyB
-    pWbA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1688193642;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Geopluaz3TDcYvhoF+eKUr/b/1qwY3K/34g5xOAaUv0=;
-    b=cCcdVDTKyp0U1B9gi/3O243CwI2nJaisPzxNIy4FowyFjOqwN7CbfwbUA2UXKXf2uB
-    e8CbACLaX0bERNq2GaCA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwjU4IS6qmHYqr4pnLwccgWBLjxs"
-Received: from [IPV6:2a02:8109:8980:4474:19de:8732:90de:fd8]
-    by smtp.strato.de (RZmta 49.6.0 AUTH)
-    with ESMTPSA id N28a51z616egsBq
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Sat, 1 Jul 2023 08:40:42 +0200 (CEST)
-Message-ID: <3e3ce346-f627-4adf-179d-b8817361e6e3@xenosoft.de>
-Date:   Sat, 1 Jul 2023 08:40:41 +0200
+        with ESMTP id S229560AbjGAHXH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 03:23:07 -0400
+Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80CE7136
+        for <stable@vger.kernel.org>; Sat,  1 Jul 2023 00:22:52 -0700 (PDT)
+Received: by mail-ua1-x92e.google.com with SMTP id a1e0cc1a2514c-791c27bb91dso1879115241.0
+        for <stable@vger.kernel.org>; Sat, 01 Jul 2023 00:22:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688196171; x=1690788171;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EndCeKtE1MtgHQq8vWwQLNF9dWQA3B6cvL2ugHn86C0=;
+        b=p7/Cpgn+qOHw0O4uZ9lBFJqAIMmlfNxgrj7mC2p//k13dCEF6Sw0S/xxrHvCcm45Qo
+         bt4bog7m4BvYlBGxcnltSwwPTpPIBGGMC5Nn0cuRbGXwPG6x5aDn3X/H8OY7EkWUWbK5
+         jCO35tC0Wpjdad+RAWLSuw54m60OgkscXoNjIVO1Fa5ayqIkcRHsbKXq4Ewcj0cU9v40
+         FKEKdXE21l9MgDwnW3beZBJRgrKJWYeF8UUyG3wFeAN7BQqT8B97jmZPz3NhGOfdxUMO
+         LJ2GLr3FewCGDPGIGSQWXfHdSoLVuzYJpXUWvmkMwau+vh3zuKXMtziqTmvUp2Kx9wKd
+         yNpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688196171; x=1690788171;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EndCeKtE1MtgHQq8vWwQLNF9dWQA3B6cvL2ugHn86C0=;
+        b=ChJ3PPq+Xd/XNtj43pgDU4i4D5KivQmkVgN0CyZlO05Fmgm40VvnfTjyhC/hrPAfZK
+         XLtzM/gM0y4HxY6fuX3D4DsuVTB9MEKlgFUtL1ANx6JajPUO1CyhuqMIyH/eq/ZYoUHv
+         iP8vYGCLTK8tQaui8fvRKTty6o8Chl9gUKpu4gmX6LEtRtQRqInm/Paa+uZOIZSmzb/t
+         I5k28ZJUFpfpBU3J3e9cFE02Iv0fA6GRs4po8Ft/2d9mAC53Zias71a1eMCVZHu5+54K
+         1m1PsWO0Jig5xcivBJZP4ODdWuSfQrCPHa6I8bIXRlfjSZqCXRWWh0+j2kp/kFmwcUfi
+         xeyQ==
+X-Gm-Message-State: ABy/qLYyhb0bq0MNX3yIeVNc3Ip0fe9B/Pw3fteMT72Awp3l9J8tAyVZ
+        1sg0bp2Ex3Vfr3tQwzefr75zSu2G85j3XJjzPVnm0g==
+X-Google-Smtp-Source: APBJJlF/wJHiu7VKFbccuje5fHD/XYfVjwPMhARFmrKgQj+3Ii+IL3DF/1ULbi0q25CyiWdm3p8pZTtwRJ0QN/kn18U=
+X-Received: by 2002:a67:fe98:0:b0:443:672a:8c3a with SMTP id
+ b24-20020a67fe98000000b00443672a8c3amr2412688vsr.9.1688196171362; Sat, 01 Jul
+ 2023 00:22:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] block: bugfix for Amiga partition overflow check patch
-To:     Michael Schmitz <schmitzmic@gmail.com>,
-        linux-block@vger.kernel.org, axboe@kernel.dk
-Cc:     linux-m68k@vger.kernel.org, geert@linux-m68k.org, hch@lst.de,
-        martin@lichtvoll.de, stable@vger.kernel.org,
-        "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        Darren Stevens <darren@stevens-zone.net>,
-        mad skateman <madskateman@gmail.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-References: <20230701023524.7434-1-schmitzmic@gmail.com>
-Content-Language: de-DE
-From:   Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <20230701023524.7434-1-schmitzmic@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+References: <20230630072124.944461414@linuxfoundation.org>
+In-Reply-To: <20230630072124.944461414@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Sat, 1 Jul 2023 12:52:40 +0530
+Message-ID: <CA+G9fYtUn5p-wQZsWoRA2XLaJdOSEt9E3RYgiF5w2fWczTvx9Q@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/33] 6.1.37-rc3 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 01 July 2023 at 04:35 am, Michael Schmitz wrote:
-> Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
-> fails the 'blk>0' test in the partition block loop if a
-> value of (signed int) -1 is used to mark the end of the
-> partition block list.
+On Fri, 30 Jun 2023 at 13:02, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> This bug was introduced in patch 3 of my prior Amiga partition
-> support fixes series, and spotted by Christian Zigotzky when
-> testing the latest block updates.
+> This is the start of the stable review cycle for the 6.1.37 release.
+> There are 33 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Explicitly cast 'blk' to signed int to allow use of -1 to
-> terminate the partition block linked list.
+> Responses should be made by Sun, 02 Jul 2023 07:21:12 +0000.
+> Anything received after that time might be too late.
 >
-> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-> Fixes: b6f3f28f60 ("Linux 6.4")
-> Message-ID: 024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
-> Cc: <stable@vger.kernel.org> # 6.4
-> Link: https://lore.kernel.org/r/024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
-> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-> ---
->   block/partitions/amiga.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.37-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
 >
-> diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
-> index ed222b9c901b..506921095412 100644
-> --- a/block/partitions/amiga.c
-> +++ b/block/partitions/amiga.c
-> @@ -90,7 +90,7 @@ int amiga_partition(struct parsed_partitions *state)
->   	}
->   	blk = be32_to_cpu(rdb->rdb_PartitionList);
->   	put_dev_sector(sect);
-> -	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
-> +	for (part = 1; (s32) blk>0 && part<=16; part++, put_dev_sector(sect)) {
->   		/* Read in terms partition table understands */
->   		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
->   			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
-Hello Michael,
+> thanks,
+>
+> greg k-h
 
-Thanks for your patch.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-I patched the latest git kernel source code with your patch today but 
-unfortunately the kernel has reported a bad geometry. (EXT4-fs (sda4): 
-bad geometry: block count ...)
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-dmesg | grep -i sda
+## Build
+* kernel: 6.1.37-rc3
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: bb9014bd0a3195cf910cede585b8dc0c4f85aa50
+* git describe: v6.1.36-34-gbb9014bd0a31
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.3=
+6-34-gbb9014bd0a31
 
-[    4.025449] sd 0:0:0:0: [sda] 3907029168 512-byte logical blocks: 
-(2.00 TB/1.82 TiB)
-[    4.071978] sd 0:0:0:0: [sda] 4096-byte physical blocks
-[    4.119333] sd 0:0:0:0: [sda] Write Protect is off
-[    4.165958] sd 0:0:0:0: [sda] Mode Sense: 00 3a 00 00
-[    4.212921] sd 0:0:0:0: [sda] Write cache: enabled, read cache: 
-enabled, doesn't support DPO or FUA
-[    4.259469] sd 0:0:0:0: [sda] Preferred minimum I/O size 4096 bytes
-[    4.502519]  sda: RDSK (512) sda1 (DOS^G)(res 2 spb 2) sda2 
-(SFS^B)(res 2 spb 1) sda3 (SFS^B)(res 2 spb 2) sda4 ((res 2 spb 1)
-[    4.551981] sd 0:0:0:0: [sda] Attached SCSI disk
-[   82.421727] EXT4-fs (sda4): bad geometry: block count 319655862 
-exceeds size of device (317690430 blocks)
+## Test Regressions (compared to v6.1.36)
 
-I can't mount the ext4 partition on the RDB disk and booting isn't 
-possible as well.
+## Metric Regressions (compared to v6.1.36)
 
-Thanks,
-Christian
+## Test Fixes (compared to v6.1.36)
+
+## Metric Fixes (compared to v6.1.36)
+## Test result summary
+total: 184322, pass: 145551, fail: 3522, skip: 35067, xfail: 182
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 151 total, 150 passed, 1 failed
+* arm64: 57 total, 56 passed, 1 failed
+* i386: 41 total, 38 passed, 3 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 38 total, 36 passed, 2 failed
+* riscv: 16 total, 15 passed, 1 failed
+* s390: 16 total, 16 passed, 0 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* fwts
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
