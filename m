@@ -2,91 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39A9B744854
-	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 11:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB89374487C
+	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 12:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbjGAJ5i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 1 Jul 2023 05:57:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51340 "EHLO
+        id S229490AbjGAKcS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 1 Jul 2023 06:32:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbjGAJ5g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 05:57:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0C02D46;
-        Sat,  1 Jul 2023 02:57:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ACE4860A5C;
-        Sat,  1 Jul 2023 09:57:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93301C433C7;
-        Sat,  1 Jul 2023 09:57:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688205454;
-        bh=rcb5fmM/YGXFaxmYPm09nzSE6MxfW1AoIbS68NK9hgE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lOB2tx/2N2H2VFd0tt8NrfjCdO5WWKUtaZRg+F3WbC1sM7/QuEMdwIUAdTf5uxR+1
-         OUNEOhpANcMhuuAp7BI/V2dfN+6BpJlcftZGmgIUbVq1Z4C15d2Vu1B9oTYnZI2K1C
-         KoDEWXpmcnGKlGb3y7NsLXyrOakCWKBwyCxFDqEM=
-Date:   Sat, 1 Jul 2023 11:57:30 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        with ESMTP id S229452AbjGAKcS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 06:32:18 -0400
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBAD73ABD;
+        Sat,  1 Jul 2023 03:32:15 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1a28de15c8aso2626718fac.2;
+        Sat, 01 Jul 2023 03:32:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688207535; x=1690799535;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pGpM6CzxS23sdxO56fNlVqxcfTCp7IVYaCNZLh8aKSE=;
+        b=PAsUACBjiDmca1uG/cRa+14CvaPNzBosEv8uPiP0xVRTBr8sp9MjKGQMzq/zGxnJ+z
+         V20eFrw1c7Sc86rs2aIEp8e/0PwK0/JVLSq3RlEzJyfz49Bt2FAS97ZkGbHloaOO41he
+         orYdC2d8lClXzIPoE6IeOhzPt4PuV/RARfQVq2XuNlgnJ/K+VQMaPNjvyBZyN49+eBOp
+         9fV3AqlQiI+Xb9odyCryBL+IqOSnTA0sRkWsGXMxmU2zJvED2wYDlPDZmBaMg2OphUn1
+         LGQ8/eOZP3mIP77TTjHMlxxJEcwBbVvQFgovssrzGcQ47EIjbHCfFUtSdoWxuGxHPq6R
+         PNsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688207535; x=1690799535;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pGpM6CzxS23sdxO56fNlVqxcfTCp7IVYaCNZLh8aKSE=;
+        b=VRLLWSeNRQ61vBx9qohGUkBub0WQDhAk1R+lTLaWSmDyuA27TEb/kBWSLIE1hif8HP
+         RnkB+826PJ5USL2BEgZ8tHXjPuJNOB+DQFzWfV/cJwmd/QRE/ZK7mXhKVTDior592vY0
+         48H+XYKX7GbyJHXNoi9HSKJSzo9y+rTNljOmjs9cqRiEtlecqYOCpn2vF9h6L8btAFZT
+         X/AdkQdpweYDdtOSgckew+xg5Ip6+B3/JRYiQLAgyRjhwnR4qbzkhpAT6mrqn/wqwBXQ
+         wzTC2m1D36sZLBPXTHe0hPUgKLa2zaxX9Oj82/Sft3q/QYtk34l4Wz4pnat6iunZVz8Y
+         qrCQ==
+X-Gm-Message-State: AC+VfDxu7+yaBx2xWttYhh9vfApifi81JcZ8j8DXg0w3urXtBrPGzJhK
+        DRqoVmAQKVIMt420vMbR5Sq8ZMWLoIY=
+X-Google-Smtp-Source: ACHHUZ5uOA5xbSyBGlBFlIvtCukl6K/M9dx0Xq1bDXphbQ7Vs1joYUrrpgWnjuzV3/KyCCiI5W6G8A==
+X-Received: by 2002:a05:6870:e253:b0:1b0:6f63:8619 with SMTP id d19-20020a056870e25300b001b06f638619mr7416607oac.24.1688207535215;
+        Sat, 01 Jul 2023 03:32:15 -0700 (PDT)
+Received: from octofox.hsd1.ca.comcast.net ([2601:646:a201:19d0:fb41:4abd:2fa3:e68b])
+        by smtp.gmail.com with ESMTPSA id x187-20020a6363c4000000b005533b6cb3a6sm11753316pgb.16.2023.07.01.03.32.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Jul 2023 03:32:14 -0700 (PDT)
+From:   Max Filippov <jcmvbkbc@gmail.com>
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        sparclinux@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Helge Deller <deller@gmx.de>,
-        Jason Wang <wangborong@cdjrlc.com>
-Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review
-Message-ID: <2023070124-electable-gear-f99e@gregkh>
-References: <20230629184151.888604958@linuxfoundation.org>
- <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
- <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
- <fbe57907-b03f-ac8c-f3f4-4d6959bbc59c@roeck-us.net>
- <CAHk-=wgE9iTd_g20RU+FYa0NPhGSdiUDPW+moEqdHR4du1jmVA@mail.gmail.com>
- <CAHk-=wiN5H-2dh2zCo_jXE7_ekrxSHvQcMw4xfUKjuQs2=BN4w@mail.gmail.com>
- <fb63ea7b-c44b-fb1b-2014-3d23794fa896@roeck-us.net>
- <CAHk-=whh_aUHYF6LCV36K9NYHR4ofEZ0gwcg0RY5hj=B7AT4YQ@mail.gmail.com>
- <e4dd115b-1a41-4859-bbeb-b3a6a75bf664@roeck-us.net>
- <CAHk-=wgBAhFqD6aoD2rL0qws8S1erdbrvmQXuYi=ZFEUVNuVfg@mail.gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Chris Zankel <chris@zankel.net>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH] xtensa: fix lock_mm_and_find_vma in case VMA not found
+Date:   Sat,  1 Jul 2023 03:31:55 -0700
+Message-Id: <20230701103155.1209274-1-jcmvbkbc@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wgBAhFqD6aoD2rL0qws8S1erdbrvmQXuYi=ZFEUVNuVfg@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FROM_LOCAL_NOVOWEL,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jun 30, 2023 at 09:22:45PM -0700, Linus Torvalds wrote:
-> On Fri, 30 Jun 2023 at 19:50, Guenter Roeck <linux@roeck-us.net> wrote:
-> >
-> > Yes, the patch below fixes the problem.
-> >
-> > Building xtensa:de212:kc705-nommu:nommu_kc705_defconfig ... running ......... passed
-> 
-> Thanks. Committed as
-> 
->   d85a143b69ab ("xtensa: fix NOMMU build with lock_mm_and_find_vma()
-> conversion")
-> 
-> and pushed out.
+MMU version of lock_mm_and_find_vma releases the mm lock before
+returning when VMA is not found. Do the same in noMMU version.
+This fixes hang on an attempt to handle protection fault.
 
-Thanks, now queued up.
+Fixes: d85a143b69ab ("xtensa: fix NOMMU build with lock_mm_and_find_vma() conversion")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+ mm/nommu.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-greg k-h
+diff --git a/mm/nommu.c b/mm/nommu.c
+index fdc392735ec6..c072a660ec2c 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -637,8 +637,13 @@ EXPORT_SYMBOL(find_vma);
+ struct vm_area_struct *lock_mm_and_find_vma(struct mm_struct *mm,
+ 			unsigned long addr, struct pt_regs *regs)
+ {
++	struct vm_area_struct *vma;
++
+ 	mmap_read_lock(mm);
+-	return vma_lookup(mm, addr);
++	vma = vma_lookup(mm, addr);
++	if (!vma)
++		mmap_read_unlock(mm);
++	return vma;
+ }
+ 
+ /*
+-- 
+2.30.2
+
