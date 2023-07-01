@@ -2,107 +2,191 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E0474461D
-	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 04:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04F6974465F
+	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 05:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbjGACh4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 30 Jun 2023 22:37:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42936 "EHLO
+        id S229692AbjGADfF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 30 Jun 2023 23:35:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229735AbjGAChm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 22:37:42 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E7FE44B0;
-        Fri, 30 Jun 2023 19:35:31 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id af79cd13be357-765a6bbddd6so233229185a.0;
-        Fri, 30 Jun 2023 19:35:31 -0700 (PDT)
+        with ESMTP id S229799AbjGADdt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 30 Jun 2023 23:33:49 -0400
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5030646BD;
+        Fri, 30 Jun 2023 20:28:16 -0700 (PDT)
+Received: by mail-qt1-x831.google.com with SMTP id d75a77b69052e-3fde82c8ca7so21313511cf.3;
+        Fri, 30 Jun 2023 20:28:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688178930; x=1690770930;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0z2JwK1RrLjO9rd7bUAW0h8yDPkiVe+KUjRl/TttWdo=;
-        b=RJ6uk2LkUUdpHJxoGZsLheBAoPGgdMejv/jD37sHByR8Mdb2SDnV9KGNxwUxvrM4JZ
-         y/alIuH7vSSUvJl24tVndCm755nKVL3FopivY1CNG9ByPwCYhVSZDuW6iCR9hJjg+1DE
-         GEoh0rn6izPL+v7xn00FavCIzjKFL9SUHlEw2k/6R9ykt67Yf0Cl5gIRjbIV/4I/3VP0
-         r6H09WYaZGjAa5DeIHXb82CagkMQXL3U0BaEzZFpS/VOM7viGc7PvvZD2VCHae/4BfnQ
-         4hZ7EGXet6J9z6NJliqH5qcOpACHtDkg6FI3iS8YPgtBkvROz3+dJe/zZPg4HWz/Y+wx
-         TlYg==
+        d=gmail.com; s=20221208; t=1688182095; x=1690774095;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UFqIqSRBSLc1Ges7V4RrWVh1QvEfZbr10hghH4pahl4=;
+        b=pP1eEBxBE+OVpA07P4Ifj0szylxAlkwPW8RX5HAGwyE4tZMO3jDb8fusxlH1wZb3/c
+         cNoWB7hdRYIm7CXM/u6deOmZvfm7OMp4IPzjytvdIAGtEQCRkSHswAUZIpIO0Df4973b
+         srgfH8N4aj0OrQlxshypBuT346uM5vYzmBA9IaKEs1lkE8GjnRSzky+qXnGHY5JpaACB
+         WLt4H5O3NXlyMbhfaIhMVrP3Pe87Q1umHeE8ExxojKY6feICDUMdGtJAqCQJ5l7zo4Gr
+         gXFQxvm3C0At+3BCsEHa9zgKsWLZKi7uz+1DPhxhb6eV3cHZVQR5+4uNgVPnBFotwJPX
+         JEMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688178930; x=1690770930;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1688182095; x=1690774095;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0z2JwK1RrLjO9rd7bUAW0h8yDPkiVe+KUjRl/TttWdo=;
-        b=Ym0tyNdrxU17szIz0pO0wlHTWNVFBMCnW7ubUm2LTZW+g6TxpaQnHdoR+5mcJVu4Sj
-         Z6tmKFm0XJQOUSQTrqNh4+rsFRQm7JiaQrb2rEZxwvZZ6aZI6Q7R3C0oHkgbccYIqrX8
-         75r9hGH7WDAjivBjAdTuqRA9ceQBlooOuGqP/QnPNU6sr48Jc0ms0HN3tDpBBZQgrAx8
-         qsfBHzsu7iK6u+UYgWIw0qLLARVLVKI7UFzo7tUx7AbWC5QZopBHl3ABL099Kwu79aPW
-         UERjsgJeRoRTZrneQ2VSZAkm2A0eIAa7fH3+smRmvVGOYoTHN/BhjSIunUq2mJP/ilVy
-         X7pQ==
-X-Gm-Message-State: AC+VfDxl4CE1OpJhunx662ICaTGEYG8TdS5/d8hLNWytuJ0oZMsVofUA
-        bvNoO1oxY7fXuYF3yQpB9Ko=
-X-Google-Smtp-Source: ACHHUZ5AeASuq18tzxZAjVAgnmo2eS+teacxv7pTfdVV2/3zL+UqpyodBAa3HHw8BaOZrrONckNjuw==
-X-Received: by 2002:a05:620a:4082:b0:767:954:a743 with SMTP id f2-20020a05620a408200b007670954a743mr5120547qko.51.1688178930463;
-        Fri, 30 Jun 2023 19:35:30 -0700 (PDT)
-Received: from xplor.waratah.dyndns.org (222-152-184-54-fibre.sparkbb.co.nz. [222.152.184.54])
-        by smtp.gmail.com with ESMTPSA id s11-20020a62e70b000000b00663ab37ff74sm10030026pfh.72.2023.06.30.19.35.29
+        bh=UFqIqSRBSLc1Ges7V4RrWVh1QvEfZbr10hghH4pahl4=;
+        b=YuXqgS7qzL9v5YtnklvFapxqKoabfp+SaWo7ZJ6fDMeNvqKg9+ZbvIRoLzyaj+EYAy
+         FI15ZGUH4zMcZKTHO3QlpE19pe5hjtT04YDBWPckHHyFIUCJ8DcDh+a4uzSXLkAsnN2K
+         8fx7gwEdTai9zMIotnV/zPcTtov/kld1MFTCALnnrrfZp3dhCJordt68fU3y6z6t2Bc7
+         6HsrthNqI/niN/1Ob9gIiV+hNzU3k7lztYy+X1VWR0bnc9U43zB/4PXhdPM+zFkOgMez
+         uhrUMWs8F72x8a0D02OXoq9v0Y578HhrjXEqF5u911Yn2uiLJxs8uSc9I3Bszz2xv/UG
+         9AvA==
+X-Gm-Message-State: AC+VfDzINVnQ3ZPQP8hn7fT8uUudK0fsqvPLw6yXZ23/fU8iPrRZQC1p
+        AV63guLgma11tGJajex65e2/hO1Ce4s=
+X-Google-Smtp-Source: ACHHUZ4B6R4I+euwxmhxe2vEfD8fzPBZAFh9e9ic9lkRZHYEO5MIfilrT0jQhbbhk57WtDvOG52dAA==
+X-Received: by 2002:a05:620a:4249:b0:75b:23a1:3606 with SMTP id w9-20020a05620a424900b0075b23a13606mr5310663qko.23.1688179782577;
+        Fri, 30 Jun 2023 19:49:42 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id k6-20020aa78206000000b0064aea45b040sm10510104pfi.168.2023.06.30.19.49.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jun 2023 19:35:30 -0700 (PDT)
-Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id 673CB360319; Sat,  1 Jul 2023 14:35:26 +1200 (NZST)
-From:   Michael Schmitz <schmitzmic@gmail.com>
-To:     linux-block@vger.kernel.org, axboe@kernel.dk
-Cc:     linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de,
-        geert@linux-m68k.org, hch@lst.de, martin@lichtvoll.de,
-        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH] block: bugfix for Amiga partition overflow check patch
-Date:   Sat,  1 Jul 2023 14:35:24 +1200
-Message-Id: <20230701023524.7434-1-schmitzmic@gmail.com>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        Fri, 30 Jun 2023 19:49:41 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Fri, 30 Jun 2023 19:49:40 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        sparclinux@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Helge Deller <deller@gmx.de>,
+        Jason Wang <wangborong@cdjrlc.com>
+Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review
+Message-ID: <e4dd115b-1a41-4859-bbeb-b3a6a75bf664@roeck-us.net>
+References: <20230629184151.888604958@linuxfoundation.org>
+ <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
+ <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
+ <fbe57907-b03f-ac8c-f3f4-4d6959bbc59c@roeck-us.net>
+ <CAHk-=wgE9iTd_g20RU+FYa0NPhGSdiUDPW+moEqdHR4du1jmVA@mail.gmail.com>
+ <CAHk-=wiN5H-2dh2zCo_jXE7_ekrxSHvQcMw4xfUKjuQs2=BN4w@mail.gmail.com>
+ <fb63ea7b-c44b-fb1b-2014-3d23794fa896@roeck-us.net>
+ <CAHk-=whh_aUHYF6LCV36K9NYHR4ofEZ0gwcg0RY5hj=B7AT4YQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whh_aUHYF6LCV36K9NYHR4ofEZ0gwcg0RY5hj=B7AT4YQ@mail.gmail.com>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
-fails the 'blk>0' test in the partition block loop if a
-value of (signed int) -1 is used to mark the end of the
-partition block list.
+On Fri, Jun 30, 2023 at 06:24:49PM -0700, Linus Torvalds wrote:
+> On Fri, 30 Jun 2023 at 15:51, Guenter Roeck <linux@roeck-us.net> wrote:
+> >
+> > There is one more, unfortunately.
+> >
+> > Building xtensa:de212:kc705-nommu:nommu_kc705_defconfig ... failed
+> 
+> Heh. I didn't even realize that anybody would ever do
+> lock_mm_and_find_vma() code on a nommu platform.
+> 
+> With nommu, handle_mm_fault() will just BUG(), so it's kind of
+> pointless to do any of this at all, and I didn't expect anybody to
+> have this page faulting path that just causes that BUG() for any
+> faults.
+> 
+> But it turns out xtensa has a notion of protection faults even for
+> NOMMU configs:
+> 
+>     config PFAULT
+>         bool "Handle protection faults" if EXPERT && !MMU
+>         default y
+>         help
+>           Handle protection faults. MMU configurations must enable it.
+>           noMMU configurations may disable it if used memory map never
+>           generates protection faults or faults are always fatal.
+> 
+>           If unsure, say Y.
+> 
+> which is why it violated my expectations so badly.
+> 
+> I'm not sure if that protection fault handling really ever gets quite
+> this far (it certainly should *not* make it to the BUG() in
+> handle_mm_fault()), but I think the attached patch is likely the right
+> thing to do.
+> 
+> Can you check if it fixes that xtensa case? It looks
+> ObviouslyCorrect(tm) to me, but considering that I clearly missed this
+> case existing AT ALL, it might be best to double-check.
+> 
+>                Linus
 
-This bug was introduced in patch 3 of my prior Amiga partition
-support fixes series, and spotted by Christian Zigotzky when
-testing the latest block updates.
+Yes, the patch below fixes the problem.
 
-Explicitly cast 'blk' to signed int to allow use of -1 to
-terminate the partition block linked list.
+Building xtensa:de212:kc705-nommu:nommu_kc705_defconfig ... running ......... passed
 
-Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-Fixes: b6f3f28f60 ("Linux 6.4")
-Message-ID: 024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
-Cc: <stable@vger.kernel.org> # 6.4
-Link: https://lore.kernel.org/r/024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
----
- block/partitions/amiga.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Guenter
 
-diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
-index ed222b9c901b..506921095412 100644
---- a/block/partitions/amiga.c
-+++ b/block/partitions/amiga.c
-@@ -90,7 +90,7 @@ int amiga_partition(struct parsed_partitions *state)
- 	}
- 	blk = be32_to_cpu(rdb->rdb_PartitionList);
- 	put_dev_sector(sect);
--	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
-+	for (part = 1; (s32) blk>0 && part<=16; part++, put_dev_sector(sect)) {
- 		/* Read in terms partition table understands */
- 		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
- 			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
--- 
-2.17.1
+>  include/linux/mm.h |  5 +++--
+>  mm/nommu.c         | 11 +++++++++++
+>  2 files changed, 14 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 39aa409e84d5..4f2c33c273eb 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2323,6 +2323,9 @@ void pagecache_isize_extended(struct inode *inode, loff_t from, loff_t to);
+>  void truncate_pagecache_range(struct inode *inode, loff_t offset, loff_t end);
+>  int generic_error_remove_page(struct address_space *mapping, struct page *page);
+>  
+> +struct vm_area_struct *lock_mm_and_find_vma(struct mm_struct *mm,
+> +		unsigned long address, struct pt_regs *regs);
+> +
+>  #ifdef CONFIG_MMU
+>  extern vm_fault_t handle_mm_fault(struct vm_area_struct *vma,
+>  				  unsigned long address, unsigned int flags,
+> @@ -2334,8 +2337,6 @@ void unmap_mapping_pages(struct address_space *mapping,
+>  		pgoff_t start, pgoff_t nr, bool even_cows);
+>  void unmap_mapping_range(struct address_space *mapping,
+>  		loff_t const holebegin, loff_t const holelen, int even_cows);
+> -struct vm_area_struct *lock_mm_and_find_vma(struct mm_struct *mm,
+> -		unsigned long address, struct pt_regs *regs);
+>  #else
+>  static inline vm_fault_t handle_mm_fault(struct vm_area_struct *vma,
+>  					 unsigned long address, unsigned int flags,
+> diff --git a/mm/nommu.c b/mm/nommu.c
+> index 37d0b03143f1..fdc392735ec6 100644
+> --- a/mm/nommu.c
+> +++ b/mm/nommu.c
+> @@ -630,6 +630,17 @@ struct vm_area_struct *find_vma(struct mm_struct *mm, unsigned long addr)
+>  }
+>  EXPORT_SYMBOL(find_vma);
+>  
+> +/*
+> + * At least xtensa ends up having protection faults even with no
+> + * MMU.. No stack expansion, at least.
+> + */
+> +struct vm_area_struct *lock_mm_and_find_vma(struct mm_struct *mm,
+> +			unsigned long addr, struct pt_regs *regs)
+> +{
+> +	mmap_read_lock(mm);
+> +	return vma_lookup(mm, addr);
+> +}
+> +
+>  /*
+>   * expand a stack to a given address
+>   * - not supported under NOMMU conditions
 
