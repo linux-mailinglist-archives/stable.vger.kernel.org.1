@@ -2,113 +2,582 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36F36744B06
-	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 22:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51C8B744B15
+	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 22:49:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229665AbjGAUUJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 1 Jul 2023 16:20:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46920 "EHLO
+        id S229573AbjGAUtI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 1 Jul 2023 16:49:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjGAUUI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 16:20:08 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 336621999
-        for <stable@vger.kernel.org>; Sat,  1 Jul 2023 13:20:07 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id 4fb4d7f45d1cf-51d9a925e9aso3587797a12.0
-        for <stable@vger.kernel.org>; Sat, 01 Jul 2023 13:20:07 -0700 (PDT)
+        with ESMTP id S229535AbjGAUtI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 16:49:08 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD1E1985
+        for <stable@vger.kernel.org>; Sat,  1 Jul 2023 13:49:06 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1b88e5b3834so488135ad.3
+        for <stable@vger.kernel.org>; Sat, 01 Jul 2023 13:49:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688242805; x=1690834805;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=On9FXbz/4p6uZeLAq7sP25Q5Nd8OJiKjb1ZpXex+CRI=;
-        b=CJhUaHyKEh6POc+9rYHcw5kow4gHN8dIT/tpXWcFAWe2EMQBvolX6dlrxNn3+KnIz0
-         Fq+CWlkGoKkJX8EJP/rO85kEzyXM3K3Qaw5Od/jo4SlhG4jOBakbvMW8Ey4veD1zCalo
-         6+M1oUo/3Cif+SaZU64qpw9BD/JVg0GxBmg5kgwIXi/eClXoAF39tCGOePxcydSVoMGN
-         JoPJnWzSGCfxlovH4QTnO0LC9AWi3WnjhUsDe5yoQuJLlWkF/Bu8YGaz6d8OaxWLHyDc
-         o9zdDDxpwAjxJAYMhhUJ150Xl2fIMovAc+RYsMAfNZg4auiaUq8GmR1c+yU5J+VuwHvW
-         iyJw==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1688244545; x=1690836545;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sr9Uvw+caP4syAK0HjcY4FRGBkV6VaNVtRxEPNgiONs=;
+        b=2vQ/xzWiKdVvSBSpsMWvT27+W68iIFpSy7p2higC8g/75M9ui33OULoL8fXfTx0Osd
+         Xn3B35rDnREpvAwjRljrAFS19KJx38lSUu7073NTSeTFxwqe7u/FQU8mMRpbg5OWZG1y
+         S6d2ec/UNQfX3tnkunkbEz0WC9Wme+NVtnS2G9wIzCwVcNYlG2p6gzjd8NMlZU2lPwNJ
+         1+l+p5kPSoIWATYa2BNadDZofLH/1H2JPqzzNo1Vc/FKcfQDLj303ZJfHJ0GTTzeWZJQ
+         OzhJ6nQ9Y1zWxQX/mEY7NEL6RfYTjJsN+akBncnthhB3b4cTGDJP6IU2kIg0qnW9/vfC
+         7S9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688242805; x=1690834805;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1688244545; x=1690836545;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=On9FXbz/4p6uZeLAq7sP25Q5Nd8OJiKjb1ZpXex+CRI=;
-        b=HpyKRiQ9pjATYfM1WBBkE2CfzsVI3TO1JQZ35gxwVMH+5FG3E/Etb+EKMOqtybImN8
-         VE54XfpQYG+lL0tH62z7Bg1QusueEpBwgKJphaRLv6MoCuDVYXqrmnM8t3NOI2TgsIz2
-         fFLuqAF8jpintdLo7MTFTAQ8539XURuPBXdPPWTOW2txFzTGlpHEh17IRvMxzLgeYlY6
-         pbFnSPebidGVl/EhupMklySAHE3WCH4jWjZetBK1IYsSA0F4nNY4UQBXBlFcYw/YAhM0
-         CXvuZpitT++67bLMXV1Slh3yOc8BCKMALpnUsv5FBhYHYeFQL+lLYQXOMCo4GsFQiFov
-         b6Vg==
-X-Gm-Message-State: ABy/qLaKFe9U9AzTcWUGqmvpLpRsD3seiy2jQtRlFKu7ReqYrAfJDSP4
-        3IFEgT4WNatS1+9Opvjd8fumhk3vrjiIVgxXAA==
-X-Google-Smtp-Source: APBJJlGEipRnrxC78mvBwRGnFXSkVvqb2bwae4lWU0bG6xIU91I50zp25cv4ZvHUFfTP75tuX6yENVl+fjX3+yDP7gw=
-X-Received: by 2002:aa7:dac9:0:b0:51d:d1a6:c507 with SMTP id
- x9-20020aa7dac9000000b0051dd1a6c507mr4274761eds.31.1688242805395; Sat, 01 Jul
- 2023 13:20:05 -0700 (PDT)
+        bh=Sr9Uvw+caP4syAK0HjcY4FRGBkV6VaNVtRxEPNgiONs=;
+        b=UEE9iA0WNPNys64MPA612IONu2i3QvBqG+7AgwsZcO82a6UUO45e/+We/LSIcyt8iX
+         xNWDJ1FbgVfm/+UwxiHQD1yPjfWqdXmvJKUhS5mKMCY3vAb9D0VQz7fVZCEV2C5va7F+
+         jxz90bjwoNl0JqFpr0TH4I7pb3RcypkOwXfBVuVa+CFyDNihw1gevmtsZae+PFt0f1lY
+         D0vvnDhbBoXAYHXCPXnpFtBvmhXqqVbN22elrFHYXzrb2VhMah6mLZWpKpofia/msV0O
+         GygGNsN34xisLPdLLfTyONFR9sr+BA9YgKNcGhIiZZNFjDupvk6QUJtMmE61tnR/kF22
+         K9Bg==
+X-Gm-Message-State: ABy/qLZCPmS2WPR93UI9S2o+872KSdKEanKAZPZgDOTlbF4ol2Orlkfh
+        xMYUiRd7+5ehRdiBHpzCLIg84zFevgRVUdFC3BUedQ==
+X-Google-Smtp-Source: APBJJlHFSBE1SuTKrLf2dTZqM1uuvOMVMXad9HQpBL1Bp9tDyhZeyf+Q4aS98KkWQ3wZ5kdKYfqw6Q==
+X-Received: by 2002:a17:902:e5c1:b0:1b8:5ab2:49a4 with SMTP id u1-20020a170902e5c100b001b85ab249a4mr5097181plf.53.1688244545050;
+        Sat, 01 Jul 2023 13:49:05 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id w5-20020a170902d3c500b001b1a2bf5277sm6513718plb.39.2023.07.01.13.49.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Jul 2023 13:49:04 -0700 (PDT)
+Message-ID: <64a09140.170a0220.a3e0e.d1dc@mx.google.com>
+Date:   Sat, 01 Jul 2023 13:49:04 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a05:640c:250b:b0:1cf:2c36:29bf with HTTP; Sat, 1 Jul 2023
- 13:20:04 -0700 (PDT)
-Reply-To: osbornemichel438@gmail.com
-From:   John T <jnd187152@gmail.com>
-Date:   Sat, 1 Jul 2023 21:20:04 +0100
-Message-ID: <CAM0pHQ4_rFvct+ebt+iA4gTb3zvTHJF=-m8Zx5zhZTGiOvCm1A@mail.gmail.com>
-Subject: Hallow und wie geht es dir heute?
-To:     osbornemichel438@gmail.com
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FORM_SHORT,
-        MONEY_FRAUD_3,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-Kernelci-Kernel: v6.1.37
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Branch: linux-6.1.y
+Subject: stable-rc/linux-6.1.y baseline: 97 runs, 8 regressions (v6.1.37)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hallow und wie geht es dir heute?
+stable-rc/linux-6.1.y baseline: 97 runs, 8 regressions (v6.1.37)
 
-Ich m=C3=B6chte, dass Ihre Partnerschaft Sie als Subunternehmer
-pr=C3=A4sentiert, damit Sie in meinem Namen 8,6 Millionen US-Dollar aus
-=C3=9Cberrechnungsvertr=C3=A4gen erhalten k=C3=B6nnen, die wir zu 65 % und =
-35 %
-aufteilen k=C3=B6nnen.
+Regressions Summary
+-------------------
 
-Diese Transaktion ist 100 % risikofrei; Du brauchst keine Angst zu haben.
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-C436FA-Flip-hatch       | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-Bitte senden Sie mir eine E-Mail an (osbornemichel438@gmail.com), um
-ausf=C3=BChrliche Informationen zu erhalten und bei Interesse zu erfahren,
-wie wir dies gemeinsam bew=C3=A4ltigen k=C3=B6nnen.
+asus-CM1400CXA-dalboz        | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-Sie m=C3=BCssen es mir also weiterleiten
-Ihr vollst=C3=A4ndiger Name.........................
-Telefon.............
-Geburtsdatum .........................
-Staatsangeh=C3=B6rigkeit .................................
+asus-cx9400-volteer          | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-Mit freundlichen Gr=C3=BC=C3=9Fe,
-Osborne Michel.
+beagle-xm                    | arm    | lab-baylibre  | gcc-10   | omap2plu=
+s_defconfig          | 1          =
 
-Hallow and how are you today?
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-I seek for your partnership to present  you as a sub-contractor so
-that you can receive 8.6M Over-Invoice contract fund on my behalf and
-we can split it 65% 35%.
+hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-This transaction is 100% risk -free; you need not to be afraid.
+hp-x360-14a-cb0001xx-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-Please email me at ( osbornemichel438@gmail.com ) for comprehensive
-details and how we can handle this together if interested.
+lenovo-TPad-C13-Yoga-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-So I need you to forward it to me
-your full name.........................
-Telephone.............
-Date of  Birth .........................
-Nationality .................................
 
-Kind Regards,
-Osborne Michel.
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.1.y/kern=
+el/v6.1.37/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-6.1.y
+  Describe: v6.1.37
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      0f4ac6b4c5f00f45b7a429c8a5b028a598c6400c =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-C436FA-Flip-hatch       | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64a059439910f04025bb2a7c
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-C=
+436FA-Flip-hatch.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-C=
+436FA-Flip-hatch.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64a059439910f04025bb2a81
+        failing since 93 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-07-01T16:49:55.477706  + set +x
+
+    2023-07-01T16:49:55.484224  <8>[   10.411760] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10976926_1.4.2.3.1>
+
+    2023-07-01T16:49:55.588619  / # #
+
+    2023-07-01T16:49:55.689214  export SHELL=3D/bin/sh
+
+    2023-07-01T16:49:55.689387  #
+
+    2023-07-01T16:49:55.789909  / # export SHELL=3D/bin/sh. /lava-10976926/=
+environment
+
+    2023-07-01T16:49:55.790075  =
+
+
+    2023-07-01T16:49:55.890596  / # . /lava-10976926/environment/lava-10976=
+926/bin/lava-test-runner /lava-10976926/1
+
+    2023-07-01T16:49:55.890858  =
+
+
+    2023-07-01T16:49:55.896601  / # /lava-10976926/bin/lava-test-runner /la=
+va-10976926/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-CM1400CXA-dalboz        | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64a0593c4aa7cb1602bb2a76
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-C=
+M1400CXA-dalboz.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-C=
+M1400CXA-dalboz.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64a0593c4aa7cb1602bb2a7b
+        failing since 93 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-07-01T16:49:41.636987  + set<8>[    9.044994] <LAVA_SIGNAL_ENDRUN =
+0_dmesg 10976934_1.4.2.3.1>
+
+    2023-07-01T16:49:41.637567   +x
+
+    2023-07-01T16:49:41.745405  / # #
+
+    2023-07-01T16:49:41.847937  export SHELL=3D/bin/sh
+
+    2023-07-01T16:49:41.848762  #
+
+    2023-07-01T16:49:41.950421  / # export SHELL=3D/bin/sh. /lava-10976934/=
+environment
+
+    2023-07-01T16:49:41.951217  =
+
+
+    2023-07-01T16:49:42.052737  / # . /lava-10976934/environment/lava-10976=
+934/bin/lava-test-runner /lava-10976934/1
+
+    2023-07-01T16:49:42.053968  =
+
+
+    2023-07-01T16:49:42.058967  / # /lava-10976934/bin/lava-test-runner /la=
+va-10976934/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-cx9400-volteer          | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64a05921b08d8e6838bb2a97
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-c=
+x9400-volteer.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-asus-c=
+x9400-volteer.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64a05921b08d8e6838bb2a9c
+        failing since 93 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-07-01T16:49:18.660938  <8>[    9.759106] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10976879_1.4.2.3.1>
+
+    2023-07-01T16:49:18.664407  + set +x
+
+    2023-07-01T16:49:18.768831  #
+
+    2023-07-01T16:49:18.769544  =
+
+
+    2023-07-01T16:49:18.870791  / # #export SHELL=3D/bin/sh
+
+    2023-07-01T16:49:18.871607  =
+
+
+    2023-07-01T16:49:18.973123  / # export SHELL=3D/bin/sh. /lava-10976879/=
+environment
+
+    2023-07-01T16:49:18.974158  =
+
+
+    2023-07-01T16:49:19.075724  / # . /lava-10976879/environment/lava-10976=
+879/bin/lava-test-runner /lava-10976879/1
+
+    2023-07-01T16:49:19.077043  =
+
+ =
+
+    ... (13 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+beagle-xm                    | arm    | lab-baylibre  | gcc-10   | omap2plu=
+s_defconfig          | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64a05b4e8ebacd381abb2aac
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: omap2plus_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagle-xm.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagle-xm.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64a05b4e8ebacd381abb2=
+aad
+        failing since 23 days (last pass: v6.1.31-40-g7d0a9678d276, first f=
+ail: v6.1.31-266-g8f4f686e321c) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64a059324643b4a732bb2a77
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-12b-ca0010nr-n4020-octopus.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-12b-ca0010nr-n4020-octopus.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64a059324643b4a732bb2a7c
+        failing since 93 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-07-01T16:49:43.289730  + set +x
+
+    2023-07-01T16:49:43.296598  <8>[   10.733280] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10976859_1.4.2.3.1>
+
+    2023-07-01T16:49:43.404606  / # #
+
+    2023-07-01T16:49:43.506749  export SHELL=3D/bin/sh
+
+    2023-07-01T16:49:43.507562  #
+
+    2023-07-01T16:49:43.608916  / # export SHELL=3D/bin/sh. /lava-10976859/=
+environment
+
+    2023-07-01T16:49:43.609281  =
+
+
+    2023-07-01T16:49:43.710173  / # . /lava-10976859/environment/lava-10976=
+859/bin/lava-test-runner /lava-10976859/1
+
+    2023-07-01T16:49:43.710918  =
+
+
+    2023-07-01T16:49:43.715622  / # /lava-10976859/bin/lava-test-runner /la=
+va-10976859/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64a0592982caca6b68bb2a89
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-14-G1-sona.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-14-G1-sona.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64a0592982caca6b68bb2a8e
+        failing since 93 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-07-01T16:49:24.718776  <8>[   10.819017] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10976927_1.4.2.3.1>
+
+    2023-07-01T16:49:24.722148  + set +x
+
+    2023-07-01T16:49:24.829666  / # #
+
+    2023-07-01T16:49:24.931731  export SHELL=3D/bin/sh
+
+    2023-07-01T16:49:24.932401  #
+
+    2023-07-01T16:49:25.033832  / # export SHELL=3D/bin/sh. /lava-10976927/=
+environment
+
+    2023-07-01T16:49:25.034513  =
+
+
+    2023-07-01T16:49:25.135895  / # . /lava-10976927/environment/lava-10976=
+927/bin/lava-test-runner /lava-10976927/1
+
+    2023-07-01T16:49:25.137063  =
+
+
+    2023-07-01T16:49:25.142576  / # /lava-10976927/bin/lava-test-runner /la=
+va-10976927/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-14a-cb0001xx-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64a05931419e959551bb2ac9
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-14a-cb0001xx-zork.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-x36=
+0-14a-cb0001xx-zork.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64a05931419e959551bb2ace
+        failing since 93 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-07-01T16:49:34.378033  + set<8>[   11.342163] <LAVA_SIGNAL_ENDRUN =
+0_dmesg 10976872_1.4.2.3.1>
+
+    2023-07-01T16:49:34.378624   +x
+
+    2023-07-01T16:49:34.486867  / # #
+
+    2023-07-01T16:49:34.589582  export SHELL=3D/bin/sh
+
+    2023-07-01T16:49:34.590399  #
+
+    2023-07-01T16:49:34.692015  / # export SHELL=3D/bin/sh. /lava-10976872/=
+environment
+
+    2023-07-01T16:49:34.692851  =
+
+
+    2023-07-01T16:49:34.794551  / # . /lava-10976872/environment/lava-10976=
+872/bin/lava-test-runner /lava-10976872/1
+
+    2023-07-01T16:49:34.795825  =
+
+
+    2023-07-01T16:49:34.800907  / # /lava-10976872/bin/lava-test-runner /la=
+va-10976872/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+lenovo-TPad-C13-Yoga-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64a059444aa7cb1602bb2aca
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-lenovo=
+-TPad-C13-Yoga-zork.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.37/=
+x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-lenovo=
+-TPad-C13-Yoga-zork.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64a059444aa7cb1602bb2acf
+        failing since 93 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-07-01T16:49:52.129439  + set +x<8>[   10.994430] <LAVA_SIGNAL_ENDR=
+UN 0_dmesg 10976936_1.4.2.3.1>
+
+    2023-07-01T16:49:52.129891  =
+
+
+    2023-07-01T16:49:52.237753  / # #
+
+    2023-07-01T16:49:52.339697  export SHELL=3D/bin/sh
+
+    2023-07-01T16:49:52.340416  #
+
+    2023-07-01T16:49:52.441728  / # export SHELL=3D/bin/sh. /lava-10976936/=
+environment
+
+    2023-07-01T16:49:52.442525  =
+
+
+    2023-07-01T16:49:52.543916  / # . /lava-10976936/environment/lava-10976=
+936/bin/lava-test-runner /lava-10976936/1
+
+    2023-07-01T16:49:52.544174  =
+
+
+    2023-07-01T16:49:52.548978  / # /lava-10976936/bin/lava-test-runner /la=
+va-10976936/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =20
