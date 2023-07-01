@@ -2,220 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EB3474484C
-	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 11:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A9B744854
+	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 11:57:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbjGAJsl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 1 Jul 2023 05:48:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50620 "EHLO
+        id S229734AbjGAJ5i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 1 Jul 2023 05:57:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjGAJsk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 05:48:40 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222BE3C29;
-        Sat,  1 Jul 2023 02:48:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1688204882; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=KdbtNqylftOo1+PbBsC55VutPhxTjNTKGLp2HbuzERO0BqPmB0X0tXpLNeBCxI7V06
-    IU4g7lGfTg7H1tidslsHtnaASa9dojI5SKQ1qDtdZjV4qpgLOkdopIUAbUdwlIY3yuvp
-    4/siEAJ99VMoRaN+59J9Samgca1PtIFwlPTCzsLtCrKJvJqXJv46n7SDgdQYwhcEuQfe
-    r66a7iFFW1g+09K6npXW6BlnHnuNpIERG8W009XetNyBp+UA3y1vnGiSBK54rS9ikF2Y
-    1gUPgDnuUM7LHbpiEHVWTKLb8yx4QOTL3MLTSxyPNahmBN5VFKlUNeJkuUtya1Fc7FuB
-    P2oQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1688204882;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=qvqpM5AoRX2cCiwKz3Sb461vdD3xeoeZK2q+kBPv04g=;
-    b=UQGrMKcjMZv7rhcwx3VmV2SHGm3UfiXbZ8vZTqnym9j2ANoeqmTRVtpOkh2X+Prz4u
-    +ldDStW8ykPcRVzoHTS8o1ezq8KV6jNKUkNBLvWZkwX98ikJYy3JkvSOiQQvB5nVB1UP
-    aei0CgcXG0fFREjUvUFg1vVeOO5/kpOpP2lK8K1m1VTVg2ZUXX6fm4qWA4jjoitHRB3P
-    bLfMLDHKdt6PWebCPLdRu+WPqqCm2OJPmcTQ6bUegLKKRb4QEVXAM8ScT34APMMqMsFN
-    nGUf+9Z0XTYf+i0IiQP00tQbjko/ajlS1XFG+WpAyyc5ltXRoXoRuDPFq+KVEKVMBhlC
-    TuHg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1688204882;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=qvqpM5AoRX2cCiwKz3Sb461vdD3xeoeZK2q+kBPv04g=;
-    b=eYqf046Al535sFwuIPIweoln2AY2veN+CgyJP1JADGDRSGyxuiApVwJcyR9GEesvwU
-    aM+0HqHv+Or3ixRd3lMKNCXD1ULa4Sqpl7iiG/PYnUVXEkUV8ytCLnUFuqGsQ+tA6b9p
-    is8LuNE7M7PsYwyxF3HEhW5bPCG8d015L5B/apWqxn/Hx4QcUXQGi+b0ZdqFuNtAQ62e
-    t/VC8JoJgrKVDURWLWrdk46lbg05sPA8EcRO/JD2bLb1GoAxRenlT8tcLL9N0GtWF4Z2
-    VwyS+tlP91BHaP5f1wvx+JQYcUj2MNiPRxYhIa7dJAAeqFyLv1NUW3dtZ1uLhp1wVzYh
-    oHVw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1688204882;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=qvqpM5AoRX2cCiwKz3Sb461vdD3xeoeZK2q+kBPv04g=;
-    b=166uqhK1qpchihhOp46ND9BsxEC6UaR1JJIRQ47pTlRBlR6QId5kAF9Q1jjxtWuLq6
-    yAksTR2D2isbYQxbQADA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwjR6CBYqLfA6c5k/Fdf2SzuGLMLzg=="
-Received: from [IPV6:2a02:8109:8980:4474:4196:3fea:dfa5:89da]
-    by smtp.strato.de (RZmta 49.6.0 AUTH)
-    with ESMTPSA id N28a51z619m1sPS
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Sat, 1 Jul 2023 11:48:01 +0200 (CEST)
-Message-ID: <b9600d91-6a25-746e-0769-4d0e31038da5@xenosoft.de>
-Date:   Sat, 1 Jul 2023 11:48:01 +0200
+        with ESMTP id S229557AbjGAJ5g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 05:57:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0C02D46;
+        Sat,  1 Jul 2023 02:57:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ACE4860A5C;
+        Sat,  1 Jul 2023 09:57:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93301C433C7;
+        Sat,  1 Jul 2023 09:57:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1688205454;
+        bh=rcb5fmM/YGXFaxmYPm09nzSE6MxfW1AoIbS68NK9hgE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lOB2tx/2N2H2VFd0tt8NrfjCdO5WWKUtaZRg+F3WbC1sM7/QuEMdwIUAdTf5uxR+1
+         OUNEOhpANcMhuuAp7BI/V2dfN+6BpJlcftZGmgIUbVq1Z4C15d2Vu1B9oTYnZI2K1C
+         KoDEWXpmcnGKlGb3y7NsLXyrOakCWKBwyCxFDqEM=
+Date:   Sat, 1 Jul 2023 11:57:30 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        sparclinux@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Helge Deller <deller@gmx.de>,
+        Jason Wang <wangborong@cdjrlc.com>
+Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review
+Message-ID: <2023070124-electable-gear-f99e@gregkh>
+References: <20230629184151.888604958@linuxfoundation.org>
+ <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
+ <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
+ <fbe57907-b03f-ac8c-f3f4-4d6959bbc59c@roeck-us.net>
+ <CAHk-=wgE9iTd_g20RU+FYa0NPhGSdiUDPW+moEqdHR4du1jmVA@mail.gmail.com>
+ <CAHk-=wiN5H-2dh2zCo_jXE7_ekrxSHvQcMw4xfUKjuQs2=BN4w@mail.gmail.com>
+ <fb63ea7b-c44b-fb1b-2014-3d23794fa896@roeck-us.net>
+ <CAHk-=whh_aUHYF6LCV36K9NYHR4ofEZ0gwcg0RY5hj=B7AT4YQ@mail.gmail.com>
+ <e4dd115b-1a41-4859-bbeb-b3a6a75bf664@roeck-us.net>
+ <CAHk-=wgBAhFqD6aoD2rL0qws8S1erdbrvmQXuYi=ZFEUVNuVfg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] block: bugfix for Amiga partition overflow check patch
-To:     Michael Schmitz <schmitzmic@gmail.com>, linux-block@vger.kernel.org
-Cc:     axboe@kernel.dk, linux-m68k@vger.kernel.org, geert@linux-m68k.org,
-        hch@lst.de, martin@lichtvoll.de, stable@vger.kernel.org,
-        "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        Darren Stevens <darren@stevens-zone.net>,
-        mad skateman <madskateman@gmail.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Christian Zigotzky <info@xenosoft.de>
-References: <20230701023524.7434-1-schmitzmic@gmail.com>
- <3e3ce346-f627-4adf-179d-b8817361e6e3@xenosoft.de>
- <94d46446-97fc-9e92-2585-71c18e65b64a@gmail.com>
-Content-Language: de-DE
-From:   Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <94d46446-97fc-9e92-2585-71c18e65b64a@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgBAhFqD6aoD2rL0qws8S1erdbrvmQXuYi=ZFEUVNuVfg@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 01 July 2023 at 10:11 am, Michael Schmitz wrote:
-> Hi Christian,
->
-> Am 01.07.2023 um 18:40 schrieb Christian Zigotzky:
->> On 01 July 2023 at 04:35 am, Michael Schmitz wrote:
->>> Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
->>> fails the 'blk>0' test in the partition block loop if a
->>> value of (signed int) -1 is used to mark the end of the
->>> partition block list.
->>>
->>> This bug was introduced in patch 3 of my prior Amiga partition
->>> support fixes series, and spotted by Christian Zigotzky when
->>> testing the latest block updates.
->>>
->>> Explicitly cast 'blk' to signed int to allow use of -1 to
->>> terminate the partition block linked list.
->>>
->>> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
->>> Fixes: b6f3f28f60 ("Linux 6.4")
->>> Message-ID: 024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
->>> Cc: <stable@vger.kernel.org> # 6.4
->>> Link:
->>> https://lore.kernel.org/r/024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de 
->>>
->>>
->>> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
->>> ---
->>>   block/partitions/amiga.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
->>> index ed222b9c901b..506921095412 100644
->>> --- a/block/partitions/amiga.c
->>> +++ b/block/partitions/amiga.c
->>> @@ -90,7 +90,7 @@ int amiga_partition(struct parsed_partitions *state)
->>>       }
->>>       blk = be32_to_cpu(rdb->rdb_PartitionList);
->>>       put_dev_sector(sect);
->>> -    for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
->>> +    for (part = 1; (s32) blk>0 && part<=16; part++,
->>> put_dev_sector(sect)) {
->>>           /* Read in terms partition table understands */
->>>           if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
->>>               pr_err("Dev %s: overflow calculating partition block
->>> %llu! Skipping partitions %u and beyond\n",
->> Hello Michael,
->>
->> Thanks for your patch.
->>
->> I patched the latest git kernel source code with your patch today but
->> unfortunately the kernel has reported a bad geometry. (EXT4-fs (sda4):
->> bad geometry: block count ...)
->>
->> dmesg | grep -i sda
->>
->> [    4.025449] sd 0:0:0:0: [sda] 3907029168 512-byte logical blocks:
->> (2.00 TB/1.82 TiB)
->> [    4.071978] sd 0:0:0:0: [sda] 4096-byte physical blocks
->> [    4.119333] sd 0:0:0:0: [sda] Write Protect is off
->> [    4.165958] sd 0:0:0:0: [sda] Mode Sense: 00 3a 00 00
->> [    4.212921] sd 0:0:0:0: [sda] Write cache: enabled, read cache:
->> enabled, doesn't support DPO or FUA
->> [    4.259469] sd 0:0:0:0: [sda] Preferred minimum I/O size 4096 bytes
->> [    4.502519]  sda: RDSK (512) sda1 (DOS^G)(res 2 spb 2) sda2
->> (SFS^B)(res 2 spb 1) sda3 (SFS^B)(res 2 spb 2) sda4 ((res 2 spb 1)
->
-> Good - all partitions are recognized again as they ought to be.
->
->> [    4.551981] sd 0:0:0:0: [sda] Attached SCSI disk
->> [   82.421727] EXT4-fs (sda4): bad geometry: block count 319655862
->> exceeds size of device (317690430 blocks)
->
-> Now that may be a new bug... or just a filesystem created with 
-> incorrect assumptions about partition size.
->
-> That is the partition that had reported:
->
->> sda: p4 size 18446744071956107760 extends beyond EOD, truncated
->
-> with my patches backed out? I wonder what size mkfs used when creating 
-> the filesystem?
->
-> The calculated size was clearly incorrect, but the truncated size may 
-> also be incorrect. The truncated size is likely that of a partition 
-> extending to the end of the disk, but your actual p4 size may have 
-> been smaller (your parted -l output had 1992GB which is 8 GB shorter 
-> than to EOD).
->
-> On the face of it, this does not look like a new bug in the RDB 
-> partition code, but I'd rather verify that by inspecting the RDB 
-> contents and carrying out the calculations by hand.
->
-> Can you please send a copy of the RDB (first few kB of the disk, 
-> something like dd if=/dev/sda of=rdb-sda.img bs=512 count=16 should 
-> do), and the output of cat /proc/partitions when running a kernel from 
-> before my RDB patches?
->
->
-Copy of the RDB: https://www.xenosoft.de/rdb-sda.img
+On Fri, Jun 30, 2023 at 09:22:45PM -0700, Linus Torvalds wrote:
+> On Fri, 30 Jun 2023 at 19:50, Guenter Roeck <linux@roeck-us.net> wrote:
+> >
+> > Yes, the patch below fixes the problem.
+> >
+> > Building xtensa:de212:kc705-nommu:nommu_kc705_defconfig ... running ......... passed
+> 
+> Thanks. Committed as
+> 
+>   d85a143b69ab ("xtensa: fix NOMMU build with lock_mm_and_find_vma()
+> conversion")
+> 
+> and pushed out.
 
-cat /proc/partitions:
+Thanks, now queued up.
 
-major minor  #blocks  name
-
-    8        0 1953514584 sda
-    8        1     119088 sda1
-    8        2    2100096 sda2
-    8        3  672670920 sda3
-    8        4 1278623448 sda4
-   11        0    1048575 sr0
-    8       32     250880 sdc
-    8       33     249856 sdc1
-    8       16  234431064 sdb
-    8       17  144364512 sdb1
-    8       18          1 sdb2
-    8       19   18500608 sdb3
-    8       20   40717312 sdb4
-    8       21   14684160 sdb5
-    8       22   16161792 sdb6
-    8       48       1440 sdd
-    8       49       1439 sdd1
-
-Thanks
-
+greg k-h
