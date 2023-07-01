@@ -2,143 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19F26744817
-	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 10:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 062B574484A
+	for <lists+stable@lfdr.de>; Sat,  1 Jul 2023 11:48:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbjGAIn4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 1 Jul 2023 04:43:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43368 "EHLO
+        id S229613AbjGAJsU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 1 Jul 2023 05:48:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjGAIny (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 04:43:54 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81687BC;
-        Sat,  1 Jul 2023 01:43:52 -0700 (PDT)
-Received: from kwepemi500019.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QtQd82JY6ztQRs;
-        Sat,  1 Jul 2023 16:41:00 +0800 (CST)
-Received: from [10.67.110.237] (10.67.110.237) by
- kwepemi500019.china.huawei.com (7.221.188.117) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Sat, 1 Jul 2023 16:43:47 +0800
-Subject: Re: [PATCH 5.10] kprobes/x86: Fix kprobe debug exception handling
- logic
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     <stable@vger.kernel.org>, <mhiramat@kernel.org>,
-        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-        <x86@kernel.org>, <hpa@zytor.com>, <sashal@kernel.org>,
-        <peterz@infradead.org>, <linux-kernel@vger.kernel.org>,
-        <xukuohai@huawei.com>
-References: <20230630020845.227939-1-lihuafei1@huawei.com>
- <2023063039-dotted-improper-7b3c@gregkh>
-From:   Li Huafei <lihuafei1@huawei.com>
-Message-ID: <6cbfbd13-b2f6-4c76-8d0d-ac07f59b23e7@huawei.com>
-Date:   Sat, 1 Jul 2023 16:43:46 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        with ESMTP id S229480AbjGAJsT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 05:48:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95E981FE7;
+        Sat,  1 Jul 2023 02:48:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8A9C60A57;
+        Sat,  1 Jul 2023 09:48:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21377C433C7;
+        Sat,  1 Jul 2023 09:48:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688204897;
+        bh=NkKxEelQYImgUCH/jAULU1m4zxje/sLNSE+HtnnRpXY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=arndB2iLmMRvRpc3Y5iGkNQUBEEp/2aZS8DrjgQZDBAhPD8GmBezKeXAw4RYSMmJ+
+         L9v6h70XjzbT4GH0fTmi5zRAcvRpVQnCrdD3NcBJOPayzBwY+B2u4JPkg+NPlBKPJj
+         V1AHyV25CERQ/pl8HU1oxRX+8xd49AtMsl+TDTq9leAUF0RibUj03Uv9cjlePemQCH
+         jxfrh3gptWOi++lJ6//F6nkIkr5mcWGGtkVn5yIc+WLqGxCdEkeqBwQRqxOAAGl/rF
+         XyBcYzcCUglWINtqWOTnrb3H0X7S0TYciVA/VhSLrU/opTtpb8xdqRf1TIH2fQSkRl
+         J9wrW+fNXADiw==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1qFXDN-0007eM-Lo; Sat, 01 Jul 2023 11:48:25 +0200
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Steev Klimaszewski <steev@kali.org>
+Subject: [PATCH] ASoC: codecs: wcd938x: fix soundwire initialisation race
+Date:   Sat,  1 Jul 2023 11:47:23 +0200
+Message-Id: <20230701094723.29379-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-In-Reply-To: <2023063039-dotted-improper-7b3c@gregkh>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.110.237]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemi500019.china.huawei.com (7.221.188.117)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Make sure that the soundwire device used for register accesses has been
+enumerated and initialised before trying to read the codec variant
+during component probe.
 
+This specifically avoids interpreting (a masked and shifted) -EBUSY
+errno as the variant:
 
-On 2023/6/30 13:21, Greg KH wrote:
-> On Fri, Jun 30, 2023 at 10:08:45AM +0800, Li Huafei wrote:
->> We get the following crash caused by a null pointer access:
->>
->>  BUG: kernel NULL pointer dereference, address: 0000000000000000
->>  ...
->>  RIP: 0010:resume_execution+0x35/0x190
->>  ...
->>  Call Trace:
->>   <#DB>
->>   kprobe_debug_handler+0x41/0xd0
->>   exc_debug+0xe5/0x1b0
->>   asm_exc_debug+0x19/0x30
->>  RIP: 0010:copy_from_kernel_nofault.part.0+0x55/0xc0
->>  ...
->>   </#DB>
->>   process_fetch_insn+0xfb/0x720
->>   kprobe_trace_func+0x199/0x2c0
->>   ? kernel_clone+0x5/0x2f0
->>   kprobe_dispatcher+0x3d/0x60
->>   aggr_pre_handler+0x40/0x80
->>   ? kernel_clone+0x1/0x2f0
->>   kprobe_ftrace_handler+0x82/0xf0
->>   ? __se_sys_clone+0x65/0x90
->>   ftrace_ops_assist_func+0x86/0x110
->>   ? rcu_nocb_try_bypass+0x1f3/0x370
->>   0xffffffffc07e60c8
->>   ? kernel_clone+0x1/0x2f0
->>   kernel_clone+0x5/0x2f0
->>
->> The analysis reveals that kprobe and hardware breakpoints conflict in
->> the use of debug exceptions.
->>
->> If we set a hardware breakpoint on a memory address and also have a
->> kprobe event to fetch the memory at this address. Then when kprobe
->> triggers, it goes to read the memory and triggers hardware breakpoint
->> monitoring. This time, since kprobe handles debug exceptions earlier
->> than hardware breakpoints, it will cause kprobe to incorrectly assume
->> that the exception is a kprobe trigger.
->>
->> Notice that after the mainline commit 6256e668b7af ("x86/kprobes: Use
->> int3 instead of debug trap for single-step"), kprobe no longer uses
->> debug trap, avoiding the conflict with hardware breakpoints here. This
->> commit is to remove the IRET that returns to kernel, not to fix the
->> problem we have here. Also there are a bunch of merge conflicts when
->> trying to apply this commit to older kernels, so fixing it directly in
->> older kernels is probably a better option.
-> 
-> What is the list of commits that it would take to resolve this in these
-> kernels?  We would almost always prefer to do that instead of taking
-> changes that are not upstream.
+	wcd938x_codec audio-codec: ASoC: error at soc_component_read_no_lock on audio-codec for register: [0x000034b0] -16
 
-I have sorted out that for 5.10 there are 9 patches that need to be
-backported:
+in case the soundwire device has not yet been initialised, which in turn
+prevents some headphone controls from being registered.
 
-  #9 8924779df820 ("x86/kprobes: Fix JNG/JNLE emulation")
-  #8 dec8784c9088 ("x86/kprobes: Update kcb status flag after singlestepping")
-  #7 2304d14db659 ("x86/kprobes: Move 'inline' to the beginning of the kprobe_is_ss() declaration")
-  #6 2f706e0e5e26 ("x86/kprobes: Fix to identify indirect jmp and others using range case")
-  #5 6256e668b7af ("x86/kprobes: Use int3 instead of debug trap for single-step")
-  #4 a194acd316f9 ("x86/kprobes: Identify far indirect JMP correctly")
-  #3 d60ad3d46f1d ("x86/kprobes: Retrieve correct opcode for group instruction")
-  #2 abd82e533d88 ("x86/kprobes: Do not decode opcode in resume_execution()")
-  #1 e689b300c99c ("kprobes/x86: Fix fall-through warnings for Clang e689b300c99c")
-  
-The main one we need to backport is patch 5, patche 1-6 are pre-patches,
-and patche 6-9 are fix patches for patch 5. The major modifications are
-patch 2 and patch 4. Patch 2 optimizes resume_execution() to avoid
-repeated instruction decoding, and patch 5 uses int3 instead of debug
-trap, and as Masami said in the commit message this patch will change
-some behavior of kprobe, but it has almost no effect on the actual
-usage.
+Fixes: 8d78602aa87a ("ASoC: codecs: wcd938x: add basic driver")
+Cc: stable@vger.kernel.org	# 5.14
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reported-by: Steev Klimaszewski <steev@kali.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ sound/soc/codecs/wcd938x.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-I'm not sure backport these patches are acceptable, do I need to send
-them out for review?
+diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
+index e3ae4fb2c4db..4571588fad62 100644
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -3080,9 +3080,18 @@ static int wcd938x_irq_init(struct wcd938x_priv *wcd, struct device *dev)
+ static int wcd938x_soc_codec_probe(struct snd_soc_component *component)
+ {
+ 	struct wcd938x_priv *wcd938x = snd_soc_component_get_drvdata(component);
++	struct sdw_slave *tx_sdw_dev = wcd938x->tx_sdw_dev;
+ 	struct device *dev = component->dev;
++	unsigned long time_left;
+ 	int ret, i;
+ 
++	time_left = wait_for_completion_timeout(&tx_sdw_dev->initialization_complete,
++						msecs_to_jiffies(2000));
++	if (!time_left) {
++		dev_err(dev, "soundwire device init timeout\n");
++		return -ETIMEDOUT;
++	}
++
+ 	snd_soc_component_init_regmap(component, wcd938x->regmap);
+ 
+ 	ret = pm_runtime_resume_and_get(dev);
+-- 
+2.39.3
 
-Thanks,
-Huafei
-
-> 
-> thanks,
-> 
-> greg k-h
-> .
-> 
