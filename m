@@ -2,121 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEA6F74527E
-	for <lists+stable@lfdr.de>; Sun,  2 Jul 2023 23:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0C477452FF
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 00:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229825AbjGBVdW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 2 Jul 2023 17:33:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48844 "EHLO
+        id S230018AbjGBWp5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 2 Jul 2023 18:45:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbjGBVdW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 2 Jul 2023 17:33:22 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75941E42;
-        Sun,  2 Jul 2023 14:33:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688333582; x=1688938382; i=deller@gmx.de;
- bh=zoNTrcu17OXpgIuGcZIvxt9ubX9C4LB/Hqt+z3ZP4h4=;
- h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:In-Reply-To;
- b=qgg3fznCpQ4W/OcwDrNJayMCh8Ol98cpiE5MyjMFIHFjjnhCiBW9L81hlhyeqEv8xataUdQ
- 9aQqoQLu4K1mOBy8LCmPpmUcEAPBMLxq/joVhflPGQIPybJodl1qq4KKmdF2IsQuVL1swV80v
- DO8RYs7tpqiP6O6p00Q9CRF1sHeMUZmeR/wX8PBi0jmC1VFb6cLHYeBf5T+LdyNEUCki1g0ND
- +mbIyoWOfrWe+QO5kx6cdZNc9EBu88vlCxsPIRvEd0tg0wDG27nPtJPP3uj0BMOWCed04kWcL
- 8aiFa4UrxfGlDL1ZZNnOW9RaydFpR0IMl8k+GAF+gyLGOfjWEyAg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.159.131]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M6Udt-1qMPHb348n-006zoJ; Sun, 02
- Jul 2023 23:33:02 +0200
-Message-ID: <5fd98a09-4792-1433-752d-029ae3545168@gmx.de>
-Date:   Sun, 2 Jul 2023 23:33:01 +0200
+        with ESMTP id S229932AbjGBWp4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 2 Jul 2023 18:45:56 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21B0D1B9
+        for <stable@vger.kernel.org>; Sun,  2 Jul 2023 15:45:55 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2b6a1fe5845so57595681fa.3
+        for <stable@vger.kernel.org>; Sun, 02 Jul 2023 15:45:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1688337953; x=1690929953;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rbSGoMaDXuLTUnz0WGxSI7CF/z5suPv717y+50H5ixI=;
+        b=StspcepUYcEgcCUtJ4IwnwdxoNsUWnZMTNCThy93R7sGFKyZ/R58wVWcf73ERAPggm
+         z9tW8saRzj3UyHj45uq+vqksU4sOENZyv4JHdHWP8FVL/Cfxl769B+p1DdnRQnXR0KNU
+         WuwbUyv5Xofh8zkMERcfkj94nWUrYCsQkYsFE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688337953; x=1690929953;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rbSGoMaDXuLTUnz0WGxSI7CF/z5suPv717y+50H5ixI=;
+        b=Rk3qxT6UvX3rbQOzMe9XgPxSzTiUCPnyM7C+jZ9i6ldflBYrc8r9SGochHfv/HufmK
+         VREUuP7QdeL/VcpMU7YWa/ubNCf2j0IElUg7458UBFGDKH9XM+BEheFx32/f4gSX+5Dq
+         pl7Fl38EDVmN394oxcGBcn+8C2vmDlyg65rnWQginrInDYocY8AV1y2dZdzyhKkWoKFR
+         dB8v4hOqBZi/aGqjanJ80eGbiKQjC0qEqsP7AbiQ8MtrtihcR20bp0Hiw6KSJxuz05GY
+         b+dGZlebjEHDZzef2RKHXZ8+VEYRtwRvtissyefJAl8zZrV6zS4EaAhGpPfCZCS/oyUU
+         7t3g==
+X-Gm-Message-State: ABy/qLZWctNeyuaFebRCJwfcjOfzm2lg6H/30hItIcwMKn8bYcNMMXQH
+        +bo2itQerO9idEfmCA6gvwWErXS+hKjoj39iRunFwp49
+X-Google-Smtp-Source: APBJJlFdIk8/UKtMRXvJodrbooQZtt0DLf538Oa7uE8NdmpFxzMp5VcEiVH7QlDJSZtrpqM7o6egzg==
+X-Received: by 2002:a2e:9059:0:b0:2b6:b611:64e9 with SMTP id n25-20020a2e9059000000b002b6b61164e9mr5270615ljg.52.1688337953329;
+        Sun, 02 Jul 2023 15:45:53 -0700 (PDT)
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com. [209.85.208.181])
+        by smtp.gmail.com with ESMTPSA id f18-20020a2e6a12000000b002b6a163b244sm4112270ljc.3.2023.07.02.15.45.51
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Jul 2023 15:45:52 -0700 (PDT)
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2b69a48368fso57600731fa.0
+        for <stable@vger.kernel.org>; Sun, 02 Jul 2023 15:45:51 -0700 (PDT)
+X-Received: by 2002:a2e:7d15:0:b0:2b6:9f59:7b3c with SMTP id
+ y21-20020a2e7d15000000b002b69f597b3cmr5360404ljc.14.1688337951675; Sun, 02
+ Jul 2023 15:45:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
+References: <20230629184151.888604958@linuxfoundation.org> <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
+ <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
+ <2023063001-overlying-browse-de1a@gregkh> <0b2aefa4-7407-4936-6604-dedfb1614483@gmx.de>
+ <5fd98a09-4792-1433-752d-029ae3545168@gmx.de>
+In-Reply-To: <5fd98a09-4792-1433-752d-029ae3545168@gmx.de>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun, 2 Jul 2023 15:45:34 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiHs1cL2Fb90NXVhtQsMuu+OLHB4rSDsPVe0ALmbvZXZQ@mail.gmail.com>
+Message-ID: <CAHk-=wiHs1cL2Fb90NXVhtQsMuu+OLHB4rSDsPVe0ALmbvZXZQ@mail.gmail.com>
 Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review - hppa argument list too long
-Content-Language: en-US
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
+To:     Helge Deller <deller@gmx.de>
 Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
         akpm@linux-foundation.org, linux@roeck-us.net,
         linux-parisc <linux-parisc@vger.kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         John David Anglin <dave.anglin@bell.net>
-References: <20230629184151.888604958@linuxfoundation.org>
- <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
- <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
- <2023063001-overlying-browse-de1a@gregkh>
- <0b2aefa4-7407-4936-6604-dedfb1614483@gmx.de>
-In-Reply-To: <0b2aefa4-7407-4936-6604-dedfb1614483@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6Yhl0DRuuLPKEMiY143f2N6rriAfbId77ULH2KXnQFOoo9YEc5p
- Rz5/9HFqMpYPYjBVkGk/n+l7DxusKZ02OVttxqO9kGoN9frimC9B+8vF2w7xGxO76aPhbDn
- DPl3LuBRAWIS5FGRyjQcHNq7e6SNXi6kiSZjeDYT673dH1UN9nLhgH8LiLpgf/DXiSduPEB
- oRkBMg2OIB7RMHjP0DCYA==
-UI-OutboundReport: notjunk:1;M01:P0:rlpGPtRtE0g=;fcye9KtAlNqbjwGrLOMOoEcB/Xz
- /V9Q95CRG/a7Nqt63mKJQOEJgcFkTX+BOdS5MsNeSLGoeTQJBPjTFd1+UL9uoZCW68uYtezg1
- owTp56q/sLiY7yE071UeyCAC1O7hB3unjU+uTaI0+iMsin+/3iWqxK4qltVF/kxBDHSu0C4YH
- Dfa0GVTsLv56I4DWbO4VwFDXvkw21vuzjooCodPvS7GGNQ1faN4UwKtv+DTNdJd29lzym2dDh
- iLwFFSF0j/Wd1TD6Cs16/pwtJLAIsyrcOSV+MBjUWCQI81Xuu31Pt3cYIa+7PqZPJgmjT5HOG
- znFbIlcX+/of13qiEG+V3KyvMzRGRSTnOXG20BnRaXNUOMv+WHdMZs/nutmCcKoMJcc4Kb22r
- YTPXn1r5XtlQRumCOqi0tr7YhSp5Aq7GUjs4iRwZt6hPeXO6dFAmb16u9q3Hw3sUUIZ/0xr6P
- OO1YjQNq3cmWxZAVQiSGqzqersipjdfF6b+BmiP0KF50GhrYnpu5z6VEJmHJidacPR20NXu/f
- TejHkDlzM4ppHXRuIiAepuD5ZZJFp6IiyWPYoqJTlp5gr0tNp4rNsdhpfdgG3U7GMZkkStqVd
- QV6NSAfglPl0DFmbX1NC1jx+tpbK27JPVrQNUDMCEY8cHumAaZcil+y4GmKxB9tEZvKOybt9z
- VAAd4fpJvl/Vk+pPGJZPO66eAtvDL7OIa2wpWkysOIGvhBWp3oIRNB6PyN6jdmW94lbAhPhFL
- B5CBOkv6fiXFA9Qurhc55SI9Yw/alfS4JFOMbsQK+M6QE3Yl5l0J8LxUTHJ7RfVansIZJFSdr
- uD8XrwE969R5iJ9N5rMc5GiJKMKZJyQTHX/Fdl0W/jkQ8dXuGVRUiRmkHmGmxHKtWle5Qbkc5
- 1tOWV4A2+oGKmh2XB31m+QEolqdJppXIuBa2fTMYScTXgHH6v2bfjLUN3c3RAZtCFy4dVuN/P
- yyLZplnytkfcg0pyygcbp9hODLQ=
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Linus,
-
-On 6/30/23 08:56, Helge Deller wrote:
-> On 6/30/23 08:29, Greg Kroah-Hartman wrote:
->> On Thu, Jun 29, 2023 at 11:16:21PM -0700, Linus Torvalds wrote:
->>> On Thu, 29 Jun 2023 at 22:31, Naresh Kamboju <naresh.kamboju@linaro.or=
-g> wrote:
->>>>
->>>> arch/parisc/mm/fault.c: In function 'do_page_fault':
->>>> arch/parisc/mm/fault.c:292:22: error: 'prev' undeclared (first use in=
- this function)
->>>> =C2=A0=C2=A0 292 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!prev || !(prev->vm_flag=
-s & VM_GROWSUP))
->>>
->>> Bah. "prev" should be "prev_vma" here.
->>>
->>> I've pushed out the fix. Greg, apologies. It's
->>>
->>> =C2=A0=C2=A0=C2=A0 ea3f8272876f parisc: fix expand_stack() conversion
->>>
->>> and Naresh already pointed to the similarly silly sparc32 fix.
->>
->> Ah, I saw it hit your repo before your email here, sorry about that.
->> Now picked up.
+On Sun, 2 Jul 2023 at 14:33, Helge Deller <deller@gmx.de> wrote:
 >
-> I've just cherry-picked ea3f8272876f on top of -rc2, built and run-teste=
-d it,
-> and everything is OK on parisc.
+> Actually, your changes seems to trigger...:
+>
+> root@debian:~# /usr/bin/ls /usr/bin/*
+> -bash: /usr/bin/ls: Argument list too long
 
-Actually, your changes seems to trigger...:
+So this only happens with _fairly_ long argument lists, right? Maybe
+your config has a 64kB page size, and normal programs never expand
+beyond a single page?
 
-root@debian:~# /usr/bin/ls /usr/bin/*
--bash: /usr/bin/ls: Argument list too long
+I bet it is because of f313c51d26aa ("execve: expand new process stack
+manually ahead of time"), but I don't see exactly why.
 
-or with a long gcc argument list:
-gcc: fatal error: cannot execute '/usr/lib/gcc/hppa-linux-gnu/12/cc1': exe=
-cv: Argument list too long
+But pa-risc is the only architecture with CONFIG_STACK_GROWSUP, and
+while I really thought that commit should do the exact same thing as
+the old
 
-I'm trying to understand what's missing, but maybe you have some idea?
+  #ifdef CONFIG_STACK_GROWSUP
 
-Helge
+special case, I must clearly have been wrong.
+
+Would you mind just verifying that yes, that commit on mainline is
+broken for you, and the previous one works?
+
+               Linus
