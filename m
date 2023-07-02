@@ -2,81 +2,171 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02717744BDC
-	for <lists+stable@lfdr.de>; Sun,  2 Jul 2023 02:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED541744C08
+	for <lists+stable@lfdr.de>; Sun,  2 Jul 2023 04:17:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbjGBAB2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 1 Jul 2023 20:01:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38372 "EHLO
+        id S229570AbjGBCRp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 1 Jul 2023 22:17:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbjGBAB1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 20:01:27 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5BB61725
-        for <stable@vger.kernel.org>; Sat,  1 Jul 2023 17:01:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688256086; x=1719792086;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=dt3ish8l/dwCYC3dQF9tTPUPRNE2LfJ1WSODUJituTY=;
-  b=ZLK0nfJt0+pLLzSuITEtRlA+MzR2XY4/32WP9faoxeX1KZ6p37j7fyUv
-   T/hbRjrs9aiVNwqm96PLoSISlmo73KST/tWfmdb2sKOER35tHC0cx/C6u
-   F8kTykNo5FSxLoA6UKt0dmn0/8W12g6jFgWsTboZ3XZHuCQUFKL7xS98a
-   iQ/POQLRsnJKs5fvpOciNsiTcmlt7h/6BnYl1itewZXrqwASMsRBuDYXG
-   e1yOZmxeISS+nMxhxLRaapvBKrSqOqZVpkChhBdR136TbNxzsGR3TymIv
-   IKLzh5IsrrAeXuSx3YMU7uJgGwZeW4zphQFaa2nqxlz2tP/+vXrjipI1G
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10758"; a="365218304"
-X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="365218304"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2023 17:01:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10758"; a="695411857"
-X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="695411857"
-Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 01 Jul 2023 17:01:24 -0700
-Received: from kbuild by 783282924a45 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qFkWp-000GL7-2e;
-        Sun, 02 Jul 2023 00:01:23 +0000
-Date:   Sun, 2 Jul 2023 08:01:21 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Samuel Thibault <samuel.thibault@ens-lyon.org>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] TIOCSTI: always enable for CAP_SYS_ADMIN
-Message-ID: <ZKC+UQ7HYVZCWhpR@65525e8f8615>
+        with ESMTP id S229446AbjGBCRo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 22:17:44 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C7421703;
+        Sat,  1 Jul 2023 19:17:38 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1b7f2239bfdso26142205ad.1;
+        Sat, 01 Jul 2023 19:17:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688264258; x=1690856258;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yJTGw+c9DJrbYqiA04K/2tANXpXGkgOAgtlz124a1Co=;
+        b=YgaK746I+skXxol7AodgRplLh/h4Un1YNEUG7ChHu1aIEwGJM26CThspI00TET9jYU
+         HsOAMzX3opDf+nm8c2SXTrbbjKxmpqCKVpOpKnKbkQeg+0NSo3SsA4M5J6R3f5ACJMwt
+         rdeaSIinHZ9oNhxYSX42yap+UNw04KMfCKliMFuf6CYGoUiG2X3rrsd3X5wlOi9bNzsX
+         2eE6y7nsaCalVlw3RkXeFbDkDzQoQE6MqLWxLFgrTAhyVmjk45LRmEEnNFt4yCqzpffe
+         /qcMz71olL8Rl3sjm/gB9v60k20OnlCfPLiW8sVXzw7Kk/AcxXrBr3kpJ9nI6Ml18cuQ
+         bvig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688264258; x=1690856258;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=yJTGw+c9DJrbYqiA04K/2tANXpXGkgOAgtlz124a1Co=;
+        b=fer6czbEEqdWH8wWcQai61hV4jnrJLbhw9/RjJ1epWYm2d5y3A09TkCwgcKAqMuAZk
+         wKKlXdvx/s8HSkLv7+q2fbKI3wG2m9Q3bTm0W2/YKGVlnxD+zcYMBVXCnATfptB0X0Je
+         RVb54sPvZ1VufW37zYYtpk5XaIWzfzSxpDXuGVj6U/1+xBuRoR+QPop63YhAX2cBZY14
+         BI2fDopdVuXVdIQV4P1GHaydnU7QwKWrmi7ahGv6W80Nw1H7f6+/gXIfVU5KCe/idQMx
+         hJD14GXa7umwyteD6zIlTYjsjIv68ynh5T1Hge30EPe/WVyIxfzeEYAiWJCZqBN3IwCt
+         sLdQ==
+X-Gm-Message-State: ABy/qLbQZFGplW5M09TkVTxEjlA9VoAK1r9xIB2QeSG8y7Gp7jbibdHW
+        3FphxLOqlBYWo7TnkA3I7OQ=
+X-Google-Smtp-Source: APBJJlEHuyOIr+bpMXj6M8qVN84MWrOUnsf0HN46zV15E4B5oVJcSfNCuw0JTj4GKAK40hSTwnrpFw==
+X-Received: by 2002:a17:903:1246:b0:1b4:5697:d991 with SMTP id u6-20020a170903124600b001b45697d991mr8479034plh.15.1688264257789;
+        Sat, 01 Jul 2023 19:17:37 -0700 (PDT)
+Received: from [10.1.1.24] (222-152-184-54-fibre.sparkbb.co.nz. [222.152.184.54])
+        by smtp.gmail.com with ESMTPSA id j23-20020a170902759700b001b53953f306sm12875459pll.178.2023.07.01.19.17.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 01 Jul 2023 19:17:37 -0700 (PDT)
+Subject: Re: [PATCH] block: bugfix for Amiga partition overflow check patch
+To:     Christian Zigotzky <chzigotzky@xenosoft.de>,
+        linux-block@vger.kernel.org
+References: <20230701023524.7434-1-schmitzmic@gmail.com>
+ <3e3ce346-f627-4adf-179d-b8817361e6e3@xenosoft.de>
+ <94d46446-97fc-9e92-2585-71c18e65b64a@gmail.com>
+ <b9600d91-6a25-746e-0769-4d0e31038da5@xenosoft.de>
+Cc:     axboe@kernel.dk, linux-m68k@vger.kernel.org, geert@linux-m68k.org,
+        hch@lst.de, martin@lichtvoll.de, stable@vger.kernel.org,
+        "R.T.Dickinson" <rtd2@xtra.co.nz>,
+        Darren Stevens <darren@stevens-zone.net>,
+        mad skateman <madskateman@gmail.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Christian Zigotzky <info@xenosoft.de>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <afe14b08-7bab-d81b-fce6-e6408741760a@gmail.com>
+Date:   Sun, 2 Jul 2023 14:17:23 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230701235918.kwfathbdklkyrbde@begin>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <b9600d91-6a25-746e-0769-4d0e31038da5@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Hi Christian,
 
-Thanks for your patch.
+Am 01.07.2023 um 21:48 schrieb Christian Zigotzky:
+>> Can you please send a copy of the RDB (first few kB of the disk,
+>> something like dd if=/dev/sda of=rdb-sda.img bs=512 count=16 should
+>> do), and the output of cat /proc/partitions when running a kernel from
+>> before my RDB patches?
+>>
+>>
+> Copy of the RDB: https://www.xenosoft.de/rdb-sda.img
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Thanks, casual inspection of this RDB does show that indeed a value of 
+-1 is used as pb_next in partition slot 4 (and 5).
 
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH] TIOCSTI: always enable for CAP_SYS_ADMIN
-Link: https://lore.kernel.org/stable/20230701235918.kwfathbdklkyrbde%40begin
+The disk geometry is defined as 3 heads, 16 sectors per track (48 
+sectors per cylinder) and 81396441 cylinders which matches your 2 TB 
+disk size.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+The first partition begins at cylinder 43 and ends at cylinder 5004, 
+matching the 119088 k (k == 1024 bytes) below.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Partition 2 begins at cylinder 5005, ends at 92508, size 2100096 again 
+as below.
+
+Partition 3 begins at cylinder 92509, ends at 28120463, size 672670920 
+as below.
+
+Partition 4 begins at cylinder 28120464, ends at 81068868, size 
+1270041720, different from the size shown in your /proc/partitions log.
+
+The disk ends at cylinder 81396440, so a partition 4 extending to the 
+end of the disk would have size 1278623448, which is what your log shows.
+
+>
+> cat /proc/partitions:
+>
+> major minor  #blocks  name
+>
+>    8        0 1953514584 sda
+>    8        1     119088 sda1
+>    8        2    2100096 sda2
+>    8        3  672670920 sda3
+>    8        4 1278623448 sda4
+
+I have (disk image on sdb, patches applied):
+      8       20 1270761720 sdb4
+
+which matches what I calculated by hand above.
+
+With an old kernel that does not have the RDB fixes, I get the same 
+partition size as you report. That size is the result of truncation to 
+EOD (the miscalculated size of 18446744071956107760 exceeds the device 
+size).
+
+Creating the filesystem on an unpatched kernel will use that incorrect 
+partition size. I'm sorry to say I cannot see a new RDB partition bug 
+her, just the result of undefined behaviour due to overflowing a 32 bit 
+nr_sect size calculation in the old RDB code.
 
 
+If you cannot shrink the filesystem, you will have to edit the partition 
+table to extend p4 to the end of the disk. Just replace the partition 4 
+pb->pb_Environment[10] (at offset 0x8a8, current value 0x04d50344) by 
+0x04da02d8. As far as I can see, there is no adjustment to the partition 
+block checksum required, as the checksummed block of 160 bytes ends just 
+before the location of the partition's low and high cylinder addresses....
+
+I'd best verify that a patched RDB actually works...
+
+Cheers,
+
+	Michael
+
+
+
+>   11        0    1048575 sr0
+>    8       32     250880 sdc
+>    8       33     249856 sdc1
+>    8       16  234431064 sdb
+>    8       17  144364512 sdb1
+>    8       18          1 sdb2
+>    8       19   18500608 sdb3
+>    8       20   40717312 sdb4
+>    8       21   14684160 sdb5
+>    8       22   16161792 sdb6
+>    8       48       1440 sdd
+>    8       49       1439 sdd1
 
