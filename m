@@ -2,171 +2,170 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED541744C08
-	for <lists+stable@lfdr.de>; Sun,  2 Jul 2023 04:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55280744C0F
+	for <lists+stable@lfdr.de>; Sun,  2 Jul 2023 04:57:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229570AbjGBCRp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 1 Jul 2023 22:17:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47876 "EHLO
+        id S229471AbjGBC52 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 1 Jul 2023 22:57:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjGBCRo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 22:17:44 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C7421703;
-        Sat,  1 Jul 2023 19:17:38 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1b7f2239bfdso26142205ad.1;
-        Sat, 01 Jul 2023 19:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688264258; x=1690856258;
-        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
-         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yJTGw+c9DJrbYqiA04K/2tANXpXGkgOAgtlz124a1Co=;
-        b=YgaK746I+skXxol7AodgRplLh/h4Un1YNEUG7ChHu1aIEwGJM26CThspI00TET9jYU
-         HsOAMzX3opDf+nm8c2SXTrbbjKxmpqCKVpOpKnKbkQeg+0NSo3SsA4M5J6R3f5ACJMwt
-         rdeaSIinHZ9oNhxYSX42yap+UNw04KMfCKliMFuf6CYGoUiG2X3rrsd3X5wlOi9bNzsX
-         2eE6y7nsaCalVlw3RkXeFbDkDzQoQE6MqLWxLFgrTAhyVmjk45LRmEEnNFt4yCqzpffe
-         /qcMz71olL8Rl3sjm/gB9v60k20OnlCfPLiW8sVXzw7Kk/AcxXrBr3kpJ9nI6Ml18cuQ
-         bvig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688264258; x=1690856258;
-        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
-         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yJTGw+c9DJrbYqiA04K/2tANXpXGkgOAgtlz124a1Co=;
-        b=fer6czbEEqdWH8wWcQai61hV4jnrJLbhw9/RjJ1epWYm2d5y3A09TkCwgcKAqMuAZk
-         wKKlXdvx/s8HSkLv7+q2fbKI3wG2m9Q3bTm0W2/YKGVlnxD+zcYMBVXCnATfptB0X0Je
-         RVb54sPvZ1VufW37zYYtpk5XaIWzfzSxpDXuGVj6U/1+xBuRoR+QPop63YhAX2cBZY14
-         BI2fDopdVuXVdIQV4P1GHaydnU7QwKWrmi7ahGv6W80Nw1H7f6+/gXIfVU5KCe/idQMx
-         hJD14GXa7umwyteD6zIlTYjsjIv68ynh5T1Hge30EPe/WVyIxfzeEYAiWJCZqBN3IwCt
-         sLdQ==
-X-Gm-Message-State: ABy/qLbQZFGplW5M09TkVTxEjlA9VoAK1r9xIB2QeSG8y7Gp7jbibdHW
-        3FphxLOqlBYWo7TnkA3I7OQ=
-X-Google-Smtp-Source: APBJJlEHuyOIr+bpMXj6M8qVN84MWrOUnsf0HN46zV15E4B5oVJcSfNCuw0JTj4GKAK40hSTwnrpFw==
-X-Received: by 2002:a17:903:1246:b0:1b4:5697:d991 with SMTP id u6-20020a170903124600b001b45697d991mr8479034plh.15.1688264257789;
-        Sat, 01 Jul 2023 19:17:37 -0700 (PDT)
-Received: from [10.1.1.24] (222-152-184-54-fibre.sparkbb.co.nz. [222.152.184.54])
-        by smtp.gmail.com with ESMTPSA id j23-20020a170902759700b001b53953f306sm12875459pll.178.2023.07.01.19.17.27
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 01 Jul 2023 19:17:37 -0700 (PDT)
-Subject: Re: [PATCH] block: bugfix for Amiga partition overflow check patch
-To:     Christian Zigotzky <chzigotzky@xenosoft.de>,
-        linux-block@vger.kernel.org
-References: <20230701023524.7434-1-schmitzmic@gmail.com>
- <3e3ce346-f627-4adf-179d-b8817361e6e3@xenosoft.de>
- <94d46446-97fc-9e92-2585-71c18e65b64a@gmail.com>
- <b9600d91-6a25-746e-0769-4d0e31038da5@xenosoft.de>
-Cc:     axboe@kernel.dk, linux-m68k@vger.kernel.org, geert@linux-m68k.org,
-        hch@lst.de, martin@lichtvoll.de, stable@vger.kernel.org,
-        "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        Darren Stevens <darren@stevens-zone.net>,
-        mad skateman <madskateman@gmail.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Christian Zigotzky <info@xenosoft.de>
-From:   Michael Schmitz <schmitzmic@gmail.com>
-Message-ID: <afe14b08-7bab-d81b-fce6-e6408741760a@gmail.com>
-Date:   Sun, 2 Jul 2023 14:17:23 +1200
-User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
- Icedove/45.4.0
+        with ESMTP id S229446AbjGBC51 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 1 Jul 2023 22:57:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 415601705;
+        Sat,  1 Jul 2023 19:57:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A160760AE8;
+        Sun,  2 Jul 2023 02:57:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D74C433C7;
+        Sun,  2 Jul 2023 02:57:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688266644;
+        bh=KVAMyfKWjVwwLKGxATgxHTcW5xvo69PZktIxihAIbBw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jsdwgGk96dt3I47o1PYBrvECOCVIDHA3vugLsQJRAfRPn5ULpsltjeB5JVuBECQgk
+         z39LttKtf0epErz0P5dJqlC3thXTyxja+sCTpZepc92xXFBimh58gthiJuo9X1O7qi
+         HeKA2OsetQLQgOfR3lE/6NSHPEFsvJdCD4MuQDh5fuS7iKzm7ejhwfpp+HllnP7/mF
+         IzP6S68/4wG4yHeCp3/iYfoRBivLjtd8OrUiez+cdeA6lA3KLShqGfygRnXm98n36S
+         Z0Z8/heQEPuovLOYSuDKgb70Exc+jdumgvab2cPF8tZxYPl0b6ehlcvo/kXeUcTQ/N
+         xbccNOBE0o75g==
+From:   guoren@kernel.org
+To:     arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
+        peterz@infradead.org, luto@kernel.org, conor.dooley@microchip.com,
+        heiko@sntech.de, jszhang@kernel.org, lazyparser@gmail.com,
+        falcon@tinylab.org, chenhuacai@kernel.org, apatel@ventanamicro.com,
+        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
+        palmer@dabbelt.com, guoren@kernel.org, bjorn@rivosinc.com,
+        daniel.thompson@linaro.org
+Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
+        Guo Ren <guoren@linux.alibaba.com>
+Subject: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
+Date:   Sat,  1 Jul 2023 22:57:07 -0400
+Message-Id: <20230702025708.784106-1-guoren@kernel.org>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-In-Reply-To: <b9600d91-6a25-746e-0769-4d0e31038da5@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Christian,
+From: Guo Ren <guoren@linux.alibaba.com>
 
-Am 01.07.2023 um 21:48 schrieb Christian Zigotzky:
->> Can you please send a copy of the RDB (first few kB of the disk,
->> something like dd if=/dev/sda of=rdb-sda.img bs=512 count=16 should
->> do), and the output of cat /proc/partitions when running a kernel from
->> before my RDB patches?
->>
->>
-> Copy of the RDB: https://www.xenosoft.de/rdb-sda.img
+The irqentry_nmi_enter/exit would force the current context into in_interrupt.
+That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
+debug the kernel.
 
-Thanks, casual inspection of this RDB does show that indeed a value of 
--1 is used as pb_next in partition slot 4 (and 5).
+Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
+of the kernel side.
 
-The disk geometry is defined as 3 heads, 16 sectors per track (48 
-sectors per cylinder) and 81396441 cylinders which matches your 2 TB 
-disk size.
+Before the fixup:
+$echo BUG > /sys/kernel/debug/provoke-crash/DIRECT
+  lkdtm: Performing direct entry BUG
+  ------------[ cut here ]------------
+  kernel BUG at drivers/misc/lkdtm/bugs.c:78!
+  handle_break, 256.
+  Kernel BUG [#1]
+  Modules linked in:
+  CPU: 0 PID: 104 Comm: echo Not tainted 6.4.0-rc1-00055-g0ca05a4b079f-dirty #30
+  Hardware name: riscv-virtio,qemu (DT)
+  epc : lkdtm_BUG+0x6/0x8
+   ra : lkdtm_do_action+0x14/0x1c
+  epc : ffffffff8055c730 ra : ffffffff8087e188 sp : ff200000007dbd40
+   gp : ffffffff81500878 tp : ff600000028ebac0 t0 : 6500000000000000
+   t1 : 000000000000006c t2 : 6550203a6d74646b s0 : ff200000007dbd50
+   s1 : ffffffff814bfc80 a0 : ffffffff814bfc80 a1 : ff6000001ffd8608
+   a2 : ff6000001ffdb870 a3 : 0000000000000000 a4 : 0000000000000000
+   a5 : ffffffff8055c72a a6 : 0000000000000032 a7 : 0000000000000038
+   s2 : 0000000000000004 s3 : 00000000556371a0 s4 : ff200000007dbe70
+   s5 : ff60000002090000 s6 : 00000000556371a0 s7 : 0000000000000030
+   s8 : 000000007fffec78 s9 : 0000000000000007 s10: 0000000055637530
+   s11: 0000000000000001 t3 : ffffffff81513ed7 t4 : ffffffff81513ed7
+   t5 : ffffffff81513ed8 t6 : ff200000007dbb88
+  status: 0000000100000120 badaddr: 0000000000000000 cause: 0000000000000003
+  [<ffffffff8055c730>] lkdtm_BUG+0x6/0x8
+  Code: 0513 6b05 b097 0031 80e7 e960 b705 1141 e422 0800 (9002) 1141
+  ---[ end trace 0000000000000000 ]---
+  Kernel panic - not syncing: Aiee, killing interrupt handler!
+  ---[ end Kernel panic - not syncing: Aiee, killing interrupt handler! ]---
 
-The first partition begins at cylinder 43 and ends at cylinder 5004, 
-matching the 119088 k (k == 1024 bytes) below.
+(Dead in the kernel side.)
 
-Partition 2 begins at cylinder 5005, ends at 92508, size 2100096 again 
-as below.
+After the fixup:
+$echo BUG > /sys/kernel/debug/provoke-crash/DIRECT
+  lkdtm: Performing direct entry BUG
+  ------------[ cut here ]------------
+  kernel BUG at drivers/misc/lkdtm/bugs.c:78!
+  Kernel BUG [#13]
+  Modules linked in:
+  CPU: 0 PID: 129 Comm: echo Tainted: G D 6.4.0-rc1-00055-g0ca05a4b079f-dirty #34
+  Hardware name: riscv-virtio,qemu (DT)
+  epc : lkdtm_BUG+0x6/0x8
+   ra : lkdtm_do_action+0x14/0x1c
+  epc : ffffffff8055c71c ra : ffffffff8087e170 sp : ff200000007e3d40
+   gp : ffffffff81500878 tp : ff600000028ebac0 t0 : 6500000000000000
+   t1 : 000000000000006c t2 : 6550203a6d74646b s0 : ff200000007e3d50
+   s1 : ffffffff814bfc80 a0 : ffffffff814bfc80 a1 : ff6000001ffd8608
+   a2 : ff6000001ffdb870 a3 : 0000000000000000 a4 : 0000000000000000
+   a5 : ffffffff8055c716 a6 : 0000000000000032 a7 : 0000000000000038
+   s2 : 0000000000000004 s3 : 00000000556371a0 s4 : ff200000007e3e70
+   s5 : ff60000002090000 s6 : 00000000556371a0 s7 : 0000000000000030
+   s8 : 000000007fffec78 s9 : 0000000000000007 s10: 0000000055637530
+   s11: 0000000000000001 t3 : ffffffff81513ed7 t4 : ffffffff81513ed7
+   t5 : ffffffff81513ed8 t6 : ff200000007e3b88
+  status: 0000000100000120 badaddr: 0000000000000000 cause: 0000000000000003
+  [<ffffffff8055c71c>] lkdtm_BUG+0x6/0x8
+  Code: 0513 6945 b097 0031 80e7 e920 b705 1141 e422 0800 (9002) 1141
+  ---[ end trace 0000000000000000 ]---
+  note: echo[129] exited with irqs disabled
+  Segmentation fault
 
-Partition 3 begins at cylinder 92509, ends at 28120463, size 672670920 
-as below.
+(Resume to the shell normally.)
 
-Partition 4 begins at cylinder 28120464, ends at 81068868, size 
-1270041720, different from the size shown in your /proc/partitions log.
+Fixes: f0bddf50586d ("riscv: entry: Convert to generic entry")
+Reported-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+Signed-off-by: Guo Ren <guoren@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ arch/riscv/kernel/traps.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-The disk ends at cylinder 81396440, so a partition 4 extending to the 
-end of the disk would have size 1278623448, which is what your log shows.
-
->
-> cat /proc/partitions:
->
-> major minor  #blocks  name
->
->    8        0 1953514584 sda
->    8        1     119088 sda1
->    8        2    2100096 sda2
->    8        3  672670920 sda3
->    8        4 1278623448 sda4
-
-I have (disk image on sdb, patches applied):
-      8       20 1270761720 sdb4
-
-which matches what I calculated by hand above.
-
-With an old kernel that does not have the RDB fixes, I get the same 
-partition size as you report. That size is the result of truncation to 
-EOD (the miscalculated size of 18446744071956107760 exceeds the device 
-size).
-
-Creating the filesystem on an unpatched kernel will use that incorrect 
-partition size. I'm sorry to say I cannot see a new RDB partition bug 
-her, just the result of undefined behaviour due to overflowing a 32 bit 
-nr_sect size calculation in the old RDB code.
-
-
-If you cannot shrink the filesystem, you will have to edit the partition 
-table to extend p4 to the end of the disk. Just replace the partition 4 
-pb->pb_Environment[10] (at offset 0x8a8, current value 0x04d50344) by 
-0x04da02d8. As far as I can see, there is no adjustment to the partition 
-block checksum required, as the checksummed block of 160 bytes ends just 
-before the location of the partition's low and high cylinder addresses....
-
-I'd best verify that a patched RDB actually works...
-
-Cheers,
-
-	Michael
-
-
-
->   11        0    1048575 sr0
->    8       32     250880 sdc
->    8       33     249856 sdc1
->    8       16  234431064 sdb
->    8       17  144364512 sdb1
->    8       18          1 sdb2
->    8       19   18500608 sdb3
->    8       20   40717312 sdb4
->    8       21   14684160 sdb5
->    8       22   16161792 sdb6
->    8       48       1440 sdd
->    8       49       1439 sdd1
+diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
+index efc6b649985a..ed0eb9452f9e 100644
+--- a/arch/riscv/kernel/traps.c
++++ b/arch/riscv/kernel/traps.c
+@@ -18,6 +18,7 @@
+ #include <linux/irq.h>
+ #include <linux/kexec.h>
+ #include <linux/entry-common.h>
++#include <linux/context_tracking.h>
+ 
+ #include <asm/asm-prototypes.h>
+ #include <asm/bug.h>
+@@ -257,11 +258,11 @@ asmlinkage __visible __trap_section void do_trap_break(struct pt_regs *regs)
+ 
+ 		irqentry_exit_to_user_mode(regs);
+ 	} else {
+-		irqentry_state_t state = irqentry_nmi_enter(regs);
++		enum ctx_state prev_state = exception_enter();
+ 
+ 		handle_break(regs);
+ 
+-		irqentry_nmi_exit(regs, state);
++		exception_exit(prev_state);
+ 	}
+ }
+ 
+-- 
+2.36.1
 
