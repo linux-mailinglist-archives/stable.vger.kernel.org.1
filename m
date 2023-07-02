@@ -2,122 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5BEC74505D
-	for <lists+stable@lfdr.de>; Sun,  2 Jul 2023 21:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5706774506C
+	for <lists+stable@lfdr.de>; Sun,  2 Jul 2023 21:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229817AbjGBTcG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 2 Jul 2023 15:32:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49012 "EHLO
+        id S230039AbjGBTiV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 2 Jul 2023 15:38:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229513AbjGBTcG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 2 Jul 2023 15:32:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175A2A0;
-        Sun,  2 Jul 2023 12:32:05 -0700 (PDT)
+        with ESMTP id S229513AbjGBTiU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 2 Jul 2023 15:38:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08D78A7;
+        Sun,  2 Jul 2023 12:38:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9058760C78;
-        Sun,  2 Jul 2023 19:32:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CC0C433C8;
-        Sun,  2 Jul 2023 19:32:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1688326323;
-        bh=rRM6GjMifgftUKvo/+glxJunFuzIr9/DPDhMhOLJaes=;
-        h=Date:To:From:Subject:From;
-        b=zMww4EQt9AYVynMXOmYsYUE4C8yitGvG9Kpk9Dg8A44BOBM6a2tQzTLbcKdc2fiBz
-         +SOjgAmzVdF3YWHRszKaGdiZMAJFn9riu2IdP+BqpXnPWpcUt2IIWvY6/tKnC0Z5cp
-         HlOquNZ+DDE01NdMN90LT7P15amtlnulNbUy4ZxE=
-Date:   Sun, 02 Jul 2023 12:32:03 -0700
-To:     mm-commits@vger.kernel.org, ying.huang@intel.com,
-        steven.price@arm.com, stable@vger.kernel.org,
-        Qun-wei.Lin@mediatek.com, david@redhat.com,
-        catalin.marinas@arm.com, pcc@google.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-call-arch_swap_restore-from-do_swap_page.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230702193203.D1CC0C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 91C3360C75;
+        Sun,  2 Jul 2023 19:38:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CBAC433C8;
+        Sun,  2 Jul 2023 19:38:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688326699;
+        bh=TSX3Rrl6WtObg7OskbwOx637gCEJc8c5D/jlEoi634U=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OwVIhBk+q+1GWFJHF9vIgKWQ/pRSD6cHUvKOkxUXOH7ZvfOZmjAb9gZ3KCM4fHhTZ
+         KA0FTucUo4v66al0S2OCYy3EtIPp3MzDCdJGRvDogMoHc0J90LugGCU/010GGfvdKY
+         vWPSHeDC2bWMLPBAHBEjFGSO+A3okhHEPM9pEWwnqJvWaN655fVqh7lLWet2Wly65K
+         dfqYcQNM1i+GMALnokH1pr2m6eI/0XC2W2/RngK97gkL7HXS8qA4deNafOhF9mW+WD
+         jWjASiRIw9BwkzCjdOK10qWYIbZYztuOBbd2wmRmlsGS+EEM/EMJwbI1HE1N42OK/T
+         gk/TD+FAKVK0g==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Azeem Shaikh <azeemshaikh38@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, viro@zeniv.linux.org.uk,
+        linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.4 01/16] vfs: Replace all non-returning strlcpy with strscpy
+Date:   Sun,  2 Jul 2023 15:38:00 -0400
+Message-Id: <20230702193815.1775684-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.4.1
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Azeem Shaikh <azeemshaikh38@gmail.com>
 
-The patch titled
-     Subject: mm: call arch_swap_restore() from do_swap_page()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-call-arch_swap_restore-from-do_swap_page.patch
+[ Upstream commit c642256b91770e201519d037a91f255a617a4602 ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-call-arch_swap_restore-from-do_swap_page.patch
+strlcpy() reads the entire source buffer first.
+This read may exceed the destination size limit.
+This is both inefficient and can lead to linear read
+overflows if a source string is not NUL-terminated [1].
+In an effort to remove strlcpy() completely [2], replace
+strlcpy() here with strscpy().
+No return values were used, so direct replacement is safe.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Peter Collingbourne <pcc@google.com>
-Subject: mm: call arch_swap_restore() from do_swap_page()
-Date: Mon, 22 May 2023 17:43:08 -0700
-
-Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
-the call to swap_free() before the call to set_pte_at(), which meant that
-the MTE tags could end up being freed before set_pte_at() had a chance to
-restore them.  Fix it by adding a call to the arch_swap_restore() hook
-before the call to swap_free().
-
-Link: https://lkml.kernel.org/r/20230523004312.1807357-2-pcc@google.com
-Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
-Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
-Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.camel@mediatek.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: "Huang, Ying" <ying.huang@intel.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>	[6.1+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Message-Id: <20230510221119.3508930-1-azeemshaikh38@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ fs/char_dev.c | 2 +-
+ fs/super.c    | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
- mm/memory.c |    7 +++++++
- 1 file changed, 7 insertions(+)
-
---- a/mm/memory.c~mm-call-arch_swap_restore-from-do_swap_page
-+++ a/mm/memory.c
-@@ -3954,6 +3954,13 @@ vm_fault_t do_swap_page(struct vm_fault
- 	}
+diff --git a/fs/char_dev.c b/fs/char_dev.c
+index 13deb45f1ec65..950b6919fb872 100644
+--- a/fs/char_dev.c
++++ b/fs/char_dev.c
+@@ -150,7 +150,7 @@ __register_chrdev_region(unsigned int major, unsigned int baseminor,
+ 	cd->major = major;
+ 	cd->baseminor = baseminor;
+ 	cd->minorct = minorct;
+-	strlcpy(cd->name, name, sizeof(cd->name));
++	strscpy(cd->name, name, sizeof(cd->name));
  
- 	/*
-+	 * Some architectures may have to restore extra metadata to the page
-+	 * when reading from swap. This metadata may be indexed by swap entry
-+	 * so this must be called before swap_free().
-+	 */
-+	arch_swap_restore(entry, folio);
-+
-+	/*
- 	 * Remove the swap entry and conditionally try to free up the swapcache.
- 	 * We're already holding a reference on the page but haven't mapped it
- 	 * yet.
-_
-
-Patches currently in -mm which might be from pcc@google.com are
-
-mm-call-arch_swap_restore-from-do_swap_page.patch
+ 	if (!prev) {
+ 		cd->next = curr;
+diff --git a/fs/super.c b/fs/super.c
+index 04bc62ab7dfea..09668ddfbbd55 100644
+--- a/fs/super.c
++++ b/fs/super.c
+@@ -595,7 +595,7 @@ struct super_block *sget_fc(struct fs_context *fc,
+ 	fc->s_fs_info = NULL;
+ 	s->s_type = fc->fs_type;
+ 	s->s_iflags |= fc->s_iflags;
+-	strlcpy(s->s_id, s->s_type->name, sizeof(s->s_id));
++	strscpy(s->s_id, s->s_type->name, sizeof(s->s_id));
+ 	list_add_tail(&s->s_list, &super_blocks);
+ 	hlist_add_head(&s->s_instances, &s->s_type->fs_supers);
+ 	spin_unlock(&sb_lock);
+@@ -674,7 +674,7 @@ struct super_block *sget(struct file_system_type *type,
+ 		return ERR_PTR(err);
+ 	}
+ 	s->s_type = type;
+-	strlcpy(s->s_id, type->name, sizeof(s->s_id));
++	strscpy(s->s_id, type->name, sizeof(s->s_id));
+ 	list_add_tail(&s->s_list, &super_blocks);
+ 	hlist_add_head(&s->s_instances, &type->fs_supers);
+ 	spin_unlock(&sb_lock);
+-- 
+2.39.2
 
