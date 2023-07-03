@@ -2,59 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C0F07461B4
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 19:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C82047461DA
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230253AbjGCR7g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 13:59:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60146 "EHLO
+        id S230386AbjGCSLr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 14:11:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230030AbjGCR7f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 13:59:35 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25F7910C1
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 10:59:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688407166; x=1719943166;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=0KQh8hPclyt8Tpuaarfnp7DVoSBirK/DCKhrf3brP8s=;
-  b=lvda7WiQRaFa/NvYk8uD4qOPbXpjwdATbWRJ0J4fpfzlg+V+7UV/uKdi
-   lS2JNdqhO/+hHP1dHeASNaadz+EBe7blOr+UXt8uz3d7hRUrG+O30A5JT
-   zJPZqYswDFXCcH/9dDEqXk2wLexqULocsayLJgknJdlf2G8xKRE0GrycE
-   vcqWlTjtKkhUGIarD8/mAsEhN64oysqjnWR4Q610qWAE0VcmL+vb3ciBe
-   I9JQGSFeDEF0HEU7T4PCtpXTJh52/eAA5ZLfwMfGZMkq0i96nfk2MWPUB
-   uYBivPqUZ6ph19uQNqIlDawO0kl3/irmIyRxe8e6MizPur9sqdlgr6qPz
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10760"; a="343271023"
-X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
-   d="scan'208";a="343271023"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2023 10:59:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10760"; a="695877320"
-X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
-   d="scan'208";a="695877320"
-Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 03 Jul 2023 10:59:19 -0700
-Received: from kbuild by 783282924a45 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qGNpW-000HYj-11;
-        Mon, 03 Jul 2023 17:59:18 +0000
-Date:   Tue, 4 Jul 2023 01:58:35 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Sricharan Ramabadhran <quic_srichara@quicinc.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH V2] PCI: qcom: Use PARF_SLV_ADDR_SPACE_SIZE for ops_2_3_3
-Message-ID: <ZKMMSz3zJvoSsLnp@65525e8f8615>
+        with ESMTP id S230437AbjGCSLp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:11:45 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46240E6D;
+        Mon,  3 Jul 2023 11:11:39 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1b852785a65so30018315ad.0;
+        Mon, 03 Jul 2023 11:11:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688407898; x=1690999898;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1IhdYP/22dBSoxvMuKvWYSpUplc7xlf7E0Ak61tHyTo=;
+        b=VZA4n/DN1QFCSrPzFmHJ1ZapCsXI7MW5ozRUIRfGn/haqF3uRiSFySHGKSliDu8U3l
+         4t5/jXPiHVpDk5ZQjhZidMVhtpORBwRHVoWaUzIFK5M/FHIWFdF9DUn9OgMAYU0qq1ha
+         CzHr931w6W+rdHJqr9WlW8HZg/pEICbhk6uSxTgINPVAx2eV8m/Y18fnWTPLtg7H1T17
+         daX9popzNofjW2DluL728dOJV0xloaJ9xPbdkmBY5vDcj4dVFqu0SPYNjF4WGYX3q8ME
+         ubLi+TtO7pSmUgqENdsdu6+Wxh5wKS44l2t+K1K+nKivaTRpLWFpAqw0oH20Z8lb2jdb
+         GyAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688407898; x=1690999898;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1IhdYP/22dBSoxvMuKvWYSpUplc7xlf7E0Ak61tHyTo=;
+        b=cBHSTOlpliYYdC3FooGBmNsRMStY7mLzL/7MJ4d8ToElsori5ezSv0wWz8KZsO6wjk
+         5KcF330FXLwgo9KUMrRmlRc9ebd/MqvnYk1vvQOs+TLtg88EZpxPM6sbLkb4de0w3k6h
+         O/TrxiOz2CA8feuGJK/k/D3R08YEPRnfbAhizh93N5IwmyXqW7QwXtd/Fpv+Ypf7SAUS
+         X802OZCBQa9BNm7akLav2hqvpVTy0LrIk4/L8Bp4Cc+egAc6M560V956M2ETNEU/hJRc
+         11UQahQKBncBBDK45Cd/1YD6MoYtsmyse0crpju3D7S0XPHZJ9YGGa7Od2+e2f+mstCj
+         5U4w==
+X-Gm-Message-State: ABy/qLbakRHRPB5l0NO+ZC9ro9i00W75O9+rfr04dDWQr14gArucQdiK
+        L92Pmhbt4ui5gt/TxdzwpjykNzghzbs=
+X-Google-Smtp-Source: APBJJlH9uxUr74T3itDXphOGFeNhR6089Pr8UOtA6dNGiJn+j1gQnOZ/lHsdEgILnIhgz3oqUoYqCw==
+X-Received: by 2002:a17:902:e743:b0:1ae:89a:a4 with SMTP id p3-20020a170902e74300b001ae089a00a4mr15745490plf.8.1688407898512;
+        Mon, 03 Jul 2023 11:11:38 -0700 (PDT)
+Received: from octofox.hsd1.ca.comcast.net ([2601:646:a201:19d0:feb2:139d:d966:84b8])
+        by smtp.gmail.com with ESMTPSA id h6-20020a170902f54600b001b86c526feasm6204072plf.28.2023.07.03.11.11.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jul 2023 11:11:37 -0700 (PDT)
+From:   Max Filippov <jcmvbkbc@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+        stable@vger.kernel.org
+Subject: [PATCH v2] xtensa: ISS: fix call to split_if_spec
+Date:   Mon,  3 Jul 2023 11:11:27 -0700
+Message-Id: <20230703181127.1346607-1-jcmvbkbc@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230703175757.2425540-1-quic_srichara@quicinc.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FROM_LOCAL_NOVOWEL,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,21 +69,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+split_if_spec expects a NULL-pointer as an end marker for the argument
+list, but tuntap_probe never supplied that terminating NULL. As a result
+incorrectly formatted interface specification string may cause a crash
+because of the random memory access. Fix that by adding NULL terminator
+to the split_if_spec argument list.
 
-Thanks for your patch.
+Cc: stable@vger.kernel.org
+Fixes: 7282bee78798 ("[PATCH] xtensa: Architecture support for Tensilica Xtensa Part 8")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+Changes v1->v2:
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+- fix commit message wording and add cc: stable
 
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH V2] PCI: qcom: Use PARF_SLV_ADDR_SPACE_SIZE for ops_2_3_3
-Link: https://lore.kernel.org/stable/20230703175757.2425540-1-quic_srichara%40quicinc.com
+ arch/xtensa/platforms/iss/network.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
+diff --git a/arch/xtensa/platforms/iss/network.c b/arch/xtensa/platforms/iss/network.c
+index 7b97e6ab85a4..85c82cd42188 100644
+--- a/arch/xtensa/platforms/iss/network.c
++++ b/arch/xtensa/platforms/iss/network.c
+@@ -237,7 +237,7 @@ static int tuntap_probe(struct iss_net_private *lp, int index, char *init)
+ 
+ 	init += sizeof(TRANSPORT_TUNTAP_NAME) - 1;
+ 	if (*init == ',') {
+-		rem = split_if_spec(init + 1, &mac_str, &dev_name);
++		rem = split_if_spec(init + 1, &mac_str, &dev_name, NULL);
+ 		if (rem != NULL) {
+ 			pr_err("%s: extra garbage on specification : '%s'\n",
+ 			       dev->name, rem);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.30.2
 
