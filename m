@@ -2,231 +2,238 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBC974601B
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 17:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6617974607C
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 18:11:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229814AbjGCPve (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 11:51:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37540 "EHLO
+        id S230092AbjGCQLq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 12:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229738AbjGCPvd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 11:51:33 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2124.outbound.protection.outlook.com [40.107.244.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05C6DC2;
-        Mon,  3 Jul 2023 08:51:32 -0700 (PDT)
+        with ESMTP id S229719AbjGCQLp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 12:11:45 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2224109;
+        Mon,  3 Jul 2023 09:11:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688400704; x=1719936704;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=pX1UQgNZXn92/zcmgB5ALOc4HN6DB/lnLGLVKeS/SCU=;
+  b=Q6tKQh38L1OUzHUQpj49j3UB8fWiPXN+i9zsIychbjOySMUtduX1shBM
+   TkqMR/v6OKEveVDCMmk81FrMBPTeSbtoyYrrAJJG/KergojtzATfEvLXu
+   HSTXWL+gaUXs3dFR5oD9DDhkqiuBy/jw4r/89jckNFWopTHIUikz42vbL
+   18u1g/rvesmX4oao0xApaKPkWEaWFj6dNtujR5sMvoDKeJXQB6pRotTOD
+   ylfOhLi4mZp8RoAHu5KQN2gpfh74p5sLMWzXV4nEDdRQVXf2Ixh8XIqTO
+   nQZlkJdn4cqSyfxnNvtDfxxAPHBmXnxW4ZruPt40zoitKEmTeei9V9je3
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10760"; a="366404243"
+X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
+   d="scan'208";a="366404243"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2023 09:11:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10760"; a="753792133"
+X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
+   d="scan'208";a="753792133"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orsmga001.jf.intel.com with ESMTP; 03 Jul 2023 09:11:44 -0700
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 3 Jul 2023 09:11:43 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Mon, 3 Jul 2023 09:11:43 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Mon, 3 Jul 2023 09:11:42 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bMd6S1jjvHufR9Sad8Yz+NZXvN8LAP9WyJ9spbxhpMHiLxPB/23j/PMlswtPWiPeL3k1AHgiArpbQx8qDWw5Fh5omvcqBehKMfc0rDQXNx0koe5i4meyHyNUv5OSnDPY7Ss3sxGgSiwl9sIod9YeeeubwrVUC5ejg9qalYPtJLnrDFesGvf8SYPqe7k2VDYB2ihwQxYJArNKX0SXui8JNFNxvKBCQWV/sKgMJNn/4gWfwHdRUr0D5P7EpUPAGuW/zuDI796TGl39734zAbLELyJ6KfyrAMpmvdw0zi7L8s+gJMRIcS10EkJ4u4xNmpr2fjuUJQXaDCDAC1F/wjZ+Sw==
+ b=l01v45UwabNf28smc0GlwwQkIQ0tAe45XRDMNnIZQddhuvjMQSTe0akwG7N7rtD2moXxlVPVEOK990/r3Q6AYJl3bNOdPPQihEkd6l1ohlOVaIxpfJQpEM7+5P+qAPktMmgNxU4POD1DLmM/AOIPSiLEVwmgG8LjFb2GE9CnMq3A3f5r6ogD9EgIPszj4RY+YbIBJrVNqEm0mFVzoVkKxbHac4n2dxVvK6gzJbWG+e5132mSv4Rq3w2KZJmqIcV8lGcjow4lRuaYsOHJgyWJ27vNnCAQGxIwhS7d6pQpXVJ6KAA6ZE9Kxtd61I/uLXqhlT+QtvUi2nNhwKOsFvfNZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xxLKuqzB8F3ZwItGN/CCzSImCLnYoPoXp8nFK1ZVaK0=;
- b=av6UWM+e93l6F0EcHxICwW44u5nqlPLDf5bhaq+PE2ksyvLMJ6QOmHrq9Q2i4My1iRM74uweudefXNyiqeGIxC8Zvgeh5ZJ+N0wM0CcYgMRtmaE5PrH2RCPOM+ojKr8v6HlK/PAtC/jzbgTrYL99CYzrA57mtYs8xl+4faYdPuirr8xetfXMGTc/qoxtj1iWpjzORhbWAv+mhLn9YEtd837kxwtPvDj3p+xJnI48Vwyd3kiLvF9PuQ6k4gfw5dRjvMnQw1tar4ciF3/+7t2PYKsyYmLS+420vJywmN+hjDl3KXVrwxmHrOdbQQk76iZ+ta6JYDP0QzQ+UEOwCEzFIw==
+ bh=cLlNcIS1Bg8sQ+pZEjzlCaGbpu6KN6ymNarbSUTGNkQ=;
+ b=I5UOuGAbA9yZ4XJu18ClgvZXWdEorN1Gu82OXNZ+4DEDYUC37BZxTa6hAr/pge0urWUVq1BkbXfWNqjqnAq4HjFfQNU5Y8LWa4rNwrYgwUCaBxjX6VMC/TyraYG6/XQS8ROowyFU4E9tFu1qZMT06LkN3m/7iuV7u6jbGJGVBtEna2A7+ebD0eFdDNVBNl2L9orMwztWgzsuBUnXEP76jBQTyVNYdNuV+/bVVE2JLN5GpA8rI/SuotyLgAyLf2teiwDfWG8mjm/92QTOxyo8hDOpZheYPabdlEm3/BWzhncn6YJmc4wG09ziutSNUca1ND71ZLC3+HOERQPYSg2fiQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xxLKuqzB8F3ZwItGN/CCzSImCLnYoPoXp8nFK1ZVaK0=;
- b=e5Zd/I53k3pZt7xS35Qews8W2WHkM9VyQOkq9qFZDNiZjaWZpXuMNr+i8f6BBz9n5UOqnwiK8QpjKHuq4Nnl8hXxpwAxzedLw6abWPUUNzeYypudieg6KwZSXeqAyjps4hNAm/phDe4F5SNb1R99AIIQbk6+SS9Bv9EHNiDSHm8=
-Received: from PH7PR21MB3116.namprd21.prod.outlook.com (2603:10b6:510:1d0::10)
- by DM4PR21MB3682.namprd21.prod.outlook.com (2603:10b6:8:af::13) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM6PR11MB3625.namprd11.prod.outlook.com (2603:10b6:5:13a::21)
+ by SA3PR11MB7433.namprd11.prod.outlook.com (2603:10b6:806:31e::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.9; Mon, 3 Jul
- 2023 15:51:28 +0000
-Received: from PH7PR21MB3116.namprd21.prod.outlook.com
- ([fe80::848b:6d47:841d:20ff]) by PH7PR21MB3116.namprd21.prod.outlook.com
- ([fe80::848b:6d47:841d:20ff%4]) with mapi id 15.20.6544.006; Mon, 3 Jul 2023
- 15:51:28 +0000
-From:   Haiyang Zhang <haiyangz@microsoft.com>
-To:     souradeep chakrabarti <schakrabarti@linux.microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        Long Li <longli@microsoft.com>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        "leon@kernel.org" <leon@kernel.org>,
-        "cai.huoqing@linux.dev" <cai.huoqing@linux.dev>,
-        "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
-        "vkuznets@redhat.com" <vkuznets@redhat.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>
-CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Souradeep Chakrabarti <schakrabarti@microsoft.com>
-Subject: RE: [PATCH V4 net] net: mana: Fix MANA VF unload when host is
- unresponsive
-Thread-Topic: [PATCH V4 net] net: mana: Fix MANA VF unload when host is
- unresponsive
-Thread-Index: AQHZrYtO9uZDC1JBBkmdomCootYeWK+oLtxg
-Date:   Mon, 3 Jul 2023 15:51:28 +0000
-Message-ID: <PH7PR21MB31166AAAE7225559D751F722CA29A@PH7PR21MB3116.namprd21.prod.outlook.com>
-References: <1688374171-10534-1-git-send-email-schakrabarti@linux.microsoft.com>
-In-Reply-To: <1688374171-10534-1-git-send-email-schakrabarti@linux.microsoft.com>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.24; Mon, 3 Jul
+ 2023 16:11:41 +0000
+Received: from DM6PR11MB3625.namprd11.prod.outlook.com
+ ([fe80::82b6:7b9d:96ce:9325]) by DM6PR11MB3625.namprd11.prod.outlook.com
+ ([fe80::82b6:7b9d:96ce:9325%7]) with mapi id 15.20.6544.024; Mon, 3 Jul 2023
+ 16:11:40 +0000
+Message-ID: <4012ae37-f674-9e58-ec2a-672e9136576a@intel.com>
+Date:   Mon, 3 Jul 2023 18:10:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH net v2] nfp: clean mc addresses in application firmware
+ when closing port
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=5f961a7e-ca82-4161-a6dd-538abc496366;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-07-03T15:42:29Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR21MB3116:EE_|DM4PR21MB3682:EE_
-x-ms-office365-filtering-correlation-id: 88375292-f5c5-433c-58ff-08db7bdd5d46
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ylwkPHfIky+3RiEbfjij+bxL5rto0jxS/RX9uZhN/ogIicbRlo12j6m9IvzN3oYIbO6DdoGSM4m4TBuBOcyiHMX4H9LFmGN3qmQ6iICeKH+/W8iHqSWQXg+LvouAvDVpOdGs6bFERqHBm890Smll1ZrA71Wdu85TKgynpmhiSoNPa83oi9p3LJ3NmOgHjvTFnIseEvUdXE8nIAjCN3HRaCrU2fIOZtw7I8jaOyb51gqZk12hOtlEHeV+KbYJ1Pn3FXl9dEpBN7BpyevQh953pCN4AwcYdS1KzGCwPQ1nmUC/GpZoxk88izXVZLzh9Y8YFkZnQpKzjq1cBH1WLWrHqIxmg7z5a5arQGQ5auS8BcSwuWZyW5bIHXBW3scdHuJlZ3ppYp/WdAq7vngjNtXfP2PvxtMhL/PsE+I6A/7lAs+UxHOABycPlEn/4hRt1lpOf3pFYtruTHop3S1W28kLk0c2TfIDWw/zgzSVBGdw0qLiAI56z75xIVwoTnZZ47IzQ0ubaRTTHwlxfEaTAbE48SZ3mTqL3rSgN/AG6waoLo0TKwK4sWz5KGzbIqSA4MuPaJLysrxRRZckgHxLmc1P0P0WIxkQOk918wchTu7e5f+EXLIwxTv8i147ZWEJO9wae5J2UZPl9bXh9yLFB8EKHM2MPBPpZGVK/8id4YjEeLN46cRlsguf7HU5UX0x/ZjG
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR21MB3116.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(346002)(396003)(39860400002)(376002)(136003)(451199021)(82950400001)(82960400001)(53546011)(8990500004)(921005)(10290500003)(6506007)(316002)(66446008)(64756008)(38070700005)(76116006)(55016003)(66556008)(66476007)(4326008)(38100700002)(122000001)(66946007)(107886003)(83380400001)(66899021)(186003)(26005)(9686003)(478600001)(8936002)(54906003)(110136005)(8676002)(2906002)(71200400001)(5660300002)(7416002)(7696005)(41300700001)(86362001)(52536014)(33656002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?xvvBdowBc+b8qZTXkTEyPmRdd65aORxRZH8iy+ReGGbUT/8Eq5DBFjPYL6qp?=
- =?us-ascii?Q?xHKepeEkEplPVp9JPAym0p7QRgw3pGn2vsHmf8af7CkjNgH4vPreggPB5N2L?=
- =?us-ascii?Q?RtfvEXiO/5MpqFNlHs8G2C33Faz2ENiKjX5NEA406RYMZkOlTs2/YZkmfsVV?=
- =?us-ascii?Q?czUGF2OB+vDFnM3HH3z97q6V3GyHdS7lblMhpmvpzsFyO+f7OlPLRz0AO12C?=
- =?us-ascii?Q?73Elc9CXiT2HXcjbBWu38Fdn3wDl1y1tjhCEESvR2RzEVSsHYd/1iJaoY41F?=
- =?us-ascii?Q?pckAk/AeHq6BTDM3+rsHPTVpjUQ3qV2DkVbGwck+5zhVBfoV4htrkSUIYXte?=
- =?us-ascii?Q?K4oq+bpdyV1eMg93QmkhxnPGzKWeZjrz2VrLy17+lLdcimaRglP7iTgp+GwN?=
- =?us-ascii?Q?EUSPnQV8z00Cw4v6kdD4V6orDVu1f0LR3SdE5Demhaf4yG+ekgJVZ1EJY2SE?=
- =?us-ascii?Q?HY4kR3uY3jNdsteh2z296lHkIIXzAOzR4BVuIbWyUwGa6BC5BhNfM4Au5nQg?=
- =?us-ascii?Q?3/XwH7mx13aT7gaWb0tRmCRewi8YiyhW5XbEoRxP2A9V1uY8Ct1gwx/mr7UW?=
- =?us-ascii?Q?bXdJzPlmzEdLdESW3frRbGmj3OO/pKWifZp47XDVgi+rUzTOsjP25Jd4uGha?=
- =?us-ascii?Q?3T2370L2wvqcEdJVtZXtibjjo6OGMF1NZS52HBiF2e/Sjw+EsHubmG5h5oUH?=
- =?us-ascii?Q?zF3TP0yQOdaFAwC77CgCG9IFOcMH4jmm5UQr9fQZ30QTVcxdu5xziUGvUMgf?=
- =?us-ascii?Q?pcwEe28GM8Pc75Z5MZWF6BYBQrlWunrkR8RT23T3z4c3uLtL5EXqdg56HfJx?=
- =?us-ascii?Q?zhG6byErd5bfx5gDccKu7635/8PIwu3l3FFSdcdvXWsNac7Gyr9l/QQsxDfK?=
- =?us-ascii?Q?1RRChE0kW+40X25XbWZ+5HCOfhEKmCZ54qaLqQgvj8KINIa42BMLAw3zQ6a2?=
- =?us-ascii?Q?GubXxDKTR4zPl9IFVVICDMWTN1HajNzcgB6JfPdVg67tCtlE6oSGdEBnTLiD?=
- =?us-ascii?Q?H4KRnuxm32FEwOK/wA2GzoDFsHHc1N+2pk5Gc1D5HjoWU6o/TQBoJbd4rxrs?=
- =?us-ascii?Q?+PRr8MZ0lCx92IKnadWg8K7Fgyyv/vFG15iUcajZT8IDcI99HRc6iNrpOn8g?=
- =?us-ascii?Q?WRbLZbkZUlAn0wLZ3Gu6PAR0Qts1gZnogD1Ppx7c/av1O0Ga1JnL1HKX8323?=
- =?us-ascii?Q?vXJnKQIKqc1zWO6ekw53TPBrRkmrzWzO0SamC/4DtW0psS+Hjy795yyFeoH9?=
- =?us-ascii?Q?nnreB9iSCSxL9g+rN9y7ewh/KI0Kir8nb+S6TyfWarx96ejcFZvLbijINZ2f?=
- =?us-ascii?Q?0oz1SD7RxIfgyEYUYw+b4JIHIXNU2Ya5GX+t7qFAlJcdYB5T2r5smHTj3Y4A?=
- =?us-ascii?Q?XxshStKt28eRLeI4tXw01J6X5qWP5aBXjZcVVgPIhg79+eem90EyacVgiCud?=
- =?us-ascii?Q?Sy7LhxghwL/+3PmhaVSdJ4wf62ikUEUhGPrha5IOt+49QsHoKTgMnwfTd93r?=
- =?us-ascii?Q?hozRTWUbBIj/GiFxr4v9QpS2V2QdJEWQ3nhY3riQLQOPxZTcPp4fpiLYctZg?=
- =?us-ascii?Q?2WuyfST+pK+yy9DxcIphAjJj+7SWziV83TEFvcZn?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To:     Louis Peens <louis.peens@corigine.com>
+CC:     David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Yinjun Zhang <yinjun.zhang@corigine.com>,
+        <netdev@vger.kernel.org>, <stable@vger.kernel.org>,
+        <oss-drivers@corigine.com>
+References: <20230703120116.37444-1-louis.peens@corigine.com>
+From:   Alexander Lobakin <aleksander.lobakin@intel.com>
+In-Reply-To: <20230703120116.37444-1-louis.peens@corigine.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0065.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:93::11) To DM6PR11MB3625.namprd11.prod.outlook.com
+ (2603:10b6:5:13a::21)
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR11MB3625:EE_|SA3PR11MB7433:EE_
+X-MS-Office365-Filtering-Correlation-Id: 323f9d5e-cdfc-4b0b-66aa-08db7be02f6d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: OlCqgv6X71luGmQ02wa2ZCdPoKx9CW1v23JgHKouL4rGGWOc1IJTG2X+XkLz+/hFZWrTw8k57/vUuQO0FkkGq//8ABfDVjOwiZs1CDSwRLGK3HxnmJ59OWQZ/MHM099G0SBZCem0kMasNWpy6YFIClwH8LqBg7QoHP1nJKCOprgKZnoTsDtxgyU4Do3vzyPsO3+xYRd1lqgwncE+q4rq0fKj/tfzds+ZHjv+eRGqyrEiBQ0x4da+JdOJNVMCReeA8tH1lMbYJQslirQL+VlFCrHjOJHd+PAB9oNH3LPd5xNgiVJUD/J35D7OtQBfqtPII5WB1VmCeqoP/jWzvoa/W7Fpba8uYycbxamQuMym8NYe19iib3jlBjfby3iMMQcuLkCriWQttboPybJW6pfg/+pQ5X0GUQTO0bToQjg4+niOH5rRrVKNRwOts4gocycqUOVsjv/xv5GhiiDXWSRrvM5ldJMeQ4KieNlFopiUgOeC6vDxP61FQc7Zzb3tnSOu1ncBePDYM8pWiyVgJ9C11d4HSGLHqOi0rt9EJzw0S/sKDNWz8zj31XklOLJtEq6WrA9XxF+va12KkvLDcVFiAWcyrmImTG+EM8RMCUSm8s4uvnMkiKCtZIqHrFVWvX5cism8WQ6NlqCORkMEV4ev+w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3625.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(366004)(136003)(376002)(39860400002)(346002)(451199021)(31686004)(4326008)(66476007)(66946007)(6916009)(66556008)(316002)(478600001)(2906002)(36756003)(8936002)(8676002)(5660300002)(31696002)(41300700001)(6512007)(54906003)(86362001)(6666004)(38100700002)(6486002)(26005)(186003)(6506007)(82960400001)(2616005)(83380400001)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c21XWVZMSmh2c1Eza1A0eldWNHkzZXRBUTJQNkNhN01PQm16WElIclFocWhw?=
+ =?utf-8?B?cmRGRmVKamtGV1krUTNBMGRDWVB2VFd0dk91OUMwM25ySXFTdGN6dnZaUjVZ?=
+ =?utf-8?B?bmt4dkJqUG0rSEttTVdGUmtqbEM2bmM5ejY2Q0RGTEk2Vk1LUllnaTNFcXRW?=
+ =?utf-8?B?TUkwM3k4WjExb3JlVUMzYmZiNXlRUy9Kay9ucEpWckR5VllZVktqSDcza0cx?=
+ =?utf-8?B?bTBaS1R5VW43Y0UvL2QxN1BIckI0SmtWOHd4SVpPb09mR0NhQUJjSEphc3N6?=
+ =?utf-8?B?QmhQTjRhWDNJUEFENVV3Q2RxUjVTeUwvczg2d2pCN2ZjQlNpRGFkZytscnov?=
+ =?utf-8?B?Qi9XSnkrZlRRSDNtT2NIVVdIYUg5eTV3SW53VExXYkJFc3hjc25CUDdtbTRI?=
+ =?utf-8?B?NkE3Nnk0RjdGVWZQVXREYmdPL0RXWkFFOWxZTVpuei9kUE9nYnRPbUdBM3pp?=
+ =?utf-8?B?QUoycjN1eHhrSk1oMGU5ZnI4djV6ZXlJODNRK1p5UExhenNFV2ZpSVYremJO?=
+ =?utf-8?B?SHdLT3dieHVENHhLVHc4d0dvczg5NlFzbWMyMU1mc0h4blNiTHRtOFljTXVS?=
+ =?utf-8?B?d3RLandVVHFTaXM4dTg2YmtzWVRhR2U2N2grY24vd3BRMTNQL2h0R0ZVTTVG?=
+ =?utf-8?B?VE9oMlFvUndSaGxtY1ROakdoY21tYk1HdUllcXdxUG1wUEZ0b2c1ZHpBWGZt?=
+ =?utf-8?B?YmhrSlRCOXRTenU0UnRTbFpzREJWbHREeWUvdkV0MFRidmE2ZDFvUGRlS1BZ?=
+ =?utf-8?B?d3lsSmR2NlArY2xoeVRWeW45dEZuTDczNWJsZVp3bCtjbjFNKzl1aVA2MHda?=
+ =?utf-8?B?RTRjUzdQSjI3ZTRXZGtWZE1pY3BOc04wd2FIeXprWjg2R3JsejlkVDdQek16?=
+ =?utf-8?B?NGVwMU9nZzduVHJIMFBnWlNJYTZ3UWRoc0dMa2FxNDgwVitGbGlsUUpBakIw?=
+ =?utf-8?B?MFhzKzkySUNzWjR1Y1RUZVZmdkNIeTRueWFPc29XQjlzd3pEdm9VMmNKZWJI?=
+ =?utf-8?B?NU1hK1NmK1JxL3lkZzIwRTJ6bzlBcktmTEdZbW16Q3Nyak9HS3A3VTZSckpq?=
+ =?utf-8?B?YTFVZ1V3VEYxK1FPMGk2a0NFbzFtVFZGc1NjclRDaWJsYUxmY0N4QXBkbUdI?=
+ =?utf-8?B?SmdYaWZFR0tsN2JYNkZSVjJOSklFRFQvK2FheDNvU1hYK3pVL3Iza0NWTjdL?=
+ =?utf-8?B?M3lrUkhLTTU1WlhQaEdoS3JMS2k3NjFSSmJ5eFhRaUpDdm5kNVh4RFRjTDhn?=
+ =?utf-8?B?eGZ3L3FPcjRVS2pEWFhZQXRFRGFtUmNGMXg0Rk5wVElQeW9RY2NEazQrQWht?=
+ =?utf-8?B?RStBalNOeVhCRUR1QU5jMjVld0w5ejcyeml6bm1MVERyU3RWSWFBQ1JxSk9r?=
+ =?utf-8?B?elJuL0pBaWhabHN3c0Z0KzM1QUFWeWFreE5aTFB3WDYrc1d1WWJEenZ5bHhX?=
+ =?utf-8?B?TVRhUHJ4VkNNT1liZzNZZCtEUksrdGJrOTg1cTE5cXkwOENWV3lvYVBDZHFD?=
+ =?utf-8?B?bVdIaStUckpOR0hHL2tERlIwMFRiQ1JaVnptUTJDNk5aTVNEdXA0ZnVYYlNj?=
+ =?utf-8?B?VDRxOWcxMi9DeXgyUFZlQ21JMkdlVDVwRnNPOC9VS2RFVFhFQmpzeUp5Q3RR?=
+ =?utf-8?B?WmhJRGJqYkt2WEN6dTNGNUpzcGR5MXRyM1VtSzRxNklpWCt1VG5GUk5hbDRu?=
+ =?utf-8?B?a1VvQUJDVmpaY3pCZUNyekMxTDMrUXZxVDJWM0d2ZGtVNVRzbEFCcHcvRnht?=
+ =?utf-8?B?cENNMklZeTVhRHVkbjQyNTR6QzZtSExHTks5eC84V05SdjF4R3ArU1BrRU9p?=
+ =?utf-8?B?VlorVlJOWmJGREp0MTRsN1lhbzRBQkNwMk1lMnJiZWlPYlJ1ZlZqemdhNndq?=
+ =?utf-8?B?YnlXNHpscTJSODU4a2VlT09uUytCTHpUNmNZTno4Y3dXSDg5MFFRUVhZdEdH?=
+ =?utf-8?B?aVNDSEU0YzU0d0hGa3JOOWlBQzU4NmNJcW1NcW9zcHhKbFdnYWtIVzRvTHdZ?=
+ =?utf-8?B?Y0NZamRHKzhKN296R2pjSGRpanM1V0xFalc5VGdMdW9oVFc2ZW9sek01UHpP?=
+ =?utf-8?B?VFdqSXdkekpTbDFqakRIektHMm52d2tZQzVvRGdMK3Y0NEkwOXFpRlRabzY3?=
+ =?utf-8?B?TEZJNzhMTjdFNUNZYlhpSXdVdHU0M0x3VE42QXFVQXp2dkpMekpWR3JTOFB4?=
+ =?utf-8?B?OFE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 323f9d5e-cdfc-4b0b-66aa-08db7be02f6d
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3625.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR21MB3116.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88375292-f5c5-433c-58ff-08db7bdd5d46
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jul 2023 15:51:28.5333
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2023 16:11:40.4701
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: GeaWYQ9jeb1oTRlAf58puQkiqIAksTyiaMIxGfuA+1SMMa/4ON8D2PPjLZ1GKe/1p2PUxAQ0HlQDoC/VaxC78g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR21MB3682
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1o2bXH1dufzTj02i9rRUHEzi2fhNOe6waNeO5mrI6SiGC1q6sssiV7azwPyVt+nxiDLxrwIdd3B6+GC4q9VAnXPGuhGrNHpq7KZmWPIpZOc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7433
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Louis Peens <louis.peens@corigine.com>
+Date: Mon,  3 Jul 2023 14:01:16 +0200
 
+> From: Yinjun Zhang <yinjun.zhang@corigine.com>
+> 
+> When moving devices from one namespace to another, mc addresses are
+> cleaned in software while not removed from application firmware. Thus
+> the mc addresses are remained and will cause resource leak.
+> 
+> Now use `__dev_mc_unsync` to clean mc addresses when closing port.
+> 
+> Fixes: e20aa071cd95 ("nfp: fix schedule in atomic context when sync mc address")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yinjun Zhang <yinjun.zhang@corigine.com>
+> Acked-by: Simon Horman <simon.horman@corigine.com>
+> Signed-off-by: Louis Peens <louis.peens@corigine.com>
+> ---
+> Changes since v1:
+> 
+> * Use __dev_mc_unsyc to clean mc addresses instead of tracking mc addresses by
+>   driver itself.
+> * Clean mc addresses when closing port instead of driver exits,
+>   so that the issue of moving devices between namespaces can be fixed.
+> * Modify commit message accordingly.
+> 
+>  .../ethernet/netronome/nfp/nfp_net_common.c   | 171 +++++++++---------
+>  1 file changed, 87 insertions(+), 84 deletions(-)
 
-> -----Original Message-----
-> From: souradeep chakrabarti <schakrabarti@linux.microsoft.com>
-> Sent: Monday, July 3, 2023 4:50 AM
-> To: KY Srinivasan <kys@microsoft.com>; Haiyang Zhang
-> <haiyangz@microsoft.com>; wei.liu@kernel.org; Dexuan Cui
-> <decui@microsoft.com>; davem@davemloft.net; edumazet@google.com;
-> kuba@kernel.org; pabeni@redhat.com; Long Li <longli@microsoft.com>; Ajay
-> Sharma <sharmaajay@microsoft.com>; leon@kernel.org;
-> cai.huoqing@linux.dev; ssengar@linux.microsoft.com; vkuznets@redhat.com;
-> tglx@linutronix.de; linux-hyperv@vger.kernel.org; netdev@vger.kernel.org;
-> linux-kernel@vger.kernel.org; linux-rdma@vger.kernel.org
-> Cc: stable@vger.kernel.org; Souradeep Chakrabarti
-> <schakrabarti@microsoft.com>; Souradeep Chakrabarti
-> <schakrabarti@linux.microsoft.com>
-> Subject: [PATCH V4 net] net: mana: Fix MANA VF unload when host is
-> unresponsive
->=20
-> From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
->=20
-> When unloading the MANA driver, mana_dealloc_queues() waits for the MANA
-> hardware to complete any inflight packets and set the pending send count
-> to zero. But if the hardware has failed, mana_dealloc_queues()
-> could wait forever.
->=20
-> Fix this by adding a timeout to the wait. Set the timeout to 120 seconds,
-> which is a somewhat arbitrary value that is more than long enough for
-> functional hardware to complete any sends.
->=20
-> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-> ---
-> V3 -> V4:
-> * Fixed the commit message to describe the context.
-> * Removed the vf_unload_timeout, as it is not required.
-> ---
->  drivers/net/ethernet/microsoft/mana/mana_en.c | 26 ++++++++++++++++---
->  1 file changed, 23 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index a499e460594b..d26f1da70411 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -2346,7 +2346,10 @@ static int mana_dealloc_queues(struct net_device
-> *ndev)
->  {
->  	struct mana_port_context *apc =3D netdev_priv(ndev);
->  	struct gdma_dev *gd =3D apc->ac->gdma_dev;
-> +	unsigned long timeout;
->  	struct mana_txq *txq;
-> +	struct sk_buff *skb;
-> +	struct mana_cq *cq;
->  	int i, err;
->=20
->  	if (apc->port_is_up)
-> @@ -2363,15 +2366,32 @@ static int mana_dealloc_queues(struct net_device
-> *ndev)
->  	 * to false, but it doesn't matter since mana_start_xmit() drops any
->  	 * new packets due to apc->port_is_up being false.
->  	 *
-> -	 * Drain all the in-flight TX packets
-> +	 * Drain all the in-flight TX packets.
-> +	 * A timeout of 120 seconds for all the queues is used.
-> +	 * This will break the while loop when h/w is not responding.
-> +	 * This value of 120 has been decided here considering max
-> +	 * number of queues.
->  	 */
+[...]
+
+> +static int nfp_net_mc_sync(struct net_device *netdev, const unsigned char *addr)
+> +{
+> +	struct nfp_net *nn = netdev_priv(netdev);
 > +
-> +	timeout =3D jiffies + 120 * HZ;
->  	for (i =3D 0; i < apc->num_queues; i++) {
->  		txq =3D &apc->tx_qp[i].txq;
-> -
-> -		while (atomic_read(&txq->pending_sends) > 0)
-> +		while (atomic_read(&txq->pending_sends) > 0 &&
-> +		       time_before(jiffies, timeout)) {
->  			usleep_range(1000, 2000);
-> +		}
->  	}
->=20
-> +	for (i =3D 0; i < apc->num_queues; i++) {
-> +		txq =3D &apc->tx_qp[i].txq;
-> +		cq =3D &apc->tx_qp[i].tx_cq;
-> +		while (atomic_read(&txq->pending_sends)) {
-> +			skb =3D skb_dequeue(&txq->pending_skbs);
-> +			mana_unmap_skb(skb, apc);
-> +			napi_consume_skb(skb, cq->budget);
+> +	if (netdev_mc_count(netdev) > NFP_NET_CFG_MAC_MC_MAX) {
+> +		nn_err(nn, "Requested number of MC addresses (%d) exceeds maximum (%d).\n",
+> +		       netdev_mc_count(netdev), NFP_NET_CFG_MAC_MC_MAX);
+> +		return -EINVAL;
+> +	}
+> +
+> +	return nfp_net_sched_mbox_amsg_work(nn, NFP_NET_CFG_MBOX_CMD_MULTICAST_ADD, addr,
+> +					    NFP_NET_CFG_MULTICAST_SZ, nfp_net_mc_cfg);
+> +}
+> +
+> +static int nfp_net_mc_unsync(struct net_device *netdev, const unsigned char *addr)
+> +{
+> +	struct nfp_net *nn = netdev_priv(netdev);
+> +
+> +	return nfp_net_sched_mbox_amsg_work(nn, NFP_NET_CFG_MBOX_CMD_MULTICAST_DEL, addr,
+> +					    NFP_NET_CFG_MULTICAST_SZ, nfp_net_mc_cfg);
+> +}
 
-This is not in NAPI context, so it should be dev_consume_skb_any()
+You can just declare nfp_net_mc_unsync()'s prototype here, so that it
+will be visible to nfp_net_netdev_close(), without moving the whole set
+of functions. Either way works, but that one would allow avoiding big
+diffs not really related to fixing things going through the net-fixes tree.
+
+> +
+>  /**
+>   * nfp_net_clear_config_and_disable() - Clear control BAR and disable NFP
+>   * @nn:      NFP Net device to reconfigure
+> @@ -1084,6 +1168,9 @@ static int nfp_net_netdev_close(struct net_device *netdev)
+>  
+>  	/* Step 2: Tell NFP
+>  	 */
+> +	if (nn->cap_w1 & NFP_NET_CFG_CTRL_MCAST_FILTER)
+> +		__dev_mc_unsync(netdev, nfp_net_mc_unsync);
+> +
+>  	nfp_net_clear_config_and_disable(nn);
+>  	nfp_port_configure(netdev, false);
+[...]
 
 Thanks,
-- Haiyang
-
-
+Olek
