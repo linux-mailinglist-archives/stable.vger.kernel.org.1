@@ -2,196 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E0D07459F1
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 12:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D10745A06
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 12:19:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231164AbjGCKPh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 06:15:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41518 "EHLO
+        id S229889AbjGCKS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 06:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbjGCKPg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 06:15:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8876E1B5
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 03:14:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688379285;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XvxK+fIsyjrDQkIYelBKm95I7W5xSKZhQqP3NKGrN5Y=;
-        b=LrFYHwFYmSMTBCsFd60d4N/5RqATYE2ITQOgcTz5tplBff9TFKwacpN9Lg7GQz/9EoSIwb
-        i8s/aI68qFS7+vH9hru0hDHVydOa1AxQYL1fcTzO9ukxPIaBnkXVPJSdm/NPk9M8WyMJAl
-        euGbgNthqed0O5HbafKXk20WrwsNKYY=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-422-lql95RwjNq29n01xkuu9ig-1; Mon, 03 Jul 2023 06:14:44 -0400
-X-MC-Unique: lql95RwjNq29n01xkuu9ig-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7672918d8a4so131000085a.0
-        for <stable@vger.kernel.org>; Mon, 03 Jul 2023 03:14:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688379284; x=1690971284;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XvxK+fIsyjrDQkIYelBKm95I7W5xSKZhQqP3NKGrN5Y=;
-        b=K5ZCVyBWnPzM4pj06/hDrllg5iUrHKrPwEglpV7vA8ftx3lR8Fm5qQHU5JyGm4YsiX
-         jvyV5q8X9Krm9btw5tgW2bsc6tpFE6Sl4ManLHgQLdi91Al23e1TAeQy5vayTZMPEvh5
-         Nwl8MIS4T8IEQcgCy0iFnCybFA2by9jKOdykZDtH3tPqk+nF63nexnhmbYFaNyuR/MkL
-         H9JnxCrCZeayz+n9CG0AiTnV0580yFp92xjlAsqFBnlLR1DVUHN7URpWpqnKMeBTv+MJ
-         ZRHT8n7+YU7SbSax/xo7bXDF0uPOiW1mJjU6/SYStw1uGWlZLCJmUqggObomQ5mslH4O
-         /zSA==
-X-Gm-Message-State: ABy/qLYV6Lz3xt0fvZdpKeeuCLNYfJ1plN8YDs+vmXHAUFeuE8Sc9zi5
-        k2PQYV+w14mKu/Ok9SOo1qGrzXo4lP4mGDXuJjSOyiQnLvKP9/MTZSOSX73FJPxvvySffipB234
-        lGUl9dDsn0zR5/yji
-X-Received: by 2002:a05:6214:202c:b0:625:aa48:e50f with SMTP id 12-20020a056214202c00b00625aa48e50fmr9437534qvf.6.1688379283893;
-        Mon, 03 Jul 2023 03:14:43 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFljnv6+yTIgfMKV/gziFBD0PAF2l0MeOkDf4KoEbTfBbqyGgdTZozaiDNbKJUnLvyb6syUBw==
-X-Received: by 2002:a05:6214:202c:b0:625:aa48:e50f with SMTP id 12-20020a056214202c00b00625aa48e50fmr9437518qvf.6.1688379283620;
-        Mon, 03 Jul 2023 03:14:43 -0700 (PDT)
-Received: from gerbillo.redhat.com (146-241-247-156.dyn.eolo.it. [146.241.247.156])
-        by smtp.gmail.com with ESMTPSA id ec17-20020ad44e71000000b00632191a70a2sm11047509qvb.103.2023.07.03.03.14.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jul 2023 03:14:42 -0700 (PDT)
-Message-ID: <8fb0c81c022d58d3f08082764038d17cfc849ba1.camel@redhat.com>
-Subject: Re: [Patch v3] net: mana: Batch ringing RX queue doorbell on
- receiving packets
-From:   Paolo Abeni <pabeni@redhat.com>
-To:     Long Li <longli@microsoft.com>, Jakub Kicinski <kuba@kernel.org>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        "longli@linuxonhyperv.com" <longli@linuxonhyperv.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Date:   Mon, 03 Jul 2023 12:14:37 +0200
-In-Reply-To: <PH7PR21MB3263ED62B45BF78370350AD7CE28A@PH7PR21MB3263.namprd21.prod.outlook.com>
-References: <1687823827-15850-1-git-send-email-longli@linuxonhyperv.com>
-         <36c95dd6babb2202f70594d5dde13493af62dcad.camel@redhat.com>
-         <PH7PR21MB3263B266E381BA15DCE45820CE25A@PH7PR21MB3263.namprd21.prod.outlook.com>
-         <e5c3e5e5033290c2228bbad0307334a964eb065e.camel@redhat.com>
-         <PH7PR21MB326330931CFDDA96E287E470CE2AA@PH7PR21MB3263.namprd21.prod.outlook.com>
-         <2023063001-agenda-spent-83c6@gregkh>
-         <PH7PR21MB3263330E6A32D81D52B955FBCE2AA@PH7PR21MB3263.namprd21.prod.outlook.com>
-         <20230630163805.79c0bdf5@kernel.org>
-         <PH7PR21MB3263ED62B45BF78370350AD7CE28A@PH7PR21MB3263.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        with ESMTP id S229989AbjGCKS6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 06:18:58 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9C91DBE;
+        Mon,  3 Jul 2023 03:18:57 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0DF572F4;
+        Mon,  3 Jul 2023 03:19:40 -0700 (PDT)
+Received: from [10.57.38.117] (unknown [10.57.38.117])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 429EE3F762;
+        Mon,  3 Jul 2023 03:18:53 -0700 (PDT)
+Message-ID: <997819c6-0798-e2f9-b94b-fedfbab7fdd8@arm.com>
+Date:   Mon, 3 Jul 2023 11:18:48 +0100
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] PCI: rockchip: Use 64-bit mask on MSI 64-bit PCI
+ address
+Content-Language: en-GB
+To:     Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+        alberto.dassatti@heig-vd.ch
+Cc:     dlemoal@kernel.org, Dan Carpenter <dan.carpenter@linaro.org>,
+        stable@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20230703085845.2052008-1-rick.wertenbroek@gmail.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20230703085845.2052008-1-rick.wertenbroek@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, 2023-07-02 at 20:18 +0000, Long Li wrote:
-> > > > > > > > Subject: Re: [Patch v3] net: mana: Batch ringing RX
-> > > > > > > > queue
-> > > > > > > > doorbell
-> > > > > > > > on receiving
-> > > > > > > > packets
-> > > > > > > >=20
-> > > > > > > > On Fri, 30 Jun 2023 20:42:28 +0000 Long Li wrote:
-> > > > > > > > > > > > > > > > > > > > 5.15 and kernel 6.1. (those
-> > > > > > > > > > > > > > > > > > > > kernels are longterm)
-> > > > > > > > > > > > > > > > > > > > They need
-> > > > > > > > > > > > > > > > > > > > this
-> > > > > > > > > > > > > > > > > > > > fix to achieve the performance
-> > > > > > > > > > > > > > > > > > > > target.
-> > > > > > > > > > > > > > > >=20
-> > > > > > > > > > > > > > > > Why can't they be upgraded to get that
-> > > > > > > > > > > > > > > > performance
-> > > > > > > > > > > > > > > > target, and
-> > > > > > > > > > > > > > > > all
-> > > > > > > > > > > > > > > > the other goodness that those kernels
-> > > > > > > > > > > > > > > > have? We don't
-> > > > > > > > > > > > > > > > normally
-> > > > > > > > > > > > > > > > backport new features, right?
-> > > > > > > > > > > >=20
-> > > > > > > > > > > > I think this should be considered as a fix, not
-> > > > > > > > > > > > a new
-> > > > > > > > > > > > feature.
-> > > > > > > > > > > >=20
-> > > > > > > > > > > > MANA is designed to be 200GB full duplex at the
-> > > > > > > > > > > > start. Due
-> > > > > > > > > > > > to
-> > > > > > > > > > > > lack of
-> > > > > > > > > > > > hardware testing capability at early stage of
-> > > > > > > > > > > > the project,
-> > > > > > > > > > > > we
-> > > > > > > > > > > > could
-> > > > > > > > > > > > only test 100GB for the Linux driver. When
-> > > > > > > > > > > > hardware is
-> > > > > > > > > > > > fully
-> > > > > > > > > > > > capable
-> > > > > > > > > > > > of reaching designed spec, this bug in the
-> > > > > > > > > > > > Linux driver
-> > > > > > > > > > > > shows up.
-> > > > > > > >=20
-> > > > > > > > That part we understand.
-> > > > > > > >=20
-> > > > > > > > If I were you I'd try to convince Greg and Paolo that
-> > > > > > > > the
-> > > > > > > > change is
-> > > > > > > > small and
-> > > > > > > > significant for user experience. And answer Greg's
-> > > > > > > > question why
-> > > > > > > > upgrading the
-> > > > > > > > kernel past 6.1 is a challenge in your environment.
-> > > >=20
-> > > > I was under the impression that this patch was considered to be
-> > > > a
-> > > > feature,=20
-> > > > not a bug fix. I was trying to justify that the "Fixes:" tag
-> > > > was
-> > > > needed.=20
-> > > >=20
-> > > > I apologize for misunderstanding this.
-> > > >=20
-> > > > Without this fix, it's not possible to run a typical workload
-> > > > designed for 200Gb
-> > > > physical link speed.
-> > > >=20
-> > > > We see a large number of customers and Linux distributions
-> > > > committed
-> > > > on 5.15=20
-> > > > and 6.1 kernels. They planned the product cycles and
-> > > > certification
-> > > > processes=20
-> > > > around these longterm kernel versions. It's difficult for them
-> > > > to
-> > > > upgrade to newer
-> > > > kernel versions.
+On 2023-07-03 09:58, Rick Wertenbroek wrote:
+> A 32-bit mask was used on the 64-bit PCI address used for mapping MSIs.
+> This would result in the upper 32 bits being unintentionally zeroed and
+> MSIs getting mapped to incorrect PCI addresses if the address had any
+> of the upper bits set.
+> 
+> Replace 32-bit mask by appropriate 64-bit mask.
+> 
+> Fixes: dc73ed0f1b8b ("PCI: rockchip: Fix window mapping and address translation for endpoint")
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/linux-pci/8d19e5b7-8fa0-44a4-90e2-9bb06f5eb694@moroto.mountain/
+> Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+> Cc: stable@vger.kernel.org
+> ---
+>   drivers/pci/controller/pcie-rockchip.h | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
+> index fe0333778fd9..627d08b34827 100644
+> --- a/drivers/pci/controller/pcie-rockchip.h
+> +++ b/drivers/pci/controller/pcie-rockchip.h
+> @@ -158,7 +158,9 @@
+>   #define PCIE_RC_CONFIG_THP_CAP		(PCIE_RC_CONFIG_BASE + 0x274)
+>   #define   PCIE_RC_CONFIG_THP_CAP_NEXT_MASK	GENMASK(31, 20)
+>   
+> -#define PCIE_ADDR_MASK			0xffffff00
+> +#define MAX_AXI_IB_ROOTPORT_REGION_NUM		3
+> +#define MIN_AXI_ADDR_BITS_PASSED		8
+> +#define PCIE_ADDR_MASK			GENMASK(63, MIN_AXI_ADDR_BITS_PASSED)
 
-I think there are some misunderstanding WRT distros and stable kernels.
-(Commercial) distros will backport the patch as needed, regardless such
-patch landing in the 5.15 upstream tree or not. Individual users
-running their own vanilla 5.15 kernel can't expect performance
-improvement landing there.
+Nit: this probably wants to be GENMASK_ULL(), otherwise it might throw a 
+warning if compile-tested for 32-bit.
 
-All in all I feel undecided. I would endorse this change going trough
-net-next (without the stable tag). I would feel less torn with this
-change targeting -net without the stable tag. Targeting -net with the
-stable tag sounds a bit too much to me.
+Thanks,
+Robin.
 
-Cheers,
-Paolo
-
+>   #define PCIE_CORE_AXI_CONF_BASE		0xc00000
+>   #define PCIE_CORE_OB_REGION_ADDR0	(PCIE_CORE_AXI_CONF_BASE + 0x0)
+>   #define   PCIE_CORE_OB_REGION_ADDR0_NUM_BITS	0x3f
+> @@ -185,8 +187,6 @@
+>   #define AXI_WRAPPER_TYPE1_CFG			0xb
+>   #define AXI_WRAPPER_NOR_MSG			0xc
+>   
+> -#define MAX_AXI_IB_ROOTPORT_REGION_NUM		3
+> -#define MIN_AXI_ADDR_BITS_PASSED		8
+>   #define PCIE_RC_SEND_PME_OFF			0x11960
+>   #define ROCKCHIP_VENDOR_ID			0x1d87
+>   #define PCIE_LINK_IS_L2(x) \
