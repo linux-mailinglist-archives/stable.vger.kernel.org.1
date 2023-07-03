@@ -2,82 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8AA746365
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 21:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38C38746377
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 21:43:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231221AbjGCTgr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 15:36:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49854 "EHLO
+        id S231368AbjGCTnU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 15:43:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231213AbjGCTgr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 15:36:47 -0400
-Received: from smtp.gentoo.org (smtp.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A15E6B;
-        Mon,  3 Jul 2023 12:36:40 -0700 (PDT)
-References: <20230629184151.888604958@linuxfoundation.org>
- <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
- <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
- <2023063001-overlying-browse-de1a@gregkh>
- <0b2aefa4-7407-4936-6604-dedfb1614483@gmx.de>
- <5fd98a09-4792-1433-752d-029ae3545168@gmx.de>
- <CAHk-=wiHs1cL2Fb90NXVhtQsMuu+OLHB4rSDsPVe0ALmbvZXZQ@mail.gmail.com>
- <CAHk-=wj=0jkhj2=HkHVdezvuzV-djLsnyeE5zFfnXxgtS2MXFQ@mail.gmail.com>
- <9b35a19d-800c-f9f9-6b45-cf2038ef235f@roeck-us.net>
- <CAHk-=wgdC6RROG145_YB5yWoNtBQ0Xsrhdcu2TMAFTw52U2E0w@mail.gmail.com>
- <2a2387bf-f589-6856-3583-d3d848a17d34@roeck-us.net>
- <CAHk-=wgczy0dxK9vg-YWbq6YLP2gP8ix7Ys9K+Mr=S2NEj+hGw@mail.gmail.com>
- <c21e8e95-3353-fc57-87fd-271b2c9cc000@roeck-us.net>
- <CAHk-=wj+F8oGK_Hx6YSPJpwL-xyL+-q2SxtxYE0abtZa_jSkLw@mail.gmail.com>
- <7146f74d-8638-46c7-8e8c-15abc97a379f@gmx.de>
- <CAHk-=wjqp09i1053vqFc41Ftegkrh0pD+MKY-3ptdYu3FUh6Bw@mail.gmail.com>
- <11fef47a-4805-df0e-016e-d2a777087129@gmx.de> <87v8f04wpy.fsf@gentoo.org>
-User-agent: mu4e 1.10.4; emacs 29.0.92
-From:   Sam James <sam@gentoo.org>
-To:     Sam James <sam@gentoo.org>
-Cc:     Helge Deller <deller@gmx.de>,
+        with ESMTP id S231308AbjGCTnT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 15:43:19 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899ECE75
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 12:43:17 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6687466137bso2883390b3a.0
+        for <stable@vger.kernel.org>; Mon, 03 Jul 2023 12:43:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1688413397; x=1691005397;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ySGQb63McKAnHAtTV4YnIT1osW5j3ZzjlUXCtpyAk60=;
+        b=duVOIzc9ItKwtD4olGEWyaG0IZNcOfgysto8rnoAotgH/JPKXC2pKbZk5yrUweFloB
+         0ieStjkohOJZcbL0D4nbiGWZQ1yEifLKqbwsGy+MLaoj5ddR7LMatWVLluiyqgK6nmFP
+         +9S13j9+5FuJK62iqs6y0OxJ1hAYJe45SdBis=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688413397; x=1691005397;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ySGQb63McKAnHAtTV4YnIT1osW5j3ZzjlUXCtpyAk60=;
+        b=YkfL++Pi+rTWdOwNkiYFCcalzIgUOW7OaJMBuKFTqZDHwfVVmh5TV58TqHTUlx0gRt
+         1UmKdRoDwFee2974QfYq9bYDtbop7VfUtuSKjDUgFPN0/N3am7UWcuGYbna2gzkDdtjZ
+         kUgby3neSclZ+1jcvhLj9HJH0tgCmJblG31O4YZa0Fx0Lf8fOm/tCYiaIc+LmBTaMN6u
+         GUmUbQZyDHLIF4WqlERP6643ZK1nwKNSamfcKIM+k7ApIYglKB+BDQWL5j5+Sn3vWvZ7
+         ZL6uf4qNWLdaqODZbGRmWIstERmY4CJ2vu96gf/Ef2NfRRhNaKrtKUAkZAQgJAmk7opd
+         YtVw==
+X-Gm-Message-State: ABy/qLZHKdAtj/sBM0Lgtgk9h4+nbNToVQvbfuEIzFnue8jlSsH/iYaw
+        VN5FhjY90Jtm9AxTiJMPYY0rRw==
+X-Google-Smtp-Source: APBJJlFMfAY1KDOtIdrla5dpxwEcVA8Y4IsZ0EJSS662iPGIBtnRIpBBFo1pU1hOYhJVfCXP6h2FNg==
+X-Received: by 2002:a05:6a00:99f:b0:62d:8376:3712 with SMTP id u31-20020a056a00099f00b0062d83763712mr9777195pfg.28.1688413396784;
+        Mon, 03 Jul 2023 12:43:16 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id i3-20020aa787c3000000b006666699be98sm12345534pfo.34.2023.07.03.12.43.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jul 2023 12:43:16 -0700 (PDT)
+Date:   Mon, 3 Jul 2023 12:43:15 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Samuel Thibault <samuel.thibault@ens-lyon.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review - hppa argument list too long
-Date:   Mon, 03 Jul 2023 20:36:16 +0100
-In-reply-to: <87v8f04wpy.fsf@gentoo.org>
-Message-ID: <87h6qk4wjh.fsf@gentoo.org>
+        Randy Dunlap <rdunlap@infradead.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Simon Brand <simon.brand@postadigitale.de>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Dave@mielke.cc
+Subject: Re: [PATCH] TIOCSTI: always enable for CAP_SYS_ADMIN
+Message-ID: <202307031241.C7286A7B2@keescook>
+References: <20230701235918.kwfathbdklkyrbde@begin>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,TO_EQ_FM_DIRECT_MX,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230701235918.kwfathbdklkyrbde@begin>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sun, Jul 02, 2023 at 01:59:18AM +0200, Samuel Thibault wrote:
+> 83efeeeb3d04 ("tty: Allow TIOCSTI to be disabled") broke BRLTTY's
+> ability to simulate keypresses on the console, thus effectively breaking
+> braille keyboards of blind users.
+> 
+> This restores the TIOCSTI feature for CAP_SYS_ADMIN processes, which
+> BRLTTY is, thus fixing braille keyboards without re-opening the security
+> issue.
+> 
+> Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+> Fixes: 83efeeeb3d04 ("tty: Allow TIOCSTI to be disabled")
 
-Sam James <sam@gentoo.org> writes:
+Based on the design of brltty, this appears to be the only solution. I
+remain surprised that FreeBSD had no brltty support, which is why they
+didn't run into this problem.
 
-> Helge Deller <deller@gmx.de> writes:
->
->> On 7/3/23 18:49, Linus Torvalds wrote:
->>> On Mon, 3 Jul 2023 at 00:08, Helge Deller <deller@gmx.de> wrote:
->>>>
->>>> Great, that patch fixes it!
->>>
->>> Yeah, I was pretty sure this was it, but it's good to have it
->>> confirmed. Committed.
->>
->> Thank you!
->>
->> Nice to see that Greg picked up the patch for stable that fast as well!
->
-> Sorry, where? I was just about to check if it was marked for backporting
-> but I can't see it in Greg's trees yet.
->
-> We need it fo 6.1, 6.3, 6.4.
->
-> (Apologies if I'm missing it somewhere obvious.)
+Acked-by: Kees Cook <keescook@chromium.org>
 
-.. and I was. I see it now, sorry!
+-Kees
+
+> 
+> Index: linux-6.4/drivers/tty/tty_io.c
+> ===================================================================
+> --- linux-6.4.orig/drivers/tty/tty_io.c
+> +++ linux-6.4/drivers/tty/tty_io.c
+> @@ -2276,7 +2276,7 @@ static int tiocsti(struct tty_struct *tt
+>  	char ch, mbz = 0;
+>  	struct tty_ldisc *ld;
+>  
+> -	if (!tty_legacy_tiocsti)
+> +	if (!tty_legacy_tiocsti && !capable(CAP_SYS_ADMIN))
+>  		return -EIO;
+>  
+>  	if ((current->signal->tty != tty) && !capable(CAP_SYS_ADMIN))
+
+-- 
+Kees Cook
