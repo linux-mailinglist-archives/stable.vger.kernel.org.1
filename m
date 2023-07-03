@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56ADF746302
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:56:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 624417462F2
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230284AbjGCS4x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 14:56:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38458 "EHLO
+        id S231395AbjGCS4G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 14:56:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231436AbjGCS4n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:56:43 -0400
+        with ESMTP id S231267AbjGCS4F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:56:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E60B10C1
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:56:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 886A4E7B
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:56:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DE29A61013
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:56:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0451CC433C8;
-        Mon,  3 Jul 2023 18:56:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2662B60FFA
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:56:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BE3C433C9;
+        Mon,  3 Jul 2023 18:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688410601;
-        bh=FM2FZD3XMMZ4LcjN5nnVh4kN9kWa0KoC93RCCXXbGlM=;
+        s=korg; t=1688410562;
+        bh=etqMsFn4RSS5ug2q9deNG4dwM6wEb7mVP8RpGSIbIXo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DmC/2pd935D+Bp+VD/X2mwMeelGRtoNgDvwPgBvi09wjqY21NDg5us8iqSQroL0Sy
-         vbSi3zkGE+Xu77YnXG3t7wz8wXvDdtGchzNb280HO2Tu4I/cksGP9HlfEeSclSlVZB
-         EjwRMecV3JnTM49OyK9JXxRpkn5JsNaua8K9CoOw=
+        b=NwKfvRbSnbkilPFXQXXgAUiJkv4WYK11maEAN71ctt7W5SM53IFcYJiQGFSnBraJm
+         8EHMT/+bP+DXfpUvluYug7LVbmVhU8shzPGmMTPA27Rd0PAh2Y7N0WffRzbrUW5ys+
+         ol/CMQwHgS22OvkXcNqV4YiWr+GSPnYvRsrCHmA0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Broadworth <mark.broadworth@amd.com>,
-        Aric Cyr <Aric.Cyr@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alvin Lee <Alvin.Lee2@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1 02/11] drm/amd/display: Remove optimization for VRR updates
+        patches@lists.linux.dev, "Ahmed S. Darwish" <darwi@linutronix.de>,
+        Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.3 11/13] docs: Set minimal gtags / GNU GLOBAL version to 6.6.5
 Date:   Mon,  3 Jul 2023 20:54:21 +0200
-Message-ID: <20230703184519.190634362@linuxfoundation.org>
+Message-ID: <20230703184519.535934727@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230703184519.121965745@linuxfoundation.org>
-References: <20230703184519.121965745@linuxfoundation.org>
+In-Reply-To: <20230703184519.206275653@linuxfoundation.org>
+References: <20230703184519.206275653@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,34 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alvin Lee <Alvin.Lee2@amd.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-commit 3442f4e0e55555d14b099c17382453fdfd2508d5 upstream.
+commit b230235b386589d8f0d631b1c77a95ca79bb0732 upstream.
 
-Optimization caused unexpected regression, so remove for now.
+Kernel build now uses the gtags "-C (--directory)" option, available
+since GNU GLOBAL v6.6.5.  Update the documentation accordingly.
 
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Reviewed-by: Aric Cyr <Aric.Cyr@amd.com>
-Acked-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alvin Lee <Alvin.Lee2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lists.gnu.org/archive/html/info-global/2020-09/msg00000.html
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c |    3 ---
- 1 file changed, 3 deletions(-)
+ Documentation/process/changes.rst |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -401,9 +401,6 @@ bool dc_stream_adjust_vmin_vmax(struct d
- {
- 	int i;
+--- a/Documentation/process/changes.rst
++++ b/Documentation/process/changes.rst
+@@ -60,6 +60,7 @@ openssl & libcrypto    1.0.0
+ bc                     1.06.95          bc --version
+ Sphinx\ [#f1]_         1.7              sphinx-build --version
+ cpio                   any              cpio --version
++gtags (optional)       6.6.5            gtags --version
+ ====================== ===============  ========================================
  
--	if (memcmp(adjust, &stream->adjust, sizeof(struct dc_crtc_timing_adjust)) == 0)
--		return true;
--
- 	stream->adjust.v_total_max = adjust->v_total_max;
- 	stream->adjust.v_total_mid = adjust->v_total_mid;
- 	stream->adjust.v_total_mid_frame_num = adjust->v_total_mid_frame_num;
+ .. [#f1] Sphinx is needed only to build the Kernel documentation
+@@ -174,6 +175,12 @@ You will need openssl to build kernels 3
+ enabled.  You will also need openssl development packages to build kernels 4.3
+ and higher.
+ 
++gtags / GNU GLOBAL (optional)
++-----------------------------
++
++The kernel build requires GNU GLOBAL version 6.6.5 or later to generate
++tag files through ``make gtags``.  This is due to its use of the gtags
++``-C (--directory)`` flag.
+ 
+ System utilities
+ ****************
 
 
