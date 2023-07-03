@@ -2,61 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC39474631E
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75AEA74630C
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230515AbjGCS5r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 14:57:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39548 "EHLO
+        id S231420AbjGCS5W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 14:57:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230406AbjGCS5p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:57:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EEC1E70;
-        Mon,  3 Jul 2023 11:57:44 -0700 (PDT)
+        with ESMTP id S231305AbjGCS5H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:57:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C11E6B
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:57:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D53260D3A;
-        Mon,  3 Jul 2023 18:57:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310FFC433C8;
-        Mon,  3 Jul 2023 18:57:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C66E61015
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:57:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DF1C433C8;
+        Mon,  3 Jul 2023 18:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688410663;
-        bh=ZP3cJ2R+JbG+59E5fYy11eI5Z25vNRTQd6BPmrkpEXw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=G+aLUe1sFfmIpdNpIkBfQsJ+3Q8xw8reWVQ1kluQAW22CO0PiJxMplLzX3uK1/cie
-         Mb9MtaaO/V0kMZp8q/yQ2286QtpfhPDyYOIC9t3d2kYVuZEz4Ie5lynJwL6cDHfGZd
-         p0vhWs0V0POlsgXeafwwgedl1cb7aK/VeJrOEWDQ=
+        s=korg; t=1688410624;
+        bh=xlEC9XqBm0HrybmZPEXfHEplMLHBePgEgZakez4kLm8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=zFcSjIBi2dCy4Q7v5SEpBpNOAL5YWALMpW6Vbsex2udVB1QadRBb6YNBXndvFxRYu
+         uocGxCe7LpK0WLwshl3Az0gzIjokdFSeV2YKFiYecWIg/k06F3JlmuQMjaxFb4nr+w
+         z7Z3P75+oA4uMCY7nK0lY4BBrLiCuQCjyams4HLs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: [PATCH 5.15 00/15] 5.15.120-rc1 review
-Date:   Mon,  3 Jul 2023 20:54:45 +0200
-Message-ID: <20230703184518.896751186@linuxfoundation.org>
+        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 01/15] mptcp: fix possible divide by zero in recvmsg()
+Date:   Mon,  3 Jul 2023 20:54:46 +0200
+Message-ID: <20230703184518.936530437@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
+In-Reply-To: <20230703184518.896751186@linuxfoundation.org>
+References: <20230703184518.896751186@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.120-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.15.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.15.120-rc1
-X-KernelTest-Deadline: 2023-07-05T18:45+00:00
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLACK autolearn=ham
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,98 +58,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is the start of the stable review cycle for the 5.15.120 release.
-There are 15 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+From: Paolo Abeni <pabeni@redhat.com>
 
-Responses should be made by Wed, 05 Jul 2023 18:45:08 +0000.
-Anything received after that time might be too late.
+commit 0ad529d9fd2bfa3fc619552a8d2fb2f2ef0bce2e upstream.
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.120-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-and the diffstat can be found below.
+Christoph reported a divide by zero bug in mptcp_recvmsg():
 
-thanks,
+divide error: 0000 [#1] PREEMPT SMP
+CPU: 1 PID: 19978 Comm: syz-executor.6 Not tainted 6.4.0-rc2-gffcc7899081b #20
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
+RIP: 0010:__tcp_select_window+0x30e/0x420 net/ipv4/tcp_output.c:3018
+Code: 11 ff 0f b7 cd c1 e9 0c b8 ff ff ff ff d3 e0 89 c1 f7 d1 01 cb 21 c3 eb 17 e8 2e 83 11 ff 31 db eb 0e e8 25 83 11 ff 89 d8 99 <f7> 7c 24 04 29 d3 65 48 8b 04 25 28 00 00 00 48 3b 44 24 10 75 60
+RSP: 0018:ffffc90000a07a18 EFLAGS: 00010246
+RAX: 000000000000ffd7 RBX: 000000000000ffd7 RCX: 0000000000040000
+RDX: 0000000000000000 RSI: 000000000003ffff RDI: 0000000000040000
+RBP: 000000000000ffd7 R08: ffffffff820cf297 R09: 0000000000000001
+R10: 0000000000000000 R11: ffffffff8103d1a0 R12: 0000000000003f00
+R13: 0000000000300000 R14: ffff888101cf3540 R15: 0000000000180000
+FS:  00007f9af4c09640(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b33824000 CR3: 000000012f241001 CR4: 0000000000170ee0
+Call Trace:
+ <TASK>
+ __tcp_cleanup_rbuf+0x138/0x1d0 net/ipv4/tcp.c:1611
+ mptcp_recvmsg+0xcb8/0xdd0 net/mptcp/protocol.c:2034
+ inet_recvmsg+0x127/0x1f0 net/ipv4/af_inet.c:861
+ ____sys_recvmsg+0x269/0x2b0 net/socket.c:1019
+ ___sys_recvmsg+0xe6/0x260 net/socket.c:2764
+ do_recvmmsg+0x1a5/0x470 net/socket.c:2858
+ __do_sys_recvmmsg net/socket.c:2937 [inline]
+ __se_sys_recvmmsg net/socket.c:2953 [inline]
+ __x64_sys_recvmmsg+0xa6/0x130 net/socket.c:2953
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x47/0xa0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+RIP: 0033:0x7f9af58fc6a9
+Code: 5c c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 4f 37 0d 00 f7 d8 64 89 01 48
+RSP: 002b:00007f9af4c08cd8 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
+RAX: ffffffffffffffda RBX: 00000000006bc050 RCX: 00007f9af58fc6a9
+RDX: 0000000000000001 RSI: 0000000020000140 RDI: 0000000000000004
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000f00 R11: 0000000000000246 R12: 00000000006bc05c
+R13: fffffffffffffea8 R14: 00000000006bc050 R15: 000000000001fe40
+ </TASK>
 
-greg k-h
+mptcp_recvmsg is allowed to release the msk socket lock when
+blocking, and before re-acquiring it another thread could have
+switched the sock to TCP_LISTEN status - with a prior
+connect(AF_UNSPEC) - also clearing icsk_ack.rcv_mss.
 
--------------
-Pseudo-Shortlog of commits:
+Address the issue preventing the disconnect if some other process is
+concurrently performing a blocking syscall on the same socket, alike
+commit 4faeee0cf8a5 ("tcp: deny tcp_disconnect() when threads are waiting").
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.15.120-rc1
+Fixes: a6b118febbab ("mptcp: add receive buffer auto-tuning")
+Cc: stable@vger.kernel.org
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/404
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Christoph Paasch <cpaasch@apple.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/mptcp/protocol.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-    drm/amdgpu: Validate VM ioctl flags.
-
-Ahmed S. Darwish <darwi@linutronix.de>
-    scripts/tags.sh: Resolve gtags empty index generation
-
-Krister Johansen <kjlx@templeofstupid.com>
-    perf symbols: Symbol lookup with kcore can fail if multiple segments match stext
-
-Ricardo Cañuelo <ricardo.canuelo@collabora.com>
-    Revert "thermal/drivers/mediatek: Use devm_of_iomap to avoid resource leak in mtk_thermal_probe"
-
-Mike Hommey <mh@glandium.org>
-    HID: logitech-hidpp: add HIDPP_QUIRK_DELAYED_INIT for the T651.
-
-Jason Gerecke <jason.gerecke@wacom.com>
-    HID: wacom: Use ktime_t rather than int when dealing with timestamps
-
-Krister Johansen <kjlx@templeofstupid.com>
-    bpf: ensure main program has an extable
-
-Oliver Hartkopp <socketcan@hartkopp.net>
-    can: isotp: isotp_sendmsg(): fix return error fix on TX path
-
-Thomas Gleixner <tglx@linutronix.de>
-    x86/smp: Use dedicated cache-line for mwait_play_dead()
-
-Borislav Petkov (AMD) <bp@alien8.de>
-    x86/microcode/AMD: Load late on both threads too
-
-Philip Yang <Philip.Yang@amd.com>
-    drm/amdgpu: Set vmbo destroy after pt bo is created
-
-Jane Chu <jane.chu@oracle.com>
-    mm, hwpoison: when copy-on-write hits poison, take page offline
-
-Tony Luck <tony.luck@intel.com>
-    mm, hwpoison: try to recover from copy-on write faults
-
-Paolo Abeni <pabeni@redhat.com>
-    mptcp: consolidate fallback and non fallback state machine
-
-Paolo Abeni <pabeni@redhat.com>
-    mptcp: fix possible divide by zero in recvmsg()
-
-
--------------
-
-Diffstat:
-
- Makefile                                   |  4 +--
- arch/x86/kernel/cpu/microcode/amd.c        |  2 +-
- arch/x86/kernel/smpboot.c                  | 24 +++++++++-------
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c |  1 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c     |  4 +++
- drivers/hid/hid-logitech-hidpp.c           |  2 +-
- drivers/hid/wacom_wac.c                    |  6 ++--
- drivers/hid/wacom_wac.h                    |  2 +-
- drivers/thermal/mtk_thermal.c              | 14 ++-------
- include/linux/highmem.h                    | 24 ++++++++++++++++
- include/linux/mm.h                         |  5 +++-
- kernel/bpf/verifier.c                      |  7 +++--
- mm/memory.c                                | 33 ++++++++++++++-------
- net/can/isotp.c                            |  5 ++--
- net/mptcp/protocol.c                       | 46 ++++++++++++++----------------
- net/mptcp/subflow.c                        | 17 ++++++-----
- scripts/tags.sh                            |  9 +++++-
- tools/perf/util/symbol.c                   | 17 +++++++++--
- 18 files changed, 142 insertions(+), 80 deletions(-)
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2807,6 +2807,12 @@ static int mptcp_disconnect(struct sock
+ 	struct mptcp_subflow_context *subflow;
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 
++	/* Deny disconnect if other threads are blocked in sk_wait_event()
++	 * or inet_wait_for_connect().
++	 */
++	if (sk->sk_wait_pending)
++		return -EBUSY;
++
+ 	mptcp_do_flush_join_list(msk);
+ 
+ 	mptcp_for_each_subflow(msk, subflow) {
+@@ -2845,6 +2851,7 @@ struct sock *mptcp_sk_clone(const struct
+ 		inet_sk(nsk)->pinet6 = mptcp_inet6_sk(nsk);
+ #endif
+ 
++	nsk->sk_wait_pending = 0;
+ 	__mptcp_init_sock(nsk);
+ 
+ 	msk = mptcp_sk(nsk);
 
 
