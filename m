@@ -2,48 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66281746263
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6B4F74626E
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:32:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230162AbjGCSbK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 14:31:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48386 "EHLO
+        id S231260AbjGCScp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 14:32:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbjGCSbK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:31:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A66B9121;
-        Mon,  3 Jul 2023 11:31:09 -0700 (PDT)
+        with ESMTP id S231292AbjGCScl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:32:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 941E910CE
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:32:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 43EFC60FFA;
-        Mon,  3 Jul 2023 18:31:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA58C433C8;
-        Mon,  3 Jul 2023 18:31:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2892160FFB
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:32:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA77C433C7;
+        Mon,  3 Jul 2023 18:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688409068;
-        bh=WFAyaT1zBQm/iWkDAeWv3kb/dymBVkbMfUBLGKdYW5s=;
+        s=korg; t=1688409154;
+        bh=biAe+KgJdd4IMVjrQugbzTh6QabpKTXIPhNVezqwWGQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BIqHRpak3i1WBkOOcQxmz4zZdBFnodO6CT37vQwO5m5E+wUrsVrXulKzpa/4z81PD
-         skZl5ufsvgnuzsxzWOY80tKuIx2yNZH+G2KsmvAGu+SIKT0uEgxVftqsCU7JSpk/yh
-         V5ICfyIS94uH0WzUDD2bK4J/+7GBLctk6Lcl6yf0=
-Date:   Mon, 3 Jul 2023 20:31:06 +0200
+        b=lUxsisnPmglbuQQa7POTo4w+XFzxwmJ5PxJs5lWoQpZfzAhi5XR7XuZJd8W8H0Yrb
+         KRebXnmNmTVUEA0geAkuUqgC6ibjrYyEDThYxe1Fsw7tk/4aSYhBUukqjv/TkPtyuq
+         QTPALA6wXWJRs92E12k0eLkNhna9vzu9OW+Z2yU4=
+Date:   Mon, 3 Jul 2023 20:32:32 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        songmuchun@bytedance.com, mike.kravetz@oracle.com,
-        Ackerley Tng <ackerleytng@google.com>
-Subject: Re: [PATCH 6.3.y] mm/hugetlb: revert use of page_cache_next_miss()
-Message-ID: <2023070356-paddling-grip-b31a@gregkh>
-References: <20230629211817.194786-1-sidhartha.kumar@oracle.com>
+To:     Krister Johansen <kjlx@templeofstupid.com>
+Cc:     stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        David Reaver <me@davidreaver.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Petlan <mpetlan@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 5.15.y] perf symbols: Symbol lookup with kcore can fail
+ if multiple segments match stext
+Message-ID: <2023070314-unblock-nursery-52be@gregkh>
+References: <20230628230435.GD1918@templeofstupid.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230629211817.194786-1-sidhartha.kumar@oracle.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <20230628230435.GD1918@templeofstupid.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,40 +59,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 29, 2023 at 05:18:17PM -0400, Sidhartha Kumar wrote:
-> commit fd4aed8d985a3236d0877ff6d0c80ad39d4ce81a upstream
+On Wed, Jun 28, 2023 at 04:04:35PM -0700, Krister Johansen wrote:
+> commit 1c249565426e3a9940102c0ba9f63914f7cda73d upstream.
 > 
-> Ackerley Tng reported an issue with hugetlbfs fallocate as noted in the
-> Closes tag.  The issue showed up after the conversion of hugetlb page
-> cache lookup code to use page_cache_next_miss.  User visible effects are:
+> This problem was encountered on an arm64 system with a lot of memory.
+> Without kernel debug symbols installed, and with both kcore and kallsyms
+> available, perf managed to get confused and returned "unknown" for all
+> of the kernel symbols that it tried to look up.
 > 
-> - hugetlbfs fallocate incorrectly returns -EEXIST if pages are presnet
->   in the file.
-> - hugetlb pages will not be included in core dumps if they need to be
->   brought in via GUP.
-> - userfaultfd UFFDIO_COPY will not notice pages already present in the
->   cache.  It may try to allocate a new page and potentially return
->   ENOMEM as opposed to EEXIST.
+> On this system, stext fell within the vmalloc segment.  The kcore symbol
+> matching code tries to find the first segment that contains stext and
+> uses that to replace the segment generated from just the kallsyms
+> information.  In this case, however, there were two: a very large
+> vmalloc segment, and the text segment.  This caused perf to get confused
+> because multiple overlapping segments were inserted into the RB tree
+> that holds the discovered segments.  However, that alone wasn't
+> sufficient to cause the problem. Even when we could find the segment,
+> the offsets were adjusted in such a way that the newly generated symbols
+> didn't line up with the instruction addresses in the trace.  The most
+> obvious solution would be to consult which segment type is text from
+> kcore, but this information is not exposed to users.
 > 
-> Revert the use page_cache_next_miss() in hugetlb code.
+> Instead, select the smallest matching segment that contains stext
+> instead of the first matching segment.  This allows us to match the text
+> segment instead of vmalloc, if one is contained within the other.
 > 
-> The upstream fix[2] cannot be used used directly as the return value for
-> filemap_get_folio() has been changed between 6.3 and upstream.
-> 
-> Closes: https://lore.kernel.org/linux-mm/cover.1683069252.git.ackerleytng@google.com
-> Fixes: d0ce0e47b323 ("mm/hugetlb: convert hugetlb fault paths to use alloc_hugetlb_folio()")
-> Cc: <stable@vger.kernel.org> #v6.3
-> Reported-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> 
-> [1] https://lore.kernel.org/linux-mm/cover.1683069252.git.ackerleytng@google.com/
-> [2] https://lore.kernel.org/lkml/20230621230255.GD4155@monkey/
+> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+> Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> Cc: David Reaver <me@davidreaver.com>
+> Cc: Ian Rogers <irogers@google.com>
+> Cc: Jiri Olsa <jolsa@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Michael Petlan <mpetlan@redhat.com>
+> Cc: Namhyung Kim <namhyung@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Link: http://lore.kernel.org/lkml/20230125183418.GD1963@templeofstupid.com
+> Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+> Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
 > ---
+>  tools/perf/util/symbol.c | 17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
 > 
->  fs/hugetlbfs/inode.c |  8 +++-----
->  mm/hugetlb.c         | 11 +++++------
->  2 files changed, 8 insertions(+), 11 deletions(-)
 
-Now queued up, thanks.
+Both now queued up, thanks.
 
 greg k-h
