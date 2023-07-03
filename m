@@ -2,84 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DF81745F66
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 17:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FDA8745FB6
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 17:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230075AbjGCPFl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 11:05:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46482 "EHLO
+        id S230393AbjGCPXX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 11:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbjGCPFk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 11:05:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F327BC;
-        Mon,  3 Jul 2023 08:05:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F165960F8C;
-        Mon,  3 Jul 2023 15:05:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2816C433C8;
-        Mon,  3 Jul 2023 15:05:37 +0000 (UTC)
-Date:   Mon, 3 Jul 2023 16:05:38 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Peter Collingbourne <pcc@google.com>,
-        Will Deacon <will@kernel.org>,
-        Qun-wei Lin <Qun-wei.Lin@mediatek.com>,
-        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        "david@redhat.com" <david@redhat.com>,
-        Chinwen Chang <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>,
-        Casper Li <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
+        with ESMTP id S229830AbjGCPXX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 11:23:23 -0400
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [IPv6:2a0a:51c0:0:237:300::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8BF7E62;
+        Mon,  3 Jul 2023 08:23:14 -0700 (PDT)
+Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
+        (envelope-from <fw@strlen.de>)
+        id 1qGLOC-0000cR-Qj; Mon, 03 Jul 2023 17:22:56 +0200
+Date:   Mon, 3 Jul 2023 17:22:56 +0200
+From:   Florian Westphal <fw@strlen.de>
+To:     Florent Revest <revest@chromium.org>
+Cc:     netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, pablo@netfilter.org, kadlec@netfilter.org,
+        fw@strlen.de, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, kpsingh@kernel.org,
         stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] mm: Call arch_swap_restore() from do_swap_page()
-Message-ID: <ZKLjwjYUM2zSRtJ5@arm.com>
-References: <20230523004312.1807357-1-pcc@google.com>
- <20230523004312.1807357-2-pcc@google.com>
- <20230605140554.GC21212@willie-the-truck>
- <CAMn1gO4k=rg96GVsPW6Aaz12c7hS0TYcgVR7y38x7pUsbfwg5A@mail.gmail.com>
- <ZJ1VersqnJcMXMyi@arm.com>
- <20230702123821.04e64ea2c04dd0fdc947bda3@linux-foundation.org>
+Subject: Re: [PATCH nf v2] netfilter: conntrack: Avoid nf_ct_helper_hash uses
+ after free
+Message-ID: <20230703152256.GC7043@breakpoint.cc>
+References: <20230703145216.1096265-1-revest@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230702123821.04e64ea2c04dd0fdc947bda3@linux-foundation.org>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230703145216.1096265-1-revest@chromium.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Jul 02, 2023 at 12:38:21PM -0700, Andrew Morton wrote:
-> On Thu, 29 Jun 2023 10:57:14 +0100 Catalin Marinas <catalin.marinas@arm.com> wrote:
-> > Andrew, what's your preference for this series? I'd like at least the
-> > first patch to go into 6.5 as a fix. The second patch seems to be fairly
-> > low risk and I'm happy for the third arm64 patch/cleanup to go in
-> > 6.5-rc1 (but it depends on the second patch). If you prefer, I can pick
-> > them up and send a pull request to Linus next week before -rc1.
-> > Otherwise you (or I) can queue the first patch and leave the other two
-> > for 6.6.
+Florent Revest <revest@chromium.org> wrote:
+> If nf_conntrack_init_start() fails (for example due to a
+> register_nf_conntrack_bpf() failure), the nf_conntrack_helper_fini()
+> clean-up path frees the nf_ct_helper_hash map.
 > 
-> Thanks.  I queued [1/3] for 6.5-rcX with a cc:stable.  And I queued
-> [2/3] and [3/3] for 6.6-rc1.
+> When built with NF_CONNTRACK=y, further netfilter modules (e.g:
+> netfilter_conntrack_ftp) can still be loaded and call
+> nf_conntrack_helpers_register(), independently of whether nf_conntrack
+> initialized correctly. This accesses the nf_ct_helper_hash dangling
+> pointer and causes a uaf, possibly leading to random memory corruption.
 > 
-> If you wish to grab any/all of these then please do so - Stephen
-> will tell us of the duplicate and I'll drop the mm-git copy.
+> This patch guards nf_conntrack_helper_register() from accessing a freed
+> or uninitialized nf_ct_helper_hash pointer and fixes possible
+> uses-after-free when loading a conntrack module.
 
-That's great, thanks. We'll let you know if there are any conflicts
-during the 6.6 preparation.
-
--- 
-Catalin
+Reviewed-by: Florian Westphal <fw@strlen.de>
