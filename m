@@ -2,96 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB6DA7460FE
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 18:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A52A746150
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 19:19:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230192AbjGCQyF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 12:54:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60042 "EHLO
+        id S230037AbjGCRTq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 13:19:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbjGCQyF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 12:54:05 -0400
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B640E59;
-        Mon,  3 Jul 2023 09:54:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=UPHKo8guvj/2wEUMDLhfEXpJf9TVh5eXRfSHFXQcHBA=; b=jfLhYm02QkWxLFM1DOGstKUnu6
-        vxf4OfAXc0eXw20E7wZh78gLJoqMhjFRf/oU62RDRD0Y/siwM0bgtmZ2kq6sibM99aYXU+CHQcQNG
-        rsU+M1SG1uwJ8ms67fo8/t12u2b/say9bs/bvTXz8HTeMLMaopAm7hv8D+at9DT82tvwE4fnbVl0j
-        Mr2pP4eUO2b6zNAQJWYulIwvGpE9KSM3gh5FGaABJool2Q2cgG2uRO1EnHXaU9fPk74wyndzGM+Wb
-        aM7QxDIu3VBNC8i8qyxowsL0+J2cvUHwF9GfMOkD2QXk8TlYOgIxcjSGkz6LErLQKuS1MV/WG/x1g
-        UlY2fz/g==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qGMoH-0007Ti-On; Mon, 03 Jul 2023 18:53:57 +0200
-Received: from [178.197.249.52] (helo=linux.home)
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qGMoH-000UR3-82; Mon, 03 Jul 2023 18:53:57 +0200
-Subject: Re: [PATCH v3] btf: warn but return no error for NULL btf from
- __register_btf_kfunc_id_set()
-To:     SeongJae Park <sj@kernel.org>
-Cc:     Alexander.Egorenkov@ibm.com, ast@kernel.org, jolsa@kernel.org,
-        martin.lau@linux.dev, memxor@gmail.com, olsajiri@gmail.com,
-        bpf@vger.kernel.org, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230701171447.56464-1-sj@kernel.org>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <e1d10b8b-e9f2-267f-c8d8-55d977349c5b@iogearbox.net>
-Date:   Mon, 3 Jul 2023 18:53:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        with ESMTP id S230258AbjGCRTp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 13:19:45 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F458E59;
+        Mon,  3 Jul 2023 10:19:44 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6686ef86110so2348160b3a.2;
+        Mon, 03 Jul 2023 10:19:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688404784; x=1690996784;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=YQM7lFuVD4W1t3SE7hSv4jfk2Y/VsgE1SkaDnTLWS1E=;
+        b=k2qWWVrQz67rwhXy5mKhI9QPceGWjpWaJ/vl0t+wOSuv4WXQJbhGiuSD+4g5PdE2LW
+         MPEETAtmVQ3o6iMS+767jjshta5uQ+XYeNqJ9RseaHgqoAsyrDqueccGdUNtzlEEPV/z
+         8mSwuNTBeAi4CgOScqxxTXDqgWthUsahyP0kPYKSRVLV+omyDa6FiYiRlmVGVHq9hnmJ
+         PhKHHfwqMWYUwAuA2IxtpOsDbqHqLNMDsc3Nr+zqPXH/PSisny8D+B34PKNHAwsSHqID
+         fDaz8zGmQoC0YM4+3dFAoIOhxDIuTXESzIBr5RJqj7XiOZdkTeyFoHfbNG/qEGtqFrTa
+         KhqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688404784; x=1690996784;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YQM7lFuVD4W1t3SE7hSv4jfk2Y/VsgE1SkaDnTLWS1E=;
+        b=dM79fNgAHkia9M12Tq/pttAfQgTQn0jiS6f/EYFNKTvHcpR1JWHSURJVXNKss5GlhA
+         1fvNdRZL2zIXqQhpTtqD7++UO3vTKTaekS+0XLisGrM8LavxZSc2C96h3j1xhxlA+aSK
+         emiV4itcH1NHm8iu1yBUbSN9soaw6DIg54z1rP7+VGvQGzMZqowH4IlHxkWq3S7u2sup
+         groGTPAQ/ykDClKF4BVzlrc8gBZO9ghnpM0dFZPjdSb0yu/EkL2U5vBvKzBOay5b1Bsc
+         IQoqprsyqQu9kBdKpCV2jpLGREcznczag5gcfb7eaB6Pfs4/yhVL/0uQKKtKvaQJVGHZ
+         p2zQ==
+X-Gm-Message-State: ABy/qLaA/MOvVUhzs+SRhgJLFM2+tfjv2xAJR0N+dDXGdkWlULgHbedx
+        rLjesqr9y4HEY01Jvd963RM=
+X-Google-Smtp-Source: APBJJlFvk503EdfDGKBw/xTf52kVInfGiE0pg0Y6cY85b8fhK7hPP0OE/OIgze5Xc4w78aE1+H9auA==
+X-Received: by 2002:a05:6a00:2e22:b0:66e:fd84:c96d with SMTP id fc34-20020a056a002e2200b0066efd84c96dmr11644628pfb.13.1688404783998;
+        Mon, 03 Jul 2023 10:19:43 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id h21-20020aa786d5000000b00678cb336f3csm12184914pfo.142.2023.07.03.10.19.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Jul 2023 10:19:43 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <964806c4-db73-a70b-2168-24168e4b5aab@roeck-us.net>
+Date:   Mon, 3 Jul 2023 10:19:41 -0700
 MIME-Version: 1.0
-In-Reply-To: <20230701171447.56464-1-sj@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review - hppa argument list too long
 Content-Language: en-US
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Helge Deller <deller@gmx.de>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        akpm@linux-foundation.org,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John David Anglin <dave.anglin@bell.net>
+References: <20230629184151.888604958@linuxfoundation.org>
+ <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
+ <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
+ <2023063001-overlying-browse-de1a@gregkh>
+ <0b2aefa4-7407-4936-6604-dedfb1614483@gmx.de>
+ <5fd98a09-4792-1433-752d-029ae3545168@gmx.de>
+ <CAHk-=wiHs1cL2Fb90NXVhtQsMuu+OLHB4rSDsPVe0ALmbvZXZQ@mail.gmail.com>
+ <CAHk-=wj=0jkhj2=HkHVdezvuzV-djLsnyeE5zFfnXxgtS2MXFQ@mail.gmail.com>
+ <9b35a19d-800c-f9f9-6b45-cf2038ef235f@roeck-us.net>
+ <CAHk-=wgdC6RROG145_YB5yWoNtBQ0Xsrhdcu2TMAFTw52U2E0w@mail.gmail.com>
+ <2a2387bf-f589-6856-3583-d3d848a17d34@roeck-us.net>
+ <CAHk-=wgczy0dxK9vg-YWbq6YLP2gP8ix7Ys9K+Mr=S2NEj+hGw@mail.gmail.com>
+ <c21e8e95-3353-fc57-87fd-271b2c9cc000@roeck-us.net>
+ <CAHk-=wj+F8oGK_Hx6YSPJpwL-xyL+-q2SxtxYE0abtZa_jSkLw@mail.gmail.com>
+ <7146f74d-8638-46c7-8e8c-15abc97a379f@gmx.de>
+ <CAHk-=wjqp09i1053vqFc41Ftegkrh0pD+MKY-3ptdYu3FUh6Bw@mail.gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <CAHk-=wjqp09i1053vqFc41Ftegkrh0pD+MKY-3ptdYu3FUh6Bw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26958/Mon Jul  3 09:29:03 2023)
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/1/23 7:14 PM, SeongJae Park wrote:
-> __register_btf_kfunc_id_set() assumes .BTF to be part of the module's
-> .ko file if CONFIG_DEBUG_INFO_BTF is enabled.  If that's not the case,
-> the function prints an error message and return an error.  As a result,
-> such modules cannot be loaded.
+On 7/3/23 09:49, Linus Torvalds wrote:
+> On Mon, 3 Jul 2023 at 00:08, Helge Deller <deller@gmx.de> wrote:
+>>
+>> Great, that patch fixes it!
 > 
-> However, the section could be stripped out during a build process.  It
-> would be better to let the modules loaded, because their basic
-> functionalities have no problem[1], though the BTF functionalities will
-> not be supported.  Make the function to lower the level of the message
-> from error to warn, and return no error.
+> Yeah, I was pretty sure this was it, but it's good to have it
+> confirmed. Committed.
 > 
-> [1] https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
-> 
-> Reported-by: Alexander Egorenkov <Alexander.Egorenkov@ibm.com>
-> Link: https://lore.kernel.org/bpf/87y228q66f.fsf@oc8242746057.ibm.com/
-> Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-> Link: https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion/
-> Fixes: c446fdacb10d ("bpf: fix register_btf_kfunc_id_set for !CONFIG_DEBUG_INFO_BTF")
-> Cc: <stable@vger.kernel.org> # 5.18.x
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> Acked-by: Jiri Olsa <jolsa@kernel.org>
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
-> 
-> Changes from v2
-> (https://lore.kernel.org/bpf/20230628164611.83038-1-sj@kernel.org/)
-> - Keep the error for vmlinux case.
 
-Looks good, applied to bpf, thanks!
+FWIW, my qemu boot tests didn't find any problems with other architectures.
+
+Guenter
+
+>> I wonder if you want to
+>> #define VM_STACK_EARLY VM_GROWSDOWN
+>> even for the case where the stack grows down too (instead of 0),
+>> just to make clear that in both cases the stack goes downwards initially.
+> 
+> No, that wouldn't work for the simple reason that the special bits in
+> VM_STACK_INCOMPLETE_SETUP are always cleared after the stack setup is
+> done.
+> 
+> So if we added VM_GROWSDOWN to those early bits in general, the bit
+> would then be cleared even when that wasn't the intent.
+> 
+> Yes, yes, we could change the VM_STACK_INCOMPLETE_SETUP logic to only
+> clear some of the bits in the end, but the end result would be
+> practically the same: we'd still have to do different things for
+> grows-up vs grows-down cases, so the difference might as well be here
+> in the VM_STACK_EARLY bit.
+> 
+>                   Linus
+
