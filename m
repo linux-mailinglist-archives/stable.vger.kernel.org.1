@@ -2,65 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C82047461DA
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6FE574625F
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:30:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230386AbjGCSLr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 14:11:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37666 "EHLO
+        id S229701AbjGCSaE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 14:30:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230437AbjGCSLp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:11:45 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46240E6D;
-        Mon,  3 Jul 2023 11:11:39 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1b852785a65so30018315ad.0;
-        Mon, 03 Jul 2023 11:11:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688407898; x=1690999898;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1IhdYP/22dBSoxvMuKvWYSpUplc7xlf7E0Ak61tHyTo=;
-        b=VZA4n/DN1QFCSrPzFmHJ1ZapCsXI7MW5ozRUIRfGn/haqF3uRiSFySHGKSliDu8U3l
-         4t5/jXPiHVpDk5ZQjhZidMVhtpORBwRHVoWaUzIFK5M/FHIWFdF9DUn9OgMAYU0qq1ha
-         CzHr931w6W+rdHJqr9WlW8HZg/pEICbhk6uSxTgINPVAx2eV8m/Y18fnWTPLtg7H1T17
-         daX9popzNofjW2DluL728dOJV0xloaJ9xPbdkmBY5vDcj4dVFqu0SPYNjF4WGYX3q8ME
-         ubLi+TtO7pSmUgqENdsdu6+Wxh5wKS44l2t+K1K+nKivaTRpLWFpAqw0oH20Z8lb2jdb
-         GyAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688407898; x=1690999898;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1IhdYP/22dBSoxvMuKvWYSpUplc7xlf7E0Ak61tHyTo=;
-        b=cBHSTOlpliYYdC3FooGBmNsRMStY7mLzL/7MJ4d8ToElsori5ezSv0wWz8KZsO6wjk
-         5KcF330FXLwgo9KUMrRmlRc9ebd/MqvnYk1vvQOs+TLtg88EZpxPM6sbLkb4de0w3k6h
-         O/TrxiOz2CA8feuGJK/k/D3R08YEPRnfbAhizh93N5IwmyXqW7QwXtd/Fpv+Ypf7SAUS
-         X802OZCBQa9BNm7akLav2hqvpVTy0LrIk4/L8Bp4Cc+egAc6M560V956M2ETNEU/hJRc
-         11UQahQKBncBBDK45Cd/1YD6MoYtsmyse0crpju3D7S0XPHZJ9YGGa7Od2+e2f+mstCj
-         5U4w==
-X-Gm-Message-State: ABy/qLbakRHRPB5l0NO+ZC9ro9i00W75O9+rfr04dDWQr14gArucQdiK
-        L92Pmhbt4ui5gt/TxdzwpjykNzghzbs=
-X-Google-Smtp-Source: APBJJlH9uxUr74T3itDXphOGFeNhR6089Pr8UOtA6dNGiJn+j1gQnOZ/lHsdEgILnIhgz3oqUoYqCw==
-X-Received: by 2002:a17:902:e743:b0:1ae:89a:a4 with SMTP id p3-20020a170902e74300b001ae089a00a4mr15745490plf.8.1688407898512;
-        Mon, 03 Jul 2023 11:11:38 -0700 (PDT)
-Received: from octofox.hsd1.ca.comcast.net ([2601:646:a201:19d0:feb2:139d:d966:84b8])
-        by smtp.gmail.com with ESMTPSA id h6-20020a170902f54600b001b86c526feasm6204072plf.28.2023.07.03.11.11.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jul 2023 11:11:37 -0700 (PDT)
-From:   Max Filippov <jcmvbkbc@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v2] xtensa: ISS: fix call to split_if_spec
-Date:   Mon,  3 Jul 2023 11:11:27 -0700
-Message-Id: <20230703181127.1346607-1-jcmvbkbc@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S230137AbjGCSaE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:30:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB7371A7
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:30:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EC4A60FFA
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:30:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BD0C433C7;
+        Mon,  3 Jul 2023 18:30:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1688409001;
+        bh=K+oBVMoybBKKwNEn4tHLH0BrYNdvhvpWiOktZoh3Ctw=;
+        h=Subject:To:Cc:From:Date:From;
+        b=W+rKM75rDzQYIFwnSjg8VuRpnAXAIcugClDwcFIIDllkpSPeRPEJ2jOF/5P30jH5H
+         eAmD/sQbjgUP7z0qvM/RN6BziU7VriDpEHkLK9osZBHQFmxcGia88l+DmCvzD1Gm32
+         amqqHLz3efxXgZlAGTZi0lnY183gJ5HO//JwxWB4=
+Subject: FAILED: patch "[PATCH] nubus: Partially revert proc_create_single_data() conversion" failed to apply to 5.15-stable tree
+To:     fthain@linux-m68k.org, geert@linux-m68k.org, hch@lst.de
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 03 Jul 2023 20:29:59 +0200
+Message-ID: <2023070359-scowling-tiny-bfd6@gregkh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FROM_LOCAL_NOVOWEL,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,36 +48,140 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-split_if_spec expects a NULL-pointer as an end marker for the argument
-list, but tuntap_probe never supplied that terminating NULL. As a result
-incorrectly formatted interface specification string may cause a crash
-because of the random memory access. Fix that by adding NULL terminator
-to the split_if_spec argument list.
 
-Cc: stable@vger.kernel.org
-Fixes: 7282bee78798 ("[PATCH] xtensa: Architecture support for Tensilica Xtensa Part 8")
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
----
-Changes v1->v2:
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-- fix commit message wording and add cc: stable
+To reproduce the conflict and resubmit, you may use the following commands:
 
- arch/xtensa/platforms/iss/network.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0e96647cff9224db564a1cee6efccb13dbe11ee2
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023070359-scowling-tiny-bfd6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-diff --git a/arch/xtensa/platforms/iss/network.c b/arch/xtensa/platforms/iss/network.c
-index 7b97e6ab85a4..85c82cd42188 100644
---- a/arch/xtensa/platforms/iss/network.c
-+++ b/arch/xtensa/platforms/iss/network.c
-@@ -237,7 +237,7 @@ static int tuntap_probe(struct iss_net_private *lp, int index, char *init)
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 0e96647cff9224db564a1cee6efccb13dbe11ee2 Mon Sep 17 00:00:00 2001
+From: Finn Thain <fthain@linux-m68k.org>
+Date: Tue, 14 Mar 2023 19:51:59 +1100
+Subject: [PATCH] nubus: Partially revert proc_create_single_data() conversion
+
+The conversion to proc_create_single_data() introduced a regression
+whereby reading a file in /proc/bus/nubus results in a seg fault:
+
+    # grep -r . /proc/bus/nubus/e/
+    Data read fault at 0x00000020 in Super Data (pc=0x1074c2)
+    BAD KERNEL BUSERR
+    Oops: 00000000
+    Modules linked in:
+    PC: [<001074c2>] PDE_DATA+0xc/0x16
+    SR: 2010  SP: 38284958  a2: 01152370
+    d0: 00000001    d1: 01013000    d2: 01002790    d3: 00000000
+    d4: 00000001    d5: 0008ce2e    a0: 00000000    a1: 00222a40
+    Process grep (pid: 45, task=142f8727)
+    Frame format=B ssw=074d isc=2008 isb=4e5e daddr=00000020 dobuf=01199e70
+    baddr=001074c8 dibuf=ffffffff ver=f
+    Stack from 01199e48:
+	    01199e70 00222a58 01002790 00000000 011a3000 01199eb0 015000c0 00000000
+	    00000000 01199ec0 01199ec0 000d551a 011a3000 00000001 00000000 00018000
+	    d003f000 00000003 00000001 0002800d 01052840 01199fa8 c01f8000 00000000
+	    00000029 0b532b80 00000000 00000000 00000029 0b532b80 01199ee4 00103640
+	    011198c0 d003f000 00018000 01199fa8 00000000 011198c0 00000000 01199f4c
+	    000b3344 011198c0 d003f000 00018000 01199fa8 00000000 00018000 011198c0
+    Call Trace: [<00222a58>] nubus_proc_rsrc_show+0x18/0xa0
+     [<000d551a>] seq_read+0xc4/0x510
+     [<00018000>] fp_fcos+0x2/0x82
+     [<0002800d>] __sys_setreuid+0x115/0x1c6
+     [<00103640>] proc_reg_read+0x5c/0xb0
+     [<00018000>] fp_fcos+0x2/0x82
+     [<000b3344>] __vfs_read+0x2c/0x13c
+     [<00018000>] fp_fcos+0x2/0x82
+     [<00018000>] fp_fcos+0x2/0x82
+     [<000b8aa2>] sys_statx+0x60/0x7e
+     [<000b34b6>] vfs_read+0x62/0x12a
+     [<00018000>] fp_fcos+0x2/0x82
+     [<00018000>] fp_fcos+0x2/0x82
+     [<000b39c2>] ksys_read+0x48/0xbe
+     [<00018000>] fp_fcos+0x2/0x82
+     [<000b3a4e>] sys_read+0x16/0x1a
+     [<00018000>] fp_fcos+0x2/0x82
+     [<00002b84>] syscall+0x8/0xc
+     [<00018000>] fp_fcos+0x2/0x82
+     [<0000c016>] not_ext+0xa/0x18
+    Code: 4e5e 4e75 4e56 0000 206e 0008 2068 ffe8 <2068> 0020 2008 4e5e 4e75 4e56 0000 2f0b 206e 0008 2068 0004 2668 0020 206b ffe8
+    Disabling lock debugging due to kernel taint
+
+    Segmentation fault
+
+The proc_create_single_data() conversion does not work because
+single_open(file, nubus_proc_rsrc_show, PDE_DATA(inode)) is not
+equivalent to the original code.
+
+Fixes: 3f3942aca6da ("proc: introduce proc_create_single{,_data}")
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org # 5.6+
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/d4e2a586e793cc8d9442595684ab8a077c0fe726.1678783919.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+diff --git a/drivers/nubus/proc.c b/drivers/nubus/proc.c
+index 1fd667852271..cd4bd06cf309 100644
+--- a/drivers/nubus/proc.c
++++ b/drivers/nubus/proc.c
+@@ -137,6 +137,18 @@ static int nubus_proc_rsrc_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
  
- 	init += sizeof(TRANSPORT_TUNTAP_NAME) - 1;
- 	if (*init == ',') {
--		rem = split_if_spec(init + 1, &mac_str, &dev_name);
-+		rem = split_if_spec(init + 1, &mac_str, &dev_name, NULL);
- 		if (rem != NULL) {
- 			pr_err("%s: extra garbage on specification : '%s'\n",
- 			       dev->name, rem);
--- 
-2.30.2
++static int nubus_rsrc_proc_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, nubus_proc_rsrc_show, inode);
++}
++
++static const struct proc_ops nubus_rsrc_proc_ops = {
++	.proc_open	= nubus_rsrc_proc_open,
++	.proc_read	= seq_read,
++	.proc_lseek	= seq_lseek,
++	.proc_release	= single_release,
++};
++
+ void nubus_proc_add_rsrc_mem(struct proc_dir_entry *procdir,
+ 			     const struct nubus_dirent *ent,
+ 			     unsigned int size)
+@@ -152,8 +164,8 @@ void nubus_proc_add_rsrc_mem(struct proc_dir_entry *procdir,
+ 		pded = nubus_proc_alloc_pde_data(nubus_dirptr(ent), size);
+ 	else
+ 		pded = NULL;
+-	proc_create_single_data(name, S_IFREG | 0444, procdir,
+-			nubus_proc_rsrc_show, pded);
++	proc_create_data(name, S_IFREG | 0444, procdir,
++			 &nubus_rsrc_proc_ops, pded);
+ }
+ 
+ void nubus_proc_add_rsrc(struct proc_dir_entry *procdir,
+@@ -166,9 +178,9 @@ void nubus_proc_add_rsrc(struct proc_dir_entry *procdir,
+ 		return;
+ 
+ 	snprintf(name, sizeof(name), "%x", ent->type);
+-	proc_create_single_data(name, S_IFREG | 0444, procdir,
+-			nubus_proc_rsrc_show,
+-			nubus_proc_alloc_pde_data(data, 0));
++	proc_create_data(name, S_IFREG | 0444, procdir,
++			 &nubus_rsrc_proc_ops,
++			 nubus_proc_alloc_pde_data(data, 0));
+ }
+ 
+ /*
 
