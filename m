@@ -2,112 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8452F7465FF
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 01:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B80A6746613
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 01:08:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230384AbjGCXCm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 19:02:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44630 "EHLO
+        id S230303AbjGCXIL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 19:08:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230507AbjGCXCj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 19:02:39 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9AE510E4
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 16:02:21 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-51d95aed33aso4668310a12.3
-        for <stable@vger.kernel.org>; Mon, 03 Jul 2023 16:02:21 -0700 (PDT)
+        with ESMTP id S229786AbjGCXIK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 19:08:10 -0400
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A82D2186;
+        Mon,  3 Jul 2023 16:07:59 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-666edfc50deso3134659b3a.0;
+        Mon, 03 Jul 2023 16:07:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1688425340; x=1691017340;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1688425679; x=1691017679;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ugEEPDI78ePccslV5nFSda7Y+u/b3y8toq3vF1cGXRM=;
-        b=Gxg1d296aYhiThTBErhnK4dFyBlXUAQZR1j5FPxBeNRWewzsI9EYOok18orw1+ka1x
-         +bln1Pl9uVN9FKWcvin7zQoyOTdfSeP7iYT1KquHv/2Guvb2gEQwQ0bS3yurHb84tRcd
-         UZn/uttOqZ42oBsM2Lu7jsF+dofR+ZkktI39f1FtTVw5cnxdpAv0WkPyPnEqoLhgumXg
-         y6tUYBc+rnuSm1I4rgSIcZhOPR2nIvmgJ5+hSjhmOY/sX7RqoCZY37moGpkZjpQ94Fn6
-         SwfY8aaKo0F2wt8qwbc3NJqvuyTok8oCtlw8LNWm7yoWR9iVHYiXNBGMdl+HkL7AJrLc
-         BnQg==
+        bh=30zNCo+aXEcdrX1BYZ3Jkoz9pf4nQ32fKAkcmaAbuak=;
+        b=gSUs7NtBYHwpeLLg17wEsJTefX77ut3A/4nFbS2k2LZV2Lxv6cF/guao2w3TCt+PNu
+         JVSvokGP/0Z2tkeVM0buJ0VcckFpwfJKML4tznnFa/Im8Fd/A28b6nWRuANIn5dTXyPa
+         5jCFTeRehKQHIAmHDJeDIsu+rm4LgBgfeqwtLg3Cx3ahVVkuWIulpSWP9Jv6EBw9LW4B
+         D8dO1IUj6WyPY5ZT6gj6hcaekGunAjSfeOIaLiH1uZazZH14nBqwlQvzYmFDfWZ9tbCH
+         64sZ9kyOoICO8dLTZWI+ggvvFv8vpa6GvlgLiQrXZUGefwOKdiIjL/haWUeQM13mAlJv
+         LOIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688425340; x=1691017340;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1688425679; x=1691017679;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ugEEPDI78ePccslV5nFSda7Y+u/b3y8toq3vF1cGXRM=;
-        b=crUQG0HY0xXwgqb2VTBKj30/wxtN19b/u1ZkmziGDUsk/wpLxnhDsrS9KzwS56v/w6
-         GfTVEJlGfHaQneLFnzg4nFHQIBOrtzPrYakkBPGHKVb6mwSuO0UNuJQSFU61C6/LOnvF
-         RfqqschljBZd2m4Gk9TBq0NcrD5tKRNomVCJw82lB9A83mCoL6T0ZulB2ipgqtK8kexK
-         /O0AKibL/Y0O4yC2LT5q5E6jMYN9yy4rRghhdO4yE0QRwSmttHvS0dVhyPjCynYNuzUf
-         GMTzJKAIWIXqJOaE3Tg6hICwctXwXgq6ZxAQbtElYY1JKwrOsFmxxkXevnUYMFXLXxID
-         ZMjA==
-X-Gm-Message-State: ABy/qLZ+BsaqNC0Gr+WEthtTvcgAX3f0EBCSgIHYpg0Ux+Fh9swr5LCQ
-        CMQV0wWb5KIBtaGbXcK13CJiTs2hymZT6bmDCmc8dA==
-X-Google-Smtp-Source: APBJJlFfCePKSzholqHXh1bDMosUBsG+EpDt5w4T90POrytUx446YR+AKSabi0OjjX5yBnw0LUAcyx0QPDihFPk1n/8=
-X-Received: by 2002:aa7:c697:0:b0:51d:960d:5fce with SMTP id
- n23-20020aa7c697000000b0051d960d5fcemr6204738edq.14.1688425340062; Mon, 03
- Jul 2023 16:02:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230703184519.121965745@linuxfoundation.org>
-In-Reply-To: <20230703184519.121965745@linuxfoundation.org>
-From:   ogasawara takeshi <takeshi.ogasawara@futuring-girl.com>
-Date:   Tue, 4 Jul 2023 08:02:09 +0900
-Message-ID: <CAKL4bV6wTXVoYP7Ui9u0vSfx4Ga0GY+VPZeQp8TLJ+zvxjoHhQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/11] 6.1.38-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        bh=30zNCo+aXEcdrX1BYZ3Jkoz9pf4nQ32fKAkcmaAbuak=;
+        b=H+ELCeOB7fU3gjAImwYUCIWfAN5oC7HFuL/250B0N5tuIXQEbNUWM9YyPR4p+eOlZ2
+         u/MGDPO9Eo0LbhHTaPlV+pi6S23IJ/LkmkQKcknBzz5Na5A6TQa6MzZJVeetz/e+zqTY
+         rebPzL1e/Gq1O2WUebT54CRXCB6PvjSH9n+MliwbjhMX28Jqu9lFvIw7ZmM/XjaZFhpL
+         pBaB29xAoAbnhX1Ao8rAwnZ/hUltg5FtEhCQJAHz+dCyjp6ENFe4boSGnnzcnMAGyWQN
+         ziUBy/Vc9AtwJixyRKj8cxihJvr39IDkohElZCXp+4mwSS1q1dY9mcPVnMU6Lox+Wppv
+         r7wA==
+X-Gm-Message-State: AC+VfDzxKwhpgdfLTYfQUyf/YXY3qZFCLJy3NEqphvsF6ZZBhn8jjZPK
+        reR1GwcMKXpNlgCi7DyKRt8=
+X-Google-Smtp-Source: ACHHUZ7gcOaPDsbNzc5xwNmjHgIPbfFNvEWUcCtR2orYaGicSiZSsbCe/eSSHHqXKJ3OKv6MfQAlGQ==
+X-Received: by 2002:a05:6a00:1388:b0:668:93e7:6800 with SMTP id t8-20020a056a00138800b0066893e76800mr25863549pfg.14.1688425678950;
+        Mon, 03 Jul 2023 16:07:58 -0700 (PDT)
+Received: from xplor.waratah.dyndns.org (222-152-184-54-fibre.sparkbb.co.nz. [222.152.184.54])
+        by smtp.gmail.com with ESMTPSA id y19-20020aa78553000000b0066f37665a63sm9982670pfn.73.2023.07.03.16.07.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jul 2023 16:07:58 -0700 (PDT)
+Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
+        id 9EBA8360319; Tue,  4 Jul 2023 11:07:54 +1200 (NZST)
+From:   Michael Schmitz <schmitzmic@gmail.com>
+To:     linux-block@vger.kernel.org, axboe@kernel.dk
+Cc:     linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de,
+        geert@linux-m68k.org, hch@lst.de, martin@lichtvoll.de,
+        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH v2] block: bugfix for Amiga partition overflow check patch
+Date:   Tue,  4 Jul 2023 11:07:52 +1200
+Message-Id: <20230703230752.13394-1-schmitzmic@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
+fails the 'blk>0' test in the partition block loop if a
+value of (signed int) -1 is used to mark the end of the
+partition block list.
 
-On Tue, Jul 4, 2023 at 3:57=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.38 release.
-> There are 11 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 05 Jul 2023 18:45:08 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.38-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+This bug was introduced in patch 3 of my prior Amiga partition
+support fixes series, and spotted by Christian Zigotzky when
+testing the latest block updates.
 
-6.1.38-rc1 tested.
+Explicitly cast 'blk' to signed int to allow use of -1 to
+terminate the partition block linked list.
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+Testing by Christian also exposed another aspect of the old
+bug fixed in commits fc3d092c6b ("block: fix signed int
+overflow in Amiga partition support") and b6f3f28f60
+("block: add overflow checks for Amiga partition support"):
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64), arch linux)
+Partitons that did overflow the disk size (due to 32 bit int
+overflow) were not skipped but truncated to the end of the
+disk. Users who missed the warning message during boot would
+go on to create a filesystem with a size exceeding the
+actual partition size. Now that the 32 bit overflow has been
+corrected, such filesystems may refuse to mount with a
+'filesystem exceeds partition size' error. Users should
+either correct the partition size, or resize the filesystem
+before attempting to boot a kernel with the RDB fixes in
+place.
 
-Thanks
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Fixes: b6f3f28f60 ("block: add overflow checks for Amiga partition support")
+Message-ID: 024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+Cc: <stable@vger.kernel.org> # 6.4
+Link: https://lore.kernel.org/r/024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+--
+
+Changes since v1:
+
+- corrected Fixes: tag
+- added Tested-by:
+- reworded commit message to describe filesystem partition
+  size mismatch problem
+---
+ block/partitions/amiga.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
+index ed222b9c901b..506921095412 100644
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -90,7 +90,7 @@ int amiga_partition(struct parsed_partitions *state)
+ 	}
+ 	blk = be32_to_cpu(rdb->rdb_PartitionList);
+ 	put_dev_sector(sect);
+-	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
++	for (part = 1; (s32) blk>0 && part<=16; part++, put_dev_sector(sect)) {
+ 		/* Read in terms partition table understands */
+ 		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
+ 			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
+-- 
+2.17.1
+
