@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6FE574625F
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC85D746260
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:30:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229701AbjGCSaE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 14:30:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48258 "EHLO
+        id S230281AbjGCSaO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 14:30:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbjGCSaE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:30:04 -0400
+        with ESMTP id S230137AbjGCSaN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:30:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB7371A7
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:30:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCAC121
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:30:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EC4A60FFA
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:30:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BD0C433C7;
-        Mon,  3 Jul 2023 18:30:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B7A460FFA
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:30:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251BCC433C7;
+        Mon,  3 Jul 2023 18:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688409001;
-        bh=K+oBVMoybBKKwNEn4tHLH0BrYNdvhvpWiOktZoh3Ctw=;
+        s=korg; t=1688409011;
+        bh=VPTd+od6e47dpz5pSuwQe59wRGvqQEMjosoFtgWv2Gg=;
         h=Subject:To:Cc:From:Date:From;
-        b=W+rKM75rDzQYIFwnSjg8VuRpnAXAIcugClDwcFIIDllkpSPeRPEJ2jOF/5P30jH5H
-         eAmD/sQbjgUP7z0qvM/RN6BziU7VriDpEHkLK9osZBHQFmxcGia88l+DmCvzD1Gm32
-         amqqHLz3efxXgZlAGTZi0lnY183gJ5HO//JwxWB4=
-Subject: FAILED: patch "[PATCH] nubus: Partially revert proc_create_single_data() conversion" failed to apply to 5.15-stable tree
+        b=W06L2h0mFxOvtOmk44Un6E6VS+NQR1KL4u83ltDhYVgmQoToZESvDwetZA91hn99D
+         0gClz6UbScwK4HOj3NMwApASM0ZVKDv9u42mJG0PMST0IaTCJ9YHLY8PpkWDdPbckt
+         u6gfsg5AsYaQSR/83/+JPDZrw3EQVFecDFz8Z4ws=
+Subject: FAILED: patch "[PATCH] nubus: Partially revert proc_create_single_data() conversion" failed to apply to 5.10-stable tree
 To:     fthain@linux-m68k.org, geert@linux-m68k.org, hch@lst.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 03 Jul 2023 20:29:59 +0200
-Message-ID: <2023070359-scowling-tiny-bfd6@gregkh>
+Date:   Mon, 03 Jul 2023 20:30:01 +0200
+Message-ID: <2023070300-copious-unhidden-592f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0e96647cff9224db564a1cee6efccb13dbe11ee2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023070359-scowling-tiny-bfd6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023070300-copious-unhidden-592f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
