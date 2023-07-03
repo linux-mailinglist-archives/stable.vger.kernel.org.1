@@ -2,162 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 594D6745CD7
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 15:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC6A745E03
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 15:57:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbjGCNGy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 09:06:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39718 "EHLO
+        id S229523AbjGCN5u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 09:57:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230452AbjGCNGx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 09:06:53 -0400
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99CAF1B5;
-        Mon,  3 Jul 2023 06:06:52 -0700 (PDT)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5703cb4bcb4so46569627b3.3;
-        Mon, 03 Jul 2023 06:06:52 -0700 (PDT)
+        with ESMTP id S229484AbjGCN5t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 09:57:49 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036C4E51
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 06:57:48 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2b699a2fe86so74198471fa.3
+        for <stable@vger.kernel.org>; Mon, 03 Jul 2023 06:57:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688389612; x=1690981612;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=E/UIpD/SrkLTx6OVnCwv/YXnUS5IysH+eycuEeM76/E=;
-        b=BBdBGotrRDCts8dsP+Iqv/KbwxLpKRS1msq2KDaSkoTMetauVEE001eZ4UjhUIZreP
-         bjwNopiQ0m1B9EO9eE/3xGVuIz6rQ93UmvAGcUoea8RWq1Brz12qzj70ejIhQV5SOlSq
-         0nCvwbkGIiKH0DLTLfrdZ6IzV2uZ+Fm7QEQdiTYzewuoHvP41Xfo4Nn4cHoUTSLXKQNO
-         iKnM95wMBGQxrNJWkRjvHVifhBD0CqX3lOzvzHcZWWhqtwcL8edg28RAuPyPVAXu0dp/
-         Y9mqmSB57NXKwFrbpHX2M43NYVpXvh32xZ6ogH6Q26ER+hLl38uLIhLeR5IltMOZY7Pz
-         +xDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688389612; x=1690981612;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20221208; t=1688392666; x=1690984666;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=E/UIpD/SrkLTx6OVnCwv/YXnUS5IysH+eycuEeM76/E=;
-        b=UstGSvCfGTbUvm8fdhpblP6UlufMxFetPxvV6lTmQFIJSgAF7ivIqnXGQjYcYZVMre
-         8ZmDEHJlEngoOlXKUdECSGqnN6f1OAcXx0KIdV8GaqpQhfY4egdVeJeNiBsOCpJEYbQr
-         DWr46KxgjIvAuwXJTQAcItJenbgN1/93wzM/FxeD5Iyh8yyhpTrlFmrAeh7WdHnxTFn+
-         l9M3ibMG/ltIWK2VjCwV3z5nx6yf15ovyFZxOThltzC1MQAqm/h1NlV0T46b4yNcC4pA
-         wK8kbE9jXT93/I5J/aqDMlKCv+hW77P5RH8XljR+Qm0IMBfhzjvGX9zkJz7xBOvBprvC
-         bteQ==
-X-Gm-Message-State: ABy/qLaCplyDdgj53BKFPBtgYV+z9HAs8ohQ2dvqtWxoS+Yo/3izsKWz
-        vTbPd7IEKSkN4jdVp5B0gHR21J7kJ9g=
-X-Google-Smtp-Source: APBJJlFA4OoXPKC76ahBQyNUCz3bRAW4u9bv/d0+w2rQ8FYfKFA1/1KBcuOobmGfYN5OlK9av2OMNg==
-X-Received: by 2002:a81:ab52:0:b0:570:670c:7fe3 with SMTP id d18-20020a81ab52000000b00570670c7fe3mr11162420ywk.46.1688389610179;
-        Mon, 03 Jul 2023 06:06:50 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id t11-20020a81460b000000b005616d72f435sm5093236ywa.116.2023.07.03.06.06.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Jul 2023 06:06:49 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <b886c0ee-2ef6-5ec9-17e0-eb66c63a61d4@roeck-us.net>
-Date:   Mon, 3 Jul 2023 06:06:47 -0700
+        bh=PKlR/17zBBOm87/ERZ/UgMSxJea1HiQOEOXEkvHkmd8=;
+        b=PaExsTHmnVLcUii2/kshU7xQ7UsndZVhnIf4YWBJMUlmMnAEL2Fa8rBV/5nVsXPLtp
+         /ArWTI0tFnVgmYQ/O7G+guYMgEKb4wXHlx8QJAM1jpdxYQvhiDH41YSwbyXWX0DDFkc5
+         1DMSb77BmfjXRpU+AXOgAKOVwusQEFdsAP6I+giQt0vNi+Ayq/hfdO3eJTa2t6MnptCp
+         e9VyGgsOiC8hDRJ4EezCq4yXDDvb5LnGVuTygKkUXzilIlJnulMhqti040vNxjAlrov9
+         gfiAG2VQQVKmgf6RvwI4w9CJhRm231tDS+F2At6Ao6RtOuXnheMwkslDSQY813G5a6uL
+         lEFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688392666; x=1690984666;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PKlR/17zBBOm87/ERZ/UgMSxJea1HiQOEOXEkvHkmd8=;
+        b=S91M486hQV0kwEhil/0R97N0dgZXrOPGK1hnGyoMOCqvg1hCTtUhRyh7ouxQiHGcQ1
+         qlX0vg5b2FjBa/z828F7SYicmFOBYdEkRaaQVDamkvoXj1EX5Bb9M9yOU+9gfLNlrYsN
+         2ak2mqAqyZ0MzNAMwQwFz8Z0McN9tEDLLfnG0UJQUBK3Z2C/M0acDLn1ULVl4lwGAKwG
+         AviofUqkNw8smTUZzHdD+FI4xSCZ2cVhoWwNV9LLpUlv2qbrcIvsIVd0rvgF6vV4HcOl
+         DmjXCtjJSYtq4ug+0tvNMD0AAWu0I0xaIjQstB9GQph1IPv/1VrvKEcd7Q6NIVuw36yu
+         MNnQ==
+X-Gm-Message-State: ABy/qLbNPyJMphI84nHfdDwV+aUuhqcrWyXYBXWAB7iREnDUzAVqmFGD
+        z8YFrAyutCOJ9P3OGY5khuU=
+X-Google-Smtp-Source: APBJJlEjtAu6fwqxU8bio+kqvjipP02DjJCXlp59Cuax6A+JXSJcUNt07ThdpT2s05dON86kjoSnZg==
+X-Received: by 2002:a2e:3507:0:b0:2b6:eee2:99b0 with SMTP id z7-20020a2e3507000000b002b6eee299b0mr656660ljz.37.1688392665935;
+        Mon, 03 Jul 2023 06:57:45 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id kt19-20020a170906aad300b009894b476310sm12090368ejb.163.2023.07.03.06.57.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jul 2023 06:57:45 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+        id 75AB5BE2DE0; Mon,  3 Jul 2023 15:57:44 +0200 (CEST)
+Date:   Mon, 3 Jul 2023 15:57:44 +0200
+From:   Salvatore Bonaccorso <carnil@debian.org>
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: Regression in 6.1.35 / 6.3.9
+Message-ID: <ZKLT2NnJu3aA0pqt@eldamar.lan>
+References: <MN0PR12MB6101C52C4B7FB00702A996EBE224A@MN0PR12MB6101.namprd12.prod.outlook.com>
+ <2023062808-mangy-vineyard-4f66@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review - hppa argument list too long
-Content-Language: en-US
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Helge Deller <deller@gmx.de>, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John David Anglin <dave.anglin@bell.net>
-References: <20230629184151.888604958@linuxfoundation.org>
- <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
- <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
- <2023063001-overlying-browse-de1a@gregkh>
- <0b2aefa4-7407-4936-6604-dedfb1614483@gmx.de>
- <5fd98a09-4792-1433-752d-029ae3545168@gmx.de>
- <CAHk-=wiHs1cL2Fb90NXVhtQsMuu+OLHB4rSDsPVe0ALmbvZXZQ@mail.gmail.com>
- <CAHk-=wj=0jkhj2=HkHVdezvuzV-djLsnyeE5zFfnXxgtS2MXFQ@mail.gmail.com>
- <9b35a19d-800c-f9f9-6b45-cf2038ef235f@roeck-us.net>
- <CAHk-=wgdC6RROG145_YB5yWoNtBQ0Xsrhdcu2TMAFTw52U2E0w@mail.gmail.com>
- <2a2387bf-f589-6856-3583-d3d848a17d34@roeck-us.net>
- <CAHk-=wgczy0dxK9vg-YWbq6YLP2gP8ix7Ys9K+Mr=S2NEj+hGw@mail.gmail.com>
- <c21e8e95-3353-fc57-87fd-271b2c9cc000@roeck-us.net>
- <CAHk-=wj+F8oGK_Hx6YSPJpwL-xyL+-q2SxtxYE0abtZa_jSkLw@mail.gmail.com>
- <36986dd6-4973-65a2-3490-84d3c0967adc@roeck-us.net>
-In-Reply-To: <36986dd6-4973-65a2-3490-84d3c0967adc@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023062808-mangy-vineyard-4f66@gregkh>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/3/23 05:59, Guenter Roeck wrote:
-> On 7/2/23 23:20, Linus Torvalds wrote:
->> On Sun, 2 Jul 2023 at 22:33, Guenter Roeck <linux@roeck-us.net> wrote:
->>>
->>> Here you are:
->>>
->>> [   31.188688] stack expand failed: ffeff000-fff00000 (ffefeff2)
->>
->> Ahhah!
->>
->> I think the problem is actually ridiculously simple.
->>
->> The thing is, the parisc stack expands upwards. That's obvious. I've
->> mentioned it several times in just this thread as being the thing that
->> makes parisc special.
->>
->> But it's *so* obvious that I didn't even think about what it really implies.
->>
->> And part of all the changes was this part in expand_downwards():
->>
->>          if (!(vma->vm_flags & VM_GROWSDOWN))
->>                  return -EFAULT;
->>
->> and that will *always* fail on parisc, because - as said multiple
->> times - the parisc stack expands upwards. It doesn't have VM_GROWSDOWN
->> set.
->>
->> What a dum-dum I am.
->>
->> And I did it that way because the *normal* stack expansion obviously
->> wants it that way and putting the check there not only made sense, but
->> simplified other code.
->>
->> But fs/execve.c is special - and only special for parisc - in that it
->> really wants to  expand a normally upwards-growing stack downwards
->> unconditionally.
->>
->> Anyway, I think that new check in expand_downwards() is the right
->> thing to do, and the real fix here is to simply make vm_flags reflect
->> reality.
->>
->> Because during execve, that stack that will _eventually_ grow upwards,
->> does in fact grow downwards.  Let's make it reflect that.
->>
->> We already do magical extra setup for the stack flags during setup
->> (VM_STACK_INCOMPLETE_SETUP), so extending that logic to contain
->> VM_GROWSDOWN seems sane and the right thing to do.
->>
->> IOW, I think a patch like the attached will fix the problem for real.
->>
->> It needs a good commit log and maybe a code comment or two, but before
->> I bother to do that, let's verify that yes, it does actually fix
->> things.
->>
+Hi Mario,
+
+On Wed, Jun 28, 2023 at 08:16:25PM +0200, Greg KH wrote:
+> On Wed, Jun 28, 2023 at 05:56:01PM +0000, Limonciello, Mario wrote:
+> > [Public]
+> > 
+> > Hi,
+> >  A regression was reported in 6.4-rc6 that monitor resolutions are no longer present for anything but native resolution on eDP panels.  This specific change backported into stable at 6.1.35 and 6.3.9:
+> > e749dd10e5f29 ("drm/amd/display: edp do not add non-edid timings")
+> > 
+> > After discussing it with the original author, they submitted a revert commit for review:
+> > https://patchwork.freedesktop.org/patch/544273/
+> > 
+> > I suggested the revert also CC stable, and I expect this will go up in 6.5-rc1, but given the timing of the merge window and the original issue hit the stable trees, can we revert it sooner in the stable
+> > trees to avoid exposing the regression to more people?
 > 
-> Yes, it does. I'll run a complete qemu test with it applied to be sure
-> there is no impact on other architectures (yes, I know, that should not
-> be the case, but better safe than sorry). I'll even apply
-> https://lore.kernel.org/all/20230609075528.9390-12-bhe@redhat.com/raw
-> to be able to test sh4.
-> 
+> As the submitted patch had the wrong git id, it might be good to be able
+> to take a real one?  I can take it once it shows up in linux-next if
+> it's really going to be going into 6.5, but I need a stable git id for
+> it.
 
-Meh, should have figured. That fixes one problem with sh4 builds
-and creates another. Should have figured.
+Do you know, did that felt trough the cracks or is it still planned to
+do the revert?
 
-Guenter
-
+Regards,
+Salvatore
