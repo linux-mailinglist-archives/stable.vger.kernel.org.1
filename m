@@ -2,41 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEFA3746295
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A24217462EE
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:55:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230247AbjGCSg6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 14:36:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53434 "EHLO
+        id S230231AbjGCSz5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 14:55:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230121AbjGCSg6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:36:58 -0400
+        with ESMTP id S230344AbjGCSz4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:55:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A0BF1A2
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:36:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4556E64;
+        Mon,  3 Jul 2023 11:55:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D3FAA60FFB
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:36:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE4EC433C7;
-        Mon,  3 Jul 2023 18:36:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69F8761019;
+        Mon,  3 Jul 2023 18:55:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7C8C433C7;
+        Mon,  3 Jul 2023 18:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688409416;
-        bh=WaWaGMR4JFyWXQOflx+2zBQ9fUCvOo+9oN2nRGzFbBQ=;
-        h=Subject:To:Cc:From:Date:From;
-        b=R1TXceM0ByE1bAsk2CTCPjUvWsZ1odRBMUa6DoeMVvF1qE/rXA0SedMQQymU8HRZj
-         Hxp70wvKTa9JmA4ha8onZa5Tg9IE5FG1M8XF3Hk9Rjb8SN6bQKWMBnDS11WEWPTpOz
-         0lOEJAvhLovZKbJLFOq8mle97r45+ZEM+RAcwFuI=
-Subject: FAILED: patch "[PATCH] dm ioctl: Avoid double-fetch of version" failed to apply to 4.14-stable tree
-To:     demi@invisiblethingslab.com, snitzer@kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 03 Jul 2023 20:36:44 +0200
-Message-ID: <2023070344-agenda-establish-d050@gregkh>
+        s=korg; t=1688410554;
+        bh=QSLM8BmL/Y3s6sjAZ97trfVyFWYruJB+PErAW4K9rS0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bGyswGH3VKcygLbLiS8o40Mb+Ys/aEYBPRAMaupahhNKfHQHM/X1OOox05RO42A2o
+         zOIXEJgZ06Ica3LWawfg3lH5bWg3TFcrVHUfyLTzGUKxuDmo+P74TIz/dhJAsRwTDe
+         cze248WtFoUplu8aDDGIQFz6FPfYbB/hSmwMCXlY=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: [PATCH 6.4 00/13] 6.4.2-rc1 review
+Date:   Mon,  3 Jul 2023 20:54:01 +0200
+Message-ID: <20230703184519.261119397@linuxfoundation.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.2-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.4.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.4.2-rc1
+X-KernelTest-Deadline: 2023-07-05T18:45+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -48,122 +64,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+This is the start of the stable review cycle for the 6.4.2 release.
+There are 13 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Responses should be made by Wed, 05 Jul 2023 18:45:08 +0000.
+Anything received after that time might be too late.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 249bed821b4db6d95a99160f7d6d236ea5fe6362
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023070344-agenda-establish-d050@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
-
-Possible dependencies:
-
-
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.2-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+and the diffstat can be found below.
 
 thanks,
 
 greg k-h
 
------------------- original commit in Linus's tree ------------------
+-------------
+Pseudo-Shortlog of commits:
 
-From 249bed821b4db6d95a99160f7d6d236ea5fe6362 Mon Sep 17 00:00:00 2001
-From: Demi Marie Obenour <demi@invisiblethingslab.com>
-Date: Sat, 3 Jun 2023 10:52:42 -0400
-Subject: [PATCH] dm ioctl: Avoid double-fetch of version
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.4.2-rc1
 
-The version is fetched once in check_version(), which then does some
-validation and then overwrites the version in userspace with the API
-version supported by the kernel.  copy_params() then fetches the version
-from userspace *again*, and this time no validation is done.  The result
-is that the kernel's version number is completely controllable by
-userspace, provided that userspace can win a race condition.
+Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+    drm/amdgpu: Validate VM ioctl flags.
 
-Fix this flaw by not copying the version back to the kernel the second
-time.  This is not exploitable as the version is not further used in the
-kernel.  However, it could become a problem if future patches start
-relying on the version field.
+Demi Marie Obenour <demi@invisiblethingslab.com>
+    dm ioctl: Avoid double-fetch of version
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Ahmed S. Darwish <darwi@linutronix.de>
+    docs: Set minimal gtags / GNU GLOBAL version to 6.6.5
 
-diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
-index a92abbe90981..bfaebc02833a 100644
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1872,30 +1872,36 @@ static ioctl_fn lookup_ioctl(unsigned int cmd, int *ioctl_flags)
-  * As well as checking the version compatibility this always
-  * copies the kernel interface version out.
-  */
--static int check_version(unsigned int cmd, struct dm_ioctl __user *user)
-+static int check_version(unsigned int cmd, struct dm_ioctl __user *user,
-+			 struct dm_ioctl *kernel_params)
- {
--	uint32_t version[3];
- 	int r = 0;
- 
--	if (copy_from_user(version, user->version, sizeof(version)))
-+	/* Make certain version is first member of dm_ioctl struct */
-+	BUILD_BUG_ON(offsetof(struct dm_ioctl, version) != 0);
-+
-+	if (copy_from_user(kernel_params->version, user->version, sizeof(kernel_params->version)))
- 		return -EFAULT;
- 
--	if ((version[0] != DM_VERSION_MAJOR) ||
--	    (version[1] > DM_VERSION_MINOR)) {
-+	if ((kernel_params->version[0] != DM_VERSION_MAJOR) ||
-+	    (kernel_params->version[1] > DM_VERSION_MINOR)) {
- 		DMERR("ioctl interface mismatch: kernel(%u.%u.%u), user(%u.%u.%u), cmd(%d)",
- 		      DM_VERSION_MAJOR, DM_VERSION_MINOR,
- 		      DM_VERSION_PATCHLEVEL,
--		      version[0], version[1], version[2], cmd);
-+		      kernel_params->version[0],
-+		      kernel_params->version[1],
-+		      kernel_params->version[2],
-+		      cmd);
- 		r = -EINVAL;
- 	}
- 
- 	/*
- 	 * Fill in the kernel version.
- 	 */
--	version[0] = DM_VERSION_MAJOR;
--	version[1] = DM_VERSION_MINOR;
--	version[2] = DM_VERSION_PATCHLEVEL;
--	if (copy_to_user(user->version, version, sizeof(version)))
-+	kernel_params->version[0] = DM_VERSION_MAJOR;
-+	kernel_params->version[1] = DM_VERSION_MINOR;
-+	kernel_params->version[2] = DM_VERSION_PATCHLEVEL;
-+	if (copy_to_user(user->version, kernel_params->version, sizeof(kernel_params->version)))
- 		return -EFAULT;
- 
- 	return r;
-@@ -1921,7 +1927,10 @@ static int copy_params(struct dm_ioctl __user *user, struct dm_ioctl *param_kern
- 	const size_t minimum_data_size = offsetof(struct dm_ioctl, data);
- 	unsigned int noio_flag;
- 
--	if (copy_from_user(param_kernel, user, minimum_data_size))
-+	/* check_version() already copied version from userspace, avoid TOCTOU */
-+	if (copy_from_user((char *)param_kernel + sizeof(param_kernel->version),
-+			   (char __user *)user + sizeof(param_kernel->version),
-+			   minimum_data_size - sizeof(param_kernel->version)))
- 		return -EFAULT;
- 
- 	if (param_kernel->data_size < minimum_data_size) {
-@@ -2033,7 +2042,7 @@ static int ctl_ioctl(struct file *file, uint command, struct dm_ioctl __user *us
- 	 * Check the interface version passed in.  This also
- 	 * writes out the kernel's interface version.
- 	 */
--	r = check_version(cmd, user);
-+	r = check_version(cmd, user, &param_kernel);
- 	if (r)
- 		return r;
- 
+Ahmed S. Darwish <darwi@linutronix.de>
+    scripts/tags.sh: Resolve gtags empty index generation
+
+Mike Kravetz <mike.kravetz@oracle.com>
+    hugetlb: revert use of page_cache_next_miss()
+
+Finn Thain <fthain@linux-m68k.org>
+    nubus: Partially revert proc_create_single_data() conversion
+
+Dan Williams <dan.j.williams@intel.com>
+    Revert "cxl/port: Enable the HDM decoder capability for switch ports"
+
+Jeff Layton <jlayton@kernel.org>
+    nfs: don't report STATX_BTIME in ->getattr
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    execve: always mark stack as growing down during early stack setup
+
+Mario Limonciello <mario.limonciello@amd.com>
+    PCI/ACPI: Call _REG when transitioning D-states
+
+Bjorn Helgaas <bhelgaas@google.com>
+    PCI/ACPI: Validate acpi_pci_set_power_state() parameter
+
+Thomas Weißschuh <linux@weissschuh.net>
+    tools/nolibc: x86_64: disable stack protector for _start
+
+Max Filippov <jcmvbkbc@gmail.com>
+    xtensa: fix lock_mm_and_find_vma in case VMA not found
+
+
+-------------
+
+Diffstat:
+
+ Documentation/process/changes.rst      |  7 +++++
+ Makefile                               |  4 +--
+ drivers/cxl/core/pci.c                 | 27 +++--------------
+ drivers/cxl/cxl.h                      |  1 -
+ drivers/cxl/port.c                     | 14 ++++-----
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |  4 +++
+ drivers/md/dm-ioctl.c                  | 33 +++++++++++++--------
+ drivers/nubus/proc.c                   | 22 ++++++++++----
+ drivers/pci/pci-acpi.c                 | 53 +++++++++++++++++++++++++---------
+ fs/hugetlbfs/inode.c                   |  8 ++---
+ fs/nfs/inode.c                         |  2 +-
+ include/linux/mm.h                     |  4 ++-
+ mm/hugetlb.c                           | 12 ++++----
+ mm/nommu.c                             |  7 ++++-
+ scripts/tags.sh                        |  9 +++++-
+ tools/include/nolibc/arch-x86_64.h     |  2 +-
+ tools/testing/cxl/Kbuild               |  1 -
+ tools/testing/cxl/test/mock.c          | 15 ----------
+ 18 files changed, 128 insertions(+), 97 deletions(-)
+
 
