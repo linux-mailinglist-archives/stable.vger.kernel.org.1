@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC85D746260
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66281746263
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:31:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230281AbjGCSaO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 14:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48284 "EHLO
+        id S230162AbjGCSbK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 14:31:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbjGCSaN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:30:13 -0400
+        with ESMTP id S230137AbjGCSbK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:31:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCAC121
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:30:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A66B9121;
+        Mon,  3 Jul 2023 11:31:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B7A460FFA
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:30:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251BCC433C7;
-        Mon,  3 Jul 2023 18:30:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43EFC60FFA;
+        Mon,  3 Jul 2023 18:31:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA58C433C8;
+        Mon,  3 Jul 2023 18:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688409011;
-        bh=VPTd+od6e47dpz5pSuwQe59wRGvqQEMjosoFtgWv2Gg=;
-        h=Subject:To:Cc:From:Date:From;
-        b=W06L2h0mFxOvtOmk44Un6E6VS+NQR1KL4u83ltDhYVgmQoToZESvDwetZA91hn99D
-         0gClz6UbScwK4HOj3NMwApASM0ZVKDv9u42mJG0PMST0IaTCJ9YHLY8PpkWDdPbckt
-         u6gfsg5AsYaQSR/83/+JPDZrw3EQVFecDFz8Z4ws=
-Subject: FAILED: patch "[PATCH] nubus: Partially revert proc_create_single_data() conversion" failed to apply to 5.10-stable tree
-To:     fthain@linux-m68k.org, geert@linux-m68k.org, hch@lst.de
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 03 Jul 2023 20:30:01 +0200
-Message-ID: <2023070300-copious-unhidden-592f@gregkh>
+        s=korg; t=1688409068;
+        bh=WFAyaT1zBQm/iWkDAeWv3kb/dymBVkbMfUBLGKdYW5s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BIqHRpak3i1WBkOOcQxmz4zZdBFnodO6CT37vQwO5m5E+wUrsVrXulKzpa/4z81PD
+         skZl5ufsvgnuzsxzWOY80tKuIx2yNZH+G2KsmvAGu+SIKT0uEgxVftqsCU7JSpk/yh
+         V5ICfyIS94uH0WzUDD2bK4J/+7GBLctk6Lcl6yf0=
+Date:   Mon, 3 Jul 2023 20:31:06 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        songmuchun@bytedance.com, mike.kravetz@oracle.com,
+        Ackerley Tng <ackerleytng@google.com>
+Subject: Re: [PATCH 6.3.y] mm/hugetlb: revert use of page_cache_next_miss()
+Message-ID: <2023070356-paddling-grip-b31a@gregkh>
+References: <20230629211817.194786-1-sidhartha.kumar@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230629211817.194786-1-sidhartha.kumar@oracle.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -48,140 +52,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Thu, Jun 29, 2023 at 05:18:17PM -0400, Sidhartha Kumar wrote:
+> commit fd4aed8d985a3236d0877ff6d0c80ad39d4ce81a upstream
+> 
+> Ackerley Tng reported an issue with hugetlbfs fallocate as noted in the
+> Closes tag.  The issue showed up after the conversion of hugetlb page
+> cache lookup code to use page_cache_next_miss.  User visible effects are:
+> 
+> - hugetlbfs fallocate incorrectly returns -EEXIST if pages are presnet
+>   in the file.
+> - hugetlb pages will not be included in core dumps if they need to be
+>   brought in via GUP.
+> - userfaultfd UFFDIO_COPY will not notice pages already present in the
+>   cache.  It may try to allocate a new page and potentially return
+>   ENOMEM as opposed to EEXIST.
+> 
+> Revert the use page_cache_next_miss() in hugetlb code.
+> 
+> The upstream fix[2] cannot be used used directly as the return value for
+> filemap_get_folio() has been changed between 6.3 and upstream.
+> 
+> Closes: https://lore.kernel.org/linux-mm/cover.1683069252.git.ackerleytng@google.com
+> Fixes: d0ce0e47b323 ("mm/hugetlb: convert hugetlb fault paths to use alloc_hugetlb_folio()")
+> Cc: <stable@vger.kernel.org> #v6.3
+> Reported-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+> 
+> [1] https://lore.kernel.org/linux-mm/cover.1683069252.git.ackerleytng@google.com/
+> [2] https://lore.kernel.org/lkml/20230621230255.GD4155@monkey/
+> ---
+> 
+>  fs/hugetlbfs/inode.c |  8 +++-----
+>  mm/hugetlb.c         | 11 +++++------
+>  2 files changed, 8 insertions(+), 11 deletions(-)
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 0e96647cff9224db564a1cee6efccb13dbe11ee2
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023070300-copious-unhidden-592f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+Now queued up, thanks.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 0e96647cff9224db564a1cee6efccb13dbe11ee2 Mon Sep 17 00:00:00 2001
-From: Finn Thain <fthain@linux-m68k.org>
-Date: Tue, 14 Mar 2023 19:51:59 +1100
-Subject: [PATCH] nubus: Partially revert proc_create_single_data() conversion
-
-The conversion to proc_create_single_data() introduced a regression
-whereby reading a file in /proc/bus/nubus results in a seg fault:
-
-    # grep -r . /proc/bus/nubus/e/
-    Data read fault at 0x00000020 in Super Data (pc=0x1074c2)
-    BAD KERNEL BUSERR
-    Oops: 00000000
-    Modules linked in:
-    PC: [<001074c2>] PDE_DATA+0xc/0x16
-    SR: 2010  SP: 38284958  a2: 01152370
-    d0: 00000001    d1: 01013000    d2: 01002790    d3: 00000000
-    d4: 00000001    d5: 0008ce2e    a0: 00000000    a1: 00222a40
-    Process grep (pid: 45, task=142f8727)
-    Frame format=B ssw=074d isc=2008 isb=4e5e daddr=00000020 dobuf=01199e70
-    baddr=001074c8 dibuf=ffffffff ver=f
-    Stack from 01199e48:
-	    01199e70 00222a58 01002790 00000000 011a3000 01199eb0 015000c0 00000000
-	    00000000 01199ec0 01199ec0 000d551a 011a3000 00000001 00000000 00018000
-	    d003f000 00000003 00000001 0002800d 01052840 01199fa8 c01f8000 00000000
-	    00000029 0b532b80 00000000 00000000 00000029 0b532b80 01199ee4 00103640
-	    011198c0 d003f000 00018000 01199fa8 00000000 011198c0 00000000 01199f4c
-	    000b3344 011198c0 d003f000 00018000 01199fa8 00000000 00018000 011198c0
-    Call Trace: [<00222a58>] nubus_proc_rsrc_show+0x18/0xa0
-     [<000d551a>] seq_read+0xc4/0x510
-     [<00018000>] fp_fcos+0x2/0x82
-     [<0002800d>] __sys_setreuid+0x115/0x1c6
-     [<00103640>] proc_reg_read+0x5c/0xb0
-     [<00018000>] fp_fcos+0x2/0x82
-     [<000b3344>] __vfs_read+0x2c/0x13c
-     [<00018000>] fp_fcos+0x2/0x82
-     [<00018000>] fp_fcos+0x2/0x82
-     [<000b8aa2>] sys_statx+0x60/0x7e
-     [<000b34b6>] vfs_read+0x62/0x12a
-     [<00018000>] fp_fcos+0x2/0x82
-     [<00018000>] fp_fcos+0x2/0x82
-     [<000b39c2>] ksys_read+0x48/0xbe
-     [<00018000>] fp_fcos+0x2/0x82
-     [<000b3a4e>] sys_read+0x16/0x1a
-     [<00018000>] fp_fcos+0x2/0x82
-     [<00002b84>] syscall+0x8/0xc
-     [<00018000>] fp_fcos+0x2/0x82
-     [<0000c016>] not_ext+0xa/0x18
-    Code: 4e5e 4e75 4e56 0000 206e 0008 2068 ffe8 <2068> 0020 2008 4e5e 4e75 4e56 0000 2f0b 206e 0008 2068 0004 2668 0020 206b ffe8
-    Disabling lock debugging due to kernel taint
-
-    Segmentation fault
-
-The proc_create_single_data() conversion does not work because
-single_open(file, nubus_proc_rsrc_show, PDE_DATA(inode)) is not
-equivalent to the original code.
-
-Fixes: 3f3942aca6da ("proc: introduce proc_create_single{,_data}")
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: stable@vger.kernel.org # 5.6+
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/d4e2a586e793cc8d9442595684ab8a077c0fe726.1678783919.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-diff --git a/drivers/nubus/proc.c b/drivers/nubus/proc.c
-index 1fd667852271..cd4bd06cf309 100644
---- a/drivers/nubus/proc.c
-+++ b/drivers/nubus/proc.c
-@@ -137,6 +137,18 @@ static int nubus_proc_rsrc_show(struct seq_file *m, void *v)
- 	return 0;
- }
- 
-+static int nubus_rsrc_proc_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, nubus_proc_rsrc_show, inode);
-+}
-+
-+static const struct proc_ops nubus_rsrc_proc_ops = {
-+	.proc_open	= nubus_rsrc_proc_open,
-+	.proc_read	= seq_read,
-+	.proc_lseek	= seq_lseek,
-+	.proc_release	= single_release,
-+};
-+
- void nubus_proc_add_rsrc_mem(struct proc_dir_entry *procdir,
- 			     const struct nubus_dirent *ent,
- 			     unsigned int size)
-@@ -152,8 +164,8 @@ void nubus_proc_add_rsrc_mem(struct proc_dir_entry *procdir,
- 		pded = nubus_proc_alloc_pde_data(nubus_dirptr(ent), size);
- 	else
- 		pded = NULL;
--	proc_create_single_data(name, S_IFREG | 0444, procdir,
--			nubus_proc_rsrc_show, pded);
-+	proc_create_data(name, S_IFREG | 0444, procdir,
-+			 &nubus_rsrc_proc_ops, pded);
- }
- 
- void nubus_proc_add_rsrc(struct proc_dir_entry *procdir,
-@@ -166,9 +178,9 @@ void nubus_proc_add_rsrc(struct proc_dir_entry *procdir,
- 		return;
- 
- 	snprintf(name, sizeof(name), "%x", ent->type);
--	proc_create_single_data(name, S_IFREG | 0444, procdir,
--			nubus_proc_rsrc_show,
--			nubus_proc_alloc_pde_data(data, 0));
-+	proc_create_data(name, S_IFREG | 0444, procdir,
-+			 &nubus_rsrc_proc_ops,
-+			 nubus_proc_alloc_pde_data(data, 0));
- }
- 
- /*
-
