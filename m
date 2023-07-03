@@ -2,127 +2,170 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C564074530D
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 01:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88B0E745384
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 03:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229931AbjGBXbC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 2 Jul 2023 19:31:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59610 "EHLO
+        id S229913AbjGCB1r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 2 Jul 2023 21:27:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjGBXbB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 2 Jul 2023 19:31:01 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E661E40
-        for <stable@vger.kernel.org>; Sun,  2 Jul 2023 16:31:00 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-98e39784a85so690715566b.1
-        for <stable@vger.kernel.org>; Sun, 02 Jul 2023 16:31:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1688340658; x=1690932658;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=a/JDLP8CymZmDlmvB9dj/413Y4QC83ykfU77d78w06M=;
-        b=TTeungzCpCOC/kyX7kk3Flxs3qCQAR5nQi+Yo3YK+jKxNdd0uTkLdEu0A9ENnyGTVl
-         Fh+O4CjxBPEh2ADiF5gXIO0cwHz+bvk61jGujAaixn7TB3DozhFRIeUT8Tpru8cAfkHa
-         ckN0qTkQC07guU7i0zWFf7Nq6GveohTtdltxw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688340658; x=1690932658;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=a/JDLP8CymZmDlmvB9dj/413Y4QC83ykfU77d78w06M=;
-        b=B3bmNuKVbJLFxoZX72b+ULRNUDdsoaVKavo3ZTU0CsfLNojSBoMMXujt5C1xgRoN+c
-         lBLnZ5Yo03gdg/VXhpcrN+iu89+qgZSszvHW2EPc7avyWob0QsG+F/d/7dveMvK6I69+
-         fZvWpdpwooakd8X46h4ZVOll9fsizunUOFysWUpz3AhZMRbIsAxdg6uWWkc3Mic+mWb8
-         CU1lMOWLt9fynfNHUaLKCL3EVrrloCleGKll+B2XSGQvwRSYm9tpyFlcbFdJpeW/WGUT
-         YLXcDMqN0CYeG/j3RACxqR9wtsLrfnogpEtELzTh6LOx4WnPRSM05NdKdLXAVKGg4H3l
-         vhxA==
-X-Gm-Message-State: AC+VfDx2zff9b4liMSgsvLX5frGArU2CTS6JW07yeKy0xuy61ad07FbP
-        C+OBdtvrnR4JvqulWDKwTagReLlZxx+wKKW2g87eMEQl
-X-Google-Smtp-Source: ACHHUZ5KwQJ7REq0vQ8Xxv7EimgS0XA2dWxT128n/fZ7oHgWd4bdcqrWq9u2j3fXyergWQq7KmZjQA==
-X-Received: by 2002:a17:907:3f21:b0:98d:abd4:4000 with SMTP id hq33-20020a1709073f2100b0098dabd44000mr10425412ejc.35.1688340658472;
-        Sun, 02 Jul 2023 16:30:58 -0700 (PDT)
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
-        by smtp.gmail.com with ESMTPSA id jt24-20020a170906dfd800b00988b8ff849csm11025906ejc.108.2023.07.02.16.30.57
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Jul 2023 16:30:57 -0700 (PDT)
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-51dd0205b2cso6775679a12.1
-        for <stable@vger.kernel.org>; Sun, 02 Jul 2023 16:30:57 -0700 (PDT)
-X-Received: by 2002:aa7:c541:0:b0:51d:a4fa:c62c with SMTP id
- s1-20020aa7c541000000b0051da4fac62cmr9098498edr.0.1688340657183; Sun, 02 Jul
- 2023 16:30:57 -0700 (PDT)
+        with ESMTP id S229437AbjGCB1o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 2 Jul 2023 21:27:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE1A12E;
+        Sun,  2 Jul 2023 18:27:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9802460CA5;
+        Mon,  3 Jul 2023 01:27:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B2EC433C8;
+        Mon,  3 Jul 2023 01:27:41 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="mJm14A4X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1688347659;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vuxOFbTAgQkfyy8cx4BstQShC0WcmX6WYAC5dTJO6NQ=;
+        b=mJm14A4X2IsfgDgOG6ef2FcJixwMOAbINoDyQcvFS8mDN0nTop7I2IX7axXm0Pt9myPUEL
+        k6eROId1VosI8tJJOeqnjVG8JJhAPLiAE9Rj1tlFssS0drTu5Ce3xqrHXA1aa7DJrNtNa0
+        wFXvp9N9x7xq6axp12qHVbz8Ke48geM=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 303a1b42 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Mon, 3 Jul 2023 01:27:39 +0000 (UTC)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Manuel Leiner <manuel.leiner@gmx.de>
+Subject: [PATCH net 1/3] wireguard: queueing: use saner cpu selection wrapping
+Date:   Mon,  3 Jul 2023 03:27:04 +0200
+Message-ID: <20230703012723.800199-2-Jason@zx2c4.com>
+In-Reply-To: <20230703012723.800199-1-Jason@zx2c4.com>
+References: <20230703012723.800199-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-References: <20230629184151.888604958@linuxfoundation.org> <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
- <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
- <2023063001-overlying-browse-de1a@gregkh> <0b2aefa4-7407-4936-6604-dedfb1614483@gmx.de>
- <5fd98a09-4792-1433-752d-029ae3545168@gmx.de> <CAHk-=wiHs1cL2Fb90NXVhtQsMuu+OLHB4rSDsPVe0ALmbvZXZQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wiHs1cL2Fb90NXVhtQsMuu+OLHB4rSDsPVe0ALmbvZXZQ@mail.gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sun, 2 Jul 2023 16:30:40 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wj=0jkhj2=HkHVdezvuzV-djLsnyeE5zFfnXxgtS2MXFQ@mail.gmail.com>
-Message-ID: <CAHk-=wj=0jkhj2=HkHVdezvuzV-djLsnyeE5zFfnXxgtS2MXFQ@mail.gmail.com>
-Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review - hppa argument list too long
-To:     Helge Deller <deller@gmx.de>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        akpm@linux-foundation.org, linux@roeck-us.net,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John David Anglin <dave.anglin@bell.net>
-Content-Type: multipart/mixed; boundary="00000000000021bec905ff897138"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---00000000000021bec905ff897138
-Content-Type: text/plain; charset="UTF-8"
+Using `% nr_cpumask_bits` is slow and complicated, and not totally
+robust toward dynamic changes to CPU topologies. Rather than storing the
+next CPU in the round-robin, just store the last one, and also return
+that value. This simplifies the loop drastically into a much more common
+pattern.
 
-On Sun, 2 Jul 2023 at 15:45, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> Would you mind just verifying that yes, that commit on mainline is
-> broken for you, and the previous one works?
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Cc: stable@vger.kernel.org
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+Tested-by: Manuel Leiner <manuel.leiner@gmx.de>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+---
+ drivers/net/wireguard/queueing.c |  1 +
+ drivers/net/wireguard/queueing.h | 25 +++++++++++--------------
+ drivers/net/wireguard/receive.c  |  2 +-
+ drivers/net/wireguard/send.c     |  2 +-
+ 4 files changed, 14 insertions(+), 16 deletions(-)
 
-Also, while I looked at it again, and still didn't understand why
-parisc would be different here, I *did* realize that because parisc
-has a stack that grows up, the debug warning I added for GUP won't
-trigger.
+diff --git a/drivers/net/wireguard/queueing.c b/drivers/net/wireguard/queueing.c
+index 8084e7408c0a..26d235d15235 100644
+--- a/drivers/net/wireguard/queueing.c
++++ b/drivers/net/wireguard/queueing.c
+@@ -28,6 +28,7 @@ int wg_packet_queue_init(struct crypt_queue *queue, work_func_t function,
+ 	int ret;
+ 
+ 	memset(queue, 0, sizeof(*queue));
++	queue->last_cpu = -1;
+ 	ret = ptr_ring_init(&queue->ring, len, GFP_KERNEL);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/net/wireguard/queueing.h b/drivers/net/wireguard/queueing.h
+index 125284b346a7..1ea4f874e367 100644
+--- a/drivers/net/wireguard/queueing.h
++++ b/drivers/net/wireguard/queueing.h
+@@ -117,20 +117,17 @@ static inline int wg_cpumask_choose_online(int *stored_cpu, unsigned int id)
+ 	return cpu;
+ }
+ 
+-/* This function is racy, in the sense that next is unlocked, so it could return
+- * the same CPU twice. A race-free version of this would be to instead store an
+- * atomic sequence number, do an increment-and-return, and then iterate through
+- * every possible CPU until we get to that index -- choose_cpu. However that's
+- * a bit slower, and it doesn't seem like this potential race actually
+- * introduces any performance loss, so we live with it.
++/* This function is racy, in the sense that it's called while last_cpu is
++ * unlocked, so it could return the same CPU twice. Adding locking or using
++ * atomic sequence numbers is slower though, and the consequences of racing are
++ * harmless, so live with it.
+  */
+-static inline int wg_cpumask_next_online(int *next)
++static inline int wg_cpumask_next_online(int *last_cpu)
+ {
+-	int cpu = *next;
+-
+-	while (unlikely(!cpumask_test_cpu(cpu, cpu_online_mask)))
+-		cpu = cpumask_next(cpu, cpu_online_mask) % nr_cpumask_bits;
+-	*next = cpumask_next(cpu, cpu_online_mask) % nr_cpumask_bits;
++	int cpu = cpumask_next(*last_cpu, cpu_online_mask);
++	if (cpu >= nr_cpu_ids)
++		cpu = cpumask_first(cpu_online_mask);
++	*last_cpu = cpu;
+ 	return cpu;
+ }
+ 
+@@ -159,7 +156,7 @@ static inline void wg_prev_queue_drop_peeked(struct prev_queue *queue)
+ 
+ static inline int wg_queue_enqueue_per_device_and_peer(
+ 	struct crypt_queue *device_queue, struct prev_queue *peer_queue,
+-	struct sk_buff *skb, struct workqueue_struct *wq, int *next_cpu)
++	struct sk_buff *skb, struct workqueue_struct *wq)
+ {
+ 	int cpu;
+ 
+@@ -173,7 +170,7 @@ static inline int wg_queue_enqueue_per_device_and_peer(
+ 	/* Then we queue it up in the device queue, which consumes the
+ 	 * packet as soon as it can.
+ 	 */
+-	cpu = wg_cpumask_next_online(next_cpu);
++	cpu = wg_cpumask_next_online(&device_queue->last_cpu);
+ 	if (unlikely(ptr_ring_produce_bh(&device_queue->ring, skb)))
+ 		return -EPIPE;
+ 	queue_work_on(cpu, wq, &per_cpu_ptr(device_queue->worker, cpu)->work);
+diff --git a/drivers/net/wireguard/receive.c b/drivers/net/wireguard/receive.c
+index 7135d51d2d87..0b3f0c843550 100644
+--- a/drivers/net/wireguard/receive.c
++++ b/drivers/net/wireguard/receive.c
+@@ -524,7 +524,7 @@ static void wg_packet_consume_data(struct wg_device *wg, struct sk_buff *skb)
+ 		goto err;
+ 
+ 	ret = wg_queue_enqueue_per_device_and_peer(&wg->decrypt_queue, &peer->rx_queue, skb,
+-						   wg->packet_crypt_wq, &wg->decrypt_queue.last_cpu);
++						   wg->packet_crypt_wq);
+ 	if (unlikely(ret == -EPIPE))
+ 		wg_queue_enqueue_per_peer_rx(skb, PACKET_STATE_DEAD);
+ 	if (likely(!ret || ret == -EPIPE)) {
+diff --git a/drivers/net/wireguard/send.c b/drivers/net/wireguard/send.c
+index 5368f7c35b4b..95c853b59e1d 100644
+--- a/drivers/net/wireguard/send.c
++++ b/drivers/net/wireguard/send.c
+@@ -318,7 +318,7 @@ static void wg_packet_create_data(struct wg_peer *peer, struct sk_buff *first)
+ 		goto err;
+ 
+ 	ret = wg_queue_enqueue_per_device_and_peer(&wg->encrypt_queue, &peer->tx_queue, first,
+-						   wg->packet_crypt_wq, &wg->encrypt_queue.last_cpu);
++						   wg->packet_crypt_wq);
+ 	if (unlikely(ret == -EPIPE))
+ 		wg_queue_enqueue_per_peer_tx(first, PACKET_STATE_DEAD);
+ err:
+-- 
+2.41.0
 
-So if I got that execve() logic wrong for STACK_GROWSUP (which I
-clearly must have), then exactly because it's grows-up, a GUP failure
-wouldn't warn about not expanding the stack.
-
-IOW, would you mind applying something like this on top of the current
-kernel, and let me know if it warns?
-
-.. and here I thought ia64 would be the pain-point. Silly me.
-
-                  Linus
-
---00000000000021bec905ff897138
-Content-Type: text/x-patch; charset="US-ASCII"; name="patch.diff"
-Content-Disposition: attachment; filename="patch.diff"
-Content-Transfer-Encoding: base64
-Content-ID: <f_ljm2eq3m0>
-X-Attachment-Id: f_ljm2eq3m0
-
-IG1tL2d1cC5jIHwgNiArKysrKy0KIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDEg
-ZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9tbS9ndXAuYyBiL21tL2d1cC5jCmluZGV4IGVmMjk2
-NDE2NzFjNy4uNjY1MjAxOTQwMDZiIDEwMDY0NAotLS0gYS9tbS9ndXAuYworKysgYi9tbS9ndXAu
-YwpAQCAtMTE2OCwxMSArMTE2OCwxNSBAQCBzdGF0aWMgbG9uZyBfX2dldF91c2VyX3BhZ2VzKHN0
-cnVjdCBtbV9zdHJ1Y3QgKm1tLAogCiAJCS8qIGZpcnN0IGl0ZXJhdGlvbiBvciBjcm9zcyB2bWEg
-Ym91bmQgKi8KIAkJaWYgKCF2bWEgfHwgc3RhcnQgPj0gdm1hLT52bV9lbmQpIHsKLQkJCXZtYSA9
-IGZpbmRfdm1hKG1tLCBzdGFydCk7CisJCQlzdHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKnByZXYgPSBO
-VUxMOworCQkJdm1hID0gZmluZF92bWFfcHJldihtbSwgc3RhcnQsICZwcmV2KTsKIAkJCWlmICh2
-bWEgJiYgKHN0YXJ0IDwgdm1hLT52bV9zdGFydCkpIHsKIAkJCQlXQVJOX09OX09OQ0Uodm1hLT52
-bV9mbGFncyAmIFZNX0dST1dTRE9XTik7CiAJCQkJdm1hID0gTlVMTDsKIAkJCX0KKwkJCWlmICgh
-dm1hICYmIHByZXYgJiYgc3RhcnQgPj0gcHJldi0+dm1fZW5kKQorCQkJCVdBUk5fT05fT05DRShw
-cmV2LT52bV9mbGFncyAmIFZNX0dST1dTVVApOworCiAJCQlpZiAoIXZtYSAmJiBpbl9nYXRlX2Fy
-ZWEobW0sIHN0YXJ0KSkgewogCQkJCXJldCA9IGdldF9nYXRlX3BhZ2UobW0sIHN0YXJ0ICYgUEFH
-RV9NQVNLLAogCQkJCQkJZ3VwX2ZsYWdzLCAmdm1hLAo=
---00000000000021bec905ff897138--
