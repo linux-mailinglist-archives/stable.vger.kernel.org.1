@@ -2,102 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05D10745A06
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 12:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 921C9745A4B
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 12:31:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229889AbjGCKS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 06:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43860 "EHLO
+        id S231588AbjGCKbE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 06:31:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229989AbjGCKS6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 06:18:58 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9C91DBE;
-        Mon,  3 Jul 2023 03:18:57 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0DF572F4;
-        Mon,  3 Jul 2023 03:19:40 -0700 (PDT)
-Received: from [10.57.38.117] (unknown [10.57.38.117])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 429EE3F762;
-        Mon,  3 Jul 2023 03:18:53 -0700 (PDT)
-Message-ID: <997819c6-0798-e2f9-b94b-fedfbab7fdd8@arm.com>
-Date:   Mon, 3 Jul 2023 11:18:48 +0100
+        with ESMTP id S230237AbjGCKal (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 06:30:41 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DF671734
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 03:30:04 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fbc587febfso33998095e9.2
+        for <stable@vger.kernel.org>; Mon, 03 Jul 2023 03:30:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688380185; x=1690972185;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=msJWpyA7yo6ChYj6KxpLPwqEqEdFIUqzWnqvB6326h8=;
+        b=uG7u5pKuhtwVbr2UgzP8QRIsfl1iHAteUv24U80QoHbW76XH60V8ImE2VNBLxQa9Qq
+         kLRpwlK6YtuNENBihvqHpD6PyWaah6uVndRmhCfpY/XXqkgmtI/BwUInZ8BSkTfG/Dao
+         18RUARVnFlz7VWwr0WMyVF8SsKwfdStnu625yEymLkZ2+Kj86OmvzzI8YUNG7JLtpSGp
+         HEsvosPWjYgwvL8q8M9NlgK/Mj6nmGfLdNG759I8DxJ2cICoqAa9ihOBTlJF9w24ph2d
+         TbkH2F7e9NyNZM63JA/5/MZmRvOX3RU0Jb+i7iMf+YaKFCuFhigY9yyshw65JxqmZDgQ
+         EZpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688380185; x=1690972185;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=msJWpyA7yo6ChYj6KxpLPwqEqEdFIUqzWnqvB6326h8=;
+        b=VZyto0bdqQwlzx3AyQreIkJNvwXffmxggdtpSQ9v0xBxjxvR0CV5akHC/bZ8tFCpxx
+         R46xZdKiTeVOS79iuknR+JtBr/055zZ6gnk5BswBlrD+o0J2m+wDwsc/RyGpAOk5xBsc
+         cS5vY/1GkP98vHLSN+KKbSCUkR9tBdueJP58h2rbjDiqQqOPNIiZihnO1A1zjFoEDUX4
+         K9X/RXhgY7VpmPfLm9lajqR5p5+CgITL9EB6ePtsB54JT4MK4X6e12wRNG4IypOGvk9D
+         0Ttx8C2YMRTHBHCE8eNaEy7afcNRGzy1eLciWFMVuX3p3eemcgBa227PQ+hgb8wPjKGo
+         kTXg==
+X-Gm-Message-State: ABy/qLbNpOZUvAVw6UoS6zQHGG6pyyv1KZWUJjYM8dR6V3QLChw1N0S6
+        R7O6r3EmCYovOQGiCVtQ/teMVA==
+X-Google-Smtp-Source: APBJJlHzl6eBn9aWNVBkstLjO2nceNNNQ/v7qgOzbBPVd6Bz/h0VoFqe818reHfXXfYJfj+v9+U3ow==
+X-Received: by 2002:a05:600c:22c4:b0:3fb:d1c1:9b79 with SMTP id 4-20020a05600c22c400b003fbd1c19b79mr4086786wmg.30.1688380184737;
+        Mon, 03 Jul 2023 03:29:44 -0700 (PDT)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id q18-20020adfcd92000000b003140f47224csm12786759wrj.15.2023.07.03.03.29.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jul 2023 03:29:43 -0700 (PDT)
+Date:   Mon, 3 Jul 2023 11:29:41 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     guoren@kernel.org
+Cc:     arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
+        peterz@infradead.org, luto@kernel.org, conor.dooley@microchip.com,
+        heiko@sntech.de, jszhang@kernel.org, lazyparser@gmail.com,
+        falcon@tinylab.org, chenhuacai@kernel.org, apatel@ventanamicro.com,
+        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
+        palmer@dabbelt.com, bjorn@rivosinc.com, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        stable@vger.kernel.org, Guo Ren <guoren@linux.alibaba.com>
+Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
+Message-ID: <20230703102941.GA4328@aspen.lan>
+References: <20230702025708.784106-1-guoren@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2] PCI: rockchip: Use 64-bit mask on MSI 64-bit PCI
- address
-Content-Language: en-GB
-To:     Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        alberto.dassatti@heig-vd.ch
-Cc:     dlemoal@kernel.org, Dan Carpenter <dan.carpenter@linaro.org>,
-        stable@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20230703085845.2052008-1-rick.wertenbroek@gmail.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <20230703085845.2052008-1-rick.wertenbroek@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230702025708.784106-1-guoren@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-07-03 09:58, Rick Wertenbroek wrote:
-> A 32-bit mask was used on the 64-bit PCI address used for mapping MSIs.
-> This would result in the upper 32 bits being unintentionally zeroed and
-> MSIs getting mapped to incorrect PCI addresses if the address had any
-> of the upper bits set.
-> 
-> Replace 32-bit mask by appropriate 64-bit mask.
-> 
-> Fixes: dc73ed0f1b8b ("PCI: rockchip: Fix window mapping and address translation for endpoint")
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/linux-pci/8d19e5b7-8fa0-44a4-90e2-9bb06f5eb694@moroto.mountain/
-> Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> The irqentry_nmi_enter/exit would force the current context into in_interrupt.
+> That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
+> debug the kernel.
+>
+> Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
+> of the kernel side.
+
+<snip>
+
+> Fixes: f0bddf50586d ("riscv: entry: Convert to generic entry")
+> Reported-by: Daniel Thompson <daniel.thompson@linaro.org>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
 > Cc: stable@vger.kernel.org
-> ---
->   drivers/pci/controller/pcie-rockchip.h | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
-> index fe0333778fd9..627d08b34827 100644
-> --- a/drivers/pci/controller/pcie-rockchip.h
-> +++ b/drivers/pci/controller/pcie-rockchip.h
-> @@ -158,7 +158,9 @@
->   #define PCIE_RC_CONFIG_THP_CAP		(PCIE_RC_CONFIG_BASE + 0x274)
->   #define   PCIE_RC_CONFIG_THP_CAP_NEXT_MASK	GENMASK(31, 20)
->   
-> -#define PCIE_ADDR_MASK			0xffffff00
-> +#define MAX_AXI_IB_ROOTPORT_REGION_NUM		3
-> +#define MIN_AXI_ADDR_BITS_PASSED		8
-> +#define PCIE_ADDR_MASK			GENMASK(63, MIN_AXI_ADDR_BITS_PASSED)
 
-Nit: this probably wants to be GENMASK_ULL(), otherwise it might throw a 
-warning if compile-tested for 32-bit.
+I pushed this though the kgdb test suite that originally found the
+problem (although it didn't occur to me when I reported it that
+the problem was nothing to do with kgdb ;-) ). So FWIW:
 
-Thanks,
-Robin.
+Tested-by: Daniel Thompson <daniel.thompson@linaro.org>
 
->   #define PCIE_CORE_AXI_CONF_BASE		0xc00000
->   #define PCIE_CORE_OB_REGION_ADDR0	(PCIE_CORE_AXI_CONF_BASE + 0x0)
->   #define   PCIE_CORE_OB_REGION_ADDR0_NUM_BITS	0x3f
-> @@ -185,8 +187,6 @@
->   #define AXI_WRAPPER_TYPE1_CFG			0xb
->   #define AXI_WRAPPER_NOR_MSG			0xc
->   
-> -#define MAX_AXI_IB_ROOTPORT_REGION_NUM		3
-> -#define MIN_AXI_ADDR_BITS_PASSED		8
->   #define PCIE_RC_SEND_PME_OFF			0x11960
->   #define ROCKCHIP_VENDOR_ID			0x1d87
->   #define PCIE_LINK_IS_L2(x) \
+
+Daniel.
