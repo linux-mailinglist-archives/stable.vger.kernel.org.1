@@ -2,52 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B98BC74583B
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 11:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0744E74584A
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 11:24:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229766AbjGCJTb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 05:19:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32852 "EHLO
+        id S229516AbjGCJYF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 05:24:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbjGCJTa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 05:19:30 -0400
+        with ESMTP id S230000AbjGCJYE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 05:24:04 -0400
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9840018D;
-        Mon,  3 Jul 2023 02:19:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66ACD1A1
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 02:24:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
         In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=SGJKKlGPHOOO++xI1ULSrW0mAjDOrbHmkxIaOKoddPI=; b=VuVjK31kSCz1duS2onqd9u5Rsl
-        8C+Qbwt7+6JMMwiQEFQPW/uqVYXGekqN6HBtj95A15MwxAf+y/9gt+LXfW7IjepxYDQmHwuyzEgiR
-        9UPMbVM7Su7YdqCAq8B1jjmxg0v8CbwGzyB3GAimQZuR2GeMsLqEc/wvCHTOY+C8smw4/lLp29erB
-        xALaaV9pDddh3Xa9fBx86XvTbPzbp/AgfL30j3DVnCXXmJKxjPRUUpVxMXDReTd9tv4a+tiT5xYQH
-        jUDPHy4GNrin5aD+lbzGUdY6vQemH5U7OG4kGo0LqXaT4bjBBp5qe0ss32LiZTpONzr5GVCE/J4dG
-        6mLPGPHw==;
+        bh=S3YS6ZAOeZkW2Ve2VD0uBviirEIai3WfDhIEJTcrAnQ=; b=qoh6RKmChnIQX822FJ+3S69u0b
+        yjqsNMVdx4DHAbucttZKbbQPMm88DDHQOBQuxxKzHp5qQ8j72zsUJPI2xnD0HSA4uYXyIAXVIfKcI
+        JVeLAzOsESyagcfh03bv4QT58p/Pap61sccV+r86b8je3g390YHoo/onZspDc1JFdD2kVj0HhiEnK
+        7DTNsafPSWwPqFzxTUiohMsDocrf+O2Tu2Cpkoe2iPtH9pY/pVo/1ySBvswQ4kagbWPu+FrYWDeyV
+        BTaBG6fd2zWmmF1bf10v30ZPRtmhHsUHRIlWTHOqk8ox4Rge5o7A6N288V6JQksfAbhKiZwHtZs0o
+        /TAGnVcw==;
 Received: from [2001:8b0:10b:5:86a3:26f9:cd4a:d44b] (helo=u3832b3a9db3152.ant.amazon.com)
         by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qGFiO-0085rM-MF; Mon, 03 Jul 2023 09:19:24 +0000
-Message-ID: <937d902965db22fa54668c985a09dc4c07dbb0b1.camel@infradead.org>
-Subject: Re: [EXTERNAL] [PATCH AUTOSEL 6.4 02/15] x86/smpboot: Implement a
- bit spinlock to protect the realmode stack
+        id 1qGFmq-00862O-GJ; Mon, 03 Jul 2023 09:24:00 +0000
+Message-ID: <aec8346199e1128f4608ffef6882652938cca5fe.camel@infradead.org>
+Subject: Re: [PATCH 6.3 02/29] mm/mmap: Fix error return in
+ do_vmi_align_munmap()
 From:   David Woodhouse <dwmw2@infradead.org>
-To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michael Kelley <mikelley@microsoft.com>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Helge Deller <deller@gmx.de>,
-        "Guilherme G . Piccoli" <gpiccoli@igalia.com>, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        usama.arif@bytedance.com, brgerst@gmail.com, jgross@suse.com,
-        jpoimboe@kernel.org, thomas.lendacky@amd.com
-Date:   Mon, 03 Jul 2023 10:19:23 +0100
-In-Reply-To: <20230702194020.1776895-2-sashal@kernel.org>
-References: <20230702194020.1776895-1-sashal@kernel.org>
-         <20230702194020.1776895-2-sashal@kernel.org>
+Cc:     patches@lists.linux.dev,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Date:   Mon, 03 Jul 2023 10:23:59 +0100
+In-Reply-To: <20230629184151.812335573@linuxfoundation.org>
+References: <20230629184151.705870770@linuxfoundation.org>
+         <20230629184151.812335573@linuxfoundation.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-        boundary="=-FpwvptRCF8S1OMYGfgb3"
+        boundary="=-pfZPVdkwc5EjaaP3kHuz"
 User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
@@ -62,27 +55,36 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---=-FpwvptRCF8S1OMYGfgb3
+--=-pfZPVdkwc5EjaaP3kHuz
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 2023-07-02 at 15:40 -0400, Sasha Levin wrote:
-> From: Thomas Gleixner <tglx@linutronix.de>
+On Thu, 2023-06-29 at 20:43 +0200, Greg Kroah-Hartman wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 >=20
-> [ Upstream commit f6f1ae9128d2a080ecdd55f85e8a0ca3ed1d58eb ]
+> commit 6c26bd4384da24841bac4f067741bbca18b0fb74 upstream,
 >=20
-> Parallel AP bringup requires that the APs can run fully parallel through
-> the early startup code including the real mode trampoline.
+> If mas_store_gfp() in the gather loop failed, the 'error' variable that
+> ultimately gets returned was not being set. In many cases, its original
+> value of -ENOMEM was still in place, and that was fine. But if VMAs had
+> been split at the start or end of the range, then 'error' could be zero.
 >=20
-> To prepare for this implement a bit-spinlock to serialize access to the
-> real mode stack so that parallel upcoming APs are not going to corrupt ea=
-ch
-> others stack while going through the real mode startup code.
+> Change to the 'error =3D foo(); if (error) goto =C3=A2=E2=82=AC=C2=A6' id=
+iom to fix the bug.
 
-This is also preparation for the parallel CPU bringup and (again,
-unless I'm missing something) doesn't need to be backported to stable.
+Hrm, that isn't what the original commit message said. It said:
 
---=-FpwvptRCF8S1OMYGfgb3
+> Change to the 'error =3D foo(); if (error) goto =E2=80=A6' idiom to fix t=
+he bug.
+
+This far into the 21st century, we don't see a lot of tools injecting
+Mojibake any more; the mantra of "everything is UTF-8, all of the time"
+mostly seems to work.
+
+Granted, there are more important problems in the world, but it'd be
+good to identify where that happened and file bugs if needed.
+
+--=-pfZPVdkwc5EjaaP3kHuz
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -174,24 +176,24 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwNzAzMDkxOTIzWjAvBgkqhkiG9w0BCQQxIgQgJ/hMeuK6
-gJRmiPpsglBPBOonpawDEQVr3h3icewhMjAwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwNzAzMDkyMzU5WjAvBgkqhkiG9w0BCQQxIgQgV1i6AlFF
+y6Bv1ZMkPesJ3vMO1j4rqbIeL/EL5WDRfS4wgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAWnnnOkDdsW7HSXIhlD/hPBOp0Z0UtrQDp
-nvUXZeDhBVRP+yfM+8ymXxJuzQa3GPw3dAzgisCFxYRzrJ+lLikCS7OiyeER197cJfJk/lKqzG+W
-pWiMpeFlRvysYfaALnX3bOCAGWmTSjZ7Gcjo9/4KUzDu0ueubMh+xAGnIEnARVSj4VT+h9RSvmNY
-glKaEFJAzjEt+RCSkvy7HC/Y0XaHO9Zb3xF1nVs9zfUIWo7+8bpGQFysiVa2miq/+jx7Sum+52Qe
-S9EpsixI+yvAKZpmHCxD1JhgtXl9WRU9Y7CuBgDcdDnqQOynWudA1LUsFZxHiZ9GVhI2fSVdOd3A
-X50qS/O+qzLO9rzOte4mCxUJzVI3WPXss/XvDf33VpUAVrBiX7D3+6QLZ8JsRltaK7D6xANqqJaG
-NNLBbf/g3HZPx3KW6LFF91+y6jUSWTm0H6M+uREflgjJCTKYkHKSzwxHnMGMRUPAxJbkDxbaJh04
-TS3i34+lgOt+sGno5nP2bb+3wZ4PG56GrAfrb2CucOl+poB2zFbHq0fiXab1dS7aKHUErTb9o6YL
-Qad4iPZQl/9wX8pzVj66D3rKcXE2CNJSKnCrNxSuy52P7nIi1RPUcaa5RKonx1eU2MxOA5ox50a1
-/mR3tPvG+TxWCeChL59sRWtBztgpTJe4EVytE/iLCAAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgB6lL4n4D0vpv0zk4mqrN2WstRY+UUkKwPJ
+8mh0C7CdioncAwnN2+0Q8VnF9+hUYzorIT1G6fBUMY3LpsaQoiOfvpJq/DlaAIIlVroyf0oPF3Up
+ik4fpBE/w6uNH5O4n/9Q86JGk2zRtYoG6lsZ6dOk4YnWmWrD8qzmaASFoA4d/vIf7UyRFc/8tB39
+Lu2RG6kOsJa9cmSmcl5vwvw12bUj6zcUjVbW7CMIHZCAqzVh8HlGFh8kRXie1R1T5bm99K8cNjcT
+GYdbjArKYkYqEyxvjaMuCjXYkf2A8TN/QWjqc719PW1oEUD85IKeDyYg/ccKFvcNw2QT+AZSVzE/
+kIgSAenYMFo/jIyliF/eD6UvpDlJbHBJeFdwZY7DMrEZupmMRqEPrhXXRciEDPhDSCF3LvcbqAHU
++ZlfE9PMoYrnt9kJmlcZPhQcIehEgVz8+86oIDh2shlEYcgQslmiMtKyfM2Za/eUQSuHWmp5XPH6
+hgTnIk82W1XBbP1aXcdimmAM/1NQ6jYt9SMP2gDTTQSG3a9rxwuZG+/CmBshrmkVWWtf+ozHdue1
+WAwmO1eobWUrgKbPDZY+04B8Ab8TptS61DPDUHSIWXQxz6wQTjDLVImQa1eGGavSqHkE4ULdLXvs
+54oC9wdkKdwjBoB+eT7pyh97m5ZUvcH36cmnncFEqwAAAAAAAA==
 
 
---=-FpwvptRCF8S1OMYGfgb3--
+--=-pfZPVdkwc5EjaaP3kHuz--
