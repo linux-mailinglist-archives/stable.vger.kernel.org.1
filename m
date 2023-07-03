@@ -2,170 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3FAA7453BF
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 04:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E1074541E
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 05:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229655AbjGCCGO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 2 Jul 2023 22:06:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47870 "EHLO
+        id S229605AbjGCDX0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 2 Jul 2023 23:23:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjGCCGN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 2 Jul 2023 22:06:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1AF0E58;
-        Sun,  2 Jul 2023 19:05:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83B9A60D2C;
-        Mon,  3 Jul 2023 02:05:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B1BC433C8;
-        Mon,  3 Jul 2023 02:05:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688349933;
-        bh=6Vt/sBkrXdrxTQKVsUKGftN2YBxZb9Pi00xquCrBohc=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=LjCUwi5skzJas/FE30Uw3LTmmxaKFtanu5Q4CdiA49GglOROpD0KWawmPcK/U4jNN
-         JS8ST9+me3IWMG5rrqvv0w6A3PRik9TAMkaRw7GNTQiJ+5wDcJjU7CF/9D6BJjIVhH
-         ekW8hR0sTSKZ6ZmZD9ru3O7LGE3mDymTQk+K9dOzGl3go/NdZzM85W2cMSzdu0uwJF
-         TlPQJtZoiuy0kSOpGr+E5E92Dxx0Cyz+kFt4zPdHBy9Lcm+AUpBb+W6f6bwTTxwoe1
-         DGrhyfGMbhZijPjzMC3JOVUdIbIRcCYrty3HlFavgHMT4cmZIdz9QTHsriKTh1x262
-         HSfUi7zOdkttw==
-Message-ID: <3e49476e-ee18-bfb8-ae1a-3a55a3d13f88@kernel.org>
-Date:   Mon, 3 Jul 2023 11:05:30 +0900
+        with ESMTP id S229482AbjGCDXZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 2 Jul 2023 23:23:25 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CD0B95;
+        Sun,  2 Jul 2023 20:23:24 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b88e84bfb8so8820045ad.2;
+        Sun, 02 Jul 2023 20:23:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688354603; x=1690946603;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tC2ikVsHLBbeocRmvK2qdglPhmmlZ6ytcOUovVJyZ8E=;
+        b=fOUwfR0QcmqvhNFigYm30S1P+KvTRcNKGkuHkQmqRj9eF8QoajtfhOwLCp7P7ntAYf
+         4d/LClaWc6BIAJu+Qaht9vpxry6pH9f5h1DcVMvYQmuz2j1hDxvsh6mdiW/5+iD77mFW
+         H500HhpHcycqaVgLqNg+Myrn60ATPIJP8evNmh++1JoqUuBt4l9YI8RERDxzPp7ojiAp
+         oPWDwcjjEGhQC6DgfmmWGRL827znhOaV+yjxPtmPw9c32mcxSmWNqFUjVw5hIGOSluzj
+         U1k+D0naLz3sshqxGtcb4SCkBMyP7/hyeuJFsri4IrCPG8tbJDrizeKSde0US9yuxKjX
+         VM+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688354603; x=1690946603;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tC2ikVsHLBbeocRmvK2qdglPhmmlZ6ytcOUovVJyZ8E=;
+        b=LpNbsiMzEtVajwUn+EdfHiy4IL691OrXWOmODca3Q8MUcNqf3+8lHQr8vfgTXQ1I9z
+         jOD3RRv3KUFjMa0g7iyI9lGnViDhqkiFBv/se1yqdPg+WejVATgEGXb2Nk0gy+OFy0sW
+         YjnhPNsJZjkJ1GEPSLczexjDRrj2J1EObKbIbJcT1XuAuXdMSRIV37JSpgsL7hFKaDAt
+         Wgoqpf9Qw6gV6PPzWbTEqk+Yhcba24w60F5addXQGPaOHEN8Z52Tr00Y/giMHWJ1cIKi
+         QOOGo20eS0DPJCIyrQ1Q375SanVaa+0wTRz73Kn3SKIUee2oQibm8HZNyJElBPNztLyW
+         eG9A==
+X-Gm-Message-State: ABy/qLZgUhKvVgn8qWE3MMknU9R1dh+W8eq1viH0oAp75kNi9eRTTpJz
+        JaczdvBHohnQW+/PEZIxhgo//RJRkY8=
+X-Google-Smtp-Source: APBJJlF24mVWYk1/hDvB4vhX4Rcp0QOntBWRfk/vlhd4cswA/btSkmp6FbHa5ex/wvGCjg/2Yqny5g==
+X-Received: by 2002:a05:6a21:7898:b0:12e:7ca3:e22 with SMTP id bf24-20020a056a21789800b0012e7ca30e22mr2991655pzc.27.1688354603576;
+        Sun, 02 Jul 2023 20:23:23 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id p4-20020aa78604000000b0066f37665a6asm8548659pfn.117.2023.07.02.20.23.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Jul 2023 20:23:22 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <9b35a19d-800c-f9f9-6b45-cf2038ef235f@roeck-us.net>
+Date:   Sun, 2 Jul 2023 20:23:21 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] PCI: rockchip: Use 64-bit mask on MSI 64-bit PCI address
-To:     Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        alberto.dassatti@heig.vd.ch
-Cc:     Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20230630131753.1549685-1-rick.wertenbroek@gmail.com>
+ Thunderbird/102.11.0
 Content-Language: en-US
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20230630131753.1549685-1-rick.wertenbroek@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Helge Deller <deller@gmx.de>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        akpm@linux-foundation.org,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John David Anglin <dave.anglin@bell.net>
+References: <20230629184151.888604958@linuxfoundation.org>
+ <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
+ <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
+ <2023063001-overlying-browse-de1a@gregkh>
+ <0b2aefa4-7407-4936-6604-dedfb1614483@gmx.de>
+ <5fd98a09-4792-1433-752d-029ae3545168@gmx.de>
+ <CAHk-=wiHs1cL2Fb90NXVhtQsMuu+OLHB4rSDsPVe0ALmbvZXZQ@mail.gmail.com>
+ <CAHk-=wj=0jkhj2=HkHVdezvuzV-djLsnyeE5zFfnXxgtS2MXFQ@mail.gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review - hppa argument list too long
+In-Reply-To: <CAHk-=wj=0jkhj2=HkHVdezvuzV-djLsnyeE5zFfnXxgtS2MXFQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/30/23 22:17, Rick Wertenbroek wrote:
-> A 32-bit mask was used on the 64-bit PCI address used for mapping MSIs.
-> This would result in the upper 32 bits being unintentionally zeroed and
-> MSIs getting mapped to incorrect PCI addresses if the address had any
-> of the upper bits set.
+On 7/2/23 16:30, Linus Torvalds wrote:
+> On Sun, 2 Jul 2023 at 15:45, Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+>>
+>> Would you mind just verifying that yes, that commit on mainline is
+>> broken for you, and the previous one works?
 > 
-> Replace 32-bit mask by appropriate 64-bit mask and rename 32-bit mask
-> for clarity.
+> Also, while I looked at it again, and still didn't understand why
+> parisc would be different here, I *did* realize that because parisc
+> has a stack that grows up, the debug warning I added for GUP won't
+> trigger.
 > 
-> Fixes: dc73ed0f1b8b ("PCI: rockchip: Fix window mapping and address translation for endpoint")
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/linux-pci/8d19e5b7-8fa0-44a4-90e2-9bb06f5eb694@moroto.mountain/
-> Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/pci/controller/pcie-rockchip-ep.c | 12 ++++++------
->  drivers/pci/controller/pcie-rockchip.h    |  6 +++---
->  2 files changed, 9 insertions(+), 9 deletions(-)
+> So if I got that execve() logic wrong for STACK_GROWSUP (which I
+> clearly must have), then exactly because it's grows-up, a GUP failure
+> wouldn't warn about not expanding the stack.
 > 
-> diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
-> index 0af0e965fb57..313face6a87f 100644
-> --- a/drivers/pci/controller/pcie-rockchip-ep.c
-> +++ b/drivers/pci/controller/pcie-rockchip-ep.c
-> @@ -354,7 +354,7 @@ static int rockchip_pcie_ep_send_msi_irq(struct rockchip_pcie_ep *ep, u8 fn,
->  	struct rockchip_pcie *rockchip = &ep->rockchip;
->  	u32 flags, mme, data, data_mask;
->  	u8 msi_count;
-> -	u64 pci_addr;
-> +	u64 pci_addr, pci_addr_mask = GENMASK(63, 8);
+> IOW, would you mind applying something like this on top of the current
+> kernel, and let me know if it warns?
+> 
 
-I think you can simplify all this with only the change to the definition of
-PCIE_ADDR_MASK macro. Applying a 64 bits mask for low bits to a 32-bits variable
-is OK and should not generate any complaints from the compiler.
-Also, that "8" in the GENMASK can be replaced by MIN_AXI_ADDR_BITS_PASSED.
-So:
+I can reproduce the problem in qemu. However, I do not see a warning
+after applying your patch.
 
-#define PCIE_ADDR_MASK	GENMASK(63, MIN_AXI_ADDR_BITS_PASSED)
-
-Would fix everything I think.
-
-If it does not, I would prefer you define a macro for that GENMASK(63, 8) mask
-instead of using a variable on stack. That would be more efficient code wise,
-removing a memory access.
-
->  	u32 r;
->  
->  	/* Check MSI enable bit */
-> @@ -391,18 +391,18 @@ static int rockchip_pcie_ep_send_msi_irq(struct rockchip_pcie_ep *ep, u8 fn,
->  				       PCI_MSI_ADDRESS_LO);
->  
->  	/* Set the outbound region if needed. */
-> -	if (unlikely(ep->irq_pci_addr != (pci_addr & PCIE_ADDR_MASK) ||
-> +	if (unlikely(ep->irq_pci_addr != (pci_addr & pci_addr_mask) ||
->  		     ep->irq_pci_fn != fn)) {
->  		r = rockchip_ob_region(ep->irq_phys_addr);
->  		rockchip_pcie_prog_ep_ob_atu(rockchip, fn, r,
->  					     ep->irq_phys_addr,
-> -					     pci_addr & PCIE_ADDR_MASK,
-> -					     ~PCIE_ADDR_MASK + 1);
-> -		ep->irq_pci_addr = (pci_addr & PCIE_ADDR_MASK);
-> +					     pci_addr & pci_addr_mask,
-> +					     ~pci_addr_mask + 1);
-> +		ep->irq_pci_addr = (pci_addr & pci_addr_mask);
->  		ep->irq_pci_fn = fn;
->  	}
->  
-> -	writew(data, ep->irq_cpu_addr + (pci_addr & ~PCIE_ADDR_MASK));
-> +	writew(data, ep->irq_cpu_addr + (pci_addr & ~pci_addr_mask));
->  	return 0;
->  }
->  
-> diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
-> index fe0333778fd9..2d7b05f07b7e 100644
-> --- a/drivers/pci/controller/pcie-rockchip.h
-> +++ b/drivers/pci/controller/pcie-rockchip.h
-> @@ -158,11 +158,11 @@
->  #define PCIE_RC_CONFIG_THP_CAP		(PCIE_RC_CONFIG_BASE + 0x274)
->  #define   PCIE_RC_CONFIG_THP_CAP_NEXT_MASK	GENMASK(31, 20)
->  
-> -#define PCIE_ADDR_MASK			0xffffff00
-> +#define PCIE_LO_ADDR_MASK		GENMASK(31, 8)
->  #define PCIE_CORE_AXI_CONF_BASE		0xc00000
->  #define PCIE_CORE_OB_REGION_ADDR0	(PCIE_CORE_AXI_CONF_BASE + 0x0)
->  #define   PCIE_CORE_OB_REGION_ADDR0_NUM_BITS	0x3f
-> -#define   PCIE_CORE_OB_REGION_ADDR0_LO_ADDR	PCIE_ADDR_MASK
-> +#define   PCIE_CORE_OB_REGION_ADDR0_LO_ADDR	PCIE_LO_ADDR_MASK
->  #define PCIE_CORE_OB_REGION_ADDR1	(PCIE_CORE_AXI_CONF_BASE + 0x4)
->  #define PCIE_CORE_OB_REGION_DESC0	(PCIE_CORE_AXI_CONF_BASE + 0x8)
->  #define PCIE_CORE_OB_REGION_DESC1	(PCIE_CORE_AXI_CONF_BASE + 0xc)
-> @@ -170,7 +170,7 @@
->  #define PCIE_CORE_AXI_INBOUND_BASE	0xc00800
->  #define PCIE_RP_IB_ADDR0		(PCIE_CORE_AXI_INBOUND_BASE + 0x0)
->  #define   PCIE_CORE_IB_REGION_ADDR0_NUM_BITS	0x3f
-> -#define   PCIE_CORE_IB_REGION_ADDR0_LO_ADDR	PCIE_ADDR_MASK
-> +#define   PCIE_CORE_IB_REGION_ADDR0_LO_ADDR	PCIE_LO_ADDR_MASK
->  #define PCIE_RP_IB_ADDR1		(PCIE_CORE_AXI_INBOUND_BASE + 0x4)
->  
->  /* Size of one AXI Region (not Region 0) */
-
--- 
-Damien Le Moal
-Western Digital Research
+Guenter
 
