@@ -2,68 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91CF9745EC2
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 16:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8375A745F21
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 16:52:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231282AbjGCOm5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 10:42:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57476 "EHLO
+        id S229981AbjGCOwZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 10:52:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230332AbjGCOmv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 10:42:51 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B306710E3
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 07:42:42 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-53fa455cd94so2298763a12.2
-        for <stable@vger.kernel.org>; Mon, 03 Jul 2023 07:42:42 -0700 (PDT)
+        with ESMTP id S230023AbjGCOwY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 10:52:24 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDFCAE5E
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 07:52:22 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3fbd33a57dcso23193605e9.0
+        for <stable@vger.kernel.org>; Mon, 03 Jul 2023 07:52:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1688395362; x=1690987362;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DrA308we96oVwz/kgmxRDcKXJtyEBbepsNUANAmoIY0=;
-        b=Ipef32BA2RNaBK8hQFCP5rn7/iZ5F+7/2ITqgBNoT//Pyxpw5oJDZHImVjcaj/f9cr
-         oBov6aTuCU/uWiIANJI0IGAVCGW2NceXrknYsmfRXoEStDWuLTlj0WO1coDT98FpDZpd
-         OoSbiBIH1+0SnVorEzx6R15ihrj8UvThvWlRA=
+        d=chromium.org; s=google; t=1688395941; x=1690987941;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+3KjuLBngLO3rai8mrqNkWZ2OBnCS0ojb/WfZfP0ytU=;
+        b=KFYcQJIC/LHmqIQeVankvlb89fFhXYJ2u4CRhT6/pS3M2Mop+/IKcNS6tZ4P3Wel4B
+         4812aItVGnJv3Opnl116QiQO7pXEjK6Fe0MXtMVzVAx03vxCOot9tHZcEF778K3ijkGZ
+         8ehBVmANtCmTN66OCjq2uFuheE7ql4BEsAXiI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688395362; x=1690987362;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DrA308we96oVwz/kgmxRDcKXJtyEBbepsNUANAmoIY0=;
-        b=F5AFclDUXkSRvNIcgabfQe2ewwC6u1CfX4kMAci8rSGrRydSAxJWGbwWgjs0vHUWba
-         7v3V01DoU28/gsgZEBfPnaHpFdQciArP6aNsfgKnV+nibz8Rx4s5KzuG+07lSk/Kou1u
-         CATvAEYSAZLBcXACfS0i7G8IaiQ84+rw/rBFMoouX2tzqRpoRsIodSXlcnP9JY2gIK6E
-         0wV6qXImLsZgWxImhzs2f5NCpXubBBeJOoW1MZLqUva3jOyFdKG2LwycAigI78ntRNu7
-         cXSdCzto3gjejZls4H2iocuMbUXa3ngUhEeAgjLUjzJOagjwhP0vLfLSjL2hmPfjSxx4
-         /bGg==
-X-Gm-Message-State: ABy/qLaMpgjzlNa18gQzJ/kY0jXWs26PehCJrT5dtG/fOI4NdVm+00w6
-        DBo68bOITlEinC+cGHPk5sQg3m8RGQeyPsYkOx8Btg==
-X-Google-Smtp-Source: ACHHUZ5mTAPpxbNhYNSgpszF3WnuYH2PV51tm62xSaVgy4bpo+CAIhriuYCoo7xWSfATi1JfQBwW7sG7ccxjqSs1lls=
-X-Received: by 2002:a05:6a20:a128:b0:11a:c623:7849 with SMTP id
- q40-20020a056a20a12800b0011ac6237849mr10155512pzk.48.1688395361920; Mon, 03
- Jul 2023 07:42:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230615152918.3484699-1-revest@chromium.org> <ZJFIy+oJS+vTGJer@calendula>
- <CABRcYmJjv-JoadtzZwU5A+SZwbmbgnzWb27UNZ-UC+9r+JnVxg@mail.gmail.com>
- <20230621111454.GB24035@breakpoint.cc> <CABRcYmKeo6A+3dmZd9bRp8W3tO9M5cHDpQ13b8aeMkhYr4L64Q@mail.gmail.com>
- <20230621184738.GG24035@breakpoint.cc>
-In-Reply-To: <20230621184738.GG24035@breakpoint.cc>
+        d=1e100.net; s=20221208; t=1688395941; x=1690987941;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+3KjuLBngLO3rai8mrqNkWZ2OBnCS0ojb/WfZfP0ytU=;
+        b=XhJKzHdFFVt7mYT2+uJiQzSW63KHPEwjQsXLijfBX7WjbQSDYl8aJCHiwVJqpHMOyo
+         NVcfzWSXCQusr9EotqmM2lRdSUpOXpf9S9cQ4JzuykKZSyLbdf4NZenCWwsZ+B2Yq4MZ
+         0yUI+6ovdEDnqAM2KjLU3JZuRcSzlSvh+e80ZqfJ0UQr7W7u8UhEO4f83SbRO7kM28um
+         /N3FIX498AovzCmluq0Ro6jGcrEzfR+rHm+bb7kYcowSPAw0/lrJgmliQNaIX6YIJNfV
+         jO0LdJvhktORFBNJbKBzfPIN1BcuRA3kZWhy1bFLWxr232fAbJHsx3c7ghBioIpP5OeV
+         TMTw==
+X-Gm-Message-State: AC+VfDxSnSdwL87efMZANOHiCo6/vO1GlhhFu8W11A+XBew1kyQk/u1U
+        nUOp9K/JPJR2Jt3LYYestZfswg==
+X-Google-Smtp-Source: ACHHUZ7JLYiih/sZAgY31lyo8PL1r1xW+5cJuN3mzYzCpWVCujuece0APXkMinyxrAGdwGlWBqHPNw==
+X-Received: by 2002:a7b:c38f:0:b0:3fb:a46c:7eac with SMTP id s15-20020a7bc38f000000b003fba46c7eacmr9214337wmj.7.1688395940886;
+        Mon, 03 Jul 2023 07:52:20 -0700 (PDT)
+Received: from revest.zrh.corp.google.com ([2a00:79e0:9d:6:34e3:ca8b:5d5c:2c66])
+        by smtp.gmail.com with ESMTPSA id 12-20020a05600c028c00b003fbaade072dsm16878177wmk.23.2023.07.03.07.52.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jul 2023 07:52:20 -0700 (PDT)
 From:   Florent Revest <revest@chromium.org>
-Date:   Mon, 3 Jul 2023 16:42:30 +0200
-Message-ID: <CABRcYmKkDyMBqe0C5AGZVihGQhXzCjsQrg5fBhtTX3qjxe7jOA@mail.gmail.com>
-Subject: Re: [PATCH nf] netfilter: conntrack: Avoid nf_ct_helper_hash uses
- after free
-To:     Florian Westphal <fw@strlen.de>
-Cc:     Pablo Neira Ayuso <pablo@netfilter.org>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+To:     netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kadlec@netfilter.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        lirongqing@baidu.com, daniel@iogearbox.net, ast@kernel.org,
-        kpsingh@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        bpf@vger.kernel.org
+Cc:     pablo@netfilter.org, kadlec@netfilter.org, fw@strlen.de,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, kpsingh@kernel.org, stable@vger.kernel.org,
+        Florent Revest <revest@chromium.org>
+Subject: [PATCH nf v2] netfilter: conntrack: Avoid nf_ct_helper_hash uses after free
+Date:   Mon,  3 Jul 2023 16:52:16 +0200
+Message-ID: <20230703145216.1096265-1-revest@chromium.org>
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
@@ -74,32 +69,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 21, 2023 at 8:47=E2=80=AFPM Florian Westphal <fw@strlen.de> wro=
-te:
->
-> Florent Revest <revest@chromium.org> wrote:
-> > > in this case an initcall is failing and I think panic is preferrable
-> > > to a kernel that behaves like NF_CONNTRACK_FTP=3Dn.
-> >
-> > In that case, it seems like what you'd want is
-> > nf_conntrack_standalone_init() to BUG() instead of returning an error
-> > then ? (so you'd never get to NF_CONNTRACK_FTP or any other if
-> > nf_conntrack failed to initialize) If this is the prefered behavior,
-> > then sure, why not.
-> >
-> > > AFAICS this problem is specific to NF_CONNTRACK_FTP=3Dy
-> > > (or any other helper module, for that matter).
-> >
-> > Even with NF_CONNTRACK_FTP=3Dm, the initialization failure in
-> > nf_conntrack_standalone_init() still happens. Therefore, the helper
-> > hashtable gets freed and when the nf_conntrack_ftp.ko module gets
-> > insmod-ed, it calls nf_conntrack_helpers_register() and this still
-> > causes a use-after-free.
->
-> Can you send a v2 with a slightly reworded changelog?
->
-> It should mention that one needs NF_CONNTRACK=3Dy, so that when
-> the failure happens during the initcall (as oposed to module insertion),
-> nf_conntrack_helpers_register() can fail cleanly without followup splat?
+If nf_conntrack_init_start() fails (for example due to a
+register_nf_conntrack_bpf() failure), the nf_conntrack_helper_fini()
+clean-up path frees the nf_ct_helper_hash map.
 
-Sure! :) On it.
+When built with NF_CONNTRACK=y, further netfilter modules (e.g:
+netfilter_conntrack_ftp) can still be loaded and call
+nf_conntrack_helpers_register(), independently of whether nf_conntrack
+initialized correctly. This accesses the nf_ct_helper_hash dangling
+pointer and causes a uaf, possibly leading to random memory corruption.
+
+This patch guards nf_conntrack_helper_register() from accessing a freed
+or uninitialized nf_ct_helper_hash pointer and fixes possible
+uses-after-free when loading a conntrack module.
+
+Cc: stable@vger.kernel.org
+Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
+Signed-off-by: Florent Revest <revest@chromium.org>
+---
+ net/netfilter/nf_conntrack_helper.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+index 0c4db2f2ac43..f22691f83853 100644
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -360,6 +360,9 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
+ 	BUG_ON(me->expect_class_max >= NF_CT_MAX_EXPECT_CLASSES);
+ 	BUG_ON(strlen(me->name) > NF_CT_HELPER_NAME_LEN - 1);
+ 
++	if (!nf_ct_helper_hash)
++		return -ENOENT;
++
+ 	if (me->expect_policy->max_expected > NF_CT_EXPECT_MAX_CNT)
+ 		return -EINVAL;
+ 
+@@ -515,4 +518,5 @@ int nf_conntrack_helper_init(void)
+ void nf_conntrack_helper_fini(void)
+ {
+ 	kvfree(nf_ct_helper_hash);
++	nf_ct_helper_hash = NULL;
+ }
+-- 
+2.41.0.255.g8b1d071c50-goog
+
