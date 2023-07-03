@@ -2,95 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E1F7455B8
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 09:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F2517455C0
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 09:09:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229821AbjGCHF4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 03:05:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52576 "EHLO
+        id S229482AbjGCHJB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 03:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229516AbjGCHFz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 03:05:55 -0400
-Received: from mail.lichtvoll.de (lichtvoll.de [IPv6:2001:67c:14c:12f::11:100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B512E44;
-        Mon,  3 Jul 2023 00:05:54 -0700 (PDT)
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-        (No client certificate requested)
-        by mail.lichtvoll.de (Postfix) with ESMTPSA id AEB9772BDDB;
-        Mon,  3 Jul 2023 09:05:50 +0200 (CEST)
-Authentication-Results: mail.lichtvoll.de;
-        auth=pass smtp.auth=martin smtp.mailfrom=martin@lichtvoll.de
-From:   Martin Steigerwald <martin@lichtvoll.de>
-To:     linux-block@vger.kernel.org,
-        Christian Zigotzky <chzigotzky@xenosoft.de>,
-        Michael Schmitz <schmitzmic@gmail.com>
-Cc:     axboe@kernel.dk, linux-m68k@vger.kernel.org, geert@linux-m68k.org,
-        hch@lst.de, stable@vger.kernel.org,
-        "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        Darren Stevens <darren@stevens-zone.net>,
-        mad skateman <madskateman@gmail.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Christian Zigotzky <info@xenosoft.de>
-Subject: Re: [PATCH] block: bugfix for Amiga partition overflow check patch
-Date:   Mon, 03 Jul 2023 09:05:50 +0200
-Message-ID: <4858801.31r3eYUQgx@lichtvoll.de>
-In-Reply-To: <234f57e7-a35f-4406-35ad-a5b9b49e9a5e@gmail.com>
-References: <20230701023524.7434-1-schmitzmic@gmail.com>
- <1885875.tdWV9SEqCh@lichtvoll.de>
- <234f57e7-a35f-4406-35ad-a5b9b49e9a5e@gmail.com>
+        with ESMTP id S229608AbjGCHI7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 03:08:59 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72648DD;
+        Mon,  3 Jul 2023 00:08:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1688368119; x=1688972919; i=deller@gmx.de;
+ bh=luZeGm1GXeAsE8r2D/0EeQwg0QXYvcH0kDHoE08Z2OQ=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=pM2ZSHbaaXLsfr+Td+QUPXbRJSAGjK0UcFVjw+kSUZQXr7BIXpy3ebqanBeadAEjqu9ahMz
+ o2DvwIoefhGbzQp4J0GuGarLBTPu8rRJ66Mv/sITmCTqG4Xnk/ZcWlntm2o3hfn00FHNRwmAt
+ b26d+JxCwm/bDQWw1yrHEf9ihgm5lgzzYGdOzQNxVTk1GdyGRHD4ygTurC8KwUjm8igRqocoj
+ eh1TXDictbtorxNkSrl2KwTcaDYEliYXGrA26fUXJM/nwAJYuSKKsTnjLhVHXBhB5KG7wcryr
+ ezICwIlec7w6vKtTMj3NsEmm5RrDKszb05chCdX8M0JkOgxLe16g==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.144.165]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mn2aD-1pZ9Pc0tiZ-00kC05; Mon, 03
+ Jul 2023 09:08:39 +0200
+Message-ID: <7146f74d-8638-46c7-8e8c-15abc97a379f@gmx.de>
+Date:   Mon, 3 Jul 2023 09:08:37 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review - hppa argument list too long
+Content-Language: en-US
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        akpm@linux-foundation.org,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John David Anglin <dave.anglin@bell.net>
+References: <20230629184151.888604958@linuxfoundation.org>
+ <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
+ <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
+ <2023063001-overlying-browse-de1a@gregkh>
+ <0b2aefa4-7407-4936-6604-dedfb1614483@gmx.de>
+ <5fd98a09-4792-1433-752d-029ae3545168@gmx.de>
+ <CAHk-=wiHs1cL2Fb90NXVhtQsMuu+OLHB4rSDsPVe0ALmbvZXZQ@mail.gmail.com>
+ <CAHk-=wj=0jkhj2=HkHVdezvuzV-djLsnyeE5zFfnXxgtS2MXFQ@mail.gmail.com>
+ <9b35a19d-800c-f9f9-6b45-cf2038ef235f@roeck-us.net>
+ <CAHk-=wgdC6RROG145_YB5yWoNtBQ0Xsrhdcu2TMAFTw52U2E0w@mail.gmail.com>
+ <2a2387bf-f589-6856-3583-d3d848a17d34@roeck-us.net>
+ <CAHk-=wgczy0dxK9vg-YWbq6YLP2gP8ix7Ys9K+Mr=S2NEj+hGw@mail.gmail.com>
+ <c21e8e95-3353-fc57-87fd-271b2c9cc000@roeck-us.net>
+ <CAHk-=wj+F8oGK_Hx6YSPJpwL-xyL+-q2SxtxYE0abtZa_jSkLw@mail.gmail.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <CAHk-=wj+F8oGK_Hx6YSPJpwL-xyL+-q2SxtxYE0abtZa_jSkLw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zhNIve0Qn9wedvW+caLKaSTKvmFAILjNj7cOhlw/NpMQSs0L19O
+ INKh9GBEywpaOqTgxw0u4T8E72R4bmbtihWSChGiCp/oNsBrEkcdnYMaQNfMkYEsYC+bNkL
+ LJPd1/WAu3bAZh0PA61+XUaXhOd1qqr13EDNu/hu4b21CuTO76v3RuRmN78vVZsbjZBej4O
+ bhUh9JaxrRs+ZwzuSBjGw==
+UI-OutboundReport: notjunk:1;M01:P0:hnRkHV78HyA=;TW/3kwgffETGuHe+FcWFOGGyGRa
+ vDVXDyQl85KlqKWEBwwaF2xBM0lRabcQ0xKgTHOUPSpU5ky+PepqqWcFShVuUI2nTA/tPto3t
+ jiKH4cDeFwCM618wB/G2ByisUOL8sJ8+LKeQrN9cBmRZp1Uj45cNseWppH17BprDguPKkjbvO
+ UIZXcvp3T/zoFlQZPrsSoxK7INljy+ftTXTTSekO1cqbB21GRLkLxxhM55U6IbnZWthZZU0YI
+ 9JtbNkpFgEA1ARiIRzcxQeuVHa0julagiPmgV3ehp3Q0p6V33ullSfcCiJp73LJigYAq+JTk+
+ JOzbC4m7bnfGBhYm31Ca6lxsZlDhmN+NrWc4Ny+RkUH2x88zUjSlOXfQgDWwI0ajia4lp0iIf
+ 9wEHhR0PksjclwmoI3ctejXmDjCtzJRZDh9ih3c8e0fTG/Cu6h/3XMY1SZ6V+7tyxRBOX1gtc
+ rBppkZtpfWfZOTYeHFDd6eMGwOxQEuxRKDihlEYQkbMV6IbPA2RoQ+Bwt2P7uFFlSPA6aFqHa
+ xXlzMYO91L2IOOpqN/4DkSynN0dqmPIy9rS+Qd5We0MLJnFABR8I+uTKQkklaM2ra3FIQi7x/
+ Qmi52xk80itcBeGVYQPNQgI0rVI+5JnPoPq7h4D9C7nRa/SocaV2/cAg5HNOIjL3Fg+1VF4ya
+ ZYqd72kS7Dhq+CLLCNCzbO1iG+wsSeyM4nt79ocXIYoXk9TCvCYv9kcaz2spLfdZ6QmsZAi2V
+ sGlL0xKX1L241GSAKRCUiur4CtQOf2QOYbCWHYTUG8arUJuh3XvxHKUx76wKF4xkpN5cewzQf
+ Qw5j/byG/1zfNB1I/wx2uaBAobNXZvIu0UpSFCBRDb5SKlYf/ICyqlCquNF7cJctfudcteWXO
+ Xv7uOIogdd0CtKL8KMpre/J/eSn5VQiCHaak4DGElEYhQtuhZJP4FQ0hA5apK5c45ktqR/xwE
+ rVwlPTuB4/rjMK7tX2M+FLnZfF0=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Michael Schmitz - 02.07.23, 22:22:27 CEST:
-> > I have read through the last mails without commenting. I admit: I do
-> > not yet get what is wrong here? A checksum was miscalculated? Is
-> > this a regular thing to happen when using RDB disks with Linux
-> > partitions?
-> I sent instructions to Christian on how to fix his partition table so
-> the size mismatch between partition and filesystem (caused by the old
-> RDB code) can be avoided, and misreading the checksum calculation code
-> I forgot to update the checksum. That's all.
+Hi Linus,
 
-Ah okay. Sure, the checksum needs to be updated then.
+On 7/3/23 08:20, Linus Torvalds wrote:
+> On Sun, 2 Jul 2023 at 22:33, Guenter Roeck <linux@roeck-us.net> wrote:
+>>
+>> Here you are:
+>>
+>> [   31.188688] stack expand failed: ffeff000-fff00000 (ffefeff2)
+>
+> Ahhah!
+>
+> I think the problem is actually ridiculously simple.
+>
+> The thing is, the parisc stack expands upwards. That's obvious. I've
+> mentioned it several times in just this thread as being the thing that
+> makes parisc special.
+>
+> But it's *so* obvious that I didn't even think about what it really impl=
+ies.
+>
+> And part of all the changes was this part in expand_downwards():
+>
+>          if (!(vma->vm_flags & VM_GROWSDOWN))
+>                  return -EFAULT;
+>
+> and that will *always* fail on parisc, because - as said multiple
+> times - the parisc stack expands upwards. It doesn't have VM_GROWSDOWN
+> set.
+>
+> What a dum-dum I am.
+>
+> And I did it that way because the *normal* stack expansion obviously
+> wants it that way and putting the check there not only made sense, but
+> simplified other code.
+>
+> But fs/execve.c is special - and only special for parisc - in that it
+> really wants to  expand a normally upwards-growing stack downwards
+> unconditionally.
+>
+> Anyway, I think that new check in expand_downwards() is the right
+> thing to do, and the real fix here is to simply make vm_flags reflect
+> reality.
+>
+> Because during execve, that stack that will _eventually_ grow upwards,
+> does in fact grow downwards.  Let's make it reflect that.
+>
+> We already do magical extra setup for the stack flags during setup
+> (VM_STACK_INCOMPLETE_SETUP), so extending that logic to contain
+> VM_GROWSDOWN seems sane and the right thing to do.
+>
+> IOW, I think a patch like the attached will fix the problem for real.
+>
+> It needs a good commit log and maybe a code comment or two, but before
+> I bother to do that, let's verify that yes, it does actually fix
+> things.
+>
+> In the meantime, I will actually go to bed, but I'm pretty sure this is =
+it.
 
-From what I thought I gathered from Christian, I thought that his issue 
-would be something that would automatically be triggered by just using 
-disks Amiga + Linux RDB partitioning setup. And I did not get, how any 
-tool on AmigaOS would create partition tables with errors like too large 
-partitions in them. I am not completely sure about the amiga-fdisk tool 
-for Linux, but even there I would be surprised if it would allow to 
-create such a partition table. Especially given that as I remember back 
-then when I faced the overflow issue amiga-fdisk showed the correct 
-values. I always suggest to use a tool on AmigaOS however.
+Great, that patch fixes it!
 
-So that was it: I did not get how Christian comes to claim that so many 
-users were affected with incorrect partition tables, cause frankly Amiga 
-RDB partitioning tools are not actually famous for creating incorrect 
-partition tables like this. There has been some compatibility issue 
-between some Phase 5 tool with a name I do not remember and the other 
-tools back then I believe, but it was not about partition sizes. 
-Especially if you use a HDToolBox from any AmigaOS version up to 3.x or 
-Media Toolbox from AmigaOS 4.x with automatic geometry calculation, I 
-never heard of such a partition to large error in the partition table. 
-Those tools simply do not allow creating that.
+I wonder if you want to
+#define VM_STACK_EARLY VM_GROWSDOWN
+even for the case where the stack grows down too (instead of 0),
+just to make clear that in both cases the stack goes downwards initially.
 
-So, Christian, unless you can actually enlighten us on a reproducible 
-way how users with those setups end up with incorrect partition tables 
-like this, I consider this case closed. So far you didn't.
-
-Ciao,
--- 
-Martin
-
-
+Helge
