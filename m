@@ -2,145 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75C1C745728
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 10:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2320574579B
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 10:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbjGCITp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 04:19:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58874 "EHLO
+        id S230320AbjGCIsz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 04:48:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230092AbjGCITo (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Mon, 3 Jul 2023 04:19:44 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B66E6F;
-        Mon,  3 Jul 2023 01:19:31 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        with ESMTP id S230214AbjGCIso (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Mon, 3 Jul 2023 04:48:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFFC6E59;
+        Mon,  3 Jul 2023 01:48:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 3368B218F6;
-        Mon,  3 Jul 2023 08:19:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1688372370; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UpkuB3/PahTMC3E01tkVXYrfpgLpPbrbEH63Q3jfRXo=;
-        b=aJje8umumX+wbjeh/5WR+y740OPtf3TqtEYdg8fi56N38n6f+o5F4bQKfkU1tGir/mD2Pk
-        JtD0nyrvIaIPHs9Y2dmpNwfRdR0s7ygD8MbOfwlSdp2Gs/Oj3uSPqibe8KFrjCUPMPDlFf
-        BykWceTpucFYTP0aqh27bgWta1D2FZI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1688372370;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UpkuB3/PahTMC3E01tkVXYrfpgLpPbrbEH63Q3jfRXo=;
-        b=jmqiKABTTV2EIlXnmTNx//2wzH20PGtjQsULnm6Zpk+W33q4yANxojTDrMLbWEhhuyqajv
-        dYmEfZFeF01bH1CQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E4FCB138FC;
-        Mon,  3 Jul 2023 08:19:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 0OLxNpGEomQZbwAAMHmgww
-        (envelope-from <tiwai@suse.de>); Mon, 03 Jul 2023 08:19:29 +0000
-Date:   Mon, 03 Jul 2023 10:19:29 +0200
-Message-ID: <877crh76ge.wl-tiwai@suse.de>
-From:   Takashi Iwai <tiwai@suse.de>
-To:     Johan Hovold <johan@kernel.org>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AB7A60E76;
+        Mon,  3 Jul 2023 08:48:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0611C433C8;
+        Mon,  3 Jul 2023 08:48:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688374116;
+        bh=pox5/8OU+E0k0USvT7GzuoL1tE4nYDvau0NjWziCQbg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QO5q0gD+xg0S2yRaTSvnhQN1rQSHd3GjZR/BSvSF5xkz6zcOhpSknzlG215Zkx8V1
+         8v1d/RtC05HMr5F/BsBtEzRd6iS5S9L+yhc3Glx/DuUHH6YdlaokKLWtPnxvbbVqiT
+         R5r/TOG61tIwNf/cZ87WVI4Q1lc8Kisxk6Vzle1GYtj9yAxPib85Q3ISjzapugs4H3
+         2slsG81RGvle2x2nfzci471SvTPp0apDznCWCf+t7pn5nLQWbFTDEqoN8lQ/YsbJg7
+         IbCkh1dwJtggfdSWh8rpKfY1jFVlQsadGyzWELnwwgAVUPZ0EG+oWb8lQU5q+XrtP6
+         jg7EQP/EkplYg==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan@kernel.org>)
+        id 1qGFEo-0006nE-37;
+        Mon, 03 Jul 2023 10:48:51 +0200
+Date:   Mon, 3 Jul 2023 10:48:50 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Takashi Iwai <tiwai@suse.de>
 Cc:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Mark Brown <broonie@kernel.org>, johan+linaro@kernel.org,
         perex@perex.cz, tiwai@suse.com, lgirdwood@gmail.com,
         ckeepax@opensource.cirrus.com, kuninori.morimoto.gx@renesas.com,
         linux-kernel@vger.kernel.org, pierre-louis.bossart@linux.intel.com,
         alsa-devel@alsa-project.org, Stable@vger.kernel.org
-Subject: Re: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device number
-In-Reply-To: <ZKKA6K44mp_vjwtp@hovoldconsulting.com>
+Subject: Re: [PATCH] ASoC: qdsp6: q6apm: use dai link pcm id as pcm device
+ number
+Message-ID: <ZKKLcnosI5jD-IXv@hovoldconsulting.com>
 References: <20230628092404.13927-1-srinivas.kandagatla@linaro.org>
-        <ZKJ9UrB8FRkLzLc-@hovoldconsulting.com>
-        <ZKKA6K44mp_vjwtp@hovoldconsulting.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+ <ZKJ9UrB8FRkLzLc-@hovoldconsulting.com>
+ <ZKKA6K44mp_vjwtp@hovoldconsulting.com>
+ <877crh76ge.wl-tiwai@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877crh76ge.wl-tiwai@suse.de>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 03 Jul 2023 10:03:52 +0200,
-Johan Hovold wrote:
+On Mon, Jul 03, 2023 at 10:19:29AM +0200, Takashi Iwai wrote:
+> On Mon, 03 Jul 2023 10:03:52 +0200,
+> Johan Hovold wrote:
+
+> > Ok, scratch that. I just hit the race again also with this patch
+> > applied:
+> > 
+> > [   11.815028] q6apm-dai 3000000.remoteproc:glink-edge:gpr:service@1:dais: Adding to iommu group 23
+> > [   11.838667] snd-sc8280xp sound: ASoC: adding FE link failed
+> > [   11.838774] snd-sc8280xp sound: ASoC: topology: could not load header: -517
+> > [   11.838916] qcom-apm gprsvc:service:2:1: tplg component load failed-517
+> > [   11.838996] qcom-apm gprsvc:service:2:1: ASoC: error at snd_soc_component_probe on gprsvc:service:2:1: -22
+> > [   11.839430] snd-sc8280xp sound: ASoC: failed to instantiate card -22
+> > [   11.844801] snd-sc8280xp: probe of sound failed with error -22
 > 
-> On Mon, Jul 03, 2023 at 09:48:34AM +0200, Johan Hovold wrote:
-> > On Wed, Jun 28, 2023 at 10:24:04AM +0100, Srinivas Kandagatla wrote:
-> > > For some reason we ended up with a setup without this flag.
-> > > This resulted in inconsistent sound card devices numbers which
-> > >  are also not starting as expected at dai_link->id.
-> > >  (Ex: MultiMedia1 pcm ended up with device number 4 instead of 0)
-> > > 
-> > > With this patch patch now the MultiMedia1 PCM ends up with device number 0
-> > > as expected.
-> > 
-> > This appears to fix the intermittent probe breakage that I see every
-> > five boots or so:
-> > 
-> > [   11.843320] q6apm-dai 3000000.remoteproc:glink-edge:gpr:service@1:dais: Adding to iommu group 23
-> > [   11.867467] snd-sc8280xp sound: ASoC: adding FE link failed
-> > [   11.867574] snd-sc8280xp sound: ASoC: topology: could not load header: -517
-> > [   11.867725] qcom-apm gprsvc:service:2:1: tplg component load failed-517
-> > [   11.867933] qcom-apm gprsvc:service:2:1: ASoC: error at snd_soc_component_probe on gprsvc:service:2:1: -22
-> > [   11.868379] snd-sc8280xp sound: ASoC: failed to instantiate card -22
-> > [   11.873645] snd-sc8280xp: probe of sound failed with error -22
-> > 
-> > and which I've reported here:
-> > 
-> > 	https://lore.kernel.org/lkml/ZIHMMFtuDtvdpFAZ@hovoldconsulting.com/
-> > 
-> > as unrelated changes in timings resulting from that series made the
-> > problem much harder (but not impossible) to hit.
-> > 
-> > With this fix, I've rebooted 20+ times without hitting the issue once.
-> > 
-> > I'm guessing that you found this issue while investigated that probe
-> > race, Srini? It does look related, and it does seem to make the problem
-> > go away, but I'm not comfortable claiming that the intermittent probe
-> > breakage has been resolved without some analysis to back that up.
-> 
-> Ok, scratch that. I just hit the race again also with this patch
-> applied:
-> 
-> [   11.815028] q6apm-dai 3000000.remoteproc:glink-edge:gpr:service@1:dais: Adding to iommu group 23
-> [   11.838667] snd-sc8280xp sound: ASoC: adding FE link failed
-> [   11.838774] snd-sc8280xp sound: ASoC: topology: could not load header: -517
-> [   11.838916] qcom-apm gprsvc:service:2:1: tplg component load failed-517
-> [   11.838996] qcom-apm gprsvc:service:2:1: ASoC: error at snd_soc_component_probe on gprsvc:service:2:1: -22
-> [   11.839430] snd-sc8280xp sound: ASoC: failed to instantiate card -22
-> [   11.844801] snd-sc8280xp: probe of sound failed with error -22
+> Isn't it rather an issue about the error code passing in qcom driver?
+> How about the change like below?
 
-Isn't it rather an issue about the error code passing in qcom driver?
-How about the change like below?
+Indeed, and I tested a change like that here:
 
+	https://lore.kernel.org/lkml/ZIHSGf18Aw7htb9o8@hovoldconsulting.com/
 
-Takashi
+but that only seems to make the problem worse currently.
 
---- a/sound/soc/qcom/qdsp6/topology.c
-+++ b/sound/soc/qcom/qdsp6/topology.c
-@@ -1276,10 +1276,8 @@ int audioreach_tplg_init(struct snd_soc_component *component)
- 	}
- 
- 	ret = snd_soc_tplg_component_load(component, &audioreach_tplg_ops, fw);
--	if (ret < 0) {
--		dev_err(dev, "tplg component load failed%d\n", ret);
--		ret = -EINVAL;
--	}
-+	if (ret < 0)
-+		dev_err_probe(dev, ret, "tplg component load failed %d\n", ret);
- 
- 	release_firmware(fw);
- err:
+This should probably still be fixed, but I was just hoping that the DAI
+numbering could have been the cause for the probe deferral (which then
+triggers the other bugs).
+
+Johan
