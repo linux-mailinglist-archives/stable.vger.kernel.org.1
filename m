@@ -2,127 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D4867465D1
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 00:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A56AB7465F5
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 01:01:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229925AbjGCWn0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 18:43:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40272 "EHLO
+        id S230083AbjGCXB5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 19:01:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbjGCWnZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 18:43:25 -0400
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A053E41;
-        Mon,  3 Jul 2023 15:43:25 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-38c35975545so3862202b6e.1;
-        Mon, 03 Jul 2023 15:43:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688424204; x=1691016204;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=B/tfjhU3WPT9PSSMcmIhQFAKvoGMhIuT3oBNwXQ8Q7I=;
-        b=QxEwG9k9hafZSIThooJ6Va0V2ZEBPjliQLDD5krXOQdS7rJXHc5Iwv6qSyKhGGua3y
-         yeLwl2a3dEKnxls7RJvO471pQDcjUCxb3ZwyAGa2ei72HmLpK8LxeP3usnW2C6IvyG34
-         SpHO3TtIDpOLLhb8JZJw6CwDzznJIeCurOvNyhaPO2AatPXp70B7SUOWqKlzOOvyy9N4
-         MvVNnmr2Vb3VRruPJFksaDRJnu4TAVtkrmIjOGoE8aqZhUl+C0gr5l/gFUDAj58QkdPn
-         lEwMS/OK34opowHn1lQVhZIeE4CWE1LO6yBUrN2GOw/v2+c7z82jl8WrbfTEMrzd2J4I
-         RW6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688424204; x=1691016204;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B/tfjhU3WPT9PSSMcmIhQFAKvoGMhIuT3oBNwXQ8Q7I=;
-        b=DgDG9qmJank+S66LpDrZ+Lyn3/hUaz+94Q/2Ktv+6DWZotAlQkX/GvvRMaNy8PpgUl
-         k4QVKMDE5ybaxjBiQKiJvemtrlx0iFF/ff/uzn2gHJoHuJYOg+OLjYEp9HLv4Tgkw8V/
-         6GD6LIUOiWfhc1i0PANpanvg2c291dr8XuyqLatqhq26N6+B03BunU0y44vWozA1g/YY
-         SbB7MqoGEBiJ01MCL0fslfzVTrIreQAjv4eQ72+3uJ/ZbXeF8Blhf8NCj8BUZOtEJPAc
-         5xCychLrwRSWAsycsyMFniMiEh9ZHzwQBxrn4n1R/2RnsBgx0dNvV/L5LGrK/r5zzHx3
-         HHhg==
-X-Gm-Message-State: AC+VfDwFV/xojIt2YgiExPBHaPEO9gA/j6cEdtjdcO/+wBlDl29dA1sP
-        WNMQWPHRY9fzNgn86pYw+X4=
-X-Google-Smtp-Source: ACHHUZ7MsBY8S9p1pCulyNlK0/OBB75ADUqabd0KbfLOf7fSvrt5HvmKI+GztiOV4Pt7hNq39OhZvg==
-X-Received: by 2002:a05:6808:1827:b0:3a1:d763:40a6 with SMTP id bh39-20020a056808182700b003a1d76340a6mr13018019oib.38.1688424203733;
-        Mon, 03 Jul 2023 15:43:23 -0700 (PDT)
-Received: from ?IPV6:2001:df0:0:200c:d1e:daf:45b5:fd3f? ([2001:df0:0:200c:d1e:daf:45b5:fd3f])
-        by smtp.gmail.com with ESMTPSA id x23-20020a62fb17000000b00680af5e4184sm8675068pfm.160.2023.07.03.15.43.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Jul 2023 15:43:23 -0700 (PDT)
-Message-ID: <fd1539ee-f336-30e0-e155-2c18b4391753@gmail.com>
-Date:   Tue, 4 Jul 2023 10:43:16 +1200
+        with ESMTP id S229793AbjGCXB4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 19:01:56 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293E3E59;
+        Mon,  3 Jul 2023 16:01:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=rz8+A1sENDx30nELD7mDPWbKVEEZHfOcR63DH9BqkMY=; b=yw0ML96BdG7xwSathwbm+wS47t
+        p4DwtsqssQSGNfaGUdPlAHM7Q6OZ3VsABmoxYxGXw9oI04FpNeVGr1QZVJQkJb6b1WZshhoyMm4NZ
+        sXZ9nZkgYMZA3CFyFleLmkQih8cZsoBRmJ1TjlvMcz5ZEMiWlWkiNS4pYTYJJnRukVJuQo43KacZY
+        zCtV9hHDL3UYNRaxuKQBI8xQezY8pixr+XotPddXjvf5f0pZehMyySOVToscjAPviwHOv+fF3QNpw
+        EcNmjpJuMBUfo3cKtcW3PcnqOYjJldDmuX06IQUvCeX3+Uw7ADXvCIFR3quaJVQrpNzFnHJbOW9SZ
+        eHDQNmLQ==;
+Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qGSYM-00Bbaq-1h;
+        Mon, 03 Jul 2023 23:01:54 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Igor Zhbanov <izh1979@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Nick Alcock <nick.alcock@oracle.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH v4 RESEND] sparc: vDSO: fix return value of __setup handler
+Date:   Mon,  3 Jul 2023 16:01:53 -0700
+Message-ID: <20230703230153.19421-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] block: bugfix for Amiga partition overflow check patch
-Content-Language: en-US
-To:     Jens Axboe <axboe@kernel.dk>,
-        Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc:     linux-m68k@vger.kernel.org, geert@linux-m68k.org, hch@lst.de,
-        stable@vger.kernel.org, "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        Darren Stevens <darren@stevens-zone.net>,
-        mad skateman <madskateman@gmail.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Christian Zigotzky <info@xenosoft.de>,
-        Martin Steigerwald <martin@lichtvoll.de>,
-        linux-block <linux-block@vger.kernel.org>
-References: <20230701023524.7434-1-schmitzmic@gmail.com>
- <1885875.tdWV9SEqCh@lichtvoll.de>
- <234f57e7-a35f-4406-35ad-a5b9b49e9a5e@gmail.com>
- <4858801.31r3eYUQgx@lichtvoll.de>
- <947340d9-b640-0910-317b-5c8022220a55@xenosoft.de>
- <80266037-f808-c448-c3c7-9d5d5f4253a7@xenosoft.de>
- <45d9f890-ebe2-4014-2411-953fd9741c2b@gmail.com>
- <fbabe412-a3a9-ef89-72ce-cc3e51984139@kernel.dk>
-From:   Michael Schmitz <schmitzmic@gmail.com>
-In-Reply-To: <fbabe412-a3a9-ef89-72ce-cc3e51984139@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Jens,
+__setup() handlers should return 1 to obsolete_checksetup() in
+init/main.c to indicate that the boot option has been handled.
+A return of 0 causes the boot option/value to be listed as an Unknown
+kernel parameter and added to init's (limited) argument or environment
+strings. Also, error return codes don't mean anything to
+obsolete_checksetup() -- only non-zero (usually 1) or zero.
+So return 1 from vdso_setup().
 
-On 4/07/23 09:27, Jens Axboe wrote:
-> On 7/3/23 3:24?PM, Michael Schmitz wrote:
->> Hi Christian,
->>
->> On 4/07/23 02:59, Christian Zigotzky wrote:
->>>> I am very happy that this bug is fixed now but we have to explain it to our customers why they can't mount their Linux partitions on the RDB disk anymore. Booting is of course also affected. (Mounting the root partition)
->>>>
->>>> But maybe simple GParted instructions are a good solution.
->>> You can apply the patch. I will revert this patch until I find a simple solution for our community.
->>>
->>> Thank you for fixing this issue!
->> Thanks for testing - I'll add your Tested-by: tag now. I have to
->> correct the Fixes: tag anyway.
->>
->> Jens - is the bugfix patch enough, or do you need a new version of the
->> entire series?
-> Well, the whole series is already upstream, so that part is set in
-That's what I thought, but thought to better ask...
-> stone. What I'm unclear on is if the final fix is the parent of this
-> thread, or if there's later version burried somewhere within this big
-> thread?
+Fixes: 9a08862a5d2e ("vDSO for sparc")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Igor Zhbanov <izh1979@gmail.com>
+Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org
+Cc: Dan Carpenter <dan.carpenter@oracle.com>
+Cc: Nick Alcock <nick.alcock@oracle.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>
+---
+v2: correct the Fixes: tag (Dan Carpenter)
+v3: add more Cc's;
+    correct Igor's email address;
+    change From: Igor to Reported-by: Igor;
+v4: add Arnd to Cc: list
 
-It's the parent of this thread (Message ID 
-<20230701023524.7434-1-schmitzmic@gmail.com>) but I'd botched up the 
-Fixes: tag; might also need to reword the commit message to clearly 
-explain the ramifications of commit b6f3f28f60 as regards partitions at 
-the end of the disk that were subject to size overflow and truncation in 
-previous kernels.
+ arch/sparc/vdso/vma.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-I'll send v2 of the bugfix shortly, OK?
-
-Cheers,
-
-     Michael
-
-
+diff -- a/arch/sparc/vdso/vma.c b/arch/sparc/vdso/vma.c
+--- a/arch/sparc/vdso/vma.c
++++ b/arch/sparc/vdso/vma.c
+@@ -449,9 +449,8 @@ static __init int vdso_setup(char *s)
+ 	unsigned long val;
+ 
+ 	err = kstrtoul(s, 10, &val);
+-	if (err)
+-		return err;
+-	vdso_enabled = val;
+-	return 0;
++	if (!err)
++		vdso_enabled = val;
++	return 1;
+ }
+ __setup("vdso=", vdso_setup);
