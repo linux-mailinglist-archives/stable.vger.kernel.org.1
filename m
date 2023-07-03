@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78CEB7462F5
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BD937462E5
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 20:55:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231347AbjGCS4U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 14:56:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38048 "EHLO
+        id S230250AbjGCSzn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 14:55:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231481AbjGCS4N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:56:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E73E71
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:56:11 -0700 (PDT)
+        with ESMTP id S229562AbjGCSzm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 14:55:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 184E410F1
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 11:55:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 042DE60FFA
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:56:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 198F4C433C7;
-        Mon,  3 Jul 2023 18:56:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6CF36101C
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:55:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3E5C433C8;
+        Mon,  3 Jul 2023 18:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688410570;
-        bh=PXx3pC26vARFw20M92KqrHQ9XW/5nF4w5xespK0Q2Kc=;
+        s=korg; t=1688410529;
+        bh=kKexH7LG/LgNP3sH6LotSyBxbYHuDu56Vq+KaZx2KK4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ApTkvydEVl/Ok3KSm5VuGFQW657gP9X4oR3afIUN13B/kfjsavg12UtCZkFPykJU/
-         yztOiaNarA09c0W2fLu5YI/8Qru9HMDzt6L5PW+qPJBTvlxwJ6o0CICaiTz8jaZoVs
-         Mq9M1qvgXSJpj8woRnnSoZ5gnlbFdDXIIkVb9N9M=
+        b=FqPEvWb6ysKM+59AecIzYFfOX9Fziy93A9qskJz7++q0XQnlCUu/5tYBgPYAR6o88
+         uNJhnRXj/5/FnYGXIltZxrtDjDXvy5OIvzrtVnsvwddtfG0YYl8NdQG620/tprPtLn
+         BREfMbGeycrtCx9yvRU+kUaP2q+xoUtpIdKANOAE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aric Cyr <aric.cyr@amd.com>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.3 02/13] drm/amd/display: Do not update DRR while BW optimizations pending
-Date:   Mon,  3 Jul 2023 20:54:12 +0200
-Message-ID: <20230703184519.273503172@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Demi Marie Obenour <demi@invisiblethingslab.com>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.4 12/13] dm ioctl: Avoid double-fetch of version
+Date:   Mon,  3 Jul 2023 20:54:13 +0200
+Message-ID: <20230703184519.633067425@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230703184519.206275653@linuxfoundation.org>
-References: <20230703184519.206275653@linuxfoundation.org>
+In-Reply-To: <20230703184519.261119397@linuxfoundation.org>
+References: <20230703184519.261119397@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,107 +55,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aric Cyr <aric.cyr@amd.com>
+From: Demi Marie Obenour <demi@invisiblethingslab.com>
 
-commit 32953485c558cecf08f33fbfa251e80e44cef981 upstream.
+commit 249bed821b4db6d95a99160f7d6d236ea5fe6362 upstream.
 
-[why]
-While bandwidth optimizations are pending, it's possible a pstate change
-will occur.  During this time, VSYNC handler should not also try to update
-DRR parameters causing pstate hang
+The version is fetched once in check_version(), which then does some
+validation and then overwrites the version in userspace with the API
+version supported by the kernel.  copy_params() then fetches the version
+from userspace *again*, and this time no validation is done.  The result
+is that the kernel's version number is completely controllable by
+userspace, provided that userspace can win a race condition.
 
-[how]
-Do not adjust DRR if optimize bandwidth is set.
+Fix this flaw by not copying the version back to the kernel the second
+time.  This is not exploitable as the version is not further used in the
+kernel.  However, it could become a problem if future patches start
+relying on the version field.
 
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Aric Cyr <aric.cyr@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c |   48 ++++++++++++++++++-------------
- 1 file changed, 29 insertions(+), 19 deletions(-)
+ drivers/md/dm-ioctl.c |   33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -400,6 +400,13 @@ bool dc_stream_adjust_vmin_vmax(struct d
+--- a/drivers/md/dm-ioctl.c
++++ b/drivers/md/dm-ioctl.c
+@@ -1830,30 +1830,36 @@ static ioctl_fn lookup_ioctl(unsigned in
+  * As well as checking the version compatibility this always
+  * copies the kernel interface version out.
+  */
+-static int check_version(unsigned int cmd, struct dm_ioctl __user *user)
++static int check_version(unsigned int cmd, struct dm_ioctl __user *user,
++			 struct dm_ioctl *kernel_params)
  {
- 	int i;
+-	uint32_t version[3];
+ 	int r = 0;
  
-+	/*
-+	 * Don't adjust DRR while there's bandwidth optimizations pending to
-+	 * avoid conflicting with firmware updates.
-+	 */
-+	if (dc->optimized_required || dc->wm_optimized_required)
-+		return false;
+-	if (copy_from_user(version, user->version, sizeof(version)))
++	/* Make certain version is first member of dm_ioctl struct */
++	BUILD_BUG_ON(offsetof(struct dm_ioctl, version) != 0);
 +
- 	stream->adjust.v_total_max = adjust->v_total_max;
- 	stream->adjust.v_total_mid = adjust->v_total_mid;
- 	stream->adjust.v_total_mid_frame_num = adjust->v_total_mid_frame_num;
-@@ -2201,27 +2208,33 @@ void dc_post_update_surfaces_to_stream(s
++	if (copy_from_user(kernel_params->version, user->version, sizeof(kernel_params->version)))
+ 		return -EFAULT;
  
- 	post_surface_trace(dc);
- 
--	if (dc->ctx->dce_version >= DCE_VERSION_MAX)
--		TRACE_DCN_CLOCK_STATE(&context->bw_ctx.bw.dcn.clk);
--	else
-+	/*
-+	 * Only relevant for DCN behavior where we can guarantee the optimization
-+	 * is safe to apply - retain the legacy behavior for DCE.
-+	 */
-+
-+	if (dc->ctx->dce_version < DCE_VERSION_MAX)
- 		TRACE_DCE_CLOCK_STATE(&context->bw_ctx.bw.dce);
-+	else {
-+		TRACE_DCN_CLOCK_STATE(&context->bw_ctx.bw.dcn.clk);
- 
--	if (is_flip_pending_in_pipes(dc, context))
--		return;
-+		if (is_flip_pending_in_pipes(dc, context))
-+			return;
- 
--	for (i = 0; i < dc->res_pool->pipe_count; i++)
--		if (context->res_ctx.pipe_ctx[i].stream == NULL ||
--		    context->res_ctx.pipe_ctx[i].plane_state == NULL) {
--			context->res_ctx.pipe_ctx[i].pipe_idx = i;
--			dc->hwss.disable_plane(dc, &context->res_ctx.pipe_ctx[i]);
--		}
-+		for (i = 0; i < dc->res_pool->pipe_count; i++)
-+			if (context->res_ctx.pipe_ctx[i].stream == NULL ||
-+					context->res_ctx.pipe_ctx[i].plane_state == NULL) {
-+				context->res_ctx.pipe_ctx[i].pipe_idx = i;
-+				dc->hwss.disable_plane(dc, &context->res_ctx.pipe_ctx[i]);
-+			}
- 
--	process_deferred_updates(dc);
-+		process_deferred_updates(dc);
- 
--	dc->hwss.optimize_bandwidth(dc, context);
-+		dc->hwss.optimize_bandwidth(dc, context);
- 
--	if (dc->debug.enable_double_buffered_dsc_pg_support)
--		dc->hwss.update_dsc_pg(dc, context, true);
-+		if (dc->debug.enable_double_buffered_dsc_pg_support)
-+			dc->hwss.update_dsc_pg(dc, context, true);
-+	}
- 
- 	dc->optimized_required = false;
- 	dc->wm_optimized_required = false;
-@@ -4203,12 +4216,9 @@ void dc_commit_updates_for_stream(struct
- 			if (new_pipe->plane_state && new_pipe->plane_state != old_pipe->plane_state)
- 				new_pipe->plane_state->force_full_update = true;
- 		}
--	} else if (update_type == UPDATE_TYPE_FAST && dc_ctx->dce_version >= DCE_VERSION_MAX) {
-+	} else if (update_type == UPDATE_TYPE_FAST) {
- 		/*
- 		 * Previous frame finished and HW is ready for optimization.
--		 *
--		 * Only relevant for DCN behavior where we can guarantee the optimization
--		 * is safe to apply - retain the legacy behavior for DCE.
- 		 */
- 		dc_post_update_surfaces_to_stream(dc);
+-	if ((version[0] != DM_VERSION_MAJOR) ||
+-	    (version[1] > DM_VERSION_MINOR)) {
++	if ((kernel_params->version[0] != DM_VERSION_MAJOR) ||
++	    (kernel_params->version[1] > DM_VERSION_MINOR)) {
+ 		DMERR("ioctl interface mismatch: kernel(%u.%u.%u), user(%u.%u.%u), cmd(%d)",
+ 		      DM_VERSION_MAJOR, DM_VERSION_MINOR,
+ 		      DM_VERSION_PATCHLEVEL,
+-		      version[0], version[1], version[2], cmd);
++		      kernel_params->version[0],
++		      kernel_params->version[1],
++		      kernel_params->version[2],
++		      cmd);
+ 		r = -EINVAL;
  	}
+ 
+ 	/*
+ 	 * Fill in the kernel version.
+ 	 */
+-	version[0] = DM_VERSION_MAJOR;
+-	version[1] = DM_VERSION_MINOR;
+-	version[2] = DM_VERSION_PATCHLEVEL;
+-	if (copy_to_user(user->version, version, sizeof(version)))
++	kernel_params->version[0] = DM_VERSION_MAJOR;
++	kernel_params->version[1] = DM_VERSION_MINOR;
++	kernel_params->version[2] = DM_VERSION_PATCHLEVEL;
++	if (copy_to_user(user->version, kernel_params->version, sizeof(kernel_params->version)))
+ 		return -EFAULT;
+ 
+ 	return r;
+@@ -1879,7 +1885,10 @@ static int copy_params(struct dm_ioctl _
+ 	const size_t minimum_data_size = offsetof(struct dm_ioctl, data);
+ 	unsigned int noio_flag;
+ 
+-	if (copy_from_user(param_kernel, user, minimum_data_size))
++	/* check_version() already copied version from userspace, avoid TOCTOU */
++	if (copy_from_user((char *)param_kernel + sizeof(param_kernel->version),
++			   (char __user *)user + sizeof(param_kernel->version),
++			   minimum_data_size - sizeof(param_kernel->version)))
+ 		return -EFAULT;
+ 
+ 	if (param_kernel->data_size < minimum_data_size) {
+@@ -1991,7 +2000,7 @@ static int ctl_ioctl(struct file *file,
+ 	 * Check the interface version passed in.  This also
+ 	 * writes out the kernel's interface version.
+ 	 */
+-	r = check_version(cmd, user);
++	r = check_version(cmd, user, &param_kernel);
+ 	if (r)
+ 		return r;
+ 
 
 
