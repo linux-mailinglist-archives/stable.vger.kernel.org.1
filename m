@@ -2,54 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 276A3745386
-	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 03:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 692DA7453B2
+	for <lists+stable@lfdr.de>; Mon,  3 Jul 2023 03:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229437AbjGCB1s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 2 Jul 2023 21:27:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40906 "EHLO
+        id S229937AbjGCB5W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 2 Jul 2023 21:57:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229932AbjGCB1r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 2 Jul 2023 21:27:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C34BD12E;
-        Sun,  2 Jul 2023 18:27:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 610C960B46;
-        Mon,  3 Jul 2023 01:27:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448A4C433C9;
-        Mon,  3 Jul 2023 01:27:45 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OLCjpCtb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1688347662;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4Bsgk0ZPu+12ieJC1IW1q2532d2t2GK2LWiYlH0RX0w=;
-        b=OLCjpCtbQENqob1Mm1o4IxQjVDuzheVlpWKEhEeb+xnlmgOdSVXZ6VbdHA5FoKfOIQPd9x
-        4A4sEUw4+1Xhv2Ev4nrBy5uwaUg4krRsFVix8aGaTw70sZHTfOxrElwLrd7ZJn/sfVo7y9
-        UicHvYzeNtHU8N7jtNmjf3lF0plB+9M=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id a32e2a99 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Mon, 3 Jul 2023 01:27:42 +0000 (UTC)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org,
-        Maxim Cournoyer <maxim.cournoyer@gmail.com>
-Subject: [PATCH net 2/3] wireguard: netlink: send staged packets when setting initial private key
-Date:   Mon,  3 Jul 2023 03:27:05 +0200
-Message-ID: <20230703012723.800199-3-Jason@zx2c4.com>
-In-Reply-To: <20230703012723.800199-1-Jason@zx2c4.com>
-References: <20230703012723.800199-1-Jason@zx2c4.com>
+        with ESMTP id S229482AbjGCB5V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 2 Jul 2023 21:57:21 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972AE19A;
+        Sun,  2 Jul 2023 18:57:20 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1b84c7a2716so18826345ad.3;
+        Sun, 02 Jul 2023 18:57:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688349440; x=1690941440;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IgtuTfk8ghajOELdnsmPNXhVMSoe5USZM9GNI8VUIuA=;
+        b=m0KH6j1lxg1izPCZ4LSzPy/lbtzy7sLoCO1xDyf4za2b2L32Xz+w2pO4YD2zPqJufu
+         w4kn9Dq8je0rwFZnTRDUccKUahRDTdDretVefCcm5T9BesxS3dC2ggPoe/KSia2MMLyq
+         D7OzSwTk/WYy+q7sCh1pXAlF2sXyggQwiHGO+rrQyWZQfrO680/xZW7/cC1nnTh1t0Es
+         4KYKLMLd2LwWE7sRETZFutIT4vLKwcpY8e2iEJL8Jxws5I+xYJWrJpLWpdD1q+nftwqP
+         5SwrBuvFVQIMP7O665E1iRahc4Z+/bp4hiZTO938vp5CNs1gw8Eaq9tPCP5lrX8XrEPr
+         1LcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688349440; x=1690941440;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IgtuTfk8ghajOELdnsmPNXhVMSoe5USZM9GNI8VUIuA=;
+        b=XDbCmt7OGJQHY9bceHvhczuo+xmENTf3WjPMtP0Q42NBdyky3ylpuU0mO9U6JJuL+C
+         iZkjoYrqKQxs8UwyrhctlvxV8QumKp511vBnMxrndJF+6vG6gYUsy0tgZQHiWKSgLJFu
+         aHYMBbBquKj24qr949h1dwBK1vxtyYpFszxQNVL+fY3HYWyyLj00V3fKSpQeg9DMawtY
+         81fX+xg01v1xmSc6TsuShRrOR2BnXuePOTHI+i6rdCrSGFC8ntBqtGAGdw7yQJkoSnpi
+         zmPd9IXQGAqnp0yOl7i9Ko98a6tHanlkVLdCdxWjluC4WMZp4HPVnY2zerBzhyj4dAJS
+         EDEA==
+X-Gm-Message-State: ABy/qLYlatJh1lDsPVFu7/xtDCaoBjcQJr/3HWGGiF4yMaoaZD2PjaoR
+        c+HA5aa73G2OLRNo2aXKhG0=
+X-Google-Smtp-Source: APBJJlGAOeTVKETBQ1UaZItJXnhLmCJejXbsjfshpRQgXuDm1Uf1+26l+cFZD+VwbNR9l0DTd1v3FA==
+X-Received: by 2002:a17:902:ecd2:b0:1b6:b1f3:add5 with SMTP id a18-20020a170902ecd200b001b6b1f3add5mr9349895plh.27.1688349439976;
+        Sun, 02 Jul 2023 18:57:19 -0700 (PDT)
+Received: from [10.1.1.24] (222-152-184-54-fibre.sparkbb.co.nz. [222.152.184.54])
+        by smtp.gmail.com with ESMTPSA id k13-20020a170902ba8d00b001b69303db54sm14141289pls.91.2023.07.02.18.57.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 02 Jul 2023 18:57:19 -0700 (PDT)
+Subject: Re: [PATCH] block: bugfix for Amiga partition overflow check patch
+To:     Christian Zigotzky <chzigotzky@xenosoft.de>,
+        Martin Steigerwald <martin@lichtvoll.de>
+References: <3C36662C-78A3-4160-93AB-3E28A246AFCE@xenosoft.de>
+ <9785707F-E415-4E04-A8E5-AD984CE16AA0@xenosoft.de>
+Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
+        linux-m68k@vger.kernel.org, geert@linux-m68k.org, hch@lst.de,
+        stable@vger.kernel.org, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+        Darren Stevens <darren@stevens-zone.net>,
+        mad skateman <madskateman@gmail.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Christian Zigotzky <info@xenosoft.de>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <c3a7f613-102b-add1-0d55-32f030e936b7@gmail.com>
+Date:   Mon, 3 Jul 2023 13:57:10 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
 MIME-Version: 1.0
+In-Reply-To: <9785707F-E415-4E04-A8E5-AD984CE16AA0@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,117 +80,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Packets bound for peers can queue up prior to the device private key
-being set. For example, if persistent keepalive is set, a packet is
-queued up to be sent as soon as the device comes up. However, if the
-private key hasn't been set yet, the handshake message never sends, and
-no timer is armed to retry, since that would be pointless.
+Hi Christian,
 
-But, if a user later sets a private key, the expectation is that those
-queued packets, such as a persistent keepalive, are actually sent. So
-adjust the configuration logic to account for this edge case, and add a
-test case to make sure this works.
+please stop placing your replies underneath the previous mail's 
+signature separator. There are mail clients that won't copy such text 
+when composing a reply.
 
-Maxim noticed this with a wg-quick(8) config to the tune of:
+Am 02.07.2023 um 21:34 schrieb Christian Zigotzky:
+>
+>
+> On 2. Jul 2023, at 10:56, Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+>
+> ﻿On 2. Jul 2023, at 09:55, Martin Steigerwald <martin@lichtvoll.de> wrote:
+>
+> How many end users are you speaking of?
+>
+> Back then I thought I was the only one using a hard disk with mixed
+> Amiga/Linux RDB setup.
+>
+> Best,
+>
+>
+> Martin
+>
+>
+>
+> A lot.  I am speaking about the new A-EON machines.
+>
+>
+>
+> The end users have to fix their  RDBs if they want to use the new patched kernels.
 
-    [Interface]
-    PostUp = wg set %i private-key somefile
+So what you're saying is that you have let your end users use RDB 
+partitions on the old kernels that had a bug against them in the RDB 
+code for eleven years, and proposed bugfixes for as long, patches to 
+resolve the problem submitted to linux-block for the last five years, 
+and you never once stopped to investigate what the ramifications of this 
+bug were, and what the consequences of the proposed bugfix would be?
 
-    [Peer]
-    PublicKey = ...
-    Endpoint = ...
-    PersistentKeepalive = 25
+The discussion of this bug among Martin, Joanne and Geert didn't leave a 
+lot to imagination as regards data corruption potential.
 
-Here, the private key gets set after the device comes up using a PostUp
-script, triggering the bug.
+> But a normal user can’t edit the RDB manually. What can we do for the end users?
 
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Cc: stable@vger.kernel.org
-Reported-by: Maxim Cournoyer <maxim.cournoyer@gmail.com>
-Tested-by: Maxim Cournoyer <maxim.cournoyer@gmail.com>
-Link: https://lore.kernel.org/wireguard/87fs7xtqrv.fsf@gmail.com/
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
- drivers/net/wireguard/netlink.c            | 14 ++++++----
- tools/testing/selftests/wireguard/netns.sh | 30 +++++++++++++++++++---
- 2 files changed, 35 insertions(+), 9 deletions(-)
+End users can use whatever tool they happened to use to partition the 
+disk in the first instance, and correct the partition table that way.
 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index 43c8c84e7ea8..6d1bd9f52d02 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -546,6 +546,7 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
- 		u8 *private_key = nla_data(info->attrs[WGDEVICE_A_PRIVATE_KEY]);
- 		u8 public_key[NOISE_PUBLIC_KEY_LEN];
- 		struct wg_peer *peer, *temp;
-+		bool send_staged_packets;
- 
- 		if (!crypto_memneq(wg->static_identity.static_private,
- 				   private_key, NOISE_PUBLIC_KEY_LEN))
-@@ -564,14 +565,17 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
- 		}
- 
- 		down_write(&wg->static_identity.lock);
--		wg_noise_set_static_identity_private_key(&wg->static_identity,
--							 private_key);
--		list_for_each_entry_safe(peer, temp, &wg->peer_list,
--					 peer_list) {
-+		send_staged_packets = !wg->static_identity.has_identity && netif_running(wg->dev);
-+		wg_noise_set_static_identity_private_key(&wg->static_identity, private_key);
-+		send_staged_packets = send_staged_packets && wg->static_identity.has_identity;
-+
-+		wg_cookie_checker_precompute_device_keys(&wg->cookie_checker);
-+		list_for_each_entry_safe(peer, temp, &wg->peer_list, peer_list) {
- 			wg_noise_precompute_static_static(peer);
- 			wg_noise_expire_current_peer_keypairs(peer);
-+			if (send_staged_packets)
-+				wg_packet_send_staged_packets(peer);
- 		}
--		wg_cookie_checker_precompute_device_keys(&wg->cookie_checker);
- 		up_write(&wg->static_identity.lock);
- 	}
- skip_set_private_key:
-diff --git a/tools/testing/selftests/wireguard/netns.sh b/tools/testing/selftests/wireguard/netns.sh
-index 69c7796c7ca9..405ff262ca93 100755
---- a/tools/testing/selftests/wireguard/netns.sh
-+++ b/tools/testing/selftests/wireguard/netns.sh
-@@ -514,10 +514,32 @@ n2 bash -c 'printf 0 > /proc/sys/net/ipv4/conf/all/rp_filter'
- n1 ping -W 1 -c 1 192.168.241.2
- [[ $(n2 wg show wg0 endpoints) == "$pub1	10.0.0.3:1" ]]
- 
--ip1 link del veth1
--ip1 link del veth3
--ip1 link del wg0
--ip2 link del wg0
-+ip1 link del dev veth3
-+ip1 link del dev wg0
-+ip2 link del dev wg0
-+
-+# Make sure persistent keep alives are sent when an adapter comes up
-+ip1 link add dev wg0 type wireguard
-+n1 wg set wg0 private-key <(echo "$key1") peer "$pub2" endpoint 10.0.0.1:1 persistent-keepalive 1
-+read _ _ tx_bytes < <(n1 wg show wg0 transfer)
-+[[ $tx_bytes -eq 0 ]]
-+ip1 link set dev wg0 up
-+read _ _ tx_bytes < <(n1 wg show wg0 transfer)
-+[[ $tx_bytes -gt 0 ]]
-+ip1 link del dev wg0
-+# This should also happen even if the private key is set later
-+ip1 link add dev wg0 type wireguard
-+n1 wg set wg0 peer "$pub2" endpoint 10.0.0.1:1 persistent-keepalive 1
-+read _ _ tx_bytes < <(n1 wg show wg0 transfer)
-+[[ $tx_bytes -eq 0 ]]
-+ip1 link set dev wg0 up
-+read _ _ tx_bytes < <(n1 wg show wg0 transfer)
-+[[ $tx_bytes -eq 0 ]]
-+n1 wg set wg0 private-key <(echo "$key1")
-+read _ _ tx_bytes < <(n1 wg show wg0 transfer)
-+[[ $tx_bytes -gt 0 ]]
-+ip1 link del dev veth1
-+ip1 link del dev wg0
- 
- # We test that Netlink/IPC is working properly by doing things that usually cause split responses
- ip0 link add dev wg0 type wireguard
--- 
-2.41.0
+Leaving 8 GB unused at the end of the disk can't be some feature of 
+Amiga partition editors, leastways not one that can't be overridden?
+
+
+But if you want to support your large userbase by a convenient solution, 
+may I suggest you write a small tool that gets the disks's end cylinder 
+from the RDB (field rdb_HiCylinder, offset 0x8c), then walk the 
+partition list starting from rdb_PartitionList for the first partition 
+block, then pb_Next for the next one, find the last valid partition 
+(where pb_Next is 0xffffffff), and check whether the partition size 
+calculation for that partition (in 32 bit arithmetic) would cause the 
+partition end to land beyond EOD. If that is the case, the old kernel 
+code would have truncated that partition to exactly EOD, and you have to 
+change the partition end cylinder value (offset 0xa8 from the start of 
+that partition block) to the value of rdb_HiCylinder. Adjust the 
+partition checksum (offset 0x8) by the difference of the old and new 
+values (i.e. add (old-new) to the checksum stored there) and you should 
+have a valid partition to the end of the disk.
+
+Might be a bit tough in a shell script but not too hard in Perl or Python.
+
+Putting that kind of fix in the kernel would be asking Jens and Linus 
+(and quite a few others) to yell at me and call me names, and for very 
+good reason (but of course you can always do that in kernels you 
+distribute to your end users).
+
+Cheers,
+
+	Michael
+
 
