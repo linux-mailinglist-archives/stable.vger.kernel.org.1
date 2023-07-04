@@ -2,99 +2,164 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42AC2746A23
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 08:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2138F746A36
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 09:00:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbjGDGyG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 02:54:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34988 "EHLO
+        id S231133AbjGDHAE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 03:00:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229662AbjGDGyF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 02:54:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A29E107;
-        Mon,  3 Jul 2023 23:54:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9251361161;
-        Tue,  4 Jul 2023 06:54:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A806FC433C8;
-        Tue,  4 Jul 2023 06:54:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688453644;
-        bh=GtIczgk+uy3osy7x9+LMppBWIexhfEBaDf1y+GtXuOM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=L0Sfiz666GIquZN774fyO/HYD0OxF6kbKYxIzORPfezfLMdgekmO9mtgLwkYi4ZK6
-         Gf16w3QlDzWzmZDWmU0cl2BktjdL/lKIXxHdvISyt9Mf+hD3x8+xXyJ5iCVlKpaQFK
-         ALcaHuJ1arOrVGWw8jcTSa3HgvKnVbD8zc8bh0aM=
-Date:   Tue, 4 Jul 2023 07:54:01 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Michael Schmitz <schmitzmic@gmail.com>
-Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
-        linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de,
-        geert@linux-m68k.org, hch@lst.de, martin@lichtvoll.de,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v3] block: bugfix for Amiga partition overflow check patch
-Message-ID: <2023070456-vertigo-fanfare-1a8e@gregkh>
-References: <20230704054955.16906-1-schmitzmic@gmail.com>
+        with ESMTP id S231139AbjGDG76 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 02:59:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F3F12E
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 23:59:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1688453953;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0IleIxpNn+PMHgV028qieppTFJnd95N2jqDTi5xYgrM=;
+        b=GzsddLnMhsuW0REBQZ06z+g9Hls1BUo6vAmDCN1vAW0ffrFLXQrgu1+44ldkJN9QdN2qUQ
+        SLKGG12oQZbPG7AyS3qA4eh3JhZ0j9fyOKvc6JwFbRd+u7j/vbxd8ifFIGKLHnfOGD3RRC
+        3QdnExBHTKvsdb4IoXA99jsN8sh2wYM=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-211-C3d8CYPvPDGPsg30r76kuQ-1; Tue, 04 Jul 2023 02:59:09 -0400
+X-MC-Unique: C3d8CYPvPDGPsg30r76kuQ-1
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7673887b2cfso146348585a.1
+        for <stable@vger.kernel.org>; Mon, 03 Jul 2023 23:59:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688453949; x=1691045949;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0IleIxpNn+PMHgV028qieppTFJnd95N2jqDTi5xYgrM=;
+        b=hbaS6RL0kshXKaN1yhgMiB8S/y0JemHIXb+AJ7xyLbfAWpqXFWJ9o1ulrjwcfT8KO0
+         YmDNQzO60ds6OtZNhSsoXs70j2ZsgMTobXLV/tl9oIB/tUp7PJ5hAN4+80hW4j6zDkR0
+         boRr3+9VMbCLwgSGiMBYmyYQQEymW4HH8hU8zRjN5JPxdLj0nrl+34FkJ5hmWdgFT9gi
+         /saEk7d+CKrdv1ha9khISYz/652aL0tkCHJn9wun58AWooWrkzXckHGjSDUKpeavHDBI
+         oVttIjDaXuhzL2buTCBoux+rGAO4A7qKEeeskRshTPfPVYPkJCWQY6D9KysFjKJiv+d8
+         lg6Q==
+X-Gm-Message-State: ABy/qLZVo5EG2ZGhco7UgcPLyecmln79gdhwygavAgUNZrOJcz5d5/uL
+        XvvEobP30LB69A9cHyuq+bCnEUOy0nQRj3NGEu82DI3IXn1+f48rmxXiJJBtRhvDLqjsGfaEIIC
+        UmCNswfD2jRF54bcr
+X-Received: by 2002:a05:620a:1aa4:b0:765:58ac:9458 with SMTP id bl36-20020a05620a1aa400b0076558ac9458mr14719920qkb.7.1688453949242;
+        Mon, 03 Jul 2023 23:59:09 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEzlcNLkagvW9k+kp5MGjOwZWN9zlneIyGcDYmRHiEtbwaDGwG+DfHs99YP8WgUKWv70lEQoQ==
+X-Received: by 2002:a05:620a:1aa4:b0:765:58ac:9458 with SMTP id bl36-20020a05620a1aa400b0076558ac9458mr14719893qkb.7.1688453948908;
+        Mon, 03 Jul 2023 23:59:08 -0700 (PDT)
+Received: from gerbillo.redhat.com (146-241-247-156.dyn.eolo.it. [146.241.247.156])
+        by smtp.gmail.com with ESMTPSA id pe34-20020a05620a852200b007623c96430csm9632974qkn.111.2023.07.03.23.59.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jul 2023 23:59:08 -0700 (PDT)
+Message-ID: <8b0696a63d3f9cdcd4d9a8d933826e9ea1cb126b.camel@redhat.com>
+Subject: Re: [EXTERNAL] Re: [PATCH V4 net] net: mana: Fix MANA VF unload
+ when host is unresponsive
+From:   Paolo Abeni <pabeni@redhat.com>
+To:     Souradeep Chakrabarti <schakrabarti@microsoft.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        souradeep chakrabarti <schakrabarti@linux.microsoft.com>
+Cc:     KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        Dexuan Cui <decui@microsoft.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        Long Li <longli@microsoft.com>,
+        Ajay Sharma <sharmaajay@microsoft.com>,
+        "leon@kernel.org" <leon@kernel.org>,
+        "cai.huoqing@linux.dev" <cai.huoqing@linux.dev>,
+        "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+        "vkuznets@redhat.com" <vkuznets@redhat.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Date:   Tue, 04 Jul 2023 08:59:03 +0200
+In-Reply-To: <PUZP153MB07880E6D692FD5D13C508694CC29A@PUZP153MB0788.APCP153.PROD.OUTLOOK.COM>
+References: <1688374171-10534-1-git-send-email-schakrabarti@linux.microsoft.com>
+         <83ef6401-8736-8416-c898-2fbbb786726e@intel.com>
+         <PUZP153MB07880E6D692FD5D13C508694CC29A@PUZP153MB0788.APCP153.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230704054955.16906-1-schmitzmic@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 04, 2023 at 05:49:55PM +1200, Michael Schmitz wrote:
-> Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
-> fails the 'blk>0' test in the partition block loop if a
-> value of (signed int) -1 is used to mark the end of the
-> partition block list.
-> 
-> This bug was introduced in patch 3 of my prior Amiga partition
-> support fixes series, and spotted by Christian Zigotzky when
-> testing the latest block updates.
-> 
-> Explicitly cast 'blk' to signed int to allow use of -1 to
-> terminate the partition block linked list.
-> 
-> Testing by Christian also exposed another aspect of the old
-> bug fixed in commits fc3d092c6b ("block: fix signed int
-> overflow in Amiga partition support") and b6f3f28f60
-> ("block: add overflow checks for Amiga partition support"):
-> 
-> Partitions that did overflow the disk size (due to 32 bit int
-> overflow) were not skipped but truncated to the end of the
-> disk. Users who missed the warning message during boot would
-> go on to create a filesystem with a size exceeding the
-> actual partition size. Now that the 32 bit overflow has been
-> corrected, such filesystems may refuse to mount with a
-> 'filesystem exceeds partition size' error. Users should
-> either correct the partition size, or resize the filesystem
-> before attempting to boot a kernel with the RDB fixes in
-> place.
-> 
-> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-> Fixes: b6f3f28f60 ("block: add overflow checks for Amiga partition support")
+On Mon, 2023-07-03 at 19:55 +0000, Souradeep Chakrabarti wrote:
+> > -----Original Message-----
+> > From: Alexander Lobakin <aleksander.lobakin@intel.com>
+> > Sent: Monday, July 3, 2023 10:18 PM
+> > To: souradeep chakrabarti <schakrabarti@linux.microsoft.com>
+> > Cc: KY Srinivasan <kys@microsoft.com>; Haiyang Zhang
+> > <haiyangz@microsoft.com>; wei.liu@kernel.org; Dexuan Cui
+> > <decui@microsoft.com>; davem@davemloft.net; edumazet@google.com;
+> > kuba@kernel.org; pabeni@redhat.com; Long Li <longli@microsoft.com>; Aja=
+y
+> > Sharma <sharmaajay@microsoft.com>; leon@kernel.org;
+> > cai.huoqing@linux.dev; ssengar@linux.microsoft.com; vkuznets@redhat.com=
+;
+> > tglx@linutronix.de; linux-hyperv@vger.kernel.org; netdev@vger.kernel.or=
+g;
+> > linux-kernel@vger.kernel.org; linux-rdma@vger.kernel.org;
+> > stable@vger.kernel.org; Souradeep Chakrabarti <schakrabarti@microsoft.c=
+om>
+> > Subject: [EXTERNAL] Re: [PATCH V4 net] net: mana: Fix MANA VF unload wh=
+en
+> > host is unresponsive
+> >=20
+> > From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+> > Date: Mon,  3 Jul 2023 01:49:31 -0700
+> >=20
+> > > From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+> >=20
+> > Please sync your Git name and Git mail account settings, so that your o=
+wn
+> > patches won't have "From:" when sending. From what I see, you need to
+> > correct first letters of name and surname to capital in the Git email s=
+ettings
+> > block.
+> Thank you for pointing, I will fix it.
+> >=20
+> > >=20
+> > > When unloading the MANA driver, mana_dealloc_queues() waits for the
+> > > MANA hardware to complete any inflight packets and set the pending
+> > > send count to zero. But if the hardware has failed,
+> > > mana_dealloc_queues() could wait forever.
+> > >=20
+> > > Fix this by adding a timeout to the wait. Set the timeout to 120
+> > > seconds, which is a somewhat arbitrary value that is more than long
+> > > enough for functional hardware to complete any sends.
+> > >=20
+> > > Signed-off-by: Souradeep Chakrabarti
+> > > <schakrabarti@linux.microsoft.com>
+> >=20
+> > Where's "Fixes:" tagging the blamed commit?
+> This is present from the day zero of the mana driver code.
+> It has not been introduced in the code by any commit.
+>=20
 
-That commit is not in:
+Then the fixes tag should be:
 
-> Cc: <stable@vger.kernel.org> # 6.4
+Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network A=
+dapter (MANA)")
 
-6.4.  It's in Linus's tree only right now.
+Cheers,
 
-But yes, it's tagged for 5.2 and older kernels to be added to the stable
-tree, so why is this one limited only to 6.4 and not also for 5.2 and
-newer?
+Paolo
 
-thanks,
-
-greg k-h
