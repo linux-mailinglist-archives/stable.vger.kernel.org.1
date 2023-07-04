@@ -2,123 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECA5D74778B
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 19:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2BD37477EA
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 19:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231844AbjGDRMH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 13:12:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34336 "EHLO
+        id S231294AbjGDRfP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 13:35:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231290AbjGDRMG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 13:12:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61C2E75;
-        Tue,  4 Jul 2023 10:12:03 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B06661329;
-        Tue,  4 Jul 2023 17:12:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E880C433C7;
-        Tue,  4 Jul 2023 17:12:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1688490722;
-        bh=PIfZTDcLnlwKFoZ8bNlpOlu1mUDdM/k/1cXC4BzXGHM=;
-        h=Date:To:From:Subject:From;
-        b=IuNswrzYlOXPOqcHi7PZl7G6OGYukWIh9J4bZH18EsZDTpeOhTpqA4gHYR+dE9R8i
-         qDSuLuu7OYPpqEYCvL6oLWV1eHAv/X0EbJgRGBybDah53wUSYx4M1r4TLzOYSYU3gp
-         2W0DjxgCcqoly3h0WSOIMVDwdODuJPnfABg4wVz4=
-Date:   Tue, 04 Jul 2023 10:12:01 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        ryabinin.a.a@gmail.com, glider@google.com, elver@google.com,
-        dvyukov@google.com, arnd@arndb.de, andreyknvl@google.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + kasan-fix-type-cast-in-memory_is_poisoned_n.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230704171202.9E880C433C7@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231290AbjGDRfO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 13:35:14 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663DC170D
+        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 10:34:56 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3fbc0609cd6so58439995e9.1
+        for <stable@vger.kernel.org>; Tue, 04 Jul 2023 10:34:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688492094; x=1691084094;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3qJ64lF89VpbBy1ulIr9SZuXHSuhm2fS1ISkB9mGrhk=;
+        b=UaNfZIHtqk8sEbad/eQ98L/1Xhl2t0Rk2Cg/sDrY56rhiua4m2qDFulF1/qLVjRl+S
+         cKvYQ7uLAy5lu4t51ZX4buDN3G7HRRoHRzYeYqY3SMkVnx6TD1+UVZnRhrmxhQ61Q493
+         +Or8Aijqk1dkK7CSdnUQ1vOR7Wh3zf4K7rSv9EmlxbtiBCk4J2FIJxt4rBWo9Zo96Exn
+         yM5TdQuJNG3DazERTfy13G3Tk7f6vcCKSD7SqSonGaPU7vrvAWP7act/UC/JQXTLdKwA
+         os9+ZDwZWt6eHP78vqaKcB7cqPXG0zTGfRuw1v6yl6U81iH3tcsxFcy8dg0dKeW4zs9a
+         FYeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688492094; x=1691084094;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3qJ64lF89VpbBy1ulIr9SZuXHSuhm2fS1ISkB9mGrhk=;
+        b=Ln3R363xSibP/BJJXAv2GFfy4UFB9L8JZakCcBKLl1dvBM34PgsLAcoUUG8sLGRrte
+         YmDXnqhCA3L/cBRT5KLZ2BT93nAid0kCv1Q38dI8JsrPRCGSa+tXESmjuEZr3wvweguB
+         qsF+tsCND13Vd2YyLRTO1eUVUry/Yie5MRonV+W2BqXbz485UxJuvyaJdFhqdspgG0c1
+         Z40HYzLsM0KOLwCJ2KKm6x6lkWy7qMm/l/6VfPCFH0cWeuJTwRoHWwn5QCbVnv3Z3Hwa
+         jvb0aqyKfNZZBdOsUBOfw66dY0b5+G0KIqOs8A3lHiB1Zf+I3BpetnPajpFoRCiZGOX9
+         bD+w==
+X-Gm-Message-State: AC+VfDyJFpqZHPW+lzRSmfYjcE26LWFaOH0cckcZPae5QKZcG2d/rjnw
+        w6KJGGshLn1tXPJQmCKNjuGJPA==
+X-Google-Smtp-Source: ACHHUZ5jn9n9ZjzIR1LoKOiyjbakRHjBusBJI/fMlOmuJoqSwT0055ZXuMXIRChWey7suI30Cuw7cA==
+X-Received: by 2002:a1c:4c10:0:b0:3fa:991c:2af9 with SMTP id z16-20020a1c4c10000000b003fa991c2af9mr10773167wmf.16.1688492094251;
+        Tue, 04 Jul 2023 10:34:54 -0700 (PDT)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id u16-20020a7bcb10000000b003fbb5142c4bsm17163518wmj.18.2023.07.04.10.34.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Jul 2023 10:34:53 -0700 (PDT)
+Date:   Tue, 4 Jul 2023 18:34:51 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     guoren@kernel.org, arnd@arndb.de, palmer@rivosinc.com,
+        tglx@linutronix.de, luto@kernel.org, conor.dooley@microchip.com,
+        heiko@sntech.de, jszhang@kernel.org, lazyparser@gmail.com,
+        falcon@tinylab.org, chenhuacai@kernel.org, apatel@ventanamicro.com,
+        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
+        palmer@dabbelt.com, bjorn@rivosinc.com, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        stable@vger.kernel.org, Guo Ren <guoren@linux.alibaba.com>
+Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
+Message-ID: <20230704173451.GD385243@aspen.lan>
+References: <20230702025708.784106-1-guoren@kernel.org>
+ <20230704164003.GB83892@hirez.programming.kicks-ass.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230704164003.GB83892@hirez.programming.kicks-ass.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, Jul 04, 2023 at 06:40:03PM +0200, Peter Zijlstra wrote:
+> On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
+> > From: Guo Ren <guoren@linux.alibaba.com>
+> >
+> > The irqentry_nmi_enter/exit would force the current context into in_interrupt.
+> > That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
+> > debug the kernel.
+> >
+> > Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
+> > of the kernel side.
+>
+> This doesn't explain much if anything :/
+>
+> I'm confused (probably because I don't know RISC-V very well), what's
+> EBREAK and how does it happen?
 
-The patch titled
-     Subject: kasan: fix type cast in memory_is_poisoned_n
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kasan-fix-type-cast-in-memory_is_poisoned_n.patch
+Among other things ebreak is part of the BUG() macro (although it is
+also used to programmatically enter kgdb).
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-fix-type-cast-in-memory_is_poisoned_n.patch
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> Specifically, if EBREAK can happen inside an local_irq_disable() region,
+> then the below change is actively wrong. Any exception/interrupt that
+> can happen while local_irq_disable() must be treated like an NMI.
+>
+> If that makes kdb unhappy, fix kdb.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+The only relationship this problem has to kgdb/kdb is that is was found
+using the kgdb test suite. However the panic is absolutely nothing to
+do with kgdb.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+I would never normally be so sure regarding the absence of bugs in kgdb
+but in this case it can be reproduced when kgdb is not enabled in the
+KConfig which I think puts it in the clear!
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Reproduction is simply:
 
-------------------------------------------------------
-From: Andrey Konovalov <andreyknvl@google.com>
-Subject: kasan: fix type cast in memory_is_poisoned_n
-Date: Tue, 4 Jul 2023 02:52:05 +0200
+  /bin/echo BUG > /sys/kernel/debug/provoke-crash/DIRECT
 
-Commit bb6e04a173f0 ("kasan: use internal prototypes matching gcc-13
-builtins") introduced a bug into the memory_is_poisoned_n implementation:
-it effectively removed the cast to a signed integer type after applying
-KASAN_GRANULE_MASK.
+Above will panic the kernel but, absent options specifically requesting
+a panic, this should kill the echo process rather than killing the kernel.
 
-As a result, KASAN started failing to properly check memset, memcpy, and
-other similar functions.
 
-Fix the bug by adding the cast back (through an additional signed integer
-variable to make the code more readable).
-
-Link: https://lkml.kernel.org/r/8c9e0251c2b8b81016255709d4ec42942dcaf018.1688431866.git.andreyknvl@google.com
-Fixes: bb6e04a173f0 ("kasan: use internal prototypes matching gcc-13 builtins")
-Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/generic.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/mm/kasan/generic.c~kasan-fix-type-cast-in-memory_is_poisoned_n
-+++ a/mm/kasan/generic.c
-@@ -130,9 +130,10 @@ static __always_inline bool memory_is_po
- 	if (unlikely(ret)) {
- 		const void *last_byte = addr + size - 1;
- 		s8 *last_shadow = (s8 *)kasan_mem_to_shadow(last_byte);
-+		s8 last_accessible_byte = (unsigned long)last_byte & KASAN_GRANULE_MASK;
- 
- 		if (unlikely(ret != (unsigned long)last_shadow ||
--			(((long)last_byte & KASAN_GRANULE_MASK) >= *last_shadow)))
-+			     last_accessible_byte >= *last_shadow))
- 			return true;
- 	}
- 	return false;
-_
-
-Patches currently in -mm which might be from andreyknvl@google.com are
-
-kasan-fix-type-cast-in-memory_is_poisoned_n.patch
-
+Daniel.
