@@ -2,138 +2,219 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C1E8747838
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 20:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFB407478AF
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 21:30:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229865AbjGDSPV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 14:15:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52164 "EHLO
+        id S231309AbjGDTaX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 15:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230246AbjGDSPU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 14:15:20 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B83E10CA;
-        Tue,  4 Jul 2023 11:15:19 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-666e64e97e2so3003610b3a.1;
-        Tue, 04 Jul 2023 11:15:19 -0700 (PDT)
+        with ESMTP id S229744AbjGDTaW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 15:30:22 -0400
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E272BE5B;
+        Tue,  4 Jul 2023 12:30:20 -0700 (PDT)
+Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-565d65adcf2so3436661eaf.3;
+        Tue, 04 Jul 2023 12:30:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688494519; x=1691086519;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=DSqYHV9aOqFyal3Tm/y/6ISIc1yWfppvT5nKEoCz+0I=;
-        b=RIzLb7TawJkCpEJQbDIU8BXy4bWw/yGDH/7J/GYhKwiu9J7lCjupK3kiSYf4wa8mmr
-         k1S4t1dw0herZTL6y2GQ0gHWwTa8UC0WK5FToGuAK2YcMP/3ohfSTzVenkWFlbGJ86hN
-         MKsfx2j1EKkHnx8lt3ol6fJ4GG3adw7TNXGUbfYku6mADtMx1CjWo2Jf6HMkw7780dk6
-         tqd8+kUlaYOO7cioX/WxIOMd3wozhQMwShwujlMVOHJBOEkjc2u9ZAcV2sKFEsokDqjt
-         Hd4ZSzaRKwOs2QZssxM25FsgBPLKcd0MbNnPY/eZDdut9cOkY7z2DTm6X4CSFdJJkqbX
-         PztA==
+        d=gmail.com; s=20221208; t=1688499020; x=1691091020;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=c6GwQNuQoPzKEctHnLR1MdtDAqznYQQ2gb9SsVrjkj8=;
+        b=phRPC/3CT8tjDE6GohLc286LMIrphQeS8w0G9QzvauTZH7wEtmfquBhORGIDiIa4rs
+         GAjSUTn6Gd6418AOsVUjOv1KC6JnJp/sZgR0iATv0x58wNAAXuwyCxGbh8tkrcef8rXv
+         FuCOp5RAeSAaC76hsm9zI8YEjnL/SFu+UIuVJhQmGBfOyklEDr/F5lSeo1TcVZcIQsv/
+         5ToVx4DOohwHgbLQ2P9lFNspAy7BK1Db323vGgctHGv1rwoWHVUq5thV/Io0nODBu085
+         wbuwfMHQ5wuP+AKsRURiXMpyMEeZayeAHt16g3dQ9wC9TKOPQ8uWu9Cz6aemweS8/4s9
+         UNXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688494519; x=1691086519;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DSqYHV9aOqFyal3Tm/y/6ISIc1yWfppvT5nKEoCz+0I=;
-        b=Fufrmo3wrhQ7QCfw46PI8G0g24Fmj65lEK5yXkhklXgS+ykJzx4glNWBTDU7o6+6cI
-         z6+2gkV3ZfzwMjTFtH5BmbNMiedB9Ity8UIHzon9/z9ECZ5w8dZSUg7rYLzvvYCa9h2Q
-         hbOqqKSgxmQuEB3yiWUpWHxevDbZirnyvHHDlbIG6qc64JJROMUgHNFPe7xGKWLFyb6o
-         HkEWENYZnpy/iCUQOXaGQ21JAki4O7DVXNOBZKSN8K0e6cOjtF/bEyJ0mIVvm9HroYBV
-         CpLS+ukY52M6bqayzWw+AO00uuidwAXtc3uVGZoDKoIbquwiiEogE02lklTB0UrF/sPY
-         GBMQ==
-X-Gm-Message-State: ABy/qLYRNrP4xUmZzWZI3OhBAeS5dlUJ08EdSzuMl2piOW18fJQUtW9k
-        2krupy/sGOsQvPN6kwp6OXQ=
-X-Google-Smtp-Source: APBJJlHRgeukUmL5ptqGK63dR+9Sh5I4TafvsUUhKrlZ5EWZgFXxkxEtpKdqugjc8mEXOwJkawzeuQ==
-X-Received: by 2002:a05:6a00:2da3:b0:66a:2771:6c4d with SMTP id fb35-20020a056a002da300b0066a27716c4dmr15771360pfb.4.1688494518570;
-        Tue, 04 Jul 2023 11:15:18 -0700 (PDT)
-Received: from bangji.hsd1.ca.comcast.net ([2601:647:6700:7f00:6b7:7112:19a1:fc15])
-        by smtp.gmail.com with ESMTPSA id u25-20020a62ed19000000b00682a839d0aesm1476717pfh.112.2023.07.04.11.15.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jul 2023 11:15:18 -0700 (PDT)
-Sender: Namhyung Kim <namhyung@gmail.com>
-From:   Namhyung Kim <namhyung@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Stephane Eranian <eranian@google.com>,
-        Greg Thelen <gthelen@google.com>, stable@vger.kernel.org
-Subject: [PATCH] perf/x86: Fix lockdep warning in for_each_sibling_event() on SPR
-Date:   Tue,  4 Jul 2023 11:15:15 -0700
-Message-ID: <20230704181516.3293665-1-namhyung@kernel.org>
-X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+        d=1e100.net; s=20221208; t=1688499020; x=1691091020;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c6GwQNuQoPzKEctHnLR1MdtDAqznYQQ2gb9SsVrjkj8=;
+        b=H6MVYJ/9K8RJx16FiYAo5ngWcxvN0WHlkRhZeSDhCjaQEXWyhhlRNbX4kqv2bhw3FR
+         L+/oxVM5PSPE6QhyNo8/nKyjg9fpB8/SyzTsHi3ZLJURONPsT1iGAgobLfW8ClxDM2ze
+         F4mZgLjADk89NgWAsnaPTbh9Mc6UvFG2QcS+bGHIRz3xUy6Op3Vjj+fWqp+eDz32f+ls
+         9SvngQ8qEjoRkb2B8XPqHRPhJFXxCLyRpQDxxaz3KXA7vfBmca6bt6caGnRe/rr4YwVt
+         d7rRhk/dHvlSlPzCoqq3R1M0bd1p5gNKlRpIAiMz+wNSccAV7X/MwfcLfAti4IRmLWhe
+         NT/g==
+X-Gm-Message-State: AC+VfDwz89o8cgoOM4t+hWRvzqQ27lt2pYYzsAU1Okbp0ohwNDYHnJgC
+        ENOUZy2NCQT3gnJZansy7ow=
+X-Google-Smtp-Source: ACHHUZ7CQJXWsdzZ1tydlQmjVUQ/r04to1VhbVdOjEDBjB2ZLRXooct8/GoHmzhS4Hng+HR6wvey7w==
+X-Received: by 2002:a05:6808:bcc:b0:3a3:7a28:f841 with SMTP id o12-20020a0568080bcc00b003a37a28f841mr16424267oik.41.1688499019164;
+        Tue, 04 Jul 2023 12:30:19 -0700 (PDT)
+Received: from ?IPV6:2001:df0:0:200c:2c51:ccb9:9db0:5657? ([2001:df0:0:200c:2c51:ccb9:9db0:5657])
+        by smtp.gmail.com with ESMTPSA id c19-20020aa78813000000b00671aa6b4962sm14772265pfo.114.2023.07.04.12.30.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Jul 2023 12:30:18 -0700 (PDT)
+Message-ID: <69cf5397-1a99-8cc5-ed48-d354f0ad05df@gmail.com>
+Date:   Wed, 5 Jul 2023 07:30:07 +1200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3] block: bugfix for Amiga partition overflow check patch
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
+        linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de, hch@lst.de,
+        martin@lichtvoll.de, stable@vger.kernel.org
+References: <20230704054955.16906-1-schmitzmic@gmail.com>
+ <CAMuHMdUY6T7Q+fusJtHQxYTnKAvsdOJvFL_ZS-bkJTV32Y2yCw@mail.gmail.com>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+In-Reply-To: <CAMuHMdUY6T7Q+fusJtHQxYTnKAvsdOJvFL_ZS-bkJTV32Y2yCw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On SPR, the load latency event needs an auxiliary event in the same
-group to work properly.  There's a check in intel_pmu_hw_config()
-for this to iterate sibling events and find a mem-loads-aux event.
+Hi Geert,
 
-The for_each_sibling_event() has a lockdep assert to make sure if it
-disabled hardirq or hold leader->ctx->mutex.  This works well if the
-given event has a separate leader event since perf_try_init_event()
-grabs the leader->ctx->mutex to protect the sibling list.  But it can
-cause a problem when the event itself is a leader since the event is
-not initialized yet and there's no ctx for the event.
+On 4/07/23 19:20, Geert Uytterhoeven wrote:
+> Hi MIchael,
+>
+> Thanks for your patch!
+>
+> On Tue, Jul 4, 2023 at 7:50 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+>> Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
+>> fails the 'blk>0' test in the partition block loop if a
+>> value of (signed int) -1 is used to mark the end of the
+>> partition block list.
+>>
+>> This bug was introduced in patch 3 of my prior Amiga partition
+>> support fixes series, and spotted by Christian Zigotzky when
+>> testing the latest block updates.
+>>
+>> Explicitly cast 'blk' to signed int to allow use of -1 to
+>> terminate the partition block linked list.
+> That's the explanation for what this patch does.
+>
+> The below is not directly related to that, so IMHO it does not
+> belong in the description of this patch.
+Yes, I realize that. I had hoped that by way of the Fixes: tag, people 
+would be able to relate that comment to the correct commit. Might be a 
+little circuitous ...
+> We do not really have a way to record comments in git history
+> after the fact.  The best you can do is to reply to the email thread
+> where the patch was submitted.  When people follow the Link:
+> tag to the lore archive in the original commit, they can read any follow-ups.
+Does lore pick up related patches through the In-Reply-To header? In 
+that case it would be easiest for me to to put this comment in a cover 
+letter to the bugfix patch.
+>
+>> Testing by Christian also exposed another aspect of the old
+>> bug fixed in commits fc3d092c6b ("block: fix signed int
+>> overflow in Amiga partition support") and b6f3f28f60
+>> ("block: add overflow checks for Amiga partition support"):
+>>
+>> Partitions that did overflow the disk size (due to 32 bit int
+>> overflow) were not skipped but truncated to the end of the
+>> disk. Users who missed the warning message during boot would
+> I am confused.  So before, the partition size as seen by Linux after
+> the truncation, was correct?
 
-Actually I got a lockdep warning when I run the below command on SPR,
-but I guess it could be a NULL pointer dereference.
+No, it was incorrect (though valid).
 
-  $ perf record -d -e cpu/mem-loads/uP true
+On a 2 TB disk, a partition of 1.3 TB at the end of the disk (but not 
+extending to the very end!) would trigger a overflow in the size 
+calculation:
 
-The code path to the warning is:
+sda: p4 size 18446744071956107760 extends beyond EOD,
 
-  sys_perf_event_open()
-    perf_event_alloc()
-      perf_init_event()
-        perf_try_init_event()
-          x86_pmu_event_init()
-            hsw_hw_config()
-              intel_pmu_hw_config()
-                for_each_sibling_event()
-                  lockdep_assert_event_ctx()
+That's only noted somewhere inside put_partition. The effective 
+partition size seen by the kernel and user tools is then that of a 
+partition extending to EOD (in Christian's case a full 8 GB more than 
+recorded in the partition table).
 
-We don't need for_each_sibling_event() when it's a standalone event.
-Let's return the error code directly.
+>> go on to create a filesystem with a size exceeding the
+>> actual partition size. Now that the 32 bit overflow has been
+> But if Linux did see the correct size, mkfs would have used the correct
+> size, too, and the size in the recorded file system should be correct?
 
-Fixes: f3c0eba28704 ("perf: Add a few assertions")
-Reported-by: Greg Thelen <gthelen@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
----
- arch/x86/events/intel/core.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+mkfs used what the old kernel code gave as partition size. That did 
+'seem' correct at that time, but after the overflow fixes (which prevent 
+other partition miscalculations, which in Martin's case caused 
+partitions to overlap), the partitions size is actually correct and 
+smaller than the filesystem size.
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 0d09245aa8df..933fe4894c32 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3983,6 +3983,14 @@ static int intel_pmu_hw_config(struct perf_event *event)
- 		struct perf_event *leader = event->group_leader;
- 		struct perf_event *sibling = NULL;
- 
-+		/*
-+		 * The event is not fully initialized yet and no ctx is set
-+		 * for the event.  Avoid for_each_sibling_event() since it
-+		 * has a lockdep assert with leader->ctx->mutex.
-+		 */
-+		if (leader == event)
-+			return -ENODATA;
-+
- 		if (!is_mem_loads_aux_event(leader)) {
- 			for_each_sibling_event(sibling, leader) {
- 				if (is_mem_loads_aux_event(sibling))
--- 
-2.41.0.255.g8b1d071c50-goog
+I have a hunch I don't explain myself very well.
 
+>
+>> corrected, such filesystems may refuse to mount with a
+>> 'filesystem exceeds partition size' error. Users should
+>> either correct the partition size, or resize the filesystem
+>> before attempting to boot a kernel with the RDB fixes in
+>> place.
+> Hence there is no need to resize the file system, just to fix the
+> partition size in the RDB?
+
+Yes, that's the easiest way to do it, but we don't yet know if gparted 
+(for example) does allow to do that. Mucking around with hexedit (which 
+is what I used to verify this change gives identical partition sizes for 
+old and new kernels) isn't to everyone's taste.
+
+I haven't looked at amiga-fdisk - that one might be easiest to fix.
+
+Cheers,
+
+     Michael
+
+
+>
+>> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+>> Fixes: b6f3f28f60 ("block: add overflow checks for Amiga partition support")
+>> Message-ID: 024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+>> Cc: <stable@vger.kernel.org> # 6.4
+>> Link: https://lore.kernel.org/r/024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+>> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+>> Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+>>
+>> --
+>>
+>> Changes since v2:
+>>
+>> Adrian Glaubitz:
+>> - fix typo in commit message
+>>
+>> Changes since v1:
+>>
+>> - corrected Fixes: tag
+>> - added Tested-by:
+>> - reworded commit message to describe filesystem partition
+>>    size mismatch problem
+>> --- a/block/partitions/amiga.c
+>> +++ b/block/partitions/amiga.c
+>> @@ -90,7 +90,7 @@ int amiga_partition(struct parsed_partitions *state)
+>>          }
+>>          blk = be32_to_cpu(rdb->rdb_PartitionList);
+>>          put_dev_sector(sect);
+>> -       for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
+>> +       for (part = 1; (s32) blk>0 && part<=16; part++, put_dev_sector(sect)) {
+> And this block number is supposed to be in the first 2 cylinders of
+> the disk, so it can never be equal or larger than 1 << 31, right?
+> We only really expect to see -1 here, not just any negative number.
+> So I think it would be safer to check against -1.
+> Or  against U32_MAX, to avoid the cast.
+>
+>>                  /* Read in terms partition table understands */
+>>                  if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
+>>                          pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                  -- Linus Torvalds
