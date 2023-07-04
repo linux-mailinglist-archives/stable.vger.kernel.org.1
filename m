@@ -2,61 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C2977476ED
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 18:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E9F74772A
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 18:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231229AbjGDQkg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 12:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44794 "EHLO
+        id S231209AbjGDQqf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 12:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230452AbjGDQkf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 12:40:35 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58CF810D8;
-        Tue,  4 Jul 2023 09:40:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=rt0Sgef/0mx0ZYOvMVPEM6yNpv3ovZQ+3Nf5gB6MWzc=; b=rBDJ16SWf0Ay6zMTwd7f3d6kAy
-        qL6gCNlEfMBkK0U+jU0qBzOfVEhTXG/Jv0AuHH3G28F0sguOTd83Pszb1jR+PaLG5s56Umax07fky
-        V+iLFsLcxqEwkx3CI+pXhlpUSnVO+D96+/aU9xo4KoKnlqy9OpOKBBhZC+Vpw6TFOGUgslA1GZTkZ
-        SBEi2TSZLYKwyfiKoMzYJyrNhynZiXZMtVBtouqBeRApWVW9F5b6hYk8oICgkC4wCyIR5RqJ6hssZ
-        ZWjQWEW9UvhulmSJ8hJiipJeZ+BV+g0ahag6kXdsU0gmmWJLGcd55LQxknsw7phyM1cb1bgZs3jD+
-        /FUXh9nA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qGj4R-009J9Z-4f; Tue, 04 Jul 2023 16:40:07 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        with ESMTP id S231153AbjGDQqf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 12:46:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 607BA1A1;
+        Tue,  4 Jul 2023 09:46:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 270993002E1;
-        Tue,  4 Jul 2023 18:40:04 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 081F120292D0E; Tue,  4 Jul 2023 18:40:04 +0200 (CEST)
-Date:   Tue, 4 Jul 2023 18:40:03 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     guoren@kernel.org
-Cc:     arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
-        luto@kernel.org, conor.dooley@microchip.com, heiko@sntech.de,
-        jszhang@kernel.org, lazyparser@gmail.com, falcon@tinylab.org,
-        chenhuacai@kernel.org, apatel@ventanamicro.com,
-        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
-        palmer@dabbelt.com, bjorn@rivosinc.com, daniel.thompson@linaro.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
-        Guo Ren <guoren@linux.alibaba.com>
-Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
-Message-ID: <20230704164003.GB83892@hirez.programming.kicks-ass.net>
-References: <20230702025708.784106-1-guoren@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230702025708.784106-1-guoren@kernel.org>
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E7F6461309;
+        Tue,  4 Jul 2023 16:46:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B946C433C8;
+        Tue,  4 Jul 2023 16:46:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1688489193;
+        bh=T5zXY+bfM5uTDRq2rUkdLVw/dFNlAfaxiwpz/wxVXF0=;
+        h=Date:To:From:Subject:From;
+        b=dQdBtDQ5dXxUykeyfYgCNbnhKXPdhioji8eEL+F3zyDs7mYeiSX1pjyryzG/I5dax
+         DcWuG7xDmAzlT9f7zhxIdzJT6TqjmzA+289jQwKDD7A0/KSUSvbuczU7H04u4v+dRo
+         m/f9ptBzkGsqH4L5r1KSI/Mn6t1dcT87MPwp5oNM=
+Date:   Tue, 04 Jul 2023 09:46:32 -0700
+To:     mm-commits@vger.kernel.org, tj@kernel.org, stable@vger.kernel.org,
+        shakeelb@google.com, roman.gushchin@linux.dev,
+        muchun.song@linux.dev, hannes@cmpxchg.org, mhocko@suse.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + memcg-drop-kmemlimit_in_bytes.patch added to mm-unstable branch
+Message-Id: <20230704164633.3B946C433C8@smtp.kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,62 +47,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
-> From: Guo Ren <guoren@linux.alibaba.com>
-> 
-> The irqentry_nmi_enter/exit would force the current context into in_interrupt.
-> That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
-> debug the kernel.
-> 
-> Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
-> of the kernel side.
 
-This doesn't explain much if anything :/
+The patch titled
+     Subject: memcg: drop kmem.limit_in_bytes
+has been added to the -mm mm-unstable branch.  Its filename is
+     memcg-drop-kmemlimit_in_bytes.patch
 
-I'm confused (probably because I don't know RISC-V very well), what's
-EBREAK and how does it happen?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/memcg-drop-kmemlimit_in_bytes.patch
 
-Specifically, if EBREAK can happen inside an local_irq_disable() region,
-then the below change is actively wrong. Any exception/interrupt that
-can happen while local_irq_disable() must be treated like an NMI.
+This patch will later appear in the mm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-If that makes kdb unhappy, fix kdb.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-> Fixes: f0bddf50586d ("riscv: entry: Convert to generic entry")
-> Reported-by: Daniel Thompson <daniel.thompson@linaro.org>
-> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> Signed-off-by: Guo Ren <guoren@kernel.org>
-> Cc: stable@vger.kernel.org
-> ---
->  arch/riscv/kernel/traps.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-> index efc6b649985a..ed0eb9452f9e 100644
-> --- a/arch/riscv/kernel/traps.c
-> +++ b/arch/riscv/kernel/traps.c
-> @@ -18,6 +18,7 @@
->  #include <linux/irq.h>
->  #include <linux/kexec.h>
->  #include <linux/entry-common.h>
-> +#include <linux/context_tracking.h>
->  
->  #include <asm/asm-prototypes.h>
->  #include <asm/bug.h>
-> @@ -257,11 +258,11 @@ asmlinkage __visible __trap_section void do_trap_break(struct pt_regs *regs)
->  
->  		irqentry_exit_to_user_mode(regs);
->  	} else {
-> -		irqentry_state_t state = irqentry_nmi_enter(regs);
-> +		enum ctx_state prev_state = exception_enter();
->  
->  		handle_break(regs);
->  
-> -		irqentry_nmi_exit(regs, state);
-> +		exception_exit(prev_state);
->  	}
->  }
->  
-> -- 
-> 2.36.1
-> 
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Michal Hocko <mhocko@suse.com>
+Subject: memcg: drop kmem.limit_in_bytes
+Date: Tue, 4 Jul 2023 13:52:40 +0200
+
+kmem.limit_in_bytes (v1 way to limit kernel memory usage) has been
+deprecated since 58056f77502f ("memcg, kmem: further deprecate
+kmem.limit_in_bytes") merged in 5.16.  We haven't heard about any serious
+users since then but it seems that the mere presence of the file is
+causing more harm than good.  We (SUSE) have had several bug reports from
+customers where Docker based containers started to fail because a write to
+kmem.limit_in_bytes has failed.
+
+This was unexpected because runc code only expects ENOENT (kmem disabled)
+or EBUSY (tasks already running within cgroup).  So a new error code was
+unexpected and the whole container startup failed.  This has been later
+addressed by
+https://github.com/opencontainers/runc/commit/52390d68040637dfc77f9fda6bbe70952423d380
+so current Docker runtimes do not suffer from the problem anymore.  There
+are still older version of Docker in use and likely hard to get rid of
+completely.
+
+Address this by wiping out the file completely and effectively get back to
+pre 4.5 era and CONFIG_MEMCG_KMEM=n configuration.
+
+I would recommend backporting to stable trees which have picked up
+58056f77502f ("memcg, kmem: further deprecate kmem.limit_in_bytes").
+
+Link: https://lkml.kernel.org/r/20230704115240.14672-1-mhocko@kernel.org
+Signed-off-by: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeelb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ Documentation/admin-guide/cgroup-v1/memory.rst |    2 --
+ mm/memcontrol.c                                |   13 -------------
+ 2 files changed, 15 deletions(-)
+
+--- a/Documentation/admin-guide/cgroup-v1/memory.rst~memcg-drop-kmemlimit_in_bytes
++++ a/Documentation/admin-guide/cgroup-v1/memory.rst
+@@ -92,8 +92,6 @@ Brief summary of control files.
+  memory.oom_control		     set/show oom controls.
+  memory.numa_stat		     show the number of memory usage per numa
+ 				     node
+- memory.kmem.limit_in_bytes          This knob is deprecated and writing to
+-                                     it will return -ENOTSUPP.
+  memory.kmem.usage_in_bytes          show current kernel memory allocation
+  memory.kmem.failcnt                 show the number of kernel memory usage
+ 				     hits limits
+--- a/mm/memcontrol.c~memcg-drop-kmemlimit_in_bytes
++++ a/mm/memcontrol.c
+@@ -3708,9 +3708,6 @@ static u64 mem_cgroup_read_u64(struct cg
+ 	case _MEMSWAP:
+ 		counter = &memcg->memsw;
+ 		break;
+-	case _KMEM:
+-		counter = &memcg->kmem;
+-		break;
+ 	case _TCP:
+ 		counter = &memcg->tcpmem;
+ 		break;
+@@ -3871,10 +3868,6 @@ static ssize_t mem_cgroup_write(struct k
+ 		case _MEMSWAP:
+ 			ret = mem_cgroup_resize_max(memcg, nr_pages, true);
+ 			break;
+-		case _KMEM:
+-			/* kmem.limit_in_bytes is deprecated. */
+-			ret = -EOPNOTSUPP;
+-			break;
+ 		case _TCP:
+ 			ret = memcg_update_tcp_max(memcg, nr_pages);
+ 			break;
+@@ -5086,12 +5079,6 @@ static struct cftype mem_cgroup_legacy_f
+ 	},
+ #endif
+ 	{
+-		.name = "kmem.limit_in_bytes",
+-		.private = MEMFILE_PRIVATE(_KMEM, RES_LIMIT),
+-		.write = mem_cgroup_write,
+-		.read_u64 = mem_cgroup_read_u64,
+-	},
+-	{
+ 		.name = "kmem.usage_in_bytes",
+ 		.private = MEMFILE_PRIVATE(_KMEM, RES_USAGE),
+ 		.read_u64 = mem_cgroup_read_u64,
+_
+
+Patches currently in -mm which might be from mhocko@suse.com are
+
+memcg-drop-kmemlimit_in_bytes.patch
+
