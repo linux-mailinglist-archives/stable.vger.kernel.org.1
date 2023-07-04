@@ -2,178 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A6B8747937
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 22:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4007B747A71
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 01:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231528AbjGDUpU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 16:45:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51136 "EHLO
+        id S230490AbjGDXi1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 19:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231521AbjGDUpF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 16:45:05 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7C010F2
-        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 13:45:02 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-3fba5a8af2cso62458745e9.3
-        for <stable@vger.kernel.org>; Tue, 04 Jul 2023 13:45:02 -0700 (PDT)
+        with ESMTP id S230196AbjGDXiY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 19:38:24 -0400
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33E01BD;
+        Tue,  4 Jul 2023 16:38:24 -0700 (PDT)
+Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3a04e5baffcso4678901b6e.3;
+        Tue, 04 Jul 2023 16:38:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1688503501; x=1691095501;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0GDNvib6QZmeEngLmbfD0MP/CFixjMyasw17pjt5GlM=;
-        b=abBErgxiaAQ7MZQ7fucza85sp/xYBG/N4N4qMdPT99RoNZvF5uU7rEPBMsh2vpyCuw
-         PqFgSer9YY/68iY5TRNnXstmo6KfO8O2kXzDYVl9WpffbhTnsQoqMsrM1q9djg1FnFL8
-         NpmBDbGh97C0J8m1QiyLnu0AJrSMrJ7WLBF+oheIoStrTf7eaz4uSvTxhBoAG67UzHGN
-         ljo+O7fT5WIYd6xYFqV9lONzooAGdjsLtSsqBFVLSUG+5wX+P/9RBx/h5bz8S0+SXEiP
-         u2xfBzmwhXZdH/CZ0n2y0u0Sw4FNLDZVIabcDPMe4Ee9lzfLyGvIbya/IhW3hSKayyvH
-         fmug==
+        d=gmail.com; s=20221208; t=1688513903; x=1691105903;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=e6fOv3KfpYRgxDp5NnegPjCOw+kqjU07ZSKbfN9Zafw=;
+        b=XUnbSQnr5C6k/HBziBsOf6Gx2Favu7CkdlNpOpQRxw0Kgowx3mUIUL9upitJ8RLoz0
+         WApwn7CE73qZX2NrAzDb/B39IvONmSNdICWbXxMVBWhOOoUDdIMqoGLiknwJ7C0gVLlV
+         RvWM1CtMPIra2uqeDeRVFOukjUNbpA1uK5qR111kfGxthergG869EKQwBkqCDuZ9EXmt
+         Y0TFPhePbhTlqH9a/z5Hbwx1ZOOPmVMtdGCa+THnU+7m5C8LX1nPy6Dejuw5mUY6SdUr
+         4bPr8dvfv51e4A8r+nhyTi3AkVqcGPyOfhihqABD52YFabtDChCEO04/iX8O8NWxlGX0
+         Y6Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688503501; x=1691095501;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0GDNvib6QZmeEngLmbfD0MP/CFixjMyasw17pjt5GlM=;
-        b=YvHV+qGatKW5HHK9M9PVW2qKNUWI8O7dQaFHFb6Y85u2nrmU8WY2eo2OPu98L3S2SA
-         /LDw/BdU3444rYGWUey3zaE4IRUbXIIVyq/CCRDnvTJ9sFSHGsImeMPg0Kh5NpKa8lYZ
-         8NVDfEvAcRFnRHmWXknrkzfc7tiHsMvcWCXvJZd2hslvgrhI8jo8Wr8VKpsbOEk9LfCT
-         0Xb7qH6yW+g+0+lETepmos38YN4GxkWEQSNE4UrGgp4bq9k9uA0YPZohVeNIMqYYEPeh
-         BCrD6br3ILh8W8LNHCd+3tLUd1QhJ4UhBV9WaqbO9AxHteOysn9ARtWtyZGq02MzjAik
-         dlDg==
-X-Gm-Message-State: AC+VfDwGKyetggeKBN/9lTyGT3PXZiDwdwprh/nQ1HJ0VFQ2T58RTnpm
-        7olg7biewG6OS+XhCWEeJwOGRA==
-X-Google-Smtp-Source: ACHHUZ48m5TTryjiHP5lseidA3LmSb86zf/V7P9rskuqKQ9nenuKa4+AWi9l8zb3PsBvodIiXgOp7g==
-X-Received: by 2002:a05:600c:2185:b0:3fb:c384:89ef with SMTP id e5-20020a05600c218500b003fbc38489efmr10189045wme.17.1688503501104;
-        Tue, 04 Jul 2023 13:45:01 -0700 (PDT)
-Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id y4-20020a05600c364400b003fa74bff02asm115332wmq.26.2023.07.04.13.45.00
+        d=1e100.net; s=20221208; t=1688513903; x=1691105903;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e6fOv3KfpYRgxDp5NnegPjCOw+kqjU07ZSKbfN9Zafw=;
+        b=keQ2UySaiPyT0MstwcdG/P2QW5lESYSPS/LZ+DjhMysoxrfbgYcdcD0c7/L33kEaUQ
+         BpSbHrcuDpNt6A30ChJsvcY8Kq2SgBTX+VwQQ8PJ4SYVamvVtJzpZTxjR2KXmpt2Y7UL
+         aOeL3RkgDh3Y2hDlhu7GjBTgS3gcTSHnySn31yivgobhZXXQQ8v94PIQ5QDBm9gpRUDL
+         VTxETd30enjI3XfojfGS6ou7wOg4C45XeyjhCrAmZkMvfraaZvyRq/mG2ajqfK8pw3sW
+         yHo6o75izNqOglg0uFd+nhIqkGw/Jn+Cj30Pr/dK3qm8WC9fgYHm9j7P4QQUUoIKX5Vj
+         bm2w==
+X-Gm-Message-State: AC+VfDxtJ6JcvH5V9qoFYrlvSbHAnUWQlvN1qZTY0+zgsW2rQo4lpqcM
+        BsRaTGp9KRloCZxO8ltRMHei9PLYb0YcSA==
+X-Google-Smtp-Source: ACHHUZ5BriiXdRxvI6+OWJnyU1ruKdO37WbqxE3Y+fdZCQOhxWwLy2sVTMZ4um7Uq9d24v3z7bl11g==
+X-Received: by 2002:a05:6808:1294:b0:3a3:82a1:d1e7 with SMTP id a20-20020a056808129400b003a382a1d1e7mr16491226oiw.6.1688513903535;
+        Tue, 04 Jul 2023 16:38:23 -0700 (PDT)
+Received: from xplor.waratah.dyndns.org (222-152-184-54-fibre.sparkbb.co.nz. [222.152.184.54])
+        by smtp.gmail.com with ESMTPSA id a15-20020aa7864f000000b0066883d75932sm14045569pfo.204.2023.07.04.16.38.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jul 2023 13:45:00 -0700 (PDT)
-From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-Date:   Tue, 04 Jul 2023 22:44:41 +0200
-Subject: [PATCH net 9/9] selftests: mptcp: pm_nl_ctl: fix 32-bit support
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230704-upstream-net-20230704-misc-fixes-6-5-rc1-v1-9-d7e67c274ca5@tessares.net>
-References: <20230704-upstream-net-20230704-misc-fixes-6-5-rc1-v1-0-d7e67c274ca5@tessares.net>
-In-Reply-To: <20230704-upstream-net-20230704-misc-fixes-6-5-rc1-v1-0-d7e67c274ca5@tessares.net>
-To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
-        Florian Westphal <fw@strlen.de>,
-        Kishen Maloor <kishen.maloor@intel.com>
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        stable@vger.kernel.org
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3010;
- i=matthieu.baerts@tessares.net; h=from:subject:message-id;
- bh=u1k8iIN6l4SZJWpyeVyx7kGYVtesJznCZArOL3Lw7TQ=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkpITDCL61mEtunnDwk6Rf0ldwTLYb6HJX73Tgx
- 7uQFLbFrNOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZKSEwwAKCRD2t4JPQmmg
- c5uFD/9jO/kwOJQsQZ5OUb5E0p6aN3+wVxvFP3tEM0GikY0krZwGsHqiVy5A2r4PZSGL3X3RNSQ
- sDuR604XK4njHy1QQS7t2v13YFte66oha+/rOHxPpWwg6GQ7eHjFQP8wA6O2oYCkxI+lXwW9XqY
- /5cXrv08fmiTBPjMEVQ0FQklwYCIWPT4FOVsk7kC+01gs8uhdPoECeXMvtJFAX8FZg2M71xcwSo
- fP3NhyWEj8EM4tAS7vTSC21Tm7DT5+++k2R5tDKQHjoH6rbov7Fnqttb41oDGGcGQyFVtQQL/NH
- TadguNjqtD46bbCCJk1Gt4npIySxQ3cxw6HOI1I0UMbjUujoXMAOCutgD2qnCBi5EqOcd1sKQz7
- 8lBkc2fYAKyC4m1n0eUatT6hktbQ/8CmNXg/sd1K3+u9s6QBUJ6e7zWTjqAYVoZqvkr1KVR4k5E
- onIqX5UIzRtSyrFqTzu5MbJ5HP9e/YvACev94zBJoR2Aax3BpaFjTH5FyzaNiqvNvLDjq4gHt/C
- EkmC+5O60hcky2lN96dliv7Wdb6WY4VaV3vUdsoWtaIQvvOZV2j7JrhHciqEGpJqchecXBEMF/f
- lyTu8Mkc2+kaRIBdirF0U49a6B9+mka30qMk4EDze9TpydMoQlT+rkEU5CjCxr6HJXuMVVz+c+h
- 9k6/Knvzg1m6EZg==
-X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+        Tue, 04 Jul 2023 16:38:23 -0700 (PDT)
+Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
+        id C24AA360370; Wed,  5 Jul 2023 11:38:19 +1200 (NZST)
+From:   Michael Schmitz <schmitzmic@gmail.com>
+To:     linux-block@vger.kernel.org, axboe@kernel.dk
+Cc:     linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de,
+        geert@linux-m68k.org, hch@lst.de, martin@lichtvoll.de,
+        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH v4 1/1] block: bugfix for Amiga partition overflow check patch
+Date:   Wed,  5 Jul 2023 11:38:08 +1200
+Message-Id: <20230704233808.25166-2-schmitzmic@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20230704233808.25166-1-schmitzmic@gmail.com>
+References: <20230620201725.7020-1-schmitzmic@gmail.com>
+ <20230704233808.25166-1-schmitzmic@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When using pm_nl_ctl to validate userspace path-manager's behaviours, it
-was failing on 32-bit architectures ~half of the time.
+Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
+fails the 'blk>0' test in the partition block loop if a
+value of (signed int) -1 is used to mark the end of the
+partition block list.
 
-pm_nl_ctl was not reporting any error but the command was not doing what
-it was expected to do. As a result, the expected linked event was not
-triggered after and the test failed.
+This bug was introduced in patch 3 of my prior Amiga partition
+support fixes series, and spotted by Christian Zigotzky when
+testing the latest block updates.
 
-This is due to the fact the token given in argument to the application
-was parsed as an integer with atoi(): in a 32-bit arch, if the number
-was bigger than INT_MAX, 2147483647 was used instead.
+Explicitly cast 'blk' to signed int to allow use of -1 to
+terminate the partition block linked list.
 
-This can simply be fixed by using strtoul() instead of atoi().
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Fixes: b6f3f28f60 ("block: add overflow checks for Amiga partition support")
+Message-ID: 024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+Cc: <stable@vger.kernel.org> # 5.2
+Link: https://lore.kernel.org/r/024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Martin Steigerwald <martin@lichtvoll.de>
+Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
 
-The errors have been seen "by chance" when manually looking at the
-results from LKFT.
+--
 
-Fixes: 9a0b36509df0 ("selftests: mptcp: support MPTCP_PM_CMD_ANNOUNCE")
-Cc: stable@vger.kernel.org
-Fixes: ecd2a77d672f ("selftests: mptcp: support MPTCP_PM_CMD_REMOVE")
-Fixes: cf8d0a6dfd64 ("selftests: mptcp: support MPTCP_PM_CMD_SUBFLOW_CREATE")
-Fixes: 57cc361b8d38 ("selftests: mptcp: support MPTCP_PM_CMD_SUBFLOW_DESTROY")
-Fixes: ca188a25d43f ("selftests: mptcp: userspace PM support for MP_PRIO signals")
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Changes since v1:
+
+- corrected Fixes: tag
+- added Tested-by:
+- reworded commit message to describe filesystem partition
+  size mismatch problem
+
+Changes since v2:
+
+Adrian Glaubitz:
+- fix typo in commit message
+
+Changes since v3:
+
+Greg KH:
+- fix stable tag
+
+Geert Uytterhoeven:
+- revert changes to commit message since v1
 ---
- tools/testing/selftests/net/mptcp/pm_nl_ctl.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ block/partitions/amiga.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-index abddf4c63e79..1887bd61bd9a 100644
---- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-+++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-@@ -425,7 +425,7 @@ int dsf(int fd, int pm_family, int argc, char *argv[])
+diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
+index ed222b9c901b..506921095412 100644
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -90,7 +90,7 @@ int amiga_partition(struct parsed_partitions *state)
  	}
- 
- 	/* token */
--	token = atoi(params[4]);
-+	token = strtoul(params[4], NULL, 10);
- 	rta = (void *)(data + off);
- 	rta->rta_type = MPTCP_PM_ATTR_TOKEN;
- 	rta->rta_len = RTA_LENGTH(4);
-@@ -551,7 +551,7 @@ int csf(int fd, int pm_family, int argc, char *argv[])
- 	}
- 
- 	/* token */
--	token = atoi(params[4]);
-+	token = strtoul(params[4], NULL, 10);
- 	rta = (void *)(data + off);
- 	rta->rta_type = MPTCP_PM_ATTR_TOKEN;
- 	rta->rta_len = RTA_LENGTH(4);
-@@ -598,7 +598,7 @@ int remove_addr(int fd, int pm_family, int argc, char *argv[])
- 			if (++arg >= argc)
- 				error(1, 0, " missing token value");
- 
--			token = atoi(argv[arg]);
-+			token = strtoul(argv[arg], NULL, 10);
- 			rta = (void *)(data + off);
- 			rta->rta_type = MPTCP_PM_ATTR_TOKEN;
- 			rta->rta_len = RTA_LENGTH(4);
-@@ -710,7 +710,7 @@ int announce_addr(int fd, int pm_family, int argc, char *argv[])
- 			if (++arg >= argc)
- 				error(1, 0, " missing token value");
- 
--			token = atoi(argv[arg]);
-+			token = strtoul(argv[arg], NULL, 10);
- 		} else
- 			error(1, 0, "unknown keyword %s", argv[arg]);
- 	}
-@@ -1347,7 +1347,7 @@ int set_flags(int fd, int pm_family, int argc, char *argv[])
- 				error(1, 0, " missing token value");
- 
- 			/* token */
--			token = atoi(argv[arg]);
-+			token = strtoul(argv[arg], NULL, 10);
- 		} else if (!strcmp(argv[arg], "flags")) {
- 			char *tok, *str;
- 
-
+ 	blk = be32_to_cpu(rdb->rdb_PartitionList);
+ 	put_dev_sector(sect);
+-	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
++	for (part = 1; (s32) blk>0 && part<=16; part++, put_dev_sector(sect)) {
+ 		/* Read in terms partition table understands */
+ 		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
+ 			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
 -- 
-2.40.1
+2.17.1
 
