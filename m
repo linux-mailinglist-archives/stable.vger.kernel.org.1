@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F9B1746AEC
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 09:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53DE0746BC6
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 10:24:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230478AbjGDHoA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 03:44:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54662 "EHLO
+        id S229804AbjGDIYm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 04:24:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbjGDHn7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 03:43:59 -0400
+        with ESMTP id S229603AbjGDIYm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 04:24:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC69BE52;
-        Tue,  4 Jul 2023 00:43:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FE331AC;
+        Tue,  4 Jul 2023 01:24:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 730586116F;
-        Tue,  4 Jul 2023 07:43:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679E2C433C8;
-        Tue,  4 Jul 2023 07:43:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C97EC6117D;
+        Tue,  4 Jul 2023 08:24:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F1BC433C8;
+        Tue,  4 Jul 2023 08:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688456636;
-        bh=5VqRSuMpYumZIqE2wC2cou/STTVXEllMVqkTXJmrxnk=;
+        s=korg; t=1688459080;
+        bh=cJcQ8DyGHxVBu+2gLQQlsksCzpsku7jq3SZesDnGGpg=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OhL/ucFadRGJsdjIxYHH6pHgWRZryuy11gsj5A7B8/+/EZwY7DtLyfS4pudRKhfn4
-         lR2Es1OjZEQw2dm5vLVuGHSl+0dnBtd4uViVnu+8LQz3GgVW5JbKimoIZVV/DhyfYP
-         phSLQX3MRamnf1SMh3dYj44or8bVF1bNVtE77MJ4=
-Date:   Tue, 4 Jul 2023 08:43:54 +0100
+        b=VsYjzFcI/rj44S0AkwipvBAWHyhYQwVUFA+TQWNnQd2R1qjYYA8Qti+35+9pNI0w6
+         LTQBN7pEuuz6QqlpwE/5yAlasTaRKe5Tci6uS/3lKAIFZhvw7Sv2/zyKy4eTD2bZPb
+         8iT97H4tnj9nG0yqTxUR/yQSz4ceCZjDRMFD5vQ0=
+Date:   Tue, 4 Jul 2023 09:24:37 +0100
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Naresh Kamboju <naresh.kamboju@linaro.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -40,13 +40,14 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
         conor@kernel.org
 Subject: Re: [PATCH 6.3 00/13] 6.3.12-rc1 review
-Message-ID: <2023070411-steadfast-overtly-02a3@gregkh>
+Message-ID: <2023070416-wow-phrasing-b92c@gregkh>
 References: <20230703184519.206275653@linuxfoundation.org>
  <CA+G9fYvf-sw8tCHjxhoMvHrtzzdE69EwvB2PmypUkGDdCFFASA@mail.gmail.com>
+ <2023070411-steadfast-overtly-02a3@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+G9fYvf-sw8tCHjxhoMvHrtzzdE69EwvB2PmypUkGDdCFFASA@mail.gmail.com>
+In-Reply-To: <2023070411-steadfast-overtly-02a3@gregkh>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -57,44 +58,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 04, 2023 at 01:04:36PM +0530, Naresh Kamboju wrote:
-> On Tue, 4 Jul 2023 at 00:26, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.3.12 release.
-> > There are 13 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Wed, 05 Jul 2023 18:45:08 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.12-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
+On Tue, Jul 04, 2023 at 08:43:54AM +0100, Greg Kroah-Hartman wrote:
+> On Tue, Jul 04, 2023 at 01:04:36PM +0530, Naresh Kamboju wrote:
+> > On Tue, 4 Jul 2023 at 00:26, Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > This is the start of the stable review cycle for the 6.3.12 release.
+> > > There are 13 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > >
+> > > Responses should be made by Wed, 05 Jul 2023 18:45:08 +0000.
+> > > Anything received after that time might be too late.
+> > >
+> > > The whole patch series can be found in one patch at:
+> > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.12-rc1.gz
+> > > or in the git tree and branch at:
+> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> > > and the diffstat can be found below.
+> > >
+> > > thanks,
+> > >
+> > > greg k-h
+> > 
+> > 
+> > While running LTP hugetlb testing on x86 the following kernel BUG noticed
+> > on running stable-rc 6.3.12-rc1.
+> > 
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > 
+> > Crash log:
+> > =========
+> > [   54.386939] hugefallocate01 (410): drop_caches: 3
+> > g tests.......
 > 
+> And this worked on 6.3.11 just fine?
 > 
-> While running LTP hugetlb testing on x86 the following kernel BUG noticed
-> on running stable-rc 6.3.12-rc1.
+> Trying to narrow down what would have caused this...
 > 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> Crash log:
-> =========
-> [   54.386939] hugefallocate01 (410): drop_caches: 3
-> g tests.......
+> Any chance you can run Linus's tree with thie LTP test as well?
 
-And this worked on 6.3.11 just fine?
-
-Trying to narrow down what would have caused this...
-
-Any chance you can run Linus's tree with thie LTP test as well?
+Ah, I can hit this here locally too!  Let me bisect...
 
 thanks,
 
