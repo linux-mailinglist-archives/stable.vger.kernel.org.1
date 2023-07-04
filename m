@@ -2,123 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFB547476C4
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 18:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 179CA7476D8
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 18:37:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230489AbjGDQ36 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 12:29:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40666 "EHLO
+        id S231418AbjGDQhT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 12:37:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231486AbjGDQ35 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 12:29:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5500FE5;
-        Tue,  4 Jul 2023 09:29:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF82461122;
-        Tue,  4 Jul 2023 16:29:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C845C433C7;
-        Tue,  4 Jul 2023 16:29:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1688488195;
-        bh=mz2Iu6lHIM5ltZlhnJknul78c5yuJ4JBfaMtDnONxio=;
-        h=Date:To:From:Subject:From;
-        b=0ZutxEr0r23OaYlZBdIZDrzyK1QmhqBC0pn9tnNRh5bZFFCk6AlUR7u5KFQ8/UoHs
-         w7uZUWDt1uVoQ2kqgWcZc04onvIQG+KPSzna0ohSxhXwaEZnRZ6aMyLnNkv/Ow/zGJ
-         3gQdAYRnxLuYMbUEmvtbI/mIidk2cT9B0d1s730w=
-Date:   Tue, 04 Jul 2023 09:29:54 -0700
-To:     mm-commits@vger.kernel.org, willy@infradead.org,
-        stable@vger.kernel.org, songmuchun@bytedance.com,
-        osalvador@suse.de, mike.kravetz@oracle.com, liushixin2@huawei.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + bootmem-remove-the-vmemmap-pages-from-kmemleak-in-free_bootmem_page.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230704162955.3C845C433C7@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229615AbjGDQhS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 12:37:18 -0400
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283A6CF;
+        Tue,  4 Jul 2023 09:37:18 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1b7ef3e74edso29177865ad.0;
+        Tue, 04 Jul 2023 09:37:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688488637; x=1691080637;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qq9caxBhUaIDTOUts0hMPoGeTAHn1nr/fwkbfDRFOV4=;
+        b=DRODGkvGkssu8sbpH5JfFdL0Dwx1OfH+U7SSFY6gIJ0v6LTLqeNqjhBf8nmyPy4gG2
+         oiNgpFAtVRu9NdjJ8AXflAkzXUDRBtm1DwKH6+dv1MqxwskzxumNO5juQO8oDWlkMBY8
+         oMbR6wrLHLaBYM3LSFbtupluYCA8UKra9TkS14fNUvBVnA50/sSvLxoG+0JRkMGxohtC
+         4XFthla/1NcoJIUkd+Nh6VfWNefjn3uzOfEVCLURL1eFBJPdi9+Ej0TIRoo94qo1q9N5
+         YY+bjRQ9RjJcevtmfry7JvF1lFpLiu1nEkmZpTbFpZgJt7x1T83M/CiMTZTyCmMzQs3j
+         A+Ww==
+X-Gm-Message-State: ABy/qLZkIhcqZa19ZXVgKzV3v167qMEV//dp+1Hr1qss+3U2TLyIUTvb
+        irGKM6CN31PVMcqsDLArFdE=
+X-Google-Smtp-Source: APBJJlFLrXdz6T8wRfchr9R6PTEOz95tWasBcijz9afT2zIq9026AzCHmKf2iLbvuD5b+Zi1eMkf+g==
+X-Received: by 2002:a17:902:8682:b0:1b8:95fc:d12 with SMTP id g2-20020a170902868200b001b895fc0d12mr4921692plo.54.1688488637557;
+        Tue, 04 Jul 2023 09:37:17 -0700 (PDT)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id j6-20020a170902c3c600b001b8918da8d1sm4605652plj.80.2023.07.04.09.37.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Jul 2023 09:37:15 -0700 (PDT)
+Date:   Wed, 5 Jul 2023 01:37:13 +0900
+From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To:     Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Cc:     alberto.dassatti@heig-vd.ch, dlemoal@kernel.org,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        stable@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] PCI: rockchip: Use 64-bit mask on MSI 64-bit PCI
+ address
+Message-ID: <20230704163713.GB435329@rocinante>
+References: <20230703085845.2052008-1-rick.wertenbroek@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230703085845.2052008-1-rick.wertenbroek@gmail.com>
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hello,
 
-The patch titled
-     Subject: bootmem: remove the vmemmap pages from kmemleak in free_bootmem_page
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     bootmem-remove-the-vmemmap-pages-from-kmemleak-in-free_bootmem_page.patch
+> A 32-bit mask was used on the 64-bit PCI address used for mapping MSIs.
+> This would result in the upper 32 bits being unintentionally zeroed and
+> MSIs getting mapped to incorrect PCI addresses if the address had any
+> of the upper bits set.
+> 
+> Replace 32-bit mask by appropriate 64-bit mask.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/bootmem-remove-the-vmemmap-pages-from-kmemleak-in-free_bootmem_page.patch
+Applied to controller/rockchip, thank you!
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+[1/1] PCI: rockchip: Use 64-bit mask on MSI 64-bit PCI address
+      https://git.kernel.org/pci/pci/c/251c859f4b6f
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Liu Shixin <liushixin2@huawei.com>
-Subject: bootmem: remove the vmemmap pages from kmemleak in free_bootmem_page
-Date: Tue, 4 Jul 2023 18:19:42 +0800
-
-commit dd0ff4d12dd2 ("bootmem: remove the vmemmap pages from kmemleak in
-put_page_bootmem") fix an overlaps existing problem of kmemleak.  But the
-problem still existed when HAVE_BOOTMEM_INFO_NODE is disabled, because in
-this case, free_bootmem_page() will call free_reserved_page() directly.
-
-Fix the problem by adding kmemleak_free_part() in free_bootmem_page() when
-HAVE_BOOTMEM_INFO_NODE is disabled.
-
-Link: https://lkml.kernel.org/r/20230704101942.2819426-1-liushixin2@huawei.com
-Fixes: f41f2ed43ca5 ("mm: hugetlb: free the vmemmap pages associated with each HugeTLB page")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Acked-by: Muchun Song <songmuchun@bytedance.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/bootmem_info.h |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/include/linux/bootmem_info.h~bootmem-remove-the-vmemmap-pages-from-kmemleak-in-free_bootmem_page
-+++ a/include/linux/bootmem_info.h
-@@ -3,6 +3,7 @@
- #define __LINUX_BOOTMEM_INFO_H
- 
- #include <linux/mm.h>
-+#include <linux/kmemleak.h>
- 
- /*
-  * Types for free bootmem stored in page->lru.next. These have to be in
-@@ -59,6 +60,7 @@ static inline void get_page_bootmem(unsi
- 
- static inline void free_bootmem_page(struct page *page)
- {
-+	kmemleak_free_part(page_to_virt(page), PAGE_SIZE);
- 	free_reserved_page(page);
- }
- #endif
-_
-
-Patches currently in -mm which might be from liushixin2@huawei.com are
-
-bootmem-remove-the-vmemmap-pages-from-kmemleak-in-free_bootmem_page.patch
-
+	Krzysztof
