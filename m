@@ -2,137 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E557478BA
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 21:35:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 057DE7478D6
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 21:51:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230197AbjGDTfn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 15:35:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40154 "EHLO
+        id S231689AbjGDTvO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 15:51:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjGDTfm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 15:35:42 -0400
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D0910C9;
-        Tue,  4 Jul 2023 12:35:41 -0700 (PDT)
-Received: by mail-il1-x12f.google.com with SMTP id e9e14a558f8ab-345c343ce29so30710875ab.3;
-        Tue, 04 Jul 2023 12:35:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688499341; x=1691091341;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vn24u4tGz5eEseZIEsjh5FJBPFhLJAwSRCoo8IlAu0I=;
-        b=q4LjKoYaWxG2uB4CS4yv3Z0kpbL6qtovP4IIEndvEOIv1NP3OSyrD9/8sRnimjB90U
-         eCg2wzmfjVmNAI7WHYJrTePYUIwjT4Lrom+TQs9BhnLnXtjpOBzniMluYkbajlImUqAm
-         uPC3dqcjR7cTlJAlJ2wUFRuGY/iCmKML7OUZBvFY1r6OLRjelInN2sQTKzGVPhG2jgxo
-         bMMa5TKbWeLIxr7UDOfUPqGLTs5CwNetiWQ5iKuSgmHj2eEfai4RakxNeYJutBPmRG8D
-         3CVndG6sY6p7jXE3Qot+2kg4jpTYafonjNOY524gs6ZIs/bOa2BD4ZWe3kJs+ZzzCfKw
-         rDqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688499341; x=1691091341;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vn24u4tGz5eEseZIEsjh5FJBPFhLJAwSRCoo8IlAu0I=;
-        b=SA+Q+U0863z/5OfhTFL1wPxQXhICEtqEIwnucwOKFz9Hw7o9rwZeso3FmuQrO35Ouy
-         8rKIhSWEL7AGvomPFpGBU9Rl4Q/xUwys6cF4riOxYdbliovAbs0bo9VJPEkG+BVYEkbq
-         dk+LTs1LxSmLaHdDbOkOvVhnrD5COHufuFysw79MHyemYPZi5ctvnxV8HOZyPeNbRDJj
-         FWpsZfUIxiqev7qQPa9XMzXW6mWjCSsFlr9QYEAkcO1fZqFy+/5IR4ldix9tNiwF/3+y
-         /jkFUikfUZw6iZaFEqCntbLgvft5yBZnfyqdwtgzdUYfen/ch4SzaZYX4ve4UhEkhYMF
-         I+nQ==
-X-Gm-Message-State: ABy/qLbBlMlXHXWGkdCQsBiYaIanEMdwLqtsM/r4hOqPhG8/b1RxQga6
-        tAUEFvRf66iNh1bwyGEiTpHIqUcUayqnvQ==
-X-Google-Smtp-Source: APBJJlGEWXnjNowmsWDVqc5kXgZ3X1fvFlVbb1B6+CflFNh/G4kiNoIBy0MPd8v7dLuO+pZ/D92Diw==
-X-Received: by 2002:a92:d48e:0:b0:345:aba5:3777 with SMTP id p14-20020a92d48e000000b00345aba53777mr14265177ilg.25.1688499340643;
-        Tue, 04 Jul 2023 12:35:40 -0700 (PDT)
-Received: from ?IPV6:2001:df0:0:200c:2c51:ccb9:9db0:5657? ([2001:df0:0:200c:2c51:ccb9:9db0:5657])
-        by smtp.gmail.com with ESMTPSA id n2-20020a170902968200b001b7cbc5871csm12763666plp.53.2023.07.04.12.35.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Jul 2023 12:35:40 -0700 (PDT)
-Message-ID: <e50347e0-0545-1a0b-f094-8e93329c30f3@gmail.com>
-Date:   Wed, 5 Jul 2023 07:35:34 +1200
+        with ESMTP id S231286AbjGDTvO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 15:51:14 -0400
+Received: from smtp.smtpout.orange.fr (smtp-14.smtpout.orange.fr [80.12.242.14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F2510CF
+        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 12:51:11 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id Gm3HqhIN61lRhGm3Hq4oNQ; Tue, 04 Jul 2023 21:51:09 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1688500269;
+        bh=E5rO26Dz3CWK8l+Od+4vE1x2c+orHF72b1zdbUbPDV4=;
+        h=From:To:Cc:Subject:Date;
+        b=Vtze80gT9MTMD9rA3V9bGewsYl3ApaMoHm2coqNXA2EIJYAbnuj/jrjX6wzceUUrY
+         8ZXcbDtR0rZkV0KZlPL31Rx4tDuX45eSyEH5/HUlapU4xhaQy9oepa92Ex3GuxPGN6
+         M6jCQg3gSdxCCXFgmvhKHrHsRZvt7J9ZYdfdkciXcU/7sKSlghv1zHtfgqBlk2c0Y1
+         Qw3dA9LeA2lUnpSa7YAnKJyUMCNPG5CpOLHz2QwvPLlUAR4tuxtOm55LHjh+/T6d3y
+         ryL1iciITpEf9iTlxjnbvWptvB6wcjt+eM23rzaeVNMSKojQ/6nAWQnetfDJfAkr1W
+         SxHEUFahQVGcA==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 04 Jul 2023 21:51:09 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     dan.carpenter@linaro.org, Linus Walleij <linus.walleij@linaro.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Alessandro Rubini <rubini@gnudd.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Giancarlo Asnaghi <giancarlo.asnaghi@st.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-i2c@vger.kernel.org
+Subject: [PATCH v3] i2c: busses: i2c-nomadik: Remove a useless call in the remove function
+Date:   Tue,  4 Jul 2023 21:50:28 +0200
+Message-Id: <62ae6810d41e04a9eb5adfa18a9e40904bc72256.1688160163.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3] block: bugfix for Amiga partition overflow check patch
-Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
-        linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de,
-        geert@linux-m68k.org, hch@lst.de, martin@lichtvoll.de,
-        stable@vger.kernel.org
-References: <20230704054955.16906-1-schmitzmic@gmail.com>
- <2023070456-vertigo-fanfare-1a8e@gregkh>
-From:   Michael Schmitz <schmitzmic@gmail.com>
-In-Reply-To: <2023070456-vertigo-fanfare-1a8e@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
+driver"), there is no more request_mem_region() call in this driver.
 
-On 4/07/23 18:54, Greg KH wrote:
-> On Tue, Jul 04, 2023 at 05:49:55PM +1200, Michael Schmitz wrote:
->> Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
->> fails the 'blk>0' test in the partition block loop if a
->> value of (signed int) -1 is used to mark the end of the
->> partition block list.
->>
->> This bug was introduced in patch 3 of my prior Amiga partition
->> support fixes series, and spotted by Christian Zigotzky when
->> testing the latest block updates.
->>
->> Explicitly cast 'blk' to signed int to allow use of -1 to
->> terminate the partition block linked list.
->>
->> Testing by Christian also exposed another aspect of the old
->> bug fixed in commits fc3d092c6b ("block: fix signed int
->> overflow in Amiga partition support") and b6f3f28f60
->> ("block: add overflow checks for Amiga partition support"):
->>
->> Partitions that did overflow the disk size (due to 32 bit int
->> overflow) were not skipped but truncated to the end of the
->> disk. Users who missed the warning message during boot would
->> go on to create a filesystem with a size exceeding the
->> actual partition size. Now that the 32 bit overflow has been
->> corrected, such filesystems may refuse to mount with a
->> 'filesystem exceeds partition size' error. Users should
->> either correct the partition size, or resize the filesystem
->> before attempting to boot a kernel with the RDB fixes in
->> place.
->>
->> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
->> Fixes: b6f3f28f60 ("block: add overflow checks for Amiga partition support")
-> That commit is not in:
->
->> Cc: <stable@vger.kernel.org> # 6.4
-> 6.4.  It's in Linus's tree only right now.
-Sigh ... I should have followed that tree also. I had wondered why the 
-patches hadn't shown up in Geert's tree yet.
->
-> But yes, it's tagged for 5.2 and older kernels to be added to the stable
-> tree, so why is this one limited only to 6.4 and not also for 5.2 and
-> newer?
+So remove the release_mem_region() call from the remove function which is
+likely a left over.
 
-Brain fade on my part, same day (and situation) as the botched Fixes: 
-tag, sorry.
+Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
+Cc: <stable@vger.kernel.org> # v3.6+
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org> 
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+v3: - update commit description
+    - add R-b and A-b
+    - fix Fixes tag   [Dan Carpenter]
+    - add cc stable   [Andi Shyti]
 
-I'll correct that, along with Geert's comment regarding the commit 
-description.
+v2: - synch with latest -next
+    - https://lore.kernel.org/all/62ae6810d41e0429ebaadfac8a95409f4bc72456.1688160163.git.christophe.jaillet@wanadoo.fr/
 
-Cheers,
+v1: - https://lore.kernel.org/all/4f4c2c5c20b61c4bb28cb3e9ab4640534dd2adec.1629530169.git.christophe.jaillet@wanadoo.fr/
+---
+ drivers/i2c/busses/i2c-nomadik.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-     Michael
+diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
+index 1e5fd23ef45c..212f412f1c74 100644
+--- a/drivers/i2c/busses/i2c-nomadik.c
++++ b/drivers/i2c/busses/i2c-nomadik.c
+@@ -1038,7 +1038,6 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+ 
+ static void nmk_i2c_remove(struct amba_device *adev)
+ {
+-	struct resource *res = &adev->res;
+ 	struct nmk_i2c_dev *dev = amba_get_drvdata(adev);
+ 
+ 	i2c_del_adapter(&dev->adap);
+@@ -1047,7 +1046,6 @@ static void nmk_i2c_remove(struct amba_device *adev)
+ 	clear_all_interrupts(dev);
+ 	/* disable the controller */
+ 	i2c_clr_bit(dev->virtbase + I2C_CR, I2C_CR_PE);
+-	release_mem_region(res->start, resource_size(res));
+ }
+ 
+ static struct i2c_vendor_data vendor_stn8815 = {
+-- 
+2.34.1
 
->
-> thanks,
->
-> greg k-h
