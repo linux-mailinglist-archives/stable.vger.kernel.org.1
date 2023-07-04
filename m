@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C26D27466C1
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 03:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C81B07466D2
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 03:13:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230153AbjGDBIY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 21:08:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43918 "EHLO
+        id S231220AbjGDBN2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 21:13:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229622AbjGDBIX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 21:08:23 -0400
+        with ESMTP id S230377AbjGDBN0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 21:13:26 -0400
 Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6DC184
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:08:22 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id 075333200A88
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 21:08:18 -0400 (EDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072E1184
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:13:25 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.west.internal (Postfix) with ESMTP id 78F03320094E
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 21:13:24 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Mon, 03 Jul 2023 21:08:19 -0400
+  by compute4.internal (MEProxy); Mon, 03 Jul 2023 21:13:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:content-type:date:date:feedback-id
         :feedback-id:from:from:in-reply-to:in-reply-to:message-id
         :references:reply-to:sender:subject:subject:to:to:x-me-proxy
         :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1688432898; x=1688519298; bh=4i99dNquXLGCn9208vrpXsrFZfW28/4HSbP
-        31k5WNdw=; b=LFYskeQSgeIXEL6hEMqF6jFRaJsN7kHySjHgZFFk7CSykN4Sgov
-        6IQV6KUMaiDNUmamI7OP5f6WFwqGRmeMA7yUTWNymv+jE2s4366wku+WzTnTZyxv
-        5uHZV68EyXkNvctOmPC73O6zDeBiYkwFFYa3fwCprXB0joVtz1NsSzC+J7WMX9BX
-        f6dN5fB3dyf3eDn2Ezc6/PX0W6nwzKUq35X96uyvRgAAtIW+CpEStuoh7H0FmM46
-        8u3cBKUWqf2Kvs8qdWdo0dJO/T6aPJURRLtX6GxeCbYpMMP7fOotL9I3iRH4/BBi
-        P2T5DzCFoUlHqWpTscOPqOWvybKzb272/6w==
-X-ME-Sender: <xms:AnGjZDWKtPFEp50h_48TH1KMevCNuvfc8WlrV0ct4BFg8L4203WJqA>
-    <xme:AnGjZLmS3MTrpqekFMMCPDB-s_CxwRfCaVa-qtZincIDTs_9H9WBmdloSYpHqDbJF
-    a6JKgNFhocMumWLgqQ>
-X-ME-Received: <xmr:AnGjZPYGqaW6UMBwvslkn5FzgN4WU4gOLA37X0oL-Kf-y31l3HWxheHGuoGQktuS3fx7Z_YY1jtCz2IGgAmmScvkWU8vlV7Jstc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudefgdegfecutefuodetggdotefrodftvf
+        1688433203; x=1688519603; bh=4i99dNquXLGCn9208vrpXsrFZfW28/4HSbP
+        31k5WNdw=; b=DSS1cfSAsmLmggd0SRoVQhFDj+fz2pMWsgSBJ+dQXMVAsle6n7t
+        tpl1y+8tV9DX0fPNfRAbWywaHOpkWq/2GAYzDtezoR3L/yBbyDE3t6HbSbWI/sY2
+        saYEYHZOL+DD5UJoMQI99RL8Kujh+eungkU0IbPsvPsmdr1oF+Mmk67BnJMWZVfH
+        JzqEzMuFPUbQBg6oceuymVn196Pc0uWXEtYrHeDeAL19kEBZfSLLy+djFFi0j5e/
+        /b65xo3C3Yy56uSy7hFI5Iyl1sU3divNob/Vcz/3qNoVeRMZNfawPqLFUsle/gGv
+        /etQ19zCfZUusxDKX1upFy1mzGm/Hf+3FCA==
+X-ME-Sender: <xms:M3KjZBEm06jR7McCFqljUKthEFJiZ6ayf5UI5VL_1JHp4izhCE2Tdg>
+    <xme:M3KjZGWXvLM4R8ZkLef0XmNtq_Bf1-e1Ryzjx5Lo2SZg308EWYgo6gdmrbRtIz8TQ
+    khJAvHuGtpbxk5qvt0>
+X-ME-Received: <xmr:M3KjZDKMzRV4LOvYg4Xfy5dwWFs4l8uh4zPN9xnixb9tvOFwHyq-rE3_94rgCJLAoFOhNezbakwH5GZeq-ueokwp-GjzZyboZKg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudefgdeggecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecunecujfgurhepfffkjghfhffuvfestddtredttddttd
     enucfhrhhomhephfhinhhnucfvhhgrihhnuceofhhthhgrihhnsehlihhnuhigqdhmieek
@@ -43,19 +43,19 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudefgdegfecutefuodetggdote
     ffheehteektdfhfeduudeljedtjeeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghen
     ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrg
     hinheslhhinhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:AnGjZOVm5GhYxFq4fv7u2rWhsNZ7XNvdDIRpKsek4q0xVcrGWOyKiQ>
-    <xmx:AnGjZNlREYtvmDVUVJ9iwgE2mfqbEVUVzQ5bL2kXxV2t31fAimbphg>
-    <xmx:AnGjZLdr2-jcgxX6vXCrbBRTm-LJz24C7LxkloUcNQ8prOwEEiSQtg>
-    <xmx:AnGjZJwmFru85tnv-9-t8GGi53tXW0b_SlnnMHoxk-DrhCb_wR3ZHg>
+X-ME-Proxy: <xmx:M3KjZHEJddMp6b3YrbT2F8YN2Rwu4nc86CGPzzSPQeLsPJdSRhYIPQ>
+    <xmx:M3KjZHVPwB2SD_cJ-RGVsmfwoPytdb_lNeQ0fD7REyDSShv1bFsiXA>
+    <xmx:M3KjZCOPB6ltQaWTJYFctqSLn6r_umddL6o6gGMA3ZjM1F-aAmhsQg>
+    <xmx:M3KjZPjhoYOlw_q6Kdvvltrawu1oxPO_4ON8jZlhvvbtsEzGYKYP8g>
 Feedback-ID: i58a146ae:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA for
- <stable@vger.kernel.org>; Mon, 3 Jul 2023 21:08:15 -0400 (EDT)
-Date:   Tue, 04 Jul 2023 11:09:21 +1000
-Message-ID: <9bb320e617f10d0b99fed211fbaf5543.fthain@linux-m68k.org>
-In-Reply-To: <2023070300-copious-unhidden-592f@gregkh>
-References: <2023070300-copious-unhidden-592f@gregkh>
+ <stable@vger.kernel.org>; Mon, 3 Jul 2023 21:13:21 -0400 (EDT)
+Date:   Tue, 04 Jul 2023 11:14:26 +1000
+Message-ID: <12e2e18317f0348a3c1f7099c088bb08.fthain@linux-m68k.org>
+In-Reply-To: <2023070359-scowling-tiny-bfd6@gregkh>
+References: <2023070359-scowling-tiny-bfd6@gregkh>
 From:   Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH 5.10.y] nubus: Partially revert proc_create_single_data()
+Subject: [PATCH 5.15.y] nubus: Partially revert proc_create_single_data()
  conversion
 To:     <stable@vger.kernel.org>
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
