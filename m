@@ -2,60 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15973746AB4
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 09:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B29746AB8
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 09:34:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229624AbjGDHdM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 03:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49102 "EHLO
+        id S230014AbjGDHeJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 03:34:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231163AbjGDHdL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 03:33:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF0611C
-        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 00:33:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S229598AbjGDHeJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 03:34:09 -0400
+Received: from mail.lichtvoll.de (lichtvoll.de [IPv6:2001:67c:14c:12f::11:100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51A611C;
+        Tue,  4 Jul 2023 00:34:07 -0700 (PDT)
+Received: from 127.0.0.1 (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4119E61178
-        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 07:33:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA80C433C8;
-        Tue,  4 Jul 2023 07:33:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688455989;
-        bh=N+rvBaFsWTshp7hN1HgJPj1nLFmW0eYWWCXf6ztARi0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=xKVhVxndOYf0qixBvT9GPmxTAT+EBY6FY4IGzNkrpM0rpaH0mwH9oiZMZPyoLSo7t
-         +KbAkcMG1yTnJmSSYO+ji7q37DgFYSBPkLm1AxZ735Alm9sGQgOvdmsI44tT3iwHq/
-         8oBNpZ2PSLTDuDED25aZvqdLXPL5Kq+UlafKyv0k=
-Date:   Tue, 4 Jul 2023 08:33:07 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Finn Thain <fthain@linux-m68k.org>
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH 5.15.y] nubus: Partially revert proc_create_single_data()
- conversion
-Message-ID: <2023070456-crucial-ruined-9ce1@gregkh>
-References: <2023070359-scowling-tiny-bfd6@gregkh>
- <12e2e18317f0348a3c1f7099c088bb08.fthain@linux-m68k.org>
+        by mail.lichtvoll.de (Postfix) with ESMTPSA id BB4B572DA85;
+        Tue,  4 Jul 2023 09:34:04 +0200 (CEST)
+Authentication-Results: mail.lichtvoll.de;
+        auth=pass smtp.auth=martin smtp.mailfrom=martin@lichtvoll.de
+From:   Martin Steigerwald <martin@lichtvoll.de>
+To:     linux-block@vger.kernel.org, axboe@kernel.dk,
+        Michael Schmitz <schmitzmic@gmail.com>
+Cc:     linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de,
+        geert@linux-m68k.org, hch@lst.de,
+        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] block: bugfix for Amiga partition overflow check patch
+Date:   Tue, 04 Jul 2023 09:34:04 +0200
+Message-ID: <10307003.nUPlyArG6x@lichtvoll.de>
+In-Reply-To: <20230704054955.16906-1-schmitzmic@gmail.com>
+References: <20230704054955.16906-1-schmitzmic@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <12e2e18317f0348a3c1f7099c088bb08.fthain@linux-m68k.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 04, 2023 at 11:14:26AM +1000, Finn Thain wrote:
-> The conversion to proc_create_single_data() introduced a regression
-> whereby reading a file in /proc/bus/nubus results in a seg fault:
+Michael Schmitz - 04.07.23, 07:49:55 CEST:
+> Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
+> fails the 'blk>0' test in the partition block loop if a
+> value of (signed int) -1 is used to mark the end of the
+> partition block list.
+> 
+> This bug was introduced in patch 3 of my prior Amiga partition
+> support fixes series, and spotted by Christian Zigotzky when
+> testing the latest block updates.
+> 
+> Explicitly cast 'blk' to signed int to allow use of -1 to
+> terminate the partition block linked list.
+> 
+> Testing by Christian also exposed another aspect of the old
+> bug fixed in commits fc3d092c6b ("block: fix signed int
+> overflow in Amiga partition support") and b6f3f28f60
+> ("block: add overflow checks for Amiga partition support"):
+> 
+> Partitions that did overflow the disk size (due to 32 bit int
+> overflow) were not skipped but truncated to the end of the
+> disk. Users who missed the warning message during boot would
+> go on to create a filesystem with a size exceeding the
+> actual partition size. Now that the 32 bit overflow has been
+> corrected, such filesystems may refuse to mount with a
+> 'filesystem exceeds partition size' error. Users should
+> either correct the partition size, or resize the filesystem
+> before attempting to boot a kernel with the RDB fixes in
+> place.
+> 
+> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> Fixes: b6f3f28f60 ("block: add overflow checks for Amiga partition support")
+> Message-ID: 024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+> Cc: <stable@vger.kernel.org> # 6.4
+> Link: https://lore.kernel.org/r/024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+> Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> 
+> --
+> 
+> Changes since v2:
+> 
+> Adrian Glaubitz:
+> - fix typo in commit message
+> 
+> Changes since v1:
+> 
+> - corrected Fixes: tag
+> - added Tested-by:
+> - reworded commit message to describe filesystem partition
+>   size mismatch problem
+> ---
+>  block/partitions/amiga.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
+> index ed222b9c901b..506921095412 100644
+> --- a/block/partitions/amiga.c
+> +++ b/block/partitions/amiga.c
+> @@ -90,7 +90,7 @@ int amiga_partition(struct parsed_partitions *state)
+>  	}
+>  	blk = be32_to_cpu(rdb->rdb_PartitionList);
+>  	put_dev_sector(sect);
+> -	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
+> +	for (part = 1; (s32) blk>0 && part<=16; part++, put_dev_sector(sect)) {
+>  		/* Read in terms partition table understands */
+>  		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
+>  			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
+> 
 
-Thanks for the backport, now queued up.
+Looks good. I do not consider myself a kernel developer, but patch
+description and patch itself make sense to me.
 
-greg k-h
+Reviewed-By: Martin Steigerwald <martin@lichtvoll.de>
+
+Ciao,
+-- 
+Martin
+
+
