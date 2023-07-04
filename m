@@ -2,164 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2138F746A36
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 09:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E92A746A41
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 09:01:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231133AbjGDHAE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 03:00:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36264 "EHLO
+        id S229786AbjGDHB0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 03:01:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231139AbjGDG76 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 02:59:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F3F12E
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 23:59:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688453953;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0IleIxpNn+PMHgV028qieppTFJnd95N2jqDTi5xYgrM=;
-        b=GzsddLnMhsuW0REBQZ06z+g9Hls1BUo6vAmDCN1vAW0ffrFLXQrgu1+44ldkJN9QdN2qUQ
-        SLKGG12oQZbPG7AyS3qA4eh3JhZ0j9fyOKvc6JwFbRd+u7j/vbxd8ifFIGKLHnfOGD3RRC
-        3QdnExBHTKvsdb4IoXA99jsN8sh2wYM=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-C3d8CYPvPDGPsg30r76kuQ-1; Tue, 04 Jul 2023 02:59:09 -0400
-X-MC-Unique: C3d8CYPvPDGPsg30r76kuQ-1
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7673887b2cfso146348585a.1
-        for <stable@vger.kernel.org>; Mon, 03 Jul 2023 23:59:09 -0700 (PDT)
+        with ESMTP id S230242AbjGDHBY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 03:01:24 -0400
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A23BE42
+        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 00:01:11 -0700 (PDT)
+Received: by mail-vs1-xe2f.google.com with SMTP id ada2fe7eead31-440d1ba5662so1234330137.2
+        for <stable@vger.kernel.org>; Tue, 04 Jul 2023 00:01:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688454070; x=1691046070;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9pLLIHKvmmk4zC9SwsHcTfPMPfVegexthgZQWT/NwCU=;
+        b=a+pGwLbbwJCReamWGknbZ4TgzzLts/gLAaV9nWXDmYXu0RTVp+HIc+Pa5JAYWjgpdF
+         H3fX/q7DfDx0zMsbAPblAmXluwU/A9dc0AhZezBWT79vpiLO+o1tuCH6sGyzqFChV2dC
+         Uc1eqxPxYnhMHR4q6neEN0OIycj2nx/jme2PN/0FqU44PITVQ/4tg+vyfWar0vJmN1eO
+         fP+xS2MijKwNJc4tHpHwMpSqMHBYMnThA8K7aVAiPcJOekMHvfxGmpnIPr97LeieNmJW
+         SQczBMVI3gEGRq3onvjyWCQhxP0OHv0lDiSOehDBzyPnTlqafLzgjAM6ds8/zcm+lGjV
+         d7vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688453949; x=1691045949;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0IleIxpNn+PMHgV028qieppTFJnd95N2jqDTi5xYgrM=;
-        b=hbaS6RL0kshXKaN1yhgMiB8S/y0JemHIXb+AJ7xyLbfAWpqXFWJ9o1ulrjwcfT8KO0
-         YmDNQzO60ds6OtZNhSsoXs70j2ZsgMTobXLV/tl9oIB/tUp7PJ5hAN4+80hW4j6zDkR0
-         boRr3+9VMbCLwgSGiMBYmyYQQEymW4HH8hU8zRjN5JPxdLj0nrl+34FkJ5hmWdgFT9gi
-         /saEk7d+CKrdv1ha9khISYz/652aL0tkCHJn9wun58AWooWrkzXckHGjSDUKpeavHDBI
-         oVttIjDaXuhzL2buTCBoux+rGAO4A7qKEeeskRshTPfPVYPkJCWQY6D9KysFjKJiv+d8
-         lg6Q==
-X-Gm-Message-State: ABy/qLZVo5EG2ZGhco7UgcPLyecmln79gdhwygavAgUNZrOJcz5d5/uL
-        XvvEobP30LB69A9cHyuq+bCnEUOy0nQRj3NGEu82DI3IXn1+f48rmxXiJJBtRhvDLqjsGfaEIIC
-        UmCNswfD2jRF54bcr
-X-Received: by 2002:a05:620a:1aa4:b0:765:58ac:9458 with SMTP id bl36-20020a05620a1aa400b0076558ac9458mr14719920qkb.7.1688453949242;
-        Mon, 03 Jul 2023 23:59:09 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEzlcNLkagvW9k+kp5MGjOwZWN9zlneIyGcDYmRHiEtbwaDGwG+DfHs99YP8WgUKWv70lEQoQ==
-X-Received: by 2002:a05:620a:1aa4:b0:765:58ac:9458 with SMTP id bl36-20020a05620a1aa400b0076558ac9458mr14719893qkb.7.1688453948908;
-        Mon, 03 Jul 2023 23:59:08 -0700 (PDT)
-Received: from gerbillo.redhat.com (146-241-247-156.dyn.eolo.it. [146.241.247.156])
-        by smtp.gmail.com with ESMTPSA id pe34-20020a05620a852200b007623c96430csm9632974qkn.111.2023.07.03.23.59.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jul 2023 23:59:08 -0700 (PDT)
-Message-ID: <8b0696a63d3f9cdcd4d9a8d933826e9ea1cb126b.camel@redhat.com>
-Subject: Re: [EXTERNAL] Re: [PATCH V4 net] net: mana: Fix MANA VF unload
- when host is unresponsive
-From:   Paolo Abeni <pabeni@redhat.com>
-To:     Souradeep Chakrabarti <schakrabarti@microsoft.com>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        souradeep chakrabarti <schakrabarti@linux.microsoft.com>
-Cc:     KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        Long Li <longli@microsoft.com>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        "leon@kernel.org" <leon@kernel.org>,
-        "cai.huoqing@linux.dev" <cai.huoqing@linux.dev>,
-        "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
-        "vkuznets@redhat.com" <vkuznets@redhat.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Date:   Tue, 04 Jul 2023 08:59:03 +0200
-In-Reply-To: <PUZP153MB07880E6D692FD5D13C508694CC29A@PUZP153MB0788.APCP153.PROD.OUTLOOK.COM>
-References: <1688374171-10534-1-git-send-email-schakrabarti@linux.microsoft.com>
-         <83ef6401-8736-8416-c898-2fbbb786726e@intel.com>
-         <PUZP153MB07880E6D692FD5D13C508694CC29A@PUZP153MB0788.APCP153.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        d=1e100.net; s=20221208; t=1688454070; x=1691046070;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9pLLIHKvmmk4zC9SwsHcTfPMPfVegexthgZQWT/NwCU=;
+        b=fHnbXm2Ci4zuyM1gYQ0lPOkzXZtpfADCtSPrxgXPi6HXdLxa5OziNO/EAAswKjQGw8
+         HJVWgBpZuJ3u6EORJRG+ElRnv6uYHc3DRq2Knn0wOky2VLQKWXC5gb5be42YjpMZIux2
+         WrIWuBYUqlRn4C5A9WvWioiq6ncMEjr2/PsH9lF5z4wRN7hNo1W0a9H3E5arU2y80lq2
+         T3Fh6Tmfb7cRMzX68B7E6Jxqao8ZFjNe66FM4Z+Q2KblAk+TJZyqk3SPJ88mApuEIeE/
+         /ZGyk/XH36iQH91Uu+83w7fzswSR3HrlX5Cngb8bQ5DeUq+YJziz7vxW3b+itK9/uZg2
+         T2/Q==
+X-Gm-Message-State: ABy/qLYDZCiuBjeS2+GnWK/3nzOmWg3SY1orsK+VCytniRQAt0nyEqM7
+        TtzdITshxokHV0oRvp+01YGAvmh63FaSHwbgIDAJhA==
+X-Google-Smtp-Source: APBJJlHHFru7hehy/Zd70AaP3FWkvc1cUSv1H/u4Os+sP54Zrm6/BsfpbzuKyGRVs/aUbzDELUweyKecQMONkFL4CGM=
+X-Received: by 2002:a67:f413:0:b0:444:c294:afc7 with SMTP id
+ p19-20020a67f413000000b00444c294afc7mr3671389vsn.26.1688454070103; Tue, 04
+ Jul 2023 00:01:10 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20230703184518.896751186@linuxfoundation.org>
+In-Reply-To: <20230703184518.896751186@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 4 Jul 2023 12:30:58 +0530
+Message-ID: <CA+G9fYueycAbx7DDR3S57d43UX49SOGnW6igQUZ0voEcapxdYw@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/15] 5.15.120-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        Helge Deller <deller@gmx.de>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Vishal Bhoj <vishal.bhoj@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 2023-07-03 at 19:55 +0000, Souradeep Chakrabarti wrote:
-> > -----Original Message-----
-> > From: Alexander Lobakin <aleksander.lobakin@intel.com>
-> > Sent: Monday, July 3, 2023 10:18 PM
-> > To: souradeep chakrabarti <schakrabarti@linux.microsoft.com>
-> > Cc: KY Srinivasan <kys@microsoft.com>; Haiyang Zhang
-> > <haiyangz@microsoft.com>; wei.liu@kernel.org; Dexuan Cui
-> > <decui@microsoft.com>; davem@davemloft.net; edumazet@google.com;
-> > kuba@kernel.org; pabeni@redhat.com; Long Li <longli@microsoft.com>; Aja=
-y
-> > Sharma <sharmaajay@microsoft.com>; leon@kernel.org;
-> > cai.huoqing@linux.dev; ssengar@linux.microsoft.com; vkuznets@redhat.com=
-;
-> > tglx@linutronix.de; linux-hyperv@vger.kernel.org; netdev@vger.kernel.or=
-g;
-> > linux-kernel@vger.kernel.org; linux-rdma@vger.kernel.org;
-> > stable@vger.kernel.org; Souradeep Chakrabarti <schakrabarti@microsoft.c=
-om>
-> > Subject: [EXTERNAL] Re: [PATCH V4 net] net: mana: Fix MANA VF unload wh=
-en
-> > host is unresponsive
-> >=20
-> > From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-> > Date: Mon,  3 Jul 2023 01:49:31 -0700
-> >=20
-> > > From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-> >=20
-> > Please sync your Git name and Git mail account settings, so that your o=
-wn
-> > patches won't have "From:" when sending. From what I see, you need to
-> > correct first letters of name and surname to capital in the Git email s=
-ettings
-> > block.
-> Thank you for pointing, I will fix it.
-> >=20
-> > >=20
-> > > When unloading the MANA driver, mana_dealloc_queues() waits for the
-> > > MANA hardware to complete any inflight packets and set the pending
-> > > send count to zero. But if the hardware has failed,
-> > > mana_dealloc_queues() could wait forever.
-> > >=20
-> > > Fix this by adding a timeout to the wait. Set the timeout to 120
-> > > seconds, which is a somewhat arbitrary value that is more than long
-> > > enough for functional hardware to complete any sends.
-> > >=20
-> > > Signed-off-by: Souradeep Chakrabarti
-> > > <schakrabarti@linux.microsoft.com>
-> >=20
-> > Where's "Fixes:" tagging the blamed commit?
-> This is present from the day zero of the mana driver code.
-> It has not been introduced in the code by any commit.
->=20
+On Tue, 4 Jul 2023 at 00:27, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.120 release.
+> There are 15 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 05 Jul 2023 18:45:08 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.120-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Then the fixes tag should be:
+Following build regressions noticed on stable-rc 5.15.
+This build failure started happening from v5.15.119 from date June 28, 2023.
 
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network A=
-dapter (MANA)")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Cheers,
+Regressions found on parisc:
 
-Paolo
+  - build/gcc-11-allnoconfig
+  - build/gcc-11-defconfig
+  - build/gcc-11-tinyconfig
 
+Build errors:
+=============
+arch/parisc/include/asm/assembly.h: Assembler messages:
+arch/parisc/include/asm/assembly.h:75: Error: symbol `sp' is already defined
+arch/parisc/include/asm/assembly.h:77: Error: symbol `ipsw' is already defined
+make[3]: *** [scripts/Makefile.build:391: arch/parisc/kernel/head.o] Error 1
+arch/parisc/include/asm/assembly.h: Assembler messages:
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.119-16-g66130849c020/testrun/18074467/suite/build/test/gcc-11-defconfig/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.119-16-g66130849c020/testrun/18074467/suite/build/test/gcc-11-defconfig/details/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.119-16-g66130849c020/testrun/18074467/suite/build/test/gcc-11-defconfig/history/
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
