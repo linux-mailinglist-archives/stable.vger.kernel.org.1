@@ -2,193 +2,160 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96D51746A45
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 09:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F0B2746A68
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 09:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230173AbjGDHC0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 03:02:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38474 "EHLO
+        id S230294AbjGDHRT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 03:17:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230382AbjGDHC0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 03:02:26 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A4EEE;
-        Tue,  4 Jul 2023 00:02:24 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 5E92B224C5;
-        Tue,  4 Jul 2023 07:02:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1688454143; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=I2wmCXpl436Dp8ZP2JM7afvCQOhr1hfCC2vxh1ZCMho=;
-        b=bn443TypRb0QJOcKUIKKDBJ9iTJpFltDCrtc+5qGKaxTKetUK7xwPl8YdC5TXKW5atUxYM
-        XF89NTrHY0zxyeqHS0SZElzSum7Qx+ZiM1PDIgHWs5N+H51231BYHgHnCHrTiz7UOp3QSL
-        WY6oBYdrHUb3H3DRJkYT5WX38FvyP94=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1C182133F7;
-        Tue,  4 Jul 2023 07:02:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 4NFmBf/Do2TKAQAAMHmgww
-        (envelope-from <jgross@suse.com>); Tue, 04 Jul 2023 07:02:23 +0000
-Message-ID: <0a05588e-68d3-1550-4c21-e282f4d66060@suse.com>
-Date:   Tue, 4 Jul 2023 09:02:22 +0200
+        with ESMTP id S229647AbjGDHRS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 03:17:18 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F52B138;
+        Tue,  4 Jul 2023 00:17:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1688454998; x=1689059798; i=deller@gmx.de;
+ bh=Fd35mdewvm82K5ewc5PyOoq3D2RKdeSWq63lTN9u92E=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=Ro8UU0r1uVyvqJNwTL9BzHGDLbyYud1QZr1lsB5leZoeoAJrGvzIcl9LzaIKjbijWGjP1Fi
+ bksvxD+T6zqTJZjOEZT9M1sUvUqMP84yjv4nUcwkOBvRBErrrF89dj4W3tHnKjAgARGLCnhx1
+ 4h/WiST6mng7K9t0uv1zKkqGmgJUYCYl7o97EYZxWZqe0tTGuyYphZJvqim/bq+XYHkOCHnKv
+ z+MbQlJO9igEt9IZw1OwQfSDPOMHYt/+17cJXgMlDJWeuS9SxTg6vR85vkLTi9RS9U7kYf05r
+ Zxyi1GOVd3C3N+IWSfiCKdroA3S3ddzj7Ca7yz2+rHWgKyjoy/iw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.147.238]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N2V0B-1psUSP1RR1-013wqV; Tue, 04
+ Jul 2023 09:16:38 +0200
+Message-ID: <d25d0195-b40e-2a03-de75-1bdc1aaf404c@gmx.de>
+Date:   Tue, 4 Jul 2023 09:16:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
+Subject: Re: [PATCH 5.15 00/15] 5.15.120-rc1 review
 Content-Language: en-US
-To:     Demi Marie Obenour <demi@invisiblethingslab.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Jan Beulich <JBeulich@suse.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Cc:     Xen developer discussion <xen-devel@lists.xenproject.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable@vger.kernel.org
-References: <20230627172216.1359-1-demi@invisiblethingslab.com>
-From:   Juergen Gross <jgross@suse.com>
-Subject: Re: [PATCH v3] xen: speed up grant-table reclaim
-In-Reply-To: <20230627172216.1359-1-demi@invisiblethingslab.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------MNrRNEu0Gn5vUM6zQYoVYHAv"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Vishal Bhoj <vishal.bhoj@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        =?UTF-8?Q?Daniel_D=c3=adaz?= <daniel.diaz@linaro.org>
+References: <20230703184518.896751186@linuxfoundation.org>
+ <CA+G9fYueycAbx7DDR3S57d43UX49SOGnW6igQUZ0voEcapxdYw@mail.gmail.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <CA+G9fYueycAbx7DDR3S57d43UX49SOGnW6igQUZ0voEcapxdYw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:gwk/9c6c39JOp9JwhH+wtMbvKGnNdJJEywma54f6FCuUiPtq0i+
+ C+NlDrAFQtlN9PFW2qEcA7k3nmsvbCUPcxcYmG66/kTdqmj+lxWUm8DT/uJLn9W+XeJZrrv
+ +tAT7hS7qFTy39dMEYCki+ct7RWZs9jiq7J5neJcGZm6McmNS6pU6Yog4P3d2739099dTiY
+ +kyqEcw4wvHl0v4mxbZWQ==
+UI-OutboundReport: notjunk:1;M01:P0:tJOMGFgiwU8=;I1Kt3M8ATKMjxuAjF1o0VfEHK4S
+ oQrZuGJErW2OHMbp7lDLcGt9IFG6OBjc49gxwuZrgmjLPN7rGyRY8iH9o1TzpdVD1gYWdTDow
+ 1JEG2+EBMiSyELSQiO4ZSRYYVuzzeYaFYteyjwyrLsh2llaqEzHcSF0J0zenBv1f8V3UGzjo7
+ DCgqPx5BHLcl8jZCE59QHC7Ucp1Ltgj1mE1axOlvFYVRB069U1DFIJ6s3pfD1haq2+tggLsuY
+ xxkksz1vf/+zHHNKd7Pq/Zkp8psCu9GBkJX0Em3yDoKX+EvbYzAsBDhlK3cgSAT4fRB/07N8y
+ ZXkcz2T1TLuVtbDolkWGOF3Gux0YAoEXZLCuvY74lb+ny6jRKIKo7Doj+b2+U95KkBhyGaekU
+ Z+VpVnPM8+eVaWHuZcZ1Hvozpm6PQBgMokxqMvvWYvwVm8fI6R8dtBWNIJ/zlrgqe5yZIgUfk
+ 9L1bYn7xqmBuwRhIdTKSvmrlNm/d4IuZI7j0RmvJrYpNEtnnYkEBr/ntYc/V93We0EXo8WzN0
+ ftRLaNPZoapmvpEgxtmyFMM/d9V58dbiXh1zS5g5HBJ24Y9QLtT+0Mnb8Xyltm8WWe15rC/fu
+ UU/5sMQazc8CTgAuVZgAX+4sdOwaspUSSEbLCXfZTD/N5w7a4bWWroMESwmXQVFjMVbKlzC71
+ 3tepTxrzwjOLyX3x/LgcYV30jOVwZI1vaaNnSi+Sxub7ypzR+6/Hp596/W0/GE2IWhgVWX/iA
+ udd5MomGxyBXf6X5NqrSf/x0m95bdEHlBrgd15c9LmOTGfadeuNVkbPZGA2UCRgNZj+C98PWN
+ hdpusWJD8UT+AM4R2j4klMn08mHlbw7lBzdi7HeIsHTy287JT6UIVD+G9rmKYOUO5fAWMnZhE
+ eN36vt9d3HHubKzgYF3gqOKCDXT6pNbz9pThS98NaDyd7yYe887BubiGgfKwVSds8yz3FK09X
+ UcvoTGXM43EEibje4u7alB+C34s=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------MNrRNEu0Gn5vUM6zQYoVYHAv
-Content-Type: multipart/mixed; boundary="------------B37XGpMk5E2SqDCYefhE8oq7";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Demi Marie Obenour <demi@invisiblethingslab.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Jan Beulich <JBeulich@suse.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Cc: Xen developer discussion <xen-devel@lists.xenproject.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable@vger.kernel.org
-Message-ID: <0a05588e-68d3-1550-4c21-e282f4d66060@suse.com>
-Subject: Re: [PATCH v3] xen: speed up grant-table reclaim
-References: <20230627172216.1359-1-demi@invisiblethingslab.com>
-In-Reply-To: <20230627172216.1359-1-demi@invisiblethingslab.com>
+On 7/4/23 09:00, Naresh Kamboju wrote:
+> On Tue, 4 Jul 2023 at 00:27, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+>>
+>> This is the start of the stable review cycle for the 5.15.120 release.
+>> There are 15 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+>>
+>> Responses should be made by Wed, 05 Jul 2023 18:45:08 +0000.
+>> Anything received after that time might be too late.
+>>
+>> The whole patch series can be found in one patch at:
+>>          https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/pat=
+ch-5.15.120-rc1.gz
+>> or in the git tree and branch at:
+>>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-sta=
+ble-rc.git linux-5.15.y
+>> and the diffstat can be found below.
+>>
+>> thanks,
+>>
+>> greg k-h
+>
+> Following build regressions noticed on stable-rc 5.15.
+> This build failure started happening from v5.15.119 from date June 28, 2=
+023.
+>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> Regressions found on parisc:
+>
+>    - build/gcc-11-allnoconfig
+>    - build/gcc-11-defconfig
+>    - build/gcc-11-tinyconfig
+>
+> Build errors:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> arch/parisc/include/asm/assembly.h: Assembler messages:
+> arch/parisc/include/asm/assembly.h:75: Error: symbol `sp' is already def=
+ined
+> arch/parisc/include/asm/assembly.h:77: Error: symbol `ipsw' is already d=
+efined
+> make[3]: *** [scripts/Makefile.build:391: arch/parisc/kernel/head.o] Err=
+or 1
+> arch/parisc/include/asm/assembly.h: Assembler messages:
 
---------------B37XGpMk5E2SqDCYefhE8oq7
-Content-Type: multipart/mixed; boundary="------------xtWTFltP0EaZv0PU6Wx3Xf2W"
+Greg, could you please pull in the following upstream commit?
+It was backported to kernels > 6.0, but with newer binutils it's probably
+needed for kernels < 6.0 as well:
 
---------------xtWTFltP0EaZv0PU6Wx3Xf2W
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+commit b5b2a02bcaac7c287694aa0db4837a07bf178626
+Author: Ben Hutchings <benh@debian.org>
+Date:   Thu Jun 15 00:00:02 2023 +0200
 
-T24gMjcuMDYuMjMgMTk6MjIsIERlbWkgTWFyaWUgT2Jlbm91ciB3cm90ZToNCj4gV2hlbiBh
-IGdyYW50IGVudHJ5IGlzIHN0aWxsIGluIHVzZSBieSB0aGUgcmVtb3RlIGRvbWFpbiwgTGlu
-dXggbXVzdCBwdXQNCj4gaXQgb24gYSBkZWZlcnJlZCBsaXN0LiAgTm9ybWFsbHksIHRoaXMg
-bGlzdCBpcyB2ZXJ5IHNob3J0LCBiZWNhdXNlDQo+IHRoZSBQViBuZXR3b3JrIGFuZCBibG9j
-ayBwcm90b2NvbHMgZXhwZWN0IHRoZSBiYWNrZW5kIHRvIHVubWFwIHRoZSBncmFudA0KPiBm
-aXJzdC4gIEhvd2V2ZXIsIFF1YmVzIE9TJ3MgR1VJIHByb3RvY29sIGlzIHN1YmplY3QgdG8g
-dGhlIGNvbnN0cmFpbnRzDQo+IG9mIHRoZSBYIFdpbmRvdyBTeXN0ZW0sIGFuZCBhcyBzdWNo
-IHdpbmRzIHVwIHdpdGggdGhlIGZyb250ZW5kIHVubWFwcGluZw0KPiB0aGUgd2luZG93IGZp
-cnN0LiAgQXMgYSByZXN1bHQsIHRoZSBsaXN0IGNhbiBncm93IHZlcnkgbGFyZ2UsIHJlc3Vs
-dGluZw0KPiBpbiBhIG1hc3NpdmUgbWVtb3J5IGxlYWsgYW5kIGV2ZW50dWFsIFZNIGZyZWV6
-ZS4NCj4gDQo+IFRvIHBhcnRpYWxseSBzb2x2ZSB0aGlzIHByb2JsZW0sIG1ha2UgdGhlIG51
-bWJlciBvZiBlbnRyaWVzIHRoYXQgdGhlIFZNDQo+IHdpbGwgYXR0ZW1wdCB0byBmcmVlIGF0
-IGVhY2ggaXRlcmF0aW9uIHR1bmFibGUuICBUaGUgZGVmYXVsdCBpcyBzdGlsbA0KPiAxMCwg
-YnV0IGl0IGNhbiBiZSBvdmVycmlkZGVuIGF0IGNvbXBpbGUtdGltZSAodmlhIEtjb25maWcp
-LCBib290LXRpbWUNCj4gKHZpYSBhIGtlcm5lbCBjb21tYW5kLWxpbmUgb3B0aW9uKSwgb3Ig
-cnVudGltZSAodmlhIHN5c2ZzKS4NCg0KWW91IGFyZSBzdGlsbCBtZW50aW9uaW5nIEtjb25m
-aWcuDQoNCkZvciB0aGUgc3lzZnMgZW50cnkgeW91IHNob3VsZCBhZGQgc29tZXRoaW5nIHVu
-ZGVyIERvY3VtZW50YXRpb24vQUJJLiBTb3JyeQ0KSSBkaWRuJ3Qgc3BvdCB0aGlzIG9taXNz
-aW9uIHByZXZpb3VzbHkuDQoNCg0KSnVlcmdlbg0K
---------------xtWTFltP0EaZv0PU6Wx3Xf2W
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+     parisc: Delete redundant register definitions in <asm/assembly.h>
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+     We define sp and ipsw in <asm/asmregs.h> using ".reg", and when using
+     current binutils (snapshot 2.40.50.20230611) the definitions in
+     <asm/assembly.h> using "=3D" conflict with those:
 
-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
-jR/i1DG86lem3iBDXzXsZDn8R38=3D
-=3D2wuH
------END PGP PUBLIC KEY BLOCK-----
+     arch/parisc/include/asm/assembly.h: Assembler messages:
+     arch/parisc/include/asm/assembly.h:93: Error: symbol `sp' is already =
+defined
+     arch/parisc/include/asm/assembly.h:95: Error: symbol `ipsw' is alread=
+y defined
 
---------------xtWTFltP0EaZv0PU6Wx3Xf2W--
+     Delete the duplicate definitions in <asm/assembly.h>.
 
---------------B37XGpMk5E2SqDCYefhE8oq7--
+     Also delete the definition of gp, which isn't used anywhere.
 
---------------MNrRNEu0Gn5vUM6zQYoVYHAv
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+     Signed-off-by: Ben Hutchings <benh@debian.org>
+     Cc: stable@vger.kernel.org # v6.0+
+     Signed-off-by: Helge Deller <deller@gmx.de>
 
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmSjw/4FAwAAAAAACgkQsN6d1ii/Ey86
-+Qf7BVc79+MQbLa9SjzT0G9ygKhf8N61XHUt58BIVHzXuBPyl08NthIgPjR1XAkwDhjb9gk1TFTR
-thYepMpEXviC9KuSUeNiVJ0Z64VobeQ2cCuyQ7r6MHWJSLZLtjXjH3/bXnEwXe03k0pZ3Qt0HM+1
-aObCnEc26vVpbkc4tmU3W0OlZDq7w9QkVZG21qm8c+GSx3UYTQkfBE5/4s6gisF1+tDinDY0cif7
-Nynh+/Ga+5bkhQ5EPHL3CXNZNtmRvzzA/SEWXAlHKEdH7JpQpwUskbzQqoBCWnk58U1np22t7VWt
-qKPso3z45GZxSU6UYw8i6hMOjgi0SkEmiIVTXXvI4g==
-=3vJC
------END PGP SIGNATURE-----
-
---------------MNrRNEu0Gn5vUM6zQYoVYHAv--
+Thanks,
+Helge
