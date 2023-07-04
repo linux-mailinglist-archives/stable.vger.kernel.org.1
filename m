@@ -2,107 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95E5A747782
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 19:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECA5D74778B
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 19:12:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230156AbjGDRJS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 13:09:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33006 "EHLO
+        id S231844AbjGDRMH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 13:12:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231305AbjGDRJR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 13:09:17 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E00DE7A
-        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 10:09:16 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id 6a1803df08f44-635dccdf17dso42035776d6.3
-        for <stable@vger.kernel.org>; Tue, 04 Jul 2023 10:09:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688490555; x=1691082555;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rSo2MED2dTm6RY30lyoWG5ywhIBWHYf7KBjiWayVK+A=;
-        b=WsoPz9mfnX2QeQ9QkXSzR+gjtE/uSADqW2tFgYruv5SSf6QQXHSNJyifRE0soiFwvZ
-         Nw7obbT0hu1pOq8aFjV0rWVypH1AZiGlFc2NCRwa9xEd/yaRKmoQvipG5mN4McIDNRpZ
-         vn+zqBsflnM7NK6qT9mEfhw8NWH5z6AOALM1EraEhlpOXCm4kbH9lyJjKj50zHpIn+Lm
-         2K1OFL4WHp5WaVkwLPiI7mtNgcXSgE7e8vwYFIG/3tyMsX1LN8DFD+sMMOVei2qGq00/
-         oO9gR6woUkmY2q+PZw2B9ZNoELnp/BNevDQwxafSWj621584IcQ8X4ye2mR0Ln7JRiZs
-         1+7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688490555; x=1691082555;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rSo2MED2dTm6RY30lyoWG5ywhIBWHYf7KBjiWayVK+A=;
-        b=BskAGrtfee9Gfweeu4BMJldu91MNjOUdcudSA4dRpkS9WwrJZqgw+RonxOaOfy3I9a
-         zy7YhgHYzNdW19E9Fo7w3uAw9aBxlRD1FM4/ggcEaHe5xUWJmg2LTK2ZjOOoibb1oNFM
-         75CFgrhUcrWpI256mHFampnOU6sjA9fctyxnjYjraxYDxwahfHFPYlbPc4PzPcrol/Ij
-         MF+BkfsCdI/4+mWsPHdx6RA+u1E6UkmnJUL2/vjY6UZYCRKQRtlJdQ2zoUihE2vJgJeP
-         dTFtjnYPQPfcMm6ukywdtdy9HY23Kus7w3kmShQ95gWVndZQo8dvgNUHgCxv4sx9tF5a
-         0kgg==
-X-Gm-Message-State: ABy/qLZYSY2RmNZR785fKCM4U0sUCVBxSh2GgADPXltqOMD7VSPShFTi
-        DS6HUSR5IHMkicX+rEDePUQJ7cnXbjkwYUANZyU=
-X-Google-Smtp-Source: APBJJlFPMCSNmHXk6tXG7yLQoKni0yXe9KdLKIv8YBzvVskuceHP9Eolof3Yu6lH8UtiqTowmE0PTKmheZFNB96accg=
-X-Received: by 2002:a05:6214:27c4:b0:62d:f515:9320 with SMTP id
- ge4-20020a05621427c400b0062df5159320mr14515706qvb.28.1688490555147; Tue, 04
- Jul 2023 10:09:15 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a0c:b40d:0:b0:632:aed:434e with HTTP; Tue, 4 Jul 2023
- 10:09:14 -0700 (PDT)
-Reply-To: kmrs41786@gmail.com
-From:   Johnson <pg023374@gmail.com>
-Date:   Tue, 4 Jul 2023 18:09:14 +0100
-Message-ID: <CAHLkZpUD8NUifgcxWevOhfZHj8rw85Vyk=OmE74buGLPHkRu-g@mail.gmail.com>
-Subject: Hallow und wie geht es dir heute?
-To:     kmrs41786@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+        with ESMTP id S231290AbjGDRMG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 13:12:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61C2E75;
+        Tue,  4 Jul 2023 10:12:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B06661329;
+        Tue,  4 Jul 2023 17:12:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E880C433C7;
+        Tue,  4 Jul 2023 17:12:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1688490722;
+        bh=PIfZTDcLnlwKFoZ8bNlpOlu1mUDdM/k/1cXC4BzXGHM=;
+        h=Date:To:From:Subject:From;
+        b=IuNswrzYlOXPOqcHi7PZl7G6OGYukWIh9J4bZH18EsZDTpeOhTpqA4gHYR+dE9R8i
+         qDSuLuu7OYPpqEYCvL6oLWV1eHAv/X0EbJgRGBybDah53wUSYx4M1r4TLzOYSYU3gp
+         2W0DjxgCcqoly3h0WSOIMVDwdODuJPnfABg4wVz4=
+Date:   Tue, 04 Jul 2023 10:12:01 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        ryabinin.a.a@gmail.com, glider@google.com, elver@google.com,
+        dvyukov@google.com, arnd@arndb.de, andreyknvl@google.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + kasan-fix-type-cast-in-memory_is_poisoned_n.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230704171202.9E880C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hallow und wie geht es dir heute?
 
-Ich m=C3=B6chte, dass Ihre Partnerschaft Sie als Subunternehmer
-pr=C3=A4sentiert, damit Sie in meinem Namen 8,6 Mio.
-=C3=9Cberrechnungsvertragsfonds erhalten k=C3=B6nnen, die wir zu 65 % und 3=
-5 %
-aufteilen k=C3=B6nnen.
+The patch titled
+     Subject: kasan: fix type cast in memory_is_poisoned_n
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kasan-fix-type-cast-in-memory_is_poisoned_n.patch
 
-Diese Transaktion ist 100 % risikofrei; Du brauchst keine Angst zu haben.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-fix-type-cast-in-memory_is_poisoned_n.patch
 
-Bitte senden Sie mir eine E-Mail an (kmrs41786@gmail.com), um
-ausf=C3=BChrliche Informationen zu erhalten und bei Interesse zu erfahren,
-wie wir dies gemeinsam bew=C3=A4ltigen k=C3=B6nnen.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Sie m=C3=BCssen es mir also weiterleiten
-Ihr vollst=C3=A4ndiger Name.........................
-Telefon.............
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Mit freundlichen Gr=C3=BC=C3=9Fe,
-Herr Jimoh Oyebisi.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Hallow and how are you today?
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-I seek for your partnership to present  you as a sub-contractor so
-that you can receive 8.6M Over-Invoice contract fund on my behalf and
-we can split it 65% 35%.
+------------------------------------------------------
+From: Andrey Konovalov <andreyknvl@google.com>
+Subject: kasan: fix type cast in memory_is_poisoned_n
+Date: Tue, 4 Jul 2023 02:52:05 +0200
 
-This transaction is 100% risk -free; you need not to be afraid.
+Commit bb6e04a173f0 ("kasan: use internal prototypes matching gcc-13
+builtins") introduced a bug into the memory_is_poisoned_n implementation:
+it effectively removed the cast to a signed integer type after applying
+KASAN_GRANULE_MASK.
 
-Please email me at ( kmrs41786@gmail.com ) for comprehensive details
-and how we can handle this together if interested.
+As a result, KASAN started failing to properly check memset, memcpy, and
+other similar functions.
 
-So I need you to forward it to me
-your full name.........................
-Telephone.............
+Fix the bug by adding the cast back (through an additional signed integer
+variable to make the code more readable).
 
-Kind Regards,
-Mr. Jimoh Oyebisi.
+Link: https://lkml.kernel.org/r/8c9e0251c2b8b81016255709d4ec42942dcaf018.1688431866.git.andreyknvl@google.com
+Fixes: bb6e04a173f0 ("kasan: use internal prototypes matching gcc-13 builtins")
+Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/kasan/generic.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/mm/kasan/generic.c~kasan-fix-type-cast-in-memory_is_poisoned_n
++++ a/mm/kasan/generic.c
+@@ -130,9 +130,10 @@ static __always_inline bool memory_is_po
+ 	if (unlikely(ret)) {
+ 		const void *last_byte = addr + size - 1;
+ 		s8 *last_shadow = (s8 *)kasan_mem_to_shadow(last_byte);
++		s8 last_accessible_byte = (unsigned long)last_byte & KASAN_GRANULE_MASK;
+ 
+ 		if (unlikely(ret != (unsigned long)last_shadow ||
+-			(((long)last_byte & KASAN_GRANULE_MASK) >= *last_shadow)))
++			     last_accessible_byte >= *last_shadow))
+ 			return true;
+ 	}
+ 	return false;
+_
+
+Patches currently in -mm which might be from andreyknvl@google.com are
+
+kasan-fix-type-cast-in-memory_is_poisoned_n.patch
+
