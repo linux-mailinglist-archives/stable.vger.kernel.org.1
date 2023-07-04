@@ -2,68 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68DB77466C0
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 03:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C26D27466C1
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 03:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230496AbjGDBIH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 3 Jul 2023 21:08:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43874 "EHLO
+        id S230153AbjGDBIY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 3 Jul 2023 21:08:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229622AbjGDBIG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 21:08:06 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DC7D185
-        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:08:05 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1b8918dadbdso9179065ad.1
-        for <stable@vger.kernel.org>; Mon, 03 Jul 2023 18:08:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1688432884; x=1691024884;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=wgD4SR+gRpX3jFDv885tXalu630WPjQvW2agB0CI7vY=;
-        b=gaJRHP3ZGUDHcTUYSf7LuaQjzUaFc/D7bTj4cmrh2ANcTzbzNX7IoOqIrIEFS35fML
-         U839efsHgVGIrRDucuW75fJjNAOydFHiS6oeaUf2RAMQn55KQ+2Q4ZB+yORXsZWGgunl
-         YoMJlRBIJgt3JfrPsrHOt1KSW0fKrLI3DW4cs4mpStiw2R7EgLa8FYD0qLRtiD59R47K
-         qxTFD91MXb2x2aiUxsK0I4RwcGG871kHXj45h+kZfAByyReR467NZ3XSn5ZLW7CIkdqH
-         JI6/9jfi7qArFX1U4iB5bfL06YFgArB8Ek/3+ziTxY6LqgPNvhuDCJ5SPJ2R7ssROrs9
-         HPUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688432884; x=1691024884;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wgD4SR+gRpX3jFDv885tXalu630WPjQvW2agB0CI7vY=;
-        b=hrsMKlZU6LwV0TRp+oLZZBYWT9587hbuUDKSzyxoF0YtS/QIaHqqOxqxeB2rb7SuPB
-         Ns4b5cgg0ZM1O8wQjHu+xVNkOK9HNWKRY/qEzSAABjvJZCCqITBtvW/QI2HShvvoAC0E
-         R9ouF8UCjYPooZRoaanhNNJG40HMJWY6WBELLPHTfFOK5+JB3lOJM022rvRUtxnWVXq9
-         PuIhVimLgAzMyca9fqneyj/M5LItVT78MbG6nMHoXDzuxVwXLSxmqxZRHkRzp2LcApZ1
-         MBmdM8GH7jQ+3TawJnUjlFfhRld9sC9r2Fo10AYa1CiFdloL9dPY8piDBina7lR0XUAE
-         qMvQ==
-X-Gm-Message-State: ABy/qLbzSEERPs0TDFAeJk/iC9yxvIlKsApvB2yTueOUq9pjz7akm2As
-        HDI8R5Ab86Vmgq5aq5755dDXglcV62fViRfj25bLQg==
-X-Google-Smtp-Source: APBJJlH+l+NpvR4vq65onjce92GRZhviQhxjJLBs1hlpXl7czUL21fvnkOqrfpCUT7C/YpCT8p++Cg==
-X-Received: by 2002:a17:903:11c6:b0:1ac:8475:87c5 with SMTP id q6-20020a17090311c600b001ac847587c5mr11472835plh.56.1688432884520;
-        Mon, 03 Jul 2023 18:08:04 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id w8-20020a170902a70800b001b3d4d74749sm15917487plq.7.2023.07.03.18.08.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jul 2023 18:08:03 -0700 (PDT)
-Message-ID: <64a370f3.170a0220.24e4c.eaa9@mx.google.com>
-Date:   Mon, 03 Jul 2023 18:08:03 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.10.186-12-ga5e7c39a80ad
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-5.10.y
-Subject: stable-rc/linux-5.10.y baseline: 114 runs,
- 4 regressions (v5.10.186-12-ga5e7c39a80ad)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        with ESMTP id S229622AbjGDBIX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 3 Jul 2023 21:08:23 -0400
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6DC184
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 18:08:22 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.west.internal (Postfix) with ESMTP id 075333200A88
+        for <stable@vger.kernel.org>; Mon,  3 Jul 2023 21:08:18 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Mon, 03 Jul 2023 21:08:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1688432898; x=1688519298; bh=4i99dNquXLGCn9208vrpXsrFZfW28/4HSbP
+        31k5WNdw=; b=LFYskeQSgeIXEL6hEMqF6jFRaJsN7kHySjHgZFFk7CSykN4Sgov
+        6IQV6KUMaiDNUmamI7OP5f6WFwqGRmeMA7yUTWNymv+jE2s4366wku+WzTnTZyxv
+        5uHZV68EyXkNvctOmPC73O6zDeBiYkwFFYa3fwCprXB0joVtz1NsSzC+J7WMX9BX
+        f6dN5fB3dyf3eDn2Ezc6/PX0W6nwzKUq35X96uyvRgAAtIW+CpEStuoh7H0FmM46
+        8u3cBKUWqf2Kvs8qdWdo0dJO/T6aPJURRLtX6GxeCbYpMMP7fOotL9I3iRH4/BBi
+        P2T5DzCFoUlHqWpTscOPqOWvybKzb272/6w==
+X-ME-Sender: <xms:AnGjZDWKtPFEp50h_48TH1KMevCNuvfc8WlrV0ct4BFg8L4203WJqA>
+    <xme:AnGjZLmS3MTrpqekFMMCPDB-s_CxwRfCaVa-qtZincIDTs_9H9WBmdloSYpHqDbJF
+    a6JKgNFhocMumWLgqQ>
+X-ME-Received: <xmr:AnGjZPYGqaW6UMBwvslkn5FzgN4WU4gOLA37X0oL-Kf-y31l3HWxheHGuoGQktuS3fx7Z_YY1jtCz2IGgAmmScvkWU8vlV7Jstc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudefgdegfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecunecujfgurhepfffkjghfhffuvfestddtredttddttd
+    enucfhrhhomhephfhinhhnucfvhhgrihhnuceofhhthhgrihhnsehlihhnuhigqdhmieek
+    khdrohhrgheqnecuggftrfgrthhtvghrnheptdekveffiedugffftdettddtuefgffeuff
+    ffheehteektdfhfeduudeljedtjeeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrg
+    hinheslhhinhhugidqmheikehkrdhorhhg
+X-ME-Proxy: <xmx:AnGjZOVm5GhYxFq4fv7u2rWhsNZ7XNvdDIRpKsek4q0xVcrGWOyKiQ>
+    <xmx:AnGjZNlREYtvmDVUVJ9iwgE2mfqbEVUVzQ5bL2kXxV2t31fAimbphg>
+    <xmx:AnGjZLdr2-jcgxX6vXCrbBRTm-LJz24C7LxkloUcNQ8prOwEEiSQtg>
+    <xmx:AnGjZJwmFru85tnv-9-t8GGi53tXW0b_SlnnMHoxk-DrhCb_wR3ZHg>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA for
+ <stable@vger.kernel.org>; Mon, 3 Jul 2023 21:08:15 -0400 (EDT)
+Date:   Tue, 04 Jul 2023 11:09:21 +1000
+Message-ID: <9bb320e617f10d0b99fed211fbaf5543.fthain@linux-m68k.org>
+In-Reply-To: <2023070300-copious-unhidden-592f@gregkh>
+References: <2023070300-copious-unhidden-592f@gregkh>
+From:   Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH 5.10.y] nubus: Partially revert proc_create_single_data()
+ conversion
+To:     <stable@vger.kernel.org>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -72,242 +68,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y baseline: 114 runs, 4 regressions (v5.10.186-12-ga5e=
-7c39a80ad)
+The conversion to proc_create_single_data() introduced a regression
+whereby reading a file in /proc/bus/nubus results in a seg fault:
+
+    # grep -r . /proc/bus/nubus/e/
+    Data read fault at 0x00000020 in Super Data (pc=0x1074c2)
+    BAD KERNEL BUSERR
+    Oops: 00000000
+    Modules linked in:
+    PC: [<001074c2>] PDE_DATA+0xc/0x16
+    SR: 2010  SP: 38284958  a2: 01152370
+    d0: 00000001    d1: 01013000    d2: 01002790    d3: 00000000
+    d4: 00000001    d5: 0008ce2e    a0: 00000000    a1: 00222a40
+    Process grep (pid: 45, task=142f8727)
+    Frame format=B ssw=074d isc=2008 isb=4e5e daddr=00000020 dobuf=01199e70
+    baddr=001074c8 dibuf=ffffffff ver=f
+    Stack from 01199e48:
+	    01199e70 00222a58 01002790 00000000 011a3000 01199eb0 015000c0 00000000
+	    00000000 01199ec0 01199ec0 000d551a 011a3000 00000001 00000000 00018000
+	    d003f000 00000003 00000001 0002800d 01052840 01199fa8 c01f8000 00000000
+	    00000029 0b532b80 00000000 00000000 00000029 0b532b80 01199ee4 00103640
+	    011198c0 d003f000 00018000 01199fa8 00000000 011198c0 00000000 01199f4c
+	    000b3344 011198c0 d003f000 00018000 01199fa8 00000000 00018000 011198c0
+    Call Trace: [<00222a58>] nubus_proc_rsrc_show+0x18/0xa0
+     [<000d551a>] seq_read+0xc4/0x510
+     [<00018000>] fp_fcos+0x2/0x82
+     [<0002800d>] __sys_setreuid+0x115/0x1c6
+     [<00103640>] proc_reg_read+0x5c/0xb0
+     [<00018000>] fp_fcos+0x2/0x82
+     [<000b3344>] __vfs_read+0x2c/0x13c
+     [<00018000>] fp_fcos+0x2/0x82
+     [<00018000>] fp_fcos+0x2/0x82
+     [<000b8aa2>] sys_statx+0x60/0x7e
+     [<000b34b6>] vfs_read+0x62/0x12a
+     [<00018000>] fp_fcos+0x2/0x82
+     [<00018000>] fp_fcos+0x2/0x82
+     [<000b39c2>] ksys_read+0x48/0xbe
+     [<00018000>] fp_fcos+0x2/0x82
+     [<000b3a4e>] sys_read+0x16/0x1a
+     [<00018000>] fp_fcos+0x2/0x82
+     [<00002b84>] syscall+0x8/0xc
+     [<00018000>] fp_fcos+0x2/0x82
+     [<0000c016>] not_ext+0xa/0x18
+    Code: 4e5e 4e75 4e56 0000 206e 0008 2068 ffe8 <2068> 0020 2008 4e5e 4e75 4e56 0000 2f0b 206e 0008 2068 0004 2668 0020 206b ffe8
+    Disabling lock debugging due to kernel taint
+
+    Segmentation fault
+
+The proc_create_single_data() conversion does not work because
+single_open(file, nubus_proc_rsrc_show, PDE_DATA(inode)) is not
+equivalent to the original code.
+
+Fixes: 3f3942aca6da ("proc: introduce proc_create_single{,_data}")
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org # 5.6+
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/d4e2a586e793cc8d9442595684ab8a077c0fe726.1678783919.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+(cherry picked from commit 0e96647cff9224db564a1cee6efccb13dbe11ee2)
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+---
+ drivers/nubus/proc.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/nubus/proc.c b/drivers/nubus/proc.c
+index 88e1f9a0faaf..78cf0e7b53d5 100644
+--- a/drivers/nubus/proc.c
++++ b/drivers/nubus/proc.c
+@@ -137,6 +137,18 @@ static int nubus_proc_rsrc_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
++static int nubus_rsrc_proc_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, nubus_proc_rsrc_show, inode);
++}
++
++static const struct proc_ops nubus_rsrc_proc_ops = {
++	.proc_open	= nubus_rsrc_proc_open,
++	.proc_read	= seq_read,
++	.proc_lseek	= seq_lseek,
++	.proc_release	= single_release,
++};
++
+ void nubus_proc_add_rsrc_mem(struct proc_dir_entry *procdir,
+ 			     const struct nubus_dirent *ent,
+ 			     unsigned int size)
+@@ -152,8 +164,8 @@ void nubus_proc_add_rsrc_mem(struct proc_dir_entry *procdir,
+ 		pde_data = nubus_proc_alloc_pde_data(nubus_dirptr(ent), size);
+ 	else
+ 		pde_data = NULL;
+-	proc_create_single_data(name, S_IFREG | 0444, procdir,
+-			nubus_proc_rsrc_show, pde_data);
++	proc_create_data(name, S_IFREG | 0444, procdir,
++			 &nubus_rsrc_proc_ops, pde_data);
+ }
+ 
+ void nubus_proc_add_rsrc(struct proc_dir_entry *procdir,
+@@ -166,9 +178,9 @@ void nubus_proc_add_rsrc(struct proc_dir_entry *procdir,
+ 		return;
+ 
+ 	snprintf(name, sizeof(name), "%x", ent->type);
+-	proc_create_single_data(name, S_IFREG | 0444, procdir,
+-			nubus_proc_rsrc_show,
+-			nubus_proc_alloc_pde_data(data, 0));
++	proc_create_data(name, S_IFREG | 0444, procdir,
++			 &nubus_rsrc_proc_ops,
++			 nubus_proc_alloc_pde_data(data, 0));
+ }
+ 
+ /*
+-- 
+2.39.3
 
-Regressions Summary
--------------------
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-cubietruck                   | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-r8a7743-iwg20d-q7            | arm    | lab-cip       | gcc-10   | shmobile=
-_defconfig           | 1          =
-
-stm32mp157c-dk2              | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
-nel/v5.10.186-12-ga5e7c39a80ad/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-5.10.y
-  Describe: v5.10.186-12-ga5e7c39a80ad
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      a5e7c39a80ad721c67b797ff18634bcaea0bf5e7 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-cubietruck                   | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64a33cb6fd449919e5bb2ac1
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-86-12-ga5e7c39a80ad/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cub=
-ietruck.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-86-12-ga5e7c39a80ad/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cub=
-ietruck.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64a33cb6fd449919e5bb2ac6
-        failing since 166 days (last pass: v5.10.158-107-gd2432186ff47, fir=
-st fail: v5.10.162-852-geeaac3cf2eb3)
-
-    2023-07-03T21:24:45.843608  + set +x<8>[   11.124479] <LAVA_SIGNAL_ENDR=
-UN 0_dmesg 3708671_1.5.2.4.1>
-    2023-07-03T21:24:45.844001  =
-
-    2023-07-03T21:24:45.951741  / # #
-    2023-07-03T21:24:46.055164  export SHELL=3D/bin/sh
-    2023-07-03T21:24:46.056318  #
-    2023-07-03T21:24:46.056937  / # <3>[   11.292577] Bluetooth: hci0: comm=
-and 0xfc18 tx timeout
-    2023-07-03T21:24:46.159088  export SHELL=3D/bin/sh. /lava-3708671/envir=
-onment
-    2023-07-03T21:24:46.160248  =
-
-    2023-07-03T21:24:46.262471  / # . /lava-3708671/environment/lava-370867=
-1/bin/lava-test-runner /lava-3708671/1
-    2023-07-03T21:24:46.263033   =
-
-    ... (13 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64a338b7fd2b922066bb2aaf
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-86-12-ga5e7c39a80ad/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
-bora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-86-12-ga5e7c39a80ad/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
-bora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64a338b7fd2b922066bb2ab4
-        failing since 97 days (last pass: v5.10.176, first fail: v5.10.176-=
-105-g18265b240021)
-
-    2023-07-03T21:07:48.936277  + set +x
-
-    2023-07-03T21:07:48.942862  <8>[   10.394085] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 10998434_1.4.2.3.1>
-
-    2023-07-03T21:07:49.047439  / # #
-
-    2023-07-03T21:07:49.148028  export SHELL=3D/bin/sh
-
-    2023-07-03T21:07:49.148194  #
-
-    2023-07-03T21:07:49.248765  / # export SHELL=3D/bin/sh. /lava-10998434/=
-environment
-
-    2023-07-03T21:07:49.248953  =
-
-
-    2023-07-03T21:07:49.349527  / # . /lava-10998434/environment/lava-10998=
-434/bin/lava-test-runner /lava-10998434/1
-
-    2023-07-03T21:07:49.349794  =
-
-
-    2023-07-03T21:07:49.354593  / # /lava-10998434/bin/lava-test-runner /la=
-va-10998434/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-r8a7743-iwg20d-q7            | arm    | lab-cip       | gcc-10   | shmobile=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64a33a63c7f78d2a35bb2ab9
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: shmobile_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-86-12-ga5e7c39a80ad/arm/shmobile_defconfig/gcc-10/lab-cip/baseline-r8a7743-=
-iwg20d-q7.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-86-12-ga5e7c39a80ad/arm/shmobile_defconfig/gcc-10/lab-cip/baseline-r8a7743-=
-iwg20d-q7.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/64a33a63c7f78d2a35bb2=
-aba
-        new failure (last pass: v5.10.186) =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-stm32mp157c-dk2              | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64a33d320ff7c93280bb2ac9
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-86-12-ga5e7c39a80ad/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-stm=
-32mp157c-dk2.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-86-12-ga5e7c39a80ad/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-stm=
-32mp157c-dk2.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64a33d320ff7c93280bb2ace
-        failing since 150 days (last pass: v5.10.147, first fail: v5.10.166=
--10-g6278b8c9832e)
-
-    2023-07-03T21:26:58.173624  <8>[  211.906046] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 3708673_1.5.2.4.1>
-    2023-07-03T21:26:58.279430  / # #
-    2023-07-03T21:26:58.381056  export SHELL=3D/bin/sh
-    2023-07-03T21:26:58.381451  #
-    2023-07-03T21:26:58.482667  / # export SHELL=3D/bin/sh. /lava-3708673/e=
-nvironment
-    2023-07-03T21:26:58.483073  =
-
-    2023-07-03T21:26:58.584330  / # . /lava-3708673/environment/lava-370867=
-3/bin/lava-test-runner /lava-3708673/1
-    2023-07-03T21:26:58.585008  =
-
-    2023-07-03T21:26:58.588651  / # /lava-3708673/bin/lava-test-runner /lav=
-a-3708673/1
-    2023-07-03T21:26:58.654569  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =20
