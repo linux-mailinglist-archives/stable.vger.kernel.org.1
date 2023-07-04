@@ -2,107 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 057DE7478D6
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 21:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 927F17478E5
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 22:07:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231689AbjGDTvO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 15:51:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43576 "EHLO
+        id S231358AbjGDUHD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 16:07:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231286AbjGDTvO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 15:51:14 -0400
-Received: from smtp.smtpout.orange.fr (smtp-14.smtpout.orange.fr [80.12.242.14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F2510CF
-        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 12:51:11 -0700 (PDT)
-Received: from pop-os.home ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id Gm3HqhIN61lRhGm3Hq4oNQ; Tue, 04 Jul 2023 21:51:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1688500269;
-        bh=E5rO26Dz3CWK8l+Od+4vE1x2c+orHF72b1zdbUbPDV4=;
-        h=From:To:Cc:Subject:Date;
-        b=Vtze80gT9MTMD9rA3V9bGewsYl3ApaMoHm2coqNXA2EIJYAbnuj/jrjX6wzceUUrY
-         8ZXcbDtR0rZkV0KZlPL31Rx4tDuX45eSyEH5/HUlapU4xhaQy9oepa92Ex3GuxPGN6
-         M6jCQg3gSdxCCXFgmvhKHrHsRZvt7J9ZYdfdkciXcU/7sKSlghv1zHtfgqBlk2c0Y1
-         Qw3dA9LeA2lUnpSa7YAnKJyUMCNPG5CpOLHz2QwvPLlUAR4tuxtOm55LHjh+/T6d3y
-         ryL1iciITpEf9iTlxjnbvWptvB6wcjt+eM23rzaeVNMSKojQ/6nAWQnetfDJfAkr1W
-         SxHEUFahQVGcA==
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 04 Jul 2023 21:51:09 +0200
-X-ME-IP: 86.243.2.178
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     dan.carpenter@linaro.org, Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Alessandro Rubini <rubini@gnudd.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Giancarlo Asnaghi <giancarlo.asnaghi@st.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-i2c@vger.kernel.org
-Subject: [PATCH v3] i2c: busses: i2c-nomadik: Remove a useless call in the remove function
-Date:   Tue,  4 Jul 2023 21:50:28 +0200
-Message-Id: <62ae6810d41e04a9eb5adfa18a9e40904bc72256.1688160163.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229838AbjGDUHD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 16:07:03 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF5C189
+        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 13:07:02 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-570553a18deso62848587b3.2
+        for <stable@vger.kernel.org>; Tue, 04 Jul 2023 13:07:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1688501221; x=1691093221;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r8il2W3A+Y7dZW8xauwfpOUi9D6SLUIEJNmGFcA4NVg=;
+        b=6VCAkwu8Vj/qi03mCMziSMUtK2HemZuvC0I/OyVXR3EqfP3G6zpDUX/yE5A84wYXHs
+         Vprk+pCbwwr5BJIsl2f7iCstULYXel5PXQjVyFU8x4ocxvsmJu/Ijw9ucU9zSExQSPVJ
+         GjfBPz+I4GWvxMeyFmWCK+hZnrn51I2seHLCHVjcRPGORoPK3UC0L3RotkOC9Mpu7r22
+         63WqExhTkViW4O6Pxql2AJSPXAmeeLluTcOHO6Kga2OWz7K11pb+2XVjOc/Ovw26usyn
+         NFE/enwZP1tGesPvIGeRCKvuC/KSspHC43PLVf8huMbGaGy2Y2IHO2VvZnoKNaEc8d3t
+         OWjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688501221; x=1691093221;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r8il2W3A+Y7dZW8xauwfpOUi9D6SLUIEJNmGFcA4NVg=;
+        b=b38JOUDDwoSJeFPsufTix83DsXvT6Qx2jb2XMcvOQDb98CeJbJitSxopiCx6PQ0XZS
+         EDN9xoFm+9F1VwHdAnU5Co2Pj86VM4j5xxlAgt7s5K407VoX1elkEnPlld0YneJOX0Et
+         n0KLZr3MwpRDJfbLCiqTtb5t42txEev43lGuW2ihdYXDj3pbYff6yNA8AwyyoKbvDwUJ
+         958CjZuuJvodn5QXs108fVgFZFPdRFyIXEexnglB63eeQ4KnkSR3R2U/CkgahkLInlqV
+         yjiX4AjbJp5k4OeB1uzBgHApRMn3TaJCD4lTEE0Jeo65lvnPETlCZyXnKSCJkFN2JZoq
+         7tiA==
+X-Gm-Message-State: ABy/qLbsudlZrn4bgaNuTdjIAKEOC2S69A8w3X5112AsefkAeFbpRpiC
+        Vsv/AHAFAYSkvic/HU8u5WsVb9+Xb0M=
+X-Google-Smtp-Source: APBJJlEeX9skwLcSa6ScHb3JM5//3ONAkxhpQ7w9Tg9rQrPR9RX9XqSOF0TFni9TD5TubYd6ol0QzlgFmOw=
+X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:9164:ef9f:8918:e2b6])
+ (user=surenb job=sendgmr) by 2002:a81:4109:0:b0:56f:f77c:3c7d with SMTP id
+ o9-20020a814109000000b0056ff77c3c7dmr103135ywa.3.1688501221474; Tue, 04 Jul
+ 2023 13:07:01 -0700 (PDT)
+Date:   Tue,  4 Jul 2023 13:06:56 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+Message-ID: <20230704200656.2526715-1-surenb@google.com>
+Subject: [PATCH 1/1] fork: lock VMAs of the parent process when forking
+From:   Suren Baghdasaryan <surenb@google.com>
+To:     akpm@linux-foundation.org
+Cc:     jirislaby@kernel.org, jacobly.alt@gmail.com,
+        holger@applied-asynchrony.com, hdegoede@redhat.com,
+        michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
+        vbabka@suse.cz, hannes@cmpxchg.org, mgorman@techsingularity.net,
+        dave@stgolabs.net, willy@infradead.org, liam.howlett@oracle.com,
+        peterz@infradead.org, ldufour@linux.ibm.com, paulmck@kernel.org,
+        mingo@redhat.com, will@kernel.org, luto@kernel.org,
+        songliubraving@fb.com, peterx@redhat.com, david@redhat.com,
+        dhowells@redhat.com, hughd@google.com, bigeasy@linutronix.de,
+        kent.overstreet@linux.dev, punit.agrawal@bytedance.com,
+        lstoakes@gmail.com, peterjung1337@gmail.com, rientjes@google.com,
+        chriscli@google.com, axelrasmussen@google.com, joelaf@google.com,
+        minchan@google.com, rppt@kernel.org, jannh@google.com,
+        shakeelb@google.com, tatashin@google.com, edumazet@google.com,
+        gthelen@google.com, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Suren Baghdasaryan <surenb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
-driver"), there is no more request_mem_region() call in this driver.
+When forking a child process, parent write-protects an anonymous page
+and COW-shares it with the child being forked using copy_present_pte().
+Parent's TLB is flushed right before we drop the parent's mmap_lock in
+dup_mmap(). If we get a write-fault before that TLB flush in the parent,
+and we end up replacing that anonymous page in the parent process in
+do_wp_page() (because, COW-shared with the child), this might lead to
+some stale writable TLB entries targeting the wrong (old) page.
+Similar issue happened in the past with userfaultfd (see flush_tlb_page()
+call inside do_wp_page()).
+Lock VMAs of the parent process when forking a child, which prevents
+concurrent page faults during fork operation and avoids this issue.
+This fix can potentially regress some fork-heavy workloads. Kernel build
+time did not show noticeable regression on a 56-core machine while a
+stress test mapping 10000 VMAs and forking 5000 times in a tight loop
+shows ~5% regression. If such fork time regression is unacceptable,
+disabling CONFIG_PER_VMA_LOCK should restore its performance. Further
+optimizations are possible if this regression proves to be problematic.
 
-So remove the release_mem_region() call from the remove function which is
-likely a left over.
-
-Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
-Cc: <stable@vger.kernel.org> # v3.6+
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org> 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@ke=
+rnel.org/
+Reported-by: Holger Hoffst=C3=A4tte <holger@applied-asynchrony.com>
+Closes: https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34c@ap=
+plied-asynchrony.com/
+Reported-by: Jacob Young <jacobly.alt@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling first"=
+)
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
-v3: - update commit description
-    - add R-b and A-b
-    - fix Fixes tag   [Dan Carpenter]
-    - add cc stable   [Andi Shyti]
+ kernel/fork.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-v2: - synch with latest -next
-    - https://lore.kernel.org/all/62ae6810d41e0429ebaadfac8a95409f4bc72456.1688160163.git.christophe.jaillet@wanadoo.fr/
-
-v1: - https://lore.kernel.org/all/4f4c2c5c20b61c4bb28cb3e9ab4640534dd2adec.1629530169.git.christophe.jaillet@wanadoo.fr/
----
- drivers/i2c/busses/i2c-nomadik.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
-index 1e5fd23ef45c..212f412f1c74 100644
---- a/drivers/i2c/busses/i2c-nomadik.c
-+++ b/drivers/i2c/busses/i2c-nomadik.c
-@@ -1038,7 +1038,6 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
- 
- static void nmk_i2c_remove(struct amba_device *adev)
- {
--	struct resource *res = &adev->res;
- 	struct nmk_i2c_dev *dev = amba_get_drvdata(adev);
- 
- 	i2c_del_adapter(&dev->adap);
-@@ -1047,7 +1046,6 @@ static void nmk_i2c_remove(struct amba_device *adev)
- 	clear_all_interrupts(dev);
- 	/* disable the controller */
- 	i2c_clr_bit(dev->virtbase + I2C_CR, I2C_CR_PE);
--	release_mem_region(res->start, resource_size(res));
- }
- 
- static struct i2c_vendor_data vendor_stn8815 = {
--- 
-2.34.1
+diff --git a/kernel/fork.c b/kernel/fork.c
+index b85814e614a5..d2e12b6d2b18 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -686,6 +686,7 @@ static __latent_entropy int dup_mmap(struct mm_struct *=
+mm,
+ 	for_each_vma(old_vmi, mpnt) {
+ 		struct file *file;
+=20
++		vma_start_write(mpnt);
+ 		if (mpnt->vm_flags & VM_DONTCOPY) {
+ 			vm_stat_account(mm, mpnt->vm_flags, -vma_pages(mpnt));
+ 			continue;
+--=20
+2.41.0.255.g8b1d071c50-goog
 
