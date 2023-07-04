@@ -2,121 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2BD37477EA
-	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 19:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C1E8747838
+	for <lists+stable@lfdr.de>; Tue,  4 Jul 2023 20:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231294AbjGDRfP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 4 Jul 2023 13:35:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43828 "EHLO
+        id S229865AbjGDSPV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 4 Jul 2023 14:15:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231290AbjGDRfO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 13:35:14 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663DC170D
-        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 10:34:56 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3fbc0609cd6so58439995e9.1
-        for <stable@vger.kernel.org>; Tue, 04 Jul 2023 10:34:56 -0700 (PDT)
+        with ESMTP id S230246AbjGDSPU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 4 Jul 2023 14:15:20 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B83E10CA;
+        Tue,  4 Jul 2023 11:15:19 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-666e64e97e2so3003610b3a.1;
+        Tue, 04 Jul 2023 11:15:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688492094; x=1691084094;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3qJ64lF89VpbBy1ulIr9SZuXHSuhm2fS1ISkB9mGrhk=;
-        b=UaNfZIHtqk8sEbad/eQ98L/1Xhl2t0Rk2Cg/sDrY56rhiua4m2qDFulF1/qLVjRl+S
-         cKvYQ7uLAy5lu4t51ZX4buDN3G7HRRoHRzYeYqY3SMkVnx6TD1+UVZnRhrmxhQ61Q493
-         +Or8Aijqk1dkK7CSdnUQ1vOR7Wh3zf4K7rSv9EmlxbtiBCk4J2FIJxt4rBWo9Zo96Exn
-         yM5TdQuJNG3DazERTfy13G3Tk7f6vcCKSD7SqSonGaPU7vrvAWP7act/UC/JQXTLdKwA
-         os9+ZDwZWt6eHP78vqaKcB7cqPXG0zTGfRuw1v6yl6U81iH3tcsxFcy8dg0dKeW4zs9a
-         FYeg==
+        d=gmail.com; s=20221208; t=1688494519; x=1691086519;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=DSqYHV9aOqFyal3Tm/y/6ISIc1yWfppvT5nKEoCz+0I=;
+        b=RIzLb7TawJkCpEJQbDIU8BXy4bWw/yGDH/7J/GYhKwiu9J7lCjupK3kiSYf4wa8mmr
+         k1S4t1dw0herZTL6y2GQ0gHWwTa8UC0WK5FToGuAK2YcMP/3ohfSTzVenkWFlbGJ86hN
+         MKsfx2j1EKkHnx8lt3ol6fJ4GG3adw7TNXGUbfYku6mADtMx1CjWo2Jf6HMkw7780dk6
+         tqd8+kUlaYOO7cioX/WxIOMd3wozhQMwShwujlMVOHJBOEkjc2u9ZAcV2sKFEsokDqjt
+         Hd4ZSzaRKwOs2QZssxM25FsgBPLKcd0MbNnPY/eZDdut9cOkY7z2DTm6X4CSFdJJkqbX
+         PztA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688492094; x=1691084094;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20221208; t=1688494519; x=1691086519;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3qJ64lF89VpbBy1ulIr9SZuXHSuhm2fS1ISkB9mGrhk=;
-        b=Ln3R363xSibP/BJJXAv2GFfy4UFB9L8JZakCcBKLl1dvBM34PgsLAcoUUG8sLGRrte
-         YmDXnqhCA3L/cBRT5KLZ2BT93nAid0kCv1Q38dI8JsrPRCGSa+tXESmjuEZr3wvweguB
-         qsF+tsCND13Vd2YyLRTO1eUVUry/Yie5MRonV+W2BqXbz485UxJuvyaJdFhqdspgG0c1
-         Z40HYzLsM0KOLwCJ2KKm6x6lkWy7qMm/l/6VfPCFH0cWeuJTwRoHWwn5QCbVnv3Z3Hwa
-         jvb0aqyKfNZZBdOsUBOfw66dY0b5+G0KIqOs8A3lHiB1Zf+I3BpetnPajpFoRCiZGOX9
-         bD+w==
-X-Gm-Message-State: AC+VfDyJFpqZHPW+lzRSmfYjcE26LWFaOH0cckcZPae5QKZcG2d/rjnw
-        w6KJGGshLn1tXPJQmCKNjuGJPA==
-X-Google-Smtp-Source: ACHHUZ5jn9n9ZjzIR1LoKOiyjbakRHjBusBJI/fMlOmuJoqSwT0055ZXuMXIRChWey7suI30Cuw7cA==
-X-Received: by 2002:a1c:4c10:0:b0:3fa:991c:2af9 with SMTP id z16-20020a1c4c10000000b003fa991c2af9mr10773167wmf.16.1688492094251;
-        Tue, 04 Jul 2023 10:34:54 -0700 (PDT)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id u16-20020a7bcb10000000b003fbb5142c4bsm17163518wmj.18.2023.07.04.10.34.53
+        bh=DSqYHV9aOqFyal3Tm/y/6ISIc1yWfppvT5nKEoCz+0I=;
+        b=Fufrmo3wrhQ7QCfw46PI8G0g24Fmj65lEK5yXkhklXgS+ykJzx4glNWBTDU7o6+6cI
+         z6+2gkV3ZfzwMjTFtH5BmbNMiedB9Ity8UIHzon9/z9ECZ5w8dZSUg7rYLzvvYCa9h2Q
+         hbOqqKSgxmQuEB3yiWUpWHxevDbZirnyvHHDlbIG6qc64JJROMUgHNFPe7xGKWLFyb6o
+         HkEWENYZnpy/iCUQOXaGQ21JAki4O7DVXNOBZKSN8K0e6cOjtF/bEyJ0mIVvm9HroYBV
+         CpLS+ukY52M6bqayzWw+AO00uuidwAXtc3uVGZoDKoIbquwiiEogE02lklTB0UrF/sPY
+         GBMQ==
+X-Gm-Message-State: ABy/qLYRNrP4xUmZzWZI3OhBAeS5dlUJ08EdSzuMl2piOW18fJQUtW9k
+        2krupy/sGOsQvPN6kwp6OXQ=
+X-Google-Smtp-Source: APBJJlHRgeukUmL5ptqGK63dR+9Sh5I4TafvsUUhKrlZ5EWZgFXxkxEtpKdqugjc8mEXOwJkawzeuQ==
+X-Received: by 2002:a05:6a00:2da3:b0:66a:2771:6c4d with SMTP id fb35-20020a056a002da300b0066a27716c4dmr15771360pfb.4.1688494518570;
+        Tue, 04 Jul 2023 11:15:18 -0700 (PDT)
+Received: from bangji.hsd1.ca.comcast.net ([2601:647:6700:7f00:6b7:7112:19a1:fc15])
+        by smtp.gmail.com with ESMTPSA id u25-20020a62ed19000000b00682a839d0aesm1476717pfh.112.2023.07.04.11.15.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jul 2023 10:34:53 -0700 (PDT)
-Date:   Tue, 4 Jul 2023 18:34:51 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     guoren@kernel.org, arnd@arndb.de, palmer@rivosinc.com,
-        tglx@linutronix.de, luto@kernel.org, conor.dooley@microchip.com,
-        heiko@sntech.de, jszhang@kernel.org, lazyparser@gmail.com,
-        falcon@tinylab.org, chenhuacai@kernel.org, apatel@ventanamicro.com,
-        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
-        palmer@dabbelt.com, bjorn@rivosinc.com, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-        stable@vger.kernel.org, Guo Ren <guoren@linux.alibaba.com>
-Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
-Message-ID: <20230704173451.GD385243@aspen.lan>
-References: <20230702025708.784106-1-guoren@kernel.org>
- <20230704164003.GB83892@hirez.programming.kicks-ass.net>
+        Tue, 04 Jul 2023 11:15:18 -0700 (PDT)
+Sender: Namhyung Kim <namhyung@gmail.com>
+From:   Namhyung Kim <namhyung@kernel.org>
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Stephane Eranian <eranian@google.com>,
+        Greg Thelen <gthelen@google.com>, stable@vger.kernel.org
+Subject: [PATCH] perf/x86: Fix lockdep warning in for_each_sibling_event() on SPR
+Date:   Tue,  4 Jul 2023 11:15:15 -0700
+Message-ID: <20230704181516.3293665-1-namhyung@kernel.org>
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230704164003.GB83892@hirez.programming.kicks-ass.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 04, 2023 at 06:40:03PM +0200, Peter Zijlstra wrote:
-> On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
-> > From: Guo Ren <guoren@linux.alibaba.com>
-> >
-> > The irqentry_nmi_enter/exit would force the current context into in_interrupt.
-> > That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
-> > debug the kernel.
-> >
-> > Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
-> > of the kernel side.
->
-> This doesn't explain much if anything :/
->
-> I'm confused (probably because I don't know RISC-V very well), what's
-> EBREAK and how does it happen?
+On SPR, the load latency event needs an auxiliary event in the same
+group to work properly.  There's a check in intel_pmu_hw_config()
+for this to iterate sibling events and find a mem-loads-aux event.
 
-Among other things ebreak is part of the BUG() macro (although it is
-also used to programmatically enter kgdb).
+The for_each_sibling_event() has a lockdep assert to make sure if it
+disabled hardirq or hold leader->ctx->mutex.  This works well if the
+given event has a separate leader event since perf_try_init_event()
+grabs the leader->ctx->mutex to protect the sibling list.  But it can
+cause a problem when the event itself is a leader since the event is
+not initialized yet and there's no ctx for the event.
 
+Actually I got a lockdep warning when I run the below command on SPR,
+but I guess it could be a NULL pointer dereference.
 
-> Specifically, if EBREAK can happen inside an local_irq_disable() region,
-> then the below change is actively wrong. Any exception/interrupt that
-> can happen while local_irq_disable() must be treated like an NMI.
->
-> If that makes kdb unhappy, fix kdb.
+  $ perf record -d -e cpu/mem-loads/uP true
 
-The only relationship this problem has to kgdb/kdb is that is was found
-using the kgdb test suite. However the panic is absolutely nothing to
-do with kgdb.
+The code path to the warning is:
 
-I would never normally be so sure regarding the absence of bugs in kgdb
-but in this case it can be reproduced when kgdb is not enabled in the
-KConfig which I think puts it in the clear!
+  sys_perf_event_open()
+    perf_event_alloc()
+      perf_init_event()
+        perf_try_init_event()
+          x86_pmu_event_init()
+            hsw_hw_config()
+              intel_pmu_hw_config()
+                for_each_sibling_event()
+                  lockdep_assert_event_ctx()
 
-Reproduction is simply:
+We don't need for_each_sibling_event() when it's a standalone event.
+Let's return the error code directly.
 
-  /bin/echo BUG > /sys/kernel/debug/provoke-crash/DIRECT
+Fixes: f3c0eba28704 ("perf: Add a few assertions")
+Reported-by: Greg Thelen <gthelen@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+---
+ arch/x86/events/intel/core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Above will panic the kernel but, absent options specifically requesting
-a panic, this should kill the echo process rather than killing the kernel.
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 0d09245aa8df..933fe4894c32 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3983,6 +3983,14 @@ static int intel_pmu_hw_config(struct perf_event *event)
+ 		struct perf_event *leader = event->group_leader;
+ 		struct perf_event *sibling = NULL;
+ 
++		/*
++		 * The event is not fully initialized yet and no ctx is set
++		 * for the event.  Avoid for_each_sibling_event() since it
++		 * has a lockdep assert with leader->ctx->mutex.
++		 */
++		if (leader == event)
++			return -ENODATA;
++
+ 		if (!is_mem_loads_aux_event(leader)) {
+ 			for_each_sibling_event(sibling, leader) {
+ 				if (is_mem_loads_aux_event(sibling))
+-- 
+2.41.0.255.g8b1d071c50-goog
 
-
-Daniel.
