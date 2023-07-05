@@ -2,46 +2,30 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A8187486CF
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 16:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35D17748739
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 17:01:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232214AbjGEOtj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 10:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54774 "EHLO
+        id S233086AbjGEPBR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 11:01:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232700AbjGEOth (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 10:49:37 -0400
-Received: from mail.antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CC221700;
-        Wed,  5 Jul 2023 07:49:36 -0700 (PDT)
-Date:   Wed, 5 Jul 2023 16:49:34 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
-        s=202107; t=1688568575;
-        bh=GIWV2HIUTLtn3vB0UoTBBDtrxwltDf/z19Fbs+ugRo0=;
-        h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-         Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
-         From:from:in-reply-to:in-reply-to:message-id:mime-version:
-         references:reply-to:Sender:Subject:Subject:To:To;
-        b=Wp/fEoooNnAioqfFI8PpkvEboGJAXlQcjsoOccqYGNAK+aJlXkMld3JZlg1aa+056
-         bc2BgT7WdRlbf42iFMs8drt2pL58q3wzg5lwfG/enmQfyc+Bv+vuTL6e3e9TT8YJqh
-         wNf6BlSIaf13Zp8yV16HzhxO2I5VZPyCesnDu7FASzXM5Qzs6CLBz9ZgO/kdPNJWO2
-         55GKApBBCAhMRCnTx5ZMDkEJKAg4HT3jDt7WMyBgXcSR4LyAzpqyy2Vofcvn5KxHd7
-         vkxxx6DOUD+Detx35nMq+3ez7d7B5qAbRsOhb4h6YoNa1spUKrLaegD2xY7oGCVrJM
-         LoSgHkFZ0Z+Rw==
-From:   Markus Reichelt <lkt+2023@mareichelt.com>
-To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.4 00/15] 6.4.2-rc2 review
-Message-ID: <20230705144934.GB18711@pc21.mareichelt.com>
-Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230704084611.900603362@linuxfoundation.org>
+        with ESMTP id S233027AbjGEPA7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 11:00:59 -0400
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 335E91BFE;
+        Wed,  5 Jul 2023 08:00:35 -0700 (PDT)
+From:   Pablo Neira Ayuso <pablo@netfilter.org>
+To:     netfilter-devel@vger.kernel.org
+Cc:     sashal@kernel.org, gregkh@linuxfoundation.org,
+        stable@vger.kernel.org
+Subject: [PATCH -stable,5.10,v2 00/11] stable fixes for 5.10
+Date:   Wed,  5 Jul 2023 17:00:00 +0200
+Message-Id: <20230705150011.59408-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230704084611.900603362@linuxfoundation.org>
-Organization: still stuck in reorganization mode
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,21 +33,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Hi Greg, Sasha,
 
-> This is the start of the stable review cycle for the 6.4.2 release.
-> There are 15 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 06 Jul 2023 08:46:01 +0000.
-> Anything received after that time might be too late.
+[ This is v2 appends patch #11 f838e0906dd3 as Florian suggested. ]
 
-Hi Greg
+The following list shows the backported patches, I am using original
+commit IDs for reference:
 
-6.4.2-rc2
+1) 0854db2aaef3 ("netfilter: nf_tables: use net_generic infra for transaction data")
 
-compiles, boots and runs here on x86_64
-(AMD Ryzen 5 PRO 4650G, Slackware64-15.0)
+2) 81ea01066741 ("netfilter: nf_tables: add rescheduling points during loop detection walks")
 
-Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
+3) 1240eb93f061 ("netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE")
+
+4) 4bedf9eee016 ("netfilter: nf_tables: fix chain binding transaction logic")
+
+5) 26b5a5712eb8 ("netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain")
+
+6) 938154b93be8 ("netfilter: nf_tables: reject unbound anonymous set before commit phase")
+
+7) 62e1e94b246e ("netfilter: nf_tables: reject unbound chain set before commit phase")
+
+8) f8bb7889af58 ("netfilter: nftables: rename set element data activation/deactivation functions")
+
+9) 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
+
+10) 3e70489721b6 ("netfilter: nf_tables: unbind non-anonymous set if rule construction fails")
+
+11) f838e0906dd3 ("netfilter: nf_tables: fix scheduling-while-atomic splat")
+
+Note:
+
+- Patch #1 is a backported dependency patch required by these fixes.
+- Patch #2 needs a follow up fix coming in this series as patch #11.
+
+Please, apply,
+Thanks.
+
+Florian Westphal (3):
+  netfilter: nf_tables: use net_generic infra for transaction data
+  netfilter: nf_tables: add rescheduling points during loop detection walks
+  netfilter: nf_tables: fix scheduling-while-atomic splat
+
+Pablo Neira Ayuso (8):
+  netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE
+  netfilter: nf_tables: fix chain binding transaction logic
+  netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain
+  netfilter: nf_tables: reject unbound anonymous set before commit phase
+  netfilter: nf_tables: reject unbound chain set before commit phase
+  netfilter: nftables: rename set element data activation/deactivation functions
+  netfilter: nf_tables: drop map element references from preparation phase
+  netfilter: nf_tables: unbind non-anonymous set if rule construction fails
+
+ include/net/netfilter/nf_tables.h |  41 +-
+ include/net/netns/nftables.h      |   7 -
+ net/netfilter/nf_tables_api.c     | 692 +++++++++++++++++++++---------
+ net/netfilter/nf_tables_offload.c |  30 +-
+ net/netfilter/nft_chain_filter.c  |  11 +-
+ net/netfilter/nft_dynset.c        |   6 +-
+ net/netfilter/nft_immediate.c     |  90 +++-
+ net/netfilter/nft_set_bitmap.c    |   5 +-
+ net/netfilter/nft_set_hash.c      |  23 +-
+ net/netfilter/nft_set_pipapo.c    |  14 +-
+ net/netfilter/nft_set_rbtree.c    |   5 +-
+ 11 files changed, 678 insertions(+), 246 deletions(-)
+
+-- 
+2.30.2
+
