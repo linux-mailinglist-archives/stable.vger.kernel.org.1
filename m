@@ -2,103 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B89748197
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 12:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B34767481D2
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 12:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231639AbjGEKA1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 06:00:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36432 "EHLO
+        id S231893AbjGEKQ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 06:16:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232105AbjGEKA0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 06:00:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D2021723;
-        Wed,  5 Jul 2023 03:00:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15155614EC;
-        Wed,  5 Jul 2023 10:00:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7181EC433CA;
-        Wed,  5 Jul 2023 10:00:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688551223;
-        bh=rfKwXHw/MObGrKQHHxQ3kXk+3dEtPedetkvV200qdBA=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=i7DLBNU9u74goYVpIpur4MOnr3DPPgafPqv3zyjUTrOLo7DxhosmRCu1pbSZ7PvSL
-         3Kdc6u+SuLg6v45+2FkhX37ZL0sRcMtxEuJWFVDrncyYySTIR07gr6wC67EaNlKaPp
-         voua6jvdKjCC7vLHuyP6p45Re2YdZQ4O53jfYTzham6f1Rh+4VbPMWs3Iw5RjBBPEh
-         nKmUBWhxKP9nCiUK/ksgfvIBWlN/+b6RMRa44F4cOhMsS7vJP8R7WoA/zg150hmlGN
-         70LtwZSQShBCSkwxtgHIS/a+54rAzVyfoB4OGO9DGIcpdWyqM2AMYi83blCE0P1OKL
-         OqLKfBnuiz05A==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 4E528C0C40E;
-        Wed,  5 Jul 2023 10:00:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S231965AbjGEKQR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 06:16:17 -0400
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45A7F10E2
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 03:16:14 -0700 (PDT)
+Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3a1ebb79579so4685521b6e.3
+        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 03:16:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=heitbaum.com; s=google; t=1688552173; x=1691144173;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AzhvK8EnyXoNyk7icoiRJkisO9UvyAqZpT57/R0erjo=;
+        b=K6OJeNqfhO6IRs9I3aXem2n2bgVrKW+SWowkSVr/eEtXZv1Pat+tjoIl5fWv/7b163
+         0iDdwfeh0D2nVCpemy3kx5z+2yFApRsAa6Tyz2x3eRXS5PT3KQF/9NF9F2GgHhI1VOsP
+         SzVy7aVttT+XtKNFS07U/Ry0ow3ZhjmAAVBFI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688552173; x=1691144173;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AzhvK8EnyXoNyk7icoiRJkisO9UvyAqZpT57/R0erjo=;
+        b=GOMA1b14d3SY7KEdEJyzPxiGx4RWd9PfOiE7utfEAfSfxPul4cgLeoJZnexc6SpUXF
+         bPd4awHPXZlyzzVpOEHxYc3IaN8jqzNvVBI6szEHdlFQv8AdV9zo7NyRMtiYwlO4kHrd
+         6Sd0JJxFGgUzoS8CGRaqDp8OT8AwTEkn/FxzgI8JQRUiHwsgqVYWuapYlHKca6nyCGKd
+         b6Jd5EGHL33afUk7rKM6d/d9Kt3SmXJJ9hUvyAt1n50FuHnoO+LsjOroz+/LuOo+KqxD
+         ztv/nuGdIvFcp4yGlgQ1k1OPphGREAYtEJt7TCzOjTnT47A04yQK9DBv6i/ssciNCGOU
+         maYA==
+X-Gm-Message-State: AC+VfDwiVtwszvlpl7OgAvIxwDiZxWckAHFqIqzjfW5tf0BjEsAnT0dG
+        GmjRXkagZSGb42hAhOopi92adw==
+X-Google-Smtp-Source: ACHHUZ6fT5xRwDL5gF8pDtJcEsLSySgE1A8aMrIHeqhzNAHOr6m2+0zLz2H0+Ssc8xYUk3QeE0j8vA==
+X-Received: by 2002:a54:4713:0:b0:3a3:6743:a9c with SMTP id k19-20020a544713000000b003a367430a9cmr15390485oik.6.1688552173480;
+        Wed, 05 Jul 2023 03:16:13 -0700 (PDT)
+Received: from 5f8976b95e14 ([122.199.31.3])
+        by smtp.gmail.com with ESMTPSA id 204-20020a6300d5000000b0053051d50a48sm17500765pga.79.2023.07.05.03.16.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jul 2023 03:16:12 -0700 (PDT)
+Date:   Wed, 5 Jul 2023 10:16:04 +0000
+From:   Rudi Heitbaum <rudi@heitbaum.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.4 00/15] 6.4.2-rc2 review
+Message-ID: <ZKVC5OwGFbCoqDdm@5f8976b95e14>
+References: <20230704084611.900603362@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/9] mptcp: fixes for v6.5
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168855122331.15504.15239551564077359539.git-patchwork-notify@kernel.org>
-Date:   Wed, 05 Jul 2023 10:00:23 +0000
-References: <20230704-upstream-net-20230704-misc-fixes-6-5-rc1-v1-0-d7e67c274ca5@tessares.net>
-In-Reply-To: <20230704-upstream-net-20230704-misc-fixes-6-5-rc1-v1-0-d7e67c274ca5@tessares.net>
-To:     Matthieu Baerts <matthieu.baerts@tessares.net>
-Cc:     mptcp@lists.linux.dev, martineau@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        shuah@kernel.org, fw@strlen.de, kishen.maloor@intel.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        cpaasch@apple.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230704084611.900603362@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Tue, 04 Jul 2023 22:44:32 +0200 you wrote:
-> Here is a first batch of fixes for v6.5 and older.
+On Tue, Jul 04, 2023 at 09:48:24AM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.2 release.
+> There are 15 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> The fixes are not linked to each others.
-> 
-> Patch 1 ensures subflows are unhashed before cleaning the backlog to
-> avoid races. This fixes another recent fix from v6.4.
-> 
-> [...]
+> Responses should be made by Thu, 06 Jul 2023 08:46:01 +0000.
+> Anything received after that time might be too late.
 
-Here is the summary with links:
-  - [net,1/9] mptcp: ensure subflow is unhashed before cleaning the backlog
-    https://git.kernel.org/netdev/net/c/3fffa15bfef4
-  - [net,2/9] mptcp: do not rely on implicit state check in mptcp_listen()
-    https://git.kernel.org/netdev/net/c/0226436acf24
-  - [net,3/9] selftests: mptcp: connect: fail if nft supposed to work
-    https://git.kernel.org/netdev/net/c/221e4550454a
-  - [net,4/9] selftests: mptcp: sockopt: use 'iptables-legacy' if available
-    https://git.kernel.org/netdev/net/c/a5a5990c099d
-  - [net,5/9] selftests: mptcp: sockopt: return error if wrong mark
-    https://git.kernel.org/netdev/net/c/9ac4c28eb70c
-  - [net,6/9] selftests: mptcp: userspace_pm: use correct server port
-    https://git.kernel.org/netdev/net/c/d8566d0e0392
-  - [net,7/9] selftests: mptcp: userspace_pm: report errors with 'remove' tests
-    https://git.kernel.org/netdev/net/c/966c6c3adfb1
-  - [net,8/9] selftests: mptcp: depend on SYN_COOKIES
-    https://git.kernel.org/netdev/net/c/6c8880fcaa5c
-  - [net,9/9] selftests: mptcp: pm_nl_ctl: fix 32-bit support
-    https://git.kernel.org/netdev/net/c/61d965805026
+Hi Greg,
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+6.4.2-rc2 tested.
 
+Run tested on:
+- Allwinner H6 (Tanix TX6)
+- Intel Alder Lake x86_64 (nuc12 i7-1260P)
 
+In addition - build tested for:
+- Allwinner A64
+- Allwinner H3
+- Allwinner H5
+- NXP iMX6
+- NXP iMX8
+- Qualcomm Dragonboard
+- Rockchip RK3288
+- Rockchip RK3328
+- Rockchip RK3399pro
+- Samsung Exynos
+
+Tested-by: Rudi Heitbaum <rudi@heitbaum.com>
+--
+Rudi
