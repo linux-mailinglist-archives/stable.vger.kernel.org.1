@@ -2,74 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4C1A7489F7
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 19:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87688748A0C
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 19:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232279AbjGERQM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 13:16:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41252 "EHLO
+        id S232416AbjGERWk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 13:22:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232348AbjGERQJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 13:16:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE22D198B;
-        Wed,  5 Jul 2023 10:16:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5EA8161630;
-        Wed,  5 Jul 2023 17:16:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766BFC433C7;
-        Wed,  5 Jul 2023 17:16:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688577364;
-        bh=zFXaNvkTxbLMuq+O/dUCtxLwWjcMbfSWbfYucdGMHE4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Ys2HSvNgJapJ12zfD9tK6RQ9QZY5Zq5scc749TtHRFSTgMt9zVkKUaIykz+NE3dMh
-         gWA6E875QcCNM+CXkJkOKmqYb3bhK3NcDArfXueFwGRn7kBInvtJ1eMxwNHX+Da1J1
-         MaUBRl4WVvSUkunw5c6rXkaTdhQ0SpE12TDRvXN0=
-Date:   Wed, 5 Jul 2023 18:16:02 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
-Cc:     Ranjan Kumar <ranjan.kumar@broadcom.com>,
-        linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
-        sreekanth.reddy@broadcom.com, stable@vger.kernel.org
-Subject: Re: [PATCH] mpt3sas: Perform additional retries if Doorbell read
- returns 0
-Message-ID: <2023070524-mocker-flatware-6e65@gregkh>
-References: <20230615083010.45837-1-ranjan.kumar@broadcom.com>
- <2023061538-dizzy-amiable-9ec7@gregkh>
- <CAFdVvOwjQZZnViCYbJqPC81ZJPsZdqjNuQE=dH4bHWD4Pyu7Ew@mail.gmail.com>
- <2023062207-plywood-vindicate-c271@gregkh>
- <CAFdVvOyMdoE8Nwg82uj0HRw=MuAsxgKprTjb0p9bxL6efNPSOw@mail.gmail.com>
- <2023062228-circus-deed-7c9e@gregkh>
- <CAFdVvOyeYYwiVGBhqCSxxgVB9NMjGhHnrBPgdGd+H_OOHdctFw@mail.gmail.com>
+        with ESMTP id S232268AbjGERWk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 13:22:40 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32276188
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 10:22:39 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-c2cf4e61bc6so8190859276.3
+        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 10:22:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1688577758; x=1691169758;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P6Tk2ql2z3k8hI6gx082bWriam5zLDXexsywXgjVlB4=;
+        b=Vwr0HKppn8I7Y48ogyG7iPT2wYGMyZgOMj2odgQD6TWHNk+4wNp0qzgiv4/AM1diks
+         Ctnd+ZWxUYwa8Fy7wrhYYZq15ti771Mtd5owNQnjOutUFhf92TzjYyCc7oi8xbJcJiuv
+         bAzvuvn66zIm+FCZ+7FU20Sdymyv0HtTX9gdnYqKpCnSe8IUw/0GK6AQQ+9gs3KW3xku
+         XRdo9cbI5ljud3WQ6ITvbubiQVIeSL7BmyJ0sWrfPr9/rgFIXTiiUb1U2OfaaegxgXxV
+         gnLyWSpPhIkKagpxNXBPQQobtrj3nqaZjDAQ/X8zPK0zqtWTxOvXZ+yqBbKHcGmbrV6u
+         SGig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688577758; x=1691169758;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P6Tk2ql2z3k8hI6gx082bWriam5zLDXexsywXgjVlB4=;
+        b=NyvVe9MIqMCnnZFGOA+EgU1K71tkIAT3FGqNEPCmXI4o1YOA7Kp3Imvo8s1zT3jidc
+         WpX+euaXXTMtmUQvBIse3y+7y8w+zvShVOcMGuq0H5wIiUsvGbF/8QdXY99L9iLxO+9/
+         6MfSv4gxuZLTufbeCw1oIVu8SxhRuYaagLSQnAm/PVwu+minpvRb2SfQFBS7k25n6VEf
+         o0V1wCHJbHkWKI1LUOo8RBDbE1icmjKPz7rbDpvxu7WLUhF3Zb3A4jT0fzR2vMSAs0rJ
+         4j73VB9uWbA3jcPqNLD56WIIqFCzDTq/FjgnxoJfjj0dMmkcS5hdcG7Ju3se5jUn8mnd
+         nRAw==
+X-Gm-Message-State: ABy/qLYlDTY6GlvRiQheffqc8muW4QivYuVAwTvu/rvLkENuV7gyZjAN
+        X+3GLqtYSGibAOMntCQVYbPc0MsngIWCi+Ki1F2i9w==
+X-Google-Smtp-Source: APBJJlEzexLn8Gnsj86NrWI8WO/vdjL9jBS1mJI+nuZ2OzXLXobm03US7gnI6v9c7ePfC7tBcWU3w5mlyqIWysOpxiw=
+X-Received: by 2002:a25:d488:0:b0:c4c:dbee:4915 with SMTP id
+ m130-20020a25d488000000b00c4cdbee4915mr13592561ybf.9.1688577758189; Wed, 05
+ Jul 2023 10:22:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFdVvOyeYYwiVGBhqCSxxgVB9NMjGhHnrBPgdGd+H_OOHdctFw@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230705171213.2843068-1-surenb@google.com> <20230705171213.2843068-3-surenb@google.com>
+ <3cdaa7d4-1293-3806-05ce-6b7fc4382458@redhat.com>
+In-Reply-To: <3cdaa7d4-1293-3806-05ce-6b7fc4382458@redhat.com>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Wed, 5 Jul 2023 10:22:27 -0700
+Message-ID: <CAJuCfpGTNF9BWBxZoqYKSDrtq=iJoN1n8oTc=Yu0pPzW8cs8rQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mm: disable CONFIG_PER_VMA_LOCK until its fixed
+To:     David Hildenbrand <david@redhat.com>
+Cc:     akpm@linux-foundation.org, jirislaby@kernel.org,
+        jacobly.alt@gmail.com, holger@applied-asynchrony.com,
+        hdegoede@redhat.com, michel@lespinasse.org, jglisse@google.com,
+        mhocko@suse.com, vbabka@suse.cz, hannes@cmpxchg.org,
+        mgorman@techsingularity.net, dave@stgolabs.net,
+        willy@infradead.org, liam.howlett@oracle.com, peterz@infradead.org,
+        ldufour@linux.ibm.com, paulmck@kernel.org, mingo@redhat.com,
+        will@kernel.org, luto@kernel.org, songliubraving@fb.com,
+        peterx@redhat.com, dhowells@redhat.com, hughd@google.com,
+        bigeasy@linutronix.de, kent.overstreet@linux.dev,
+        punit.agrawal@bytedance.com, lstoakes@gmail.com,
+        peterjung1337@gmail.com, rientjes@google.com, chriscli@google.com,
+        axelrasmussen@google.com, joelaf@google.com, minchan@google.com,
+        rppt@kernel.org, jannh@google.com, shakeelb@google.com,
+        tatashin@google.com, edumazet@google.com, gthelen@google.com,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 05, 2023 at 11:09:30AM -0600, Sathya Prakash Veerichetty wrote:
-> Hi Greg,
-> The email footer issue is resolved and Ranjan has submitted a new
-> revision of patches, we can discuss in the thread if you have further
-> questions on the patch.
+On Wed, Jul 5, 2023 at 10:16=E2=80=AFAM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> On 05.07.23 19:12, Suren Baghdasaryan wrote:
+> > A memory corruption was reported in [1] with bisection pointing to the
+> > patch [2] enabling per-VMA locks for x86.
+> > Disable per-VMA locks config to prevent this issue while the problem is
+> > being investigated. This is expected to be a temporary measure.
+> >
+> > [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+> > [2] https://lore.kernel.org/all/20230227173632.3292573-30-surenb@google=
+.com
+> >
+> > Reported-by: Jiri Slaby <jirislaby@kernel.org>
+> > Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51=
+b@kernel.org/
+> > Reported-by: Jacob Young <jacobly.alt@gmail.com>
+> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+> > Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling fi=
+rst")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >   mm/Kconfig | 3 ++-
+> >   1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index 09130434e30d..0abc6c71dd89 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -1224,8 +1224,9 @@ config ARCH_SUPPORTS_PER_VMA_LOCK
+> >          def_bool n
+> >
+> >   config PER_VMA_LOCK
+> > -     def_bool y
+> > +     bool "Enable per-vma locking during page fault handling."
+> >       depends on ARCH_SUPPORTS_PER_VMA_LOCK && MMU && SMP
+> > +     depends on BROKEN
+> >       help
+> >         Allow per-vma locking during page fault handling.
+> >
+> Do we have any testing results (that don't reveal other issues :) ) for
+> patch #1? Not sure if we really want to mark it broken if patch #1 fixes
+> the issue.
 
-I have no context here at all, sorry.  What in the world is this all
-about?
+I tested the fix using the only reproducer provided in the reports
+plus kernel compilation and my fork stress test. All looked good and
+stable but I don't know if other reports had the same issue or
+something different.
+I think the urgency to disable the feature stems from the timeline
+being very close to when distributions will start using the 6.4 stable
+kernel version.
 
-What would you do if you got a random email like this?
-
-Remember, some of us get 1000+ emails a day to deal with...
-
-greg k-h
+>
+> --
+> Cheers,
+>
+> David / dhildenb
+>
