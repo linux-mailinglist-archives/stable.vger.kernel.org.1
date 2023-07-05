@@ -2,59 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0F36748A0F
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 19:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 581FD748A13
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 19:25:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232486AbjGERYJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 13:24:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44612 "EHLO
+        id S231398AbjGERZu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 13:25:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232453AbjGERYJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 13:24:09 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7907E41
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 10:24:04 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-c5e76dfcc36so1971455276.2
-        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 10:24:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688577844; x=1691169844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sHjvoo64g8hqR4hb9CfrVJyaF2fuw5Igy5Tcp1DXgn0=;
-        b=UxvRl93OuANxiyXqhyXqCmP3i8b5MiWAFlpa+NkGqyp7Idba76W8Zi+pYaDuYc8QQF
-         tpXpBKOQWeP4Jj2xp63wGWrjOd4zyUlRPhTbHr2unVBgGIU/ruEwEiVucvDbTdW6MrvD
-         KjtcaaJSZWTFmn9jrVitGbjRJwCfra5ctoo1050hawVosrwe51cJAqB5NuG6QQob/d5P
-         bnD/AS6wPoTYkovC1lf3GjAXyZ5Xi+kc0m1epLh3aUHr6BJMy+xZs79S5v2Q0hMgLSP5
-         dNx/+zAc0HrJG9uD1lfdHtoyZquD1XibsyHsndmcWiqPSC8JvH2WG4E6M7jWRR9Tcj7X
-         CgvA==
+        with ESMTP id S232546AbjGERZo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 13:25:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00767183
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 10:24:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1688577896;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=v27EJolWd9vgnA83/Nkc58pSBSJkYYfnU44c9IwfWFY=;
+        b=W8aOYvbbsar9tqJ7q27C0IrXHlPgR6pdjhHlyPANCSEmeoC6HTZawAW//Ui1HFDOrWNgrA
+        ELDZ3R2tbm4FtVzch9X1a1hsvYsFnW2Cr59WZYEP2b5ctnrGWO0pbLoyRMg9STA1P4ALKa
+        TxO39wSSOnipPXZf65NtjcPg7iAJ8SA=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-263-4oc0lLhnN9SPghiH16JDHQ-1; Wed, 05 Jul 2023 13:24:55 -0400
+X-MC-Unique: 4oc0lLhnN9SPghiH16JDHQ-1
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-4fab61bb53bso6977897e87.0
+        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 10:24:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688577844; x=1691169844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sHjvoo64g8hqR4hb9CfrVJyaF2fuw5Igy5Tcp1DXgn0=;
-        b=d66IbLV1T7XUuz/C6dNevpfiSAtYgrPmyV26B/nwWV2yEgK2qSKA5H0G+zKsApY78C
-         zeOw9ODZ5+eKtgOEb2pL/ieGAKAqAooIn8TMpSZZB0mHeeemTBVPIKkOgHy5f47E4uoS
-         IO4HcLmJ43C57MAjYpo9Tzs1NceKvJf7qUl3p+K3snoFaXO28vojJiKehigLrG/tfy7C
-         cE7wgiWut1pRpKvZbtZjv3wYJaRf7xTE4bCbe5fIBgY807maF5UHjyU8nMHit/j6KiJ/
-         i78yFd0hxEqDH3Ks0w/1DsNBMVN6fu2y3lvnNQE0W6yq1gQYE+OdO0ABj3zruBgCw8qC
-         FWqw==
-X-Gm-Message-State: ABy/qLY3wHBvu9cmBSFHtDbSmVZYci5pR6TBVD6k7S7Bo84FTHAp28LK
-        cN7LINb8fyfcR26U3O+jVWlqoZ6Qhym8xTYdk76YbA==
-X-Google-Smtp-Source: APBJJlEXr+7nJr1kglpTbDNE3cb0nSLMWuqSOLSYsZv8wiWSxoU7q9OpLPF0oSmE8g15pgbllX4DkKQIua5s0UK9uiQ=
-X-Received: by 2002:a25:69cd:0:b0:c4e:c503:d5f6 with SMTP id
- e196-20020a2569cd000000b00c4ec503d5f6mr9299399ybc.64.1688577843719; Wed, 05
- Jul 2023 10:24:03 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688577893; x=1691169893;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v27EJolWd9vgnA83/Nkc58pSBSJkYYfnU44c9IwfWFY=;
+        b=GDixK7AF5jiYrOKrrTi0M2AdZ0kalW60DQPfdnrmQ5HMFo7u82oa3Y16GYqgBTf/pv
+         CU5i6ff/erwMx8WNMykhIFX0SphWqPmKBL/X/6vUTtiiG8GqFBzFuaxqK7n0dpClnLjY
+         ksqEpaU/KtgsAN7CAbC28YXpn3XLk26nRF9GVHUqqZcNhIR8HaR59CYSft0sV2O3YvUN
+         Ct5tyKER/K/VaQSiWTrv+iXlDsKJiA1wOWqG7HHS88i98dBuYaVDZQUqy5iXcunQSht7
+         OYO67NdFiNM27qC/TW+i8a+N+U25YO+tFaeUCn+9/HZEJKmXgk82KsgGVmvYp+ucH6mS
+         pX7A==
+X-Gm-Message-State: ABy/qLbLw0Dr5P0UFVmbqBQ6GJFps1S12n3ptYCRrs0HfYiq1y62Tdl+
+        PaTShiU9F+x7N0NhEKogpBitkpB/uPm/265q1LxSLcMlw7P/urz3gZ+RScQeKMgPZf1Pt2r9ijz
+        yiKXwE5VPKEiSKAtF
+X-Received: by 2002:a05:6512:3bc:b0:4f7:6775:2a66 with SMTP id v28-20020a05651203bc00b004f767752a66mr10546763lfp.53.1688577893205;
+        Wed, 05 Jul 2023 10:24:53 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFwWvdb9CtRtlyPDaCglyB2byse00H+L5+2mWlx0zEDsjYRPwa8pgXijw9uCV1C55NL7pPWSw==
+X-Received: by 2002:a05:6512:3bc:b0:4f7:6775:2a66 with SMTP id v28-20020a05651203bc00b004f767752a66mr10546722lfp.53.1688577892764;
+        Wed, 05 Jul 2023 10:24:52 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c71a:1c00:e2b1:fc33:379b:a713? (p200300cbc71a1c00e2b1fc33379ba713.dip0.t-ipconnect.de. [2003:cb:c71a:1c00:e2b1:fc33:379b:a713])
+        by smtp.gmail.com with ESMTPSA id x16-20020a1c7c10000000b003fbe4cecc3bsm2682371wmc.16.2023.07.05.10.24.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Jul 2023 10:24:51 -0700 (PDT)
+Message-ID: <e4f64aa8-93f5-e731-5d6f-e37ae373c006@redhat.com>
+Date:   Wed, 5 Jul 2023 19:24:49 +0200
 MIME-Version: 1.0
-References: <20230705171213.2843068-1-surenb@google.com> <20230705171213.2843068-2-surenb@google.com>
- <10c8fe17-fa9b-bf34-cb88-c758e07c9d72@redhat.com>
-In-Reply-To: <10c8fe17-fa9b-bf34-cb88-c758e07c9d72@redhat.com>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Wed, 5 Jul 2023 10:23:52 -0700
-Message-ID: <CAJuCfpFBh647trAjgPfr0Wcd=7V2gbHUnBe8mR4Pgdmrzh6Hxg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] fork: lock VMAs of the parent process when forking
-To:     David Hildenbrand <david@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 2/2] mm: disable CONFIG_PER_VMA_LOCK until its fixed
+Content-Language: en-US
+To:     Suren Baghdasaryan <surenb@google.com>
 Cc:     akpm@linux-foundation.org, jirislaby@kernel.org,
         jacobly.alt@gmail.com, holger@applied-asynchrony.com,
         hdegoede@redhat.com, michel@lespinasse.org, jglisse@google.com,
@@ -72,90 +81,77 @@ Cc:     akpm@linux-foundation.org, jirislaby@kernel.org,
         tatashin@google.com, edumazet@google.com, gthelen@google.com,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20230705171213.2843068-1-surenb@google.com>
+ <20230705171213.2843068-3-surenb@google.com>
+ <3cdaa7d4-1293-3806-05ce-6b7fc4382458@redhat.com>
+ <CAJuCfpGTNF9BWBxZoqYKSDrtq=iJoN1n8oTc=Yu0pPzW8cs8rQ@mail.gmail.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <CAJuCfpGTNF9BWBxZoqYKSDrtq=iJoN1n8oTc=Yu0pPzW8cs8rQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 5, 2023 at 10:14=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 05.07.23 19:12, Suren Baghdasaryan wrote:
-> > When forking a child process, parent write-protects an anonymous page
-> > and COW-shares it with the child being forked using copy_present_pte().
-> > Parent's TLB is flushed right before we drop the parent's mmap_lock in
-> > dup_mmap(). If we get a write-fault before that TLB flush in the parent=
-,
-> > and we end up replacing that anonymous page in the parent process in
-> > do_wp_page() (because, COW-shared with the child), this might lead to
-> > some stale writable TLB entries targeting the wrong (old) page.
-> > Similar issue happened in the past with userfaultfd (see flush_tlb_page=
-()
-> > call inside do_wp_page()).
-> > Lock VMAs of the parent process when forking a child, which prevents
-> > concurrent page faults during fork operation and avoids this issue.
-> > This fix can potentially regress some fork-heavy workloads. Kernel buil=
-d
-> > time did not show noticeable regression on a 56-core machine while a
-> > stress test mapping 10000 VMAs and forking 5000 times in a tight loop
-> > shows ~5% regression. If such fork time regression is unacceptable,
-> > disabling CONFIG_PER_VMA_LOCK should restore its performance. Further
-> > optimizations are possible if this regression proves to be problematic.
-> >
-> > Suggested-by: David Hildenbrand <david@redhat.com>
-> > Reported-by: Jiri Slaby <jirislaby@kernel.org>
-> > Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51=
-b@kernel.org/
-> > Reported-by: Holger Hoffst=C3=A4tte <holger@applied-asynchrony.com>
-> > Closes: https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34=
-c@applied-asynchrony.com/
-> > Reported-by: Jacob Young <jacobly.alt@gmail.com>
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
-> > Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling fi=
-rst")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >   kernel/fork.c | 6 ++++++
-> >   1 file changed, 6 insertions(+)
-> >
-> > diff --git a/kernel/fork.c b/kernel/fork.c
-> > index b85814e614a5..403bc2b72301 100644
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -658,6 +658,12 @@ static __latent_entropy int dup_mmap(struct mm_str=
-uct *mm,
-> >               retval =3D -EINTR;
-> >               goto fail_uprobe_end;
-> >       }
-> > +#ifdef CONFIG_PER_VMA_LOCK
-> > +     /* Disallow any page faults before calling flush_cache_dup_mm */
-> > +     for_each_vma(old_vmi, mpnt)
-> > +             vma_start_write(mpnt);
-> > +     vma_iter_init(&old_vmi, oldmm, 0);
-> > +#endif
-> >       flush_cache_dup_mm(oldmm);
-> >       uprobe_dup_mmap(oldmm, mm);
-> >       /*
->
-> The old version was most probably fine as well, but this certainly looks
-> even safer.
->
-> Acked-by: David Hildenbrand <david@redhat.com>
+On 05.07.23 19:22, Suren Baghdasaryan wrote:
+> On Wed, Jul 5, 2023 at 10:16 AM David Hildenbrand <david@redhat.com> wrote:
+>>
+>> On 05.07.23 19:12, Suren Baghdasaryan wrote:
+>>> A memory corruption was reported in [1] with bisection pointing to the
+>>> patch [2] enabling per-VMA locks for x86.
+>>> Disable per-VMA locks config to prevent this issue while the problem is
+>>> being investigated. This is expected to be a temporary measure.
+>>>
+>>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=217624
+>>> [2] https://lore.kernel.org/all/20230227173632.3292573-30-surenb@google.com
+>>>
+>>> Reported-by: Jiri Slaby <jirislaby@kernel.org>
+>>> Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org/
+>>> Reported-by: Jacob Young <jacobly.alt@gmail.com>
+>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217624
+>>> Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling first")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+>>> ---
+>>>    mm/Kconfig | 3 ++-
+>>>    1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/Kconfig b/mm/Kconfig
+>>> index 09130434e30d..0abc6c71dd89 100644
+>>> --- a/mm/Kconfig
+>>> +++ b/mm/Kconfig
+>>> @@ -1224,8 +1224,9 @@ config ARCH_SUPPORTS_PER_VMA_LOCK
+>>>           def_bool n
+>>>
+>>>    config PER_VMA_LOCK
+>>> -     def_bool y
+>>> +     bool "Enable per-vma locking during page fault handling."
+>>>        depends on ARCH_SUPPORTS_PER_VMA_LOCK && MMU && SMP
+>>> +     depends on BROKEN
+>>>        help
+>>>          Allow per-vma locking during page fault handling.
+>>>
+>> Do we have any testing results (that don't reveal other issues :) ) for
+>> patch #1? Not sure if we really want to mark it broken if patch #1 fixes
+>> the issue.
+> 
+> I tested the fix using the only reproducer provided in the reports
+> plus kernel compilation and my fork stress test. All looked good and
+> stable but I don't know if other reports had the same issue or
+> something different.
 
-Thanks!
+Can you point me at the other reports, so I can quickly scan them?
 
->
-> --
-> Cheers,
->
-> David / dhildenb
->
+-- 
+Cheers,
+
+David / dhildenb
+
