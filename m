@@ -2,170 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2A59748B49
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 20:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7AC8748BCA
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 20:26:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232689AbjGESPF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 14:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43136 "EHLO
+        id S232296AbjGES0a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 14:26:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230285AbjGESPE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 14:15:04 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B25170B
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 11:15:03 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id 3f1490d57ef6-c4dfe2a95fbso5040381276.3
-        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 11:15:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688580902; x=1691172902;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mN+8m1ObowZ74/MLZ++4zNOVgKxyk4abeoHHzPL0ezY=;
-        b=4TFMCjMv9iG+yqvy1BZCXvPVHaAAiUMgSlESlQ24abzZb75mpvo4noUD94rWEbxSwN
-         2Dlz8AWTMjrSG4gawG4Uh6ULXX+zF17/kLnPeMF1MCgbYmbB6+zq2cO418wb9Xi7Ffjt
-         vvBykSdfuu+sRbQU5SCWpWrlzrjNPXjxI5avEpX3nxHQGa6Wmh4i0wG2pi4KEdqW1qNS
-         tta+EW2l09KXS+jEIZFzV3NaW7CAg7cSqRBw768qp7KoyC+dUhLwH3L8IHjR9Q4vU0Wh
-         PoK+i/B5EHpcdwlqwH5hK4aAvpfmUemy0RRP54JpB8jaV/4bwUnwBUXTw42Axmxfy0ed
-         Gdiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688580902; x=1691172902;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mN+8m1ObowZ74/MLZ++4zNOVgKxyk4abeoHHzPL0ezY=;
-        b=ID66wZKhItozr52+ZSHMGn6tcVUdviifRowzsCPcIwAcgnIoFzyn1BP1PQp6B+LJYk
-         OXg974ykMCc8H03lC7tWF1HZ9gf3hV2M7RKHFCv4y6D1KNZ3EdKvrmnTTLy7YPkFMqSs
-         NmjhHMBferQ5PLq4oi5mcebRA84WHy8ANglcSEVPAZcfFTaOexcfYhQloRdITr9h5b9b
-         WeVMMGCxnNAjJfQK+Y99jkijQG6EpWN/BwS5Z5lYcQ/JoO4i8PVz3x2Mn9oAH2lPPnXj
-         YTuZD9E3qyIxgS179vKE4nShqrhQhEczGG9uqLQmkUyfK445x4cqD7gVEoLoSC2o8iwa
-         eVwA==
-X-Gm-Message-State: ABy/qLajgW6VTsnp77GmCAfcwcvrfZjOPOrEwBY4Mp+QJSZuYJk2aVHd
-        MImm/Na70KPLAp1o3D60CXg4HB3o1LV0UP2ragFs0Q==
-X-Google-Smtp-Source: APBJJlEmDjvoEme69I8YCn0M78cljJMU1hQs/lP0iWGg79WAt9uupvyQmLpjOx+Bgg5NHy46qtYnpkRlzLRzoRRjbnU=
-X-Received: by 2002:a25:cfd3:0:b0:c4e:48eb:b8d4 with SMTP id
- f202-20020a25cfd3000000b00c4e48ebb8d4mr10899950ybg.27.1688580902461; Wed, 05
- Jul 2023 11:15:02 -0700 (PDT)
+        with ESMTP id S233407AbjGES0I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 14:26:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA6219A2
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 11:25:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A456E616CD
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 18:20:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 08F3BC433C7;
+        Wed,  5 Jul 2023 18:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688581221;
+        bh=JamJjeCCkOl0qbFxmtmzV9hb2vvVrB1vx3JFpdV8h7Q=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=G8cOetNb+diIwOS8l11Vp7QJLP960UCtIQxIslSHQe+0L7f2naXT8OuKUAjCO2Hnd
+         Wve0WEmh2V7nKJq6nrH1io1U1jArvTWR/ZZD+cDUZLisRJ83PhdFySljdEqtO5gn3M
+         /gk6QwS2NIGNNHnyBdp0t+no1yeA2r/WGWgOF4/H80Z54auL1jm9FSkTyMk7YxdglN
+         G2UAWOJMveeDbLVsbNsAVTBV01mPYLK9YWf2V8joQO3qopGVm5ayctVL3eyt63z+pH
+         CKcieW+TjBBZs/0Qp9UKlTob7fSkBiK9nnbPZTp9e0/kbRRBh8JqX16rfeFIPWvWsb
+         nvKmnKN8+nctA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DF0B7C395C5;
+        Wed,  5 Jul 2023 18:20:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230705171213.2843068-1-surenb@google.com> <20230705171213.2843068-3-surenb@google.com>
- <3cdaa7d4-1293-3806-05ce-6b7fc4382458@redhat.com> <CAJuCfpGTNF9BWBxZoqYKSDrtq=iJoN1n8oTc=Yu0pPzW8cs8rQ@mail.gmail.com>
- <e4f64aa8-93f5-e731-5d6f-e37ae373c006@redhat.com> <CAJuCfpGSt-P6NzTDa8HG6tBKac4Y4Rhkiwcz+80x6aTmVCNS1Q@mail.gmail.com>
-In-Reply-To: <CAJuCfpGSt-P6NzTDa8HG6tBKac4Y4Rhkiwcz+80x6aTmVCNS1Q@mail.gmail.com>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Wed, 5 Jul 2023 11:14:51 -0700
-Message-ID: <CAJuCfpHdw0rMfuYhAEAp_LC3sMUsBDmaKD_NU9hX8z5TH-CBxw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] mm: disable CONFIG_PER_VMA_LOCK until its fixed
-To:     David Hildenbrand <david@redhat.com>
-Cc:     akpm@linux-foundation.org, jirislaby@kernel.org,
-        jacobly.alt@gmail.com, holger@applied-asynchrony.com,
-        hdegoede@redhat.com, michel@lespinasse.org, jglisse@google.com,
-        mhocko@suse.com, vbabka@suse.cz, hannes@cmpxchg.org,
-        mgorman@techsingularity.net, dave@stgolabs.net,
-        willy@infradead.org, liam.howlett@oracle.com, peterz@infradead.org,
-        ldufour@linux.ibm.com, paulmck@kernel.org, mingo@redhat.com,
-        will@kernel.org, luto@kernel.org, songliubraving@fb.com,
-        peterx@redhat.com, dhowells@redhat.com, hughd@google.com,
-        bigeasy@linutronix.de, kent.overstreet@linux.dev,
-        punit.agrawal@bytedance.com, lstoakes@gmail.com,
-        peterjung1337@gmail.com, rientjes@google.com, chriscli@google.com,
-        axelrasmussen@google.com, joelaf@google.com, minchan@google.com,
-        rppt@kernel.org, jannh@google.com, shakeelb@google.com,
-        tatashin@google.com, edumazet@google.com, gthelen@google.com,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] nfp: clean mc addresses in application firmware when
+ closing port
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168858122090.23406.18329773090141093446.git-patchwork-notify@kernel.org>
+Date:   Wed, 05 Jul 2023 18:20:20 +0000
+References: <20230705052818.7122-1-louis.peens@corigine.com>
+In-Reply-To: <20230705052818.7122-1-louis.peens@corigine.com>
+To:     Louis Peens <louis.peens@corigine.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        jacob.e.keller@intel.com, simon.horman@corigine.com,
+        yinjun.zhang@corigine.com, netdev@vger.kernel.org,
+        stable@vger.kernel.org, oss-drivers@corigine.com
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 5, 2023 at 11:09=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Wed, Jul 5, 2023 at 10:24=E2=80=AFAM David Hildenbrand <david@redhat.c=
-om> wrote:
-> >
-> > On 05.07.23 19:22, Suren Baghdasaryan wrote:
-> > > On Wed, Jul 5, 2023 at 10:16=E2=80=AFAM David Hildenbrand <david@redh=
-at.com> wrote:
-> > >>
-> > >> On 05.07.23 19:12, Suren Baghdasaryan wrote:
-> > >>> A memory corruption was reported in [1] with bisection pointing to =
-the
-> > >>> patch [2] enabling per-VMA locks for x86.
-> > >>> Disable per-VMA locks config to prevent this issue while the proble=
-m is
-> > >>> being investigated. This is expected to be a temporary measure.
-> > >>>
-> > >>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
-> > >>> [2] https://lore.kernel.org/all/20230227173632.3292573-30-surenb@go=
-ogle.com
-> > >>>
-> > >>> Reported-by: Jiri Slaby <jirislaby@kernel.org>
-> > >>> Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3c=
-df51b@kernel.org/
-> > >>> Reported-by: Jacob Young <jacobly.alt@gmail.com>
-> > >>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
-> > >>> Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handlin=
-g first")
-> > >>> Cc: stable@vger.kernel.org
-> > >>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > >>> ---
-> > >>>    mm/Kconfig | 3 ++-
-> > >>>    1 file changed, 2 insertions(+), 1 deletion(-)
-> > >>>
-> > >>> diff --git a/mm/Kconfig b/mm/Kconfig
-> > >>> index 09130434e30d..0abc6c71dd89 100644
-> > >>> --- a/mm/Kconfig
-> > >>> +++ b/mm/Kconfig
-> > >>> @@ -1224,8 +1224,9 @@ config ARCH_SUPPORTS_PER_VMA_LOCK
-> > >>>           def_bool n
-> > >>>
-> > >>>    config PER_VMA_LOCK
-> > >>> -     def_bool y
-> > >>> +     bool "Enable per-vma locking during page fault handling."
-> > >>>        depends on ARCH_SUPPORTS_PER_VMA_LOCK && MMU && SMP
-> > >>> +     depends on BROKEN
-> > >>>        help
-> > >>>          Allow per-vma locking during page fault handling.
-> > >>>
-> > >> Do we have any testing results (that don't reveal other issues :) ) =
-for
-> > >> patch #1? Not sure if we really want to mark it broken if patch #1 f=
-ixes
-> > >> the issue.
-> > >
-> > > I tested the fix using the only reproducer provided in the reports
-> > > plus kernel compilation and my fork stress test. All looked good and
-> > > stable but I don't know if other reports had the same issue or
-> > > something different.
-> >
-> > Can you point me at the other reports, so I can quickly scan them?
->
-> by Jacob Young: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
-> by Jiri Slaby: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3=
-cdf51b@kernel.org/
+Hello:
 
-From strace in https://lore.kernel.org/all/f7ad7a42-13c8-a486-d0b7-01d5acf0=
-1e13@kernel.org/
-looks like clone3() was involved, so this seems quite likely to be the
-same issue I think.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> by Holger Hoffst=C3=A4tte:
-> https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34c@applied-=
-asynchrony.com/
-> only saying that Firefox started crashing after upgrading to 6.4.1
->
-> >
-> > --
-> > Cheers,
-> >
-> > David / dhildenb
-> >
+On Wed,  5 Jul 2023 07:28:18 +0200 you wrote:
+> From: Yinjun Zhang <yinjun.zhang@corigine.com>
+> 
+> When moving devices from one namespace to another, mc addresses are
+> cleaned in software while not removed from application firmware. Thus
+> the mc addresses are remained and will cause resource leak.
+> 
+> Now use `__dev_mc_unsync` to clean mc addresses when closing port.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3] nfp: clean mc addresses in application firmware when closing port
+    https://git.kernel.org/netdev/net/c/cc7eab25b1cf
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
