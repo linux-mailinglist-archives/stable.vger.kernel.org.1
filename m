@@ -2,63 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7E16748439
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 14:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F02B748459
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 14:44:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbjGEMdQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 08:33:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45016 "EHLO
+        id S231970AbjGEMoN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 08:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231710AbjGEMdN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 08:33:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F7D116;
-        Wed,  5 Jul 2023 05:33:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB2D261572;
-        Wed,  5 Jul 2023 12:33:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD18FC433BA;
-        Wed,  5 Jul 2023 12:33:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688560389;
-        bh=wn7CUVVxrOWOl0kh/DRq8DJmjTUPwwGVXxwtuxE9kBs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iQteiVQr2zXXSIJZcGhyLp5bdPktNo1wKcXW3iBcr+scNrD/ATzB0mxiv3vtz+BP9
-         yje/CvC2ZTg7hw4yGVsFgYiDAo359/q8VtCtNmChWwB40JlIsdfKapL0ad+VCRTRQR
-         t7FAvlZw7kQwXBhHJ2KmJTYsvjCLsE+nUXwRAsVxAws4EJ5UsB4Hy6kgf6K1Hj3fji
-         +amjTqFZpYjvb1JwZoTGDEqi1cBJilYsGkf78KdOR5kSnYli+gJTvolNm7nMA+sWbo
-         h6tD2W/u+n2VZeUC+zj5kNSp7qDd0T9kR6P0jmpq9CsS4sbyDF8kKmsFORlaakEIe+
-         Cy29u0las/GsQ==
-Received: from johan by xi.lan with local (Exim 4.96)
-        (envelope-from <johan+linaro@kernel.org>)
-        id 1qH1hK-00084J-1l;
-        Wed, 05 Jul 2023 14:33:30 +0200
-From:   Johan Hovold <johan+linaro@kernel.org>
-To:     Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>
-Cc:     Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Banajit Goswami <bgoswami@quicinc.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        with ESMTP id S230487AbjGEMoN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 08:44:13 -0400
+X-Greylist: delayed 129120 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 05 Jul 2023 05:44:12 PDT
+Received: from out-23.mta1.migadu.com (out-23.mta1.migadu.com [IPv6:2001:41d0:203:375::17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5204DE70
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 05:44:12 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1688561049;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=OvYom9X/S7wayVeQUgTcDXl5jN2F2BPuKd+7kG4C4mU=;
+        b=L8cZm9LxdvRBYMRNAvSEu9H0IxP7taSx5EvR7BcZ8G88ca7lnB4ReJaYDVG16WBkTlpRN7
+        24GG0wNfx+8UM1CyKbWj+H72mwRnnArUTCvZRaQVPbU+ySUdM/44CzzLQw+XaOIEncUFVt
+        8VsKnaiXIIbjxVhTkWZ85lf6z419tXo=
+From:   andrey.konovalov@linux.dev
+To:     Marco Elver <elver@google.com>, Mark Rutland <mark.rutland@arm.com>
+Cc:     Andrey Konovalov <andreyknvl@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        kasan-dev@googlegroups.com,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Peter Collingbourne <pcc@google.com>,
+        Feng Tang <feng.tang@intel.com>, stable@vger.kernel.org,
+        Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
         linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH 6/8] ASoC: codecs: wcd-mbhc-v2: fix resource leaks on component remove
-Date:   Wed,  5 Jul 2023 14:30:16 +0200
-Message-Id: <20230705123018.30903-7-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230705123018.30903-1-johan+linaro@kernel.org>
-References: <20230705123018.30903-1-johan+linaro@kernel.org>
+        Andrey Konovalov <andreyknvl@google.com>
+Subject: [PATCH] kasan, slub: fix HW_TAGS zeroing with slub_debug
+Date:   Wed,  5 Jul 2023 14:44:02 +0200
+Message-Id: <678ac92ab790dba9198f9ca14f405651b97c8502.1688561016.git.andreyknvl@google.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,152 +62,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The MBHC resources must be released on component probe failure and
-removal so can not be tied to the lifetime of the component device.
+From: Andrey Konovalov <andreyknvl@google.com>
 
-This is specifically needed to allow probe deferrals of the sound card
-which otherwise fails when reprobing the codec component:
+Commit 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated
+kmalloc space than requested") added precise kmalloc redzone poisoning
+to the slub_debug functionality.
 
-    snd-sc8280xp sound: ASoC: failed to instantiate card -517
-    genirq: Flags mismatch irq 299. 00002001 (mbhc sw intr) vs. 00002001 (mbhc sw intr)
-    wcd938x_codec audio-codec: Failed to request mbhc interrupts -16
-    wcd938x_codec audio-codec: mbhc initialization failed
-    wcd938x_codec audio-codec: ASoC: error at snd_soc_component_probe on audio-codec: -16
-    snd-sc8280xp sound: ASoC: failed to instantiate card -16
+However, this commit didn't account for HW_TAGS KASAN fully initializing
+the object via its built-in memory initialization feature. Even though
+HW_TAGS KASAN memory initialization contains special memory initialization
+handling for when slub_debug is enabled, it does not account for in-object
+slub_debug redzones. As a result, HW_TAGS KASAN can overwrite these
+redzones and cause false-positive slub_debug reports.
 
-Fixes: 0e5c9e7ff899 ("ASoC: codecs: wcd: add multi button Headset detection support")
-Cc: stable@vger.kernel.org      # 5.14
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+To fix the issue, avoid HW_TAGS KASAN memory initialization when slub_debug
+is enabled altogether. Implement this by moving the __slub_debug_enabled
+check to slab_post_alloc_hook. Common slab code seems like a more
+appropriate place for a slub_debug check anyway.
+
+Fixes: 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated kmalloc space than requested")
+Cc: <stable@vger.kernel.org>
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
 ---
- sound/soc/codecs/wcd-mbhc-v2.c | 57 ++++++++++++++++++++++++----------
- 1 file changed, 41 insertions(+), 16 deletions(-)
+ mm/kasan/kasan.h | 12 ------------
+ mm/slab.h        | 16 ++++++++++++++--
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/sound/soc/codecs/wcd-mbhc-v2.c b/sound/soc/codecs/wcd-mbhc-v2.c
-index 1911750f7445..5da1934527f3 100644
---- a/sound/soc/codecs/wcd-mbhc-v2.c
-+++ b/sound/soc/codecs/wcd-mbhc-v2.c
-@@ -1454,7 +1454,7 @@ struct wcd_mbhc *wcd_mbhc_init(struct snd_soc_component *component,
- 		return ERR_PTR(-EINVAL);
- 	}
+diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+index b799f11e45dc..2e973b36fe07 100644
+--- a/mm/kasan/kasan.h
++++ b/mm/kasan/kasan.h
+@@ -466,18 +466,6 @@ static inline void kasan_unpoison(const void *addr, size_t size, bool init)
  
--	mbhc = devm_kzalloc(dev, sizeof(*mbhc), GFP_KERNEL);
-+	mbhc = kzalloc(sizeof(*mbhc), GFP_KERNEL);
- 	if (!mbhc)
- 		return ERR_PTR(-ENOMEM);
+ 	if (WARN_ON((unsigned long)addr & KASAN_GRANULE_MASK))
+ 		return;
+-	/*
+-	 * Explicitly initialize the memory with the precise object size to
+-	 * avoid overwriting the slab redzone. This disables initialization in
+-	 * the arch code and may thus lead to performance penalty. This penalty
+-	 * does not affect production builds, as slab redzones are not enabled
+-	 * there.
+-	 */
+-	if (__slub_debug_enabled() &&
+-	    init && ((unsigned long)size & KASAN_GRANULE_MASK)) {
+-		init = false;
+-		memzero_explicit((void *)addr, size);
+-	}
+ 	size = round_up(size, KASAN_GRANULE_SIZE);
  
-@@ -1474,61 +1474,76 @@ struct wcd_mbhc *wcd_mbhc_init(struct snd_soc_component *component,
- 
- 	INIT_WORK(&mbhc->correct_plug_swch, wcd_correct_swch_plug);
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_sw_intr, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->mbhc_sw_intr, NULL,
- 					wcd_mbhc_mech_plug_detect_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"mbhc sw intr", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_mbhc;
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_btn_press_intr, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->mbhc_btn_press_intr, NULL,
- 					wcd_mbhc_btn_press_handler,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"Button Press detect", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_sw_intr;
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_btn_release_intr, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->mbhc_btn_release_intr, NULL,
- 					wcd_mbhc_btn_release_handler,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"Button Release detect", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_btn_press_intr;
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_hs_ins_intr, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->mbhc_hs_ins_intr, NULL,
- 					wcd_mbhc_adc_hs_ins_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"Elect Insert", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_btn_release_intr;
- 
- 	disable_irq_nosync(mbhc->intr_ids->mbhc_hs_ins_intr);
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_hs_rem_intr, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->mbhc_hs_rem_intr, NULL,
- 					wcd_mbhc_adc_hs_rem_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"Elect Remove", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_hs_ins_intr;
- 
- 	disable_irq_nosync(mbhc->intr_ids->mbhc_hs_rem_intr);
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->hph_left_ocp, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->hph_left_ocp, NULL,
- 					wcd_mbhc_hphl_ocp_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"HPH_L OCP detect", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_hs_rem_intr;
- 
--	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->hph_right_ocp, NULL,
-+	ret = request_threaded_irq(mbhc->intr_ids->hph_right_ocp, NULL,
- 					wcd_mbhc_hphr_ocp_irq,
- 					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
- 					"HPH_R OCP detect", mbhc);
- 	if (ret)
--		goto err;
-+		goto err_free_hph_left_ocp;
- 
- 	return mbhc;
--err:
-+
-+err_free_hph_left_ocp:
-+	free_irq(mbhc->intr_ids->hph_left_ocp, mbhc);
-+err_free_hs_rem_intr:
-+	free_irq(mbhc->intr_ids->mbhc_hs_rem_intr, mbhc);
-+err_free_hs_ins_intr:
-+	free_irq(mbhc->intr_ids->mbhc_hs_ins_intr, mbhc);
-+err_free_btn_release_intr:
-+	free_irq(mbhc->intr_ids->mbhc_btn_release_intr, mbhc);
-+err_free_btn_press_intr:
-+	free_irq(mbhc->intr_ids->mbhc_btn_press_intr, mbhc);
-+err_free_sw_intr:
-+	free_irq(mbhc->intr_ids->mbhc_sw_intr, mbhc);
-+err_free_mbhc:
-+	kfree(mbhc);
-+
- 	dev_err(dev, "Failed to request mbhc interrupts %d\n", ret);
- 
- 	return ERR_PTR(ret);
-@@ -1537,9 +1552,19 @@ EXPORT_SYMBOL(wcd_mbhc_init);
- 
- void wcd_mbhc_deinit(struct wcd_mbhc *mbhc)
+ 	hw_set_mem_tag_range((void *)addr, size, tag, init);
+diff --git a/mm/slab.h b/mm/slab.h
+index 6a5633b25eb5..9c0e09d0f81f 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -723,6 +723,7 @@ static inline void slab_post_alloc_hook(struct kmem_cache *s,
+ 					unsigned int orig_size)
  {
-+	free_irq(mbhc->intr_ids->hph_right_ocp, mbhc);
-+	free_irq(mbhc->intr_ids->hph_left_ocp, mbhc);
-+	free_irq(mbhc->intr_ids->mbhc_hs_rem_intr, mbhc);
-+	free_irq(mbhc->intr_ids->mbhc_hs_ins_intr, mbhc);
-+	free_irq(mbhc->intr_ids->mbhc_btn_release_intr, mbhc);
-+	free_irq(mbhc->intr_ids->mbhc_btn_press_intr, mbhc);
-+	free_irq(mbhc->intr_ids->mbhc_sw_intr, mbhc);
-+
- 	mutex_lock(&mbhc->lock);
- 	wcd_cancel_hs_detect_plug(mbhc,	&mbhc->correct_plug_swch);
- 	mutex_unlock(&mbhc->lock);
-+
-+	kfree(mbhc);
- }
- EXPORT_SYMBOL(wcd_mbhc_deinit);
+ 	unsigned int zero_size = s->object_size;
++	bool kasan_init = init;
+ 	size_t i;
  
+ 	flags &= gfp_allowed_mask;
+@@ -739,6 +740,17 @@ static inline void slab_post_alloc_hook(struct kmem_cache *s,
+ 	    (s->flags & SLAB_KMALLOC))
+ 		zero_size = orig_size;
+ 
++	/*
++	 * When slub_debug is enabled, avoid memory initialization integrated
++	 * into KASAN and instead zero out the memory via the memset below with
++	 * the proper size. Otherwise, KASAN might overwrite SLUB redzones and
++	 * cause false-positive reports. This does not lead to a performance
++	 * penalty on production builds, as slub_debug is not intended to be
++	 * enabled there.
++	 */
++	if (__slub_debug_enabled())
++		kasan_init = false;
++
+ 	/*
+ 	 * As memory initialization might be integrated into KASAN,
+ 	 * kasan_slab_alloc and initialization memset must be
+@@ -747,8 +759,8 @@ static inline void slab_post_alloc_hook(struct kmem_cache *s,
+ 	 * As p[i] might get tagged, memset and kmemleak hook come after KASAN.
+ 	 */
+ 	for (i = 0; i < size; i++) {
+-		p[i] = kasan_slab_alloc(s, p[i], flags, init);
+-		if (p[i] && init && !kasan_has_integrated_init())
++		p[i] = kasan_slab_alloc(s, p[i], flags, kasan_init);
++		if (p[i] && init && (!kasan_init || !kasan_has_integrated_init()))
+ 			memset(p[i], 0, zero_size);
+ 		kmemleak_alloc_recursive(p[i], s->object_size, 1,
+ 					 s->flags, flags);
 -- 
-2.39.3
+2.25.1
 
