@@ -2,607 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A311748B0F
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 19:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99FE8748B3F
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 20:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233239AbjGERyr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 13:54:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34872 "EHLO
+        id S232720AbjGESJr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 14:09:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233294AbjGERyj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 13:54:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 059F3E70;
-        Wed,  5 Jul 2023 10:54:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FB8D61693;
-        Wed,  5 Jul 2023 17:54:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48467C433C8;
-        Wed,  5 Jul 2023 17:54:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688579663;
-        bh=FjodaAnMJOfV20aZl3bDzRcK6o8LclzbehHjF5ZAG6s=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IKp21J3BxpGsQTukKNtp1LBmvhWzCQK3I3K4FcwkhBbO+d5nhFfW3itwKWPjUHO8D
-         SviJuBtfNnd3LmuNc9+TtAxoabp/5oQa8e6lp6eURx/uGNpJJkyhvAN9RDb96EMw/O
-         ISHbkBkuL5q7ATPyy6CEVtLuUtknjySSLwkynBNU=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org
-Cc:     lwn@lwn.net, jslaby@suse.cz,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.4.2
-Date:   Wed,  5 Jul 2023 18:54:15 +0100
-Message-ID: <2023070515-transpire-elm-8893@gregkh>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023070515-gumball-exert-245a@gregkh>
-References: <2023070515-gumball-exert-245a@gregkh>
+        with ESMTP id S232025AbjGESJq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 14:09:46 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 150A81981
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 11:09:45 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-5774335bb2aso67476377b3.0
+        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 11:09:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1688580584; x=1691172584;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vqtIzGaVFOpXMYPUl5WSw8mMx6YorPxKDA1JIgHkc1I=;
+        b=zyh3IZqQ+kfBulotXhA2VdnvqrskivIdQ7QCn4ZFrxXXlOeDI/LF1j8gqy3p5TeZH8
+         amVPkyTLjx4TE3D2aIff9NNayDZ2X6TILonhNNrkvpPxcQ5HQeiJ8crGhMe6uM7cmTyq
+         k0q/ezzj9IPqghkFyP6e6Ji4waAMrcUUn/JIXWITL/Y3hV+PHuIziquhrJr0FZ2XQN+/
+         oh4Bpc4rx71Kr2SvPNdPDZGqBaufGk5YdVmh074qBK8Kqrqqap4AdCW/qV7iqZYQPZEY
+         DontwsPK+JEmHy5XeYj48Rwc/EZUDmow9CCed4swbtxyGuXtStCkgnuixUV2qDnWUgAY
+         9uhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688580584; x=1691172584;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vqtIzGaVFOpXMYPUl5WSw8mMx6YorPxKDA1JIgHkc1I=;
+        b=SexGlIc0ZwsQumvuRvHYkdyUekQ1Tg/JMlBzeIBj+mGyVRrN4dERiF0FGYxY4QzoUz
+         mjfeWbz2OQY3PhOJE9ewzE4hAiIPCSOXysx4BNMRJ4q+sTluyYMGKarPwTqYgxCszG9g
+         ++PQNCTbNYZ3kp7JQ+2qRBTr2HwIHDmRM4ym6V6gAK7NBmeAVWFCeYSo+F6Td8UJGDei
+         CVMbQc3YCanaxiDgmmw5NPD8gir4DXO+emypY0OOGhTv1PdYtmvTNeQ1zSsBiZ4fZv3j
+         dWNjE2kaMdEjBlsx5Fh3GE1kTLvCzG8jcvnZJhLOplCXX3pjUVeLz87GswXnfQY/lVBS
+         Ympw==
+X-Gm-Message-State: ABy/qLZhuezAtV9hCHALla+s7UnzfSq906NeY5TV47vz19S4d6YOjrUi
+        dFja/rMpdqMOfNVr1TsjJhnsT5r8cS69oetEWDP/jA==
+X-Google-Smtp-Source: APBJJlG9oqJDpPwWw/Z1xXQvA1VxDd0mdwRL341XkKBoNONj9tMIWiDmDQv5f61Uo93QwDdmjgkM/uJxbAdHXfuP6xs=
+X-Received: by 2002:a25:e714:0:b0:c61:e9b6:82a5 with SMTP id
+ e20-20020a25e714000000b00c61e9b682a5mr2592409ybh.39.1688580583893; Wed, 05
+ Jul 2023 11:09:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230705171213.2843068-1-surenb@google.com> <20230705171213.2843068-3-surenb@google.com>
+ <3cdaa7d4-1293-3806-05ce-6b7fc4382458@redhat.com> <CAJuCfpGTNF9BWBxZoqYKSDrtq=iJoN1n8oTc=Yu0pPzW8cs8rQ@mail.gmail.com>
+ <e4f64aa8-93f5-e731-5d6f-e37ae373c006@redhat.com>
+In-Reply-To: <e4f64aa8-93f5-e731-5d6f-e37ae373c006@redhat.com>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Wed, 5 Jul 2023 11:09:32 -0700
+Message-ID: <CAJuCfpGSt-P6NzTDa8HG6tBKac4Y4Rhkiwcz+80x6aTmVCNS1Q@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mm: disable CONFIG_PER_VMA_LOCK until its fixed
+To:     David Hildenbrand <david@redhat.com>
+Cc:     akpm@linux-foundation.org, jirislaby@kernel.org,
+        jacobly.alt@gmail.com, holger@applied-asynchrony.com,
+        hdegoede@redhat.com, michel@lespinasse.org, jglisse@google.com,
+        mhocko@suse.com, vbabka@suse.cz, hannes@cmpxchg.org,
+        mgorman@techsingularity.net, dave@stgolabs.net,
+        willy@infradead.org, liam.howlett@oracle.com, peterz@infradead.org,
+        ldufour@linux.ibm.com, paulmck@kernel.org, mingo@redhat.com,
+        will@kernel.org, luto@kernel.org, songliubraving@fb.com,
+        peterx@redhat.com, dhowells@redhat.com, hughd@google.com,
+        bigeasy@linutronix.de, kent.overstreet@linux.dev,
+        punit.agrawal@bytedance.com, lstoakes@gmail.com,
+        peterjung1337@gmail.com, rientjes@google.com, chriscli@google.com,
+        axelrasmussen@google.com, joelaf@google.com, minchan@google.com,
+        rppt@kernel.org, jannh@google.com, shakeelb@google.com,
+        tatashin@google.com, edumazet@google.com, gthelen@google.com,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
-index ef540865ad22..a9ef00509c9b 100644
---- a/Documentation/process/changes.rst
-+++ b/Documentation/process/changes.rst
-@@ -60,6 +60,7 @@ openssl & libcrypto    1.0.0            openssl version
- bc                     1.06.95          bc --version
- Sphinx\ [#f1]_         1.7              sphinx-build --version
- cpio                   any              cpio --version
-+gtags (optional)       6.6.5            gtags --version
- ====================== ===============  ========================================
- 
- .. [#f1] Sphinx is needed only to build the Kernel documentation
-@@ -174,6 +175,12 @@ You will need openssl to build kernels 3.7 and higher if module signing is
- enabled.  You will also need openssl development packages to build kernels 4.3
- and higher.
- 
-+gtags / GNU GLOBAL (optional)
-+-----------------------------
-+
-+The kernel build requires GNU GLOBAL version 6.6.5 or later to generate
-+tag files through ``make gtags``.  This is due to its use of the gtags
-+``-C (--directory)`` flag.
- 
- System utilities
- ****************
-diff --git a/Makefile b/Makefile
-index 9f6376cbafeb..bcac81556b56 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 4
--SUBLEVEL = 1
-+SUBLEVEL = 2
- EXTRAVERSION =
- NAME = Hurr durr I'ma ninja sloth
- 
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 8a169bdb4d53..df1386a60d52 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -522,9 +522,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
- 	unsigned long vm_flags;
- 	unsigned int mm_flags = FAULT_FLAG_DEFAULT;
- 	unsigned long addr = untagged_addr(far);
--#ifdef CONFIG_PER_VMA_LOCK
- 	struct vm_area_struct *vma;
--#endif
- 
- 	if (kprobe_page_fault(regs, esr))
- 		return 0;
-diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-index 67f4ab6daa34..74962b18e3b2 100644
---- a/drivers/cxl/core/pci.c
-+++ b/drivers/cxl/core/pci.c
-@@ -308,36 +308,17 @@ static void disable_hdm(void *_cxlhdm)
- 	       hdm + CXL_HDM_DECODER_CTRL_OFFSET);
- }
- 
--int devm_cxl_enable_hdm(struct cxl_port *port, struct cxl_hdm *cxlhdm)
-+static int devm_cxl_enable_hdm(struct device *host, struct cxl_hdm *cxlhdm)
- {
--	void __iomem *hdm;
-+	void __iomem *hdm = cxlhdm->regs.hdm_decoder;
- 	u32 global_ctrl;
- 
--	/*
--	 * If the hdm capability was not mapped there is nothing to enable and
--	 * the caller is responsible for what happens next.  For example,
--	 * emulate a passthrough decoder.
--	 */
--	if (IS_ERR(cxlhdm))
--		return 0;
--
--	hdm = cxlhdm->regs.hdm_decoder;
- 	global_ctrl = readl(hdm + CXL_HDM_DECODER_CTRL_OFFSET);
--
--	/*
--	 * If the HDM decoder capability was enabled on entry, skip
--	 * registering disable_hdm() since this decode capability may be
--	 * owned by platform firmware.
--	 */
--	if (global_ctrl & CXL_HDM_DECODER_ENABLE)
--		return 0;
--
- 	writel(global_ctrl | CXL_HDM_DECODER_ENABLE,
- 	       hdm + CXL_HDM_DECODER_CTRL_OFFSET);
- 
--	return devm_add_action_or_reset(&port->dev, disable_hdm, cxlhdm);
-+	return devm_add_action_or_reset(host, disable_hdm, cxlhdm);
- }
--EXPORT_SYMBOL_NS_GPL(devm_cxl_enable_hdm, CXL);
- 
- int cxl_dvsec_rr_decode(struct device *dev, int d,
- 			struct cxl_endpoint_dvsec_info *info)
-@@ -511,7 +492,7 @@ int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
- 	if (info->mem_enabled)
- 		return 0;
- 
--	rc = devm_cxl_enable_hdm(port, cxlhdm);
-+	rc = devm_cxl_enable_hdm(&port->dev, cxlhdm);
- 	if (rc)
- 		return rc;
- 
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index f93a28538962..044a92d9813e 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -710,7 +710,6 @@ struct cxl_endpoint_dvsec_info {
- struct cxl_hdm;
- struct cxl_hdm *devm_cxl_setup_hdm(struct cxl_port *port,
- 				   struct cxl_endpoint_dvsec_info *info);
--int devm_cxl_enable_hdm(struct cxl_port *port, struct cxl_hdm *cxlhdm);
- int devm_cxl_enumerate_decoders(struct cxl_hdm *cxlhdm,
- 				struct cxl_endpoint_dvsec_info *info);
- int devm_cxl_add_passthrough_decoder(struct cxl_port *port);
-diff --git a/drivers/cxl/port.c b/drivers/cxl/port.c
-index c23b6164e1c0..07c5ac598da1 100644
---- a/drivers/cxl/port.c
-+++ b/drivers/cxl/port.c
-@@ -60,17 +60,13 @@ static int discover_region(struct device *dev, void *root)
- static int cxl_switch_port_probe(struct cxl_port *port)
- {
- 	struct cxl_hdm *cxlhdm;
--	int rc, nr_dports;
--
--	nr_dports = devm_cxl_port_enumerate_dports(port);
--	if (nr_dports < 0)
--		return nr_dports;
-+	int rc;
- 
--	cxlhdm = devm_cxl_setup_hdm(port, NULL);
--	rc = devm_cxl_enable_hdm(port, cxlhdm);
--	if (rc)
-+	rc = devm_cxl_port_enumerate_dports(port);
-+	if (rc < 0)
- 		return rc;
- 
-+	cxlhdm = devm_cxl_setup_hdm(port, NULL);
- 	if (!IS_ERR(cxlhdm))
- 		return devm_cxl_enumerate_decoders(cxlhdm, NULL);
- 
-@@ -79,7 +75,7 @@ static int cxl_switch_port_probe(struct cxl_port *port)
- 		return PTR_ERR(cxlhdm);
- 	}
- 
--	if (nr_dports == 1) {
-+	if (rc == 1) {
- 		dev_dbg(&port->dev, "Fallback to passthrough decoder\n");
- 		return devm_cxl_add_passthrough_decoder(port);
- 	}
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index 3c0310576b3b..5b3a70becbdf 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2368,6 +2368,10 @@ int amdgpu_vm_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 	struct amdgpu_fpriv *fpriv = filp->driver_priv;
- 	int r;
- 
-+	/* No valid flags defined yet */
-+	if (args->in.flags)
-+		return -EINVAL;
-+
- 	switch (args->in.op) {
- 	case AMDGPU_VM_OP_RESERVE_VMID:
- 		/* We only have requirement to reserve vmid from gfxhub */
-diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
-index 7d5c9c582ed2..0d2fa7f86a54 100644
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1830,30 +1830,36 @@ static ioctl_fn lookup_ioctl(unsigned int cmd, int *ioctl_flags)
-  * As well as checking the version compatibility this always
-  * copies the kernel interface version out.
-  */
--static int check_version(unsigned int cmd, struct dm_ioctl __user *user)
-+static int check_version(unsigned int cmd, struct dm_ioctl __user *user,
-+			 struct dm_ioctl *kernel_params)
- {
--	uint32_t version[3];
- 	int r = 0;
- 
--	if (copy_from_user(version, user->version, sizeof(version)))
-+	/* Make certain version is first member of dm_ioctl struct */
-+	BUILD_BUG_ON(offsetof(struct dm_ioctl, version) != 0);
-+
-+	if (copy_from_user(kernel_params->version, user->version, sizeof(kernel_params->version)))
- 		return -EFAULT;
- 
--	if ((version[0] != DM_VERSION_MAJOR) ||
--	    (version[1] > DM_VERSION_MINOR)) {
-+	if ((kernel_params->version[0] != DM_VERSION_MAJOR) ||
-+	    (kernel_params->version[1] > DM_VERSION_MINOR)) {
- 		DMERR("ioctl interface mismatch: kernel(%u.%u.%u), user(%u.%u.%u), cmd(%d)",
- 		      DM_VERSION_MAJOR, DM_VERSION_MINOR,
- 		      DM_VERSION_PATCHLEVEL,
--		      version[0], version[1], version[2], cmd);
-+		      kernel_params->version[0],
-+		      kernel_params->version[1],
-+		      kernel_params->version[2],
-+		      cmd);
- 		r = -EINVAL;
- 	}
- 
- 	/*
- 	 * Fill in the kernel version.
- 	 */
--	version[0] = DM_VERSION_MAJOR;
--	version[1] = DM_VERSION_MINOR;
--	version[2] = DM_VERSION_PATCHLEVEL;
--	if (copy_to_user(user->version, version, sizeof(version)))
-+	kernel_params->version[0] = DM_VERSION_MAJOR;
-+	kernel_params->version[1] = DM_VERSION_MINOR;
-+	kernel_params->version[2] = DM_VERSION_PATCHLEVEL;
-+	if (copy_to_user(user->version, kernel_params->version, sizeof(kernel_params->version)))
- 		return -EFAULT;
- 
- 	return r;
-@@ -1879,7 +1885,10 @@ static int copy_params(struct dm_ioctl __user *user, struct dm_ioctl *param_kern
- 	const size_t minimum_data_size = offsetof(struct dm_ioctl, data);
- 	unsigned int noio_flag;
- 
--	if (copy_from_user(param_kernel, user, minimum_data_size))
-+	/* check_version() already copied version from userspace, avoid TOCTOU */
-+	if (copy_from_user((char *)param_kernel + sizeof(param_kernel->version),
-+			   (char __user *)user + sizeof(param_kernel->version),
-+			   minimum_data_size - sizeof(param_kernel->version)))
- 		return -EFAULT;
- 
- 	if (param_kernel->data_size < minimum_data_size) {
-@@ -1991,7 +2000,7 @@ static int ctl_ioctl(struct file *file, uint command, struct dm_ioctl __user *us
- 	 * Check the interface version passed in.  This also
- 	 * writes out the kernel's interface version.
- 	 */
--	r = check_version(cmd, user);
-+	r = check_version(cmd, user, &param_kernel);
- 	if (r)
- 		return r;
- 
-diff --git a/drivers/nubus/proc.c b/drivers/nubus/proc.c
-index 1fd667852271..cd4bd06cf309 100644
---- a/drivers/nubus/proc.c
-+++ b/drivers/nubus/proc.c
-@@ -137,6 +137,18 @@ static int nubus_proc_rsrc_show(struct seq_file *m, void *v)
- 	return 0;
- }
- 
-+static int nubus_rsrc_proc_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, nubus_proc_rsrc_show, inode);
-+}
-+
-+static const struct proc_ops nubus_rsrc_proc_ops = {
-+	.proc_open	= nubus_rsrc_proc_open,
-+	.proc_read	= seq_read,
-+	.proc_lseek	= seq_lseek,
-+	.proc_release	= single_release,
-+};
-+
- void nubus_proc_add_rsrc_mem(struct proc_dir_entry *procdir,
- 			     const struct nubus_dirent *ent,
- 			     unsigned int size)
-@@ -152,8 +164,8 @@ void nubus_proc_add_rsrc_mem(struct proc_dir_entry *procdir,
- 		pded = nubus_proc_alloc_pde_data(nubus_dirptr(ent), size);
- 	else
- 		pded = NULL;
--	proc_create_single_data(name, S_IFREG | 0444, procdir,
--			nubus_proc_rsrc_show, pded);
-+	proc_create_data(name, S_IFREG | 0444, procdir,
-+			 &nubus_rsrc_proc_ops, pded);
- }
- 
- void nubus_proc_add_rsrc(struct proc_dir_entry *procdir,
-@@ -166,9 +178,9 @@ void nubus_proc_add_rsrc(struct proc_dir_entry *procdir,
- 		return;
- 
- 	snprintf(name, sizeof(name), "%x", ent->type);
--	proc_create_single_data(name, S_IFREG | 0444, procdir,
--			nubus_proc_rsrc_show,
--			nubus_proc_alloc_pde_data(data, 0));
-+	proc_create_data(name, S_IFREG | 0444, procdir,
-+			 &nubus_rsrc_proc_ops,
-+			 nubus_proc_alloc_pde_data(data, 0));
- }
- 
- /*
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index 052a611081ec..a05350a4e49c 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1043,6 +1043,16 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
- 	return false;
- }
- 
-+static void acpi_pci_config_space_access(struct pci_dev *dev, bool enable)
-+{
-+	int val = enable ? ACPI_REG_CONNECT : ACPI_REG_DISCONNECT;
-+	int ret = acpi_evaluate_reg(ACPI_HANDLE(&dev->dev),
-+				    ACPI_ADR_SPACE_PCI_CONFIG, val);
-+	if (ret)
-+		pci_dbg(dev, "ACPI _REG %s evaluation failed (%d)\n",
-+			enable ? "connect" : "disconnect", ret);
-+}
-+
- int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
- {
- 	struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
-@@ -1053,32 +1063,49 @@ int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
- 		[PCI_D3hot] = ACPI_STATE_D3_HOT,
- 		[PCI_D3cold] = ACPI_STATE_D3_COLD,
- 	};
--	int error = -EINVAL;
-+	int error;
- 
- 	/* If the ACPI device has _EJ0, ignore the device */
- 	if (!adev || acpi_has_method(adev->handle, "_EJ0"))
- 		return -ENODEV;
- 
- 	switch (state) {
--	case PCI_D3cold:
--		if (dev_pm_qos_flags(&dev->dev, PM_QOS_FLAG_NO_POWER_OFF) ==
--				PM_QOS_FLAGS_ALL) {
--			error = -EBUSY;
--			break;
--		}
--		fallthrough;
- 	case PCI_D0:
- 	case PCI_D1:
- 	case PCI_D2:
- 	case PCI_D3hot:
--		error = acpi_device_set_power(adev, state_conv[state]);
-+	case PCI_D3cold:
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (state == PCI_D3cold) {
-+		if (dev_pm_qos_flags(&dev->dev, PM_QOS_FLAG_NO_POWER_OFF) ==
-+				PM_QOS_FLAGS_ALL)
-+			return -EBUSY;
-+
-+		/* Notify AML lack of PCI config space availability */
-+		acpi_pci_config_space_access(dev, false);
- 	}
- 
--	if (!error)
--		pci_dbg(dev, "power state changed by ACPI to %s\n",
--		        acpi_power_state_string(adev->power.state));
-+	error = acpi_device_set_power(adev, state_conv[state]);
-+	if (error)
-+		return error;
- 
--	return error;
-+	pci_dbg(dev, "power state changed by ACPI to %s\n",
-+	        acpi_power_state_string(adev->power.state));
-+
-+	/*
-+	 * Notify AML of PCI config space availability.  Config space is
-+	 * accessible in all states except D3cold; the only transitions
-+	 * that change availability are transitions to D3cold and from
-+	 * D3cold to D0.
-+	 */
-+	if (state == PCI_D0)
-+		acpi_pci_config_space_access(dev, true);
-+
-+	return 0;
- }
- 
- pci_power_t acpi_pci_get_power_state(struct pci_dev *dev)
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index ecfdfb2529a3..581201818ed8 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -821,7 +821,6 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 		 */
- 		struct folio *folio;
- 		unsigned long addr;
--		bool present;
- 
- 		cond_resched();
- 
-@@ -845,10 +844,9 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
- 
- 		/* See if already present in mapping to avoid alloc/free */
--		rcu_read_lock();
--		present = page_cache_next_miss(mapping, index, 1) != index;
--		rcu_read_unlock();
--		if (present) {
-+		folio = filemap_get_folio(mapping, index);
-+		if (!IS_ERR(folio)) {
-+			folio_put(folio);
- 			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
- 			hugetlb_drop_vma_policy(&pseudo_vma);
- 			continue;
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index a910b9a638c5..8172dd4135a1 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -845,7 +845,7 @@ int nfs_getattr(struct mnt_idmap *idmap, const struct path *path,
- 
- 	request_mask &= STATX_TYPE | STATX_MODE | STATX_NLINK | STATX_UID |
- 			STATX_GID | STATX_ATIME | STATX_MTIME | STATX_CTIME |
--			STATX_INO | STATX_SIZE | STATX_BLOCKS | STATX_BTIME |
-+			STATX_INO | STATX_SIZE | STATX_BLOCKS |
- 			STATX_CHANGE_COOKIE;
- 
- 	if ((query_flags & AT_STATX_DONT_SYNC) && !force_sync) {
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6cbcc55a80b0..9e10485f37e7 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -377,7 +377,7 @@ extern unsigned int kobjsize(const void *objp);
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_MINOR */
- 
- /* Bits set in the VMA until the stack is in its final location */
--#define VM_STACK_INCOMPLETE_SETUP	(VM_RAND_READ | VM_SEQ_READ)
-+#define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_STACK_EARLY)
- 
- #define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
- 
-@@ -399,8 +399,10 @@ extern unsigned int kobjsize(const void *objp);
- 
- #ifdef CONFIG_STACK_GROWSUP
- #define VM_STACK	VM_GROWSUP
-+#define VM_STACK_EARLY	VM_GROWSDOWN
- #else
- #define VM_STACK	VM_GROWSDOWN
-+#define VM_STACK_EARLY	0
- #endif
- 
- #define VM_STACK_FLAGS	(VM_STACK | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index f154019e6b84..f791076da157 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5731,13 +5731,13 @@ static bool hugetlbfs_pagecache_present(struct hstate *h,
- {
- 	struct address_space *mapping = vma->vm_file->f_mapping;
- 	pgoff_t idx = vma_hugecache_offset(h, vma, address);
--	bool present;
--
--	rcu_read_lock();
--	present = page_cache_next_miss(mapping, idx, 1) != idx;
--	rcu_read_unlock();
-+	struct folio *folio;
- 
--	return present;
-+	folio = filemap_get_folio(mapping, idx);
-+	if (IS_ERR(folio))
-+		return false;
-+	folio_put(folio);
-+	return true;
- }
- 
- int hugetlb_add_to_page_cache(struct folio *folio, struct address_space *mapping,
-diff --git a/mm/nommu.c b/mm/nommu.c
-index fdc392735ec6..c072a660ec2c 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -637,8 +637,13 @@ EXPORT_SYMBOL(find_vma);
- struct vm_area_struct *lock_mm_and_find_vma(struct mm_struct *mm,
- 			unsigned long addr, struct pt_regs *regs)
- {
-+	struct vm_area_struct *vma;
-+
- 	mmap_read_lock(mm);
--	return vma_lookup(mm, addr);
-+	vma = vma_lookup(mm, addr);
-+	if (!vma)
-+		mmap_read_unlock(mm);
-+	return vma;
- }
- 
- /*
-diff --git a/scripts/tags.sh b/scripts/tags.sh
-index ea31640b2671..f6b3c7cd39c7 100755
---- a/scripts/tags.sh
-+++ b/scripts/tags.sh
-@@ -32,6 +32,13 @@ else
- 	tree=${srctree}/
- fi
- 
-+# gtags(1) refuses to index any file outside of its current working dir.
-+# If gtags indexing is requested and the build output directory is not
-+# the kernel source tree, index all files in absolute-path form.
-+if [[ "$1" == "gtags" && -n "${tree}" ]]; then
-+	tree=$(realpath "$tree")/
-+fi
-+
- # Detect if ALLSOURCE_ARCHS is set. If not, we assume SRCARCH
- if [ "${ALLSOURCE_ARCHS}" = "" ]; then
- 	ALLSOURCE_ARCHS=${SRCARCH}
-@@ -131,7 +138,7 @@ docscope()
- 
- dogtags()
- {
--	all_target_sources | gtags -i -f -
-+	all_target_sources | gtags -i -C "${tree:-.}" -f - "$PWD"
- }
- 
- # Basic regular expressions with an optional /kind-spec/ for ctags and
-diff --git a/tools/include/nolibc/arch-x86_64.h b/tools/include/nolibc/arch-x86_64.h
-index f7f2a11d4c3b..f52725f51fca 100644
---- a/tools/include/nolibc/arch-x86_64.h
-+++ b/tools/include/nolibc/arch-x86_64.h
-@@ -190,7 +190,7 @@ const unsigned long *_auxv __attribute__((weak));
-  * 2) The deepest stack frame should be zero (the %rbp).
-  *
-  */
--void __attribute__((weak,noreturn,optimize("omit-frame-pointer"))) _start(void)
-+void __attribute__((weak,noreturn,optimize("omit-frame-pointer"),no_stack_protector)) _start(void)
- {
- 	__asm__ volatile (
- #ifdef NOLIBC_STACKPROTECTOR
-diff --git a/tools/testing/cxl/Kbuild b/tools/testing/cxl/Kbuild
-index 6f9347ade82c..fba7bec96acd 100644
---- a/tools/testing/cxl/Kbuild
-+++ b/tools/testing/cxl/Kbuild
-@@ -6,7 +6,6 @@ ldflags-y += --wrap=acpi_pci_find_root
- ldflags-y += --wrap=nvdimm_bus_register
- ldflags-y += --wrap=devm_cxl_port_enumerate_dports
- ldflags-y += --wrap=devm_cxl_setup_hdm
--ldflags-y += --wrap=devm_cxl_enable_hdm
- ldflags-y += --wrap=devm_cxl_add_passthrough_decoder
- ldflags-y += --wrap=devm_cxl_enumerate_decoders
- ldflags-y += --wrap=cxl_await_media_ready
-diff --git a/tools/testing/cxl/test/mock.c b/tools/testing/cxl/test/mock.c
-index 284416527644..de3933a776fd 100644
---- a/tools/testing/cxl/test/mock.c
-+++ b/tools/testing/cxl/test/mock.c
-@@ -149,21 +149,6 @@ struct cxl_hdm *__wrap_devm_cxl_setup_hdm(struct cxl_port *port,
- }
- EXPORT_SYMBOL_NS_GPL(__wrap_devm_cxl_setup_hdm, CXL);
- 
--int __wrap_devm_cxl_enable_hdm(struct cxl_port *port, struct cxl_hdm *cxlhdm)
--{
--	int index, rc;
--	struct cxl_mock_ops *ops = get_cxl_mock_ops(&index);
--
--	if (ops && ops->is_mock_port(port->uport))
--		rc = 0;
--	else
--		rc = devm_cxl_enable_hdm(port, cxlhdm);
--	put_cxl_mock_ops(index);
--
--	return rc;
--}
--EXPORT_SYMBOL_NS_GPL(__wrap_devm_cxl_enable_hdm, CXL);
--
- int __wrap_devm_cxl_add_passthrough_decoder(struct cxl_port *port)
- {
- 	int rc, index;
+On Wed, Jul 5, 2023 at 10:24=E2=80=AFAM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> On 05.07.23 19:22, Suren Baghdasaryan wrote:
+> > On Wed, Jul 5, 2023 at 10:16=E2=80=AFAM David Hildenbrand <david@redhat=
+.com> wrote:
+> >>
+> >> On 05.07.23 19:12, Suren Baghdasaryan wrote:
+> >>> A memory corruption was reported in [1] with bisection pointing to th=
+e
+> >>> patch [2] enabling per-VMA locks for x86.
+> >>> Disable per-VMA locks config to prevent this issue while the problem =
+is
+> >>> being investigated. This is expected to be a temporary measure.
+> >>>
+> >>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+> >>> [2] https://lore.kernel.org/all/20230227173632.3292573-30-surenb@goog=
+le.com
+> >>>
+> >>> Reported-by: Jiri Slaby <jirislaby@kernel.org>
+> >>> Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf=
+51b@kernel.org/
+> >>> Reported-by: Jacob Young <jacobly.alt@gmail.com>
+> >>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+> >>> Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling =
+first")
+> >>> Cc: stable@vger.kernel.org
+> >>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> >>> ---
+> >>>    mm/Kconfig | 3 ++-
+> >>>    1 file changed, 2 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/mm/Kconfig b/mm/Kconfig
+> >>> index 09130434e30d..0abc6c71dd89 100644
+> >>> --- a/mm/Kconfig
+> >>> +++ b/mm/Kconfig
+> >>> @@ -1224,8 +1224,9 @@ config ARCH_SUPPORTS_PER_VMA_LOCK
+> >>>           def_bool n
+> >>>
+> >>>    config PER_VMA_LOCK
+> >>> -     def_bool y
+> >>> +     bool "Enable per-vma locking during page fault handling."
+> >>>        depends on ARCH_SUPPORTS_PER_VMA_LOCK && MMU && SMP
+> >>> +     depends on BROKEN
+> >>>        help
+> >>>          Allow per-vma locking during page fault handling.
+> >>>
+> >> Do we have any testing results (that don't reveal other issues :) ) fo=
+r
+> >> patch #1? Not sure if we really want to mark it broken if patch #1 fix=
+es
+> >> the issue.
+> >
+> > I tested the fix using the only reproducer provided in the reports
+> > plus kernel compilation and my fork stress test. All looked good and
+> > stable but I don't know if other reports had the same issue or
+> > something different.
+>
+> Can you point me at the other reports, so I can quickly scan them?
+
+by Jacob Young: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+by Jiri Slaby: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cd=
+f51b@kernel.org/
+by Holger Hoffst=C3=A4tte:
+https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34c@applied-as=
+ynchrony.com/
+only saying that Firefox started crashing after upgrading to 6.4.1
+
+>
+> --
+> Cheers,
+>
+> David / dhildenb
+>
