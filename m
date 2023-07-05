@@ -2,54 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78BBD7489E9
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 19:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2E7F7489EB
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 19:12:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231285AbjGERMT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 13:12:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38710 "EHLO
+        id S231736AbjGERMV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 13:12:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjGERMS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 13:12:18 -0400
+        with ESMTP id S230383AbjGERMV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 13:12:21 -0400
 Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE5AE173E
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 10:12:17 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-56cf9a86277so70977117b3.3
-        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 10:12:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B6D8173F
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 10:12:20 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-57704aa6c69so68016427b3.0
+        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 10:12:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688577137; x=1691169137;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ov6LRlh9LCdAcznRqf58Iol/cEMbf+u2BMkn78BN9Oo=;
-        b=T+mg0OFmgyXoHB2xUaxm9bI4N2paEqU77xhwnCoD437rE/Z/Llg19AEluRmHAbVMx0
-         I0BZQ7u/eO4Ij5I/NThKezUth0qUGDXM5G+daFzn7MOrQjk4F0RzI+viZxO0comk49pn
-         Y8IuBNJSr0aaErcvx0gMtv3EX9xM1HqGpGhFReOjMEKGI1+xcg+q8uxvzpQxG5K/ZDUS
-         /ErPZNZ2957JqkKSfPiD0t/UasiQeM30ZPI9PleSoysvKxLx9H1bTrVkISH23PoumPBp
-         TUPT7I81Wc8WU3NpCs5K54aliI8UAg7s5K6AsmFIOL1ld3FjOwld7HxD1hbhbc+sMUOH
-         s2vg==
+        d=google.com; s=20221208; t=1688577139; x=1691169139;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LEfYN9pWKwKFx1JeQhdsclXOpUTR5qIj3GofsUdOz+Q=;
+        b=pv5J0UpQIPe0CfYpd/A4LUOIsPSqjggyBSXP8KA0L3IjO09ETnpFoKvsG9qpEBU9te
+         LkkAk34KlR77CbwUqvjVmP+PelArfdSViArec9GtraLonPbdZCHYpxl59mhuJh+qwNH/
+         x8PVMMrUZyzXU+40IUVTClHb66yk1cJcLC9UceptakgAwptMXgWNfem+82VsI8PV2343
+         ulU6/+r+EU8f0/mTbgobEHK1XRAYgNrYZAN4gmcUtuXNe9XdnDjCwCv5EvDBO523pj4K
+         7SMAC2TVEkWPpnJYpSek3AANRder6w/kKNU3IvQKMe889P3MVrbJ0gLpEvPDPOLNjhs0
+         dzJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688577137; x=1691169137;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ov6LRlh9LCdAcznRqf58Iol/cEMbf+u2BMkn78BN9Oo=;
-        b=NEhnc6/gmZ3ib6TjrUKoj4K17YfcEHFtuQIIJ7HUBbP4qzNusHXQKWPo60MYvs2QP4
-         LN9Q7uw3DWGelrq1ChJFCm1Cjzs8YAbCEQQ83FTYAl6etg0yPPLG9ejiEbz2lh7DpIiF
-         J9vk0nQCbL4kVBrGfP046NtEEawPevdXTZRL+UM8sSPPuzMAkccX0DE3LtPTTLccolw6
-         ACX9OJJlcovo8r3iWweU6X8E99yn17Jo/SjvqrB9kQf69VrVkWjFYrOkuYa8enP5QAji
-         Ha/6waV8kMJGIVg57qVWZ6+MuzRmr2U8pbWuClWdzE2dkZShso2OOnv+i1zjC7/E5jSO
-         YRZA==
-X-Gm-Message-State: ABy/qLZNT4tFLXpXcOjQD6poykQmzSQ/bEke8Cr77u78M6rJCxVxOwlz
-        y4a1JqO7eV4CRmb42ao+1+rKfzJSnLk=
-X-Google-Smtp-Source: APBJJlFqC2MtdmTPgc1v7+QBlSCtCP4tG5yIre7Jg4XHgPH/Ze+FST6lwDib3ryjRXTWbz8lERZ1X7bsWMU=
+        d=1e100.net; s=20221208; t=1688577139; x=1691169139;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LEfYN9pWKwKFx1JeQhdsclXOpUTR5qIj3GofsUdOz+Q=;
+        b=NwcLwC6Fv+FuI3vxamjHwhC9oHUTRJCVyZcY74zIq80M9+KdklXATE2O0sSYaLH/TQ
+         iuW8ar9Sro693KAORqaOfpC8gFIuhnyyvpJwQ2lRGss5JCOYEg5F/rFu6VCdRS7CjjjF
+         uDLvf1LEJ0Czo2hjd1Y3wrzBTB7NFCrIXnAu9Amn2De7WmBG2hCtLSNXfbnRo8wviRas
+         +jDIUDSazMS91yOhqZPlJi4tpoVM/xqSvqhOrPFwG2/2bFCChgufzmc2gyhvgrPQ6h30
+         M1AWewanr7mjpdMoHtdQqb+H9LjMRj0eXteCMHRTMi+1CJdOQob/uOQCl0VzD5YE94Vq
+         gf3g==
+X-Gm-Message-State: ABy/qLaYrQq5OQM4gUbOHITwxx21YTQL7Ydd3wuOan7IMSLCzl8m++pK
+        zeSqQu39rcBwGiBsxfcNA96b1T5gMFw=
+X-Google-Smtp-Source: APBJJlE4UJqW+lKx2tf9OzDDJfg9cAcjpV6MDLC4+UeP6EFuD+QsQM5ZG6pzBAqVEKNmfN+tN2GiB5xNqjQ=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:946c:be30:90d9:9093])
- (user=surenb job=sendgmr) by 2002:a81:ca0d:0:b0:576:fc37:e6c3 with SMTP id
- p13-20020a81ca0d000000b00576fc37e6c3mr109707ywi.9.1688577136832; Wed, 05 Jul
- 2023 10:12:16 -0700 (PDT)
-Date:   Wed,  5 Jul 2023 10:12:10 -0700
+ (user=surenb job=sendgmr) by 2002:a81:b60f:0:b0:577:617b:f881 with SMTP id
+ u15-20020a81b60f000000b00577617bf881mr98615ywh.8.1688577139225; Wed, 05 Jul
+ 2023 10:12:19 -0700 (PDT)
+Date:   Wed,  5 Jul 2023 10:12:11 -0700
+In-Reply-To: <20230705171213.2843068-1-surenb@google.com>
 Mime-Version: 1.0
+References: <20230705171213.2843068-1-surenb@google.com>
 X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230705171213.2843068-1-surenb@google.com>
-Subject: [PATCH v3 0/2] Avoid memory corruption caused by per-VMA locks
+Message-ID: <20230705171213.2843068-2-surenb@google.com>
+Subject: [PATCH v3 1/2] fork: lock VMAs of the parent process when forking
 From:   Suren Baghdasaryan <surenb@google.com>
 To:     akpm@linux-foundation.org
 Cc:     jirislaby@kernel.org, jacobly.alt@gmail.com,
@@ -70,6 +74,7 @@ Cc:     jirislaby@kernel.org, jacobly.alt@gmail.com,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         Suren Baghdasaryan <surenb@google.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
@@ -80,14 +85,17 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-A memory corruption was reported in [1] with bisection pointing to the
-patch [2] enabling per-VMA locks for x86. Based on the reproducer
-provided in [1] we suspect this is caused by the lack of VMA locking
-while forking a child process.
-
-Patch 1/2 in the series implements proper VMA locking during fork.
-I tested the fix locally using the reproducer and was unable to reproduce
-the memory corruption problem.
+When forking a child process, parent write-protects an anonymous page
+and COW-shares it with the child being forked using copy_present_pte().
+Parent's TLB is flushed right before we drop the parent's mmap_lock in
+dup_mmap(). If we get a write-fault before that TLB flush in the parent,
+and we end up replacing that anonymous page in the parent process in
+do_wp_page() (because, COW-shared with the child), this might lead to
+some stale writable TLB entries targeting the wrong (old) page.
+Similar issue happened in the past with userfaultfd (see flush_tlb_page()
+call inside do_wp_page()).
+Lock VMAs of the parent process when forking a child, which prevents
+concurrent page faults during fork operation and avoids this issue.
 This fix can potentially regress some fork-heavy workloads. Kernel build
 time did not show noticeable regression on a 56-core machine while a
 stress test mapping 10000 VMAs and forking 5000 times in a tight loop
@@ -95,25 +103,41 @@ shows ~5% regression. If such fork time regression is unacceptable,
 disabling CONFIG_PER_VMA_LOCK should restore its performance. Further
 optimizations are possible if this regression proves to be problematic.
 
-Patch 2/2 disabled per-VMA locks until the fix is tested and verified.
-
-Both patches apply cleanly over Linus' ToT and stable 6.4.y branch.
-
-Changes from v2 posted at [3]:
-- Move VMA locking before flush_cache_dup_mm, per David Hildenbrand
-
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=217624
-[2] https://lore.kernel.org/all/20230227173632.3292573-30-surenb@google.com
-[3] https://lore.kernel.org/all/20230705063711.2670599-1-surenb@google.com/
-
-Suren Baghdasaryan (2):
-  fork: lock VMAs of the parent process when forking
-  mm: disable CONFIG_PER_VMA_LOCK until its fixed
-
+Suggested-by: David Hildenbrand <david@redhat.com>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@ke=
+rnel.org/
+Reported-by: Holger Hoffst=C3=A4tte <holger@applied-asynchrony.com>
+Closes: https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34c@ap=
+plied-asynchrony.com/
+Reported-by: Jacob Young <jacobly.alt@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling first"=
+)
+Cc: stable@vger.kernel.org
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+---
  kernel/fork.c | 6 ++++++
- mm/Kconfig    | 3 ++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ 1 file changed, 6 insertions(+)
 
--- 
+diff --git a/kernel/fork.c b/kernel/fork.c
+index b85814e614a5..403bc2b72301 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -658,6 +658,12 @@ static __latent_entropy int dup_mmap(struct mm_struct =
+*mm,
+ 		retval =3D -EINTR;
+ 		goto fail_uprobe_end;
+ 	}
++#ifdef CONFIG_PER_VMA_LOCK
++	/* Disallow any page faults before calling flush_cache_dup_mm */
++	for_each_vma(old_vmi, mpnt)
++		vma_start_write(mpnt);
++	vma_iter_init(&old_vmi, oldmm, 0);
++#endif
+ 	flush_cache_dup_mm(oldmm);
+ 	uprobe_dup_mmap(oldmm, mm);
+ 	/*
+--=20
 2.41.0.255.g8b1d071c50-goog
 
