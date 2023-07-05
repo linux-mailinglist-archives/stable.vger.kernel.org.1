@@ -2,120 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38A7C748003
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 10:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CD9374801C
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 10:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231958AbjGEIpK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 04:45:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60184 "EHLO
+        id S232072AbjGEIvD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 04:51:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231754AbjGEIpJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 04:45:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EE9D19B;
-        Wed,  5 Jul 2023 01:45:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DBEE61493;
-        Wed,  5 Jul 2023 08:45:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC539C433C8;
-        Wed,  5 Jul 2023 08:45:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688546708;
-        bh=3I2hTeaGJBO9WRbnJZs9CjQRSwxF5Et8HWH3vhQF2R4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IyyzxTzpjRQ99S07jHM4YvYSM5O+NPQ8VPIwVeygMXzycK5oiHL7YKk34upTe6Qp3
-         w7O1x2tV6MWOkBUPupVX3UnZE2RtQXJzOn0KIOHay8chlXi/CGNP6p9DDj/9bftVUi
-         Bvm1dyMGpYbuR8K+eG9AM4XIeyKvmrEIn75F7GbtBrjwMr7zhdZo3w7ZpZT8m7S+4b
-         V2MALGMozJ/oxnScVZ1+9xn+rJ7La5PHV2KvilxBMw7MpB8QPBUT54/P0DamN15RSr
-         ptstEREff74SXUzlPlEM0Gp8AFrn82riVzUenSCEODNStMv9PWzwrj60I6fvlyoQ/J
-         ttoJ0PewpXP/g==
-Date:   Wed, 5 Jul 2023 14:14:54 +0530
-From:   Manivannan Sadhasivam <mani@kernel.org>
-To:     Sricharan Ramabadhran <quic_srichara@quicinc.com>
-Cc:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, sboyd@kernel.org, mturquette@baylibre.com,
-        lpieralisi@kernel.org, bhelgaas@google.com,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-pci@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH V2] PCI: qcom: Use PARF_SLV_ADDR_SPACE_SIZE for ops_2_3_3
-Message-ID: <20230705084454.GE11854@thinkpad>
-References: <20230703175757.2425540-1-quic_srichara@quicinc.com>
+        with ESMTP id S231708AbjGEIvC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 04:51:02 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA841722;
+        Wed,  5 Jul 2023 01:50:58 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3a3c78ede4bso808024b6e.2;
+        Wed, 05 Jul 2023 01:50:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688547057; x=1691139057;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wjetYudzBDRm79CoZEFgauUDFcjdsQG1HEiGIKnkNc0=;
+        b=i6C2yhZ0pF3S4zasSWenfcz2CBw8oHQivaBvNp4W74p0zANn30MONFJn6cNmDJpt8q
+         mWAql0bS094GvjDUTlp+nxsqwdkUHuVueU/eimGL2TkkRF7Nn182JCKih1uSgu7Dhi+0
+         45PAVKvxFhKhCtUq4GMKGyBg/mf3Lj7TI9rsz0HNm4B7IXLQc0oj8Gobtfa/nTfo7nL3
+         WwsTJjJGYm/ubrabYHvyq5hplbjqa9eeQqIGlXGc9sfAddh9EN7V8ByKYMc4VkCXlajC
+         Jore9r7B8L/Gg6GgORbSpJi10r1mmGne08rZ7PB+osf7JVx3+1Go8WTzhoYbwV0BGd18
+         VTLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688547057; x=1691139057;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wjetYudzBDRm79CoZEFgauUDFcjdsQG1HEiGIKnkNc0=;
+        b=Ir0BMsefMZp1EfN3cxVo4NUoq9AFYCx+qLJE+Y5pDlbalNOJ+oitEfGu+6Rv2CuZk/
+         DVcCg6EctycLbsB7flP/+8KfcOz/5ajAieFO8KJtKZ0tR8/BPpYUOEfemvDgaF5gIBHi
+         EsbZMcVuVaL7N3XnfeHJoVvApq5Jrpeh4i3eGDkxPPHJOKAbNP+jarUncrzQunw2Ky5V
+         lIou9rfwREezfhsKhozCjRDILNGkS9ZzRsr+h6K2H2SpyE1aS92cw/I66cHdoARGe6D9
+         i26hfMxgYJPLmbGDVrPHMMTWDCHwj90Fjrmt8/scw0XABzEwbRIn8W6vXdvG+Xx7CkpY
+         oUFQ==
+X-Gm-Message-State: AC+VfDyJmPullam/F6u0zO4OT69b6G4VchY6P0eN6HqPcNUZvb0ejX/7
+        r4oM2Th1i5nusI4WAKkxsQ7dwftyhng=
+X-Google-Smtp-Source: ACHHUZ5jGof96+7NEVY63a3PdEYzNFMohoQ02d1TKKVe5Mt9qyypeD525412U6gBWe4PB43mqFlq+Q==
+X-Received: by 2002:aca:2b02:0:b0:3a1:dc0d:f337 with SMTP id i2-20020aca2b02000000b003a1dc0df337mr11475349oik.45.1688547057241;
+        Wed, 05 Jul 2023 01:50:57 -0700 (PDT)
+Received: from [10.1.1.24] (222-152-184-54-fibre.sparkbb.co.nz. [222.152.184.54])
+        by smtp.gmail.com with ESMTPSA id j24-20020a63cf18000000b0054ff075fb31sm17590234pgg.42.2023.07.05.01.50.50
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 05 Jul 2023 01:50:56 -0700 (PDT)
+Subject: Re: [PATCH v3] block: bugfix for Amiga partition overflow check patch
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230704054955.16906-1-schmitzmic@gmail.com>
+ <CAMuHMdUY6T7Q+fusJtHQxYTnKAvsdOJvFL_ZS-bkJTV32Y2yCw@mail.gmail.com>
+ <69cf5397-1a99-8cc5-ed48-d354f0ad05df@gmail.com>
+ <CAMuHMdVD9r2XjPYU9WJXYoSO5LriCoYy+TOp4ddru3WbX803Tg@mail.gmail.com>
+Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
+        linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de, hch@lst.de,
+        martin@lichtvoll.de, stable@vger.kernel.org
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <07830f19-5275-2108-adf0-b5c1c1d2b5f6@gmail.com>
+Date:   Wed, 5 Jul 2023 20:50:47 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230703175757.2425540-1-quic_srichara@quicinc.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAMuHMdVD9r2XjPYU9WJXYoSO5LriCoYy+TOp4ddru3WbX803Tg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 03, 2023 at 11:27:57PM +0530, Sricharan Ramabadhran wrote:
-> PARF_SLV_ADDR_SPACE_SIZE_2_3_3 macro is used for IPQ8074
-> 2_3_3 post_init ops. pcie slave addr size was initially set
+Hi Geert,
 
-PCIe
+Am 05.07.2023 um 19:24 schrieb Geert Uytterhoeven:
+>>> We do not really have a way to record comments in git history
+>>> after the fact.  The best you can do is to reply to the email thread
+>>> where the patch was submitted.  When people follow the Link:
+>>> tag to the lore archive in the original commit, they can read any follow-ups.
+>>
+>> Does lore pick up related patches through the In-Reply-To header? In
+>> that case it would be easiest for me to to put this comment in a cover
+>> letter to the bugfix patch.
+>
+> Lore does not do that (b4 (the tool to download patch series from lore)
+> usually can link a series to its previous version, though).
+> New replies sent to a patch submission do end up in the right thread,
+> so any later comments (bug reports, Reviewed/Tested-by tags, ...)
+> can be found easily by following the Link: tag in the commit.
 
-> to 0x358, but was wrongly changed to 0x168 as a part of
+OK, that's good enough for me.
 
-commit 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from register definitions")
+>>>> Partitions that did overflow the disk size (due to 32 bit int
+>>>> overflow) were not skipped but truncated to the end of the
+>>>> disk. Users who missed the warning message during boot would
+>>> I am confused.  So before, the partition size as seen by Linux after
+>>> the truncation, was correct?
+>>
+>> No, it was incorrect (though valid).
+>>
+>> On a 2 TB disk, a partition of 1.3 TB at the end of the disk (but not
+>> extending to the very end!) would trigger a overflow in the size
+>> calculation:
+>>
+>> sda: p4 size 18446744071956107760 extends beyond EOD,
+>
+> Oh, so they were not "truncated to the end of the disk"?
 
-> "PCI: qcom: Remove PCIE20_ prefix from register definitions"
-> Fixing it, by using the right macro PARF_SLV_ADDR_SPACE_SIZE
-> and removing the unused PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
-> 
+Not by the RDB parser, but truncation happens ultimately. I should have 
+copied the second instance of that message from Christian's log:
 
-Commit message should be imperative.
+sda: p4 size 18446744071956107760 extends beyond EOD, truncated
 
-> Without this pcie bring up on IPQ8074 is broken now.
-> 
-> Fixes: 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from register definitions")
-> Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
-> ---
->  [V2] Fixed the 'fixes tag' correctly, subject, right macro usage
-> 
->  drivers/pci/controller/dwc/pcie-qcom.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-> index 4ab30892f6ef..1689d072fe86 100644
-> --- a/drivers/pci/controller/dwc/pcie-qcom.c
-> +++ b/drivers/pci/controller/dwc/pcie-qcom.c
-> @@ -43,7 +43,6 @@
->  #define PARF_PHY_REFCLK				0x4c
->  #define PARF_CONFIG_BITS			0x50
->  #define PARF_DBI_BASE_ADDR			0x168
-> -#define PARF_SLV_ADDR_SPACE_SIZE_2_3_3		0x16c /* Register offset specific to IP ver 2.3.3 */
->  #define PARF_MHI_CLOCK_RESET_CTRL		0x174
->  #define PARF_AXI_MSTR_WR_ADDR_HALT		0x178
->  #define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1a8
-> @@ -811,7 +810,7 @@ static int qcom_pcie_post_init_2_3_3(struct qcom_pcie *pcie)
->  	u32 val;
->  
->  	writel(SLV_ADDR_SPACE_SZ,
-> -		pcie->parf + PARF_SLV_ADDR_SPACE_SIZE_2_3_3);
-> +		pcie->parf + PARF_SLV_ADDR_SPACE_SIZE);
+The core partition code later sanity checks the partition data and 
+truncates (see block/partitions/core.c:blk_add_partition())
 
-This could be wrapped in the above line itself.
+Cheers,
 
-- Mani
-
->  
->  	val = readl(pcie->parf + PARF_PHY_CTRL);
->  	val &= ~PHY_TEST_PWR_DOWN;
-> -- 
-> 2.34.1
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+	Michael
