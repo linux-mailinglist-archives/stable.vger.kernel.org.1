@@ -2,91 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B19D747F33
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 10:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF607747F66
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 10:20:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232462AbjGEIRJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 04:17:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43356 "EHLO
+        id S231810AbjGEIUf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 04:20:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231290AbjGEIRI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 04:17:08 -0400
-X-Greylist: delayed 1152 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 05 Jul 2023 01:17:02 PDT
-Received: from alt-proxy28.mail.unifiedlayer.com (alt-proxy28.mail.unifiedlayer.com [74.220.216.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FFC11719
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 01:17:02 -0700 (PDT)
-Received: from cmgw13.mail.unifiedlayer.com (unknown [10.0.90.128])
-        by progateway1.mail.pro1.eigbox.com (Postfix) with ESMTP id 12A9A1004062A
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 08:17:02 +0000 (UTC)
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTP
-        id Gxh8qc7RWNX2aGxh8q4RWM; Wed, 05 Jul 2023 08:17:02 +0000
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.4 cv=NMAQR22g c=1 sm=1 tr=0 ts=64a526fe
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10:nop_charset_1
- a=ws7JD89P4LkA:10:nop_rcvd_month_year
- a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=yHYbLVMQCOB0I-ZR2NwA:9 a=QEXdDO2ut3YA:10:nop_charset_2
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Or7n9G3PxxIStDvuuYU0gwfWzWQF03cxWN294tWfCWk=; b=eFnzclcPns4PRcEMPAtxGaI2Cx
-        M1CnTkNhRSlsIJJNa26P09ZxznedKery0BKZMupdim9h1hkK1hlT2m0knaKPijmiE2rzds8fXkrNc
-        6Ii5pHUO3UXmy0rR4Pkv/FrFo2526IXyl8rklBdpZ7BNm/+hNV/dBdNOM7X1LFWoHGlG1OIl/Ncxd
-        cbvI4PjVDsz7Sz0dGEUewS9O3MF/ZhYPzi0Wd3bLzs0TBg3bUrH2Dc0kwdUGaUic3kNfqDSYpEZ5g
-        AeiPAEvZSJJIomaDSFhkMi98TMBxJKlMk7kRxQz7hzcpQ7oWA+AiPyVFBm8i2CFi48Ocn6Zk8NGo4
-        8/REFedg==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:46694 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.95)
-        (envelope-from <re@w6rz.net>)
-        id 1qGxh6-002rrK-Oc;
-        Wed, 05 Jul 2023 02:17:00 -0600
-Subject: Re: [PATCH 5.15 00/17] 5.15.120-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230704084610.981452877@linuxfoundation.org>
-In-Reply-To: <20230704084610.981452877@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <fe2bcc7f-c515-9b4c-fbdc-2659dc4f2464@w6rz.net>
-Date:   Wed, 5 Jul 2023 01:16:58 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S231969AbjGEIUV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 04:20:21 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F54B1BFB
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 01:19:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688545177; x=1720081177;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=rz0v9QIUxLspvY/L3UqIDS0FVDS5+aMsMjXSkjqh5cU=;
+  b=J9PGhKrybN/TYUjdRDp8/ch+h0MOUGnh/sKOKIXPMGlc7kY6oYF0O5+u
+   Snd2Q98tGtkS7FMYzFCd3tDaZ210HW7vXJ75O31rlljulDiA1/J6QKHri
+   ZcJ+y/DUNwneHcyE64ScLHhvyHF0Rdcf5MDLCw9ucg38PzRM6S+2Qa1lj
+   roOBvsmLjeXVM8oXmkhd89dlJtbkmEjXqW31VofetNbJ/i7+Milu6tifZ
+   5Jj7cq2zz/STfvsle79D+4DOEPilZrRvUWwf4cA2c4TYxhQC9JR68JJAv
+   X8eZGXWMwdQd+2OdDtmoZQ+IwslMVmcX9cHcFDc1TsgtETU0nLxFUiMKb
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="366764760"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
+   d="scan'208";a="366764760"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 01:17:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="784442204"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
+   d="scan'208";a="784442204"
+Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 05 Jul 2023 01:17:54 -0700
+Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qGxhx-0000Vq-0P;
+        Wed, 05 Jul 2023 08:17:53 +0000
+Date:   Wed, 5 Jul 2023 16:17:49 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH V5 net] net: mana: Fix MANA VF unload when hardware is
+ unresponsive
+Message-ID: <ZKUnLa+98qCZA5Dj@a1daa7802ad8>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1qGxh6-002rrK-Oc
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:46694
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 36
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1688544973-2507-1-git-send-email-schakrabarti@linux.microsoft.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,26 +63,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/4/23 1:48 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.120 release.
-> There are 17 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 06 Jul 2023 08:46:01 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.120-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi,
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Thanks for your patch.
 
-Tested-by: Ron Economos <re@w6rz.net>
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH V5 net] net: mana: Fix MANA VF unload when hardware is unresponsive
+Link: https://lore.kernel.org/stable/1688544973-2507-1-git-send-email-schakrabarti%40linux.microsoft.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
