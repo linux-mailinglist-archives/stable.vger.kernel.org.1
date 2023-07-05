@@ -2,194 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C689748467
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 14:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 261A2748592
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 15:58:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231533AbjGEMvK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 08:51:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52636 "EHLO
+        id S231313AbjGEN6G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 09:58:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230466AbjGEMvK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 08:51:10 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A30E10F2
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 05:51:09 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fbc244d384so66037615e9.0
-        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 05:51:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688561467; x=1691153467;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=noF3Ta0PVHsT1dAI560cBu0m3xEmyMOxO2GSiAJv96w=;
-        b=6+ZPkY1yjJwXTqbMFTMHCrK/T8datvgutZDhyMZnXhvNBxoAhfyIf+ANzHU6SA+iDF
-         15NS7oWLkd9Dz2l5TeJzBOyR6g4cWuq7+9CRVGIlPqGmovYdrN46qlhvj2LMvArQl42N
-         B90c3qixMrWpkPgNA6yM4gGINevXFByNktY/I8rXs4lmt0/ilHDdlYgMYQt5EM5USIO0
-         TSfu6sRlGg/DMjejEgyIwHvQfF9dHhloReFNi8EKarKYcKCXCCa2PVpGXLJYojOIVHwk
-         I8Mro2ud2P6fRx9BffNsFpWKrprg2At0+O0DS7a2oKpRCrgBFICFbsVqFSRIJJvCViGq
-         kzKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688561467; x=1691153467;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=noF3Ta0PVHsT1dAI560cBu0m3xEmyMOxO2GSiAJv96w=;
-        b=GSF7tS035opb4J3r8TWbhf38WJVY3ZgSaRZPRulLPLv+s+WVLuVfS1lX+43uSoSrJv
-         sZPn9O+cL4Fz9/Y1Kp8nulnHMR+zyuT/r4mjbccodbbvP+V72NNZ56Nn4lnPbxZH/WHG
-         efIf6f1S/vEDfBPM5xTRK5Yaj1RoKnmPqUBwMdc30GnWTVEWaLLomPwvaiwwb/OxMSn3
-         CPqtBZIklt6gYIjHL56KkutIUe9O1yQZwFfinaxsr14k1wfwEwcNuhZujT5NDTDfuhjB
-         NZneeuMTiriVO3woQiO8EICUXnzFBUOPazDcw0PKuuXNnCqDGtchG2wkKAl44wKgkDRq
-         M0sg==
-X-Gm-Message-State: AC+VfDzh5ESurk1Vuis12hZCtPosD/IsA9Og2sn1K/HLEzcUYcOMN9OF
-        UPxlqtdhUSSRttnk1T9kJwKPXcIhQKH95eLqCQG6Jg==
-X-Google-Smtp-Source: ACHHUZ7mUyPyhRDfHd4CI2NmZWEHYRE1pLrvi+Khzyl+5wxz5EtXLb+GHQjp/Vq1Ggszq6SjK7AVmpc/kNaHlG+RQO8=
-X-Received: by 2002:a1c:4c12:0:b0:3fb:b1af:a455 with SMTP id
- z18-20020a1c4c12000000b003fbb1afa455mr12792094wmf.5.1688561467416; Wed, 05
- Jul 2023 05:51:07 -0700 (PDT)
+        with ESMTP id S232350AbjGEN5z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 09:57:55 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FD611B;
+        Wed,  5 Jul 2023 06:57:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688565474; x=1720101474;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=PdRHsWcUvKlFxrNHtPGxrZat7W9p+9tZkkMZRNnSzjQ=;
+  b=G+qVJWgANbUBDr5M8wITIOro4rbNtyh4umU9dukluk26fuCIzssdgjKd
+   bmoJ7Cs5RjKp3njt6wLbQH8jEYsuVut8a45JjWkQP59vOVwZ7DZvofqqx
+   X8BthI+16KQR/9zJk/A/71sKBbflUwsKsd6GBL6DhxMbOno42GK29vzEb
+   4lDszr9Wx4eHDPneRI4k9CecuSbbNX4G4SXmRWD2RGjPq3/JylBu0uM+g
+   9nBUnJPSEGdbhCP4YacjtTTTQXRO+f0ZuA/A3JxDIabnnThLwYN2ZsK7v
+   9ucTJDH8MInGiqJaByjBKCVPB+C77d554kjkEK9iVnPPTrOI/F2COhSUL
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10762"; a="342934605"
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="342934605"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 06:57:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10762"; a="965835533"
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="965835533"
+Received: from meggieha-mobl.ger.corp.intel.com (HELO [10.252.48.235]) ([10.252.48.235])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 06:57:49 -0700
+Message-ID: <907ad7a3-3384-c0c4-90a9-5beab4cc45e0@linux.intel.com>
+Date:   Wed, 5 Jul 2023 14:53:17 +0200
 MIME-Version: 1.0
-References: <678ac92ab790dba9198f9ca14f405651b97c8502.1688561016.git.andreyknvl@google.com>
-In-Reply-To: <678ac92ab790dba9198f9ca14f405651b97c8502.1688561016.git.andreyknvl@google.com>
-From:   Marco Elver <elver@google.com>
-Date:   Wed, 5 Jul 2023 14:50:30 +0200
-Message-ID: <CANpmjNO+spktteYZezk7PGLFOyoeuFyziKiU-1GXbpeyKLZLPg@mail.gmail.com>
-Subject: Re: [PATCH] kasan, slub: fix HW_TAGS zeroing with slub_debug
-To:     andrey.konovalov@linux.dev
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        kasan-dev@googlegroups.com,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Peter Collingbourne <pcc@google.com>,
-        Feng Tang <feng.tang@intel.com>, stable@vger.kernel.org,
-        Christoph Lameter <cl@linux.com>,
-        Pekka Enberg <penberg@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Andrey Konovalov <andreyknvl@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.11.0
+Subject: Re: [PATCH 1/8] soundwire: fix enumeration completion
+Content-Language: en-US
+To:     Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>
+Cc:     Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Banajit Goswami <bgoswami@quicinc.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Rander Wang <rander.wang@linux.intel.com>
+References: <20230705123018.30903-1-johan+linaro@kernel.org>
+ <20230705123018.30903-2-johan+linaro@kernel.org>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <20230705123018.30903-2-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 5 Jul 2023 at 14:44, <andrey.konovalov@linux.dev> wrote:
->
-> From: Andrey Konovalov <andreyknvl@google.com>
->
-> Commit 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated
-> kmalloc space than requested") added precise kmalloc redzone poisoning
-> to the slub_debug functionality.
->
-> However, this commit didn't account for HW_TAGS KASAN fully initializing
-> the object via its built-in memory initialization feature. Even though
-> HW_TAGS KASAN memory initialization contains special memory initialization
-> handling for when slub_debug is enabled, it does not account for in-object
-> slub_debug redzones. As a result, HW_TAGS KASAN can overwrite these
-> redzones and cause false-positive slub_debug reports.
->
-> To fix the issue, avoid HW_TAGS KASAN memory initialization when slub_debug
-> is enabled altogether. Implement this by moving the __slub_debug_enabled
-> check to slab_post_alloc_hook. Common slab code seems like a more
-> appropriate place for a slub_debug check anyway.
->
-> Fixes: 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated kmalloc space than requested")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Mark Rutland <mark.rutland@arm.com>
 
-Is it fixing this issue:
 
-  https://lore.kernel.org/all/20230628154714.GB22090@willie-the-truck/
+On 7/5/23 14:30, Johan Hovold wrote:
+> The soundwire subsystem uses two completion structures that allow
+> drivers to wait for soundwire device to become enumerated on the bus and
+> initialised by their drivers, respectively.
+> 
+> The code implementing the signalling is currently broken as it does not
+> signal all current and future waiters and also uses the wrong
+> reinitialisation function, which can potentially lead to memory
+> corruption if there are still waiters on the queue.
 
-Or some other issue?
+That change sounds good, but I am not following the two paragraphs below.
 
-> Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
+> Not signalling future waiters specifically breaks sound card probe
+> deferrals as codec drivers can not tell that the soundwire device is
+> already attached when being reprobed. 
 
-Other than the question above, it looks sane:
+What makes you say that? There is a test in the probe and the codec
+driver will absolutely be notified, see bus_type.c
 
-Acked-by: Marco Elver <elver@google.com>
+	if (drv->ops && drv->ops->update_status) {
+		ret = drv->ops->update_status(slave, slave->status);
+		if (ret < 0)
+			dev_warn(dev, "%s: update_status failed with status %d\n", __func__,
+ret);
+	}
 
+> Some codec runtime PM
+> implementations suffer from similar problems as waiting for enumeration
+> during resume can also timeout despite the device already having been
+> enumerated.
+
+I am not following this either. Are you saying the wait_for_completion()
+times out because of the init_completion/reinit_completion confusion, or
+something else.
+
+> Fixes: fb9469e54fa7 ("soundwire: bus: fix race condition with enumeration_complete signaling")
+> Fixes: a90def068127 ("soundwire: bus: fix race condition with initialization_complete signaling")
+> Cc: stable@vger.kernel.org      # 5.7
+> Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> Cc: Rander Wang <rander.wang@linux.intel.com>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 > ---
->  mm/kasan/kasan.h | 12 ------------
->  mm/slab.h        | 16 ++++++++++++++--
->  2 files changed, 14 insertions(+), 14 deletions(-)
->
-> diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-> index b799f11e45dc..2e973b36fe07 100644
-> --- a/mm/kasan/kasan.h
-> +++ b/mm/kasan/kasan.h
-> @@ -466,18 +466,6 @@ static inline void kasan_unpoison(const void *addr, size_t size, bool init)
->
->         if (WARN_ON((unsigned long)addr & KASAN_GRANULE_MASK))
->                 return;
-> -       /*
-> -        * Explicitly initialize the memory with the precise object size to
-> -        * avoid overwriting the slab redzone. This disables initialization in
-> -        * the arch code and may thus lead to performance penalty. This penalty
-> -        * does not affect production builds, as slab redzones are not enabled
-> -        * there.
-> -        */
-> -       if (__slub_debug_enabled() &&
-> -           init && ((unsigned long)size & KASAN_GRANULE_MASK)) {
-> -               init = false;
-> -               memzero_explicit((void *)addr, size);
-> -       }
->         size = round_up(size, KASAN_GRANULE_SIZE);
->
->         hw_set_mem_tag_range((void *)addr, size, tag, init);
-> diff --git a/mm/slab.h b/mm/slab.h
-> index 6a5633b25eb5..9c0e09d0f81f 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -723,6 +723,7 @@ static inline void slab_post_alloc_hook(struct kmem_cache *s,
->                                         unsigned int orig_size)
->  {
->         unsigned int zero_size = s->object_size;
-> +       bool kasan_init = init;
->         size_t i;
->
->         flags &= gfp_allowed_mask;
-> @@ -739,6 +740,17 @@ static inline void slab_post_alloc_hook(struct kmem_cache *s,
->             (s->flags & SLAB_KMALLOC))
->                 zero_size = orig_size;
->
-> +       /*
-> +        * When slub_debug is enabled, avoid memory initialization integrated
-> +        * into KASAN and instead zero out the memory via the memset below with
-> +        * the proper size. Otherwise, KASAN might overwrite SLUB redzones and
-> +        * cause false-positive reports. This does not lead to a performance
-> +        * penalty on production builds, as slub_debug is not intended to be
-> +        * enabled there.
-> +        */
-> +       if (__slub_debug_enabled())
-> +               kasan_init = false;
-> +
->         /*
->          * As memory initialization might be integrated into KASAN,
->          * kasan_slab_alloc and initialization memset must be
-> @@ -747,8 +759,8 @@ static inline void slab_post_alloc_hook(struct kmem_cache *s,
->          * As p[i] might get tagged, memset and kmemleak hook come after KASAN.
->          */
->         for (i = 0; i < size; i++) {
-> -               p[i] = kasan_slab_alloc(s, p[i], flags, init);
-> -               if (p[i] && init && !kasan_has_integrated_init())
-> +               p[i] = kasan_slab_alloc(s, p[i], flags, kasan_init);
-> +               if (p[i] && init && (!kasan_init || !kasan_has_integrated_init()))
->                         memset(p[i], 0, zero_size);
->                 kmemleak_alloc_recursive(p[i], s->object_size, 1,
->                                          s->flags, flags);
-> --
-> 2.25.1
->
+>  drivers/soundwire/bus.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
+> index 1ea6a64f8c4a..66e5dba919fa 100644
+> --- a/drivers/soundwire/bus.c
+> +++ b/drivers/soundwire/bus.c
+> @@ -908,8 +908,8 @@ static void sdw_modify_slave_status(struct sdw_slave *slave,
+>  			"initializing enumeration and init completion for Slave %d\n",
+>  			slave->dev_num);
+>  
+> -		init_completion(&slave->enumeration_complete);
+> -		init_completion(&slave->initialization_complete);
+> +		reinit_completion(&slave->enumeration_complete);
+> +		reinit_completion(&slave->initialization_complete);
+>  
+>  	} else if ((status == SDW_SLAVE_ATTACHED) &&
+>  		   (slave->status == SDW_SLAVE_UNATTACHED)) {
+> @@ -917,7 +917,7 @@ static void sdw_modify_slave_status(struct sdw_slave *slave,
+>  			"signaling enumeration completion for Slave %d\n",
+>  			slave->dev_num);
+>  
+> -		complete(&slave->enumeration_complete);
+> +		complete_all(&slave->enumeration_complete);
+>  	}
+>  	slave->status = status;
+>  	mutex_unlock(&bus->bus_lock);
+> @@ -1941,7 +1941,7 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
+>  				"signaling initialization completion for Slave %d\n",
+>  				slave->dev_num);
+>  
+> -			complete(&slave->initialization_complete);
+> +			complete_all(&slave->initialization_complete);
+>  
+>  			/*
+>  			 * If the manager became pm_runtime active, the peripherals will be
