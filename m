@@ -2,127 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5107747DA3
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 08:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD1DE747DAF
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 08:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231583AbjGEG5t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 02:57:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59554 "EHLO
+        id S231933AbjGEG7b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 02:59:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230345AbjGEG5s (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Wed, 5 Jul 2023 02:57:48 -0400
-Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F4BA134;
-        Tue,  4 Jul 2023 23:57:45 -0700 (PDT)
-Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-        by mx1.sberdevices.ru (Postfix) with ESMTP id D1A89100073;
-        Wed,  5 Jul 2023 09:57:42 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru D1A89100073
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1688540262;
-        bh=o0WT1/mR0NlnDuo4W0bZ0/ygxHFHAYruyxfCphFZ/FQ=;
-        h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-        b=WY2vH1AiLSkMKvS/MpKftpD/7i+36kLRXlQ1/Z/vF5CZbA++zzyLnGFlZ3kvxwbMW
-         Y4BZ0PDI1HlyRMCpqMTVqVZg6pcwNZwqEQ5R+L8XDgTcmKCtxFG1MmoqUVBQCuQ+sh
-         THYj5ykiYVzWXMbjdKL0JX0dDdsaBioMs4mQ8FiXi/l/aY1KjeTh4XfiLjKH29dmNE
-         5iKgyVMvDP1r3ezzDMZpbIyI1CZoQhaEvxEjEH58ZZi9fc4ELUm7olLi373qkXn0gs
-         v9/ZRjAw82s2W6RZz+9PstpAYf/EJosVXNke3yl0Mv4pj95TjX5Xmq/8xVxW7zblwY
-         6Rd9UymFaJGxA==
-Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.sberdevices.ru (Postfix) with ESMTPS;
-        Wed,  5 Jul 2023 09:57:42 +0300 (MSK)
-Received: from localhost.localdomain (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 5 Jul 2023 09:57:41 +0300
-From:   Arseniy Krasnov <AVKrasnov@sberdevices.ru>
-To:     Liang Yang <liang.yang@amlogic.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jianxin Pan <jianxin.pan@amlogic.com>,
-        Yixun Lan <yixun.lan@amlogic.com>
-CC:     <oxffffaa@gmail.com>, <kernel@sberdevices.ru>,
-        Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
-        <Stable@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-amlogic@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v1] mtd: rawnand: meson: fix OOB available bytes for ECC
-Date:   Wed, 5 Jul 2023 09:52:10 +0300
-Message-ID: <20230705065211.293500-1-AVKrasnov@sberdevices.ru>
-X-Mailer: git-send-email 2.35.0
+        with ESMTP id S231912AbjGEG7a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 02:59:30 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93F9A199A;
+        Tue,  4 Jul 2023 23:58:51 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1b8b2cb7384so753835ad.2;
+        Tue, 04 Jul 2023 23:58:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688540328; x=1691132328;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eOBekDUo3aipR+GfrPkz/lBRM9kv+I/UnJZ1bWtQhbY=;
+        b=kne59eDqFdRnpjPhStuLzwuz+YDVUhmmKeqSHqHqLYyM8Mx36L7+BjMRrjKBQsaZFn
+         a1k9jKJWO/96LQUltnKeV7RrW/lgYMnxXmSrm9sOrA4YoYct5x2GCtzQ9lpCi1AYpFIb
+         tESHMxS5Bvi8+DKLsQihkvH9ZCrrNoGYw+wIZSOfcpI8n1tofTsFjwpIOhmA6fqtwFSl
+         IJnRTrybtirGbX06wH7Wgn/3s7nFoqyIb8vxpC9koMIeRXqSgyy9oga/zu5FKAOcn7kD
+         ESvt/PKbaXnbfSYQ5pwTUj4W9YUNYA98J/+0nhvc1cZ2cBZqivnPfNtmg/33GJdzJrC8
+         BKIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688540328; x=1691132328;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eOBekDUo3aipR+GfrPkz/lBRM9kv+I/UnJZ1bWtQhbY=;
+        b=hXH02aIsaSpsL8O36T/HiGYlbN23alW0sk0hnj1mdA0E5USJqweTXnJ0iPAEnQ7wUB
+         NvBKOR7PSnhfLiPkQOeQZdPXceeD/6IbOuDq3qSvnQOVc8Dw5KV4s9ky4DEEsgVaNfWN
+         4rKaWnDwBqfyok6o+kQHix0T3z8OINWG6Ch/MCtEsKXbRMwxUN4Ikyx+cJDpoDnOWHrO
+         cH669D7BHIxZS0GxosMAoekbOffMwqlMcPuIY2GOyVrYhUwFgGKJwF28UuRpuSVS7/8F
+         WNUYEmvFnW7lKLcsS22Fuum6jMLFYOZt4pY+RiP5jX8fPnard/5CDtIiH2XfGVHCfPpj
+         TDOQ==
+X-Gm-Message-State: ABy/qLbmS/nNCliyKakF74UMeTRZGMN1XjmbPVMteX6FmgyMFxIKYOUf
+        GfKUOaxXesjAc1fNn6+po3Y=
+X-Google-Smtp-Source: APBJJlGJh47YE1+DxQRpHxFoXP7erWWhRznO03XdtQE8sGDLNFyyo1zLqh4sST49Hn/8ANgjgHDFRQ==
+X-Received: by 2002:a17:903:246:b0:1b1:99c9:8ce1 with SMTP id j6-20020a170903024600b001b199c98ce1mr13265300plh.51.1688540328442;
+        Tue, 04 Jul 2023 23:58:48 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id 21-20020a170902e9d500b001b8649e52f8sm9490928plk.254.2023.07.04.23.58.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Jul 2023 23:58:47 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 2FAF78061696; Wed,  5 Jul 2023 13:58:43 +0700 (WIB)
+Date:   Wed, 5 Jul 2023 13:58:42 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 00/13] 6.1.38-rc2 review
+Message-ID: <ZKUUovHusmwmZR1S@debian.me>
+References: <20230704084611.071971014@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [100.64.160.123]
-X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 178437 [Jul 05 2023]
-X-KSMG-AntiSpam-Version: 5.9.59.0
-X-KSMG-AntiSpam-Envelope-From: AVKrasnov@sberdevices.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 520 520 ccb018a655251011855942a2571029252d3d69a2, {Tracking_from_domain_doesnt_match_to}, sberdevices.ru:5.0.1,7.1.1;100.64.160.123:7.1.2;p-i-exch-sc-m01.sberdevices.ru:5.0.1,7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2, FromAlignment: s, {Tracking_white_helo}, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/07/05 01:35:00 #21564271
-X-KSMG-AntiVirus-Status: Clean, skipped
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="/qHfQp2kcWQ1L9Da"
+Content-Disposition: inline
+In-Reply-To: <20230704084611.071971014@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-It is incorrect to calculate number of OOB bytes for ECC engine using
-some "already known" ECC step size (1024 bytes here). Number of such
-bytes for ECC engine must be whole OOB except 2 bytes for bad block
-marker, while proper ECC step size and strength will be selected by
-ECC logic.
 
-Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
----
- drivers/mtd/nand/raw/meson_nand.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+--/qHfQp2kcWQ1L9Da
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/mtd/nand/raw/meson_nand.c b/drivers/mtd/nand/raw/meson_nand.c
-index 369e81356240..c7213f03a773 100644
---- a/drivers/mtd/nand/raw/meson_nand.c
-+++ b/drivers/mtd/nand/raw/meson_nand.c
-@@ -1301,7 +1301,6 @@ static int meson_nand_attach_chip(struct nand_chip *nand)
- 	struct meson_nfc *nfc = nand_get_controller_data(nand);
- 	struct meson_nfc_nand_chip *meson_chip = to_meson_nand(nand);
- 	struct mtd_info *mtd = nand_to_mtd(nand);
--	int nsectors = mtd->writesize / 1024;
- 	int raw_writesize;
- 	int ret;
- 
-@@ -1327,7 +1326,7 @@ static int meson_nand_attach_chip(struct nand_chip *nand)
- 	nand->options |= NAND_NO_SUBPAGE_WRITE;
- 
- 	ret = nand_ecc_choose_conf(nand, nfc->data->ecc_caps,
--				   mtd->oobsize - 2 * nsectors);
-+				   mtd->oobsize - 2);
- 	if (ret) {
- 		dev_err(nfc->dev, "failed to ECC init\n");
- 		return -EINVAL;
--- 
-2.35.0
+On Tue, Jul 04, 2023 at 09:48:32AM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.38 release.
+> There are 13 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
+Successfully compiled and installed bindeb-pkgs on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--/qHfQp2kcWQ1L9Da
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZKUUngAKCRD2uYlJVVFO
+ozhZAP9kql9Y4fampzYuzVfCougXR8SF4O6k5UH3zH47EFr6IAD/TKLMLdQUqa/Z
+i6rYxXb1rxe2G8Ak4sv0ANy0mVUpwAw=
+=EBqP
+-----END PGP SIGNATURE-----
+
+--/qHfQp2kcWQ1L9Da--
