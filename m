@@ -2,87 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7AC8748BCA
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 20:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADFC1748DBD
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 21:26:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232296AbjGES0a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 14:26:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54164 "EHLO
+        id S234282AbjGET0z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 15:26:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233407AbjGES0I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 14:26:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA6219A2
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 11:25:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A456E616CD
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 18:20:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 08F3BC433C7;
-        Wed,  5 Jul 2023 18:20:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688581221;
-        bh=JamJjeCCkOl0qbFxmtmzV9hb2vvVrB1vx3JFpdV8h7Q=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=G8cOetNb+diIwOS8l11Vp7QJLP960UCtIQxIslSHQe+0L7f2naXT8OuKUAjCO2Hnd
-         Wve0WEmh2V7nKJq6nrH1io1U1jArvTWR/ZZD+cDUZLisRJ83PhdFySljdEqtO5gn3M
-         /gk6QwS2NIGNNHnyBdp0t+no1yeA2r/WGWgOF4/H80Z54auL1jm9FSkTyMk7YxdglN
-         G2UAWOJMveeDbLVsbNsAVTBV01mPYLK9YWf2V8joQO3qopGVm5ayctVL3eyt63z+pH
-         CKcieW+TjBBZs/0Qp9UKlTob7fSkBiK9nnbPZTp9e0/kbRRBh8JqX16rfeFIPWvWsb
-         nvKmnKN8+nctA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DF0B7C395C5;
-        Wed,  5 Jul 2023 18:20:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S234180AbjGET0n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 15:26:43 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 074981FC8;
+        Wed,  5 Jul 2023 12:25:45 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1b88e99673eso20293765ad.0;
+        Wed, 05 Jul 2023 12:25:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688585144; x=1691177144;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GTGMwlxjgIPq8hZWcJugZVRyWJlTrNPe6BjOWeskKkQ=;
+        b=IdaCeINzlEstyZdIRrW1hrj/uikDvLoD+ntjJFEkwGd79Q7MKOjhKmEA73WeIyRvbI
+         g6nVv95XkK5m16cKDnjNKQUznZ0/KJtafjae66vbWA6HoT4e/p/wUvuJ/ENayCyGsVB6
+         6EfUBjUmy3f1dzBjWq68KPlev9BbRLQ2XJzGtHBEbE127pHt5CvZKIdtO1Vdguk11V4q
+         V17GMbXN3v313T88M/i2wtxHFDgE2KfQrsZMlcj3wz2qUyIkiymeKA+7N1jjpKPywt1f
+         l5bPqPJrYFxNY50pGPkY8b3kylKDeQXHyFZbQPWzh9NcIYZR8lQBuC3UxTao95E5U4rk
+         dKxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688585144; x=1691177144;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GTGMwlxjgIPq8hZWcJugZVRyWJlTrNPe6BjOWeskKkQ=;
+        b=Ney9F6zA1PlzHW4wX5JcnRXUF9YcM9HbosybN28hQkGOHx+gKjvqJWpJ3VvogkBzCJ
+         taL92+uaL1QaT7526bQhrdfKN1GwQ42gnwLumQgQFa4Az+W6AZ3jSmJ1sqi6i5nhnYMF
+         sAkXbzh3jZ92L+iPHB+NTLAktNB2phHKhPsIvFAAEaGpMqo3/u40Ok6yZAbShz9ThwQL
+         D3EK7IuQxzRijX5ru8jo5c1BN8A1xJcPFvIeQiJLMgPqqh0UgRN6+ayaJm99RVXCXVvk
+         JFiUazT/aq/X0nBnPP+QsnxZwzokZ9cVH3UZUVleajRCddsagZImZFmFd2pllqtjABK3
+         kKVg==
+X-Gm-Message-State: ABy/qLbhfLcP8T/KbHCJxvBIiIk4Vp4b45Y6CByn1Cj17lwz8er3DlL6
+        YHZJKJ/6bhLoYf7/sPkkqbU=
+X-Google-Smtp-Source: APBJJlG/WjX8Z3w2uqyocC+CIuHSwtffE8uNfDgHFT1bNCVIVr7VbfKRJI28WHBFFlO8DtlJiQwRgw==
+X-Received: by 2002:a17:902:c246:b0:1b6:b95d:768e with SMTP id 6-20020a170902c24600b001b6b95d768emr14021958plg.32.1688585144408;
+        Wed, 05 Jul 2023 12:25:44 -0700 (PDT)
+Received: from ?IPV6:2001:df0:0:200c:65c6:1730:4701:8c0b? ([2001:df0:0:200c:65c6:1730:4701:8c0b])
+        by smtp.gmail.com with ESMTPSA id g12-20020a170902740c00b001b6674b6140sm19314212pll.290.2023.07.05.12.25.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Jul 2023 12:25:43 -0700 (PDT)
+Message-ID: <def97c03-533d-4ce0-4303-e8465233bd7c@gmail.com>
+Date:   Thu, 6 Jul 2023 07:25:37 +1200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 1/1] block: bugfix for Amiga partition overflow check
+ patch
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
+        linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de, hch@lst.de,
+        martin@lichtvoll.de, stable@vger.kernel.org
+References: <20230620201725.7020-1-schmitzmic@gmail.com>
+ <20230704233808.25166-1-schmitzmic@gmail.com>
+ <20230704233808.25166-2-schmitzmic@gmail.com>
+ <CAMuHMdUc-mqHC80euFrXLGGJO3gLW3ywu2aG4MDQi5ED=dWFeQ@mail.gmail.com>
+ <06995206-5dc5-8008-ef06-c76389ef0dd8@gmail.com>
+ <CAMuHMdVGNB_aZnDHw_wfDTinDk+LKkP1Lx96Cgm0jM6J1WdACQ@mail.gmail.com>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+In-Reply-To: <CAMuHMdVGNB_aZnDHw_wfDTinDk+LKkP1Lx96Cgm0jM6J1WdACQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] nfp: clean mc addresses in application firmware when
- closing port
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168858122090.23406.18329773090141093446.git-patchwork-notify@kernel.org>
-Date:   Wed, 05 Jul 2023 18:20:20 +0000
-References: <20230705052818.7122-1-louis.peens@corigine.com>
-In-Reply-To: <20230705052818.7122-1-louis.peens@corigine.com>
-To:     Louis Peens <louis.peens@corigine.com>
-Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        jacob.e.keller@intel.com, simon.horman@corigine.com,
-        yinjun.zhang@corigine.com, netdev@vger.kernel.org,
-        stable@vger.kernel.org, oss-drivers@corigine.com
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+Hi Geert,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+On 5/07/23 21:08, Geert Uytterhoeven wrote:
+>
+>>>> Fixes: b6f3f28f60 ("block: add overflow checks for Amiga partition support")
+>>>> Message-ID: 024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
+>>> Please drop this line.
+>> Because it's redundant, as I've also used Link:?
+> (That, too ;-)
+>
+> Because the use of the Message-ID: tag in patches is not documented.
 
-On Wed,  5 Jul 2023 07:28:18 +0200 you wrote:
-> From: Yinjun Zhang <yinjun.zhang@corigine.com>
-> 
-> When moving devices from one namespace to another, mc addresses are
-> cleaned in software while not removed from application firmware. Thus
-> the mc addresses are remained and will cause resource leak.
-> 
-> Now use `__dev_mc_unsync` to clean mc addresses when closing port.
-> 
-> [...]
+Now I wonder where I picked up that habit ...
 
-Here is the summary with links:
-  - [net,v3] nfp: clean mc addresses in application firmware when closing port
-    https://git.kernel.org/netdev/net/c/cc7eab25b1cf
+> IIRC, it might also cause issues when applying, as the downloaded patch
+> will appear to have two Message-IDs.
+That's correct (if you refer to a patch in mbox format), but from the 
+context of the two Message-ID lines, it ought to be clear which one 
+matters.
+> I'm not sure the sample git hook in Documentation/maintainer/configure-git.rst
+> (and all variants the various maintainers are using) handles this correctly.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+You're right, it won't check for context there.
+
+In this particular instance, it won't use my Message-ID tag anyway 
+though (forgot the angle brackets).
+
+I'll fix that in v5 later.
+
+Cheers,
+
+     Michael
 
 
+>
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
