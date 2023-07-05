@@ -2,75 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88091747D77
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 08:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE04747D84
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 08:53:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231949AbjGEGur (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 02:50:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50548 "EHLO
+        id S231620AbjGEGxL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 02:53:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231869AbjGEGu2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 02:50:28 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 646B819AF;
-        Tue,  4 Jul 2023 23:49:50 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id af79cd13be357-7658430eb5dso678651985a.2;
-        Tue, 04 Jul 2023 23:49:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688539789; x=1691131789;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZN4dJ8uJf+yfpLbNOPBTsXnaH4U3xyC1VSZoGX/yD5g=;
-        b=m4T+3PxA8HKfBr2TtZ/oCxC/7I+nwE60cEOIjA0Akxk2fo9u+kXotl/Y66pyVMpYy8
-         iKdcXwMg1fGYqsgHGd7K1+wViX3AhH1x4gKM3cbCHomNoVLKvz2wQ/ASV5YU/ZPA/cOR
-         H6brhmnxUTUIDsMPUiW4AsY4RltaoK7d2+L7RY9R1Df+bAPqeejptgmtO8x+zyipm/3B
-         nHQyKxILNe/MUeIn8t/U4cdUz90v8SadkxouoS6yryYeOpkvmKr2ub4VNJgWEmmf4f8G
-         NgHdpM52h07tHqnAL7pH0Jl7vNjXI4n02ht0ImkuECqbTi7WllRuCWYCSMYoTM79YP4V
-         ZdQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688539789; x=1691131789;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZN4dJ8uJf+yfpLbNOPBTsXnaH4U3xyC1VSZoGX/yD5g=;
-        b=JkdCCeOfQKGnvs9EyyxsVctiS9iwCltlj/7oRXsDm7bt3tqH47lj4Yi0EnqJ8LElMJ
-         LZaU/5eQ1BAgOwxwX51Bw648Fr6e/pnLgJZZjTgcLWWbKAKcm8TUBoG422IKqxHsejpH
-         Fx0SrzL78IzNqTdhjCz6MyhA86E6e0fOZHKfDwaqKwy8qpsSequ3sclC4uc5kc5iMAnr
-         juG/iLw/9kYKWgZtw1Cr9uc5A9ujMYyS15Nk1fgx69kWTLhT/a5gA0BxnHR1ntgPaqzP
-         tFRv0gjPrLIltVm/a+6WrCJtkG5eRblGJHVdisbecU/C3zatIwFr2L6z0DXq1ZFs9BvO
-         sPSg==
-X-Gm-Message-State: ABy/qLbmQ26VODr9LKkp+riBX9Vbghsk2nDk53kICcnKHo+XVtYbAaZY
-        GgOpbzoT8zpftEUhxUfumqY=
-X-Google-Smtp-Source: APBJJlHKocwWU4up8nA4Gn1I7Nh1oYffL5uD+Ha03luBbt7pFqLDhuLz8yNEvDhyLcxugjHdl0J5Ow==
-X-Received: by 2002:a37:f718:0:b0:766:fd2c:fca1 with SMTP id q24-20020a37f718000000b00766fd2cfca1mr15674220qkj.75.1688539789332;
-        Tue, 04 Jul 2023 23:49:49 -0700 (PDT)
-Received: from debian.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id bn10-20020a056a00324a00b0065980654baasm16591235pfb.130.2023.07.04.23.49.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jul 2023 23:49:48 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 1B2D3808759F; Wed,  5 Jul 2023 13:49:43 +0700 (WIB)
-Date:   Wed, 5 Jul 2023 13:49:43 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.4 00/15] 6.4.2-rc2 review
-Message-ID: <ZKUSh0p8ynyFCG4n@debian.me>
-References: <20230704084611.900603362@linuxfoundation.org>
+        with ESMTP id S231938AbjGEGwy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 02:52:54 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B4EC18E;
+        Tue,  4 Jul 2023 23:52:31 -0700 (PDT)
+Received: from kwepemi500019.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Qwqyq2DgvzLngB;
+        Wed,  5 Jul 2023 14:49:39 +0800 (CST)
+Received: from [10.67.110.237] (10.67.110.237) by
+ kwepemi500019.china.huawei.com (7.221.188.117) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Wed, 5 Jul 2023 14:51:51 +0800
+Subject: Re: [PATCH 5.10] kprobes/x86: Fix kprobe debug exception handling
+ logic
+To:     Greg KH <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>, <mhiramat@kernel.org>,
+        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+        <x86@kernel.org>, <hpa@zytor.com>, <sashal@kernel.org>,
+        <peterz@infradead.org>, <linux-kernel@vger.kernel.org>,
+        <xukuohai@huawei.com>
+References: <20230630020845.227939-1-lihuafei1@huawei.com>
+ <2023063039-dotted-improper-7b3c@gregkh>
+ <6cbfbd13-b2f6-4c76-8d0d-ac07f59b23e7@huawei.com>
+ <2023070308-garland-smilingly-8b03@gregkh>
+From:   Li Huafei <lihuafei1@huawei.com>
+Message-ID: <37a3a2aa-5af5-6cf6-a074-28b929556dab@huawei.com>
+Date:   Wed, 5 Jul 2023 14:51:50 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="5eonTzacrvwGSkuM"
-Content-Disposition: inline
-In-Reply-To: <20230704084611.900603362@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+In-Reply-To: <2023070308-garland-smilingly-8b03@gregkh>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.110.237]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500019.china.huawei.com (7.221.188.117)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,35 +57,98 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---5eonTzacrvwGSkuM
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 04, 2023 at 09:48:24AM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.2 release.
-> There are 15 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+On 2023/7/4 2:34, Greg KH wrote:
+> On Sat, Jul 01, 2023 at 04:43:46PM +0800, Li Huafei wrote:
+>>
+>>
+>> On 2023/6/30 13:21, Greg KH wrote:
+>>> On Fri, Jun 30, 2023 at 10:08:45AM +0800, Li Huafei wrote:
+>>>> We get the following crash caused by a null pointer access:
+>>>>
+>>>>  BUG: kernel NULL pointer dereference, address: 0000000000000000
+>>>>  ...
+>>>>  RIP: 0010:resume_execution+0x35/0x190
+>>>>  ...
+>>>>  Call Trace:
+>>>>   <#DB>
+>>>>   kprobe_debug_handler+0x41/0xd0
+>>>>   exc_debug+0xe5/0x1b0
+>>>>   asm_exc_debug+0x19/0x30
+>>>>  RIP: 0010:copy_from_kernel_nofault.part.0+0x55/0xc0
+>>>>  ...
+>>>>   </#DB>
+>>>>   process_fetch_insn+0xfb/0x720
+>>>>   kprobe_trace_func+0x199/0x2c0
+>>>>   ? kernel_clone+0x5/0x2f0
+>>>>   kprobe_dispatcher+0x3d/0x60
+>>>>   aggr_pre_handler+0x40/0x80
+>>>>   ? kernel_clone+0x1/0x2f0
+>>>>   kprobe_ftrace_handler+0x82/0xf0
+>>>>   ? __se_sys_clone+0x65/0x90
+>>>>   ftrace_ops_assist_func+0x86/0x110
+>>>>   ? rcu_nocb_try_bypass+0x1f3/0x370
+>>>>   0xffffffffc07e60c8
+>>>>   ? kernel_clone+0x1/0x2f0
+>>>>   kernel_clone+0x5/0x2f0
+>>>>
+>>>> The analysis reveals that kprobe and hardware breakpoints conflict in
+>>>> the use of debug exceptions.
+>>>>
+>>>> If we set a hardware breakpoint on a memory address and also have a
+>>>> kprobe event to fetch the memory at this address. Then when kprobe
+>>>> triggers, it goes to read the memory and triggers hardware breakpoint
+>>>> monitoring. This time, since kprobe handles debug exceptions earlier
+>>>> than hardware breakpoints, it will cause kprobe to incorrectly assume
+>>>> that the exception is a kprobe trigger.
+>>>>
+>>>> Notice that after the mainline commit 6256e668b7af ("x86/kprobes: Use
+>>>> int3 instead of debug trap for single-step"), kprobe no longer uses
+>>>> debug trap, avoiding the conflict with hardware breakpoints here. This
+>>>> commit is to remove the IRET that returns to kernel, not to fix the
+>>>> problem we have here. Also there are a bunch of merge conflicts when
+>>>> trying to apply this commit to older kernels, so fixing it directly in
+>>>> older kernels is probably a better option.
+>>>
+>>> What is the list of commits that it would take to resolve this in these
+>>> kernels?  We would almost always prefer to do that instead of taking
+>>> changes that are not upstream.
+>>
+>> I have sorted out that for 5.10 there are 9 patches that need to be
+>> backported:
+>>
+>>   #9 8924779df820 ("x86/kprobes: Fix JNG/JNLE emulation")
+>>   #8 dec8784c9088 ("x86/kprobes: Update kcb status flag after singlestepping")
+>>   #7 2304d14db659 ("x86/kprobes: Move 'inline' to the beginning of the kprobe_is_ss() declaration")
+>>   #6 2f706e0e5e26 ("x86/kprobes: Fix to identify indirect jmp and others using range case")
+>>   #5 6256e668b7af ("x86/kprobes: Use int3 instead of debug trap for single-step")
+>>   #4 a194acd316f9 ("x86/kprobes: Identify far indirect JMP correctly")
+>>   #3 d60ad3d46f1d ("x86/kprobes: Retrieve correct opcode for group instruction")
+>>   #2 abd82e533d88 ("x86/kprobes: Do not decode opcode in resume_execution()")
+>>   #1 e689b300c99c ("kprobes/x86: Fix fall-through warnings for Clang e689b300c99c")
+>>   
+>> The main one we need to backport is patch 5, patche 1-6 are pre-patches,
+>> and patche 6-9 are fix patches for patch 5. The major modifications are
+>> patch 2 and patch 4. Patch 2 optimizes resume_execution() to avoid
+>> repeated instruction decoding, and patch 5 uses int3 instead of debug
+>> trap, and as Masami said in the commit message this patch will change
+>> some behavior of kprobe, but it has almost no effect on the actual
+>> usage.
+>>
+>> I'm not sure backport these patches are acceptable, do I need to send
+>> them out for review?
+> 
+> Yes, please make up the patch series for these, that's not all that bad,
+> and looks like it is more "correct" than just your one-off patch.
+> 
 
-Successfully compiled and installed bindeb-pkgs on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+Okay, I've sent out the patch set, thanks for the suggestion!
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Thanks,
+Huafei
 
---=20
-An old man doll... just what I always wanted! - Clara
-
---5eonTzacrvwGSkuM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZKUSgwAKCRD2uYlJVVFO
-o3uiAQDbj4eI9kQDllJlbiIZXvqitq2jET2swj+CoKrC34S6/QEAygBCFW5W6ort
-46cTN7NMFBFj8fuLvf4fvc9Z52VMkgM=
-=Ag84
------END PGP SIGNATURE-----
-
---5eonTzacrvwGSkuM--
+> thanks,
+> 
+> greg k-h
+> .
+> 
