@@ -2,59 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DC427480EA
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 11:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75B89748197
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 12:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231582AbjGEJeN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 05:34:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51432 "EHLO
+        id S231639AbjGEKA1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 06:00:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229532AbjGEJeM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 05:34:12 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 041361713
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 02:34:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688549650; x=1720085650;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=yEmpHI45wYMuw9pSc0dk9wNynDhlBbqB9Q1dSv9P9PM=;
-  b=JduGZeSeRfnLbwuQH6mmyBbM+UGx/kLAQk5px5LGtLUQJW23pFyt21Dn
-   UoMj/J+WcfCID2gWGng9ueTt6hJ1r/LqL3B8m4txgTd4pf7h5RAKwjBWj
-   qNbQ0rDpj+wv03i+439EnlQaL102E7a0Sy9A33W7yxiTcqyrU0vGmNUUk
-   yfBrpnNJxap/fZ/tf6norqHR2x6SrUDn0rK1phwE2Dyx2yxNFWcgMDYJi
-   lc/q22WvMrwiqega2oG94on0DCpkMazKLRie4bhk1Vh8idMd4wMhp/06/
-   VIwo4peFH8BKnbddD8xYT4VappDH7ZAu+SYyEG/IIfoWrYCsi+bZYuKE/
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="348082810"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
-   d="scan'208";a="348082810"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 02:33:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="784472441"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
-   d="scan'208";a="784472441"
-Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 05 Jul 2023 02:33:55 -0700
-Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qGytW-0000YQ-1g;
-        Wed, 05 Jul 2023 09:33:54 +0000
-Date:   Wed, 5 Jul 2023 17:33:31 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net] net: mana: Configure hwc timeout from hardware
-Message-ID: <ZKU46+qyuF22wy9s@a1daa7802ad8>
+        with ESMTP id S232105AbjGEKA0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 06:00:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D2021723;
+        Wed,  5 Jul 2023 03:00:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15155614EC;
+        Wed,  5 Jul 2023 10:00:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7181EC433CA;
+        Wed,  5 Jul 2023 10:00:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688551223;
+        bh=rfKwXHw/MObGrKQHHxQ3kXk+3dEtPedetkvV200qdBA=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=i7DLBNU9u74goYVpIpur4MOnr3DPPgafPqv3zyjUTrOLo7DxhosmRCu1pbSZ7PvSL
+         3Kdc6u+SuLg6v45+2FkhX37ZL0sRcMtxEuJWFVDrncyYySTIR07gr6wC67EaNlKaPp
+         voua6jvdKjCC7vLHuyP6p45Re2YdZQ4O53jfYTzham6f1Rh+4VbPMWs3Iw5RjBBPEh
+         nKmUBWhxKP9nCiUK/ksgfvIBWlN/+b6RMRa44F4cOhMsS7vJP8R7WoA/zg150hmlGN
+         70LtwZSQShBCSkwxtgHIS/a+54rAzVyfoB4OGO9DGIcpdWyqM2AMYi83blCE0P1OKL
+         OqLKfBnuiz05A==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 4E528C0C40E;
+        Wed,  5 Jul 2023 10:00:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1688549578-12906-1-git-send-email-schakrabarti@linux.microsoft.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/9] mptcp: fixes for v6.5
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168855122331.15504.15239551564077359539.git-patchwork-notify@kernel.org>
+Date:   Wed, 05 Jul 2023 10:00:23 +0000
+References: <20230704-upstream-net-20230704-misc-fixes-6-5-rc1-v1-0-d7e67c274ca5@tessares.net>
+In-Reply-To: <20230704-upstream-net-20230704-misc-fixes-6-5-rc1-v1-0-d7e67c274ca5@tessares.net>
+To:     Matthieu Baerts <matthieu.baerts@tessares.net>
+Cc:     mptcp@lists.linux.dev, martineau@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        shuah@kernel.org, fw@strlen.de, kishen.maloor@intel.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+        cpaasch@apple.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,21 +61,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Hello:
 
-Thanks for your patch.
+This series was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+On Tue, 04 Jul 2023 22:44:32 +0200 you wrote:
+> Here is a first batch of fixes for v6.5 and older.
+> 
+> The fixes are not linked to each others.
+> 
+> Patch 1 ensures subflows are unhashed before cleaning the backlog to
+> avoid races. This fixes another recent fix from v6.4.
+> 
+> [...]
 
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH net] net: mana: Configure hwc timeout from hardware
-Link: https://lore.kernel.org/stable/1688549578-12906-1-git-send-email-schakrabarti%40linux.microsoft.com
+Here is the summary with links:
+  - [net,1/9] mptcp: ensure subflow is unhashed before cleaning the backlog
+    https://git.kernel.org/netdev/net/c/3fffa15bfef4
+  - [net,2/9] mptcp: do not rely on implicit state check in mptcp_listen()
+    https://git.kernel.org/netdev/net/c/0226436acf24
+  - [net,3/9] selftests: mptcp: connect: fail if nft supposed to work
+    https://git.kernel.org/netdev/net/c/221e4550454a
+  - [net,4/9] selftests: mptcp: sockopt: use 'iptables-legacy' if available
+    https://git.kernel.org/netdev/net/c/a5a5990c099d
+  - [net,5/9] selftests: mptcp: sockopt: return error if wrong mark
+    https://git.kernel.org/netdev/net/c/9ac4c28eb70c
+  - [net,6/9] selftests: mptcp: userspace_pm: use correct server port
+    https://git.kernel.org/netdev/net/c/d8566d0e0392
+  - [net,7/9] selftests: mptcp: userspace_pm: report errors with 'remove' tests
+    https://git.kernel.org/netdev/net/c/966c6c3adfb1
+  - [net,8/9] selftests: mptcp: depend on SYN_COOKIES
+    https://git.kernel.org/netdev/net/c/6c8880fcaa5c
+  - [net,9/9] selftests: mptcp: pm_nl_ctl: fix 32-bit support
+    https://git.kernel.org/netdev/net/c/61d965805026
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
