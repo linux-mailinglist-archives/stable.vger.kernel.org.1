@@ -2,48 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4615D748884
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 17:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7E377488D8
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 18:05:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232859AbjGEPyD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 11:54:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34228 "EHLO
+        id S233104AbjGEQFK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 12:05:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232726AbjGEPyB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 11:54:01 -0400
+        with ESMTP id S232725AbjGEQFK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 12:05:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9637B133;
-        Wed,  5 Jul 2023 08:53:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 999F110A
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 09:05:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0732261600;
-        Wed,  5 Jul 2023 15:53:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BA6C433C7;
-        Wed,  5 Jul 2023 15:53:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1688572438;
-        bh=AEAtWD3d1LwbQvafKDuUpkOqzW4QebBziXMK3a5DQWw=;
-        h=Date:To:From:Subject:From;
-        b=1TDuRhte21jvghDngmgZCY2o6SgQcNGopp9eR66Q/Ya23mOnIqPYncbHEbfiXEUkF
-         DKGfgXBgT5NU1PjNQg6Tf7AToleO0BEZhqdDvNQpdNhyL2j54IM6l2dz0vg+AEGt0y
-         EyH2YB5VCzzxqBLIDzvGA8dCgfzmLwJFg073soks=
-Date:   Wed, 05 Jul 2023 08:53:56 -0700
-To:     mm-commits@vger.kernel.org, will@kernel.org,
-        vincenzo.frascino@arm.com, vbabka@suse.cz, stable@vger.kernel.org,
-        ryabinin.a.a@gmail.com, roman.gushchin@linux.dev,
-        rientjes@google.com, penberg@kernel.org, pcc@google.com,
-        mark.rutland@arm.com, iamjoonsoo.kim@lge.com, glider@google.com,
-        feng.tang@intel.com, elver@google.com, dvyukov@google.com,
-        cl@linux.com, catalin.marinas@arm.com, 42.hyeyoo@gmail.com,
-        andreyknvl@google.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + kasan-slub-fix-hw_tags-zeroing-with-slub_debug.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230705155358.53BA6C433C7@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F8E461615
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 16:05:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A7FC433C8;
+        Wed,  5 Jul 2023 16:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688573108;
+        bh=MaQ9axNX26c9wxnJ0P+IdEAV6VOXIK3LAWryZ90v/Qg=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=l3w5MPUrUOOTkdmknB6dx2CtyE52F8JS3tBM0epQzl+7XfY9lWhN2iMZRW8obwzfE
+         2OSTQTiVyWTgkJZ1X/k94tnKvPJuszNC1sD492Gept8Na3v0tjQoPiMHzmOt1y83fG
+         s68wJHzlZ9RN0CRG7CPdagmeRZHbi9Xrsx88wzrORB/C5bBUGC5fH8RL0WgpnFDWaa
+         4gC9pnSi/uYA+dZNAcTrj8jrhduibrdK0zNisA5ZQRLTTIuU6H2awoyad6vEsA8/hZ
+         2fkuXp0LC1Xw55zACnJGJTwUfmUBfAWf8sFQDnYNULgtoqroey94oDHoPstIDJ4AMQ
+         XRIUuMjx8DMpQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     lgirdwood@gmail.com, vkarpovi@opensource.cirrus.com,
+        rf@opensource.cirrus.com, ckeepax@opensource.cirrus.com,
+        alsa-devel@alsa-project.org, patches@lists.linux.dev,
+        stable@vger.kernel.org, Marcus Seyfarth <m.seyfarth@gmail.com>
+In-Reply-To: <20230703-cs35l45-select-regmap_irq-v1-1-37d7e838b614@kernel.org>
+References: <20230703-cs35l45-select-regmap_irq-v1-1-37d7e838b614@kernel.org>
+Subject: Re: [PATCH] ASoC: cs35l45: Select REGMAP_IRQ
+Message-Id: <168857310652.55162.4180283376212806885.b4-ty@kernel.org>
+Date:   Wed, 05 Jul 2023 17:05:06 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-099c9
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,144 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, 03 Jul 2023 14:43:15 -0700, Nathan Chancellor wrote:
+> After commit 6085f9e6dc19 ("ASoC: cs35l45: IRQ support"), without any
+> other configuration that selects CONFIG_REGMAP_IRQ, modpost errors out
+> with:
+> 
+>   ERROR: modpost: "regmap_irq_get_virq" [sound/soc/codecs/snd-soc-cs35l45.ko] undefined!
+>   ERROR: modpost: "devm_regmap_add_irq_chip" [sound/soc/codecs/snd-soc-cs35l45.ko] undefined!
+> 
+> [...]
 
-The patch titled
-     Subject: kasan, slub: fix HW_TAGS zeroing with slub_debug
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kasan-slub-fix-hw_tags-zeroing-with-slub_debug.patch
+Applied to
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-slub-fix-hw_tags-zeroing-with-slub_debug.patch
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Thanks!
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+[1/1] ASoC: cs35l45: Select REGMAP_IRQ
+      commit: d9ba2975e98a4bec0a9f8d4be4c1de8883fccb71
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-------------------------------------------------------
-From: Andrey Konovalov <andreyknvl@google.com>
-Subject: kasan, slub: fix HW_TAGS zeroing with slub_debug
-Date: Wed, 5 Jul 2023 14:44:02 +0200
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Commit 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated
-kmalloc space than requested") added precise kmalloc redzone poisoning to
-the slub_debug functionality.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-However, this commit didn't account for HW_TAGS KASAN fully initializing
-the object via its built-in memory initialization feature.  Even though
-HW_TAGS KASAN memory initialization contains special memory initialization
-handling for when slub_debug is enabled, it does not account for in-object
-slub_debug redzones.  As a result, HW_TAGS KASAN can overwrite these
-redzones and cause false-positive slub_debug reports.
-
-To fix the issue, avoid HW_TAGS KASAN memory initialization when
-slub_debug is enabled altogether.  Implement this by moving the
-__slub_debug_enabled check to slab_post_alloc_hook.  Common slab code
-seems like a more appropriate place for a slub_debug check anyway.
-
-Link: https://lkml.kernel.org/r/678ac92ab790dba9198f9ca14f405651b97c8502.1688561016.git.andreyknvl@google.com
-Fixes: 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated kmalloc space than requested")
-Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
-Reported-by: Will Deacon <will@kernel.org>
-Acked-by: Marco Elver <elver@google.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Feng Tang <feng.tang@intel.com>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: kasan-dev@googlegroups.com
-Cc: Pekka Enberg <penberg@kernel.org>
-Cc: Peter Collingbourne <pcc@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/kasan.h |   12 ------------
- mm/slab.h        |   16 ++++++++++++++--
- 2 files changed, 14 insertions(+), 14 deletions(-)
-
---- a/mm/kasan/kasan.h~kasan-slub-fix-hw_tags-zeroing-with-slub_debug
-+++ a/mm/kasan/kasan.h
-@@ -466,18 +466,6 @@ static inline void kasan_unpoison(const
- 
- 	if (WARN_ON((unsigned long)addr & KASAN_GRANULE_MASK))
- 		return;
--	/*
--	 * Explicitly initialize the memory with the precise object size to
--	 * avoid overwriting the slab redzone. This disables initialization in
--	 * the arch code and may thus lead to performance penalty. This penalty
--	 * does not affect production builds, as slab redzones are not enabled
--	 * there.
--	 */
--	if (__slub_debug_enabled() &&
--	    init && ((unsigned long)size & KASAN_GRANULE_MASK)) {
--		init = false;
--		memzero_explicit((void *)addr, size);
--	}
- 	size = round_up(size, KASAN_GRANULE_SIZE);
- 
- 	hw_set_mem_tag_range((void *)addr, size, tag, init);
---- a/mm/slab.h~kasan-slub-fix-hw_tags-zeroing-with-slub_debug
-+++ a/mm/slab.h
-@@ -723,6 +723,7 @@ static inline void slab_post_alloc_hook(
- 					unsigned int orig_size)
- {
- 	unsigned int zero_size = s->object_size;
-+	bool kasan_init = init;
- 	size_t i;
- 
- 	flags &= gfp_allowed_mask;
-@@ -740,6 +741,17 @@ static inline void slab_post_alloc_hook(
- 		zero_size = orig_size;
- 
- 	/*
-+	 * When slub_debug is enabled, avoid memory initialization integrated
-+	 * into KASAN and instead zero out the memory via the memset below with
-+	 * the proper size. Otherwise, KASAN might overwrite SLUB redzones and
-+	 * cause false-positive reports. This does not lead to a performance
-+	 * penalty on production builds, as slub_debug is not intended to be
-+	 * enabled there.
-+	 */
-+	if (__slub_debug_enabled())
-+		kasan_init = false;
-+
-+	/*
- 	 * As memory initialization might be integrated into KASAN,
- 	 * kasan_slab_alloc and initialization memset must be
- 	 * kept together to avoid discrepancies in behavior.
-@@ -747,8 +759,8 @@ static inline void slab_post_alloc_hook(
- 	 * As p[i] might get tagged, memset and kmemleak hook come after KASAN.
- 	 */
- 	for (i = 0; i < size; i++) {
--		p[i] = kasan_slab_alloc(s, p[i], flags, init);
--		if (p[i] && init && !kasan_has_integrated_init())
-+		p[i] = kasan_slab_alloc(s, p[i], flags, kasan_init);
-+		if (p[i] && init && (!kasan_init || !kasan_has_integrated_init()))
- 			memset(p[i], 0, zero_size);
- 		kmemleak_alloc_recursive(p[i], s->object_size, 1,
- 					 s->flags, flags);
-_
-
-Patches currently in -mm which might be from andreyknvl@google.com are
-
-kasan-fix-type-cast-in-memory_is_poisoned_n.patch
-kasan-slub-fix-hw_tags-zeroing-with-slub_debug.patch
+Thanks,
+Mark
 
