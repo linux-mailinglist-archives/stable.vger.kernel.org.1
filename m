@@ -2,120 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3873D747D2F
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 08:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81C4F747D47
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 08:47:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230374AbjGEGhX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 02:37:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47070 "EHLO
+        id S231635AbjGEGrq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 02:47:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231572AbjGEGhW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 02:37:22 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E0F21703
-        for <stable@vger.kernel.org>; Tue,  4 Jul 2023 23:37:21 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5704995f964so68951607b3.2
-        for <stable@vger.kernel.org>; Tue, 04 Jul 2023 23:37:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688539040; x=1691131040;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zhr6pJDsNrLzcgsJWM8+NlUbxGJ2RjB7mS40bDz+nag=;
-        b=wGZz06tiAGOYOW1oR9igBCSCESoMLrvNQ4Is6Pq7jt8gRNGlk1OlqZ3GkhB+7tB7P9
-         9lnfKV1ZOPx85SiPB01L2VOYkfUHMYQugjqIBBmzYRd9nmOCGL2TtTmutyFGYvZrS9jQ
-         +W0EPlKnQP+wOFnIQ4R6jDrukMoAYrbfHMtMDFmynXYRiAD9rYASdisWn+t9ZO9ysXzw
-         pu71VB50nQ9GaYyt1jma1y3S/PyVvAUT4Fg+kD4KEc6TcpNqzMQ1FQUr40YrhLdj2XyJ
-         l2odp0IjyHycFROKoN2GV3n72IrNyOtaK4/hhb8CV/GjubqvLQRS7I2/YogapwLtjdfi
-         kP9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688539040; x=1691131040;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zhr6pJDsNrLzcgsJWM8+NlUbxGJ2RjB7mS40bDz+nag=;
-        b=R2KMe/BEeGbH0Cv4dWiuQj1Mg2X2RTGwXG42KrgQ3fVJYPj9GKx9vwdAFmMugjrBjm
-         wdlPhIcIYezbz5z9Qs73VFhlgxPm/5cwoorJv7hXNduU+bWA+MUGlKtcANooBbp8HaVz
-         yIeubCtDIlpBxeTBfu6tVBfzmKr7ob+SOvbIzbKSusdcf1SBl7lRHAQjVnUSfkvfLwxJ
-         RBuEuGI98HUgzABSsyoBaawCaDX2BsH19XrTHpev2cD2MJTmL3HEyXPHgfezLttTgDRd
-         MppTzH1iHple2ynYC//ZvQNk3rTz9ngeJu/MCsBs+nJeqxR1FRXPf4CuCFb6SqGoStc6
-         o2Uw==
-X-Gm-Message-State: ABy/qLbTzuMLW24zTM9fgdeZzbT1Ktu1AAx/qFaf/eLP2TiYJunuKTkC
-        dWklgzau6RIYGuXvW2CyCS0xNj4H1es=
-X-Google-Smtp-Source: APBJJlGRXrDm2+UHaaQ2lMndANUDPYXN3L5xPOFiKmeuHtoExxhUVsaVOnCv/ExXrwiSlS2rc6+mCts1FPc=
-X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:9164:ef9f:8918:e2b6])
- (user=surenb job=sendgmr) by 2002:a81:ca44:0:b0:573:3897:c925 with SMTP id
- y4-20020a81ca44000000b005733897c925mr109816ywk.6.1688539040473; Tue, 04 Jul
- 2023 23:37:20 -0700 (PDT)
-Date:   Tue,  4 Jul 2023 23:37:11 -0700
-In-Reply-To: <20230705063711.2670599-1-surenb@google.com>
-Mime-Version: 1.0
-References: <20230705063711.2670599-1-surenb@google.com>
-X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230705063711.2670599-3-surenb@google.com>
-Subject: [PATCH v2 2/2] mm: disable CONFIG_PER_VMA_LOCK until its fixed
-From:   Suren Baghdasaryan <surenb@google.com>
-To:     akpm@linux-foundation.org
-Cc:     jirislaby@kernel.org, jacobly.alt@gmail.com,
-        holger@applied-asynchrony.com, hdegoede@redhat.com,
-        michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
-        vbabka@suse.cz, hannes@cmpxchg.org, mgorman@techsingularity.net,
-        dave@stgolabs.net, willy@infradead.org, liam.howlett@oracle.com,
-        peterz@infradead.org, ldufour@linux.ibm.com, paulmck@kernel.org,
-        mingo@redhat.com, will@kernel.org, luto@kernel.org,
-        songliubraving@fb.com, peterx@redhat.com, david@redhat.com,
-        dhowells@redhat.com, hughd@google.com, bigeasy@linutronix.de,
-        kent.overstreet@linux.dev, punit.agrawal@bytedance.com,
-        lstoakes@gmail.com, peterjung1337@gmail.com, rientjes@google.com,
-        chriscli@google.com, axelrasmussen@google.com, joelaf@google.com,
-        minchan@google.com, rppt@kernel.org, jannh@google.com,
-        shakeelb@google.com, tatashin@google.com, edumazet@google.com,
-        gthelen@google.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Suren Baghdasaryan <surenb@google.com>
+        with ESMTP id S231179AbjGEGrp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 02:47:45 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F33A91700;
+        Tue,  4 Jul 2023 23:47:43 -0700 (PDT)
+Received: from kwepemi500019.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Qwqrp1gTbzMq8h;
+        Wed,  5 Jul 2023 14:44:26 +0800 (CST)
+Received: from ubuntu1804.huawei.com (10.67.174.174) by
+ kwepemi500019.china.huawei.com (7.221.188.117) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Wed, 5 Jul 2023 14:47:39 +0800
+From:   Li Huafei <lihuafei1@huawei.com>
+To:     <stable@vger.kernel.org>
+CC:     <gregkh@linuxfoundation.org>, <mhiramat@kernel.org>,
+        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+        <x86@kernel.org>, <hpa@zytor.com>, <sashal@kernel.org>,
+        <peterz@infradead.org>, <linux-kernel@vger.kernel.org>,
+        <xukuohai@huawei.com>, <natechancellor@gmail.com>,
+        <ndesaulniers@google.com>, <rostedt@goodmis.org>,
+        <weiyongjun1@huawei.com>, <gustavoars@kernel.org>,
+        <namit@vmware.com>, <laijs@linux.alibaba.com>,
+        <clang-built-linux@googlegroups.com>, <lihuafei1@huawei.com>
+Subject: [PATCH 5.10 0/9] x86/kprobes: Fix kprobe debug exception handling logic
+Date:   Wed, 5 Jul 2023 14:46:44 +0800
+Message-ID: <20230705064653.226811-1-lihuafei1@huawei.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.174.174]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemi500019.china.huawei.com (7.221.188.117)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-A memory corruption was reported in [1] with bisection pointing to the
-patch [2] enabling per-VMA locks for x86.
-Disable per-VMA locks config to prevent this issue while the problem is
-being investigated. This is expected to be a temporary measure.
+We found an issue with null pointer access due to kprobe debug exception
+error handling on 5.10, and I proposed a separate fix patch for 5.10,
+see [1]. But as Greg gave advice, we always choose to backport relevant
+patches from upstream to fix issues with stable kernels, so I made this
+patch set.
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=217624
-[2] https://lore.kernel.org/all/20230227173632.3292573-30-surenb@google.com
+The main one we need to backport is patch 5, which uses int3 instead of
+debug trap for single-stepping, thus avoiding the problems we
+encountered with kprobe debug exception error handling. Patches 1-4 are
+pre-patches, and patches 6-9 are fixes for patch 5. The major
+modifications are patch 2 and patch 5. Patch 2 optimizes
+resume_execution() to avoid repeated instruction decoding, and patch 5
+uses int3 instead of debug trap, and as Masami said in the commit
+message this patch will change some behavior of kprobe, but it has
+almost no effect on the actual usage.
 
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org/
-Reported-by: Jacob Young <jacobly.alt@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217624
-Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling first")
-Cc: stable@vger.kernel.org
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- mm/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Please let me know if there are any problems, thanks!
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 09130434e30d..0abc6c71dd89 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1224,8 +1224,9 @@ config ARCH_SUPPORTS_PER_VMA_LOCK
-        def_bool n
- 
- config PER_VMA_LOCK
--	def_bool y
-+	bool "Enable per-vma locking during page fault handling."
- 	depends on ARCH_SUPPORTS_PER_VMA_LOCK && MMU && SMP
-+	depends on BROKEN
- 	help
- 	  Allow per-vma locking during page fault handling.
- 
+[1] https://lore.kernel.org/lkml/20230630020845.227939-1-lihuafei1@huawei.com/
+
+Gustavo A. R. Silva (1):
+  kprobes/x86: Fix fall-through warnings for Clang
+
+Masami Hiramatsu (5):
+  x86/kprobes: Do not decode opcode in resume_execution()
+  x86/kprobes: Retrieve correct opcode for group instruction
+  x86/kprobes: Identify far indirect JMP correctly
+  x86/kprobes: Use int3 instead of debug trap for single-step
+  x86/kprobes: Fix to identify indirect jmp and others using range case
+
+Masami Hiramatsu (Google) (1):
+  x86/kprobes: Update kcb status flag after singlestepping
+
+Nadav Amit (1):
+  x86/kprobes: Fix JNG/JNLE emulation
+
+Wei Yongjun (1):
+  x86/kprobes: Move 'inline' to the beginning of the kprobe_is_ss()
+    declaration
+
+ arch/x86/include/asm/kprobes.h |  24 +-
+ arch/x86/kernel/kprobes/core.c | 639 ++++++++++++++++++++-------------
+ arch/x86/kernel/traps.c        |   3 -
+ 3 files changed, 409 insertions(+), 257 deletions(-)
+
 -- 
-2.41.0.255.g8b1d071c50-goog
+2.17.1
 
