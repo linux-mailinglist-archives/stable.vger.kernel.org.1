@@ -2,177 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E8B574863E
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 16:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C2B74865C
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 16:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231162AbjGEOZL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 10:25:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38392 "EHLO
+        id S232026AbjGEOaj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 10:30:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232608AbjGEOYi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 10:24:38 -0400
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 525241FEA;
-        Wed,  5 Jul 2023 07:23:37 -0700 (PDT)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-5774098f16eso71380587b3.0;
-        Wed, 05 Jul 2023 07:23:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688567014; x=1691159014;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=PhMX9Gf1eC3s7FkxmXbqbNQ7tc0qTU4hPkMTdctXh34=;
-        b=nNU0d983bI6LB5Rei/Fl15hwCcPPQpjpa5z621GQI9bMc8N464MEaZtVtTDr4cfZ8v
-         n7iQQvxtML6FZCXb5i5QtoLfqYXB/aDsaF/UKd2ddB5rRqIf0SfcB4s6CD7beCqyN1CB
-         VEdCO9mE83Xf5USoHiGRt4rm14UpSH14YyPUrUR2Enw/7MCwANMW5B+wWDmCytiu3nyT
-         ygTWDQm+eQn70r79m9opt7wAqptj9XUCvJ2GgsSZIVUbZTEBwnAbm7Dm3uijz4jiU6Ey
-         m3Qez2kyDs1FcA9huQpeDjGN70Kpfq6NIOQg8BF8hlKDbTC/g+7NuOL33MGYpYfNQRrZ
-         eFog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688567014; x=1691159014;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PhMX9Gf1eC3s7FkxmXbqbNQ7tc0qTU4hPkMTdctXh34=;
-        b=TXyvf7KdIjr8Ai+vNUGxl9zceyUJNNlDFBkoQcjREqBeAKUeYeTiGuD/GI+c+HbDV5
-         3fLqDOqym1/gSPZiJ2mU6XvWqRrgHp+aoqDO6c8R2sCiR8hGFYw0iUVCHLSoYriF4OSk
-         UXaB+gxKVE6a9ek8vxTD79IBeMgwj+lBV1GjvWo6+rptpPXF6xZt/Gbq11XKkYS2rP1J
-         efhTAy9Vx3/EfMsM22wiTE28C4Z6hygP7GEEOzSkjbxSAFsWg/9f0Gg7n07Jd6cd5WvX
-         MMBbJFsc6xPmsT5iOggrL/WrmHMQDvZEctcAkqmLqZaQCE5FW+hOC9iW3zTd8ODrK3iT
-         V9rw==
-X-Gm-Message-State: ABy/qLZMC2YCNXOaLFCEQb0Q05BTrWszuw7hu8XG9xGABKSNC4HnOG7Y
-        rEQUYHvjTFGtdExblFSd6KY=
-X-Google-Smtp-Source: APBJJlF2lwnjeMYyp2vVNhcNzRXbSEuEGAgDcQauGDciAIf14tH1VkhpsPQde93Axx083R6HkXgNvw==
-X-Received: by 2002:a0d:d656:0:b0:579:ed5c:2d10 with SMTP id y83-20020a0dd656000000b00579ed5c2d10mr10385565ywd.30.1688567014245;
-        Wed, 05 Jul 2023 07:23:34 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id p190-20020a0dffc7000000b0055a7c2375dfsm6109811ywf.101.2023.07.05.07.23.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Jul 2023 07:23:33 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <824705ec-38ca-1587-573c-595b146ee2e1@roeck-us.net>
-Date:   Wed, 5 Jul 2023 07:23:30 -0700
+        with ESMTP id S231984AbjGEOaj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 10:30:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58330CF;
+        Wed,  5 Jul 2023 07:30:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8E5861578;
+        Wed,  5 Jul 2023 14:30:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530FCC433C7;
+        Wed,  5 Jul 2023 14:30:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688567437;
+        bh=mioA+NwZpkg7KB16O0oCsl2L7Ti3kUkbc08ZUpiE4dQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tHyEobZ4yZ6Rf5P4cpd7HdExbDFfbfwjSd9AOkAamID+KUpZLK3UX1Ssiu3WEZob9
+         k/S/wpYG3g5A+k/Zd9q4qO9qNtok2xT0r1VnWKJ8ffAo5OtFxZBdnxjW8HqTlznM2k
+         dy6Ih2YDHHoWWcJeC74ZCp68RRIXR969V9jXPKOOTAwZevqQlW8Jfa21AJxEKzD6Ie
+         I9kSC7ozj89z0APRO985AwxivYx5Jejt3rEuv87AeietuvgV7417+qJkqGMp8AgF8q
+         CBK/6Ksld10CgpxWIHyvxj/5lgIZHaWqVBIAjZV9MzAqTPgYowu7FKAEnBTwJ6jQ1F
+         YgNkRGtArbf7A==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan@kernel.org>)
+        id 1qH3Wz-0000g3-1S;
+        Wed, 05 Jul 2023 16:30:58 +0200
+Date:   Wed, 5 Jul 2023 16:30:57 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Banajit Goswami <bgoswami@quicinc.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Rander Wang <rander.wang@linux.intel.com>
+Subject: Re: [PATCH 1/8] soundwire: fix enumeration completion
+Message-ID: <ZKV-oXAWzRXnjXus@hovoldconsulting.com>
+References: <20230705123018.30903-1-johan+linaro@kernel.org>
+ <20230705123018.30903-2-johan+linaro@kernel.org>
+ <907ad7a3-3384-c0c4-90a9-5beab4cc45e0@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 6.1 00/13] 6.1.38-rc2 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230704084611.071971014@linuxfoundation.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <20230704084611.071971014@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <907ad7a3-3384-c0c4-90a9-5beab4cc45e0@linux.intel.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/4/23 01:48, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.38 release.
-> There are 13 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Jul 05, 2023 at 02:53:17PM +0200, Pierre-Louis Bossart wrote:
+> On 7/5/23 14:30, Johan Hovold wrote:
+> > The soundwire subsystem uses two completion structures that allow
+> > drivers to wait for soundwire device to become enumerated on the bus and
+> > initialised by their drivers, respectively.
+> > 
+> > The code implementing the signalling is currently broken as it does not
+> > signal all current and future waiters and also uses the wrong
+> > reinitialisation function, which can potentially lead to memory
+> > corruption if there are still waiters on the queue.
 > 
-> Responses should be made by Thu, 06 Jul 2023 08:46:01 +0000.
-> Anything received after that time might be too late.
+> That change sounds good, but I am not following the two paragraphs below.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.38-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+> > Not signalling future waiters specifically breaks sound card probe
+> > deferrals as codec drivers can not tell that the soundwire device is
+> > already attached when being reprobed. 
 > 
-> thanks,
+> What makes you say that? There is a test in the probe and the codec
+> driver will absolutely be notified, see bus_type.c
 > 
-> greg k-h
-> 
-> -------------
-> Pseudo-Shortlog of commits:
-> 
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->      Linux 6.1.38-rc2
-> 
-> Linus Torvalds <torvalds@linux-foundation.org>
->      gup: avoid stack expansion warning for known-good case
-> 
+> 	if (drv->ops && drv->ops->update_status) {
+> 		ret = drv->ops->update_status(slave, slave->status);
+> 		if (ret < 0)
+> 			dev_warn(dev, "%s: update_status failed with status %d\n", __func__,
+> ret);
+> 	}
 
-I am a bit puzzled by this patch. It avoids a warning introduced with
-upstream commit a425ac5365f6 ("gup: add warning if some caller would
-seem to want stack expansion"), or at least it says so, but that patch
-is not in v6.1.y. Why is this patch needed here ?
+I'm talking about signalling the codec driver using the soundwire device
+via the completion structs. Unless the underling device is detached and
+reattached, trying to wait for completion a second time will currently
+timeout instead of returning immediately.
 
-Thanks,
-Guenter
+This affects codecs like rt5682, which wait for completion in component
+probe (see rt5682_probe()).
 
-> Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
->      drm/amd/display: Ensure vmin and vmax adjust for DCE
+> > Some codec runtime PM
+> > implementations suffer from similar problems as waiting for enumeration
+> > during resume can also timeout despite the device already having been
+> > enumerated.
 > 
-> Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
->      drm/amdgpu: Validate VM ioctl flags.
-> 
-> Ahmed S. Darwish <darwi@linutronix.de>
->      docs: Set minimal gtags / GNU GLOBAL version to 6.6.5
-> 
-> Ahmed S. Darwish <darwi@linutronix.de>
->      scripts/tags.sh: Resolve gtags empty index generation
-> 
-> Krister Johansen <kjlx@templeofstupid.com>
->      perf symbols: Symbol lookup with kcore can fail if multiple segments match stext
-> 
-> Finn Thain <fthain@linux-m68k.org>
->      nubus: Partially revert proc_create_single_data() conversion
-> 
-> Linus Torvalds <torvalds@linux-foundation.org>
->      execve: always mark stack as growing down during early stack setup
-> 
-> Mario Limonciello <mario.limonciello@amd.com>
->      PCI/ACPI: Call _REG when transitioning D-states
-> 
-> Bjorn Helgaas <bhelgaas@google.com>
->      PCI/ACPI: Validate acpi_pci_set_power_state() parameter
-> 
-> Aric Cyr <aric.cyr@amd.com>
->      drm/amd/display: Do not update DRR while BW optimizations pending
-> 
-> Alvin Lee <Alvin.Lee2@amd.com>
->      drm/amd/display: Remove optimization for VRR updates
-> 
-> Max Filippov <jcmvbkbc@gmail.com>
->      xtensa: fix lock_mm_and_find_vma in case VMA not found
-> 
-> 
-> -------------
-> 
-> Diffstat:
-> 
->   Documentation/process/changes.rst        |  7 +++++
->   Makefile                                 |  4 +--
->   drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c   |  4 +++
->   drivers/gpu/drm/amd/display/dc/core/dc.c | 50 +++++++++++++++++-------------
->   drivers/nubus/proc.c                     | 22 ++++++++++---
->   drivers/pci/pci-acpi.c                   | 53 ++++++++++++++++++++++++--------
->   include/linux/mm.h                       |  4 ++-
->   mm/memory.c                              |  4 +++
->   mm/nommu.c                               |  7 ++++-
->   scripts/tags.sh                          |  9 +++++-
->   tools/perf/util/symbol.c                 | 17 ++++++++--
->   11 files changed, 135 insertions(+), 46 deletions(-)
-> 
-> 
+> I am not following this either. Are you saying the wait_for_completion()
+> times out because of the init_completion/reinit_completion confusion, or
+> something else.
 
+It times out because the completion counter is not saturated unless you
+use complete_all().
+
+Drivers that wait unconditionally in resume, will time out the second
+time they are runtime resumed unless the underlying device has been
+detached and reattached in the meantime (e.g. wsa881x_runtime_resume()).
+
+Johan
