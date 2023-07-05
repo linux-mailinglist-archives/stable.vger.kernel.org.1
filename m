@@ -2,218 +2,279 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A537748A19
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 19:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB615748A65
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 19:30:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232550AbjGER3B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 13:29:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46760 "EHLO
+        id S231479AbjGERah (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 13:30:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231695AbjGER3A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 13:29:00 -0400
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F063819B
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 10:28:59 -0700 (PDT)
-Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-63588812c7aso5020236d6.0
-        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 10:28:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1688578139; x=1691170139;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=eQWO62cXtKOcircJG+EPeArV6BFhovDZjTsTZiwnTL0=;
-        b=ZwhHyFDxccXzGMgxP7MHQzXWBQXEV/z9qS3sqMtSn4+UQDXxgtmjdVU6thxcH1VuAB
-         ktOraLWSAB/oyepA7i+rYAVeuDD5O0lfRcBnpKZz9wv3pgYpOAV9vjbm7++YY0H5SECQ
-         k8xiG/OpFX5zf+h2+T9Sqp932oeFUn6Bu3WCo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688578139; x=1691170139;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eQWO62cXtKOcircJG+EPeArV6BFhovDZjTsTZiwnTL0=;
-        b=FpM9b4aCtNLWmN5sSIMKw8USN6u6yK/wcpWZTedef8IQuliJz7TODqQOWGpCvGMs9s
-         ptjXA3Dgl5C+L4mtx9KCsabMrLW+DGMt8kAw6fVptEngDw1/NJPEGlUerk7eLMz0sUaA
-         2vewLVued+KhVUioGfK0dkvtY5m4BvRERa9qBNdGQ7fJhM/11BlAA+qHEGsXwUeKubu2
-         eOPwODlVBkSSRIq+k1LwkooA1KcDO8nXy9KoKp9Nx34+fIRp5cQW+9w74I73Jhb03F08
-         GXSzcKqLSz6VEaMM7G7467667rpznLj9JFmHI0p1dRLGEBi55RgUZtbSoozV+eqxQl5w
-         6PJQ==
-X-Gm-Message-State: ABy/qLZyYtgdXJ676GaEYGo3PKh37eVgTaiMS9fn5j+UKEz+GlUc4EAk
-        PCmcx5vRz8I9VTf8zs2V4IRNQBjeG4lEB2UJ/Ck0
-X-Google-Smtp-Source: APBJJlGjutRk/LZlN8k4Uw+C2f1JrVQeW1dzVU5D+PCZTYLHZxzzl0LGHZ5fDhjZQuDHApfFZLFR7WPjNWGnbDDTQs8=
-X-Received: by 2002:a05:6214:c8c:b0:635:ee77:8d69 with SMTP id
- r12-20020a0562140c8c00b00635ee778d69mr3656258qvr.22.1688578139038; Wed, 05
- Jul 2023 10:28:59 -0700 (PDT)
+        with ESMTP id S231772AbjGERaa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 13:30:30 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 657971FFB;
+        Wed,  5 Jul 2023 10:29:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688578196; x=1720114196;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=sSa39Ynd5Wfm/pwyvbZC+CkdbKauksRmdbGaQqwdQHg=;
+  b=CLuiSz6IsSjM5sHKpOw5oBQG5jR+Sklv2aofCPGqnqmz6UzOAMzv2BSF
+   kzKWT2mQ7zEmUh4jBupwwn2GYMfxWmlpfiRVZrWhJ637il8tFr+iD720G
+   4QvVN4bulNRUN0cQdc/7CL2JupZ5XDV2hcZR2sWlfEUaKVSaFP4uv9CUD
+   PGxlHkeCbok0UzauIkdQtjyZDtWFtcn114ClIiQXxojbZ6SQ6BIK0ppPy
+   nAk8oYrY4oWv1vAeqkdX4CYvXQPeAWTqANw5Imb77ZBYFNVXCCbJXeB5u
+   WadI3O7B7CEOah67xrLYNMqZNRJ2gwUOuYFv3DDKLPQOSv18yTbAvMt0M
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10762"; a="365973126"
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="365973126"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 10:29:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10762"; a="748810510"
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="748810510"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orsmga008.jf.intel.com with ESMTP; 05 Jul 2023 10:29:43 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Wed, 5 Jul 2023 10:29:42 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Wed, 5 Jul 2023 10:29:42 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Wed, 5 Jul 2023 10:29:42 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GSHV72ox0bxE/Cs5OID/i/EbI/pxRfSYnczMLK70kT3Hl3tNl+p1tYct2lcgmreWIwpqNJlt94dLj2MXuRZFuh+g3L6CFEEtm0rbCg2EOnmIPo7eJ18JIlq8g8gqAg9E08ZGEO7yOObiVWSDq0mTx1EkbCeqwlhYDfSuiRdI2F2sXBvid66NS1032Ykyq0/up1g4qCNTpVR1iwbJ5fUYhLQu2EU+B9N/QdBRms8vtleAV6VA4e+26k66OkHTzg5czleWeLtUU5+55jc5xReUk7p6vL3sFG+f6J+47KoZ/Ku3BsS7wbz1J0GLs8Yg7TgRqx/mKRF0kcVlQ7qOTBjKMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S/iIrIHpi3jJ1Q7EEq0nTXEF2Ky3lBml62B6m9k7LtU=;
+ b=e3ebJcDc3WB6Xzd+DRZib/b02deKu6LfihtpC7DOJoLg1rOMthF1yVI7tXV7NVC4/uP9qsdmmyxQQiyDA6Lq1o0V2PQu7XFCJOrqDYZ5my0OTwxd9wI54SSKutDbRI+0Slgq1Ll7mXScNNxplDK0ppGJWZVIkGqFsvgJM0uPHtaYpYjTFpVTmKfdGpvr+w3QDmGWhEJAbRYhX0YP56KYU4/A2pI74nQTrmfXAzalqqHJitbp1S/Dima0K/e/fXv1s2ykEt7K/YHjc4YOaVAdanlDW20usANQsnW4jcdzGTgosEQDTByVe/WKt73Vf6c889Tv+xOQ17+iTcX/h8x8tA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1PR11MB5089.namprd11.prod.outlook.com (2603:10b6:303:9b::16)
+ by PH7PR11MB6699.namprd11.prod.outlook.com (2603:10b6:510:1ad::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.17; Wed, 5 Jul
+ 2023 17:29:40 +0000
+Received: from CO1PR11MB5089.namprd11.prod.outlook.com
+ ([fe80::4e5a:e4d6:5676:b0ab]) by CO1PR11MB5089.namprd11.prod.outlook.com
+ ([fe80::4e5a:e4d6:5676:b0ab%5]) with mapi id 15.20.6565.016; Wed, 5 Jul 2023
+ 17:29:40 +0000
+Message-ID: <ca4d9186-705c-8a69-7fce-7cff884989c0@intel.com>
+Date:   Wed, 5 Jul 2023 10:29:38 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH net v2] nfp: clean mc addresses in application firmware
+ when closing port
+To:     Yinjun Zhang <yinjun.zhang@corigine.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Louis Peens <louis.peens@corigine.com>
+CC:     David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        oss-drivers <oss-drivers@corigine.com>
+References: <20230703120116.37444-1-louis.peens@corigine.com>
+ <4012ae37-f674-9e58-ec2a-672e9136576a@intel.com>
+ <DM6PR13MB3705E98ABE2CA8B2B677E055FC2EA@DM6PR13MB3705.namprd13.prod.outlook.com>
+Content-Language: en-US
+From:   Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <DM6PR13MB3705E98ABE2CA8B2B677E055FC2EA@DM6PR13MB3705.namprd13.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR02CA0007.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::33) To CO1PR11MB5089.namprd11.prod.outlook.com
+ (2603:10b6:303:9b::16)
 MIME-Version: 1.0
-References: <20230615083010.45837-1-ranjan.kumar@broadcom.com> <2023061538-dizzy-amiable-9ec7@gregkh>
-In-Reply-To: <2023061538-dizzy-amiable-9ec7@gregkh>
-From:   Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
-Date:   Wed, 5 Jul 2023 11:28:42 -0600
-Message-ID: <CAFdVvOxx_rHkpLLcbQbtNS-3bS9-hsLedom6qRK1H6C2x1iUyw@mail.gmail.com>
-Subject: Re: [PATCH] mpt3sas: Perform additional retries if Doorbell read
- returns 0
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Ranjan Kumar <ranjan.kumar@broadcom.com>,
-        linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
-        sreekanth.reddy@broadcom.com, stable@vger.kernel.org
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000002be09b05ffc0bc68"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR11MB5089:EE_|PH7PR11MB6699:EE_
+X-MS-Office365-Filtering-Correlation-Id: 84c34b6f-8ba2-44e3-7562-08db7d7d69c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: iNqhRhtQ2Q/UrdGnZ76WiZQZ0ityJrqrm6jwnYDR4jMzHkVIYO5z9Wkszq/KnLaO3l7o5DCL5EA8+vaigsjcnwZUkB40gBhoCnVs0fSjBTQvf48wP1vF6bBOHV+swG/GZvMgBzMaIzsnomqHEfHyRPiXTsW+823IxuwMZ1m9fOO7PHEhMZ0qJ8dIINSboLGHWmeZjr5Yg+LPkQBu98TX8YUuaj2mJqnQkU44aRMHxSqj+Mnkcm99VpRBiakhweELzwgKOzrlWc4qeebkgzMASEtxkNHEpbf1mzczgSKfDaNSn1mlZ5Pkub+CxuSleWkAABLwen95pHgDEbb8JSRr3gQL5VwJhlA8jKA9nOiF3wg2/zvZVYE9gtcYXYS3Ue/cODqLeaxaQgqucWxvxddp3un6mBNS+OUJzkqrqKyfLb7mpOH3Lm+CXjxQMr+scstJHX5xVbPBPfU8Ju7Jd6Zi4iAmJCJsD3rpQslJsK1gahXXB3ZfbGGL2kAr4iFxrUgpqq9w0H50CP1qTc+ydtzpspkrKj9ml5Zq0cKVmGDKSop+gl9bKgslG5zwqVS9O/1R7kkzxRv2ROMQbvPlR28PP8dh83/BmN7jn5ofvrlYT4gTTyMnmfCHylmQGxhqOD2ZM+rytcHqA60lmKowlR/tUg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5089.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(366004)(346002)(136003)(376002)(39860400002)(451199021)(38100700002)(66476007)(66556008)(4326008)(66946007)(82960400001)(2616005)(186003)(86362001)(31696002)(6486002)(6512007)(36756003)(478600001)(26005)(53546011)(110136005)(6506007)(54906003)(8676002)(8936002)(5660300002)(31686004)(2906002)(41300700001)(316002)(83380400001)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TUtXTnU5cGh5VUhMTGZBR243QzZWUXQvSmZOUGNySnhNLzdmZDExOXpPWGNI?=
+ =?utf-8?B?bTdVSFJjNUhyNWl1OVdyWDVvaXpYZS81bkZoOU5ad01OK0pDNFVWSVFGUkRk?=
+ =?utf-8?B?R3ptcGJUUUJNckdqVnkzYkovM2wxUC95NU41STdBMmQwb01yV1ZYTlBZbm1F?=
+ =?utf-8?B?ZVNwQzNDT2p4citGNDlDeTVmM21sYk9lYXJoYkxDQjZKRWNlK3V1N05tS2pT?=
+ =?utf-8?B?ZmpQS0JCaERJYVM0bHpKQ0Q4dXZWR0pjRXFlVVUvMCtENldQaVd1R0VGaExm?=
+ =?utf-8?B?NG1pT1lEUVJrZ0VuOEluS0JyQlljcnJLR2lNWm5IUTdFVERiYkVJOWFQTlZi?=
+ =?utf-8?B?SkJvT1ZhRzB3blF6ZjJnUU5DZFp1N3FmZ1BLUmFERHdjek9ETmJrV3M1ZHYx?=
+ =?utf-8?B?dzFxZFNtN3ZDdVJVZExxbUU3ZS81ZGdSUUkvYldaaXNRL1lHTkF6OXAva2RZ?=
+ =?utf-8?B?bXdHdHBYb2dyVVMyclBwSzdINWZEb1VCbVhxTExjZ3dmMEo3U2Fmb01NRWhi?=
+ =?utf-8?B?Z3ZaQ0RZeEhycWRPTjFydzVUWHBscGZEcXExK2d0Z1NLSWducVhIam9FU2l6?=
+ =?utf-8?B?U0xPSXF1bTBtM0txbWtCNWhiTS9TM1dScDVCWWREdHNoOHZONmNNTSs4bGNV?=
+ =?utf-8?B?VDBiVkZFaVlxTWFwMVFrclBoY1pYWURzSGhCQ2xsUzJBaHhMdkptNGFHbVBF?=
+ =?utf-8?B?RlVlRHJWRmg1TGRKeGhrVkdxV3pVVllhSXhNKzB3SytUZUF4QnNPbmFxdjlo?=
+ =?utf-8?B?UEtYMzJQUEQ0bzVra0dlMk5nWDZxRGdCYzAzdG1ieW4rZjBkSmNxWUFFNUtF?=
+ =?utf-8?B?amc1bDdXN3E1a0FjeTVvc3ZZR3VkYWc0Nm1iV01SbVgwYW80cGN4UjMzbmh4?=
+ =?utf-8?B?dU43TFQ2dkxobCs5QXZ2WmZhSDF4aVp6eFFWc0QweVFYdzZDNkxJWTlKTnpV?=
+ =?utf-8?B?RVY3L3A4Zkk1OGNoLzdNbkxQU1ZaVHIydlVtTEFvRG93SStLVGxzcmp2Wlhq?=
+ =?utf-8?B?UG5RTDBOcmhiZks0R1dWZ0JISXNqNWxZZGFXaUtYeW5xbFdrWnF0SVFQbk5H?=
+ =?utf-8?B?dmFYWGNyay9uSmI5SVhneWllSGc2bHdac2dFWHk2QjNyMWVIb2Zuc0J3bWxp?=
+ =?utf-8?B?ajErbDk3Y1YzZEhsb2lwOTlqSXhYcDl6M2VGM3dZZnZDZHlYWVdpVWptNkh5?=
+ =?utf-8?B?emZSYmtHdkZZWGhpakxoeTloK1VmQzJrODdiWVBVdEtpTHFMelZJamdwa0Vt?=
+ =?utf-8?B?UW9ZMlFDQm1qZjhLWnh0OWsrR2s2SkpzNlhVa2FWeGdaZVp0VEI4bTBmdThK?=
+ =?utf-8?B?RzN1TTRtakVZRTR6M0ZvVW4zTXd2R3R0UEkwNWo1UG8wYTR4aDRRSCs5amZt?=
+ =?utf-8?B?ejRzdmV3Mk9KdXYrWGwvemNBSFYxMmhkeTc4WXpUZjl1SGdiQ2dyUGZ3clgz?=
+ =?utf-8?B?U3VIaXBwNm80SEg0UGt6V25iUDBqR0dmcXhLTzZOQ1FqNTRhUkxkbG1jYlQ3?=
+ =?utf-8?B?ci9UQnhiU215cTdJbk83b2I0MG91OXNIN2pMcjR5UEdLWHIzNjdvZjF0czkw?=
+ =?utf-8?B?cENydDlSaVVXNjk0VDBqUkpXZnRjeTZMM05MZFVSemtuOFV2L0ppdEw1OWM5?=
+ =?utf-8?B?azdsbkp0WTRjZEJ5WldleW9mUXFrVExMbTFrTUJReHFZYVptcEtmeWhuelBt?=
+ =?utf-8?B?NHduNTlkcy9Yb2xJN2xCS0Z1bWNOT3VORmNhVm5tNlppcFdBZkwvUVF6L0gv?=
+ =?utf-8?B?b0xHRWZUQ1hPRUIwdzgzTmZiQlNHdzRXWkNlVUNtR21Md0dIdnBHRWNZUTJ1?=
+ =?utf-8?B?TTl1dHJaOHprSnRKMld5Q0VRN3JNMzdHNXMrSTRUREVRdVlxTU9BQkJBSy9U?=
+ =?utf-8?B?bE1nN285TktuZnpUaitQaDlScXhFL0FCOEpaWHAwa3A0WDFUR3Y1SlM1QVNN?=
+ =?utf-8?B?M3JhbWQ0eGRSUndtODFwYW9GNHo3aDVscm9sS1RtTEtwWjhjckZpendUa2pE?=
+ =?utf-8?B?a0hsSmo2K3V5RTk1ZmZnUi95ZG1ZSVBKakJKNnlsVXhoYWVUNmxoeXRrRE9B?=
+ =?utf-8?B?WWdFZ3MyOVhva0RXRnI0TVlDSlN0RUtWM1hUUXlFa1o3Z0hydE9nTWZYRVpo?=
+ =?utf-8?B?WktaWFdXenRQNFdNd2ZVdEpnQXcxYkVJWlBqdmFjaWVRYURzcjQrWEx2SlpX?=
+ =?utf-8?B?c2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84c34b6f-8ba2-44e3-7562-08db7d7d69c2
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5089.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jul 2023 17:29:40.3266
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IWOyZKfZTqSHKAcg+iK12ZVGInEtKkLc0iS4Vn3eLWWY83Y7J/zTdEi1yOeFWVhmv5G/THWAx8NbiuF9+wrJQpjK2uHbBztME03Srt0IKaM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6699
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---0000000000002be09b05ffc0bc68
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 15, 2023 at 2:47=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Thu, Jun 15, 2023 at 02:00:10PM +0530, Ranjan Kumar wrote:
-> > Doorbell and Host diagnostic registers could return 0 even
-> > after 3 retries and that leads to occasional resets of the
-> > controllers, hence increased the retry count to thirty.
-> >
-> > 'Fixes: b899202901a8 ("mpt3sas: Add separate function for aero doorbell=
- reads ")'
->
-> No ' characters here please.
->
-> > Cc: stable@vger.kernel.org
-> >
-> > Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
->
-> No blank line before the signed-off-by and the other fields please.
->
-> Didn't checkpatch warn you about this?
->
-> > ---
-> >  drivers/scsi/mpt3sas/mpt3sas_base.c | 50 ++++++++++++++++-------------
-> >  drivers/scsi/mpt3sas/mpt3sas_base.h |  4 ++-
-> >  2 files changed, 31 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas=
-/mpt3sas_base.c
-> > index 53f5492579cb..44e7ccb6f780 100644
-> > --- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-> > +++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-> > @@ -201,20 +201,20 @@ module_param_call(mpt3sas_fwfault_debug, _scsih_s=
-et_fwfault_debug,
-> >   * while reading the system interface register.
-> >   */
-> >  static inline u32
-> > -_base_readl_aero(const volatile void __iomem *addr)
-> > +_base_readl_aero(const volatile void __iomem *addr, u8 retry_count)
->
-> Are you sure that volatile really does what you think it does here?
->
->
-This is taken care in the new revision of the patch
 
-> >  {
-> >       u32 i =3D 0, ret_val;
-> >
-> >       do {
-> >               ret_val =3D readl(addr);
-> >               i++;
-> > -     } while (ret_val =3D=3D 0 && i < 3);
-> > +     } while (ret_val =3D=3D 0 && i < retry_count);
->
-> So newer systems will complete this failure loop faster than older ones?
-> That feels very wrong, you will be changing this in a year or so.  Use
-> time please, not counts.
->
-This is nothing to do with the system speed, this is our hardware
-specific behavior and we are confident that the increased retry count
-is sufficient from our hardware perspective for any new systems too.
+On 7/3/2023 6:50 PM, Yinjun Zhang wrote:
+> On Tuesday, July 4, 2023 12:11 AM, Alexander Lobakin wrote:
+>> From: Louis Peens <louis.peens@corigine.com>
+>> Date: Mon,  3 Jul 2023 14:01:16 +0200
+>>
+>>> From: Yinjun Zhang <yinjun.zhang@corigine.com>
+>>>
+>>> When moving devices from one namespace to another, mc addresses are
+>>> cleaned in software while not removed from application firmware. Thus
+>>> the mc addresses are remained and will cause resource leak.
+>>>
+>>> Now use `__dev_mc_unsync` to clean mc addresses when closing port.
+>>>
+>>> Fixes: e20aa071cd95 ("nfp: fix schedule in atomic context when sync mc
+>> address")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Yinjun Zhang <yinjun.zhang@corigine.com>
+>>> Acked-by: Simon Horman <simon.horman@corigine.com>
+>>> Signed-off-by: Louis Peens <louis.peens@corigine.com>
+>>> ---
+>>> Changes since v1:
+>>>
+>>> * Use __dev_mc_unsyc to clean mc addresses instead of tracking mc
+>> addresses by
+>>>   driver itself.
+>>> * Clean mc addresses when closing port instead of driver exits,
+>>>   so that the issue of moving devices between namespaces can be fixed.
+>>> * Modify commit message accordingly.
+>>>
+>>>  .../ethernet/netronome/nfp/nfp_net_common.c   | 171 +++++++++---------
+>>>  1 file changed, 87 insertions(+), 84 deletions(-)
+>>
+>> [...]
+>>
+>>> +static int nfp_net_mc_sync(struct net_device *netdev, const unsigned char
+>> *addr)
+>>> +{
+>>> +	struct nfp_net *nn = netdev_priv(netdev);
+>>> +
+>>> +	if (netdev_mc_count(netdev) > NFP_NET_CFG_MAC_MC_MAX) {
+>>> +		nn_err(nn, "Requested number of MC addresses (%d)
+>> exceeds maximum (%d).\n",
+>>> +		       netdev_mc_count(netdev),
+>> NFP_NET_CFG_MAC_MC_MAX);
+>>> +		return -EINVAL;
+>>> +	}
+>>> +
+>>> +	return nfp_net_sched_mbox_amsg_work(nn,
+>> NFP_NET_CFG_MBOX_CMD_MULTICAST_ADD, addr,
+>>> +					    NFP_NET_CFG_MULTICAST_SZ,
+>> nfp_net_mc_cfg);
+>>> +}
+>>> +
+>>> +static int nfp_net_mc_unsync(struct net_device *netdev, const unsigned
+>> char *addr)
+>>> +{
+>>> +	struct nfp_net *nn = netdev_priv(netdev);
+>>> +
+>>> +	return nfp_net_sched_mbox_amsg_work(nn,
+>> NFP_NET_CFG_MBOX_CMD_MULTICAST_DEL, addr,
+>>> +					    NFP_NET_CFG_MULTICAST_SZ,
+>> nfp_net_mc_cfg);
+>>> +}
+>>
+>> You can just declare nfp_net_mc_unsync()'s prototype here, so that it
+>> will be visible to nfp_net_netdev_close(), without moving the whole set
+>> of functions. Either way works, but that one would allow avoiding big
+>> diffs not really related to fixing things going through the net-fixes tree.
+> 
+> I didn't know which was preferred. Looks like minimum change is concerned
+> more. I'll change it.
+> 
 
-> thanks,
->
-> greg k-h
+net-next might prefer code re-ordering and avoiding the extra
+declaration, but net would definitely want the smaller fix.
 
---0000000000002be09b05ffc0bc68
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+For what its worth, I double check this kind of thing by applying the
+patch to my git tree and using git's "color moved lines" options to diff.
 
-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
-v82E+npLwqC8bSHh1m6BJewfpawx72uKM9aFs6SVpLPtN6a5369OCwVeEwkk2FeFU9tZXWBnI4Wu
-d1Q4a3vhOColD6PdTWv74Ez2I3ahCkmpeEQ1YMt61TUH3W8NUJJeYN2xkR6OGsA1AgMBAAGjggHc
-MIIB2DAOBgNVHQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRw
-Oi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAy
-MC5jcnQwQQYIKwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJz
-b25hbHNpZ24yY2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZo
-dHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRC
-MEAwPqA8oDqGOGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJj
-YTIwMjAuY3JsMCYGA1UdEQQfMB2BG3NhdGh5YS5wcmFrYXNoQGJyb2FkY29tLmNvbTATBgNVHSUE
-DDAKBggrBgEFBQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU
-VyBc/F5XGkYNCP9Rb96mru8lU4AwDQYJKoZIhvcNAQELBQADggEBACiysbqj0ggjcc9uzOpBkt1Q
-nGtvHhd9pbNmshJRUoNL11pQEzupSsUkDoAa6hPrOaJVobIO+yC84D4GXQc13Jk0QZQhRJJRYLwk
-vdq704JPh4ULIwofTWqwsiZ1OvINzX9h9KEw/+h+Mc3YUCO7tvKBGLJTUaUhrjxyjLQdEK1Xp/8B
-kYd5quZssxYPJ3nl37Moy/U9ZM2F0Ivv4U3wyP5y5cdmBUBAGOd94rH60fVDVogEo5F9gXrZhT/4
-jKzCG3LclOOzLinCkK2J5GYngIUHSmnqk909QPG6jkx5RJWwkpTzm+AAVbJ9a+1F/8iR3FiDddEK
-8wQJuWG84jqd/9wxggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxT
-aWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAy
-MDIwAgx2rp2oPFt1hdtt8l8wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIGcJXUlA
-jD5nJ8MVlW7RPfMinUbDC0sq0WtvCY//qT6aMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJ
-KoZIhvcNAQkFMQ8XDTIzMDcwNTE3Mjg1OVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASow
-CwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZI
-hvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQByJxkxnLyYEfZ1aEWaSjZ4b8Iy
-nfF6L5p/7Jo2XrNWsyYV07tyzPL5N8UBpR9rNsj7300B+8pC3zirsn77qaalaMhM0u19SDzWj8TW
-54x9qV+Sm1jB2QeQCoN5Y51HJrtcNJP9L3tvrk7OK/qm0W/Jd8ExhjwdGZlijPkq+yVXaq0f8c5P
-9SwUz2a5YZWg2NY5v4e8oFzSNG+tBr2yz2V3tdM0ZisK2xx/FFkRNfvRPfH4FfbN6x3S4O/8MJRU
-UCxihsobzTO3tre3+ezmyNTr24qB6G/HgMNUuSbnP6LHSuwt06e7cKynW2ETwQ54pBlo0UEUkLrA
-8BFaNB3YEn53
---0000000000002be09b05ffc0bc68--
+Doing so for this patch shows that the change really is a straight
+forward re-ordering without any additional changes accidentally included.
+
+Thus, I have no objection to this version as-is, but a smaller v3 with
+the prototype is also fine with me.
+
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+
+Thanks,
+Jake
+
+>>
+>>> +
+>>>  /**
+>>>   * nfp_net_clear_config_and_disable() - Clear control BAR and disable NFP
+>>>   * @nn:      NFP Net device to reconfigure
+>>> @@ -1084,6 +1168,9 @@ static int nfp_net_netdev_close(struct net_device
+>> *netdev)
+>>>
+>>>  	/* Step 2: Tell NFP
+>>>  	 */
+>>> +	if (nn->cap_w1 & NFP_NET_CFG_CTRL_MCAST_FILTER)
+>>> +		__dev_mc_unsync(netdev, nfp_net_mc_unsync);
+>>> +
+>>>  	nfp_net_clear_config_and_disable(nn);
+>>>  	nfp_port_configure(netdev, false);
+>> [...]
+>>
+>> Thanks,
+>> Olek
