@@ -2,112 +2,259 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A85E1748077
-	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 11:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D669D7480E8
+	for <lists+stable@lfdr.de>; Wed,  5 Jul 2023 11:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232167AbjGEJIe convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 5 Jul 2023 05:08:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41778 "EHLO
+        id S231455AbjGEJdF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 05:33:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231823AbjGEJId (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 05:08:33 -0400
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52B011706;
-        Wed,  5 Jul 2023 02:08:32 -0700 (PDT)
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-c5c03379a76so1906428276.1;
-        Wed, 05 Jul 2023 02:08:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688548111; x=1691140111;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E+TNnJonIwEoTpka1YO/KDKKK9gHKhOV507pFmzvVvo=;
-        b=gAYjz5MryJWAeykZs1fl1yyMyFyI+wRQ6dcNjzxp7RSObvB9WHH9RsHEJTpM7mClEX
-         niulX6xvqCg46B2Aluyj/6OaeBNeHq9ipCaxmWaQS8CrG9ItCg6SA/dW7Wtdkdwj4u4r
-         Tx7gK16a3aAUkRFrjhJa0eDtyIykEBWsMsBS+N8s52du5DbjS1QQqQnAVHNTuXW6c6pa
-         EU0FpCX3bAjAEoZy/iM+dMPBriIUnxVZVtvdD6+ipAjeYWoQ1HlBM+fUKaxnf1TK7RoG
-         3NDvxdurBLAxZ5yK+4NHy75Th8SCpUEAysKoibS+5At8o6DNXbMy/7ZUp2ClS+CJlWut
-         d2wg==
-X-Gm-Message-State: ABy/qLbiLio7X4Swd3MGEHC4iZYZ0JKaDBAYZBGFxDLCI+UwI6P0cMMQ
-        A1bnnkYwz9pf/FJhn6HL5jv4lOgto/izEA==
-X-Google-Smtp-Source: APBJJlF2cdFQ/RfTXYI9fun9UP6bBacdF2Oe83rK3eciuHwHnRCu8SziRtjj81RzWWJu2Ew1HH9AbA==
-X-Received: by 2002:a25:ab65:0:b0:c1b:d362:4b4e with SMTP id u92-20020a25ab65000000b00c1bd3624b4emr14470370ybi.43.1688548110951;
-        Wed, 05 Jul 2023 02:08:30 -0700 (PDT)
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com. [209.85.219.174])
-        by smtp.gmail.com with ESMTPSA id q6-20020a258e86000000b00c5cac376dffsm672813ybl.22.2023.07.05.02.08.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Jul 2023 02:08:30 -0700 (PDT)
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-c5e76dfcc36so1402582276.2;
-        Wed, 05 Jul 2023 02:08:30 -0700 (PDT)
-X-Received: by 2002:a25:d701:0:b0:c19:df8b:68b with SMTP id
- o1-20020a25d701000000b00c19df8b068bmr14361415ybg.47.1688548110559; Wed, 05
- Jul 2023 02:08:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230620201725.7020-1-schmitzmic@gmail.com> <20230704233808.25166-1-schmitzmic@gmail.com>
- <20230704233808.25166-2-schmitzmic@gmail.com> <CAMuHMdUc-mqHC80euFrXLGGJO3gLW3ywu2aG4MDQi5ED=dWFeQ@mail.gmail.com>
- <06995206-5dc5-8008-ef06-c76389ef0dd8@gmail.com>
-In-Reply-To: <06995206-5dc5-8008-ef06-c76389ef0dd8@gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 5 Jul 2023 11:08:19 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVGNB_aZnDHw_wfDTinDk+LKkP1Lx96Cgm0jM6J1WdACQ@mail.gmail.com>
-Message-ID: <CAMuHMdVGNB_aZnDHw_wfDTinDk+LKkP1Lx96Cgm0jM6J1WdACQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/1] block: bugfix for Amiga partition overflow check patch
-To:     Michael Schmitz <schmitzmic@gmail.com>
-Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
-        linux-m68k@vger.kernel.org, chzigotzky@xenosoft.de, hch@lst.de,
-        martin@lichtvoll.de, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S229532AbjGEJdE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 05:33:04 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A42F41711;
+        Wed,  5 Jul 2023 02:33:02 -0700 (PDT)
+Received: by linux.microsoft.com (Postfix, from userid 1099)
+        id C78FA20938BF; Wed,  5 Jul 2023 02:33:01 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C78FA20938BF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1688549581;
+        bh=BujkrTlk1vj49nUHXLGB7avpayiTaU0StVHZua2nrDU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dZbn8jG0HXJvZtpvfVJEzv5QXB7taiwcmYy80l0/6ieruKkBhF405WvURGKK1ND9o
+         ItrfK+Pti4uwRHd+cMe0rvRJ/p2C/f6kNbeAxTZpjBVDgUx0po267lpBLME+okk8Ys
+         wa/NJDCKLXYS8jUfJbCnmi3Bl2oy/OihTLcHBr9Q=
+From:   Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+To:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
+        sharmaajay@microsoft.com, leon@kernel.org, cai.huoqing@linux.dev,
+        ssengar@linux.microsoft.com, vkuznets@redhat.com,
+        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Cc:     stable@vger.kernel.org, schakrabarti@microsoft.com,
+        Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Subject: [PATCH net] net: mana: Configure hwc timeout from hardware
+Date:   Wed,  5 Jul 2023 02:32:58 -0700
+Message-Id: <1688549578-12906-1-git-send-email-schakrabarti@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Michael,
+At present hwc timeout value is a fixed value.
+This patch sets the hwc timeout from the hardware.
 
-On Wed, Jul 5, 2023 at 10:53 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
-> Am 05.07.2023 um 19:28 schrieb Geert Uytterhoeven:
-> > On Wed, Jul 5, 2023 at 1:38 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
-> >> Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
-> >> fails the 'blk>0' test in the partition block loop if a
-> >> value of (signed int) -1 is used to mark the end of the
-> >> partition block list.
-> >>
-> >> This bug was introduced in patch 3 of my prior Amiga partition
-> >> support fixes series, and spotted by Christian Zigotzky when
-> >> testing the latest block updates.
-> >>
-> >> Explicitly cast 'blk' to signed int to allow use of -1 to
-> >> terminate the partition block linked list.
-> >>
-> >> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-> >> Fixes: b6f3f28f60 ("block: add overflow checks for Amiga partition support")
-> >> Message-ID: 024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de
-> >
-> > Please drop this line.
->
-> Because it's redundant, as I've also used Link:?
+Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+---
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 27 +++++++++++++++++++
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 25 ++++++++++++++++-
+ include/net/mana/gdma.h                       | 20 +++++++++++++-
+ include/net/mana/hw_channel.h                 |  5 ++++
+ 4 files changed, 75 insertions(+), 2 deletions(-)
 
-(That, too ;-)
-
-Because the use of the Message-ID: tag in patches is not documented.
-IIRC, it might also cause issues when applying, as the downloaded patch
-will appear to have two Message-IDs.
-I'm not sure the sample git hook in Documentation/maintainer/configure-git.rst
-(and all variants the various maintainers are using) handles this correctly.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index 8f3f78b68592..5d30347e0137 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -106,6 +106,30 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
+ 	return 0;
+ }
+ 
++static int mana_gd_query_hwc_timeout(struct pci_dev *pdev, u32 *timeout_val)
++{
++	struct gdma_context *gc = pci_get_drvdata(pdev);
++	struct gdma_query_hwc_timeout_req req = {};
++	struct gdma_query_hwc_timeout_resp resp = {};
++	int err;
++
++	mana_gd_init_req_hdr(&req.hdr, GDMA_QUERY_HWC_TIMEOUT,
++			     sizeof(req), sizeof(resp));
++	req.timeout_ms = *timeout_val;
++	err = mana_gd_send_request(gc, sizeof(req), &req, sizeof(resp), &resp);
++	if (err || resp.hdr.status) {
++		dev_err(gc->dev, "Failed to query timeout: %d, 0x%x\n", err,
++			resp.hdr.status);
++		return err ? err : -EPROTO;
++	}
++
++	*timeout_val = resp.timeout_ms;
++	dev_info(gc->dev, "Successfully changed the timeout value %u\n",
++		 *timeout_val);
++
++	return 0;
++}
++
+ static int mana_gd_detect_devices(struct pci_dev *pdev)
+ {
+ 	struct gdma_context *gc = pci_get_drvdata(pdev);
+@@ -879,6 +903,7 @@ int mana_gd_verify_vf_version(struct pci_dev *pdev)
+ 	struct gdma_context *gc = pci_get_drvdata(pdev);
+ 	struct gdma_verify_ver_resp resp = {};
+ 	struct gdma_verify_ver_req req = {};
++	struct hw_channel_context *hwc = gc->hwc.driver_data;
+ 	int err;
+ 
+ 	mana_gd_init_req_hdr(&req.hdr, GDMA_VERIFY_VF_DRIVER_VERSION,
+@@ -907,6 +932,8 @@ int mana_gd_verify_vf_version(struct pci_dev *pdev)
+ 			err, resp.hdr.status);
+ 		return err ? err : -EPROTO;
+ 	}
++	if (resp.pf_cap_flags1 & GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG)
++		mana_gd_query_hwc_timeout(pdev, &hwc->hwc_timeout);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+index 9d1507eba5b9..f5980c26fd09 100644
+--- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
++++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+@@ -174,7 +174,25 @@ static void mana_hwc_init_event_handler(void *ctx, struct gdma_queue *q_self,
+ 		complete(&hwc->hwc_init_eqe_comp);
+ 		break;
+ 
++	case GDMA_EQE_HWC_SOC_RECONFIG_DATA:
++		type_data.as_uint32 = event->details[0];
++		type = type_data.type;
++		val = type_data.value;
++
++		switch (type) {
++		case HWC_DATA_CFG_HWC_TIMEOUT:
++			hwc->hwc_timeout = val;
++			break;
++
++		default:
++			dev_warn(hwc->dev, "Received unknown reconfig type %u\n", type);
++			break;
++		}
++
++		break;
++
+ 	default:
++		dev_warn(hwc->dev, "Received unknown gdma event %u\n", event->type);
+ 		/* Ignore unknown events, which should never happen. */
+ 		break;
+ 	}
+@@ -704,6 +722,7 @@ int mana_hwc_create_channel(struct gdma_context *gc)
+ 	gd->pdid = INVALID_PDID;
+ 	gd->doorbell = INVALID_DOORBELL;
+ 
++	hwc->hwc_timeout = HW_CHANNEL_WAIT_RESOURCE_TIMEOUT_MS;
+ 	/* mana_hwc_init_queues() only creates the required data structures,
+ 	 * and doesn't touch the HWC device.
+ 	 */
+@@ -770,6 +789,8 @@ void mana_hwc_destroy_channel(struct gdma_context *gc)
+ 	hwc->gdma_dev->doorbell = INVALID_DOORBELL;
+ 	hwc->gdma_dev->pdid = INVALID_PDID;
+ 
++	hwc->hwc_timeout = 0;
++
+ 	kfree(hwc);
+ 	gc->hwc.driver_data = NULL;
+ 	gc->hwc.gdma_context = NULL;
+@@ -818,6 +839,7 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
+ 		dest_vrq = hwc->pf_dest_vrq_id;
+ 		dest_vrcq = hwc->pf_dest_vrcq_id;
+ 	}
++	dev_err(hwc->dev, "HWC: timeout %u ms\n", hwc->hwc_timeout);
+ 
+ 	err = mana_hwc_post_tx_wqe(txq, tx_wr, dest_vrq, dest_vrcq, false);
+ 	if (err) {
+@@ -825,7 +847,8 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
+ 		goto out;
+ 	}
+ 
+-	if (!wait_for_completion_timeout(&ctx->comp_event, 30 * HZ)) {
++	if (!wait_for_completion_timeout(&ctx->comp_event,
++					 (hwc->hwc_timeout / 1000) * HZ)) {
+ 		dev_err(hwc->dev, "HWC: Request timed out!\n");
+ 		err = -ETIMEDOUT;
+ 		goto out;
+diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
+index 96c120160f15..88b6ef7ce1a6 100644
+--- a/include/net/mana/gdma.h
++++ b/include/net/mana/gdma.h
+@@ -33,6 +33,7 @@ enum gdma_request_type {
+ 	GDMA_DESTROY_PD			= 30,
+ 	GDMA_CREATE_MR			= 31,
+ 	GDMA_DESTROY_MR			= 32,
++	GDMA_QUERY_HWC_TIMEOUT		= 84, /* 0x54 */
+ };
+ 
+ #define GDMA_RESOURCE_DOORBELL_PAGE	27
+@@ -57,6 +58,8 @@ enum gdma_eqe_type {
+ 	GDMA_EQE_HWC_INIT_EQ_ID_DB	= 129,
+ 	GDMA_EQE_HWC_INIT_DATA		= 130,
+ 	GDMA_EQE_HWC_INIT_DONE		= 131,
++	GDMA_EQE_HWC_SOC_RECONFIG	= 132,
++	GDMA_EQE_HWC_SOC_RECONFIG_DATA	= 133,
+ };
+ 
+ enum {
+@@ -531,10 +534,12 @@ enum {
+  * so the driver is able to reliably support features like busy_poll.
+  */
+ #define GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX BIT(2)
++#define GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG BIT(3)
+ 
+ #define GDMA_DRV_CAP_FLAGS1 \
+ 	(GDMA_DRV_CAP_FLAG_1_EQ_SHARING_MULTI_VPORT | \
+-	 GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX)
++	 GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX | \
++	 GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG)
+ 
+ #define GDMA_DRV_CAP_FLAGS2 0
+ 
+@@ -664,6 +669,19 @@ struct gdma_disable_queue_req {
+ 	u32 alloc_res_id_on_creation;
+ }; /* HW DATA */
+ 
++/* GDMA_QUERY_HWC_TIMEOUT */
++struct gdma_query_hwc_timeout_req {
++	struct gdma_req_hdr hdr;
++	u32 timeout_ms;
++	u32 reserved;
++};
++
++struct gdma_query_hwc_timeout_resp {
++	struct gdma_resp_hdr hdr;
++	u32 timeout_ms;
++	u32 reserved;
++};
++
+ enum atb_page_size {
+ 	ATB_PAGE_SIZE_4K,
+ 	ATB_PAGE_SIZE_8K,
+diff --git a/include/net/mana/hw_channel.h b/include/net/mana/hw_channel.h
+index 6a757a6e2732..3d3b5c881bc1 100644
+--- a/include/net/mana/hw_channel.h
++++ b/include/net/mana/hw_channel.h
+@@ -23,6 +23,10 @@
+ #define HWC_INIT_DATA_PF_DEST_RQ_ID	10
+ #define HWC_INIT_DATA_PF_DEST_CQ_ID	11
+ 
++#define HWC_DATA_CFG_HWC_TIMEOUT 1
++
++#define HW_CHANNEL_WAIT_RESOURCE_TIMEOUT_MS 30000
++
+ /* Structures labeled with "HW DATA" are exchanged with the hardware. All of
+  * them are naturally aligned and hence don't need __packed.
+  */
+@@ -182,6 +186,7 @@ struct hw_channel_context {
+ 
+ 	u32 pf_dest_vrq_id;
+ 	u32 pf_dest_vrcq_id;
++	u32 hwc_timeout;
+ 
+ 	struct hwc_caller_ctx *caller_ctx;
+ };
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.34.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
