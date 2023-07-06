@@ -2,87 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A56057492F8
-	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 03:17:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 658EB7493EC
+	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 04:55:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231794AbjGFBRC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 21:17:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41660 "EHLO
+        id S232802AbjGFCzQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 22:55:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjGFBRB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 21:17:01 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8245AF7
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 18:17:00 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-c2cf29195f8so117249276.1
-        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 18:17:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688606219; x=1691198219;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/Sb08cFWgrv3wGlfRFRn6zfHbCpEJzACO/MXH/nqfSo=;
-        b=uH4U4iCZ5BA9AW1gHcHpSugIZ7KluY0dTkOmcNZqfd06T2Oso+DF601AaV7geuZk1a
-         5Wj7ReroDQKjEvQXs42RZ/WoIYfgtS2XflvvoRCcb7tF6EU7/WS9rL/xr+C6jM4F3MxZ
-         fl89BHVgVZT1pnNZu/SlzteXyRVu1aqygIYtFXEfDBLAAXSFRKOXwa4AZtd0J/R374hT
-         91Q9tfeoX2ISwOl9ZwTU7B+m5SFlaAddVcLdnB9TitQW4IHsqxK1+6t8E7wQ5CfN7rhs
-         B0K1TWwjH+YY1C+GC/Jly4rV5HUSHIbziTv5a+zRBzD1BdnirWModMvd5+Lby37MMQce
-         gh0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688606219; x=1691198219;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/Sb08cFWgrv3wGlfRFRn6zfHbCpEJzACO/MXH/nqfSo=;
-        b=FP6lRhKC389X3KTwHjlQ685/iwWspMOihII/dWlzqYK6+YXyMMWDavkm3tP00kWOWS
-         9SIKld8vp+CxfbtUMPpZe629fFYbtrlwXS6W0dnAWGc/5CBboGuzoX6JZJTo+M2BOfgT
-         WSjZoj33ZFH04fPnT6LbqNQUyyQG+chLpRF1jGfPQZpcHryiKeoIGAAxd6CjNwBTLTri
-         bWeVTKeFOLGy61L4Ius/EzMd1Mq3Kaqe8e+Fs0Tf8XIAIPEuB5OZr1kh7EonqVFMTDM5
-         uLsRGiGxNsXcF4m39CvFqItHY/UTNnYoh2redhqriinjUVABoRgrJtKIpXFJvVg5iY7p
-         uGSA==
-X-Gm-Message-State: ABy/qLbZXXH/lBq9ZgJUxVLVTVCMkEP+fnHMgndSryfw4jRobjBRCc+j
-        vxioWw/sk7pA3G1Nybwo+OUU3BCPr/qLIpHzmMd4Ow==
-X-Google-Smtp-Source: APBJJlFV9NZNjmlo5zt2nLV7CJf7Oaffqx/acpr3b5jQNuT+4E+yTFrYTvwia1Q3dRHZVJzSNFxi7PrmxXP86KjUHyo=
-X-Received: by 2002:a25:98c6:0:b0:c0b:7483:5cdb with SMTP id
- m6-20020a2598c6000000b00c0b74835cdbmr401542ybo.35.1688606219462; Wed, 05 Jul
- 2023 18:16:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230705171213.2843068-1-surenb@google.com> <20230705171213.2843068-3-surenb@google.com>
- <3cdaa7d4-1293-3806-05ce-6b7fc4382458@redhat.com> <CAJuCfpGTNF9BWBxZoqYKSDrtq=iJoN1n8oTc=Yu0pPzW8cs8rQ@mail.gmail.com>
- <ZKXRsQC8ufiebDGu@x1n> <CAJuCfpGHRfK1ZC3YmF1caKHiR7hD73goOXLKQubFLuOgzCr0dg@mail.gmail.com>
- <20230705172424.e505f5013bfdf44543d9c6be@linux-foundation.org>
- <CAJuCfpFLRePeOsrSg--5GtWbC1M5y21Sq7gzrs1vVEUE7C+30A@mail.gmail.com>
- <CAJuCfpGWW7wsrtqi4rZUz4vxW-N0CaUEeUqY4e7iX1hzgRsT2g@mail.gmail.com>
- <20230705174440.9adb53f2e362056867135b84@linux-foundation.org> <CAJuCfpEjytSBKN0gn0t7e5bCSmZLXU-86Ko0Kt-rkXD7hZeNNA@mail.gmail.com>
-In-Reply-To: <CAJuCfpEjytSBKN0gn0t7e5bCSmZLXU-86Ko0Kt-rkXD7hZeNNA@mail.gmail.com>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Wed, 5 Jul 2023 18:16:48 -0700
-Message-ID: <CAJuCfpENo+xJOFjy7geYJjH54cT6e9t-Qw18AvcwNrcE2AMicw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] mm: disable CONFIG_PER_VMA_LOCK until its fixed
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+        with ESMTP id S229634AbjGFCzP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 22:55:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5862A19B6;
+        Wed,  5 Jul 2023 19:55:14 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EAE3C61458;
+        Thu,  6 Jul 2023 02:55:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F829C433C9;
+        Thu,  6 Jul 2023 02:55:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1688612113;
+        bh=emoK0lgitnxNXhEE0QJn2Ljs+uFBw1mm+JRwfjF2ecY=;
+        h=Date:To:From:Subject:From;
+        b=qAlBfIQzPhwSzL189V4gcx2tQVTWUbEzK6YLHX47VhgV55WLTfFZaooUSRNQSzyuG
+         a7uVNBAuRKRoUwo+P7NQ7aSOSbsJq32h6H/0hknS9YyKBc1tl62l0cdfGusjd2+SCM
+         YZjbelNqhqrgVEfqjEdSFV/NGqn71UfDtbE2cwH4=
+Date:   Wed, 05 Jul 2023 19:55:12 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
         jirislaby@kernel.org, jacobly.alt@gmail.com,
-        holger@applied-asynchrony.com, hdegoede@redhat.com,
-        michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
-        vbabka@suse.cz, hannes@cmpxchg.org, mgorman@techsingularity.net,
-        dave@stgolabs.net, willy@infradead.org, liam.howlett@oracle.com,
-        peterz@infradead.org, ldufour@linux.ibm.com, paulmck@kernel.org,
-        mingo@redhat.com, will@kernel.org, luto@kernel.org,
-        songliubraving@fb.com, dhowells@redhat.com, hughd@google.com,
-        bigeasy@linutronix.de, kent.overstreet@linux.dev,
-        punit.agrawal@bytedance.com, lstoakes@gmail.com,
-        peterjung1337@gmail.com, rientjes@google.com, chriscli@google.com,
-        axelrasmussen@google.com, joelaf@google.com, minchan@google.com,
-        rppt@kernel.org, jannh@google.com, shakeelb@google.com,
-        tatashin@google.com, edumazet@google.com, gthelen@google.com,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        holger@applied-asynchrony.com, david@redhat.com, surenb@google.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + fork-lock-vmas-of-the-parent-process-when-forking.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230706025513.4F829C433C9@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PP_MIME_FAKE_ASCII_TEXT,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,56 +47,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 5, 2023 at 5:49=E2=80=AFPM Suren Baghdasaryan <surenb@google.co=
-m> wrote:
->
-> On Wed, Jul 5, 2023 at 5:44=E2=80=AFPM Andrew Morton <akpm@linux-foundati=
-on.org> wrote:
-> >
-> > On Wed, 5 Jul 2023 17:32:09 -0700 Suren Baghdasaryan <surenb@google.com=
-> wrote:
-> >
-> > > On Wed, Jul 5, 2023 at 5:30=E2=80=AFPM Suren Baghdasaryan <surenb@goo=
-gle.com> wrote:
-> > > >
-> > > > On Wed, Jul 5, 2023 at 5:24=E2=80=AFPM Andrew Morton <akpm@linux-fo=
-undation.org> wrote:
-> > > > >
-> > > > > On Wed, 5 Jul 2023 13:33:26 -0700 Suren Baghdasaryan <surenb@goog=
-le.com> wrote:
-> > > > >
-> > > > > > I was hoping we could re-enable VMA locks in 6.4 once we get mo=
-re
-> > > > > > confirmations that the problem is gone. Is that not possible on=
-ce the
-> > > > > > BROKEN dependency is merged?
-> > > > >
-> > > > > I think "no".  By doing this we're effectively backporting a mino=
-r
-> > > > > performance optimization, which isn't a thing we'd normally do.
-> > > >
-> > > > In that case, maybe for 6.4 we send the fix and only disable it by
-> > > > default without marking BROKEN? That way we still have a way to ena=
-ble
-> > > > it if desired?
-> > >
-> > > I'm preparing the next version with Liam's corrections. If the above
-> > > option I suggested is acceptable I can send a modified second patch
-> > > which would not have BROKEN dependency.
-> >
-> > I think just mark it broken and move on.  At some later time we can
-> > consider backporting the fixes into 6.4.x and reenabling, but I don't
-> > think it's likely that we'll do this.
->
-> Uh, ok. I'll send the next version shortly with the patch fixing the
-> issue and another one marking it BROKEN. Hopefully in the next version
-> we can roll it our more carefully, removing BROKEN dependency but
-> keeping it disabled by default?
 
-v4 is posted at
-https://lore.kernel.org/all/20230706011400.2949242-1-surenb@google.com/
-Thanks,
-Suren.
+The patch titled
+     Subject: fork: lock VMAs of the parent process when forking
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fork-lock-vmas-of-the-parent-process-when-forking.patch
 
->
-> >
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fork-lock-vmas-of-the-parent-process-when-forking.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Suren Baghdasaryan <surenb@google.com>
+Subject: fork: lock VMAs of the parent process when forking
+Date: Wed, 5 Jul 2023 18:13:59 -0700
+
+Patch series "Avoid memory corruption caused by per-VMA locks", v4.
+
+A memory corruption was reported in [1] with bisection pointing to the
+patch [2] enabling per-VMA locks for x86.  Based on the reproducer
+provided in [1] we suspect this is caused by the lack of VMA locking while
+forking a child process.
+
+Patch 1/2 in the series implements proper VMA locking during fork.  I
+tested the fix locally using the reproducer and was unable to reproduce
+the memory corruption problem.
+
+This fix can potentially regress some fork-heavy workloads.  Kernel build
+time did not show noticeable regression on a 56-core machine while a
+stress test mapping 10000 VMAs and forking 5000 times in a tight loop
+shows ~7% regression.  If such fork time regression is unacceptable,
+disabling CONFIG_PER_VMA_LOCK should restore its performance.  Further
+optimizations are possible if this regression proves to be problematic.
+
+Patch 2/2 disables per-VMA locks until the fix is tested and verified.
+
+
+This patch (of 2):
+
+When forking a child process, parent write-protects an anonymous page and
+COW-shares it with the child being forked using copy_present_pte(). 
+Parent's TLB is flushed right before we drop the parent's mmap_lock in
+dup_mmap().  If we get a write-fault before that TLB flush in the parent,
+and we end up replacing that anonymous page in the parent process in
+do_wp_page() (because, COW-shared with the child), this might lead to some
+stale writable TLB entries targeting the wrong (old) page.  Similar issue
+happened in the past with userfaultfd (see flush_tlb_page() call inside
+do_wp_page()).
+
+Lock VMAs of the parent process when forking a child, which prevents
+concurrent page faults during fork operation and avoids this issue.  This
+fix can potentially regress some fork-heavy workloads.  Kernel build time
+did not show noticeable regression on a 56-core machine while a stress
+test mapping 10000 VMAs and forking 5000 times in a tight loop shows ~7%
+regression.  If such fork time regression is unacceptable, disabling
+CONFIG_PER_VMA_LOCK should restore its performance.  Further optimizations
+are possible if this regression proves to be problematic.
+
+Link: https://lkml.kernel.org/r/20230706011400.2949242-1-surenb@google.com
+Link: https://lkml.kernel.org/r/20230706011400.2949242-2-surenb@google.com
+Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling first")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org/
+Reported-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+Closes: https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34c@applied-asynchrony.com/
+Reported-by: Jacob Young <jacobly.alt@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/fork.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+--- a/kernel/fork.c~fork-lock-vmas-of-the-parent-process-when-forking
++++ a/kernel/fork.c
+@@ -658,6 +658,12 @@ static __latent_entropy int dup_mmap(str
+ 		retval = -EINTR;
+ 		goto fail_uprobe_end;
+ 	}
++#ifdef CONFIG_PER_VMA_LOCK
++	/* Disallow any page faults before calling flush_cache_dup_mm */
++	for_each_vma(old_vmi, mpnt)
++		vma_start_write(mpnt);
++	vma_iter_set(&old_vmi, 0);
++#endif
+ 	flush_cache_dup_mm(oldmm);
+ 	uprobe_dup_mmap(oldmm, mm);
+ 	/*
+_
+
+Patches currently in -mm which might be from surenb@google.com are
+
+fork-lock-vmas-of-the-parent-process-when-forking.patch
+mm-disable-config_per_vma_lock-until-its-fixed.patch
+swap-remove-remnants-of-polling-from-read_swap_cache_async.patch
+mm-add-missing-vm_fault_result_trace-name-for-vm_fault_completed.patch
+mm-drop-per-vma-lock-when-returning-vm_fault_retry-or-vm_fault_completed.patch
+mm-change-folio_lock_or_retry-to-use-vm_fault-directly.patch
+mm-handle-swap-page-faults-under-per-vma-lock.patch
+mm-handle-userfaults-under-vma-lock.patch
+
