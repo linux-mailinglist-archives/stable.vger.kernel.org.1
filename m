@@ -2,236 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4234A749A47
-	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 13:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B7B2749A59
+	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 13:13:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232573AbjGFLKH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 6 Jul 2023 07:10:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56038 "EHLO
+        id S231877AbjGFLNx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 6 Jul 2023 07:13:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232571AbjGFLKG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 6 Jul 2023 07:10:06 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B1281FC1
-        for <stable@vger.kernel.org>; Thu,  6 Jul 2023 04:09:50 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4fb7769f15aso752649e87.0
-        for <stable@vger.kernel.org>; Thu, 06 Jul 2023 04:09:50 -0700 (PDT)
+        with ESMTP id S231255AbjGFLNw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 6 Jul 2023 07:13:52 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB65131;
+        Thu,  6 Jul 2023 04:13:50 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-4fb7b2e3dacso756555e87.0;
+        Thu, 06 Jul 2023 04:13:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688641789; x=1691233789;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mRiuKcFF4D+Ma/+WP7HwqWtEf6Dd+kBdcV9nMz+Xal8=;
-        b=wCQyNj8kDh/OsyddAN39TNa2jnM2R2His5q/FBgPX+0PzMpAkseWY4CyUHa2Jj5QJ+
-         m2BQ3dZamSYppisNMU1d0hbm7bc1ddRHVRiH1XGod9MWd4AmceZfDWO7BxpVYPvV0SIP
-         iFDUok5hM3iHd/fSo5yflzUdEkyJNKi+BAk+K9/p6qrQPtSh5rAcjQYpZ8rhE/r7traN
-         Jse3mJXIdUVWx1j0IXkDwN0sEjOIyikCHwjYZDHxh9B7749PS66Nfq6f/W0pPSXENgqX
-         A1LOSY9WZyRv8wlCMGJ09lMkNry9HWhS5JMV0ceppDabZTWiJ2lh+hRYEqDxREgrwh5y
-         W7fg==
+        d=gmail.com; s=20221208; t=1688642029; x=1691234029;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=csDOZ6a1voCOJNBiSlT7Iqwi91gjcwEx7uBOQUBJAmA=;
+        b=dpSxcvnzqbsIlXFbEGCXyLSHvMKo/dOm8+sUll7jcmtrCvBiEBTv8Luk8iz8NIqEgo
+         D7OHQjTwZSbrsFbJlF6IJJRfWAURIC+t/yY3ks8Mw6MYkJWTioZF2hazFsFcJYlQyHiD
+         GhPb50MgU2yb0omPctA7SEHgP2eA92ca394gNy1WGuFKMeOVggPgQ9Ei3dG5PwvPbyOo
+         zIgY+ma7ZBL/7F1KfK9zs5ggLB1+EPII44thMWkydhPKpbZfR1E7GydJ1DkYkbImz58W
+         vOVJbn/auadhIFbpGT9evotMKhl1zVX9Qn46R/K5KIrlbXLhNSOseI1CIpyh7zFix3+C
+         vhDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688641789; x=1691233789;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mRiuKcFF4D+Ma/+WP7HwqWtEf6Dd+kBdcV9nMz+Xal8=;
-        b=AKbRjyVP5r/KwIoXQbJEpSF/hCwn9NEy3ArUeGB2MV/RhGKR7iXIef4SjtnAuxyw0B
-         vSZ+6Lgd+R8RI9QqIkB0VZyrkADg69RNUX0egU+NrruEeh+gJdxVvdVRBXD332PEB6H7
-         zqWlrxkqwEj+EtZUwzryhZjpa69d/8NCm17674szpluZlVj4O4SYWArRW0d2NPktXp+5
-         GdpTUQ+W5ex75gzmn4rLMqTlLuBunv7tyu0tH8fDptW/ejIgGkMaU+HDs3xEOJBlC8wT
-         52tNDhIQhDa3FNcvWYZWLV2JXjkAyZH7D7uJdzCIrpk9b4z8y1dqhqEcSGsPLE7Gvq1n
-         VFRQ==
-X-Gm-Message-State: ABy/qLaec6//R2vmcjrQOZDxuFuOZwh6MHh8cHMYxZSm4ReHksukzUj1
-        U8LEE8XCTsjH8WvCc0i/ZRLBLw==
-X-Google-Smtp-Source: APBJJlFr0goL3O6OGKwREZsKNTnsILJbcu1yBKhHSIpf/ySaPhU/h5xY6c9b0kLkZyP65pD6yUsZTg==
-X-Received: by 2002:ac2:4438:0:b0:4f8:7568:e94b with SMTP id w24-20020ac24438000000b004f87568e94bmr1128208lfl.56.1688641788898;
-        Thu, 06 Jul 2023 04:09:48 -0700 (PDT)
-Received: from [192.168.1.195] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id o18-20020a05600c379200b003fbe561f6a3sm4763165wmr.37.2023.07.06.04.09.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Jul 2023 04:09:48 -0700 (PDT)
-Message-ID: <31bcbd57-1087-e8a4-6061-0fb89a82aec5@linaro.org>
-Date:   Thu, 6 Jul 2023 12:09:47 +0100
+        d=1e100.net; s=20221208; t=1688642029; x=1691234029;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=csDOZ6a1voCOJNBiSlT7Iqwi91gjcwEx7uBOQUBJAmA=;
+        b=S9TbP1/uq1rSgEkzfzP3vxmWwgq0ybi0XOaRD7z/BXDhAFkXOfxXjvXQWhX2cmEpHL
+         nEfbMqgE5DCboejQvm5gA8R8t+KAsOP3ijLLEB8Ft7a2r9E5znhPF+Ztq+4zzj5n5v9k
+         g2Gqc2U7P//O2mbsnWldJwINwxkfXy01zHYHEKrqCvNGQG+BIxqwvwDtDH5O+eNvef/g
+         San0H42z8zc7Y+iLKrvBHrdu3sKXCnhZJiO1RExLORAUspe5/8yTPLdiErnh2rmL3izF
+         u3v+e+e8cAqjirvTG0LycWMi5vh565xy/znPYBdxpAQLGZN4x0+nRoPPNDuf61qdsPXF
+         PYtQ==
+X-Gm-Message-State: ABy/qLY+t8vSAPEwIkq3UGzCydpcKK99DT0sIgjss2wNkpO2oFwkvtdc
+        8z5zxdhqMqBc6JTFw3UU+1qgEmHvNGk=
+X-Google-Smtp-Source: APBJJlEwwIWE1/AkiX9bakJFxzlBhRE4Mj9tFFyWnMufZkJZ5qkcZtKiRVIao5dZBAn8z18Pk+GtFA==
+X-Received: by 2002:ac2:5e30:0:b0:4f8:7528:50b5 with SMTP id o16-20020ac25e30000000b004f8752850b5mr1137692lfg.14.1688642028497;
+        Thu, 06 Jul 2023 04:13:48 -0700 (PDT)
+Received: from localhost.lan (031011218106.poznan.vectranet.pl. [31.11.218.106])
+        by smtp.gmail.com with ESMTPSA id y24-20020ac24218000000b004fa039eb84csm207216lfh.198.2023.07.06.04.13.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jul 2023 04:13:48 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     stable@vger.kernel.org
+Cc:     netdev@vger.kernel.org
+Subject: [PATCH linux-5.4.y] bgmac: fix *initial* chip reset to support BCM5358
+Date:   Thu,  6 Jul 2023 13:13:46 +0200
+Message-Id: <20230706111346.20234-1-zajec5@gmail.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 6/8] ASoC: codecs: wcd-mbhc-v2: fix resource leaks on
- component remove
-Content-Language: en-US
-To:     Johan Hovold <johan+linaro@kernel.org>,
-        Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>
-Cc:     Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Banajit Goswami <bgoswami@quicinc.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230705123018.30903-1-johan+linaro@kernel.org>
- <20230705123018.30903-7-johan+linaro@kernel.org>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <20230705123018.30903-7-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Rafał Miłecki <rafal@milecki.pl>
 
+commit f99e6d7c4ed3be2531bd576425a5bd07fb133bd7 upstream.
 
-On 05/07/2023 13:30, Johan Hovold wrote:
-> The MBHC resources must be released on component probe failure and
-> removal so can not be tied to the lifetime of the component device.
-> 
-> This is specifically needed to allow probe deferrals of the sound card
-> which otherwise fails when reprobing the codec component:
-> 
->      snd-sc8280xp sound: ASoC: failed to instantiate card -517
->      genirq: Flags mismatch irq 299. 00002001 (mbhc sw intr) vs. 00002001 (mbhc sw intr)
->      wcd938x_codec audio-codec: Failed to request mbhc interrupts -16
->      wcd938x_codec audio-codec: mbhc initialization failed
->      wcd938x_codec audio-codec: ASoC: error at snd_soc_component_probe on audio-codec: -16
->      snd-sc8280xp sound: ASoC: failed to instantiate card -16
-> 
-> Fixes: 0e5c9e7ff899 ("ASoC: codecs: wcd: add multi button Headset detection support")
-> Cc: stable@vger.kernel.org      # 5.14
-> Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+While bringing hardware up we should perform a full reset including the
+switch bit (BGMAC_BCMA_IOCTL_SW_RESET aka SICF_SWRST). It's what
+specification says and what reference driver does.
 
---srini
->   sound/soc/codecs/wcd-mbhc-v2.c | 57 ++++++++++++++++++++++++----------
->   1 file changed, 41 insertions(+), 16 deletions(-)
-> 
-> diff --git a/sound/soc/codecs/wcd-mbhc-v2.c b/sound/soc/codecs/wcd-mbhc-v2.c
-> index 1911750f7445..5da1934527f3 100644
-> --- a/sound/soc/codecs/wcd-mbhc-v2.c
-> +++ b/sound/soc/codecs/wcd-mbhc-v2.c
-> @@ -1454,7 +1454,7 @@ struct wcd_mbhc *wcd_mbhc_init(struct snd_soc_component *component,
->   		return ERR_PTR(-EINVAL);
->   	}
->   
-> -	mbhc = devm_kzalloc(dev, sizeof(*mbhc), GFP_KERNEL);
-> +	mbhc = kzalloc(sizeof(*mbhc), GFP_KERNEL);
->   	if (!mbhc)
->   		return ERR_PTR(-ENOMEM);
->   
-> @@ -1474,61 +1474,76 @@ struct wcd_mbhc *wcd_mbhc_init(struct snd_soc_component *component,
->   
->   	INIT_WORK(&mbhc->correct_plug_swch, wcd_correct_swch_plug);
->   
-> -	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_sw_intr, NULL,
-> +	ret = request_threaded_irq(mbhc->intr_ids->mbhc_sw_intr, NULL,
->   					wcd_mbhc_mech_plug_detect_irq,
->   					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
->   					"mbhc sw intr", mbhc);
->   	if (ret)
-> -		goto err;
-> +		goto err_free_mbhc;
->   
-> -	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_btn_press_intr, NULL,
-> +	ret = request_threaded_irq(mbhc->intr_ids->mbhc_btn_press_intr, NULL,
->   					wcd_mbhc_btn_press_handler,
->   					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
->   					"Button Press detect", mbhc);
->   	if (ret)
-> -		goto err;
-> +		goto err_free_sw_intr;
->   
-> -	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_btn_release_intr, NULL,
-> +	ret = request_threaded_irq(mbhc->intr_ids->mbhc_btn_release_intr, NULL,
->   					wcd_mbhc_btn_release_handler,
->   					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
->   					"Button Release detect", mbhc);
->   	if (ret)
-> -		goto err;
-> +		goto err_free_btn_press_intr;
->   
-> -	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_hs_ins_intr, NULL,
-> +	ret = request_threaded_irq(mbhc->intr_ids->mbhc_hs_ins_intr, NULL,
->   					wcd_mbhc_adc_hs_ins_irq,
->   					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
->   					"Elect Insert", mbhc);
->   	if (ret)
-> -		goto err;
-> +		goto err_free_btn_release_intr;
->   
->   	disable_irq_nosync(mbhc->intr_ids->mbhc_hs_ins_intr);
->   
-> -	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->mbhc_hs_rem_intr, NULL,
-> +	ret = request_threaded_irq(mbhc->intr_ids->mbhc_hs_rem_intr, NULL,
->   					wcd_mbhc_adc_hs_rem_irq,
->   					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
->   					"Elect Remove", mbhc);
->   	if (ret)
-> -		goto err;
-> +		goto err_free_hs_ins_intr;
->   
->   	disable_irq_nosync(mbhc->intr_ids->mbhc_hs_rem_intr);
->   
-> -	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->hph_left_ocp, NULL,
-> +	ret = request_threaded_irq(mbhc->intr_ids->hph_left_ocp, NULL,
->   					wcd_mbhc_hphl_ocp_irq,
->   					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
->   					"HPH_L OCP detect", mbhc);
->   	if (ret)
-> -		goto err;
-> +		goto err_free_hs_rem_intr;
->   
-> -	ret = devm_request_threaded_irq(dev, mbhc->intr_ids->hph_right_ocp, NULL,
-> +	ret = request_threaded_irq(mbhc->intr_ids->hph_right_ocp, NULL,
->   					wcd_mbhc_hphr_ocp_irq,
->   					IRQF_ONESHOT | IRQF_TRIGGER_RISING,
->   					"HPH_R OCP detect", mbhc);
->   	if (ret)
-> -		goto err;
-> +		goto err_free_hph_left_ocp;
->   
->   	return mbhc;
-> -err:
-> +
-> +err_free_hph_left_ocp:
-> +	free_irq(mbhc->intr_ids->hph_left_ocp, mbhc);
-> +err_free_hs_rem_intr:
-> +	free_irq(mbhc->intr_ids->mbhc_hs_rem_intr, mbhc);
-> +err_free_hs_ins_intr:
-> +	free_irq(mbhc->intr_ids->mbhc_hs_ins_intr, mbhc);
-> +err_free_btn_release_intr:
-> +	free_irq(mbhc->intr_ids->mbhc_btn_release_intr, mbhc);
-> +err_free_btn_press_intr:
-> +	free_irq(mbhc->intr_ids->mbhc_btn_press_intr, mbhc);
-> +err_free_sw_intr:
-> +	free_irq(mbhc->intr_ids->mbhc_sw_intr, mbhc);
-> +err_free_mbhc:
-> +	kfree(mbhc);
-> +
->   	dev_err(dev, "Failed to request mbhc interrupts %d\n", ret);
->   
->   	return ERR_PTR(ret);
-> @@ -1537,9 +1552,19 @@ EXPORT_SYMBOL(wcd_mbhc_init);
->   
->   void wcd_mbhc_deinit(struct wcd_mbhc *mbhc)
->   {
-> +	free_irq(mbhc->intr_ids->hph_right_ocp, mbhc);
-> +	free_irq(mbhc->intr_ids->hph_left_ocp, mbhc);
-> +	free_irq(mbhc->intr_ids->mbhc_hs_rem_intr, mbhc);
-> +	free_irq(mbhc->intr_ids->mbhc_hs_ins_intr, mbhc);
-> +	free_irq(mbhc->intr_ids->mbhc_btn_release_intr, mbhc);
-> +	free_irq(mbhc->intr_ids->mbhc_btn_press_intr, mbhc);
-> +	free_irq(mbhc->intr_ids->mbhc_sw_intr, mbhc);
-> +
->   	mutex_lock(&mbhc->lock);
->   	wcd_cancel_hs_detect_plug(mbhc,	&mbhc->correct_plug_swch);
->   	mutex_unlock(&mbhc->lock);
-> +
-> +	kfree(mbhc);
->   }
->   EXPORT_SYMBOL(wcd_mbhc_deinit);
->   
+This seems to be critical for the BCM5358. Without this hardware doesn't
+get initialized properly and doesn't seem to transmit or receive any
+packets.
+
+Originally bgmac was calling bgmac_chip_reset() before setting
+"has_robosw" property which resulted in expected behaviour. That has
+changed as a side effect of adding platform device support which
+regressed BCM5358 support.
+
+Fixes: f6a95a24957a ("net: ethernet: bgmac: Add platform device support")
+Cc: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Link: https://lore.kernel.org/r/20230227091156.19509-1-zajec5@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+---
+Upstream commit wasn't backported to 5.4 (and older) because it couldn't
+be cherry-picked cleanly. There was a small fuzz caused by a missing
+commit 8c7da63978f1 ("bgmac: configure MTU and add support for frames
+beyond 8192 byte size").
+
+I've manually cherry-picked fix for BCM5358 to the linux-5.4.x.
+---
+ drivers/net/ethernet/broadcom/bgmac.c | 8 ++++++--
+ drivers/net/ethernet/broadcom/bgmac.h | 2 ++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+index 193722334d93..89a63fdbe0e3 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.c
++++ b/drivers/net/ethernet/broadcom/bgmac.c
+@@ -890,13 +890,13 @@ static void bgmac_chip_reset_idm_config(struct bgmac *bgmac)
+ 
+ 		if (iost & BGMAC_BCMA_IOST_ATTACHED) {
+ 			flags = BGMAC_BCMA_IOCTL_SW_CLKEN;
+-			if (!bgmac->has_robosw)
++			if (bgmac->in_init || !bgmac->has_robosw)
+ 				flags |= BGMAC_BCMA_IOCTL_SW_RESET;
+ 		}
+ 		bgmac_clk_enable(bgmac, flags);
+ 	}
+ 
+-	if (iost & BGMAC_BCMA_IOST_ATTACHED && !bgmac->has_robosw)
++	if (iost & BGMAC_BCMA_IOST_ATTACHED && (bgmac->in_init || !bgmac->has_robosw))
+ 		bgmac_idm_write(bgmac, BCMA_IOCTL,
+ 				bgmac_idm_read(bgmac, BCMA_IOCTL) &
+ 				~BGMAC_BCMA_IOCTL_SW_RESET);
+@@ -1489,6 +1489,8 @@ int bgmac_enet_probe(struct bgmac *bgmac)
+ 	struct net_device *net_dev = bgmac->net_dev;
+ 	int err;
+ 
++	bgmac->in_init = true;
++
+ 	bgmac_chip_intrs_off(bgmac);
+ 
+ 	net_dev->irq = bgmac->irq;
+@@ -1538,6 +1540,8 @@ int bgmac_enet_probe(struct bgmac *bgmac)
+ 	net_dev->hw_features = net_dev->features;
+ 	net_dev->vlan_features = net_dev->features;
+ 
++	bgmac->in_init = false;
++
+ 	err = register_netdev(bgmac->net_dev);
+ 	if (err) {
+ 		dev_err(bgmac->dev, "Cannot register net device\n");
+diff --git a/drivers/net/ethernet/broadcom/bgmac.h b/drivers/net/ethernet/broadcom/bgmac.h
+index 40d02fec2747..76930b8353d6 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.h
++++ b/drivers/net/ethernet/broadcom/bgmac.h
+@@ -511,6 +511,8 @@ struct bgmac {
+ 	int irq;
+ 	u32 int_mask;
+ 
++	bool in_init;
++
+ 	/* Current MAC state */
+ 	int mac_speed;
+ 	int mac_duplex;
+-- 
+2.35.3
+
