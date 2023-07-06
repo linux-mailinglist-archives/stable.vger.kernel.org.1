@@ -2,193 +2,173 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D02E274971B
-	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 10:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF1BE749758
+	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 10:19:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233950AbjGFIIf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Thu, 6 Jul 2023 04:08:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37676 "EHLO
+        id S232212AbjGFITu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 6 Jul 2023 04:19:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229528AbjGFIIe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 6 Jul 2023 04:08:34 -0400
-Received: from ste-pvt-msa1.bahnhof.se (ste-pvt-msa1.bahnhof.se [213.80.101.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED781988;
-        Thu,  6 Jul 2023 01:08:30 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 073213FA35;
-        Thu,  6 Jul 2023 10:08:28 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-X-Spam-Score: -1.91
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
-Received: from ste-pvt-msa1.bahnhof.se ([127.0.0.1])
-        by localhost (ste-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 5UPqS-fiHZfV; Thu,  6 Jul 2023 10:08:26 +0200 (CEST)
-Received: by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 0ED163F399;
-        Thu,  6 Jul 2023 10:08:26 +0200 (CEST)
-Received: from [192.168.0.132] (port=45102)
-        by tnonline.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <forza@tnonline.net>)
-        id 1qHK2K-000Pgc-1b;
-        Thu, 06 Jul 2023 10:08:25 +0200
-Date:   Thu, 6 Jul 2023 10:08:24 +0200 (GMT+02:00)
-From:   Forza <forza@tnonline.net>
-To:     Uladzislau Rezki <urezki@gmail.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     Uladzislau Rezki <urezki@gmail.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux btrfs <linux-btrfs@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Stable <stable@vger.kernel.org>,
-        Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, a1bert@atlas.cz
-Message-ID: <2063d59.8f9f4a3a.1892a3ec50f@tnonline.net>
-In-Reply-To: <cf07f03.70397026.18918ef7f95@tnonline.net>
-References: <efa04d56-cd7f-6620-bca7-1df89f49bf4b@gmail.com> <fcf1d04.faed4a1a.18844d8e78f@tnonline.net> <ZGwcVTpQNBoJHBB+@debian.me> <ZGyVVQxnw6Tn7Xb8@pc636> <c9db92d.faed4a1c.1884c5550fb@tnonline.net> <20230524091357.GH32559@suse.cz> <ZHClGA9szxSqzDf8@pc636> <cf07f03.70397026.18918ef7f95@tnonline.net>
-Subject: Re: Fwd: vmalloc error: btrfs-delalloc btrfs_work_helper [btrfs] in
- kernel 6.3.x
+        with ESMTP id S229956AbjGFITr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 6 Jul 2023 04:19:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B16E130
+        for <stable@vger.kernel.org>; Thu,  6 Jul 2023 01:19:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1688631540;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lx+lBJ29CFsk81sGY8QIW/lXN8O5LUUJoAktsDtK8dk=;
+        b=FzitJ6+8f7c1o4hQR1zoWkg0sZqF12jPsIxtq8uNLlgVjz9K3wmPLqoxFl8IrY5gZZzFx5
+        4nyc2t6qBB1jDC0ncLCU5+LaFkB3tNFxP/ZHfHzq78f5MfzwrKiSkBAhLsdVlvyW0DJQgN
+        hUghHf3F7vmQhlXxL31/VjVEwPtAH3U=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-131-HUsezmhSOvuXVcY8vSFfQg-1; Thu, 06 Jul 2023 04:18:59 -0400
+X-MC-Unique: HUsezmhSOvuXVcY8vSFfQg-1
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-767a1ad2175so8780485a.0
+        for <stable@vger.kernel.org>; Thu, 06 Jul 2023 01:18:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688631539; x=1691223539;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lx+lBJ29CFsk81sGY8QIW/lXN8O5LUUJoAktsDtK8dk=;
+        b=jo4c7k2i3zNFa66KohJcJ8SnyUlDZAfHX7rVMXs/LvIc7H8eLo0Z07Csp8RcCTMhbr
+         nJCXYFcJfa2/zgKVCevnb0bAoV2VC+T9VshqZlzo48Tf6Whc999WQnMTieX03BkP4TCJ
+         gbh/C8zFYm+DpwIHKJzzrBJbx5XaRMt0M2me8bxDfdLcTAK7E4PbImyPhEucq/IVEgKe
+         pMrh4bF0LSS1XhEJV/jRGj7lxU7A/NPhQ92BBfMX5pWrOAWOHceSbENc/tyMZ3xbmNrK
+         P/ROxDW1K2X8qCe3zBGYRmcvgrPZytNq9f+/Yqo4323j9ahzzSOhfxm7E7k4Ez3VjD36
+         dqVw==
+X-Gm-Message-State: ABy/qLZ9t6y+QFGUFhmtzpMbYw8TKTjMqZdqckvyt/pjIjEJ+jp5tOUo
+        r+wEDMSwdB04joCR1dbGLhN+gYQgxqTuIPcV+ernDYlDUSuaDVQI5yJtiNDKduEkSe5+acwJXYj
+        F7y867fq3ZAyLRA9e
+X-Received: by 2002:a05:6214:411c:b0:62b:5410:322d with SMTP id kc28-20020a056214411c00b0062b5410322dmr1222403qvb.6.1688631539322;
+        Thu, 06 Jul 2023 01:18:59 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHlIzKkGbc7Mhe75o6I7OvXujWZEcDlXrKdSN6nbMjmBM78UrxpGipZsStzvrEN62Vz4TceNw==
+X-Received: by 2002:a05:6214:411c:b0:62b:5410:322d with SMTP id kc28-20020a056214411c00b0062b5410322dmr1222386qvb.6.1688631538999;
+        Thu, 06 Jul 2023 01:18:58 -0700 (PDT)
+Received: from gerbillo.redhat.com (host-95-248-55-118.retail.telecomitalia.it. [95.248.55.118])
+        by smtp.gmail.com with ESMTPSA id e4-20020a0caa44000000b006300e92ea02sm591634qvb.121.2023.07.06.01.18.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jul 2023 01:18:58 -0700 (PDT)
+Message-ID: <062d9a4a0ec07e0c498fb7c6b8aab9d27177b21a.camel@redhat.com>
+Subject: Re: [PATCH V5 net] net: mana: Fix MANA VF unload when hardware is
+ unresponsive
+From:   Paolo Abeni <pabeni@redhat.com>
+To:     Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
+        kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, longli@microsoft.com, sharmaajay@microsoft.com,
+        leon@kernel.org, cai.huoqing@linux.dev,
+        ssengar@linux.microsoft.com, vkuznets@redhat.com,
+        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Cc:     stable@vger.kernel.org, schakrabarti@microsoft.com
+Date:   Thu, 06 Jul 2023 10:18:51 +0200
+In-Reply-To: <1688544973-2507-1-git-send-email-schakrabarti@linux.microsoft.com>
+References: <1688544973-2507-1-git-send-email-schakrabarti@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-X-Mailer: R2Mail2
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, 2023-07-05 at 01:16 -0700, Souradeep Chakrabarti wrote:
+> When unloading the MANA driver, mana_dealloc_queues() waits for the MANA
+> hardware to complete any inflight packets and set the pending send count
+> to zero. But if the hardware has failed, mana_dealloc_queues()
+> could wait forever.
+>=20
+> Fix this by adding a timeout to the wait. Set the timeout to 120 seconds,
+> which is a somewhat arbitrary value that is more than long enough for
+> functional hardware to complete any sends.
+>=20
+> Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network=
+ Adapter (MANA)")
+> ---
+> V4 -> V5:
+> * Added fixes tag
+> * Changed the usleep_range from static to incremental value.
+> * Initialized timeout in the begining.
+> ---
+> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
 
+the changelog should come after the SoB tag, and there should be no '--
+- ' separator before the SoB.
 
----- From: Forza <forza@tnonline.net> -- Sent: 2023-07-03 - 01:28 ----
+Please double-check your patch with the checkpatch script before the
+next submission, it should catch trivial issues as the above one.
 
-> 
-> 
-> ---- From: Uladzislau Rezki <urezki@gmail.com> -- Sent: 2023-05-26 - 14:24 ----
-> 
->> On Wed, May 24, 2023 at 11:13:57AM +0200, David Sterba wrote:
->>> This looks like a different set of problems, though all of them seem to
->>> start on the compression write path in btrfs.
->>> 
->>> On Wed, May 24, 2023 at 07:57:19AM +0200, Forza wrote:
->>> > [   8.641506] 8021q: adding VLAN 0 to HW filter on device enp4s0
->>> > [   13.841691] wireguard: WireGuard 1.0.0 loaded. See www.wireguard.com for information.
->>> > [   13.841705] wireguard: Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
->>> > [13917.280527] ------------[ cut here ]------------
->>> > [13917.280753] default_enter_idle leaked IRQ state
->>> > [13917.281004] WARNING: CPU: 3 PID: 0 at drivers/cpuidle/cpuidle.c:269 cpuidle_enter_state+0x3bb/0x430
->>> 
->>> 
-> ... Snip
->>> 
->>> And again, so something is going wrong
->>> 
->> Indeed.
->> 
->> I suggest you run your kernel with CONFIG_KASAN=y to see if there are
->> any use-after-free or out-of-bounds bugs.
->> 
->> --
->> Uladzislau Rezki
-> 
-> 
-> Pardon the delay... I have enabled KASAN and UBSAN on this kernel. It produced a lot of output and plenty of warnings for misalignment. 
-> 
-> The full dmesg is at https://paste.tnonline.net/files/aBoUMuTd5KBC_dmesg.ubsan.txt (approx 1.7MiB)
-> 
-> The full kernel .conf is. at https://paste.tnonline.net/files/z1mX8TWFgZQ3_kernel.conf-kasan-ubsan.txt
-> 
-> A small exctract around what I think is the  default_enter_idle leaked IRQ event. Is this helpful?
-> 
-> ================================================================================
-> Jul 03 00:33:57 git kernel: UBSAN: misaligned-access in net/ipv4/tcp_ipv4.c:1848:13
-> Jul 03 00:33:57 git kernel: member access within misaligned address 000000007604d82f for type 'const struct tcphdr'
-> Jul 03 00:33:57 git kernel: which requires 4 byte alignment
-> Jul 03 00:33:57 git kernel: CPU: 2 PID: 29 Comm: ksoftirqd/2 Not tainted 6.3.10-ksan-ubsan #8
-> Jul 03 00:33:57 git kernel: Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
-> Jul 03 00:33:57 git kernel: Call Trace:
-> Jul 03 00:33:57 git kernel:  <TASK>
-> Jul 03 00:33:57 git kernel:  dump_stack_lvl+0x86/0xd0
-> Jul 03 00:33:57 git kernel:  ubsan_type_mismatch_common+0xdf/0x240
-> Jul 03 00:33:57 git kernel:  __ubsan_handle_type_mismatch_v1+0x44/0x60
-> Jul 03 00:33:57 git kernel:  tcp_add_backlog+0x1fac/0x3ab0
-> Jul 03 00:33:57 git kernel:  ? sk_filter_trim_cap+0xcc/0xb60
-> Jul 03 00:33:57 git kernel:  ? __pfx_tcp_add_backlog+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? __pfx__raw_spin_lock+0x10/0x10
-> Jul 03 00:33:57 git kernel:  tcp_v4_rcv+0x3583/0x4c40
-> Jul 03 00:33:57 git kernel:  ? __pfx_tcp_v4_rcv+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ip_protocol_deliver_rcu+0x6c/0x480
-> Jul 03 00:33:57 git kernel:  ip_local_deliver_finish+0x2ae/0x4d0
-> Jul 03 00:33:57 git kernel:  ? __pfx_ip_local_deliver+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? __pfx_ip_local_deliver+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ip_local_deliver+0x1ba/0x380
-> Jul 03 00:33:57 git kernel:  ? __pfx_ip_local_deliver+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? ipv4_dst_check+0x104/0x250
-> Jul 03 00:33:57 git kernel:  ? __ubsan_handle_type_mismatch_v1+0x44/0x60
-> Jul 03 00:33:57 git kernel:  ip_sublist_rcv_finish+0x172/0x380
-> Jul 03 00:33:57 git kernel: ------------[ cut here ]------------
-> Jul 03 00:33:57 git kernel:  ip_sublist_rcv+0x3cd/0x900
-> Jul 03 00:33:57 git kernel: default_enter_idle leaked IRQ state
-> Jul 03 00:33:57 git kernel:  ? __pfx_ip_sublist_rcv+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? __ubsan_handle_type_mismatch_v1+0x44/0x60
-> Jul 03 00:33:57 git kernel:  ? ip_rcv_core+0x972/0x1b20
-> Jul 03 00:33:57 git kernel:  ip_list_rcv+0x318/0x750
-> Jul 03 00:33:57 git kernel:  ? __pfx_ip_list_rcv+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? __pfx_ip_list_rcv+0x10/0x10
-> Jul 03 00:33:57 git kernel:  __netif_receive_skb_list_core+0x5ad/0x1170
-> Jul 03 00:33:57 git kernel:  ? tcp_gro_receive+0x1f45/0x2990
-> Jul 03 00:33:57 git kernel:  ? __pfx___netif_receive_skb_list_core+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? kvm_clock_read+0x16/0x40
-> Jul 03 00:33:57 git kernel:  ? ktime_get_with_offset+0xd0/0x1f0
-> Jul 03 00:33:57 git kernel:  netif_receive_skb_list_internal+0x76f/0x1530
-> Jul 03 00:33:57 git kernel:  ? __pfx_netif_receive_skb_list_internal+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? dev_gro_receive+0x67f/0x4900
-> Jul 03 00:33:57 git kernel:  ? free_unref_page+0x2fd/0x680
-> Jul 03 00:33:57 git kernel:  ? put_page+0x69/0x2b0
-> Jul 03 00:33:57 git kernel:  ? __pfx_eth_type_trans+0x10/0x10
-> Jul 03 00:33:57 git kernel:  napi_gro_receive+0x77b/0xdc0
-> Jul 03 00:33:57 git kernel:  receive_buf+0x1001/0xac40
-> Jul 03 00:33:57 git kernel:  ? _raw_spin_lock_irqsave+0xaa/0x180
-> Jul 03 00:33:57 git kernel:  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? __pfx_receive_buf+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? _raw_spin_unlock_irqrestore+0x40/0x80
-> Jul 03 00:33:57 git kernel:  ? trace_hardirqs_on+0x2d/0xd0
-> Jul 03 00:33:57 git kernel:  ? detach_buf_split+0x27e/0xa70
-> Jul 03 00:33:57 git kernel:  ? virtqueue_get_buf_ctx_split+0x3c3/0x1400
-> Jul 03 00:33:57 git kernel:  ? virtqueue_enable_cb_delayed+0x5d0/0x1180
-> Jul 03 00:33:57 git kernel:  virtnet_poll+0x7c7/0x2030
-> Jul 03 00:33:57 git kernel:  ? __pfx_virtnet_poll+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? __pfx__raw_spin_lock+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? __run_timers+0x43d/0xf70
-> Jul 03 00:33:57 git kernel:  __napi_poll.constprop.0+0xd4/0x840
-> Jul 03 00:33:57 git kernel:  net_rx_action+0x7a0/0x26e0
-> Jul 03 00:33:57 git kernel:  ? __pfx_net_rx_action+0x10/0x10
-> Jul 03 00:33:57 git kernel:  __do_softirq+0x277/0x95d
-> Jul 03 00:33:57 git kernel:  ? __pfx___do_softirq+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? __pfx_run_ksoftirqd+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ? __pfx_run_ksoftirqd+0x10/0x10
-> Jul 03 00:33:57 git kernel:  run_ksoftirqd+0x2c/0x40
-> Jul 03 00:33:57 git kernel:  smpboot_thread_fn+0x380/0xbc0
-> Jul 03 00:33:57 git kernel:  ? __kthread_parkme+0xdc/0x280
-> Jul 03 00:33:57 git kernel:  ? schedule+0x158/0x360
-> Jul 03 00:33:57 git kernel:  ? __pfx_smpboot_thread_fn+0x10/0x10
-> Jul 03 00:33:57 git kernel:  kthread+0x259/0x3d0
-> Jul 03 00:33:57 git kernel:  ? __pfx_kthread+0x10/0x10
-> Jul 03 00:33:57 git kernel:  ret_from_fork+0x2c/0x50
-> Jul 03 00:33:57 git kernel:  </TASK>
-> Jul 03 00:33:57 git kernel: ================================================================================
-> 
+> ---
+>  drivers/net/ethernet/microsoft/mana/mana_en.c | 30 ++++++++++++++++---
+>  1 file changed, 26 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/=
+ethernet/microsoft/mana/mana_en.c
+> index a499e460594b..56b7074db1a2 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> @@ -2345,9 +2345,13 @@ int mana_attach(struct net_device *ndev)
+>  static int mana_dealloc_queues(struct net_device *ndev)
+>  {
+>  	struct mana_port_context *apc =3D netdev_priv(ndev);
+> +	unsigned long timeout =3D jiffies + 120 * HZ;
+>  	struct gdma_dev *gd =3D apc->ac->gdma_dev;
+>  	struct mana_txq *txq;
+> +	struct sk_buff *skb;
+> +	struct mana_cq *cq;
+>  	int i, err;
+> +	u32 tsleep;
+> =20
+>  	if (apc->port_is_up)
+>  		return -EINVAL;
+> @@ -2363,15 +2367,33 @@ static int mana_dealloc_queues(struct net_device =
+*ndev)
+>  	 * to false, but it doesn't matter since mana_start_xmit() drops any
+>  	 * new packets due to apc->port_is_up being false.
+>  	 *
+> -	 * Drain all the in-flight TX packets
+> +	 * Drain all the in-flight TX packets.
+> +	 * A timeout of 120 seconds for all the queues is used.
+> +	 * This will break the while loop when h/w is not responding.
+> +	 * This value of 120 has been decided here considering max
+> +	 * number of queues.
+>  	 */
+> +
+>  	for (i =3D 0; i < apc->num_queues; i++) {
+>  		txq =3D &apc->tx_qp[i].txq;
+> -
+> -		while (atomic_read(&txq->pending_sends) > 0)
+> -			usleep_range(1000, 2000);
+> +		tsleep =3D 1000;
+> +		while (atomic_read(&txq->pending_sends) > 0 &&
+> +		       time_before(jiffies, timeout)) {
+> +			usleep_range(tsleep, tsleep << 1);
+> +			tsleep <<=3D 1;
+> +		}
+>  	}
+> =20
+> +	for (i =3D 0; i < apc->num_queues; i++) {
+> +		txq =3D &apc->tx_qp[i].txq;
+> +		cq =3D &apc->tx_qp[i].tx_cq;
 
+The above variable is unused, and causes a build warning. Please remove
+the assignment and the variable declaration.
 
-A small update.
+Thanks,
 
-I have been able test 6.2.16, all 6.3.x and 6.4.1 and they all show the same issue.
-
-I am now trying 6.1.37 since two days and have not been able to reproduce this issue on any of my virtual qemu/kvm machines. Perhaps this information is helpful in finding the root cause?
-
-~Forza 
+Paolo
 
