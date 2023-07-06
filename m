@@ -2,131 +2,199 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71245749220
-	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 02:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3D56749287
+	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 02:20:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230158AbjGFAAv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 20:00:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52850 "EHLO
+        id S232207AbjGFAUa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 20:20:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229793AbjGFAAv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 20:00:51 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15896199E
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 17:00:50 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1b8b318c5cfso22705ad.1
-        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 17:00:50 -0700 (PDT)
+        with ESMTP id S232698AbjGFAUZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 20:20:25 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1B81BCF
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 17:20:18 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-c5ce57836b8so77542276.1
+        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 17:20:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1688601649; x=1691193649;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLTXggKRC3dA0xaEeWzXwWPadxO9IedEfVtfvOBvKZw=;
-        b=QR8CsMCuK+GxP6BuekM+i6zNmXVbr7be4mfN8PLCh9TWjj2EFShu2StBgLr2pDmYin
-         dYi4zOCtHT03616H/Kwn+nmfBfOrgTN7HpNvuSW1OJsjWiR96qNoBdDomeAn7l6BRxsk
-         73bir1SjrcTMHBjmD36GxSYLnEw3T4bB8seVxL4XNapxGALsVOB4joSVCxM1XgzB1G7M
-         CnDE2vRw3V34UHtgSZLNxZLI35d2EdlpwLiR0g1Ibm2D0cOlB3OxpislQnwEFV0nNlD+
-         uZwMovbCSVHkVNQQ2MjyRU8eYgYdPuBrQivm9173fL3ia8hrUDEifPAhVtsTGyqDBn2t
-         ixsw==
+        d=google.com; s=20221208; t=1688602817; x=1691194817;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=knzXabcAOJG0/E2AKfeBSXuBhoKGya+QyzfiqVLDY0c=;
+        b=p032VP+I2cT4M0GRmBEuHaLjt1qMukmrGcg8nfFGTMhfFwdBKiYmHMidsUKlN72pQJ
+         89p0zkgDGkg05ayMLp2Zy15EuH4npY69hHErx+Ej+kA/kC/qzOm3CUzu+xFCHRpnfDnm
+         p+KpKUqfjUwdApExidI7GYGs6y1jPKFnFsxomzO7q8al/MgFZF01MxK56YWvcJU0wn5Z
+         CpQN8XPo+70kUOPhKaQyYvA604uKpOxsoFZ36HqckrVSP5UAPYW49hCmhn0+PcWwmCgk
+         WAJXaJRJc7irtS3p+QPkcUaxDzgRLG+WvpJWgiBHERoneGF7rrpmU/2NPfF8/nnutgVm
+         cYWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688601649; x=1691193649;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fLTXggKRC3dA0xaEeWzXwWPadxO9IedEfVtfvOBvKZw=;
-        b=bJeLu9DbVZ5llwEBlHM2P8BmhDshrTL3mhb7nLj0rGgdYXtDhvamBO5vpSuUNrIEzO
-         pJI8SofMF7UArVlEdkOPdgYLrMrQqdtwF7uvEXkA81fZrZfbvXF7dqHDdL0dJvg3Mh5r
-         i6hqCMZLFjmhkUInF1M8YM1l1zvklBGucYst+yXexcrijmbKnVo8lfZ+b4lDnJePjank
-         XqFMp+vtq65gNODOb8arrpgU6GBiRSSg24gsI5di+XovMrK1Qi2hM3LY3nWfzhvDSWtF
-         b5H9iLkvQd5oYrnu1Kv2cq0dti5fzF8V9cs+/OmO9XTgYJml1iLb1P1/Cw8c7zwk56rJ
-         YdKw==
-X-Gm-Message-State: ABy/qLZD/R5n+CdvjwiAfxBY5xapdDPaJXiJlrLDlIfNUblzPcmNppx4
-        39SBDAY79AxB5tV1C6Zf4Ocf7DK4gX0CN0O+xiDFWw==
-X-Google-Smtp-Source: APBJJlEr24KfHmNIYlj7gY64CbqGeQGQA+5B8ufmfCEE6ZrHuT73dvdZNgS6HQjeo4ar6a0av5mucg==
-X-Received: by 2002:a17:902:e80b:b0:1ab:11c8:777a with SMTP id u11-20020a170902e80b00b001ab11c8777amr455802plg.13.1688601648976;
-        Wed, 05 Jul 2023 17:00:48 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id 13-20020a170902c24d00b001b85a56597bsm41985plg.185.2023.07.05.17.00.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jul 2023 17:00:48 -0700 (PDT)
-Message-ID: <64a60430.170a0220.71309.028f@mx.google.com>
-Date:   Wed, 05 Jul 2023 17:00:48 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20221208; t=1688602817; x=1691194817;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=knzXabcAOJG0/E2AKfeBSXuBhoKGya+QyzfiqVLDY0c=;
+        b=UkiGqGVJVSQICsP1r+VBRoDQnP+RpOqQfWtrwXrpp4GNr/z45XMi5KN4tyDXTV8Vlk
+         NXS9Fx9js4WAXWuG2Z5ZH5qg8jrQHMsdPuQHSHoINtOrXzNfWGPMWoaECrJQ34kfoUgR
+         /ds4GB6Pz89znQtT7jTmzPFyLt9f9GoQS24QIDR0GXV+VR48F2upegp+hv6nAuGT3y0V
+         w0q23DbeS4UGuW6XPVYSj9929T4YWVcGqXXL92PPflmgsJ4AlT0/e9V3XZvkVbPbT6J2
+         WtlLDllQeeP8hUYvmhwzvmJOUNMJ0/6BcNEHvkLhH1lqsYFd8qX3ymk1HhgczUzsSKJ9
+         OZag==
+X-Gm-Message-State: ABy/qLYmTUUR2QZ33PhQbMojihaHjLxltsuS+/IPwSd4ig4xTfUkg85q
+        tZvgZk8+nlTpTc5lR4X6gynm1oOAhNB1lSzbB2vqmg==
+X-Google-Smtp-Source: APBJJlG9B/AgV8ZlpmDyoFeYHyoyaXzxDtkaKfnNIU8/AaWY2+nG/ix41X59c785FqRwTiYk/QEqPu6RBiViX4Se3rM=
+X-Received: by 2002:a25:1657:0:b0:bad:125f:9156 with SMTP id
+ 84-20020a251657000000b00bad125f9156mr353741ybw.35.1688602817224; Wed, 05 Jul
+ 2023 17:20:17 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230705171213.2843068-1-surenb@google.com> <20230705171213.2843068-2-surenb@google.com>
+ <10c8fe17-fa9b-bf34-cb88-c758e07c9d72@redhat.com> <CAJuCfpFBh647trAjgPfr0Wcd=7V2gbHUnBe8mR4Pgdmrzh6Hxg@mail.gmail.com>
+ <20230705230647.twq3n5nb2iabr7uk@revolver>
+In-Reply-To: <20230705230647.twq3n5nb2iabr7uk@revolver>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Wed, 5 Jul 2023 17:20:06 -0700
+Message-ID: <CAJuCfpG1GCwvvOWgtHkGCNLk-emOsb_sA2hki5dMriAQzRQQNg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] fork: lock VMAs of the parent process when forking
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        David Hildenbrand <david@redhat.com>,
+        akpm@linux-foundation.org, jirislaby@kernel.org,
+        jacobly.alt@gmail.com, holger@applied-asynchrony.com,
+        hdegoede@redhat.com, michel@lespinasse.org, jglisse@google.com,
+        mhocko@suse.com, vbabka@suse.cz, hannes@cmpxchg.org,
+        mgorman@techsingularity.net, dave@stgolabs.net,
+        willy@infradead.org, peterz@infradead.org, ldufour@linux.ibm.com,
+        paulmck@kernel.org, mingo@redhat.com, will@kernel.org,
+        luto@kernel.org, songliubraving@fb.com, peterx@redhat.com,
+        dhowells@redhat.com, hughd@google.com, bigeasy@linutronix.de,
+        kent.overstreet@linux.dev, punit.agrawal@bytedance.com,
+        lstoakes@gmail.com, peterjung1337@gmail.com, rientjes@google.com,
+        chriscli@google.com, axelrasmussen@google.com, joelaf@google.com,
+        minchan@google.com, rppt@kernel.org, jannh@google.com,
+        shakeelb@google.com, tatashin@google.com, edumazet@google.com,
+        gthelen@google.com, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v6.3.12
-X-Kernelci-Tree: stable
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-6.3.y
-Subject: stable/linux-6.3.y baseline: 126 runs, 1 regressions (v6.3.12)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-6.3.y baseline: 126 runs, 1 regressions (v6.3.12)
+On Wed, Jul 5, 2023 at 4:07=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracle=
+.com> wrote:
+>
+> * Suren Baghdasaryan <surenb@google.com> [230705 13:24]:
+> > On Wed, Jul 5, 2023 at 10:14=E2=80=AFAM David Hildenbrand <david@redhat=
+.com> wrote:
+> > >
+> > > On 05.07.23 19:12, Suren Baghdasaryan wrote:
+> > > > When forking a child process, parent write-protects an anonymous pa=
+ge
+> > > > and COW-shares it with the child being forked using copy_present_pt=
+e().
+> > > > Parent's TLB is flushed right before we drop the parent's mmap_lock=
+ in
+> > > > dup_mmap(). If we get a write-fault before that TLB flush in the pa=
+rent,
+> > > > and we end up replacing that anonymous page in the parent process i=
+n
+> > > > do_wp_page() (because, COW-shared with the child), this might lead =
+to
+> > > > some stale writable TLB entries targeting the wrong (old) page.
+> > > > Similar issue happened in the past with userfaultfd (see flush_tlb_=
+page()
+> > > > call inside do_wp_page()).
+> > > > Lock VMAs of the parent process when forking a child, which prevent=
+s
+> > > > concurrent page faults during fork operation and avoids this issue.
+> > > > This fix can potentially regress some fork-heavy workloads. Kernel =
+build
+> > > > time did not show noticeable regression on a 56-core machine while =
+a
+> > > > stress test mapping 10000 VMAs and forking 5000 times in a tight lo=
+op
+> > > > shows ~5% regression. If such fork time regression is unacceptable,
+> > > > disabling CONFIG_PER_VMA_LOCK should restore its performance. Furth=
+er
+> > > > optimizations are possible if this regression proves to be problema=
+tic.
+> > > >
+> > > > Suggested-by: David Hildenbrand <david@redhat.com>
+> > > > Reported-by: Jiri Slaby <jirislaby@kernel.org>
+> > > > Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3c=
+df51b@kernel.org/
+> > > > Reported-by: Holger Hoffst=C3=A4tte <holger@applied-asynchrony.com>
+> > > > Closes: https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec=
+2a34c@applied-asynchrony.com/
+> > > > Reported-by: Jacob Young <jacobly.alt@gmail.com>
+> > > > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+> > > > Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handlin=
+g first")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > > ---
+> > > >   kernel/fork.c | 6 ++++++
+> > > >   1 file changed, 6 insertions(+)
+> > > >
+> > > > diff --git a/kernel/fork.c b/kernel/fork.c
+> > > > index b85814e614a5..403bc2b72301 100644
+> > > > --- a/kernel/fork.c
+> > > > +++ b/kernel/fork.c
+> > > > @@ -658,6 +658,12 @@ static __latent_entropy int dup_mmap(struct mm=
+_struct *mm,
+> > > >               retval =3D -EINTR;
+> > > >               goto fail_uprobe_end;
+> > > >       }
+> > > > +#ifdef CONFIG_PER_VMA_LOCK
+> > > > +     /* Disallow any page faults before calling flush_cache_dup_mm=
+ */
+> > > > +     for_each_vma(old_vmi, mpnt)
+> > > > +             vma_start_write(mpnt);
+> > > > +     vma_iter_init(&old_vmi, oldmm, 0);
+>
+> vma_iter_set(&old_vmi, 0) is probably what you want here.
 
-Regressions Summary
--------------------
+Ok, I send another version with that.
 
-platform                 | arch   | lab           | compiler | defconfig   =
-                 | regressions
--------------------------+--------+---------------+----------+-------------=
------------------+------------
-acer-chromebox-cxi4-puff | x86_64 | lab-collabora | gcc-10   | x86_64_defco=
-n...6-chromebook | 1          =
+>
+> > > > +#endif
+> > > >       flush_cache_dup_mm(oldmm);
+> > > >       uprobe_dup_mmap(oldmm, mm);
+> > > >       /*
+> > >
+> > > The old version was most probably fine as well, but this certainly lo=
+oks
+> > > even safer.
+> > >
+> > > Acked-by: David Hildenbrand <david@redhat.com>
+>
+> I think this is overkill and believe setting the vma_start_write() will
+> synchronize with any readers since it's using the per-vma rw semaphore
+> in write mode. Anything faulting will need to finish before the fork
+> continues and faults during the fork will fall back to a read lock of
+> the mmap_lock.  Is there a possibility of populate happening outside the
+> mmap_write lock/vma_lock?
 
+Yes, I think we understand the loss of concurrency in the parent's
+ability to fault pages while forking. Is that a real problem though?
 
-  Details:  https://kernelci.org/test/job/stable/branch/linux-6.3.y/kernel/=
-v6.3.12/plan/baseline/
+>
+> Was your benchmarking done with this loop at the start?
 
-  Test:     baseline
-  Tree:     stable
-  Branch:   linux-6.3.y
-  Describe: v6.3.12
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able.git
-  SHA:      eceb0b18ae34b399856a2dd1eee8c18b2341e6f0 =
+No, it was done with the initial version where the lock was inside the
+existing loop. I just reran the benchmark and while kernel compilation
+times did not change, the stress test shows ~7% regression now,
+probably due to that additional tree walk. I'll update that number in
+the new patch.
+Thanks!
 
-
-
-Test Regressions
----------------- =
-
-
-
-platform                 | arch   | lab           | compiler | defconfig   =
-                 | regressions
--------------------------+--------+---------------+----------+-------------=
------------------+------------
-acer-chromebox-cxi4-puff | x86_64 | lab-collabora | gcc-10   | x86_64_defco=
-n...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64a5ccde3deaa75484bb2a8c
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable/linux-6.3.y/v6.3.12/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-acer-chro=
-mebox-cxi4-puff.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-6.3.y/v6.3.12/x86=
-_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-acer-chro=
-mebox-cxi4-puff.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/64a5ccde3deaa75484bb2=
-a8d
-        new failure (last pass: v6.3.11) =
-
- =20
+>
+> Thanks,
+> Liam
