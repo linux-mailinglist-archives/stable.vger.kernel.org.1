@@ -2,87 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E937499F7
-	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 12:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF8FB749A3F
+	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 13:09:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232164AbjGFKy6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 6 Jul 2023 06:54:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45138 "EHLO
+        id S231812AbjGFLJO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 6 Jul 2023 07:09:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232235AbjGFKye (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 6 Jul 2023 06:54:34 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C49E1BDB;
-        Thu,  6 Jul 2023 03:54:17 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qHMco-0005gy-HF; Thu, 06 Jul 2023 12:54:14 +0200
-Message-ID: <7336b8ea-64bd-d08d-1d85-bf942d5660e2@leemhuis.info>
-Date:   Thu, 6 Jul 2023 12:54:13 +0200
+        with ESMTP id S229654AbjGFLJN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 6 Jul 2023 07:09:13 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A1C102
+        for <stable@vger.kernel.org>; Thu,  6 Jul 2023 04:09:12 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fbd33a57dcso6064605e9.0
+        for <stable@vger.kernel.org>; Thu, 06 Jul 2023 04:09:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688641750; x=1691233750;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U4pJMNxdRYP6BWhbdIUrCN4Z4INLjW+mU8oEQ+C2oq0=;
+        b=Qyt1S6dW0DJHS9Qwr6lQFv0KX6BIiN/hDvnwUc5Nob/8jVfskxy5bjk9zDFKVViUdL
+         r0ZyxrGM75LdfQGVyoecfc/byaadeOsgN49+KyF5gckB4e1vDphVLF6eGpMBEj5OkvSw
+         LGvnbohKEg+50mocgJaa0y7kOlSJYg5H3qcbh/3UyzcCxJA2ZyD8xHqk0tUNOx2lZouV
+         M1sRZdBBy8prC14qbwYmVfetcRESsy0VKweU7LQjwq0D/vXBNzJNx7snLQczkCty/ITB
+         S6XWZDZ+zErZHNLrhwt0WCjT7tScFvGVb3Iz7Y656IblYfY0bR7SlE/eTFX8xD6aCdSa
+         hTOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688641750; x=1691233750;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U4pJMNxdRYP6BWhbdIUrCN4Z4INLjW+mU8oEQ+C2oq0=;
+        b=LRmCP8UvgiVNI5s7s94KKy21auJflJCj8rjBsrkKUEbfSjiKQ+L5oiTxHLrAyhAMvA
+         Z7B0K/j5w0JGLAmA+VdbMb1F0iGzj48tDyID9LsUi/9ydHBqFKo1lnTu9ZZs9wYRvHgB
+         9n+LFTTKygeIRO8D2bwmLTG4pkT+zW5mJmHxDT4em2c6KJi8MYvgKc7qPD0BvkpjFavD
+         aKx3azCEzOO6nlJQZK1ZF7Wl26OfpUa2ApthRIauaDICIs7ueqqD2B9DfTFIy7bNZKkC
+         K96C1mIDBiU93zVcJOfTuuwFfuz0uWEJEkAGrLpe7w5fZD6xsBKQrEgxl1mIQcsT5jZ1
+         n/5Q==
+X-Gm-Message-State: ABy/qLYCbdAF7yRwajcynRbItYy05uQ4fQX6vEU0oZrsrxQqpo5xp9rE
+        Cxsl7/7LYLR6TAjKkmXxigxpdw==
+X-Google-Smtp-Source: APBJJlEwlWIIftTa7gVX+PL/PhpqiVsjsG9ggmBOPIkfwoJfsfs9brTOMymuBcGCGggJ5cVGxBm3AA==
+X-Received: by 2002:a7b:cd08:0:b0:3fb:d81a:8b4 with SMTP id f8-20020a7bcd08000000b003fbd81a08b4mr2651wmj.16.1688641750542;
+        Thu, 06 Jul 2023 04:09:10 -0700 (PDT)
+Received: from [192.168.1.195] ([5.133.47.210])
+        by smtp.googlemail.com with ESMTPSA id z18-20020a5d6552000000b0030fd03e3d25sm1591490wrv.75.2023.07.06.04.09.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Jul 2023 04:09:10 -0700 (PDT)
+Message-ID: <3819b919-b096-31c9-525b-03a8b52df3b7@linaro.org>
+Date:   Thu, 6 Jul 2023 12:09:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Fwd: vmalloc error: btrfs-delalloc btrfs_work_helper [btrfs] in
- kernel 6.3.x
-To:     Forza <forza@tnonline.net>, Uladzislau Rezki <urezki@gmail.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     Linux btrfs <linux-btrfs@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Stable <stable@vger.kernel.org>,
-        Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, a1bert@atlas.cz
-References: <efa04d56-cd7f-6620-bca7-1df89f49bf4b@gmail.com>
- <fcf1d04.faed4a1a.18844d8e78f@tnonline.net> <ZGwcVTpQNBoJHBB+@debian.me>
- <ZGyVVQxnw6Tn7Xb8@pc636> <c9db92d.faed4a1c.1884c5550fb@tnonline.net>
- <20230524091357.GH32559@suse.cz> <ZHClGA9szxSqzDf8@pc636>
- <cf07f03.70397026.18918ef7f95@tnonline.net>
- <2063d59.8f9f4a3a.1892a3ec50f@tnonline.net>
-Content-Language: en-US, de-DE
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <2063d59.8f9f4a3a.1892a3ec50f@tnonline.net>
-Content-Type: text/plain; charset=UTF-8
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 3/8] ASoC: codecs: wcd938x: fix missing clsh ctrl error
+ handling
+Content-Language: en-US
+To:     Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>
+Cc:     Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        Banajit Goswami <bgoswami@quicinc.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230705123018.30903-1-johan+linaro@kernel.org>
+ <20230705123018.30903-4-johan+linaro@kernel.org>
+From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+In-Reply-To: <20230705123018.30903-4-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688640857;1fe2e194;
-X-HE-SMSGID: 1qHMco-0005gy-HF
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 06.07.23 10:08, Forza wrote:
->>> On Wed, May 24, 2023 at 11:13:57AM +0200, David Sterba wrote:
-> [...]
-> A small update.
 
-Thx for this.
 
-> I have been able test 6.2.16, all 6.3.x and 6.4.1 and they all show
-> the same issue.
+On 05/07/2023 13:30, Johan Hovold wrote:
+> Allocation of the clash control structure may fail so add the missing
+> error handling to avoid dereferencing an error pointer.
 > 
-> I am now trying 6.1.37 since two days and have not been able to
-> reproduce this issue on any of my virtual qemu/kvm machines. Perhaps
-> this information is helpful in finding the root cause?
+> Fixes: 8d78602aa87a ("ASoC: codecs: wcd938x: add basic driver")
+> Cc: stable@vger.kernel.org	# 5.14
+> Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
 
-That means it's most likely a regression between v6.1..v6.2 (or
-v6.1..v6.2.16 if we are unlucky) somewhere (from earlier in the thread
-it sounds like it might not be Btrfs).
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-Which makes we wonder: how long do you usually need to reproduce the
-issue? If it's not too long it might mean that a bisection is the best
-way forward, unless some developer sits down and looks closely at the
-logs. With a bit of luck some dev will do that; but if we are unlucky we
-likely will need a bisection.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
-
+>   sound/soc/codecs/wcd938x.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
+> index faa15a5ed2c8..2e342398d027 100644
+> --- a/sound/soc/codecs/wcd938x.c
+> +++ b/sound/soc/codecs/wcd938x.c
+> @@ -3106,6 +3106,10 @@ static int wcd938x_soc_codec_probe(struct snd_soc_component *component)
+>   						 WCD938X_ID_MASK);
+>   
+>   	wcd938x->clsh_info = wcd_clsh_ctrl_alloc(component, WCD938X);
+> +	if (IS_ERR(wcd938x->clsh_info)) {
+> +		pm_runtime_put(dev);
+> +		return PTR_ERR(wcd938x->clsh_info);
+> +	}
+>   
+>   	wcd938x_io_init(wcd938x);
+>   	/* Set all interrupts as edge triggered */
