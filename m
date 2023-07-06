@@ -2,86 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 831E77492C2
-	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 02:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61AF07492EE
+	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 03:14:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232719AbjGFAt5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 5 Jul 2023 20:49:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36422 "EHLO
+        id S232075AbjGFBOH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 5 Jul 2023 21:14:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232571AbjGFAt5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 20:49:57 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18CC3171A
-        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 17:49:56 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-c4dfe2a95fbso89294276.3
-        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 17:49:56 -0700 (PDT)
+        with ESMTP id S231950AbjGFBOF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 5 Jul 2023 21:14:05 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 049771997
+        for <stable@vger.kernel.org>; Wed,  5 Jul 2023 18:14:05 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-c4cda9d3823so109780276.1
+        for <stable@vger.kernel.org>; Wed, 05 Jul 2023 18:14:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688604595; x=1691196595;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uS0XZ1fUS0VGPojYqzvpfVl4CXPI8Do8FblmEQ8ODms=;
-        b=EIAi6itQYEmH6xFZ4o9n4NzNBBUltsEavCtIyk/jEAlvRTjak+IwP9IekJezSBDiFP
-         rag/e41OhG9t9xYdYtU2rb0z3vz4vWCpb2R3Jhr6laoakm5drAfmUicusk6sG0tWQ32K
-         Zpkj/e0ViWHHp6TEGfIOLOwx+2dv6SDMdAguax94iUKkb79YK+U9jNvJy0ZAep8QXWZU
-         Mx5+rdGhWx6Xl+8PHphq1cULfnKYHtodg6hKjwk5dxm7SLwCYtez1/U8W4PryMOdrAYQ
-         ynEP0SBWRn3FeEu98EO9Kyjsapq36Nvsmh1X0nVvDEpDoSZgWE01iqvx1ipoxAZUKnEG
-         kR9A==
+        d=google.com; s=20221208; t=1688606044; x=1691198044;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/ZvjsLzR90/Ihxg7W2cQFYrdAaC3RTmM6cS2FPW4Hig=;
+        b=M5IX75oaI5+U+XxwObu9YSuPnYLffE9WfpI1afLQJyuZ8ZdqQzSucCDlj3g5M5PuYZ
+         GsZp07pN00tTE+vWh7rvzdQ2h/PvSjrslMecjY9k8CxrDbycHpXPsX/eJlCQoGUrIPpz
+         5DjkcITZwm9WsevSIjZ5YrQVBsdE/akRWew0G7xNfaEdgcd2aG2WvNO2LOgCnmYUfkUx
+         RZ7L0soWGM73GloOpd8UJJCcY4U+Nkb2yrVBeQGyNKQAVhdwZPP7lEjQzjA0VM9wmdPP
+         hrLCj2TQXAmiBvtocX3y+KheOs+hqyBVAJUjvTR+A5I1O3diUYY/iVRtZGt06Dx+fZrK
+         qc3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688604595; x=1691196595;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uS0XZ1fUS0VGPojYqzvpfVl4CXPI8Do8FblmEQ8ODms=;
-        b=Xys5twMSq/LFIcbUa3sXET8DrlTJEXqoDpHl+9EZ7K/oR5slcmDIAU/CJy9xELF44B
-         JGz/vuf4uZgHM9NQbz+1toVbpghq+wOOUXQvqcEVbmh7ZfqC0upoQSiRk5SOjrmrGByy
-         y9NHP4vNegheI1NdSNyA2LjyvEJqwXB4jEO1oojJI1pOI6yAAYj6NOKauQs7Joa8fOXJ
-         sJslwh4lJI9kv/D+S54XocukiQQ2rFw0c+1jpFEqYRTr+7eTDwzDTchnLtl3iyBE+1o/
-         apLViDQlyf3fiGlEsxJzYxcWzaI7GbDXLr+uvCAfEcYryA1q/omh16WDCamo5lRw/3ZJ
-         KMRA==
-X-Gm-Message-State: ABy/qLZBBB9a8y8YMAjLvPEnW/LefkcAIB40AYxZRbMcW6Z/qUSgOorY
-        awbC6XQkEmh8ECNpI2DegRVY9NnMzR+oBQRDqTVlfg==
-X-Google-Smtp-Source: APBJJlHpt9JQ+AIigpgGbyrUOJU9M9UGcUJA4d6s+0oOFsqwkgrKB/j6NACCn3Myn8DaEFaYZKMfK4zc8Jfpe5uDn4g=
-X-Received: by 2002:a05:6902:513:b0:bc1:dfa5:8399 with SMTP id
- x19-20020a056902051300b00bc1dfa58399mr418671ybs.13.1688604595099; Wed, 05 Jul
- 2023 17:49:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230705171213.2843068-1-surenb@google.com> <20230705171213.2843068-3-surenb@google.com>
- <3cdaa7d4-1293-3806-05ce-6b7fc4382458@redhat.com> <CAJuCfpGTNF9BWBxZoqYKSDrtq=iJoN1n8oTc=Yu0pPzW8cs8rQ@mail.gmail.com>
- <ZKXRsQC8ufiebDGu@x1n> <CAJuCfpGHRfK1ZC3YmF1caKHiR7hD73goOXLKQubFLuOgzCr0dg@mail.gmail.com>
- <20230705172424.e505f5013bfdf44543d9c6be@linux-foundation.org>
- <CAJuCfpFLRePeOsrSg--5GtWbC1M5y21Sq7gzrs1vVEUE7C+30A@mail.gmail.com>
- <CAJuCfpGWW7wsrtqi4rZUz4vxW-N0CaUEeUqY4e7iX1hzgRsT2g@mail.gmail.com> <20230705174440.9adb53f2e362056867135b84@linux-foundation.org>
-In-Reply-To: <20230705174440.9adb53f2e362056867135b84@linux-foundation.org>
+        d=1e100.net; s=20221208; t=1688606044; x=1691198044;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/ZvjsLzR90/Ihxg7W2cQFYrdAaC3RTmM6cS2FPW4Hig=;
+        b=i2ZoLltFC8bjHXrCfuQGsoVSZZHvx4iucdKLj1pYZTcO5CEua3kfwkWFgi+7yTzEbe
+         LsaWJQx72jM2fuxLtmscFhGrCN+6yfCscZmdnl3fHguZvptvAVYRw8l+8l20YpkwEmZN
+         /f8Pv+jn7qGDEczlISN5+8CM7BqLKzPu1XzrwiwykFGRY6Hf8KX9WuS0u0OYBXwN1Icb
+         jx4HtuZQM68MJ9OK+xBQ8VzBqQJ0zYcNWXQbPuG8T+vRIiRlsa7OHZEQFSR6Qo+SdmNl
+         bunh4oW2f8sodiaApwxczby+DqqiUIuECmfCloaPG1I7G7VXnptx2u2G5j7B5CILDNgX
+         bEcw==
+X-Gm-Message-State: ABy/qLavkW2all7ZOM4fim5xiAF0YwyKVcwKXo+mWm8tZA9oJmddJcXm
+        kENpapdSZOw3BjP2QxctX2M3TO+2zQ4=
+X-Google-Smtp-Source: APBJJlEt8HfzqWqwQiw75adRHvjlP3xBCgQKrxmzHqhU1j9EJbyqaYHCgGKMeEKDjFzgklMWWacm6BoOT+0=
+X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:946c:be30:90d9:9093])
+ (user=surenb job=sendgmr) by 2002:a05:6902:30b:b0:c67:ebc5:de5d with SMTP id
+ b11-20020a056902030b00b00c67ebc5de5dmr2439ybs.4.1688606044026; Wed, 05 Jul
+ 2023 18:14:04 -0700 (PDT)
+Date:   Wed,  5 Jul 2023 18:13:58 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+Message-ID: <20230706011400.2949242-1-surenb@google.com>
+Subject: [PATCH v4 0/2] Avoid memory corruption caused by per-VMA locks
 From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Wed, 5 Jul 2023 17:49:44 -0700
-Message-ID: <CAJuCfpEjytSBKN0gn0t7e5bCSmZLXU-86Ko0Kt-rkXD7hZeNNA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] mm: disable CONFIG_PER_VMA_LOCK until its fixed
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
-        jirislaby@kernel.org, jacobly.alt@gmail.com,
+To:     akpm@linux-foundation.org
+Cc:     jirislaby@kernel.org, jacobly.alt@gmail.com,
         holger@applied-asynchrony.com, hdegoede@redhat.com,
         michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
         vbabka@suse.cz, hannes@cmpxchg.org, mgorman@techsingularity.net,
         dave@stgolabs.net, willy@infradead.org, liam.howlett@oracle.com,
         peterz@infradead.org, ldufour@linux.ibm.com, paulmck@kernel.org,
         mingo@redhat.com, will@kernel.org, luto@kernel.org,
-        songliubraving@fb.com, dhowells@redhat.com, hughd@google.com,
-        bigeasy@linutronix.de, kent.overstreet@linux.dev,
-        punit.agrawal@bytedance.com, lstoakes@gmail.com,
-        peterjung1337@gmail.com, rientjes@google.com, chriscli@google.com,
-        axelrasmussen@google.com, joelaf@google.com, minchan@google.com,
-        rppt@kernel.org, jannh@google.com, shakeelb@google.com,
-        tatashin@google.com, edumazet@google.com, gthelen@google.com,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
+        songliubraving@fb.com, peterx@redhat.com, david@redhat.com,
+        dhowells@redhat.com, hughd@google.com, bigeasy@linutronix.de,
+        kent.overstreet@linux.dev, punit.agrawal@bytedance.com,
+        lstoakes@gmail.com, peterjung1337@gmail.com, rientjes@google.com,
+        chriscli@google.com, axelrasmussen@google.com, joelaf@google.com,
+        minchan@google.com, rppt@kernel.org, jannh@google.com,
+        shakeelb@google.com, tatashin@google.com, edumazet@google.com,
+        gthelen@google.com, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Suren Baghdasaryan <surenb@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -89,45 +80,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 5, 2023 at 5:44=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Wed, 5 Jul 2023 17:32:09 -0700 Suren Baghdasaryan <surenb@google.com> =
-wrote:
->
-> > On Wed, Jul 5, 2023 at 5:30=E2=80=AFPM Suren Baghdasaryan <surenb@googl=
-e.com> wrote:
-> > >
-> > > On Wed, Jul 5, 2023 at 5:24=E2=80=AFPM Andrew Morton <akpm@linux-foun=
-dation.org> wrote:
-> > > >
-> > > > On Wed, 5 Jul 2023 13:33:26 -0700 Suren Baghdasaryan <surenb@google=
-.com> wrote:
-> > > >
-> > > > > I was hoping we could re-enable VMA locks in 6.4 once we get more
-> > > > > confirmations that the problem is gone. Is that not possible once=
- the
-> > > > > BROKEN dependency is merged?
-> > > >
-> > > > I think "no".  By doing this we're effectively backporting a minor
-> > > > performance optimization, which isn't a thing we'd normally do.
-> > >
-> > > In that case, maybe for 6.4 we send the fix and only disable it by
-> > > default without marking BROKEN? That way we still have a way to enabl=
-e
-> > > it if desired?
-> >
-> > I'm preparing the next version with Liam's corrections. If the above
-> > option I suggested is acceptable I can send a modified second patch
-> > which would not have BROKEN dependency.
->
-> I think just mark it broken and move on.  At some later time we can
-> consider backporting the fixes into 6.4.x and reenabling, but I don't
-> think it's likely that we'll do this.
+A memory corruption was reported in [1] with bisection pointing to the
+patch [2] enabling per-VMA locks for x86. Based on the reproducer
+provided in [1] we suspect this is caused by the lack of VMA locking
+while forking a child process.
 
-Uh, ok. I'll send the next version shortly with the patch fixing the
-issue and another one marking it BROKEN. Hopefully in the next version
-we can roll it our more carefully, removing BROKEN dependency but
-keeping it disabled by default?
+Patch 1/2 in the series implements proper VMA locking during fork.
+I tested the fix locally using the reproducer and was unable to reproduce
+the memory corruption problem.
+This fix can potentially regress some fork-heavy workloads. Kernel build
+time did not show noticeable regression on a 56-core machine while a
+stress test mapping 10000 VMAs and forking 5000 times in a tight loop
+shows ~7% regression. If such fork time regression is unacceptable,
+disabling CONFIG_PER_VMA_LOCK should restore its performance. Further
+optimizations are possible if this regression proves to be problematic.
 
->
+Patch 2/2 disables per-VMA locks until the fix is tested and verified.
+
+Both patches apply cleanly over Linus' ToT and stable 6.4.y branch.
+
+Changes from v3 posted at [3]:
+- Replace vma_iter_init with vma_iter_set, per Liam R. Howlett
+- Update the regression number caused by additional VMA tree walk
+
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=217624
+[2] https://lore.kernel.org/all/20230227173632.3292573-30-surenb@google.com
+[3] https://lore.kernel.org/all/20230705171213.2843068-1-surenb@google.com
+
+Suren Baghdasaryan (2):
+  fork: lock VMAs of the parent process when forking
+  mm: disable CONFIG_PER_VMA_LOCK until its fixed
+
+ kernel/fork.c | 6 ++++++
+ mm/Kconfig    | 3 ++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+-- 
+2.41.0.255.g8b1d071c50-goog
+
