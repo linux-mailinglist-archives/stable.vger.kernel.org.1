@@ -2,173 +2,170 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF1BE749758
-	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 10:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B10674978E
+	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 10:36:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232212AbjGFITu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 6 Jul 2023 04:19:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43152 "EHLO
+        id S229715AbjGFIgH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 6 Jul 2023 04:36:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229956AbjGFITr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 6 Jul 2023 04:19:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B16E130
-        for <stable@vger.kernel.org>; Thu,  6 Jul 2023 01:19:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688631540;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=lx+lBJ29CFsk81sGY8QIW/lXN8O5LUUJoAktsDtK8dk=;
-        b=FzitJ6+8f7c1o4hQR1zoWkg0sZqF12jPsIxtq8uNLlgVjz9K3wmPLqoxFl8IrY5gZZzFx5
-        4nyc2t6qBB1jDC0ncLCU5+LaFkB3tNFxP/ZHfHzq78f5MfzwrKiSkBAhLsdVlvyW0DJQgN
-        hUghHf3F7vmQhlXxL31/VjVEwPtAH3U=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-HUsezmhSOvuXVcY8vSFfQg-1; Thu, 06 Jul 2023 04:18:59 -0400
-X-MC-Unique: HUsezmhSOvuXVcY8vSFfQg-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-767a1ad2175so8780485a.0
-        for <stable@vger.kernel.org>; Thu, 06 Jul 2023 01:18:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688631539; x=1691223539;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lx+lBJ29CFsk81sGY8QIW/lXN8O5LUUJoAktsDtK8dk=;
-        b=jo4c7k2i3zNFa66KohJcJ8SnyUlDZAfHX7rVMXs/LvIc7H8eLo0Z07Csp8RcCTMhbr
-         nJCXYFcJfa2/zgKVCevnb0bAoV2VC+T9VshqZlzo48Tf6Whc999WQnMTieX03BkP4TCJ
-         gbh/C8zFYm+DpwIHKJzzrBJbx5XaRMt0M2me8bxDfdLcTAK7E4PbImyPhEucq/IVEgKe
-         pMrh4bF0LSS1XhEJV/jRGj7lxU7A/NPhQ92BBfMX5pWrOAWOHceSbENc/tyMZ3xbmNrK
-         P/ROxDW1K2X8qCe3zBGYRmcvgrPZytNq9f+/Yqo4323j9ahzzSOhfxm7E7k4Ez3VjD36
-         dqVw==
-X-Gm-Message-State: ABy/qLZ9t6y+QFGUFhmtzpMbYw8TKTjMqZdqckvyt/pjIjEJ+jp5tOUo
-        r+wEDMSwdB04joCR1dbGLhN+gYQgxqTuIPcV+ernDYlDUSuaDVQI5yJtiNDKduEkSe5+acwJXYj
-        F7y867fq3ZAyLRA9e
-X-Received: by 2002:a05:6214:411c:b0:62b:5410:322d with SMTP id kc28-20020a056214411c00b0062b5410322dmr1222403qvb.6.1688631539322;
-        Thu, 06 Jul 2023 01:18:59 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHlIzKkGbc7Mhe75o6I7OvXujWZEcDlXrKdSN6nbMjmBM78UrxpGipZsStzvrEN62Vz4TceNw==
-X-Received: by 2002:a05:6214:411c:b0:62b:5410:322d with SMTP id kc28-20020a056214411c00b0062b5410322dmr1222386qvb.6.1688631538999;
-        Thu, 06 Jul 2023 01:18:58 -0700 (PDT)
-Received: from gerbillo.redhat.com (host-95-248-55-118.retail.telecomitalia.it. [95.248.55.118])
-        by smtp.gmail.com with ESMTPSA id e4-20020a0caa44000000b006300e92ea02sm591634qvb.121.2023.07.06.01.18.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jul 2023 01:18:58 -0700 (PDT)
-Message-ID: <062d9a4a0ec07e0c498fb7c6b8aab9d27177b21a.camel@redhat.com>
-Subject: Re: [PATCH V5 net] net: mana: Fix MANA VF unload when hardware is
- unresponsive
-From:   Paolo Abeni <pabeni@redhat.com>
-To:     Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-        kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, longli@microsoft.com, sharmaajay@microsoft.com,
-        leon@kernel.org, cai.huoqing@linux.dev,
-        ssengar@linux.microsoft.com, vkuznets@redhat.com,
-        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-Cc:     stable@vger.kernel.org, schakrabarti@microsoft.com
-Date:   Thu, 06 Jul 2023 10:18:51 +0200
-In-Reply-To: <1688544973-2507-1-git-send-email-schakrabarti@linux.microsoft.com>
-References: <1688544973-2507-1-git-send-email-schakrabarti@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        with ESMTP id S229527AbjGFIgG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 6 Jul 2023 04:36:06 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2061.outbound.protection.outlook.com [40.107.92.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549D6170F
+        for <stable@vger.kernel.org>; Thu,  6 Jul 2023 01:36:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EivVddYOeU+ZoTp8BEtWmVa9niA768Y0ZGkkSHdt8ltrNZz4GGXziM+idm0aEelPYq2e5ujtmgwPNSbg7b9CZeJVZK0sA1+yzzCn9IR6GeMnLFzMu64q+2vKx8Qujoj50t7xP2WSDT9bG/hQr/MZxfOHKutCjmyJsJ8HvD7WqUiOB/Svk4Dks75VbOg43Ng8FUW+s/Ih5ZiJk0+5GTqJo6vHWae9Q9YqkSd7zSXUg+GVCtU9B2rNf57IqSyyjEMtSs38ocIZl1I6VZtSTQVc16ohqpHmscC0JkSHp4PCOyZl49FRPRdqIuetkv+QrVS5ll63z+4eamI4uVpBD75dYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A+4ZP4C+N1dvOPtAMhapEDwkc12qUGadWwH51ifjzjw=;
+ b=cWLMRkmJgBmYvHU524exht1lYM2MxPJGrV4cVSYjoGWGi6eq9NwVfUjU6QuQ4xHYOv4qEc0yYha40hmg+wYpyIgVv2pdl5SkICriGENBxMUXA738PIv3e997H1QF9eDsyzNjC3TYTwTU9KFlxa6d2gb/5duws7bSUNnmN/2WPYwIPAYgYt0rMMQISkB2SWOWWHSQ9riKOlfXlE9Cq8ShTWQqqDri/JVecyCPVvcrXIjrf9hbTkVboBjRoYiQYVfzEZhO8IpdTmTirqqRIIO7/4cedZxgoKe+z/1UGBL2ahBRlLHtdh5/ih3tQ8L5B/yHQVQTU1S3Wfl4MhT0HYLB4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A+4ZP4C+N1dvOPtAMhapEDwkc12qUGadWwH51ifjzjw=;
+ b=sn+PVlzgWePhpNHacTutFSnFzdtLlY7OxL4KMRq02lIN8DAwzT9t+Y3zYvp/HJ7fdtTmxG1+ZNM61Rc5Qr78eYx1W+IiHkOYkEKtJk8Y2KteRGP2/YAHcmP0Cq/aDISppY4rpyvtikKDFRdlpfldR06RCvcnidGacrdaQMQgb/w=
+Received: from BN9PR03CA0848.namprd03.prod.outlook.com (2603:10b6:408:13d::13)
+ by BL1PR12MB5378.namprd12.prod.outlook.com (2603:10b6:208:31d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.24; Thu, 6 Jul
+ 2023 08:35:58 +0000
+Received: from BN8NAM11FT110.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:13d:cafe::9) by BN9PR03CA0848.outlook.office365.com
+ (2603:10b6:408:13d::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.25 via Frontend
+ Transport; Thu, 6 Jul 2023 08:35:58 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT110.mail.protection.outlook.com (10.13.176.156) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6500.47 via Frontend Transport; Thu, 6 Jul 2023 08:35:57 +0000
+Received: from guchchen-System-Product-Name.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 6 Jul 2023 03:35:55 -0500
+From:   Guchun Chen <guchun.chen@amd.com>
+To:     <amd-gfx@lists.freedesktop.org>, <alexander.deucher@amd.com>,
+        <hawking.zhang@amd.com>, <christian.koenig@amd.com>,
+        <dusica.milinkovic@amd.com>, <nikola.prica@amd.com>,
+        <flora.cui@amd.com>
+CC:     Guchun Chen <guchun.chen@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH] drm/amdgpu/vkms: relax timer deactivation by hrtimer_try_to_cancel
+Date:   Thu, 6 Jul 2023 16:35:23 +0800
+Message-ID: <20230706083523.561741-1-guchun.chen@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT110:EE_|BL1PR12MB5378:EE_
+X-MS-Office365-Filtering-Correlation-Id: b543f075-adb7-484f-e94a-08db7dfc0566
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: HsppSpMKOq7THP8qL18OUZwvK+GxSTlF6tw6gC5jvxjcuGe1bUCrzhle/Ikmfj4PVqgJzXD/huWjoF2dJbvol6gvUZFUw56sD1D702oFLj6Y3uxbbijgAw9xRLmsfOj8I76aFdcpQSLx1KN7enlWWqOpdgIu9U/zMNjaYdg5zLmiTkrh7BOqW48rKzN+7kILpkoOI1UiFtFc/+lrIbONrnwmpPKMiKyWyBHjm/gjKd+oa/4pCpxgthEVraktXk79AqkMkAubHk2I+wK/uSIE9U/gAF93SSLKAwe4d67EfL2ZIoBY4agKi/bFDt0/5bPBytzLYhWSYafCDsVPiUqsDeQqocKY6wT/D/4XD3EWFMlo5Bg7IqdIrqTBYNpS4TNYC2Fz+DsIQdG2leJWDOp64Ia5YsX/Ct0M/9AuXEIqOUApbUBBdhKxoMrmLfH1YupHs1LVUNzBg56QZaiEkkZ2yDnUfDU8cwoMd5/skZ6mk0i5jsO4TbZqiiITirMNhwjA8kuveSkbG4Josnv54I9rkS9uzDkVE1kIvRqBFdKRr+Yj/JW1iGQo9iGleR6CxerBL3SpoGX4gdCKoBGjlJTWfxAV65lhOgS4ByB+0wzep29DE3BEBgGdJCdFfyZIovpNfrKLWR3m6OlZDWgdlZAgBOljUrW1jqTBaHNTfe13+U0XysNDO9bsVnDDmi2cxiyd+/wYnhUyXXjFc5z3M0uvf0/6kM7J/YD5FOU/UMebcdfrTNoYXlcbRvlNrkS4up0tL9fl180pnwUPfSByTwdPn9L0R9fr6OeWCHbCDbN5pls=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(346002)(136003)(396003)(451199021)(36840700001)(40470700004)(46966006)(44832011)(478600001)(5660300002)(8936002)(8676002)(70586007)(316002)(4326008)(70206006)(6636002)(2906002)(41300700001)(54906003)(110136005)(7696005)(6666004)(2616005)(26005)(1076003)(186003)(16526019)(36860700001)(356005)(82740400003)(83380400001)(66574015)(47076005)(336012)(426003)(81166007)(82310400005)(40460700003)(36756003)(86362001)(40480700001)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2023 08:35:57.8449
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b543f075-adb7-484f-e94a-08db7dfc0566
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT110.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5378
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 2023-07-05 at 01:16 -0700, Souradeep Chakrabarti wrote:
-> When unloading the MANA driver, mana_dealloc_queues() waits for the MANA
-> hardware to complete any inflight packets and set the pending send count
-> to zero. But if the hardware has failed, mana_dealloc_queues()
-> could wait forever.
->=20
-> Fix this by adding a timeout to the wait. Set the timeout to 120 seconds,
-> which is a somewhat arbitrary value that is more than long enough for
-> functional hardware to complete any sends.
->=20
-> Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network=
- Adapter (MANA)")
-> ---
-> V4 -> V5:
-> * Added fixes tag
-> * Changed the usleep_range from static to incremental value.
-> * Initialized timeout in the begining.
-> ---
-> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+In below thousands of screen rotation loop tests with virtual display
+enabled, a CPU hard lockup issue may happen, leading system to unresponsive
+and crash.
 
-the changelog should come after the SoB tag, and there should be no '--
-- ' separator before the SoB.
+do {
+	xrandr --output Virtual --rotate inverted
+	xrandr --output Virtual --rotate right
+	xrandr --output Virtual --rotate left
+	xrandr --output Virtual --rotate normal
+} while (1);
 
-Please double-check your patch with the checkpatch script before the
-next submission, it should catch trivial issues as the above one.
+NMI watchdog: Watchdog detected hard LOCKUP on cpu 4
 
-> ---
->  drivers/net/ethernet/microsoft/mana/mana_en.c | 30 ++++++++++++++++---
->  1 file changed, 26 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/=
-ethernet/microsoft/mana/mana_en.c
-> index a499e460594b..56b7074db1a2 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -2345,9 +2345,13 @@ int mana_attach(struct net_device *ndev)
->  static int mana_dealloc_queues(struct net_device *ndev)
->  {
->  	struct mana_port_context *apc =3D netdev_priv(ndev);
-> +	unsigned long timeout =3D jiffies + 120 * HZ;
->  	struct gdma_dev *gd =3D apc->ac->gdma_dev;
->  	struct mana_txq *txq;
-> +	struct sk_buff *skb;
-> +	struct mana_cq *cq;
->  	int i, err;
-> +	u32 tsleep;
-> =20
->  	if (apc->port_is_up)
->  		return -EINVAL;
-> @@ -2363,15 +2367,33 @@ static int mana_dealloc_queues(struct net_device =
-*ndev)
->  	 * to false, but it doesn't matter since mana_start_xmit() drops any
->  	 * new packets due to apc->port_is_up being false.
->  	 *
-> -	 * Drain all the in-flight TX packets
-> +	 * Drain all the in-flight TX packets.
-> +	 * A timeout of 120 seconds for all the queues is used.
-> +	 * This will break the while loop when h/w is not responding.
-> +	 * This value of 120 has been decided here considering max
-> +	 * number of queues.
->  	 */
-> +
->  	for (i =3D 0; i < apc->num_queues; i++) {
->  		txq =3D &apc->tx_qp[i].txq;
-> -
-> -		while (atomic_read(&txq->pending_sends) > 0)
-> -			usleep_range(1000, 2000);
-> +		tsleep =3D 1000;
-> +		while (atomic_read(&txq->pending_sends) > 0 &&
-> +		       time_before(jiffies, timeout)) {
-> +			usleep_range(tsleep, tsleep << 1);
-> +			tsleep <<=3D 1;
-> +		}
->  	}
-> =20
-> +	for (i =3D 0; i < apc->num_queues; i++) {
-> +		txq =3D &apc->tx_qp[i].txq;
-> +		cq =3D &apc->tx_qp[i].tx_cq;
+? hrtimer_run_softirq+0x140/0x140
+? store_vblank+0xe0/0xe0 [drm]
+hrtimer_cancel+0x15/0x30
+amdgpu_vkms_disable_vblank+0x15/0x30 [amdgpu]
+drm_vblank_disable_and_save+0x185/0x1f0 [drm]
+drm_crtc_vblank_off+0x159/0x4c0 [drm]
+? record_print_text.cold+0x11/0x11
+? wait_for_completion_timeout+0x232/0x280
+? drm_crtc_wait_one_vblank+0x40/0x40 [drm]
+? bit_wait_io_timeout+0xe0/0xe0
+? wait_for_completion_interruptible+0x1d7/0x320
+? mutex_unlock+0x81/0xd0
+amdgpu_vkms_crtc_atomic_disable
 
-The above variable is unused, and causes a build warning. Please remove
-the assignment and the variable declaration.
+It's caused by a stuck in lock dependency in such scenario on different
+CPUs.
 
-Thanks,
+CPU1                                             CPU2
+drm_crtc_vblank_off                              hrtimer_interrupt
+    grab event_lock (irq disabled)                   __hrtimer_run_queues
+        grab vbl_lock/vblank_time_block                  amdgpu_vkms_vblank_simulate
+            amdgpu_vkms_disable_vblank                       drm_handle_vblank
+                hrtimer_cancel                                   grab dev->event_lock
 
-Paolo
+So CPU1 stucks in hrtimer_cancel as timer callback is running endless on
+current clock base, as that timer queue on CPU2 has no chance to finish it
+because of failing to hold the lock. So NMI watchdog will throw the errors
+after its threshold, and all later CPUs are impacted/blocked.
+
+So use hrtimer_try_to_cancel to fix this, as disable_vblank callback
+does not need to wait the handler to finish. And also it's not necessary
+to check the return value of hrtimer_try_to_cancel, because even if it's
+-1 which means current timer callback is running, it will be reprogrammed
+in hrtimer_start with calling enable_vblank to make it works.
+
+Cc: stable@vger.kernel.org
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
+index 53ff91fc6cf6..70fb0df039e3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
+@@ -81,7 +81,7 @@ static void amdgpu_vkms_disable_vblank(struct drm_crtc *crtc)
+ {
+ 	struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
+ 
+-	hrtimer_cancel(&amdgpu_crtc->vblank_timer);
++	hrtimer_try_to_cancel(&amdgpu_crtc->vblank_timer);
+ }
+ 
+ static bool amdgpu_vkms_get_vblank_timestamp(struct drm_crtc *crtc,
+-- 
+2.25.1
 
