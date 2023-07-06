@@ -2,116 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE39274A47B
-	for <lists+stable@lfdr.de>; Thu,  6 Jul 2023 21:39:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 445EA74A6A6
+	for <lists+stable@lfdr.de>; Fri,  7 Jul 2023 00:18:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231169AbjGFTjw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 6 Jul 2023 15:39:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49442 "EHLO
+        id S229510AbjGFWSk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 6 Jul 2023 18:18:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbjGFTjv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 6 Jul 2023 15:39:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC21719B7;
-        Thu,  6 Jul 2023 12:39:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 693216118D;
-        Thu,  6 Jul 2023 19:39:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4683DC433C7;
-        Thu,  6 Jul 2023 19:39:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688672389;
-        bh=yd5ZfhpPHoEtN8UO2XW5AaVfdcS9cerHuenbgKjZVMQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EZgNsNm7ACja89GCYt4QZjwNxiDlS0fz4BPSniEBObGls7+KlAUmGLwsQnIF/GHEP
-         f0oxiGB58FMNIC/aNMThhmHfOx3qxKNaGTLOYiejzlqC6PX3KC8LzFA0KwXiamCVDk
-         fWd+Xi8U9/vnIVMghD8jwm856FzlCkB8WSD6YzWbGTX+p+T/yYfsUXtpvGXangg7Hl
-         8HkS4hloqIVpl/wkSlK+ImsM1wSEMu/pP62tcsVZashDOnVlKC+HZxEBNdIJE5ZFH0
-         b198AOKlBCtY6T2mdVZ3qCjSwhV/DAXMOjpJovuraXhEe0XwT5rHVoaUYOKlMTthSv
-         vTyk9pOAh5c0Q==
-Date:   Thu, 6 Jul 2023 21:39:46 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     dan.carpenter@linaro.org, Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Alessandro Rubini <rubini@gnudd.com>,
-        Giancarlo Asnaghi <giancarlo.asnaghi@st.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-i2c@vger.kernel.org
-Subject: Re: [PATCH v3] i2c: busses: i2c-nomadik: Remove a useless call in
- the remove function
-Message-ID: <ZKcYguUjJqxOGcUB@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        dan.carpenter@linaro.org, Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Alessandro Rubini <rubini@gnudd.com>,
-        Giancarlo Asnaghi <giancarlo.asnaghi@st.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-i2c@vger.kernel.org
-References: <62ae6810d41e04a9eb5adfa18a9e40904bc72256.1688160163.git.christophe.jaillet@wanadoo.fr>
+        with ESMTP id S229452AbjGFWSk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 6 Jul 2023 18:18:40 -0400
+Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 456F51B6
+        for <stable@vger.kernel.org>; Thu,  6 Jul 2023 15:18:39 -0700 (PDT)
+Received: by mail-oo1-xc2d.google.com with SMTP id 006d021491bc7-5635a80f367so125198eaf.0
+        for <stable@vger.kernel.org>; Thu, 06 Jul 2023 15:18:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688681918; x=1691273918;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bu4ArN757zrK6429dA+5bQX13DVBTagf2yg0iXGGPcU=;
+        b=QknGzXf7i6AU7TTviRyC3tzzf+EQYyXQjMOkPUfvQ7s4nJG1+MllzFOfQ79sOLX0DO
+         muej3qCZuuVYAJO+ErY1H3BCZ+EKAmGx76ieSBR+ev+pof711p43KhdzBaNou6DhNjND
+         Ehe+HnPka0Tf95GS12lg5/ka78XThImyXtd2HKRVgmKTrq11V4ko1miWO+BZjccvcsiI
+         ccuFGU6171Ib/rxRELkGlMrw8L4xcMr1aJOBKMIt8VgBuAmAFlsESL3MvSkVS1yoVGwL
+         A6w9HCgfRTtIxK3C/yh+8hRa2zJCXqYXo0nY7SckAGj31tcphKmhGnrsvwkDXsYxlBis
+         EDLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688681918; x=1691273918;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bu4ArN757zrK6429dA+5bQX13DVBTagf2yg0iXGGPcU=;
+        b=Ge0AmCg7OV/ys+ZMx+pFzKnVi4lMuXum7L01HrCLTOFO46wruR6NgusK39bndCBaZX
+         3I6sFa6FnQz47GOiUnQKw2Hmmm8sK+ja+sW7SE4A/xmLYDZLkayaBJEXzG4sLi4yHGtp
+         bw0kbxXvoBJkFOCoyZndzcqu4k5GsRWLuIRAhFCkQVhYskK0HHL9QnAtipmnYG882QbE
+         IMrsEkBfJIM9cTP92WerZD2ZOnR5ZtLGOM7XVF462ZkpOpsi5LTUEhfraG3gcssuxzvb
+         z6VyCnKQ7bEdOotoxgpms2T1hkQsp6QQbZSJ6o8qehcdk53PQiceNTnykdFAUaINEmCv
+         5Xlg==
+X-Gm-Message-State: ABy/qLaQ5MvZzM7AqiHJO/VxcZEIQZt1A61CcXrssuH2CRF5dxRns0zD
+        4AbrVoEeNcnpe+0fhesXmbQ=
+X-Google-Smtp-Source: APBJJlHS7EV2bmXMGM2r/VB1wrv4UFoC7vNpA114sabEnY7BGHNtjRyj+Oi6h4CO77mm9NagfbHJ5g==
+X-Received: by 2002:a4a:c4c4:0:b0:563:3b56:5dc1 with SMTP id g4-20020a4ac4c4000000b005633b565dc1mr2269131ooq.0.1688681918360;
+        Thu, 06 Jul 2023 15:18:38 -0700 (PDT)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:da08:7cc0:c10e:810f])
+        by smtp.gmail.com with ESMTPSA id bg30-20020a056820081e00b00558c88d131asm1005708oob.36.2023.07.06.15.18.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jul 2023 15:18:37 -0700 (PDT)
+From:   Fabio Estevam <festevam@gmail.com>
+To:     broonie@kernel.org
+Cc:     shengjiu.wang@gmail.com, alsa-devel@alsa-project.org,
+        andreas@fatal.se, hans.soderlund@realbit.se,
+        Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
+Subject: [PATCH] ASoC: fsl_sai: Revert "ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode"
+Date:   Thu,  6 Jul 2023 19:18:27 -0300
+Message-Id: <20230706221827.1938990-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="KIbpIBjWo1WrAkVC"
-Content-Disposition: inline
-In-Reply-To: <62ae6810d41e04a9eb5adfa18a9e40904bc72256.1688160163.git.christophe.jaillet@wanadoo.fr>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Fabio Estevam <festevam@denx.de>
 
---KIbpIBjWo1WrAkVC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This reverts commit ff87d619ac180444db297f043962a5c325ded47b.
 
-On Tue, Jul 04, 2023 at 09:50:28PM +0200, Christophe JAILLET wrote:
-> Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an a=
-mba
-> driver"), there is no more request_mem_region() call in this driver.
->=20
-> So remove the release_mem_region() call from the remove function which is
-> likely a left over.
->=20
-> Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba dr=
-iver")
-> Cc: <stable@vger.kernel.org> # v3.6+
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> Reviewed-by: Andi Shyti <andi.shyti@kernel.org>=20
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Andreas reports that on an i.MX8MP-based system where MCLK needs to be
+used as an input, the MCLK pin is actually an output, despite not having
+the 'fsl,sai-mclk-direction-output' property present in the devicetree.
 
-Applied to for-current, thanks!
+This is caused by commit ff87d619ac18 ("ASoC: fsl_sai: Enable
+MCTL_MCLK_EN bit for master mode") that sets FSL_SAI_MCTL_MCLK_EN
+unconditionally for imx8mm/8mn/8mp/93, causing the MCLK to always
+be configured as output.
 
+FSL_SAI_MCTL_MCLK_EN corresponds to the MOE (MCLK Output Enable) bit
+of register MCR and the drivers sets it when the
+'fsl,sai-mclk-direction-output' devicetree property is present.
 
---KIbpIBjWo1WrAkVC
-Content-Type: application/pgp-signature; name="signature.asc"
+Revert the commit to allow SAI to use MCLK as input as well.
 
------BEGIN PGP SIGNATURE-----
+Cc: stable@vger.kernel.org
+Fixes: ff87d619ac18 ("ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode")
+Reported-by: Andreas Henriksson <andreas@fatal.se>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+---
+ sound/soc/fsl/fsl_sai.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmSnGIIACgkQFA3kzBSg
-KbbTLQ//Z17Q9oUqZ/7oqQGbFyjrzw+cB9E4wcUpsZR4Qi8uhZoOar1Gnq8oHFBS
-q4twrbMNdWx4vVCVVcHBqSEj+8sBDAgIxfhJ6Iwsbp7A5khg1ifxLE6HJXtZzn5z
-DgsuNeVREQY8vPPwSHggNQI5AePgVGIyPh/16BQIAsEiRkse5yhjSdvUKdTSKBm4
-rw8TRSBhoTR/abTRolI8GrAcbqVwXPOKV4aNE1rFZObcDCHB6zm/mxdKuc0tY1K9
-YKKY+Ditugim9MO3pgH1M9n9pZObmInFIusRrv+i9gA8Eb9/dCYe10EuD0nchK/i
-07OdJ7kAvHucMn9CJqz3LRzWskTYOqTj+7nvK8kRAyaRhuAXug8C/SeU2R9eL8Fq
-Ey/bKMC7J0YJYf+/ZGxEFjILPiBNR1Sao8xalng30ReeA2pYcsHmOCKSG7f35e+n
-y5QNghs2MZrGW5+hh3IMVIVb+fjxh2Qvxnr41SJ3knhV0nSUFdc9wBMXtegX5vrW
-ALROVLBqBv0VdGDwY9rGVLJiMnhdctwgDfFXDHoqn+48c+TjREeW9qy+WHbO+yBs
-/OzU9wQRG/FL0ud/MXSAPpJgZTWHT0oAZxYPHhe9jQpoGQa3lpNsYPhMrEYpkUsw
-hNHoNKF5dbMh+q+Q/WhIJEvs2VimrjVmHqQQTj0YjHH3M+o+hNE=
-=230U
------END PGP SIGNATURE-----
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 5e09f634c61b..54b4bf3744c6 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -507,12 +507,6 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
+ 				   savediv / 2 - 1);
+ 	}
+ 
+-	if (sai->soc_data->max_register >= FSL_SAI_MCTL) {
+-		/* SAI is in master mode at this point, so enable MCLK */
+-		regmap_update_bits(sai->regmap, FSL_SAI_MCTL,
+-				   FSL_SAI_MCTL_MCLK_EN, FSL_SAI_MCTL_MCLK_EN);
+-	}
+-
+ 	return 0;
+ }
+ 
+-- 
+2.34.1
 
---KIbpIBjWo1WrAkVC--
