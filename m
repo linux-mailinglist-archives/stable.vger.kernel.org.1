@@ -2,72 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4354174A9F0
-	for <lists+stable@lfdr.de>; Fri,  7 Jul 2023 06:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54F6E74A9F4
+	for <lists+stable@lfdr.de>; Fri,  7 Jul 2023 06:33:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231938AbjGGEcT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 7 Jul 2023 00:32:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57762 "EHLO
+        id S231156AbjGGEdz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 7 Jul 2023 00:33:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231845AbjGGEcS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 7 Jul 2023 00:32:18 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2E3F1BC9
-        for <stable@vger.kernel.org>; Thu,  6 Jul 2023 21:32:17 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5734d919156so17418307b3.3
-        for <stable@vger.kernel.org>; Thu, 06 Jul 2023 21:32:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688704337; x=1691296337;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sOqq0WN+jYVzOAHPCJmC3T8ZmV+ri02/8UcPUSwENZU=;
-        b=eODw2VAG4LYwUudSofmYsJnD5sDvgnvXm7FQ6WhI9uyNSxsp0njiK6thMN6LRU5jTF
-         gYmW5dl0SjECbLtK8iZkOH2xEUNg27Y4ApUuh7waJQakQ9qHP1nx+nYn3YKoVQ98VxWz
-         OY4YiR+GiMKjF2MsRbpXNOQvq0vJJsB3vwvYf8qNkr7WvRvnC7O9FwEtRfKLje9Z1BZP
-         9cOyuGcTKL1Y+u5/k71eAVQKBKvf+ar9q4SEqw+qNvkFIduc73n4qBi271JwmDnSiSe9
-         HnhcI0RwPWBtG3pS/6ZbVosWthJ25wdjphq0ZVDNfyhX/7kCWTDbFnICRKBZ285B6A6q
-         2nhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688704337; x=1691296337;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sOqq0WN+jYVzOAHPCJmC3T8ZmV+ri02/8UcPUSwENZU=;
-        b=YB/WH5w3cdAqPpVBoMvv5gZVjnGSvGAsdU5OByOtJd4gXygvx3e150AFa73vuJXT9a
-         71cQKjGmYN8n/2MVVDf+nzrLNecmyOFFLx53NJqlHCN9rxeNDQSEQoAwt41gV4FeXds4
-         IC9I8zkbOycnqlLq47GqB/V6YBFUNxbN4b1lHRZRG8kuDzt15vwqu3LokKR2KO3HAEX9
-         puBNAIMPbzaK9Gf7BJzr1exq25ZzjEs7w+fvQB2OlBIZRvyANK3bIcRYO3a4+cLdi+xR
-         FpjLPI/GZtT+ss5XC1oosS+eQOOoFWPeZg0X9XDJwcoFFKuWoe8qDgCI9fxyVrQ3TSIL
-         hPrA==
-X-Gm-Message-State: ABy/qLZEnGy7GwkNwTXwbif423cCumgVMgA4G3eWT2ZbLle/gU7BQjw8
-        Ex1Nh8XUjFQK81r7pSkvyE4Nml6JBD0=
-X-Google-Smtp-Source: APBJJlHJJzo6xKqRfCwu3K4BMa/DSUqUwTqtDXrv/pQ5MfhlCzg1HW7hTPTkOQo0rodXtQODdOcQ37BKfgc=
-X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:fd8f:e174:8bb4:814])
- (user=surenb job=sendgmr) by 2002:a81:af1b:0:b0:573:6b9c:6fa1 with SMTP id
- n27-20020a81af1b000000b005736b9c6fa1mr27409ywh.1.1688704337053; Thu, 06 Jul
- 2023 21:32:17 -0700 (PDT)
-Date:   Thu,  6 Jul 2023 21:32:11 -0700
+        with ESMTP id S229642AbjGGEdy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 7 Jul 2023 00:33:54 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F60C1BCA
+        for <stable@vger.kernel.org>; Thu,  6 Jul 2023 21:33:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688704433; x=1720240433;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=vytT7TEwKhYPHkiJ3LpIi4rGC7Ld22/i2DIxPAtwzuY=;
+  b=K7sJ573GohJAPRE8ar4NKTTU5dUhWxi+K5+583PC7UpADLqhyMi4QZmP
+   W4/ZkVQqOp2yklUHCFL0jadu5QJtLydYpcQKfxgBPA7cYIrN3Eo5nTY6h
+   avaxpGtJl/1GNdvfz3rOCdP4ibbu2GgBCjuzEcCa5AYepg8zIDGifxeHx
+   6cS5FyVVdmxOlLtqvLOhM1Yh/ipMnw9p4R6tTxXFh6PpQcCAns7TN78Qb
+   RQcuqDPT0nag1IB/I/SLVS28+npFJXvtRJpBZW6jVJ6DCIGXsYN5PE27/
+   T6T+GojXb+C7NYPS7nIjXuv83gvQcQV+TvOiU/S5lWyePAfcbzqs8Dt1Q
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10763"; a="343386832"
+X-IronPort-AV: E=Sophos;i="6.01,187,1684825200"; 
+   d="scan'208";a="343386832"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2023 21:33:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10763"; a="713846027"
+X-IronPort-AV: E=Sophos;i="6.01,187,1684825200"; 
+   d="scan'208";a="713846027"
+Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 06 Jul 2023 21:33:51 -0700
+Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qHdAE-0001le-2S;
+        Fri, 07 Jul 2023 04:33:50 +0000
+Date:   Fri, 7 Jul 2023 12:33:47 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Suren Baghdasaryan <surenb@google.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 1/2] mm: lock a vma before stack expansion
+Message-ID: <ZKeVq4oIFqT55cZw@a1daa7802ad8>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20230707043211.3682710-1-surenb@google.com>
-Mime-Version: 1.0
-References: <20230707043211.3682710-1-surenb@google.com>
-X-Mailer: git-send-email 2.41.0.390.g38632f3daf-goog
-Message-ID: <20230707043211.3682710-2-surenb@google.com>
-Subject: [PATCH 2/2] mm: lock newly mapped VMA which can be modified after it
- becomes visible
-From:   Suren Baghdasaryan <surenb@google.com>
-To:     akpm@linux-foundation.org
-Cc:     willy@infradead.org, liam.howlett@oracle.com, david@redhat.com,
-        peterx@redhat.com, vbabka@suse.cz, michel@lespinasse.org,
-        jglisse@google.com, mhocko@suse.com, hannes@cmpxchg.org,
-        dave@stgolabs.net, ldufour@linux.ibm.com, hughd@google.com,
-        punit.agrawal@bytedance.com, lstoakes@gmail.com,
-        rientjes@google.com, axelrasmussen@google.com, jannh@google.com,
-        shakeelb@google.com, tatashin@google.com, gthelen@google.com,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, kernel-team@android.com, surenb@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,36 +62,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-mmap_region adds a newly created VMA into VMA tree and might modify it
-afterwards before dropping the mmap_lock. This poses a problem for page
-faults handled under per-VMA locks because they don't take the mmap_lock
-and can stumble on this VMA while it's still being modified. Currently
-this does not pose a problem since post-addition modifications are done
-only for file-backed VMAs, which are not handled under per-VMA lock.
-However, once support for handling file-backed page faults with per-VMA
-locks is added, this will become a race.
-Fix this by write-locking the VMA before inserting it into the VMA tree.
-Other places where a new VMA is added into VMA tree do not modify it
-after the insertion, so do not need the same locking.
+Hi,
 
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- mm/mmap.c | 2 ++
- 1 file changed, 2 insertions(+)
+Thanks for your patch.
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index c66e4622a557..84c71431a527 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -2812,6 +2812,8 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- 	if (vma->vm_file)
- 		i_mmap_lock_write(vma->vm_file->f_mapping);
- 
-+	/* Lock the VMA since it is modified after insertion into VMA tree */
-+	vma_start_write(vma);
- 	vma_iter_store(&vmi, vma);
- 	mm->map_count++;
- 	if (vma->vm_file) {
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH 1/2] mm: lock a vma before stack expansion
+Link: https://lore.kernel.org/stable/20230707043211.3682710-1-surenb%40google.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.41.0.255.g8b1d071c50-goog
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
