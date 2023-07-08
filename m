@@ -2,83 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4163E74BA7C
-	for <lists+stable@lfdr.de>; Sat,  8 Jul 2023 02:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABBE474BB27
+	for <lists+stable@lfdr.de>; Sat,  8 Jul 2023 03:51:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230166AbjGHAM3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 7 Jul 2023 20:12:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52198 "EHLO
+        id S232194AbjGHBvc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 7 Jul 2023 21:51:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230115AbjGHAM2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 7 Jul 2023 20:12:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D9219B7;
-        Fri,  7 Jul 2023 17:12:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F19B61ACF;
-        Sat,  8 Jul 2023 00:12:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566CBC433C8;
-        Sat,  8 Jul 2023 00:12:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688775146;
-        bh=ijIPQ+hptm0DWZFgQRUdBDKFLI/pxNjT4o8gTe1nWV8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VejCWVV9U7psKJ3JrtNUdWwyjWoiPvzKVme9p7gPfbfghJgkdEX8kpkGiL6F7yYRq
-         r+oHGPOjOOtEgsSRr+bxii5/WgIRCwYDC+KZAQ6KasAjQnW4km/WeHSN0SS2oAFOfi
-         Jb/QD3EWha/3zssviaP/GAXjJgmyrYVZXUx0Jy3nzs/a0VKB/DBZGBPvPI+X2pHby9
-         wTXv07i+YK1VlXHk+N0sz2Zu51eiYvC0XuNpcG5PkG8QpfpF+zvHbSyLT8YN7kleIy
-         sPLoJG/Nle4Wwh+3OTtbo+SYbpJuMSd3UIKlvQAmVj9QwYr5LrLYdsg+d3VGfgG6lo
-         +QyOFXkmKXmQg==
-Date:   Fri, 7 Jul 2023 17:12:25 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Cc:     linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        with ESMTP id S231845AbjGHBvb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 7 Jul 2023 21:51:31 -0400
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id AD3FF213B
+        for <stable@vger.kernel.org>; Fri,  7 Jul 2023 18:51:28 -0700 (PDT)
+Received: (qmail 1232616 invoked by uid 1000); 7 Jul 2023 21:51:27 -0400
+Date:   Fri, 7 Jul 2023 21:51:27 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
         davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
         hayeswang@realtek.com, jflf_kernel@gmx.com, bjorn@mork.no,
         svenva@chromium.org, linux-kernel@vger.kernel.org,
         eniac-xw.zhang@hp.com, stable@vger.kernel.org
 Subject: Re: [PATCH] r8152: Suspend USB device before shutdown when WoL is
  enabled
-Message-ID: <20230707171225.3cb6e354@kernel.org>
-In-Reply-To: <20230706182858.761311-1-alexandru.gagniuc@hp.com>
+Message-ID: <2c12d7a0-3edb-48b3-abf7-135e1a8838ca@rowland.harvard.edu>
 References: <20230706182858.761311-1-alexandru.gagniuc@hp.com>
+ <20230707171225.3cb6e354@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230707171225.3cb6e354@kernel.org>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu,  6 Jul 2023 18:28:58 +0000 Alexandru Gagniuc wrote:
-> For Wake-on-LAN to work from S5 (shutdown), the USB link must be put
-> in U3 state. If it is not, and the host "disappears", the chip will
-> no longer respond to WoL triggers.
->  
-> To resolve this, add a notifier block and register it as a reboot
-> notifier. When WoL is enabled, work through the usb_device struct to
-> get to the suspend function. Calling this function puts the link in
-> the correct state for WoL to function.
+On Fri, Jul 07, 2023 at 05:12:25PM -0700, Jakub Kicinski wrote:
+> On Thu,  6 Jul 2023 18:28:58 +0000 Alexandru Gagniuc wrote:
+> > For Wake-on-LAN to work from S5 (shutdown), the USB link must be put
+> > in U3 state. If it is not, and the host "disappears", the chip will
+> > no longer respond to WoL triggers.
+> >  
+> > To resolve this, add a notifier block and register it as a reboot
+> > notifier. When WoL is enabled, work through the usb_device struct to
+> > get to the suspend function. Calling this function puts the link in
+> > the correct state for WoL to function.
+> 
+> Would be good to hear from USB experts on this one, to an outside seems
+> like something that the bus should be doing, possibly based on some
+> driver opt-in..
 
-Would be good to hear from USB experts on this one, to an outside seems
-like something that the bus should be doing, possibly based on some
-driver opt-in..
+The USB spec does not include any discussion of what things should be 
+done when the system is turned off -- it doesn't even really acknowledge 
+the existence of different system-wide power states.  As a result, the 
+USB subsystem never developed any support for power-off callbacks or 
+anything else of the sort.
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+Of course, this kind of thing can always be added.  But I don't think 
+there's any way to distinguish (at the USB level) between wakeup from 
+S5-off and wakeup from any other low-power system state.  And the PM 
+part of the device model doesn't have multiple types of "enable-wakeup" 
+flags -- either a device is enabled for wakeup or it isn't.
 
-Please add a Fixes tag - I'm guessing it dates back to
-
-Fixes: 21ff2e8976b1 ("r8152: support WOL")
-
-?
--- 
-pw-bot: cr
+Alan Stern
