@@ -2,71 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABBE474BB27
-	for <lists+stable@lfdr.de>; Sat,  8 Jul 2023 03:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E61E74BB76
+	for <lists+stable@lfdr.de>; Sat,  8 Jul 2023 04:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232194AbjGHBvc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 7 Jul 2023 21:51:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38560 "EHLO
+        id S230145AbjGHCrd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 7 Jul 2023 22:47:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231845AbjGHBvb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 7 Jul 2023 21:51:31 -0400
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id AD3FF213B
-        for <stable@vger.kernel.org>; Fri,  7 Jul 2023 18:51:28 -0700 (PDT)
-Received: (qmail 1232616 invoked by uid 1000); 7 Jul 2023 21:51:27 -0400
-Date:   Fri, 7 Jul 2023 21:51:27 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        hayeswang@realtek.com, jflf_kernel@gmx.com, bjorn@mork.no,
-        svenva@chromium.org, linux-kernel@vger.kernel.org,
-        eniac-xw.zhang@hp.com, stable@vger.kernel.org
-Subject: Re: [PATCH] r8152: Suspend USB device before shutdown when WoL is
- enabled
-Message-ID: <2c12d7a0-3edb-48b3-abf7-135e1a8838ca@rowland.harvard.edu>
-References: <20230706182858.761311-1-alexandru.gagniuc@hp.com>
- <20230707171225.3cb6e354@kernel.org>
+        with ESMTP id S229699AbjGHCrd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 7 Jul 2023 22:47:33 -0400
+Received: from zg8tndyumtaxlji0oc4xnzya.icoremail.net (zg8tndyumtaxlji0oc4xnzya.icoremail.net [46.101.248.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EE569C9
+        for <stable@vger.kernel.org>; Fri,  7 Jul 2023 19:47:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=whu.edu.cn; s=dkim; h=Received:Date:From:To:Subject:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID;
+        bh=BLZZmKZhI+wxmLaYc2p5It3oWeMowcKyCWiS7QfHkL0=; b=P/k4JMNb6NAdC
+        WZHoU+ZZnoe/0jXGL18wjKLcJAryNzkfpl81koyVYeXPG7gxxe5wCZcIMos3K30B
+        XTpi6Qc4NPizTsnbckmHUn+/JmV8kGpPLWPWcf0EqvsS6HNQXoq17O6npChc5Wui
+        YKYcz0MmozqQGWZIwKI8GO4n/57Shc=
+Received: by ajax-webmail-email1 (Coremail) ; Sat, 8 Jul 2023 10:47:21 +0800
+ (GMT+08:00)
+X-Originating-IP: [10.201.164.53]
+Date:   Sat, 8 Jul 2023 10:47:21 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   =?UTF-8?B?5ZGo6YC45p6X?= <ylzhou@whu.edu.cn>
+To:     stable@vger.kernel.org
+Subject: A linux kernel bug report about a USBcore driver
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210104(ab8c30b6)
+ Copyright (c) 2002-2023 www.mailtech.cn whu
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230707171225.3cb6e354@kernel.org>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Message-ID: <f7137bb.c0125.18933658fac.Coremail.ylzhou@whu.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: AQBjCgDHiLw5zqhkOM+ZCg--.4383W
+X-CM-SenderInfo: qsqrljiqrviiqqqrq4lkxovvfxof0/1tbiAQUEElmj4e7QfQABsL
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 07, 2023 at 05:12:25PM -0700, Jakub Kicinski wrote:
-> On Thu,  6 Jul 2023 18:28:58 +0000 Alexandru Gagniuc wrote:
-> > For Wake-on-LAN to work from S5 (shutdown), the USB link must be put
-> > in U3 state. If it is not, and the host "disappears", the chip will
-> > no longer respond to WoL triggers.
-> >  
-> > To resolve this, add a notifier block and register it as a reboot
-> > notifier. When WoL is enabled, work through the usb_device struct to
-> > get to the suspend function. Calling this function puts the link in
-> > the correct state for WoL to function.
-> 
-> Would be good to hear from USB experts on this one, to an outside seems
-> like something that the bus should be doing, possibly based on some
-> driver opt-in..
-
-The USB spec does not include any discussion of what things should be 
-done when the system is turned off -- it doesn't even really acknowledge 
-the existence of different system-wide power states.  As a result, the 
-USB subsystem never developed any support for power-off callbacks or 
-anything else of the sort.
-
-Of course, this kind of thing can always be added.  But I don't think 
-there's any way to distinguish (at the USB level) between wakeup from 
-S5-off and wakeup from any other low-power system state.  And the PM 
-part of the device model doesn't have multiple types of "enable-wakeup" 
-flags -- either a device is enabled for wakeup or it isn't.
-
-Alan Stern
+Dear developer, I am a security researcher at Wuhan University. Recently I discovered a vulnerability in the driver of the USBcore module in the Linux kernel. This vulnerability will lead to an infinite loop in the probe process of the USB device, which will consume a lot of system resources. The vulnerability was found in kernel version 5.6.19 and tested to exist in the new 6.3.7 kernel version as well. I hope that after your review, you will be able to apply for a CVE number to disclose this vulnerability. If you need more detailed vulnerability information, please   contact me. Thank you for your help.
