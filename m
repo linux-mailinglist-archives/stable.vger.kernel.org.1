@@ -2,56 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 953E174BFEA
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 01:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F4B974BFFA
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 01:23:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229644AbjGHXKV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 8 Jul 2023 19:10:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46624 "EHLO
+        id S229809AbjGHXXK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 8 Jul 2023 19:23:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjGHXKU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 8 Jul 2023 19:10:20 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA68DFF
-        for <stable@vger.kernel.org>; Sat,  8 Jul 2023 16:10:19 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id 3f1490d57ef6-c6e4d4c59bcso2645223276.1
-        for <stable@vger.kernel.org>; Sat, 08 Jul 2023 16:10:19 -0700 (PDT)
+        with ESMTP id S229523AbjGHXXK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 8 Jul 2023 19:23:10 -0400
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07B82E43
+        for <stable@vger.kernel.org>; Sat,  8 Jul 2023 16:23:09 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5703d12ab9aso39969697b3.2
+        for <stable@vger.kernel.org>; Sat, 08 Jul 2023 16:23:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688857819; x=1691449819;
+        d=google.com; s=20221208; t=1688858588; x=1691450588;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bHBmqS8NwC99Z9QtRqyVciJnx9vOvvM1ypQPd7HicZU=;
-        b=aC4JvRwH236lHuuVjAmz79NEJVSGu4y/lyV+aIB63wbpLAmWiLZozzV/UUf7clKQdy
-         +r3PNew5EFTC1WrC/weTl9Rg4KI9C1loeR7rdfhvftl7bFZBvg+WX5rXFHoUHlwRccHG
-         H5roPa9rNRZpaOd/D7jMAJ7mC2TUiS4BVHWIC8SW3iTtVDYqMAaGIgWohMK2lnVNoynB
-         hJJZqyMf7CIF+Mjkeh/5GT66mCZKLJeXGdex0kJ7A1CYTZ4IW+10Kb5CuhiMT2XcDU2V
-         USI9u190+1iYAZmtXcU8yuRMzj6cmZmjxLxj2oxypX5TZLV/7cn58g+QvYRPWbGj2IG9
-         isgw==
+        bh=DJmd9FNoExrkZazabhisTEX13e3yTkQujDR9ImsW+As=;
+        b=KAr00s05g8LvJTb3B4MfRknnBcOsPzBA8MpmvEk9MyW2dsnWRJ+gR0zO8PseNnhyds
+         6Mt9nJsN6mDK1Dh0NvAnhRCWzYZxHAhlfLQy9RHgQ4LNeE/wsu1rS7QDkdsSrHxffmbG
+         LncoxcuQ5LD5OovH5vrPd/CfkojrHatihkBkTAqHapCmqs2qMs/IOwteAtH86tzhaWr+
+         E8r1XVvTEXmScKTJlgEBa93UC+N33QJ1k4AhSrsn7Uk/wL8h6+7Vf6PuBvhB/DZSWdgZ
+         jmFzygQ4Fr5KUeiYWIsHonmdkl7IWGEiCBU4SkTSiHEkZDV2rwxK3hTecpts0OknAuAS
+         gqGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688857819; x=1691449819;
+        d=1e100.net; s=20221208; t=1688858588; x=1691450588;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bHBmqS8NwC99Z9QtRqyVciJnx9vOvvM1ypQPd7HicZU=;
-        b=cxBSHhK9wI/Y4AVajHMM/DccxY8O0mfDecllRxQUquG0cu+8COsDBjqX3Z6nLFDI2f
-         gr3dP/fOEDVg1eKO09iT5nnuOFdPZrAbpPQtxY7X4BPfldjMGaT9IQdVixeQypbwCgPY
-         EZC2omqOdcMZaNubL9UZlgiWbxPgCR9GCraH+a7dDMi8tDY0OSlLr7gqRl+l8PlWvC/Q
-         5JNTG2beXzwAoxNUzRZ5VkVOM+LVTqDAeuJqVsqgJc1V/6uCTyizFLB7KljVVfmGT975
-         jH/mE8066NRm6soqtBP6iAmYq0uFUEGeqV4N+JUaUSKVBdN2xdp5QeORkWVO7UoIRQ1Q
-         aS7A==
-X-Gm-Message-State: ABy/qLZga/Zx/9/WQkVclLL0xY6OZoZoupDRFiuMgyNlrI1i8tBzt1Ot
-        pnsgoe1PXOTmrwm0unGdoUYoY9jSbK+c6UfVwC+vQw==
-X-Google-Smtp-Source: APBJJlGlS5xEDkfZpc19JrLy3RDko6OpCb3oW1HWrIZs49KQqhT9ol0NyMJ1vIr071SbtX0uRyAhsa+cCc58DLTyhYY=
-X-Received: by 2002:a81:a114:0:b0:56d:2e66:bd55 with SMTP id
- y20-20020a81a114000000b0056d2e66bd55mr6858350ywg.3.1688857818674; Sat, 08 Jul
- 2023 16:10:18 -0700 (PDT)
+        bh=DJmd9FNoExrkZazabhisTEX13e3yTkQujDR9ImsW+As=;
+        b=fLaIIkOpZ38NfR23lA/aKYSJtkOUkFlXqgzNhr9o73ojkdChExgkpt4yBwtP6p4RQE
+         rZUd1yCNf9ZBKC6qncCnq0pg6JK3vciEXdDhysIBLxR5CvLLJYb5xoBUm20Lp+03R4L6
+         4m7HgGI17aONX9MBHwNYJYnaN+zf9IwJWZF5MHh4n72+qiuJilPB5gtG+XvpxqroWBfb
+         9MTsOeTlxwzHozXSk3112Jl8AS/vsqt48lRlygtBdOg5Uzjcy98aaWWCTpvc8oEWfJFl
+         YbPaM4AK9r5X9Pq2C6GYnx7xiUQSLJsjE3aa3G34tkKgQ5LFKzkHaZe1fdnT7LwUGQNW
+         sJ2Q==
+X-Gm-Message-State: ABy/qLbMwRAPtNpsqehSzY+lmovGlluOuKItWAkOOxrMRaH/dpGyOryp
+        sa7p1HntCGQ3G/S8oo4iPpSdwyHX66hJG8lng6SVQA==
+X-Google-Smtp-Source: APBJJlHs1/S5FDnBZdy+MijP9fwBR6OMu6G+Y9QcTJ4N/KwfTKOEXMXKD5Sjy19yPHubJ4iO8EvZDNmedrlxShdDCY0=
+X-Received: by 2002:a81:6d95:0:b0:56d:3f2:35a3 with SMTP id
+ i143-20020a816d95000000b0056d03f235a3mr8095661ywc.44.1688858587953; Sat, 08
+ Jul 2023 16:23:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <b5a5626-2684-899d-874b-801e7974b17@google.com>
-In-Reply-To: <b5a5626-2684-899d-874b-801e7974b17@google.com>
+References: <b5a5626-2684-899d-874b-801e7974b17@google.com> <CAJuCfpGXC23r11-0jz+an01tO2BUOMpjJ93Dm3pc+EUQM=BXYg@mail.gmail.com>
+In-Reply-To: <CAJuCfpGXC23r11-0jz+an01tO2BUOMpjJ93Dm3pc+EUQM=BXYg@mail.gmail.com>
 From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Sat, 8 Jul 2023 16:10:07 -0700
-Message-ID: <CAJuCfpGXC23r11-0jz+an01tO2BUOMpjJ93Dm3pc+EUQM=BXYg@mail.gmail.com>
+Date:   Sat, 8 Jul 2023 16:22:56 -0700
+Message-ID: <CAJuCfpEyOXYh+dhW5iUFsz_s4P_pka9cD3M6qc8dDit5JxH3mw@mail.gmail.com>
 Subject: Re: [PATCH] mm: lock newly mapped VMA with corrected ordering
 To:     Hugh Dickins <hughd@google.com>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -66,7 +66,7 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -75,47 +75,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jul 8, 2023 at 4:04=E2=80=AFPM Hugh Dickins <hughd@google.com> wrot=
-e:
+On Sat, Jul 8, 2023 at 4:10=E2=80=AFPM Suren Baghdasaryan <surenb@google.co=
+m> wrote:
 >
-> Lockdep is certainly right to complain about
-> (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_write+0x2d/0x3f
->                but task is already holding lock:
-> (&mapping->i_mmap_rwsem){+.+.}-{3:3}, at: mmap_region+0x4dc/0x6db
-> Invert those to the usual ordering.
+> On Sat, Jul 8, 2023 at 4:04=E2=80=AFPM Hugh Dickins <hughd@google.com> wr=
+ote:
+> >
+> > Lockdep is certainly right to complain about
+> > (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_write+0x2d/0x3f
+> >                but task is already holding lock:
+> > (&mapping->i_mmap_rwsem){+.+.}-{3:3}, at: mmap_region+0x4dc/0x6db
+> > Invert those to the usual ordering.
+>
+> Doh! Thanks Hugh!
+> I totally forgot to run this with lockdep enabled :(
 
-Doh! Thanks Hugh!
-I totally forgot to run this with lockdep enabled :(
+I verified both the lockdep warning and the fix. Thanks again, Hugh!
+
+Tested-by: Suren Baghdasaryan <surenb@google.com>
 
 >
-> Fixes: 33313a747e81 ("mm: lock newly mapped VMA which can be modified aft=
-er it becomes visible")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> ---
->  mm/mmap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 84c71431a527..3eda23c9ebe7 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -2809,11 +2809,11 @@ unsigned long mmap_region(struct file *file, unsi=
-gned long addr,
->         if (vma_iter_prealloc(&vmi))
->                 goto close_and_free_vma;
->
-> +       /* Lock the VMA since it is modified after insertion into VMA tre=
-e */
-> +       vma_start_write(vma);
->         if (vma->vm_file)
->                 i_mmap_lock_write(vma->vm_file->f_mapping);
->
-> -       /* Lock the VMA since it is modified after insertion into VMA tre=
-e */
-> -       vma_start_write(vma);
->         vma_iter_store(&vmi, vma);
->         mm->map_count++;
->         if (vma->vm_file) {
-> --
-> 2.35.3
+> >
+> > Fixes: 33313a747e81 ("mm: lock newly mapped VMA which can be modified a=
+fter it becomes visible")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Hugh Dickins <hughd@google.com>
+> > ---
+> >  mm/mmap.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index 84c71431a527..3eda23c9ebe7 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -2809,11 +2809,11 @@ unsigned long mmap_region(struct file *file, un=
+signed long addr,
+> >         if (vma_iter_prealloc(&vmi))
+> >                 goto close_and_free_vma;
+> >
+> > +       /* Lock the VMA since it is modified after insertion into VMA t=
+ree */
+> > +       vma_start_write(vma);
+> >         if (vma->vm_file)
+> >                 i_mmap_lock_write(vma->vm_file->f_mapping);
+> >
+> > -       /* Lock the VMA since it is modified after insertion into VMA t=
+ree */
+> > -       vma_start_write(vma);
+> >         vma_iter_store(&vmi, vma);
+> >         mm->map_count++;
+> >         if (vma->vm_file) {
+> > --
+> > 2.35.3
