@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEF6374C305
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FEA774C306
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:27:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232479AbjGIL1U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37744 "EHLO
+        id S232474AbjGIL1Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232467AbjGIL1U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:27:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B4FC0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:27:19 -0700 (PDT)
+        with ESMTP id S232467AbjGIL1X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:27:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA80C0
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:27:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B188960C01
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:27:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF16C433C9;
-        Sun,  9 Jul 2023 11:27:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AD0760C07
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:27:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887B8C433C8;
+        Sun,  9 Jul 2023 11:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902038;
-        bh=75/PENnJQurpQEeV0E6sOjQokwS3+3Z8XpXyhIwANY8=;
+        s=korg; t=1688902041;
+        bh=LYn3F8lUP5AfNt1g85P8lgOs40CGs6rDWNGMA5ETgto=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ynXfPFoz6wYvZVd6kH7JufTpAlEe/f0DWRcoN7SYG+z/a637/W9NLMRtRGBrsGAMw
-         ZE58tzkfL+EACcklqYcPnYOQvrBcp5pea40vqFFau9ToldzeGKYjsFWPrgeTtjVh0N
-         2OIgU0SdiiNp12hdiQM+DSBQLcHyfvCwNgEjUhDs=
+        b=WH90SqVcomQw6x1BLQZ4nckSZ0oLTwbga9Ts0L7YaX6zWRRs/FuNbja3ok0VGavBH
+         dUpRFkUOpyfC8ZDFTJReqLklxv/wmWLmhgs0MQBeMeK+ht8JDLU5mPESbuuSNIWCky
+         7OgspJ54f1EfQoHXQkTSLDeZT4tLlucDFccv92d0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 233/431] arm64: dts: qcom: sdm630: correct camss unit address
-Date:   Sun,  9 Jul 2023 13:13:01 +0200
-Message-ID: <20230709111456.626622811@linuxfoundation.org>
+Subject: [PATCH 6.3 234/431] arm64: dts: qcom: sdm845: correct camss unit address
+Date:   Sun,  9 Jul 2023 13:13:02 +0200
+Message-ID: <20230709111456.649808983@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -61,36 +59,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit c8b7faa7e9913a94444b3f00b6480e53a174fcfd ]
+[ Upstream commit a05b913a27e46926ba60ba2bcacc7ec7a8403e4c ]
 
 Match unit-address to reg entry to fix dtbs W=1 warnings:
 
-  Warning (simple_bus_reg): /soc/camss@ca00000: simple-bus unit address format error, expected "ca00020"
+  Warning (simple_bus_reg): /soc@0/camss@a00000: simple-bus unit address format error, expected "acb3000"
 
-Fixes: f3d5d3cc6971 ("arm64: dts: qcom: sdm630: Configure the camera subsystem")
+Fixes: d48a6698a6b7 ("arm64: dts: qcom: sdm845: Add CAMSS ISP node")
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230419211856.79332-10-krzysztof.kozlowski@linaro.org
+Link: https://lore.kernel.org/r/20230419211856.79332-11-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm630.dtsi | 2 +-
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index 5827cda270a0e..07c720c5721d4 100644
---- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -1893,7 +1893,7 @@ pil-reloc@94c {
- 			};
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index c5e92851a4f08..bc89a2b4bc258 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4158,7 +4158,7 @@ videocc: clock-controller@ab00000 {
+ 			#reset-cells = <1>;
  		};
  
--		camss: camss@ca00000 {
-+		camss: camss@ca00020 {
- 			compatible = "qcom,sdm660-camss";
- 			reg = <0x0ca00020 0x10>,
- 			      <0x0ca30000 0x100>,
+-		camss: camss@a00000 {
++		camss: camss@acb3000 {
+ 			compatible = "qcom,sdm845-camss";
+ 
+ 			reg = <0 0x0acb3000 0 0x1000>,
 -- 
 2.39.2
 
