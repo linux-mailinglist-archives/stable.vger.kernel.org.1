@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 658FD74C27B
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A31574C286
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:21:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231259AbjGILVJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:21:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33198 "EHLO
+        id S231315AbjGILVf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:21:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbjGILVI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:21:08 -0400
+        with ESMTP id S231282AbjGILVe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:21:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75AF418C
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:21:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1F79B5
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:21:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 14AE860BB7
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:21:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A73C433C7;
-        Sun,  9 Jul 2023 11:21:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4085B60BC0
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:21:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2F1C433C8;
+        Sun,  9 Jul 2023 11:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901661;
-        bh=BrHVtI39Tbrh68XMJrHlBDtfg+7kGQHajXHqZzLBf2Y=;
+        s=korg; t=1688901692;
+        bh=sBUJ8ybF0GOqBJDIqoc1bqU5xEkn/bcDBo49I0iRFN0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KqaCojkXNYHFCz+JxFWjR717cBfqte59CXD0miEuTXJBloAv6UUNxqGInIMFI01mw
-         9UA06vwhyPiFyhPYOafxUpP1udW5aKsaPOsQoXlR5y65UGwmWl87Jiob4ZD6jfVpFP
-         bt8+50JwtAmxYTRCDESqL/GIzv8pI+OKT0LA2ZhQ=
+        b=shug2pp8f27bdr5DF+jYVod2JFebLxdODj86o0yP/pMBPXyO14mSdDqn0jqLDVLxv
+         TJtRu7Q34FmzTPB0LHIrDE1IvfgxS9HpmyPz+VCWFQ0+6dpYkKC+79Xj03SBY7PohA
+         hMyvYXSp8bffU8cCQ3zsTzQa3H6/642FPkqDPbNg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yafang Shao <laoar.shao@gmail.com>,
+        patches@lists.linux.dev, Alexey Gladkov <legion@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
-        Song Liu <song@kernel.org>, Jiri Olsa <olsajiri@gmail.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Stanislav Fomichev <sdf@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 092/431] bpf: Fix memleak due to fentry attach failure
-Date:   Sun,  9 Jul 2023 13:10:40 +0200
-Message-ID: <20230709111453.309608267@linuxfoundation.org>
+Subject: [PATCH 6.3 093/431] selftests/bpf: Do not use sign-file as testcase
+Date:   Sun,  9 Jul 2023 13:10:41 +0200
+Message-ID: <20230709111453.332030229@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -56,110 +57,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Alexey Gladkov <legion@kernel.org>
 
-[ Upstream commit 108598c39eefbedc9882273ac0df96127a629220 ]
+[ Upstream commit f04a32b2c5b539e3c097cb5c7c1df12a8f4a0cf0 ]
 
-If it fails to attach fentry, the allocated bpf trampoline image will be
-left in the system. That can be verified by checking /proc/kallsyms.
+The sign-file utility (from scripts/) is used in prog_tests/verify_pkcs7_sig.c,
+but the utility should not be called as a test. Executing this utility produces
+the following error:
 
-This meamleak can be verified by a simple bpf program as follows:
+  selftests: /linux/tools/testing/selftests/bpf: urandom_read
+  ok 16 selftests: /linux/tools/testing/selftests/bpf: urandom_read
 
-  SEC("fentry/trap_init")
-  int fentry_run()
-  {
-      return 0;
-  }
+  selftests: /linux/tools/testing/selftests/bpf: sign-file
+  not ok 17 selftests: /linux/tools/testing/selftests/bpf: sign-file # exit=2
 
-It will fail to attach trap_init because this function is freed after
-kernel init, and then we can find the trampoline image is left in the
-system by checking /proc/kallsyms.
+Also, urandom_read is mistakenly used as a test. It does not lead to an error,
+but should be moved over to TEST_GEN_FILES as well. The empty TEST_CUSTOM_PROGS
+can then be removed.
 
-  $ tail /proc/kallsyms
-  ffffffffc0613000 t bpf_trampoline_6442453466_1  [bpf]
-  ffffffffc06c3000 t bpf_trampoline_6442453466_1  [bpf]
-
-  $ bpftool btf dump file /sys/kernel/btf/vmlinux | grep "FUNC 'trap_init'"
-  [2522] FUNC 'trap_init' type_id=119 linkage=static
-
-  $ echo $((6442453466 & 0x7fffffff))
-  2522
-
-Note that there are two left bpf trampoline images, that is because the
-libbpf will fallback to raw tracepoint if -EINVAL is returned.
-
-Fixes: e21aa341785c ("bpf: Fix fexit trampoline.")
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Fixes: fc97590668ae ("selftests/bpf: Add test for bpf_verify_pkcs7_signature() kfunc")
+Signed-off-by: Alexey Gladkov <legion@kernel.org>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Song Liu <song@kernel.org>
-Cc: Jiri Olsa <olsajiri@gmail.com>
-Link: https://lore.kernel.org/bpf/20230515130849.57502-2-laoar.shao@gmail.com
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Link: https://lore.kernel.org/bpf/ZEuWFk3QyML9y5QQ@example.org
+Link: https://lore.kernel.org/bpf/88e3ab23029d726a2703adcf6af8356f7a2d3483.1684316821.git.legion@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/trampoline.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ tools/testing/selftests/bpf/Makefile | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index 213d9b3cb06ad..fecb8d2d885a3 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -279,11 +279,8 @@ bpf_trampoline_get_progs(const struct bpf_trampoline *tr, int *total, bool *ip_a
- 	return tlinks;
- }
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index ad01c9e1ff12b..625eedb84eecc 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -88,8 +88,7 @@ TEST_GEN_PROGS_EXTENDED = test_sock_addr test_skb_cgroup_id_user \
+ 	xskxceiver xdp_redirect_multi xdp_synproxy veristat xdp_hw_metadata \
+ 	xdp_features
  
--static void __bpf_tramp_image_put_deferred(struct work_struct *work)
-+static void bpf_tramp_image_free(struct bpf_tramp_image *im)
- {
--	struct bpf_tramp_image *im;
--
--	im = container_of(work, struct bpf_tramp_image, work);
- 	bpf_image_ksym_del(&im->ksym);
- 	bpf_jit_free_exec(im->image);
- 	bpf_jit_uncharge_modmem(PAGE_SIZE);
-@@ -291,6 +288,14 @@ static void __bpf_tramp_image_put_deferred(struct work_struct *work)
- 	kfree_rcu(im, rcu);
- }
+-TEST_CUSTOM_PROGS = $(OUTPUT)/urandom_read $(OUTPUT)/sign-file
+-TEST_GEN_FILES += liburandom_read.so
++TEST_GEN_FILES += liburandom_read.so urandom_read sign-file
  
-+static void __bpf_tramp_image_put_deferred(struct work_struct *work)
-+{
-+	struct bpf_tramp_image *im;
-+
-+	im = container_of(work, struct bpf_tramp_image, work);
-+	bpf_tramp_image_free(im);
-+}
-+
- /* callback, fexit step 3 or fentry step 2 */
- static void __bpf_tramp_image_put_rcu(struct rcu_head *rcu)
- {
-@@ -465,7 +470,7 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
- 					  &tr->func.model, tr->flags, tlinks,
- 					  tr->func.addr);
- 	if (err < 0)
--		goto out;
-+		goto out_free;
- 
- 	set_memory_rox((long)im->image, 1);
- 
-@@ -494,7 +499,7 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
- 	}
- #endif
- 	if (err)
--		goto out;
-+		goto out_free;
- 
- 	if (tr->cur_image)
- 		bpf_tramp_image_put(tr->cur_image);
-@@ -505,6 +510,10 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
- 		tr->flags = orig_flags;
- 	kfree(tlinks);
- 	return err;
-+
-+out_free:
-+	bpf_tramp_image_free(im);
-+	goto out;
- }
- 
- static enum bpf_tramp_prog_type bpf_attach_type_to_tramp(struct bpf_prog *prog)
+ # Emit succinct information message describing current building step
+ # $1 - generic step name (e.g., CC, LINK, etc);
 -- 
 2.39.2
 
