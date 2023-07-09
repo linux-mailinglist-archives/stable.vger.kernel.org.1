@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39D6B74C22F
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7386F74C259
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:19:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbjGILRq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59220 "EHLO
+        id S230092AbjGILTh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:19:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229899AbjGILRp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:17:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30A9137
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:17:44 -0700 (PDT)
+        with ESMTP id S231126AbjGILTg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:19:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38CAC130
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:19:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C56260BDC
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:17:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C00FC433C8;
-        Sun,  9 Jul 2023 11:17:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCA0E60BEC
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:19:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA17CC433C8;
+        Sun,  9 Jul 2023 11:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901463;
-        bh=y82BXBa3gUHLtgZibOoUflmazoHlF/tfiVIIOVK3dHA=;
+        s=korg; t=1688901574;
+        bh=+SoqVG6RoguNPN15+w6YkeW507traoDvh9eGkjN/N3Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DR6vqWlbBgWK2AOcnjNK8a5xSp5gVSihMU8D5tkA67J124Nq76Vbp4mD0R22lq8il
-         ewyAv66ZM5KHIaPboIMOYtGEgWRy1rZQBCywzflx2CplWql8fgjOcPG5pKx5ln7t8U
-         /7UQbvSeXqlcNM/ZODxT9/x9et7FKMbg+bqcrKAg=
+        b=uWy5BO6EK4ypX0FHqu7YgI83n+O94H8O2mZ/5bSa6rzg9pXKFGSKBHc1HIeQFp1zi
+         utEyQKEGJ1RtV6id5VxBzbruF3qxgYofCSf7CAyZ8C4rnGVfYZxolkt8Xvm3wiqEVl
+         rxpqs3kJrqBFwdJ1ja9i1GypVzObj4CG5TAZbohY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Antonio Borneo <antonio.borneo@foss.st.com>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 029/431] irqchip/stm32-exti: Fix warning on initialized field overwritten
-Date:   Sun,  9 Jul 2023 13:09:37 +0200
-Message-ID: <20230709111451.782410798@linuxfoundation.org>
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Rob Landley <rob@landley.net>, Marc Zyngier <maz@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 030/431] irqchip/jcore-aic: Fix missing allocation of IRQ descriptors
+Date:   Sun,  9 Jul 2023 13:09:38 +0200
+Message-ID: <20230709111451.804813460@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -55,60 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Antonio Borneo <antonio.borneo@foss.st.com>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-[ Upstream commit 48f31e496488a25f443c0df52464da446fb1d10c ]
+[ Upstream commit 4848229494a323eeaab62eee5574ef9f7de80374 ]
 
-While compiling with W=1, both gcc and clang complain about a
-tricky way to initialize an array by filling it with a non-zero
-value and then overrride some of the array elements.
-In this case the override is intentional, so just disable the
-specific warning for only this part of the code.
+The initialization function for the J-Core AIC aic_irq_of_init() is
+currently missing the call to irq_alloc_descs() which allocates and
+initializes all the IRQ descriptors. Add missing function call and
+return the error code from irq_alloc_descs() in case the allocation
+fails.
 
-Note: the flag "-Woverride-init" is recognized by both compilers,
-but the warning msg from clang reports "-Winitializer-overrides".
-The doc of clang clarifies that the two flags are synonyms, so use
-here only the flag name common on both compilers.
-
-Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Fixes: c297493336b7 ("irqchip/stm32-exti: Simplify irq description table")
+Fixes: 981b58f66cfc ("irqchip/jcore-aic: Add J-Core AIC driver")
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Tested-by: Rob Landley <rob@landley.net>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230601155614.34490-1-antonio.borneo@foss.st.com
+Link: https://lore.kernel.org/r/20230510163343.43090-1-glaubitz@physik.fu-berlin.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-stm32-exti.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/irqchip/irq-jcore-aic.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/irqchip/irq-stm32-exti.c b/drivers/irqchip/irq-stm32-exti.c
-index 6a3f7498ea8ea..8bbb2b114636c 100644
---- a/drivers/irqchip/irq-stm32-exti.c
-+++ b/drivers/irqchip/irq-stm32-exti.c
-@@ -173,6 +173,16 @@ static struct irq_chip stm32_exti_h_chip_direct;
- #define EXTI_INVALID_IRQ       U8_MAX
- #define STM32MP1_DESC_IRQ_SIZE (ARRAY_SIZE(stm32mp1_exti_banks) * IRQS_PER_BANK)
+diff --git a/drivers/irqchip/irq-jcore-aic.c b/drivers/irqchip/irq-jcore-aic.c
+index 5f47d8ee4ae39..b9dcc8e78c750 100644
+--- a/drivers/irqchip/irq-jcore-aic.c
++++ b/drivers/irqchip/irq-jcore-aic.c
+@@ -68,6 +68,7 @@ static int __init aic_irq_of_init(struct device_node *node,
+ 	unsigned min_irq = JCORE_AIC2_MIN_HWIRQ;
+ 	unsigned dom_sz = JCORE_AIC_MAX_HWIRQ+1;
+ 	struct irq_domain *domain;
++	int ret;
  
-+/*
-+ * Use some intentionally tricky logic here to initialize the whole array to
-+ * EXTI_INVALID_IRQ, but then override certain fields, requiring us to indicate
-+ * that we "know" that there are overrides in this structure, and we'll need to
-+ * disable that warning from W=1 builds.
-+ */
-+__diag_push();
-+__diag_ignore_all("-Woverride-init",
-+		  "logic to initialize all and then override some is OK");
-+
- static const u8 stm32mp1_desc_irq[] = {
- 	/* default value */
- 	[0 ... (STM32MP1_DESC_IRQ_SIZE - 1)] = EXTI_INVALID_IRQ,
-@@ -266,6 +276,8 @@ static const u8 stm32mp13_desc_irq[] = {
- 	[70] = 98,
- };
+ 	pr_info("Initializing J-Core AIC\n");
  
-+__diag_pop();
+@@ -100,6 +101,12 @@ static int __init aic_irq_of_init(struct device_node *node,
+ 	jcore_aic.irq_unmask = noop;
+ 	jcore_aic.name = "AIC";
+ 
++	ret = irq_alloc_descs(-1, min_irq, dom_sz - min_irq,
++			      of_node_to_nid(node));
 +
- static const struct stm32_exti_drv_data stm32mp1_drv_data = {
- 	.exti_banks = stm32mp1_exti_banks,
- 	.bank_nr = ARRAY_SIZE(stm32mp1_exti_banks),
++	if (ret < 0)
++		return ret;
++
+ 	domain = irq_domain_add_legacy(node, dom_sz - min_irq, min_irq, min_irq,
+ 				       &jcore_aic_irqdomain_ops,
+ 				       &jcore_aic);
 -- 
 2.39.2
 
