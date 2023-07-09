@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8EC974C341
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A49374C342
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232764AbjGILaH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:30:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39162 "EHLO
+        id S232768AbjGILaK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:30:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232745AbjGILaG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:30:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F49AC0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:30:05 -0700 (PDT)
+        with ESMTP id S232745AbjGILaI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:30:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05A84C0
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:30:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F326960B7F
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:30:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9AEC433C8;
-        Sun,  9 Jul 2023 11:30:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 900F360BC9
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:30:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04C5C433C7;
+        Sun,  9 Jul 2023 11:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902204;
-        bh=VfhehZjfB7zXTNkY3noGT+nfhrovIHPpUG0S69nTCH0=;
+        s=korg; t=1688902207;
+        bh=9yj/H9YeZH/x9APVFO4gsHLKIrHbSsuef9sI4cr4Kyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lh/qoUXNO6ktTr5TVjzx404oatDfLMhmLQCuye+SnxQ3RzW8td+DS5kZJvhGnJRxc
-         /CdjYoEI5wmxCA9S4LjPU536hoB8ZkU9g7+qDiJAQEj05XQnw0zLWJ39aOhAEFEcKK
-         4rs3nvGXZ5+UuxO8GHu2kPYz7Q9jFvtNaCPBK+9s=
+        b=uPxCQLojL0zAKTVk89hCt0/D7V2UDCejhMrqco3r6kLLNV7C4SMiQS+U6RGBKXoyx
+         QNe5vYakjDKcx6sKIn3tOsOm33DMsdOYN80cSnBcAy3lvE5TIY2Qd8lQb+Dm7VoI7+
+         zkkU8V870AiYL5xL/6ewgXn5elNqS8c8WsZghEa4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bosi Zhang <u201911157@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 292/431] clk: mediatek: fix of_iomap memory leak
-Date:   Sun,  9 Jul 2023 13:14:00 +0200
-Message-ID: <20230709111457.990931317@linuxfoundation.org>
+Subject: [PATCH 6.3 293/431] arm64: dts: qcom: qdu1000: Flush RSC sleep & wake votes
+Date:   Sun,  9 Jul 2023 13:14:01 +0200
+Message-ID: <20230709111458.013378909@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -56,54 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bosi Zhang <u201911157@hust.edu.cn>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 3db7285e044144fd88a356f5b641b9cd4b231a77 ]
+[ Upstream commit ab033e7846f91953244d0626b28ce66412b813b3 ]
 
-Smatch reports:
-drivers/clk/mediatek/clk-mtk.c:583 mtk_clk_simple_probe() warn:
-    'base' from of_iomap() not released on lines: 496.
+The rpmh driver will cache sleep and wake votes until the cluster
+power-domain is about to enter idle, to avoid unnecessary writes. So
+associate the apps_rsc with the cluster pd, so that it can be notified
+about this event.
 
-This problem was also found in linux-next. In mtk_clk_simple_probe(),
-base is not released when handling errors
-if clk_data is not existed, which may cause a leak.
-So free_base should be added here to release base.
+Without this, only AMC votes are being commited.
 
-Fixes: c58cd0e40ffa ("clk: mediatek: Add mtk_clk_simple_probe() to simplify clock providers")
-Signed-off-by: Bosi Zhang <u201911157@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230422084331.47198-1-u201911157@hust.edu.cn
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 6bd20c54b589 ("arm64: dts: qcom: Add base QDU1000/QRU1000 DTSIs")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230531-topic-rsc-v1-3-b4a985f57b8b@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mtk.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/qdu1000.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
-index 14e8b64a32a3c..b93fb1d80878c 100644
---- a/drivers/clk/mediatek/clk-mtk.c
-+++ b/drivers/clk/mediatek/clk-mtk.c
-@@ -492,8 +492,10 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
- 	num_clks += mcd->num_mux_clks;
+diff --git a/arch/arm64/boot/dts/qcom/qdu1000.dtsi b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
+index c72a51c32a300..eeb4e51b31cfc 100644
+--- a/arch/arm64/boot/dts/qcom/qdu1000.dtsi
++++ b/arch/arm64/boot/dts/qcom/qdu1000.dtsi
+@@ -1238,6 +1238,7 @@ apps_rsc: rsc@17a00000 {
+ 			qcom,tcs-config = <ACTIVE_TCS    2>, <SLEEP_TCS     3>,
+ 					  <WAKE_TCS      3>, <CONTROL_TCS   0>;
+ 			label = "apps_rsc";
++			power-domains = <&CLUSTER_PD>;
  
- 	clk_data = mtk_alloc_clk_data(num_clks);
--	if (!clk_data)
--		return -ENOMEM;
-+	if (!clk_data) {
-+		r = -ENOMEM;
-+		goto free_base;
-+	}
- 
- 	if (mcd->fixed_clks) {
- 		r = mtk_clk_register_fixed_clks(mcd->fixed_clks,
-@@ -578,6 +580,7 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
- 					      mcd->num_fixed_clks, clk_data);
- free_data:
- 	mtk_free_clk_data(clk_data);
-+free_base:
- 	if (mcd->shared_io && base)
- 		iounmap(base);
- 	return r;
+ 			apps_bcm_voter: bcm-voter {
+ 				compatible = "qcom,bcm-voter";
 -- 
 2.39.2
 
