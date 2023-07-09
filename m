@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72EF974C37C
+	by mail.lfdr.de (Postfix) with ESMTP id BCB8674C37D
 	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:33:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230074AbjGILdI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:33:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41500 "EHLO
+        id S230146AbjGILdJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:33:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232906AbjGILcq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:32:46 -0400
+        with ESMTP id S232916AbjGILct (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:32:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF36191
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:32:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0259A18F
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:32:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C96EB60BC9
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:32:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F10C433C7;
-        Sun,  9 Jul 2023 11:32:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E5BD60BC4
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:32:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A61CC433C7;
+        Sun,  9 Jul 2023 11:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902364;
-        bh=QR7icJWg8kFVed04lTN7wMSBBqjWqg4mSdPgC278FkQ=;
+        s=korg; t=1688902367;
+        bh=iuWJK9SJxVMKP5LwSNVXIZp5xRy5szBPUxKW9nQngyQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=asGXxsghR4L5EkNMFyPgIoohVQAiNMcMRmwzTHUZORh507S8+UJO9FGIOwKfpaDIH
-         4rWlpUe9biBYW94wVGd7JECWdXlJuU+xcyZrJJatPTfX6CgqxF5vyqkwh+vXTG2305
-         Y7aVizFYlwFYAtwrj9M/JgHum+imUaAk6PjP6zqg=
+        b=IiwoFeJK5vPgChQAUfWxww5soaVtmIBakaKP9pGjIhB6GWbYVgtSesEUmXP72d9mx
+         nMH6ClZmgMDpzaw12az7KnpoyacHz4wq3bnuhmrG0+4l6yo1cBOmMO/0iuIAPlYQ2N
+         PztpXtT+ek5uBj8rf/9AxNOrPMAb7/48Qmm7t7Hg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ryan Wanner <ryan.wanner@microchip.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        Rongguang Wei <weirongguang@kylinos.cn>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 350/431] pinctrl: at91: fix a couple NULL vs IS_ERR() checks
-Date:   Sun,  9 Jul 2023 13:14:58 +0200
-Message-ID: <20230709111459.372507955@linuxfoundation.org>
+Subject: [PATCH 6.3 351/431] PCI: pciehp: Cancel bringup sequence if card is not present
+Date:   Sun,  9 Jul 2023 13:14:59 +0200
+Message-ID: <20230709111459.396277755@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -58,51 +56,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Rongguang Wei <weirongguang@kylinos.cn>
 
-[ Upstream commit 35216718c9ac2aef934ea9cd229572d4996807b2 ]
+[ Upstream commit e8afd0d9fccc27c8ad263db5cf5952cfcf72d6fe ]
 
-The devm_kasprintf_strarray() function doesn't return NULL on error,
-it returns error pointers.  Update the checks accordingly.
+If a PCIe hotplug slot has an Attention Button, the normal hot-add flow is:
 
-Fixes: f494c1913cbb ("pinctrl: at91: use devm_kasprintf() to avoid potential leaks (part 2)")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Ryan Wanner <ryan.wanner@microchip.com>
-Link: https://lore.kernel.org/r/5697980e-f687-47a7-9db8-2af34ae464bd@kili.mountain
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+  - Slot is empty and slot power is off
+  - User inserts card in slot and presses Attention Button
+  - OS blinks Power Indicator for 5 seconds
+  - After 5 seconds, OS turns on Power Indicator, turns on slot power, and
+    enumerates the device
+
+Previously, if a user pressed the Attention Button on an *empty* slot,
+pciehp logged the following messages and blinked the Power Indicator
+until a second button press:
+
+  [0.000] pciehp: Button press: will power on in 5 sec
+  [0.001] # Power Indicator starts blinking
+  [5.001] # 5 second timeout; slot is empty, so we should cancel the
+            request to power on and turn off Power Indicator
+
+  [7.000] # Power Indicator still blinking
+  [8.000] # possible card insertion
+  [9.000] pciehp: Button press: canceling request to power on
+
+The first button press incorrectly left the slot in BLINKINGON_STATE, so
+the second was interpreted as a "cancel power on" event regardless of
+whether a card was present.
+
+If the slot is empty, turn off the Power Indicator and return from
+BLINKINGON_STATE to OFF_STATE after 5 seconds, effectively canceling the
+request to power on.  Putting the slot in OFF_STATE also means the second
+button press will correctly request a slot power on if the slot is
+occupied.
+
+[bhelgaas: commit log]
+Link: https://lore.kernel.org/r/20230512021518.336460-1-clementwei90@163.com
+Fixes: d331710ea78f ("PCI: pciehp: Become resilient to missed events")
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-at91.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/hotplug/pciehp_ctrl.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index e3664aafccef9..9184d457edf8d 100644
---- a/drivers/pinctrl/pinctrl-at91.c
-+++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -1399,8 +1399,8 @@ static int at91_pinctrl_probe(struct platform_device *pdev)
- 		char **names;
- 
- 		names = devm_kasprintf_strarray(dev, "pio", MAX_NB_GPIO_PER_BANK);
--		if (!names)
--			return -ENOMEM;
-+		if (IS_ERR(names))
-+			return PTR_ERR(names);
- 
- 		for (j = 0; j < MAX_NB_GPIO_PER_BANK; j++, k++) {
- 			char *name = names[j];
-@@ -1860,8 +1860,8 @@ static int at91_gpio_probe(struct platform_device *pdev)
+diff --git a/drivers/pci/hotplug/pciehp_ctrl.c b/drivers/pci/hotplug/pciehp_ctrl.c
+index 529c348084401..32baba1b7f131 100644
+--- a/drivers/pci/hotplug/pciehp_ctrl.c
++++ b/drivers/pci/hotplug/pciehp_ctrl.c
+@@ -256,6 +256,14 @@ void pciehp_handle_presence_or_link_change(struct controller *ctrl, u32 events)
+ 	present = pciehp_card_present(ctrl);
+ 	link_active = pciehp_check_link_active(ctrl);
+ 	if (present <= 0 && link_active <= 0) {
++		if (ctrl->state == BLINKINGON_STATE) {
++			ctrl->state = OFF_STATE;
++			cancel_delayed_work(&ctrl->button_work);
++			pciehp_set_indicators(ctrl, PCI_EXP_SLTCTL_PWR_IND_OFF,
++					      INDICATOR_NOOP);
++			ctrl_info(ctrl, "Slot(%s): Card not present\n",
++				  slot_name(ctrl));
++		}
+ 		mutex_unlock(&ctrl->state_lock);
+ 		return;
  	}
- 
- 	names = devm_kasprintf_strarray(dev, "pio", chip->ngpio);
--	if (!names)
--		return -ENOMEM;
-+	if (IS_ERR(names))
-+		return PTR_ERR(names);
- 
- 	for (i = 0; i < chip->ngpio; i++)
- 		strreplace(names[i], '-', alias_idx + 'A');
 -- 
 2.39.2
 
