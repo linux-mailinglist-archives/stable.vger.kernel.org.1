@@ -2,245 +2,1340 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECC4674C2AA
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A971174C1FB
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231565AbjGILXQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:23:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34988 "EHLO
+        id S230056AbjGILLl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:11:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231564AbjGILXP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:23:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6262390
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:23:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECA5660BD8
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:23:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0184EC433C8;
-        Sun,  9 Jul 2023 11:23:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901793;
-        bh=n61dg96YkAlL87L3F8maW7+q4udf8H5lpqMEeDIO0/g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j+Hm7Fi2fE0g4wBalOA2zrOJg9b9FMVTHfQuIalAorJn4MmpnDkqhpbyoaMVIkGaX
-         ZXs2RSoyOX7SpNiXc1kfZ/NG4Ifks+8ClqGN43qFS55ZKwDk9ziuQvkOM1XuGs8sYW
-         1YatiJWiQpZ/b2mWlZL9awbCxSWaSie1ZHxmIRTI=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 146/431] gtp: Fix use-after-free in __gtp_encap_destroy().
-Date:   Sun,  9 Jul 2023 13:11:34 +0200
-Message-ID: <20230709111454.591053035@linuxfoundation.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
-References: <20230709111451.101012554@linuxfoundation.org>
-User-Agent: quilt/0.67
+        with ESMTP id S229773AbjGILLl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:11:41 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E2D128
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:11:37 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1b9c5e07c1bso16404565ad.2
+        for <stable@vger.kernel.org>; Sun, 09 Jul 2023 04:11:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1688901096; x=1691493096;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=BYj8J9NpIv+3cKM84cd9sQcPapZB4bLvvnLbRQ1+1oc=;
+        b=DYJEZYYOH75LIG9C0lPnKvjid6wvpW69TowOD2VPPq+GvLCVIzdaVxqEMQhMhGOMDC
+         yS9AXJ7YXnI6wHW8q2Fs45s1nx5Erz24YtN3anuNgzR8yBxUp91O1CkeqG/LXd+/umfE
+         0vMxdU4OEXe2r+Es/lzz8NUiWA1mO6+MXsi1xJmZNTqa5zeQzJDQao2Q6TfLwpjq0YLX
+         6Vg5MrY6jtOZ4GEwcoM5m0rT3YhW/yR8bzrfVVRFWNFFA5ebyWj9+uQmTovflznbFIvV
+         97L8rIwhIrtOrP6Qd/ITJiD2P6zLiKMOkJTErA7LC/cPrmQRKVmp6hrQwMsYsgFcz7IU
+         RSJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688901096; x=1691493096;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BYj8J9NpIv+3cKM84cd9sQcPapZB4bLvvnLbRQ1+1oc=;
+        b=JJVTZ5hkRSB5GukAR4MNi8Ki6uu5gxDk35k0fJGTz7u+jPfCj0efvHOBzHiEMKai94
+         Y1V8Pg6t0UoRzm7x5zxrA3Rxb0PP1UK8aqCuILT5UQX3sZxq/PtG1uMT3dzt3Q9ri4TS
+         kXZNh4hdL/E7yTOVygjgAumC0Q/1QobNaIRU0Oago6fA88UdREisQiFXL4qym85b8ZdY
+         FI3yC+nDx9PxQxQdlowEJMyu/PbqWYM1Wu/bNLIN1GE/A5ci6XN52kyrvXUcZctG7C5O
+         QOtuUO1IoJIjJr7Nr+kH40ox7gB1LpNHi9JT35qlHRX8zl/fpVEoE+ul2YgKMSe1t85i
+         qzAA==
+X-Gm-Message-State: ABy/qLZpIjYG7CJHJpNWQfeI75mvarxNeG7HvqXLA7ft2Cg1l7vqQk2G
+        7OFlMP3SJAAWgqgPMNcVaGa4PsUmVD/xPWgsdwM=
+X-Google-Smtp-Source: APBJJlGtin7gf9f9pDFAyo3otZksAQ5od1g7cfm24SjXQc8YbQ8v0tTRNoO4bh53zGBIsfMgxsriRw==
+X-Received: by 2002:a17:902:b110:b0:1b6:76ee:190b with SMTP id q16-20020a170902b11000b001b676ee190bmr8758656plr.35.1688901095756;
+        Sun, 09 Jul 2023 04:11:35 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id x20-20020a170902821400b001b9de8fbd78sm455648pln.212.2023.07.09.04.11.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Jul 2023 04:11:35 -0700 (PDT)
+Message-ID: <64aa95e7.170a0220.84f2b.07a0@mx.google.com>
+Date:   Sun, 09 Jul 2023 04:11:35 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v6.3.11-459-g672300a49f2d
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-6.3.y
+Subject: stable-rc/linux-6.3.y build: 122 builds: 3 failed, 119 passed,
+ 7 errors, 113 warnings (v6.3.11-459-g672300a49f2d)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+stable-rc/linux-6.3.y build: 122 builds: 3 failed, 119 passed, 7 errors, 11=
+3 warnings (v6.3.11-459-g672300a49f2d)
 
-[ Upstream commit ce3aee7114c575fab32a5e9e939d4bbb3dcca79f ]
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.3.y=
+/kernel/v6.3.11-459-g672300a49f2d/
 
-syzkaller reported use-after-free in __gtp_encap_destroy(). [0]
+Tree: stable-rc
+Branch: linux-6.3.y
+Git Describe: v6.3.11-459-g672300a49f2d
+Git Commit: 672300a49f2d4cd69e953f84511b4f77a38f4a57
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-It shows the same process freed sk and touched it illegally.
+Build Failures Detected:
 
-Commit e198987e7dd7 ("gtp: fix suspicious RCU usage") added lock_sock()
-and release_sock() in __gtp_encap_destroy() to protect sk->sk_user_data,
-but release_sock() is called after sock_put() releases the last refcnt.
+arm:
+    omap1_defconfig: (gcc-10) FAIL
 
-[0]:
-BUG: KASAN: slab-use-after-free in instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
-BUG: KASAN: slab-use-after-free in atomic_try_cmpxchg_acquire include/linux/atomic/atomic-instrumented.h:541 [inline]
-BUG: KASAN: slab-use-after-free in queued_spin_lock include/asm-generic/qspinlock.h:111 [inline]
-BUG: KASAN: slab-use-after-free in do_raw_spin_lock include/linux/spinlock.h:186 [inline]
-BUG: KASAN: slab-use-after-free in __raw_spin_lock_bh include/linux/spinlock_api_smp.h:127 [inline]
-BUG: KASAN: slab-use-after-free in _raw_spin_lock_bh+0x75/0xe0 kernel/locking/spinlock.c:178
-Write of size 4 at addr ffff88800dbef398 by task syz-executor.2/2401
+mips:
+    ci20_defconfig: (gcc-10) FAIL
+    decstation_64_defconfig: (gcc-10) FAIL
 
-CPU: 1 PID: 2401 Comm: syz-executor.2 Not tainted 6.4.0-rc5-01219-gfa0e21fa4443 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x72/0xa0 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:351 [inline]
- print_report+0xcc/0x620 mm/kasan/report.c:462
- kasan_report+0xb2/0xe0 mm/kasan/report.c:572
- check_region_inline mm/kasan/generic.c:181 [inline]
- kasan_check_range+0x39/0x1c0 mm/kasan/generic.c:187
- instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
- atomic_try_cmpxchg_acquire include/linux/atomic/atomic-instrumented.h:541 [inline]
- queued_spin_lock include/asm-generic/qspinlock.h:111 [inline]
- do_raw_spin_lock include/linux/spinlock.h:186 [inline]
- __raw_spin_lock_bh include/linux/spinlock_api_smp.h:127 [inline]
- _raw_spin_lock_bh+0x75/0xe0 kernel/locking/spinlock.c:178
- spin_lock_bh include/linux/spinlock.h:355 [inline]
- release_sock+0x1f/0x1a0 net/core/sock.c:3526
- gtp_encap_disable_sock drivers/net/gtp.c:651 [inline]
- gtp_encap_disable+0xb9/0x220 drivers/net/gtp.c:664
- gtp_dev_uninit+0x19/0x50 drivers/net/gtp.c:728
- unregister_netdevice_many_notify+0x97e/0x1520 net/core/dev.c:10841
- rtnl_delete_link net/core/rtnetlink.c:3216 [inline]
- rtnl_dellink+0x3c0/0xb30 net/core/rtnetlink.c:3268
- rtnetlink_rcv_msg+0x450/0xb10 net/core/rtnetlink.c:6423
- netlink_rcv_skb+0x15d/0x450 net/netlink/af_netlink.c:2548
- netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
- netlink_unicast+0x700/0x930 net/netlink/af_netlink.c:1365
- netlink_sendmsg+0x91c/0xe30 net/netlink/af_netlink.c:1913
- sock_sendmsg_nosec net/socket.c:724 [inline]
- sock_sendmsg+0x1b7/0x200 net/socket.c:747
- ____sys_sendmsg+0x75a/0x990 net/socket.c:2493
- ___sys_sendmsg+0x11d/0x1c0 net/socket.c:2547
- __sys_sendmsg+0xfe/0x1d0 net/socket.c:2576
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3f/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7f1168b1fe5d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
-RSP: 002b:00007f1167edccc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00000000004bbf80 RCX: 00007f1168b1fe5d
-RDX: 0000000000000000 RSI: 00000000200002c0 RDI: 0000000000000003
-RBP: 00000000004bbf80 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000000b R14: 00007f1168b80530 R15: 0000000000000000
- </TASK>
+Errors and Warnings Detected:
 
-Allocated by task 1483:
- kasan_save_stack+0x22/0x50 mm/kasan/common.c:45
- kasan_set_track+0x25/0x30 mm/kasan/common.c:52
- __kasan_slab_alloc+0x59/0x70 mm/kasan/common.c:328
- kasan_slab_alloc include/linux/kasan.h:186 [inline]
- slab_post_alloc_hook mm/slab.h:711 [inline]
- slab_alloc_node mm/slub.c:3451 [inline]
- slab_alloc mm/slub.c:3459 [inline]
- __kmem_cache_alloc_lru mm/slub.c:3466 [inline]
- kmem_cache_alloc+0x16d/0x340 mm/slub.c:3475
- sk_prot_alloc+0x5f/0x280 net/core/sock.c:2073
- sk_alloc+0x34/0x6c0 net/core/sock.c:2132
- inet6_create net/ipv6/af_inet6.c:192 [inline]
- inet6_create+0x2c7/0xf20 net/ipv6/af_inet6.c:119
- __sock_create+0x2a1/0x530 net/socket.c:1535
- sock_create net/socket.c:1586 [inline]
- __sys_socket_create net/socket.c:1623 [inline]
- __sys_socket_create net/socket.c:1608 [inline]
- __sys_socket+0x137/0x250 net/socket.c:1651
- __do_sys_socket net/socket.c:1664 [inline]
- __se_sys_socket net/socket.c:1662 [inline]
- __x64_sys_socket+0x72/0xb0 net/socket.c:1662
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3f/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+arc:
+    allnoconfig (gcc-10): 1 warning
+    axs103_defconfig (gcc-10): 1 warning
+    axs103_smp_defconfig (gcc-10): 1 warning
+    haps_hs_defconfig (gcc-10): 1 warning
+    haps_hs_smp_defconfig (gcc-10): 1 warning
+    hsdk_defconfig (gcc-10): 1 warning
+    nsimosci_hs_defconfig (gcc-10): 1 warning
+    nsimosci_hs_smp_defconfig (gcc-10): 1 warning
+    vdk_hs38_defconfig (gcc-10): 1 warning
+    vdk_hs38_smp_defconfig (gcc-10): 1 warning
 
-Freed by task 2401:
- kasan_save_stack+0x22/0x50 mm/kasan/common.c:45
- kasan_set_track+0x25/0x30 mm/kasan/common.c:52
- kasan_save_free_info+0x2e/0x50 mm/kasan/generic.c:521
- ____kasan_slab_free mm/kasan/common.c:236 [inline]
- ____kasan_slab_free mm/kasan/common.c:200 [inline]
- __kasan_slab_free+0x10c/0x1b0 mm/kasan/common.c:244
- kasan_slab_free include/linux/kasan.h:162 [inline]
- slab_free_hook mm/slub.c:1781 [inline]
- slab_free_freelist_hook mm/slub.c:1807 [inline]
- slab_free mm/slub.c:3786 [inline]
- kmem_cache_free+0xb4/0x490 mm/slub.c:3808
- sk_prot_free net/core/sock.c:2113 [inline]
- __sk_destruct+0x500/0x720 net/core/sock.c:2207
- sk_destruct+0xc1/0xe0 net/core/sock.c:2222
- __sk_free+0xed/0x3d0 net/core/sock.c:2233
- sk_free+0x7c/0xa0 net/core/sock.c:2244
- sock_put include/net/sock.h:1981 [inline]
- __gtp_encap_destroy+0x165/0x1b0 drivers/net/gtp.c:634
- gtp_encap_disable_sock drivers/net/gtp.c:651 [inline]
- gtp_encap_disable+0xb9/0x220 drivers/net/gtp.c:664
- gtp_dev_uninit+0x19/0x50 drivers/net/gtp.c:728
- unregister_netdevice_many_notify+0x97e/0x1520 net/core/dev.c:10841
- rtnl_delete_link net/core/rtnetlink.c:3216 [inline]
- rtnl_dellink+0x3c0/0xb30 net/core/rtnetlink.c:3268
- rtnetlink_rcv_msg+0x450/0xb10 net/core/rtnetlink.c:6423
- netlink_rcv_skb+0x15d/0x450 net/netlink/af_netlink.c:2548
- netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
- netlink_unicast+0x700/0x930 net/netlink/af_netlink.c:1365
- netlink_sendmsg+0x91c/0xe30 net/netlink/af_netlink.c:1913
- sock_sendmsg_nosec net/socket.c:724 [inline]
- sock_sendmsg+0x1b7/0x200 net/socket.c:747
- ____sys_sendmsg+0x75a/0x990 net/socket.c:2493
- ___sys_sendmsg+0x11d/0x1c0 net/socket.c:2547
- __sys_sendmsg+0xfe/0x1d0 net/socket.c:2576
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3f/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+arm64:
+    defconfig (gcc-10): 1 warning
+    defconfig+arm64-chromebook (gcc-10): 1 warning
 
-The buggy address belongs to the object at ffff88800dbef300
- which belongs to the cache UDPv6 of size 1344
-The buggy address is located 152 bytes inside of
- freed 1344-byte region [ffff88800dbef300, ffff88800dbef840)
+arm:
+    am200epdkit_defconfig (gcc-10): 1 warning
+    aspeed_g5_defconfig (gcc-10): 1 warning
+    assabet_defconfig (gcc-10): 1 warning
+    at91_dt_defconfig (gcc-10): 1 warning
+    axm55xx_defconfig (gcc-10): 1 warning
+    footbridge_defconfig (gcc-10): 1 warning
+    gemini_defconfig (gcc-10): 1 warning
+    h3600_defconfig (gcc-10): 1 warning
+    hisi_defconfig (gcc-10): 1 warning
+    imx_v4_v5_defconfig (gcc-10): 1 warning
+    imx_v6_v7_defconfig (gcc-10): 1 warning
+    imxrt_defconfig (gcc-10): 1 warning
+    integrator_defconfig (gcc-10): 1 warning
+    jornada720_defconfig (gcc-10): 1 warning
+    keystone_defconfig (gcc-10): 1 warning
+    lpc18xx_defconfig (gcc-10): 1 warning
+    lpc32xx_defconfig (gcc-10): 1 warning
+    milbeaut_m10v_defconfig (gcc-10): 1 warning
+    mmp2_defconfig (gcc-10): 1 warning
+    moxart_defconfig (gcc-10): 1 warning
+    multi_v5_defconfig (gcc-10): 1 warning
+    multi_v7_defconfig (gcc-10): 1 warning
+    mvebu_v5_defconfig (gcc-10): 1 warning
+    mvebu_v7_defconfig (gcc-10): 1 warning
+    netwinder_defconfig (gcc-10): 1 warning
+    nhk8815_defconfig (gcc-10): 1 warning
+    omap1_defconfig (gcc-10): 3 errors, 1 warning
+    omap2plus_defconfig (gcc-10): 1 warning
+    orion5x_defconfig (gcc-10): 1 warning
+    oxnas_v6_defconfig (gcc-10): 1 warning
+    pxa168_defconfig (gcc-10): 1 warning
+    pxa3xx_defconfig (gcc-10): 1 warning
+    pxa910_defconfig (gcc-10): 1 warning
+    pxa_defconfig (gcc-10): 1 warning
+    qcom_defconfig (gcc-10): 1 warning
+    realview_defconfig (gcc-10): 1 warning
+    s3c6400_defconfig (gcc-10): 1 warning
+    s5pv210_defconfig (gcc-10): 1 warning
+    sama7_defconfig (gcc-10): 1 warning
+    shmobile_defconfig (gcc-10): 1 warning
+    sp7021_defconfig (gcc-10): 1 warning
+    spear13xx_defconfig (gcc-10): 1 warning
+    spear3xx_defconfig (gcc-10): 1 warning
+    spitz_defconfig (gcc-10): 1 warning
+    stm32_defconfig (gcc-10): 1 warning
+    sunxi_defconfig (gcc-10): 1 warning
+    tegra_defconfig (gcc-10): 1 warning
+    u8500_defconfig (gcc-10): 1 warning
+    versatile_defconfig (gcc-10): 1 warning
+    vexpress_defconfig (gcc-10): 1 warning
+    vt8500_v6_v7_defconfig (gcc-10): 1 warning
+    wpcm450_defconfig (gcc-10): 1 warning
 
-The buggy address belongs to the physical page:
-page:00000000d31bfed5 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff88800dbeed40 pfn:0xdbe8
-head:00000000d31bfed5 order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-memcg:ffff888008ee0801
-flags: 0x100000000010200(slab|head|node=0|zone=1)
-page_type: 0xffffffff()
-raw: 0100000000010200 ffff88800c7a3000 dead000000000122 0000000000000000
-raw: ffff88800dbeed40 0000000080160015 00000001ffffffff ffff888008ee0801
-page dumped because: kasan: bad access detected
+i386:
 
-Memory state around the buggy address:
- ffff88800dbef280: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88800dbef300: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff88800dbef380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                            ^
- ffff88800dbef400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88800dbef480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+    ar7_defconfig (gcc-10): 1 warning
+    ath25_defconfig (gcc-10): 1 warning
+    ath79_defconfig (gcc-10): 1 warning
+    bcm47xx_defconfig (gcc-10): 1 warning
+    bcm63xx_defconfig (gcc-10): 1 warning
+    bigsur_defconfig (gcc-10): 1 warning
+    cavium_octeon_defconfig (gcc-10): 1 warning
+    ci20_defconfig (gcc-10): 1 error
+    cobalt_defconfig (gcc-10): 1 warning
+    cu1000-neo_defconfig (gcc-10): 1 warning
+    cu1830-neo_defconfig (gcc-10): 1 warning
+    db1xxx_defconfig (gcc-10): 1 warning
+    decstation_64_defconfig (gcc-10): 1 warning
+    decstation_defconfig (gcc-10): 1 warning
+    decstation_r4k_defconfig (gcc-10): 1 warning
+    fuloong2e_defconfig (gcc-10): 1 error, 1 warning
+    gcw0_defconfig (gcc-10): 1 warning
+    gpr_defconfig (gcc-10): 1 warning
+    ip22_defconfig (gcc-10): 1 warning
+    ip27_defconfig (gcc-10): 1 warning
+    ip28_defconfig (gcc-10): 1 warning
+    ip32_defconfig (gcc-10): 1 warning
+    jazz_defconfig (gcc-10): 1 warning
+    lemote2f_defconfig (gcc-10): 1 error, 1 warning
+    loongson1b_defconfig (gcc-10): 1 warning
+    loongson1c_defconfig (gcc-10): 1 warning
+    loongson2k_defconfig (gcc-10): 1 error, 1 warning
+    malta_defconfig (gcc-10): 1 warning
+    malta_kvm_defconfig (gcc-10): 1 warning
+    malta_qemu_32r6_defconfig (gcc-10): 1 warning
+    maltaaprp_defconfig (gcc-10): 1 warning
+    maltasmvp_defconfig (gcc-10): 1 warning
+    maltasmvp_eva_defconfig (gcc-10): 1 warning
+    maltaup_defconfig (gcc-10): 1 warning
+    maltaup_xpa_defconfig (gcc-10): 1 warning
+    mtx1_defconfig (gcc-10): 1 warning
+    omega2p_defconfig (gcc-10): 1 warning
+    pic32mzda_defconfig (gcc-10): 1 warning
+    qi_lb60_defconfig (gcc-10): 1 warning
+    rb532_defconfig (gcc-10): 1 warning
+    rm200_defconfig (gcc-10): 1 warning
+    rs90_defconfig (gcc-10): 1 warning
+    rt305x_defconfig (gcc-10): 1 warning
+    sb1250_swarm_defconfig (gcc-10): 1 warning
+    vocore2_defconfig (gcc-10): 1 warning
 
-Fixes: e198987e7dd7 ("gtp: fix suspicious RCU usage")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Link: https://lore.kernel.org/r/20230622213231.24651-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+riscv:
+    defconfig (gcc-10): 1 warning
+    nommu_k210_sdcard_defconfig (gcc-10): 1 warning
+    rv32_defconfig (gcc-10): 1 warning
+
+x86_64:
+    allnoconfig (gcc-10): 1 warning
+
+Errors summary:
+
+    3    cc1: error: =E2=80=98-mloongson-mmi=E2=80=99 must be used with =E2=
+=80=98-mhard-float=E2=80=99
+    1    arch/arm/mach-omap1/irq.c:250:23: error: implicit declaration of f=
+unction =E2=80=98irq_find_mapping=E2=80=99 [-Werror=3Dimplicit-function-dec=
+laration]
+    1    arch/arm/mach-omap1/irq.c:222:13: error: =E2=80=98irq_domain_simpl=
+e_ops=E2=80=99 undeclared (first use in this function)
+    1    arch/arm/mach-omap1/irq.c:221:11: error: implicit declaration of f=
+unction =E2=80=98irq_domain_add_legacy=E2=80=99 [-Werror=3Dimplicit-functio=
+n-declaration]
+    1    ERROR: Input tree has errors, aborting (use -f to force output)
+
+Warnings summary:
+
+    112  include/linux/blktrace_api.h:88:33: warning: statement with no eff=
+ect [-Wunused-value]
+    1    cc1: some warnings being treated as errors
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section mi=
+smatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section=
+ mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+am200epdkit_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
+section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+ar7_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section=
+ mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+aspeed_g5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+assabet_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+at91_dt_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+ath25_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+ath79_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+axm55xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+axs103_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+axs103_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 s=
+ection mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+bcm47xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+bcm63xx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+bigsur_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+bmips_stb_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
+cavium_octeon_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning,=
+ 0 section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+ci20_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sectio=
+n mismatches
+
+Errors:
+    ERROR: Input tree has errors, aborting (use -f to force output)
+
+---------------------------------------------------------------------------=
+-----
+cobalt_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+cu1000-neo_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
+section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+cu1830-neo_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
+section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+db1xxx_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+decstation_64_defconfig (mips, gcc-10) =E2=80=94 FAIL, 0 errors, 1 warning,=
+ 0 section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+decstation_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
+section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+decstation_r4k_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning=
+, 0 section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section mi=
+smatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section mi=
+smatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warn=
+ing, 0 section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+footbridge_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 s=
+ection mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+fuloong2e_defconfig (mips, gcc-10) =E2=80=94 PASS, 1 error, 1 warning, 0 se=
+ction mismatches
+
+Errors:
+    cc1: error: =E2=80=98-mloongson-mmi=E2=80=99 must be used with =E2=80=
+=98-mhard-float=E2=80=99
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+gcw0_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+gemini_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+gpr_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section=
+ mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+h3600_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
+section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+hisi_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section=
+ mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+hsdk_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section=
+ mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v4_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+imxrt_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+integrator_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 s=
+ection mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+ip22_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+ip27_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+ip28_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+ip32_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+jazz_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+jornada720_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 s=
+ection mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+keystone_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+lemote2f_defconfig (mips, gcc-10) =E2=80=94 PASS, 1 error, 1 warning, 0 sec=
+tion mismatches
+
+Errors:
+    cc1: error: =E2=80=98-mloongson-mmi=E2=80=99 must be used with =E2=80=
+=98-mhard-float=E2=80=99
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+loongson1b_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
+section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+loongson1c_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
+section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+loongson2k_defconfig (mips, gcc-10) =E2=80=94 PASS, 1 error, 1 warning, 0 s=
+ection mismatches
+
+Errors:
+    cc1: error: =E2=80=98-mloongson-mmi=E2=80=99 must be used with =E2=80=
+=98-mhard-float=E2=80=99
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+lpc18xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+lpc32xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+malta_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+malta_kvm_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 s=
+ection mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+malta_qemu_32r6_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warnin=
+g, 0 section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+maltaaprp_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 s=
+ection mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+maltasmvp_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 s=
+ection mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+maltasmvp_eva_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning,=
+ 0 section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+maltaup_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+maltaup_xpa_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0=
+ section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+milbeaut_m10v_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, =
+0 section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+mmp2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section=
+ mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+moxart_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+mps2_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+mtx1_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+mvebu_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+mvebu_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+mxs_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+netwinder_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+nhk8815_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
+ning, 0 section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+nsimosci_hs_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
+section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+nsimosci_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning=
+, 0 section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+omap1_defconfig (arm, gcc-10) =E2=80=94 FAIL, 3 errors, 1 warning, 0 sectio=
+n mismatches
+
+Errors:
+    arch/arm/mach-omap1/irq.c:221:11: error: implicit declaration of functi=
+on =E2=80=98irq_domain_add_legacy=E2=80=99 [-Werror=3Dimplicit-function-dec=
+laration]
+    arch/arm/mach-omap1/irq.c:222:13: error: =E2=80=98irq_domain_simple_ops=
+=E2=80=99 undeclared (first use in this function)
+    arch/arm/mach-omap1/irq.c:250:23: error: implicit declaration of functi=
+on =E2=80=98irq_find_mapping=E2=80=99 [-Werror=3Dimplicit-function-declarat=
+ion]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+omega2p_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+orion5x_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+oxnas_v6_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+pic32mzda_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 s=
+ection mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+pxa168_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+pxa3xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+pxa910_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+pxa_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section =
+mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+qcom_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 section=
+ mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+qi_lb60_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+rb532_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+realview_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+rm200_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+rs90_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+rt305x_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+s3c6400_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+s5pv210_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+sama7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+sb1250_swarm_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, =
+0 section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+shmobile_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+sp7021_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+spear13xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+spear3xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+spitz_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+stm32_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+sunxi_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+tegra_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section mi=
+smatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+u8500_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
+n mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+vdk_hs38_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+vdk_hs38_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0=
+ section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+versatile_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+vocore2_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+vt8500_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0=
+ section mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+wpcm450_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/blktrace_api.h:88:33: warning: statement with no effect [=
+-Wunused-value]
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
 ---
- drivers/net/gtp.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 15c7dc82107f4..acb20ad4e37eb 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -631,7 +631,9 @@ static void __gtp_encap_destroy(struct sock *sk)
- 			gtp->sk1u = NULL;
- 		udp_sk(sk)->encap_type = 0;
- 		rcu_assign_sk_user_data(sk, NULL);
-+		release_sock(sk);
- 		sock_put(sk);
-+		return;
- 	}
- 	release_sock(sk);
- }
--- 
-2.39.2
-
-
-
+For more info write to <info@kernelci.org>
