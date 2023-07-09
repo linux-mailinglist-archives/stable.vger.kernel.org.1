@@ -2,148 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2389874C5F1
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 17:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6F8774C653
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 17:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233919AbjGIPU6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 11:20:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60122 "EHLO
+        id S229765AbjGIPsK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 11:48:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233874AbjGIPUb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 11:20:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A83B3A85;
-        Sun,  9 Jul 2023 08:17:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4009F60B80;
-        Sun,  9 Jul 2023 15:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3569AC433CA;
-        Sun,  9 Jul 2023 15:16:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688915813;
-        bh=+4OD2e+nUE3H3B/U6CcfTS29ZMGsdufMVRQ2jG7RYIM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ExntHOyZ2yLTbF65JutdPuyKvBjAQ31069I28DhVd0i4IpIrxYvTfQMqWMaLfiaoc
-         DjoaHHCM1Bwak5CywyFtOg5DwrM6gYM3kn0QKqI3BPfJj+Dhle+mdU/dmIcSbYwKR+
-         qdI8ZGyBhKXL/4EaKxhaVuWNrN2tXzGvCuQgAkDeXMuWmOPRIjQjWNqYZ21c/p4r1Z
-         YOmV3VJNhx5BPpA38wjMEFm8JQ38JYIPKCVTdQ/JFUrmmrs13o887c9H4WjcLIFt8m
-         b6G/Vs9peTgeNWK0ryCb+c8ICFN11ogV15Kj/OV7gikQ72fvFdHtcYQkAEHGWbgzVZ
-         eN8TDB/0yhdtw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ying Hsu <yinghsu@chromium.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, jesse.brandeburg@intel.com,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 4/4] igb: Fix igb_down hung on surprise removal
-Date:   Sun,  9 Jul 2023 11:16:44 -0400
-Message-Id: <20230709151645.514172-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230709151645.514172-1-sashal@kernel.org>
-References: <20230709151645.514172-1-sashal@kernel.org>
+        with ESMTP id S229450AbjGIPsJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 11:48:09 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F85DD
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 08:48:08 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-553a1f13d9fso2888276a12.1
+        for <stable@vger.kernel.org>; Sun, 09 Jul 2023 08:48:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1688917687; x=1691509687;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=6q87vb8lIrKhBgDLEmwfxTzOMgjjS5W8xTixvgWCO5I=;
+        b=XXavGYZ0WY3Bjg2dZ5J8eZ4oM19a4biWH/ujlXuNbpgRv3X85zzeM85AgfXkIw/UgX
+         OCLNlSMonFg19JIhH82W+5wRa82BT9X2EL3rza6d9Mig3T9YT6zX+Uj7Mv2MJQJevVDy
+         Mt+Ehf33AifAWTwoCD/zhv6JxmpAu21aGw0CLK37eYxR2SIU9LagnzeCCm+23USUmnSK
+         50vfSfMicQrXp3lYF//oUHfSB57uKNkZdGNubiCwIAl2PZaqq5/QnIFWGOpXfK+LupCJ
+         O1HlOFI/7S3KYam9fGSMA5nqJezIbUQH6pjrVc6i6YCviqnVzUnzxJSLZHFzSJVJRSLv
+         oOeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688917687; x=1691509687;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6q87vb8lIrKhBgDLEmwfxTzOMgjjS5W8xTixvgWCO5I=;
+        b=IZbS21hjllZbm0MKbJ7Sq3VZo4E8q6P+zfkEx1axZKUGcAlJIYlgAmkgkLncc3jllt
+         H9kpf8MI/9Y5k1fYUFL8vDde0y5qaArgwy3tOZe055sOVnZfeiwabAupuB/7PqQl7CI4
+         QtlCGPmbitJAnYxKKY/w9CsB9hWveQ2CyJszZ5c2I9IUtYZYZg3eB/pdo2HAGUDJJWVu
+         l2nVhY7zxQ5r4SM5q1RDfzY/zHVfsz6vFWNiR5FMV9Pf0dn3uSSPSGuJhf0VksTbLxoL
+         GImpCN4a1K6ISReXBDfca+cSxWj5zrTOuEXKrXVzQWMUWajMFMeLzU3H8g8g3iFTzwlv
+         lJCg==
+X-Gm-Message-State: ABy/qLZEjqXFtCJk30HVsf6Ky1wAK6FXEzW0TK2zlGLfIoW/JTAMmjjG
+        H8Yj59vKEwtKnsxgpZ/ZvpS7eFey06d4URpJ4nA=
+X-Google-Smtp-Source: APBJJlHFeEYoRiblUlCN10FTkX3q5XZOc2plwI9lzqhmC4F4puGeoxQ8s9vQYVwD90/khsUinAHzAg==
+X-Received: by 2002:a17:902:db10:b0:1b8:a39a:2833 with SMTP id m16-20020a170902db1000b001b8a39a2833mr13774926plx.15.1688917687399;
+        Sun, 09 Jul 2023 08:48:07 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id bg5-20020a1709028e8500b001b9dab0397bsm1172838plb.29.2023.07.09.08.48.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Jul 2023 08:48:06 -0700 (PDT)
+Message-ID: <64aad6b6.170a0220.af25a.1b93@mx.google.com>
+Date:   Sun, 09 Jul 2023 08:48:06 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.320
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v6.3.11-446-gc36188cdbe80
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Branch: linux-6.3.y
+Subject: stable-rc/linux-6.3.y baseline: 142 runs,
+ 1 regressions (v6.3.11-446-gc36188cdbe80)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ying Hsu <yinghsu@chromium.org>
+stable-rc/linux-6.3.y baseline: 142 runs, 1 regressions (v6.3.11-446-gc3618=
+8cdbe80)
 
-[ Upstream commit 004d25060c78fc31f66da0fa439c544dda1ac9d5 ]
+Regressions Summary
+-------------------
 
-In a setup where a Thunderbolt hub connects to Ethernet and a display
-through USB Type-C, users may experience a hung task timeout when they
-remove the cable between the PC and the Thunderbolt hub.
-This is because the igb_down function is called multiple times when
-the Thunderbolt hub is unplugged. For example, the igb_io_error_detected
-triggers the first call, and the igb_remove triggers the second call.
-The second call to igb_down will block at napi_synchronize.
-Here's the call trace:
-    __schedule+0x3b0/0xddb
-    ? __mod_timer+0x164/0x5d3
-    schedule+0x44/0xa8
-    schedule_timeout+0xb2/0x2a4
-    ? run_local_timers+0x4e/0x4e
-    msleep+0x31/0x38
-    igb_down+0x12c/0x22a [igb 6615058754948bfde0bf01429257eb59f13030d4]
-    __igb_close+0x6f/0x9c [igb 6615058754948bfde0bf01429257eb59f13030d4]
-    igb_close+0x23/0x2b [igb 6615058754948bfde0bf01429257eb59f13030d4]
-    __dev_close_many+0x95/0xec
-    dev_close_many+0x6e/0x103
-    unregister_netdevice_many+0x105/0x5b1
-    unregister_netdevice_queue+0xc2/0x10d
-    unregister_netdev+0x1c/0x23
-    igb_remove+0xa7/0x11c [igb 6615058754948bfde0bf01429257eb59f13030d4]
-    pci_device_remove+0x3f/0x9c
-    device_release_driver_internal+0xfe/0x1b4
-    pci_stop_bus_device+0x5b/0x7f
-    pci_stop_bus_device+0x30/0x7f
-    pci_stop_bus_device+0x30/0x7f
-    pci_stop_and_remove_bus_device+0x12/0x19
-    pciehp_unconfigure_device+0x76/0xe9
-    pciehp_disable_slot+0x6e/0x131
-    pciehp_handle_presence_or_link_change+0x7a/0x3f7
-    pciehp_ist+0xbe/0x194
-    irq_thread_fn+0x22/0x4d
-    ? irq_thread+0x1fd/0x1fd
-    irq_thread+0x17b/0x1fd
-    ? irq_forced_thread_fn+0x5f/0x5f
-    kthread+0x142/0x153
-    ? __irq_get_irqchip_state+0x46/0x46
-    ? kthread_associate_blkcg+0x71/0x71
-    ret_from_fork+0x1f/0x30
+platform             | arch  | lab          | compiler | defconfig | regres=
+sions
+---------------------+-------+--------------+----------+-----------+-------=
+-----
+meson-gxl-s905d-p230 | arm64 | lab-baylibre | gcc-10   | defconfig | 1     =
+     =
 
-In this case, igb_io_error_detected detaches the network interface
-and requests a PCIE slot reset, however, the PCIE reset callback is
-not being invoked and thus the Ethernet connection breaks down.
-As the PCIE error in this case is a non-fatal one, requesting a
-slot reset can be avoided.
-This patch fixes the task hung issue and preserves Ethernet
-connection by ignoring non-fatal PCIE errors.
 
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230620174732.4145155-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/intel/igb/igb_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.3.y/kern=
+el/v6.3.11-446-gc36188cdbe80/plan/baseline/
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index ab54362c0992e..d7b531eae8195 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -8257,6 +8257,11 @@ static pci_ers_result_t igb_io_error_detected(struct pci_dev *pdev,
- 	struct net_device *netdev = pci_get_drvdata(pdev);
- 	struct igb_adapter *adapter = netdev_priv(netdev);
- 
-+	if (state == pci_channel_io_normal) {
-+		dev_warn(&pdev->dev, "Non-correctable non-fatal error reported.\n");
-+		return PCI_ERS_RESULT_CAN_RECOVER;
-+	}
-+
- 	netif_device_detach(netdev);
- 
- 	if (state == pci_channel_io_perm_failure)
--- 
-2.39.2
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-6.3.y
+  Describe: v6.3.11-446-gc36188cdbe80
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      c36188cdbe803adfeea94f8b4b1d2c5ebf1f0793 =
 
+
+
+Test Regressions
+---------------- =
+
+
+
+platform             | arch  | lab          | compiler | defconfig | regres=
+sions
+---------------------+-------+--------------+----------+-----------+-------=
+-----
+meson-gxl-s905d-p230 | arm64 | lab-baylibre | gcc-10   | defconfig | 1     =
+     =
+
+
+  Details:     https://kernelci.org/test/plan/id/64aaa6c30dfd1cc1cbbb2a7b
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.11-=
+446-gc36188cdbe80/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxl-s9=
+05d-p230.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.11-=
+446-gc36188cdbe80/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxl-s9=
+05d-p230.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64aaa6c30dfd1cc1cbbb2=
+a7c
+        new failure (last pass: v6.3.9) =
+
+ =20
