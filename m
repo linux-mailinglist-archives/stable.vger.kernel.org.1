@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 198DF74C266
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B39A274C267
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:20:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231172AbjGILUN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:20:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60812 "EHLO
+        id S231171AbjGILUQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:20:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231171AbjGILUM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:20:12 -0400
+        with ESMTP id S231165AbjGILUP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:20:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D64B5130
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:20:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D80B5
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:20:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B6FE60BCA
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:20:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E64C433C7;
-        Sun,  9 Jul 2023 11:20:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BBAE60BB7
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:20:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFE5C433C7;
+        Sun,  9 Jul 2023 11:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901610;
-        bh=ra0ecAm9GDyk6lKFoXIankzZKDENIX6CFYXplPwUS7U=;
+        s=korg; t=1688901613;
+        bh=Sc/Y6taSEYeoSv/ZciwiOBAlYZa0aU2zKcDbdnJhlYo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AtzrbfWx/m9y6HiG8amQXih1bybZla2TteVLmRE3/4FcKndQrtw6HuBEHabcqXJg8
-         +Ya/YNhO63i682Z5lLxBvEllSlqdBAb/eABEv+zepkXRorjQAFIaie/lxhS33orh03
-         lIoPhE7SUjKPQV6k5Dv0qfRwH6EGqDlLNasFm94c=
+        b=jsCw47pNsqyAPrnWboF43iAnX4bG+QtUv10IBDIblzKriD6Ro8Y/2pnMNE0fILH0k
+         evWO0VdmQo6NjQi81JWSkyimnIIGurZOtL+TeFwFOnE2K8kLijGo1Q3k8TB9wHQ3pm
+         yU6qD0Q+k27ohWJsDatFEhPwwETC1nB4d6r6Ewuc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pengcheng Yang <yangpc@wangsu.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 081/431] samples/bpf: Fix buffer overflow in tcp_basertt
-Date:   Sun,  9 Jul 2023 13:10:29 +0200
-Message-ID: <20230709111453.050466473@linuxfoundation.org>
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 082/431] spi: spi-geni-qcom: Correct CS_TOGGLE bit in SPI_TRANS_CFG
+Date:   Sun,  9 Jul 2023 13:10:30 +0200
+Message-ID: <20230709111453.073500455@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -55,34 +53,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pengcheng Yang <yangpc@wangsu.com>
+From: Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com>
 
-[ Upstream commit f4dea9689c5fea3d07170c2cb0703e216f1a0922 ]
+[ Upstream commit 5fd7c99ecf45c8ee8a9b1268f0ffc91cc6271da2 ]
 
-Using sizeof(nv) or strlen(nv)+1 is correct.
+The CS_TOGGLE bit when set is supposed to instruct FW to
+toggle CS line between words. The driver with intent of
+disabling this behaviour has been unsetting BIT(0). This has
+not caused any trouble so far because the original BIT(1)
+is untouched and BIT(0) likely wasn't being used.
 
-Fixes: c890063e4404 ("bpf: sample BPF_SOCKET_OPS_BASE_RTT program")
-Signed-off-by: Pengcheng Yang <yangpc@wangsu.com>
-Link: https://lore.kernel.org/r/1683276658-2860-1-git-send-email-yangpc@wangsu.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Correct this to prevent a potential future bug.
+
+Signed-off-by: Vijaya Krishna Nivarthi <quic_vnivarth@quicinc.com
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org
+Fixes: 561de45f72bd ("spi: spi-geni-qcom: Add SPI driver support for GENI based QUP")
+Reviewed-by: Douglas Anderson <dianders@chromium.org
+Link: https://lore.kernel.org/r/1682412128-1913-1-git-send-email-quic_vnivarth@quicinc.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/tcp_basertt_kern.c | 2 +-
+ drivers/spi/spi-geni-qcom.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/samples/bpf/tcp_basertt_kern.c b/samples/bpf/tcp_basertt_kern.c
-index 8dfe09a92feca..822b0742b8154 100644
---- a/samples/bpf/tcp_basertt_kern.c
-+++ b/samples/bpf/tcp_basertt_kern.c
-@@ -47,7 +47,7 @@ int bpf_basertt(struct bpf_sock_ops *skops)
- 		case BPF_SOCK_OPS_BASE_RTT:
- 			n = bpf_getsockopt(skops, SOL_TCP, TCP_CONGESTION,
- 					   cong, sizeof(cong));
--			if (!n && !__builtin_memcmp(cong, nv, sizeof(nv)+1)) {
-+			if (!n && !__builtin_memcmp(cong, nv, sizeof(nv))) {
- 				/* Set base_rtt to 80us */
- 				rv = 80;
- 			} else if (n) {
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index baf477383682d..d147519fe1089 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -35,7 +35,7 @@
+ #define CS_DEMUX_OUTPUT_SEL	GENMASK(3, 0)
+ 
+ #define SE_SPI_TRANS_CFG	0x25c
+-#define CS_TOGGLE		BIT(0)
++#define CS_TOGGLE		BIT(1)
+ 
+ #define SE_SPI_WORD_LEN		0x268
+ #define WORD_LEN_MSK		GENMASK(9, 0)
 -- 
 2.39.2
 
