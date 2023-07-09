@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE9974C3AE
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8755074C391
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:33:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232930AbjGILfK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:35:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43088 "EHLO
+        id S230051AbjGILds (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:33:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232926AbjGILfC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:35:02 -0400
+        with ESMTP id S229777AbjGILdo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:33:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D51F198
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:35:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A931118F
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:33:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 353BE60BC0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:35:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE67C433C7;
-        Sun,  9 Jul 2023 11:35:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EF1C60BC0
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:33:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501B2C433C7;
+        Sun,  9 Jul 2023 11:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902500;
-        bh=RAaRnQrbxD4KQEd99SUWpbHGTAM330DqB2Gt85uMd7I=;
+        s=korg; t=1688902422;
+        bh=B32SVhQMe+FpiMbO6keH5Pk5eWOnQv6AS1MyQdnAyUk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SPUIX3VbJm649gW8vdly86+K8iiEFQlO9o78L6mE+vhOPWbGggtk6iZolngD273i6
-         agCOqqzU50up99odUzAPOOVPTyMiJ7FvsVB64Uh9IpvM8PjXOgB6zoAypZoKvKvxOE
-         VfSLNZjJ1UpvrPtMC0Pxp8LdGHRsW6YpNVvlOiUo=
+        b=UUkM6SbyHt8FZE0Hb6VF5QGNDxw+JPoH0lYkO8e2jndRvqXtVlWvDpd6pRuqJQFLb
+         kwhTag8YXWMwgRHPwTIu8efbUf47SyDeU9Hjg0xLcgKqQcPyq18eJEyUYAuJ6w68qO
+         swIPwJ2CYRrV4vq8UUKwGR7W7PwPZd2v2/GkIqP8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Nicholas Piggin <npiggin@gmail.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 370/431] powerpc/interrupt: Dont read MSR from interrupt_exit_kernel_prepare()
-Date:   Sun,  9 Jul 2023 13:15:18 +0200
-Message-ID: <20230709111459.838287527@linuxfoundation.org>
+Subject: [PATCH 6.3 371/431] powerpc/signal32: Force inlining of __unsafe_save_user_regs() and save_tm_user_regs_unsafe()
+Date:   Sun,  9 Jul 2023 13:15:19 +0200
+Message-ID: <20230709111459.860958592@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -59,53 +58,74 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 0eb089a72fda3f7969e6277804bde75dc1474a14 ]
+[ Upstream commit a03b1a0b19398a47489fdcef02ec19c2ba05a15d ]
 
-A disassembly of interrupt_exit_kernel_prepare() shows a useless read
-of MSR register. This is shown by r9 being re-used immediately without
-doing anything with the value read.
+Looking at generated code for handle_signal32() shows calls to a
+function called __unsafe_save_user_regs.constprop.0 while user access
+is open.
 
-  c000e0e0:       60 00 00 00     nop
-  c000e0e4:       7d 3a c2 a6     mfmd_ap r9
-  c000e0e8:       7d 20 00 a6     mfmsr   r9
-  c000e0ec:       7c 51 13 a6     mtspr   81,r2
-  c000e0f0:       81 3f 00 84     lwz     r9,132(r31)
-  c000e0f4:       71 29 80 00     andi.   r9,r9,32768
+And that __unsafe_save_user_regs.constprop.0 function has two nops at
+the begining, allowing it to be traced, which is unexpected during
+user access open window.
 
-This is due to the use of local_irq_save(). The flags read by
-local_irq_save() are never used, use local_irq_disable() instead.
+The solution could be to mark __unsafe_save_user_regs() no trace, but
+to be on the safe side the most efficient is to flag it __always_inline
+as already done for function __unsafe_restore_general_regs(). The
+function is relatively small and only called twice, so the size
+increase will remain in the noise.
 
-Fixes: 13799748b957 ("powerpc/64: use interrupt restart table to speed up return from interrupt")
+Do the same with save_tm_user_regs_unsafe() as it may suffer the
+same issue.
+
+Fixes: ef75e7318294 ("powerpc/signal32: Transform save_user_regs() and save_tm_user_regs() in 'unsafe' version")
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/df36c6205ab64326fb1b991993c82057e92ace2f.1685955214.git.christophe.leroy@csgroup.eu
+Link: https://msgid.link/7e469c8f01860a69c1ada3ca6a5e2aa65f0f74b2.1685955220.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/interrupt.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/kernel/signal_32.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index 0ec1581619db5..cf770d86c03c6 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -368,7 +368,6 @@ void preempt_schedule_irq(void);
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index c114c7f25645c..7a718ed32b277 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -264,8 +264,9 @@ static void prepare_save_user_regs(int ctx_has_vsx_region)
+ #endif
+ }
  
- notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
+-static int __unsafe_save_user_regs(struct pt_regs *regs, struct mcontext __user *frame,
+-				   struct mcontext __user *tm_frame, int ctx_has_vsx_region)
++static __always_inline int
++__unsafe_save_user_regs(struct pt_regs *regs, struct mcontext __user *frame,
++			struct mcontext __user *tm_frame, int ctx_has_vsx_region)
  {
--	unsigned long flags;
- 	unsigned long ret = 0;
- 	unsigned long kuap;
- 	bool stack_store = read_thread_flags() & _TIF_EMULATE_STACK_STORE;
-@@ -392,7 +391,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
+ 	unsigned long msr = regs->msr;
  
- 	kuap = kuap_get_and_assert_locked();
+@@ -364,8 +365,9 @@ static void prepare_save_tm_user_regs(void)
+ 		current->thread.ckvrsave = mfspr(SPRN_VRSAVE);
+ }
  
--	local_irq_save(flags);
-+	local_irq_disable();
+-static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
+-				    struct mcontext __user *tm_frame, unsigned long msr)
++static __always_inline int
++save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
++			 struct mcontext __user *tm_frame, unsigned long msr)
+ {
+ 	/* Save both sets of general registers */
+ 	unsafe_save_general_regs(&current->thread.ckpt_regs, frame, failed);
+@@ -444,8 +446,9 @@ static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user
+ #else
+ static void prepare_save_tm_user_regs(void) { }
  
- 	if (!arch_irq_disabled_regs(regs)) {
- 		/* Returning to a kernel context with local irqs enabled. */
+-static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
+-				    struct mcontext __user *tm_frame, unsigned long msr)
++static __always_inline int
++save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
++			 struct mcontext __user *tm_frame, unsigned long msr)
+ {
+ 	return 0;
+ }
 -- 
 2.39.2
 
