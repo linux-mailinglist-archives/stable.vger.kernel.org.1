@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A86BA74C3A7
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F064074C3A8
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:34:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230213AbjGILeo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:34:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42912 "EHLO
+        id S232937AbjGILeu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:34:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232913AbjGILen (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:43 -0400
+        with ESMTP id S232930AbjGILes (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18F8418F
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A00AA95
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89DFB60BC9
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B13C433C8;
-        Sun,  9 Jul 2023 11:34:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 351F060BA4
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EA3C433C8;
+        Sun,  9 Jul 2023 11:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902481;
-        bh=i9LECIh5CVhsss1UjbHzW4V7tGoX1gPjVLyuYAmd2j8=;
+        s=korg; t=1688902486;
+        bh=QwAw1gVGT2HLH/XyPuxu3HVcO1q+k6lLBl31fNGoFGQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tF+FAYlZ5iBH9Tnxot2eGiq6OhKWZVLAsjjlw02n31Ae9xSlOXIw2KMItUbCGA3jA
-         EtKrLAnFia2/NOVurUk/lIQqxA0Seb7q9baM0UQr0a86PcovvmV1HJ2O7q1aLnMxNV
-         JZqhbgU0hDG59uKeJifiQcT9pHkjd1w37VO6dtc4=
+        b=gCPRMGj4qcX63HIjxNdu+OpwhOcyATdnpB0ho7e8Q7cVG+NjbBuNwpCOrXrOMFuc9
+         kCoqne9/p7JgyDYVGpTnVVVFkz6ZSP9YNaV/ffo8G+nlYsyLjgOPo5NIlviLkn4Bzn
+         LVYUVDgZ61L3HcXB0LU9zKNhqgN3gA7gmFjR3U+c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,9 +36,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 364/431] platform/x86: think-lmi: mutex protection around multiple WMI calls
-Date:   Sun,  9 Jul 2023 13:15:12 +0200
-Message-ID: <20230709111459.702952694@linuxfoundation.org>
+Subject: [PATCH 6.3 365/431] platform/x86: think-lmi: Correct System password interface
+Date:   Sun,  9 Jul 2023 13:15:13 +0200
+Message-ID: <20230709111459.725738811@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -48,8 +48,8 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,TVD_PH_BODY_ACCOUNTS_PRE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,79 +58,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit c41e0121a1221894a1a9c4666156db9e1def4d6c ]
+[ Upstream commit 97eef5983372d7aee6549d644d788fd0c10d2b6e ]
 
-When an attribute is being changed if the Admin account is enabled, or if
-a password is being updated then multiple WMI calls are needed.
-Add mutex protection to ensure no race conditions are introduced.
+The system password identification was incorrect. This means that if
+the password was enabled it wouldn't be detected correctly; and setting
+it would not work.
+Also updated code to use TLMI_SMP_PWD instead of TLMI_SYS_PWD to be in
+sync with Lenovo documentation.
 
-Fixes: b49f72e7f96d ("platform/x86: think-lmi: Certificate authentication support")
+Fixes: 640a5fa50a42 ("platform/x86: think-lmi: Opcode support")
 Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230601200552.4396-1-mpearson-lenovo@squebb.ca
+Link: https://lore.kernel.org/r/20230601200552.4396-3-mpearson-lenovo@squebb.ca
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/think-lmi.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/platform/x86/think-lmi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index 78dc82bda4dde..7a145f578ef49 100644
+index 7a145f578ef49..cd755ef48ce40 100644
 --- a/drivers/platform/x86/think-lmi.c
 +++ b/drivers/platform/x86/think-lmi.c
-@@ -14,6 +14,7 @@
- #include <linux/acpi.h>
- #include <linux/errno.h>
- #include <linux/fs.h>
-+#include <linux/mutex.h>
- #include <linux/string.h>
- #include <linux/types.h>
- #include <linux/dmi.h>
-@@ -195,6 +196,7 @@ static const char * const level_options[] = {
- };
- static struct think_lmi tlmi_priv;
- static struct class *fw_attr_class;
-+static DEFINE_MUTEX(tlmi_mutex);
+@@ -172,7 +172,7 @@ MODULE_PARM_DESC(debug_support, "Enable debug command support");
+ #define TLMI_POP_PWD (1 << 0)
+ #define TLMI_PAP_PWD (1 << 1)
+ #define TLMI_HDD_PWD (1 << 2)
+-#define TLMI_SYS_PWD (1 << 3)
++#define TLMI_SMP_PWD (1 << 6) /* System Management */
+ #define TLMI_CERT    (1 << 7)
  
- /* ------ Utility functions ------------*/
- /* Strip out CR if one is present */
-@@ -437,6 +439,9 @@ static ssize_t new_password_store(struct kobject *kobj,
- 	/* Strip out CR if one is present, setting password won't work if it is present */
- 	strip_cr(new_pwd);
+ #define to_tlmi_pwd_setting(kobj)  container_of(kobj, struct tlmi_pwd_setting, kobj)
+@@ -1522,11 +1522,11 @@ static int tlmi_analyze(void)
+ 		tlmi_priv.pwd_power->valid = true;
  
-+	/* Use lock in case multiple WMI operations needed */
-+	mutex_lock(&tlmi_mutex);
-+
- 	pwdlen = strlen(new_pwd);
- 	/* pwdlen == 0 is allowed to clear the password */
- 	if (pwdlen && ((pwdlen < setting->minlen) || (pwdlen > setting->maxlen))) {
-@@ -493,6 +498,7 @@ static ssize_t new_password_store(struct kobject *kobj,
- 		kfree(auth_str);
- 	}
- out:
-+	mutex_unlock(&tlmi_mutex);
- 	kfree(new_pwd);
- 	return ret ?: count;
- }
-@@ -982,6 +988,9 @@ static ssize_t current_value_store(struct kobject *kobj,
- 	/* Strip out CR if one is present */
- 	strip_cr(new_setting);
+ 	if (tlmi_priv.opcode_support) {
+-		tlmi_priv.pwd_system = tlmi_create_auth("sys", "system");
++		tlmi_priv.pwd_system = tlmi_create_auth("smp", "system");
+ 		if (!tlmi_priv.pwd_system)
+ 			goto fail_clear_attr;
  
-+	/* Use lock in case multiple WMI operations needed */
-+	mutex_lock(&tlmi_mutex);
-+
- 	/* Check if certificate authentication is enabled and active */
- 	if (tlmi_priv.certificate_support && tlmi_priv.pwd_admin->cert_installed) {
- 		if (!tlmi_priv.pwd_admin->signature || !tlmi_priv.pwd_admin->save_signature) {
-@@ -1040,6 +1049,7 @@ static ssize_t current_value_store(struct kobject *kobj,
- 		kobject_uevent(&tlmi_priv.class_dev->kobj, KOBJ_CHANGE);
- 	}
- out:
-+	mutex_unlock(&tlmi_mutex);
- 	kfree(auth_str);
- 	kfree(set_str);
- 	kfree(new_setting);
+-		if (tlmi_priv.pwdcfg.core.password_state & TLMI_SYS_PWD)
++		if (tlmi_priv.pwdcfg.core.password_state & TLMI_SMP_PWD)
+ 			tlmi_priv.pwd_system->valid = true;
+ 
+ 		tlmi_priv.pwd_hdd = tlmi_create_auth("hdd", "hdd");
 -- 
 2.39.2
 
