@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B782474C28B
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F3174C28C
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:21:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231342AbjGILVu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:21:50 -0400
+        id S231326AbjGILVx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:21:53 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231372AbjGILVs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:21:48 -0400
+        with ESMTP id S231372AbjGILVx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:21:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CA0B13D
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:21:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 470EE90
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:21:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BC2060BC0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:21:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA64C433C8;
-        Sun,  9 Jul 2023 11:21:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA42E60BCA
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:21:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA28DC433C7;
+        Sun,  9 Jul 2023 11:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901706;
-        bh=Zci2n30MyAXDmjYQLmou7yO1S0q6uFFBCdCyVxVfHWY=;
+        s=korg; t=1688901709;
+        bh=rvKtnN98+cSQHDuLVFywgMt/5YiKKt0Jw0+1rq4baBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uz1/le0jpSqwVZBM7if6Vh3VpyQ0oXoXFtbgeex8X788HiKB687J1hC9f/Ga+UrwS
-         lck0G84Wvs7zqn5/YDe25vHPenr3yiWUgVe0GinJrCroxtH4tV5n3OmbXmxsJYcdFz
-         BFC08gLdN6J1IXdB67sUS1AB1nWF8Q5yblD3/v2E=
+        b=R//zaFrcrzHfyFvfwNGqMaaymBWGRAH50/g2dwaIRvBXpwFx1DfdGHGXQH+TOpdMC
+         gF3o5kHQTU6rWf1b/+lL5R52qo1xP9wEIQjF99h13oXNwOZrM3LgXsBEZqwmy1mgg3
+         nxVWeAVVeQa2sPEV6ssaFZDYExl6XfuGBFj0KX4A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 115/431] mmc: mediatek: Avoid ugly error message when SDIO wakeup IRQ isnt used
-Date:   Sun,  9 Jul 2023 13:11:03 +0200
-Message-ID: <20230709111453.851225192@linuxfoundation.org>
+Subject: [PATCH 6.3 116/431] memstick r592: make memstick_debug_get_tpc_name() static
+Date:   Sun,  9 Jul 2023 13:11:04 +0200
+Message-ID: <20230709111453.874246528@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -56,41 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit a3332b7aad346b14770797e03ddd02ebdb14db41 ]
+[ Upstream commit 434587df9f7fd68575f99a889cc5f2efc2eaee5e ]
 
-When I boot a kukui-kodama board, I see an ugly warning in my kernel
-log:
-  mtk-msdc 11240000.mmc: error -ENXIO: IRQ sdio_wakeup not found
+There are no other files referencing this function, apparently
+it was left global to avoid an 'unused function' warning when
+the only caller is left out. With a 'W=1' build, it causes
+a 'missing prototype' warning though:
 
-It's pretty normal not to have an "sdio_wakeup" IRQ defined. In fact,
-no device trees in mainline seem to have it. Let's use the
-platform_get_irq_byname_optional() to avoid the error message.
+drivers/memstick/host/r592.c:47:13: error: no previous prototype for 'memstick_debug_get_tpc_name' [-Werror=missing-prototypes]
 
-Fixes: 527f36f5efa4 ("mmc: mediatek: add support for SDIO eint wakup IRQ")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://lore.kernel.org/r/20230510064434.1.I935404c5396e6bf952e99bb7ffb744c6f7fd430b@changeid
+Annotate the function as 'static __maybe_unused' to avoid both
+problems.
+
+Fixes: 926341250102 ("memstick: add driver for Ricoh R5C592 card reader")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230516202714.560929-1-arnd@kernel.org
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/memstick/host/r592.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index 9785ec91654f7..97c42aacaf346 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -2707,7 +2707,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
+diff --git a/drivers/memstick/host/r592.c b/drivers/memstick/host/r592.c
+index 42bfc46842b82..461f5ffd02bc1 100644
+--- a/drivers/memstick/host/r592.c
++++ b/drivers/memstick/host/r592.c
+@@ -44,12 +44,10 @@ static const char *tpc_names[] = {
+  * memstick_debug_get_tpc_name - debug helper that returns string for
+  * a TPC number
+  */
+-const char *memstick_debug_get_tpc_name(int tpc)
++static __maybe_unused const char *memstick_debug_get_tpc_name(int tpc)
+ {
+ 	return tpc_names[tpc-1];
+ }
+-EXPORT_SYMBOL(memstick_debug_get_tpc_name);
+-
  
- 	/* Support for SDIO eint irq ? */
- 	if ((mmc->pm_caps & MMC_PM_WAKE_SDIO_IRQ) && (mmc->pm_caps & MMC_PM_KEEP_POWER)) {
--		host->eint_irq = platform_get_irq_byname(pdev, "sdio_wakeup");
-+		host->eint_irq = platform_get_irq_byname_optional(pdev, "sdio_wakeup");
- 		if (host->eint_irq > 0) {
- 			host->pins_eint = pinctrl_lookup_state(host->pinctrl, "state_eint");
- 			if (IS_ERR(host->pins_eint)) {
+ /* Read a register*/
+ static inline u32 r592_read_reg(struct r592_device *dev, int address)
 -- 
 2.39.2
 
