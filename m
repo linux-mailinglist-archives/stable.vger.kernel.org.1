@@ -2,50 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45B2174C3AF
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD81374C3BB
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232926AbjGILfL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43060 "EHLO
+        id S232966AbjGILfj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232953AbjGILfI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:35:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F3E4191
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:35:07 -0700 (PDT)
+        with ESMTP id S232970AbjGILfi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:35:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D8913D
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:35:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B89E960B51
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:35:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB06C433C8;
-        Sun,  9 Jul 2023 11:35:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 670B860BB7
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:35:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77874C433C7;
+        Sun,  9 Jul 2023 11:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902506;
-        bh=/eCpOHVdDejXBXh6t0gTTlmuVTbygfJ3hKHPWPmuelg=;
+        s=korg; t=1688902536;
+        bh=/UyJFN8YF2iwl/EKXJKmFOlG+TPPmgaKLa2LZEvvaHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iUZpPWn5eTr+PZqjM0m0St2L4Gv2jXxaO2vpdtIFJ9zay4Q0D4i5Q9IJjFnVrHbyE
-         zuSsKHZI5LQrrvcUb4IWWnPrsM57+0/F0NQa5Kb6Z0YvfUvGnHtHUEQQIoMo+NSp0n
-         +Ra1lN3VF19LyPr9lLJDU15NfMoHGwZXnvStGG3g=
+        b=zsmgbxZAj9UIHToET3Gu+5z/iqREd7j9vCCdEclEFa1gUsu+95E10zgqrQnl6jW1O
+         EKks8rOfcTqTMBrkrj0ng8WZj91ykVFDXzK49Gikgwzo4D3wiGaoqQByeadbSbngF2
+         /BXH/G7PtCen346WFg18+QOj7A2I6BDuUUwMVY+8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Petar Gligoric <petar.gligoric@rohde-schwarz.com>,
-        Hagen Paul Pfeifer <hagen@jauu.net>,
-        Aditya Gupta <adityag@linux.ibm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Ian Rogers <irogers@google.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        patches@lists.linux.dev, Shunsuke Mie <mie@igel.co.jp>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 393/431] perf test: Set PERF_EXEC_PATH for script execution
-Date:   Sun,  9 Jul 2023 13:15:41 +0200
-Message-ID: <20230709111500.387094274@linuxfoundation.org>
+Subject: [PATCH 6.3 394/431] PCI: endpoint: Fix a Kconfig prompt of vNTB driver
+Date:   Sun,  9 Jul 2023 13:15:42 +0200
+Message-ID: <20230709111500.409919626@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -63,51 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Shunsuke Mie <mie@igel.co.jp>
 
-[ Upstream commit e4ef3ef1bc0a3d2535427da78b8095ef657eb474 ]
+[ Upstream commit 37587673cda963ec950e4983db5023802f9b5ff2 ]
 
-The task-analyzer.py script (actually every other scripts too) requires
-PERF_EXEC_PATH env to find dependent libraries and scripts. For scripts
-test to run correctly, it needs to set PERF_EXEC_PATH to the perf tool
-source directory.
+vNTB driver and NTB driver have same Kconfig prompt. Changed to make it
+distinguishable.
 
-Instead of blindly update the env, let's check the directory structure
-to make sure it points to the correct location.
-
-Fixes: e8478b84d6ba ("perf test: add new task-analyzer tests")
-Cc: Petar Gligoric <petar.gligoric@rohde-schwarz.com>
-Cc: Hagen Paul Pfeifer <hagen@jauu.net>
-Cc: Aditya Gupta <adityag@linux.ibm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Acked-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20230202103832.2038286-1-mie@igel.co.jp
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Shunsuke Mie <mie@igel.co.jp>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/test_task_analyzer.sh | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pci/endpoint/functions/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/tests/shell/test_task_analyzer.sh b/tools/perf/tests/shell/test_task_analyzer.sh
-index 1b7f3c1ec218b..365b61aea519a 100755
---- a/tools/perf/tests/shell/test_task_analyzer.sh
-+++ b/tools/perf/tests/shell/test_task_analyzer.sh
-@@ -5,6 +5,12 @@
- tmpdir=$(mktemp -d /tmp/perf-script-task-analyzer-XXXXX)
- err=0
+diff --git a/drivers/pci/endpoint/functions/Kconfig b/drivers/pci/endpoint/functions/Kconfig
+index 9fd5608868718..8efb6a869e7ce 100644
+--- a/drivers/pci/endpoint/functions/Kconfig
++++ b/drivers/pci/endpoint/functions/Kconfig
+@@ -27,7 +27,7 @@ config PCI_EPF_NTB
+ 	  If in doubt, say "N" to disable Endpoint NTB driver.
  
-+# set PERF_EXEC_PATH to find scripts in the source directory
-+perfdir=$(dirname "$0")/../..
-+if [ -e "$perfdir/scripts/python/Perf-Trace-Util" ]; then
-+  export PERF_EXEC_PATH=$perfdir
-+fi
-+
- cleanup() {
-   rm -f perf.data
-   rm -f perf.data.old
+ config PCI_EPF_VNTB
+-	tristate "PCI Endpoint NTB driver"
++	tristate "PCI Endpoint Virtual NTB driver"
+ 	depends on PCI_ENDPOINT
+ 	depends on NTB
+ 	select CONFIGFS_FS
 -- 
 2.39.2
 
