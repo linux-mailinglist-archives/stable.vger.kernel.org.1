@@ -2,57 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 706AF74C460
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 15:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D45ED74C487
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 16:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229853AbjGINc1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 09:32:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34864 "EHLO
+        id S230115AbjGIOCx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 10:02:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229765AbjGINc0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 09:32:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C1B9137
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 06:32:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2B7F60BA4
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 13:32:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E3AC433C7;
-        Sun,  9 Jul 2023 13:32:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688909543;
-        bh=rwLzNnh9Owt1yY3HyQ3Mn9+3wPadnenSGXlnaindEMY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RgjitRhDY8bMW8OnFuLn+MQsk4YRdo/u3XvUDSbrNrl3m3lCGtVC49M+yNJQotML6
-         CIUO/oikaUPkiegeP3ow2K7GbIJGbE69lGzhq4PSbWx8mqQxHjJGx8hjWHuqrLmZNu
-         eN3+2F6jlzgfvjiSSOeOOaA8kzfNtSlMbzBlApnw=
-Date:   Sun, 9 Jul 2023 15:32:20 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Suren Baghdasaryan <surenb@google.com>,
-        David Hildenbrand <david@redhat.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Holger =?iso-8859-1?Q?Hoffst=E4tte?= 
-        <holger@applied-asynchrony.com>,
-        Jacob Young <jacobly.alt@gmail.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.4 7/8] fork: lock VMAs of the parent process when
- forking
-Message-ID: <2023070904-customer-concise-e6fe@gregkh>
-References: <20230709111345.297026264@linuxfoundation.org>
- <20230709111345.516444847@linuxfoundation.org>
- <c783f635-f839-638c-5e32-ef923be432ad@leemhuis.info>
+        with ESMTP id S230091AbjGIOCw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 10:02:52 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBFF397;
+        Sun,  9 Jul 2023 07:02:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1688911368; x=1689516168; i=rwarsow@gmx.de;
+ bh=A10VahtUSlruQolJWv7H2HXJIC9L1XPgk95ZAOCM6bs=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+ b=tCegJ9EMQQOm5eCTyDRN+yuRaa5STvASYWb1Oat6HaoJdwdYmYv+d2oFt9W0vWsuD+4QaKe
+ lcElDQbmvaWA0a2J/UPFLAEf6SAVPRoLF09d8OHBSaORanr91qYFQF1qTraoMJTngwGeRinqL
+ xJGE6kaH07+sT8qpI6Mrc/QR9xnD6/djOP6KG1ZZXt8s/NdcBxA+H8yNh1zhOXe0ZH/wVCvUH
+ 2/lW0moDJVKeWFmEJeQ/TKFF7huuSfxkrw+64mH0QPKPWEuP59mpHQhE2BSMIAm3WjlXjQqhb
+ SxjcIEEBDoV73d9+Wi59qlOvE15jUWSJ7UalR69XTxKi0vb64LMg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.35.75]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MoO24-1pcVM03Chs-00opmM; Sun, 09
+ Jul 2023 16:02:48 +0200
+Message-ID: <aeef7dfa-13de-b312-8746-6ee66c2f851f@gmx.de>
+Date:   Sun, 9 Jul 2023 16:02:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c783f635-f839-638c-5e32-ef923be432ad@leemhuis.info>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+From:   Ronald Warsow <rwarsow@gmx.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.4 0/8] 6.4.3-rc1 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:on2LAspDD3oErUNNWsl1RVPxbGgo7u8a7kJghWMgZEJ8YoJolIu
+ WxLk7OBsAhLB96odUWV829EyXVDDkgS4pnBIxhnB9ELYuTugZruR+zRN3JHgc4NNkzEu76E
+ WYlBJX6DWi3YzDPzTNuR61KAgDpKXJM1ttmG5WITn9gzqWCAElPgZwMpPrJtECGX5sDZi3H
+ DrtoBmD/3RlXkWropT2tw==
+UI-OutboundReport: notjunk:1;M01:P0:uPd8k2HADdU=;aXoi6k798EYERxl9p9THeHLB4jD
+ DvVZF/++uiJpQPZMXTHhfjc8iR8w5CRinRy6c0RgAYd8ilI0QL3dXiFtWNEFm8F/NSN0cxf3B
+ n2i/nZnqFKisewuC3NeIZJMhdzncnsk4lop+qBsL7qmyLQt4Qb/2dg285ocJ6mdTxmWekzuZi
+ WA5Gi0e8liLMohfwePcuek/8FigG0xFwqcDKPaRl3CfvnCYz60d9uoe/5aoBjRPW3jV3fWOXF
+ KtffdQyXrpLapaUvAF9WsBFk4YmrDyHjivpRr/DyyWttpxzW6UxMNrz2xvTMoOw04i7OvN07N
+ 6wyKOZVmbEDjtp9yIXGcK9TVBc6SA5LFAfX4ANVH7HyihoOGfgQEjw9wMeneAn3DuIUb4tFhM
+ Dlx87xexVoEAfuzuq79v2CwtG3S00jQgpK/hJnmoBu5UFLdCBb0kRhwy+fB1T8AvPr9oVc6vi
+ baTLlnq7VHoi1uOp3nNX4cfS3ibW70/qtmna2Z/429dADB7hQsBZ2sggfAWIKmgJ9SAjF01lS
+ KQcVtVvuuLkAKLpujjR8Hi10gOH1G8pqVhRkupwmeT/WBg9FjWUjqRM29047IV4VbkVumFqSc
+ eHqOHnqG7ZxJaT0td1WrKwLtc0CW5ux++QJXySlcLyo2f0ohuzVjo5jhqoZs161vYyCciOE0R
+ oN3TXokibfeDIn8rFGC6QvZcq9w+uOCjmLMXYt1j3oG+hQoWPd6VczEowh0MvqKjZ1p81N0kQ
+ LLn7WOXl5iijIjeaefnLWWdOi5ahKe4Zj6QxbKcis5KwPTsJwkGB/Yaxx5VrQLjOplRvKY2Re
+ A08M1i77yNCH/6XI+P6ZtE6L538gcTf5qwAgSwp1pq1/sEUyrAINB/SWpZ8Wf6cCglekxk2bz
+ +CSuIcd3NNKggdyxgGtitNER/j1pjs3uk897iPp5MmjncUrZuX5Jh75MlrHBSNxJVUFl/DZWg
+ jhwd4c0OA1YZXoqkAlnGXfUcdL0=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,62 +68,13 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Jul 09, 2023 at 02:39:00PM +0200, Thorsten Leemhuis wrote:
-> On 09.07.23 13:14, Greg Kroah-Hartman wrote:
-> > From: Suren Baghdasaryan <surenb@google.com>
-> > 
-> > commit 2b4f3b4987b56365b981f44a7e843efa5b6619b9 upstream.
-> > 
-> > Patch series "Avoid memory corruption caused by per-VMA locks", v4.
-> > 
-> > A memory corruption was reported in [1] with bisection pointing to the
-> > patch [2] enabling per-VMA locks for x86.  Based on the reproducer
-> > provided in [1] we suspect this is caused by the lack of VMA locking while
-> > forking a child process.
-> > [...]
-> 
-> Question from someone that is neither a C nor a git expert -- and thus
-> might say something totally stupid below (and thus maybe should not have
-> sent this mail at all).
-> 
-> But I have to wonder: is adding this patch to stable necessary given
-> patch 8/8?
-> 
-> FWIW, this change looks like this:
-> 
-> > ---
-> >  kernel/fork.c |    6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -662,6 +662,12 @@ static __latent_entropy int dup_mmap(str
-> >  		retval = -EINTR;
-> >  		goto fail_uprobe_end;
-> >  	}
-> > +#ifdef CONFIG_PER_VMA_LOCK
-> > +	/* Disallow any page faults before calling flush_cache_dup_mm */
-> > +	for_each_vma(old_vmi, mpnt)
-> > +		vma_start_write(mpnt);
-> > +	vma_iter_set(&old_vmi, 0);
-> > +#endif
-> >  	flush_cache_dup_mm(oldmm);
-> >  	uprobe_dup_mmap(oldmm, mm);
-> >  	/*
-> 
-> But when I look at kernel/fork.c in mainline I can't see this bit. I
-> also only see Linus' change (e.g. patch 8/8 in this series) when I look at
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/kernel/fork.c
+Hi Greg
 
-Look at 946c6b59c56d ("Merge tag 'mm-hotfixes-stable-2023-07-08-10-43'
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
+6.4.3-rc1
 
-Where Linus manually dropped those #ifdefs.
+compiles, boots and runs here on x86_64
+(Intel Rocket Lake, i5-11400)
 
-Hm, I'll leave them for now in 6.4.y as that is "safer", but if Suren
-feels comfortable, I'll gladly take a patch from him to drop them in the
-6.4.y tree as well.
+Thanks
 
-thanks,
-
-greg k-h
+Tested-by: Ronald Warsow <rwarsow@gmx.de
