@@ -2,57 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBC2E74C854
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 23:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A42FC74C869
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 23:30:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229795AbjGIVOK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 17:14:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59330 "EHLO
+        id S229989AbjGIVaX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 17:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjGIVOJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 17:14:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E97118;
-        Sun,  9 Jul 2023 14:14:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C969B60C4F;
-        Sun,  9 Jul 2023 21:14:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4D8C433C8;
-        Sun,  9 Jul 2023 21:14:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688937248;
-        bh=djyTuseLBeA/Gg1w7QGVbC0L8UjHiviHHPC+JTv+QFQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WGW3Rrobh4cpmkwae04EinmulxFvrNVqwMYvVBpWeXAaj+C3QsT/GM9yZaZgRCN9K
-         1ZiV06ncKleNveVvZ2niBS+q/Q9G49V3bqqWUwc6EQCuEO8Z4NGrjj0Wt4TXsioe0x
-         aLbzDW6a2NWQcTzq4WwWCQiLOdd2Tuqs0ig/0XaEINeaKaKxhu7AEYzyuS8pQBPq+2
-         WYvPE58NJOHi8dkjeLzkgHRmGvL+lepEWaq5BXo3WYZqUAQVcXi+m9u+Lic6nfXDLA
-         6zQLFXdG0uefYnZ8Zj8gCBlNgBP5E0UCelE94V2ctFr+uSXJSIBVjiYbQSHC8i3TwW
-         5vYINae9gAqyw==
-Date:   Sun, 9 Jul 2023 22:14:04 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Jaewon Kim <jaewon02.kim@samsung.com>, andi.shyti@kernel.org,
-        krzysztof.kozlowski@linaro.org, linux-spi@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.4 04/26] spi: s3c64xx: change polling mode to
- optional
-Message-ID: <ZKsjHAaH41V8J+Dc@finisterre.sirena.org.uk>
-References: <20230709151255.512931-1-sashal@kernel.org>
- <20230709151255.512931-4-sashal@kernel.org>
+        with ESMTP id S229895AbjGIVaR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 17:30:17 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2778123;
+        Sun,  9 Jul 2023 14:30:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1688938214; x=1689543014; i=rwarsow@gmx.de;
+ bh=ZT2WA+hNiIdiSiTdYBj7HEV/czIf3ZM3McHFUNQUrCM=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+ b=Xl2w0vT9IvFd2g+iJ5nVKwhS4m/ev4G6AL7hHQ2uOzsuJx3UabekCpDqHrwl5IaWaezSTzI
+ 9EXDTNPanvc8mJ3N4k6Bmuxmfe0ymjlLRIsuus61bANBKvKURQLYcxXIfwztAlGycHiS7UCGN
+ j6e4oPPdchteApXvdzuqcPHvefJ8GUKO8WX98XAbx1VVcbMHTXQAf5KgQJ3PUgv9AYwaxUNg5
+ iV+nd8SDFywLRPJ+HDo2JmsOSGeGwVT5jW7KkQOw8FNESWapBNCJdwtSOCuSVaLB+vvk++hzz
+ +CkG2mEHOibVBZXS1R1wBcNV2x2ID0852ysSyLSTwSV8/fV37kTw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.35.75]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MwQT9-1q22XD0Q1V-00sMr9; Sun, 09
+ Jul 2023 23:30:14 +0200
+Message-ID: <5ce87fd0-ae9a-fdb0-b237-c2e9a4e2dc0d@gmx.de>
+Date:   Sun, 9 Jul 2023 23:30:13 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gSG3AG9Mzt2Vuaqg"
-Content-Disposition: inline
-In-Reply-To: <20230709151255.512931-4-sashal@kernel.org>
-X-Cookie: Slow day.  Practice crawling.
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+From:   Ronald Warsow <rwarsow@gmx.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.4 0/6] 6.4.3-rc2 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:Gikm1b9N8IjodK9weNTnTl1xdAIOjUC4AtakgrpPVUBE956F3v9
+ Uit0YdzDjl1WUuQtBDe8v6SVrkFHTFwYiXOmXCSoCMSrn1D+DQMp4TJWm+NpDZHxM3yF94g
+ 9DIU/6n7DZoTII/irtg7OM8ipqQPGYSzkv6+LQ6ociosahUqh457fX+T6h7AeNVH0KL+gDV
+ 3O8y4ChOTXUZR/08yKBDg==
+UI-OutboundReport: notjunk:1;M01:P0:7ulh2bVsGqs=;Z54mpYAFCn4Tn/IiaCjq7NN41fB
+ C0jAutliA4Xb1vUApc5GcqQbyHc4oWjxLbK0ybYFHlH1mbQKUhFXoo2UrH05M83qddAWSfeBd
+ 6Rb2atpM1q5z9LSR4rc3A7oVwuyBeH+cLGYedc2uH0Y15ewRMEu/L7dtURy6x34Fe8Qw4L0Jn
+ FAgFuT1Is1R4cmGT23+AsOHVJKkhuRvr6lLFwYOB6lf5s7APz2WMIOoeJOQz5NUhifkJoFAlq
+ cQr0Mc9oY7rxAjlKEczYgPCBDD3PV62HDugBMIeTwb1rtyAKM7/WpEpc7XwbKN8+FzYteDnl4
+ D46DyubcDG0wGjqhFhxYexSdLfyuiYbzfp7lOSRKCpBQAGZyx3xdOkqMMFwUclLibbork9pVZ
+ oR8Qo9BusvPGhXxfkx4pDcE1d7SF4Djz3NzSQupJKDsoApdZwbtbZYxKEVV5zgeUiq3RF+k0J
+ nJZUy7+BIta+/FUsfdBFyqR55aNiAFBLGtyaxIVR5GGhOsjQYFrFNgAtPXWHCenZCZu7Pikj4
+ DVLzSRPssRwRioygEzYkMI2cAy3HDI5G1F+h7ySVyyUMgZ2fLfzBHnAwTOqLImU6xDsubN0Zo
+ WDMWfaCn2uqfDAcrUVGAZOtJuFyRiCbyuhTYMuY81sO78ZY+Hq1VFNk2TsgNxCFvYlmflDGoR
+ 1mn3GFjHFOQBpJ+J3SUXa7zZK9pQqjY/VD2N/Dh6kwHUV9WDTVosOtzF8sMI3BZD0XmOXpdR7
+ OnXeQeHEvM8Uz9FlaTmgtyYK7p+QRHOzTCG6KO/VUqnFzEqyeosAcPPKwPrFL1iAM2iKZ/B9e
+ oiPprwTH4HGFHmFIKCbnJ920t8MugYJMOJeuzn5VNgayS34gJCF7b9+2UJ7k4l44awrygrb9S
+ zmLxTDyjurnTpcxkkq+QzGgL1gNTMjP4cqyqSGcVLt/rpdDLmTMcx03kiPza2YNUVB2iByC/p
+ ffSpTA==
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,38 +68,13 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Greg
 
---gSG3AG9Mzt2Vuaqg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+6.4.3-rc2
 
-On Sun, Jul 09, 2023 at 11:12:33AM -0400, Sasha Levin wrote:
-> From: Jaewon Kim <jaewon02.kim@samsung.com>
->=20
-> [ Upstream commit d1a7718ee8dbcc488d3243d52e19c755123e0024 ]
->=20
-> Previously, Polling mode was supported as quirk for SOC without DMA.
-> To provide more flexible support for polling mode, it changed to polling
-> mode when the 'dmas' property is not present in the devicetree, rather th=
-an
-> using a quirk.
+compiles, boots and runs here on x86_64
+(Intel Rocket Lake, i5-11400)
 
-This is a new feature/performance improvement, not a fix.
+Thanks
 
---gSG3AG9Mzt2Vuaqg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSrIxwACgkQJNaLcl1U
-h9BQFQf8CKzKdu0m0tAVJQpSKAYVP/C+mC0FyYeSoywlsnn8mLEcj7hs5ISAoj4K
-0vgSSirVRBuVdqaPIT/nMihQFDOgMP6PCIxZKsirh87f3kztnL7H0XWIyj3PD2ZB
-X8+TVi0+M95hrkzXkQEp0fybPglb+OkOagEiWVKrwWgF8Qb+HzdHjJ2kmr/5opes
-DjMEj1HuCV2t2in/ghB7dSiHm1XfJdATOO9BLpqiHVE5mMinaJyZBK3cIl+0K9jr
-0vMRbTGaIujAW7FOc4In1WP+zqBi99Z8JeUQW9bfOrGx+BwKJIP2mj01a6H43JKK
-tbyu6gRM9jaoEff+HrZWnL8ukPTlvQ==
-=7XeE
------END PGP SIGNATURE-----
-
---gSG3AG9Mzt2Vuaqg--
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
