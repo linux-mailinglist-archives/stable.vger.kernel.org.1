@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC3CA74C368
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8954C74C20C
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:14:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230143AbjGILck (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41116 "EHLO
+        id S230371AbjGILOt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:14:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232937AbjGILcJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:32:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F7B2E74
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:32:00 -0700 (PDT)
+        with ESMTP id S230366AbjGILOt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:14:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ACF512A
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:14:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30DC160BC0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:32:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B56C433C8;
-        Sun,  9 Jul 2023 11:31:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D85B60BC7
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:14:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BD7C433C7;
+        Sun,  9 Jul 2023 11:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902319;
-        bh=MEjax2E3uwZ/Q7uTHGyL3toADYhbdwMSK5uHSBlQBd4=;
+        s=korg; t=1688901287;
+        bh=TXdyKbUgf13XY3EU8v7zY3HU3a45Pxaq7itkdHG7sN0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DZqtNoXxVJRPWkiDXsN6KM23ecCTHRYRpZTm6x8QW7OqDN8RkbAw1BK4pdCtOzr4F
-         YnemUJxupDlYdD7AIfY46D6WcvMq/Lo91EWpwTJg5rdFrtgoRGbNFs3mk1MhgnLQ4a
-         H0bFbCp1LDpLCArbKPMvKh5nOsRvY50fwpFo38dk=
+        b=NlpezaRxJoRzgD0f96S71FTdyriWoihGx8iekLlHDNWMNG/N8yTWE1642yBpoVc9s
+         o+tz/eFm/5RUe7Pw3LA6uqLP97AoBwVdwpKhx5Bdz1RUwpu5KAFOM2QESJVZKMZD7i
+         N+a5ANRRyZ/Ebbp0LVoWgvLJXMlfDmhGxjpeRcwc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
-        Udit Kumar <u-kumar1@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 306/431] arm64: dts: ti: k3-am69-sk: Fix main_i2c0 alias
+        patches@lists.linux.dev, David Hildenbrand <david@redhat.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= 
+        <holger@applied-asynchrony.com>,
+        Jacob Young <jacobly.alt@gmail.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.4 8/8] fork: lock VMAs of the parent process when forking, again
 Date:   Sun,  9 Jul 2023 13:14:14 +0200
-Message-ID: <20230709111458.336815272@linuxfoundation.org>
+Message-ID: <20230709111345.543400132@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
-References: <20230709111451.101012554@linuxfoundation.org>
+In-Reply-To: <20230709111345.297026264@linuxfoundation.org>
+References: <20230709111345.297026264@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +59,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nishanth Menon <nm@ti.com>
+From: Suren Baghdasaryan <surenb@google.com>
 
-[ Upstream commit b38c6ced4ec5b3f6260ff6cc2b71e8a3d8c897d7 ]
+commit fb49c455323ff8319a123dd312be9082c49a23a5 upstream.
 
-main_i2c0 is aliased as i2c0 which creates a problem for u-boot R5
-SPL attempting to reuse the same definition in the common board
-detection logic as it looks for the first i2c instance as the bus on
-which to detect the eeprom to understand the board variant involved.
-Switch main_i2c0 to i2c3 alias allowing us to introduce wkup_i2c0
-and potentially space for mcu_i2c instances in the gap for follow on
-patches.
+When forking a child process, the parent write-protects anonymous pages
+and COW-shares them with the child being forked using copy_present_pte().
 
-Fixes: 635fb18ba008 ("arch: arm64: dts: Add support for AM69 Starter Kit")
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20230602214937.2349545-5-nm@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We must not take any concurrent page faults on the source vma's as they
+are being processed, as we expect both the vma and the pte's behind it
+to be stable.  For example, the anon_vma_fork() expects the parents
+vma->anon_vma to not change during the vma copy.
+
+A concurrent page fault on a page newly marked read-only by the page
+copy might trigger wp_page_copy() and a anon_vma_prepare(vma) on the
+source vma, defeating the anon_vma_clone() that wasn't done because the
+parent vma originally didn't have an anon_vma, but we now might end up
+copying a pte entry for a page that has one.
+
+Before the per-vma lock based changes, the mmap_lock guaranteed
+exclusion with concurrent page faults.  But now we need to do a
+vma_start_write() to make sure no concurrent faults happen on this vma
+while it is being processed.
+
+This fix can potentially regress some fork-heavy workloads.  Kernel
+build time did not show noticeable regression on a 56-core machine while
+a stress test mapping 10000 VMAs and forking 5000 times in a tight loop
+shows ~5% regression.  If such fork time regression is unacceptable,
+disabling CONFIG_PER_VMA_LOCK should restore its performance.  Further
+optimizations are possible if this regression proves to be problematic.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org/
+Reported-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+Closes: https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34c@applied-asynchrony.com/
+Reported-by: Jacob Young <jacobly.alt@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217624
+Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling first")
+Cc: stable@vger.kernel.org
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am69-sk.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/fork.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am69-sk.dts b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
-index bc49ba534790e..f364b7803115d 100644
---- a/arch/arm64/boot/dts/ti/k3-am69-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am69-sk.dts
-@@ -23,7 +23,7 @@ chosen {
- 	aliases {
- 		serial2 = &main_uart8;
- 		mmc1 = &main_sdhci1;
--		i2c0 = &main_i2c0;
-+		i2c3 = &main_i2c0;
- 	};
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -696,6 +696,7 @@ static __latent_entropy int dup_mmap(str
+ 	for_each_vma(old_vmi, mpnt) {
+ 		struct file *file;
  
- 	memory@80000000 {
--- 
-2.39.2
-
++		vma_start_write(mpnt);
+ 		if (mpnt->vm_flags & VM_DONTCOPY) {
+ 			vm_stat_account(mm, mpnt->vm_flags, -vma_pages(mpnt));
+ 			continue;
 
 
