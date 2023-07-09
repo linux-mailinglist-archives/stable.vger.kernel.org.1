@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 351A674C302
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 795F974C30D
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:27:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232449AbjGIL1M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:27:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37700 "EHLO
+        id S232511AbjGIL1q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:27:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232453AbjGIL1L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:27:11 -0400
+        with ESMTP id S232514AbjGIL1n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:27:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA04918C
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:27:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5959DC0
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:27:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48FBC60B7F
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:27:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EE3C433CA;
-        Sun,  9 Jul 2023 11:27:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC95160C01
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:27:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02536C433C8;
+        Sun,  9 Jul 2023 11:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902029;
-        bh=56f1In5tbzygGHl5qDvchEX5W2hG6dnIKV1N39LOWoI=;
+        s=korg; t=1688902061;
+        bh=XLScQ5AKDtvtrk2kNuXzi09UEOcedD6+vOvyNnJtcZk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W8VJEZEFHZblHi0gK3FobhQHazQWMoNyeWFW3RpeXyzS76wTyuzmuzDxXVKkkPshs
-         mxk8x8dr2FJdX/gQpN8V7SO78Uu65Lw+Qz/e0hSZcsDyUXZc8bsdvp9mAxQYGNskM7
-         SRtj4OByRro97EXIPnLaRoS3V+fhKfwPusxBu9Bk=
+        b=VHDGOvt9bIRiHfUJ2kka9yDVp4vaJK9uaiEA8umyJPoXGIjXazdDmJpj5CX61CUYm
+         M4e+8suLfLeORrv5CG58RtNs6eTtR8Z5LZpKzps45ifuzhEkgzGAVBdTtnUa4XTpuy
+         FWHQ/zlEOTrqlHThz9j/TFoAGxYxbXMyWxcgIhv8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, "kernelci.org bot" <bot@kernelci.org>,
+        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
+        <nfraprado@collabora.com>, Robert Foss <rfoss@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 213/431] ARM: dts: gta04: Move model property out of pinctrl node
-Date:   Sun,  9 Jul 2023 13:12:41 +0200
-Message-ID: <20230709111456.158934155@linuxfoundation.org>
+Subject: [PATCH 6.3 214/431] drm/bridge: anx7625: Prevent endless probe loop
+Date:   Sun,  9 Jul 2023 13:12:42 +0200
+Message-ID: <20230709111456.181311710@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -46,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,39 +56,259 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 4ffec92e70ac5097b9f67ec154065305b16a3b46 ]
+[ Upstream commit 1464e48d69ab7a50a377c9d39f5e5eb3cee2722e ]
 
-The model property should be at the top level, let's move it out
-of the pinctrl node.
+During probe, the driver registers i2c dummy devices and populates the
+aux bus, which registers a device for the panel. After doing that, the
+driver can still defer probe if needed. This ordering of operations is
+troublesome however, because the deferred probe work will retry probing
+all pending devices every time a new device is registered. Therefore, if
+modules need to be loaded in order to satisfy the dependencies for this
+driver to complete probe, the kernel will stall, since it'll keep trying
+to probe the anx7625 driver, but never succeed, given that modules would
+only be loaded after the deferred probe work completes.
 
-Fixes: d2eaf949d2c3 ("ARM: dts: omap3-gta04a5one: define GTA04A5 variant with OneNAND")
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Cc: H. Nikolaus Schaller <hns@goldelico.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Two changes are required to avoid this issue:
+* Move of_find_mipi_dsi_host_by_node(), which can defer probe, to before
+  anx7625_register_i2c_dummy_clients() and
+  devm_of_dp_aux_populate_ep_devices(), which register devices.
+* Make use of the done_probing callback when populating the aux bus,
+  so that the bridge registration is only done after the panel is
+  probed. This is required because the panel might need to defer probe,
+  but the aux bus population needs the i2c dummy devices working, so
+  this call couldn't just be moved to an earlier point in probe.
+  One caveat is that if the panel is described outside the aux bus, the
+  probe loop issue can still happen, but we don't have a way to avoid
+  it in that case since there's no callback available.
+
+With this patch applied, it's possible to boot on
+mt8192-asurada-spherion with
+
+CONFIG_DRM_ANALOGIX_ANX7625=y
+CONFIG_MTK_MMSYS=m
+CONFIG_BACKLIGHT_PWM=y
+
+and also with
+
+CONFIG_DRM_ANALOGIX_ANX7625=y
+CONFIG_MTK_MMSYS=y
+CONFIG_BACKLIGHT_PWM=m
+
+Fixes: adca62ec370c ("drm/bridge: anx7625: Support reading edid through aux channel")
+Fixes: 269332997a16 ("drm/bridge: anx7625: Return -EPROBE_DEFER if the dsi host was not found")
+Reported-by: "kernelci.org bot" <bot@kernelci.org>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230518193902.891121-1-nfraprado@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/omap3-gta04a5one.dts | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 128 +++++++++++++++-------
+ 1 file changed, 88 insertions(+), 40 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap3-gta04a5one.dts b/arch/arm/boot/dts/omap3-gta04a5one.dts
-index 9db9fe67cd63b..95df45cc70c09 100644
---- a/arch/arm/boot/dts/omap3-gta04a5one.dts
-+++ b/arch/arm/boot/dts/omap3-gta04a5one.dts
-@@ -5,9 +5,11 @@
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 6846199a2ee14..9e387c3e9b696 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -1687,6 +1687,14 @@ static int anx7625_parse_dt(struct device *dev,
+ 	if (of_property_read_bool(np, "analogix,audio-enable"))
+ 		pdata->audio_en = 1;
  
- #include "omap3-gta04a5.dts"
++	return 0;
++}
++
++static int anx7625_parse_dt_panel(struct device *dev,
++				  struct anx7625_platform_data *pdata)
++{
++	struct device_node *np = dev->of_node;
++
+ 	pdata->panel_bridge = devm_drm_of_get_bridge(dev, np, 1, 0);
+ 	if (IS_ERR(pdata->panel_bridge)) {
+ 		if (PTR_ERR(pdata->panel_bridge) == -ENODEV) {
+@@ -2032,7 +2040,7 @@ static int anx7625_register_audio(struct device *dev, struct anx7625_data *ctx)
+ 	return 0;
+ }
  
--&omap3_pmx_core {
-+/ {
- 	model = "Goldelico GTA04A5/Letux 2804 with OneNAND";
-+};
+-static int anx7625_attach_dsi(struct anx7625_data *ctx)
++static int anx7625_setup_dsi_device(struct anx7625_data *ctx)
+ {
+ 	struct mipi_dsi_device *dsi;
+ 	struct device *dev = &ctx->client->dev;
+@@ -2042,9 +2050,6 @@ static int anx7625_attach_dsi(struct anx7625_data *ctx)
+ 		.channel = 0,
+ 		.node = NULL,
+ 	};
+-	int ret;
+-
+-	DRM_DEV_DEBUG_DRIVER(dev, "attach dsi\n");
  
-+&omap3_pmx_core {
- 	gpmc_pins: pinmux_gpmc_pins {
- 		pinctrl-single,pins = <
+ 	host = of_find_mipi_dsi_host_by_node(ctx->pdata.mipi_host_node);
+ 	if (!host) {
+@@ -2065,14 +2070,24 @@ static int anx7625_attach_dsi(struct anx7625_data *ctx)
+ 		MIPI_DSI_MODE_VIDEO_HSE	|
+ 		MIPI_DSI_HS_PKT_END_ALIGNED;
  
+-	ret = devm_mipi_dsi_attach(dev, dsi);
++	ctx->dsi = dsi;
++
++	return 0;
++}
++
++static int anx7625_attach_dsi(struct anx7625_data *ctx)
++{
++	struct device *dev = &ctx->client->dev;
++	int ret;
++
++	DRM_DEV_DEBUG_DRIVER(dev, "attach dsi\n");
++
++	ret = devm_mipi_dsi_attach(dev, ctx->dsi);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(dev, "fail to attach dsi to host.\n");
+ 		return ret;
+ 	}
+ 
+-	ctx->dsi = dsi;
+-
+ 	DRM_DEV_DEBUG_DRIVER(dev, "attach dsi succeeded.\n");
+ 
+ 	return 0;
+@@ -2560,6 +2575,40 @@ static void anx7625_runtime_disable(void *data)
+ 	pm_runtime_disable(data);
+ }
+ 
++static int anx7625_link_bridge(struct drm_dp_aux *aux)
++{
++	struct anx7625_data *platform = container_of(aux, struct anx7625_data, aux);
++	struct device *dev = aux->dev;
++	int ret;
++
++	ret = anx7625_parse_dt_panel(dev, &platform->pdata);
++	if (ret) {
++		DRM_DEV_ERROR(dev, "fail to parse DT for panel : %d\n", ret);
++		return ret;
++	}
++
++	platform->bridge.funcs = &anx7625_bridge_funcs;
++	platform->bridge.of_node = dev->of_node;
++	if (!anx7625_of_panel_on_aux_bus(dev))
++		platform->bridge.ops |= DRM_BRIDGE_OP_EDID;
++	if (!platform->pdata.panel_bridge)
++		platform->bridge.ops |= DRM_BRIDGE_OP_HPD |
++					DRM_BRIDGE_OP_DETECT;
++	platform->bridge.type = platform->pdata.panel_bridge ?
++				    DRM_MODE_CONNECTOR_eDP :
++				    DRM_MODE_CONNECTOR_DisplayPort;
++
++	drm_bridge_add(&platform->bridge);
++
++	if (!platform->pdata.is_dpi) {
++		ret = anx7625_attach_dsi(platform);
++		if (ret)
++			drm_bridge_remove(&platform->bridge);
++	}
++
++	return ret;
++}
++
+ static int anx7625_i2c_probe(struct i2c_client *client)
+ {
+ 	struct anx7625_data *platform;
+@@ -2634,6 +2683,24 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 	platform->aux.wait_hpd_asserted = anx7625_wait_hpd_asserted;
+ 	drm_dp_aux_init(&platform->aux);
+ 
++	ret = anx7625_parse_dt(dev, pdata);
++	if (ret) {
++		if (ret != -EPROBE_DEFER)
++			DRM_DEV_ERROR(dev, "fail to parse DT : %d\n", ret);
++		goto free_wq;
++	}
++
++	if (!platform->pdata.is_dpi) {
++		ret = anx7625_setup_dsi_device(platform);
++		if (ret < 0)
++			goto free_wq;
++	}
++
++	/*
++	 * Registering the i2c devices will retrigger deferred probe, so it
++	 * needs to be done after calls that might return EPROBE_DEFER,
++	 * otherwise we can get an infinite loop.
++	 */
+ 	if (anx7625_register_i2c_dummy_clients(platform, client) != 0) {
+ 		ret = -ENOMEM;
+ 		DRM_DEV_ERROR(dev, "fail to reserve I2C bus.\n");
+@@ -2648,13 +2715,21 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 	if (ret)
+ 		goto free_wq;
+ 
+-	devm_of_dp_aux_populate_ep_devices(&platform->aux);
+-
+-	ret = anx7625_parse_dt(dev, pdata);
++	/*
++	 * Populating the aux bus will retrigger deferred probe, so it needs to
++	 * be done after calls that might return EPROBE_DEFER, otherwise we can
++	 * get an infinite loop.
++	 */
++	ret = devm_of_dp_aux_populate_bus(&platform->aux, anx7625_link_bridge);
+ 	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			DRM_DEV_ERROR(dev, "fail to parse DT : %d\n", ret);
+-		goto free_wq;
++		if (ret != -ENODEV) {
++			DRM_DEV_ERROR(dev, "failed to populate aux bus : %d\n", ret);
++			goto free_wq;
++		}
++
++		ret = anx7625_link_bridge(&platform->aux);
++		if (ret)
++			goto free_wq;
+ 	}
+ 
+ 	if (!platform->pdata.low_power_mode) {
+@@ -2667,27 +2742,6 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 	if (platform->pdata.intp_irq)
+ 		queue_work(platform->workqueue, &platform->work);
+ 
+-	platform->bridge.funcs = &anx7625_bridge_funcs;
+-	platform->bridge.of_node = client->dev.of_node;
+-	if (!anx7625_of_panel_on_aux_bus(&client->dev))
+-		platform->bridge.ops |= DRM_BRIDGE_OP_EDID;
+-	if (!platform->pdata.panel_bridge)
+-		platform->bridge.ops |= DRM_BRIDGE_OP_HPD |
+-					DRM_BRIDGE_OP_DETECT;
+-	platform->bridge.type = platform->pdata.panel_bridge ?
+-				    DRM_MODE_CONNECTOR_eDP :
+-				    DRM_MODE_CONNECTOR_DisplayPort;
+-
+-	drm_bridge_add(&platform->bridge);
+-
+-	if (!platform->pdata.is_dpi) {
+-		ret = anx7625_attach_dsi(platform);
+-		if (ret) {
+-			DRM_DEV_ERROR(dev, "Fail to attach to dsi : %d\n", ret);
+-			goto unregister_bridge;
+-		}
+-	}
+-
+ 	if (platform->pdata.audio_en)
+ 		anx7625_register_audio(dev, platform);
+ 
+@@ -2695,12 +2749,6 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 
+ 	return 0;
+ 
+-unregister_bridge:
+-	drm_bridge_remove(&platform->bridge);
+-
+-	if (!platform->pdata.low_power_mode)
+-		pm_runtime_put_sync_suspend(&client->dev);
+-
+ free_wq:
+ 	if (platform->workqueue)
+ 		destroy_workqueue(platform->workqueue);
 -- 
 2.39.2
 
