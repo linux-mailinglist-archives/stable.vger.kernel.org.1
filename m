@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CFFC74C02A
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 02:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7CF674C02B
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 02:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229454AbjGIA2U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 8 Jul 2023 20:28:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52808 "EHLO
+        id S229789AbjGIAa0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 8 Jul 2023 20:30:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbjGIA2T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 8 Jul 2023 20:28:19 -0400
+        with ESMTP id S229828AbjGIAaX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 8 Jul 2023 20:30:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 660CEE4C;
-        Sat,  8 Jul 2023 17:28:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05361E4A;
+        Sat,  8 Jul 2023 17:30:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EF8EB60B50;
-        Sun,  9 Jul 2023 00:28:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503BCC433C7;
-        Sun,  9 Jul 2023 00:28:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DAE960B5C;
+        Sun,  9 Jul 2023 00:30:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6692C433C8;
+        Sun,  9 Jul 2023 00:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1688862497;
-        bh=PE0ZtakxCz57/oIalPMrehbn3vq+YCTe/8Q4AdaptbY=;
+        s=korg; t=1688862622;
+        bh=R5Sy4nBtBpKsdyiPO0zfq+ZwMlMfavHLS3cAS+M7JQk=;
         h=Date:To:From:Subject:From;
-        b=kimWg8Z0d/gwr90PJv/2ujKr5CW8U7kCS/rjYbPumkpufMgSbNJgs8ocCKr2iRNfF
-         hXyyBR8B15aVGfcebu+OC1RJLlRd2QEx5BbcaKyjb7lWg+KAEBzcDwLPcXCj4G4D0M
-         lZnea3RHE0G1TRdrXbeORCVFd/jSHGb6IoO5V88o=
-Date:   Sat, 08 Jul 2023 17:28:16 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        jirislaby@kernel.org, jacobly.alt@gmail.com,
-        holger@applied-asynchrony.com, david@redhat.com, surenb@google.com,
-        akpm@linux-foundation.org
+        b=Lj+4grZyCtTYggf4ZEzo0axm7GjqvG0FJvPHkLogWdY7VPAR5koF85HyoIAgcWUz0
+         CgJACiDp7GNMPJKC04cpNbkXP3ZU8HiD1c4I5uWPE1w14/81ETGW5ptZBsFr2kJS5p
+         a2bY6QRe2iqRVbVK+Lcsyhy2nDjTgLBSkHgDQGAE=
+Date:   Sat, 08 Jul 2023 17:30:21 -0700
+To:     mm-commits@vger.kernel.org, ying.huang@intel.com,
+        steven.price@arm.com, stable@vger.kernel.org,
+        Qun-wei.Lin@mediatek.com, david@redhat.com,
+        catalin.marinas@arm.com, pcc@google.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [obsolete] mm-disable-config_per_vma_lock-until-its-fixed.patch removed from -mm tree
-Message-Id: <20230709002817.503BCC433C7@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-call-arch_swap_restore-from-do_swap_page.patch removed from -mm tree
+Message-Id: <20230709003021.E6692C433C8@smtp.kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PP_MIME_FAKE_ASCII_TEXT,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,64 +49,61 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm: disable CONFIG_PER_VMA_LOCK until its fixed
+     Subject: mm: call arch_swap_restore() from do_swap_page()
 has been removed from the -mm tree.  Its filename was
-     mm-disable-config_per_vma_lock-until-its-fixed.patch
+     mm-call-arch_swap_restore-from-do_swap_page.patch
 
-This patch was dropped because it is obsolete
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: mm: disable CONFIG_PER_VMA_LOCK until its fixed
-Date: Wed, 5 Jul 2023 18:14:00 -0700
+From: Peter Collingbourne <pcc@google.com>
+Subject: mm: call arch_swap_restore() from do_swap_page()
+Date: Mon, 22 May 2023 17:43:08 -0700
 
-A memory corruption was reported in [1] with bisection pointing to the
-patch [2] enabling per-VMA locks for x86.  Disable per-VMA locks config to
-prevent this issue until the fix is confirmed.  This is expected to be a
-temporary measure.
+Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
+the call to swap_free() before the call to set_pte_at(), which meant that
+the MTE tags could end up being freed before set_pte_at() had a chance to
+restore them.  Fix it by adding a call to the arch_swap_restore() hook
+before the call to swap_free().
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=217624
-[2] https://lore.kernel.org/all/20230227173632.3292573-30-surenb@google.com
-
-Link: https://lkml.kernel.org/r/20230706011400.2949242-3-surenb@google.com
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org/
-Reported-by: Jacob Young <jacobly.alt@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217624
-Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling first")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Holger Hoffstätte <holger@applied-asynchrony.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20230523004312.1807357-2-pcc@google.com
+Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
+Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
+Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.camel@mediatek.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: "Huang, Ying" <ying.huang@intel.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: <stable@vger.kernel.org>	[6.1+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/Kconfig |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/memory.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/mm/Kconfig~mm-disable-config_per_vma_lock-until-its-fixed
-+++ a/mm/Kconfig
-@@ -1224,8 +1224,9 @@ config ARCH_SUPPORTS_PER_VMA_LOCK
-        def_bool n
+--- a/mm/memory.c~mm-call-arch_swap_restore-from-do_swap_page
++++ a/mm/memory.c
+@@ -3954,6 +3954,13 @@ vm_fault_t do_swap_page(struct vm_fault
+ 	}
  
- config PER_VMA_LOCK
--	def_bool y
-+	bool "Enable per-vma locking during page fault handling."
- 	depends on ARCH_SUPPORTS_PER_VMA_LOCK && MMU && SMP
-+	depends on BROKEN
- 	help
- 	  Allow per-vma locking during page fault handling.
- 
+ 	/*
++	 * Some architectures may have to restore extra metadata to the page
++	 * when reading from swap. This metadata may be indexed by swap entry
++	 * so this must be called before swap_free().
++	 */
++	arch_swap_restore(entry, folio);
++
++	/*
+ 	 * Remove the swap entry and conditionally try to free up the swapcache.
+ 	 * We're already holding a reference on the page but haven't mapped it
+ 	 * yet.
 _
 
-Patches currently in -mm which might be from surenb@google.com are
+Patches currently in -mm which might be from pcc@google.com are
 
-mm-lock-a-vma-before-stack-expansion.patch
-mm-lock-newly-mapped-vma-which-can-be-modified-after-it-becomes-visible.patch
-swap-remove-remnants-of-polling-from-read_swap_cache_async.patch
-mm-add-missing-vm_fault_result_trace-name-for-vm_fault_completed.patch
-mm-drop-per-vma-lock-when-returning-vm_fault_retry-or-vm_fault_completed.patch
-mm-change-folio_lock_or_retry-to-use-vm_fault-directly.patch
-mm-handle-swap-page-faults-under-per-vma-lock.patch
-mm-handle-userfaults-under-vma-lock.patch
+mm-call-arch_swap_restore-from-unuse_pte.patch
+arm64-mte-simplify-swap-tag-restoration-logic.patch
 
