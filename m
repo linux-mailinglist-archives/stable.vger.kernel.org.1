@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2995974C32B
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:29:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97BAF74C352
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:30:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232685AbjGIL3I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:29:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38670 "EHLO
+        id S232796AbjGILay (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:30:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232681AbjGIL3H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:29:07 -0400
+        with ESMTP id S232805AbjGILax (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:30:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB25B18F
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:29:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3315B18F
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:30:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A1F860B7F
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:29:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFF5C433C7;
-        Sun,  9 Jul 2023 11:29:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C60D860BB7
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:30:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34BEC433C8;
+        Sun,  9 Jul 2023 11:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902145;
-        bh=Zzo5s1DtmZHbxvr46nB1pAS3A2hZO+KEbeElB69G4WY=;
+        s=korg; t=1688902252;
+        bh=h7wSZcCXv4nXf65tj7RLqZPvATNaJNRzTCdnu8XReZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bsrkICXD9vWmZuT9fbewgnp6wyq0/qNHS8kG4IgdZDfaFWE07LFG1P3hg2Mecjc0n
-         +qvjjX468AT1QZdTuX2kxR5J8k6TIV9Jumdv3ggBvFZ4k+u5Ud+Z7GEq6a2CkFm8y8
-         0LiIAD9XW+Ks+xpc9ABi9lr8oJCtduhgvXI7NvKg=
+        b=j1jupGAEjUZjCaQCsCAfxNoTeQCo65qfui8AFkEMzlFZxiZ4xtYEOMQWsSdoZLYpT
+         W4lnUIpluIO2w88VHZDDLXlkvkguMFbqkyJZR+U1w2scAjDceUJPLTTIpkXsu18tH7
+         UbDdciBH42iy6JCCcsnC0zceasyWFtkcxBp3PCy0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        patches@lists.linux.dev, Christian Lamparter <chunkeey@gmail.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 271/431] hwmon: (pmbus/adm1275) Fix problems with temperature monitoring on ADM1272
-Date:   Sun,  9 Jul 2023 13:13:39 +0200
-Message-ID: <20230709111457.498955553@linuxfoundation.org>
+Subject: [PATCH 6.3 272/431] ARM: dts: BCM5301X: fix duplex-full => full-duplex
+Date:   Sun,  9 Jul 2023 13:13:40 +0200
+Message-ID: <20230709111457.523151641@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -54,125 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Christian Lamparter <chunkeey@gmail.com>
 
-[ Upstream commit b153a0bb4199566abd337119207f82b59a8cd1ca ]
+[ Upstream commit fd274b733bfdde3ca72f0fa2a37f032f3a8c402c ]
 
-The PMON_CONFIG register on ADM1272 is a 16 bit register. Writing a 8 bit
-value into it clears the upper 8 bits of the register, resulting in
-unexpected side effects. Fix by writing the 16 bit register value.
+this typo was found by the dtbs_check
+| ports:port@5:fixed-link: 'oneOf' conditional failed,
+|  {'speed': [[1000]], 'duplex-full': True} is not of type 'array'
+| 'duplex-full' does not match any of the regexes: 'pinctrl-[0-]..."
 
-Also, it has been reported that temperature readings are sometimes widely
-inaccurate, to the point where readings may result in device shutdown due
-to errant overtemperature faults. Improve by enabling temperature sampling.
+this should have been full-duplex;
 
-While at it, move the common code for ADM1272 and ADM1278 into a separate
-function, and clarify in the error message that an attempt was made to
-enable both VOUT and temperature monitoring.
-
-Last but not least, return the error code reported by the underlying I2C
-controller and not -ENODEV if updating the PMON_CONFIG register fails.
-After all, this does not indicate that the chip is not present, but an
-error in the communication with the chip.
-
-Fixes: 4ff0ce227a1e ("hwmon: (pmbus/adm1275) Add support for ADM1272")
-Fixes: 9da9c2dc57b2 ("hwmon: (adm1275) enable adm1272 temperature reporting")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230602213447.3557346-1-linux@roeck-us.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 935327a73553 ("ARM: dts: BCM5301X: Add DT for Meraki MR26")
+Fixes: ec88a9c344d9 ("ARM: BCM5301X: Add DT for Meraki MR32")
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+Link: https://lore.kernel.org/r/50522f45566951a9eabd22820647924cc6b4a264.1686238550.git.chunkeey@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1275.c | 52 +++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 26 deletions(-)
+ arch/arm/boot/dts/bcm53015-meraki-mr26.dts | 2 +-
+ arch/arm/boot/dts/bcm53016-meraki-mr32.dts | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/adm1275.c b/drivers/hwmon/pmbus/adm1275.c
-index 3b07bfb43e937..b8543c06d022a 100644
---- a/drivers/hwmon/pmbus/adm1275.c
-+++ b/drivers/hwmon/pmbus/adm1275.c
-@@ -37,10 +37,13 @@ enum chips { adm1075, adm1272, adm1275, adm1276, adm1278, adm1293, adm1294 };
+diff --git a/arch/arm/boot/dts/bcm53015-meraki-mr26.dts b/arch/arm/boot/dts/bcm53015-meraki-mr26.dts
+index 14f58033efeb9..ca2266b936ee2 100644
+--- a/arch/arm/boot/dts/bcm53015-meraki-mr26.dts
++++ b/arch/arm/boot/dts/bcm53015-meraki-mr26.dts
+@@ -128,7 +128,7 @@ port@5 {
  
- #define ADM1272_IRANGE			BIT(0)
+ 			fixed-link {
+ 				speed = <1000>;
+-				duplex-full;
++				full-duplex;
+ 			};
+ 		};
+ 	};
+diff --git a/arch/arm/boot/dts/bcm53016-meraki-mr32.dts b/arch/arm/boot/dts/bcm53016-meraki-mr32.dts
+index 46c2c93b01d88..a34e1746a6c59 100644
+--- a/arch/arm/boot/dts/bcm53016-meraki-mr32.dts
++++ b/arch/arm/boot/dts/bcm53016-meraki-mr32.dts
+@@ -187,7 +187,7 @@ port@5 {
  
-+#define ADM1278_TSFILT			BIT(15)
- #define ADM1278_TEMP1_EN		BIT(3)
- #define ADM1278_VIN_EN			BIT(2)
- #define ADM1278_VOUT_EN			BIT(1)
- 
-+#define ADM1278_PMON_DEFCONFIG		(ADM1278_VOUT_EN | ADM1278_TEMP1_EN | ADM1278_TSFILT)
-+
- #define ADM1293_IRANGE_25		0
- #define ADM1293_IRANGE_50		BIT(6)
- #define ADM1293_IRANGE_100		BIT(7)
-@@ -462,6 +465,22 @@ static const struct i2c_device_id adm1275_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, adm1275_id);
- 
-+/* Enable VOUT & TEMP1 if not enabled (disabled by default) */
-+static int adm1275_enable_vout_temp(struct i2c_client *client, int config)
-+{
-+	int ret;
-+
-+	if ((config & ADM1278_PMON_DEFCONFIG) != ADM1278_PMON_DEFCONFIG) {
-+		config |= ADM1278_PMON_DEFCONFIG;
-+		ret = i2c_smbus_write_word_data(client, ADM1275_PMON_CONFIG, config);
-+		if (ret < 0) {
-+			dev_err(&client->dev, "Failed to enable VOUT/TEMP1 monitoring\n");
-+			return ret;
-+		}
-+	}
-+	return 0;
-+}
-+
- static int adm1275_probe(struct i2c_client *client)
- {
- 	s32 (*config_read_fn)(const struct i2c_client *client, u8 reg);
-@@ -615,19 +634,10 @@ static int adm1275_probe(struct i2c_client *client)
- 			PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT |
- 			PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP;
- 
--		/* Enable VOUT & TEMP1 if not enabled (disabled by default) */
--		if ((config & (ADM1278_VOUT_EN | ADM1278_TEMP1_EN)) !=
--		    (ADM1278_VOUT_EN | ADM1278_TEMP1_EN)) {
--			config |= ADM1278_VOUT_EN | ADM1278_TEMP1_EN;
--			ret = i2c_smbus_write_byte_data(client,
--							ADM1275_PMON_CONFIG,
--							config);
--			if (ret < 0) {
--				dev_err(&client->dev,
--					"Failed to enable VOUT monitoring\n");
--				return -ENODEV;
--			}
--		}
-+		ret = adm1275_enable_vout_temp(client, config);
-+		if (ret)
-+			return ret;
-+
- 		if (config & ADM1278_VIN_EN)
- 			info->func[0] |= PMBUS_HAVE_VIN;
- 		break;
-@@ -684,19 +694,9 @@ static int adm1275_probe(struct i2c_client *client)
- 			PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT |
- 			PMBUS_HAVE_TEMP | PMBUS_HAVE_STATUS_TEMP;
- 
--		/* Enable VOUT & TEMP1 if not enabled (disabled by default) */
--		if ((config & (ADM1278_VOUT_EN | ADM1278_TEMP1_EN)) !=
--		    (ADM1278_VOUT_EN | ADM1278_TEMP1_EN)) {
--			config |= ADM1278_VOUT_EN | ADM1278_TEMP1_EN;
--			ret = i2c_smbus_write_word_data(client,
--							ADM1275_PMON_CONFIG,
--							config);
--			if (ret < 0) {
--				dev_err(&client->dev,
--					"Failed to enable VOUT monitoring\n");
--				return -ENODEV;
--			}
--		}
-+		ret = adm1275_enable_vout_temp(client, config);
-+		if (ret)
-+			return ret;
- 
- 		if (config & ADM1278_VIN_EN)
- 			info->func[0] |= PMBUS_HAVE_VIN;
+ 			fixed-link {
+ 				speed = <1000>;
+-				duplex-full;
++				full-duplex;
+ 			};
+ 		};
+ 	};
 -- 
 2.39.2
 
