@@ -2,115 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 599E274C000
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 01:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B89B474C029
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 02:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229839AbjGHXd7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 8 Jul 2023 19:33:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48396 "EHLO
+        id S229771AbjGIA2T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 8 Jul 2023 20:28:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjGHXd6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 8 Jul 2023 19:33:58 -0400
+        with ESMTP id S229454AbjGIA2S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 8 Jul 2023 20:28:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBDD3E43;
-        Sat,  8 Jul 2023 16:33:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C868102;
+        Sat,  8 Jul 2023 17:28:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6334B60B3A;
-        Sat,  8 Jul 2023 23:33:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEDDC433C7;
-        Sat,  8 Jul 2023 23:33:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688859235;
-        bh=c7YAN05o/7u4ZuTezbA7EQz+CckXWvrgMuBtkeN7qoc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ccJ3VdkgiLo6S8x4jMomQTR0IpxahgKdZYUqLbArnCVD9vwbBAeA46fY5D4yvP3Hu
-         rE0LhcRJz7D2TWe/LSZMxONyp3+mrpyPjp3db1QJWHr1+xQCmxjTFAESV4eIBlNnO2
-         jZX+QUOoLZYMJrZBUjFpnG8y6ufrq7vHbdWfH+dbtHUQJXl+C9WOr+zSEX2Fjr0lyR
-         U2Uu74MPBhBrgFEPqLcLKiy5p1IQxD6SiLFHoJIHEJHWyJLKsMar+VnkVqw/2kMPAX
-         ew960hq4okBxJ1M33xQ2A3e57zb1eEmIuoyo9cGY578nXtf8cNUAkG+aFglkr/Z8W2
-         fCi1aLZKUCW2A==
-From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Josh Triplett <josh@joshtriplett.org>,
-        linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        stable@vger.kernel.org
-Subject: [PATCH] prctl: move PR_GET_AUXV out of PR_MCE_KILL
-Date:   Sun,  9 Jul 2023 01:33:44 +0200
-Message-ID: <20230708233344.361854-1-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFD7560B46;
+        Sun,  9 Jul 2023 00:28:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E2FC433C7;
+        Sun,  9 Jul 2023 00:28:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1688862496;
+        bh=GzBc7wNigdd4K77j0EFSLbDUD+aYHLBjSb8Ajiz6MwQ=;
+        h=Date:To:From:Subject:From;
+        b=PhOmitkZlCmKGRe0uR6LDqUbWKr1ITzA4D3AAaSl1di+Qc9HWqoRCH3w+4q4slBPT
+         A291NfG7Crk54Vg+Is+rTy7CKBci+bTNS95tbTDTDhxzlEURVfg4luS8iLGbGPUBOK
+         Dbky1gXWN/RE0dKdwZGNSghIM5Yi5Yl89VWHoEh0=
+Date:   Sat, 08 Jul 2023 17:28:15 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        Liam.Howlett@oracle.com, jirislaby@kernel.org,
+        jacobly.alt@gmail.com, holger@applied-asynchrony.com,
+        david@redhat.com, surenb@google.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [obsolete] fork-lock-vmas-of-the-parent-process-when-forking.patch removed from -mm tree
+Message-Id: <20230709002816.18E2FC433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PP_MIME_FAKE_ASCII_TEXT,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Somehow PR_GET_AUXV got added into PR_MCE_KILL's switch when
-the patch was applied [1].
 
-Thus move it out of the switch, to the place the patch added it.
+The quilt patch titled
+     Subject: fork: lock VMAs of the parent process when forking
+has been removed from the -mm tree.  Its filename was
+     fork-lock-vmas-of-the-parent-process-when-forking.patch
 
-In the recently released v6.4 kernel some user could, in
-principle, be already using this feature by mapping the right
-page and passing the PR_GET_AUXV constant as a pointer:
+This patch was dropped because it is obsolete
 
-    prctl(PR_MCE_KILL, PR_GET_AUXV, ...)
+------------------------------------------------------
+From: Suren Baghdasaryan <surenb@google.com>
+Subject: fork: lock VMAs of the parent process when forking
+Date: Wed, 5 Jul 2023 18:13:59 -0700
 
-So this does change the behavior for users. We could keep the bug
-since the other subcases in PR_MCE_KILL (PR_MCE_KILL_CLEAR and
-PR_MCE_KILL_SET) do not overlap.
+Patch series "Avoid memory corruption caused by per-VMA locks", v4.
 
-However, v6.4 may be recent enough (2 weeks old) that moving
-the lines (rather than just adding a new case) does not break
-anybody? Moreover, the documentation in man-pages was just
-committed today [2].
+A memory corruption was reported in [1] with bisection pointing to the
+patch [2] enabling per-VMA locks for x86.  Based on the reproducer
+provided in [1] we suspect this is caused by the lack of VMA locking while
+forking a child process.
 
-Fixes: ddc65971bb67 ("prctl: add PR_GET_AUXV to copy auxv to userspace")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/d81864a7f7f43bca6afa2a09fc2e850e4050ab42.1680611394.git.josh@joshtriplett.org/ [1]
-Link: https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/commit/?id=8cf0c06bfd3c2b219b044d4151c96f0da50af9ad [2]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Patch 1/2 in the series implements proper VMA locking during fork.  I
+tested the fix locally using the reproducer and was unable to reproduce
+the memory corruption problem.
+
+This fix can potentially regress some fork-heavy workloads.  Kernel build
+time did not show noticeable regression on a 56-core machine while a
+stress test mapping 10000 VMAs and forking 5000 times in a tight loop
+shows ~7% regression.  If such fork time regression is unacceptable,
+disabling CONFIG_PER_VMA_LOCK should restore its performance.  Further
+optimizations are possible if this regression proves to be problematic.
+
+Patch 2/2 disables per-VMA locks until the fix is tested and verified.
+
+
+This patch (of 2):
+
+When forking a child process, parent write-protects an anonymous page and
+COW-shares it with the child being forked using copy_present_pte(). 
+Parent's TLB is flushed right before we drop the parent's mmap_lock in
+dup_mmap().  If we get a write-fault before that TLB flush in the parent,
+and we end up replacing that anonymous page in the parent process in
+do_wp_page() (because, COW-shared with the child), this might lead to some
+stale writable TLB entries targeting the wrong (old) page.  Similar issue
+happened in the past with userfaultfd (see flush_tlb_page() call inside
+do_wp_page()).
+
+Lock VMAs of the parent process when forking a child, which prevents
+concurrent page faults during fork operation and avoids this issue.  This
+fix can potentially regress some fork-heavy workloads.  Kernel build time
+did not show noticeable regression on a 56-core machine while a stress
+test mapping 10000 VMAs and forking 5000 times in a tight loop shows ~7%
+regression.  If such fork time regression is unacceptable, disabling
+CONFIG_PER_VMA_LOCK should restore its performance.  Further optimizations
+are possible if this regression proves to be problematic.
+
+Link: https://lkml.kernel.org/r/20230706011400.2949242-1-surenb@google.com
+Link: https://lkml.kernel.org/r/20230706011400.2949242-2-surenb@google.com
+Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling first")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org/
+Reported-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+Closes: https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34c@applied-asynchrony.com/
+Reported-by: Jacob Young <jacobly.alt@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217624
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Tested-by: Holger Hoffsttte <holger@applied-asynchrony.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- kernel/sys.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 339fee3eff6a..a36a27ebac33 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -2529,11 +2529,6 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 			else
- 				return -EINVAL;
- 			break;
--	case PR_GET_AUXV:
--		if (arg4 || arg5)
--			return -EINVAL;
--		error = prctl_get_auxv((void __user *)arg2, arg3);
--		break;
- 		default:
- 			return -EINVAL;
- 		}
-@@ -2688,6 +2683,11 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 	case PR_SET_VMA:
- 		error = prctl_set_vma(arg2, arg3, arg4, arg5);
- 		break;
-+	case PR_GET_AUXV:
-+		if (arg4 || arg5)
-+			return -EINVAL;
-+		error = prctl_get_auxv((void __user *)arg2, arg3);
-+		break;
- #ifdef CONFIG_KSM
- 	case PR_SET_MEMORY_MERGE:
- 		if (arg3 || arg4 || arg5)
+ kernel/fork.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-base-commit: 6995e2de6891c724bfeb2db33d7b87775f913ad1
--- 
-2.41.0
+--- a/kernel/fork.c~fork-lock-vmas-of-the-parent-process-when-forking
++++ a/kernel/fork.c
+@@ -658,6 +658,12 @@ static __latent_entropy int dup_mmap(str
+ 		retval = -EINTR;
+ 		goto fail_uprobe_end;
+ 	}
++#ifdef CONFIG_PER_VMA_LOCK
++	/* Disallow any page faults before calling flush_cache_dup_mm */
++	for_each_vma(old_vmi, mpnt)
++		vma_start_write(mpnt);
++	vma_iter_set(&old_vmi, 0);
++#endif
+ 	flush_cache_dup_mm(oldmm);
+ 	uprobe_dup_mmap(oldmm, mm);
+ 	/*
+_
+
+Patches currently in -mm which might be from surenb@google.com are
+
+mm-disable-config_per_vma_lock-until-its-fixed.patch
+mm-lock-a-vma-before-stack-expansion.patch
+mm-lock-newly-mapped-vma-which-can-be-modified-after-it-becomes-visible.patch
+swap-remove-remnants-of-polling-from-read_swap_cache_async.patch
+mm-add-missing-vm_fault_result_trace-name-for-vm_fault_completed.patch
+mm-drop-per-vma-lock-when-returning-vm_fault_retry-or-vm_fault_completed.patch
+mm-change-folio_lock_or_retry-to-use-vm_fault-directly.patch
+mm-handle-swap-page-faults-under-per-vma-lock.patch
+mm-handle-userfaults-under-vma-lock.patch
 
