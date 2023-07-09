@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1509074C2C1
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8F3A74C2CC
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:24:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231752AbjGILYV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:24:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35616 "EHLO
+        id S231845AbjGILY5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:24:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231709AbjGILYU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:24:20 -0400
+        with ESMTP id S231864AbjGILYw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:24:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B93D418C
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:24:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56C2A13D
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:24:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4880D60BD6
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:24:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF82C433C7;
-        Sun,  9 Jul 2023 11:24:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E215A60BEB
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:24:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00323C433C8;
+        Sun,  9 Jul 2023 11:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901858;
-        bh=lp04nvsECuj9Z3KYPrWIO7o5fBWoIIQVz2IrryEAFGo=;
+        s=korg; t=1688901889;
+        bh=k2CA7rI2ZOVYfokyffwdv1fmht2eZusReAvJvYCjrT0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xio6YySQ3s1AxBLhHam1wRabEqQdjbsNnZDiRDT/j0r3epSrDDcP9v3fynrTDclvt
-         2Vx+vWaEqNoIkmIM9pkmw0ZPSyRqsSCgE3EZiTxNh/cNulQJhEtQotajeb1WN/dIfq
-         aORlRnHLe3x4DN3exLoZWoqfYcJ67W3XitVoKKo0=
+        b=IYnqlVjg/W1j4IHZ6NPpdojoZjNimIFoQW1jp/FKmuv77obHfJtajd6qOQuqTWMe+
+         TJYNNUI9kp4ut8KgFRHJu2JE05M6dXV7dTGCOf+VzYXvXkYuMlmmpqIB8pDEtIQ6PU
+         fRgJX/3+GIPUJYL/DDeOeEbqKJvgLm4WOMmdbTpk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        patches@lists.linux.dev,
+        "Ilia.Gavrilov" <Ilia.Gavrilov@infotecs.ru>,
+        Simon Horman <simon.horman@corigine.com>,
         Florian Westphal <fw@strlen.de>,
         Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 152/431] netfilter: conntrack: dccp: copy entire header to stack buffer, not just basic one
-Date:   Sun,  9 Jul 2023 13:11:40 +0200
-Message-ID: <20230709111454.730106878@linuxfoundation.org>
+Subject: [PATCH 6.3 153/431] netfilter: nf_conntrack_sip: fix the ct_sip_parse_numerical_param() return value.
+Date:   Sun,  9 Jul 2023 13:11:41 +0200
+Message-ID: <20230709111454.752871510@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -56,145 +58,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Ilia.Gavrilov <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit ff0a3a7d52ff7282dbd183e7fc29a1fe386b0c30 ]
+[ Upstream commit f188d30087480eab421cd8ca552fb15f55d57f4d ]
 
-Eric Dumazet says:
-  nf_conntrack_dccp_packet() has an unique:
+ct_sip_parse_numerical_param() returns only 0 or 1 now.
+But process_register_request() and process_register_response() imply
+checking for a negative value if parsing of a numerical header parameter
+failed.
+The invocation in nf_nat_sip() looks correct:
+ 	if (ct_sip_parse_numerical_param(...) > 0 &&
+ 	    ...) { ... }
 
-  dh = skb_header_pointer(skb, dataoff, sizeof(_dh), &_dh);
+Make the return value of the function ct_sip_parse_numerical_param()
+a tristate to fix all the cases
+a) return 1 if value is found; *val is set
+b) return 0 if value is not found; *val is unchanged
+c) return -1 on error; *val is undefined
 
-  And nothing more is 'pulled' from the packet, depending on the content.
-  dh->dccph_doff, and/or dh->dccph_x ...)
-  So dccp_ack_seq() is happily reading stuff past the _dh buffer.
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-BUG: KASAN: stack-out-of-bounds in nf_conntrack_dccp_packet+0x1134/0x11c0
-Read of size 4 at addr ffff000128f66e0c by task syz-executor.2/29371
-[..]
-
-Fix this by increasing the stack buffer to also include room for
-the extra sequence numbers and all the known dccp packet type headers,
-then pull again after the initial validation of the basic header.
-
-While at it, mark packets invalid that lack 48bit sequence bit but
-where RFC says the type MUST use them.
-
-Compile tested only.
-
-v2: first skb_header_pointer() now needs to adjust the size to
-    only pull the generic header. (Eric)
-
-Heads-up: I intend to remove dccp conntrack support later this year.
-
-Fixes: 2bc780499aa3 ("[NETFILTER]: nf_conntrack: add DCCP protocol support")
-Reported-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Fixes: 0f32a40fc91a ("[NETFILTER]: nf_conntrack_sip: create signalling expectations")
+Signed-off-by: Ilia.Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_proto_dccp.c | 52 +++++++++++++++++++++++--
- 1 file changed, 49 insertions(+), 3 deletions(-)
+ net/netfilter/nf_conntrack_sip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_proto_dccp.c b/net/netfilter/nf_conntrack_proto_dccp.c
-index c1557d47ccd1e..d4fd626d2b8c3 100644
---- a/net/netfilter/nf_conntrack_proto_dccp.c
-+++ b/net/netfilter/nf_conntrack_proto_dccp.c
-@@ -432,9 +432,19 @@ static bool dccp_error(const struct dccp_hdr *dh,
- 		       struct sk_buff *skb, unsigned int dataoff,
- 		       const struct nf_hook_state *state)
- {
-+	static const unsigned long require_seq48 = 1 << DCCP_PKT_REQUEST |
-+						   1 << DCCP_PKT_RESPONSE |
-+						   1 << DCCP_PKT_CLOSEREQ |
-+						   1 << DCCP_PKT_CLOSE |
-+						   1 << DCCP_PKT_RESET |
-+						   1 << DCCP_PKT_SYNC |
-+						   1 << DCCP_PKT_SYNCACK;
- 	unsigned int dccp_len = skb->len - dataoff;
- 	unsigned int cscov;
- 	const char *msg;
-+	u8 type;
-+
-+	BUILD_BUG_ON(DCCP_PKT_INVALID >= BITS_PER_LONG);
- 
- 	if (dh->dccph_doff * 4 < sizeof(struct dccp_hdr) ||
- 	    dh->dccph_doff * 4 > dccp_len) {
-@@ -459,34 +469,70 @@ static bool dccp_error(const struct dccp_hdr *dh,
- 		goto out_invalid;
- 	}
- 
--	if (dh->dccph_type >= DCCP_PKT_INVALID) {
-+	type = dh->dccph_type;
-+	if (type >= DCCP_PKT_INVALID) {
- 		msg = "nf_ct_dccp: reserved packet type ";
- 		goto out_invalid;
- 	}
-+
-+	if (test_bit(type, &require_seq48) && !dh->dccph_x) {
-+		msg = "nf_ct_dccp: type lacks 48bit sequence numbers";
-+		goto out_invalid;
-+	}
-+
- 	return false;
- out_invalid:
- 	nf_l4proto_log_invalid(skb, state, IPPROTO_DCCP, "%s", msg);
- 	return true;
- }
- 
-+struct nf_conntrack_dccp_buf {
-+	struct dccp_hdr dh;	 /* generic header part */
-+	struct dccp_hdr_ext ext; /* optional depending dh->dccph_x */
-+	union {			 /* depends on header type */
-+		struct dccp_hdr_ack_bits ack;
-+		struct dccp_hdr_request req;
-+		struct dccp_hdr_response response;
-+		struct dccp_hdr_reset rst;
-+	} u;
-+};
-+
-+static struct dccp_hdr *
-+dccp_header_pointer(const struct sk_buff *skb, int offset, const struct dccp_hdr *dh,
-+		    struct nf_conntrack_dccp_buf *buf)
-+{
-+	unsigned int hdrlen = __dccp_hdr_len(dh);
-+
-+	if (hdrlen > sizeof(*buf))
-+		return NULL;
-+
-+	return skb_header_pointer(skb, offset, hdrlen, buf);
-+}
-+
- int nf_conntrack_dccp_packet(struct nf_conn *ct, struct sk_buff *skb,
- 			     unsigned int dataoff,
- 			     enum ip_conntrack_info ctinfo,
- 			     const struct nf_hook_state *state)
- {
- 	enum ip_conntrack_dir dir = CTINFO2DIR(ctinfo);
--	struct dccp_hdr _dh, *dh;
-+	struct nf_conntrack_dccp_buf _dh;
- 	u_int8_t type, old_state, new_state;
- 	enum ct_dccp_roles role;
- 	unsigned int *timeouts;
-+	struct dccp_hdr *dh;
- 
--	dh = skb_header_pointer(skb, dataoff, sizeof(_dh), &_dh);
-+	dh = skb_header_pointer(skb, dataoff, sizeof(*dh), &_dh.dh);
- 	if (!dh)
- 		return NF_DROP;
- 
- 	if (dccp_error(dh, skb, dataoff, state))
- 		return -NF_ACCEPT;
- 
-+	/* pull again, including possible 48 bit sequences and subtype header */
-+	dh = dccp_header_pointer(skb, dataoff, dh, &_dh);
-+	if (!dh)
-+		return NF_DROP;
-+
- 	type = dh->dccph_type;
- 	if (!nf_ct_is_confirmed(ct) && !dccp_new(ct, skb, dh, state))
- 		return -NF_ACCEPT;
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index 77f5e82d8e3fe..d0eac27f6ba03 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -611,7 +611,7 @@ int ct_sip_parse_numerical_param(const struct nf_conn *ct, const char *dptr,
+ 	start += strlen(name);
+ 	*val = simple_strtoul(start, &end, 0);
+ 	if (start == end)
+-		return 0;
++		return -1;
+ 	if (matchoff && matchlen) {
+ 		*matchoff = start - dptr;
+ 		*matchlen = end - start;
 -- 
 2.39.2
 
