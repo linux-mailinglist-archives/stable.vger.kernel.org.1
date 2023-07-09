@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8908C74C207
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF1E274C371
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230328AbjGILOj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:14:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57524 "EHLO
+        id S232880AbjGILco (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:32:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230371AbjGILOi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:14:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9D8813D
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:14:36 -0700 (PDT)
+        with ESMTP id S233007AbjGILcS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:32:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C25095
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:32:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58F5360BC7
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:14:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D889C433C8;
-        Sun,  9 Jul 2023 11:14:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2433E60BC0
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:32:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33486C433C7;
+        Sun,  9 Jul 2023 11:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901275;
-        bh=UjjBGhzKOxEVuuaGuLBSd+9oLMENGkyHQzkPSfEKTso=;
+        s=korg; t=1688902336;
+        bh=EyYRh+3otg3D/HkayMLbR/CSzGXR5oVy6A/UB67R580=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VkudsO6YSH5oY98Y5ggs2OpxIdxc4Bb3/1Nkw4Cp0u2Mb6oyUWkATIRlBXAgaFcBu
-         l5lbQ4qrfALbsjFZt/xjMd26BLPVwEfSo/7yfgPQv5DyEe1CbXtA/m52iXBGxOcnQe
-         ssGjfwefgT94LaifPKHgYnEGUjESarBfR+Q9QxZI=
+        b=fWu2SwlP9FEdXXuycZ4D7Q1bqYg13RlR/zdN4xx2DFk6BhmB520bIGod+4aBrkksS
+         CM1CRioNucXZHYyi7q4uZG6zW7EyxG4Xf9CWVXsqv4hDKI8C7P1Pr1V6vOd803xOqd
+         1wog1lx3FSMK3LEBX/KZ/5iK6VDNMsPUb4mKyKGs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hugh Dickins <hughd@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.4 4/8] mm: lock newly mapped VMA with corrected ordering
+        patches@lists.linux.dev, Andrew Davis <afd@ti.com>,
+        Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 302/431] arm64: dts: ti: k3-j721e-beagleboneai64: Fix mailbox node status
 Date:   Sun,  9 Jul 2023 13:14:10 +0200
-Message-ID: <20230709111345.430583721@linuxfoundation.org>
+Message-ID: <20230709111458.224822258@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230709111345.297026264@linuxfoundation.org>
-References: <20230709111345.297026264@linuxfoundation.org>
+In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
+References: <20230709111451.101012554@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +56,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hugh Dickins <hughd@google.com>
+From: Andrew Davis <afd@ti.com>
 
-commit 1c7873e3364570ec89343ff4877e0f27a7b21a61 upstream.
+[ Upstream commit 155e7635ed1f3814d94d12556a3a0fed41d05b76 ]
 
-Lockdep is certainly right to complain about
+Mailbox nodes are now disabled by default. The BeagleBoard AI64 DT
+addition went in at around the same time and must have missed that
+change so the mailboxes are not re-enabled. Do that here.
 
-  (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_write+0x2d/0x3f
-                 but task is already holding lock:
-  (&mapping->i_mmap_rwsem){+.+.}-{3:3}, at: mmap_region+0x4dc/0x6db
-
-Invert those to the usual ordering.
-
-Fixes: 33313a747e81 ("mm: lock newly mapped VMA which can be modified after it becomes visible")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Tested-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fae14a1cb8dd ("arm64: dts: ti: Add k3-j721e-beagleboneai64")
+Signed-off-by: Andrew Davis <afd@ti.com>
+Reviewed-by: Nishanth Menon <nm@ti.com>
+Link: https://lore.kernel.org/r/20230515172137.474626-1-afd@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/mmap.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -2801,11 +2801,11 @@ cannot_expand:
- 	if (vma_iter_prealloc(&vmi))
- 		goto close_and_free_vma;
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+index 37c24b077b6aa..8a62ac263b89a 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+@@ -936,6 +936,7 @@ &ufs_wrapper {
+ };
  
-+	/* Lock the VMA since it is modified after insertion into VMA tree */
-+	vma_start_write(vma);
- 	if (vma->vm_file)
- 		i_mmap_lock_write(vma->vm_file->f_mapping);
+ &mailbox0_cluster0 {
++	status = "okay";
+ 	interrupts = <436>;
  
--	/* Lock the VMA since it is modified after insertion into VMA tree */
--	vma_start_write(vma);
- 	vma_iter_store(&vmi, vma);
- 	mm->map_count++;
- 	if (vma->vm_file) {
+ 	mbox_mcu_r5fss0_core0: mbox-mcu-r5fss0-core0 {
+@@ -950,6 +951,7 @@ mbox_mcu_r5fss0_core1: mbox-mcu-r5fss0-core1 {
+ };
+ 
+ &mailbox0_cluster1 {
++	status = "okay";
+ 	interrupts = <432>;
+ 
+ 	mbox_main_r5fss0_core0: mbox-main-r5fss0-core0 {
+@@ -964,6 +966,7 @@ mbox_main_r5fss0_core1: mbox-main-r5fss0-core1 {
+ };
+ 
+ &mailbox0_cluster2 {
++	status = "okay";
+ 	interrupts = <428>;
+ 
+ 	mbox_main_r5fss1_core0: mbox-main-r5fss1-core0 {
+@@ -978,6 +981,7 @@ mbox_main_r5fss1_core1: mbox-main-r5fss1-core1 {
+ };
+ 
+ &mailbox0_cluster3 {
++	status = "okay";
+ 	interrupts = <424>;
+ 
+ 	mbox_c66_0: mbox-c66-0 {
+@@ -992,6 +996,7 @@ mbox_c66_1: mbox-c66-1 {
+ };
+ 
+ &mailbox0_cluster4 {
++	status = "okay";
+ 	interrupts = <420>;
+ 
+ 	mbox_c71_0: mbox-c71-0 {
+-- 
+2.39.2
+
 
 
