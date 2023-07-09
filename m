@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE7C074C3D3
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2A7A74C3D4
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:36:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233017AbjGILgq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:36:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44234 "EHLO
+        id S233014AbjGILgt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:36:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233014AbjGILgp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:36:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84CED95
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:36:44 -0700 (PDT)
+        with ESMTP id S233019AbjGILgs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:36:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC5795
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:36:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AABB60BC0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:36:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27998C433C8;
-        Sun,  9 Jul 2023 11:36:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DCB8460BCA
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:36:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4A8C433C8;
+        Sun,  9 Jul 2023 11:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902603;
-        bh=BzvCo3HWBqSaVJKjGJ9j8VwdWk1qEnpVy9z/SWChluY=;
+        s=korg; t=1688902606;
+        bh=cqkJilOKQYH6aifif8b2L1dMa8Hw++lhjjF690FyiFg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yDloSBtOyl82CYs2zRZVOzQCnitxPiDLjXGiYr+38hkpjg07dAr06ESDlIt2HToWm
-         5ztk+tzMB0pAbS3EfjV+8s7g7H5gLP872OuF0a+QAndf5+M1uCfYDqX8SGKVR/DQHs
-         LCqiuawtLoOimDLvrD+swYbd0QSL2i2OEGFN1K5o=
+        b=ZzqBo6BhQCdiNhln883DKkIQ5UHWBQh+g7I8yPB1VqSl3QEg63xfQl3FxYo+eywGx
+         KxugJPZ11ddJ9UaxacdqTUwIhQNUdMgrPmD7YtdNeOPNBb/WCIzMjyAbgZLfxg/Cwj
+         dLkKxFc+JBGMiVEBgsJBpGP5DVotOvA8Q3PcISYs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Will Deacon <will@kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 428/431] ksmbd: avoid field overflow warning
-Date:   Sun,  9 Jul 2023 13:16:16 +0200
-Message-ID: <20230709111501.223948773@linuxfoundation.org>
+Subject: [PATCH 6.3 429/431] arm64: sme: Use STR P to clear FFR context field in streaming SVE mode
+Date:   Sun,  9 Jul 2023 13:16:17 +0200
+Message-ID: <20230709111501.246713879@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -56,45 +60,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit 9cedc58bdbe9fff9aacd0ca19ee5777659f28fd7 ]
+[ Upstream commit 893b24181b4c4bf1fa2841b1ed192e5413a97cb1 ]
 
-clang warns about a possible field overflow in a memcpy:
+The FFR is a predicate register which can vary between 16 and 256 bits
+in size depending upon the configured vector length. When saving the
+SVE state in streaming SVE mode, the FFR register is inaccessible and
+so commit 9f5848665788 ("arm64/sve: Make access to FFR optional") simply
+clears the FFR field of the in-memory context structure. Unfortunately,
+it achieves this using an unconditional 8-byte store and so if the SME
+vector length is anything other than 64 bytes in size we will either
+fail to clear the entire field or, worse, we will corrupt memory
+immediately following the structure. This has led to intermittent kfence
+splats in CI [1] and can trigger kmalloc Redzone corruption messages
+when running the 'fp-stress' kselftest:
 
-In file included from fs/smb/server/smb_common.c:7:
-include/linux/fortify-string.h:583:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-                        __write_overflow_field(p_size_field, size);
+ | =============================================================================
+ | BUG kmalloc-1k (Not tainted): kmalloc Redzone overwritten
+ | -----------------------------------------------------------------------------
+ |
+ | 0xffff000809bf1e22-0xffff000809bf1e27 @offset=7714. First byte 0x0 instead of 0xcc
+ | Allocated in do_sme_acc+0x9c/0x220 age=2613 cpu=1 pid=531
+ |  __kmalloc+0x8c/0xcc
+ |  do_sme_acc+0x9c/0x220
+ |  ...
 
-It appears to interpret the "&out[baselen + 4]" as referring to a single
-byte of the character array, while the equivalen "out + baselen + 4" is
-seen as an offset into the array.
+Replace the 8-byte store with a store of a predicate register which has
+been zero-initialised with PFALSE, ensuring that the entire field is
+cleared in memory.
 
-I don't see that kind of warning elsewhere, so just go with the simple
-rework.
+[1] https://lore.kernel.org/r/CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: 9f5848665788 ("arm64/sve: Make access to FFR optional")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Link: https://lore.kernel.org/r/20230628155605.22296-1-will@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/smb_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/fpsimdmacros.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ksmbd/smb_common.c b/fs/ksmbd/smb_common.c
-index 569e5eecdf3db..3e391a7d5a3ab 100644
---- a/fs/ksmbd/smb_common.c
-+++ b/fs/ksmbd/smb_common.c
-@@ -536,7 +536,7 @@ int ksmbd_extract_shortname(struct ksmbd_conn *conn, const char *longname,
- 	out[baselen + 3] = PERIOD;
- 
- 	if (dot_present)
--		memcpy(&out[baselen + 4], extension, 4);
-+		memcpy(out + baselen + 4, extension, 4);
- 	else
- 		out[baselen + 4] = '\0';
- 	smbConvertToUTF16((__le16 *)shortname, out, PATH_MAX,
+diff --git a/arch/arm64/include/asm/fpsimdmacros.h b/arch/arm64/include/asm/fpsimdmacros.h
+index cd03819a3b686..cdf6a35e39944 100644
+--- a/arch/arm64/include/asm/fpsimdmacros.h
++++ b/arch/arm64/include/asm/fpsimdmacros.h
+@@ -316,12 +316,12 @@
+  _for n, 0, 15,	_sve_str_p	\n, \nxbase, \n - 16
+ 		cbz		\save_ffr, 921f
+ 		_sve_rdffr	0
+-		_sve_str_p	0, \nxbase
+-		_sve_ldr_p	0, \nxbase, -16
+ 		b		922f
+ 921:
+-		str		xzr, [x\nxbase]		// Zero out FFR
++		_sve_pfalse	0			// Zero out FFR
+ 922:
++		_sve_str_p	0, \nxbase
++		_sve_ldr_p	0, \nxbase, -16
+ 		mrs		x\nxtmp, fpsr
+ 		str		w\nxtmp, [\xpfpsr]
+ 		mrs		x\nxtmp, fpcr
 -- 
 2.39.2
 
