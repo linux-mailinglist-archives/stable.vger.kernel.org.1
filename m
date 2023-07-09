@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F064074C3A8
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E067974C3A9
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232937AbjGILeu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:34:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42976 "EHLO
+        id S232913AbjGILew (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:34:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232930AbjGILes (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:48 -0400
+        with ESMTP id S232941AbjGILev (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A00AA95
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A41B95
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 351F060BA4
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EA3C433C8;
-        Sun,  9 Jul 2023 11:34:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 056C960BA4
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107FBC433C7;
+        Sun,  9 Jul 2023 11:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902486;
-        bh=QwAw1gVGT2HLH/XyPuxu3HVcO1q+k6lLBl31fNGoFGQ=;
+        s=korg; t=1688902489;
+        bh=KxqU6Rcoj7pVw6ohZb4m4imvyjWUs5ekwVkk6S+qIbQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gCPRMGj4qcX63HIjxNdu+OpwhOcyATdnpB0ho7e8Q7cVG+NjbBuNwpCOrXrOMFuc9
-         kCoqne9/p7JgyDYVGpTnVVVFkz6ZSP9YNaV/ffo8G+nlYsyLjgOPo5NIlviLkn4Bzn
-         LVYUVDgZ61L3HcXB0LU9zKNhqgN3gA7gmFjR3U+c=
+        b=niydz/Y04hFUws1Eej23vWuEb8T5yLktDv8GaxZvDbZDcPPwgn5ja0NHeQjn0Uv3o
+         CrncJFre4c3rDPVDA887AQKFzcIRGwHZjiNti11R1tati8+CaEpfiGqlbwUYpaOaQD
+         vdGcpEfkgAakV5AceUWAhl3qWBD4oldn+Oj+mNbQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,9 +36,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 365/431] platform/x86: think-lmi: Correct System password interface
-Date:   Sun,  9 Jul 2023 13:15:13 +0200
-Message-ID: <20230709111459.725738811@linuxfoundation.org>
+Subject: [PATCH 6.3 366/431] platform/x86: think-lmi: Correct NVME password handling
+Date:   Sun,  9 Jul 2023 13:15:14 +0200
+Message-ID: <20230709111459.748433706@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -58,52 +58,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 97eef5983372d7aee6549d644d788fd0c10d2b6e ]
+[ Upstream commit 4cebb42412248d28df6de01420cfac5654428d41 ]
 
-The system password identification was incorrect. This means that if
-the password was enabled it wouldn't be detected correctly; and setting
-it would not work.
-Also updated code to use TLMI_SMP_PWD instead of TLMI_SYS_PWD to be in
-sync with Lenovo documentation.
+NVME passwords identifier have been standardised across the Lenovo
+systems and now use udrp and adrp (user and admin level) instead of
+unvp and mnvp.
+
+This should apparently be backwards compatible.
 
 Fixes: 640a5fa50a42 ("platform/x86: think-lmi: Opcode support")
 Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230601200552.4396-3-mpearson-lenovo@squebb.ca
+Link: https://lore.kernel.org/r/20230601200552.4396-6-mpearson-lenovo@squebb.ca
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/think-lmi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/platform/x86/think-lmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index 7a145f578ef49..cd755ef48ce40 100644
+index cd755ef48ce40..4b7f2a969dfec 100644
 --- a/drivers/platform/x86/think-lmi.c
 +++ b/drivers/platform/x86/think-lmi.c
-@@ -172,7 +172,7 @@ MODULE_PARM_DESC(debug_support, "Enable debug command support");
- #define TLMI_POP_PWD (1 << 0)
- #define TLMI_PAP_PWD (1 << 1)
- #define TLMI_HDD_PWD (1 << 2)
--#define TLMI_SYS_PWD (1 << 3)
-+#define TLMI_SMP_PWD (1 << 6) /* System Management */
- #define TLMI_CERT    (1 << 7)
- 
- #define to_tlmi_pwd_setting(kobj)  container_of(kobj, struct tlmi_pwd_setting, kobj)
-@@ -1522,11 +1522,11 @@ static int tlmi_analyze(void)
- 		tlmi_priv.pwd_power->valid = true;
- 
- 	if (tlmi_priv.opcode_support) {
--		tlmi_priv.pwd_system = tlmi_create_auth("sys", "system");
-+		tlmi_priv.pwd_system = tlmi_create_auth("smp", "system");
- 		if (!tlmi_priv.pwd_system)
- 			goto fail_clear_attr;
- 
--		if (tlmi_priv.pwdcfg.core.password_state & TLMI_SYS_PWD)
-+		if (tlmi_priv.pwdcfg.core.password_state & TLMI_SMP_PWD)
- 			tlmi_priv.pwd_system->valid = true;
- 
- 		tlmi_priv.pwd_hdd = tlmi_create_auth("hdd", "hdd");
+@@ -461,9 +461,9 @@ static ssize_t new_password_store(struct kobject *kobj,
+ 				sprintf(pwd_type, "mhdp%d", setting->index);
+ 		} else if (setting == tlmi_priv.pwd_nvme) {
+ 			if (setting->level == TLMI_LEVEL_USER)
+-				sprintf(pwd_type, "unvp%d", setting->index);
++				sprintf(pwd_type, "udrp%d", setting->index);
+ 			else
+-				sprintf(pwd_type, "mnvp%d", setting->index);
++				sprintf(pwd_type, "adrp%d", setting->index);
+ 		} else {
+ 			sprintf(pwd_type, "%s", setting->pwd_type);
+ 		}
 -- 
 2.39.2
 
