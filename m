@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A31574C286
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B4DE74C290
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:22:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231315AbjGILVf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33774 "EHLO
+        id S231386AbjGILWD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:22:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231282AbjGILVe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:21:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1F79B5
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:21:33 -0700 (PDT)
+        with ESMTP id S231362AbjGILWC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:22:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E814C4
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:22:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4085B60BC0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:21:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2F1C433C8;
-        Sun,  9 Jul 2023 11:21:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19DB860BD6
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:22:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E82DC433C8;
+        Sun,  9 Jul 2023 11:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901692;
-        bh=sBUJ8ybF0GOqBJDIqoc1bqU5xEkn/bcDBo49I0iRFN0=;
+        s=korg; t=1688901720;
+        bh=jaogtDk8XSrSU4yHzqA876y7Dr+sbZjzo3wvtqAtf3o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=shug2pp8f27bdr5DF+jYVod2JFebLxdODj86o0yP/pMBPXyO14mSdDqn0jqLDVLxv
-         TJtRu7Q34FmzTPB0LHIrDE1IvfgxS9HpmyPz+VCWFQ0+6dpYkKC+79Xj03SBY7PohA
-         hMyvYXSp8bffU8cCQ3zsTzQa3H6/642FPkqDPbNg=
+        b=W73oDAnPAi50JV7XM9KNypJvSWZy1ZRO4vv+Tx6DyccwG2SOilOLQ+AiO4jIfn1PU
+         ak95LTJZ5xW78zKA675ga6veMnuAGCw5eYm+shRRsR6tLAlclDArbSKWHlcIgZOaR9
+         mQTPRDhZxDPOkZ65Z2446lIzKAI0ExCMYU5KjgWE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexey Gladkov <legion@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Stanislav Fomichev <sdf@google.com>,
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 093/431] selftests/bpf: Do not use sign-file as testcase
-Date:   Sun,  9 Jul 2023 13:10:41 +0200
-Message-ID: <20230709111453.332030229@linuxfoundation.org>
+Subject: [PATCH 6.3 094/431] regulator: core: Fix more error checking for debugfs_create_dir()
+Date:   Sun,  9 Jul 2023 13:10:42 +0200
+Message-ID: <20230709111453.355972995@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -57,50 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexey Gladkov <legion@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit f04a32b2c5b539e3c097cb5c7c1df12a8f4a0cf0 ]
+[ Upstream commit 2715bb11cfff964aa33946847f9527cfbd4874f5 ]
 
-The sign-file utility (from scripts/) is used in prog_tests/verify_pkcs7_sig.c,
-but the utility should not be called as a test. Executing this utility produces
-the following error:
+In case of failure, debugfs_create_dir() does not return NULL, but an
+error pointer.  Most incorrect error checks were fixed, but the one in
+create_regulator() was forgotten.
 
-  selftests: /linux/tools/testing/selftests/bpf: urandom_read
-  ok 16 selftests: /linux/tools/testing/selftests/bpf: urandom_read
+Fix the remaining error check.
 
-  selftests: /linux/tools/testing/selftests/bpf: sign-file
-  not ok 17 selftests: /linux/tools/testing/selftests/bpf: sign-file # exit=2
-
-Also, urandom_read is mistakenly used as a test. It does not lead to an error,
-but should be moved over to TEST_GEN_FILES as well. The empty TEST_CUSTOM_PROGS
-can then be removed.
-
-Fixes: fc97590668ae ("selftests/bpf: Add test for bpf_verify_pkcs7_signature() kfunc")
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Link: https://lore.kernel.org/bpf/ZEuWFk3QyML9y5QQ@example.org
-Link: https://lore.kernel.org/bpf/88e3ab23029d726a2703adcf6af8356f7a2d3483.1684316821.git.legion@kernel.org
+Fixes: 2bf1c45be3b8f3a3 ("regulator: Fix error checking for debugfs_create_dir")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/ee980a108b5854dd8ce3630f8f673e784e057d17.1685013051.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/regulator/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index ad01c9e1ff12b..625eedb84eecc 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -88,8 +88,7 @@ TEST_GEN_PROGS_EXTENDED = test_sock_addr test_skb_cgroup_id_user \
- 	xskxceiver xdp_redirect_multi xdp_synproxy veristat xdp_hw_metadata \
- 	xdp_features
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 323e8187a98ff..2997a26a9ce3b 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1918,7 +1918,7 @@ static struct regulator *create_regulator(struct regulator_dev *rdev,
  
--TEST_CUSTOM_PROGS = $(OUTPUT)/urandom_read $(OUTPUT)/sign-file
--TEST_GEN_FILES += liburandom_read.so
-+TEST_GEN_FILES += liburandom_read.so urandom_read sign-file
- 
- # Emit succinct information message describing current building step
- # $1 - generic step name (e.g., CC, LINK, etc);
+ 	if (err != -EEXIST)
+ 		regulator->debugfs = debugfs_create_dir(supply_name, rdev->debugfs);
+-	if (!regulator->debugfs) {
++	if (IS_ERR(regulator->debugfs)) {
+ 		rdev_dbg(rdev, "Failed to create debugfs directory\n");
+ 	} else {
+ 		debugfs_create_u32("uA_load", 0444, regulator->debugfs,
 -- 
 2.39.2
 
