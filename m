@@ -2,79 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A42FC74C869
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 23:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D522774C906
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 00:56:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229989AbjGIVaX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 17:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33834 "EHLO
+        id S229920AbjGIW4J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 18:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229895AbjGIVaR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 17:30:17 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2778123;
-        Sun,  9 Jul 2023 14:30:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688938214; x=1689543014; i=rwarsow@gmx.de;
- bh=ZT2WA+hNiIdiSiTdYBj7HEV/czIf3ZM3McHFUNQUrCM=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=Xl2w0vT9IvFd2g+iJ5nVKwhS4m/ev4G6AL7hHQ2uOzsuJx3UabekCpDqHrwl5IaWaezSTzI
- 9EXDTNPanvc8mJ3N4k6Bmuxmfe0ymjlLRIsuus61bANBKvKURQLYcxXIfwztAlGycHiS7UCGN
- j6e4oPPdchteApXvdzuqcPHvefJ8GUKO8WX98XAbx1VVcbMHTXQAf5KgQJ3PUgv9AYwaxUNg5
- iV+nd8SDFywLRPJ+HDo2JmsOSGeGwVT5jW7KkQOw8FNESWapBNCJdwtSOCuSVaLB+vvk++hzz
- +CkG2mEHOibVBZXS1R1wBcNV2x2ID0852ysSyLSTwSV8/fV37kTw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.35.75]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MwQT9-1q22XD0Q1V-00sMr9; Sun, 09
- Jul 2023 23:30:14 +0200
-Message-ID: <5ce87fd0-ae9a-fdb0-b237-c2e9a4e2dc0d@gmx.de>
-Date:   Sun, 9 Jul 2023 23:30:13 +0200
+        with ESMTP id S229766AbjGIW4J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 18:56:09 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29BEB123
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 15:56:07 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-262d9e75438so2807487a91.2
+        for <stable@vger.kernel.org>; Sun, 09 Jul 2023 15:56:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688943366; x=1691535366;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QPdWGUJfSkwMpEftrHb4D0cEYRriyUH34Z10bwypwcY=;
+        b=CLsejkqejApXka8e4+zbRWOj4b3p+RUdEXNs8qqyD/iTB1djayTt60FQuWqGiaNKCI
+         /BqsFe9v42atzSr89uUZwE7J7VcBC5Namdf7xLM+cCDZd8NOlxVhE/laMU7A/cCHDzRe
+         DFHght8gY1kanTVEZhcAygHGumfgVHxIDmhqd4Ib6R6ExQeyM+2HiZxzOFyU7FFMVT1C
+         eeaAAE71uf2DpbVyEq5AyUMWD7lmTNTMchYxhXPTGOsYbB/Dsl2iYEW+v3R2TiWTdGAM
+         YE9jr4dKWMolMisYUdXcifg3Tbkl10aWXyAek0zjaJb2qtpehDfr7PZECrp78xfCXNKo
+         WujQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688943366; x=1691535366;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QPdWGUJfSkwMpEftrHb4D0cEYRriyUH34Z10bwypwcY=;
+        b=iusHkFgjuPWaraeLeaUfPzmYDA/y1QaT6n25WcLRGRzxT6fjQ/xpvYvaH3c8ZdX8nv
+         d+pA//vne6+aO8T4jZZ7aNyZX5otEgSnG0L1x22HdpFLyKX64S5UON5G/cml+iEjKV3K
+         GWZU/CVYsge5gIlvRl4No87EvMShEeL+tQYMjvWXvhMcjMFqaUfjmECCwAWosTo9Vite
+         MTN5EEwxK9Mj2fC3BdUhjP/InBHt8BTRwyI4cl/cw1cIHFAV4sS9q4ViQA1V0d+IRSQG
+         S/3uX+eGJhy35mI3PTw7HsrvfrGunzVOFUn/Qf6WaJt1T1iCk9Vr+qMVguMimdynEJy5
+         abnw==
+X-Gm-Message-State: ABy/qLZziDzycDRsUWfgzb0ejwNEcNCD5xOph1clQyiEqyiRczWvS/ZU
+        lceKKnBoV89jL4cI2JsJ7pyDx2RjHcCvLvIGweBljQ==
+X-Google-Smtp-Source: APBJJlHR1RTkC5VFgPWsyq6+xGci00cEkBZUr3KXhTYYNqOa6OOJZOmGZA53j4DADL++r3rjSqPqo4w8ydU3ANiKpSU=
+X-Received: by 2002:a17:90a:b283:b0:262:d661:75e4 with SMTP id
+ c3-20020a17090ab28300b00262d66175e4mr11412368pjr.0.1688943366456; Sun, 09 Jul
+ 2023 15:56:06 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.4 0/6] 6.4.3-rc2 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:Gikm1b9N8IjodK9weNTnTl1xdAIOjUC4AtakgrpPVUBE956F3v9
- Uit0YdzDjl1WUuQtBDe8v6SVrkFHTFwYiXOmXCSoCMSrn1D+DQMp4TJWm+NpDZHxM3yF94g
- 9DIU/6n7DZoTII/irtg7OM8ipqQPGYSzkv6+LQ6ociosahUqh457fX+T6h7AeNVH0KL+gDV
- 3O8y4ChOTXUZR/08yKBDg==
-UI-OutboundReport: notjunk:1;M01:P0:7ulh2bVsGqs=;Z54mpYAFCn4Tn/IiaCjq7NN41fB
- C0jAutliA4Xb1vUApc5GcqQbyHc4oWjxLbK0ybYFHlH1mbQKUhFXoo2UrH05M83qddAWSfeBd
- 6Rb2atpM1q5z9LSR4rc3A7oVwuyBeH+cLGYedc2uH0Y15ewRMEu/L7dtURy6x34Fe8Qw4L0Jn
- FAgFuT1Is1R4cmGT23+AsOHVJKkhuRvr6lLFwYOB6lf5s7APz2WMIOoeJOQz5NUhifkJoFAlq
- cQr0Mc9oY7rxAjlKEczYgPCBDD3PV62HDugBMIeTwb1rtyAKM7/WpEpc7XwbKN8+FzYteDnl4
- D46DyubcDG0wGjqhFhxYexSdLfyuiYbzfp7lOSRKCpBQAGZyx3xdOkqMMFwUclLibbork9pVZ
- oR8Qo9BusvPGhXxfkx4pDcE1d7SF4Djz3NzSQupJKDsoApdZwbtbZYxKEVV5zgeUiq3RF+k0J
- nJZUy7+BIta+/FUsfdBFyqR55aNiAFBLGtyaxIVR5GGhOsjQYFrFNgAtPXWHCenZCZu7Pikj4
- DVLzSRPssRwRioygEzYkMI2cAy3HDI5G1F+h7ySVyyUMgZ2fLfzBHnAwTOqLImU6xDsubN0Zo
- WDMWfaCn2uqfDAcrUVGAZOtJuFyRiCbyuhTYMuY81sO78ZY+Hq1VFNk2TsgNxCFvYlmflDGoR
- 1mn3GFjHFOQBpJ+J3SUXa7zZK9pQqjY/VD2N/Dh6kwHUV9WDTVosOtzF8sMI3BZD0XmOXpdR7
- OnXeQeHEvM8Uz9FlaTmgtyYK7p+QRHOzTCG6KO/VUqnFzEqyeosAcPPKwPrFL1iAM2iKZ/B9e
- oiPprwTH4HGFHmFIKCbnJ920t8MugYJMOJeuzn5VNgayS34gJCF7b9+2UJ7k4l44awrygrb9S
- zmLxTDyjurnTpcxkkq+QzGgL1gNTMjP4cqyqSGcVLt/rpdDLmTMcx03kiPza2YNUVB2iByC/p
- ffSpTA==
+References: <20230709202353.266998088@linuxfoundation.org>
+In-Reply-To: <20230709202353.266998088@linuxfoundation.org>
+From:   =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date:   Sun, 9 Jul 2023 16:55:55 -0600
+Message-ID: <CAEUSe7_KV_+jLJzE4u4_DHUPbi8Z=ASh-=aKB_JQr4+pz_8GVw@mail.gmail.com>
+Subject: Re: [PATCH 6.3 000/425] 6.3.13-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+Hello!
 
-6.4.3-rc2
+On Sun, 9 Jul 2023 at 14:24, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> This is the start of the stable review cycle for the 6.3.13 release.
+> There are 425 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 11 Jul 2023 20:22:29 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.3.13-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.3.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake, i5-11400)
+This introduces a warning:
+-----8<-----
+  In file included from /builds/linux/block/genhd.c:28:
+  /builds/linux/block/genhd.c: In function 'disk_release':
+  /builds/linux/include/linux/blktrace_api.h:88:33: warning: statement
+with no effect [-Wunused-value]
+   # define blk_trace_remove(q)    (-ENOTTY)
+                                   ^
+  /builds/linux/block/genhd.c:1187:2: note: in expansion of macro
+'blk_trace_remove'
+    blk_trace_remove(disk->queue);
+    ^~~~~~~~~~~~~~~~
+----->8-----
 
-Thanks
+This is again with Arm 32-bits on omap1_defconfig.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Bisection points to "block: fix blktrace debugfs entries leakage"
+(d8c9d0067dbd here, dd7de3704af9 upstream). Reverting this commit
+makes the warning go away.
+
+Greetings!
+
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
