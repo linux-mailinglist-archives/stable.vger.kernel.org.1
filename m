@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FC1174C206
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8908C74C207
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230370AbjGILOf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:14:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57492 "EHLO
+        id S230328AbjGILOj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:14:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230366AbjGILOe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:14:34 -0400
+        with ESMTP id S230371AbjGILOi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:14:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB09E12A
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:14:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9D8813D
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:14:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AEFD60BC4
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:14:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7722EC433C7;
-        Sun,  9 Jul 2023 11:14:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 58F5360BC7
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:14:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D889C433C8;
+        Sun,  9 Jul 2023 11:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901272;
-        bh=ANrfaKyJP2FUXOaM31vYzQIlBUTQnUVpURxMjTlfYhE=;
+        s=korg; t=1688901275;
+        bh=UjjBGhzKOxEVuuaGuLBSd+9oLMENGkyHQzkPSfEKTso=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J2TmXLKxMcupYV3st+JR8Q3VPaGif2WpTk23nqO7CSlR0L6p6nHtk3k2nhPJyBM9x
-         J4PH9KAXO4tz3ZxATlniessi/uDG1m9Kqa+P6T82T/CdGGkC5DRc2uuxljuWoS2kRD
-         jN+PeYQeIpH1j2pCxEK/ANV4U6XqdKQqSVgPonMs=
+        b=VkudsO6YSH5oY98Y5ggs2OpxIdxc4Bb3/1Nkw4Cp0u2Mb6oyUWkATIRlBXAgaFcBu
+         l5lbQ4qrfALbsjFZt/xjMd26BLPVwEfSo/7yfgPQv5DyEe1CbXtA/m52iXBGxOcnQe
+         ssGjfwefgT94LaifPKHgYnEGUjESarBfR+Q9QxZI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Suren Baghdasaryan <surenb@google.com>,
+        patches@lists.linux.dev, Hugh Dickins <hughd@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.4 3/8] mm: lock newly mapped VMA which can be modified after it becomes visible
-Date:   Sun,  9 Jul 2023 13:14:09 +0200
-Message-ID: <20230709111345.397858220@linuxfoundation.org>
+Subject: [PATCH 6.4 4/8] mm: lock newly mapped VMA with corrected ordering
+Date:   Sun,  9 Jul 2023 13:14:10 +0200
+Message-ID: <20230709111345.430583721@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111345.297026264@linuxfoundation.org>
 References: <20230709111345.297026264@linuxfoundation.org>
@@ -54,39 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Hugh Dickins <hughd@google.com>
 
-commit 33313a747e81af9f31d0d45de78c9397fa3655eb upstream.
+commit 1c7873e3364570ec89343ff4877e0f27a7b21a61 upstream.
 
-mmap_region adds a newly created VMA into VMA tree and might modify it
-afterwards before dropping the mmap_lock.  This poses a problem for page
-faults handled under per-VMA locks because they don't take the mmap_lock
-and can stumble on this VMA while it's still being modified.  Currently
-this does not pose a problem since post-addition modifications are done
-only for file-backed VMAs, which are not handled under per-VMA lock.
-However, once support for handling file-backed page faults with per-VMA
-locks is added, this will become a race.
+Lockdep is certainly right to complain about
 
-Fix this by write-locking the VMA before inserting it into the VMA tree.
-Other places where a new VMA is added into VMA tree do not modify it
-after the insertion, so do not need the same locking.
+  (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_write+0x2d/0x3f
+                 but task is already holding lock:
+  (&mapping->i_mmap_rwsem){+.+.}-{3:3}, at: mmap_region+0x4dc/0x6db
 
+Invert those to the usual ordering.
+
+Fixes: 33313a747e81 ("mm: lock newly mapped VMA which can be modified after it becomes visible")
 Cc: stable@vger.kernel.org
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Tested-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mmap.c |    2 ++
- 1 file changed, 2 insertions(+)
+ mm/mmap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -2804,6 +2804,8 @@ cannot_expand:
- 	if (vma->vm_file)
- 		i_mmap_lock_write(vma->vm_file->f_mapping);
+@@ -2801,11 +2801,11 @@ cannot_expand:
+ 	if (vma_iter_prealloc(&vmi))
+ 		goto close_and_free_vma;
  
 +	/* Lock the VMA since it is modified after insertion into VMA tree */
 +	vma_start_write(vma);
+ 	if (vma->vm_file)
+ 		i_mmap_lock_write(vma->vm_file->f_mapping);
+ 
+-	/* Lock the VMA since it is modified after insertion into VMA tree */
+-	vma_start_write(vma);
  	vma_iter_store(&vmi, vma);
  	mm->map_count++;
  	if (vma->vm_file) {
