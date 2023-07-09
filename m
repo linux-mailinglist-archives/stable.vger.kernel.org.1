@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF83B74C340
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C067474C34B
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232741AbjGILaE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:30:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39152 "EHLO
+        id S232785AbjGILaf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232763AbjGILaD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:30:03 -0400
+        with ESMTP id S232787AbjGILae (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:30:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73CB618C
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:30:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70CE213D
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:30:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 12E3A60B7F
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:30:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25018C433C8;
-        Sun,  9 Jul 2023 11:30:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 100DC60BC4
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:30:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94C1C433C7;
+        Sun,  9 Jul 2023 11:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902201;
-        bh=7CyZ9Se5iyVlpgCPS0OulQndlhx6cRyDUzwrdGVPgI0=;
+        s=korg; t=1688902232;
+        bh=hpGf9vCdNEztVJI2ZSWvpw22AOSaYsUojgeYrE59Aog=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gRCAvwtwatmiOZTFxGVxK1NI6NCaW9pNoOlAkt7c53PLQ4Dz4YLMtU5lJtF2fuobF
-         CSICcTVz36sFF838xvV8dcj2KjQpRU6NWGsKmyGlX6h1WrjC5ADhtkcWG8bPh4uiMS
-         NpzrF+QDRTdemNyx9IkvbwoUAhx+THLyYKmskNZQ=
+        b=fZOSsIvJf/+pUmzh0wooBsZQ8Ej2rpqCSusnRLz797jJ2HhaBKW5IIuRidenuFKyL
+         Q4A1PktqJ3BUI7fAAbixRylZ0WmViQMzcIPshhwsmYicTvA6RD5bVbDpXYpvmhHXeW
+         pCNDPrhn5PVGT9YQk5H0rAgnBuXM4GwjQpZgjMNU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paul Cercueil <paul@crapouillou.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 274/431] MIPS: DTS: CI20: Fix ACT8600 regulator node names
-Date:   Sun,  9 Jul 2023 13:13:42 +0200
-Message-ID: <20230709111457.568629575@linuxfoundation.org>
+Subject: [PATCH 6.3 275/431] drm/amd/display: Fix a test CalculatePrefetchSchedule()
+Date:   Sun,  9 Jul 2023 13:13:43 +0200
+Message-ID: <20230709111457.592214068@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -55,111 +57,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paul Cercueil <paul@crapouillou.net>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 08384e80a70fb1942510ab5f0ce27bad134e634e ]
+[ Upstream commit 960e27a5741cd3001996ff6ddfb3eb0ed3a4909d ]
 
-The Device Tree was using invalid node names for the ACT8600 regulators.
-To be fair, it is not the original committer's fault, as the
-documentation did gives invalid names as well.
+It is likely Height was expected here, instead of Width.
 
-In theory, the fix should have been to modify the driver to accept the
-alternative names. However, even though the act8865 driver spits
-warnings, the kernel seemed to work fine with what is currently
-supported upstream. For that reason, I think it is okay to just update
-the DTS.
+Test the correct variable.
 
-I removed the "regulator-name" too, since they really didn't bring any
-information. The node names are enough.
-
-Fixes: 73f2b940474d ("MIPS: CI20: DTS: Add I2C nodes")
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 17529ea2acfa ("drm/amd/display: Optimizations for DML math")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/ingenic/ci20.dts | 27 ++++++++-------------------
- 1 file changed, 8 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn21/display_mode_vba_21.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/ingenic/ci20.dts b/arch/mips/boot/dts/ingenic/ci20.dts
-index 239c4537484d0..2b1284c6c64a6 100644
---- a/arch/mips/boot/dts/ingenic/ci20.dts
-+++ b/arch/mips/boot/dts/ingenic/ci20.dts
-@@ -237,59 +237,49 @@ &i2c0 {
- 	act8600: act8600@5a {
- 		compatible = "active-semi,act8600";
- 		reg = <0x5a>;
--		status = "okay";
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_mode_vba_21.c b/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_mode_vba_21.c
+index b7c2844d0cbee..f294f2f8c75bc 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_mode_vba_21.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn21/display_mode_vba_21.c
+@@ -810,7 +810,7 @@ static bool CalculatePrefetchSchedule(
+ 			*swath_width_chroma_ub = dml_ceil(SwathWidthY / 2 - 1, myPipe->BlockWidth256BytesC) + myPipe->BlockWidth256BytesC;
+ 	} else {
+ 		*swath_width_luma_ub = dml_ceil(SwathWidthY - 1, myPipe->BlockHeight256BytesY) + myPipe->BlockHeight256BytesY;
+-		if (myPipe->BlockWidth256BytesC > 0)
++		if (myPipe->BlockHeight256BytesC > 0)
+ 			*swath_width_chroma_ub = dml_ceil(SwathWidthY / 2 - 1, myPipe->BlockHeight256BytesC) + myPipe->BlockHeight256BytesC;
+ 	}
  
- 		regulators {
--			vddcore: SUDCDC1 {
--				regulator-name = "DCDC_REG1";
-+			vddcore: DCDC1 {
- 				regulator-min-microvolt = <1100000>;
- 				regulator-max-microvolt = <1100000>;
- 				regulator-always-on;
- 			};
--			vddmem: SUDCDC2 {
--				regulator-name = "DCDC_REG2";
-+			vddmem: DCDC2 {
- 				regulator-min-microvolt = <1500000>;
- 				regulator-max-microvolt = <1500000>;
- 				regulator-always-on;
- 			};
--			vcc_33: SUDCDC3 {
--				regulator-name = "DCDC_REG3";
-+			vcc_33: DCDC3 {
- 				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-always-on;
- 			};
--			vcc_50: SUDCDC4 {
--				regulator-name = "SUDCDC_REG4";
-+			vcc_50: SUDCDC_REG4 {
- 				regulator-min-microvolt = <5000000>;
- 				regulator-max-microvolt = <5000000>;
- 				regulator-always-on;
- 			};
--			vcc_25: LDO_REG5 {
--				regulator-name = "LDO_REG5";
-+			vcc_25: LDO5 {
- 				regulator-min-microvolt = <2500000>;
- 				regulator-max-microvolt = <2500000>;
- 				regulator-always-on;
- 			};
--			wifi_io: LDO_REG6 {
--				regulator-name = "LDO_REG6";
-+			wifi_io: LDO6 {
- 				regulator-min-microvolt = <2500000>;
- 				regulator-max-microvolt = <2500000>;
- 				regulator-always-on;
- 			};
--			vcc_28: LDO_REG7 {
--				regulator-name = "LDO_REG7";
-+			cim_io_28: LDO7 {
- 				regulator-min-microvolt = <2800000>;
- 				regulator-max-microvolt = <2800000>;
- 				regulator-always-on;
- 			};
--			vcc_15: LDO_REG8 {
--				regulator-name = "LDO_REG8";
-+			cim_io_15: LDO8 {
- 				regulator-min-microvolt = <1500000>;
- 				regulator-max-microvolt = <1500000>;
- 				regulator-always-on;
- 			};
- 			vrtc_18: LDO_REG9 {
--				regulator-name = "LDO_REG9";
- 				/* Despite the datasheet stating 3.3V
- 				 * for REG9 and the driver expecting that,
- 				 * REG9 outputs 1.8V.
-@@ -303,7 +293,6 @@ vrtc_18: LDO_REG9 {
- 				regulator-always-on;
- 			};
- 			vcc_11: LDO_REG10 {
--				regulator-name = "LDO_REG10";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <1200000>;
- 				regulator-always-on;
 -- 
 2.39.2
 
