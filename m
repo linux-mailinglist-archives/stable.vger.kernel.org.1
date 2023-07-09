@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E556174C21F
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5757374C220
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:17:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229885AbjGILRA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:17:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58928 "EHLO
+        id S230181AbjGILRE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:17:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230025AbjGILRA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:17:00 -0400
+        with ESMTP id S230025AbjGILRD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:17:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22899130
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:16:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF0513D
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:17:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AB6EF60BC4
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:16:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04CAC433C7;
-        Sun,  9 Jul 2023 11:16:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82E5F60BCB
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:17:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9472CC433C7;
+        Sun,  9 Jul 2023 11:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901418;
-        bh=qepqbFVSEd23dBSdxTrQnPhaswCs8I7QOPj+sHsouEA=;
+        s=korg; t=1688901420;
+        bh=GgrXLdNJCVhJu719tGGFaPQ+zAaNJfLcsG3EnTg94Lo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a0J2Bj2fJyw2D4ibEjcqJXU+3AIaYd5/yADVzg/undOBcUXvi2V/ujBqrYdAmMj9X
-         rpLkZHRtMJ6aON6Mew0YOeOmcYPbQfSaX9N7AWll8YmC1ACCFruUetHZSBsPBR/VhM
-         xM81POIIZnMhvWYAa83kPCXqscW0ix56u59xws4s=
+        b=hCJ/TGxn4cuuRpun+IWu9B46k8uuabXDI+w9uLLidS5BYVxnNaLMBTAavjdK6e4rd
+         FHvnHymlij/3resh0q4nJibqzplu+iQWlfuOwq4nWa3UJhSaj11x3vnTxzN3tWWG7c
+         KAP14kR9WAUVXzCjdGqgXJtHOSwdVyVact6tB6rQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Chaitanya Kulkarni <kch@nvidia.com>,
-        Yi Zhang <yi.zhang@redhat.com>, Christoph Hellwig <hch@lst.de>,
+        Christoph Hellwig <hch@lst.de>,
         Sagi Grimberg <sagi@grimberg.me>,
         Keith Busch <kbusch@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 014/431] nvme-core: fix memory leak in dhchap_secret_store
-Date:   Sun,  9 Jul 2023 13:09:22 +0200
-Message-ID: <20230709111451.442093933@linuxfoundation.org>
+Subject: [PATCH 6.3 015/431] nvme-core: fix memory leak in dhchap_ctrl_secret
+Date:   Sun,  9 Jul 2023 13:09:23 +0200
+Message-ID: <20230709111451.465287631@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -59,41 +59,13 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Chaitanya Kulkarni <kch@nvidia.com>
 
-[ Upstream commit a836ca33c5b07d34dd5347af9f64d25651d12674 ]
+[ Upstream commit 99c2dcc8ffc24e210a3aa05c204d92f3ef460b05 ]
 
-Free dhchap_secret in nvme_ctrl_dhchap_secret_store() before we return
-fix following kmemleack:-
-
-unreferenced object 0xffff8886376ea800 (size 64):
-  comm "check", pid 22048, jiffies 4344316705 (age 92.199s)
-  hex dump (first 32 bytes):
-    44 48 48 43 2d 31 3a 30 30 3a 6e 78 72 35 4b 67  DHHC-1:00:nxr5Kg
-    75 58 34 75 6f 41 78 73 4a 61 34 63 2f 68 75 4c  uX4uoAxsJa4c/huL
-  backtrace:
-    [<0000000030ce5d4b>] __kmalloc+0x4b/0x130
-    [<000000009be1cdc1>] nvme_ctrl_dhchap_secret_store+0x8f/0x160 [nvme_core]
-    [<00000000ac06c96a>] kernfs_fop_write_iter+0x12b/0x1c0
-    [<00000000437e7ced>] vfs_write+0x2ba/0x3c0
-    [<00000000f9491baf>] ksys_write+0x5f/0xe0
-    [<000000001c46513d>] do_syscall_64+0x3b/0x90
-    [<00000000ecf348fe>] entry_SYSCALL_64_after_hwframe+0x72/0xdc
-unreferenced object 0xffff8886376eaf00 (size 64):
-  comm "check", pid 22048, jiffies 4344316736 (age 92.168s)
-  hex dump (first 32 bytes):
-    44 48 48 43 2d 31 3a 30 30 3a 6e 78 72 35 4b 67  DHHC-1:00:nxr5Kg
-    75 58 34 75 6f 41 78 73 4a 61 34 63 2f 68 75 4c  uX4uoAxsJa4c/huL
-  backtrace:
-    [<0000000030ce5d4b>] __kmalloc+0x4b/0x130
-    [<000000009be1cdc1>] nvme_ctrl_dhchap_secret_store+0x8f/0x160 [nvme_core]
-    [<00000000ac06c96a>] kernfs_fop_write_iter+0x12b/0x1c0
-    [<00000000437e7ced>] vfs_write+0x2ba/0x3c0
-    [<00000000f9491baf>] ksys_write+0x5f/0xe0
-    [<000000001c46513d>] do_syscall_64+0x3b/0x90
-    [<00000000ecf348fe>] entry_SYSCALL_64_after_hwframe+0x72/0xdc
+Free dhchap_secret in nvme_ctrl_dhchap_ctrl_secret_store() before we
+return when nvme_auth_generate_key() returns error.
 
 Fixes: f50fff73d620 ("nvme: implement In-Band authentication")
 Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
@@ -103,10 +75,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 8a632bf7f5a8f..8a706ca1b3e14 100644
+index 8a706ca1b3e14..b03f5a34b1ee0 100644
 --- a/drivers/nvme/host/core.c
 +++ b/drivers/nvme/host/core.c
-@@ -3872,8 +3872,10 @@ static ssize_t nvme_ctrl_dhchap_secret_store(struct device *dev,
+@@ -3929,8 +3929,10 @@ static ssize_t nvme_ctrl_dhchap_ctrl_secret_store(struct device *dev,
  		int ret;
  
  		ret = nvme_auth_generate_key(dhchap_secret, &key);
@@ -115,13 +87,13 @@ index 8a632bf7f5a8f..8a706ca1b3e14 100644
 +			kfree(dhchap_secret);
  			return ret;
 +		}
- 		kfree(opts->dhchap_secret);
- 		opts->dhchap_secret = dhchap_secret;
- 		host_key = ctrl->host_key;
-@@ -3881,7 +3883,8 @@ static ssize_t nvme_ctrl_dhchap_secret_store(struct device *dev,
- 		ctrl->host_key = key;
+ 		kfree(opts->dhchap_ctrl_secret);
+ 		opts->dhchap_ctrl_secret = dhchap_secret;
+ 		ctrl_key = ctrl->ctrl_key;
+@@ -3938,7 +3940,8 @@ static ssize_t nvme_ctrl_dhchap_ctrl_secret_store(struct device *dev,
+ 		ctrl->ctrl_key = key;
  		mutex_unlock(&ctrl->dhchap_auth_mutex);
- 		nvme_auth_free_key(host_key);
+ 		nvme_auth_free_key(ctrl_key);
 -	}
 +	} else
 +		kfree(dhchap_secret);
