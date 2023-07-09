@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3BA374C239
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:18:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F2E474C247
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:19:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbjGILSM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:18:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59472 "EHLO
+        id S231135AbjGILS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbjGILSL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:18:11 -0400
+        with ESMTP id S230511AbjGILS5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:18:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E583CB5
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:18:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550D5E71
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:18:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C09960BEA
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:18:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8641BC433C8;
-        Sun,  9 Jul 2023 11:18:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC3FE60BD8
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:18:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC46BC433C8;
+        Sun,  9 Jul 2023 11:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901489;
-        bh=wFVCP8xLdTVwR7tZEWX5SG3VupPhy39YBsBy+xjiscs=;
+        s=korg; t=1688901521;
+        bh=zWyz+U7V32RdcaRCDSd50v+jbz1pxsAjvBu4FFaypzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b4oFR6yIwMB//ro887sBcvRyF1OsMeQ508YjlJpAK0jEo0bwR8YOspuakbDKknKSH
-         drIkxnnn4lJlN6lCs7oqQGIlOwse4tBAWCPGmVqZYmI+LQatlCCy8X3BL1qd2/s6b0
-         NmKd/OA0Dhh1QG1X1UKUgDfRp+6PivgkQqhYoi48=
+        b=0J370q0kxyG/KF568NDBLWEIc2CzCpp/vabIVqSII+uJmvVnr6jGuFUmShsPk2LbX
+         VU1XxvL661T69ayUsh95bFa+AjlUV9ysP+tEOQUEOagM5T0jANobP3wcessPP6aM6M
+         Ww2RracPHKXIl3GpcTD7gLz8eZ4wvEQWbkzS9fGo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 031/431] svcrdma: Prevent page release when nothing was received
-Date:   Sun,  9 Jul 2023 13:09:39 +0200
-Message-ID: <20230709111451.827225621@linuxfoundation.org>
+Subject: [PATCH 6.3 032/431] erofs: fix compact 4B support for 16k block size
+Date:   Sun,  9 Jul 2023 13:09:40 +0200
+Message-ID: <20230709111451.850352229@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -55,51 +54,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit baf6d18b116b7dc84ed5e212c3a89f17cdc3f28c ]
+[ Upstream commit 001b8ccd0650727e54ec16ef72bf1b8eeab7168e ]
 
-I noticed that svc_rqst_release_pages() was still unnecessarily
-releasing a page when svc_rdma_recvfrom() returns zero.
+In compact 4B, two adjacent lclusters are packed together as a unit to
+form on-disk indexes for effective random access, as below:
 
-Fixes: a53d5cb0646a ("svcrdma: Avoid releasing a page in svc_xprt_release()")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+(amortized = 4, vcnt = 2)
+       _____________________________________________
+      |___@_____ encoded bits __________|_ blkaddr _|
+      0        .                                    amortized * vcnt = 8
+      .             .
+      .                  .              amortized * vcnt - 4 = 4
+      .                        .
+      .____________________________.
+      |_type (2 bits)_|_clusterofs_|
+
+Therefore, encoded bits for each pack are 32 bits (4 bytes). IOWs,
+since each lcluster can get 16 bits for its type and clusterofs, the
+maximum supported lclustersize for compact 4B format is 16k (14 bits).
+
+Fix this to enable compact 4B format for 16k lclusters (blocks), which
+is tested on an arm64 server with 16k page size.
+
+Fixes: 152a333a5895 ("staging: erofs: add compacted compression indexes support")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230601112341.56960-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma_recvfrom.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/erofs/zmap.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-index a22fe7587fa6f..70207d8a318a4 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-@@ -796,6 +796,12 @@ int svc_rdma_recvfrom(struct svc_rqst *rqstp)
- 	struct svc_rdma_recv_ctxt *ctxt;
- 	int ret;
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index b5f4086537548..322f110b3c8f4 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -148,7 +148,7 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
+ 	u8 *in, type;
+ 	bool big_pcluster;
  
-+	/* Prevent svc_xprt_release() from releasing pages in rq_pages
-+	 * when returning 0 or an error.
-+	 */
-+	rqstp->rq_respages = rqstp->rq_pages;
-+	rqstp->rq_next_page = rqstp->rq_respages;
-+
- 	rqstp->rq_xprt_ctxt = NULL;
+-	if (1 << amortizedshift == 4)
++	if (1 << amortizedshift == 4 && lclusterbits <= 14)
+ 		vcnt = 2;
+ 	else if (1 << amortizedshift == 2 && lclusterbits == 12)
+ 		vcnt = 16;
+@@ -250,7 +250,6 @@ static int compacted_load_cluster_from_disk(struct z_erofs_maprecorder *m,
+ {
+ 	struct inode *const inode = m->inode;
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+-	const unsigned int lclusterbits = vi->z_logical_clusterbits;
+ 	const erofs_off_t ebase = sizeof(struct z_erofs_map_header) +
+ 		ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
+ 	const unsigned int totalidx = DIV_ROUND_UP(inode->i_size, EROFS_BLKSIZ);
+@@ -258,9 +257,6 @@ static int compacted_load_cluster_from_disk(struct z_erofs_maprecorder *m,
+ 	unsigned int amortizedshift;
+ 	erofs_off_t pos;
  
- 	ctxt = NULL;
-@@ -819,12 +825,6 @@ int svc_rdma_recvfrom(struct svc_rqst *rqstp)
- 				   DMA_FROM_DEVICE);
- 	svc_rdma_build_arg_xdr(rqstp, ctxt);
- 
--	/* Prevent svc_xprt_release from releasing pages in rq_pages
--	 * if we return 0 or an error.
--	 */
--	rqstp->rq_respages = rqstp->rq_pages;
--	rqstp->rq_next_page = rqstp->rq_respages;
+-	if (lclusterbits != 12)
+-		return -EOPNOTSUPP;
 -
- 	ret = svc_rdma_xdr_decode_req(&rqstp->rq_arg, ctxt);
- 	if (ret < 0)
- 		goto out_err;
+ 	if (lcn >= totalidx)
+ 		return -EINVAL;
+ 
 -- 
 2.39.2
 
