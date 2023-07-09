@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C1C674C34E
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 053B674C34F
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:30:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232790AbjGILan (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:30:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39400 "EHLO
+        id S232787AbjGILaq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:30:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232787AbjGILam (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:30:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B97F1C0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:30:41 -0700 (PDT)
+        with ESMTP id S232789AbjGILap (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:30:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D06C0
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:30:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5224860BC0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:30:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60241C433C9;
-        Sun,  9 Jul 2023 11:30:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 272A060B86
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:30:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377B0C433C7;
+        Sun,  9 Jul 2023 11:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902240;
-        bh=CCKfym+fiLtsILFWoSv+t8YHrlFmku2HNQmOSNs71Ck=;
+        s=korg; t=1688902243;
+        bh=XElCneLf/khqTMq5VzgpKO5CKYZSyJY5tdz4h9V7YzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w76FASqdCIfXhzN1LxZZfDGJC/NvZ1eOphe1ZL0AJ9FMDr3KdjN5mdhRE3bO/efXC
-         qbdviWXp4vmtV7rhq9UtRj/gLiiRrdH1yagEbRCXjzLD4FE+LO4OCMHiJDGAofh2/Q
-         lwLeZVZRlXkFiVxsws3SG16aL5LnNXzzv7C6jaVQ=
+        b=hSwVbvikFZDuCVHSIWBxuqZBa0m1ERI8yIU6bOrm4xemIjQhqgfxbpinVdQIYf9zi
+         K4KbdwYlHZHca1qxUld5YL5j7EOKPpo8zvV7yxy7UUEmuyUGw7wkRQ1+wECa2J6dYl
+         G4bPchKSJBXwkePm+yU+gPufrV22NhJ39B/eSNuE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        patches@lists.linux.dev,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 278/431] soc: mediatek: SVS: Fix MT8192 GPU node name
-Date:   Sun,  9 Jul 2023 13:13:46 +0200
-Message-ID: <20230709111457.662237534@linuxfoundation.org>
+Subject: [PATCH 6.3 279/431] drm/amd/display: Fix artifacting on eDP panels when engaging freesync video mode
+Date:   Sun,  9 Jul 2023 13:13:47 +0200
+Message-ID: <20230709111457.686803968@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -58,43 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-[ Upstream commit 95094495401bdf6a0649d220dfd095e6079b5e39 ]
+[ Upstream commit b18f05a0666aecd5cb19c26a8305bcfa4e9d6502 ]
 
-Device tree node names should be generic. The planned device node name
-for the GPU, according to the bindings and posted DT changes, is "gpu",
-not "mali".
+[Why]
+When freesync video mode is enabled, switching resolution from native
+mode to one of the freesync video compatible modes can trigger continous
+artifacts on some eDP panels when running under KDE. The articating can be seen in the
+attached bug report.
 
-Fix the GPU node name in the SVS driver to follow.
+[How]
+Fix this by restricting updates that require full commit by using the same checks
+for stream and scaling changes in the the enable pass of dm_update_crtc_state()
+along with the check for compatible timings for freesync vide mode.
 
-Fixes: 0bbb09b2af9d ("soc: mediatek: SVS: add mt8192 SVS GPU driver")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Link: https://lore.kernel.org/r/20230531063532.2240038-1-wenst@chromium.org
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Bug: https://gitlab.freedesktop.org/drm/amd/-/issues/2162
+Fixes: da5e14909776 ("drm/amd/display: Fix hang when skipping modeset")
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-svs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/mediatek/mtk-svs.c b/drivers/soc/mediatek/mtk-svs.c
-index f26eb2f637d52..77d6299774427 100644
---- a/drivers/soc/mediatek/mtk-svs.c
-+++ b/drivers/soc/mediatek/mtk-svs.c
-@@ -2101,9 +2101,9 @@ static int svs_mt8192_platform_probe(struct svs_platform *svsp)
- 		svsb = &svsp->banks[idx];
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 2cbd6949804f5..261dbd417c2f8 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -9276,6 +9276,8 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
  
- 		if (svsb->type == SVSB_HIGH)
--			svsb->opp_dev = svs_add_device_link(svsp, "mali");
-+			svsb->opp_dev = svs_add_device_link(svsp, "gpu");
- 		else if (svsb->type == SVSB_LOW)
--			svsb->opp_dev = svs_get_subsys_device(svsp, "mali");
-+			svsb->opp_dev = svs_get_subsys_device(svsp, "gpu");
- 
- 		if (IS_ERR(svsb->opp_dev))
- 			return dev_err_probe(svsp->dev, PTR_ERR(svsb->opp_dev),
+ 		/* Now check if we should set freesync video mode */
+ 		if (amdgpu_freesync_vid_mode && dm_new_crtc_state->stream &&
++		    dc_is_stream_unchanged(new_stream, dm_old_crtc_state->stream) &&
++		    dc_is_stream_scaling_unchanged(new_stream, dm_old_crtc_state->stream) &&
+ 		    is_timing_unchanged_for_freesync(new_crtc_state,
+ 						     old_crtc_state)) {
+ 			new_crtc_state->mode_changed = false;
 -- 
 2.39.2
 
