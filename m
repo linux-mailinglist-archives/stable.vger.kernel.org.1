@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 839E374C338
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A1F074C339
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:29:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232734AbjGIL3m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:29:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38874 "EHLO
+        id S232713AbjGIL3p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:29:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232724AbjGIL3l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:29:41 -0400
+        with ESMTP id S232730AbjGIL3o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:29:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 662FE18C
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:29:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31A8118C
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:29:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F069F60BC4
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:29:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105E2C433C8;
-        Sun,  9 Jul 2023 11:29:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B03F960BC9
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:29:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44A3C433C7;
+        Sun,  9 Jul 2023 11:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902179;
-        bh=B7Dv/CsjcgQoGuP+heAmAmLpwUNdSE9CFfIAgpODInI=;
+        s=korg; t=1688902182;
+        bh=w8ECqtR7M4AT+PxaL9qqPkJxhQoxNuJYGKoeoJPOc8U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OWck9JxujXonQ/2yJnD7qfCP4Yp2wwPNNP3qVx1bm836tGqWjk7mN1ng99/HZHWx7
-         vtlj/BV85eg32ClOR/G5g2oKbnPqd38EDt/uJ2GGl0WgDPQaCl29hKAO9fizf76tZG
-         lJiN5r3Ja7pHRa8sw+LWdDtTyCDI0bf9z2yuVpMM=
+        b=jrfwnRpIKv66YSxtWaqYr2iEImY6AlEtWoF3/y20NSe5Wlk1G5S/KNRDJ2Q8tbedr
+         BSEA4fs1CtlqPMfVMkYTkBCVyPXQd4cTIzTJEuLrOrQFYXL7DMFf315ZZzHV/03r3X
+         0eaeCP6b3BDz/D47IjUrjSfab69VWGb5HL0uCnIQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Heidelberg <david@ixit.cz>,
+        patches@lists.linux.dev, Adam Skladowski <a39.skl@gmail.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Clark <robdclark@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 284/431] drm/msm/a6xx: dont set IO_PGTABLE_QUIRK_ARM_OUTER_WBWA with coherent SMMU
-Date:   Sun,  9 Jul 2023 13:13:52 +0200
-Message-ID: <20230709111457.803780010@linuxfoundation.org>
+Subject: [PATCH 6.3 285/431] drm/msm/a5xx: really check for A510 in a5xx_gpu_init
+Date:   Sun,  9 Jul 2023 13:13:53 +0200
+Message-ID: <20230709111457.827886912@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -59,39 +58,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 38e27a6fbf2206b18417c5985dbcdeca0f2026b8 ]
+[ Upstream commit 736a9327365644b460e4498b1ce172ca411efcbc ]
 
-If the Adreno SMMU is dma-coherent, allocation will fail unless we
-disable IO_PGTABLE_QUIRK_ARM_OUTER_WBWA. Skip setting this quirk for the
-coherent SMMUs (like we have on sm8350 platform).
+The commit 010c8bbad2cb ("drm: msm: adreno: Disable preemption on Adreno
+510") added special handling for a510 (this SKU doesn't seem to support
+preemption, so the driver should clamp nr_rings to 1). However the
+gpu->revn is not yet set (it is set later, in adreno_gpu_init()) and
+thus the condition is always false. Check config->rev instead.
 
-Fixes: 54af0ceb7595 ("arm64: dts: qcom: sm8350: add GPU, GMU, GPU CC and SMMU nodes")
-Reported-by: David Heidelberg <david@ixit.cz>
+Fixes: 010c8bbad2cb ("drm: msm: adreno: Disable preemption on Adreno 510")
+Reported-by: Adam Skladowski <a39.skl@gmail.com>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: David Heidelberg <david@ixit.cz>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Tested-by: Konrad Dybcio <konrad.dybcio@linaro.org> # SM8450 HDK
-Patchwork: https://patchwork.freedesktop.org/patch/531562/
+Tested-by: Adam Skladowski <a39.skl@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/531511/
 Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 3 ++-
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 2942d2548ce69..f74495dcbd966 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -1793,7 +1793,8 @@ a6xx_create_address_space(struct msm_gpu *gpu, struct platform_device *pdev)
- 	 * This allows GPU to set the bus attributes required to use system
- 	 * cache on behalf of the iommu page table walker.
- 	 */
--	if (!IS_ERR_OR_NULL(a6xx_gpu->htw_llc_slice))
-+	if (!IS_ERR_OR_NULL(a6xx_gpu->htw_llc_slice) &&
-+	    !device_iommu_capable(&pdev->dev, IOMMU_CAP_CACHE_COHERENCY))
- 		quirks |= IO_PGTABLE_QUIRK_ARM_OUTER_WBWA;
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+index 0372f89082022..660c830c68764 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+@@ -1740,6 +1740,7 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+ {
+ 	struct msm_drm_private *priv = dev->dev_private;
+ 	struct platform_device *pdev = priv->gpu_pdev;
++	struct adreno_platform_config *config = pdev->dev.platform_data;
+ 	struct a5xx_gpu *a5xx_gpu = NULL;
+ 	struct adreno_gpu *adreno_gpu;
+ 	struct msm_gpu *gpu;
+@@ -1766,7 +1767,7 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
  
- 	return adreno_iommu_create_address_space(gpu, pdev, quirks);
+ 	nr_rings = 4;
+ 
+-	if (adreno_is_a510(adreno_gpu))
++	if (adreno_cmp_rev(ADRENO_REV(5, 1, 0, ANY_ID), config->rev))
+ 		nr_rings = 1;
+ 
+ 	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, nr_rings);
 -- 
 2.39.2
 
