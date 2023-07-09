@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 352F674C390
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC57974C39C
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:34:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230174AbjGILdr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42264 "EHLO
+        id S232907AbjGILeV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:34:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232989AbjGILdl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:33:41 -0400
+        with ESMTP id S233020AbjGILeM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0C895
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:33:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3956895
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7BDD360BC0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:33:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B47CC433C8;
-        Sun,  9 Jul 2023 11:33:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB8FC60BC9
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD4DC433C8;
+        Sun,  9 Jul 2023 11:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902419;
-        bh=Pi8GV7qEk1ibPzj4Wp2ILk8Di4v2NlFk0/HEY21e4wA=;
+        s=korg; t=1688902450;
+        bh=3mHwm5A/3Fa8cJOt/mS8kVyUwqZMIjyUP6tuVguET4s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nDt1smB1VkfH/7on8BiruDbkdDF4yg6LyFPZrL0qyaPvJIfTNfQXaV0O79F6a2jGd
-         qCPPU6coAf1DvS39uG3lCLDauCutprQospeC+GSvrpaVeKGxp9L/tnMaQdf/V5EzTS
-         csj3vlOUr6d6WtPaiM1M7Kcl8M3QMKt92+Lb5A4o=
+        b=QPIi7pv+K8IhG4WgQNbY/W2CE+WHS/k9dD34vOjY1SVsfzdgXyVnoKOgWNXSvh7Is
+         3bFRwoncubp+09G9ZBk2OeXW1lyr1tkbWUc1Xpon+X/9XZhSr7nMwXW4EsC5fxa9Kc
+         cSXoar9MStCFLx/hXcgQQar5RhxyLUyeXJ1NI9N4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        patches@lists.linux.dev, Xi Pardee <xi.pardee@intel.com>,
+        "David E. Box" <david.e.box@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 362/431] pinctrl: cherryview: Return correct value if pin in push-pull mode
-Date:   Sun,  9 Jul 2023 13:15:10 +0200
-Message-ID: <20230709111459.657134855@linuxfoundation.org>
+Subject: [PATCH 6.3 363/431] platform/x86:intel/pmc: Remove Meteor Lake S platform support
+Date:   Sun,  9 Jul 2023 13:15:11 +0200
+Message-ID: <20230709111459.680040768@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -56,55 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Xi Pardee <xi.pardee@intel.com>
 
-[ Upstream commit 5835196a17be5cfdcad0b617f90cf4abe16951a4 ]
+[ Upstream commit 416a87c972b978d71ab828442d1d48e3bd194855 ]
 
-Currently the getter returns ENOTSUPP on pin configured in
-the push-pull mode. Fix this by adding the missed switch case.
+commit c5ad454a12c6 ("platform/x86: intel/pmc/core: Add Meteor Lake
+support to pmc core driver") was supposed to add support for Meter
+Lake P/M and mistakenly added support for Meteor Lake S instead. Meteor
+Lake P/M support was added later and MTL-S support needs to be removed
+since its currently assigned to the wrong register maps.
 
-Fixes: ccdf81d08dbe ("pinctrl: cherryview: add option to set open-drain pin config")
-Fixes: 6e08d6bbebeb ("pinctrl: Add Intel Cherryview/Braswell pin controller support")
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: c5ad454a12c6 ("platform/x86: intel/pmc/core: Add Meteor Lake support to pmc core driver")
+Signed-off-by: Xi Pardee <xi.pardee@intel.com>
+Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+Link: https://lore.kernel.org/r/20230601004706.871528-1-xi.pardee@intel.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/intel/pinctrl-cherryview.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/platform/x86/intel/pmc/core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
-index 722990e278361..87cf1e7403979 100644
---- a/drivers/pinctrl/intel/pinctrl-cherryview.c
-+++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
-@@ -949,11 +949,6 @@ static int chv_config_get(struct pinctrl_dev *pctldev, unsigned int pin,
- 
- 		break;
- 
--	case PIN_CONFIG_DRIVE_OPEN_DRAIN:
--		if (!(ctrl1 & CHV_PADCTRL1_ODEN))
--			return -EINVAL;
--		break;
--
- 	case PIN_CONFIG_BIAS_HIGH_IMPEDANCE: {
- 		u32 cfg;
- 
-@@ -963,6 +958,16 @@ static int chv_config_get(struct pinctrl_dev *pctldev, unsigned int pin,
- 			return -EINVAL;
- 
- 		break;
-+
-+	case PIN_CONFIG_DRIVE_PUSH_PULL:
-+		if (ctrl1 & CHV_PADCTRL1_ODEN)
-+			return -EINVAL;
-+		break;
-+
-+	case PIN_CONFIG_DRIVE_OPEN_DRAIN:
-+		if (!(ctrl1 & CHV_PADCTRL1_ODEN))
-+			return -EINVAL;
-+		break;
- 	}
- 
- 	default:
+diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
+index b9591969e0fa1..bed083525fbe7 100644
+--- a/drivers/platform/x86/intel/pmc/core.c
++++ b/drivers/platform/x86/intel/pmc/core.c
+@@ -1039,7 +1039,6 @@ static const struct x86_cpu_id intel_pmc_core_ids[] = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,        tgl_core_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,		adl_core_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,	adl_core_init),
+-	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE,          mtl_core_init),
+ 	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE_L,	mtl_core_init),
+ 	{}
+ };
 -- 
 2.39.2
 
