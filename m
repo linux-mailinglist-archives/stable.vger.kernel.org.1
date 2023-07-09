@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B378674C258
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:19:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E53674C23B
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:18:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230523AbjGILTd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:19:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60396 "EHLO
+        id S230456AbjGILSO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:18:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230092AbjGILTd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:19:33 -0400
+        with ESMTP id S230192AbjGILSO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:18:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72290B5
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:19:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF693B5
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:18:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1165060BCA
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:19:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E600C433C8;
-        Sun,  9 Jul 2023 11:19:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4EA6060BE9
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:18:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600BCC433C8;
+        Sun,  9 Jul 2023 11:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901571;
-        bh=IJusEHLCIZFQ1IRfMWu2dJPNMN75fxZh/dGrURmSSZo=;
+        s=korg; t=1688901492;
+        bh=l84Zsd899OsILHX0vy+jLiL/i/wlxwQ/NlcSMUUutFQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TZxrX5hAjOeDDgkPUp7pvVgwQTusFEYZyVt14N2kUTQyA6pualF72pBC2+w+MuhhP
-         XZGMbqDXlp4Kx9bz583ycFG+fvryGqvZDW8Hmv5f5vgqLBI/j1AfnFx1B31chIA3Mr
-         /QtA+NDVjRR6GS9jyR4bh+xsUjvC9/CDckYW6qpk=
+        b=LKgm4DETRzS5GqMBBev/IqR2Th0E88oD0tAZ+/muFtNhYftYWG3b7rNvvZ/9Hk55O
+         yToaez/ZDD6Q8vkRS2eORrsCe91Iahj7tpIOVTNzMoOd0gijCIuM2u2WlhikOVwysN
+         wtSd/FaUNtBYHVYuLhGQ+P6Mp2yKWkLy6rv5kz7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 039/431] PM: domains: fix integer overflow issues in genpd_parse_state()
-Date:   Sun,  9 Jul 2023 13:09:47 +0200
-Message-ID: <20230709111452.012215236@linuxfoundation.org>
+        patches@lists.linux.dev, Geoff Blake <blakgeof@amazon.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 040/431] perf/arm-cmn: Fix DTC reset
+Date:   Sun,  9 Jul 2023 13:09:48 +0200
+Message-ID: <20230709111452.037934432@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -57,46 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit e5d1c8722083f0332dcd3c85fa1273d85fb6bed8 ]
+[ Upstream commit 71746c995cac92fcf6a65661b51211cf2009d7f0 ]
 
-Currently, while calculating residency and latency values, right
-operands may overflow if resulting values are big enough.
+It turns out that my naive DTC reset logic fails to work as intended,
+since, after checking with the hardware designers, the PMU actually
+needs to be fully enabled in order to correctly clear any pending
+overflows. Therefore, invert the sequence to start with turning on both
+enables so that we can reliably get the DTCs into a known state, then
+moving to our normal counters-stopped state from there. Since all the
+DTM counters have already been unpaired during the initial discovery
+pass, we just need to additionally reset the cycle counters to ensure
+that no other unexpected overflows occur during this period.
 
-To prevent this, albeit unlikely case, play it safe and convert
-right operands to left ones' type s64.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 30f604283e05 ("PM / Domains: Allow domain power states to be read from DT")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 0ba64770a2f2 ("perf: Add Arm CMN-600 PMU driver")
+Reported-by: Geoff Blake <blakgeof@amazon.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/0ea4559261ea394f827c9aee5168c77a60aaee03.1684946389.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/domain.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/perf/arm-cmn.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
-index 32084e38b73d0..51b9d4eaab5ea 100644
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -2939,10 +2939,10 @@ static int genpd_parse_state(struct genpd_power_state *genpd_state,
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index 44b719f39c3b3..4f86b7fd9823f 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -1899,9 +1899,10 @@ static int arm_cmn_init_dtc(struct arm_cmn *cmn, struct arm_cmn_node *dn, int id
+ 	if (dtc->irq < 0)
+ 		return dtc->irq;
  
- 	err = of_property_read_u32(state_node, "min-residency-us", &residency);
- 	if (!err)
--		genpd_state->residency_ns = 1000 * residency;
-+		genpd_state->residency_ns = 1000LL * residency;
- 
--	genpd_state->power_on_latency_ns = 1000 * exit_latency;
--	genpd_state->power_off_latency_ns = 1000 * entry_latency;
-+	genpd_state->power_on_latency_ns = 1000LL * exit_latency;
-+	genpd_state->power_off_latency_ns = 1000LL * entry_latency;
- 	genpd_state->fwnode = &state_node->fwnode;
+-	writel_relaxed(0, dtc->base + CMN_DT_PMCR);
++	writel_relaxed(CMN_DT_DTC_CTL_DT_EN, dtc->base + CMN_DT_DTC_CTL);
++	writel_relaxed(CMN_DT_PMCR_PMU_EN | CMN_DT_PMCR_OVFL_INTR_EN, dtc->base + CMN_DT_PMCR);
++	writeq_relaxed(0, dtc->base + CMN_DT_PMCCNTR);
+ 	writel_relaxed(0x1ff, dtc->base + CMN_DT_PMOVSR_CLR);
+-	writel_relaxed(CMN_DT_PMCR_OVFL_INTR_EN, dtc->base + CMN_DT_PMCR);
  
  	return 0;
+ }
+@@ -1961,7 +1962,7 @@ static int arm_cmn_init_dtcs(struct arm_cmn *cmn)
+ 			dn->type = CMN_TYPE_CCLA;
+ 	}
+ 
+-	writel_relaxed(CMN_DT_DTC_CTL_DT_EN, cmn->dtc[0].base + CMN_DT_DTC_CTL);
++	arm_cmn_set_state(cmn, CMN_STATE_DISABLED);
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 
