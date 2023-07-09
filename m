@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF1E274C371
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F51874C208
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:14:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232880AbjGILco (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:32:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41372 "EHLO
+        id S230380AbjGILOl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:14:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233007AbjGILcS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:32:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C25095
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:32:17 -0700 (PDT)
+        with ESMTP id S230371AbjGILOk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:14:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87888131
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:14:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2433E60BC0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:32:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33486C433C7;
-        Sun,  9 Jul 2023 11:32:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26C9360BC6
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:14:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B8AC433C7;
+        Sun,  9 Jul 2023 11:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902336;
-        bh=EyYRh+3otg3D/HkayMLbR/CSzGXR5oVy6A/UB67R580=;
+        s=korg; t=1688901278;
+        bh=JZk0yN1cG4O5ARik7AJnsNBIkCv+udHoqBWNdnRb4tQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fWu2SwlP9FEdXXuycZ4D7Q1bqYg13RlR/zdN4xx2DFk6BhmB520bIGod+4aBrkksS
-         CM1CRioNucXZHYyi7q4uZG6zW7EyxG4Xf9CWVXsqv4hDKI8C7P1Pr1V6vOd803xOqd
-         1wog1lx3FSMK3LEBX/KZ/5iK6VDNMsPUb4mKyKGs=
+        b=B4Zhre8c7JMkUYakh08ltQQcEUH0LB2ZRJ1SEZpKPaiTIDqA2kjzmR0cwYh5xBwzv
+         s3oXE1ropjeU+l/YyokAb0YDYdsFPwidRHFJCVD+E1l/J2IK/RBunz9zhWkwZ5yzfM
+         +j9Xa5EQ/b5spMuHgO/Q75Lqqm2VPUmzTywVpvj4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Davis <afd@ti.com>,
-        Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 302/431] arm64: dts: ti: k3-j721e-beagleboneai64: Fix mailbox node status
-Date:   Sun,  9 Jul 2023 13:14:10 +0200
-Message-ID: <20230709111458.224822258@linuxfoundation.org>
+        patches@lists.linux.dev, Peter Collingbourne <pcc@google.com>,
+        Qun-wei Lin <Qun-wei.Lin@mediatek.com>,
+        David Hildenbrand <david@redhat.com>,
+        "Huang, Ying" <ying.huang@intel.com>,
+        Steven Price <steven.price@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 5/8] mm: call arch_swap_restore() from do_swap_page()
+Date:   Sun,  9 Jul 2023 13:14:11 +0200
+Message-ID: <20230709111345.460811210@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
-References: <20230709111451.101012554@linuxfoundation.org>
+In-Reply-To: <20230709111345.297026264@linuxfoundation.org>
+References: <20230709111345.297026264@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,70 +59,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrew Davis <afd@ti.com>
+From: Peter Collingbourne <pcc@google.com>
 
-[ Upstream commit 155e7635ed1f3814d94d12556a3a0fed41d05b76 ]
+commit 6dca4ac6fc91fd41ea4d6c4511838d37f4e0eab2 upstream.
 
-Mailbox nodes are now disabled by default. The BeagleBoard AI64 DT
-addition went in at around the same time and must have missed that
-change so the mailboxes are not re-enabled. Do that here.
+Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
+the call to swap_free() before the call to set_pte_at(), which meant that
+the MTE tags could end up being freed before set_pte_at() had a chance to
+restore them.  Fix it by adding a call to the arch_swap_restore() hook
+before the call to swap_free().
 
-Fixes: fae14a1cb8dd ("arm64: dts: ti: Add k3-j721e-beagleboneai64")
-Signed-off-by: Andrew Davis <afd@ti.com>
-Reviewed-by: Nishanth Menon <nm@ti.com>
-Link: https://lore.kernel.org/r/20230515172137.474626-1-afd@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230523004312.1807357-2-pcc@google.com
+Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
+Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
+Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.camel@mediatek.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: "Huang, Ying" <ying.huang@intel.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: <stable@vger.kernel.org>	[6.1+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts | 5 +++++
- 1 file changed, 5 insertions(+)
+ mm/memory.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
-index 37c24b077b6aa..8a62ac263b89a 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
-@@ -936,6 +936,7 @@ &ufs_wrapper {
- };
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3933,6 +3933,13 @@ vm_fault_t do_swap_page(struct vm_fault
+ 	}
  
- &mailbox0_cluster0 {
-+	status = "okay";
- 	interrupts = <436>;
- 
- 	mbox_mcu_r5fss0_core0: mbox-mcu-r5fss0-core0 {
-@@ -950,6 +951,7 @@ mbox_mcu_r5fss0_core1: mbox-mcu-r5fss0-core1 {
- };
- 
- &mailbox0_cluster1 {
-+	status = "okay";
- 	interrupts = <432>;
- 
- 	mbox_main_r5fss0_core0: mbox-main-r5fss0-core0 {
-@@ -964,6 +966,7 @@ mbox_main_r5fss0_core1: mbox-main-r5fss0-core1 {
- };
- 
- &mailbox0_cluster2 {
-+	status = "okay";
- 	interrupts = <428>;
- 
- 	mbox_main_r5fss1_core0: mbox-main-r5fss1-core0 {
-@@ -978,6 +981,7 @@ mbox_main_r5fss1_core1: mbox-main-r5fss1-core1 {
- };
- 
- &mailbox0_cluster3 {
-+	status = "okay";
- 	interrupts = <424>;
- 
- 	mbox_c66_0: mbox-c66-0 {
-@@ -992,6 +996,7 @@ mbox_c66_1: mbox-c66-1 {
- };
- 
- &mailbox0_cluster4 {
-+	status = "okay";
- 	interrupts = <420>;
- 
- 	mbox_c71_0: mbox-c71-0 {
--- 
-2.39.2
-
+ 	/*
++	 * Some architectures may have to restore extra metadata to the page
++	 * when reading from swap. This metadata may be indexed by swap entry
++	 * so this must be called before swap_free().
++	 */
++	arch_swap_restore(entry, folio);
++
++	/*
+ 	 * Remove the swap entry and conditionally try to free up the swapcache.
+ 	 * We're already holding a reference on the page but haven't mapped it
+ 	 * yet.
 
 
