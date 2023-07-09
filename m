@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D90FA74C36B
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7021A74C38F
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:33:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232829AbjGILcl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:32:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41022 "EHLO
+        id S229516AbjGILdr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:33:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232919AbjGILcI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:32:08 -0400
+        with ESMTP id S232984AbjGILdi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:33:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2134EE45
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:31:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B3A913D
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:33:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA58D60C02
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:31:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8369C433C8;
-        Sun,  9 Jul 2023 11:31:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7EF560BC9
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:33:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B45C433C7;
+        Sun,  9 Jul 2023 11:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902314;
-        bh=ue9EbbSodOQGvyTQlJM772APoYnHF0BOM8sb+4iO1ME=;
+        s=korg; t=1688902417;
+        bh=b4aDIJsYHPCcG85cEpSQBYX4Ui66WK5ExCnv8e0O/i0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pDyatUgI9hyTAvCoQ6glSATTX499W1S5VMP3Achc1DtZ1TByV2h7R42Cv4Vuf8wB6
-         22OWaaJiG8M8dy9HiItGWN0GI7ecbsDC3avt91Yuye0GeQl4o3WHWBqd78fd5HQLql
-         bQZunqUMC1U66qzCiESopjg3yWoUVxKs6VcQuMhY=
+        b=HXTzxcLzI+vz4BhO00BRhpcaRrjV88+3ytEBESLcHpS/hwpqKPiNCtXIoimK3zNZd
+         mgNZVh+7Q4n/6ffVSIOmdP/tTOGpoo+YsUpTiqQNBAwvmx8OhxHEsnL4THfZfoxb1M
+         Xpx0R8Oq/DWnQPuCTKLKmYb6lC7zyPZgO/5zYXAo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fei Shao <fshao@chromium.org>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Michael Walle <mwalle@kernel.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 331/431] clk: Fix memory leak in devm_clk_notifier_register()
-Date:   Sun,  9 Jul 2023 13:14:39 +0200
-Message-ID: <20230709111458.935270244@linuxfoundation.org>
+Subject: [PATCH 6.3 332/431] ARM: dts: lan966x: kontron-d10: fix board reset
+Date:   Sun,  9 Jul 2023 13:14:40 +0200
+Message-ID: <20230709111458.958681261@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -56,40 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fei Shao <fshao@chromium.org>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit 7fb933e56f77a57ef7cfc59fc34cbbf1b1fa31ff ]
+[ Upstream commit bfcd5714f6424c03e385e0e9296dcd69855cfea7 ]
 
-devm_clk_notifier_register() allocates a devres resource for clk
-notifier but didn't register that to the device, so the notifier didn't
-get unregistered on device detach and the allocated resource was leaked.
+The pinctrl node was missing which change the pin mux to GPIO mode. Add
+it.
 
-Fix the issue by registering the resource through devres_add().
-
-This issue was found with kmemleak on a Chromebook.
-
-Fixes: 6d30d50d037d ("clk: add devm variant of clk_notifier_register")
-Signed-off-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20230619112253.v2.1.I13f060c10549ef181603e921291bdea95f83033c@changeid
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 79d83b3a458e ("ARM: dts: lan966x: add basic Kontron KSwitch D10 support")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+[claudiu.beznea: moved pinctrl-* bindings after compatible]
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230616-feature-d10-dt-cleanups-v1-1-50dd0452b8fe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/lan966x-kontron-kswitch-d10-mmt.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 657b27743c4dd..15a405a5582bb 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4694,6 +4694,7 @@ int devm_clk_notifier_register(struct device *dev, struct clk *clk,
- 	if (!ret) {
- 		devres->clk = clk;
- 		devres->nb = nb;
-+		devres_add(dev, devres);
- 	} else {
- 		devres_free(devres);
- 	}
+diff --git a/arch/arm/boot/dts/lan966x-kontron-kswitch-d10-mmt.dtsi b/arch/arm/boot/dts/lan966x-kontron-kswitch-d10-mmt.dtsi
+index 0097e72e3fb22..42be207509a46 100644
+--- a/arch/arm/boot/dts/lan966x-kontron-kswitch-d10-mmt.dtsi
++++ b/arch/arm/boot/dts/lan966x-kontron-kswitch-d10-mmt.dtsi
+@@ -18,6 +18,8 @@ chosen {
+ 
+ 	gpio-restart {
+ 		compatible = "gpio-restart";
++		pinctrl-0 = <&reset_pins>;
++		pinctrl-names = "default";
+ 		gpios = <&gpio 56 GPIO_ACTIVE_LOW>;
+ 		priority = <200>;
+ 	};
+@@ -59,6 +61,12 @@ miim_c_pins: miim-c-pins {
+ 		function = "miim_c";
+ 	};
+ 
++	reset_pins: reset-pins {
++		/* SYS_RST# */
++		pins = "GPIO_56";
++		function = "gpio";
++	};
++
+ 	sgpio_a_pins: sgpio-a-pins {
+ 		/* SCK, D0, D1 */
+ 		pins = "GPIO_32", "GPIO_33", "GPIO_34";
 -- 
 2.39.2
 
