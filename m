@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0894F74C26F
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED66D74C270
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:20:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231231AbjGILUa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:20:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60912 "EHLO
+        id S231235AbjGILUd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:20:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231165AbjGILU3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:20:29 -0400
+        with ESMTP id S231225AbjGILUc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:20:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD2EB5
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:20:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBA22137
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:20:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CA1560BE9
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:20:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17E1C433C8;
-        Sun,  9 Jul 2023 11:20:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5495A60BA4
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:20:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B43C433C8;
+        Sun,  9 Jul 2023 11:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901628;
-        bh=TYdxTRb+fSBkaeBeD2HXpAQFMOSdz8b4e9mmWU3MU6A=;
+        s=korg; t=1688901630;
+        bh=x1xaCyfs/40/QdrviXHnSgB6OljJy8ENDw0urg45+Qw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vrVxw0zJR9zSnB2BWW9WpvpeVb59jVFytzqSZ88+4XLWfu3pV9FxptxLCq6dSzneJ
-         CP7gflkBT73EpsYHab5q6z16vBGf0KfACDotxt37XFiIqQm2fCHRQ5oTv0rFaupmmW
-         wx56TDZgcZGxPt97Hc33PdATkg5QuTSLfE8AGj/s=
+        b=DXHrwWF6oV1/ZXbPqM2M4UzOQzmOX2wmdvAkDb5G5LKrBZahXzHZDyAce6A/5ZhAU
+         zLMFvPtG7i8WERcvVD1NxTusEFcAjrL8DUEasN6PMuoV5EiQc8bnG02qNL0x9BXBb3
+         txdpZXGE42WUzQGg/qVutqhLiU/iOiHJTTAc5zkY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 087/431] bpf: Dont EFAULT for {g,s}setsockopt with wrong optlen
-Date:   Sun,  9 Jul 2023 13:10:35 +0200
-Message-ID: <20230709111453.191755269@linuxfoundation.org>
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 088/431] spi: dw: Round of n_bytes to power of 2
+Date:   Sun,  9 Jul 2023 13:10:36 +0200
+Message-ID: <20230709111453.214991267@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -55,86 +53,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stanislav Fomichev <sdf@google.com>
+From: Joy Chakraborty <joychakr@google.com>
 
-[ Upstream commit 29ebbba7d46136cba324264e513a1e964ca16c0a ]
+[ Upstream commit 9f34baf67e4d08908fd94ff29c825bb673295336 ]
 
-With the way the hooks implemented right now, we have a special
-condition: optval larger than PAGE_SIZE will expose only first 4k into
-BPF; any modifications to the optval are ignored. If the BPF program
-doesn't handle this condition by resetting optlen to 0,
-the userspace will get EFAULT.
+n_bytes variable in the driver represents the number of bytes per word
+that needs to be sent/copied to fifo. Bits/word can be between 8 and 32
+bits from the client but in memory they are a power of 2, same is mentioned
+in spi.h header:
+"
+ * @bits_per_word: Data transfers involve one or more words; word sizes
+ *      like eight or 12 bits are common.  In-memory wordsizes are
+ *      powers of two bytes (e.g. 20 bit samples use 32 bits).
+ *      This may be changed by the device's driver, or left at the
+ *      default (0) indicating protocol words are eight bit bytes.
+ *      The spi_transfer.bits_per_word can override this for each transfer.
+"
 
-The intention of the EFAULT was to make it apparent to the
-developers that the program is doing something wrong.
-However, this inadvertently might affect production workloads
-with the BPF programs that are not too careful (i.e., returning EFAULT
-for perfectly valid setsockopt/getsockopt calls).
+Hence, round of n_bytes to a power of 2 to avoid values like 3 which
+would generate unalligned/odd accesses to memory/fifo.
 
-Let's try to minimize the chance of BPF program screwing up userspace
-by ignoring the output of those BPF programs (instead of returning
-EFAULT to the userspace). pr_info_once those cases to
-the dmesg to help with figuring out what's going wrong.
+* tested on Baikal-T1 based system with DW SPI-looped back interface
+transferring a chunk of data with DFS:8,12,16.
 
-Fixes: 0d01da6afc54 ("bpf: implement getsockopt and setsockopt hooks")
-Suggested-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Stanislav Fomichev <sdf@google.com>
-Link: https://lore.kernel.org/r/20230511170456.1759459-2-sdf@google.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: a51acc2400d4 ("spi: dw: Add support for 32-bits max xfer size")
+Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com
+Signed-off-by: Joy Chakraborty <joychakr@google.com
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com
+Tested-by: Serge Semin <fancer.lancer@gmail.com
+Link: https://lore.kernel.org/r/20230512104746.1797865-4-joychakr@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/cgroup.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/spi/spi-dw-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-index b86b907e566ca..bb70f400c25eb 100644
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -1826,6 +1826,12 @@ int __cgroup_bpf_run_filter_setsockopt(struct sock *sk, int *level,
- 		ret = 1;
- 	} else if (ctx.optlen > max_optlen || ctx.optlen < -1) {
- 		/* optlen is out of bounds */
-+		if (*optlen > PAGE_SIZE && ctx.optlen >= 0) {
-+			pr_info_once("bpf setsockopt: ignoring program buffer with optlen=%d (max_optlen=%d)\n",
-+				     ctx.optlen, max_optlen);
-+			ret = 0;
-+			goto out;
-+		}
- 		ret = -EFAULT;
- 	} else {
- 		/* optlen within bounds, run kernel handler */
-@@ -1881,8 +1887,10 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
- 		.optname = optname,
- 		.current_task = current,
- 	};
-+	int orig_optlen;
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+index c3bfb6c84cab2..4976e3b8923ee 100644
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -426,7 +426,10 @@ static int dw_spi_transfer_one(struct spi_controller *master,
  	int ret;
  
-+	orig_optlen = max_optlen;
- 	ctx.optlen = max_optlen;
- 	max_optlen = sockopt_alloc_buf(&ctx, max_optlen, &buf);
- 	if (max_optlen < 0)
-@@ -1905,6 +1913,7 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
- 			ret = -EFAULT;
- 			goto out;
- 		}
-+		orig_optlen = ctx.optlen;
- 
- 		if (copy_from_user(ctx.optval, optval,
- 				   min(ctx.optlen, max_optlen)) != 0) {
-@@ -1922,6 +1931,12 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
- 		goto out;
- 
- 	if (optval && (ctx.optlen > max_optlen || ctx.optlen < 0)) {
-+		if (orig_optlen > PAGE_SIZE && ctx.optlen >= 0) {
-+			pr_info_once("bpf getsockopt: ignoring program buffer with optlen=%d (max_optlen=%d)\n",
-+				     ctx.optlen, max_optlen);
-+			ret = retval;
-+			goto out;
-+		}
- 		ret = -EFAULT;
- 		goto out;
- 	}
+ 	dws->dma_mapped = 0;
+-	dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
++	dws->n_bytes =
++		roundup_pow_of_two(DIV_ROUND_UP(transfer->bits_per_word,
++						BITS_PER_BYTE));
++
+ 	dws->tx = (void *)transfer->tx_buf;
+ 	dws->tx_len = transfer->len / dws->n_bytes;
+ 	dws->rx = transfer->rx_buf;
 -- 
 2.39.2
 
