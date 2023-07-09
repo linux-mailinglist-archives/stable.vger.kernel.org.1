@@ -2,73 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B981674C148
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 08:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0AAF74C172
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 09:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233073AbjGIG0h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 02:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59626 "EHLO
+        id S229490AbjGIHid (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 03:38:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233301AbjGIG0e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 02:26:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466DB1BF
-        for <stable@vger.kernel.org>; Sat,  8 Jul 2023 23:26:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D466D60BA1
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 06:26:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AA4C433C9;
-        Sun,  9 Jul 2023 06:26:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688883993;
-        bh=EnHCKP0BK13Yi/iIgak4P1dYAp36N7NA3lxmY9mMduA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Hb871dcXQ5jPOb/DfcnqtBJcW5RQvEJ0k8vA9GIfHxgGxOHUt15IJrecy23qH0XJG
-         qnqY6qV0LtLxcSt+arVinc9lehPx3W0uapvW6Ih15qJdoejs/AGv7XaDsQsK//IVBi
-         QbtjRGMgE/xYnAlsVq7Pr27POyB4gjJrAAyiVkpc=
-Date:   Sun, 9 Jul 2023 08:26:30 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     zxuiji <gb2985@gmail.com>
-Cc:     stable@vger.kernel.org
-Subject: Re: Suggestion for extending SIGWINCH
-Message-ID: <2023070923-cramp-tarnish-5b8e@gregkh>
-References: <CAOZ3c1paOYY4mXuF_MMcb+12e7d4_1cXb8RxPDG5B3ty3fiwfA@mail.gmail.com>
+        with ESMTP id S229437AbjGIHic (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 03:38:32 -0400
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1C16E46
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 00:38:30 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3159709a705so79000f8f.1
+        for <stable@vger.kernel.org>; Sun, 09 Jul 2023 00:38:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688888309; x=1691480309;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BZT4OUEE+oia2xz8fV8wtOdivzl53DHGkdnBjhas2HQ=;
+        b=iamtyWe1Xdv5m1oszi0RZClB+Fw9eQ+e8XNQdlxg8eM6PC7WCdGyr5DX9r8cPPuWaA
+         Z2v+PDT6vpGeybCClu5Do2s6/yjwiH2UQsognz1nGFqyaMk5MiG1UnNgmVXv3pTUETL9
+         RU82nYK1Vg33NpCZiotYT6A7tcqppzBR2497DwhUxHeBwpfgPllsNz+Rjhr4UI2C6xFM
+         6N1P1DDbLb/LETpDNC2TD0a/vOSKCQUWxI8oMtp7c5awj90atxO6romkii6eC+mAlSCk
+         X0LIPYyyBlZLtz1RARP3iHxU52qcVdJ9+Jtd6vgOGQPSvGHJldOsQkZwrbmYNz+mBKLy
+         D7aw==
+X-Gm-Message-State: ABy/qLY85LPsj3EbiFH7He1AvJ5LOLd/N8a4VuOaEKfeQ/uSW8pf8XwL
+        Jdh/QM3b3zKtVskHJIt/JlwLFwqaoow=
+X-Google-Smtp-Source: APBJJlHPHKnmZpXdI8znJWdCmOoUhYkBUGALeHldxOsv49qxj+ziafD945e+N0G6WiZhxUx82BW1kw==
+X-Received: by 2002:a05:600c:4f56:b0:3fb:f025:9372 with SMTP id m22-20020a05600c4f5600b003fbf0259372mr9065197wmq.4.1688888308860;
+        Sun, 09 Jul 2023 00:38:28 -0700 (PDT)
+Received: from [10.100.102.14] (46-116-229-137.bb.netvision.net.il. [46.116.229.137])
+        by smtp.gmail.com with ESMTPSA id n19-20020a7bc5d3000000b003fbca05faa9sm6966822wmk.24.2023.07.09.00.38.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Jul 2023 00:38:28 -0700 (PDT)
+Message-ID: <148a3e62-939f-a74f-8075-8f37cda102ab@grimberg.me>
+Date:   Sun, 9 Jul 2023 10:38:29 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOZ3c1paOYY4mXuF_MMcb+12e7d4_1cXb8RxPDG5B3ty3fiwfA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] nvme: mark ctrl as DEAD if removing from error recovery
+Content-Language: en-US
+From:   Sagi Grimberg <sagi@grimberg.me>
+To:     Ming Lei <ming.lei@redhat.com>, Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>, linux-nvme@lists.infradead.org
+Cc:     Yi Zhang <yi.zhang@redhat.com>,
+        Chunguang Xu <brookxu.cn@gmail.com>, stable@vger.kernel.org
+References: <20230628031234.1916897-1-ming.lei@redhat.com>
+ <8dc6852e-ee90-ed64-1d3e-9ecdc9f4473b@grimberg.me>
+In-Reply-To: <8dc6852e-ee90-ed64-1d3e-9ecdc9f4473b@grimberg.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jul 08, 2023 at 06:42:57PM +0100, zxuiji wrote:
-> Currently it only indicates a change in window size, I expect the
-> si_code value is also 0 for this signal. The extension will be for
-> mouse input and the difference will be indicated by si_code being 1,
-> to avoid issues with x11 vs wayland vs etc a custom structure should
-> be pointed to in the si_addr parameter. I think the custom structure
-> should look something like this:
+
+>> namespace's request queue is frozen and quiesced during error recovering,
+>> writeback IO is blocked in bio_queue_enter(), so fsync_bdev() <- 
+>> del_gendisk()
+>> can't move on, and causes IO hang. Removal could be from sysfs, hard
+>> unplug or error handling.
+>>
+>> Fix this kind of issue by marking controller as DEAD if removal breaks
+>> error recovery.
+>>
+>> This ways is reasonable too, because controller can't be recovered any
+>> more after being removed.
 > 
-> struct ttymouse
-> {
->     uint button_mask;
->     int x, y, wheel;
-> };
+> This looks fine to me Ming,
+> Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+> 
+> 
+> I still want your patches for tcp/rdma that move the freeze.
+> If you are not planning to send them, I swear I will :)
 
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
+Ming, can you please send the tcp/rdma patches that move the
+freeze? As I said before, it addresses an existing issue with
+requests unnecessarily blocked on a frozen queue instead of
+failing over.
