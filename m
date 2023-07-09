@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8954C74C20C
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:14:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D206F74C36E
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:33:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230371AbjGILOt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:14:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57662 "EHLO
+        id S232831AbjGILcm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:32:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230366AbjGILOt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:14:49 -0400
+        with ESMTP id S232947AbjGILcK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:32:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ACF512A
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:14:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E40E4E
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:32:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D85B60BC7
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:14:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BD7C433C7;
-        Sun,  9 Jul 2023 11:14:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 08B3660BF9
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:32:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EF0C433C8;
+        Sun,  9 Jul 2023 11:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901287;
-        bh=TXdyKbUgf13XY3EU8v7zY3HU3a45Pxaq7itkdHG7sN0=;
+        s=korg; t=1688902322;
+        bh=OdP2eH2SiUnr2dlXILwjLufGnE2ddbWUuq0bsRdpu2E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NlpezaRxJoRzgD0f96S71FTdyriWoihGx8iekLlHDNWMNG/N8yTWE1642yBpoVc9s
-         o+tz/eFm/5RUe7Pw3LA6uqLP97AoBwVdwpKhx5Bdz1RUwpu5KAFOM2QESJVZKMZD7i
-         N+a5ANRRyZ/Ebbp0LVoWgvLJXMlfDmhGxjpeRcwc=
+        b=OpnP7QjOWJT10xv0o7KvMNBbrI1Gr+MP8zDcHP3fe2CQ/WVAASOHLFL1QvvZKkJ1d
+         d5Fzm/Ppv6rk9J5RjQ/gBBou0PiHgeT3zmvZMdI8JuvfUtUT4aWyZXIR14GAm0Skf1
+         E8m/DDP0493Fhhdn0jj+N6yc5HBwNVfYp2o/t1M8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Hildenbrand <david@redhat.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= 
-        <holger@applied-asynchrony.com>,
-        Jacob Young <jacobly.alt@gmail.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.4 8/8] fork: lock VMAs of the parent process when forking, again
-Date:   Sun,  9 Jul 2023 13:14:14 +0200
-Message-ID: <20230709111345.543400132@linuxfoundation.org>
+        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 307/431] ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer
+Date:   Sun,  9 Jul 2023 13:14:15 +0200
+Message-ID: <20230709111458.359875212@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230709111345.297026264@linuxfoundation.org>
-References: <20230709111345.297026264@linuxfoundation.org>
+In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
+References: <20230709111451.101012554@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,61 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit fb49c455323ff8319a123dd312be9082c49a23a5 upstream.
+[ Upstream commit 79597c8bf64ca99eab385115743131d260339da5 ]
 
-When forking a child process, the parent write-protects anonymous pages
-and COW-shares them with the child being forked using copy_present_pte().
+smatch error:
+sound/pci/ac97/ac97_codec.c:2354 snd_ac97_mixer() error:
+we previously assumed 'rac97' could be null (see line 2072)
 
-We must not take any concurrent page faults on the source vma's as they
-are being processed, as we expect both the vma and the pte's behind it
-to be stable.  For example, the anon_vma_fork() expects the parents
-vma->anon_vma to not change during the vma copy.
+remove redundant assignment, return error if rac97 is NULL.
 
-A concurrent page fault on a page newly marked read-only by the page
-copy might trigger wp_page_copy() and a anon_vma_prepare(vma) on the
-source vma, defeating the anon_vma_clone() that wasn't done because the
-parent vma originally didn't have an anon_vma, but we now might end up
-copying a pte entry for a page that has one.
-
-Before the per-vma lock based changes, the mmap_lock guaranteed
-exclusion with concurrent page faults.  But now we need to do a
-vma_start_write() to make sure no concurrent faults happen on this vma
-while it is being processed.
-
-This fix can potentially regress some fork-heavy workloads.  Kernel
-build time did not show noticeable regression on a 56-core machine while
-a stress test mapping 10000 VMAs and forking 5000 times in a tight loop
-shows ~5% regression.  If such fork time regression is unacceptable,
-disabling CONFIG_PER_VMA_LOCK should restore its performance.  Further
-optimizations are possible if this regression proves to be problematic.
-
-Suggested-by: David Hildenbrand <david@redhat.com>
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Closes: https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org/
-Reported-by: Holger Hoffstätte <holger@applied-asynchrony.com>
-Closes: https://lore.kernel.org/all/b198d649-f4bf-b971-31d0-e8433ec2a34c@applied-asynchrony.com/
-Reported-by: Jacob Young <jacobly.alt@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217624
-Fixes: 0bff0aaea03e ("x86/mm: try VMA lock-based page fault handling first")
-Cc: stable@vger.kernel.org
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: da3cec35dd3c ("ALSA: Kill snd_assert() in sound/pci/*")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20230615021732.1972194-1-suhui@nfschina.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/fork.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/ac97/ac97_codec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -696,6 +696,7 @@ static __latent_entropy int dup_mmap(str
- 	for_each_vma(old_vmi, mpnt) {
- 		struct file *file;
+diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
+index 9afc5906d662e..80a65b8ad7b9b 100644
+--- a/sound/pci/ac97/ac97_codec.c
++++ b/sound/pci/ac97/ac97_codec.c
+@@ -2069,8 +2069,8 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
+ 		.dev_disconnect =	snd_ac97_dev_disconnect,
+ 	};
  
-+		vma_start_write(mpnt);
- 		if (mpnt->vm_flags & VM_DONTCOPY) {
- 			vm_stat_account(mm, mpnt->vm_flags, -vma_pages(mpnt));
- 			continue;
+-	if (rac97)
+-		*rac97 = NULL;
++	if (!rac97)
++		return -EINVAL;
+ 	if (snd_BUG_ON(!bus || !template))
+ 		return -EINVAL;
+ 	if (snd_BUG_ON(template->num >= 4))
+-- 
+2.39.2
+
 
 
