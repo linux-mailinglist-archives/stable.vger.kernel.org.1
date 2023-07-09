@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 324D174C39A
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80CFF74C39E
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:34:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232922AbjGILeW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:34:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42712 "EHLO
+        id S229876AbjGILeX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:34:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232832AbjGILeR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C05EB13D
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:16 -0700 (PDT)
+        with ESMTP id S232898AbjGILeU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80D9518C
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 557E460BA4
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C7AC433C8;
-        Sun,  9 Jul 2023 11:34:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F40960BCA
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB9AC433C8;
+        Sun,  9 Jul 2023 11:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902455;
-        bh=sY4KMhT5t1ANyRtnt4U5bUdQCtoZnGqKkuByCo66e3w=;
+        s=korg; t=1688902458;
+        bh=flEFCbDxqNxLXK4NIqRI6HOZWZg9qbPWoUx7a9zcv4c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oq9oYxsckB34KaVF028NB52n81FCZkF/f0H5sCTtADm8hcfYXhiuyyuhHfElzRDSN
-         eKEchuLIw/f3jmUUC9tajxlpnXH5pTZhQgg5hlSCf0E7lUnKbZ3bVvXG7ea4mYTeV7
-         TGkBm73KGPWXWZ6CjNMk2myAIkT+F5+lEQ/1BjyQ=
+        b=CO6vnv3fifnm1Z1IbZ4yJGi6G/CsSKkUqS8EaIBl1akb5iLrNL+eenqLqned1adkx
+         gkM75vPPqz8064k0R7b841FTVbVo3QrK+VTuGcEUoQs/wv2CNfOM8hHIsxVeGq14UX
+         7WW7UHLGjtzI9FfO9AIaJc0Xflwu0olg38ad8lfc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,9 +37,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 382/431] pinctrl: microchip-sgpio: check return value of devm_kasprintf()
-Date:   Sun,  9 Jul 2023 13:15:30 +0200
-Message-ID: <20230709111500.119773714@linuxfoundation.org>
+Subject: [PATCH 6.3 383/431] pinctrl: at91-pio4: check return value of devm_kasprintf()
+Date:   Sun,  9 Jul 2023 13:15:31 +0200
+Message-ID: <20230709111500.143058879@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -59,36 +59,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit 310cd4c206cd04696ccbfd1927b5ab6973e8cc8e ]
+[ Upstream commit f6fd5d4ff8ca0b24cee1af4130bcb1fa96b61aa0 ]
 
 devm_kasprintf() returns a pointer to dynamically allocated memory.
 Pointer could be NULL in case allocation fails. Check pointer validity.
 Identified with coccinelle (kmerr.cocci script).
 
-Fixes: 7e5ea974e61c ("pinctrl: pinctrl-microchip-sgpio: Add pinctrl driver for Microsemi Serial GPIO")
+Fixes: 776180848b57 ("pinctrl: introduce driver for Atmel PIO4 controller")
+Depends-on: 1c4e5c470a56 ("pinctrl: at91: use devm_kasprintf() to avoid potential leaks")
+Depends-on: 5a8f9cf269e8 ("pinctrl: at91-pio4: use proper format specifier for unsigned int")
 Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230615105333.585304-3-claudiu.beznea@microchip.com
+Link: https://lore.kernel.org/r/20230615105333.585304-4-claudiu.beznea@microchip.com
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-microchip-sgpio.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/pinctrl-at91-pio4.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-microchip-sgpio.c b/drivers/pinctrl/pinctrl-microchip-sgpio.c
-index 4794602316e7d..666d8b7cdbad3 100644
---- a/drivers/pinctrl/pinctrl-microchip-sgpio.c
-+++ b/drivers/pinctrl/pinctrl-microchip-sgpio.c
-@@ -818,6 +818,9 @@ static int microchip_sgpio_register_bank(struct device *dev,
- 	pctl_desc->name = devm_kasprintf(dev, GFP_KERNEL, "%s-%sput",
- 					 dev_name(dev),
- 					 bank->is_input ? "in" : "out");
-+	if (!pctl_desc->name)
-+		return -ENOMEM;
-+
- 	pctl_desc->pctlops = &sgpio_pctl_ops;
- 	pctl_desc->pmxops = &sgpio_pmx_ops;
- 	pctl_desc->confops = &sgpio_confops;
+diff --git a/drivers/pinctrl/pinctrl-at91-pio4.c b/drivers/pinctrl/pinctrl-at91-pio4.c
+index c775d239444a6..20433c1745805 100644
+--- a/drivers/pinctrl/pinctrl-at91-pio4.c
++++ b/drivers/pinctrl/pinctrl-at91-pio4.c
+@@ -1151,6 +1151,8 @@ static int atmel_pinctrl_probe(struct platform_device *pdev)
+ 		/* Pin naming convention: P(bank_name)(bank_pin_number). */
+ 		pin_desc[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "P%c%d",
+ 						  bank + 'A', line);
++		if (!pin_desc[i].name)
++			return -ENOMEM;
+ 
+ 		group->name = group_names[i] = pin_desc[i].name;
+ 		group->pin = pin_desc[i].number;
 -- 
 2.39.2
 
