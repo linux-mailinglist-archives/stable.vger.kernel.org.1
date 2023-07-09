@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1C8674C358
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5A9E74C359
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:31:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232816AbjGILbV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:31:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40236 "EHLO
+        id S232823AbjGILb2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:31:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232831AbjGILbT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:31:19 -0400
+        with ESMTP id S232807AbjGILb1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:31:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09B3CE40
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:31:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57F751991
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:31:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1371660B86
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:31:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AD0C433C7;
-        Sun,  9 Jul 2023 11:31:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEF0760B7F
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:31:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE86C433CA;
+        Sun,  9 Jul 2023 11:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902266;
-        bh=9kyalZM9Ve6poow92aJANGuY7lczQPWx+rgTMjAzMHk=;
+        s=korg; t=1688902269;
+        bh=isATnDHqU9ZpG/NBC7KVfs5AdKvvF8bkd40Pun4YuKM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mqLkIt9EhsD/I1gVuqQ/P/DLugyy+HeijTHsA5Q91cDszP2iV41Xyi4Gfp4EGI6OQ
-         aNA9J3y9B+yY0TwaLVwU8DYVCHXUDkYIXHnQ+2UXwwhIRwL5KgCZUxXiQ/fllmf2gF
-         7vJD6NKB96xPkpoeYR+T+d0+5L37HgoIyH/ipgEM=
+        b=b6H06P0LNsvIWmPEI8/0TZ9hYqKcS84F/xHqdFMcXBVXwQBMTsjVQgoXdpsnub3Er
+         btVegmf7Yb9pbWVw2LDD4IATWaseqMvPr+YBt0xC/eHBrwjbzYUzbG1QOXU4UOvTf9
+         M3adWbxnXEq1pr2pCfsZAZcjOqHQMNVJSJxL6NwM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Golle <daniel@makrotopia.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 315/431] arm64: dts: mt7986: increase bl2 partition on NAND of Bananapi R3
-Date:   Sun,  9 Jul 2023 13:14:23 +0200
-Message-ID: <20230709111458.566493578@linuxfoundation.org>
+        patches@lists.linux.dev, Evan Quan <Evan.Quan@amd.com>,
+        Chengming Gui <Jack.Gui@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+        Evan Quan <evan.quan@amd.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 316/431] drm/amdgpu: Fix memcpy() in sienna_cichlid_append_powerplay_table function.
+Date:   Sun,  9 Jul 2023 13:14:24 +0200
+Message-ID: <20230709111458.589602374@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -55,48 +58,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 3bfbff9b461e3506dfb5b2904e8c15a0aea39e07 ]
+[ Upstream commit d50dc746ff72b9c48812dac3344fa87fbde940a3 ]
 
-The bootrom burned into the MT7986 SoC will try multiple locations on
-the SPI-NAND flash to load bl2 in case the bl2 image located at the the
-previously attempted offset is corrupt.
+Fixes the following gcc with W=1:
 
-Use 0x100000 instead of 0x80000 as partition size for bl2 on SPI-NAND,
-allowing for up to four redundant copies of bl2 (typically sized a
-bit less than 0x40000).
+In file included from ./include/linux/string.h:253,
+                 from ./include/linux/bitmap.h:11,
+                 from ./include/linux/cpumask.h:12,
+                 from ./arch/x86/include/asm/cpumask.h:5,
+                 from ./arch/x86/include/asm/msr.h:11,
+                 from ./arch/x86/include/asm/processor.h:22,
+                 from ./arch/x86/include/asm/cpufeature.h:5,
+                 from ./arch/x86/include/asm/thread_info.h:53,
+                 from ./include/linux/thread_info.h:60,
+                 from ./arch/x86/include/asm/preempt.h:7,
+                 from ./include/linux/preempt.h:78,
+                 from ./include/linux/spinlock.h:56,
+                 from ./include/linux/mmzone.h:8,
+                 from ./include/linux/gfp.h:7,
+                 from ./include/linux/firmware.h:7,
+                 from drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:26:
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘sienna_cichlid_append_powerplay_table’ at drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:444:2,
+    inlined from ‘sienna_cichlid_setup_pptable’ at drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:506:8,
+    inlined from ‘sienna_cichlid_setup_pptable’ at drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:494:12:
+./include/linux/fortify-string.h:413:4: warning: call to ‘__read_overflow2_field’ declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Wattribute-warning]
+  413 |    __read_overflow2_field(q_size_field, size);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixes: 8e01fb15b8157 ("arm64: dts: mt7986: add Bananapi R3")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/ZH9UGF99RgzrHZ88@makrotopia.org
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+the compiler complains about the size calculation in the memcpy() -
+"sizeof(*smc_dpm_table) - sizeof(smc_dpm_table->table_header)" is much
+larger than what fits into table_member.
+
+Hence, reuse 'smu_memcpy_trailing' for nv1x
+
+Fixes: 7077b19a38240 ("drm/amd/pm: use macro to get pptable members")
+Suggested-by: Evan Quan <Evan.Quan@amd.com>
+Cc: Evan Quan <Evan.Quan@amd.com>
+Cc: Chengming Gui <Jack.Gui@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Evan Quan <evan.quan@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/mediatek/mt7986a-bananapi-bpi-r3-nand.dtso     | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../amd/pm/swsmu/smu11/sienna_cichlid_ppt.c    | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3-nand.dtso b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3-nand.dtso
-index 15ee8c568f3c3..543c13385d6e3 100644
---- a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3-nand.dtso
-+++ b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3-nand.dtso
-@@ -29,13 +29,13 @@ partitions {
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index 85d53597eb07a..f7ed3e655e397 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -431,7 +431,13 @@ static int sienna_cichlid_append_powerplay_table(struct smu_context *smu)
+ {
+ 	struct atom_smc_dpm_info_v4_9 *smc_dpm_table;
+ 	int index, ret;
+-	I2cControllerConfig_t *table_member;
++	PPTable_beige_goby_t *ppt_beige_goby;
++	PPTable_t *ppt;
++
++	if (smu->adev->ip_versions[MP1_HWIP][0] == IP_VERSION(11, 0, 13))
++		ppt_beige_goby = smu->smu_table.driver_pptable;
++	else
++		ppt = smu->smu_table.driver_pptable;
  
- 					partition@0 {
- 						label = "bl2";
--						reg = <0x0 0x80000>;
-+						reg = <0x0 0x100000>;
- 						read-only;
- 					};
+ 	index = get_index_into_master_table(atom_master_list_of_data_tables_v2_1,
+ 					    smc_dpm_info);
+@@ -440,9 +446,13 @@ static int sienna_cichlid_append_powerplay_table(struct smu_context *smu)
+ 				      (uint8_t **)&smc_dpm_table);
+ 	if (ret)
+ 		return ret;
+-	GET_PPTABLE_MEMBER(I2cControllers, &table_member);
+-	memcpy(table_member, smc_dpm_table->I2cControllers,
+-			sizeof(*smc_dpm_table) - sizeof(smc_dpm_table->table_header));
++
++	if (smu->adev->ip_versions[MP1_HWIP][0] == IP_VERSION(11, 0, 13))
++		smu_memcpy_trailing(ppt_beige_goby, I2cControllers, BoardReserved,
++				    smc_dpm_table, I2cControllers);
++	else
++		smu_memcpy_trailing(ppt, I2cControllers, BoardReserved,
++				    smc_dpm_table, I2cControllers);
  
--					partition@80000 {
-+					partition@100000 {
- 						label = "reserved";
--						reg = <0x80000 0x300000>;
-+						reg = <0x100000 0x280000>;
- 					};
- 
- 					partition@380000 {
+ 	return 0;
+ }
 -- 
 2.39.2
 
