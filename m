@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FF8274C27F
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1480C74C280
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231265AbjGILVQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:21:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33496 "EHLO
+        id S231279AbjGILVS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:21:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231310AbjGILVO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:21:14 -0400
+        with ESMTP id S231282AbjGILVR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:21:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A968218F
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:21:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB338186
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:21:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 33CD860BCA
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:21:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473E0C433C8;
-        Sun,  9 Jul 2023 11:21:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3185860BD6
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:21:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444C6C433C7;
+        Sun,  9 Jul 2023 11:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901672;
-        bh=j14J+wGwFesU7svfDm8qir2eJtl0XwdPkNltllxnJJg=;
+        s=korg; t=1688901675;
+        bh=q8pIUxaKfg2Nho1GIGs5F8+Q7Aded75fIWRJBbnU1Ws=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f9Xtd4uaWEAV500rTdgESvVrRqpBB6dGdOhIkLRLbiqyK9q5gWTOK4EiWQuaSS+yb
-         5x36u7AL6Uu/O0jZ+TVdfTdMwop0Z+JjSTIIaK0/4g6VFOw9k1fAXVxvpfIYkRZ1Uw
-         DQEl2dDxECQMjooracZjhGfuINlKfs2JsazG0Evc=
+        b=UN8jKnbdPOOuh/fft2qWQ6A7hIuPH/CEyl1T2EOTjbzH4NUzp9ow3G1QBU/UQCaLw
+         WBsRKJfjENkC9SwaMmcMD5Hb/fSND0VkWHTXgMK+noJwE+hvOxGAL3D74uZ2I7jtxS
+         jEzSZ7NSCwqG9vnYHO1IJzaqF+SL9bVtcQ11ncLU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Youghandhar Chintala <quic_youghand@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 104/431] wifi: ath10k: Trigger STA disconnect after reconfig complete on hardware restart
-Date:   Sun,  9 Jul 2023 13:10:52 +0200
-Message-ID: <20230709111453.595625104@linuxfoundation.org>
+        patches@lists.linux.dev, Viktor Malik <vmalik@redhat.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 105/431] tools/resolve_btfids: Fix setting HOSTCFLAGS
+Date:   Sun,  9 Jul 2023 13:10:53 +0200
+Message-ID: <20230709111453.618989003@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -56,87 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Youghandhar Chintala <quic_youghand@quicinc.com>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit 75bd32f5ce94bc365ba0b9b68bcf9de84a391d37 ]
+[ Upstream commit edd75c802855271c8610f58a2fc9e54aefc49ce5 ]
 
-Currently, on WCN3990, the station disconnect after hardware recovery is
-not working as expected. This is because of setting the
-IEEE80211_SDATA_DISCONNECT_HW_RESTART flag very early in the hardware
-recovery process even before the driver invokes ieee80211_hw_restart().
-On the contrary, mac80211 expects this flag to be set after
-ieee80211_hw_restart() is invoked for it to trigger station disconnect.
+Building BPF selftests with custom HOSTCFLAGS yields an error:
 
-Set the IEEE80211_SDATA_DISCONNECT_HW_RESTART flag in
-ath10k_reconfig_complete() instead to fix this.
+    # make HOSTCFLAGS="-O2"
+    [...]
+      HOSTCC  ./tools/testing/selftests/bpf/tools/build/resolve_btfids/main.o
+    main.c:73:10: fatal error: linux/rbtree.h: No such file or directory
+       73 | #include <linux/rbtree.h>
+          |          ^~~~~~~~~~~~~~~~
 
-The other targets are not affected by this change, since the hardware
-params flag is not set.
+The reason is that tools/bpf/resolve_btfids/Makefile passes header
+include paths by extending HOSTCFLAGS which is overridden by setting
+HOSTCFLAGS in the make command (because of Makefile rules [1]).
 
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+This patch fixes the above problem by passing the include paths via
+`HOSTCFLAGS_resolve_btfids` which is used by tools/build/Build.include
+and can be combined with overridding HOSTCFLAGS.
 
-Fixes: 2c3fc50591ff ("ath10k: Trigger sta disconnect on hardware restart")
-Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230518101515.3820-1-quic_youghand@quicinc.com
+[1] https://www.gnu.org/software/make/manual/html_node/Overriding.html
+
+Fixes: 56a2df7615fa ("tools/resolve_btfids: Compile resolve_btfids as host program")
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20230530123352.1308488-1-vmalik@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/core.c | 9 ---------
- drivers/net/wireless/ath/ath10k/mac.c  | 7 +++++++
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ tools/bpf/resolve_btfids/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 5eb131ab916fd..b6052dcc45ebf 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -2504,7 +2504,6 @@ EXPORT_SYMBOL(ath10k_core_napi_sync_disable);
- static void ath10k_core_restart(struct work_struct *work)
- {
- 	struct ath10k *ar = container_of(work, struct ath10k, restart_work);
--	struct ath10k_vif *arvif;
- 	int ret;
+diff --git a/tools/bpf/resolve_btfids/Makefile b/tools/bpf/resolve_btfids/Makefile
+index ac548a7baa73e..4b8079f294f65 100644
+--- a/tools/bpf/resolve_btfids/Makefile
++++ b/tools/bpf/resolve_btfids/Makefile
+@@ -67,7 +67,7 @@ $(BPFOBJ): $(wildcard $(LIBBPF_SRC)/*.[ch] $(LIBBPF_SRC)/Makefile) | $(LIBBPF_OU
+ LIBELF_FLAGS := $(shell $(HOSTPKG_CONFIG) libelf --cflags 2>/dev/null)
+ LIBELF_LIBS  := $(shell $(HOSTPKG_CONFIG) libelf --libs 2>/dev/null || echo -lelf)
  
- 	set_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags);
-@@ -2543,14 +2542,6 @@ static void ath10k_core_restart(struct work_struct *work)
- 		ar->state = ATH10K_STATE_RESTARTING;
- 		ath10k_halt(ar);
- 		ath10k_scan_finish(ar);
--		if (ar->hw_params.hw_restart_disconnect) {
--			list_for_each_entry(arvif, &ar->arvifs, list) {
--				if (arvif->is_up &&
--				    arvif->vdev_type == WMI_VDEV_TYPE_STA)
--					ieee80211_hw_restart_disconnect(arvif->vif);
--			}
--		}
--
- 		ieee80211_restart_hw(ar->hw);
- 		break;
- 	case ATH10K_STATE_OFF:
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index ec8d5b29bc72c..f0729acdec50a 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -8108,6 +8108,7 @@ static void ath10k_reconfig_complete(struct ieee80211_hw *hw,
- 				     enum ieee80211_reconfig_type reconfig_type)
- {
- 	struct ath10k *ar = hw->priv;
-+	struct ath10k_vif *arvif;
+-HOSTCFLAGS += -g \
++HOSTCFLAGS_resolve_btfids += -g \
+           -I$(srctree)/tools/include \
+           -I$(srctree)/tools/include/uapi \
+           -I$(LIBBPF_INCLUDE) \
+@@ -76,7 +76,7 @@ HOSTCFLAGS += -g \
  
- 	if (reconfig_type != IEEE80211_RECONFIG_TYPE_RESTART)
- 		return;
-@@ -8122,6 +8123,12 @@ static void ath10k_reconfig_complete(struct ieee80211_hw *hw,
- 		ar->state = ATH10K_STATE_ON;
- 		ieee80211_wake_queues(ar->hw);
- 		clear_bit(ATH10K_FLAG_RESTARTING, &ar->dev_flags);
-+		if (ar->hw_params.hw_restart_disconnect) {
-+			list_for_each_entry(arvif, &ar->arvifs, list) {
-+				if (arvif->is_up && arvif->vdev_type == WMI_VDEV_TYPE_STA)
-+					ieee80211_hw_restart_disconnect(arvif->vif);
-+				}
-+		}
- 	}
+ LIBS = $(LIBELF_LIBS) -lz
  
- 	mutex_unlock(&ar->conf_mutex);
+-export srctree OUTPUT HOSTCFLAGS Q HOSTCC HOSTLD HOSTAR
++export srctree OUTPUT HOSTCFLAGS_resolve_btfids Q HOSTCC HOSTLD HOSTAR
+ include $(srctree)/tools/build/Makefile.include
+ 
+ $(BINARY_IN): fixdep FORCE prepare | $(OUTPUT)
 -- 
 2.39.2
 
