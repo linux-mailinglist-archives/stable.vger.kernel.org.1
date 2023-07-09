@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2A7A74C3D4
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94E9F74C3D5
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233014AbjGILgt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:36:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44258 "EHLO
+        id S233019AbjGILgv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233019AbjGILgs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:36:48 -0400
+        with ESMTP id S233022AbjGILgu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:36:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC5795
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:36:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 125D113D
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:36:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCB8460BCA
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:36:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4A8C433C8;
-        Sun,  9 Jul 2023 11:36:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A426660BC4
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:36:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6370C433C8;
+        Sun,  9 Jul 2023 11:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902606;
-        bh=cqkJilOKQYH6aifif8b2L1dMa8Hw++lhjjF690FyiFg=;
+        s=korg; t=1688902609;
+        bh=RfDKITa1nnaMTcN1oWHI+85uzkvt0OTMZkTTBKyetrE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZzqBo6BhQCdiNhln883DKkIQ5UHWBQh+g7I8yPB1VqSl3QEg63xfQl3FxYo+eywGx
-         KxugJPZ11ddJ9UaxacdqTUwIhQNUdMgrPmD7YtdNeOPNBb/WCIzMjyAbgZLfxg/Cwj
-         dLkKxFc+JBGMiVEBgsJBpGP5DVotOvA8Q3PcISYs=
+        b=ZadskO3u62hq3gNv0sZX8zywnMT4anuWexocmP2WqbXc+JEuzF6Qa31+i8tU6VGbj
+         PXCyHfOGwUb3D2JRkwTM/ROIEsfxLKlVl4y7mcDBCkadoa80olnJb1L4q6WYzJwGTo
+         SIOEi95VHXYYCG0gMZOp0OnAUY4ByfP3poNB8i9c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Will Deacon <will@kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Nikl=C4=81vs=20Ko=C4=BCes=C5=86ikovs?= 
+        <pinkflames.linux@gmail.com>, Thomas Gleixner <tglx@linutronix.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 429/431] arm64: sme: Use STR P to clear FFR context field in streaming SVE mode
-Date:   Sun,  9 Jul 2023 13:16:17 +0200
-Message-ID: <20230709111501.246713879@linuxfoundation.org>
+Subject: [PATCH 6.3 430/431] x86/efi: Make efi_set_virtual_address_map IBT safe
+Date:   Sun,  9 Jul 2023 13:16:18 +0200
+Message-ID: <20230709111501.270088666@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -60,73 +57,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Will Deacon <will@kernel.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 893b24181b4c4bf1fa2841b1ed192e5413a97cb1 ]
+[ Upstream commit 0303c9729afc4094ef53e552b7b8cff7436028d6 ]
 
-The FFR is a predicate register which can vary between 16 and 256 bits
-in size depending upon the configured vector length. When saving the
-SVE state in streaming SVE mode, the FFR register is inaccessible and
-so commit 9f5848665788 ("arm64/sve: Make access to FFR optional") simply
-clears the FFR field of the in-memory context structure. Unfortunately,
-it achieves this using an unconditional 8-byte store and so if the SME
-vector length is anything other than 64 bytes in size we will either
-fail to clear the entire field or, worse, we will corrupt memory
-immediately following the structure. This has led to intermittent kfence
-splats in CI [1] and can trigger kmalloc Redzone corruption messages
-when running the 'fp-stress' kselftest:
+Niklāvs reported a boot regression on an Alderlake machine and bisected it
+to commit 9df9d2f0471b ("init: Invoke arch_cpu_finalize_init() earlier").
 
- | =============================================================================
- | BUG kmalloc-1k (Not tainted): kmalloc Redzone overwritten
- | -----------------------------------------------------------------------------
- |
- | 0xffff000809bf1e22-0xffff000809bf1e27 @offset=7714. First byte 0x0 instead of 0xcc
- | Allocated in do_sme_acc+0x9c/0x220 age=2613 cpu=1 pid=531
- |  __kmalloc+0x8c/0xcc
- |  do_sme_acc+0x9c/0x220
- |  ...
+By moving the invocation of arch_cpu_finalize_init() further down he
+identified that efi_enter_virtual_mode() is the function which causes the
+boot hang.
 
-Replace the 8-byte store with a store of a predicate register which has
-been zero-initialised with PFALSE, ensuring that the entire field is
-cleared in memory.
+The main difference of the earlier invocation is that the boot CPU is
+already fully initialized and mitigations and alternatives are applied.
 
-[1] https://lore.kernel.org/r/CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com
+But the only really interesting change turned out to be IBT, which is now
+enabled before efi_enter_virtual_mode(). "ibt=off" on the kernel command
+line cured the problem.
 
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>
-Fixes: 9f5848665788 ("arm64/sve: Make access to FFR optional")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Link: https://lore.kernel.org/r/20230628155605.22296-1-will@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Inspection of the involved calls in efi_enter_virtual_mode() unearthed that
+efi_set_virtual_address_map() is the only place in the kernel which invokes
+an EFI call without the IBT safe wrapper. This went obviously unnoticed so
+far as IBT was enabled later.
+
+Use arch_efi_call_virt() instead of efi_call() to cure that.
+
+Fixes: fe379fa4d199 ("x86/ibt: Disable IBT around firmware")
+Fixes: 9df9d2f0471b ("init: Invoke arch_cpu_finalize_init() earlier")
+Reported-by: Niklāvs Koļesņikovs <pinkflames.linux@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217602
+Link: https://lore.kernel.org/r/87jzvm12q0.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/fpsimdmacros.h | 6 +++---
+ arch/x86/platform/efi/efi_64.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/include/asm/fpsimdmacros.h b/arch/arm64/include/asm/fpsimdmacros.h
-index cd03819a3b686..cdf6a35e39944 100644
---- a/arch/arm64/include/asm/fpsimdmacros.h
-+++ b/arch/arm64/include/asm/fpsimdmacros.h
-@@ -316,12 +316,12 @@
-  _for n, 0, 15,	_sve_str_p	\n, \nxbase, \n - 16
- 		cbz		\save_ffr, 921f
- 		_sve_rdffr	0
--		_sve_str_p	0, \nxbase
--		_sve_ldr_p	0, \nxbase, -16
- 		b		922f
- 921:
--		str		xzr, [x\nxbase]		// Zero out FFR
-+		_sve_pfalse	0			// Zero out FFR
- 922:
-+		_sve_str_p	0, \nxbase
-+		_sve_ldr_p	0, \nxbase, -16
- 		mrs		x\nxtmp, fpsr
- 		str		w\nxtmp, [\xpfpsr]
- 		mrs		x\nxtmp, fpcr
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index 232acf418cfbe..77f7ac3668cb4 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -853,9 +853,9 @@ efi_set_virtual_address_map(unsigned long memory_map_size,
+ 
+ 	/* Disable interrupts around EFI calls: */
+ 	local_irq_save(flags);
+-	status = efi_call(efi.runtime->set_virtual_address_map,
+-			  memory_map_size, descriptor_size,
+-			  descriptor_version, virtual_map);
++	status = arch_efi_call_virt(efi.runtime, set_virtual_address_map,
++				    memory_map_size, descriptor_size,
++				    descriptor_version, virtual_map);
+ 	local_irq_restore(flags);
+ 
+ 	efi_fpu_end();
 -- 
 2.39.2
 
