@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC57974C39C
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A86BA74C3A7
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232907AbjGILeV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:34:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42696 "EHLO
+        id S230213AbjGILeo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:34:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233020AbjGILeM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3956895
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:11 -0700 (PDT)
+        with ESMTP id S232913AbjGILen (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18F8418F
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB8FC60BC9
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD4DC433C8;
-        Sun,  9 Jul 2023 11:34:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89DFB60BC9
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B13C433C8;
+        Sun,  9 Jul 2023 11:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902450;
-        bh=3mHwm5A/3Fa8cJOt/mS8kVyUwqZMIjyUP6tuVguET4s=;
+        s=korg; t=1688902481;
+        bh=i9LECIh5CVhsss1UjbHzW4V7tGoX1gPjVLyuYAmd2j8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QPIi7pv+K8IhG4WgQNbY/W2CE+WHS/k9dD34vOjY1SVsfzdgXyVnoKOgWNXSvh7Is
-         3bFRwoncubp+09G9ZBk2OeXW1lyr1tkbWUc1Xpon+X/9XZhSr7nMwXW4EsC5fxa9Kc
-         cSXoar9MStCFLx/hXcgQQar5RhxyLUyeXJ1NI9N4=
+        b=tF+FAYlZ5iBH9Tnxot2eGiq6OhKWZVLAsjjlw02n31Ae9xSlOXIw2KMItUbCGA3jA
+         EtKrLAnFia2/NOVurUk/lIQqxA0Seb7q9baM0UQr0a86PcovvmV1HJ2O7q1aLnMxNV
+         JZqhbgU0hDG59uKeJifiQcT9pHkjd1w37VO6dtc4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xi Pardee <xi.pardee@intel.com>,
-        "David E. Box" <david.e.box@linux.intel.com>,
+        patches@lists.linux.dev, Mark Pearson <mpearson-lenovo@squebb.ca>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 363/431] platform/x86:intel/pmc: Remove Meteor Lake S platform support
-Date:   Sun,  9 Jul 2023 13:15:11 +0200
-Message-ID: <20230709111459.680040768@linuxfoundation.org>
+Subject: [PATCH 6.3 364/431] platform/x86: think-lmi: mutex protection around multiple WMI calls
+Date:   Sun,  9 Jul 2023 13:15:12 +0200
+Message-ID: <20230709111459.702952694@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -48,46 +48,89 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,TVD_PH_BODY_ACCOUNTS_PRE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xi Pardee <xi.pardee@intel.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 416a87c972b978d71ab828442d1d48e3bd194855 ]
+[ Upstream commit c41e0121a1221894a1a9c4666156db9e1def4d6c ]
 
-commit c5ad454a12c6 ("platform/x86: intel/pmc/core: Add Meteor Lake
-support to pmc core driver") was supposed to add support for Meter
-Lake P/M and mistakenly added support for Meteor Lake S instead. Meteor
-Lake P/M support was added later and MTL-S support needs to be removed
-since its currently assigned to the wrong register maps.
+When an attribute is being changed if the Admin account is enabled, or if
+a password is being updated then multiple WMI calls are needed.
+Add mutex protection to ensure no race conditions are introduced.
 
-Fixes: c5ad454a12c6 ("platform/x86: intel/pmc/core: Add Meteor Lake support to pmc core driver")
-Signed-off-by: Xi Pardee <xi.pardee@intel.com>
-Signed-off-by: David E. Box <david.e.box@linux.intel.com>
-Link: https://lore.kernel.org/r/20230601004706.871528-1-xi.pardee@intel.com
+Fixes: b49f72e7f96d ("platform/x86: think-lmi: Certificate authentication support")
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230601200552.4396-1-mpearson-lenovo@squebb.ca
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/pmc/core.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/platform/x86/think-lmi.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
-index b9591969e0fa1..bed083525fbe7 100644
---- a/drivers/platform/x86/intel/pmc/core.c
-+++ b/drivers/platform/x86/intel/pmc/core.c
-@@ -1039,7 +1039,6 @@ static const struct x86_cpu_id intel_pmc_core_ids[] = {
- 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,        tgl_core_init),
- 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,		adl_core_init),
- 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,	adl_core_init),
--	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE,          mtl_core_init),
- 	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE_L,	mtl_core_init),
- 	{}
+diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
+index 78dc82bda4dde..7a145f578ef49 100644
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -14,6 +14,7 @@
+ #include <linux/acpi.h>
+ #include <linux/errno.h>
+ #include <linux/fs.h>
++#include <linux/mutex.h>
+ #include <linux/string.h>
+ #include <linux/types.h>
+ #include <linux/dmi.h>
+@@ -195,6 +196,7 @@ static const char * const level_options[] = {
  };
+ static struct think_lmi tlmi_priv;
+ static struct class *fw_attr_class;
++static DEFINE_MUTEX(tlmi_mutex);
+ 
+ /* ------ Utility functions ------------*/
+ /* Strip out CR if one is present */
+@@ -437,6 +439,9 @@ static ssize_t new_password_store(struct kobject *kobj,
+ 	/* Strip out CR if one is present, setting password won't work if it is present */
+ 	strip_cr(new_pwd);
+ 
++	/* Use lock in case multiple WMI operations needed */
++	mutex_lock(&tlmi_mutex);
++
+ 	pwdlen = strlen(new_pwd);
+ 	/* pwdlen == 0 is allowed to clear the password */
+ 	if (pwdlen && ((pwdlen < setting->minlen) || (pwdlen > setting->maxlen))) {
+@@ -493,6 +498,7 @@ static ssize_t new_password_store(struct kobject *kobj,
+ 		kfree(auth_str);
+ 	}
+ out:
++	mutex_unlock(&tlmi_mutex);
+ 	kfree(new_pwd);
+ 	return ret ?: count;
+ }
+@@ -982,6 +988,9 @@ static ssize_t current_value_store(struct kobject *kobj,
+ 	/* Strip out CR if one is present */
+ 	strip_cr(new_setting);
+ 
++	/* Use lock in case multiple WMI operations needed */
++	mutex_lock(&tlmi_mutex);
++
+ 	/* Check if certificate authentication is enabled and active */
+ 	if (tlmi_priv.certificate_support && tlmi_priv.pwd_admin->cert_installed) {
+ 		if (!tlmi_priv.pwd_admin->signature || !tlmi_priv.pwd_admin->save_signature) {
+@@ -1040,6 +1049,7 @@ static ssize_t current_value_store(struct kobject *kobj,
+ 		kobject_uevent(&tlmi_priv.class_dev->kobj, KOBJ_CHANGE);
+ 	}
+ out:
++	mutex_unlock(&tlmi_mutex);
+ 	kfree(auth_str);
+ 	kfree(set_str);
+ 	kfree(new_setting);
 -- 
 2.39.2
 
