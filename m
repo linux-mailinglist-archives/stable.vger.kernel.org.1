@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 057EA74C251
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1299F74C27A
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230060AbjGILTR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:19:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60182 "EHLO
+        id S231249AbjGILVG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:21:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230518AbjGILTQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:19:16 -0400
+        with ESMTP id S231279AbjGILVD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:21:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C39A1B5
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:19:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6AA6E48
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:20:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AE1B60BD6
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:19:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A745C433C7;
-        Sun,  9 Jul 2023 11:19:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CC6260BE9
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:20:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46297C433C7;
+        Sun,  9 Jul 2023 11:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901554;
-        bh=gSFMdE26uMJr+YJfjdvUfjH0EENDnqfNzD2H+Ozblc0=;
+        s=korg; t=1688901658;
+        bh=ALvr9tLwj8dOZCytRoKNxeEaPiDWIBOBbpWktg0oKv8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RkoXDXJyDAeUM0KqnTns4NGgQga6rawFL6wdH3Mw5FpL8U17NmTX6DT9ALA5w1Hmr
-         P8t9B0uyYeEOx0X6VMij2pdrrwg2VfcAYi9TMCCQc38M9AWs4TrNGOubslYKtrPvfm
-         jEOvmSJSLXE8+M9ObdX7rEFjPJgaboZWuBAFNdo4=
+        b=FvmBKDAzAYdcFRRuIy5lDxthc9oumEsydtOZ+9iuVCKULTQV160Tj5dRRJKhyTird
+         mD+eCpuMCw9QUUgWIVDXarFQ6/QAD6b1zX/l5vMYbE9p2xTB3i5G8a69VKqbfGze9q
+         Py8Cu89ABQ8OKOEu+mthgI+JkUn0emHi2lvcd11s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Paul E. McKenney" <paulmck@kernel.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        patches@lists.linux.dev, kernel test robot <yujie.liu@intel.com>,
+        Liam Howlett <liam.howlett@oracle.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 060/431] rcutorture: Correct name of use_softirq module parameter
-Date:   Sun,  9 Jul 2023 13:10:08 +0200
-Message-ID: <20230709111452.543966539@linuxfoundation.org>
+Subject: [PATCH 6.3 061/431] rcuscale: Move shutdown from wait_event() to wait_event_idle()
+Date:   Sun,  9 Jul 2023 13:10:09 +0200
+Message-ID: <20230709111452.570455803@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -57,41 +59,53 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit b409afe0268faeb77267f028ea85f2d93438fced ]
+[ Upstream commit ef1ef3d47677dc191b88650a9f7f91413452cc1b ]
 
-The BUSTED-BOOST and TREE03 scenarios specify a mythical tree.use_softirq
-module parameter, which means a failure to get full test coverage.  This
-commit therefore corrects the name to rcutree.use_softirq.
+The rcu_scale_shutdown() and kfree_scale_shutdown() kthreads/functions
+use wait_event() to wait for the rcuscale test to complete.  However,
+each updater thread in such a test waits for at least 100 grace periods.
+If each grace period takes more than 1.2 seconds, which is long, but
+not insanely so, this can trigger the hung-task timeout.
 
-Fixes: e2b949d54392 ("rcutorture: Make TREE03 use real-time tree.use_softirq setting")
+This commit therefore replaces those wait_event() calls with calls to
+wait_event_idle(), which do not trigger the hung-task timeout.
+
+Reported-by: kernel test robot <yujie.liu@intel.com>
+Reported-by: Liam Howlett <liam.howlett@oracle.com>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Tested-by: Yujie Liu <yujie.liu@intel.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Stable-dep-of: 23fc8df26dea ("rcu/rcuscale: Stop kfree_scale_thread thread(s) after unloading rcuscale")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/rcutorture/configs/rcu/BUSTED-BOOST.boot  | 2 +-
- tools/testing/selftests/rcutorture/configs/rcu/TREE03.boot      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ kernel/rcu/rcuscale.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/BUSTED-BOOST.boot b/tools/testing/selftests/rcutorture/configs/rcu/BUSTED-BOOST.boot
-index f57720c52c0f9..84f6bb98ce993 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/BUSTED-BOOST.boot
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/BUSTED-BOOST.boot
-@@ -5,4 +5,4 @@ rcutree.gp_init_delay=3
- rcutree.gp_cleanup_delay=3
- rcutree.kthread_prio=2
- threadirqs
--tree.use_softirq=0
-+rcutree.use_softirq=0
-diff --git a/tools/testing/selftests/rcutorture/configs/rcu/TREE03.boot b/tools/testing/selftests/rcutorture/configs/rcu/TREE03.boot
-index 64f864f1f361f..8e50bfd4b710d 100644
---- a/tools/testing/selftests/rcutorture/configs/rcu/TREE03.boot
-+++ b/tools/testing/selftests/rcutorture/configs/rcu/TREE03.boot
-@@ -4,4 +4,4 @@ rcutree.gp_init_delay=3
- rcutree.gp_cleanup_delay=3
- rcutree.kthread_prio=2
- threadirqs
--tree.use_softirq=0
-+rcutree.use_softirq=0
+diff --git a/kernel/rcu/rcuscale.c b/kernel/rcu/rcuscale.c
+index 91fb5905a008f..4120f94030c3c 100644
+--- a/kernel/rcu/rcuscale.c
++++ b/kernel/rcu/rcuscale.c
+@@ -631,8 +631,7 @@ static int compute_real(int n)
+ static int
+ rcu_scale_shutdown(void *arg)
+ {
+-	wait_event(shutdown_wq,
+-		   atomic_read(&n_rcu_scale_writer_finished) >= nrealwriters);
++	wait_event_idle(shutdown_wq, atomic_read(&n_rcu_scale_writer_finished) >= nrealwriters);
+ 	smp_mb(); /* Wake before output. */
+ 	rcu_scale_cleanup();
+ 	kernel_power_off();
+@@ -771,8 +770,8 @@ kfree_scale_cleanup(void)
+ static int
+ kfree_scale_shutdown(void *arg)
+ {
+-	wait_event(shutdown_wq,
+-		   atomic_read(&n_kfree_scale_thread_ended) >= kfree_nrealthreads);
++	wait_event_idle(shutdown_wq,
++			atomic_read(&n_kfree_scale_thread_ended) >= kfree_nrealthreads);
+ 
+ 	smp_mb(); /* Wake before output. */
+ 
 -- 
 2.39.2
 
