@@ -2,185 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2D9B74C06B
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 04:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B981674C148
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 08:26:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229797AbjGICaj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 8 Jul 2023 22:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59606 "EHLO
+        id S233073AbjGIG0h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 02:26:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjGICai (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 8 Jul 2023 22:30:38 -0400
+        with ESMTP id S233301AbjGIG0e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 02:26:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A16E48;
-        Sat,  8 Jul 2023 19:30:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466DB1BF
+        for <stable@vger.kernel.org>; Sat,  8 Jul 2023 23:26:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39ABF60B33;
-        Sun,  9 Jul 2023 02:30:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F75AC433D9;
-        Sun,  9 Jul 2023 02:30:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688869836;
-        bh=ExIY4X1/6WBZDcceYJulXe9AXws94ZhD3WBbuCHUE6E=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Nac9IehWe3mHd7f4j/uWewTT/i+BFlYKfZ7gn5k9QJ9U3xityI4bJX9ZdXhOhbtn5
-         KTThX7ukwtNQCwv8P92YbIzux18NeIqXeNAP0ZSx+StByIr1piST8ZCbolBb1FnO0V
-         4TlYUvp27unXCEnzaLZvJTVtFuvWsG9G3LN5Uk+hhA1ztWrWPnRW3e5uliMyOLBVbq
-         XQXxCKKt+h8HovFU6s3NRY87n4MApHwoPIutnH0+WQ/HSDbD0KFEc/zfPVamMBdQsF
-         +0g+kU/G3mLejCoZnrNCxPwdnfKEnCvJ6zS/xqrJOx9j3u3+1ha9DmRYZ2q48aAI9L
-         mJuRm+SKqSf9A==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-9922d6f003cso438056866b.0;
-        Sat, 08 Jul 2023 19:30:36 -0700 (PDT)
-X-Gm-Message-State: ABy/qLZV5gTxzOkvl427ciWTsEkXXkK68StNRbDW/8r9zM4Q5b5vdEru
-        WaXWFgxvPSBOngErmAo8+tEVwSVy0sVX7Bo0ZMI=
-X-Google-Smtp-Source: APBJJlF+0ioRn75qNrO9bVL/zSUpGN/gURCXjEqGnwflHc3JbebPSMWPoOFD6j8qvVU2qPB/tccSjcTMfsMyHi84C1U=
-X-Received: by 2002:a17:906:4307:b0:992:c5ad:18bc with SMTP id
- j7-20020a170906430700b00992c5ad18bcmr7156335ejm.70.1688869834776; Sat, 08 Jul
- 2023 19:30:34 -0700 (PDT)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D466D60BA1
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 06:26:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AA4C433C9;
+        Sun,  9 Jul 2023 06:26:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1688883993;
+        bh=EnHCKP0BK13Yi/iIgak4P1dYAp36N7NA3lxmY9mMduA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Hb871dcXQ5jPOb/DfcnqtBJcW5RQvEJ0k8vA9GIfHxgGxOHUt15IJrecy23qH0XJG
+         qnqY6qV0LtLxcSt+arVinc9lehPx3W0uapvW6Ih15qJdoejs/AGv7XaDsQsK//IVBi
+         QbtjRGMgE/xYnAlsVq7Pr27POyB4gjJrAAyiVkpc=
+Date:   Sun, 9 Jul 2023 08:26:30 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     zxuiji <gb2985@gmail.com>
+Cc:     stable@vger.kernel.org
+Subject: Re: Suggestion for extending SIGWINCH
+Message-ID: <2023070923-cramp-tarnish-5b8e@gregkh>
+References: <CAOZ3c1paOYY4mXuF_MMcb+12e7d4_1cXb8RxPDG5B3ty3fiwfA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230702025708.784106-1-guoren@kernel.org> <20230704164003.GB83892@hirez.programming.kicks-ass.net>
-In-Reply-To: <20230704164003.GB83892@hirez.programming.kicks-ass.net>
-From:   Guo Ren <guoren@kernel.org>
-Date:   Sun, 9 Jul 2023 10:30:22 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTTc0Gyo=K-0dCW6wu7q=Wq34hgTB69qJ7VSF_KAgKhavA@mail.gmail.com>
-Message-ID: <CAJF2gTTc0Gyo=K-0dCW6wu7q=Wq34hgTB69qJ7VSF_KAgKhavA@mail.gmail.com>
-Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
-        luto@kernel.org, conor.dooley@microchip.com, heiko@sntech.de,
-        jszhang@kernel.org, lazyparser@gmail.com, falcon@tinylab.org,
-        chenhuacai@kernel.org, apatel@ventanamicro.com,
-        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
-        palmer@dabbelt.com, bjorn@rivosinc.com, daniel.thompson@linaro.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
-        Guo Ren <guoren@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOZ3c1paOYY4mXuF_MMcb+12e7d4_1cXb8RxPDG5B3ty3fiwfA@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 5, 2023 at 12:40=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
-> > From: Guo Ren <guoren@linux.alibaba.com>
-> >
-> > The irqentry_nmi_enter/exit would force the current context into in_int=
-errupt.
-> > That would trigger the kernel to dead panic, but the kdb still needs "e=
-break" to
-> > debug the kernel.
-> >
-> > Move irqentry_nmi_enter/exit to exception_enter/exit could correct hand=
-le_break
-> > of the kernel side.
->
-> This doesn't explain much if anything :/
->
-> I'm confused (probably because I don't know RISC-V very well), what's
-> EBREAK and how does it happen?
-EBREAK is just an instruction of riscv which would rise breakpoint exceptio=
-n.
+On Sat, Jul 08, 2023 at 06:42:57PM +0100, zxuiji wrote:
+> Currently it only indicates a change in window size, I expect the
+> si_code value is also 0 for this signal. The extension will be for
+> mouse input and the difference will be indicated by si_code being 1,
+> to avoid issues with x11 vs wayland vs etc a custom structure should
+> be pointed to in the si_addr parameter. I think the custom structure
+> should look something like this:
+> 
+> struct ttymouse
+> {
+>     uint button_mask;
+>     int x, y, wheel;
+> };
 
+<formletter>
 
->
-> Specifically, if EBREAK can happen inside an local_irq_disable() region,
-> then the below change is actively wrong. Any exception/interrupt that
-> can happen while local_irq_disable() must be treated like an NMI.
-When the ebreak happend out of local_irq_disable region, but
-__nmi_enter forces handle_break() into in_interupt() state. So how
-about:
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index f910dfccbf5d..69f7043a98b9 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -18,6 +18,7 @@
- #include <linux/irq.h>
- #include <linux/kexec.h>
- #include <linux/entry-common.h>
-+#include <linux/context_tracking.h>
-
- #include <asm/asm-prototypes.h>
- #include <asm/bug.h>
-@@ -285,12 +286,18 @@ asmlinkage __visible __trap_section void
-do_trap_break(struct pt_regs *regs)
-                handle_break(regs);
-
-                irqentry_exit_to_user_mode(regs);
--       } else {
-+       } else if (in_interrupt()){
-                irqentry_state_t state =3D irqentry_nmi_enter(regs);
-
-                handle_break(regs);
-
-                irqentry_nmi_exit(regs, state);
-+       } else {
-+               enum ctx_state prev_state =3D exception_enter();
-+
-+               handle_break(regs);
-+
-+               exception_exit(prev_state);
-        }
- }
-
-
->
-> If that makes kdb unhappy, fix kdb.
->
-> > Fixes: f0bddf50586d ("riscv: entry: Convert to generic entry")
-> > Reported-by: Daniel Thompson <daniel.thompson@linaro.org>
-> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> > Signed-off-by: Guo Ren <guoren@kernel.org>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  arch/riscv/kernel/traps.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-> > index efc6b649985a..ed0eb9452f9e 100644
-> > --- a/arch/riscv/kernel/traps.c
-> > +++ b/arch/riscv/kernel/traps.c
-> > @@ -18,6 +18,7 @@
-> >  #include <linux/irq.h>
-> >  #include <linux/kexec.h>
-> >  #include <linux/entry-common.h>
-> > +#include <linux/context_tracking.h>
-> >
-> >  #include <asm/asm-prototypes.h>
-> >  #include <asm/bug.h>
-> > @@ -257,11 +258,11 @@ asmlinkage __visible __trap_section void do_trap_=
-break(struct pt_regs *regs)
-> >
-> >               irqentry_exit_to_user_mode(regs);
-> >       } else {
-> > -             irqentry_state_t state =3D irqentry_nmi_enter(regs);
-> > +             enum ctx_state prev_state =3D exception_enter();
-> >
-> >               handle_break(regs);
-> >
-> > -             irqentry_nmi_exit(regs, state);
-> > +             exception_exit(prev_state);
-> >       }
-> >  }
-> >
-> > --
-> > 2.36.1
-> >
-
-
-
---
-Best Regards
- Guo Ren
+</formletter>
