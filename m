@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB81D74C3AA
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BF5D74C3AB
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:35:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232938AbjGILey (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:34:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43044 "EHLO
+        id S232941AbjGILfF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:35:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232898AbjGILex (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:53 -0400
+        with ESMTP id S232942AbjGILe4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:34:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29C4218C
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1BA618F
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:34:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B806560BC9
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE2BC433C7;
-        Sun,  9 Jul 2023 11:34:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F03A60BC0
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:34:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA6CC433C7;
+        Sun,  9 Jul 2023 11:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902492;
-        bh=VVh4nhVbkA3LNIZ+8jXpsyTeMDZ3FScErTp+UEIEdAk=;
+        s=korg; t=1688902494;
+        bh=/aYLQXzEbaPlzbEtwY5wHCg8joDUvhV6XCBBXurPAfs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eK7KqxMd20s+atYLLSDxFLKxoQo6BeYc/PcNCf6fLV2UEoZpybRnQspedH7w+DNeE
-         974S1oUJYOx19bu8OdWkBBki2XHl/PIFKZE9C/RirETA+maILtJ8AbQlxD9EUIJO8z
-         VwntnhYLX2F4nHcFzRzTIxZ1nG1zzzUMMaHXNyc8=
+        b=Ylp7lJWO5jhf8yUOk29K8hmb3C1IdYq+EDubx9igy+rKyKyv/5YPwnpY4ea1De38J
+         Yr1sIIk108Oox5OtjqF1TqKIUb1B8ewOf6uxFZYWaDSwc5zsK1gfEoZ5+sbEscCFA+
+         VXQV6rnXVyN+YW9IbSzSUqz2EasYMCrEq0Jg0m/s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wells Lu <wellslutw@gmail.com>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 367/431] pinctrl:sunplus: Add check for kmalloc
-Date:   Sun,  9 Jul 2023 13:15:15 +0200
-Message-ID: <20230709111459.770767264@linuxfoundation.org>
+Subject: [PATCH 6.3 368/431] pinctrl: npcm7xx: Add missing check for ioremap
+Date:   Sun,  9 Jul 2023 13:15:16 +0200
+Message-ID: <20230709111459.793299258@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -56,42 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wells Lu <wellslutw@gmail.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 73f8ce7f961afcb3be49352efeb7c26cc1c00cc4 ]
+[ Upstream commit ad64639417161e90b30dda00486570eb150aeee5 ]
 
-Fix Smatch static checker warning:
-potential null dereference 'configs'. (kmalloc returns null)
+Add check for ioremap() and return the error if it fails in order to
+guarantee the success of ioremap().
 
-Changes in v2:
-1. Add free allocated memory before returned -ENOMEM.
-2. Add call of_node_put() before returned -ENOMEM.
-
-Fixes: aa74c44be19c ("pinctrl: Add driver for Sunplus SP7021")
-Signed-off-by: Wells Lu <wellslutw@gmail.com>
+Fixes: 3b588e43ee5c ("pinctrl: nuvoton: add NPCM7xx pinctrl and GPIO driver")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/1685277277-12209-1-git-send-email-wellslutw@gmail.com
-[Rebased on the patch from Lu Hongfei]
+Link: https://lore.kernel.org/r/20230607095829.1345-1-jiasheng@iscas.ac.cn
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/sunplus/sppctl.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pinctrl/nuvoton/pinctrl-npcm7xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pinctrl/sunplus/sppctl.c b/drivers/pinctrl/sunplus/sppctl.c
-index e91ce5b5d5598..150996949ede7 100644
---- a/drivers/pinctrl/sunplus/sppctl.c
-+++ b/drivers/pinctrl/sunplus/sppctl.c
-@@ -971,8 +971,7 @@ static int sppctl_dt_node_to_map(struct pinctrl_dev *pctldev, struct device_node
+diff --git a/drivers/pinctrl/nuvoton/pinctrl-npcm7xx.c b/drivers/pinctrl/nuvoton/pinctrl-npcm7xx.c
+index ff5bcea172e84..071bdfd570f94 100644
+--- a/drivers/pinctrl/nuvoton/pinctrl-npcm7xx.c
++++ b/drivers/pinctrl/nuvoton/pinctrl-npcm7xx.c
+@@ -1881,6 +1881,8 @@ static int npcm7xx_gpio_of(struct npcm7xx_pinctrl *pctrl)
+ 		}
  
- sppctl_map_err:
- 	for (i = 0; i < (*num_maps); i++)
--		if (((*map)[i].type == PIN_MAP_TYPE_CONFIGS_PIN) &&
--		    (*map)[i].data.configs.configs)
-+		if ((*map)[i].type == PIN_MAP_TYPE_CONFIGS_PIN)
- 			kfree((*map)[i].data.configs.configs);
- 	kfree(*map);
- 	of_node_put(parent);
+ 		pctrl->gpio_bank[id].base = ioremap(res.start, resource_size(&res));
++		if (!pctrl->gpio_bank[id].base)
++			return -EINVAL;
+ 
+ 		ret = bgpio_init(&pctrl->gpio_bank[id].gc, dev, 4,
+ 				 pctrl->gpio_bank[id].base + NPCM7XX_GP_N_DIN,
 -- 
 2.39.2
 
