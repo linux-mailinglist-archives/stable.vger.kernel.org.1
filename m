@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F56474C2F0
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 428C574C2F1
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:26:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232297AbjGIL0a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:26:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37112 "EHLO
+        id S232277AbjGIL0b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:26:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232366AbjGIL03 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:26:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B60741B0
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:26:22 -0700 (PDT)
+        with ESMTP id S232374AbjGIL0a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:26:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99A021A6
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:26:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55D1C60BC9
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:26:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EB6C433C7;
-        Sun,  9 Jul 2023 11:26:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FF0A60C07
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:26:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA1EC433C9;
+        Sun,  9 Jul 2023 11:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901981;
-        bh=10vdpd8yc/Z49wEfcmmZaV0rtId9V9cW2ioVw1xQh2Q=;
+        s=korg; t=1688901984;
+        bh=G/fRDDXF+wbPdFTF+iImDKj03jTNpdYjWGoxazJ2UaQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=el8Wl0gRqCNqPynG83WT8ud/uYGrntkp2eryKFUCaauOUVm2BkITQ75ZiJGql2nQ7
-         QdMpI2HGy8juP2OSutc9VYG1BRAZ1CEnojiqw0AOIioV34Zt8KToty0xa0XS8vbsxP
-         Fjng44Di84Yry0gQHZjGKEIj/Qc4TLBNd5c9auy4=
+        b=K+RzHDAfFzPxe2OjOFj9i+MaTf7266vht2YZ3vkcZdZBjuMspDr01DW77iEOb/Xv0
+         l7w+txg8chjoTIv68prg/O4MLVDZWQPmKxkZ59pAAruLpjRuEHenkar0TdDn4bXCUC
+         4FnUSLnSp+DzQhHD5mfaX9KrGiPwTtcUmqw5tpGo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marek Vasut <marek.vasut+renesas@mailbox.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 185/431] clk: rs9: Fix .driver_data content in i2c_device_id
-Date:   Sun,  9 Jul 2023 13:12:13 +0200
-Message-ID: <20230709111455.516021356@linuxfoundation.org>
+Subject: [PATCH 6.3 186/431] Input: adxl34x - do not hardcode interrupt trigger type
+Date:   Sun,  9 Jul 2023 13:12:14 +0200
+Message-ID: <20230709111455.539123122@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -57,43 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit ad527ca87e4ea42d7baad2ce710b44069287931b ]
+[ Upstream commit e96220bce5176ed2309f77f061dcc0430b82b25e ]
 
-The .driver_data content in i2c_device_id table must match the
-.data content in of_device_id table, else device_get_match_data()
-would return bogus value on i2c_device_id match. Align the two
-tables.
+Instead of hardcoding IRQ trigger type to IRQF_TRIGGER_HIGH, let's
+respect the settings specified in the firmware description.
 
-The i2c_device_id table is now converted from of_device_id using
-'s@.compatible = "renesas,\([^"]\+"\), .data = \(.*\)@"\1, .driver_data = (kernel_ulong_t)\2@'
-
-Fixes: 892e0ddea1aa ("clk: rs9: Add Renesas 9-series PCIe clock generator driver")
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Link: https://lore.kernel.org/r/20230507133906.15061-3-marek.vasut+renesas@mailbox.org
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: e27c729219ad ("Input: add driver for ADXL345/346 Digital Accelerometers")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Acked-by: Michael Hennerich <michael.hennerich@analog.com>
+Link: https://lore.kernel.org/r/20230509203555.549158-1-marex@denx.de
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-renesas-pcie.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/input/misc/adxl34x.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/clk/clk-renesas-pcie.c b/drivers/clk/clk-renesas-pcie.c
-index 10d31c222a1cb..6060cafe1aa22 100644
---- a/drivers/clk/clk-renesas-pcie.c
-+++ b/drivers/clk/clk-renesas-pcie.c
-@@ -392,8 +392,8 @@ static const struct rs9_chip_info renesas_9fgv0441_info = {
- };
+diff --git a/drivers/input/misc/adxl34x.c b/drivers/input/misc/adxl34x.c
+index eecca671b5884..a3f45e0ee0c75 100644
+--- a/drivers/input/misc/adxl34x.c
++++ b/drivers/input/misc/adxl34x.c
+@@ -817,8 +817,7 @@ struct adxl34x *adxl34x_probe(struct device *dev, int irq,
+ 	AC_WRITE(ac, POWER_CTL, 0);
  
- static const struct i2c_device_id rs9_id[] = {
--	{ "9fgv0241", .driver_data = RENESAS_9FGV0241 },
--	{ "9fgv0441", .driver_data = RENESAS_9FGV0441 },
-+	{ "9fgv0241", .driver_data = (kernel_ulong_t)&renesas_9fgv0241_info },
-+	{ "9fgv0441", .driver_data = (kernel_ulong_t)&renesas_9fgv0441_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, rs9_id);
+ 	err = request_threaded_irq(ac->irq, NULL, adxl34x_irq,
+-				   IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+-				   dev_name(dev), ac);
++				   IRQF_ONESHOT, dev_name(dev), ac);
+ 	if (err) {
+ 		dev_err(dev, "irq %d busy?\n", ac->irq);
+ 		goto err_free_mem;
 -- 
 2.39.2
 
