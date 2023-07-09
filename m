@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F2E474C247
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6043974C252
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:19:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231135AbjGILS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59970 "EHLO
+        id S230497AbjGILTR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:19:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230511AbjGILS5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:18:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550D5E71
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:18:42 -0700 (PDT)
+        with ESMTP id S231151AbjGILTO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:19:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 178EB1AB
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:19:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC3FE60BD8
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:18:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC46BC433C8;
-        Sun,  9 Jul 2023 11:18:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9624460BD8
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:19:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39A6C433C8;
+        Sun,  9 Jul 2023 11:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688901521;
-        bh=zWyz+U7V32RdcaRCDSd50v+jbz1pxsAjvBu4FFaypzM=;
+        s=korg; t=1688901552;
+        bh=4rTdc/T2DNXWxcPuwMno5T5ZJrQ9yC3prMiN+PNcexQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0J370q0kxyG/KF568NDBLWEIc2CzCpp/vabIVqSII+uJmvVnr6jGuFUmShsPk2LbX
-         VU1XxvL661T69ayUsh95bFa+AjlUV9ysP+tEOQUEOagM5T0jANobP3wcessPP6aM6M
-         Ww2RracPHKXIl3GpcTD7gLz8eZ4wvEQWbkzS9fGo=
+        b=hCZDRx0Pr1XqX7qgxB6EDYjED7pzQIVjYczR8d48Xy9KrqmkzZN6GMRsLkpzt1YFj
+         uWDKsoKF7OC04jm1+f4PTJ+sd5zYCzpmMWH/IvaWA68AZYtuidbyR2nePrByZBx4/y
+         55Vt7rylFhi9yjLsrG/EFtuNycGkE7XicEfrJ6uM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>,
+        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 032/431] erofs: fix compact 4B support for 16k block size
-Date:   Sun,  9 Jul 2023 13:09:40 +0200
-Message-ID: <20230709111451.850352229@linuxfoundation.org>
+Subject: [PATCH 6.3 033/431] posix-timers: Prevent RT livelock in itimer_delete()
+Date:   Sun,  9 Jul 2023 13:09:41 +0200
+Message-ID: <20230709111451.873736270@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -54,69 +55,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 001b8ccd0650727e54ec16ef72bf1b8eeab7168e ]
+[ Upstream commit 9d9e522010eb5685d8b53e8a24320653d9d4cbbf ]
 
-In compact 4B, two adjacent lclusters are packed together as a unit to
-form on-disk indexes for effective random access, as below:
+itimer_delete() has a retry loop when the timer is concurrently expired. On
+non-RT kernels this just spin-waits until the timer callback has completed,
+except for posix CPU timers which have HAVE_POSIX_CPU_TIMERS_TASK_WORK
+enabled.
 
-(amortized = 4, vcnt = 2)
-       _____________________________________________
-      |___@_____ encoded bits __________|_ blkaddr _|
-      0        .                                    amortized * vcnt = 8
-      .             .
-      .                  .              amortized * vcnt - 4 = 4
-      .                        .
-      .____________________________.
-      |_type (2 bits)_|_clusterofs_|
+In that case and on RT kernels the existing task could live lock when
+preempting the task which does the timer delivery.
 
-Therefore, encoded bits for each pack are 32 bits (4 bytes). IOWs,
-since each lcluster can get 16 bits for its type and clusterofs, the
-maximum supported lclustersize for compact 4B format is 16k (14 bits).
+Replace spin_unlock() with an invocation of timer_wait_running() to handle
+it the same way as the other retry loops in the posix timer code.
 
-Fix this to enable compact 4B format for 16k lclusters (blocks), which
-is tested on an arm64 server with 16k page size.
-
-Fixes: 152a333a5895 ("staging: erofs: add compacted compression indexes support")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230601112341.56960-1-hsiangkao@linux.alibaba.com
+Fixes: ec8f954a40da ("posix-timers: Use a callback for cancel synchronization on PREEMPT_RT")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/87v8g7c50d.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zmap.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ kernel/time/posix-timers.c | 43 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 35 insertions(+), 8 deletions(-)
 
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index b5f4086537548..322f110b3c8f4 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -148,7 +148,7 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
- 	u8 *in, type;
- 	bool big_pcluster;
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index 808a247205a9a..ed3c4a9543982 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -1037,27 +1037,52 @@ SYSCALL_DEFINE1(timer_delete, timer_t, timer_id)
+ }
  
--	if (1 << amortizedshift == 4)
-+	if (1 << amortizedshift == 4 && lclusterbits <= 14)
- 		vcnt = 2;
- 	else if (1 << amortizedshift == 2 && lclusterbits == 12)
- 		vcnt = 16;
-@@ -250,7 +250,6 @@ static int compacted_load_cluster_from_disk(struct z_erofs_maprecorder *m,
+ /*
+- * return timer owned by the process, used by exit_itimers
++ * Delete a timer if it is armed, remove it from the hash and schedule it
++ * for RCU freeing.
+  */
+ static void itimer_delete(struct k_itimer *timer)
  {
- 	struct inode *const inode = m->inode;
- 	struct erofs_inode *const vi = EROFS_I(inode);
--	const unsigned int lclusterbits = vi->z_logical_clusterbits;
- 	const erofs_off_t ebase = sizeof(struct z_erofs_map_header) +
- 		ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
- 	const unsigned int totalidx = DIV_ROUND_UP(inode->i_size, EROFS_BLKSIZ);
-@@ -258,9 +257,6 @@ static int compacted_load_cluster_from_disk(struct z_erofs_maprecorder *m,
- 	unsigned int amortizedshift;
- 	erofs_off_t pos;
+-retry_delete:
+-	spin_lock_irq(&timer->it_lock);
++	unsigned long flags;
++
++	/*
++	 * irqsave is required to make timer_wait_running() work.
++	 */
++	spin_lock_irqsave(&timer->it_lock, flags);
  
--	if (lclusterbits != 12)
--		return -EOPNOTSUPP;
--
- 	if (lcn >= totalidx)
- 		return -EINVAL;
++retry_delete:
++	/*
++	 * Even if the timer is not longer accessible from other tasks
++	 * it still might be armed and queued in the underlying timer
++	 * mechanism. Worse, that timer mechanism might run the expiry
++	 * function concurrently.
++	 */
+ 	if (timer_delete_hook(timer) == TIMER_RETRY) {
+-		spin_unlock_irq(&timer->it_lock);
++		/*
++		 * Timer is expired concurrently, prevent livelocks
++		 * and pointless spinning on RT.
++		 *
++		 * timer_wait_running() drops timer::it_lock, which opens
++		 * the possibility for another task to delete the timer.
++		 *
++		 * That's not possible here because this is invoked from
++		 * do_exit() only for the last thread of the thread group.
++		 * So no other task can access and delete that timer.
++		 */
++		if (WARN_ON_ONCE(timer_wait_running(timer, &flags) != timer))
++			return;
++
+ 		goto retry_delete;
+ 	}
+ 	list_del(&timer->list);
  
+-	spin_unlock_irq(&timer->it_lock);
++	spin_unlock_irqrestore(&timer->it_lock, flags);
+ 	release_posix_timer(timer, IT_ID_SET);
+ }
+ 
+ /*
+- * This is called by do_exit or de_thread, only when nobody else can
+- * modify the signal->posix_timers list. Yet we need sighand->siglock
+- * to prevent the race with /proc/pid/timers.
++ * Invoked from do_exit() when the last thread of a thread group exits.
++ * At that point no other task can access the timers of the dying
++ * task anymore.
+  */
+ void exit_itimers(struct task_struct *tsk)
+ {
+@@ -1067,10 +1092,12 @@ void exit_itimers(struct task_struct *tsk)
+ 	if (list_empty(&tsk->signal->posix_timers))
+ 		return;
+ 
++	/* Protect against concurrent read via /proc/$PID/timers */
+ 	spin_lock_irq(&tsk->sighand->siglock);
+ 	list_replace_init(&tsk->signal->posix_timers, &timers);
+ 	spin_unlock_irq(&tsk->sighand->siglock);
+ 
++	/* The timers are not longer accessible via tsk::signal */
+ 	while (!list_empty(&timers)) {
+ 		tmr = list_first_entry(&timers, struct k_itimer, list);
+ 		itimer_delete(tmr);
 -- 
 2.39.2
 
