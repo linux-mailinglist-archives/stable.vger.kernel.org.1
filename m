@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E439D74C02D
+	by mail.lfdr.de (Postfix) with ESMTP id 9C25A74C02C
 	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 02:30:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229651AbjGIAag (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 8 Jul 2023 20:30:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53276 "EHLO
+        id S229788AbjGIAah (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 8 Jul 2023 20:30:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbjGIAa2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 8 Jul 2023 20:30:28 -0400
+        with ESMTP id S229723AbjGIAaf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 8 Jul 2023 20:30:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FDF1E4D;
-        Sat,  8 Jul 2023 17:30:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F3A5E58;
+        Sat,  8 Jul 2023 17:30:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C0E4D60B5C;
-        Sun,  9 Jul 2023 00:30:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5CBC433C8;
-        Sun,  9 Jul 2023 00:30:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEB4960B62;
+        Sun,  9 Jul 2023 00:30:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D220C433C7;
+        Sun,  9 Jul 2023 00:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1688862626;
-        bh=Ab9ivfr92a9kHPL/TtQfn9/vN+qzYWfxD2IFZ0/9Ct8=;
+        s=korg; t=1688862629;
+        bh=gM5k3tfuSs+XWS3CsJriy7uhzjGe2poHxBR1hp/dYkU=;
         h=Date:To:From:Subject:From;
-        b=N1LAre/6bQGR98O9viwav8DTK4T696pHqes+4+E28DJBOqNQw3z5Nra4y+2EQUY0e
-         J2IXT0oLBJ8HC+KCeXgMN4SlZ6mgB1IQm7/7i51PeuNgDGZYEIGVJfCx3fm0iLJ5Hz
-         Dv2RpZHuViwLDCZiDOsbpO6ZEqenMN/SaDISd4V0=
-Date:   Sat, 08 Jul 2023 17:30:25 -0700
-To:     mm-commits@vger.kernel.org, willy@infradead.org,
-        stable@vger.kernel.org, songmuchun@bytedance.com,
-        osalvador@suse.de, mike.kravetz@oracle.com, liushixin2@huawei.com,
+        b=wM9K2RM7V4iiInpAaUYxUBQTzRIU6j9Won3fDcA18mSh/9gSY86qX+bTmuCwa+6fw
+         rV+y7fsyKX5wTabPT/bMjodggk9TSfmjUgmyb7aQE1xMbjh34ctlBVm13r62Fsfyvd
+         KAgS3MrW8rgHv1A0EAkddS1TZI5bWOhI579aGDFg=
+Date:   Sat, 08 Jul 2023 17:30:28 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        ryabinin.a.a@gmail.com, glider@google.com, elver@google.com,
+        dvyukov@google.com, arnd@arndb.de, andreyknvl@google.com,
         akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] bootmem-remove-the-vmemmap-pages-from-kmemleak-in-free_bootmem_page.patch removed from -mm tree
-Message-Id: <20230709003026.1E5CBC433C8@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] kasan-fix-type-cast-in-memory_is_poisoned_n.patch removed from -mm tree
+Message-Id: <20230709003029.3D220C433C7@smtp.kernel.org>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -49,60 +49,60 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: bootmem: remove the vmemmap pages from kmemleak in free_bootmem_page
+     Subject: kasan: fix type cast in memory_is_poisoned_n
 has been removed from the -mm tree.  Its filename was
-     bootmem-remove-the-vmemmap-pages-from-kmemleak-in-free_bootmem_page.patch
+     kasan-fix-type-cast-in-memory_is_poisoned_n.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Liu Shixin <liushixin2@huawei.com>
-Subject: bootmem: remove the vmemmap pages from kmemleak in free_bootmem_page
-Date: Tue, 4 Jul 2023 18:19:42 +0800
+From: Andrey Konovalov <andreyknvl@google.com>
+Subject: kasan: fix type cast in memory_is_poisoned_n
+Date: Tue, 4 Jul 2023 02:52:05 +0200
 
-commit dd0ff4d12dd2 ("bootmem: remove the vmemmap pages from kmemleak in
-put_page_bootmem") fix an overlaps existing problem of kmemleak.  But the
-problem still existed when HAVE_BOOTMEM_INFO_NODE is disabled, because in
-this case, free_bootmem_page() will call free_reserved_page() directly.
+Commit bb6e04a173f0 ("kasan: use internal prototypes matching gcc-13
+builtins") introduced a bug into the memory_is_poisoned_n implementation:
+it effectively removed the cast to a signed integer type after applying
+KASAN_GRANULE_MASK.
 
-Fix the problem by adding kmemleak_free_part() in free_bootmem_page() when
-HAVE_BOOTMEM_INFO_NODE is disabled.
+As a result, KASAN started failing to properly check memset, memcpy, and
+other similar functions.
 
-Link: https://lkml.kernel.org/r/20230704101942.2819426-1-liushixin2@huawei.com
-Fixes: f41f2ed43ca5 ("mm: hugetlb: free the vmemmap pages associated with each HugeTLB page")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Acked-by: Muchun Song <songmuchun@bytedance.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Oscar Salvador <osalvador@suse.de>
+Fix the bug by adding the cast back (through an additional signed integer
+variable to make the code more readable).
+
+Link: https://lkml.kernel.org/r/8c9e0251c2b8b81016255709d4ec42942dcaf018.1688431866.git.andreyknvl@google.com
+Fixes: bb6e04a173f0 ("kasan: use internal prototypes matching gcc-13 builtins")
+Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/bootmem_info.h |    2 ++
- 1 file changed, 2 insertions(+)
+ mm/kasan/generic.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/bootmem_info.h~bootmem-remove-the-vmemmap-pages-from-kmemleak-in-free_bootmem_page
-+++ a/include/linux/bootmem_info.h
-@@ -3,6 +3,7 @@
- #define __LINUX_BOOTMEM_INFO_H
+--- a/mm/kasan/generic.c~kasan-fix-type-cast-in-memory_is_poisoned_n
++++ a/mm/kasan/generic.c
+@@ -130,9 +130,10 @@ static __always_inline bool memory_is_po
+ 	if (unlikely(ret)) {
+ 		const void *last_byte = addr + size - 1;
+ 		s8 *last_shadow = (s8 *)kasan_mem_to_shadow(last_byte);
++		s8 last_accessible_byte = (unsigned long)last_byte & KASAN_GRANULE_MASK;
  
- #include <linux/mm.h>
-+#include <linux/kmemleak.h>
- 
- /*
-  * Types for free bootmem stored in page->lru.next. These have to be in
-@@ -59,6 +60,7 @@ static inline void get_page_bootmem(unsi
- 
- static inline void free_bootmem_page(struct page *page)
- {
-+	kmemleak_free_part(page_to_virt(page), PAGE_SIZE);
- 	free_reserved_page(page);
- }
- #endif
+ 		if (unlikely(ret != (unsigned long)last_shadow ||
+-			(((long)last_byte & KASAN_GRANULE_MASK) >= *last_shadow)))
++			     last_accessible_byte >= *last_shadow))
+ 			return true;
+ 	}
+ 	return false;
 _
 
-Patches currently in -mm which might be from liushixin2@huawei.com are
+Patches currently in -mm which might be from andreyknvl@google.com are
 
 
