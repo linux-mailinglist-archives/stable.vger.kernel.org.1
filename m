@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD81374C3BB
-	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E181674C3C6
+	for <lists+stable@lfdr.de>; Sun,  9 Jul 2023 13:36:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232966AbjGILfj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 9 Jul 2023 07:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43424 "EHLO
+        id S233000AbjGILgJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 9 Jul 2023 07:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232970AbjGILfi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:35:38 -0400
+        with ESMTP id S232993AbjGILgJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 9 Jul 2023 07:36:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D8913D
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:35:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7569795
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 04:36:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 670B860BB7
-        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:35:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77874C433C7;
-        Sun,  9 Jul 2023 11:35:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1483360B51
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 11:36:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25901C433C7;
+        Sun,  9 Jul 2023 11:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688902536;
-        bh=/UyJFN8YF2iwl/EKXJKmFOlG+TPPmgaKLa2LZEvvaHE=;
+        s=korg; t=1688902567;
+        bh=4HnyfsApdWx8U2P+xgc8O4ZUYmzNRr2w1a4AjFiJl+o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zsmgbxZAj9UIHToET3Gu+5z/iqREd7j9vCCdEclEFa1gUsu+95E10zgqrQnl6jW1O
-         EKks8rOfcTqTMBrkrj0ng8WZj91ykVFDXzK49Gikgwzo4D3wiGaoqQByeadbSbngF2
-         /BXH/G7PtCen346WFg18+QOj7A2I6BDuUUwMVY+8=
+        b=btfrk8CSi+4gyOjnAgYl/O5yNa2MVqapK2ISQR0+D0Sxc0JPRC1PXx8lL5kt/pMrZ
+         5aNPOyrOxj0JoIXy0MKpenS86KeDmGBCe16mBw26mr5Pm8nic2QpOiACYmXcWJFXox
+         u+7pmomFqf1hxFWqScNEjTyKafhwB5AHY5S5y4TE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shunsuke Mie <mie@igel.co.jp>,
+        patches@lists.linux.dev,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
         Lorenzo Pieralisi <lpieralisi@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 394/431] PCI: endpoint: Fix a Kconfig prompt of vNTB driver
-Date:   Sun,  9 Jul 2023 13:15:42 +0200
-Message-ID: <20230709111500.409919626@linuxfoundation.org>
+        Frank Li <Frank.Li@nxp.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 395/431] PCI: endpoint: functions/pci-epf-test: Fix dma_chan direction
+Date:   Sun,  9 Jul 2023 13:15:43 +0200
+Message-ID: <20230709111500.432685051@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -57,37 +58,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shunsuke Mie <mie@igel.co.jp>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit 37587673cda963ec950e4983db5023802f9b5ff2 ]
+[ Upstream commit 880d51c729a3fa944794feb19f605eefe55916fc ]
 
-vNTB driver and NTB driver have same Kconfig prompt. Changed to make it
-distinguishable.
+In pci_epf_test_init_dma_chan() epf_test->dma_chan_rx is assigned from
+dma_request_channel() with DMA_DEV_TO_MEM as filter.dma_mask.
 
-Link: https://lore.kernel.org/r/20230202103832.2038286-1-mie@igel.co.jp
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Shunsuke Mie <mie@igel.co.jp>
+However, in pci_epf_test_data_transfer() if the dir is DMA_DEV_TO_MEM,
+epf->dma_chan_rx should be used but instead we are using
+epf_test->dma_chan_tx.
+
+Fix it.
+
+Link: https://lore.kernel.org/r/20230412063447.2841177-1-yoshihiro.shimoda.uh@renesas.com
+Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
+Tested-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/Kconfig | 2 +-
+ drivers/pci/endpoint/functions/pci-epf-test.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/endpoint/functions/Kconfig b/drivers/pci/endpoint/functions/Kconfig
-index 9fd5608868718..8efb6a869e7ce 100644
---- a/drivers/pci/endpoint/functions/Kconfig
-+++ b/drivers/pci/endpoint/functions/Kconfig
-@@ -27,7 +27,7 @@ config PCI_EPF_NTB
- 	  If in doubt, say "N" to disable Endpoint NTB driver.
- 
- config PCI_EPF_VNTB
--	tristate "PCI Endpoint NTB driver"
-+	tristate "PCI Endpoint Virtual NTB driver"
- 	depends on PCI_ENDPOINT
- 	depends on NTB
- 	select CONFIGFS_FS
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index 0f9d2ec822ac6..172e5ac0bd96c 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -112,7 +112,7 @@ static int pci_epf_test_data_transfer(struct pci_epf_test *epf_test,
+ 				      size_t len, dma_addr_t dma_remote,
+ 				      enum dma_transfer_direction dir)
+ {
+-	struct dma_chan *chan = (dir == DMA_DEV_TO_MEM) ?
++	struct dma_chan *chan = (dir == DMA_MEM_TO_DEV) ?
+ 				 epf_test->dma_chan_tx : epf_test->dma_chan_rx;
+ 	dma_addr_t dma_local = (dir == DMA_MEM_TO_DEV) ? dma_src : dma_dst;
+ 	enum dma_ctrl_flags flags = DMA_CTRL_ACK | DMA_PREP_INTERRUPT;
 -- 
 2.39.2
 
