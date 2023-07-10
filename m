@@ -2,96 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35F5F74DD8D
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 20:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE9874DE41
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 21:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230527AbjGJSrK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 14:47:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54148 "EHLO
+        id S229897AbjGJTdH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 15:33:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232830AbjGJSrJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 14:47:09 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C33DADA;
-        Mon, 10 Jul 2023 11:47:08 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-bff27026cb0so5915492276.1;
-        Mon, 10 Jul 2023 11:47:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689014828; x=1691606828;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l+e9Uwr5qc+lETVgqhuxS2sDSgDIyaCoLKWXGQhfhM8=;
-        b=EWRHAx0bvPOAglJM0S8gK5Hv9aoMSGq2QqlxfcB8wusYDCJ5OBepPkmptt3/XfyNRC
-         SQmiL0wVcnkGLiyHC0ifgymkojTs1kSq9m3OWxDD42HD6cRmjlQszYW3G4wVwOiISE1p
-         bZYywsQlZDnE6pFMDRL2x0u6pnBlkU+zRSiABvT4qUwUlQgb86/8iabqtisNH2uM0KWX
-         iaQVpfAofBzrghuBYpS2gCDApI/4hMVH4fZdmpusUZ3DEYBCTAjuTLWmq5kWnygg0Bz8
-         Mehibba4+SYuc6g3H5sNOhx49fDI2IsLRwOrLTVLu4JG4LHvK5yKR30RX2xbCZddrrDp
-         jK5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689014828; x=1691606828;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l+e9Uwr5qc+lETVgqhuxS2sDSgDIyaCoLKWXGQhfhM8=;
-        b=N8YSTmDIl4S/6wPvNuQwd2y54VRUsFPdDeZaed2Vcyvl5nSrwU/cYo9uahocUAqEJO
-         U6GcUnOFCQL/m9qWRQSFZs9pQnXNLJonI+pirPaJPQf5LD5SVqXXpWBQwX5Yw0qTpLRj
-         e0zdLbEZSkkpXUch/dYLKy8tfVVr3ANe0wi36ZJ4yBtk8/B8bJh/DuLEzb19JHhSAf2l
-         a1yT4Cyyhnr+6+lmebxAJBDRaxyE95gqSI7x/2g9AnIUWkjGgBauDJZvnmpVt49M403n
-         HSNXzgZ4BnVBE56V+cKWzXLwAOVv6NfP1swxZ5Opb3IbA3wk2f+89JPaSZF9hEEC8u9k
-         X2YA==
-X-Gm-Message-State: ABy/qLanepouOf3FEyX01HYs0thYs9ZLkvbFRn/fkGIrftXpFX5LJ+6M
-        q3uOUFW68zT224NdyMylIXk=
-X-Google-Smtp-Source: APBJJlE41i05qAHdgQLCqK7cflEjRGKFjOomlZ9w+N0fqyZicN3jiKw6stBSCJdKy8ilqTwlPRgvzQ==
-X-Received: by 2002:a25:a409:0:b0:c81:ea4:c660 with SMTP id f9-20020a25a409000000b00c810ea4c660mr4849770ybi.8.1689014827889;
-        Mon, 10 Jul 2023 11:47:07 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id y18-20020a259292000000b00be45a29d440sm86689ybl.12.2023.07.10.11.47.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jul 2023 11:47:07 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 10 Jul 2023 11:47:05 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.4 0/6] 6.4.3-rc2 review
-Message-ID: <720d1a58-9f0b-4647-8cf7-047f830f68be@roeck-us.net>
-References: <20230709203826.141774942@linuxfoundation.org>
+        with ESMTP id S230310AbjGJTcy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 15:32:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0E201B1;
+        Mon, 10 Jul 2023 12:32:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54799611C0;
+        Mon, 10 Jul 2023 19:32:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C36C433C8;
+        Mon, 10 Jul 2023 19:32:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689017569;
+        bh=VO939+UHAARObDvVdftwDAAwyOD9ujQLDJhFUZ6alak=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=c6iRjdZfW5RwF8Ejv599j9TjVkZEqLIm9tpq6ajwWtLhko9+fB4WUIks0zTOr6t9X
+         7pF59S+7gk3oUTleeOvgVfrxgzGfvApH4ESv0AH1B/aQjfCDR+OcWIBz8OXeG7MHLN
+         g+gX+TpHXhyq/A0KxFBFkB33yBppE3X0PtkFJT3PjtJz7rCKoxsFxrwMvZwURav2+l
+         agraie9m/K/LIt9uLu/L09bqJS7vjNcIJVYicajvDK2VLXnslD82bCGELP6S36KwvE
+         kIFaELsw0CzU+iZ4NJ3V5iRGst4DeOUeoBeMPgIegsHUx8U5KziSEewKvdPMezuOTB
+         LO87S2WT3h20Q==
+Date:   Mon, 10 Jul 2023 14:32:47 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        stable@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>
+Subject: Re: [PATCH v6 1/1] PCI: Avoid putting some root ports into D3 on
+ some Ryzen chips
+Message-ID: <20230710193247.GA218021@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230709203826.141774942@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20230708214457.1229-2-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Jul 09, 2023 at 10:45:16PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.3 release.
-> There are 6 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sat, Jul 08, 2023 at 04:44:57PM -0500, Mario Limonciello wrote:
+> commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> sets the policy that all PCIe ports are allowed to use D3.  When
+> the system is suspended if the port is not power manageable by the
+> platform and won't be used for wakeup via a PME this sets up the
+> policy for these ports to go into D3hot.
 > 
-> Responses should be made by Tue, 11 Jul 2023 20:38:10 +0000.
-> Anything received after that time might be too late.
+> This policy generally makes sense from an OSPM perspective but it leads
+> to problems with wakeup from suspend on laptops with AMD chips:
 > 
+> - On family 19h model 44h (PCI 0x14b9) this manifests as a missing wakeup
+>   interrupt.
+> - On family 19h model 74h (PCI 0x14eb) this manifests as a system hang.
+> 
+> Add a quirk for the PCI device ID used by the problematic root port on
+> both chips to ensure that these root ports are not put into D3hot at
+> suspend.
 
-Build results:
-	total: 157 pass: 157 fail: 0
-Qemu test results:
-	total: 520 pass: 520 fail: 0
+What is problematic about these root ports?  Is this a hardware
+erratum?  Some corner of the ACPI spec that allows undefined behavior?
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Does AMD have any guidance about generic ways to use D3, or does AMD
+expect to add quirks piecemeal as problems are discovered?  How does
+Windows handle all this?
 
-Guenter
+Adding quirks as we discover random devices that don't behave
+correctly for reasons unknown is not very sustainable.
+
+Bjorn
+
+> Cc: stable@vger.kernel.org # 6.1+
+> Reported-by: Iain Lane <iain@orangesquash.org.uk>
+> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/pci/quirks.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index 321156ca273d5..e0346073e5855 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -3867,6 +3867,22 @@ static void quirk_apple_poweroff_thunderbolt(struct pci_dev *dev)
+>  DECLARE_PCI_FIXUP_SUSPEND_LATE(PCI_VENDOR_ID_INTEL,
+>  			       PCI_DEVICE_ID_INTEL_CACTUS_RIDGE_4C,
+>  			       quirk_apple_poweroff_thunderbolt);
+> +
+> +/*
+> + * Putting PCIe root ports on Ryzen SoCs with USB4 controllers into D3hot
+> + * may cause problems when the system attempts wake up from s2idle.
+> + *
+> + * On family 19h model 44h (PCI 0x14b9) this manifests as a missing wakeup
+> + * interrupt.
+> + * On family 19h model 74h (PCI 0x14eb) this manifests as a system hang.
+> + */
+> +static void quirk_ryzen_rp_d3(struct pci_dev *pdev)
+> +{
+> +	if (!acpi_pci_power_manageable(pdev))
+> +		pdev->dev_flags |= PCI_DEV_FLAGS_NO_D3;
+> +}
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x14b9, quirk_ryzen_rp_d3);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x14eb, quirk_ryzen_rp_d3);
+>  #endif
+>  
+>  /*
+> -- 
+> 2.34.1
+> 
