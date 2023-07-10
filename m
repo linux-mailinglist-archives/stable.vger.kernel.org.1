@@ -2,76 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4A5E74DCF0
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 20:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3B2174DCFE
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 20:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232992AbjGJSBl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 14:01:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34150 "EHLO
+        id S233005AbjGJSEK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 14:04:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232979AbjGJSBh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 14:01:37 -0400
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E74C5128
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 11:01:35 -0700 (PDT)
-Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-403b30c7377so4994721cf.1
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 11:01:35 -0700 (PDT)
+        with ESMTP id S230023AbjGJSEJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 14:04:09 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D716C180
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 11:04:06 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id af79cd13be357-7659c6cae2cso337084385a.1
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 11:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1689012095; x=1691604095;
+        d=ziepe.ca; s=google; t=1689012246; x=1691604246;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2mAb04uNq1AMHQNpvPDDERYq9CZGbl5fsMiRCnuOFIc=;
-        b=opD2DNKdWmu40noOfYNxRV4vxH/LowhkkIXvYL/dihAlv4F11HxG7tOWywntDBxZ51
-         2HDCJpZ21XWmTjZNwugv5QczXc5JB0afrOBWEcZ/pAR8EV26t24abxWu9xZ4Jyn6jZ1x
-         67hLvzElobdKg24WLx4oLO+VEWJtIqai4XBUWRcl4pq8J7KDCHrHvpfYDdEsjQ3jyIMN
-         d2uCQzkX4Ymufmya/IcVahFgcem1U7DUU/JwXgzemx1FLt0BY8QMlSJeYYZqZtO6uLB/
-         YdLmBZQqWf2AH/JWPSi8FMPPUJtyZEhNxkjMHxdI9UaXV4v7fj+9N1sheO9LlQb08bvV
-         +/aA==
+        bh=BT8anRcoBomkCL3eLhDuSMG7VrJUf8etAybJpx2cUmQ=;
+        b=P3qkNZJyr3B9iPQ6tzo+Oph7KFNgQR48WP4GUaBG7LO2uQevnfZqahEoF65sPAugnn
+         MNhWEMJae9jMmX7YMUOhnYiRDETA0ZxJsxaJ3VfekaJodPQ0XE7/CMmAauDvYrE75B7W
+         e6Reiouu8KjXUJZm8YbqiHVuOqgKFmIz9g/N3BOq4+MfXFB+VobVN9UMSj1yq/bM+FvH
+         2vmlEzf/kW7afVr8b6ghNyN0dOyVHo4CIbT0AOP08KVkn04tBq6MnrtyGey8uRxlttek
+         mfECNBxhrEl971vEGY6ftU/fY4U3a2UcgpcCRczCcddHUAy7XCE4ihu65DPMtVkNd2IB
+         CQBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689012095; x=1691604095;
+        d=1e100.net; s=20221208; t=1689012246; x=1691604246;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2mAb04uNq1AMHQNpvPDDERYq9CZGbl5fsMiRCnuOFIc=;
-        b=O3AOBt8MZ45ZlbIDajkPEwz/8RDpbGLP2ibLuXJD+WS0fm4ksS6orKP6lU5MdE1n7u
-         5IWg9qlmYkKuLihSPSgiAK50qkuk487JLXFJs2TOcgnIjqWgYR1vQ3RGZkJf0IS9PLPP
-         w7dVoCtr+qtkR8ANG4My+9XvCFUMpUycDoNdEHKiDYFDWX7nmnbbgtnsbDpYBH8/ArRw
-         OGH/36u2YnpcC6OX9K+bCkK5Ojeg3+gLgsAdcoNewJF8bonG3+90cc6kvotROAewxr2m
-         PQZFdJjUNvWiX7mVERzAiInRyTLIEOZ202m4PlR7D2+3oO0/h3ltW77aya8QgLvcr5AK
-         z1Xw==
-X-Gm-Message-State: ABy/qLagPl3gMoIqOzosLF9ZMdlrk8vnNRL3JyqiiaV/ZZFrTYi23wQ/
-        raotSvFKySmwX22Ibkd4D1OmFA==
-X-Google-Smtp-Source: APBJJlFNIJ0STG/YX8tdMDnIoyf46UgtWo9nXXVxz3w2y7YTJeLvp5i08w3/IHh/aX3saMFV/M2A6A==
-X-Received: by 2002:a05:622a:148b:b0:401:ec6d:3870 with SMTP id t11-20020a05622a148b00b00401ec6d3870mr15990391qtx.11.1689012095010;
-        Mon, 10 Jul 2023 11:01:35 -0700 (PDT)
+        bh=BT8anRcoBomkCL3eLhDuSMG7VrJUf8etAybJpx2cUmQ=;
+        b=S5U6y01dC4c9eEx0SOANz44rWHsbTJEwLXtGlqWJh8AgX03QUzpsM64PMQv5kI6lmU
+         g4mK41xBVeL6maQnnCfxU2UwxouIug4pwBo5dF+brfUNiixdZnRM6LvsW3ZGo9j7byN0
+         wT7A9RkqqUXNoTWABVdMfHKlKRkfe6YM2yaWm0e+0AMJgogCdfFYH6knppAIm3FFvfWW
+         YCXFRCfpjoEiP2C1X3+NoycDrO7KmTjcuzxzim1oCVU2JqUi/77Pq4WAJcPK2AfyJlNz
+         YqZO8x4sGtCsQrBDj2mSBXR7J0G2ZFhS7LaiNW9FYi8+QuSBuhhxXkvYZPj8fjRtKp+X
+         d0MA==
+X-Gm-Message-State: ABy/qLZWAJoo+FRcF6UlsyohIYDZ2SQANRDyus9V7ET5mLmkwLyNbMtE
+        LfvZq7nCJSsqoFXKSV190rQI+A==
+X-Google-Smtp-Source: APBJJlEkdizBr7UJSHKmwk1Pw53s9bGXZHen90PgCZoTRA4bGUaUV/2iylwD9yRi/UQu94OEzqbZDw==
+X-Received: by 2002:a0c:e108:0:b0:628:6879:ee48 with SMTP id w8-20020a0ce108000000b006286879ee48mr11363899qvk.50.1689012246035;
+        Mon, 10 Jul 2023 11:04:06 -0700 (PDT)
 Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
-        by smtp.gmail.com with ESMTPSA id f7-20020ac84647000000b003e4d9c91106sm145530qto.57.2023.07.10.11.01.34
+        by smtp.gmail.com with ESMTPSA id r17-20020a0c8b91000000b006360931c12fsm65717qva.96.2023.07.10.11.04.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jul 2023 11:01:34 -0700 (PDT)
+        Mon, 10 Jul 2023 11:04:05 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.95)
         (envelope-from <jgg@ziepe.ca>)
-        id 1qIvCX-0004TE-RP;
-        Mon, 10 Jul 2023 15:01:33 -0300
-Date:   Mon, 10 Jul 2023 15:01:33 -0300
+        id 1qIvEy-0004U3-Vv;
+        Mon, 10 Jul 2023 15:04:04 -0300
+Date:   Mon, 10 Jul 2023 15:04:04 -0300
 From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Christian Hesse <mail@eworm.de>
-Cc:     linux-integrity@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Peter Huewe <peterhuewe@gmx.de>, stable@vger.kernel.org,
-        roubro1991@gmail.com
-Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
- Laptop Intel 12th gen
-Message-ID: <ZKxHfTkgKHYqhBz2@ziepe.ca>
-References: <20230710133836.4367-1-mail@eworm.de>
- <20230710142916.18162-1-mail@eworm.de>
+To:     Haiyang Zhang <haiyangz@microsoft.com>
+Cc:     Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Souradeep Chakrabarti <schakrabarti@microsoft.com>,
+        souradeep chakrabarti <schakrabarti@linux.microsoft.com>,
+        KY Srinivasan <kys@microsoft.com>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        Dexuan Cui <decui@microsoft.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        Long Li <longli@microsoft.com>,
+        Ajay Sharma <sharmaajay@microsoft.com>,
+        "leon@kernel.org" <leon@kernel.org>,
+        "cai.huoqing@linux.dev" <cai.huoqing@linux.dev>,
+        "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+        "vkuznets@redhat.com" <vkuznets@redhat.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [EXTERNAL] Re: [PATCH V4 net] net: mana: Fix MANA VF unload when
+ host is unresponsive
+Message-ID: <ZKxIFK2nQqV9AvIA@ziepe.ca>
+References: <1688374171-10534-1-git-send-email-schakrabarti@linux.microsoft.com>
+ <83ef6401-8736-8416-c898-2fbbb786726e@intel.com>
+ <PUZP153MB07880E6D692FD5D13C508694CC29A@PUZP153MB0788.APCP153.PROD.OUTLOOK.COM>
+ <7e316b51-be46-96db-84cb-addd28d90b0f@intel.com>
+ <PUZP153MB0788A5F92E65AC9A98AF03AFCC2CA@PUZP153MB0788.APCP153.PROD.OUTLOOK.COM>
+ <c7e4a416-9da4-7ff2-2223-589fd66f557d@intel.com>
+ <PUZP153MB0788C7D2376F3271D77CE826CC2CA@PUZP153MB0788.APCP153.PROD.OUTLOOK.COM>
+ <cd36e39a-ebb9-706a-87c3-2f76de82f7ca@intel.com>
+ <PH7PR21MB311670231963DE8661C2F178CA2CA@PH7PR21MB3116.namprd21.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230710142916.18162-1-mail@eworm.de>
+In-Reply-To: <PH7PR21MB311670231963DE8661C2F178CA2CA@PH7PR21MB3116.namprd21.prod.outlook.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,14 +103,25 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 04:28:43PM +0200, Christian Hesse wrote:
-> This device suffer an irq storm, so add it in tpm_tis_dmi_table to
-> force polling.
+On Thu, Jul 06, 2023 at 01:54:35PM +0000, Haiyang Zhang wrote:
 
-I can't help but feel like we are doing something wrong in the Linux
-driver that we keep having IRQ problems.
+> > This waiting loop is needed to let the pending Tx packets be sent. If
+> > they weren't sent in 1 second, it most likely makes no sense already
+> > whether they will be sent at all or not -- the destination host won't
+> > wait for them for so long.
+> > You say that it may happen only in case of HW issue. If so, I assume you
+> > need to fix it some way, e.g. do a HW reset or so? If so, why bother
+> > waiting for Tx completions if Tx is hung? You free all skbs later either
+> > way, so there are no leaks.
+> 
+> At that point, we don't actually care if the pending packets are sent or not. 
+> But if we free the queues too soon, and the HW is slow for unexpected 
+> reasons, a delayed completion notice will DMA into the freed memory and 
+> cause corruption. That's why we have a longer waiting time.
 
-Surely Windows uses the IRQ on these devices? How does it work
-reliably there?
+Aieiiie that is a horrible HW design to not have a strong fence of DMA.
+
+"just wait and hope the HW doesn't UAF the kernel with DMA" is really
+awful.
 
 Jason
