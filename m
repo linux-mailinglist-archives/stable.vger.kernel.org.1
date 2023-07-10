@@ -2,53 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D88FC74DF59
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 22:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0146F74E00B
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 23:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230245AbjGJUdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 16:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45334 "EHLO
+        id S230150AbjGJVMA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 17:12:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230155AbjGJUdY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 16:33:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4341198;
-        Mon, 10 Jul 2023 13:33:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 666C2611DC;
-        Mon, 10 Jul 2023 20:33:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCE8C433C8;
-        Mon, 10 Jul 2023 20:33:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689021201;
-        bh=gGXXrojuoIWNAw/sxFKlgIo61HCLR9eouOaOtd2kFFI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=WxQ3lhE4kDYn/Xwd0L0OWRfY5888FCT8p5MyQuEjhey5NBcmhBXk0BbpwlkXWvJq0
-         8L+0DqBfTkOZagZByJmL/tWmzd3Ub0dzdocQZ/HWHaX6TclyE1JOdFnDMQp106iW09
-         vVIqQ0AmKWBst5DuP7Szk+3om36A+qxe3ew2ol8myPwawn0aF01U2r9ytdzMs2YrsT
-         B5zXq3O0QwKG1fMVJ4NIVXdFwnytxh68kBaA7IZ4JQe06lqTUZJ256kwKa1tMENn2D
-         Z++ivouPlmekYMu9UMF7Puw5kX6N8gLOG11566uoLezcZbFedh2QJGiVP3fsDOboIL
-         VYRUCOHonuV5Q==
-Date:   Mon, 10 Jul 2023 15:33:19 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        stable@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v6 1/1] PCI: Avoid putting some root ports into D3 on
- some Ryzen chips
-Message-ID: <20230710203319.GA220162@bhelgaas>
+        with ESMTP id S229801AbjGJVL6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 17:11:58 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C44E5B7
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 14:11:53 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2b6ff1ada5dso78365531fa.2
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 14:11:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689023512; x=1691615512;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GJenQ6f6ywLinDtg4prv44o2QMZjJQ5Y8NtEkgjX+F4=;
+        b=intrAPE1oGXQ5h0kGbkzl21JZwwqG7+xqKe2/OH+7oxAiorT6bS9ZO7mHkQgsgHsGq
+         L1L3N3e4SjqIDcxezdURCPzQu3fk+jZcB+yHa3ys16+shORr8u2MGgLc2NHEVTS8YDnd
+         ObqIIR++a2++vSYd+IuTPgrsfQdEb9gkNdUtAGqwRrZi+PlCR+6SuT1rfgt/B/BZZ9cv
+         j8frFuTe9QdAiiKqmWJbcScCl1I0sJv/H9ocC25IGHU+60n5foxintSmDz8f1Ohok8wk
+         GJU9SicCjy5ye1zt3W9ylisNst67BTMzgtxkh34oSqMvwKILbiCOZAmZEhSah9vELGho
+         3Fwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689023512; x=1691615512;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GJenQ6f6ywLinDtg4prv44o2QMZjJQ5Y8NtEkgjX+F4=;
+        b=FXwxdAtAfPnSdSVcdN6DulDjS+ubfVVxB60ybTWQTbXNsw1kiXHW80f+eUK0sAWq+N
+         ecC6rCXk/8GfjE0B14h57eAdwkflbbp9G66NSHR8pPAUQxKC5tzaBdwQb8edmxhnV9or
+         j/92YWAxZItmFPB/ewa2Jo+xnaIE/mbuk1ZxlPnon5PIom1n0WmgrJFXQUFxiAMjdmpt
+         NnX1KSBlNvPZQtwUxu8KlF/gm4VpxH9zCmMStNIY31jmq3U9ctxeWNzFcG1S8MNGqk6r
+         YX+F1yGOfQP+xS9lP5aHgQNDQOZTZr4hMiIOGosHFjybmDAbuHexdtAwC6lxwhqciWpc
+         YPeQ==
+X-Gm-Message-State: ABy/qLbQZeIaigpAY07QXpYhAD7y80iENrapqLhEheBH66Rnrm60yojs
+        Acdiodkc+b21OKFKh6kFkKpj7A==
+X-Google-Smtp-Source: APBJJlECknYOx1HT0pSCZAbvCXQdaniHuFh6q/nvRIAezFbLQ7Moab69lE7D8j1itiQh6IaRFQ/iFg==
+X-Received: by 2002:a2e:800b:0:b0:2b6:a344:29cf with SMTP id j11-20020a2e800b000000b002b6a34429cfmr9781907ljg.17.1689023512008;
+        Mon, 10 Jul 2023 14:11:52 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:a0db:1f00::8a5? (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
+        by smtp.gmail.com with ESMTPSA id r6-20020a2e9946000000b002b6d781b60esm138615ljj.82.2023.07.10.14.11.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Jul 2023 14:11:51 -0700 (PDT)
+Message-ID: <325dad0e-38ff-9f60-efc9-0fd711d63267@linaro.org>
+Date:   Tue, 11 Jul 2023 00:11:50 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2f052692-9406-3812-0c53-7edf8360115d@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] drm/client: Send hotplug event after registering a client
+Content-Language: en-GB
+To:     Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
+        noralf@tronnes.org
+Cc:     dri-devel@lists.freedesktop.org,
+        Moritz Duge <MoritzDuge@kolahilft.de>,
+        Torsten Krah <krah.tm@gmail.com>,
+        Paul Schyska <pschyska@gmail.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        David Airlie <airlied@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Inki Dae <inki.dae@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        linux-tegra@vger.kernel.org, stable@vger.kernel.org
+References: <20230710091029.27503-1-tzimmermann@suse.de>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20230710091029.27503-1-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,140 +99,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[+cc Mika, author of 9d26d3a8f1b0]
-
-On Mon, Jul 10, 2023 at 02:44:23PM -0500, Limonciello, Mario wrote:
-> On 7/10/2023 14:32, Bjorn Helgaas wrote:
-> > On Sat, Jul 08, 2023 at 04:44:57PM -0500, Mario Limonciello wrote:
-> > > commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> > > sets the policy that all PCIe ports are allowed to use D3.  When
-> > > the system is suspended if the port is not power manageable by the
-> > > platform and won't be used for wakeup via a PME this sets up the
-> > > policy for these ports to go into D3hot.
-> > > 
-> > > This policy generally makes sense from an OSPM perspective but it leads
-> > > to problems with wakeup from suspend on laptops with AMD chips:
-> > > 
-> > > - On family 19h model 44h (PCI 0x14b9) this manifests as a missing wakeup
-> > >    interrupt.
-> > > - On family 19h model 74h (PCI 0x14eb) this manifests as a system hang.
-> > > 
-> > > Add a quirk for the PCI device ID used by the problematic root port on
-> > > both chips to ensure that these root ports are not put into D3hot at
-> > > suspend.
-> > 
-> > What is problematic about these root ports?  Is this a hardware
-> > erratum?
+On 10/07/2023 12:10, Thomas Zimmermann wrote:
+> Generate a hotplug event after registering a client to allow the
+> client to configure its display. Remove the hotplug calls from the
+> existing clients for fbdev emulation. This change fixes a concurrency
+> bug between registering a client and receiving events from the DRM
+> core. The bug is present in the fbdev emulation of all drivers.
 > 
-> I mentioned some of this in earlier versions; but the problem is deeper
-> in the platform firmware and only happens when the root ports are in D3hot
-> across an s2idle cycle.
+> The fbdev emulation currently generates a hotplug event before
+> registering the client to the device. For each new output, the DRM
+> core sends an additional hotplug event to each registered client.
 > 
-> When looked at independently they can be moved in and out of D3hot no
-> problem.
+> If the DRM core detects first output between sending the artificial
+> hotplug and registering the device, the output's hotplug event gets
+> lost. If this is the first output, the fbdev console display remains
+> dark. This has been observed with amdgpu and fbdev-generic.
 > 
-> From the perspective of hardware designers they say this is a software bug
-> that Linux puts PCI RP into D3hot over Modern Standby when they don't
-> specify for this to be done.  I don't expect any erratum for it.
-
-It sounds like there's someplace the hardware designers specify how
-this should work?  Where is that?  "Modern Standby" doesn't mean
-anything to me, but maybe there's some spec that covers it?
-
-> > Some corner of the ACPI spec that allows undefined behavior?
+> Fix this by adding hotplug generation directly to the client's
+> register helper drm_client_register(). Registering the client and
+> receiving events are serialized by struct drm_device.clientlist_mutex.
+> So an output is either configured by the initial hotplug event, or
+> the client has already been registered.
 > 
-> These root ports are not reported as power manageable by ACPI.
+> The bug was originally added in commit 6e3f17ee73f7 ("drm/fb-helper:
+> generic: Call drm_client_add() after setup is done"), in which adding
+> a client and receiving a hotplug event switched order. It was hidden,
+> as most hardware and drivers have at least on static output configured.
+> Other drivers didn't use the internal DRM client or still had struct
+> drm_mode_config_funcs.output_poll_changed set. That callback handled
+> hotplug events as well. After not setting the callback in amdgpu in
+> commit 0e3172bac3f4 ("drm/amdgpu: Don't set struct
+> drm_driver.output_poll_changed"), amdgpu did not show a framebuffer
+> console if output events got lost. The bug got copy-pasted from
+> fbdev-generic into the other fbdev emulation.
 > 
-> As I mentioned in the cover letter how the OSPM handles this case is outside
-> of any spec AFAICT.
+> Reported-by: Moritz Duge <MoritzDuge@kolahilft.de>
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2649
+> Fixes: 6e3f17ee73f7 ("drm/fb-helper: generic: Call drm_client_add() after setup is done")
+> Fixes: 8ab59da26bc0 ("drm/fb-helper: Move generic fbdev emulation into separate source file")
+> Fixes: b79fe9abd58b ("drm/fbdev-dma: Implement fbdev emulation for GEM DMA helpers")
+> Fixes: 63c381552f69 ("drm/armada: Implement fbdev emulation as in-kernel client")
+> Fixes: 49953b70e7d3 ("drm/exynos: Implement fbdev emulation as in-kernel client")
+> Fixes: 8f1aaccb04b7 ("drm/gma500: Implement client-based fbdev emulation")
+> Fixes: 940b869c2f2f ("drm/msm: Implement fbdev emulation as in-kernel client")
+> Fixes: 9e69bcd88e45 ("drm/omapdrm: Implement fbdev emulation as in-kernel client")
+> Fixes: e317a69fe891 ("drm/radeon: Implement client-based fbdev emulation")
+> Fixes: 71ec16f45ef8 ("drm/tegra: Implement fbdev emulation as in-kernel client")
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Tested-by: Moritz Duge <MoritzDuge@kolahilft.de>
+> Tested-by: Torsten Krah <krah.tm@gmail.com>
+> Tested-by: Paul Schyska <pschyska@gmail.com>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Noralf Trønnes <noralf@tronnes.org>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Inki Dae <inki.dae@samsung.com>
+> Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
+> Cc: Kyungmin Park <kyungmin.park@samsung.com>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+> Cc: Rob Clark <robdclark@gmail.com>
+> Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: "Christian König" <christian.koenig@amd.com>
+> Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Mikko Perttunen <mperttunen@nvidia.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-samsung-soc@vger.kernel.org
+> Cc: linux-arm-msm@vger.kernel.org
+> Cc: freedreno@lists.freedesktop.org
+> Cc: amd-gfx@lists.freedesktop.org
+> Cc: linux-tegra@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.2+
+> ---
+>   drivers/gpu/drm/armada/armada_fbdev.c     |  4 ----
+>   drivers/gpu/drm/drm_client.c              | 21 +++++++++++++++++++++
+>   drivers/gpu/drm/drm_fbdev_dma.c           |  4 ----
+>   drivers/gpu/drm/drm_fbdev_generic.c       |  4 ----
+>   drivers/gpu/drm/exynos/exynos_drm_fbdev.c |  4 ----
+>   drivers/gpu/drm/gma500/fbdev.c            |  4 ----
+>   drivers/gpu/drm/msm/msm_fbdev.c           |  4 ----
 
-If it's truly outside the spec, then I don't think Linux should use D3
-until we have some standardized way to tell whether it's safe.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # msm
 
-> > Does AMD have any guidance about generic ways to use D3, or does AMD
-> > expect to add quirks piecemeal as problems are discovered?  How does
-> > Windows handle all this?
-> 
-> Windows doesn't put root ports into D3hot over suspend unless they are power
-> managed by ACPI (as described in section 7.3 of the ACPI spec).
-> 
-> https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/07_Power_and_Performance_Mgmt/device-power-management-objects.html
-> 
-> So on Windows these ports are all in D0 and none of the issues happen.
+>   drivers/gpu/drm/omapdrm/omap_fbdev.c      |  4 ----
+>   drivers/gpu/drm/radeon/radeon_fbdev.c     |  4 ----
+>   drivers/gpu/drm/tegra/fbdev.c             |  4 ----
+>   10 files changed, 21 insertions(+), 36 deletions(-)
 
-Maybe this is the clue we need.  My eyes glaze over when reading that
-section, but if we can come up with a commit log that starts with a
-sentence from that section and connects the dots all the way to the
-platform_pci_power_manageable() implementation, that might be a good
-argument that 9d26d3a8f1b0 was a little too aggressive.
+BTW: As you have been clearing this area. I see that significant amount 
+of DRM drivers use exactly the same code for msm_fbdev_client_funcs and 
+for the significant part of foo_fbdev_setup(). Do you have any plans for 
+moving that into a library / generic code? If not, I can take a look at 
+crafting the patch.
 
-> Linux if PCI devices aren't power managed by ACPI will either follow deepest
-> state it can wake from PME or fall back to D3hot.
-> 
-> > Adding quirks as we discover random devices that don't behave
-> > correctly for reasons unknown is not very sustainable.
-> 
-> I don't disagree but in v5 I tried to align this to the Windows behavior and
-> it wasn't accepted.
+-- 
+With best wishes
+Dmitry
 
-I like the fact that v5 ([1] for anybody following along at home) is
-very generic:
-
-  @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
-  ...
-  +       if (pci_pcie_type(bridge) == PCI_EXP_TYPE_ROOT_PORT &&
-  +           !platform_pci_power_manageable(bridge))
-  +               return false;
-
-My objection was that we didn't have a clear connection to any specs,
-so even though the code is perfectly generic, the commit log mentioned
-specific cases (USB keyboard/mouse on xHCI device connected to USB-C
-on AMD USB4 router).
-
-But maybe we *could* make a convincing generic commit log.  I guess
-we'd also have to explain the PCI_EXP_TYPE_ROOT_PORT part of the
-patch.
-
-Bjorn
-
-[1] https://lore.kernel.org/r/20230530163947.230418-2-mario.limonciello@amd.com
-
-> > > Cc: stable@vger.kernel.org # 6.1+
-> > > Reported-by: Iain Lane <iain@orangesquash.org.uk>
-> > > Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
-> > > Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > ---
-> > >   drivers/pci/quirks.c | 16 ++++++++++++++++
-> > >   1 file changed, 16 insertions(+)
-> > > 
-> > > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> > > index 321156ca273d5..e0346073e5855 100644
-> > > --- a/drivers/pci/quirks.c
-> > > +++ b/drivers/pci/quirks.c
-> > > @@ -3867,6 +3867,22 @@ static void quirk_apple_poweroff_thunderbolt(struct pci_dev *dev)
-> > >   DECLARE_PCI_FIXUP_SUSPEND_LATE(PCI_VENDOR_ID_INTEL,
-> > >   			       PCI_DEVICE_ID_INTEL_CACTUS_RIDGE_4C,
-> > >   			       quirk_apple_poweroff_thunderbolt);
-> > > +
-> > > +/*
-> > > + * Putting PCIe root ports on Ryzen SoCs with USB4 controllers into D3hot
-> > > + * may cause problems when the system attempts wake up from s2idle.
-> > > + *
-> > > + * On family 19h model 44h (PCI 0x14b9) this manifests as a missing wakeup
-> > > + * interrupt.
-> > > + * On family 19h model 74h (PCI 0x14eb) this manifests as a system hang.
-> > > + */
-> > > +static void quirk_ryzen_rp_d3(struct pci_dev *pdev)
-> > > +{
-> > > +	if (!acpi_pci_power_manageable(pdev))
-> > > +		pdev->dev_flags |= PCI_DEV_FLAGS_NO_D3;
-> > > +}
-> > > +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x14b9, quirk_ryzen_rp_d3);
-> > > +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x14eb, quirk_ryzen_rp_d3);
-> > >   #endif
-> > >   /*
-> > > -- 
-> > > 2.34.1
-> > > 
-> 
