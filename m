@@ -2,101 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA4C674D90D
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 16:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBA2E74DB12
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 18:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233158AbjGJObX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 10:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47356 "EHLO
+        id S229786AbjGJQ31 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 12:29:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231578AbjGJObW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 10:31:22 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D856CF2;
-        Mon, 10 Jul 2023 07:31:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1688999480; x=1720535480;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LOdSUAq0OWnykpn7i+mc3p2uFC+TwqqqMHbwvvn1c6Y=;
-  b=I5GqNoMgGzPoldBtHdb9vAyZCEd1ywr0Vam5zupaZ4yh/zQgLSBztl2U
-   x/tDaX/9BLrkTRZaQN0/MPouRXjT6LPsZ3QFIY6C7JDSZ0+e7xmmRlNCI
-   2eyddtCT2zmcKRJIFA6tDv077WtXU0VFcmdzHKmph1t9pgADbpTSN16+o
-   kSoDx2LGyZ2e/ip5o0srm8fmM76gqfTb8n3bFFdZ6jDOTO4DFrGA/gol/
-   hZhkXVInFUT+0UnI2SB9ACmTwLsiadzFB/yF/B9BczqgI5XwvC4Rnoyd2
-   F705Kd6eYqhA7R4Fa/AjsMKiiR6+togQuYcshxxPugY/scKwL5B+4DodL
-   Q==;
-X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="asc'?scan'208";a="223957711"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 10 Jul 2023 07:31:18 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 10 Jul 2023 07:31:18 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Mon, 10 Jul 2023 07:31:15 -0700
-Date:   Mon, 10 Jul 2023 15:30:45 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
-        <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>
-Subject: Re: [PATCH 6.3 000/426] 6.3.13-rc3 review
-Message-ID: <20230710-parakeet-conjure-fd252215dc84@wendy>
-References: <20230710054619.475084489@linuxfoundation.org>
+        with ESMTP id S229663AbjGJQ30 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 12:29:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F192C11A;
+        Mon, 10 Jul 2023 09:29:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BAB4610FB;
+        Mon, 10 Jul 2023 16:29:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48292C433C8;
+        Mon, 10 Jul 2023 16:29:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689006565;
+        bh=gGS6Bp0zO0jZ5gm24xn8vWGiXBkCmkpxDeqSun0NkJU=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=EfJEVfrHcX8E2SmXehQdcrKOzStoMKH9MWG/Yx/YmGVvKPXRaq6+6oPW4DHY6Evjw
+         1ww3H9BhgXgCnzvcQSLVwf0Jb6X5OXi5Dxlwsyuz3Z7oQivbFu7QvDjN78hu2H+Ohc
+         R2IfADOWQdyLzIid6elw9nGK6BjhNtNb4Zps6GZSzdT4QovZ5kRnYOlIGA2FqW6A9Q
+         R/MKYSpg47GTdASK+Grw4IHQDhRXf1dgOZVYklTcB2gpGR5szH6l5xxIMOfz8wl/xT
+         4sHwypDZZRFc1hITW5NvMkh94OCYa8JcQp1U/SCEQ8OurMsnxv5zw7H+PSPTRnPImc
+         EC1Sl2ohKdl+A==
+Message-ID: <48da39d3c5cc4be56965ff7515844a761217ffe7.camel@kernel.org>
+Subject: Re: [PATCH 1/2] tpm/tpm_tis: Disable interrupts for Framework
+ Laptop Intel 12th gen
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Christian Hesse <mail@eworm.de>, linux-integrity@vger.kernel.org
+Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
+        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Peter Huewe <peterhuewe@gmx.de>, stable@vger.kernel.org,
+        roubro1991@gmail.com
+Date:   Mon, 10 Jul 2023 19:29:21 +0300
+In-Reply-To: <20230710133836.4367-1-mail@eworm.de>
+References: <c0ee4b7c-9d63-0bb3-c677-2be045deda43@leemhuis.info>
+         <20230710133836.4367-1-mail@eworm.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="aHlqKoYVsI68erxS"
-Content-Disposition: inline
-In-Reply-To: <20230710054619.475084489@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---aHlqKoYVsI68erxS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Mon, 2023-07-10 at 15:38 +0200, Christian Hesse wrote:
+> This device suffer an irq storm, so add it in tpm_tis_dmi_table to
+> force polling.
+>=20
+> https://bugs.archlinux.org/user/38129
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D217631
+>=20
+> Fixes: e644b2f498d297a928efcb7ff6f900c27f8b788e
+> Cc: stable@vger.kernel.org
+> Reported-by:  <roubro1991@gmail.com>
+> Signed-off-by: Christian Hesse <mail@eworm.de>
+> ---
+>  drivers/char/tpm/tpm_tis.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
+> index 7db3593941ea..2979f8b9aaa0 100644
+> --- a/drivers/char/tpm/tpm_tis.c
+> +++ b/drivers/char/tpm/tpm_tis.c
+> @@ -114,6 +114,14 @@ static int tpm_tis_disable_irq(const struct dmi_syst=
+em_id *d)
+>  }
+> =20
+>  static const struct dmi_system_id tpm_tis_dmi_table[] =3D {
+> +	{
+> +		.callback =3D tpm_tis_disable_irq,
+> +		.ident =3D "Framework Laptop Intel 12th gen",
+> +		.matches =3D {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
+> +			DMI_MATCH(DMI_PRODUCT_VERSION, "A4"),
+> +		},
+> +	},
+>  	{
+>  		.callback =3D tpm_tis_disable_irq,
+>  		.ident =3D "ThinkPad T490s",
 
-On Mon, Jul 10, 2023 at 07:47:20AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.13 release.
-> There are 426 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi, no other issues except fixes tag should be in both:
 
-CI had a wee hiccup & skipped one boot-test, but everything else looked
-normal...
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Fixes: e644b2f498d2 ("tpm, tpm_tis: Enable interrupt test")
 
-Cheers,
-Conor.
+I.e.
 
---aHlqKoYVsI68erxS
-Content-Type: application/pgp-signature; name="signature.asc"
+# $1 =3D commit ID
+function git-fixes {
+  git --no-pager log --format=3D'Fixes: %h ("%s")' --abbrev=3D12 -1 $1;
+}
 
------BEGIN PGP SIGNATURE-----
+I'll update them, thank you.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZKwWFAAKCRB4tDGHoIJi
-0skoAQDE8fqdEO0gxuNGAUHqk2owntemGPzxXEZxXBCYXZTeugD/Quwoj8kDa8Z3
-+vnNj5LEO0o5wcqIk4aCGQsqHoH4Kw0=
-=JgJc
------END PGP SIGNATURE-----
-
---aHlqKoYVsI68erxS--
+BR, Jarkko
