@@ -2,111 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBA2E74DB12
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 18:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D8F74DB2B
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 18:36:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229786AbjGJQ31 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 12:29:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39832 "EHLO
+        id S229801AbjGJQgM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 12:36:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229663AbjGJQ30 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 12:29:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F192C11A;
-        Mon, 10 Jul 2023 09:29:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        with ESMTP id S229538AbjGJQgM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 12:36:12 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 736C8120;
+        Mon, 10 Jul 2023 09:36:10 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id 21C0D223A4;
+        Mon, 10 Jul 2023 16:36:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1689006969; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2sfvjB1A0AwpI2PjUSmQqejHy2/OmMjxbXGDG72naLk=;
+        b=GEK+HflRi+8JRKXTGL4bcon//yAy5Xaor34VtkrcUwUihWquru0JnCG4Vu0xxgqVaq2fg9
+        WxPHdp43SP/IJbJVub65YX01wcWv5lVQNq2xP0ijAsPiFsbJsl0PT6TJQrnQXwc6FJ8GJ1
+        dQaY8sNALWhmC5dz/HI2NDZ0kQJCpCM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1689006969;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2sfvjB1A0AwpI2PjUSmQqejHy2/OmMjxbXGDG72naLk=;
+        b=9VrmsvD/Z4OdIWNqzeHAomfyR/ln8VG8+XfSo0NbCYtcifnCwQLKnBGFaAV4Z9yp4gDW75
+        WIc6murT70bi0tAA==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BAB4610FB;
-        Mon, 10 Jul 2023 16:29:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48292C433C8;
-        Mon, 10 Jul 2023 16:29:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689006565;
-        bh=gGS6Bp0zO0jZ5gm24xn8vWGiXBkCmkpxDeqSun0NkJU=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=EfJEVfrHcX8E2SmXehQdcrKOzStoMKH9MWG/Yx/YmGVvKPXRaq6+6oPW4DHY6Evjw
-         1ww3H9BhgXgCnzvcQSLVwf0Jb6X5OXi5Dxlwsyuz3Z7oQivbFu7QvDjN78hu2H+Ohc
-         R2IfADOWQdyLzIid6elw9nGK6BjhNtNb4Zps6GZSzdT4QovZ5kRnYOlIGA2FqW6A9Q
-         R/MKYSpg47GTdASK+Grw4IHQDhRXf1dgOZVYklTcB2gpGR5szH6l5xxIMOfz8wl/xT
-         4sHwypDZZRFc1hITW5NvMkh94OCYa8JcQp1U/SCEQ8OurMsnxv5zw7H+PSPTRnPImc
-         EC1Sl2ohKdl+A==
-Message-ID: <48da39d3c5cc4be56965ff7515844a761217ffe7.camel@kernel.org>
-Subject: Re: [PATCH 1/2] tpm/tpm_tis: Disable interrupts for Framework
- Laptop Intel 12th gen
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Christian Hesse <mail@eworm.de>, linux-integrity@vger.kernel.org
-Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Peter Huewe <peterhuewe@gmx.de>, stable@vger.kernel.org,
-        roubro1991@gmail.com
-Date:   Mon, 10 Jul 2023 19:29:21 +0300
-In-Reply-To: <20230710133836.4367-1-mail@eworm.de>
-References: <c0ee4b7c-9d63-0bb3-c677-2be045deda43@leemhuis.info>
-         <20230710133836.4367-1-mail@eworm.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+        by relay2.suse.de (Postfix) with ESMTPS id EB2542C142;
+        Mon, 10 Jul 2023 16:36:08 +0000 (UTC)
+Date:   Mon, 10 Jul 2023 18:36:07 +0200
+From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To:     Cyril Brulebois <cyril@debamax.com>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] fbdev/offb: Update expected device name
+Message-ID: <20230710163607.GZ9196@kitsune.suse.cz>
+References: <20230412095509.2196162-1-cyril@debamax.com>
+ <20230412095509.2196162-2-cyril@debamax.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230412095509.2196162-2-cyril@debamax.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 2023-07-10 at 15:38 +0200, Christian Hesse wrote:
-> This device suffer an irq storm, so add it in tpm_tis_dmi_table to
-> force polling.
->=20
-> https://bugs.archlinux.org/user/38129
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D217631
->=20
-> Fixes: e644b2f498d297a928efcb7ff6f900c27f8b788e
+On Wed, Apr 12, 2023 at 11:55:08AM +0200, Cyril Brulebois wrote:
+> Since commit 241d2fb56a18 ("of: Make OF framebuffer device names unique"),
+> as spotted by Frédéric Bonnard, the historical "of-display" device is
+> gone: the updated logic creates "of-display.0" instead, then as many
+> "of-display.N" as required.
+> 
+> This means that offb no longer finds the expected device, which prevents
+> the Debian Installer from setting up its interface, at least on ppc64el.
+> 
+> It might be better to iterate on all possible nodes, but updating the
+> hardcoded device from "of-display" to "of-display.0" is confirmed to fix
+> the Debian Installer at the very least.
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217328
+> Link: https://bugs.debian.org/1033058
+> Fixes: 241d2fb56a18 ("of: Make OF framebuffer device names unique")
 > Cc: stable@vger.kernel.org
-> Reported-by:  <roubro1991@gmail.com>
-> Signed-off-by: Christian Hesse <mail@eworm.de>
+> Signed-off-by: Cyril Brulebois <cyril@debamax.com>
+Reviewed-by: Michal Suchánek <msuchanek@suse.de>
+
+Thanks
+
+Michal
 > ---
->  drivers/char/tpm/tpm_tis.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->=20
-> diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
-> index 7db3593941ea..2979f8b9aaa0 100644
-> --- a/drivers/char/tpm/tpm_tis.c
-> +++ b/drivers/char/tpm/tpm_tis.c
-> @@ -114,6 +114,14 @@ static int tpm_tis_disable_irq(const struct dmi_syst=
-em_id *d)
->  }
-> =20
->  static const struct dmi_system_id tpm_tis_dmi_table[] =3D {
-> +	{
-> +		.callback =3D tpm_tis_disable_irq,
-> +		.ident =3D "Framework Laptop Intel 12th gen",
-> +		.matches =3D {
-> +			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
-> +			DMI_MATCH(DMI_PRODUCT_VERSION, "A4"),
-> +		},
-> +	},
->  	{
->  		.callback =3D tpm_tis_disable_irq,
->  		.ident =3D "ThinkPad T490s",
-
-Hi, no other issues except fixes tag should be in both:
-
-Fixes: e644b2f498d2 ("tpm, tpm_tis: Enable interrupt test")
-
-I.e.
-
-# $1 =3D commit ID
-function git-fixes {
-  git --no-pager log --format=3D'Fixes: %h ("%s")' --abbrev=3D12 -1 $1;
-}
-
-I'll update them, thank you.
-
-BR, Jarkko
+>  drivers/video/fbdev/offb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
+> index b97d251d894b..6264c7184457 100644
+> --- a/drivers/video/fbdev/offb.c
+> +++ b/drivers/video/fbdev/offb.c
+> @@ -698,7 +698,7 @@ MODULE_DEVICE_TABLE(of, offb_of_match_display);
+>  
+>  static struct platform_driver offb_driver_display = {
+>  	.driver = {
+> -		.name = "of-display",
+> +		.name = "of-display.0",
+>  		.of_match_table = offb_of_match_display,
+>  	},
+>  	.probe = offb_probe_display,
+> -- 
+> 2.30.2
+> 
