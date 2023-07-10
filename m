@@ -2,109 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F05F74DB35
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 18:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5064174DBA3
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 18:53:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbjGJQgq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 12:36:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42488 "EHLO
+        id S231638AbjGJQxd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 12:53:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230078AbjGJQgp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 12:36:45 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59333127;
-        Mon, 10 Jul 2023 09:36:44 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 1A72E1FF06;
-        Mon, 10 Jul 2023 16:36:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1689007003; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=50GMs5nmGpITPWTG7u5Zcxqbmkf0dcUoVQiJpGtLvBg=;
-        b=MAkcYfuu2e/AwBYCJ8iEsRGbL7yA8cBwUv3bbYwWUSPqAWWE3+OD7CUwXSDvzwimmPxDm1
-        snlvw8+Zbn4vbzubmlOotkSLqVnSnZZloPrWWPbnQLgC3FYXKyueUbjMkHNPEQd9xpbZnd
-        rimCb3GOjrBYy3y5WVygqzW/TA9ld7I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1689007003;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=50GMs5nmGpITPWTG7u5Zcxqbmkf0dcUoVQiJpGtLvBg=;
-        b=h+IckA4+b99FPAeRV10LGOxH9p9DpOwRbzQ2LuIS61mLAFsz2z61ZESsEGm+Evi1q3fXu3
-        3LuUg1XOFV1btxDg==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id E67762C142;
-        Mon, 10 Jul 2023 16:36:42 +0000 (UTC)
-Date:   Mon, 10 Jul 2023 18:36:41 +0200
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     Cyril Brulebois <cyril@debamax.com>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] drm/ofdrm: Update expected device name
-Message-ID: <20230710163641.GA9196@kitsune.suse.cz>
-References: <20230412095509.2196162-1-cyril@debamax.com>
- <20230412095509.2196162-3-cyril@debamax.com>
+        with ESMTP id S231656AbjGJQxU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 12:53:20 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72EF1725;
+        Mon, 10 Jul 2023 09:52:56 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qIu83-0003mt-VT; Mon, 10 Jul 2023 18:52:52 +0200
+Message-ID: <9dfca68e-525e-9df5-a7d0-2e2ce6de9bfc@leemhuis.info>
+Date:   Mon, 10 Jul 2023 18:52:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
+ Laptop Intel 12th gen
+Content-Language: en-US, de-DE
+To:     Christian Hesse <mail@eworm.de>, linux-integrity@vger.kernel.org
+Cc:     Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Peter Huewe <peterhuewe@gmx.de>, stable@vger.kernel.org,
+        roubro1991@gmail.com
+References: <20230710133836.4367-1-mail@eworm.de>
+ <20230710142916.18162-1-mail@eworm.de>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <20230710142916.18162-1-mail@eworm.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230412095509.2196162-3-cyril@debamax.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1689007976;15e76102;
+X-HE-SMSGID: 1qIu83-0003mt-VT
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_PDS_OTHER_BAD_TLD,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Apr 12, 2023 at 11:55:09AM +0200, Cyril Brulebois wrote:
-> Since commit 241d2fb56a18 ("of: Make OF framebuffer device names unique"),
-> as spotted by Frédéric Bonnard, the historical "of-display" device is
-> gone: the updated logic creates "of-display.0" instead, then as many
-> "of-display.N" as required.
+On 10.07.23 16:28, Christian Hesse wrote:
+> This device suffer an irq storm, so add it in tpm_tis_dmi_table to
+> force polling.
 > 
-> This means that offb no longer finds the expected device, which prevents
-> the Debian Installer from setting up its interface, at least on ppc64el.
-> 
-> Given the code similarity it is likely to affect ofdrm in the same way.
-> 
-> It might be better to iterate on all possible nodes, but updating the
-> hardcoded device from "of-display" to "of-display.0" is likely to help
-> as a first step.
-> 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217328
-> Link: https://bugs.debian.org/1033058
-> Fixes: 241d2fb56a18 ("of: Make OF framebuffer device names unique")
-> Cc: stable@vger.kernel.org # v6.2+
-> Signed-off-by: Cyril Brulebois <cyril@debamax.com>
-Reviewed-by: Michal Suchánek <msuchanek@suse.de>
+> Link: https://community.frame.work/t/boot-and-shutdown-hangs-with-arch-linux-kernel-6-4-1-mainline-and-arch/33118
+> Fixes: e644b2f498d2 ("tpm, tpm_tis: Enable interrupt test")
+> Cc: stable@vger.kernel.org
+> Reported-by: <roubro1991@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217631
+
+Thx again for working on this. FWIW, a quote from a recent comment there
+FYI:
+
+```
+ mapleleaf 2023-07-10 16:37:03 UTC
+
+I have the same problem and I own a Framework 12th-gen, but for whatever
+reason my DMI_PRODUCT_VERSION is A8 instead of A6...
+
+$ sudo dmidecode -s baseboard-version
+A8
+
+[tag] [reply] [âˆ’]
+Private
+Comment 13 mapleleaf 2023-07-10 16:41:29 UTC
+
+And also:
+
+$ sudo dmidecode -s system-version
+A8
+
+```
+
 > ---
->  drivers/gpu/drm/tiny/ofdrm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/char/tpm/tpm_tis.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/drivers/gpu/drm/tiny/ofdrm.c b/drivers/gpu/drm/tiny/ofdrm.c
-> index 6e349ca42485..92df021d71df 100644
-> --- a/drivers/gpu/drm/tiny/ofdrm.c
-> +++ b/drivers/gpu/drm/tiny/ofdrm.c
-> @@ -1390,7 +1390,7 @@ MODULE_DEVICE_TABLE(of, ofdrm_of_match_display);
+> diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
+> index 7db3593941ea..2979f8b9aaa0 100644
+> --- a/drivers/char/tpm/tpm_tis.c
+> +++ b/drivers/char/tpm/tpm_tis.c
+> @@ -114,6 +114,14 @@ static int tpm_tis_disable_irq(const struct dmi_system_id *d)
+>  }
 >  
->  static struct platform_driver ofdrm_platform_driver = {
->  	.driver = {
-> -		.name = "of-display",
-> +		.name = "of-display.0",
->  		.of_match_table = ofdrm_of_match_display,
->  	},
->  	.probe = ofdrm_probe,
-> -- 
-> 2.30.2
-> 
+>  static const struct dmi_system_id tpm_tis_dmi_table[] = {
+> +	{
+> +		.callback = tpm_tis_disable_irq,
+> +		.ident = "Framework Laptop Intel 12th gen",
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
+> +			DMI_MATCH(DMI_PRODUCT_VERSION, "A4"),
+> +		},
+> +	},
+>  	{
+>  		.callback = tpm_tis_disable_irq,
+>  		.ident = "ThinkPad T490s",
