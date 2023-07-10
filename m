@@ -2,79 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6692E74D8A0
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 16:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF64174D8B2
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 16:14:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230496AbjGJOK0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 10:10:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35436 "EHLO
+        id S230263AbjGJOOF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 10:14:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229843AbjGJOK0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 10:10:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B70E4DF;
-        Mon, 10 Jul 2023 07:10:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A49461010;
-        Mon, 10 Jul 2023 14:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D60AC433C7;
-        Mon, 10 Jul 2023 14:10:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688998223;
-        bh=CRGVL8YXgdtdfFq1hb0TSQUyjQAFF43yJebdRQR8W6c=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=N8vzNM03DlcvkiKiyHqsfg4J14YwDx18DOdZ7hhY0VfumaAOKdNSQZSffoPA+ps7v
-         qvFyj3pZtodHrLdndW24rSCTL+oW2UOCqk4Fle4b5tEQB22VHlWFXPfPj0KQl572iR
-         QrU1x7nkxFRbmP38/Wzp0vaQFuWLzOqm2fVFRxxE=
-Date:   Mon, 10 Jul 2023 16:10:20 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Christian Hesse <mail@eworm.de>
-Cc:     linux-integrity@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Peter Huewe <peterhuewe@gmx.de>, stable@vger.kernel.org,
-        roubro1991@gmail.com
-Subject: Re: [PATCH 1/2] tpm/tpm_tis: Disable interrupts for Framework Laptop
- Intel 12th gen
-Message-ID: <2023071032-eliminate-outsmart-c32d@gregkh>
-References: <c0ee4b7c-9d63-0bb3-c677-2be045deda43@leemhuis.info>
- <20230710133836.4367-1-mail@eworm.de>
+        with ESMTP id S231782AbjGJOOF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 10:14:05 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47279D2
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 07:14:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688998444; x=1720534444;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=r+Y4MnkAaEiMin2v4tuR3LJZq/mmbkPQN38NGj84L3A=;
+  b=b2jbSPYnJgGFhnnoOdnJfQpf2jwjhrhfMcsBwh350WHLo1v3pKKqKmq1
+   PWSdI5Pilmg6Osya7g33J846Kum58VaBltSUx5/5eOWZdI26u5F0YExa6
+   1Uqt212Lpo6iBLlcYgdpsH4HQkmLij+w2NSb/WChzMCK/6gUjllh22hGz
+   GCOceJZLVAnQ9YoJ/6I2fWiqveoN9A9NdZmoLemC3N26IeOWLvjD8rH7n
+   m2AnbFtU4rqacQfT1tDf/D1RiptCF0/bjjow9ZBoBev6DscqI98irduwN
+   IVC3VXEDgl1pxmj41MXgaTftAqOEdIys72crKcUSXCZ5WJ5Qhwi/1o4xw
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="366927451"
+X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
+   d="scan'208";a="366927451"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 07:14:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="834291292"
+X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
+   d="scan'208";a="834291292"
+Received: from unknown (HELO ideak-desk.fi.intel.com) ([10.237.72.78])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 07:14:02 -0700
+From:   Imre Deak <imre.deak@intel.com>
+To:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     intel-gfx@lists.freedesktop.org
+Subject: [PATCH 0/1] v6.1 stable backport request
+Date:   Mon, 10 Jul 2023 17:13:58 +0300
+Message-Id: <20230710141359.754365-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230710133836.4367-1-mail@eworm.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 03:38:35PM +0200, Christian Hesse wrote:
-> This device suffer an irq storm, so add it in tpm_tis_dmi_table to
-> force polling.
-> 
-> https://bugs.archlinux.org/user/38129
-> https://bugzilla.kernel.org/show_bug.cgi?id=217631
+Stable team, please apply patch 1/1 in this patchset along with its
+dependencies to the v6.1 stable tree. The patch required a trivial
+rebase adding a header include, hence resending it, while its 2
+dependencies listed at Cc: stable lines in the commit message can be
+cherry-picked as-is.
 
-Add "Link:" tags?
+Thanks,
+Imre
 
-> 
-> Fixes: e644b2f498d297a928efcb7ff6f900c27f8b788e
+Imre Deak (1):
+  drm/i915/tc: Fix system resume MST mode restore for DP-alt sinks
 
-As per the kernel documentation, this should be:
+ .../drm/i915/display/intel_display_types.h    |  1 +
+ drivers/gpu/drm/i915/display/intel_tc.c       | 51 +++++++++++++++++--
+ 2 files changed, 48 insertions(+), 4 deletions(-)
 
-Fixes: e644b2f498d2 ("tpm, tpm_tis: Enable interrupt test")
+-- 
+2.37.2
 
-otherwise you're going to get some emails from the linux-next bot.
-
-thanks,
-
-greg k-h
