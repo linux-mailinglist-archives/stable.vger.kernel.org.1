@@ -2,65 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFF6874CF5A
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 10:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 961EA74CF98
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 10:13:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229831AbjGJIC3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 04:02:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33484 "EHLO
+        id S232613AbjGJINs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 04:13:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbjGJIC2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 04:02:28 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B054A6;
-        Mon, 10 Jul 2023 01:02:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=yNHDpzzYjieskAxABdDoEsqYSB5/uS6TUrXGMxgOO98=; b=N99m4nozzqxFHNBeNmFnfuL0Yp
-        +A521LWm9TiYTqrAsIYVfa3VHL0b9r5GMrproiVKMHVOP6TE4Cy8w/TftoGRFFiaDE38kqnMcjsDH
-        xeUABEteMR+PZlpoHFfw+Qz0DCKQnPO0MK7fC3o85tgPx7g1tthDfgRVNUrjUEFHYVZ6vjXBHamOJ
-        cu4xFA/boDgzrKZD8/iF4a0jqsJ1XQdes6nuQLeD7eWIgQeuaGyB7BVs5ACRMjnCrN9/thpPP4JxP
-        8bfYNPFbswyKbBnUGgHpYfBUErFA4J839MBBYWAF1b+sPPpl8i7JwdDotUHM+5p+JBnDzLgFVyg/4
-        HwAW5SBA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qIlqF-000jDT-0v;
-        Mon, 10 Jul 2023 08:01:56 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id AFEC1300274;
-        Mon, 10 Jul 2023 10:01:52 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 6346D29984D29; Mon, 10 Jul 2023 10:01:52 +0200 (CEST)
-Date:   Mon, 10 Jul 2023 10:01:52 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Guo Ren <guoren@kernel.org>
-Cc:     arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
-        luto@kernel.org, conor.dooley@microchip.com, heiko@sntech.de,
-        jszhang@kernel.org, lazyparser@gmail.com, falcon@tinylab.org,
-        chenhuacai@kernel.org, apatel@ventanamicro.com,
-        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
-        palmer@dabbelt.com, bjorn@rivosinc.com, daniel.thompson@linaro.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
-        Guo Ren <guoren@linux.alibaba.com>
-Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
-Message-ID: <20230710080152.GA3028865@hirez.programming.kicks-ass.net>
-References: <20230702025708.784106-1-guoren@kernel.org>
- <20230704164003.GB83892@hirez.programming.kicks-ass.net>
- <CAJF2gTTc0Gyo=K-0dCW6wu7q=Wq34hgTB69qJ7VSF_KAgKhavA@mail.gmail.com>
+        with ESMTP id S232825AbjGJINZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 04:13:25 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E36CE7;
+        Mon, 10 Jul 2023 01:13:24 -0700 (PDT)
+Date:   Mon, 10 Jul 2023 08:13:21 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1688976802;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QmxEJkHfTKInkH+veC+TMsvNnEkLPnoWkAzHDAyTGxE=;
+        b=46UHh6y3XrPRrKJ3SjGN0YUZY/84V1itqZ5EnhjPTfpHvW70onGukErJ7ewIKM5+w+a2WO
+        z5YN1tKYAT7qWqoehvLfaZxAyQMrualGzO8cUK3QLkN23TMXFrSUFtc+OT8Cu1ocMg1EsR
+        3nHn7w3EvLG7c6yB+5L/0VBlwFo5LK4/9YDCRgkHCfXmpLDmozJ7JuwZpWoVb2p/SD6GBI
+        m7BoqpGv1cMiwjFmdK8LUv1YZhqMXV3xFAHUhfwJnkcipaKevJoE9Yym6pLbml8O62UZNl
+        DmmAF/x0NKHRj4wjKGvYRH6UnAVajYiNEesR8i5SKig4Uz0IyWH9rJtffzyy6g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1688976802;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QmxEJkHfTKInkH+veC+TMsvNnEkLPnoWkAzHDAyTGxE=;
+        b=0elY/nPtYviK9iAC+zRpm07pnu1+pEsxn8qE+5ZGzxFuFPjHqmPIeC9RgdbFntCMETSL+/
+        JJJMQfO4iuaX+RBg==
+From:   "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86: Fix lockdep warning in
+ for_each_sibling_event() on SPR
+Cc:     Greg Thelen <gthelen@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        stable@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230704181516.3293665-1-namhyung@kernel.org>
+References: <20230704181516.3293665-1-namhyung@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJF2gTTc0Gyo=K-0dCW6wu7q=Wq34hgTB69qJ7VSF_KAgKhavA@mail.gmail.com>
+Message-ID: <168897680188.404.3122821140126581927.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,77 +67,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Jul 09, 2023 at 10:30:22AM +0800, Guo Ren wrote:
-> On Wed, Jul 5, 2023 at 12:40 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
-> > > From: Guo Ren <guoren@linux.alibaba.com>
-> > >
-> > > The irqentry_nmi_enter/exit would force the current context into in_interrupt.
-> > > That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
-> > > debug the kernel.
-> > >
-> > > Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
-> > > of the kernel side.
-> >
-> > This doesn't explain much if anything :/
-> >
-> > I'm confused (probably because I don't know RISC-V very well), what's
-> > EBREAK and how does it happen?
-> EBREAK is just an instruction of riscv which would rise breakpoint exception.
-> 
-> 
-> >
-> > Specifically, if EBREAK can happen inside an local_irq_disable() region,
-> > then the below change is actively wrong. Any exception/interrupt that
-> > can happen while local_irq_disable() must be treated like an NMI.
-> When the ebreak happend out of local_irq_disable region, but
-> __nmi_enter forces handle_break() into in_interupt() state. So how
+The following commit has been merged into the perf/urgent branch of tip:
 
-And why is that a problem? I think I'm missing something fundamental
-here...
+Commit-ID:     27c68c216ee1f1b086e789a64486e6511e380b8a
+Gitweb:        https://git.kernel.org/tip/27c68c216ee1f1b086e789a64486e6511e380b8a
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Tue, 04 Jul 2023 11:15:15 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 10 Jul 2023 09:52:20 +02:00
 
-> about:
-> 
-> diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-> index f910dfccbf5d..69f7043a98b9 100644
-> --- a/arch/riscv/kernel/traps.c
-> +++ b/arch/riscv/kernel/traps.c
-> @@ -18,6 +18,7 @@
->  #include <linux/irq.h>
->  #include <linux/kexec.h>
->  #include <linux/entry-common.h>
-> +#include <linux/context_tracking.h>
-> 
->  #include <asm/asm-prototypes.h>
->  #include <asm/bug.h>
-> @@ -285,12 +286,18 @@ asmlinkage __visible __trap_section void
-> do_trap_break(struct pt_regs *regs)
->                 handle_break(regs);
-> 
->                 irqentry_exit_to_user_mode(regs);
-> -       } else {
-> +       } else if (in_interrupt()){
->                 irqentry_state_t state = irqentry_nmi_enter(regs);
-> 
->                 handle_break(regs);
-> 
->                 irqentry_nmi_exit(regs, state);
-> +       } else {
-> +               enum ctx_state prev_state = exception_enter();
-> +
-> +               handle_break(regs);
-> +
-> +               exception_exit(prev_state);
->         }
->  }
+perf/x86: Fix lockdep warning in for_each_sibling_event() on SPR
 
-That's wrong. If you want to make it conditional, you have to look at
-!(regs->status & SR_IE) (that's the interrupt enable flag of the
-interrupted context, right?)
+On SPR, the load latency event needs an auxiliary event in the same
+group to work properly.  There's a check in intel_pmu_hw_config()
+for this to iterate sibling events and find a mem-loads-aux event.
 
-When you hit an EBREAK when IRQs were disabled, you must be NMI like.
+The for_each_sibling_event() has a lockdep assert to make sure if it
+disabled hardirq or hold leader->ctx->mutex.  This works well if the
+given event has a separate leader event since perf_try_init_event()
+grabs the leader->ctx->mutex to protect the sibling list.  But it can
+cause a problem when the event itself is a leader since the event is
+not initialized yet and there's no ctx for the event.
 
-But making it conditional like this makes it really hard to write a
-handler though, it basically must assume it will be NMI contetx (because
-it can't know) so there is no point in sometimes not doing NMI context.
+Actually I got a lockdep warning when I run the below command on SPR,
+but I guess it could be a NULL pointer dereference.
+
+  $ perf record -d -e cpu/mem-loads/uP true
+
+The code path to the warning is:
+
+  sys_perf_event_open()
+    perf_event_alloc()
+      perf_init_event()
+        perf_try_init_event()
+          x86_pmu_event_init()
+            hsw_hw_config()
+              intel_pmu_hw_config()
+                for_each_sibling_event()
+                  lockdep_assert_event_ctx()
+
+We don't need for_each_sibling_event() when it's a standalone event.
+Let's return the error code directly.
+
+Fixes: f3c0eba28704 ("perf: Add a few assertions")
+Reported-by: Greg Thelen <gthelen@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20230704181516.3293665-1-namhyung@kernel.org
+---
+ arch/x86/events/intel/core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index a149faf..2a284ba 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3993,6 +3993,13 @@ static int intel_pmu_hw_config(struct perf_event *event)
+ 		struct perf_event *leader = event->group_leader;
+ 		struct perf_event *sibling = NULL;
+ 
++		/*
++		 * When this memload event is also the first event (no group
++		 * exists yet), then there is no aux event before it.
++		 */
++		if (leader == event)
++			return -ENODATA;
++
+ 		if (!is_mem_loads_aux_event(leader)) {
+ 			for_each_sibling_event(sibling, leader) {
+ 				if (is_mem_loads_aux_event(sibling))
