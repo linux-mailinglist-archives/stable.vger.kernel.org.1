@@ -2,57 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D812474D7A5
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 15:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A368E74D7A8
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 15:32:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232299AbjGJNcQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 09:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42118 "EHLO
+        id S230297AbjGJNcs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 09:32:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232383AbjGJNcN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 09:32:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426FD118;
-        Mon, 10 Jul 2023 06:31:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B86B6100A;
-        Mon, 10 Jul 2023 13:31:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDCEC433C7;
-        Mon, 10 Jul 2023 13:31:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1688995905;
-        bh=Zae0sXZ1apKn8b44P9R9P2lKldy08yGANk4vIqeZlU0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TpEBMDbsZ4zuGsGTLnbNkZkxD78Qop9PdG2mTF/3in+XYZINwiy8E3DnGYBxT56uW
-         FlwZUAutSZxHaHaF1bH1+/kdeO+zm2oH7pdw7iGFgDsJiznuRIATXGV6PNA3e+kEFC
-         TpC/CsbKeigp0h5giJ5GNEoojyvUdk+mpZPQE7jU=
-Date:   Mon, 10 Jul 2023 15:31:42 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Will Deacon <will@kernel.org>
-Cc:     Mark Brown <broonie@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Kristina Martsenko <kristina.martsenko@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
-        mark.rutland@arm.com, amit.kachhap@arm.com, maz@kernel.org,
-        anshuman.khandual@arm.com, joey.gouly@arm.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.4 07/12] arm64: cpufeature: detect FEAT_HCX
-Message-ID: <2023071024-unpaved-washed-4d7d@gregkh>
-References: <20230702195057.1787686-1-sashal@kernel.org>
- <20230702195057.1787686-7-sashal@kernel.org>
- <b37a9f79-97a8-4f74-a25c-b51128fbc9bb@sirena.org.uk>
- <ZKrKjS7sDFxhKoJT@sashalap>
- <ZKsi+UOdjlmDnhdj@finisterre.sirena.org.uk>
- <20230710094438.GD32673@willie-the-truck>
+        with ESMTP id S231307AbjGJNcq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 09:32:46 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFBD1E4E;
+        Mon, 10 Jul 2023 06:32:22 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3fbd33a57dcso50256825e9.0;
+        Mon, 10 Jul 2023 06:32:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688995933; x=1691587933;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IR/SjE3dnPHVw8ShE8Nrh5c0DK3TvPTsEq2pK74lhTU=;
+        b=jJ08xw6Sd75S+VY6zBE37HsFMCDDufSujSy1vAgE4Xl6A210EoV0z/b4RGILd95a/n
+         e1Jh+2CLNG5q524XO4llB0SYlsP7fHoR/iQy0ivw5Av8NT02qcnxCDnB6Gssw54kcL2c
+         QWGuXOLbTFy0d2oCrzqCMLUDzhErP+2elSNtE0ynl8CJOlOGGy7R0tLUBZ6gXfG1BIdj
+         nqeFbLPDCJ/3v+lFq0bfm1b2Ri8YDFmX7qbDYKoceXaNKuwq0umwq4/OzpJJlgA17mDh
+         OM2qWJDUDkSkT2C0j5B7z7/VKcLo3L/UZijFbBi9R337Zyq6nSd+ZG5C3jWbFSLS5Nmq
+         uwlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688995933; x=1691587933;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IR/SjE3dnPHVw8ShE8Nrh5c0DK3TvPTsEq2pK74lhTU=;
+        b=SYgVpvei9efTmnP6K1CkmSqz5bd9Pc3rTEE24dKf+UbbnTzUgGu8QHsL/ywkVNTpDH
+         7Mpdh/Y23hQZTQs64KtBLyCC+NxqXOym5YuiTpo4N1vSPAz/Wf/ycNrxot75KCrrDXBd
+         Ia2u7mda3C7ZifIhXYJHrtZ5WaqaNDtMhiX00qyCwHZrU2U1uojqmFwzCZF0rPgu4jF6
+         2JaiHta7iJVkwVRtBrmNI0ewoDnclyh6uwWUfC1BBITyDsnJ1hwxkXzPFSCv8Fue8RwV
+         8NLJ+yY9LFhLe6V8UhF5VS5ZQzy0wwMsQ/7U07kUSc6vaaKBcbsVTDc4Ho4IQlswsOsN
+         vq5w==
+X-Gm-Message-State: ABy/qLZARwv4cRs/YiERdDT2GIG31nXGq/07PXNrz60DIN/YytqHGmZZ
+        v47fSbINwdSW8AU6vbfHF38=
+X-Google-Smtp-Source: APBJJlHp/reV1NQnpTUVodd0zvT0GImMygco6EqeJKUKBWA9rOC6Zjr37LIBaNF+LSKmjhoasRPUDA==
+X-Received: by 2002:a1c:cc0d:0:b0:3fb:b1fd:4183 with SMTP id h13-20020a1ccc0d000000b003fbb1fd4183mr12526041wmb.12.1688995932642;
+        Mon, 10 Jul 2023 06:32:12 -0700 (PDT)
+Received: from amir-ThinkPad-T480.ctera.local (bzq-166-168-31-246.red.bezeqint.net. [31.168.166.246])
+        by smtp.gmail.com with ESMTPSA id n7-20020a5d67c7000000b0030ae3a6be4asm11789263wrw.72.2023.07.10.06.32.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jul 2023 06:32:12 -0700 (PDT)
+From:   Amir Goldstein <amir73il@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Sasha Levin <sashal@kernel.org>, Jan Kara <jack@suse.cz>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15] fanotify: disallow mount/sb marks on kernel internal pseudo fs
+Date:   Mon, 10 Jul 2023 16:32:05 +0300
+Message-Id: <20230710133205.1154168-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230710094438.GD32673@willie-the-truck>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,41 +69,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 10:44:38AM +0100, Will Deacon wrote:
-> On Sun, Jul 09, 2023 at 10:13:29PM +0100, Mark Brown wrote:
-> > On Sun, Jul 09, 2023 at 10:56:13AM -0400, Sasha Levin wrote:
-> > > On Mon, Jul 03, 2023 at 12:51:57PM +0100, Mark Brown wrote:
-> > > > On Sun, Jul 02, 2023 at 03:50:52PM -0400, Sasha Levin wrote:
-> > 
-> > > > > KVM currently relies on the register being present on all CPUs (or
-> > > > > none), so the kernel will panic if that is not the case. Fortunately no
-> > > > > such systems currently exist, but this can be revisited if they appear.
-> > > > > Note that the kernel will not panic if CONFIG_KVM is disabled.
-> > 
-> > > > This is a new feature, it's not clear why we'd backport it (especially
-> > > > since it's a new feature which is a dependency for other features rather
-> > > > than something that people can use outside of the kernel)?
-> > 
-> > > The second paragraph (above) suggested it should be.
-> > 
-> > That's saying that the code won't work properly on systems where some
-> > but not all of the CPUs support the feature.  Note that the changelog
-> > says nothing about fixing any issue here.
-> 
-> Try reading it like a GPU running an ML model:
-> 
->   "This is not a new feature, it's especially clear why we'd backport it."
-> 
-> Makes sense. *sigh*
-> 
-> We've been considering opting arm64 out of this for a while, but I don't
-> think we do a great job of CC'ing stable either (I certainly forget to
-> add it all the time and then hope that the Fixes: tag does the job),so
-> it's not obviously going to improve things.
-> 
-> Maybe we just need a commit hook that yells if something with a Fixes:
-> tag doesn't have a CC: stable on it?
+commit 69562eb0bd3e6bb8e522a7b254334e0fb30dff0c upstream.
 
-I could start doing that, it's going to be really noisy...
+Hopefully, nobody is trying to abuse mount/sb marks for watching all
+anonymous pipes/inodes.
 
-greg k-h
+I cannot think of a good reason to allow this - it looks like an
+oversight that dated back to the original fanotify API.
+
+Link: https://lore.kernel.org/linux-fsdevel/20230628101132.kvchg544mczxv2pm@quack3/
+Fixes: 0ff21db9fcc3 ("fanotify: hooks the fanotify_mark syscall to the vfsmount code")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230629042044.25723-1-amir73il@gmail.com>
+[backport to 5.x.y]
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
+
+Greg,
+
+This 5.15 backport should cleanly apply to all 5.x.y LTS kernels.
+It will NOT apply to 4.x.y kernels.
+
+The original upstream commit should apply cleanly to 6.x.y stable
+kernels.
+
+Thanks,
+Amir.
+
+ fs/notify/fanotify/fanotify_user.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
+index 84ec851211d9..0e2a0eb7cb9e 100644
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -1337,8 +1337,11 @@ static int fanotify_test_fid(struct path *path, __kernel_fsid_t *fsid)
+ 	return 0;
+ }
+ 
+-static int fanotify_events_supported(struct path *path, __u64 mask)
++static int fanotify_events_supported(struct path *path, __u64 mask,
++				     unsigned int flags)
+ {
++	unsigned int mark_type = flags & FANOTIFY_MARK_TYPE_BITS;
++
+ 	/*
+ 	 * Some filesystems such as 'proc' acquire unusual locks when opening
+ 	 * files. For them fanotify permission events have high chances of
+@@ -1350,6 +1353,21 @@ static int fanotify_events_supported(struct path *path, __u64 mask)
+ 	if (mask & FANOTIFY_PERM_EVENTS &&
+ 	    path->mnt->mnt_sb->s_type->fs_flags & FS_DISALLOW_NOTIFY_PERM)
+ 		return -EINVAL;
++
++	/*
++	 * mount and sb marks are not allowed on kernel internal pseudo fs,
++	 * like pipe_mnt, because that would subscribe to events on all the
++	 * anonynous pipes in the system.
++	 *
++	 * SB_NOUSER covers all of the internal pseudo fs whose objects are not
++	 * exposed to user's mount namespace, but there are other SB_KERNMOUNT
++	 * fs, like nsfs, debugfs, for which the value of allowing sb and mount
++	 * mark is questionable. For now we leave them alone.
++	 */
++	if (mark_type != FAN_MARK_INODE &&
++	    path->mnt->mnt_sb->s_flags & SB_NOUSER)
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
+@@ -1476,7 +1494,7 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
+ 		goto fput_and_out;
+ 
+ 	if (flags & FAN_MARK_ADD) {
+-		ret = fanotify_events_supported(&path, mask);
++		ret = fanotify_events_supported(&path, mask, flags);
+ 		if (ret)
+ 			goto path_put_and_out;
+ 	}
+-- 
+2.16.5
