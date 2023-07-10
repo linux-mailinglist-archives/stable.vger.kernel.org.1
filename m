@@ -2,119 +2,266 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A058074D25F
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 11:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D98474D282
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 12:00:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230406AbjGJJ6Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 05:58:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42384 "EHLO
+        id S232429AbjGJKAq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 06:00:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230239AbjGJJ5o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 05:57:44 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545C230D7;
-        Mon, 10 Jul 2023 02:54:17 -0700 (PDT)
+        with ESMTP id S231483AbjGJKA0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 06:00:26 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 561E730E6;
+        Mon, 10 Jul 2023 02:58:53 -0700 (PDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 31F6021EEF;
-        Mon, 10 Jul 2023 09:53:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1688982821; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        by smtp-out1.suse.de (Postfix) with ESMTPS id A935121F0E;
+        Mon, 10 Jul 2023 09:58:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1688983131; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JhQYnd3zFReOIgvPmbBH7euJHgaFU8/SGouVRAGqJOg=;
-        b=xz6F2AKCngY8+kyCyaqPfEcdl/9pcM3qK2zlApTNfnsSSmRxVEU3rLnQFOr3wfH41rieYI
-        sRPfjnTsRQvKqbS2pAKF3aE+T5KN5gJtoCEawvbbRLMT/seMfiZl2ioO8QBxA7eakSAUlQ
-        +z0vApCAa2POQfyJ1ZHAR018OicX224=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1688982821;
+        bh=GvnjoW3g/Yhbetf1CpEHHC9av6tL/nbCORcUKb9FiY0=;
+        b=YUpm422VmaeMb/1/x0/I6LomqpN/khgdWLI/I4n4VSj8h8Qu0kBITuTFdrQNT81S+X0Ure
+        cOAmS9PlFn5Td4kNpX5S4nmUmulEeVV0gJbiIqJbsC6zYV1VHtDGEu6qGAkCfl4/M81Sbl
+        qF+t0IQSGwBU0Bp1F+7/LhHNGa23HJA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1688983131;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JhQYnd3zFReOIgvPmbBH7euJHgaFU8/SGouVRAGqJOg=;
-        b=KxXe2n8vEXVhRArC1cbLwHAKno2ehlhMjN3Il+S6ofIu33K36fXvi3jmMrt+MwzWVdECPY
-        zFnWDd0kaYFTx7Dw==
+        bh=GvnjoW3g/Yhbetf1CpEHHC9av6tL/nbCORcUKb9FiY0=;
+        b=ojUwtm56Y8O/npNBSENUt/NB+Ksi02uCMuwmqP/xkY7TN0zTWHelzUWRMlfajzKhMOf2wo
+        3c4U9bolzMDxw9BQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5A11213A05;
-        Mon, 10 Jul 2023 09:53:40 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0FC3F13A05;
+        Mon, 10 Jul 2023 09:58:51 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id wcRGFSTVq2SsNAAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Mon, 10 Jul 2023 09:53:40 +0000
-Message-ID: <71313e6c-79d5-3ff7-981e-f7675aee0a5c@suse.cz>
-Date:   Mon, 10 Jul 2023 11:53:40 +0200
+        id GaumAlvWq2SKNgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Mon, 10 Jul 2023 09:58:51 +0000
+Message-ID: <72ddab83-abec-b096-6c91-9cb2083c4c0a@suse.de>
+Date:   Mon, 10 Jul 2023 11:58:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] kasan, slub: fix HW_TAGS zeroing with slub_debug
-To:     andrey.konovalov@linux.dev, Marco Elver <elver@google.com>,
-        Mark Rutland <mark.rutland@arm.com>
-Cc:     Andrey Konovalov <andreyknvl@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        kasan-dev@googlegroups.com,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Peter Collingbourne <pcc@google.com>,
-        Feng Tang <feng.tang@intel.com>, stable@vger.kernel.org,
-        Christoph Lameter <cl@linux.com>,
-        Pekka Enberg <penberg@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Andrey Konovalov <andreyknvl@google.com>
-References: <678ac92ab790dba9198f9ca14f405651b97c8502.1688561016.git.andreyknvl@google.com>
+Subject: Re: [PATCH] drm/client: Send hotplug event after registering a client
 Content-Language: en-US
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <678ac92ab790dba9198f9ca14f405651b97c8502.1688561016.git.andreyknvl@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+To:     Javier Martinez Canillas <javierm@redhat.com>, noralf@tronnes.org
+Cc:     dri-devel@lists.freedesktop.org,
+        Moritz Duge <MoritzDuge@kolahilft.de>,
+        Torsten Krah <krah.tm@gmail.com>,
+        Paul Schyska <pschyska@gmail.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        David Airlie <airlied@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Inki Dae <inki.dae@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        linux-tegra@vger.kernel.org, stable@vger.kernel.org
+References: <20230710091029.27503-1-tzimmermann@suse.de>
+ <87edlghz5e.fsf@minerva.mail-host-address-is-not-set>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <87edlghz5e.fsf@minerva.mail-host-address-is-not-set>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------1vdugXBSagH09XaDcfo6AQRC"
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE,
-        T_SPF_HELO_TEMPERROR autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/5/23 14:44, andrey.konovalov@linux.dev wrote:
-> From: Andrey Konovalov <andreyknvl@google.com>
-> 
-> Commit 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated
-> kmalloc space than requested") added precise kmalloc redzone poisoning
-> to the slub_debug functionality.
-> 
-> However, this commit didn't account for HW_TAGS KASAN fully initializing
-> the object via its built-in memory initialization feature. Even though
-> HW_TAGS KASAN memory initialization contains special memory initialization
-> handling for when slub_debug is enabled, it does not account for in-object
-> slub_debug redzones. As a result, HW_TAGS KASAN can overwrite these
-> redzones and cause false-positive slub_debug reports.
-> 
-> To fix the issue, avoid HW_TAGS KASAN memory initialization when slub_debug
-> is enabled altogether. Implement this by moving the __slub_debug_enabled
-> check to slab_post_alloc_hook. Common slab code seems like a more
-> appropriate place for a slub_debug check anyway.
-> 
-> Fixes: 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated kmalloc space than requested")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Mark Rutland <mark.rutland@arm.com>
-> Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------1vdugXBSagH09XaDcfo6AQRC
+Content-Type: multipart/mixed; boundary="------------ogGQXvUxAG6vOXW98TdFWf32";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Javier Martinez Canillas <javierm@redhat.com>, noralf@tronnes.org
+Cc: dri-devel@lists.freedesktop.org, Moritz Duge <MoritzDuge@kolahilft.de>,
+ Torsten Krah <krah.tm@gmail.com>, Paul Schyska <pschyska@gmail.com>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>, David Airlie <airlied@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+ Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+ "Pan, Xinhui" <Xinhui.Pan@amd.com>, Thierry Reding
+ <thierry.reding@gmail.com>, Mikko Perttunen <mperttunen@nvidia.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ freedreno@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+ linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Message-ID: <72ddab83-abec-b096-6c91-9cb2083c4c0a@suse.de>
+Subject: Re: [PATCH] drm/client: Send hotplug event after registering a client
+References: <20230710091029.27503-1-tzimmermann@suse.de>
+ <87edlghz5e.fsf@minerva.mail-host-address-is-not-set>
+In-Reply-To: <87edlghz5e.fsf@minerva.mail-host-address-is-not-set>
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+--------------ogGQXvUxAG6vOXW98TdFWf32
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Thanks!
+SGkNCg0KQW0gMTAuMDcuMjMgdW0gMTE6NTIgc2NocmllYiBKYXZpZXIgTWFydGluZXogQ2Fu
+aWxsYXM6DQo+IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPiB3cml0
+ZXM6DQo+IA0KPiBIZWxsbyBUaG9tYXMsDQo+IA0KPj4gR2VuZXJhdGUgYSBob3RwbHVnIGV2
+ZW50IGFmdGVyIHJlZ2lzdGVyaW5nIGEgY2xpZW50IHRvIGFsbG93IHRoZQ0KPj4gY2xpZW50
+IHRvIGNvbmZpZ3VyZSBpdHMgZGlzcGxheS4gUmVtb3ZlIHRoZSBob3RwbHVnIGNhbGxzIGZy
+b20gdGhlDQo+PiBleGlzdGluZyBjbGllbnRzIGZvciBmYmRldiBlbXVsYXRpb24uIFRoaXMg
+Y2hhbmdlIGZpeGVzIGEgY29uY3VycmVuY3kNCj4+IGJ1ZyBiZXR3ZWVuIHJlZ2lzdGVyaW5n
+IGEgY2xpZW50IGFuZCByZWNlaXZpbmcgZXZlbnRzIGZyb20gdGhlIERSTQ0KPj4gY29yZS4g
+VGhlIGJ1ZyBpcyBwcmVzZW50IGluIHRoZSBmYmRldiBlbXVsYXRpb24gb2YgYWxsIGRyaXZl
+cnMuDQo+Pg0KPj4gVGhlIGZiZGV2IGVtdWxhdGlvbiBjdXJyZW50bHkgZ2VuZXJhdGVzIGEg
+aG90cGx1ZyBldmVudCBiZWZvcmUNCj4+IHJlZ2lzdGVyaW5nIHRoZSBjbGllbnQgdG8gdGhl
+IGRldmljZS4gRm9yIGVhY2ggbmV3IG91dHB1dCwgdGhlIERSTQ0KPj4gY29yZSBzZW5kcyBh
+biBhZGRpdGlvbmFsIGhvdHBsdWcgZXZlbnQgdG8gZWFjaCByZWdpc3RlcmVkIGNsaWVudC4N
+Cj4+DQo+PiBJZiB0aGUgRFJNIGNvcmUgZGV0ZWN0cyBmaXJzdCBvdXRwdXQgYmV0d2VlbiBz
+ZW5kaW5nIHRoZSBhcnRpZmljaWFsDQo+PiBob3RwbHVnIGFuZCByZWdpc3RlcmluZyB0aGUg
+ZGV2aWNlLCB0aGUgb3V0cHV0J3MgaG90cGx1ZyBldmVudCBnZXRzDQo+PiBsb3N0LiBJZiB0
+aGlzIGlzIHRoZSBmaXJzdCBvdXRwdXQsIHRoZSBmYmRldiBjb25zb2xlIGRpc3BsYXkgcmVt
+YWlucw0KPj4gZGFyay4gVGhpcyBoYXMgYmVlbiBvYnNlcnZlZCB3aXRoIGFtZGdwdSBhbmQg
+ZmJkZXYtZ2VuZXJpYy4NCj4+DQo+PiBGaXggdGhpcyBieSBhZGRpbmcgaG90cGx1ZyBnZW5l
+cmF0aW9uIGRpcmVjdGx5IHRvIHRoZSBjbGllbnQncw0KPj4gcmVnaXN0ZXIgaGVscGVyIGRy
+bV9jbGllbnRfcmVnaXN0ZXIoKS4gUmVnaXN0ZXJpbmcgdGhlIGNsaWVudCBhbmQNCj4+IHJl
+Y2VpdmluZyBldmVudHMgYXJlIHNlcmlhbGl6ZWQgYnkgc3RydWN0IGRybV9kZXZpY2UuY2xp
+ZW50bGlzdF9tdXRleC4NCj4+IFNvIGFuIG91dHB1dCBpcyBlaXRoZXIgY29uZmlndXJlZCBi
+eSB0aGUgaW5pdGlhbCBob3RwbHVnIGV2ZW50LCBvcg0KPj4gdGhlIGNsaWVudCBoYXMgYWxy
+ZWFkeSBiZWVuIHJlZ2lzdGVyZWQuDQo+Pg0KPj4gVGhlIGJ1ZyB3YXMgb3JpZ2luYWxseSBh
+ZGRlZCBpbiBjb21taXQgNmUzZjE3ZWU3M2Y3ICgiZHJtL2ZiLWhlbHBlcjoNCj4+IGdlbmVy
+aWM6IENhbGwgZHJtX2NsaWVudF9hZGQoKSBhZnRlciBzZXR1cCBpcyBkb25lIiksIGluIHdo
+aWNoIGFkZGluZw0KPj4gYSBjbGllbnQgYW5kIHJlY2VpdmluZyBhIGhvdHBsdWcgZXZlbnQg
+c3dpdGNoZWQgb3JkZXIuIEl0IHdhcyBoaWRkZW4sDQo+PiBhcyBtb3N0IGhhcmR3YXJlIGFu
+ZCBkcml2ZXJzIGhhdmUgYXQgbGVhc3Qgb24gc3RhdGljIG91dHB1dCBjb25maWd1cmVkLg0K
+Pj4gT3RoZXIgZHJpdmVycyBkaWRuJ3QgdXNlIHRoZSBpbnRlcm5hbCBEUk0gY2xpZW50IG9y
+IHN0aWxsIGhhZCBzdHJ1Y3QNCj4+IGRybV9tb2RlX2NvbmZpZ19mdW5jcy5vdXRwdXRfcG9s
+bF9jaGFuZ2VkIHNldC4gVGhhdCBjYWxsYmFjayBoYW5kbGVkDQo+PiBob3RwbHVnIGV2ZW50
+cyBhcyB3ZWxsLiBBZnRlciBub3Qgc2V0dGluZyB0aGUgY2FsbGJhY2sgaW4gYW1kZ3B1IGlu
+DQo+PiBjb21taXQgMGUzMTcyYmFjM2Y0ICgiZHJtL2FtZGdwdTogRG9uJ3Qgc2V0IHN0cnVj
+dA0KPj4gZHJtX2RyaXZlci5vdXRwdXRfcG9sbF9jaGFuZ2VkIiksIGFtZGdwdSBkaWQgbm90
+IHNob3cgYSBmcmFtZWJ1ZmZlcg0KPj4gY29uc29sZSBpZiBvdXRwdXQgZXZlbnRzIGdvdCBs
+b3N0LiBUaGUgYnVnIGdvdCBjb3B5LXBhc3RlZCBmcm9tDQo+PiBmYmRldi1nZW5lcmljIGlu
+dG8gdGhlIG90aGVyIGZiZGV2IGVtdWxhdGlvbi4NCj4+DQo+PiBSZXBvcnRlZC1ieTogTW9y
+aXR6IER1Z2UgPE1vcml0ekR1Z2VAa29sYWhpbGZ0LmRlPg0KPj4gQ2xvc2VzOiBodHRwczov
+L2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2FtZC8tL2lzc3Vlcy8yNjQ5DQo+IA0KPiBB
+cmVuJ3QgeW91IG1pc3NpbmcgYSBGaXhlczogZm9yIDBlMzE3MmJhYzNmNCB0b28/IFNpbmNl
+IHRoYXQncyB0aGUgY29tbWl0DQo+IHRoYXQgdW5tYXNrZWQgdGhlIGJ1ZyBmb3IgYW1kZ3B1
+LCBJTU8gdGhhdCBpcyB0aGUgbW9zdCBpbXBvcnRhbnQgdG8gbGlzdC4NCg0KV2VsbCwgT0su
+DQoNCj4gDQo+PiBGaXhlczogNmUzZjE3ZWU3M2Y3ICgiZHJtL2ZiLWhlbHBlcjogZ2VuZXJp
+YzogQ2FsbCBkcm1fY2xpZW50X2FkZCgpIGFmdGVyIHNldHVwIGlzIGRvbmUiKQ0KPj4gRml4
+ZXM6IDhhYjU5ZGEyNmJjMCAoImRybS9mYi1oZWxwZXI6IE1vdmUgZ2VuZXJpYyBmYmRldiBl
+bXVsYXRpb24gaW50byBzZXBhcmF0ZSBzb3VyY2UgZmlsZSIpDQo+PiBGaXhlczogYjc5ZmU5
+YWJkNThiICgiZHJtL2ZiZGV2LWRtYTogSW1wbGVtZW50IGZiZGV2IGVtdWxhdGlvbiBmb3Ig
+R0VNIERNQSBoZWxwZXJzIikNCj4+IEZpeGVzOiA2M2MzODE1NTJmNjkgKCJkcm0vYXJtYWRh
+OiBJbXBsZW1lbnQgZmJkZXYgZW11bGF0aW9uIGFzIGluLWtlcm5lbCBjbGllbnQiKQ0KPj4g
+Rml4ZXM6IDQ5OTUzYjcwZTdkMyAoImRybS9leHlub3M6IEltcGxlbWVudCBmYmRldiBlbXVs
+YXRpb24gYXMgaW4ta2VybmVsIGNsaWVudCIpDQo+PiBGaXhlczogOGYxYWFjY2IwNGI3ICgi
+ZHJtL2dtYTUwMDogSW1wbGVtZW50IGNsaWVudC1iYXNlZCBmYmRldiBlbXVsYXRpb24iKQ0K
+Pj4gRml4ZXM6IDk0MGI4NjljMmYyZiAoImRybS9tc206IEltcGxlbWVudCBmYmRldiBlbXVs
+YXRpb24gYXMgaW4ta2VybmVsIGNsaWVudCIpDQo+PiBGaXhlczogOWU2OWJjZDg4ZTQ1ICgi
+ZHJtL29tYXBkcm06IEltcGxlbWVudCBmYmRldiBlbXVsYXRpb24gYXMgaW4ta2VybmVsIGNs
+aWVudCIpDQo+PiBGaXhlczogZTMxN2E2OWZlODkxICgiZHJtL3JhZGVvbjogSW1wbGVtZW50
+IGNsaWVudC1iYXNlZCBmYmRldiBlbXVsYXRpb24iKQ0KPj4gRml4ZXM6IDcxZWMxNmY0NWVm
+OCAoImRybS90ZWdyYTogSW1wbGVtZW50IGZiZGV2IGVtdWxhdGlvbiBhcyBpbi1rZXJuZWwg
+Y2xpZW50IikNCj4+IFNpZ25lZC1vZmYtYnk6IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVy
+bWFubkBzdXNlLmRlPg0KPj4gVGVzdGVkLWJ5OiBNb3JpdHogRHVnZSA8TW9yaXR6RHVnZUBr
+b2xhaGlsZnQuZGU+DQo+PiBUZXN0ZWQtYnk6IFRvcnN0ZW4gS3JhaCA8a3JhaC50bUBnbWFp
+bC5jb20+DQo+PiBUZXN0ZWQtYnk6IFBhdWwgU2NoeXNrYSA8cHNjaHlza2FAZ21haWwuY29t
+Pg0KPj4gQ2M6IERhbmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0ZXJAZmZ3bGwuY2g+DQo+PiBD
+YzogRGF2aWQgQWlybGllIDxhaXJsaWVkQGdtYWlsLmNvbT4NCj4+IENjOiBOb3JhbGYgVHLD
+uG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4NCj4+IENjOiBNYWFydGVuIExhbmtob3JzdCA8
+bWFhcnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPg0KPj4gQ2M6IE1heGltZSBSaXBh
+cmQgPG1yaXBhcmRAa2VybmVsLm9yZz4NCj4+IENjOiBKYXZpZXIgTWFydGluZXogQ2FuaWxs
+YXMgPGphdmllcm1AcmVkaGF0LmNvbT4NCj4+IENjOiBSdXNzZWxsIEtpbmcgPGxpbnV4QGFy
+bWxpbnV4Lm9yZy51az4NCj4+IENjOiBJbmtpIERhZSA8aW5raS5kYWVAc2Ftc3VuZy5jb20+
+DQo+PiBDYzogU2V1bmctV29vIEtpbSA8c3cwMzEyLmtpbUBzYW1zdW5nLmNvbT4NCj4+IENj
+OiBLeXVuZ21pbiBQYXJrIDxreXVuZ21pbi5wYXJrQHNhbXN1bmcuY29tPg0KPj4gQ2M6IEty
+enlzenRvZiBLb3psb3dza2kgPGtyenlzenRvZi5rb3psb3dza2lAbGluYXJvLm9yZz4NCj4+
+IENjOiBQYXRyaWsgSmFrb2Jzc29uIDxwYXRyaWsuci5qYWtvYnNzb25AZ21haWwuY29tPg0K
+Pj4gQ2M6IFJvYiBDbGFyayA8cm9iZGNsYXJrQGdtYWlsLmNvbT4NCj4+IENjOiBBYmhpbmF2
+IEt1bWFyIDxxdWljX2FiaGluYXZrQHF1aWNpbmMuY29tPg0KPj4gQ2M6IERtaXRyeSBCYXJ5
+c2hrb3YgPGRtaXRyeS5iYXJ5c2hrb3ZAbGluYXJvLm9yZz4NCj4+IENjOiBUb21pIFZhbGtl
+aW5lbiA8dG9taS52YWxrZWluZW5AaWRlYXNvbmJvYXJkLmNvbT4NCj4+IENjOiBBbGV4IERl
+dWNoZXIgPGFsZXhhbmRlci5kZXVjaGVyQGFtZC5jb20+DQo+PiBDYzogIkNocmlzdGlhbiBL
+w7ZuaWciIDxjaHJpc3RpYW4ua29lbmlnQGFtZC5jb20+DQo+PiBDYzogIlBhbiwgWGluaHVp
+IiA8WGluaHVpLlBhbkBhbWQuY29tPg0KPj4gQ2M6IFRoaWVycnkgUmVkaW5nIDx0aGllcnJ5
+LnJlZGluZ0BnbWFpbC5jb20+DQo+PiBDYzogTWlra28gUGVydHR1bmVuIDxtcGVydHR1bmVu
+QG52aWRpYS5jb20+DQo+PiBDYzogZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0K
+Pj4gQ2M6IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4+IENjOiBsaW51eC1hcm0t
+a2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4+IENjOiBsaW51eC1zYW1zdW5nLXNvY0B2
+Z2VyLmtlcm5lbC5vcmcNCj4+IENjOiBsaW51eC1hcm0tbXNtQHZnZXIua2VybmVsLm9yZw0K
+Pj4gQ2M6IGZyZWVkcmVub0BsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4+IENjOiBhbWQtZ2Z4
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPj4gQ2M6IGxpbnV4LXRlZ3JhQHZnZXIua2VybmVs
+Lm9yZw0KPj4gQ2M6IGRyaS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4+IENjOiA8
+c3RhYmxlQHZnZXIua2VybmVsLm9yZz4gIyB2NS4yKw0KPiANCj4gV2hpbGUgaXQncyB0cnVl
+IHRoYXQgdGhlIGJ1dCB3YXMgaW50cm9kdWNlZCBieSBjb21taXQgNmUzZjE3ZWU3M2Y3IGFu
+ZCB0aGF0DQo+IGxhbmRlZCBpbiB2NS4yLCBJIHdvbmRlciBpZiB0aGlzIHBhdGNoIGNvdWxk
+IGV2ZW4gYmUgYXBwbGllZCB0byBzdWNoIG9sZGVycw0KPiBMaW51eCB2ZXJzaW9ucy4gUHJv
+YmFibHkgaW4gcHJhY3RpY2UgaXQgd291bGQgYmUgYXQgbW9zdCBiYWNrcG9ydGVkIHRvDQo+
+IHY2LjIsIHdoaWNoIGlzIHRoZSByZWxlYXNlIHRoYXQgZXhwb3NlZCB0aGUgYnVnIGZvciB0
+aGUgYW1kZ3B1IGRyaXZlci4NCg0KTm8gaWRlYS4gVGhlIGZpeCBsb29rcyBzaW1wbGUgZW5v
+dWdoLCBidXQgYSBsb3QgaGFzIGNoYW5nZWQgaW4gdGhlIA0Kc3Vycm91bmRpbmcgY29kZS4N
+Cg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KPiANCj4gWW91ciBleHBsYW5hdGlvbiBtYWtl
+cyBzZW5zZSB0byBtZSBhbmQgdGhlIHBhdGNoIGxvb2tzIGdvb2QuDQo+IA0KPiBSZXZpZXdl
+ZC1ieTogSmF2aWVyIE1hcnRpbmV6IENhbmlsbGFzIDxqYXZpZXJtQHJlZGhhdC5jb20+DQo+
+IA0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVy
+DQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCkZyYW5rZW5zdHJhc3Nl
+IDE0NiwgOTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcg
+TXllcnMsIEFuZHJldyBNY0RvbmFsZCwgQm91ZGllbiBNb2VybWFuDQpIUkIgMzY4MDkgKEFH
+IE51ZXJuYmVyZykNCg==
 
+--------------ogGQXvUxAG6vOXW98TdFWf32--
+
+--------------1vdugXBSagH09XaDcfo6AQRC
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSr1loFAwAAAAAACgkQlh/E3EQov+Dk
+OA//Urw1SwmtNCQyIjfKuDxewZlClwKMSRvtLW4DYNyyCykiwPNcRVVWytSlEuLztlk+njoelgSZ
+4vJlkj1lm7p23KkKdGKI4x+i0LQcp46BqLbI9zmflh2bLaMigL5NqbddhHMZE/nkYmiTu0OSqhcZ
+cLpYSd/hBD4/Ix+nBIWgwoaqyYwljO+WySPyveymijVNKwhCF5SDQUfbwiE/2cfAjKR0EwyAF+xV
+S6unB8SWXb40QXPEQIUHIqs2c2Iww4fmI54AcuTnHx/8YjZdm0VQhGt99yAIgx3tsjaXfyKxgFRY
+UdMzv1D3rnzNMyO4Sa1rw7LRQKdLUxI1i5ABmMBNGOaL2xrVkZf5WYOWM5AwWNybt0MvKpaQXCU2
+2lO2VXd8snO0xp7zmtoOYZufdYgAOBFiGuyiCRZr4Tx8eddiQERK1hFPMb002GG1PrnSfcFQ37ta
+qy6iCBUGUMzu0blDBG+9G4/Pj69sjB05P/az3BKx5oO0Dc5lLjjxLuywl8ZumvwzuDv2POrtHsJM
+C81wrSo42y8B7Pz81r9oCJW+JY1LC9J0O0kszjzqeoiHJSi6q4xYmKUkANQ93Sh3XQs3w0crZQi9
+1uiHQ3i9uhG7IgN5JUFy7UGckta4QpNewT+8WBv86N+O0KbwnaOFNqs43hFVyTszaW7tZO2oMgL5
+Hes=
+=4IC+
+-----END PGP SIGNATURE-----
+
+--------------1vdugXBSagH09XaDcfo6AQRC--
