@@ -2,218 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3254174D28C
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 12:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A058074D25F
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 11:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232118AbjGJKBN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 06:01:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42372 "EHLO
+        id S230406AbjGJJ6Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 05:58:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231403AbjGJKAk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 06:00:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 736D226A3
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 02:58:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688983107;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        with ESMTP id S230239AbjGJJ5o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 05:57:44 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545C230D7;
+        Mon, 10 Jul 2023 02:54:17 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 31F6021EEF;
+        Mon, 10 Jul 2023 09:53:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1688982821; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XyjO7rBhUclhrrRCvtGKtbyfJKZVHucBecdHP85gxs0=;
-        b=RaEZKROMfdJvJgGQEGFGcJtsVLP3CiO2iiuY6VA3yNwPWjVOvzA9pCdvHcRwDtBMeXyfBm
-        +99hybonXB0oKyL3u0ghNd7gLA0ONrCFYhFUNuhHzdHvvw5e2BbnxSg+qVKu5C3OYkwRHU
-        LLlQqO7xFiDygIofHkvWlxQ/gIrBpts=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-21ZP0jC6N6iqgscLsrxyrg-1; Mon, 10 Jul 2023 05:52:16 -0400
-X-MC-Unique: 21ZP0jC6N6iqgscLsrxyrg-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-313c930ee0eso2254433f8f.0
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 02:52:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688982735; x=1691574735;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XyjO7rBhUclhrrRCvtGKtbyfJKZVHucBecdHP85gxs0=;
-        b=G51/R7JVjp5D6UBuyZPtOS4241wY8+tYzJtJwZVJOdAQXD9SziwMwzrNyT/93HfM1J
-         n+j4iV3teoxnqZrmmrqhzWuAEQShZ+M0Wch+0Y/K3l2l7CkOfu0d0tE4wS5ERdd/V1Lc
-         Thyyh+/R7qmeX+s2DsQivZgxmllLI0naCrQJWe9DcnV4GYd9fc0xtCNNuTZNdk+RuZ84
-         ta2XM9/qh5mTC8ueZC2fLNGFT0GG8wy+BxVFvwvzPYL71GOIY8Bkoh2C6dCRq2Txog/f
-         4ErkHFrThQ7SOA0sK/HJF2A0SWUq74tCHHtT1Q+3Wqn4Q6S9lUOVq6Y/gPsAIvU2m3rp
-         W8gg==
-X-Gm-Message-State: ABy/qLamrune1n/tU6YRuOC3zDBammdxYsIApSywiFM6572DA5VWtlsn
-        DfDuQK8ocXWbmWpadhlRsSuxSXzRXaOBq161rDQyTmabEfT2mVPubKwOte4taabpqBq0z2YKczY
-        OQu7jPLb/8tPvXJPu
-X-Received: by 2002:a05:6000:124a:b0:314:2b0a:dabe with SMTP id j10-20020a056000124a00b003142b0adabemr10425985wrx.30.1688982735480;
-        Mon, 10 Jul 2023 02:52:15 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHaQ/+IdPxGPjymocfW9cv9tWGipFqf6RaAd0AZG/bTyXsaB00iseKuCq4q/hOVcXPiHegqow==
-X-Received: by 2002:a05:6000:124a:b0:314:2b0a:dabe with SMTP id j10-20020a056000124a00b003142b0adabemr10425963wrx.30.1688982734861;
-        Mon, 10 Jul 2023 02:52:14 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id z13-20020a5d4d0d000000b002fb60c7995esm11286630wrt.8.2023.07.10.02.52.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jul 2023 02:52:14 -0700 (PDT)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>, noralf@tronnes.org
-Cc:     dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Moritz Duge <MoritzDuge@kolahilft.de>,
-        Torsten Krah <krah.tm@gmail.com>,
-        Paul Schyska <pschyska@gmail.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        David Airlie <airlied@gmail.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Inki Dae <inki.dae@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        freedreno@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        linux-tegra@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/client: Send hotplug event after registering a client
-In-Reply-To: <20230710091029.27503-1-tzimmermann@suse.de>
-References: <20230710091029.27503-1-tzimmermann@suse.de>
-Date:   Mon, 10 Jul 2023 11:52:13 +0200
-Message-ID: <87edlghz5e.fsf@minerva.mail-host-address-is-not-set>
+        bh=JhQYnd3zFReOIgvPmbBH7euJHgaFU8/SGouVRAGqJOg=;
+        b=xz6F2AKCngY8+kyCyaqPfEcdl/9pcM3qK2zlApTNfnsSSmRxVEU3rLnQFOr3wfH41rieYI
+        sRPfjnTsRQvKqbS2pAKF3aE+T5KN5gJtoCEawvbbRLMT/seMfiZl2ioO8QBxA7eakSAUlQ
+        +z0vApCAa2POQfyJ1ZHAR018OicX224=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1688982821;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JhQYnd3zFReOIgvPmbBH7euJHgaFU8/SGouVRAGqJOg=;
+        b=KxXe2n8vEXVhRArC1cbLwHAKno2ehlhMjN3Il+S6ofIu33K36fXvi3jmMrt+MwzWVdECPY
+        zFnWDd0kaYFTx7Dw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5A11213A05;
+        Mon, 10 Jul 2023 09:53:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id wcRGFSTVq2SsNAAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Mon, 10 Jul 2023 09:53:40 +0000
+Message-ID: <71313e6c-79d5-3ff7-981e-f7675aee0a5c@suse.cz>
+Date:   Mon, 10 Jul 2023 11:53:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] kasan, slub: fix HW_TAGS zeroing with slub_debug
+To:     andrey.konovalov@linux.dev, Marco Elver <elver@google.com>,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     Andrey Konovalov <andreyknvl@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        kasan-dev@googlegroups.com,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Peter Collingbourne <pcc@google.com>,
+        Feng Tang <feng.tang@intel.com>, stable@vger.kernel.org,
+        Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        Andrey Konovalov <andreyknvl@google.com>
+References: <678ac92ab790dba9198f9ca14f405651b97c8502.1688561016.git.andreyknvl@google.com>
+Content-Language: en-US
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <678ac92ab790dba9198f9ca14f405651b97c8502.1688561016.git.andreyknvl@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE,
+        T_SPF_HELO_TEMPERROR autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+On 7/5/23 14:44, andrey.konovalov@linux.dev wrote:
+> From: Andrey Konovalov <andreyknvl@google.com>
+> 
+> Commit 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated
+> kmalloc space than requested") added precise kmalloc redzone poisoning
+> to the slub_debug functionality.
+> 
+> However, this commit didn't account for HW_TAGS KASAN fully initializing
+> the object via its built-in memory initialization feature. Even though
+> HW_TAGS KASAN memory initialization contains special memory initialization
+> handling for when slub_debug is enabled, it does not account for in-object
+> slub_debug redzones. As a result, HW_TAGS KASAN can overwrite these
+> redzones and cause false-positive slub_debug reports.
+> 
+> To fix the issue, avoid HW_TAGS KASAN memory initialization when slub_debug
+> is enabled altogether. Implement this by moving the __slub_debug_enabled
+> check to slab_post_alloc_hook. Common slab code seems like a more
+> appropriate place for a slub_debug check anyway.
+> 
+> Fixes: 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated kmalloc space than requested")
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Mark Rutland <mark.rutland@arm.com>
+> Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
 
-Hello Thomas,
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-> Generate a hotplug event after registering a client to allow the
-> client to configure its display. Remove the hotplug calls from the
-> existing clients for fbdev emulation. This change fixes a concurrency
-> bug between registering a client and receiving events from the DRM
-> core. The bug is present in the fbdev emulation of all drivers.
->
-> The fbdev emulation currently generates a hotplug event before
-> registering the client to the device. For each new output, the DRM
-> core sends an additional hotplug event to each registered client.
->
-> If the DRM core detects first output between sending the artificial
-> hotplug and registering the device, the output's hotplug event gets
-> lost. If this is the first output, the fbdev console display remains
-> dark. This has been observed with amdgpu and fbdev-generic.
->
-> Fix this by adding hotplug generation directly to the client's
-> register helper drm_client_register(). Registering the client and
-> receiving events are serialized by struct drm_device.clientlist_mutex.
-> So an output is either configured by the initial hotplug event, or
-> the client has already been registered.
->
-> The bug was originally added in commit 6e3f17ee73f7 ("drm/fb-helper:
-> generic: Call drm_client_add() after setup is done"), in which adding
-> a client and receiving a hotplug event switched order. It was hidden,
-> as most hardware and drivers have at least on static output configured.
-> Other drivers didn't use the internal DRM client or still had struct
-> drm_mode_config_funcs.output_poll_changed set. That callback handled
-> hotplug events as well. After not setting the callback in amdgpu in
-> commit 0e3172bac3f4 ("drm/amdgpu: Don't set struct
-> drm_driver.output_poll_changed"), amdgpu did not show a framebuffer
-> console if output events got lost. The bug got copy-pasted from
-> fbdev-generic into the other fbdev emulation.
->
-> Reported-by: Moritz Duge <MoritzDuge@kolahilft.de>
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2649
-
-Aren't you missing a Fixes: for 0e3172bac3f4 too? Since that's the commit
-that unmasked the bug for amdgpu, IMO that is the most important to list.
-
-> Fixes: 6e3f17ee73f7 ("drm/fb-helper: generic: Call drm_client_add() after=
- setup is done")
-> Fixes: 8ab59da26bc0 ("drm/fb-helper: Move generic fbdev emulation into se=
-parate source file")
-> Fixes: b79fe9abd58b ("drm/fbdev-dma: Implement fbdev emulation for GEM DM=
-A helpers")
-> Fixes: 63c381552f69 ("drm/armada: Implement fbdev emulation as in-kernel =
-client")
-> Fixes: 49953b70e7d3 ("drm/exynos: Implement fbdev emulation as in-kernel =
-client")
-> Fixes: 8f1aaccb04b7 ("drm/gma500: Implement client-based fbdev emulation")
-> Fixes: 940b869c2f2f ("drm/msm: Implement fbdev emulation as in-kernel cli=
-ent")
-> Fixes: 9e69bcd88e45 ("drm/omapdrm: Implement fbdev emulation as in-kernel=
- client")
-> Fixes: e317a69fe891 ("drm/radeon: Implement client-based fbdev emulation")
-> Fixes: 71ec16f45ef8 ("drm/tegra: Implement fbdev emulation as in-kernel c=
-lient")
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Tested-by: Moritz Duge <MoritzDuge@kolahilft.de>
-> Tested-by: Torsten Krah <krah.tm@gmail.com>
-> Tested-by: Paul Schyska <pschyska@gmail.com>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Noralf Tr=C3=B8nnes <noralf@tronnes.org>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Inki Dae <inki.dae@samsung.com>
-> Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
-> Cc: Kyungmin Park <kyungmin.park@samsung.com>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-> Cc: Rob Clark <robdclark@gmail.com>
-> Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: "Christian K=C3=B6nig" <christian.koenig@amd.com>
-> Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Mikko Perttunen <mperttunen@nvidia.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: linux-arm-msm@vger.kernel.org
-> Cc: freedreno@lists.freedesktop.org
-> Cc: amd-gfx@lists.freedesktop.org
-> Cc: linux-tegra@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v5.2+
-
-While it's true that the but was introduced by commit 6e3f17ee73f7 and that
-landed in v5.2, I wonder if this patch could even be applied to such olders
-Linux versions. Probably in practice it would be at most backported to
-v6.2, which is the release that exposed the bug for the amdgpu driver.
-
-Your explanation makes sense to me and the patch looks good.
-
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-
---=20
-Best regards,
-
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+Thanks!
 
