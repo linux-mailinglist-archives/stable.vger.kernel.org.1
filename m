@@ -2,169 +2,364 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB57574D0B4
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 10:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A835F74D119
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 11:10:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbjGJI6Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 04:58:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34316 "EHLO
+        id S231248AbjGJJKk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 05:10:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbjGJI6X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 04:58:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE763C3
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 01:57:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688979454;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=4I42qqYNK+3f/TkWFLyU5fbfqVFxIhAvdnLjbRxGdNg=;
-        b=SabUytrPd7SXKagxKVfbwj0tm6WidYaujsDhZW03A5ZDbRUpm0P6J+TJ0di3wl22SGYTIA
-        QT2UfSX6tmpas4cse/2xcixTjjOQLBjuHRG976pbvgryHJjXEzs0wUY6bO9JVXk6SyfhTx
-        Lk5BSNQw+d4r8Eet3ly3nP8Rfv2MAzk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-265-lyC8tM4LMfmnyd-QogaEKg-1; Mon, 10 Jul 2023 04:57:30 -0400
-X-MC-Unique: lyC8tM4LMfmnyd-QogaEKg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S231189AbjGJJKg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 05:10:36 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68901FA;
+        Mon, 10 Jul 2023 02:10:34 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 044B28028B2;
-        Mon, 10 Jul 2023 08:57:30 +0000 (UTC)
-Received: from ovpn-8-31.pek2.redhat.com (ovpn-8-33.pek2.redhat.com [10.72.8.33])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id ACCEB4CD0CD;
-        Mon, 10 Jul 2023 08:57:20 +0000 (UTC)
-Date:   Mon, 10 Jul 2023 16:57:13 +0800
-From:   Ming Lei <ming.lei@redhat.com>
-To:     Sagi Grimberg <sagi@grimberg.me>
-Cc:     Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>,
-        linux-nvme@lists.infradead.org, Yi Zhang <yi.zhang@redhat.com>,
-        Chunguang Xu <brookxu.cn@gmail.com>, stable@vger.kernel.org,
-        ming.lei@redhat.com
-Subject: Re: [PATCH] nvme: mark ctrl as DEAD if removing from error recovery
-Message-ID: <ZKvH6cO+XnGgQQyc@ovpn-8-31.pek2.redhat.com>
-References: <20230628031234.1916897-1-ming.lei@redhat.com>
- <8dc6852e-ee90-ed64-1d3e-9ecdc9f4473b@grimberg.me>
- <148a3e62-939f-a74f-8075-8f37cda102ab@grimberg.me>
- <ZKt0wSHqrw3W88UQ@ovpn-8-21.pek2.redhat.com>
- <b11743c1-6c58-5f7a-8dc9-2a1a065835d0@grimberg.me>
+        by smtp-out2.suse.de (Postfix) with ESMTPS id DFECC1F747;
+        Mon, 10 Jul 2023 09:10:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1688980231; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=l+p4EX1FVzBOQoGOcOf386rIUw6gZjfldInPfSHEuhU=;
+        b=UMKbcCVa8pp9s0yYj4q8apZvI7ylWmCoLh0IThmzNRKXQi7SiSsBr7bN7jOJHtZEvy0BUg
+        uUZej/nY1hx6BETxDiC8aX+IJWSwWpKVefJsOxILJTfLMKtxlY6M6ggZSC5EredHBk9i9w
+        whqHI8xcChQH8XtITKAyqnPM04/SHFw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1688980231;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=l+p4EX1FVzBOQoGOcOf386rIUw6gZjfldInPfSHEuhU=;
+        b=KT0j+kZdbc+QU6qi5+FrO5UOv4k28KucU74/0t/x9ml5MLj0RLQDowMbs2qB4t92R88HYj
+        vrZpWorkcTJ7IxAg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 47F4F1361C;
+        Mon, 10 Jul 2023 09:10:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id ROV0EAfLq2Q1IAAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Mon, 10 Jul 2023 09:10:31 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     javierm@redhat.com, noralf@tronnes.org
+Cc:     dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Moritz Duge <MoritzDuge@kolahilft.de>,
+        Torsten Krah <krah.tm@gmail.com>,
+        Paul Schyska <pschyska@gmail.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        David Airlie <airlied@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Inki Dae <inki.dae@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH] drm/client: Send hotplug event after registering a client
+Date:   Mon, 10 Jul 2023 11:10:17 +0200
+Message-ID: <20230710091029.27503-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b11743c1-6c58-5f7a-8dc9-2a1a065835d0@grimberg.me>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 11:23:44AM +0300, Sagi Grimberg wrote:
-> 
-> > > > > namespace's request queue is frozen and quiesced during error recovering,
-> > > > > writeback IO is blocked in bio_queue_enter(), so fsync_bdev() <-
-> > > > > del_gendisk()
-> > > > > can't move on, and causes IO hang. Removal could be from sysfs, hard
-> > > > > unplug or error handling.
-> > > > > 
-> > > > > Fix this kind of issue by marking controller as DEAD if removal breaks
-> > > > > error recovery.
-> > > > > 
-> > > > > This ways is reasonable too, because controller can't be recovered any
-> > > > > more after being removed.
-> > > > 
-> > > > This looks fine to me Ming,
-> > > > Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-> > > > 
-> > > > 
-> > > > I still want your patches for tcp/rdma that move the freeze.
-> > > > If you are not planning to send them, I swear I will :)
-> > > 
-> > > Ming, can you please send the tcp/rdma patches that move the
-> > > freeze? As I said before, it addresses an existing issue with
-> > > requests unnecessarily blocked on a frozen queue instead of
-> > > failing over.
-> > 
-> > Any chance to fix the current issue in one easy(backportable) way[1] first?
-> 
-> There is, you suggested one. And I'm requesting you to send a patch for
-> it.
+Generate a hotplug event after registering a client to allow the
+client to configure its display. Remove the hotplug calls from the
+existing clients for fbdev emulation. This change fixes a concurrency
+bug between registering a client and receiving events from the DRM
+core. The bug is present in the fbdev emulation of all drivers.
 
-The patch is the one pointed by link [1], and it still can be applied on current
-linus tree.
+The fbdev emulation currently generates a hotplug event before
+registering the client to the device. For each new output, the DRM
+core sends an additional hotplug event to each registered client.
 
-https://lore.kernel.org/linux-nvme/20230629064818.2070586-1-ming.lei@redhat.com/
+If the DRM core detects first output between sending the artificial
+hotplug and registering the device, the output's hotplug event gets
+lost. If this is the first output, the fbdev console display remains
+dark. This has been observed with amdgpu and fbdev-generic.
 
-> 
-> > 
-> > All previous discussions on delay freeze[2] are generic, which apply on all
-> > nvme drivers, not mention this error handling difference causes extra maintain
-> > burden. I still suggest to convert all drivers in same way, and will work
-> > along the approach[1] aiming for v6.6.
-> 
-> But we obviously hit a difference in expectations from different
-> drivers. In tcp/rdma there is currently an _existing_ bug, where
-> we freeze the queue on error recovery, and unfreeze only after we
-> reconnect. In the meantime, requests can be blocked on the frozen
-> request queue and not failover like they should.
-> 
-> In fabrics the delta between error recovery and reconnect can (and
-> often will be) minutes or more. Hence I request that we solve _this_
-> issue which is addressed by moving the freeze to the reconnect path.
-> 
-> I personally think that pci should do this as well, and at least
-> dual-ported multipath pci devices would prefer instant failover
-> than after a full reset cycle. But Keith disagrees and I am not going to
-> push for it.
-> 
-> Regardless of anything we do in pci, the tcp/rdma transport
-> freeze-blocking-failover _must_ be addressed.
+Fix this by adding hotplug generation directly to the client's
+register helper drm_client_register(). Registering the client and
+receiving events are serialized by struct drm_device.clientlist_mutex.
+So an output is either configured by the initial hotplug event, or
+the client has already been registered.
 
-It is one generic issue, freeze/unfreeze has to be paired strictly
-for every driver.
+The bug was originally added in commit 6e3f17ee73f7 ("drm/fb-helper:
+generic: Call drm_client_add() after setup is done"), in which adding
+a client and receiving a hotplug event switched order. It was hidden,
+as most hardware and drivers have at least on static output configured.
+Other drivers didn't use the internal DRM client or still had struct
+drm_mode_config_funcs.output_poll_changed set. That callback handled
+hotplug events as well. After not setting the callback in amdgpu in
+commit 0e3172bac3f4 ("drm/amdgpu: Don't set struct
+drm_driver.output_poll_changed"), amdgpu did not show a framebuffer
+console if output events got lost. The bug got copy-pasted from
+fbdev-generic into the other fbdev emulation.
 
-For any nvme driver, the inbalance can happen when error handling
-is involved, that is why I suggest to fix the issue in one generic
-way.
+Reported-by: Moritz Duge <MoritzDuge@kolahilft.de>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2649
+Fixes: 6e3f17ee73f7 ("drm/fb-helper: generic: Call drm_client_add() after setup is done")
+Fixes: 8ab59da26bc0 ("drm/fb-helper: Move generic fbdev emulation into separate source file")
+Fixes: b79fe9abd58b ("drm/fbdev-dma: Implement fbdev emulation for GEM DMA helpers")
+Fixes: 63c381552f69 ("drm/armada: Implement fbdev emulation as in-kernel client")
+Fixes: 49953b70e7d3 ("drm/exynos: Implement fbdev emulation as in-kernel client")
+Fixes: 8f1aaccb04b7 ("drm/gma500: Implement client-based fbdev emulation")
+Fixes: 940b869c2f2f ("drm/msm: Implement fbdev emulation as in-kernel client")
+Fixes: 9e69bcd88e45 ("drm/omapdrm: Implement fbdev emulation as in-kernel client")
+Fixes: e317a69fe891 ("drm/radeon: Implement client-based fbdev emulation")
+Fixes: 71ec16f45ef8 ("drm/tegra: Implement fbdev emulation as in-kernel client")
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Tested-by: Moritz Duge <MoritzDuge@kolahilft.de>
+Tested-by: Torsten Krah <krah.tm@gmail.com>
+Tested-by: Paul Schyska <pschyska@gmail.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Noralf Trønnes <noralf@tronnes.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Inki Dae <inki.dae@samsung.com>
+Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
+Cc: Kyungmin Park <kyungmin.park@samsung.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Mikko Perttunen <mperttunen@nvidia.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: freedreno@lists.freedesktop.org
+Cc: amd-gfx@lists.freedesktop.org
+Cc: linux-tegra@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.2+
+---
+ drivers/gpu/drm/armada/armada_fbdev.c     |  4 ----
+ drivers/gpu/drm/drm_client.c              | 21 +++++++++++++++++++++
+ drivers/gpu/drm/drm_fbdev_dma.c           |  4 ----
+ drivers/gpu/drm/drm_fbdev_generic.c       |  4 ----
+ drivers/gpu/drm/exynos/exynos_drm_fbdev.c |  4 ----
+ drivers/gpu/drm/gma500/fbdev.c            |  4 ----
+ drivers/gpu/drm/msm/msm_fbdev.c           |  4 ----
+ drivers/gpu/drm/omapdrm/omap_fbdev.c      |  4 ----
+ drivers/gpu/drm/radeon/radeon_fbdev.c     |  4 ----
+ drivers/gpu/drm/tegra/fbdev.c             |  4 ----
+ 10 files changed, 21 insertions(+), 36 deletions(-)
 
-> 
-> So can you please submit a patch for each? Please phrase it as what
-> it is, a bug fix, so stable kernels can pick it up. And try to keep
-> it isolated to _only_ the freeze change so that it is easily
-> backportable.
-
-The patch of "[PATCH V2] nvme: mark ctrl as DEAD if removing from error
-recovery" can fix them all(include nvme tcp/fc's issue), and can be backported.
-
-But as we discussed, we still want to call freeze/unfreeze in pair, and
-I also suggest the following approach[2], which isn't good to backport:
-
-	1) moving freeze into reset
-	
-	2) during resetting
-	
-	- freeze NS queues
-	- unquiesce NS queues
-	- nvme_wait_freeze()
-	- update_nr_hw_queues
-	- unfreeze NS queues
-	
-	3) meantime changes driver's ->queue_rq() in case that ctrl state is NVME_CTRL_CONNECTING,
-	
-	- if the request is FS IO with data, re-submit all bios of this request, and free the request
-	
-	- otherwise, fail the request
-
-
-[2] https://lore.kernel.org/linux-block/5bddeeb5-39d2-7cec-70ac-e3c623a8fca6@grimberg.me/T/#mfc96266b63eec3e4154f6843be72e5186a4055dc
-
-
-thanks,
-Ming
+diff --git a/drivers/gpu/drm/armada/armada_fbdev.c b/drivers/gpu/drm/armada/armada_fbdev.c
+index 3943e89cc06c..e40a95e51785 100644
+--- a/drivers/gpu/drm/armada/armada_fbdev.c
++++ b/drivers/gpu/drm/armada/armada_fbdev.c
+@@ -209,10 +209,6 @@ void armada_fbdev_setup(struct drm_device *dev)
+ 		goto err_drm_client_init;
+ 	}
+ 
+-	ret = armada_fbdev_client_hotplug(&fbh->client);
+-	if (ret)
+-		drm_dbg_kms(dev, "client hotplug ret=%d\n", ret);
+-
+ 	drm_client_register(&fbh->client);
+ 
+ 	return;
+diff --git a/drivers/gpu/drm/drm_client.c b/drivers/gpu/drm/drm_client.c
+index f6292ba0e6fc..037e36f2049c 100644
+--- a/drivers/gpu/drm/drm_client.c
++++ b/drivers/gpu/drm/drm_client.c
+@@ -122,13 +122,34 @@ EXPORT_SYMBOL(drm_client_init);
+  * drm_client_register() it is no longer permissible to call drm_client_release()
+  * directly (outside the unregister callback), instead cleanup will happen
+  * automatically on driver unload.
++ *
++ * Registering a client generates a hotplug event that allows the client
++ * to set up its display from pre-existing outputs. The client must have
++ * initialized its state to able to handle the hotplug event successfully.
+  */
+ void drm_client_register(struct drm_client_dev *client)
+ {
+ 	struct drm_device *dev = client->dev;
++	int ret;
+ 
+ 	mutex_lock(&dev->clientlist_mutex);
+ 	list_add(&client->list, &dev->clientlist);
++
++	if (client->funcs && client->funcs->hotplug) {
++		/*
++		 * Perform an initial hotplug event to pick up the
++		 * display configuration for the client. This step
++		 * has to be performed *after* registering the client
++		 * in the list of clients, or a concurrent hotplug
++		 * event might be lost; leaving the display off.
++		 *
++		 * Hold the clientlist_mutex as for a regular hotplug
++		 * event.
++		 */
++		ret = client->funcs->hotplug(client);
++		if (ret)
++			drm_dbg_kms(dev, "client hotplug ret=%d\n", ret);
++	}
+ 	mutex_unlock(&dev->clientlist_mutex);
+ }
+ EXPORT_SYMBOL(drm_client_register);
+diff --git a/drivers/gpu/drm/drm_fbdev_dma.c b/drivers/gpu/drm/drm_fbdev_dma.c
+index 8217f1ddc007..f9b1f7cd31b7 100644
+--- a/drivers/gpu/drm/drm_fbdev_dma.c
++++ b/drivers/gpu/drm/drm_fbdev_dma.c
+@@ -248,10 +248,6 @@ void drm_fbdev_dma_setup(struct drm_device *dev, unsigned int preferred_bpp)
+ 		goto err_drm_client_init;
+ 	}
+ 
+-	ret = drm_fbdev_dma_client_hotplug(&fb_helper->client);
+-	if (ret)
+-		drm_dbg_kms(dev, "client hotplug ret=%d\n", ret);
+-
+ 	drm_client_register(&fb_helper->client);
+ 
+ 	return;
+diff --git a/drivers/gpu/drm/drm_fbdev_generic.c b/drivers/gpu/drm/drm_fbdev_generic.c
+index 98ae703848a0..b9343fb6cf13 100644
+--- a/drivers/gpu/drm/drm_fbdev_generic.c
++++ b/drivers/gpu/drm/drm_fbdev_generic.c
+@@ -339,10 +339,6 @@ void drm_fbdev_generic_setup(struct drm_device *dev, unsigned int preferred_bpp)
+ 		goto err_drm_client_init;
+ 	}
+ 
+-	ret = drm_fbdev_generic_client_hotplug(&fb_helper->client);
+-	if (ret)
+-		drm_dbg_kms(dev, "client hotplug ret=%d\n", ret);
+-
+ 	drm_client_register(&fb_helper->client);
+ 
+ 	return;
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_fbdev.c b/drivers/gpu/drm/exynos/exynos_drm_fbdev.c
+index fdf65587f1fe..226310c765d8 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_fbdev.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_fbdev.c
+@@ -215,10 +215,6 @@ void exynos_drm_fbdev_setup(struct drm_device *dev)
+ 	if (ret)
+ 		goto err_drm_client_init;
+ 
+-	ret = exynos_drm_fbdev_client_hotplug(&fb_helper->client);
+-	if (ret)
+-		drm_dbg_kms(dev, "client hotplug ret=%d\n", ret);
+-
+ 	drm_client_register(&fb_helper->client);
+ 
+ 	return;
+diff --git a/drivers/gpu/drm/gma500/fbdev.c b/drivers/gpu/drm/gma500/fbdev.c
+index 955cbe9f05a7..054426549fc6 100644
+--- a/drivers/gpu/drm/gma500/fbdev.c
++++ b/drivers/gpu/drm/gma500/fbdev.c
+@@ -328,10 +328,6 @@ void psb_fbdev_setup(struct drm_psb_private *dev_priv)
+ 		goto err_drm_fb_helper_unprepare;
+ 	}
+ 
+-	ret = psb_fbdev_client_hotplug(&fb_helper->client);
+-	if (ret)
+-		drm_dbg_kms(dev, "client hotplug ret=%d\n", ret);
+-
+ 	drm_client_register(&fb_helper->client);
+ 
+ 	return;
+diff --git a/drivers/gpu/drm/msm/msm_fbdev.c b/drivers/gpu/drm/msm/msm_fbdev.c
+index b933a85420f6..bf1e17dc4550 100644
+--- a/drivers/gpu/drm/msm/msm_fbdev.c
++++ b/drivers/gpu/drm/msm/msm_fbdev.c
+@@ -246,10 +246,6 @@ void msm_fbdev_setup(struct drm_device *dev)
+ 		goto err_drm_fb_helper_unprepare;
+ 	}
+ 
+-	ret = msm_fbdev_client_hotplug(&helper->client);
+-	if (ret)
+-		drm_dbg_kms(dev, "client hotplug ret=%d\n", ret);
+-
+ 	drm_client_register(&helper->client);
+ 
+ 	return;
+diff --git a/drivers/gpu/drm/omapdrm/omap_fbdev.c b/drivers/gpu/drm/omapdrm/omap_fbdev.c
+index b7ccce0704a3..fe6639c1cdf3 100644
+--- a/drivers/gpu/drm/omapdrm/omap_fbdev.c
++++ b/drivers/gpu/drm/omapdrm/omap_fbdev.c
+@@ -318,10 +318,6 @@ void omap_fbdev_setup(struct drm_device *dev)
+ 
+ 	INIT_WORK(&fbdev->work, pan_worker);
+ 
+-	ret = omap_fbdev_client_hotplug(&helper->client);
+-	if (ret)
+-		drm_dbg_kms(dev, "client hotplug ret=%d\n", ret);
+-
+ 	drm_client_register(&helper->client);
+ 
+ 	return;
+diff --git a/drivers/gpu/drm/radeon/radeon_fbdev.c b/drivers/gpu/drm/radeon/radeon_fbdev.c
+index ab9c1abbac97..f941e2e7cae6 100644
+--- a/drivers/gpu/drm/radeon/radeon_fbdev.c
++++ b/drivers/gpu/drm/radeon/radeon_fbdev.c
+@@ -383,10 +383,6 @@ void radeon_fbdev_setup(struct radeon_device *rdev)
+ 		goto err_drm_client_init;
+ 	}
+ 
+-	ret = radeon_fbdev_client_hotplug(&fb_helper->client);
+-	if (ret)
+-		drm_dbg_kms(rdev->ddev, "client hotplug ret=%d\n", ret);
+-
+ 	drm_client_register(&fb_helper->client);
+ 
+ 	return;
+diff --git a/drivers/gpu/drm/tegra/fbdev.c b/drivers/gpu/drm/tegra/fbdev.c
+index e74d9be981c7..d042234e1807 100644
+--- a/drivers/gpu/drm/tegra/fbdev.c
++++ b/drivers/gpu/drm/tegra/fbdev.c
+@@ -225,10 +225,6 @@ void tegra_fbdev_setup(struct drm_device *dev)
+ 	if (ret)
+ 		goto err_drm_client_init;
+ 
+-	ret = tegra_fbdev_client_hotplug(&helper->client);
+-	if (ret)
+-		drm_dbg_kms(dev, "client hotplug ret=%d\n", ret);
+-
+ 	drm_client_register(&helper->client);
+ 
+ 	return;
+-- 
+2.41.0
 
