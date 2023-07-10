@@ -2,166 +2,203 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DC8574CC71
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 07:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F73A74CD32
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 08:38:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbjGJF4E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 01:56:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51116 "EHLO
+        id S229627AbjGJGim (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 02:38:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbjGJF4C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 01:56:02 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4776FA;
-        Sun,  9 Jul 2023 22:56:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1688968561;
-  x=1720504561;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=rp4glHhigZRbb6cFa6BDkXLq2b9n6Bw3j2Uwao/CflA=;
-  b=AqzCB6/tgYiM16NFxDCiMhcMngw5ZC+HduYHWrrIzU2t+6FgfuLcFUVT
-   up/kzb/m//M4llNW5y2oV2lfX1QDbp2B97B46y5plSQzDNusGrknWOUuV
-   9ZCjWXcRt7Qkpn7uCgdl8eyr7OGbPUXE6wbeKonLsBcS74e9a8RNslUig
-   V0BxUp49rKubxQygCihiniOcQoPcT8zWkq0QoaxiQV1iPc7P/B46t8lGP
-   iBRGPUz97K7cWvmmxCUtTf1eiMIfVjRjvy9NcTxOXZbySKyL8iIYjSvqw
-   FVIX3BcLEoceWU8GLavTLfYNZZriCHvxSq3xZZXb2Dgy79nFFz0tkAaxA
-   w==;
+        with ESMTP id S229586AbjGJGik (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 02:38:40 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2081.outbound.protection.outlook.com [40.107.220.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F7C98E
+        for <stable@vger.kernel.org>; Sun,  9 Jul 2023 23:38:39 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TlIYTJf4pEnOtZkZJ2o1ryrR0kCfeWX1uP6jmzNQF5fuVwYjlBocBRIW68tPwFPqrinfTTCsq7XSaze4DbugdDt+WLbIoWFhAq2sLhgAwjsvasnzl0SRwYk98CzO1I/BkmqfmDOrKqT5BvPig0zAMROr+TEscBI4/W/89e7I/5oc+G5JmqhWzAdt58393F++Q4AE/6/WZztHv0csLDLwpwZ+xnzW05tOyE4OAsne4NqmjIdm4i8WuQe6Hdrc3I/OxyiB04USiVmitploTudPKCrbRaTSrmzMx4/tvZSKAvQxUA0v3Bh+Hi2cYVHZDeSmjmcBXpPEALoX9aghKRJ8jg==
+ b=GhfEfLHPC6cN1vBO0WC0pXUDfRea2sX9nfJ292JTdxpoSeCI/ehzcx1SOrAIpHqnafkhArHcYMd9qc3AKAD0n5u0zhwP2GamTLye/Q4H2pLG75gb2xlOL818RYHZGaGZ/IjJTUiVw0CQQAFVSbijfRth2EjJx1ZhcDaiqKlIApXjrQqt0ttPpDX9sO2IRDWLZZdn4xZJu/2aew2e0DWvDKXt5m33USBOPPYpae8aDTc4gW+85dy/GnOOXWkgZdJdkSw6ItQ/9XC/j393ceSZeAmf1Msv4FWIh1rEcymHQ1X6OH03Ros1OWI/TMstwfjKv7D4dUNLt9jPWcHjAwZHjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rp4glHhigZRbb6cFa6BDkXLq2b9n6Bw3j2Uwao/CflA=;
- b=McOdcn3agpK0JNYFUUpjkejgb6MpmeUqVqh14iwTdM1qlF/SNg6oZr3RZT+svePNFn2vvyinb7GoTlfYuKVz366V9L171WgRn/IJ2lVSyv4Der1lzTucEIw5sJqAHZMofiJ/tNyg6Bc/eSlEfOocSkDvVgHWOI/QOyRwD69dKpUo8+5Qq1iVokNCeJr0hDJtwVIUHTkMuQlX6+aZAMpBjWAK2yQaKGEItQd824Xxq78qbTahinqfKWrMWXbbDeCVB4580Yl4A0wXtgXORAdMScXbVAlqpOLxihuu1A7nDlXw0+Qg8yl85CkKxthgTfJudyLPxM75XhaPZJolDMRqrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axis.com; dmarc=pass action=none header.from=axis.com;
- dkim=pass header.d=axis.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=axis365.onmicrosoft.com; s=selector2-axis365-onmicrosoft-com;
+ bh=XtQ4XJlvVaQS3fFVF1U9pjZfL4OZFttDqZTzTqO6nRA=;
+ b=gd9LR8u54iKm+4MMsx2d7inhxPn2arWoskYeZqZeFz+nlXfIKHdMjwrO8G/4zP1ledGRmD1uPlBflADlVQR0mnGpqwmAaa+MjPtDwJywucBj8knjxWtujF4iGZ5XfHY1Q+KnqgFuJOWkKMnSnuWp82QxBwQ2VV7S36KeYYENvJas6f8kYzbqR2vknoimUGBswJ5ktDtB78CKMw8HVTAUfN6zh44gYGZoL5Zq2COOsHlzO8lvsb9tXg7votJeggd4H6A4eT7N5hT2Yu9JYawwUaAn41TQ2nC+cmue/KlPsqUV+cGUOyAP0YIbH0wVVaIYRXLRXt9bTwY2X/Qy4b/Ifw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rp4glHhigZRbb6cFa6BDkXLq2b9n6Bw3j2Uwao/CflA=;
- b=xEKBOhLwY8hdzvyOWXHrDgaOcE1rq/qGrhOxusv/ILxdwTHn3IlWcjFMuKeg/J8QDvIzPUxVPBqznovpbVlUU0LpQNLrBVJDeKYov0KEq+Wt6xT7NV5wSn7fDHexnuHktbzhCYCe8Kdo4Kkbf+cBufqKt9Xkiea9Mx+HT7upQF4=
-From:   Vincent Whitchurch <Vincent.Whitchurch@axis.com>
-To:     "sashal@kernel.org" <sashal@kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
-        Vincent Whitchurch <Vincent.Whitchurch@axis.com>
-CC:     "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
-Subject: Re: Patch "mmc: core: Support zeroout using TRIM for eMMC" has been
- added to the 5.15-stable tree
-Thread-Topic: Patch "mmc: core: Support zeroout using TRIM for eMMC" has been
- added to the 5.15-stable tree
-Thread-Index: AQHZsixPTotQlax7nEKNGJ3WnWYVIK+yggaA
-Date:   Mon, 10 Jul 2023 05:55:54 +0000
-Message-ID: <9dae21814b7b73cc0db1b974a868c4ced62287fa.camel@axis.com>
-References: <20230709061209.483956-1-sashal@kernel.org>
-In-Reply-To: <20230709061209.483956-1-sashal@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.38.3-1+deb11u1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=axis.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAWPR02MB10280:EE_|GVXPR02MB8326:EE_
-x-ms-office365-filtering-correlation-id: 9a9f7ca7-6a19-4971-7200-08db810a52fe
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: L2rOIFbdUfSQ+0zNQvuPsVI2i+uxlXjjwa+sYdVKJotriBHhYJGinOJiy7XkgvkfZP9ubHOZxLCu+j7DnLUTMXzHj3bBJm13s+dDmHu0RRloE0Zjwe/guCCpjk4s9QC0g0sfzC9MSwViACp0zgHmpEYqKNrjfFsXxAJgAPRGfnV6JViENHscmQ6VkMLfK/XIR4ewDhYzoqx6dQW67UIizGLEjvgubm6SbDRAw5yBQxkNSbvCpYTJcAZC0DeTww/RNDuyb7DbBkL3q6q/P5kPmB/vNw+kMK9sjb9zHShPmYe93csCtAPMlBtkaoT6j8aPMEsP43AgYtELo/GiG1So5kQpYYyJDQBMgh5hs5BSNe0uW98gN6tzX7YkNSp0sSLWMB+fp6pFuzHRSu+5oiL7cCmFmf22YnsuWVGkwQ6qBbwymHqEZG4zPvem1kvwXA1eoIstSfK1UFB8yrqmPRDmutcGDfQeU+hZaY5CdA+vbQpApvRPsOdgInFhN6MYpTQJyHLmnLjTikQ/LPA2KfztMfkriM0fSoxwzE5o/73ybU+zaex04bT/OpeAcoHGqV5IMdmHmEPCAu+FjDIRyspPR5aabXEeUEy6PfbdrwIJUz8=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAWPR02MB10280.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(376002)(346002)(39850400004)(366004)(396003)(451199021)(41300700001)(5660300002)(110136005)(71200400001)(6486002)(2906002)(316002)(8676002)(8936002)(966005)(66556008)(66446008)(91956017)(4326008)(66476007)(64756008)(66946007)(76116006)(6512007)(36756003)(478600001)(86362001)(38100700002)(2616005)(122000001)(186003)(26005)(38070700005)(6506007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WXV4dkE3bGZMbU05UU8wU20yWUtQWjZkSkhBcXBNUmVHcHVCU1EwaXorWjhO?=
- =?utf-8?B?bXYxS0lnbU9xRkc5M3g4bm9mY3N5T3ROZ3FzL2ZHbzFNOFNYOTROVTJtQlhK?=
- =?utf-8?B?NXBUNHpCbG95WkVBV1orSEx0ZVljU1VLVDNpRE82VEplMkI1Z1hrdS96TWZq?=
- =?utf-8?B?N241UTcvbk5PMTM1RlNVM2s2VFQ0cVhRRTlPcjhqU0JBd3BFZ1VnUS91Syt4?=
- =?utf-8?B?RmVIZFArM3BMMVFkODVaaEN0czdSb3UwNllrWjFLMmYvY1VVeVBjWUVNUjRB?=
- =?utf-8?B?Y1pGSDBIRCtvVjlVZEFqdlFIWHF4bXhmMExraU5ENHpTeGFhU1JYU05MTjEx?=
- =?utf-8?B?NnVVb3BmSkVGM3IrQ1Qyakx4WE1lbU5DdWVaQTIvUWFSMktEWk0zemFaR3N5?=
- =?utf-8?B?RXJmWVc2SFhjcXdubGQ4UWNHbFp4WGdndHZZNFNXcDYvL0I0T0JXUUtGVFp1?=
- =?utf-8?B?NXFoK1FLTGd4L2xiUkJSdFZ5dVEyMXpQcGE5MFgyODRUTm0zbSs1akI0aHUv?=
- =?utf-8?B?dmdVSEhDMVNFR2RUeThWVmxIRGlOZ1kvTTdYcDRkUlhJZk9UZWV2cVl6dzgz?=
- =?utf-8?B?ZW5lWVhiUEg5RFgvWmZJQjlJSDZ5V01DNkVmbEtjbC9RS1c1S1YwUEd1c01V?=
- =?utf-8?B?VWM0aVQrakFPWDkzSjcyMjRoTUczMjRnTzNib21tbTdkQU5BOExYTHBYRjFh?=
- =?utf-8?B?WXFMT08wOFNrNnptQzNaZDZRNk1IQm0rK2wrMlVIQmx1bXg0azFsZnRrY25K?=
- =?utf-8?B?T1AvTlcySHpwZ3NXL2pFT0NsbU95ZHdZcjM1bzBkNXM1OVNzV09pVTEvakVH?=
- =?utf-8?B?ajVKYThUSnVNV3BveHJMV1lnTU0weSsxYnl3eFlEWXRqdTcvSDNkTHZZejlQ?=
- =?utf-8?B?WWpzY2hNYUkwY3RUeDQxd05wMWJRNHFNV2N0WnN3UUlRWlh5aE53SVh2V2Z4?=
- =?utf-8?B?NlVPZDQxM1ZISUlpbHd5WUFqZ2ZyMHRRRDRwYmFIL2VzM01YbGIwYkxVbEdr?=
- =?utf-8?B?S295WnZJbEJNRTR6S2JHczFyaThLNjE0dVdqaFFjc1lYaEwxREJPREJiMmJQ?=
- =?utf-8?B?amkrR0hiOWJ3Qi81WERZeTdVSEVib1hETDdFbVlxOG5DMkR0d3Y1Qjh5czZG?=
- =?utf-8?B?UCtBQ1B2RFBpL3pSbjV3VkJJL2dGb25kdDNvUTlzQlI3b2x6Q2FwSWx1M1Fh?=
- =?utf-8?B?ckd5bTNXVjhxMHFiZWZMeTFTam5ja1V3YTQ0cHVrbmVuL2tJaWhjeDREd0RK?=
- =?utf-8?B?a3NTN3ZpcEoxL2ZrNFNWdm9WRXh2ZlpSNXF5MUQ0Mkt1TEMzd21veCtvcVF2?=
- =?utf-8?B?Z3JrYy9LUG1HMEdYek5odVlLa3cvOVlUUVB6N2FHOHpWaFdUWFF4TmthSWUw?=
- =?utf-8?B?N1Z1ZXByVzVNdkxwUmViK3FGaFdzMldIWVpBTHVrNi9rb1VKYzVKdmE2dUxT?=
- =?utf-8?B?OHdTWTdpZlhWemIwdEhIUG83Zm9FajdXblJ1YWFMakVSSnFsUXR4YnBQcVRz?=
- =?utf-8?B?d2cyMCthNGo2alpCK3FCR0VjQVBvN3VUV25tV0RWcUpxRGcwOUM4QmxxNG56?=
- =?utf-8?B?L2dhU3cxSU9acUYzWTVVTFVYUThjNC96d29pYzRNU2hQRXYwUFhWRjFoaFJX?=
- =?utf-8?B?UWlIOGhnMDQwNGR0T1VoYWlwallXeXJsYkNUbDU2Ylcyc0N5VVJRZ1ZoM2x3?=
- =?utf-8?B?T0c3WjN2a3hWSzA0T3IyOFFrS3oza1hoa2ZiY3NZOWV5clFlSGhKejdSTW9W?=
- =?utf-8?B?dXBPUnpLeFp3aXJQbThrUzVITHVtQ05VcXhiNS9rTVhJdzFFQzJLWkRFRUpB?=
- =?utf-8?B?bFNrNmlXV0xpQ2t1anZSSjV6VEdGNnhZWTNiTGZLQzZPVUlrZ2F5VUV4OVkz?=
- =?utf-8?B?SC9EVEdyVmcvaDdNM1MxSGF2K3Y1eGZTc01sQXhQYzB0d0VhRmp2QVZPaUZ3?=
- =?utf-8?B?ZG8vdUJTS0ZxMjlvcWVVY2JNVVovM3pwZkczeElkYW5GdVBqcDdJVEIrTVNr?=
- =?utf-8?B?QVQzbWlLdlpUK2U1TmFFeDVHbnV0V0ZKc29nNjVGTGRyb28yZmlSSjdLQmo5?=
- =?utf-8?B?UzM3anE1cmtKZXo0cGxiWEFZSTFqdmcyNkVpKzJFTTRpUzRyRlJPc2hVOWpB?=
- =?utf-8?Q?RAAGlkuylWKs6ezoZyQLINwx3?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <62F5040E86BA014C8AFC3E41F1D633D7@eurprd02.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ bh=XtQ4XJlvVaQS3fFVF1U9pjZfL4OZFttDqZTzTqO6nRA=;
+ b=LZHEVAJnPpvVVl9zYihbbfuhAwiAskkW21VN6PqW2eq50VtxyY0QpyRXPo6RfKFznP00vC5BfQueszcUGR2v62i64ebV2dg3iLx+SmObE4kQN4BhSiAQpnhZc+RjnILpa+IKkxh+8yU/4bLF/D4DIbXW6KFbeGNHuziLSpYXgPs=
+Received: from BN9PR03CA0903.namprd03.prod.outlook.com (2603:10b6:408:107::8)
+ by MN2PR12MB4375.namprd12.prod.outlook.com (2603:10b6:208:24f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.31; Mon, 10 Jul
+ 2023 06:38:31 +0000
+Received: from BN8NAM11FT008.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:107:cafe::6c) by BN9PR03CA0903.outlook.office365.com
+ (2603:10b6:408:107::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30 via Frontend
+ Transport; Mon, 10 Jul 2023 06:38:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT008.mail.protection.outlook.com (10.13.177.95) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6588.18 via Frontend Transport; Mon, 10 Jul 2023 06:38:31 +0000
+Received: from guchchen-System-Product-Name.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 10 Jul 2023 01:38:28 -0500
+From:   Guchun Chen <guchun.chen@amd.com>
+To:     <amd-gfx@lists.freedesktop.org>, <alexander.deucher@amd.com>,
+        <hawking.zhang@amd.com>, <christian.koenig@amd.com>,
+        <dusica.milinkovic@amd.com>, <nikola.prica@amd.com>,
+        <flora.cui@amd.com>
+CC:     Guchun Chen <guchun.chen@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2] drm/amdgpu/vkms: relax timer deactivation by hrtimer_try_to_cancel
+Date:   Mon, 10 Jul 2023 14:38:08 +0800
+Message-ID: <20230710063808.1684914-1-guchun.chen@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAWPR02MB10280.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a9f7ca7-6a19-4971-7200-08db810a52fe
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jul 2023 05:55:54.4990
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT008:EE_|MN2PR12MB4375:EE_
+X-MS-Office365-Filtering-Correlation-Id: c84af51e-c900-4aea-67d7-08db81104708
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4Kd+sJzbW88I/kF9mxhglpnR5VozB5wvL0VqKSUoQVn3fvXWiqtnpyTUyBOQ1RPItgalpjG37D93Gt14YwTPgPJnohrPjtheeLBa4dxnDdpiM1aLmVyaCCO0vE8xXtCtU5Y3onnxifZoyzHPgzmsVq+jME/ncJiQOlIIBW2hYbJP1X4Eesq2mDXjiGTVat5FLR8Xyv4+nZq51vWPRz30+D3B//c80FMF5M+HteFXBqvoMVArk4XadgDNuE4+QVCI7LNcICMRpOEIn5wntLmQhyh81JacV7XKJnLr4LmU7Gt1cYeCHsuWGwl1TM3ncOdFhWrYtbURIbITk+G/hIRxNzc83NlWfHwah6FWcI0vlAbSNqWTzC3TEyFlcoH/VUStH8yKn6SxlHdd26OsKfqXBp8Zo7XMFpekOK6RYd3G5bqZYXn+TTsdUO7Pwb93xrQh97n6OauVe0CTcyGeu6POG+wOkmhNqBbfpXwCNfoTnSqUfMjUvQ20luJwMOXlkbYFIwdJoCt/jmA7cJKOkbpZiYZDawJKECAVbpVKWiMPq1GQ1U3EfupI9QM9EMI8/aPiQ4fL6m/Ki0hjeTCgs2Bed3AVSuZTInNCFEg32dH2MMYG99jGIH8tBL+bLwYrCwTPxQXbU8GIdWYq1TaouSvyulUUfJcLq5nxcFMrkEtmQNagFldTr5gaFxT+A8Okl5ZKzNsKjSvZ+zu6W9qIlnd0gboHzjWCxVwtxXsdw+hm5G9Abxi9HaIZzDG4Ozt9GAP5av0X47oU/ABlipeneJx74Njt0zFqsQsBFFpMqqINg0M=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(39860400002)(376002)(346002)(451199021)(40470700004)(36840700001)(46966006)(7696005)(478600001)(6666004)(110136005)(54906003)(36860700001)(47076005)(66574015)(426003)(2616005)(83380400001)(36756003)(40460700003)(86362001)(40480700001)(2906002)(70206006)(82310400005)(186003)(70586007)(1076003)(26005)(16526019)(336012)(81166007)(356005)(82740400003)(6636002)(4326008)(41300700001)(316002)(8936002)(8676002)(5660300002)(44832011)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2023 06:38:31.3781
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: C71DjC3fu8D39Ogzd0TnZI2XCMYWdOpmFBja5W6Xn1Cr67cRkz9i+n9i+xkDfBgf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR02MB8326
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-Network-Message-Id: c84af51e-c900-4aea-67d7-08db81104708
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT008.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4375
+X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-T24gU3VuLCAyMDIzLTA3LTA5IGF0IDAyOjEyIC0wNDAwLCBTYXNoYSBMZXZpbiB3cm90ZToNCj4g
-VGhpcyBpcyBhIG5vdGUgdG8gbGV0IHlvdSBrbm93IHRoYXQgSSd2ZSBqdXN0IGFkZGVkIHRoZSBw
-YXRjaCB0aXRsZWQNCj4gDQo+IMKgwqDCoMKgbW1jOiBjb3JlOiBTdXBwb3J0IHplcm9vdXQgdXNp
-bmcgVFJJTSBmb3IgZU1NQw0KPiANCj4gdG8gdGhlIDUuMTUtc3RhYmxlIHRyZWUgd2hpY2ggY2Fu
-IGJlIGZvdW5kIGF0Og0KPiDCoMKgwqDCoGh0dHA6Ly93d3cua2VybmVsLm9yZy9naXQvP3A9bGlu
-dXgva2VybmVsL2dpdC9zdGFibGUvc3RhYmxlLXF1ZXVlLmdpdDthPXN1bW1hcnkNCj4gDQo+IFRo
-ZSBmaWxlbmFtZSBvZiB0aGUgcGF0Y2ggaXM6DQo+IMKgwqDCoMKgwqBtbWMtY29yZS1zdXBwb3J0
-LXplcm9vdXQtdXNpbmctdHJpbS1mb3ItZW1tYy5wYXRjaA0KPiBhbmQgaXQgY2FuIGJlIGZvdW5k
-IGluIHRoZSBxdWV1ZS01LjE1IHN1YmRpcmVjdG9yeS4NCj4gDQo+IElmIHlvdSwgb3IgYW55b25l
-IGVsc2UsIGZlZWxzIGl0IHNob3VsZCBub3QgYmUgYWRkZWQgdG8gdGhlIHN0YWJsZSB0cmVlLA0K
-PiBwbGVhc2UgbGV0IDxzdGFibGVAdmdlci5rZXJuZWwub3JnPiBrbm93IGFib3V0IGl0Lg0KPiAN
-Cj4gDQo+IA0KPiBjb21taXQgZTcxYzkwYmNjNjU3MjdkMzIzYjlhM2NiNDBiMjYzZGI3YmU1ZWU0
-Yw0KPiBBdXRob3I6IFZpbmNlbnQgV2hpdGNodXJjaCA8dmluY2VudC53aGl0Y2h1cmNoQGF4aXMu
-Y29tPg0KPiBEYXRlOiAgIEZyaSBBcHIgMjkgMTc6MjE6MTggMjAyMiArMDIwMA0KPiANCj4gwqDC
-oMKgwqBtbWM6IGNvcmU6IFN1cHBvcnQgemVyb291dCB1c2luZyBUUklNIGZvciBlTU1DDQo+IMKg
-wqDCoMKgDQo+IA0KPiDCoMKgwqDCoFsgVXBzdHJlYW0gY29tbWl0IGY3YjZmYzMyNzMyNzY5ODky
-NGVmM2FmYTBjM2U4N2E1Yjc0NjZhZjMgXQ0KPiDCoMKgwqDCoA0KPiANCj4gwqDCoMKgwqBJZiBh
-biBlTU1DIGNhcmQgc3VwcG9ydHMgVFJJTSBhbmQgaW5kaWNhdGVzIHRoYXQgaXQgZXJhc2VzIHRv
-IHplcm9zLCB3ZSBjYW4NCj4gwqDCoMKgwqB1c2UgaXQgdG8gc3VwcG9ydCBoYXJkd2FyZSBvZmZs
-b2FkaW5nIG9mIFJFUV9PUF9XUklURV9aRVJPRVMsIHNvIGxldCdzIGFkZA0KPiDCoMKgwqDCoHN1
-cHBvcnQgZm9yIHRoaXMuDQo+IMKgwqDCoMKgDQo+IA0KPiDCoMKgwqDCoFNpZ25lZC1vZmYtYnk6
-IFZpbmNlbnQgV2hpdGNodXJjaCA8dmluY2VudC53aGl0Y2h1cmNoQGF4aXMuY29tPg0KPiDCoMKg
-wqDCoFJldmlld2VkLWJ5OiBBdnJpIEFsdG1hbiA8QXZyaS5BbHRtYW5Ad2RjLmNvbT4NCj4gwqDC
-oMKgwqBMaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9yLzIwMjIwNDI5MTUyMTE4LjM2MTcz
-MDMtMS12aW5jZW50LndoaXRjaHVyY2hAYXhpcy5jb20NCj4gwqDCoMKgwqBTaWduZWQtb2ZmLWJ5
-OiBVbGYgSGFuc3NvbiA8dWxmLmhhbnNzb25AbGluYXJvLm9yZz4NCj4gwqDCoMKgwqBTdGFibGUt
-ZGVwLW9mOiBjNDY3YzhmMDgxODUgKCJtbWM6IEFkZCBNTUNfUVVJUktfQlJPS0VOX1NEX0NBQ0hF
-IGZvciBLaW5nc3RvbiBDYW52YXMgR28gUGx1cyBmcm9tIDExLzIwMTkiKQ0KPiDCoMKgwqDCoFNp
-Z25lZC1vZmYtYnk6IFNhc2hhIExldmluIDxzYXNoYWxAa2VybmVsLm9yZz4NCg0KSSBzdGlsbFsw
-XSBwcmVmZXIgdGhhdCB0aGlzIG5vdCBiZSBiYWNrcG9ydGVkIHRvIHN0YWJsZS4NCg0KWzBdIGh0
-dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC9ZMW93UVlscit2ZnhFbVM4QGF4aXMuY29tLw0K
+In below thousands of screen rotation loop tests with virtual display
+enabled, a CPU hard lockup issue may happen, leading system to unresponsive
+and crash.
+
+do {
+	xrandr --output Virtual --rotate inverted
+	xrandr --output Virtual --rotate right
+	xrandr --output Virtual --rotate left
+	xrandr --output Virtual --rotate normal
+} while (1);
+
+NMI watchdog: Watchdog detected hard LOCKUP on cpu 1
+
+? hrtimer_run_softirq+0x140/0x140
+? store_vblank+0xe0/0xe0 [drm]
+hrtimer_cancel+0x15/0x30
+amdgpu_vkms_disable_vblank+0x15/0x30 [amdgpu]
+drm_vblank_disable_and_save+0x185/0x1f0 [drm]
+drm_crtc_vblank_off+0x159/0x4c0 [drm]
+? record_print_text.cold+0x11/0x11
+? wait_for_completion_timeout+0x232/0x280
+? drm_crtc_wait_one_vblank+0x40/0x40 [drm]
+? bit_wait_io_timeout+0xe0/0xe0
+? wait_for_completion_interruptible+0x1d7/0x320
+? mutex_unlock+0x81/0xd0
+amdgpu_vkms_crtc_atomic_disable
+
+It's caused by a stuck in lock dependency in such scenario on different
+CPUs.
+
+CPU1                                             CPU2
+drm_crtc_vblank_off                              hrtimer_interrupt
+    grab event_lock (irq disabled)                   __hrtimer_run_queues
+        grab vbl_lock/vblank_time_block                  amdgpu_vkms_vblank_simulate
+            amdgpu_vkms_disable_vblank                       drm_handle_vblank
+                hrtimer_cancel                                       grab dev->event_lock
+
+So CPU1 stucks in hrtimer_cancel as timer callback is running endless on
+current clock base, as that timer queue on CPU2 has no chance to finish it
+because of failing to hold the lock. So NMI watchdog will throw the errors
+after its threshold, and all later CPUs are impacted/blocked.
+
+So use hrtimer_try_to_cancel to fix this, as disable_vblank callback
+does not need to wait the handler to finish. And also it's not necessary
+to check the return value of hrtimer_try_to_cancel, because even if it's
+-1 which means current timer callback is running, it will be reprogrammed
+in hrtimer_start with calling enable_vblank to make it works.
+
+v2: only re-arm timer when vblank is enabled (Christian) and add a Fixes
+tag as well
+
+Fixes: 84ec374bd580("drm/amdgpu: create amdgpu_vkms (v4)")
+Cc: stable@vger.kernel.org
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
+index 53ff91fc6cf6..44d704306f44 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
+@@ -46,7 +46,10 @@ static enum hrtimer_restart amdgpu_vkms_vblank_simulate(struct hrtimer *timer)
+ 	struct amdgpu_crtc *amdgpu_crtc = container_of(timer, struct amdgpu_crtc, vblank_timer);
+ 	struct drm_crtc *crtc = &amdgpu_crtc->base;
+ 	struct amdgpu_vkms_output *output = drm_crtc_to_amdgpu_vkms_output(crtc);
++	struct drm_vblank_crtc *vblank;
++	struct drm_device *dev;
+ 	u64 ret_overrun;
++	unsigned int pipe;
+ 	bool ret;
+ 
+ 	ret_overrun = hrtimer_forward_now(&amdgpu_crtc->vblank_timer,
+@@ -54,9 +57,15 @@ static enum hrtimer_restart amdgpu_vkms_vblank_simulate(struct hrtimer *timer)
+ 	if (ret_overrun != 1)
+ 		DRM_WARN("%s: vblank timer overrun\n", __func__);
+ 
++	dev = crtc->dev;
++	pipe = drm_crtc_index(crtc);
++	vblank = &dev->vblank[pipe];
+ 	ret = drm_crtc_handle_vblank(crtc);
+-	if (!ret)
+-		DRM_ERROR("amdgpu_vkms failure on handling vblank");
++	if (!ret && !READ_ONCE(vblank->enabled)) {
++		/* Don't queue timer again when vblank is disabled. */
++		DRM_WARN("amdgpu_vkms failure on handling vblank\n");
++		return HRTIMER_NORESTART;
++	}
+ 
+ 	return HRTIMER_RESTART;
+ }
+@@ -81,7 +90,7 @@ static void amdgpu_vkms_disable_vblank(struct drm_crtc *crtc)
+ {
+ 	struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
+ 
+-	hrtimer_cancel(&amdgpu_crtc->vblank_timer);
++	hrtimer_try_to_cancel(&amdgpu_crtc->vblank_timer);
+ }
+ 
+ static bool amdgpu_vkms_get_vblank_timestamp(struct drm_crtc *crtc,
+-- 
+2.25.1
+
