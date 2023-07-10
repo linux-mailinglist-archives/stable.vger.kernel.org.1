@@ -2,80 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9566874DD74
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 20:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35F5F74DD8D
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 20:47:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230035AbjGJSiI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 14:38:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50494 "EHLO
+        id S230527AbjGJSrK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 14:47:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229970AbjGJSiH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 14:38:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFF09DF;
-        Mon, 10 Jul 2023 11:38:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 47A7661193;
-        Mon, 10 Jul 2023 18:38:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACE2C433C7;
-        Mon, 10 Jul 2023 18:38:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689014285;
-        bh=oDS27tMrJVOBiZY57a+Ie8tABqwg5aAwz9QA3VZd2U0=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=ru2Zb17q5QYtxC+JqO+OEMltt4uxzx5xdMQUW79j/15YksroEXdTBaBSGQpUFBNuD
-         E6JTSOGUzIwNCWN7KDkLBwVUfcy9weJmES0ws49q8Yd2LLnC496c3HEyK/oLqhWnlJ
-         6y6UYAvU3Fft1iEU/MvvYw2fU4Qbx6b+k/aJ8s/6DbNr5RyuvC7DhXu1h8p0wKSqUu
-         UUyVoJBD6deIMTb8hg/gWt0caQsvAfJhHzx2gKGjCmZJgT3Djm8m1DFhLWxXOXV5Ls
-         uwjl6xkDtPSLqQ/U09FE5kRfWHwn6xvhOFRX10ga9mt7ERoC1jXItAJoCnzV60lmMg
-         Glki5J1aqPAKQ==
-Message-ID: <36a25631960bc178b318e319f1db0d4d275c910f.camel@kernel.org>
-Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
- Laptop Intel 12th gen
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Jason Gunthorpe <jgg@ziepe.ca>, Christian Hesse <mail@eworm.de>
-Cc:     linux-integrity@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Peter Huewe <peterhuewe@gmx.de>, stable@vger.kernel.org,
-        roubro1991@gmail.com
-Date:   Mon, 10 Jul 2023 21:38:01 +0300
-In-Reply-To: <ZKxHfTkgKHYqhBz2@ziepe.ca>
-References: <20230710133836.4367-1-mail@eworm.de>
-         <20230710142916.18162-1-mail@eworm.de> <ZKxHfTkgKHYqhBz2@ziepe.ca>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+        with ESMTP id S232830AbjGJSrJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 14:47:09 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C33DADA;
+        Mon, 10 Jul 2023 11:47:08 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-bff27026cb0so5915492276.1;
+        Mon, 10 Jul 2023 11:47:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689014828; x=1691606828;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l+e9Uwr5qc+lETVgqhuxS2sDSgDIyaCoLKWXGQhfhM8=;
+        b=EWRHAx0bvPOAglJM0S8gK5Hv9aoMSGq2QqlxfcB8wusYDCJ5OBepPkmptt3/XfyNRC
+         SQmiL0wVcnkGLiyHC0ifgymkojTs1kSq9m3OWxDD42HD6cRmjlQszYW3G4wVwOiISE1p
+         bZYywsQlZDnE6pFMDRL2x0u6pnBlkU+zRSiABvT4qUwUlQgb86/8iabqtisNH2uM0KWX
+         iaQVpfAofBzrghuBYpS2gCDApI/4hMVH4fZdmpusUZ3DEYBCTAjuTLWmq5kWnygg0Bz8
+         Mehibba4+SYuc6g3H5sNOhx49fDI2IsLRwOrLTVLu4JG4LHvK5yKR30RX2xbCZddrrDp
+         jK5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689014828; x=1691606828;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l+e9Uwr5qc+lETVgqhuxS2sDSgDIyaCoLKWXGQhfhM8=;
+        b=N8YSTmDIl4S/6wPvNuQwd2y54VRUsFPdDeZaed2Vcyvl5nSrwU/cYo9uahocUAqEJO
+         U6GcUnOFCQL/m9qWRQSFZs9pQnXNLJonI+pirPaJPQf5LD5SVqXXpWBQwX5Yw0qTpLRj
+         e0zdLbEZSkkpXUch/dYLKy8tfVVr3ANe0wi36ZJ4yBtk8/B8bJh/DuLEzb19JHhSAf2l
+         a1yT4Cyyhnr+6+lmebxAJBDRaxyE95gqSI7x/2g9AnIUWkjGgBauDJZvnmpVt49M403n
+         HSNXzgZ4BnVBE56V+cKWzXLwAOVv6NfP1swxZ5Opb3IbA3wk2f+89JPaSZF9hEEC8u9k
+         X2YA==
+X-Gm-Message-State: ABy/qLanepouOf3FEyX01HYs0thYs9ZLkvbFRn/fkGIrftXpFX5LJ+6M
+        q3uOUFW68zT224NdyMylIXk=
+X-Google-Smtp-Source: APBJJlE41i05qAHdgQLCqK7cflEjRGKFjOomlZ9w+N0fqyZicN3jiKw6stBSCJdKy8ilqTwlPRgvzQ==
+X-Received: by 2002:a25:a409:0:b0:c81:ea4:c660 with SMTP id f9-20020a25a409000000b00c810ea4c660mr4849770ybi.8.1689014827889;
+        Mon, 10 Jul 2023 11:47:07 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y18-20020a259292000000b00be45a29d440sm86689ybl.12.2023.07.10.11.47.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jul 2023 11:47:07 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Mon, 10 Jul 2023 11:47:05 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.4 0/6] 6.4.3-rc2 review
+Message-ID: <720d1a58-9f0b-4647-8cf7-047f830f68be@roeck-us.net>
+References: <20230709203826.141774942@linuxfoundation.org>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230709203826.141774942@linuxfoundation.org>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 2023-07-10 at 15:01 -0300, Jason Gunthorpe wrote:
-> On Mon, Jul 10, 2023 at 04:28:43PM +0200, Christian Hesse wrote:
-> > This device suffer an irq storm, so add it in tpm_tis_dmi_table to
-> > force polling.
->=20
-> I can't help but feel like we are doing something wrong in the Linux
-> driver that we keep having IRQ problems.
->=20
-> Surely Windows uses the IRQ on these devices? How does it work
-> reliably there?
->=20
-> Jason
+On Sun, Jul 09, 2023 at 10:45:16PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.3 release.
+> There are 6 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Tue, 11 Jul 2023 20:38:10 +0000.
+> Anything received after that time might be too late.
+> 
 
-I'm about to send a PR to Linus with a pile of IRQ fixes for v6.4
-feature.
+Build results:
+	total: 157 pass: 157 fail: 0
+Qemu test results:
+	total: 520 pass: 520 fail: 0
 
-BR, Jarkko
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
+Guenter
