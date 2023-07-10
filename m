@@ -2,195 +2,218 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3761474D27A
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 12:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3254174D28C
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 12:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230464AbjGJKAV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 06:00:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42092 "EHLO
+        id S232118AbjGJKBN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 06:01:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230431AbjGJKAA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 06:00:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E17FB10CB
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 02:57:28 -0700 (PDT)
+        with ESMTP id S231403AbjGJKAk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 06:00:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 736D226A3
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 02:58:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688983047;
+        s=mimecast20190719; t=1688983107;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VlLWxX08b8LJ3Dkp7XTnOw8mVjNbPIPcBglZ+TM5Sow=;
-        b=E9Vz2afst2PkAR70iTo+CNZUGxQ78s9879SbgbIkbzPDO610lu236Yhquob70uRCVLYKe1
-        /bulfFyMGVKjR7qazVxDekBEzHbsdocv2xuhYx+LsL4PIwXuP7egIGwR6SofRSkh7jJ91k
-        9uRnX/yBu6/iBcuXKN6zQW2EiR1XkmY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-359-CbfClYVXO3OjJhTZmS0Hiw-1; Mon, 10 Jul 2023 05:51:08 -0400
-X-MC-Unique: CbfClYVXO3OjJhTZmS0Hiw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 811FA1044589;
-        Mon, 10 Jul 2023 09:51:07 +0000 (UTC)
-Received: from ovpn-8-33.pek2.redhat.com (ovpn-8-33.pek2.redhat.com [10.72.8.33])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 578C1111E3E4;
-        Mon, 10 Jul 2023 09:51:01 +0000 (UTC)
-Date:   Mon, 10 Jul 2023 17:50:56 +0800
-From:   Ming Lei <ming.lei@redhat.com>
-To:     Sagi Grimberg <sagi@grimberg.me>
-Cc:     Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>,
-        linux-nvme@lists.infradead.org, Yi Zhang <yi.zhang@redhat.com>,
-        Chunguang Xu <brookxu.cn@gmail.com>, stable@vger.kernel.org,
-        ming.lei@redhat.com
-Subject: Re: [PATCH] nvme: mark ctrl as DEAD if removing from error recovery
-Message-ID: <ZKvUgDbdCdScx0e7@ovpn-8-33.pek2.redhat.com>
-References: <20230628031234.1916897-1-ming.lei@redhat.com>
- <8dc6852e-ee90-ed64-1d3e-9ecdc9f4473b@grimberg.me>
- <148a3e62-939f-a74f-8075-8f37cda102ab@grimberg.me>
- <ZKt0wSHqrw3W88UQ@ovpn-8-21.pek2.redhat.com>
- <b11743c1-6c58-5f7a-8dc9-2a1a065835d0@grimberg.me>
- <ZKvH6cO+XnGgQQyc@ovpn-8-31.pek2.redhat.com>
- <8dba03f7-2421-e86b-bc94-ff031c153110@grimberg.me>
+        bh=XyjO7rBhUclhrrRCvtGKtbyfJKZVHucBecdHP85gxs0=;
+        b=RaEZKROMfdJvJgGQEGFGcJtsVLP3CiO2iiuY6VA3yNwPWjVOvzA9pCdvHcRwDtBMeXyfBm
+        +99hybonXB0oKyL3u0ghNd7gLA0ONrCFYhFUNuhHzdHvvw5e2BbnxSg+qVKu5C3OYkwRHU
+        LLlQqO7xFiDygIofHkvWlxQ/gIrBpts=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-515-21ZP0jC6N6iqgscLsrxyrg-1; Mon, 10 Jul 2023 05:52:16 -0400
+X-MC-Unique: 21ZP0jC6N6iqgscLsrxyrg-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-313c930ee0eso2254433f8f.0
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 02:52:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688982735; x=1691574735;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XyjO7rBhUclhrrRCvtGKtbyfJKZVHucBecdHP85gxs0=;
+        b=G51/R7JVjp5D6UBuyZPtOS4241wY8+tYzJtJwZVJOdAQXD9SziwMwzrNyT/93HfM1J
+         n+j4iV3teoxnqZrmmrqhzWuAEQShZ+M0Wch+0Y/K3l2l7CkOfu0d0tE4wS5ERdd/V1Lc
+         Thyyh+/R7qmeX+s2DsQivZgxmllLI0naCrQJWe9DcnV4GYd9fc0xtCNNuTZNdk+RuZ84
+         ta2XM9/qh5mTC8ueZC2fLNGFT0GG8wy+BxVFvwvzPYL71GOIY8Bkoh2C6dCRq2Txog/f
+         4ErkHFrThQ7SOA0sK/HJF2A0SWUq74tCHHtT1Q+3Wqn4Q6S9lUOVq6Y/gPsAIvU2m3rp
+         W8gg==
+X-Gm-Message-State: ABy/qLamrune1n/tU6YRuOC3zDBammdxYsIApSywiFM6572DA5VWtlsn
+        DfDuQK8ocXWbmWpadhlRsSuxSXzRXaOBq161rDQyTmabEfT2mVPubKwOte4taabpqBq0z2YKczY
+        OQu7jPLb/8tPvXJPu
+X-Received: by 2002:a05:6000:124a:b0:314:2b0a:dabe with SMTP id j10-20020a056000124a00b003142b0adabemr10425985wrx.30.1688982735480;
+        Mon, 10 Jul 2023 02:52:15 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHaQ/+IdPxGPjymocfW9cv9tWGipFqf6RaAd0AZG/bTyXsaB00iseKuCq4q/hOVcXPiHegqow==
+X-Received: by 2002:a05:6000:124a:b0:314:2b0a:dabe with SMTP id j10-20020a056000124a00b003142b0adabemr10425963wrx.30.1688982734861;
+        Mon, 10 Jul 2023 02:52:14 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id z13-20020a5d4d0d000000b002fb60c7995esm11286630wrt.8.2023.07.10.02.52.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jul 2023 02:52:14 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     Thomas Zimmermann <tzimmermann@suse.de>, noralf@tronnes.org
+Cc:     dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Moritz Duge <MoritzDuge@kolahilft.de>,
+        Torsten Krah <krah.tm@gmail.com>,
+        Paul Schyska <pschyska@gmail.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        David Airlie <airlied@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Inki Dae <inki.dae@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/client: Send hotplug event after registering a client
+In-Reply-To: <20230710091029.27503-1-tzimmermann@suse.de>
+References: <20230710091029.27503-1-tzimmermann@suse.de>
+Date:   Mon, 10 Jul 2023 11:52:13 +0200
+Message-ID: <87edlghz5e.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8dba03f7-2421-e86b-bc94-ff031c153110@grimberg.me>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 12:27:31PM +0300, Sagi Grimberg wrote:
-> 
-> > > > > > I still want your patches for tcp/rdma that move the freeze.
-> > > > > > If you are not planning to send them, I swear I will :)
-> > > > > 
-> > > > > Ming, can you please send the tcp/rdma patches that move the
-> > > > > freeze? As I said before, it addresses an existing issue with
-> > > > > requests unnecessarily blocked on a frozen queue instead of
-> > > > > failing over.
-> > > > 
-> > > > Any chance to fix the current issue in one easy(backportable) way[1] first?
-> > > 
-> > > There is, you suggested one. And I'm requesting you to send a patch for
-> > > it.
-> > 
-> > The patch is the one pointed by link [1], and it still can be applied on current
-> > linus tree.
-> > 
-> > https://lore.kernel.org/linux-nvme/20230629064818.2070586-1-ming.lei@redhat.com/
-> 
-> This is separate from what I am talking about.
-> 
-> > > > All previous discussions on delay freeze[2] are generic, which apply on all
-> > > > nvme drivers, not mention this error handling difference causes extra maintain
-> > > > burden. I still suggest to convert all drivers in same way, and will work
-> > > > along the approach[1] aiming for v6.6.
-> > > 
-> > > But we obviously hit a difference in expectations from different
-> > > drivers. In tcp/rdma there is currently an _existing_ bug, where
-> > > we freeze the queue on error recovery, and unfreeze only after we
-> > > reconnect. In the meantime, requests can be blocked on the frozen
-> > > request queue and not failover like they should.
-> > > 
-> > > In fabrics the delta between error recovery and reconnect can (and
-> > > often will be) minutes or more. Hence I request that we solve _this_
-> > > issue which is addressed by moving the freeze to the reconnect path.
-> > > 
-> > > I personally think that pci should do this as well, and at least
-> > > dual-ported multipath pci devices would prefer instant failover
-> > > than after a full reset cycle. But Keith disagrees and I am not going to
-> > > push for it.
-> > > 
-> > > Regardless of anything we do in pci, the tcp/rdma transport
-> > > freeze-blocking-failover _must_ be addressed.
-> > 
-> > It is one generic issue, freeze/unfreeze has to be paired strictly
-> > for every driver.
-> > 
-> > For any nvme driver, the inbalance can happen when error handling
-> > is involved, that is why I suggest to fix the issue in one generic
-> > way.
-> 
-> Ming, you are ignoring what I'm saying. I don't care if the
-> freeze/unfreeze is 100% balanced or not (for the sake of this
-> discussion).
-> 
-> I'm talking about a _separate_ issue where a queue
-> is frozen for potentially many minutes blocking requests that
-> could otherwise failover.
-> 
-> > > So can you please submit a patch for each? Please phrase it as what
-> > > it is, a bug fix, so stable kernels can pick it up. And try to keep
-> > > it isolated to _only_ the freeze change so that it is easily
-> > > backportable.
-> > 
-> > The patch of "[PATCH V2] nvme: mark ctrl as DEAD if removing from error
-> > recovery" can fix them all(include nvme tcp/fc's issue), and can be backported.
-> 
-> Ming, this is completely separate from what I'm talking about. This one
-> is addressing when the controller is removed, while I'm talking about
-> the error-recovery and failover, which is ages before the controller is
-> removed.
-> 
-> > But as we discussed, we still want to call freeze/unfreeze in pair, and
-> > I also suggest the following approach[2], which isn't good to backport:
-> > 
-> > 	1) moving freeze into reset
-> > 	
-> > 	2) during resetting
-> > 	
-> > 	- freeze NS queues
-> > 	- unquiesce NS queues
-> > 	- nvme_wait_freeze()
-> > 	- update_nr_hw_queues
-> > 	- unfreeze NS queues
-> > 	
-> > 	3) meantime changes driver's ->queue_rq() in case that ctrl state is NVME_CTRL_CONNECTING,
-> > 	
-> > 	- if the request is FS IO with data, re-submit all bios of this request, and free the request
-> > 	
-> > 	- otherwise, fail the request
-> > 
-> > 
-> > [2] https://lore.kernel.org/linux-block/5bddeeb5-39d2-7cec-70ac-e3c623a8fca6@grimberg.me/T/#mfc96266b63eec3e4154f6843be72e5186a4055dc
-> 
-> Ming, please read again what my concern is. I'm talking about error recovery
-> freezing a queue, and unfreezing only after we reconnect,
-> blocking requests that should failover.
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-From my understanding, nothing is special for tcp/rdma compared with
-nvme-pci.
+Hello Thomas,
 
-All take two stage error recovery: teardown & [reset(nvme-pci) | reconnect(tcp/rdma)]
+> Generate a hotplug event after registering a client to allow the
+> client to configure its display. Remove the hotplug calls from the
+> existing clients for fbdev emulation. This change fixes a concurrency
+> bug between registering a client and receiving events from the DRM
+> core. The bug is present in the fbdev emulation of all drivers.
+>
+> The fbdev emulation currently generates a hotplug event before
+> registering the client to the device. For each new output, the DRM
+> core sends an additional hotplug event to each registered client.
+>
+> If the DRM core detects first output between sending the artificial
+> hotplug and registering the device, the output's hotplug event gets
+> lost. If this is the first output, the fbdev console display remains
+> dark. This has been observed with amdgpu and fbdev-generic.
+>
+> Fix this by adding hotplug generation directly to the client's
+> register helper drm_client_register(). Registering the client and
+> receiving events are serialized by struct drm_device.clientlist_mutex.
+> So an output is either configured by the initial hotplug event, or
+> the client has already been registered.
+>
+> The bug was originally added in commit 6e3f17ee73f7 ("drm/fb-helper:
+> generic: Call drm_client_add() after setup is done"), in which adding
+> a client and receiving a hotplug event switched order. It was hidden,
+> as most hardware and drivers have at least on static output configured.
+> Other drivers didn't use the internal DRM client or still had struct
+> drm_mode_config_funcs.output_poll_changed set. That callback handled
+> hotplug events as well. After not setting the callback in amdgpu in
+> commit 0e3172bac3f4 ("drm/amdgpu: Don't set struct
+> drm_driver.output_poll_changed"), amdgpu did not show a framebuffer
+> console if output events got lost. The bug got copy-pasted from
+> fbdev-generic into the other fbdev emulation.
+>
+> Reported-by: Moritz Duge <MoritzDuge@kolahilft.de>
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2649
 
-Queues are frozen during teardown, and unfreeze in reset or reconnect.
+Aren't you missing a Fixes: for 0e3172bac3f4 too? Since that's the commit
+that unmasked the bug for amdgpu, IMO that is the most important to list.
 
-If the 2nd stage is failed or bypassed, queues could be left as frozen
-& unquisced, and requests can't be handled, and io hang.
+> Fixes: 6e3f17ee73f7 ("drm/fb-helper: generic: Call drm_client_add() after=
+ setup is done")
+> Fixes: 8ab59da26bc0 ("drm/fb-helper: Move generic fbdev emulation into se=
+parate source file")
+> Fixes: b79fe9abd58b ("drm/fbdev-dma: Implement fbdev emulation for GEM DM=
+A helpers")
+> Fixes: 63c381552f69 ("drm/armada: Implement fbdev emulation as in-kernel =
+client")
+> Fixes: 49953b70e7d3 ("drm/exynos: Implement fbdev emulation as in-kernel =
+client")
+> Fixes: 8f1aaccb04b7 ("drm/gma500: Implement client-based fbdev emulation")
+> Fixes: 940b869c2f2f ("drm/msm: Implement fbdev emulation as in-kernel cli=
+ent")
+> Fixes: 9e69bcd88e45 ("drm/omapdrm: Implement fbdev emulation as in-kernel=
+ client")
+> Fixes: e317a69fe891 ("drm/radeon: Implement client-based fbdev emulation")
+> Fixes: 71ec16f45ef8 ("drm/tegra: Implement fbdev emulation as in-kernel c=
+lient")
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Tested-by: Moritz Duge <MoritzDuge@kolahilft.de>
+> Tested-by: Torsten Krah <krah.tm@gmail.com>
+> Tested-by: Paul Schyska <pschyska@gmail.com>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Noralf Tr=C3=B8nnes <noralf@tronnes.org>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Inki Dae <inki.dae@samsung.com>
+> Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
+> Cc: Kyungmin Park <kyungmin.park@samsung.com>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+> Cc: Rob Clark <robdclark@gmail.com>
+> Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: "Christian K=C3=B6nig" <christian.koenig@amd.com>
+> Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Mikko Perttunen <mperttunen@nvidia.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-samsung-soc@vger.kernel.org
+> Cc: linux-arm-msm@vger.kernel.org
+> Cc: freedreno@lists.freedesktop.org
+> Cc: amd-gfx@lists.freedesktop.org
+> Cc: linux-tegra@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.2+
 
-When tcp reconnect failed, nvme_delete_ctrl() is called for failing
-requests & removing controller.
+While it's true that the but was introduced by commit 6e3f17ee73f7 and that
+landed in v5.2, I wonder if this patch could even be applied to such olders
+Linux versions. Probably in practice it would be at most backported to
+v6.2, which is the release that exposed the bug for the amdgpu driver.
 
-Then the patch of "nvme: mark ctrl as DEAD if removing from error recovery"
-can avoid this issue by calling blk_mark_disk_dead() which can fail any
-request pending in bio_queue_enter().
+Your explanation makes sense to me and the patch looks good.
 
-If that isn't tcp/rdma's issue, can you explain it in details?
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-At least, from what you mentioned in the following link, seems it is
-same with what I am trying to address.
+--=20
+Best regards,
 
-https://lore.kernel.org/linux-nvme/b11743c1-6c58-5f7a-8dc9-2a1a065835d0@grimberg.me/T/#m5f07ee01cdc99b0b38305d8171e9085921df2bc2
-
-Thanks, 
-Ming
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
