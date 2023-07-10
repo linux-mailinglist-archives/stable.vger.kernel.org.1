@@ -2,55 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFA1674CF3D
-	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 09:57:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF6874CF5A
+	for <lists+stable@lfdr.de>; Mon, 10 Jul 2023 10:02:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231264AbjGJH5F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 03:57:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57476 "EHLO
+        id S229831AbjGJIC3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 04:02:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231646AbjGJH5A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 03:57:00 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8515102;
-        Mon, 10 Jul 2023 00:56:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1688975816;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=iNq4WB0ehO9BFDBl02287PbimM0hbhShaw3I63MKiPE=;
-        b=xBknwHZXPDeZO/kIF8N+R96UwfmeWjC49WRpANzlgQEGeTKwDrcsJpEEc7IrIQrlDZUKv0
-        ZffwSrGy+yeEfBA1CBXF5fpuPx3n8SInDM7nmcO+uBoeUDpyPPoFZ8zf/cnCxxE1+xc3wt
-        FKuJ2KN4/KxH3qytjVx0nAYe2l9GQeo=
-Message-ID: <053472d1f44ae57105ced620417616c4e82c2d81.camel@crapouillou.net>
-Subject: Re: [PATCH v2 3/3] ARM: dts: exynos/i9100: Fix LCD screen's
- physical size
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Sam Ravnborg <sam@ravnborg.org>
-Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-Date:   Mon, 10 Jul 2023 09:56:54 +0200
-In-Reply-To: <48d345c2-c5fe-08e9-b8c2-8d83f826e45a@linaro.org>
-References: <20230708084027.18352-1-paul@crapouillou.net>
-         <20230708084027.18352-4-paul@crapouillou.net>
-         <98b39071-cbfa-bc58-032e-56f6e9dd5c2a@linaro.org>
-         <7672f0b65cf7d2a1bb81019417aa3fa98fbac5e3.camel@crapouillou.net>
-         <48d345c2-c5fe-08e9-b8c2-8d83f826e45a@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229562AbjGJIC2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 04:02:28 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B054A6;
+        Mon, 10 Jul 2023 01:02:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=yNHDpzzYjieskAxABdDoEsqYSB5/uS6TUrXGMxgOO98=; b=N99m4nozzqxFHNBeNmFnfuL0Yp
+        +A521LWm9TiYTqrAsIYVfa3VHL0b9r5GMrproiVKMHVOP6TE4Cy8w/TftoGRFFiaDE38kqnMcjsDH
+        xeUABEteMR+PZlpoHFfw+Qz0DCKQnPO0MK7fC3o85tgPx7g1tthDfgRVNUrjUEFHYVZ6vjXBHamOJ
+        cu4xFA/boDgzrKZD8/iF4a0jqsJ1XQdes6nuQLeD7eWIgQeuaGyB7BVs5ACRMjnCrN9/thpPP4JxP
+        8bfYNPFbswyKbBnUGgHpYfBUErFA4J839MBBYWAF1b+sPPpl8i7JwdDotUHM+5p+JBnDzLgFVyg/4
+        HwAW5SBA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qIlqF-000jDT-0v;
+        Mon, 10 Jul 2023 08:01:56 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id AFEC1300274;
+        Mon, 10 Jul 2023 10:01:52 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 6346D29984D29; Mon, 10 Jul 2023 10:01:52 +0200 (CEST)
+Date:   Mon, 10 Jul 2023 10:01:52 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Guo Ren <guoren@kernel.org>
+Cc:     arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
+        luto@kernel.org, conor.dooley@microchip.com, heiko@sntech.de,
+        jszhang@kernel.org, lazyparser@gmail.com, falcon@tinylab.org,
+        chenhuacai@kernel.org, apatel@ventanamicro.com,
+        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
+        palmer@dabbelt.com, bjorn@rivosinc.com, daniel.thompson@linaro.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
+        Guo Ren <guoren@linux.alibaba.com>
+Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
+Message-ID: <20230710080152.GA3028865@hirez.programming.kicks-ass.net>
+References: <20230702025708.784106-1-guoren@kernel.org>
+ <20230704164003.GB83892@hirez.programming.kicks-ass.net>
+ <CAJF2gTTc0Gyo=K-0dCW6wu7q=Wq34hgTB69qJ7VSF_KAgKhavA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJF2gTTc0Gyo=K-0dCW6wu7q=Wq34hgTB69qJ7VSF_KAgKhavA@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,52 +68,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Le lundi 10 juillet 2023 =C3=A0 09:45 +0200, Krzysztof Kozlowski a =C3=A9cr=
-it=C2=A0:
-> On 10/07/2023 09:35, Paul Cercueil wrote:
-> > Hi Krzysztof,
-> >=20
-> > Le lundi 10 juillet 2023 =C3=A0 08:59 +0200, Krzysztof Kozlowski a
-> > =C3=A9crit=C2=A0:
-> > > On 08/07/2023 10:40, Paul Cercueil wrote:
-> > > > The previous values were completely bogus, and resulted in the
-> > > > computed
-> > > > DPI ratio being much lower than reality, causing applications
-> > > > and
-> > > > UIs to
-> > > > misbehave.
-> > > >=20
-> > > > The new values were measured by myself with a ruler.
-> > > >=20
-> > > > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> > > > Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for
-> > > > the
-> > > > Galaxy S2")
-> > > > Cc: <stable@vger.kernel.org> # v5.8+
-> > > > ---
-> > >=20
-> > > This does not apply. You rebased your work on some older
-> > > version/tree,
-> > > without new layout. Please work on linux-next.
-> >=20
-> > This patchset was based on drm-misc-next, because that's where I
-> > was
-> > planning to apply it; and it was extremely unlikely (but not
-> > impossible, apparently) that the i9100.dts would be modified in the
-> > meantime.
-> >=20
-> > I can rebase on linux-next, the problem then is that I then don't
-> > know
-> > how/where to apply the patchset.
->=20
-> DTS cannot go via drm-misc-next, so if that's your intention please
-> always split the patchset into separate ones. *Always*.
+On Sun, Jul 09, 2023 at 10:30:22AM +0800, Guo Ren wrote:
+> On Wed, Jul 5, 2023 at 12:40 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
+> > > From: Guo Ren <guoren@linux.alibaba.com>
+> > >
+> > > The irqentry_nmi_enter/exit would force the current context into in_interrupt.
+> > > That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
+> > > debug the kernel.
+> > >
+> > > Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
+> > > of the kernel side.
+> >
+> > This doesn't explain much if anything :/
+> >
+> > I'm confused (probably because I don't know RISC-V very well), what's
+> > EBREAK and how does it happen?
+> EBREAK is just an instruction of riscv which would rise breakpoint exception.
+> 
+> 
+> >
+> > Specifically, if EBREAK can happen inside an local_irq_disable() region,
+> > then the below change is actively wrong. Any exception/interrupt that
+> > can happen while local_irq_disable() must be treated like an NMI.
+> When the ebreak happend out of local_irq_disable region, but
+> __nmi_enter forces handle_break() into in_interupt() state. So how
 
-Noted.
+And why is that a problem? I think I'm missing something fundamental
+here...
 
-Then I'll apply the patches [1/3] and [2/3] to drm-misc-next since I
-have my ACKs, and re-send patch [3/3] as standalone and rebased on
-linux-next.
+> about:
+> 
+> diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
+> index f910dfccbf5d..69f7043a98b9 100644
+> --- a/arch/riscv/kernel/traps.c
+> +++ b/arch/riscv/kernel/traps.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/irq.h>
+>  #include <linux/kexec.h>
+>  #include <linux/entry-common.h>
+> +#include <linux/context_tracking.h>
+> 
+>  #include <asm/asm-prototypes.h>
+>  #include <asm/bug.h>
+> @@ -285,12 +286,18 @@ asmlinkage __visible __trap_section void
+> do_trap_break(struct pt_regs *regs)
+>                 handle_break(regs);
+> 
+>                 irqentry_exit_to_user_mode(regs);
+> -       } else {
+> +       } else if (in_interrupt()){
+>                 irqentry_state_t state = irqentry_nmi_enter(regs);
+> 
+>                 handle_break(regs);
+> 
+>                 irqentry_nmi_exit(regs, state);
+> +       } else {
+> +               enum ctx_state prev_state = exception_enter();
+> +
+> +               handle_break(regs);
+> +
+> +               exception_exit(prev_state);
+>         }
+>  }
 
-Cheers,
--Paul
+That's wrong. If you want to make it conditional, you have to look at
+!(regs->status & SR_IE) (that's the interrupt enable flag of the
+interrupted context, right?)
+
+When you hit an EBREAK when IRQs were disabled, you must be NMI like.
+
+But making it conditional like this makes it really hard to write a
+handler though, it basically must assume it will be NMI contetx (because
+it can't know) so there is no point in sometimes not doing NMI context.
