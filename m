@@ -2,38 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0409174E716
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 08:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC33B74E760
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 08:33:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230194AbjGKGUA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 02:20:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50394 "EHLO
+        id S231416AbjGKGc6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 02:32:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231296AbjGKGT7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 02:19:59 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E53E4F;
-        Mon, 10 Jul 2023 23:19:57 -0700 (PDT)
-Received: from ip4d148da6.dynamic.kabel-deutschland.de ([77.20.141.166] helo=truhe.fritz.box); authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        id 1qJ6j6-0000FA-55; Tue, 11 Jul 2023 08:19:56 +0200
-From:   Thorsten Leemhuis <linux@leemhuis.info>
-To:     Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH v2 2/2] docs: stable-kernel-rules: make rule section more straight forward
-Date:   Tue, 11 Jul 2023 08:19:54 +0200
-Message-Id: <f83e812879caa978a51a1a7cae7c359f29fc093c.1689056247.git.linux@leemhuis.info>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <cover.1689056247.git.linux@leemhuis.info>
-References: <cover.1689056247.git.linux@leemhuis.info>
+        with ESMTP id S231651AbjGKGc5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 02:32:57 -0400
+Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC0E106
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 23:32:56 -0700 (PDT)
+Received: by mail-ua1-x931.google.com with SMTP id a1e0cc1a2514c-784f7f7deddso1642776241.3
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 23:32:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689057175; x=1691649175;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OoV7wHi0BKt48VDU7rudRkLkDSl0F6bArKQxs2XKWH8=;
+        b=t6X/P1fRgTle6kOoOp6BFmV2Tp4ee4Navqh9Fi4PptgcwbjmwqvhH3XKL7/XH1JxWW
+         krc6U5rFqYashM2zrHOOY6ogMLeV/wBdP1xgXFR4mJHp/nSWSJG5Y/EKDFZ+eg0Ieqfk
+         9mlqoZUxOMgl/bie9Kir9E016+4OYIaHAbiOKiVhuVP+79y8jxdFSdPQW/2HAebuT303
+         RZbyOfF9H8xyVUUdCmlq8dU8TC1FUF4CN0G/YpClxoEz3cGFzN4lo1f9rLT4mPLzb7ek
+         OGKo46Lg713VIqF0x+OzwYM1o6TRSMsRo/vKuQc4jF1EbD8to7bA6eLcr4Cpz5kyCMtu
+         jSEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689057175; x=1691649175;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OoV7wHi0BKt48VDU7rudRkLkDSl0F6bArKQxs2XKWH8=;
+        b=D/GAH9H8teNjyT5/k/Yqbc9TsLXtuNKpnbQdPgLOlocRsb94hc3Qrl1gcWatDcsLQE
+         0hRBYyzCEQiUR1FGps+kmaUw2UHjGdzlaKK0AWGBkroyQrhGBsZRzy4Ne/eiq2hX3SJR
+         jOFUDnZv1emPvpsU6K2aLoiLATCVHkmEVHVYsn0ov1qeYZ7d/dUUGwgGfFjiqp/aNfd9
+         wJJn7ydzMv06XohGMGuwiv5tk69MVPJyjKtoxKh30focLOZNV1zJV3a+gZp7ucQZfSNa
+         F4PBx/M5EN8hAmHFtuLgh4FEgTWXtnKrS4Fdc10DBLphITCkeDosHyobZTb3xVw3sJbN
+         7Hzg==
+X-Gm-Message-State: ABy/qLbC8MNzPj4lWEpEvzE6nb8UuD/ufPJBnjgbtP0TFBF7Hdk1OAnZ
+        t9W5T6X6zLYvGVdiWsO912jCOuwsau90EOAjYrfcTjJOVcKenYN7Z+s=
+X-Google-Smtp-Source: APBJJlEqsJAqUnLJm2yvVaj5bm+mRbslSMN2Dmhfo0eGS5oS8hTszDthHaChlPLhBHw6B/4JE61l+mkeCA1SizfzCZg=
+X-Received: by 2002:a1f:6041:0:b0:471:b14a:fc48 with SMTP id
+ u62-20020a1f6041000000b00471b14afc48mr7107050vkb.13.1689057174951; Mon, 10
+ Jul 2023 23:32:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1689056398;82679b42;
-X-HE-SMSGID: 1qJ6j6-0000FA-55
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+References: <20230710142227.965586663@linuxfoundation.org>
+In-Reply-To: <20230710142227.965586663@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 11 Jul 2023 12:02:43 +0530
+Message-ID: <CA+G9fYtokiZUYJr9RZth_iEfhrJhYv5=53G7Gxds8jWhxRfEyQ@mail.gmail.com>
+Subject: Re: [PATCH 6.3 000/424] 6.3.13-rc4 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -41,89 +73,172 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Tweak some of the rule text to make things more straight forward, with
-the goal to stick closely to the intend of the old text:
+On Mon, 10 Jul 2023 at 19:53, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.3.13 release.
+> There are 424 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 12 Jul 2023 14:21:05 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.3.13-rc4.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.3.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-* put the "it or equivalent fix must be upstream" rule at the top, as
-  it's one of the most important ones that at the same time often seems
-  to be missed by developers.
-* "It must fix only one thing" was dropped, as that is almost always a
-  thing that needs to be handled earlier when the change is mainlined.
-  Furthermore, this is already indirectly covered by the "Separate your
-  changes" section in Documentation/process/submitting-patches.rst which
-  the rules already point to.
-* six other rules are in the end one rule with clarifications; structure
-  the text accordingly to make it a lot easier to follow and understand
-  the intend.
-* drop the 'In short, something critical' from one of those notes: it
-  contradicts the "real bug that bothers people" aspect somewhat and does
-  not really add anything
 
-CC: Greg KH <gregkh@linuxfoundation.org>
-CC: Sasha Levin <sashal@kernel.org>
-CC: Jonathan Corbet <corbet@lwn.net>
-Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
----
-v1->v2:
-- also drop the 'In short, something critical'
----
- Documentation/process/stable-kernel-rules.rst | 38 +++++++++----------
- 1 file changed, 18 insertions(+), 20 deletions(-)
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-diff --git a/Documentation/process/stable-kernel-rules.rst b/Documentation/process/stable-kernel-rules.rst
-index de0046c0586b..d3f040c2738e 100644
---- a/Documentation/process/stable-kernel-rules.rst
-+++ b/Documentation/process/stable-kernel-rules.rst
-@@ -6,31 +6,29 @@ Everything you ever wanted to know about Linux -stable releases
- Rules on what kind of patches are accepted, and which ones are not, into the
- "-stable" tree:
- 
-+ - It or an equivalent fix must already exist in Linus' tree (upstream).
-  - It must be obviously correct and tested.
-  - It cannot be bigger than 100 lines, with context.
-- - It must fix only one thing.
-- - It must fix a real bug that bothers people (not a, "This could be a
--   problem..." type thing).
-- - It must fix a problem that causes a build error (but not for things
--   marked CONFIG_BROKEN), an oops, a hang, data corruption, a real
--   security issue, or some "oh, that's not good" issue.  In short, something
--   critical.
-- - Serious issues as reported by a user of a distribution kernel may also
--   be considered if they fix a notable performance or interactivity issue.
--   As these fixes are not as obvious and have a higher risk of a subtle
--   regression they should only be submitted by a distribution kernel
--   maintainer and include an addendum linking to a bugzilla entry if it
--   exists and additional information on the user-visible impact.
-- - New device IDs and quirks are also accepted.
-- - No "theoretical race condition" issues, unless an explanation of how the
--   race can be exploited is also provided.
-- - It cannot contain any "trivial" fixes in it (spelling changes,
--   whitespace cleanups, etc).
-  - It must follow the
-    :ref:`Documentation/process/submitting-patches.rst <submittingpatches>`
-    rules.
-- - It or an equivalent fix must already exist in Linus' tree (upstream).
--
-+ - It must either fix a real bug that bothers people or just add a device ID.
-+   To elaborate on the former:
-+
-+   - It fixes a problem like an oops, a hang, data corruption, a real security
-+     issue, a hardware quirk, a build error (but not for things marked
-+     CONFIG_BROKEN), or some "oh, that's not good" issue.
-+   - Serious issues as reported by a user of a distribution kernel may also
-+     be considered if they fix a notable performance or interactivity issue.
-+     As these fixes are not as obvious and have a higher risk of a subtle
-+     regression they should only be submitted by a distribution kernel
-+     maintainer and include an addendum linking to a bugzilla entry if it
-+     exists and additional information on the user-visible impact.
-+   - No "This could be a problem..." type of things like a "theoretical race
-+     condition", unless an explanation of how the bug can be exploited is also
-+     provided.
-+   - No "trivial" fixes without benefit for users (spelling changes, whitespace
-+     cleanups, etc).
- 
- Procedure for submitting patches to the -stable tree
- ----------------------------------------------------
--- 
-2.40.1
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+## Build
+* kernel: 6.3.13-rc4
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.3.y
+* git commit: 4882b85b0b1dc42e2ee6554fdb1eb956bd2c6015
+* git describe: v6.3.11-439-g4882b85b0b1d
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.1=
+1-439-g4882b85b0b1d
+
+## Test Regressions (compared to v6.3.11)
+
+## Metric Regressions (compared to v6.3.11)
+
+## Test Fixes (compared to v6.3.11)
+
+## Metric Fixes (compared to v6.3.11)
+
+## Test result summary
+total: 170788, pass: 146856, fail: 1976, skip: 21790, xfail: 166
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 145 total, 144 passed, 1 failed
+* arm64: 54 total, 53 passed, 1 failed
+* i386: 41 total, 40 passed, 1 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 38 total, 36 passed, 2 failed
+* riscv: 26 total, 25 passed, 1 failed
+* s390: 16 total, 14 passed, 2 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* fwts
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
