@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F25D874F8BB
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E947174F8BC
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:07:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230178AbjGKUHC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 16:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36844 "EHLO
+        id S230399AbjGKUHE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 16:07:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230387AbjGKUHA (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Tue, 11 Jul 2023 16:07:00 -0400
+        with ESMTP id S230387AbjGKUHD (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Tue, 11 Jul 2023 16:07:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EAE61BB
-        for <Stable@vger.kernel.org>; Tue, 11 Jul 2023 13:06:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8927139
+        for <Stable@vger.kernel.org>; Tue, 11 Jul 2023 13:07:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 34636615D5
-        for <Stable@vger.kernel.org>; Tue, 11 Jul 2023 20:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4418FC433C8;
-        Tue, 11 Jul 2023 20:06:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CB97615C1
+        for <Stable@vger.kernel.org>; Tue, 11 Jul 2023 20:07:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D93CC433C8;
+        Tue, 11 Jul 2023 20:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689106018;
-        bh=gKeOlLMi/lsQFCyKYaRKOeTwA3lBTn0C5y1fJNS8unU=;
+        s=korg; t=1689106021;
+        bh=Or0+zJJ8kbZmQgTfq1NN2DzFXRdYWkqjFWEGveq2Ntg=;
         h=Subject:To:Cc:From:Date:From;
-        b=0GvygDOJP5QYe4N07crkBR3D+gxc5S4RNzO3kVA3f9rwExwlqlGct4RzB3ysO4i9n
-         BlKkYpMMgk6siXVkm+g32Ebm6bT4ZFLvXt8wWz2i2lDtnyfNrtiDQp98phEROy+1QA
-         YttMf1gAAgLf5z0IfrHtapqQDCLNoddQMeCnqd1Q=
-Subject: FAILED: patch "[PATCH] dt-bindings: iio: ad7192: Add mandatory reference voltage" failed to apply to 5.15-stable tree
+        b=ZNcpd3SPVsRoHGNySpppmyHXsS3plkJS9e7AGU3RZczWyONwFtsggYwxKZ3qHi/ws
+         DAQIfDixFVOGhShkz4oPUmcte5/SuVHHIPCD14KHTGDzL8pVb51OmgTSS2P8B4XZf9
+         Em+dWw9JrujO6Z8a6jOZA73eybqVibgzK0ZuyzDk=
+Subject: FAILED: patch "[PATCH] dt-bindings: iio: ad7192: Add mandatory reference voltage" failed to apply to 5.10-stable tree
 To:     fl.scratchpad@gmail.com, Jonathan.Cameron@huawei.com,
         Stable@vger.kernel.org, conor.dooley@microchip.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 11 Jul 2023 22:06:46 +0200
-Message-ID: <2023071146-nativity-rally-5a70@gregkh>
+Date:   Tue, 11 Jul 2023 22:06:47 +0200
+Message-ID: <2023071147-unleveled-hamburger-b749@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x c6dab7245604862d86f0b6d764919f470584d24f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071146-nativity-rally-5a70@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071147-unleveled-hamburger-b749@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
