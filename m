@@ -2,125 +2,226 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 179CD74FA1E
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 23:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30FFB74FA84
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 00:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231628AbjGKVuV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 17:50:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45660 "EHLO
+        id S229714AbjGKWCu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 18:02:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231431AbjGKVuV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 17:50:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587E610C7;
-        Tue, 11 Jul 2023 14:50:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E28AC61632;
-        Tue, 11 Jul 2023 21:50:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A53C433C7;
-        Tue, 11 Jul 2023 21:50:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689112219;
-        bh=0T0pjrWcDkDJyoK4+B3r5UxdOezTd8UsIOmWJM7998o=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=SlAC4z9aPTok8aMnJvGXJWw/qO6U+Qh6b1uxRBarfOPhmzFfWu/rCK/DcN5Zrr5Qd
-         N0ixjQDkXktV7lIcE5tFM4BSMOG5rXpNxST0GXXxWpjUR3VL8IjWRRrnTTnOI81HZO
-         HFc1IBuLfy3CIvLyTb0ae61TjsUB9OQi5A9EEPYUCrquot7qlQdPD/D7JaookJCDeW
-         DDU7jXt9vUgv210WImRXB1KNJOLkBb7WgYhsZuWxptLIP/OEY3HpqnIZ7Qz76lj77+
-         LMZs5G1Udn8gEyYuYdSHv1xz+DHuvi0Mb1lhp8/gZgoiu/0/cRESooiYplzWTICMJP
-         iJy2D1nmBrvHg==
-Message-ID: <0f272843a33a1706dbcbb2d84b02e3951ee60cbb.camel@kernel.org>
-Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
- Laptop Intel 12th gen
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Grundik <ggrundik@gmail.com>, Christian Hesse <list@eworm.de>,
-        linux-integrity@vger.kernel.org,
-        Lino Sanfilippo <LinoSanfilippo@gmx.de>
-Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Christian Hesse <mail@eworm.de>, stable@vger.kernel.org,
-        roubro1991@gmail.com,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 12 Jul 2023 00:50:15 +0300
-In-Reply-To: <bb5580e93d244400c3330d7091bf64868aa2053f.camel@gmail.com>
-References: <20230710133836.4367-1-mail@eworm.de>
-         <20230710142916.18162-1-mail@eworm.de>
-         <20230710231315.4ef54679@leda.eworm.net>
-         <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
-         <bb5580e93d244400c3330d7091bf64868aa2053f.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+        with ESMTP id S229551AbjGKWCs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 18:02:48 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A9831705
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 15:02:47 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b8a8154f9cso615045ad.1
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 15:02:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689112966; x=1691704966;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=7N2yuDkljTaH1Ot+EkZZoi+TUU9jeLw+0Renoy2cPTI=;
+        b=EP9HZL43fZcxmnkrmFvspJOeqgB+YvtKKV/cRti4EnbX4HuDfzdz9Z8vsnyAIYaP4O
+         KW9kQTP1G+s46/nRBj1RyQ8mWC8qk7/TsEggq5uxEhZCm/GJ/Tte3RK2NDTUWnjw6EOn
+         iriQoiJY2dL8WJkbJg9Hqcde6aPw9NfQ4TLeDfQX79EfOhYDNbt35+vumO81+ehKDH0B
+         20/XBMJAf9GFXaA8pxao4u/RRNBMpePeu8pNY7BfEHO3oWOZNlr/nCuqDc+cANw0cfuK
+         dytjdW2lzJLLrJKs5zWNUSxDtCLYp4QRvwNC1M7ed2NXrQ8UlnhCAdfggnCNIVMuFRns
+         jkqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689112966; x=1691704966;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7N2yuDkljTaH1Ot+EkZZoi+TUU9jeLw+0Renoy2cPTI=;
+        b=OqXyGFjdPzzjdv7qNNaNeX+aB/5DrE/gfgj89VEcjyvJBlLuqV0KjsVLQPuOaQl891
+         2Xf5zYB0933A6v7hxdWV9q+GiS3U0u+wwnQLlamOWXJeveFhHaYkN5yU3qKePCCxoqFQ
+         e7XcpE9WhkkH/ZYY1tDym6fggnd8jSU1oozvptxCzDDhL3mQZFtKUqhbXCM2ypbg+E1r
+         eEqV6JoXu16ItbOFhVfdQJZc3p0uZnnCQNrkH0JjBFEqXz9GgHJ5vaYpG1Z5DNoqbf/X
+         nTIas5ZGp+wFdiLTfs+C8jn1phN+cgz5NbMQ9GcFSgA1SWgMp8AVMdpNAKtTJOY9x7Zy
+         0SAA==
+X-Gm-Message-State: ABy/qLYMzGgRq+ZmHzOc77pCjNnIO9JHC1u9FXKCgQzkT1K1unruWhhH
+        OeBZmpsUqv03ERmGwmE6XXPNV1ixrTJ5UZFsFI9t4g==
+X-Google-Smtp-Source: APBJJlEyQyJHgOfuKemTRb+9g8CC1pIg+VuhWg8YpUpT7tOzJ6kE8qGNU0I9VyBzxM7yvbp6RkJwMA==
+X-Received: by 2002:a17:902:e74f:b0:1b6:6b03:10e7 with SMTP id p15-20020a170902e74f00b001b66b0310e7mr158494plf.5.1689112966350;
+        Tue, 11 Jul 2023 15:02:46 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id jd22-20020a170903261600b001b66e3a77easm2445855plb.50.2023.07.11.15.02.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jul 2023 15:02:45 -0700 (PDT)
+Message-ID: <64add185.170a0220.1c880.5921@mx.google.com>
+Date:   Tue, 11 Jul 2023 15:02:45 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.10.186-221-gf178eace6e074
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.10.y
+Subject: stable-rc/linux-5.10.y build: 18 builds: 0 failed, 18 passed,
+ 5 warnings (v5.10.186-221-gf178eace6e074)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 2023-07-11 at 15:41 +0300, Grundik wrote:
-> On Tue, 2023-07-11 at 00:29 +0300, Jarkko Sakkinen wrote:
-> > On Mon, 2023-07-10 at 23:13 +0200, Christian Hesse wrote:
-> >=20
-> >=20
-> > OK, this good to hear! I've been late with my pull request (past rc1)
-> > because of kind of conflicting timing with Finnish holiday season and
-> > relocating my home office.
-> >=20
-> > I'll replace v2 patches with v3 and send the PR for rc2 after that.
-> > So unluck turned into luck this time :-)
-> >=20
-> > Thank you for spotting this!
->=20
-> I want to say: this issue is NOT limited to Framework laptops.
->=20
-> For example this MSI gen12 i5-1240P laptop also suffers from same
-> problem:
->         Manufacturer: Micro-Star International Co., Ltd.
->         Product Name: Summit E13FlipEvo A12MT
->         Version: REV:1.0
->         SKU Number: 13P3.1
->         Family: Summit
->=20
-> So, probably just blacklisting affected models is not the best
-> solution...
+stable-rc/linux-5.10.y build: 18 builds: 0 failed, 18 passed, 5 warnings (v=
+5.10.186-221-gf178eace6e074)
 
-It will be supplemented with
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.186-221-gf178eace6e074/
 
-https://lore.kernel.org/linux-integrity/CTYXI8TL7C36.2SCWH82FAZWBO@suppilov=
-ahvero/T/#me895f1920ca6983f791b58a6fa0c157161a33849
+Tree: stable-rc
+Branch: linux-5.10.y
+Git Describe: v5.10.186-221-gf178eace6e074
+Git Commit: f178eace6e0740ae5eab86eb3d05df94e91e8192
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Together they should fairly sustainable framework.
+Warnings Detected:
 
-Lino, can you add the same fixes tag as for this. It would probably
-ignore inline comments to keep the patch minimal since it is a
-critical fix. Just do the renames, remove inline comments and
-send v3.
+arc:
 
-For tpm_tis_check_for_interrupt_storm(), you can could rename it
-simply as tpm_tis_update_unhandle_irqs() as that it what it does
-(my review did not include a suggestion for this).
+arm64:
 
-This way I think it should be fairly trivial to get a version that
-can be landed.
+arm:
 
-To put short:
-1. Do the renames as suggested, they are good enough for me.
-2. Drop inline comments, their usefulness is somewhat questionable
-   and they increase the diff.
-3. Generally aim for minimal diff but I think this should be good
-   enough if you do steps 1 and 2.
+i386:
 
-If you don't have the time at hand, I can carefully do these cleanups
-and apply the patch. If you have the time and motivation, go ahead
-and send v3.
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-BR, Jarkko
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
