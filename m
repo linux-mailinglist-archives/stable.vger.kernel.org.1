@@ -2,95 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8DFA74EFE4
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 15:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C41BA74F077
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 15:42:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232864AbjGKNKE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 09:10:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39146 "EHLO
+        id S232419AbjGKNmB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 09:42:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232752AbjGKNKD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 09:10:03 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB989188;
-        Tue, 11 Jul 2023 06:10:02 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qJD7v-0002JU-9d; Tue, 11 Jul 2023 15:09:59 +0200
-Message-ID: <cfa28818-9eaf-0dc9-cb4a-1b3de318e627@leemhuis.info>
-Date:   Tue, 11 Jul 2023 15:09:58 +0200
+        with ESMTP id S231192AbjGKNlz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 09:41:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8D56BC
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 06:41:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689082866;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hvnb7JiwKvSnMAgyEjcswiUDuBLsnC0rp2JWm3dcW0o=;
+        b=KOC0kDPLMgNbvKN7uFbpqhbsdbCIxvvy/HGkaF671/Ij76PMPn92pNMRwkzleeJM85K+ea
+        rTQTbt5AHYnhA4BrgYyTFbB0uGD2njEFDvaNVdgPg4wafgW3JkSvLitdDxMwd0iC2d1U/3
+        bKZXm7O0KQbhU2VkHHk/llTOX+Efh+Q=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-380-ga8YQErbNlKdpLYwna1WPQ-1; Tue, 11 Jul 2023 09:41:03 -0400
+X-MC-Unique: ga8YQErbNlKdpLYwna1WPQ-1
+Received: by mail-yb1-f200.google.com with SMTP id 3f1490d57ef6-c6db61f7f64so5378462276.0
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 06:41:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689082862; x=1691674862;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hvnb7JiwKvSnMAgyEjcswiUDuBLsnC0rp2JWm3dcW0o=;
+        b=Xrm2fnZDqwg2wl1GjOdxY4XfE2vvuRHtk6dLiV49Ire38jSBN9Wyg7DgJqjQhvE+27
+         hWKoFpHusfI5rq64mCheWRCX6pT7bfXVo1+T9LWjKkZYG7WKLCFAMoPQSVPu+g09dJHh
+         LvrEGmO6sW25+aWvSxvRSxPzA9PPfFGgd3CYRMxin3igxsWhoHntpDZcItYeDjL90KvR
+         tbiMwsdaEvMIB1KAd8VKfUVl/E+VsJrW2UQxru5lunNkfn7W1Vz5qwuQFjSqcrI2oUDj
+         298fnnBGtXpBGJtpGN9SgWfXjUc7FOhOrbaufObUCtD1VROtxKyeuaUXLnDY9YqstmJ/
+         dTrQ==
+X-Gm-Message-State: ABy/qLauHAyZlvUD4DBWFAKudSAdYUFStAo50HOKeIKJZVlzpocKaNBe
+        WIZf+sLHH3VOxVNS62rqbXeS/Ruh/5bCgQjzj4L35W2FN+SyP50QdckU0Xv+LJrmAm5b/Rxa2AS
+        i7pdyw3/A6mmHh5wN1DM2w14lYhowdrF/
+X-Received: by 2002:a25:23d1:0:b0:c69:cf1f:ec0a with SMTP id j200-20020a2523d1000000b00c69cf1fec0amr13124358ybj.15.1689082862667;
+        Tue, 11 Jul 2023 06:41:02 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE4ZLOqIjO/yyFhHoIBVoAPEbGrTyKrYmJlC4AJrQfREkKw9AcsD5OXndLzLtud1cBfWt6TWIx1ymEODA6SenA=
+X-Received: by 2002:a25:23d1:0:b0:c69:cf1f:ec0a with SMTP id
+ j200-20020a2523d1000000b00c69cf1fec0amr13124347ybj.15.1689082862425; Tue, 11
+ Jul 2023 06:41:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH] HID: logitech-hidpp: rework one more time the retries
- attempts
-Content-Language: en-US, de-DE
-To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Bastien Nocera <hadess@hadess.net>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        =?UTF-8?Q?Filipe_La=c3=adns?= <lains@riseup.net>,
+References: <20230621-logitech-fixes-v1-1-32e70933c0b0@redhat.com>
+ <2023062156-trespass-pandemic-7f4f@gregkh> <qbvmv3eexohswyagmllfh3xsxoftwa3wbmsdafmwak2bxlnlft@jz74dijlfxlz>
+ <31ce32e018a9fa410e9e1f3e5900621b16a56091.camel@hadess.net>
+ <CAO-hwJLFSUJaGK5DAOz30+YyC1hGgHnbeJbc5iQ47jxBcbRSCg@mail.gmail.com> <cfa28818-9eaf-0dc9-cb4a-1b3de318e627@leemhuis.info>
+In-Reply-To: <cfa28818-9eaf-0dc9-cb4a-1b3de318e627@leemhuis.info>
+From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Date:   Tue, 11 Jul 2023 15:40:51 +0200
+Message-ID: <CAO-hwJLc0wzv2a3JARkPDW+ZgbnvwggfRHcAJmWsKy_FMA13=g@mail.gmail.com>
+Subject: Re: [PATCH] HID: logitech-hidpp: rework one more time the retries attempts
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Bastien Nocera <hadess@hadess.net>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        =?UTF-8?Q?Filipe_La=C3=ADns?= <lains@riseup.net>,
         Jiri Kosina <jikos@kernel.org>, linux-input@vger.kernel.org,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230621-logitech-fixes-v1-1-32e70933c0b0@redhat.com>
- <2023062156-trespass-pandemic-7f4f@gregkh>
- <qbvmv3eexohswyagmllfh3xsxoftwa3wbmsdafmwak2bxlnlft@jz74dijlfxlz>
- <31ce32e018a9fa410e9e1f3e5900621b16a56091.camel@hadess.net>
- <CAO-hwJLFSUJaGK5DAOz30+YyC1hGgHnbeJbc5iQ47jxBcbRSCg@mail.gmail.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <CAO-hwJLFSUJaGK5DAOz30+YyC1hGgHnbeJbc5iQ47jxBcbRSCg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1689081002;13510ddf;
-X-HE-SMSGID: 1qJD7v-0002JU-9d
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 26.06.23 16:02, Benjamin Tissoires wrote:
-> On Sun, Jun 25, 2023 at 10:30 AM Bastien Nocera <hadess@hadess.net> wrote:
->> On Fri, 2023-06-23 at 10:37 +0200, Benjamin Tissoires wrote:
->>> On Jun 21 2023, Greg KH wrote:
->>>> On Wed, Jun 21, 2023 at 11:42:30AM +0200, Benjamin Tissoires wrote:
->>>>> Make the code looks less like Pascal.
->>>>>
->>>>> Extract the internal code inside a helper function, fix the
->>>>> initialization of the parameters used in the helper function
->>>>> (`hidpp->answer_available` was not reset and `*response` wasn't
->>>>> too),
->>>>> and use a `do {...} while();` loop.
->>>>>
->>>>> Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when
->>>>> device is busy")
->>>>> Cc: stable@vger.kernel.org
->>>>> Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
->>>>> ---
->>>>> as requested by
->>>>> https://lore.kernel.org/all/CAHk-=wiMbF38KCNhPFiargenpSBoecSXTLQACKS2UMyo_Vu2ww@mail.gmail.com/
->>>>> This is a rewrite of that particular piece of code.
->>>>> ---
->>>>>  drivers/hid/hid-logitech-hidpp.c | 102 +++++++++++++++++++++++--
->>>>> --------------
->>>>>  1 file changed, 61 insertions(+), 41 deletions(-)
-> [...]
-> 
-> Some people on the Bz were able to reproduce with multiple reboots.
-> But it's not as urgent as previously, and we were close to the 6.4
-> final when I sent it. I'll make sure this goes into 6.5 and gets
-> proper stable backports FWIW.
+On Tue, Jul 11, 2023 at 3:10=E2=80=AFPM Linux regression tracking (Thorsten
+Leemhuis) <regressions@leemhuis.info> wrote:
+>
+> On 26.06.23 16:02, Benjamin Tissoires wrote:
+> > On Sun, Jun 25, 2023 at 10:30=E2=80=AFAM Bastien Nocera <hadess@hadess.=
+net> wrote:
+> >> On Fri, 2023-06-23 at 10:37 +0200, Benjamin Tissoires wrote:
+> >>> On Jun 21 2023, Greg KH wrote:
+> >>>> On Wed, Jun 21, 2023 at 11:42:30AM +0200, Benjamin Tissoires wrote:
+> >>>>> Make the code looks less like Pascal.
+> >>>>>
+> >>>>> Extract the internal code inside a helper function, fix the
+> >>>>> initialization of the parameters used in the helper function
+> >>>>> (`hidpp->answer_available` was not reset and `*response` wasn't
+> >>>>> too),
+> >>>>> and use a `do {...} while();` loop.
+> >>>>>
+> >>>>> Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when
+> >>>>> device is busy")
+> >>>>> Cc: stable@vger.kernel.org
+> >>>>> Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+> >>>>> ---
+> >>>>> as requested by
+> >>>>> https://lore.kernel.org/all/CAHk-=3DwiMbF38KCNhPFiargenpSBoecSXTLQA=
+CKS2UMyo_Vu2ww@mail.gmail.com/
+> >>>>> This is a rewrite of that particular piece of code.
+> >>>>> ---
+> >>>>>  drivers/hid/hid-logitech-hidpp.c | 102 +++++++++++++++++++++++--
+> >>>>> --------------
+> >>>>>  1 file changed, 61 insertions(+), 41 deletions(-)
+> > [...]
+> >
+> > Some people on the Bz were able to reproduce with multiple reboots.
+> > But it's not as urgent as previously, and we were close to the 6.4
+> > final when I sent it. I'll make sure this goes into 6.5 and gets
+> > proper stable backports FWIW.
+>
+> Did that happen? Doesn't look like it from here, but maybe I'm missing
+> something. Where there maybe other changes to resolve the remaining
+> problems some users encounter sporadically since the urgent fixes went in=
+?
 
-Did that happen? Doesn't look like it from here, but maybe I'm missing
-something. Where there maybe other changes to resolve the remaining
-problems some users encounter sporadically since the urgent fixes went in?
+No, there were no other changes that could have solved this. I guess
+the randomness of the problem makes it way harder to detect and to
+reproduce.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+I'll send a v2 of that patch with the reviews today or tomorrow and we
+can probably get it through the current 6.5 cycle.
+
+Cheers,
+Benjamin
+
+>
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
+>
+
