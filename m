@@ -2,46 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F181F74F7BB
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 20:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33CC874F7DD
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 20:15:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230447AbjGKSEg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 14:04:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55550 "EHLO
+        id S229616AbjGKSPY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 14:15:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbjGKSEf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 14:04:35 -0400
-Received: from out-21.mta0.migadu.com (out-21.mta0.migadu.com [91.218.175.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EBC810D2
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 11:04:33 -0700 (PDT)
-Date:   Tue, 11 Jul 2023 11:04:27 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1689098671;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=CCTVD9YswXR/J3CAXMSX6YUf1qY7Da7neiX5xY2+9ZI=;
-        b=xqOFfRQ8zcZePJRpzJXUvOaGMByb4Nl4u+m0/KmqKDars1WLsLKhEPhur/cooVt7tGE5bB
-        qxRwMRa0+dFejYDkJRe5izywQk1z6wy7GFCdJnUw/sAbup+WBaaX5egt65qJQWKZMfEhpQ
-        awT1AEllwpFVHskR2SUTaRqtXBVWeD8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Oliver Upton <oliver.upton@linux.dev>
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     kvmarm@lists.linux.dev, James Morse <james.morse@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>,
-        Reiji Watanabe <reijiw@google.com>, stable@vger.kernel.org,
-        Yu Zhao <yuzhao@google.com>
-Subject: Re: [PATCH v2] KVM: arm64: Correctly handle page aging notifiers for
- unaligned memslot
-Message-ID: <ZK2Zq9YbN4G/Pf0+@linux.dev>
-References: <20230627235405.4069823-1-oliver.upton@linux.dev>
- <86edlewyh2.wl-maz@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86edlewyh2.wl-maz@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+        with ESMTP id S229512AbjGKSPX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 14:15:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10959E0;
+        Tue, 11 Jul 2023 11:15:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C229615A5;
+        Tue, 11 Jul 2023 18:15:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4374C433C7;
+        Tue, 11 Jul 2023 18:15:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1689099320;
+        bh=a1W3QR7NQvYR0EAyNfTG/HrtT2WYT/vN1rWF91X8zsg=;
+        h=Date:To:From:Subject:From;
+        b=fg1fW/4qxeQ6PpBeMhMFqPwQp5bIhV6k43pZD3kz0kfYlSKJh1H7LoRDygCd0mnAr
+         eZCATKwzZw2Im0hqrTOgHBwTEpzwzXhcO7+JR98GBTcPZD32Myij0ebTAHmvjVqM0g
+         Grva+wx0a8sIaZASasaWq2ZEO8Mij6vQklmpAsM4=
+Date:   Tue, 11 Jul 2023 11:15:20 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        ryan.roberts@arm.com, Liam.Howlett@oracle.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-mlock-fix-vma-iterator-conversion-of-apply_vma_lock_flags.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230711181520.C4374C433C7@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
@@ -52,72 +46,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hey Marc,
 
-On Tue, Jul 11, 2023 at 11:10:01AM +0100, Marc Zyngier wrote:
-> On Wed, 28 Jun 2023 00:54:05 +0100, Oliver Upton <oliver.upton@linux.dev> wrote:
-> > +static int stage2_age_walker(const struct kvm_pgtable_visit_ctx *ctx,
-> > +			     enum kvm_pgtable_walk_flags visit)
-> >  {
-> > -	kvm_pte_t pte = 0;
-> > -	stage2_update_leaf_attrs(pgt, addr, 1, 0, KVM_PTE_LEAF_ATTR_LO_S2_AF,
-> > -				 &pte, NULL, 0);
-> > +	kvm_pte_t new = ctx->old & ~KVM_PTE_LEAF_ATTR_LO_S2_AF;
-> > +	struct stage2_age_data *data = ctx->arg;
-> > +
-> > +	if (!kvm_pte_valid(ctx->old) || new == ctx->old)
-> > +		return 0;
-> > +
-> > +	data->young = true;
-> > +
-> > +	if (data->mkold && !stage2_try_set_pte(ctx, new))
-> > +		return -EAGAIN;
-> > +
-> >  	/*
-> >  	 * "But where's the TLBI?!", you scream.
-> >  	 * "Over in the core code", I sigh.
-> >  	 *
-> >  	 * See the '->clear_flush_young()' callback on the KVM mmu notifier.
-> >  	 */
-> > -	return pte;
-> > +	return 0;
-> >  }
-> >  
-> > -bool kvm_pgtable_stage2_is_young(struct kvm_pgtable *pgt, u64 addr)
-> > +bool kvm_pgtable_stage2_test_clear_young(struct kvm_pgtable *pgt, u64 addr,
-> > +					 u64 size, bool mkold)
-> >  {
-> > -	kvm_pte_t pte = 0;
-> > -	stage2_update_leaf_attrs(pgt, addr, 1, 0, 0, &pte, NULL, 0);
-> > -	return pte & KVM_PTE_LEAF_ATTR_LO_S2_AF;
-> > +	struct stage2_age_data data = {
-> > +		.mkold		= mkold,
-> > +	};
-> > +	struct kvm_pgtable_walker walker = {
-> > +		.cb		= stage2_age_walker,
-> > +		.arg		= &data,
-> > +		.flags		= KVM_PGTABLE_WALK_LEAF,
-> > +	};
-> > +
-> > +	WARN_ON(kvm_pgtable_walk(pgt, addr, size, &walker));
-> 
-> Do we really want a WARN_ON() here? From what I can tell, it can be
-> (trivially?) triggered by the previous function returning -EAGAIN if
-> the pte update fails in the case of a shared walk.
+The patch titled
+     Subject: mm/mlock: fix vma iterator conversion of apply_vma_lock_flags()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-mlock-fix-vma-iterator-conversion-of-apply_vma_lock_flags.patch
 
-I threw the -EAGAIN in there just due to reflexes, we're holding the MMU
-write lock at this point so stage2_try_set_pte() will always succeed. A
-tad fragile, but wanted to make it trivial to change the locking around
-stage2_age_walker() in the future.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mlock-fix-vma-iterator-conversion-of-apply_vma_lock_flags.patch
 
-The reason I wanted to have a WARN here is because we're unable to
-return an error on the MMU notifier and might need some breadcrumbs to
-debug any underlying issues in the table walker. I'd really like to keep
-it in some form.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-I can either replace stage2_try_set_pte() with a direct WRITE_ONCE()
-(eliminating the error path) or leave it as-is. Which do you prefer?
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
---
-Thanks,
-Oliver
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: mm/mlock: fix vma iterator conversion of apply_vma_lock_flags()
+Date: Tue, 11 Jul 2023 13:50:20 -0400
+
+apply_vma_lock_flags() calls mlock_fixup(), which could merge the VMA
+after where the vma iterator is located.  Although this is not an issue,
+the next iteration of the loop will check the start of the vma to be equal
+to the locally saved 'tmp' variable and cause an incorrect failure
+scenario.  Fix the error by setting tmp to the end of the vma iterator
+value before restarting the loop.
+
+There is also a potential of the error code being overwritten when the
+loop terminates early.  Fix the return issue by directly returning when an
+error is encountered since there is nothing to undo after the loop.
+
+Link: https://lkml.kernel.org/r/20230711175020.4091336-1-Liam.Howlett@oracle.com
+Fixes: 37598f5a9d8b ("mlock: convert mlock to vma iterator")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Ryan Roberts <ryan.roberts@arm.com>
+  Link: https://lore.kernel.org/linux-mm/50341ca1-d582-b33a-e3d0-acb08a65166f@arm.com/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mlock.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+--- a/mm/mlock.c~mm-mlock-fix-vma-iterator-conversion-of-apply_vma_lock_flags
++++ a/mm/mlock.c
+@@ -477,7 +477,6 @@ static int apply_vma_lock_flags(unsigned
+ {
+ 	unsigned long nstart, end, tmp;
+ 	struct vm_area_struct *vma, *prev;
+-	int error;
+ 	VMA_ITERATOR(vmi, current->mm, start);
+ 
+ 	VM_BUG_ON(offset_in_page(start));
+@@ -498,6 +497,7 @@ static int apply_vma_lock_flags(unsigned
+ 	nstart = start;
+ 	tmp = vma->vm_start;
+ 	for_each_vma_range(vmi, vma, end) {
++		int error;
+ 		vm_flags_t newflags;
+ 
+ 		if (vma->vm_start != tmp)
+@@ -511,14 +511,15 @@ static int apply_vma_lock_flags(unsigned
+ 			tmp = end;
+ 		error = mlock_fixup(&vmi, vma, &prev, nstart, tmp, newflags);
+ 		if (error)
+-			break;
++			return error;
++		tmp = vma_iter_end(&vmi);
+ 		nstart = tmp;
+ 	}
+ 
+-	if (vma_iter_end(&vmi) < end)
++	if (tmp < end)
+ 		return -ENOMEM;
+ 
+-	return error;
++	return 0;
+ }
+ 
+ /*
+_
+
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
+
+mm-mlock-fix-vma-iterator-conversion-of-apply_vma_lock_flags.patch
+
