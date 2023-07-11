@@ -2,70 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC33B74E760
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 08:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FAC774E7DD
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 09:23:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231416AbjGKGc6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 02:32:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57978 "EHLO
+        id S229458AbjGKHXk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 03:23:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231651AbjGKGc5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 02:32:57 -0400
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC0E106
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 23:32:56 -0700 (PDT)
-Received: by mail-ua1-x931.google.com with SMTP id a1e0cc1a2514c-784f7f7deddso1642776241.3
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 23:32:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689057175; x=1691649175;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OoV7wHi0BKt48VDU7rudRkLkDSl0F6bArKQxs2XKWH8=;
-        b=t6X/P1fRgTle6kOoOp6BFmV2Tp4ee4Navqh9Fi4PptgcwbjmwqvhH3XKL7/XH1JxWW
-         krc6U5rFqYashM2zrHOOY6ogMLeV/wBdP1xgXFR4mJHp/nSWSJG5Y/EKDFZ+eg0Ieqfk
-         9mlqoZUxOMgl/bie9Kir9E016+4OYIaHAbiOKiVhuVP+79y8jxdFSdPQW/2HAebuT303
-         RZbyOfF9H8xyVUUdCmlq8dU8TC1FUF4CN0G/YpClxoEz3cGFzN4lo1f9rLT4mPLzb7ek
-         OGKo46Lg713VIqF0x+OzwYM1o6TRSMsRo/vKuQc4jF1EbD8to7bA6eLcr4Cpz5kyCMtu
-         jSEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689057175; x=1691649175;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OoV7wHi0BKt48VDU7rudRkLkDSl0F6bArKQxs2XKWH8=;
-        b=D/GAH9H8teNjyT5/k/Yqbc9TsLXtuNKpnbQdPgLOlocRsb94hc3Qrl1gcWatDcsLQE
-         0hRBYyzCEQiUR1FGps+kmaUw2UHjGdzlaKK0AWGBkroyQrhGBsZRzy4Ne/eiq2hX3SJR
-         jOFUDnZv1emPvpsU6K2aLoiLATCVHkmEVHVYsn0ov1qeYZ7d/dUUGwgGfFjiqp/aNfd9
-         wJJn7ydzMv06XohGMGuwiv5tk69MVPJyjKtoxKh30focLOZNV1zJV3a+gZp7ucQZfSNa
-         F4PBx/M5EN8hAmHFtuLgh4FEgTWXtnKrS4Fdc10DBLphITCkeDosHyobZTb3xVw3sJbN
-         7Hzg==
-X-Gm-Message-State: ABy/qLbC8MNzPj4lWEpEvzE6nb8UuD/ufPJBnjgbtP0TFBF7Hdk1OAnZ
-        t9W5T6X6zLYvGVdiWsO912jCOuwsau90EOAjYrfcTjJOVcKenYN7Z+s=
-X-Google-Smtp-Source: APBJJlEqsJAqUnLJm2yvVaj5bm+mRbslSMN2Dmhfo0eGS5oS8hTszDthHaChlPLhBHw6B/4JE61l+mkeCA1SizfzCZg=
-X-Received: by 2002:a1f:6041:0:b0:471:b14a:fc48 with SMTP id
- u62-20020a1f6041000000b00471b14afc48mr7107050vkb.13.1689057174951; Mon, 10
- Jul 2023 23:32:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230710142227.965586663@linuxfoundation.org>
-In-Reply-To: <20230710142227.965586663@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 11 Jul 2023 12:02:43 +0530
-Message-ID: <CA+G9fYtokiZUYJr9RZth_iEfhrJhYv5=53G7Gxds8jWhxRfEyQ@mail.gmail.com>
-Subject: Re: [PATCH 6.3 000/424] 6.3.13-rc4 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        with ESMTP id S229766AbjGKHXi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 03:23:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6239AE6A
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 00:23:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D76C161349
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 07:23:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F12C433C9;
+        Tue, 11 Jul 2023 07:23:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689060208;
+        bh=vkZgS++QwVDhnRXO1d9T2q8nnAlRlxQqK1dITmIMh00=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=VfxJqo+pEgBOrb7/CxFe6DcYtBzt3+lwvsCWy+8ilfTklN3SZfa6TzuJ1rjqL8Orj
+         QClCeheCMq8JCmkSmFbUSJ5HMPkQEx05vU1hiZ5KSVon0k7sIhzOdNGUSuR+9qBZjI
+         Dn2UM7YGkJ2zcQy8z+gKzl9sH7mu6n4To8yWp0b5VcjDiSVUssPSukgWc0um5Cr6zr
+         0L09pNWx1ciMh3Zy0l94f4bwmNpVCNrr+SqEl9N7vtj+lIMfeLhv2SuxVNY4+I0IOZ
+         QgVFiYn7qFnqHCw4ejmZMjm+C5K1wXLa1FNGX8BfmW0VObjZx2kYOnEjt6jgEzmwxB
+         hoNd8r6XJzwbQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1qJ7iY-00C2RY-0x;
+        Tue, 11 Jul 2023 08:23:26 +0100
+Date:   Tue, 11 Jul 2023 08:23:25 +0100
+Message-ID: <86jzv6x66q.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Oliver Upton <oliver.upton@linux.dev>
+Cc:     kvmarm@lists.linux.dev, James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org,
+        Xiang Chen <chenxiang66@hisilicon.com>
+Subject: Re: [PATCH] KVM: arm64: vgic-v4: Consistently request doorbell irq for blocking vCPU
+In-Reply-To: <20230710175553.1477762-1-oliver.upton@linux.dev>
+References: <20230710175553.1477762-1-oliver.upton@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, stable@vger.kernel.org, chenxiang66@hisilicon.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,172 +68,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 10 Jul 2023 at 19:53, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.3.13 release.
-> There are 424 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 12 Jul 2023 14:21:05 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.3.13-rc4.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.3.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Mon, 10 Jul 2023 18:55:53 +0100,
+Oliver Upton <oliver.upton@linux.dev> wrote:
+> 
+> Xiang reports that VMs occasionally fail to boot on GICv4.1 systems when
+> running a preemptible kernel, as it is possible that a vCPU is blocked
+> without requesting a doorbell interrupt.
+> 
+> The issue is that any preemption that occurs between vgic_v4_put() and
+> schedule() on the block path will mark the vPE as nonresident and *not*
+> request a doorbell irq.
 
+It'd be worth spelling out. You need to go via *three* schedule()
+calls: one to be preempted (with DB set), one to be made resident
+again, and then the final one in kvm_vcpu_halt(), clearing the DB on
+vcpu_put() due to the bug.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+> 
+> Fix it by consistently requesting a doorbell irq in the vcpu put path if
+> the vCPU is blocking. While this technically means we could drop the
+> early doorbell irq request in kvm_vcpu_wfi(), deliberately leave it
+> intact such that vCPU halt polling can properly detect the wakeup
+> condition before actually scheduling out a vCPU.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 8e01d9a396e6 ("KVM: arm64: vgic-v4: Move the GICv4 residency flow to be driven by vcpu_load/put")
+> Reported-by: Xiang Chen <chenxiang66@hisilicon.com>
+> Tested-by: Xiang Chen <chenxiang66@hisilicon.com>
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> ---
+>  arch/arm64/kvm/vgic/vgic-v3.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
+> index c3b8e132d599..8c467e9f4f11 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v3.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v3.c
+> @@ -749,7 +749,7 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
+>  {
+>  	struct vgic_v3_cpu_if *cpu_if = &vcpu->arch.vgic_cpu.vgic_v3;
+>  
+> -	WARN_ON(vgic_v4_put(vcpu, false));
+> +	WARN_ON(vgic_v4_put(vcpu, kvm_vcpu_is_blocking(vcpu)));
+>  
+>  	vgic_v3_vmcr_sync(vcpu);
+>  
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Other than the above nitpicking, this looks good. Thanks both for the
+very detailed report and the fix.
 
-## Build
-* kernel: 6.3.13-rc4
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.3.y
-* git commit: 4882b85b0b1dc42e2ee6554fdb1eb956bd2c6015
-* git describe: v6.3.11-439-g4882b85b0b1d
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.1=
-1-439-g4882b85b0b1d
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 
-## Test Regressions (compared to v6.3.11)
+	M.
 
-## Metric Regressions (compared to v6.3.11)
-
-## Test Fixes (compared to v6.3.11)
-
-## Metric Fixes (compared to v6.3.11)
-
-## Test result summary
-total: 170788, pass: 146856, fail: 1976, skip: 21790, xfail: 166
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 145 total, 144 passed, 1 failed
-* arm64: 54 total, 53 passed, 1 failed
-* i386: 41 total, 40 passed, 1 failed
-* mips: 30 total, 28 passed, 2 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 38 total, 36 passed, 2 failed
-* riscv: 26 total, 25 passed, 1 failed
-* s390: 16 total, 14 passed, 2 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 46 total, 46 passed, 0 failed
-
-## Test suites summary
-* boot
-* fwts
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
+-- 
+Without deviation from the norm, progress is not possible.
