@@ -2,208 +2,322 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEE2A74F91B
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB89F74F947
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:46:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230013AbjGKUc2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 16:32:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44574 "EHLO
+        id S230195AbjGKUqL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 16:46:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbjGKUc1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:32:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C05C195
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:32:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A6E08615F5
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:32:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B209BC433C7;
-        Tue, 11 Jul 2023 20:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689107545;
-        bh=WpEcQQE+JMSk0zx63PwG7Blh/NJ5V1PPinmBPovzt3k=;
-        h=Subject:To:Cc:From:Date:From;
-        b=C/AknEoS0+mMporGW3YXqzmqX+MBj69h7SoWQMS6Xc/Ty8Xw3fEY5kEH5tIrXglEA
-         nrVuQy1GuithsVQe5DuMSyHXE8u/Tetnifplw3++UR8Pyvgxy6Y1svf+gVz66eNUCY
-         nd1vAQv4EnIEeI//4LgZ/+logxjhylaX+FCC3b3E=
-Subject: FAILED: patch "[PATCH] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()" failed to apply to 4.14-stable tree
-To:     dinghui@sangfor.com.cn, chuck.lever@oracle.com,
-        stable@vger.kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 11 Jul 2023 22:32:19 +0200
-Message-ID: <2023071119-underdone-monotype-f516@gregkh>
+        with ESMTP id S230180AbjGKUqL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:46:11 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27F41986
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:45:36 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-66f5faba829so3645574b3a.3
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:45:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689108335; x=1691700335;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kZlRzDjtjoYZ/DTuUKBf9MtFcf3ZvRdBFb+rzKNEhVo=;
+        b=qB116eoCRC3Lxvx/gMz36r1h7ABe3ueBU2QqPBAiN5syCwvwKyc/D4CAgmbYCTesUP
+         2QSeQKiB8JJptOoD4njRxr0woT1ODqANWomJq7dzsLACD+9tXLq/Ive3hsp/EjqSzaE4
+         afz9FQ9AvVi8Ua2jhVWa9TEVFSOLtplASNGY0eoHEBl90DBbMjIAhPAEg8d1h9H4x3DV
+         MRlAeGSJpEmilUI5Vl4mF7tbbwNfeLiwVsVzPAzzFH0kTmOondkI+qFtCu5WErSwktnp
+         FqObBYISDyuvHvlgdtrMtOGxjZcmA0I6XSnJ+Zfs96Z419SR3ODHSMr0kzGeyxRz4X58
+         YKzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689108335; x=1691700335;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kZlRzDjtjoYZ/DTuUKBf9MtFcf3ZvRdBFb+rzKNEhVo=;
+        b=NJL58TTtTuyIa4x8geMy6rOLlsWVfYQk6s1kxfqY+1FHDuKzsuFWWU4Q74t9JQWgfa
+         BEy6arnF/fy+gLRUARkDkBu7UsbaBKlf1alywTyYI25yonGCHGl6U0MUj/wwTZilJ16P
+         jWa7ADDZiVBhxo/lghMMuVuhP9kVudl9hcLNjQNjXvv/en+64Fsl9ZmyJcQaUY8LgYSX
+         a8YChNNeN9ueOz5UepFOsSol+Ap2pC272MxrLKIgNL5zxCm92jIB7oQlzL8MZ53Xe6me
+         CmbXmOfBi3b7uM/TXTiQpJU/bjwVvdFnheH3BoP0P/C4G5kZZyoPb6tM0nCK3RGrmSgP
+         NiDg==
+X-Gm-Message-State: ABy/qLZurhINHPmjsWw8qGS/VK+UbXCwHYZ4pzzOcoLaeCtp09AYh1Ku
+        QWqMKwxamRnHZUntCniuqN4=
+X-Google-Smtp-Source: APBJJlGPC/GnmUB0cy3sxJmiBaOrWB7vsDzNSlyHO0quUFy7aZXqi02qQ7j5KP3Ggdf9wXfJCUv5Bw==
+X-Received: by 2002:a05:6a00:2489:b0:668:99aa:3f17 with SMTP id c9-20020a056a00248900b0066899aa3f17mr17771554pfv.16.1689108334663;
+        Tue, 11 Jul 2023 13:45:34 -0700 (PDT)
+Received: from ?IPV6:2001:df0:0:200c:7107:8d5f:27ba:c525? ([2001:df0:0:200c:7107:8d5f:27ba:c525])
+        by smtp.gmail.com with ESMTPSA id e26-20020a62aa1a000000b006749c22d079sm2094327pff.167.2023.07.11.13.45.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Jul 2023 13:45:34 -0700 (PDT)
+Message-ID: <357b640e-5d24-7779-f4a6-d704bd623934@gmail.com>
+Date:   Wed, 12 Jul 2023 08:45:27 +1200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: FAILED: patch "[PATCH] block: add overflow checks for Amiga
+ partition support" failed to apply to 5.10-stable tree
+Content-Language: en-US
+To:     gregkh@linuxfoundation.org, Martin@lichtvoll.de, axboe@kernel.dk,
+        geert@linux-m68k.org, hch@infradead.org, jdow@earthlink.net,
+        stable@vger.kernel.org
+References: <2023071116-umbrella-fog-a65f@gregkh>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+In-Reply-To: <2023071116-umbrella-fog-a65f@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Greg,
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+this patch was part of a series of three patches 
+(fc3d092c6bb48d5865fec15ed5b333c12f36288c, 
+95a55437dc49fb3342c82e61f5472a71c63d9ed0, 
+b6f3f28f604ba3de4724ad82bea6adb1300c0b5f). The first in that series must 
+also be cherry-picked in order for the third one to apply cleanly.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+You appear to have applied fc3d092c6bb48d5865fec15ed5b333c12f36288c to 
+5.4 and 5.10 now, so I'd expect re-applying 
+b6f3f28f604ba3de4724ad82bea6adb1300c0b5f would work OK>
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x fc80fc2d4e39137869da3150ee169b40bf879287
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071119-underdone-monotype-f516@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+Please note that after these have all been applied, we still need 
+7eb1e47696aa231b1a567846bbe3a1e1befe1854 ("block/partition: fix 
+signedness issue for Amiga partitions") which is a bugfix for 
+b6f3f28f604ba3de4724ad82bea6adb1300c0b5f.
 
-Possible dependencies:
+Thanks!
+
+Cheers,
+
+     Michael
 
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From fc80fc2d4e39137869da3150ee169b40bf879287 Mon Sep 17 00:00:00 2001
-From: Ding Hui <dinghui@sangfor.com.cn>
-Date: Mon, 15 May 2023 10:13:07 +0800
-Subject: [PATCH] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()
-
-After the listener svc_sock is freed, and before invoking svc_tcp_accept()
-for the established child sock, there is a window that the newsock
-retaining a freed listener svc_sock in sk_user_data which cloning from
-parent. In the race window, if data is received on the newsock, we will
-observe use-after-free report in svc_tcp_listen_data_ready().
-
-Reproduce by two tasks:
-
-1. while :; do rpc.nfsd 0 ; rpc.nfsd; done
-2. while :; do echo "" | ncat -4 127.0.0.1 2049 ; done
-
-KASAN report:
-
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
-  Read of size 8 at addr ffff888139d96228 by task nc/102553
-  CPU: 7 PID: 102553 Comm: nc Not tainted 6.3.0+ #18
-  Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0x33/0x50
-   print_address_description.constprop.0+0x27/0x310
-   print_report+0x3e/0x70
-   kasan_report+0xae/0xe0
-   svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
-   tcp_data_queue+0x9f4/0x20e0
-   tcp_rcv_established+0x666/0x1f60
-   tcp_v4_do_rcv+0x51c/0x850
-   tcp_v4_rcv+0x23fc/0x2e80
-   ip_protocol_deliver_rcu+0x62/0x300
-   ip_local_deliver_finish+0x267/0x350
-   ip_local_deliver+0x18b/0x2d0
-   ip_rcv+0x2fb/0x370
-   __netif_receive_skb_one_core+0x166/0x1b0
-   process_backlog+0x24c/0x5e0
-   __napi_poll+0xa2/0x500
-   net_rx_action+0x854/0xc90
-   __do_softirq+0x1bb/0x5de
-   do_softirq+0xcb/0x100
-   </IRQ>
-   <TASK>
-   ...
-   </TASK>
-
-  Allocated by task 102371:
-   kasan_save_stack+0x1e/0x40
-   kasan_set_track+0x21/0x30
-   __kasan_kmalloc+0x7b/0x90
-   svc_setup_socket+0x52/0x4f0 [sunrpc]
-   svc_addsock+0x20d/0x400 [sunrpc]
-   __write_ports_addfd+0x209/0x390 [nfsd]
-   write_ports+0x239/0x2c0 [nfsd]
-   nfsctl_transaction_write+0xac/0x110 [nfsd]
-   vfs_write+0x1c3/0xae0
-   ksys_write+0xed/0x1c0
-   do_syscall_64+0x38/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-  Freed by task 102551:
-   kasan_save_stack+0x1e/0x40
-   kasan_set_track+0x21/0x30
-   kasan_save_free_info+0x2a/0x50
-   __kasan_slab_free+0x106/0x190
-   __kmem_cache_free+0x133/0x270
-   svc_xprt_free+0x1e2/0x350 [sunrpc]
-   svc_xprt_destroy_all+0x25a/0x440 [sunrpc]
-   nfsd_put+0x125/0x240 [nfsd]
-   nfsd_svc+0x2cb/0x3c0 [nfsd]
-   write_threads+0x1ac/0x2a0 [nfsd]
-   nfsctl_transaction_write+0xac/0x110 [nfsd]
-   vfs_write+0x1c3/0xae0
-   ksys_write+0xed/0x1c0
-   do_syscall_64+0x38/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Fix the UAF by simply doing nothing in svc_tcp_listen_data_ready()
-if state != TCP_LISTEN, that will avoid dereferencing svsk for all
-child socket.
-
-Link: https://lore.kernel.org/lkml/20230507091131.23540-1-dinghui@sangfor.com.cn/
-Fixes: fa9251afc33c ("SUNRPC: Call the default socket callbacks instead of open coding")
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index f77cebe2c071..15f4d0d40bdd 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -826,12 +826,6 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
- 
- 	trace_sk_data_ready(sk);
- 
--	if (svsk) {
--		/* Refer to svc_setup_socket() for details. */
--		rmb();
--		svsk->sk_odata(sk);
--	}
--
- 	/*
- 	 * This callback may called twice when a new connection
- 	 * is established as a child socket inherits everything
-@@ -840,13 +834,18 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
- 	 *    when one of child sockets become ESTABLISHED.
- 	 * 2) data_ready method of the child socket may be called
- 	 *    when it receives data before the socket is accepted.
--	 * In case of 2, we should ignore it silently.
-+	 * In case of 2, we should ignore it silently and DO NOT
-+	 * dereference svsk.
- 	 */
--	if (sk->sk_state == TCP_LISTEN) {
--		if (svsk) {
--			set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
--			svc_xprt_enqueue(&svsk->sk_xprt);
--		}
-+	if (sk->sk_state != TCP_LISTEN)
-+		return;
-+
-+	if (svsk) {
-+		/* Refer to svc_setup_socket() for details. */
-+		rmb();
-+		svsk->sk_odata(sk);
-+		set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
-+		svc_xprt_enqueue(&svsk->sk_xprt);
- 	}
- }
- 
-
+On 12/07/23 08:30, gregkh@linuxfoundation.org wrote:
+> The patch below does not apply to the 5.10-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following commands:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x b6f3f28f604ba3de4724ad82bea6adb1300c0b5f
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071116-umbrella-fog-a65f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+>
+> Possible dependencies:
+>
+>
+>
+> thanks,
+>
+> greg k-h
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+>  From b6f3f28f604ba3de4724ad82bea6adb1300c0b5f Mon Sep 17 00:00:00 2001
+> From: Michael Schmitz <schmitzmic@gmail.com>
+> Date: Wed, 21 Jun 2023 08:17:25 +1200
+> Subject: [PATCH] block: add overflow checks for Amiga partition support
+>
+> The Amiga partition parser module uses signed int for partition sector
+> address and count, which will overflow for disks larger than 1 TB.
+>
+> Use u64 as type for sector address and size to allow using disks up to
+> 2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+> format allows to specify disk sizes up to 2^128 bytes (though native
+> OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+> u64 overflow carefully to protect against overflowing sector_t.
+>
+> Bail out if sector addresses overflow 32 bits on kernels without LBD
+> support.
+>
+> This bug was reported originally in 2012, and the fix was created by
+> the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+> discussed and reviewed on linux-m68k at that time but never officially
+> submitted (now resubmitted as patch 1 in this series).
+> This patch adds additional error checking and warning messages.
+>
+> Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+> Cc: <stable@vger.kernel.org> # 5.2
+> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Reviewed-by: Christoph Hellwig <hch@infradead.org>
+> Link: https://lore.kernel.org/r/20230620201725.7020-4-schmitzmic@gmail.com
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+>
+> diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
+> index 85c5c79aae48..ed222b9c901b 100644
+> --- a/block/partitions/amiga.c
+> +++ b/block/partitions/amiga.c
+> @@ -11,10 +11,18 @@
+>   #define pr_fmt(fmt) fmt
+>   
+>   #include <linux/types.h>
+> +#include <linux/mm_types.h>
+> +#include <linux/overflow.h>
+>   #include <linux/affs_hardblocks.h>
+>   
+>   #include "check.h"
+>   
+> +/* magic offsets in partition DosEnvVec */
+> +#define NR_HD	3
+> +#define NR_SECT	5
+> +#define LO_CYL	9
+> +#define HI_CYL	10
+> +
+>   static __inline__ u32
+>   checksum_block(__be32 *m, int size)
+>   {
+> @@ -31,9 +39,12 @@ int amiga_partition(struct parsed_partitions *state)
+>   	unsigned char *data;
+>   	struct RigidDiskBlock *rdb;
+>   	struct PartitionBlock *pb;
+> -	sector_t start_sect, nr_sects;
+> -	int blk, part, res = 0;
+> -	int blksize = 1;	/* Multiplier for disk block size */
+> +	u64 start_sect, nr_sects;
+> +	sector_t blk, end_sect;
+> +	u32 cylblk;		/* rdb_CylBlocks = nr_heads*sect_per_track */
+> +	u32 nr_hd, nr_sect, lo_cyl, hi_cyl;
+> +	int part, res = 0;
+> +	unsigned int blksize = 1;	/* Multiplier for disk block size */
+>   	int slot = 1;
+>   
+>   	for (blk = 0; ; blk++, put_dev_sector(sect)) {
+> @@ -41,7 +52,7 @@ int amiga_partition(struct parsed_partitions *state)
+>   			goto rdb_done;
+>   		data = read_part_sector(state, blk, &sect);
+>   		if (!data) {
+> -			pr_err("Dev %s: unable to read RDB block %d\n",
+> +			pr_err("Dev %s: unable to read RDB block %llu\n",
+>   			       state->disk->disk_name, blk);
+>   			res = -1;
+>   			goto rdb_done;
+> @@ -58,12 +69,12 @@ int amiga_partition(struct parsed_partitions *state)
+>   		*(__be32 *)(data+0xdc) = 0;
+>   		if (checksum_block((__be32 *)data,
+>   				be32_to_cpu(rdb->rdb_SummedLongs) & 0x7F)==0) {
+> -			pr_err("Trashed word at 0xd0 in block %d ignored in checksum calculation\n",
+> +			pr_err("Trashed word at 0xd0 in block %llu ignored in checksum calculation\n",
+>   			       blk);
+>   			break;
+>   		}
+>   
+> -		pr_err("Dev %s: RDB in block %d has bad checksum\n",
+> +		pr_err("Dev %s: RDB in block %llu has bad checksum\n",
+>   		       state->disk->disk_name, blk);
+>   	}
+>   
+> @@ -80,10 +91,15 @@ int amiga_partition(struct parsed_partitions *state)
+>   	blk = be32_to_cpu(rdb->rdb_PartitionList);
+>   	put_dev_sector(sect);
+>   	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
+> -		blk *= blksize;	/* Read in terms partition table understands */
+> +		/* Read in terms partition table understands */
+> +		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
+> +			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
+> +				state->disk->disk_name, blk, part);
+> +			break;
+> +		}
+>   		data = read_part_sector(state, blk, &sect);
+>   		if (!data) {
+> -			pr_err("Dev %s: unable to read partition block %d\n",
+> +			pr_err("Dev %s: unable to read partition block %llu\n",
+>   			       state->disk->disk_name, blk);
+>   			res = -1;
+>   			goto rdb_done;
+> @@ -95,19 +111,70 @@ int amiga_partition(struct parsed_partitions *state)
+>   		if (checksum_block((__be32 *)pb, be32_to_cpu(pb->pb_SummedLongs) & 0x7F) != 0 )
+>   			continue;
+>   
+> -		/* Tell Kernel about it */
+> +		/* RDB gives us more than enough rope to hang ourselves with,
+> +		 * many times over (2^128 bytes if all fields max out).
+> +		 * Some careful checks are in order, so check for potential
+> +		 * overflows.
+> +		 * We are multiplying four 32 bit numbers to one sector_t!
+> +		 */
+> +
+> +		nr_hd   = be32_to_cpu(pb->pb_Environment[NR_HD]);
+> +		nr_sect = be32_to_cpu(pb->pb_Environment[NR_SECT]);
+> +
+> +		/* CylBlocks is total number of blocks per cylinder */
+> +		if (check_mul_overflow(nr_hd, nr_sect, &cylblk)) {
+> +			pr_err("Dev %s: heads*sects %u overflows u32, skipping partition!\n",
+> +				state->disk->disk_name, cylblk);
+> +			continue;
+> +		}
+> +
+> +		/* check for consistency with RDB defined CylBlocks */
+> +		if (cylblk > be32_to_cpu(rdb->rdb_CylBlocks)) {
+> +			pr_warn("Dev %s: cylblk %u > rdb_CylBlocks %u!\n",
+> +				state->disk->disk_name, cylblk,
+> +				be32_to_cpu(rdb->rdb_CylBlocks));
+> +		}
+> +
+> +		/* RDB allows for variable logical block size -
+> +		 * normalize to 512 byte blocks and check result.
+> +		 */
+> +
+> +		if (check_mul_overflow(cylblk, blksize, &cylblk)) {
+> +			pr_err("Dev %s: partition %u bytes per cyl. overflows u32, skipping partition!\n",
+> +				state->disk->disk_name, part);
+> +			continue;
+> +		}
+> +
+> +		/* Calculate partition start and end. Limit of 32 bit on cylblk
+> +		 * guarantees no overflow occurs if LBD support is enabled.
+> +		 */
+> +
+> +		lo_cyl = be32_to_cpu(pb->pb_Environment[LO_CYL]);
+> +		start_sect = ((u64) lo_cyl * cylblk);
+> +
+> +		hi_cyl = be32_to_cpu(pb->pb_Environment[HI_CYL]);
+> +		nr_sects = (((u64) hi_cyl - lo_cyl + 1) * cylblk);
+>   
+> -		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
+> -			   be32_to_cpu(pb->pb_Environment[9])) *
+> -			   be32_to_cpu(pb->pb_Environment[3]) *
+> -			   be32_to_cpu(pb->pb_Environment[5]) *
+> -			   blksize;
+>   		if (!nr_sects)
+>   			continue;
+> -		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
+> -			     be32_to_cpu(pb->pb_Environment[3]) *
+> -			     be32_to_cpu(pb->pb_Environment[5]) *
+> -			     blksize;
+> +
+> +		/* Warn user if partition end overflows u32 (AmigaDOS limit) */
+> +
+> +		if ((start_sect + nr_sects) > UINT_MAX) {
+> +			pr_warn("Dev %s: partition %u (%llu-%llu) needs 64 bit device support!\n",
+> +				state->disk->disk_name, part,
+> +				start_sect, start_sect + nr_sects);
+> +		}
+> +
+> +		if (check_add_overflow(start_sect, nr_sects, &end_sect)) {
+> +			pr_err("Dev %s: partition %u (%llu-%llu) needs LBD device support, skipping partition!\n",
+> +				state->disk->disk_name, part,
+> +				start_sect, end_sect);
+> +			continue;
+> +		}
+> +
+> +		/* Tell Kernel about it */
+> +
+>   		put_partition(state,slot++,start_sect,nr_sects);
+>   		{
+>   			/* Be even more informative to aid mounting */
+>
