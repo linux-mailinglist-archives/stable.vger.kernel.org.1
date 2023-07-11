@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8B1074F906
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F057974F908
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:30:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230155AbjGKUaX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 16:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43698 "EHLO
+        id S230305AbjGKUab (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 16:30:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjGKUaW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:30:22 -0400
+        with ESMTP id S229468AbjGKUab (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:30:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB29B7
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:30:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1B99195
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:30:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00291615F2
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:30:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091B0C433C8;
-        Tue, 11 Jul 2023 20:30:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 37E15615E4
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:30:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F31C433C8;
+        Tue, 11 Jul 2023 20:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689107419;
-        bh=9D+WvH2A77UaTzICNkF6O5trjTewFXMNO6XD3oyHQ1U=;
+        s=korg; t=1689107428;
+        bh=tWGT83VKsvaZCOu4hm69cP59ZFw359EYX+/ca7Mb6Kc=;
         h=Subject:To:Cc:From:Date:From;
-        b=sf7fUHR7j2v/kQvfco/0SDrdKgD5LDvwNRcRsQd7y1z8vcuez8+fcOtRiisbNb+Uy
-         YbeceRaMqP2iRS+nVTCYzPf87mZHj1BU0kLykrdoBLaTV6Jh0/s4+IFudEmcLrMsJa
-         BmSsEk+R3aj89kkrWMlW8TWgF+sn/FiYvDgYndr8=
-Subject: FAILED: patch "[PATCH] block: add overflow checks for Amiga partition support" failed to apply to 5.10-stable tree
+        b=uo/4VOHdIHO5T+NGMZXU3mYykj0uWeNpm9j1/+CW/EiGkDIB00WToHdXEFnGRCGQs
+         VYXQrPV0Wttozd7dQQjTKFRenoUgjlLwMU0y1nrfHaBZmuELOp/MhhMaF5E98jqw/u
+         a76DJSeg4c908wpZjBA6qqyJtBL4NZKUKVu+mAJg=
+Subject: FAILED: patch "[PATCH] block: add overflow checks for Amiga partition support" failed to apply to 5.4-stable tree
 To:     schmitzmic@gmail.com, Martin@lichtvoll.de, axboe@kernel.dk,
         geert@linux-m68k.org, hch@infradead.org, jdow@earthlink.net,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 11 Jul 2023 22:30:16 +0200
-Message-ID: <2023071116-umbrella-fog-a65f@gregkh>
+Date:   Tue, 11 Jul 2023 22:30:17 +0200
+Message-ID: <2023071117-convene-mockup-27f2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x b6f3f28f604ba3de4724ad82bea6adb1300c0b5f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071116-umbrella-fog-a65f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071117-convene-mockup-27f2@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
