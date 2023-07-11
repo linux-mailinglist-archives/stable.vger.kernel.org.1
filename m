@@ -2,81 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80DAA74E21C
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 01:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B08F74E28F
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 02:31:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbjGJXO0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 19:14:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48122 "EHLO
+        id S229583AbjGKAbb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 20:31:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230255AbjGJXOZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 19:14:25 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98F7C1B2
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 16:14:22 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4fbaef9871cso7694311e87.0
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 16:14:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1689030861; x=1691622861;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VIA0vS9CGVZu/dKUtt1DEeTq+za3hXZ7GjZyvjklTUs=;
-        b=wbebkbLh9K+s7RqRbnPjkJnBGX5Q2tQ8wr1xPosokwNjTydGAOTVas0VGA6zyRvd8W
-         WPyz+AzJVi309tna+AIGoxvDbPTKSBqHQhlDFTkuO0K7N/LXJ+6lBIA4a0/d9bQl4L5V
-         2u5aXF3lCrjW8ZVuffdH+voZjPSyNhDf7YA8Pn5PaW98cNENUYJDCXNaPPMiOVE/owwg
-         T1Q5RnfMgUW/9WFfuhI7SWR1RJxpKbsAkgkD+QTqkZ4KScpOELTy7xA1xbGH3aMYFxFE
-         WthVHtgBB+4NQP+RVltsVo14IXrQLyjuhWpqF0JjkiE+VOTMeGhWn182IwNCWlc1KsVT
-         Xn+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689030861; x=1691622861;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VIA0vS9CGVZu/dKUtt1DEeTq+za3hXZ7GjZyvjklTUs=;
-        b=aPZTOIeHtyCr/w8cNrfrPCvviPFu02KlYmYUw+qzL+iwUuUvJrLKmfrJDOeYPWMnYN
-         IbAGyMrxYnQQn9v0a5NOAbWaZmzL1ZUhZQVXmiYKOdV2ZQ4lbzY+9+xTEZbKz2BYwbAj
-         Q8Jvhrn57AcbKuMJjZm1Ban4xnDdqrahVdaVRMonlSHTboo/XGdxrBPGnmo9fUy391bM
-         0BgGNXM2lO+zL/c7CisMEzEDfuvhFUGY0QnSZmZSFJSdC6dnLLUExTf9KxX0IE5UPXS+
-         uk5RbtaGbddd+oorAtbKeS71mSD0JP1FPkURWvsDw1VgS4gyTBZym+Hk54bqUSbrcW+K
-         huvw==
-X-Gm-Message-State: ABy/qLZQtg94BiDcXkpqp4Nf4Uojpj4hWDdTqZuqB7LMTGf1g/q37Xip
-        vr8tAZ7qJxAAWjQ2lL3u5+vjzAokbAVpwuSHwZFy2A==
-X-Google-Smtp-Source: APBJJlEcIKfj6d06z0ZSWaBeY8VonHC9pf+QP0h3+s903O5LXh6RbAYPuokBP+PaRwBXogdljmL9fsDD46SWpNIEctM=
-X-Received: by 2002:a19:e006:0:b0:4f8:6bbe:8a0b with SMTP id
- x6-20020a19e006000000b004f86bbe8a0bmr10101748lfg.16.1689030860745; Mon, 10
- Jul 2023 16:14:20 -0700 (PDT)
-MIME-Version: 1.0
+        with ESMTP id S229931AbjGKAba (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 20:31:30 -0400
+Received: from gproxy2-pub.mail.unifiedlayer.com (gproxy2-pub.mail.unifiedlayer.com [69.89.18.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A601A8
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 17:31:29 -0700 (PDT)
+Received: from cmgw10.mail.unifiedlayer.com (unknown [10.0.90.125])
+        by progateway4.mail.pro1.eigbox.com (Postfix) with ESMTP id A4E4010041A32
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 00:31:28 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id J1HsqCJSzuV4sJ1Hsq1Pnd; Tue, 11 Jul 2023 00:31:28 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=Ko6IZUaN c=1 sm=1 tr=0 ts=64aca2e0
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10:nop_charset_1 a=ws7JD89P4LkA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=6xjQCxcbpo9Lr0TBgzc0qHnozptu/wWKmOm+qvGvczI=; b=U/4+UWLY9lpvufz7upMy93Hx+u
+        tZWRh8+NKzjFc7BtThtXj+7vc/Ub6BVE3h7tCugDqF2icVXEo9taATX4nZJMrWVw228D7uDkqSS9m
+        HtvvCp86p6c8GZdE6IqedAsr0kiUY3yxyMJJmxczZzjUmNhksJ/+xaL+7XIE07+BZ6ug1Nkqu8dJD
+        ZC6ppRrzd+TVGgNUydq3KWnCAQ9B3GEDI1ygFXmRKkgzQ/2lpkhqhlQl464GsQrzvYMgk9bB5+oTj
+        XSwYQdZQDZQmHDu3JeJgTSOQyXpv1YCzbfDxyNu4Lem7ixIfIltzMcnQU4k0jsW+9ME/DlOm04jR0
+        hlJauq7g==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:47342 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <re@w6rz.net>)
+        id 1qJ1Hr-001z2t-0d;
+        Mon, 10 Jul 2023 18:31:27 -0600
+Subject: Re: [PATCH 6.4 0/6] 6.4.3-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
 References: <20230709203826.141774942@linuxfoundation.org>
 In-Reply-To: <20230709203826.141774942@linuxfoundation.org>
-From:   ogasawara takeshi <takeshi.ogasawara@futuring-girl.com>
-Date:   Tue, 11 Jul 2023 08:14:09 +0900
-Message-ID: <CAKL4bV7eHZerKW5F2_Zx_fEpmotZ3YvGYht1H1Evro6M5CBHxA@mail.gmail.com>
-Subject: Re: [PATCH 6.4 0/6] 6.4.3-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <5a89404c-16f5-7ec2-689b-756527d25265@w6rz.net>
+Date:   Mon, 10 Jul 2023 17:31:24 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qJ1Hr-001z2t-0d
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:47342
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
-
-On Mon, Jul 10, 2023 at 5:45=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
+On 7/9/23 1:45 PM, Greg Kroah-Hartman wrote:
 > This is the start of the stable review cycle for the 6.4.3 release.
 > There are 6 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
@@ -86,28 +104,16 @@ On Mon, Jul 10, 2023 at 5:45=E2=80=AFAM Greg Kroah-Hartman
 > Anything received after that time might be too late.
 >
 > The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.4.3-rc2.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.3-rc2.gz
 > or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.4.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
 > and the diffstat can be found below.
 >
 > thanks,
 >
 > greg k-h
->
 
-6.4.3-rc2 tested.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+Tested-by: Ron Economos <re@w6rz.net>
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64), arch linux)
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
