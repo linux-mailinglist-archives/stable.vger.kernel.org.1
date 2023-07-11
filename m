@@ -2,94 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CE7E74F130
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 16:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD3BB74F1A8
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 16:19:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233316AbjGKOHU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 10:07:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45274 "EHLO
+        id S230352AbjGKOTb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 10:19:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233313AbjGKOHT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 10:07:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 081B8BC;
-        Tue, 11 Jul 2023 07:07:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S229959AbjGKOTa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 10:19:30 -0400
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A64311709;
+        Tue, 11 Jul 2023 07:19:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1689085127;
+        bh=e18NHVmYetnGq8YqkdNUELt5bY/GInm2niFBi9elCNI=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=HP04nBhBg1T7mrSzrnXH1M68xlu51VjuM+Nvr3qcxOkFXfDrin/JgsJHTz56YQA7N
+         xzpVdTRFDdcoGXHABdFg6uhJC55xGdQvmBl65y/RUd1/rsWg42U1nHdVrEs28XhTdO
+         KGr7CNt+NrKMBzeirjk4S+3lAUwP+Ra9PyBraugI=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id D18D912861B5;
+        Tue, 11 Jul 2023 10:18:47 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id pWlZLUf5LftT; Tue, 11 Jul 2023 10:18:47 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1689085127;
+        bh=e18NHVmYetnGq8YqkdNUELt5bY/GInm2niFBi9elCNI=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=HP04nBhBg1T7mrSzrnXH1M68xlu51VjuM+Nvr3qcxOkFXfDrin/JgsJHTz56YQA7N
+         xzpVdTRFDdcoGXHABdFg6uhJC55xGdQvmBl65y/RUd1/rsWg42U1nHdVrEs28XhTdO
+         KGr7CNt+NrKMBzeirjk4S+3lAUwP+Ra9PyBraugI=
+Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4ABC861519;
-        Tue, 11 Jul 2023 14:07:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5057C433C7;
-        Tue, 11 Jul 2023 14:07:17 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.96)
-        (envelope-from <rostedt@goodmis.org>)
-        id 1qJE1M-0007nN-2Q;
-        Tue, 11 Jul 2023 10:07:16 -0400
-Message-ID: <20230711140716.561714719@goodmis.org>
-User-Agent: quilt/0.66
-Date:   Tue, 11 Jul 2023 10:06:57 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        stable@vger.kernel.org, Beau Belgrave <beaub@linux.microsoft.com>
-Subject: [for-linus][PATCH 5/5] tracing/user_events: Fix struct arg size match check
-References: <20230711140652.217008556@goodmis.org>
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 8203D1286195;
+        Tue, 11 Jul 2023 10:18:46 -0400 (EDT)
+Message-ID: <a8d0a627bbce5a82a874977fa4bcc3adf9d3aa2c.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
+ Laptop Intel 12th gen
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Jason Gunthorpe <jgg@ziepe.ca>, Christian Hesse <mail@eworm.de>
+Cc:     linux-integrity@vger.kernel.org,
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Peter Huewe <peterhuewe@gmx.de>, stable@vger.kernel.org,
+        roubro1991@gmail.com
+Date:   Tue, 11 Jul 2023 10:18:44 -0400
+In-Reply-To: <ZKxHfTkgKHYqhBz2@ziepe.ca>
+References: <20230710133836.4367-1-mail@eworm.de>
+         <20230710142916.18162-1-mail@eworm.de> <ZKxHfTkgKHYqhBz2@ziepe.ca>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Beau Belgrave <beaub@linux.microsoft.com>
+On Mon, 2023-07-10 at 15:01 -0300, Jason Gunthorpe wrote:
+> On Mon, Jul 10, 2023 at 04:28:43PM +0200, Christian Hesse wrote:
+> > This device suffer an irq storm, so add it in tpm_tis_dmi_table to
+> > force polling.
+> 
+> I can't help but feel like we are doing something wrong in the Linux
+> driver that we keep having IRQ problems.
+> 
+> Surely Windows uses the IRQ on these devices? How does it work
+> reliably there?
 
-When users register an event the name of the event and it's argument are
-checked to ensure they match if the event already exists. Normally all
-arguments are in the form of "type name", except for when the type
-starts with "struct ". In those cases, the size of the struct is passed
-in addition to the name, IE: "struct my_struct a 20" for an argument
-that is of type "struct my_struct" with a field name of "a" and has the
-size of 20 bytes.
+I've had some friends in the MS Linux team ask around to find out if
+anyone in the windows group is willing to divulge a little on this.  My
+suspicion is that if interrupts are enabled at all on Windows TIS, it's
+via a whitelist.
 
-The current code does not honor the above case properly when comparing
-a match. This causes the event register to fail even when the same
-string was used for events that contain a struct argument within them.
-The example above "struct my_struct a 20" generates a match string of
-"struct my_struct a" omitting the size field.
+James
 
-Add the struct size of the existing field when generating a comparison
-string for a struct field to ensure proper match checking.
-
-Link: https://lkml.kernel.org/r/20230629235049.581-2-beaub@linux.microsoft.com
-
-Cc: stable@vger.kernel.org
-Fixes: e6f89a149872 ("tracing/user_events: Ensure user provided strings are safely formatted")
-Signed-off-by: Beau Belgrave <beaub@linux.microsoft.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- kernel/trace/trace_events_user.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/kernel/trace/trace_events_user.c b/kernel/trace/trace_events_user.c
-index dbb14705d0d3..83c0536ff41c 100644
---- a/kernel/trace/trace_events_user.c
-+++ b/kernel/trace/trace_events_user.c
-@@ -1223,6 +1223,9 @@ static int user_field_set_string(struct ftrace_event_field *field,
- 	pos += snprintf(buf + pos, LEN_OR_ZERO, " ");
- 	pos += snprintf(buf + pos, LEN_OR_ZERO, "%s", field->name);
- 
-+	if (str_has_prefix(field->type, "struct "))
-+		pos += snprintf(buf + pos, LEN_OR_ZERO, " %d", field->size);
-+
- 	if (colon)
- 		pos += snprintf(buf + pos, LEN_OR_ZERO, ";");
- 
--- 
-2.40.1
