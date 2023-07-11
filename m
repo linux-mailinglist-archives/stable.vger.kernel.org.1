@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A53A674F916
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D0CA74F919
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:32:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230419AbjGKUcH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 16:32:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44422 "EHLO
+        id S229548AbjGKUcV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 16:32:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjGKUcF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:32:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545A7B7
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:32:04 -0700 (PDT)
+        with ESMTP id S229476AbjGKUcU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:32:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73E8410C7
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:32:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DE1F0615D4
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:32:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30F9C433C7;
-        Tue, 11 Jul 2023 20:32:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 11EA3614FF
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B13C433C8;
+        Tue, 11 Jul 2023 20:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689107521;
-        bh=HTT+yG8m2F9WpQ9p8CkGc0AhsW5WFgIggQ5oCQDBheI=;
+        s=korg; t=1689107538;
+        bh=jtN43wKEfw+XPo618C8YAjdzDBqRt0FlLMKoGW/6TBE=;
         h=Subject:To:Cc:From:Date:From;
-        b=FBRuyuj+Y+9Kl32ShHCACYOqUBrqnX41UZN4jYr0gT6ntCxhNHTV3JW769acbLquM
-         zWpEztVg75jszP2C7JGMSTQg4O5yPl+R/3cKuOF8Nqz6qG5l17lxKPqekjAbiDPIZl
-         1r/jo+N/XNpmEt/dSWT++O8uLUbhb5GoT2tpyyfE=
-Subject: FAILED: patch "[PATCH] btrfs: do not BUG_ON() on tree mod log failure at" failed to apply to 5.4-stable tree
-To:     fdmanana@suse.com, dsterba@suse.com, wqu@suse.com
+        b=nm8VZ3q6laj3eQBTN+J3fAb0hFXuT1dPcK0yXObUgf9PcXee+p8mqbfIbniunuPfc
+         LdhkOxtQTST3cn0nO0w/+AGzoQ78mHH3rgcmbmxf+IBOTjWZ8HU3No+f+4wHsbLxD7
+         px/CZLlB56YD4cby5CiM3S0tbVH5JMrx3XyNgJvk=
+Subject: FAILED: patch "[PATCH] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()" failed to apply to 5.4-stable tree
+To:     dinghui@sangfor.com.cn, chuck.lever@oracle.com,
+        stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 11 Jul 2023 22:31:52 +0200
-Message-ID: <2023071152-quaintly-ventricle-7673@gregkh>
+Date:   Tue, 11 Jul 2023 22:32:15 +0200
+Message-ID: <2023071115-freeway-undefined-38ac@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -58,10 +59,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 39020d8abc7ec62c4de9b260e3d10d4a1c2478ce
+git cherry-pick -x fc80fc2d4e39137869da3150ee169b40bf879287
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071152-quaintly-ventricle-7673@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071115-freeway-undefined-38ac@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,66 +74,136 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 39020d8abc7ec62c4de9b260e3d10d4a1c2478ce Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Thu, 8 Jun 2023 11:27:41 +0100
-Subject: [PATCH] btrfs: do not BUG_ON() on tree mod log failure at
- balance_level()
+From fc80fc2d4e39137869da3150ee169b40bf879287 Mon Sep 17 00:00:00 2001
+From: Ding Hui <dinghui@sangfor.com.cn>
+Date: Mon, 15 May 2023 10:13:07 +0800
+Subject: [PATCH] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()
 
-At balance_level(), instead of doing a BUG_ON() in case we fail to record
-tree mod log operations, do a transaction abort and return the error to
-the callers. There's really no need for the BUG_ON() as we can release
-all resources in this context, and we have to abort because other future
-tree searches that use the tree mod log (btrfs_search_old_slot()) may get
-inconsistent results if other operations modify the tree after that
-failure and before the tree mod log based search.
+After the listener svc_sock is freed, and before invoking svc_tcp_accept()
+for the established child sock, there is a window that the newsock
+retaining a freed listener svc_sock in sk_user_data which cloning from
+parent. In the race window, if data is received on the newsock, we will
+observe use-after-free report in svc_tcp_listen_data_ready().
 
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reproduce by two tasks:
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index d6c29564ce49..d60b28c6bd1b 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -1054,7 +1054,12 @@ static noinline int balance_level(struct btrfs_trans_handle *trans,
- 		}
+1. while :; do rpc.nfsd 0 ; rpc.nfsd; done
+2. while :; do echo "" | ncat -4 127.0.0.1 2049 ; done
+
+KASAN report:
+
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
+  Read of size 8 at addr ffff888139d96228 by task nc/102553
+  CPU: 7 PID: 102553 Comm: nc Not tainted 6.3.0+ #18
+  Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+  Call Trace:
+   <IRQ>
+   dump_stack_lvl+0x33/0x50
+   print_address_description.constprop.0+0x27/0x310
+   print_report+0x3e/0x70
+   kasan_report+0xae/0xe0
+   svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
+   tcp_data_queue+0x9f4/0x20e0
+   tcp_rcv_established+0x666/0x1f60
+   tcp_v4_do_rcv+0x51c/0x850
+   tcp_v4_rcv+0x23fc/0x2e80
+   ip_protocol_deliver_rcu+0x62/0x300
+   ip_local_deliver_finish+0x267/0x350
+   ip_local_deliver+0x18b/0x2d0
+   ip_rcv+0x2fb/0x370
+   __netif_receive_skb_one_core+0x166/0x1b0
+   process_backlog+0x24c/0x5e0
+   __napi_poll+0xa2/0x500
+   net_rx_action+0x854/0xc90
+   __do_softirq+0x1bb/0x5de
+   do_softirq+0xcb/0x100
+   </IRQ>
+   <TASK>
+   ...
+   </TASK>
+
+  Allocated by task 102371:
+   kasan_save_stack+0x1e/0x40
+   kasan_set_track+0x21/0x30
+   __kasan_kmalloc+0x7b/0x90
+   svc_setup_socket+0x52/0x4f0 [sunrpc]
+   svc_addsock+0x20d/0x400 [sunrpc]
+   __write_ports_addfd+0x209/0x390 [nfsd]
+   write_ports+0x239/0x2c0 [nfsd]
+   nfsctl_transaction_write+0xac/0x110 [nfsd]
+   vfs_write+0x1c3/0xae0
+   ksys_write+0xed/0x1c0
+   do_syscall_64+0x38/0x90
+   entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+  Freed by task 102551:
+   kasan_save_stack+0x1e/0x40
+   kasan_set_track+0x21/0x30
+   kasan_save_free_info+0x2a/0x50
+   __kasan_slab_free+0x106/0x190
+   __kmem_cache_free+0x133/0x270
+   svc_xprt_free+0x1e2/0x350 [sunrpc]
+   svc_xprt_destroy_all+0x25a/0x440 [sunrpc]
+   nfsd_put+0x125/0x240 [nfsd]
+   nfsd_svc+0x2cb/0x3c0 [nfsd]
+   write_threads+0x1ac/0x2a0 [nfsd]
+   nfsctl_transaction_write+0xac/0x110 [nfsd]
+   vfs_write+0x1c3/0xae0
+   ksys_write+0xed/0x1c0
+   do_syscall_64+0x38/0x90
+   entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Fix the UAF by simply doing nothing in svc_tcp_listen_data_ready()
+if state != TCP_LISTEN, that will avoid dereferencing svsk for all
+child socket.
+
+Link: https://lore.kernel.org/lkml/20230507091131.23540-1-dinghui@sangfor.com.cn/
+Fixes: fa9251afc33c ("SUNRPC: Call the default socket callbacks instead of open coding")
+Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index f77cebe2c071..15f4d0d40bdd 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -826,12 +826,6 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
  
- 		ret = btrfs_tree_mod_log_insert_root(root->node, child, true);
--		BUG_ON(ret < 0);
-+		if (ret < 0) {
-+			btrfs_tree_unlock(child);
-+			free_extent_buffer(child);
-+			btrfs_abort_transaction(trans, ret);
-+			goto enospc;
-+		}
- 		rcu_assign_pointer(root->node, child);
+ 	trace_sk_data_ready(sk);
  
- 		add_root_to_dirty_list(root);
-@@ -1142,7 +1147,10 @@ static noinline int balance_level(struct btrfs_trans_handle *trans,
- 			btrfs_node_key(right, &right_key, 0);
- 			ret = btrfs_tree_mod_log_insert_key(parent, pslot + 1,
- 					BTRFS_MOD_LOG_KEY_REPLACE);
--			BUG_ON(ret < 0);
-+			if (ret < 0) {
-+				btrfs_abort_transaction(trans, ret);
-+				goto enospc;
-+			}
- 			btrfs_set_node_key(parent, &right_key, pslot + 1);
- 			btrfs_mark_buffer_dirty(parent);
- 		}
-@@ -1188,7 +1196,10 @@ static noinline int balance_level(struct btrfs_trans_handle *trans,
- 		btrfs_node_key(mid, &mid_key, 0);
- 		ret = btrfs_tree_mod_log_insert_key(parent, pslot,
- 						    BTRFS_MOD_LOG_KEY_REPLACE);
--		BUG_ON(ret < 0);
-+		if (ret < 0) {
-+			btrfs_abort_transaction(trans, ret);
-+			goto enospc;
-+		}
- 		btrfs_set_node_key(parent, &mid_key, pslot);
- 		btrfs_mark_buffer_dirty(parent);
+-	if (svsk) {
+-		/* Refer to svc_setup_socket() for details. */
+-		rmb();
+-		svsk->sk_odata(sk);
+-	}
+-
+ 	/*
+ 	 * This callback may called twice when a new connection
+ 	 * is established as a child socket inherits everything
+@@ -840,13 +834,18 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
+ 	 *    when one of child sockets become ESTABLISHED.
+ 	 * 2) data_ready method of the child socket may be called
+ 	 *    when it receives data before the socket is accepted.
+-	 * In case of 2, we should ignore it silently.
++	 * In case of 2, we should ignore it silently and DO NOT
++	 * dereference svsk.
+ 	 */
+-	if (sk->sk_state == TCP_LISTEN) {
+-		if (svsk) {
+-			set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
+-			svc_xprt_enqueue(&svsk->sk_xprt);
+-		}
++	if (sk->sk_state != TCP_LISTEN)
++		return;
++
++	if (svsk) {
++		/* Refer to svc_setup_socket() for details. */
++		rmb();
++		svsk->sk_odata(sk);
++		set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
++		svc_xprt_enqueue(&svsk->sk_xprt);
  	}
+ }
+ 
 
