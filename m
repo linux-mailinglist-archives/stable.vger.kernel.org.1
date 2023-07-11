@@ -2,146 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BEAB74F401
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 17:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ED3374F524
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 18:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232955AbjGKPqc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 11:46:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59668 "EHLO
+        id S230450AbjGKQ11 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 12:27:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232825AbjGKPqZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 11:46:25 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B08EE170A;
-        Tue, 11 Jul 2023 08:46:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1689090368; x=1689695168; i=deller@gmx.de;
- bh=10xMRkjlDtxZS9LQyRHHnsW87xAMUprLN04Jvmm+ctI=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=conMbIE+nxzY1Ihl5gk4rASMagP3eSIKPLkMUeO6/ZvgOZzo7Ab1Bg8ex+Ls7LSn/jXxLDn
- 8V5X0NbouhxtvH7SQrMG7cXZtcwFYfHLNbtItK46cGi8gZdJtwoN5YGGqJb9Q5kI698pnisuO
- 37OawNy05VPw42nAUnYZPhtF5w6+vRQcTIk2AanIXP0SfOsmuDvvVDoDTDeLciyUB8dPQwhY4
- NNb/oigsZ1YiQaHzRRBVtVe/42Q/08JYqaS58QOf7Uoh5wnvzMHJsmnJKxoA3yolfQuk4UXh1
- aMu9avW7Y1+roZIGDxXa1qNCSf4E/VJbhmeSPYmqLHRPFG610nLw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.149.147]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N7zFZ-1pxXrX15Wd-015041; Tue, 11
- Jul 2023 17:46:08 +0200
-Message-ID: <4de35c35-c00d-d21a-bcd1-dc878137eb94@gmx.de>
-Date:   Tue, 11 Jul 2023 17:46:07 +0200
+        with ESMTP id S229917AbjGKQ10 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 12:27:26 -0400
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB24CA;
+        Tue, 11 Jul 2023 09:27:25 -0700 (PDT)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1b06777596cso5085271fac.2;
+        Tue, 11 Jul 2023 09:27:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689092845; x=1691684845;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oljS3CL+A9NlQFaPM8t1XUxGkq5OOWrkjTs5IXV2lUY=;
+        b=AC9SHZY7OqY2h6kRrnt94oFO6cvpIzP/1SdJ12umUwa91WhJK8Vwig9/387HPtHja8
+         UwTq8lGvCofB7HACCWP7TOb7Cgh9D0UCVh2FgWDdXASLosEJdIMfRutFXA1zl7xlBxOi
+         ndzY3LHfeqpM5isEWbRVhVaHO8teQcSMFqFb1ABOeOHMYi3JEFkVi29sm/JrJ5OL44Wo
+         CfpiIZOyL867EI5TFSZK6paBOj87XWzZfW1Fa11sXHSG2AHYXA8xwWdScSfJ/5MT7qr2
+         l3kL49DxGtu7E7S3oaKvIObmKGZhVSFoX49cZdiTtemXujU9WzVbtLZjJsKjY1giqzyP
+         pPHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689092845; x=1691684845;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oljS3CL+A9NlQFaPM8t1XUxGkq5OOWrkjTs5IXV2lUY=;
+        b=Ijsj6X47N/IXaIlnF0IK2xutmuF38/wCigm8gBB35N+UyvMivUtsYbVV4woF4RO82o
+         Mbr0OfS3gtlUqLWU/FRKRfUwvAVl2uIoboK+O7/DBqIaOZ4+hz4xZCgQIZFplKS/CuQF
+         dEXuqFzvScYtzFHx8Kgpj6yXn7vGfWWxt1vle3/tYgNgCpe+85Xet8pC4T5olSA28igf
+         /h+0U8ajXubPeVIhCGgVe+M7xpPKdDs/IM04PxBFz2/0aasLR1gTVU3pWHM6hKtIXnCo
+         6OqoxHrQaQ9AAbjfVIVxVi+RaiArHQsstsoNexmEl+0wd2+55T65NfJ1/Dlov1fMTj/I
+         pZ1Q==
+X-Gm-Message-State: ABy/qLZFUmW1h7JDztHNEWzR1Ph8bi3NLpqBoYRhcySq+5Hg3aLi+Yay
+        Xys0HudCDt2SBhotl+L7KpI=
+X-Google-Smtp-Source: APBJJlHNVeZOBOzJuy/jYVc5k/hN6t75kg0q2tbRSr6JY3djdH+35anpSWDOWPN9mLD3cuPNzd4TEg==
+X-Received: by 2002:a05:6870:73c8:b0:1ad:4c06:15c with SMTP id a8-20020a05687073c800b001ad4c06015cmr15690310oan.18.1689092844838;
+        Tue, 11 Jul 2023 09:27:24 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id a188-20020a0df1c5000000b0056d4b5cde00sm646581ywf.118.2023.07.11.09.27.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jul 2023 09:27:23 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Tue, 11 Jul 2023 09:27:22 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.3 000/424] 6.3.13-rc4 review
+Message-ID: <ab657651-92f8-47fe-a8a0-099b76481743@roeck-us.net>
+References: <20230710142227.965586663@linuxfoundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] of: Preserve "of-display" device name for compatibility
-Content-Language: en-US
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Rob Herring <robh@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Michal Suchanek <msuchanek@suse.de>
-Cc:     devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Cyril Brulebois <cyril@debamax.com>,
-        dri-devel@lists.freedesktop.org
-References: <20230710174007.2291013-1-robh@kernel.org>
- <a0aa122d-38a1-d4be-edc1-a49b4e5e9b6b@suse.de>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <a0aa122d-38a1-d4be-edc1-a49b4e5e9b6b@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:OekAkpBqUCxuG1+JyXZyC7/2fpPfrldaJSFdZme0KAcMxvUfeoN
- veCEfU7iFi+a33ulHh5TfAyA1lGOR+hPuATf/vCJiEjRac5ET/QcWuzxRrXC/JbS9tIaNNa
- 8WwNTT3gM669xDj/3PmH4YPkl4FGnnA9IPPBTBzjkuxWQZn0X5XPAeF9kgFzwGk3/c7n9ww
- dKADfwpo0wxkxshZ5IxAw==
-UI-OutboundReport: notjunk:1;M01:P0:ZN1cWxUa0fI=;fgbb/uD6p39KTmTtmPiJHwFZeeg
- a6ylHQ320VvmzbF5ViY2jAzht3LKGyiN5mBiVzbuoperXxo1A5RCyZ9AbMr1TENEFsUeyhkQG
- VJkdW2TdDh8pMKSCGItqXSk862RgTlb2O+NgbKaIXDrS0CysuppJIC7dCOygf82xW3oDU8M4B
- VeUNgqtLzVn00ABC1r0t2RCukrSqeHlZwmu8T0t2uoiuZZP5OFLE9ii2aAo4pa79/KiIVq4UZ
- AA1iFKyAD9OMi6p3Yv8D5qdw/NGG6m9M6QKbXpQ9qXMTma4zxLoM1lS0gRXlnKGlZOkc9F7dp
- FLLe+rH72FXy+aFqsESouj5ZBiQAwxr9Ypks8sObOYHhC5Gre1Ng5iX3KKLCZ3N1vTjHmtT3C
- u9efBJOAZIqyxe6gWMD9ZuMqVx2Jmq8NUe85tggFvLqD/cPo1sDjAs9ucqpNh9tB7OJmZ+37M
- p6z/ndoguoWpdHGzq8HOhogzQOy/z85R/vIm0cqYcEZD6CAzQU35KXgNTI402sq9pofZHFM/Q
- KnEU+XZUiHQOCFMh0aO+Kq3uiomuEF+CfWnouQdZCj5Jo6mDnSHY6V93UpHakHj89PgP6sf+b
- OS8ytbbXKGXV6cRSJ1nEGlASaoVhn17+CdaAW6hXAT4L1AOXTjFkjsXrAhemqqRkZ7nxBtzNH
- oJt7XHN3XQLfFnnDUY8cBqT2jGz2xS1kkp+h2UZJiKEGnXEFboacK6wmu4KSZDgQlIea81XGy
- pF5jWciGmh5kiw8XiUsLJvytLcvrIfdmhyf+jaFsOzjjTXC8be8BfAo4xcI0LvC51oJgwNo/q
- R23YoKr1vm3x3QwssM5zuYL+XeshlwHTBmkGWRdYrcT+QSqFWPawgI6cgcuApesYBAzI61klm
- g6jGs/FULM7IqHKwHw9lRNzo+Ntvv+JDsWX17ZWFbS/FCIWJBfrcyVIc1Xs8pYG4WidLz8OaM
- +nOMIKFX5QL15qy+J/1PrsmggL4=
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230710142227.965586663@linuxfoundation.org>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/11/23 08:00, Thomas Zimmermann wrote:
->
->
-> Am 10.07.23 um 19:40 schrieb Rob Herring:
->> Since commit 241d2fb56a18 ("of: Make OF framebuffer device names unique=
-"),
->> as spotted by Fr=C3=A9d=C3=A9ric Bonnard, the historical "of-display" d=
-evice is
->> gone: the updated logic creates "of-display.0" instead, then as many
->> "of-display.N" as required.
->>
->> This means that offb no longer finds the expected device, which prevent=
-s
->> the Debian Installer from setting up its interface, at least on ppc64el=
-.
->>
->> Fix this by keeping "of-display" for the first device and "of-display.N=
-"
->> for subsequent devices.
->>
->> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217328
->> Link: https://bugs.debian.org/1033058
->> Fixes: 241d2fb56a18 ("of: Make OF framebuffer device names unique")
->> Cc: stable@vger.kernel.org
->> Cc: Cyril Brulebois <cyril@debamax.com>
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Helge Deller <deller@gmx.de>
->> Signed-off-by: Rob Herring <robh@kernel.org>
->
-> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+On Mon, Jul 10, 2023 at 04:23:32PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.13 release.
+> There are 424 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 12 Jul 2023 14:21:05 +0000.
+> Anything received after that time might be too late.
+> 
 
-Acked-by: Helge Deller <deller@gmx.de>
+Build results:
+	total: 157 pass: 157 fail: 0
+Qemu test results:
+	total: 520 pass: 520 fail: 0
 
-Who will pick up that patch?
-Shall I take it via fbdev git tree?
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-Helge
-
->
->> ---
->> =C2=A0 drivers/of/platform.c | 2 +-
->> =C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
->> index 051e29b7ad2b..0c3475e7d2ff 100644
->> --- a/drivers/of/platform.c
->> +++ b/drivers/of/platform.c
->> @@ -552,7 +552,7 @@ static int __init of_platform_default_populate_init=
-(void)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 if (!of_get_property(node, "linux,opened", NULL) ||
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !of_get_property(node, "linux,boot-displ=
-ay", NULL))
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 continue;
->> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev=
- =3D of_platform_device_create(node, "of-display.0", NULL);
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev=
- =3D of_platform_device_create(node, "of-display", NULL);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 of_node_put(node);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 if (WARN_ON(!dev))
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENOMEM;
->
-
+Guenter
