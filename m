@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0443974F903
+	by mail.lfdr.de (Postfix) with ESMTP id E7DCB74F904
 	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229769AbjGKU3P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 16:29:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43624 "EHLO
+        id S229458AbjGKU3R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 16:29:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230281AbjGKU3N (ORCPT
+        with ESMTP id S230305AbjGKU3N (ORCPT
         <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:29:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B9631705
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:29:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29F441709
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:29:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D43CF615E4
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:29:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FDEC433C8;
-        Tue, 11 Jul 2023 20:29:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AF1F615DD
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:29:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E88C433C8;
+        Tue, 11 Jul 2023 20:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689107348;
-        bh=sKs4h9F+jiOgPIQV/BSAhvi9Wk/UMM3ik2ydlfmSRaM=;
+        s=korg; t=1689107351;
+        bh=CcAEdIMpaWbPbGnwtwmhjxn78DjfMi0btX16hc7zo7A=;
         h=Subject:To:Cc:From:Date:From;
-        b=QbZugnA/zjRt3WLBdetjh+NvjER3wvBpJZYrX5xnXSf1fsE+mNTMWsVdDzBbS94PI
-         GKzsT870v0WX60mGlYOVZ4eNOBMbzo2P0N2XyFPQY3/EFa/WW7ckbUDjxelXFDPkW4
-         GP49XuxlDPnYLtgEOkXB+IabG+nBE0LtBEimrvV4=
-Subject: FAILED: patch "[PATCH] ALSA: jack: Fix mutex call in snd_jack_report()" failed to apply to 5.10-stable tree
+        b=s881TAImOllVdfZGpL4rF7P1WeUAyGLWLJAfTY0Bpg0bL3kgL2POEFuWZFCHKGDnw
+         ZU1h1vPuVYKZAn4t+W9pz8y+hgKbMJYz/mlUqCb8G+hODWd3E8A/PJd/J5NZArgGvG
+         QEQQuKBqqJtKYkxxQ34Tlrk/ugHz9AICs3rzjG7s=
+Subject: FAILED: patch "[PATCH] ALSA: jack: Fix mutex call in snd_jack_report()" failed to apply to 5.4-stable tree
 To:     tiwai@suse.de, amadeuszx.slawinski@linux.intel.com,
         dan.carpenter@linaro.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 11 Jul 2023 22:28:57 +0200
-Message-ID: <2023071157-breeches-ladylike-9acb@gregkh>
+Date:   Tue, 11 Jul 2023 22:28:58 +0200
+Message-ID: <2023071158-grudge-guru-b675@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 89dbb335cb6a627a4067bc42caa09c8bc3326d40
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071157-breeches-ladylike-9acb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071158-grudge-guru-b675@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
