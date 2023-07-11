@@ -2,204 +2,169 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93CE474E392
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 03:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADF1074E411
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 04:29:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229964AbjGKBjg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 10 Jul 2023 21:39:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45234 "EHLO
+        id S230389AbjGKC3u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 10 Jul 2023 22:29:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230327AbjGKBje (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 21:39:34 -0400
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2084.outbound.protection.outlook.com [40.107.101.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83A3B10EA
-        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 18:39:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MvhLh9VJvDqFxmGrzbNBvKB3ac+PiKAy/k0aq4z33a6ZutduO/Fo9yerQ7+q5D2BxBVNQXrWOPEe0L6clnYtB5ywONd2hqHsZkwrXv9sIyPDXpRaDWNZIogBaJ+FGt33xhBxbfABCS+RrVaeMbtChXlSqyTas0pvMWp0bUhvYqyaIQftaBShu9KGcOzoKsXDx4MdflyT3gB2HOi0QoenoK2Nqq2Zo5yHluYUdcMpbXauapbqrI/GXWzgb5h4OKOL39DYHeDwEBTex338AsQgMcBGHxBrr4qtEgJFrjEhGNDrWhUaaahPMlBa9H4EahNBbb06l+lym5XJxx9fNBUnew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4y2AtvptGAzJGTa2W8PTrqQ/yYlcKuRcUM1aHa+6G1M=;
- b=P3+iqDIGNof78lkIHPn1F1Rev7hD1QBHa0bK9nWXZxe01tTOEH15bj/mr4zFyhQHnKy2EJYWl44UOncM0sRkR77onksVMnunQMri+u35+N7o51Nzf85ZFkw7f5BFDh+337GOZIS528MKqfdL/3gOc+e8rK/zvy0sO9zhIEFlxRcdC385w46HJrEOpgHpVqyucPVwaKnrisQ0BBL+LQg4dUE20En9qwlQjlPV+BimuQd6pIJrnLv9YtQ5JTn4Lo27N2LREbmctHJV5H4mQM6sPuMjggDRu7CzKYT+cPJ9L6FAkMDA95XmRywKaFlhLY/k2H+rKXm2gGY7pqAHS17QAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4y2AtvptGAzJGTa2W8PTrqQ/yYlcKuRcUM1aHa+6G1M=;
- b=P+0ZgLlKRTE26Emoz4RJBHOfSQThG6a81CDhnPOIaRpezBEr1eckhqbEWRpEciJRS5/ytZ4IqTJrlClML8oP8X957LYPpxiFL3wXhklM45t6J7lq6uZyGlvT9T4zuI07QkAf5TiIA9dh84dyraMuZzsx1QWJzQHLKwUrs6ypMPQ=
-Received: from MW4PR04CA0067.namprd04.prod.outlook.com (2603:10b6:303:6b::12)
- by SA3PR12MB9158.namprd12.prod.outlook.com (2603:10b6:806:380::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30; Tue, 11 Jul
- 2023 01:38:56 +0000
-Received: from CO1NAM11FT064.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:6b:cafe::48) by MW4PR04CA0067.outlook.office365.com
- (2603:10b6:303:6b::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.31 via Frontend
- Transport; Tue, 11 Jul 2023 01:38:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT064.mail.protection.outlook.com (10.13.175.77) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6588.18 via Frontend Transport; Tue, 11 Jul 2023 01:38:55 +0000
-Received: from guchchen-System-Product-Name.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 10 Jul 2023 20:38:52 -0500
-From:   Guchun Chen <guchun.chen@amd.com>
-To:     <amd-gfx@lists.freedesktop.org>, <alexander.deucher@amd.com>,
-        <hawking.zhang@amd.com>, <christian.koenig@amd.com>,
-        <dusica.milinkovic@amd.com>, <nikola.prica@amd.com>,
-        <flora.cui@amd.com>
-CC:     Guchun Chen <guchun.chen@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3] drm/amdgpu/vkms: relax timer deactivation by hrtimer_try_to_cancel
-Date:   Tue, 11 Jul 2023 09:38:31 +0800
-Message-ID: <20230711013831.2181718-1-guchun.chen@amd.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S230259AbjGKC3u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 10 Jul 2023 22:29:50 -0400
+Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5A391
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 19:29:48 -0700 (PDT)
+Received: by mail-ot1-x32c.google.com with SMTP id 46e09a7af769-6b74e2d8c98so4564550a34.2
+        for <stable@vger.kernel.org>; Mon, 10 Jul 2023 19:29:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20221208.gappssmtp.com; s=20221208; t=1689042588; x=1691634588;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PAcYcQjSn8xP98Kv6S6ayhAabmO1DM5t1UR0BBuH+OE=;
+        b=WZ3Cco+0z7/goRk3rzbW1Q8Bm4NGTZcWnUC4vx8nMXY8TEYFlAEhAh/31nyCtxASLI
+         L0XUXJAEbEb33DoxeF6TkhvLwj+vqCoG4LoSfb8eeYaC6cpxlzYbMdC+bWUQrT8KeEqO
+         UOkra5wQjWOgV8+D1ElqXs2KXM1lYzwOSPikHVw+B3WYEtsDfuJjxr+F+XFJHP354+ah
+         l77MfOmlkTIe8LM6g+ZdXxdOA0blmTvsYghrNylAKBUYLXWothqZTrQgjWb3qQ0kRWCo
+         M5e1jgUk/3a6Mh5J2vJlylGoUtbkBLxElCO1U3Q04sFoHKvT0xzj+VJH/qC4sv5fiPeJ
+         pFKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689042588; x=1691634588;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PAcYcQjSn8xP98Kv6S6ayhAabmO1DM5t1UR0BBuH+OE=;
+        b=lkII9RYpJCjPRx6Snt/GZruEYcaJT0wUS/q4SmQyAWZH3cYYjYwMcTOLIVaioPfAUD
+         xmgTkNBlFB0FxI8xd31xZeyDvQhpSo6a6w5w0JTDmhWWIkWHdxXS3Cgui6zE1xadRdbH
+         XS87JSq3v7In3TsKP53oL3h9PbuS2HQJRKdm8Z3ODwVgjp+/zExMugb/CmKm/P9V3Ulz
+         XP4Qn6hsbHitpRRRIwYGurzwt1/3UpvGYZNXhmqLcMRWUK6ZxgDwl4J4UpuZ542vlVD1
+         3nitI/O6uGHjW9TAejBgmBLkSzjhaUyBpyASg1lbPBGkTaQhYrEWVOrgxwSUPSePyoX9
+         O0ug==
+X-Gm-Message-State: ABy/qLbhuOjXFHnG223ezcB6b5yc7ef/+dtzuqCIA+rBTnjRj+hHZHvd
+        ByGuo6zvChhCNBiaia1s7UtEzg==
+X-Google-Smtp-Source: APBJJlElSoBOffVTVDIpbJy4UIiu3P3+qhqg6us2VrXGZDT0hzskw1HitduzKJ97j3awUJOVmxodsg==
+X-Received: by 2002:a9d:5e18:0:b0:6b4:54f6:59d2 with SMTP id d24-20020a9d5e18000000b006b454f659d2mr13483143oti.3.1689042587927;
+        Mon, 10 Jul 2023 19:29:47 -0700 (PDT)
+Received: from dread.disaster.area (pa49-180-246-40.pa.nsw.optusnet.com.au. [49.180.246.40])
+        by smtp.gmail.com with ESMTPSA id c16-20020a17090ab29000b002657aa777f1sm6880198pjr.19.2023.07.10.19.29.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jul 2023 19:29:47 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.96)
+        (envelope-from <david@fromorbit.com>)
+        id 1qJ38J-004clZ-0w;
+        Tue, 11 Jul 2023 12:29:43 +1000
+Date:   Tue, 11 Jul 2023 12:29:43 +1000
+From:   Dave Chinner <david@fromorbit.com>
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Chris Dunlop <chris@onthe.net.au>,
+        Linux XFS <linux-xfs@vger.kernel.org>,
+        Dave Chinner <dchinner@redhat.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>
+Subject: Re: rm hanging, v6.1.35
+Message-ID: <ZKy+lxkSDKs84Edr@dread.disaster.area>
+References: <20230710215354.GA679018@onthe.net.au>
+ <ZKyoD7WDKfzsKAaT@debian.me>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT064:EE_|SA3PR12MB9158:EE_
-X-MS-Office365-Filtering-Correlation-Id: eddca09d-0d21-4694-332c-08db81af9733
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vBtjOPGKEBe8Lqaa9h9f0pQF9LhTzv4O2fcWU3vtD+m3qSA9SxKUkATGJAAKgjmdQ1dlTH/DDXEfxSHrLBT8vnzBCdxFnVYyUsb0SXJ9Ln7UObSzxGsdLAqQOTy9pjEjwScJy/2nts/Z/6pZUHjJn2grFlDMp1HRQBUkqL2ossqLJojHnJBobscXKy/2WgOUARZ1WAtmy0nTgHbyv8A+IXm7mb4oK/U65U8ciG+JNWJMjnvX+e84CeOFLroQj6nOcL3KHGcMQj23TlmapK9fK+r7W7VOis+ubG9PmiNk+V3nPNzZ1Bbqh2xbMhCDmPcKtwVeYnrfLv5N4jNnESFy4Qsd+1+DCV1Ox0l/SnDTb7MTbCIcN4a6H8ZxHWmC6WB9ewK/A2pVdIrpjWiG4AgYvYDwtNnycq2Xyq0X6Azgh3ZfXI6rAT9jUdnXL12O4pu/GKRF6zKtkpkaiPF80MI4BsXjwsbI35R+SKJpyUKngBqzfNC7w/atgLJRIMPo0JEZ/+zd/jc3XndQhOWqMuBRX3stJoaTUsXEgF88Xf4uJjH5P0WpKHqliFOzsEIzaXYm361Is9IZ/n2qr0PSXlLUmOdLsxoSPGV9MYZxmf1RIiRZHDyAG/Mxz7NIcI7xNkWVBQhvpxFNsO/zqoCFJvVi6mwSp3d20gfzuOuDnbuzJLo6rUt0c8mxkxjpVxPFp73Cu5jPi5ic7xVE2nC1PJ8NDFI8fpJ2ffth+Rj0ZLjgT88yqTqKSbv9t3YvWJ82PUnWo6eLs/TnFj+okvDFTguiVbBaT5xsK1IcAUMaye6EOtg=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(39860400002)(396003)(376002)(451199021)(40470700004)(36840700001)(46966006)(82310400005)(86362001)(82740400003)(40460700003)(40480700001)(36756003)(6666004)(7696005)(110136005)(54906003)(70586007)(70206006)(356005)(81166007)(478600001)(36860700001)(26005)(1076003)(186003)(2616005)(16526019)(44832011)(316002)(2906002)(5660300002)(8936002)(8676002)(426003)(66574015)(336012)(83380400001)(4326008)(6636002)(41300700001)(47076005)(36900700001)(2101003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2023 01:38:55.7313
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: eddca09d-0d21-4694-332c-08db81af9733
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT064.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9158
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZKyoD7WDKfzsKAaT@debian.me>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In below thousands of screen rotation loop tests with virtual display
-enabled, a CPU hard lockup issue may happen, leading system to unresponsive
-and crash.
+On Tue, Jul 11, 2023 at 07:53:35AM +0700, Bagas Sanjaya wrote:
+> On Tue, Jul 11, 2023 at 07:53:54AM +1000, Chris Dunlop wrote:
+> > Hi,
+> > 
+> > This box is newly booted into linux v6.1.35 (2 days ago), it was previously
+> > running v5.15.118 without any problems (other than that fixed by
+> > "5e672cd69f0a xfs: non-blocking inodegc pushes", the reason for the
+> > upgrade).
+> > 
+> > I have rm operations on two files that have been stuck for in excess of 22
+> > hours and 18 hours respectively:
+> > 
+> > $ ps -opid,lstart,state,wchan=WCHAN-xxxxxxxxxxxxxxx,cmd -C rm
+> >     PID                  STARTED S WCHAN-xxxxxxxxxxxxxxx CMD
+> > 2379355 Mon Jul 10 09:07:57 2023 D vfs_unlink            /bin/rm -rf /aaa/5539_tmp
+> > 2392421 Mon Jul 10 09:18:27 2023 D down_write_nested     /bin/rm -rf /aaa/5539_tmp
+> > 2485728 Mon Jul 10 09:28:57 2023 D down_write_nested     /bin/rm -rf /aaa/5539_tmp
+> > 2488254 Mon Jul 10 09:39:27 2023 D down_write_nested     /bin/rm -rf /aaa/5539_tmp
+> > 2491180 Mon Jul 10 09:49:58 2023 D down_write_nested     /bin/rm -rf /aaa/5539_tmp
+> > 3014914 Mon Jul 10 13:00:33 2023 D vfs_unlink            /bin/rm -rf /bbb/5541_tmp
+> > 3095893 Mon Jul 10 13:11:03 2023 D down_write_nested     /bin/rm -rf /bbb/5541_tmp
+> > 3098809 Mon Jul 10 13:21:35 2023 D down_write_nested     /bin/rm -rf /bbb/5541_tmp
+> > 3101387 Mon Jul 10 13:32:06 2023 D down_write_nested     /bin/rm -rf /bbb/5541_tmp
+> > 3195017 Mon Jul 10 13:42:37 2023 D down_write_nested     /bin/rm -rf /bbb/5541_tmp
+> > 
+> > The "rm"s are run from a process that's obviously tried a few times to get
+> > rid of these files.
+>
+> > There's nothing extraordinary about the files in terms of size:
+> > 
+> > $ ls -ltrn --full-time /aaa/5539_tmp /bbb/5541_tmp
+> > -rw-rw-rw- 1 1482 1482 7870643 2023-07-10 06:07:58.684036505 +1000 /aaa/5539_tmp
+> > -rw-rw-rw- 1 1482 1482  701240 2023-07-10 10:00:34.181064549 +1000 /bbb/5541_tmp
+> > 
+> > As hinted by the WCHAN in the ps output above, each "primary" rm (i.e. the
+> > first one run on each file) stack trace looks like:
+> > 
+> > [<0>] vfs_unlink+0x48/0x270
+> > [<0>] do_unlinkat+0x1f5/0x290
+> > [<0>] __x64_sys_unlinkat+0x3b/0x60
+> > [<0>] do_syscall_64+0x34/0x80
+> > [<0>] entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
-do {
-	xrandr --output Virtual --rotate inverted
-	xrandr --output Virtual --rotate right
-	xrandr --output Virtual --rotate left
-	xrandr --output Virtual --rotate normal
-} while (1);
+This looks to be stuck on the target inode lock (i.e. the locks for
+the inodes at /aaa/5539_tmp and /bbb/5541_tmp).
 
-NMI watchdog: Watchdog detected hard LOCKUP on cpu 1
+What's holding these inode locks? This hasn't even got to XFS yet
+here, so there's something else going on in the background. Attached
+the full output of 'echo w > /proc/sysrq-trigger' and 'echo t >
+/proc/sysrq-trigger', please?
 
-? hrtimer_run_softirq+0x140/0x140
-? store_vblank+0xe0/0xe0 [drm]
-hrtimer_cancel+0x15/0x30
-amdgpu_vkms_disable_vblank+0x15/0x30 [amdgpu]
-drm_vblank_disable_and_save+0x185/0x1f0 [drm]
-drm_crtc_vblank_off+0x159/0x4c0 [drm]
-? record_print_text.cold+0x11/0x11
-? wait_for_completion_timeout+0x232/0x280
-? drm_crtc_wait_one_vblank+0x40/0x40 [drm]
-? bit_wait_io_timeout+0xe0/0xe0
-? wait_for_completion_interruptible+0x1d7/0x320
-? mutex_unlock+0x81/0xd0
-amdgpu_vkms_crtc_atomic_disable
+> > 
+> > And each "secondary" rm (i.e. the subsequent ones on each file) stack trace
+> > looks like:
+> > 
+> > == blog-230710-xfs-rm-stuckd
+> > [<0>] down_write_nested+0xdc/0x100
+> > [<0>] do_unlinkat+0x10d/0x290
+> > [<0>] __x64_sys_unlinkat+0x3b/0x60
+> > [<0>] do_syscall_64+0x34/0x80
+> > [<0>] entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
-It's caused by a stuck in lock dependency in such scenario on different
-CPUs.
+These are likely all stuck on the parent directory inode lock (i.e.
+/aaa and /bbb).
 
-CPU1                                             CPU2
-drm_crtc_vblank_off                              hrtimer_interrupt
-    grab event_lock (irq disabled)                   __hrtimer_run_queues
-        grab vbl_lock/vblank_time_block                  amdgpu_vkms_vblank_simulate
-            amdgpu_vkms_disable_vblank                       drm_handle_vblank
-                hrtimer_cancel                                         grab dev->event_lock
 
-So CPU1 stucks in hrtimer_cancel as timer callback is running endless on
-current clock base, as that timer queue on CPU2 has no chance to finish it
-because of failing to hold the lock. So NMI watchdog will throw the errors
-after its threshold, and all later CPUs are impacted/blocked.
+> > Where to from here?
+> > 
+> > I'm guessing only a reboot is going to unstick this. Anything I should be
+> > looking at before reverting to v5.15.118?
+> > 
+> > ...subsequent to starting writing all this down I have another two sets of
+> > rms stuck, again on unremarkable files, and on two more separate
+> > filesystems.
 
-So use hrtimer_try_to_cancel to fix this, as disable_vblank callback
-does not need to wait the handler to finish. And also it's not necessary
-to check the return value of hrtimer_try_to_cancel, because even if it's
--1 which means current timer callback is running, it will be reprogrammed
-in hrtimer_start with calling enable_vblank to make it works.
+What's an "unremarkable file" look like? Is is a reflink copy of
+something else, a hard link, a small/large regular data file or something else?
 
-v2: only re-arm timer when vblank is enabled (Christian) and add a Fixes
-tag as well
+> > 
+> > ...oh. And an 'ls' on those files is hanging. The reboot has become more
+> > urgent.
 
-v3: drop warn printing (Christian)
+Yup, that's most likely getting stuck on the directory locks that
+the unlinks are holding....
 
-Fixes: 84ec374bd580("drm/amdgpu: create amdgpu_vkms (v4)")
-Cc: stable@vger.kernel.org
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Guchun Chen <guchun.chen@amd.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
-index 53ff91fc6cf6..b870c827cbaa 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
-@@ -46,7 +46,10 @@ static enum hrtimer_restart amdgpu_vkms_vblank_simulate(struct hrtimer *timer)
- 	struct amdgpu_crtc *amdgpu_crtc = container_of(timer, struct amdgpu_crtc, vblank_timer);
- 	struct drm_crtc *crtc = &amdgpu_crtc->base;
- 	struct amdgpu_vkms_output *output = drm_crtc_to_amdgpu_vkms_output(crtc);
-+	struct drm_vblank_crtc *vblank;
-+	struct drm_device *dev;
- 	u64 ret_overrun;
-+	unsigned int pipe;
- 	bool ret;
- 
- 	ret_overrun = hrtimer_forward_now(&amdgpu_crtc->vblank_timer,
-@@ -54,9 +57,13 @@ static enum hrtimer_restart amdgpu_vkms_vblank_simulate(struct hrtimer *timer)
- 	if (ret_overrun != 1)
- 		DRM_WARN("%s: vblank timer overrun\n", __func__);
- 
-+	dev = crtc->dev;
-+	pipe = drm_crtc_index(crtc);
-+	vblank = &dev->vblank[pipe];
- 	ret = drm_crtc_handle_vblank(crtc);
--	if (!ret)
--		DRM_ERROR("amdgpu_vkms failure on handling vblank");
-+	/* Don't queue timer again when vblank is disabled. */
-+	if (!ret && !READ_ONCE(vblank->enabled))
-+		return HRTIMER_NORESTART;
- 
- 	return HRTIMER_RESTART;
- }
-@@ -81,7 +88,7 @@ static void amdgpu_vkms_disable_vblank(struct drm_crtc *crtc)
- {
- 	struct amdgpu_crtc *amdgpu_crtc = to_amdgpu_crtc(crtc);
- 
--	hrtimer_cancel(&amdgpu_crtc->vblank_timer);
-+	hrtimer_try_to_cancel(&amdgpu_crtc->vblank_timer);
- }
- 
- static bool amdgpu_vkms_get_vblank_timestamp(struct drm_crtc *crtc,
+-Dave.
 -- 
-2.25.1
-
+Dave Chinner
+david@fromorbit.com
