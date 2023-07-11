@@ -2,135 +2,194 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CC9974F80D
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 20:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7983174F845
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 21:11:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231731AbjGKShK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 14:37:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40956 "EHLO
+        id S229770AbjGKTL4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 15:11:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbjGKShJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 14:37:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 525BA1704;
-        Tue, 11 Jul 2023 11:37:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C3F6A615C4;
-        Tue, 11 Jul 2023 18:37:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE95C433C8;
-        Tue, 11 Jul 2023 18:37:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689100627;
-        bh=+7N/u0itsnpJvxJot3J+mrw9E2b+Ml2TEPrpwLxs3tA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k+ovQQ75Ckii/VxurhsOretNZWMrjk6GuHTTBvArCWPTS2VFmSb/FVl+vQv6uJB92
-         swV3OBfggRv76Yw6Qu9xJG9v372D3Qwl72ySK45ISafBBgXqYHBzo2ZxgYJNMsvVjw
-         4EjyNWYz/eIzbQJeGWi1Zzmete9XvbkcaRQMLtKaepFJpytVxGRHUIGJnXq+LeHXUt
-         MdcpTCZiC7CUBwc90ZdnY4U0G2A+Z8QahEx3eDXDnubUvp5kMG3sANlodISWysGZnU
-         8wOzYpBCjyYvlDulWchrVXJenLxVTYb7CUqwwyjtFQXy9YY/pp8dZBwKrKaXw0PjmE
-         yW2/kYlCq9KtA==
-Date:   Tue, 11 Jul 2023 11:37:04 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Petr Pavlu <petr.pavlu@suse.com>, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        hpa@zytor.com, samitolvanen@google.com, x86@kernel.org,
-        linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, ndesaulniers@google.com,
-        Masami Hiramatsu <mhiramat@kernel.org>, stable@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] x86: kprobes: Fix CFI_CLANG related issues
-Message-ID: <20230711183704.GA2758126@dev-arch.thelio-3990X>
-References: <168899125356.80889.17967397360941194229.stgit@devnote2>
- <20230710155703.GA4021842@dev-arch.thelio-3990X>
- <20230711103303.287af608cc47dcf70d709070@kernel.org>
+        with ESMTP id S231208AbjGKTLz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 15:11:55 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E0DA100
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 12:11:54 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1b9cd6a0051so20548085ad.1
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 12:11:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689102713; x=1691694713;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=bARkGZ3dss4BcjOVsFQK3rhU45fbYb/5NrZsxAKBOWw=;
+        b=tKXoZ3FXAeKX+M2oO4HP+/WPjGFNwhQ7JxxRc7Imh0nhSVoZaQcU87w+FG33tDfmLF
+         //tcWgB3hqNls8PEMKySDlfc2PohNdxrCSNAI4t49sxVaIV8oBTjAOPeE6t2FKb5GMFV
+         uneTjY4bfGmQDJ76oMbTe5uPn8mwwR7vlX2ZK8Zi/h9iIOa1jgcAh/7fUtGU5vw9Tkel
+         5oXaXchmVv9TfMODaIF9bNbi8KPzTb10Jry1rbADu4wTW9nWHdDYfMVv0YoV0d+U4Gpu
+         KTI84UDyQLEuhXjO69o6JH6gFi8qSGxTf4RsRYmbMwrmVlDj7krjcU+4UDnVgtO3T/Vy
+         pbvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689102713; x=1691694713;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bARkGZ3dss4BcjOVsFQK3rhU45fbYb/5NrZsxAKBOWw=;
+        b=j5704xAVJAXFePnNEGCX5t4VorLZqCLH75QOD3zjf4WP8HQHpS7mrvAfacob7JxqLj
+         7vtCfMdtn6MhT72mdarUr42Aim7xE3mIjsvIPlKckhMuX2UF4Mxvlzu8nqzov71bz8yL
+         iVNftuwemJU0VfibMSnpOu9UMS2qngmzH2Tf8wx8gQINxXbhM8Y0DRkPlqYntHHOKwnF
+         V30paeTn0yaZAl8Hf18P6iyMB4SaXqiUGlTPh3RJcF+QJ8j2mza/Xnr/Q0mxpjZ1C0Nt
+         L4y+7U0XqnSaa03B4TJghtnBihJj2/Va4vfThRVtUi1khPDCuQmP+vyffodY5UQJnFTV
+         cJKQ==
+X-Gm-Message-State: ABy/qLbPLL+Sw+eI+Y32GTPjFc4zKH8wYrN/WKNvLokTQ4PlTv0fxzUU
+        h0Of+sTN06NKMAjH9KehATOw6NvPLY7Q98uZp0IABA==
+X-Google-Smtp-Source: APBJJlFvXwTqFFGqNrCW81tMtMXv8Wg63YE9/EInv2T9JmFbYeGHkhSOq0ivPMYCxfAqb2ZXxQpyUg==
+X-Received: by 2002:a17:90b:3b4a:b0:262:f449:4492 with SMTP id ot10-20020a17090b3b4a00b00262f4494492mr12192634pjb.30.1689102713402;
+        Tue, 11 Jul 2023 12:11:53 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id n10-20020a17090aab8a00b00262e604724dsm8481221pjq.50.2023.07.11.12.11.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jul 2023 12:11:52 -0700 (PDT)
+Message-ID: <64ada978.170a0220.ab020.01d9@mx.google.com>
+Date:   Tue, 11 Jul 2023 12:11:52 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230711103303.287af608cc47dcf70d709070@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v6.3.13
+X-Kernelci-Tree: stable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-6.3.y
+Subject: stable/linux-6.3.y build: 20 builds: 0 failed, 20 passed (v6.3.13)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Masami, thanks for verifying!
+stable/linux-6.3.y build: 20 builds: 0 failed, 20 passed (v6.3.13)
 
-Hi Greg and Sasha,
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.3.y/ke=
+rnel/v6.3.13/
 
-On Tue, Jul 11, 2023 at 10:33:03AM +0900, Masami Hiramatsu wrote:
-> On Mon, 10 Jul 2023 08:57:03 -0700
-> Nathan Chancellor <nathan@kernel.org> wrote:
-> 
-> > On Mon, Jul 10, 2023 at 09:14:13PM +0900, Masami Hiramatsu (Google) wrote:
-> > > I just build tested, since I could not boot the kernel with CFI_CLANG=y.
-> > > Would anyone know something about this error?
-> > > 
-> > > [    0.141030] MMIO Stale Data: Unknown: No mitigations
-> > > [    0.153511] SMP alternatives: Using kCFI
-> > > [    0.164593] Freeing SMP alternatives memory: 36K
-> > > [    0.165053] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_kernel+0x472/0x48b
-> > > [    0.166028] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.2-00002-g12b1b2fca8ef #126
-> > > [    0.166028] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-> > > [    0.166028] Call Trace:
-> > > [    0.166028]  <TASK>
-> > > [    0.166028]  dump_stack_lvl+0x6e/0xb0
-> > > [    0.166028]  panic+0x146/0x2f0
-> > > [    0.166028]  ? start_kernel+0x472/0x48b
-> > > [    0.166028]  __stack_chk_fail+0x14/0x20
-> > > [    0.166028]  start_kernel+0x472/0x48b
-> > > [    0.166028]  x86_64_start_reservations+0x24/0x30
-> > > [    0.166028]  x86_64_start_kernel+0xa6/0xbb
-> > > [    0.166028]  secondary_startup_64_no_verify+0x106/0x11b
-> > > [    0.166028]  </TASK>
-> > > [    0.166028] ---[ end Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_kernel+0x472/0x48b ]---
-> > 
-> > This looks like https://github.com/ClangBuiltLinux/linux/issues/1815 to
-> > me. What version of LLVM are you using? This was fixed in 16.0.4. Commit
-> > 514ca14ed544 ("start_kernel: Add __no_stack_protector function
-> > attribute") should resolve it on the Linux side, it looks like that is
-> > in 6.5-rc1. Not sure if we should backport it or just let people upgrade
-> > their toolchains on older releases.
-> 
-> Thanks for the info. I confirmed that the commit fixed the boot issue.
-> So I think it should be backported to the stable tree.
+Tree: stable
+Branch: linux-6.3.y
+Git Describe: v6.3.13
+Git Commit: d1047d75f77afefd19b19ae33cde7ad67f3628c9
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 7 unique architectures
 
-Would you please apply commit 514ca14ed544 ("start_kernel: Add
-__no_stack_protector function attribute") to linux-6.4.y? The series
-ending with commit 611d4c716db0 ("x86/hyperv: Mark hv_ghcb_terminate()
-as noreturn") that shipped in 6.4 exposes an LLVM issue that affected
-16.0.0 and 16.0.1, which was resolved in 16.0.2. When using those
-affected LLVM releases, the following crash at boot occurs:
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-  [    0.181667] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_kernel+0x3cf/0x3d0
-  [    0.182621] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.3 #1
-  [    0.182621] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [    0.182621] Call Trace:
-  [    0.182621]  <TASK>
-  [    0.182621]  dump_stack_lvl+0x6a/0xa0
-  [    0.182621]  panic+0x124/0x2f0
-  [    0.182621]  ? start_kernel+0x3cf/0x3d0
-  [    0.182621]  ? acpi_enable+0x64/0xc0
-  [    0.182621]  __stack_chk_fail+0x14/0x20
-  [    0.182621]  start_kernel+0x3cf/0x3d0
-  [    0.182621]  x86_64_start_reservations+0x24/0x30
-  [    0.182621]  x86_64_start_kernel+0xab/0xb0
-  [    0.182621]  secondary_startup_64_no_verify+0x107/0x10b
-  [    0.182621]  </TASK>
-  [    0.182621] ---[ end Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_kernel+0x3cf/0x3d0 ]---
+Detailed per-defconfig build reports:
 
-514ca14ed544 aims to avoid this on the Linux side. I have verified that
-it applies to 6.4.3 cleanly and resolves the issue there, as has Masami.
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
-If there are any issues or questions, please let me know.
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
 
-Cheers,
-Nathan
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
