@@ -2,204 +2,208 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA14C74F71C
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 19:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD0DD74F783
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 19:50:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232603AbjGKRXS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 13:23:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35140 "EHLO
+        id S231549AbjGKRuw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 13:50:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233225AbjGKRXI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 13:23:08 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D211711;
-        Tue, 11 Jul 2023 10:22:42 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36BGmrQ4004850;
-        Tue, 11 Jul 2023 17:20:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=Dd4av3OA7sDfdLwFbUft5WszPcE37l6Zz5pV11nT7+w=;
- b=oybR2R5GSqWmiD+UUCyYs9kMaH52iIobJcAe/POJSRCH1Yhmx/lidlfdKcy6LSxbx5Jr
- S2mGuiAgr7scG9dkHZAEFA15XSpz6d6K7PzN83UKT1L60BUOMEsDXdL9974mUrhqwsv2
- 9pWkOuNLhXb8UL7LKdNSnivTAAShFCYHVAn9a5JO3+kkjcWkPE4d+Ql2sWc7fUF5KZe9
- 4gOd66qpRUNbdQGKcVhgyCLu1kxAOdxJw3JMQgJThdjvRN0XbLO3BDf6ctO43grqi2Uw
- ehr5Kd0fLk2ieRwz/TK8nY45ePPOVmJrCDD18vzgSH/2hSh4euTvGAoLmj/ixCh8Fxa4 4g== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rsax482h9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Jul 2023 17:20:52 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36BHKpXW018001
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Jul 2023 17:20:51 GMT
-Received: from [10.110.47.185] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Tue, 11 Jul
- 2023 10:20:50 -0700
-Message-ID: <7eaf29c9-c2bf-3979-687a-596d3ba538fa@quicinc.com>
-Date:   Tue, 11 Jul 2023 10:20:50 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] drm/client: Send hotplug event after registering a client
-Content-Language: en-US
-To:     Thomas Zimmermann <tzimmermann@suse.de>, <javierm@redhat.com>,
-        <noralf@tronnes.org>
-CC:     <dri-devel@lists.freedesktop.org>,
-        Moritz Duge <MoritzDuge@kolahilft.de>,
-        Torsten Krah <krah.tm@gmail.com>,
-        Paul Schyska <pschyska@gmail.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        David Airlie <airlied@gmail.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Inki Dae <inki.dae@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-samsung-soc@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
-        <amd-gfx@lists.freedesktop.org>, <linux-tegra@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20230710091029.27503-1-tzimmermann@suse.de>
-From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <20230710091029.27503-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+        with ESMTP id S230258AbjGKRuv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 13:50:51 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD9B510C7;
+        Tue, 11 Jul 2023 10:50:49 -0700 (PDT)
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36BFSJ65009120;
+        Tue, 11 Jul 2023 17:50:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=corp-2023-03-30;
+ bh=Rt/4sLdDmPq66oPK56lMe3m8JmEGzuPzXCimo3LL5wQ=;
+ b=U3BvEiema5Q/CjSeSOT6gG31iqDVVbnTuGC9ZYtIoDbxd+tIl9W9adpMJn8tHZyZWg5g
+ Qo29ZXf0ciCAWh6M2bYpzMLVk0aVFD7bdcbpw67nA0uIZ/TPxcNrF6Bzfr0uP963+moU
+ xxlvgCj5jtWOWLuUvX4jKnFU2dhHrJdLpHMS5JGHht7MTaOFnz9SUNo35OXHoEx/avg4
+ s0OS8DAxOzVAzCt81jIXsCWrcx9F1lShygsmtlhiudzpNSGm8L6wVq3PkMlCuZIFsoUA
+ dFAl4O45eA50O7T4oMsBPfaKNB6k5gaPivLoyqeLjtTjITt+8/dDKweOq+j/3h+Eiden jA== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rrgn7u99e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 11 Jul 2023 17:50:40 +0000
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 36BGUdNG008276;
+        Tue, 11 Jul 2023 17:50:39 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3rpx8bgdmv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 11 Jul 2023 17:50:39 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RXvhtdfUFlLaJwSxxr+JryYhNQSN8qY5KdfIHaNJK8gzbSEnb0kW3gJD4tGq+ef02x3vfvZxs5BN5gTugJj4QItVR1Y2bfG+H0CbrLMHUvcKUt2Daa6zthtwbOe7ANizery9mzOcSx3NaAAmZV8avSVkD7z2thec/g9a4PKRAu+/b13JdZqY5YtUFsxjmYAdHowc1TSDHn2OjOMvqYRRcaAeaYiuHdeBAbi6CGktJ+Ow3mnUs7zjLPzFGc7jC0YxhbIPUXTTqFGnqIQI8foDDND+VS23vyQ/YTVp/mHTH7NW+NjDGzcDTA3vaYUJkCNXjW0sF1SNRm3LUHrBuu4SWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Rt/4sLdDmPq66oPK56lMe3m8JmEGzuPzXCimo3LL5wQ=;
+ b=dsDn9Kr0pTcexTUGfBOtZn0E8WNIYeEPCP0l7wwanQQ0TjmKSFEiqIuQQJuQJz3M+ZYIkuuwNNX/kQf60chypM8c3Ptram8tvjDVDWtE9J6MDBxsbgOg8+E4UfTGs6SzxWnM+1drVgdBkfNKCx1I0CiumWz/hs7zQNqnYS43n0/7GICAKbSrn2wU61VY4BCbA3Bl3uQXWVPT3fz04A0PJk3oZujGJ/rFWnesdIIc9LyErACEOrIvs9z3zwJzd2q5+UktXZax0z8AbrrpZ8u5Sk2RRAjeNzO6ID1ubqWZ2iIwO3h2ZCv6ygC1We+TFS8bom2iDsNBzQYqR9tS5AYWBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Rt/4sLdDmPq66oPK56lMe3m8JmEGzuPzXCimo3LL5wQ=;
+ b=lNfTaOrAZawHrw3sUOhaC8jzEWkY5rLL2ZmDyoUTDSfaBpiSE98DyYo6trj6u1JGd/hS8q3HECJDIhZMqBjGOLUjIpzvxkka6BrnHzXex/Je7qtJZA/rHCFxQD0qL8ud48Ixt7mBPcvTQxdGhceRDy5xaD6+4XGL7ePqmqc0Ics=
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
+ by CY8PR10MB6802.namprd10.prod.outlook.com (2603:10b6:930:99::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30; Tue, 11 Jul
+ 2023 17:50:37 +0000
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::c370:eff7:9ddc:f188]) by SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::c370:eff7:9ddc:f188%4]) with mapi id 15.20.6565.028; Tue, 11 Jul 2023
+ 17:50:37 +0000
+From:   "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Ryan Roberts <ryan.roberts@arm.com>, stable@vger.kernel.org
+Subject: [PATCH] mm/mlock: Fix vma iterator conversion of apply_vma_lock_flags()
+Date:   Tue, 11 Jul 2023 13:50:20 -0400
+Message-Id: <20230711175020.4091336-1-Liam.Howlett@oracle.com>
+X-Mailer: git-send-email 2.39.2
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: n6Fnwihzb_lU2DPCKZ58uhtNAcMjQTE9
-X-Proofpoint-GUID: n6Fnwihzb_lU2DPCKZ58uhtNAcMjQTE9
+Content-Type: text/plain
+X-ClientProxiedBy: YT4PR01CA0373.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:fd::15) To SN6PR10MB3022.namprd10.prod.outlook.com
+ (2603:10b6:805:d8::25)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|CY8PR10MB6802:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcc972fc-3971-4698-4e89-08db82375542
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: yFLQ51ytCaQD7Vlq0vOJK9f7LPv9YwzdbLqtK4kpX87sHg7FNmv4xC/lpB+b3svtfRV8MwKmjjafmHdw69YtXI5SPJq3ZaxK80DAEFXN4IPj6WDhFgdj3flPI1y2VLRbuPnICZiiIMEduxSwTZxuUfl3F1i/S0EcrRllA5L9I7qj+rUpDLrkgGrLraWdC9fH41vqFboptEczzqx55wOcs+cdIzVowDTxZUS4+DcxQSz6c9LZdNJ6GvRfU68/mOd4wO7RRCUkDXbfqcPG18L9iVD2f1rajn+wuLlq0Jp+O8tF+uJ3fsulGVOR9J2LtdqH/4Cpx6mPyGTZKhOzgk0e7B1WMcbscJWFfsFFnAqFWS2wcWLmvtocsah10h06MOwPeRkFMid3Zz3NjlBDDje4aH0P++AmP6HzUIJhsxpv7BOWTxBtJXTCmee7o1m+bjmPQ+w1uQJOtN9hkMRp2dHTElo6OwdK0CUopFtSVbm/EHdVbrDOx39SL5D7qDeuq2KFnUX0vWJuSSBFX94ENB1qnNw0yUQeynD3kzlMXwoxS1o=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(366004)(346002)(396003)(376002)(39860400002)(136003)(451199021)(86362001)(38100700002)(36756003)(54906003)(6666004)(6486002)(6506007)(26005)(186003)(1076003)(966005)(6512007)(2616005)(5660300002)(2906002)(316002)(66556008)(66946007)(8936002)(8676002)(66476007)(83380400001)(4326008)(478600001)(6916009)(41300700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TYh8kVxB4cVoTo4+5ulvQ30CL+ECy7fZ3zHAHUrsqVJtWhp8UoRTK9Gr6GbG?=
+ =?us-ascii?Q?gdHyvDxlmoLa/AaYryGGasLye4TnQlRq2BJoIZdBZc0PEaXVgTbRqdO9kAyy?=
+ =?us-ascii?Q?ZrMZupLafzUWqFZEgIAdE8bwooEG4vCdJxoLWIlWX6KNRf6qB160387I2svL?=
+ =?us-ascii?Q?9cAqrho1DMbuhbxM8P+8b7vIQ6LkKzbywjrVmpPH6hQ19Pp6YxbkGBgDdiuM?=
+ =?us-ascii?Q?aA/1buurnuZbfw+zEEfviGRtapubxzOq3FfgO7lGTvpZLEHpgbemjo8xJRRQ?=
+ =?us-ascii?Q?kpsQDO0JmqLe00xUTu1VKVem9/IcX387sZCdw00Z5QntlmkiYhSrt+Kk/SzD?=
+ =?us-ascii?Q?mK33ofyLxXRz7K+qIx3v8cq8ek19z5ZUNQbCN6EwjYCrIWHQfbRuwR3Dt943?=
+ =?us-ascii?Q?WSG1akurmM7h/3H3AmUqaSGzkJ/LzWCYIveOh7ZQBXIGhMURJjclafVt2mO/?=
+ =?us-ascii?Q?w9hCHBEgFRkqA2FTHtQM3WBiera31fI4vh4Lyhej6tau6o8vLR3ccoazLJCG?=
+ =?us-ascii?Q?Y4qNnxvSk2FUyoZ7zE6s0EMfCnywss6QuvYjUJVoEiEy+iI77YUp27ZAdDDL?=
+ =?us-ascii?Q?fwtwu9Jdf6gMHlnL2+4f9vYS7GN86ng9jE+Gqup6Vi17bjFJrh8skFKPeo6U?=
+ =?us-ascii?Q?or/1EMhLnJ5JSm+7RU7GdSDHD9R3ffaqbgzp+u99WXRpFBHkCmQ2kH1tzoV3?=
+ =?us-ascii?Q?jKJESFHmt9AKvXEW9VMGbdf2axMcnt8ODKWjsCNhF3ENgidl8sRm9Afg53yY?=
+ =?us-ascii?Q?yOSCNiP7gGH0qRmXezlnvU8BPhau73M44By8oOPt3NQOnYRwJ71cA1Xbed2o?=
+ =?us-ascii?Q?CmCZ/z14V3zj4gGWtdIIkGPRv/xomlJKI7meTlgChxg17aDQ6DvaZzgR0aZe?=
+ =?us-ascii?Q?hFIJKWml++EP6AONL/wmTGykb0bw57j2VzoMlpZ9eTVvsaR3IRbdxz8lSRzz?=
+ =?us-ascii?Q?9Ij4sKh3GqcUMQ8iNEl01buUw3LF2KZkQk7GdZRcIXqUjuv09EEmp2qxP1RD?=
+ =?us-ascii?Q?SsUUjQr6jUfv2DAXXHMvLv/dw5M7ly3/w4GNcuD6WCGQyeio9bagujrs/Qxy?=
+ =?us-ascii?Q?AadKyGYwXLiNcShRPEbKNdT559yA3YOKnt5GjaVKRMF1DWHhK5anBF14Or4E?=
+ =?us-ascii?Q?lsxpvKVGXj4tRambAxTME8g1ilLQ0oyfCRvK5cAAieB+N6YP6MplBshI8kLX?=
+ =?us-ascii?Q?cK0Skb8WUd/+1k93HcOhv9tFWl5MxY83rCKYUXk+MlcLUA4k/A1RausWGUQ8?=
+ =?us-ascii?Q?jc2JuQ2nfjWvps/Qcn1KVUCQHkWxPvH+QAlCLRhridgnpE/oUrL47FuQlRDV?=
+ =?us-ascii?Q?3JYe+uGb+ThcgWq8EXV51MiH6ZmyDpCoW//tt6vlqvjYnaE5vszAx3pdzUQx?=
+ =?us-ascii?Q?53/vdQzHPKIHzozKXPWD50QuT2wSjO5BtoXJtfDQXbe82yrt6PErSsHFhqFA?=
+ =?us-ascii?Q?jLU3UxAtP/vH2M+2fUOy8Lw60uGZstZ4lOWfP31gb572soPwbICtv46ufDuw?=
+ =?us-ascii?Q?YCniB6dUKaDcgNMwoxmW7wXBd2d4tTFZO4eILlPE8zB9twS8gSx2UgFgU5sD?=
+ =?us-ascii?Q?Rbfv7z4j6MKDq/FVtTfbYbGtRz9OlhbiOEJkd4cFzYv1gLMJNJgkVR2BA23s?=
+ =?us-ascii?Q?QA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 7CE6gVoPvMUey9cYTZ9vrzigvY34JJhnZZSND1j2cQSXaeF5XyGkB7LjMqGkWm3qgE4va22tR8FikLqQ7cef/dX1nVkMPJvNXIdWQH6J8w6Df7ewCT0kzmZDJCinfGHSBBUejXq7VN0wDhUwleT0Y490c4G87svgH/erCQTaAHmte3f1OBHpuiSaEIKtFsI1QKaM5Iow6KDy7KmwFiLv8GmsUW7EkqgJdiNjDdoqAnTE5qw+jIADOD8JhMM/7B1bw4n6zDrE6BpgwmsOysMt2zEU1XsgSiadyhXKKXh5+mwn8GG6P5VZYNzbt16P6PJjvjZ85tOKLl5sb3fR+4yVxy38xJ1COLub9+gyr19swYo5T2wXt+POoUd4atR/0u2tHtLUsjeShPxi+MgwcI/vyregGfcq2Lz5XQXP4c0hx70lRkFE4CJQUYW7yfDFjl/v0DyBPLHMXjPhMhH0YRJ+FysoGWXZjkzvA34tak6JU6QwiMUdXb8HpePda/T+JvbQmAYL+X7ZApf8SDMMfLap/QXuIcAUqV9CozHrMbA9KtjKxhXRcl6SBCBFI5X0pOHyt4RQfuvzGrqJRg8ZvXJJu65N2Ziilmi/8Dwh4k8kPAP+p8TN5xUuSv4PqZarqaKwX+4VZf3P01EwPo4f4mNsjNWZCKi5I4uJFqiRM9u87Ypupik0TWKAALmuM6D37BBz1TegTowmL4zJ7ihbPNO/w0+32/UsXSUyrZyLf8p21zGhkhZ0K8yyql1QxNHrinqVu1ZwxhBIx/BAlG3Bu4+ixkwbtlXVErEHcOtuLchBmgHzi6mQONYc61DvC6WwZ+ISAhkHFGIrGyROZBcQ+uX2kysfJoSKxKmWzreXHwNLXCg=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcc972fc-3971-4698-4e89-08db82375542
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2023 17:50:36.9680
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pIvOz0iDiTYoRciF5/FRUa385dlaJU9DENYI88Jf7GxKvSQ8OcW8h96DxprRHevRfQSdZRQywVAuCPVOFRnFsQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6802
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-11_09,2023-07-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- bulkscore=0 priorityscore=1501 impostorscore=0 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 adultscore=0 clxscore=1011 phishscore=0 malwarescore=0
+ definitions=2023-07-11_10,2023-07-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxlogscore=853
+ adultscore=0 suspectscore=0 mlxscore=0 malwarescore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2307110154
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+ definitions=main-2307110160
+X-Proofpoint-ORIG-GUID: jAZFZ5JEC0lsmVL1RUgyx46UnCoKPmwH
+X-Proofpoint-GUID: jAZFZ5JEC0lsmVL1RUgyx46UnCoKPmwH
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+apply_vma_lock_flags() calls mlock_fixup(), which could merge the VMA
+after where the vma iterator is located.  Although this is not an issue,
+the next iteration of the loop will check the start of the vma to be
+equal to the locally saved 'tmp' variable and cause an incorrect failure
+scenario.  Fix the error by setting tmp to the end of the vma iterator
+value before restarting the loop.
 
+There is also a potential of the error code being overwritten when the
+loop terminates early.  Fix the return issue by directly returning when
+an error is encountered since there is nothing to undo after the loop.
 
-On 7/10/2023 2:10 AM, Thomas Zimmermann wrote:
-> Generate a hotplug event after registering a client to allow the
-> client to configure its display. Remove the hotplug calls from the
-> existing clients for fbdev emulation. This change fixes a concurrency
-> bug between registering a client and receiving events from the DRM
-> core. The bug is present in the fbdev emulation of all drivers.
-> 
-> The fbdev emulation currently generates a hotplug event before
-> registering the client to the device. For each new output, the DRM
-> core sends an additional hotplug event to each registered client.
-> 
-> If the DRM core detects first output between sending the artificial
-> hotplug and registering the device, the output's hotplug event gets
-> lost. If this is the first output, the fbdev console display remains
-> dark. This has been observed with amdgpu and fbdev-generic.
-> 
-> Fix this by adding hotplug generation directly to the client's
-> register helper drm_client_register(). Registering the client and
-> receiving events are serialized by struct drm_device.clientlist_mutex.
-> So an output is either configured by the initial hotplug event, or
-> the client has already been registered.
-> 
-> The bug was originally added in commit 6e3f17ee73f7 ("drm/fb-helper:
-> generic: Call drm_client_add() after setup is done"), in which adding
-> a client and receiving a hotplug event switched order. It was hidden,
-> as most hardware and drivers have at least on static output configured.
-> Other drivers didn't use the internal DRM client or still had struct
-> drm_mode_config_funcs.output_poll_changed set. That callback handled
-> hotplug events as well. After not setting the callback in amdgpu in
-> commit 0e3172bac3f4 ("drm/amdgpu: Don't set struct
-> drm_driver.output_poll_changed"), amdgpu did not show a framebuffer
-> console if output events got lost. The bug got copy-pasted from
-> fbdev-generic into the other fbdev emulation.
-> 
-> Reported-by: Moritz Duge <MoritzDuge@kolahilft.de>
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2649
-> Fixes: 6e3f17ee73f7 ("drm/fb-helper: generic: Call drm_client_add() after setup is done")
-> Fixes: 8ab59da26bc0 ("drm/fb-helper: Move generic fbdev emulation into separate source file")
-> Fixes: b79fe9abd58b ("drm/fbdev-dma: Implement fbdev emulation for GEM DMA helpers")
-> Fixes: 63c381552f69 ("drm/armada: Implement fbdev emulation as in-kernel client")
-> Fixes: 49953b70e7d3 ("drm/exynos: Implement fbdev emulation as in-kernel client")
-> Fixes: 8f1aaccb04b7 ("drm/gma500: Implement client-based fbdev emulation")
-> Fixes: 940b869c2f2f ("drm/msm: Implement fbdev emulation as in-kernel client")
-> Fixes: 9e69bcd88e45 ("drm/omapdrm: Implement fbdev emulation as in-kernel client")
-> Fixes: e317a69fe891 ("drm/radeon: Implement client-based fbdev emulation")
-> Fixes: 71ec16f45ef8 ("drm/tegra: Implement fbdev emulation as in-kernel client")
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Tested-by: Moritz Duge <MoritzDuge@kolahilft.de>
-> Tested-by: Torsten Krah <krah.tm@gmail.com>
-> Tested-by: Paul Schyska <pschyska@gmail.com>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Noralf Trønnes <noralf@tronnes.org>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Inki Dae <inki.dae@samsung.com>
-> Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
-> Cc: Kyungmin Park <kyungmin.park@samsung.com>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-> Cc: Rob Clark <robdclark@gmail.com>
-> Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: "Christian König" <christian.koenig@amd.com>
-> Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Mikko Perttunen <mperttunen@nvidia.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: linux-arm-msm@vger.kernel.org
-> Cc: freedreno@lists.freedesktop.org
-> Cc: amd-gfx@lists.freedesktop.org
-> Cc: linux-tegra@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v5.2+
-> ---
->   drivers/gpu/drm/armada/armada_fbdev.c     |  4 ----
->   drivers/gpu/drm/drm_client.c              | 21 +++++++++++++++++++++
->   drivers/gpu/drm/drm_fbdev_dma.c           |  4 ----
->   drivers/gpu/drm/drm_fbdev_generic.c       |  4 ----
->   drivers/gpu/drm/exynos/exynos_drm_fbdev.c |  4 ----
->   drivers/gpu/drm/gma500/fbdev.c            |  4 ----
->   drivers/gpu/drm/msm/msm_fbdev.c           |  4 ----
->   drivers/gpu/drm/omapdrm/omap_fbdev.c      |  4 ----
->   drivers/gpu/drm/radeon/radeon_fbdev.c     |  4 ----
->   drivers/gpu/drm/tegra/fbdev.c             |  4 ----
->   10 files changed, 21 insertions(+), 36 deletions(-)
-> 
+Reported-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/linux-mm/50341ca1-d582-b33a-e3d0-acb08a65166f@arm.com/
+Cc: <stable@vger.kernel.org>
+Fixes: 37598f5a9d8b ("mlock: convert mlock to vma iterator")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+---
+ mm/mlock.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+diff --git a/mm/mlock.c b/mm/mlock.c
+index d7db94519884..0a0c996c5c21 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -477,7 +477,6 @@ static int apply_vma_lock_flags(unsigned long start, size_t len,
+ {
+ 	unsigned long nstart, end, tmp;
+ 	struct vm_area_struct *vma, *prev;
+-	int error;
+ 	VMA_ITERATOR(vmi, current->mm, start);
+ 
+ 	VM_BUG_ON(offset_in_page(start));
+@@ -498,6 +497,7 @@ static int apply_vma_lock_flags(unsigned long start, size_t len,
+ 	nstart = start;
+ 	tmp = vma->vm_start;
+ 	for_each_vma_range(vmi, vma, end) {
++		int error;
+ 		vm_flags_t newflags;
+ 
+ 		if (vma->vm_start != tmp)
+@@ -511,14 +511,15 @@ static int apply_vma_lock_flags(unsigned long start, size_t len,
+ 			tmp = end;
+ 		error = mlock_fixup(&vmi, vma, &prev, nstart, tmp, newflags);
+ 		if (error)
+-			break;
++			return error;
++		tmp = vma_iter_end(&vmi);
+ 		nstart = tmp;
+ 	}
+ 
+-	if (vma_iter_end(&vmi) < end)
++	if (tmp < end)
+ 		return -ENOMEM;
+ 
+-	return error;
++	return 0;
+ }
+ 
+ /*
+-- 
+2.39.2
+
