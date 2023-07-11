@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7DCB74F904
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:29:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8B1074F906
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbjGKU3R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 16:29:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43628 "EHLO
+        id S230155AbjGKUaX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 16:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230305AbjGKU3N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:29:13 -0400
+        with ESMTP id S229468AbjGKUaW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:30:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29F441709
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:29:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB29B7
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:30:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AF1F615DD
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E88C433C8;
-        Tue, 11 Jul 2023 20:29:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 00291615F2
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:30:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091B0C433C8;
+        Tue, 11 Jul 2023 20:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689107351;
-        bh=CcAEdIMpaWbPbGnwtwmhjxn78DjfMi0btX16hc7zo7A=;
+        s=korg; t=1689107419;
+        bh=9D+WvH2A77UaTzICNkF6O5trjTewFXMNO6XD3oyHQ1U=;
         h=Subject:To:Cc:From:Date:From;
-        b=s881TAImOllVdfZGpL4rF7P1WeUAyGLWLJAfTY0Bpg0bL3kgL2POEFuWZFCHKGDnw
-         ZU1h1vPuVYKZAn4t+W9pz8y+hgKbMJYz/mlUqCb8G+hODWd3E8A/PJd/J5NZArgGvG
-         QEQQuKBqqJtKYkxxQ34Tlrk/ugHz9AICs3rzjG7s=
-Subject: FAILED: patch "[PATCH] ALSA: jack: Fix mutex call in snd_jack_report()" failed to apply to 5.4-stable tree
-To:     tiwai@suse.de, amadeuszx.slawinski@linux.intel.com,
-        dan.carpenter@linaro.org, stable@vger.kernel.org
+        b=sf7fUHR7j2v/kQvfco/0SDrdKgD5LDvwNRcRsQd7y1z8vcuez8+fcOtRiisbNb+Uy
+         YbeceRaMqP2iRS+nVTCYzPf87mZHj1BU0kLykrdoBLaTV6Jh0/s4+IFudEmcLrMsJa
+         BmSsEk+R3aj89kkrWMlW8TWgF+sn/FiYvDgYndr8=
+Subject: FAILED: patch "[PATCH] block: add overflow checks for Amiga partition support" failed to apply to 5.10-stable tree
+To:     schmitzmic@gmail.com, Martin@lichtvoll.de, axboe@kernel.dk,
+        geert@linux-m68k.org, hch@infradead.org, jdow@earthlink.net,
+        stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 11 Jul 2023 22:28:58 +0200
-Message-ID: <2023071158-grudge-guru-b675@gregkh>
+Date:   Tue, 11 Jul 2023 22:30:16 +0200
+Message-ID: <2023071116-umbrella-fog-a65f@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 89dbb335cb6a627a4067bc42caa09c8bc3326d40
+git cherry-pick -x b6f3f28f604ba3de4724ad82bea6adb1300c0b5f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071158-grudge-guru-b675@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071116-umbrella-fog-a65f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,85 +75,200 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 89dbb335cb6a627a4067bc42caa09c8bc3326d40 Mon Sep 17 00:00:00 2001
-From: Takashi Iwai <tiwai@suse.de>
-Date: Thu, 6 Jul 2023 17:53:57 +0200
-Subject: [PATCH] ALSA: jack: Fix mutex call in snd_jack_report()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From b6f3f28f604ba3de4724ad82bea6adb1300c0b5f Mon Sep 17 00:00:00 2001
+From: Michael Schmitz <schmitzmic@gmail.com>
+Date: Wed, 21 Jun 2023 08:17:25 +1200
+Subject: [PATCH] block: add overflow checks for Amiga partition support
 
-snd_jack_report() is supposed to be callable from an IRQ context, too,
-and it's indeed used in that way from virtsnd driver.  The fix for
-input_dev race in commit 1b6a6fc5280e ("ALSA: jack: Access input_dev
-under mutex"), however, introduced a mutex lock in snd_jack_report(),
-and this resulted in a potential sleep-in-atomic.
+The Amiga partition parser module uses signed int for partition sector
+address and count, which will overflow for disks larger than 1 TB.
 
-For addressing that problem, this patch changes the relevant code to
-use the object get/put and removes the mutex usage.  That is,
-snd_jack_report(), it takes input_get_device() and leaves with
-input_put_device() for assuring the input_dev being assigned.
+Use u64 as type for sector address and size to allow using disks up to
+2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+format allows to specify disk sizes up to 2^128 bytes (though native
+OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+u64 overflow carefully to protect against overflowing sector_t.
 
-Although the whole mutex could be reduced, we keep it because it can
-be still a protection for potential races between creation and
-deletion.
+Bail out if sector addresses overflow 32 bits on kernels without LBD
+support.
 
-Fixes: 1b6a6fc5280e ("ALSA: jack: Access input_dev under mutex")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/cf95f7fe-a748-4990-8378-000491b40329@moroto.mountain
-Tested-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230706155357.3470-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This bug was reported originally in 2012, and the fix was created by
+the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+discussed and reviewed on linux-m68k at that time but never officially
+submitted (now resubmitted as patch 1 in this series).
+This patch adds additional error checking and warning messages.
 
-diff --git a/sound/core/jack.c b/sound/core/jack.c
-index 88493cc31914..03d155ed362b 100644
---- a/sound/core/jack.c
-+++ b/sound/core/jack.c
-@@ -654,6 +654,7 @@ void snd_jack_report(struct snd_jack *jack, int status)
- 	struct snd_jack_kctl *jack_kctl;
- 	unsigned int mask_bits = 0;
- #ifdef CONFIG_SND_JACK_INPUT_DEV
-+	struct input_dev *idev;
- 	int i;
- #endif
+Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Christoph Hellwig <hch@infradead.org>
+Link: https://lore.kernel.org/r/20230620201725.7020-4-schmitzmic@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
+index 85c5c79aae48..ed222b9c901b 100644
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -11,10 +11,18 @@
+ #define pr_fmt(fmt) fmt
  
-@@ -670,17 +671,15 @@ void snd_jack_report(struct snd_jack *jack, int status)
- 					     status & jack_kctl->mask_bits);
+ #include <linux/types.h>
++#include <linux/mm_types.h>
++#include <linux/overflow.h>
+ #include <linux/affs_hardblocks.h>
  
- #ifdef CONFIG_SND_JACK_INPUT_DEV
--	mutex_lock(&jack->input_dev_lock);
--	if (!jack->input_dev) {
--		mutex_unlock(&jack->input_dev_lock);
-+	idev = input_get_device(jack->input_dev);
-+	if (!idev)
- 		return;
--	}
+ #include "check.h"
  
- 	for (i = 0; i < ARRAY_SIZE(jack->key); i++) {
- 		int testbit = ((SND_JACK_BTN_0 >> i) & ~mask_bits);
++/* magic offsets in partition DosEnvVec */
++#define NR_HD	3
++#define NR_SECT	5
++#define LO_CYL	9
++#define HI_CYL	10
++
+ static __inline__ u32
+ checksum_block(__be32 *m, int size)
+ {
+@@ -31,9 +39,12 @@ int amiga_partition(struct parsed_partitions *state)
+ 	unsigned char *data;
+ 	struct RigidDiskBlock *rdb;
+ 	struct PartitionBlock *pb;
+-	sector_t start_sect, nr_sects;
+-	int blk, part, res = 0;
+-	int blksize = 1;	/* Multiplier for disk block size */
++	u64 start_sect, nr_sects;
++	sector_t blk, end_sect;
++	u32 cylblk;		/* rdb_CylBlocks = nr_heads*sect_per_track */
++	u32 nr_hd, nr_sect, lo_cyl, hi_cyl;
++	int part, res = 0;
++	unsigned int blksize = 1;	/* Multiplier for disk block size */
+ 	int slot = 1;
  
- 		if (jack->type & testbit)
--			input_report_key(jack->input_dev, jack->key[i],
-+			input_report_key(idev, jack->key[i],
- 					 status & testbit);
+ 	for (blk = 0; ; blk++, put_dev_sector(sect)) {
+@@ -41,7 +52,7 @@ int amiga_partition(struct parsed_partitions *state)
+ 			goto rdb_done;
+ 		data = read_part_sector(state, blk, &sect);
+ 		if (!data) {
+-			pr_err("Dev %s: unable to read RDB block %d\n",
++			pr_err("Dev %s: unable to read RDB block %llu\n",
+ 			       state->disk->disk_name, blk);
+ 			res = -1;
+ 			goto rdb_done;
+@@ -58,12 +69,12 @@ int amiga_partition(struct parsed_partitions *state)
+ 		*(__be32 *)(data+0xdc) = 0;
+ 		if (checksum_block((__be32 *)data,
+ 				be32_to_cpu(rdb->rdb_SummedLongs) & 0x7F)==0) {
+-			pr_err("Trashed word at 0xd0 in block %d ignored in checksum calculation\n",
++			pr_err("Trashed word at 0xd0 in block %llu ignored in checksum calculation\n",
+ 			       blk);
+ 			break;
+ 		}
+ 
+-		pr_err("Dev %s: RDB in block %d has bad checksum\n",
++		pr_err("Dev %s: RDB in block %llu has bad checksum\n",
+ 		       state->disk->disk_name, blk);
  	}
  
-@@ -688,13 +687,13 @@ void snd_jack_report(struct snd_jack *jack, int status)
- 		int testbit = ((1 << i) & ~mask_bits);
+@@ -80,10 +91,15 @@ int amiga_partition(struct parsed_partitions *state)
+ 	blk = be32_to_cpu(rdb->rdb_PartitionList);
+ 	put_dev_sector(sect);
+ 	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
+-		blk *= blksize;	/* Read in terms partition table understands */
++		/* Read in terms partition table understands */
++		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
++			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
++				state->disk->disk_name, blk, part);
++			break;
++		}
+ 		data = read_part_sector(state, blk, &sect);
+ 		if (!data) {
+-			pr_err("Dev %s: unable to read partition block %d\n",
++			pr_err("Dev %s: unable to read partition block %llu\n",
+ 			       state->disk->disk_name, blk);
+ 			res = -1;
+ 			goto rdb_done;
+@@ -95,19 +111,70 @@ int amiga_partition(struct parsed_partitions *state)
+ 		if (checksum_block((__be32 *)pb, be32_to_cpu(pb->pb_SummedLongs) & 0x7F) != 0 )
+ 			continue;
  
- 		if (jack->type & testbit)
--			input_report_switch(jack->input_dev,
-+			input_report_switch(idev,
- 					    jack_switch_types[i],
- 					    status & testbit);
- 	}
+-		/* Tell Kernel about it */
++		/* RDB gives us more than enough rope to hang ourselves with,
++		 * many times over (2^128 bytes if all fields max out).
++		 * Some careful checks are in order, so check for potential
++		 * overflows.
++		 * We are multiplying four 32 bit numbers to one sector_t!
++		 */
++
++		nr_hd   = be32_to_cpu(pb->pb_Environment[NR_HD]);
++		nr_sect = be32_to_cpu(pb->pb_Environment[NR_SECT]);
++
++		/* CylBlocks is total number of blocks per cylinder */
++		if (check_mul_overflow(nr_hd, nr_sect, &cylblk)) {
++			pr_err("Dev %s: heads*sects %u overflows u32, skipping partition!\n",
++				state->disk->disk_name, cylblk);
++			continue;
++		}
++
++		/* check for consistency with RDB defined CylBlocks */
++		if (cylblk > be32_to_cpu(rdb->rdb_CylBlocks)) {
++			pr_warn("Dev %s: cylblk %u > rdb_CylBlocks %u!\n",
++				state->disk->disk_name, cylblk,
++				be32_to_cpu(rdb->rdb_CylBlocks));
++		}
++
++		/* RDB allows for variable logical block size -
++		 * normalize to 512 byte blocks and check result.
++		 */
++
++		if (check_mul_overflow(cylblk, blksize, &cylblk)) {
++			pr_err("Dev %s: partition %u bytes per cyl. overflows u32, skipping partition!\n",
++				state->disk->disk_name, part);
++			continue;
++		}
++
++		/* Calculate partition start and end. Limit of 32 bit on cylblk
++		 * guarantees no overflow occurs if LBD support is enabled.
++		 */
++
++		lo_cyl = be32_to_cpu(pb->pb_Environment[LO_CYL]);
++		start_sect = ((u64) lo_cyl * cylblk);
++
++		hi_cyl = be32_to_cpu(pb->pb_Environment[HI_CYL]);
++		nr_sects = (((u64) hi_cyl - lo_cyl + 1) * cylblk);
  
--	input_sync(jack->input_dev);
--	mutex_unlock(&jack->input_dev_lock);
-+	input_sync(idev);
-+	input_put_device(idev);
- #endif /* CONFIG_SND_JACK_INPUT_DEV */
- }
- EXPORT_SYMBOL(snd_jack_report);
+-		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
+-			   be32_to_cpu(pb->pb_Environment[9])) *
+-			   be32_to_cpu(pb->pb_Environment[3]) *
+-			   be32_to_cpu(pb->pb_Environment[5]) *
+-			   blksize;
+ 		if (!nr_sects)
+ 			continue;
+-		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
+-			     be32_to_cpu(pb->pb_Environment[3]) *
+-			     be32_to_cpu(pb->pb_Environment[5]) *
+-			     blksize;
++
++		/* Warn user if partition end overflows u32 (AmigaDOS limit) */
++
++		if ((start_sect + nr_sects) > UINT_MAX) {
++			pr_warn("Dev %s: partition %u (%llu-%llu) needs 64 bit device support!\n",
++				state->disk->disk_name, part,
++				start_sect, start_sect + nr_sects);
++		}
++
++		if (check_add_overflow(start_sect, nr_sects, &end_sect)) {
++			pr_err("Dev %s: partition %u (%llu-%llu) needs LBD device support, skipping partition!\n",
++				state->disk->disk_name, part,
++				start_sect, end_sect);
++			continue;
++		}
++
++		/* Tell Kernel about it */
++
+ 		put_partition(state,slot++,start_sect,nr_sects);
+ 		{
+ 			/* Be even more informative to aid mounting */
 
