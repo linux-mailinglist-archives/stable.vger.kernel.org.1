@@ -2,141 +2,231 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0016674EB7F
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 12:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2729B74EB84
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 12:10:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230389AbjGKKJd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 06:09:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48354 "EHLO
+        id S230203AbjGKKKH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 06:10:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbjGKKJd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 06:09:33 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF65A100
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 03:09:30 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4fb77f21c63so8720157e87.2
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 03:09:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689070169; x=1691662169;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7dRYhDe8BiVEV0EBlHbMEnxi5wvB4qWMFbFVB8lXRts=;
-        b=aFgnj794CZ/PSLsUzrOXSBGzhI4B7HswMutmsFqschHSz8cORA+/pDetACQMnLtiVf
-         SmrzCFCT/cs+yM6BikKD/fqtRXullzc+RV31vTmrAL7rMnzI7g16FM72t2KqZivXVtiL
-         fMRV7ruLnrIMLDcjsLJWEglSNQS1EXdKxUdtJ7xeV2OpYxq6LtL3o6/GCUCTxNGksEAq
-         OaXuZwr3JCMIQ1l/iQaAsAXZe5TMsMdztIpr3EeEXtf9nprw/1zwlBw+P4lNXSRt+M6k
-         rXc9W4f0n7upozPz3dJJtgCxGq6YYdfg3Q3boXohjB+hDA1PLH4SmzjbP61YS/E3XkvU
-         pJlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689070169; x=1691662169;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7dRYhDe8BiVEV0EBlHbMEnxi5wvB4qWMFbFVB8lXRts=;
-        b=WF1mDVvfATa001DXOZlKg1n7s+uVfnuvSrTXS9bbmbttC+T+P5i4GKn7ompTPgsORJ
-         hzAO1BKLb/7t8lVh8o1eNe0b/by2Xr4YfXvvqnhD4YZGsH0JCWf9ULj4PXUocYJuL43D
-         fpaX4NqT2HtXg9/olgLM6veqpE45Tfs3/w7XFx1NvJd7z9o/4yKfQQC3HiDtL/iO+YRl
-         aruU/qs4QXCVdyiUkFZHP8tHBTcejSTnTVELiqXXoCyov9fjY2UDXv2ZoiW/svuldq6n
-         tBZI41WcYI9ikLC2FaRcPQaEkeuRg4JSKEUBye9cW4h0p13sVrHVscwr+Klz22hTijA0
-         Kt/w==
-X-Gm-Message-State: ABy/qLZhrgcnlq8IFtLLnuZdOh44JOOPcErp+0czHG11JrE4DgOUFG0H
-        4NyUtrRU3pfP+KG0zzxgVA65ow==
-X-Google-Smtp-Source: APBJJlHdaYP6KQEeXomKRN9uoCu1+yo8uHO71sdRJ/mNUCNoupGWQiJZQ4tH2nJN9kqa4WSAGURoBQ==
-X-Received: by 2002:a05:6512:2346:b0:4fb:7be5:8f4e with SMTP id p6-20020a056512234600b004fb7be58f4emr3008339lfu.6.1689070168929;
-        Tue, 11 Jul 2023 03:09:28 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:a0db:1f00::8a5? (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
-        by smtp.gmail.com with ESMTPSA id 15-20020ac2482f000000b004fb88fffd19sm256372lft.146.2023.07.11.03.09.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Jul 2023 03:09:28 -0700 (PDT)
-Message-ID: <1090089b-2fa9-9781-51a8-38957e261bfd@linaro.org>
-Date:   Tue, 11 Jul 2023 13:09:27 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] drm/client: Send hotplug event after registering a client
-Content-Language: en-GB
-To:     Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
-        noralf@tronnes.org
-Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        dri-devel@lists.freedesktop.org,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        amd-gfx@lists.freedesktop.org, linux-samsung-soc@vger.kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Paul Schyska <pschyska@gmail.com>,
-        Torsten Krah <krah.tm@gmail.com>,
-        linux-arm-msm@vger.kernel.org,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        linux-tegra@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        freedreno@lists.freedesktop.org,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Moritz Duge <MoritzDuge@kolahilft.de>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-References: <20230710091029.27503-1-tzimmermann@suse.de>
- <325dad0e-38ff-9f60-efc9-0fd711d63267@linaro.org>
- <117aea3d-c316-509d-7be7-ade155b4ae85@suse.de>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <117aea3d-c316-509d-7be7-ade155b4ae85@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S229468AbjGKKKG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 06:10:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC609E
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 03:10:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AEFB861419
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 10:10:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B5DC433C7;
+        Tue, 11 Jul 2023 10:10:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689070204;
+        bh=xvD9qOibcpIE57JzhSjo57C0b5FnYP22lRIrz4WjLd4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=UKXqKoWtgS/06BqN1/gx6XjfRQLf7alc2DGHshVpPDQ/i/5t4ed1nAge60F23iHZD
+         p8sKkBjYc458c6Vo8aYA83nBK5Bkp+XoyfioPK/jjAAlxd2Seflnb4AMtB7ej5nXZh
+         EuvzNuRYWzCMrAXQUUD1X8cI8EAysLHIQDN6UXHI1nqYgmXm5zTdViiEpQhyxIDaoG
+         p+1JDML4nUb38buoCe3dJ/WyPnfdNJfYbtohCV7BUKDkgZRpZnEPhcLP3QZyOPkg0K
+         jf6OtBqZUZ/XZ0jEur2s8f0GwdG5DbPy4//WURkXn5BDOS6sjQFAIw+AlGxsllEkc2
+         lm4b//i+QX3tQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1qJAJl-00C5JM-Dt;
+        Tue, 11 Jul 2023 11:10:01 +0100
+Date:   Tue, 11 Jul 2023 11:10:01 +0100
+Message-ID: <86edlewyh2.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Oliver Upton <oliver.upton@linux.dev>
+Cc:     kvmarm@lists.linux.dev, James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Reiji Watanabe <reijiw@google.com>, stable@vger.kernel.org,
+        Yu Zhao <yuzhao@google.com>
+Subject: Re: [PATCH v2] KVM: arm64: Correctly handle page aging notifiers for unaligned memslot
+In-Reply-To: <20230627235405.4069823-1-oliver.upton@linux.dev>
+References: <20230627235405.4069823-1-oliver.upton@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, reijiw@google.com, stable@vger.kernel.org, yuzhao@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/07/2023 09:07, Thomas Zimmermann wrote:
-> Hi
+On Wed, 28 Jun 2023 00:54:05 +0100,
+Oliver Upton <oliver.upton@linux.dev> wrote:
 > 
-> Am 10.07.23 um 23:11 schrieb Dmitry Baryshkov:
-> [...]
->>> ---
->>>   drivers/gpu/drm/armada/armada_fbdev.c     |  4 ----
->>>   drivers/gpu/drm/drm_client.c              | 21 +++++++++++++++++++++
->>>   drivers/gpu/drm/drm_fbdev_dma.c           |  4 ----
->>>   drivers/gpu/drm/drm_fbdev_generic.c       |  4 ----
->>>   drivers/gpu/drm/exynos/exynos_drm_fbdev.c |  4 ----
->>>   drivers/gpu/drm/gma500/fbdev.c            |  4 ----
->>>   drivers/gpu/drm/msm/msm_fbdev.c           |  4 ----
->>
->> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # msm
+> Userspace is allowed to select any PAGE_SIZE aligned hva to back guest
+> memory. This is even the case with hugepages, although it is a rather
+> suboptimal configuration as PTE level mappings are used at stage-2.
 > 
-> Thanks.
+> The arm64 page aging handlers have an assumption that the specified
+> range is exactly one page/block of memory, which in the aforementioned
+> case is not necessarily true. All together this leads to the WARN() in
+> kvm_age_gfn() firing.
 > 
->>
->>>   drivers/gpu/drm/omapdrm/omap_fbdev.c      |  4 ----
->>>   drivers/gpu/drm/radeon/radeon_fbdev.c     |  4 ----
->>>   drivers/gpu/drm/tegra/fbdev.c             |  4 ----
->>>   10 files changed, 21 insertions(+), 36 deletions(-)
->>
->> BTW: As you have been clearing this area. I see that significant 
->> amount of DRM drivers use exactly the same code for 
->> msm_fbdev_client_funcs and for the significant part of 
->> foo_fbdev_setup(). Do you have any plans for moving that into a 
->> library / generic code? If not, I can take a look at crafting the patch.
->>
+> However, the WARN is only part of the issue as the table walkers visit
+> at most a single leaf PTE. For hugepage-backed memory in a memslot that
+> isn't hugepage-aligned, page aging entirely misses accesses to the
+> hugepage beyond the first page in the memslot.
 > 
-> You're not the first to ask. :) I've so far not attempted to address 
-> this duplication. I've been bitten by premature helperization before, so 
-> I wanted to wait a bit longer. A lot of the fbdev and client code is 
-> changing quite a bit. After things stabilized, I want to to try to do 
-> some more code sharing.
+> Add a new walker dedicated to handling page aging MMU notifiers capable
+> of walking a range of PTEs. Convert kvm(_test)_age_gfn() over to the new
+> walker and drop the WARN that caught the issue in the first place. The
+> implementation of this walker was inspired by the test_clear_young()
+> implementation by Yu Zhao [*], but repurposed to address a bug in the
+> existing aging implementation.
+> 
+> Cc: stable@vger.kernel.org # v5.15
+> Fixes: 056aad67f836 ("kvm: arm/arm64: Rework gpa callback handlers")
+> Link: https://lore.kernel.org/kvmarm/20230526234435.662652-6-yuzhao@google.com/
+> Co-developed-by: Yu Zhao <yuzhao@google.com>
+> Signed-off-by: Yu Zhao <yuzhao@google.com>
+> Reported-by: Reiji Watanabe <reijiw@google.com>
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> ---
+>  arch/arm64/include/asm/kvm_pgtable.h | 26 ++++++------------
+>  arch/arm64/kvm/hyp/pgtable.c         | 41 ++++++++++++++++++++++------
+>  arch/arm64/kvm/mmu.c                 | 18 ++++++------
+>  3 files changed, 49 insertions(+), 36 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
+> index dc3c072e862f..75f437e8cd15 100644
+> --- a/arch/arm64/include/asm/kvm_pgtable.h
+> +++ b/arch/arm64/include/asm/kvm_pgtable.h
+> @@ -556,22 +556,26 @@ int kvm_pgtable_stage2_wrprotect(struct kvm_pgtable *pgt, u64 addr, u64 size);
+>  kvm_pte_t kvm_pgtable_stage2_mkyoung(struct kvm_pgtable *pgt, u64 addr);
+>  
+>  /**
+> - * kvm_pgtable_stage2_mkold() - Clear the access flag in a page-table entry.
+> + * kvm_pgtable_stage2_test_clear_young() - Test and optionally clear the access
+> + *					   flag in a page-table entry.
+>   * @pgt:	Page-table structure initialised by kvm_pgtable_stage2_init*().
+>   * @addr:	Intermediate physical address to identify the page-table entry.
+> + * @size:	Size of the address range to visit.
+> + * @mkold:	True if the access flag should be cleared.
+>   *
+>   * The offset of @addr within a page is ignored.
+>   *
+> - * If there is a valid, leaf page-table entry used to translate @addr, then
+> - * clear the access flag in that entry.
+> + * Tests and conditionally clears the access flag for every valid, leaf
+> + * page-table entry used to translate the range [@addr, @addr + @size).
+>   *
+>   * Note that it is the caller's responsibility to invalidate the TLB after
+>   * calling this function to ensure that the updated permissions are visible
+>   * to the CPUs.
+>   *
+> - * Return: The old page-table entry prior to clearing the flag, 0 on failure.
+> + * Return: True if any of the visited PTEs had the access flag set.
+>   */
+> -kvm_pte_t kvm_pgtable_stage2_mkold(struct kvm_pgtable *pgt, u64 addr);
+> +bool kvm_pgtable_stage2_test_clear_young(struct kvm_pgtable *pgt, u64 addr,
+> +					 u64 size, bool mkold);
+>  
+>  /**
+>   * kvm_pgtable_stage2_relax_perms() - Relax the permissions enforced by a
+> @@ -593,18 +597,6 @@ kvm_pte_t kvm_pgtable_stage2_mkold(struct kvm_pgtable *pgt, u64 addr);
+>  int kvm_pgtable_stage2_relax_perms(struct kvm_pgtable *pgt, u64 addr,
+>  				   enum kvm_pgtable_prot prot);
+>  
+> -/**
+> - * kvm_pgtable_stage2_is_young() - Test whether a page-table entry has the
+> - *				   access flag set.
+> - * @pgt:	Page-table structure initialised by kvm_pgtable_stage2_init*().
+> - * @addr:	Intermediate physical address to identify the page-table entry.
+> - *
+> - * The offset of @addr within a page is ignored.
+> - *
+> - * Return: True if the page-table entry has the access flag set, false otherwise.
+> - */
+> -bool kvm_pgtable_stage2_is_young(struct kvm_pgtable *pgt, u64 addr);
+> -
+>  /**
+>   * kvm_pgtable_stage2_flush_range() - Clean and invalidate data cache to Point
+>   * 				      of Coherency for guest stage-2 address
+> diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+> index 5282cb9ca4cf..5d701e9adf5c 100644
+> --- a/arch/arm64/kvm/hyp/pgtable.c
+> +++ b/arch/arm64/kvm/hyp/pgtable.c
+> @@ -1153,25 +1153,48 @@ kvm_pte_t kvm_pgtable_stage2_mkyoung(struct kvm_pgtable *pgt, u64 addr)
+>  	return pte;
+>  }
+>  
+> -kvm_pte_t kvm_pgtable_stage2_mkold(struct kvm_pgtable *pgt, u64 addr)
+> +struct stage2_age_data {
+> +	bool	mkold;
+> +	bool	young;
+> +};
+> +
+> +static int stage2_age_walker(const struct kvm_pgtable_visit_ctx *ctx,
+> +			     enum kvm_pgtable_walk_flags visit)
+>  {
+> -	kvm_pte_t pte = 0;
+> -	stage2_update_leaf_attrs(pgt, addr, 1, 0, KVM_PTE_LEAF_ATTR_LO_S2_AF,
+> -				 &pte, NULL, 0);
+> +	kvm_pte_t new = ctx->old & ~KVM_PTE_LEAF_ATTR_LO_S2_AF;
+> +	struct stage2_age_data *data = ctx->arg;
+> +
+> +	if (!kvm_pte_valid(ctx->old) || new == ctx->old)
+> +		return 0;
+> +
+> +	data->young = true;
+> +
+> +	if (data->mkold && !stage2_try_set_pte(ctx, new))
+> +		return -EAGAIN;
+> +
+>  	/*
+>  	 * "But where's the TLBI?!", you scream.
+>  	 * "Over in the core code", I sigh.
+>  	 *
+>  	 * See the '->clear_flush_young()' callback on the KVM mmu notifier.
+>  	 */
+> -	return pte;
+> +	return 0;
+>  }
+>  
+> -bool kvm_pgtable_stage2_is_young(struct kvm_pgtable *pgt, u64 addr)
+> +bool kvm_pgtable_stage2_test_clear_young(struct kvm_pgtable *pgt, u64 addr,
+> +					 u64 size, bool mkold)
+>  {
+> -	kvm_pte_t pte = 0;
+> -	stage2_update_leaf_attrs(pgt, addr, 1, 0, 0, &pte, NULL, 0);
+> -	return pte & KVM_PTE_LEAF_ATTR_LO_S2_AF;
+> +	struct stage2_age_data data = {
+> +		.mkold		= mkold,
+> +	};
+> +	struct kvm_pgtable_walker walker = {
+> +		.cb		= stage2_age_walker,
+> +		.arg		= &data,
+> +		.flags		= KVM_PGTABLE_WALK_LEAF,
+> +	};
+> +
+> +	WARN_ON(kvm_pgtable_walk(pgt, addr, size, &walker));
 
-Ack, thank you for sharing this.
+Do we really want a WARN_ON() here? From what I can tell, it can be
+(trivially?) triggered by the previous function returning -EAGAIN if
+the pte update fails in the case of a shared walk.
+
+Otherwise, look OK to me.
+
+	M.
 
 -- 
-With best wishes
-Dmitry
-
+Without deviation from the norm, progress is not possible.
