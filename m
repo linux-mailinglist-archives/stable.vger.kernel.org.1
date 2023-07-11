@@ -2,226 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30FFB74FA84
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 00:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3781A74FA85
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 00:03:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbjGKWCu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 18:02:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49320 "EHLO
+        id S230482AbjGKWC7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 18:02:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229551AbjGKWCs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 18:02:48 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A9831705
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 15:02:47 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b8a8154f9cso615045ad.1
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 15:02:47 -0700 (PDT)
+        with ESMTP id S230353AbjGKWC6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 18:02:58 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA2A1705
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 15:02:57 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4fb94b1423eso9480851e87.1
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 15:02:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689112966; x=1691704966;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=7N2yuDkljTaH1Ot+EkZZoi+TUU9jeLw+0Renoy2cPTI=;
-        b=EP9HZL43fZcxmnkrmFvspJOeqgB+YvtKKV/cRti4EnbX4HuDfzdz9Z8vsnyAIYaP4O
-         KW9kQTP1G+s46/nRBj1RyQ8mWC8qk7/TsEggq5uxEhZCm/GJ/Tte3RK2NDTUWnjw6EOn
-         iriQoiJY2dL8WJkbJg9Hqcde6aPw9NfQ4TLeDfQX79EfOhYDNbt35+vumO81+ehKDH0B
-         20/XBMJAf9GFXaA8pxao4u/RRNBMpePeu8pNY7BfEHO3oWOZNlr/nCuqDc+cANw0cfuK
-         dytjdW2lzJLLrJKs5zWNUSxDtCLYp4QRvwNC1M7ed2NXrQ8UlnhCAdfggnCNIVMuFRns
-         jkqA==
+        d=linaro.org; s=google; t=1689112975; x=1691704975;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F0Z+tdeHGTaKzHcow1KpcWdGeQHImw6XYl8ad7qpvIU=;
+        b=opoXvky99JLSERxqHP3e7AadJFBDskor1nn3ZdGiII4s5uVUMvgpRKU11dEzEghN/z
+         qZDr31SmizAnRmueXaV4Fxasr4IaOihv27cwnrOkpneFtyPX9KuMwVk7dba9GGKMNQ/U
+         Brw8S/N5o5pjr/XIE8yJw7Q+IvizmICzRvc+Sf1GoxHbFu0Dn4raiPX9RAHuVugZh5xN
+         rshTpQzb4teh6teJTSa9QQ6+RMmj9zWIwMO7f3xVX5coudjLosmIZtqBPRbAXbsbS2KD
+         K32HQtein9aaNpVh/0GhTCzZF3d113GHWiprgpyLVE6mBKQZ2kx4wVM3ge1Sj8NA673P
+         90Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689112966; x=1691704966;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1689112975; x=1691704975;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7N2yuDkljTaH1Ot+EkZZoi+TUU9jeLw+0Renoy2cPTI=;
-        b=OqXyGFjdPzzjdv7qNNaNeX+aB/5DrE/gfgj89VEcjyvJBlLuqV0KjsVLQPuOaQl891
-         2Xf5zYB0933A6v7hxdWV9q+GiS3U0u+wwnQLlamOWXJeveFhHaYkN5yU3qKePCCxoqFQ
-         e7XcpE9WhkkH/ZYY1tDym6fggnd8jSU1oozvptxCzDDhL3mQZFtKUqhbXCM2ypbg+E1r
-         eEqV6JoXu16ItbOFhVfdQJZc3p0uZnnCQNrkH0JjBFEqXz9GgHJ5vaYpG1Z5DNoqbf/X
-         nTIas5ZGp+wFdiLTfs+C8jn1phN+cgz5NbMQ9GcFSgA1SWgMp8AVMdpNAKtTJOY9x7Zy
-         0SAA==
-X-Gm-Message-State: ABy/qLYMzGgRq+ZmHzOc77pCjNnIO9JHC1u9FXKCgQzkT1K1unruWhhH
-        OeBZmpsUqv03ERmGwmE6XXPNV1ixrTJ5UZFsFI9t4g==
-X-Google-Smtp-Source: APBJJlEyQyJHgOfuKemTRb+9g8CC1pIg+VuhWg8YpUpT7tOzJ6kE8qGNU0I9VyBzxM7yvbp6RkJwMA==
-X-Received: by 2002:a17:902:e74f:b0:1b6:6b03:10e7 with SMTP id p15-20020a170902e74f00b001b66b0310e7mr158494plf.5.1689112966350;
-        Tue, 11 Jul 2023 15:02:46 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id jd22-20020a170903261600b001b66e3a77easm2445855plb.50.2023.07.11.15.02.45
+        bh=F0Z+tdeHGTaKzHcow1KpcWdGeQHImw6XYl8ad7qpvIU=;
+        b=CDCWeHQwnaAfasvjRr1rsmcTIfK7I7p21WefoF0aKjfCcM+lS+12+1x6FoQW1irPNM
+         gVHeCJssT1kbuIuEyb9koMqNpamAf4Bjcrr9mzi1rLxjBrB3xTGV/5S/X7+WTXdfUcHP
+         fNDOcoE4PwkeU3sE5XqJ9EWnZHbiVaCcoRIIhzifwHiTOivsFako6/drG1qZX2gfN1mQ
+         I2/fhanlFeA0xn2jB9DrVtyqJDkt0v9OIaBisebm+uvjM3E6mDwNMBJRGraNBWqevYkH
+         bIStaf8zcGdJBkwFX9+C078deLTCCFPwWPPq1Z71rcTQXN2EJE/nGLEDewItkNpruTBW
+         rxVA==
+X-Gm-Message-State: ABy/qLadgepTBmpBe5Y6JvzH04UDfC+vb7e6bvQjnnDop9j4WkG33f9n
+        xlyjoetavKQ0uU8uxMtCLgbRAA==
+X-Google-Smtp-Source: APBJJlGq6zZ3FxteufYERYIQNUpUpceO0dRrygOsbwoKYU5z9QAe2GSlieM91r14nBVCFfBPk6+tRw==
+X-Received: by 2002:ac2:4c4b:0:b0:4f8:72fd:ed95 with SMTP id o11-20020ac24c4b000000b004f872fded95mr16316159lfk.22.1689112975359;
+        Tue, 11 Jul 2023 15:02:55 -0700 (PDT)
+Received: from [127.0.1.1] ([85.235.12.238])
+        by smtp.gmail.com with ESMTPSA id o1-20020ac24341000000b004eff1163c37sm455369lfl.308.2023.07.11.15.02.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 15:02:45 -0700 (PDT)
-Message-ID: <64add185.170a0220.1c880.5921@mx.google.com>
-Date:   Tue, 11 Jul 2023 15:02:45 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Tue, 11 Jul 2023 15:02:54 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 12 Jul 2023 00:02:53 +0200
+Subject: [PATCH] mtd: spi-nor: Correct flags for Winbond w25q128
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.10.186-221-gf178eace6e074
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-5.10.y
-Subject: stable-rc/linux-5.10.y build: 18 builds: 0 failed, 18 passed,
- 5 warnings (v5.10.186-221-gf178eace6e074)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAIzRrWQC/x3MOQqAQAxA0atIagOTiAteRSxcoqbJ6AyoIN7dw
+ fIV/z8QJahEaLMHgpwa1VsC5RlM22CroM7JwI4LVxNh3BXNB7zURm8zXlwexA0WTEPlWISrGlK
+ 9B1n0/s9d/74f6ioqOWkAAAA=
+To:     Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Pratyush Yadav <pratyush@kernel.org>,
+        Michael Walle <michael@walle.cc>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.12.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 18 builds: 0 failed, 18 passed, 5 warnings (v=
-5.10.186-221-gf178eace6e074)
+The Winbond W25Q128 (actual vendor name W25Q128JV)
+has exactly the same flags as the sibling device
+w25q128fw. The devices both require unlocking and
+support dual and quad SPI transport.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.186-221-gf178eace6e074/
+The actual product naming between devices:
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.186-221-gf178eace6e074
-Git Commit: f178eace6e0740ae5eab86eb3d05df94e91e8192
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+0xef4018: "w25q128"   W25Q128JV-IM/JM
+0xef7018: "w25q128fw" W25Q128JV-IN/IQ/JQ
 
-Warnings Detected:
+The latter device, "w25q128fw" supports features
+named DTQ and QPI, otherwise it is the same.
 
-arc:
+Not having the right flags has the annoying side
+effect that write access does not work.
 
-arm64:
+After this patch I can write to the flash on the
+Inteno XG6846 router.
 
-arm:
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/mtd/spi-nor/winbond.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
+diff --git a/drivers/mtd/spi-nor/winbond.c b/drivers/mtd/spi-nor/winbond.c
+index 834d6ba5ce70..a67e1d4206f3 100644
+--- a/drivers/mtd/spi-nor/winbond.c
++++ b/drivers/mtd/spi-nor/winbond.c
+@@ -121,7 +121,9 @@ static const struct flash_info winbond_nor_parts[] = {
+ 	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
+ 		NO_SFDP_FLAGS(SECT_4K) },
+ 	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
+-		NO_SFDP_FLAGS(SECT_4K) },
++		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB)
++		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ |
++			      SPI_NOR_QUAD_READ) },
+ 	{ "w25q256", INFO(0xef4019, 0, 64 * 1024, 512)
+ 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
+ 		.fixups = &w25q256_fixups },
 
 ---
-For more info write to <info@kernelci.org>
+base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+change-id: 20230711-spi-nor-winbond-w25q128-321a602ee267
+
+Best regards,
+-- 
+Linus Walleij <linus.walleij@linaro.org>
+
