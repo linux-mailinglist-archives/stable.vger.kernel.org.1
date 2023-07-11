@@ -2,109 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53DAF74F0D3
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 15:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 567CE74F12F
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 16:07:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233112AbjGKN4J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 09:56:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37486 "EHLO
+        id S233309AbjGKOHT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 10:07:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231888AbjGKN4I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 09:56:08 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 834A4BC;
-        Tue, 11 Jul 2023 06:56:07 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qJDqV-0002HE-4j; Tue, 11 Jul 2023 15:56:03 +0200
-Message-ID: <2f53de7c-e9db-6bf5-6e9e-65edadd4d754@leemhuis.info>
-Date:   Tue, 11 Jul 2023 15:56:02 +0200
+        with ESMTP id S233294AbjGKOHT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 10:07:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D17BE3;
+        Tue, 11 Jul 2023 07:07:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 971EF6150B;
+        Tue, 11 Jul 2023 14:07:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C92DC433C7;
+        Tue, 11 Jul 2023 14:07:17 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.96)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1qJE1L-0007lB-2z;
+        Tue, 11 Jul 2023 10:07:15 -0400
+Message-ID: <20230711140715.745095758@goodmis.org>
+User-Agent: quilt/0.66
+Date:   Tue, 11 Jul 2023 10:06:53 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        stable@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+        Florent Revest <revest@chromium.org>
+Subject: [for-linus][PATCH 1/5] samples: ftrace: Save required argument registers in sample
+ trampolines
+References: <20230711140652.217008556@goodmis.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] HID: logitech-hidpp: rework one more time the retries
- attempts
-Content-Language: en-US, de-DE
-To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     Bastien Nocera <hadess@hadess.net>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        =?UTF-8?Q?Filipe_La=c3=adns?= <lains@riseup.net>,
-        Jiri Kosina <jikos@kernel.org>, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230621-logitech-fixes-v1-1-32e70933c0b0@redhat.com>
- <2023062156-trespass-pandemic-7f4f@gregkh>
- <qbvmv3eexohswyagmllfh3xsxoftwa3wbmsdafmwak2bxlnlft@jz74dijlfxlz>
- <31ce32e018a9fa410e9e1f3e5900621b16a56091.camel@hadess.net>
- <CAO-hwJLFSUJaGK5DAOz30+YyC1hGgHnbeJbc5iQ47jxBcbRSCg@mail.gmail.com>
- <cfa28818-9eaf-0dc9-cb4a-1b3de318e627@leemhuis.info>
- <CAO-hwJLc0wzv2a3JARkPDW+ZgbnvwggfRHcAJmWsKy_FMA13=g@mail.gmail.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CAO-hwJLc0wzv2a3JARkPDW+ZgbnvwggfRHcAJmWsKy_FMA13=g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1689083767;ef056e90;
-X-HE-SMSGID: 1qJDqV-0002HE-4j
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Florent Revest <revest@chromium.org>
 
+The ftrace-direct-too sample traces the handle_mm_fault function whose
+signature changed since the introduction of the sample. Since:
+commit bce617edecad ("mm: do page fault accounting in handle_mm_fault")
+handle_mm_fault now has 4 arguments. Therefore, the sample trampoline
+should save 4 argument registers.
 
-On 11.07.23 15:40, Benjamin Tissoires wrote:
-> On Tue, Jul 11, 2023 at 3:10 PM Linux regression tracking (Thorsten
-> Leemhuis) <regressions@leemhuis.info> wrote:
->>
->> On 26.06.23 16:02, Benjamin Tissoires wrote:
->>> On Sun, Jun 25, 2023 at 10:30 AM Bastien Nocera <hadess@hadess.net> wrote:
->>>> On Fri, 2023-06-23 at 10:37 +0200, Benjamin Tissoires wrote:
->>>>> On Jun 21 2023, Greg KH wrote:
->>>>>> On Wed, Jun 21, 2023 at 11:42:30AM +0200, Benjamin Tissoires wrote:
->>>>>>> Make the code looks less like Pascal.
->>>>>>>
->>>>>>> Extract the internal code inside a helper function, fix the
->>>>>>> initialization of the parameters used in the helper function
->>>>>>> (`hidpp->answer_available` was not reset and `*response` wasn't
->>>>>>> too),
->>>>>>> and use a `do {...} while();` loop.
->>>>>>>
->>>>>>> Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when
->>>>>>> device is busy")
->>>>>>> Cc: stable@vger.kernel.org
->>>>>>> Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
->>>>>>> ---
->>>>>>> as requested by
->>>>>>> https://lore.kernel.org/all/CAHk-=wiMbF38KCNhPFiargenpSBoecSXTLQACKS2UMyo_Vu2ww@mail.gmail.com/
->>>>>>> This is a rewrite of that particular piece of code.
->>>>>>> ---
->>>>>>>  drivers/hid/hid-logitech-hidpp.c | 102 +++++++++++++++++++++++--
->>>>>>> --------------
->>>>>>>  1 file changed, 61 insertions(+), 41 deletions(-)
->>> [...]
->>>
->>> Some people on the Bz were able to reproduce with multiple reboots.
->>> But it's not as urgent as previously, and we were close to the 6.4
->>> final when I sent it. I'll make sure this goes into 6.5 and gets
->>> proper stable backports FWIW.
->>
->> Did that happen? Doesn't look like it from here, but maybe I'm missing
->> something. Where there maybe other changes to resolve the remaining
->> problems some users encounter sporadically since the urgent fixes went in?
-> 
-> No, there were no other changes that could have solved this. I guess
-> the randomness of the problem makes it way harder to detect and to
-> reproduce.
-> 
-> I'll send a v2 of that patch with the reviews today or tomorrow and we
-> can probably get it through the current 6.5 cycle.
+s390 saves all argument registers already so it does not need a change
+but x86_64 needs an extra push and pop.
 
-Great, many thx!
+This also evolves the signature of the tracing function to make it
+mirror the signature of the traced function.
 
-Ciao, Thorsten
+Link: https://lkml.kernel.org/r/20230427140700.625241-2-revest@chromium.org
+
+Cc: stable@vger.kernel.org
+Fixes: bce617edecad ("mm: do page fault accounting in handle_mm_fault")
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Florent Revest <revest@chromium.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ samples/ftrace/ftrace-direct-too.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/samples/ftrace/ftrace-direct-too.c b/samples/ftrace/ftrace-direct-too.c
+index a05bc2cc2261..7986033887f6 100644
+--- a/samples/ftrace/ftrace-direct-too.c
++++ b/samples/ftrace/ftrace-direct-too.c
+@@ -5,14 +5,14 @@
+ #include <linux/ftrace.h>
+ #include <asm/asm-offsets.h>
+ 
+-extern void my_direct_func(struct vm_area_struct *vma,
+-			   unsigned long address, unsigned int flags);
++extern void my_direct_func(struct vm_area_struct *vma, unsigned long address,
++			   unsigned int flags, struct pt_regs *regs);
+ 
+-void my_direct_func(struct vm_area_struct *vma,
+-			unsigned long address, unsigned int flags)
++void my_direct_func(struct vm_area_struct *vma, unsigned long address,
++		    unsigned int flags, struct pt_regs *regs)
+ {
+-	trace_printk("handle mm fault vma=%p address=%lx flags=%x\n",
+-		     vma, address, flags);
++	trace_printk("handle mm fault vma=%p address=%lx flags=%x regs=%p\n",
++		     vma, address, flags, regs);
+ }
+ 
+ extern void my_tramp(void *);
+@@ -34,7 +34,9 @@ asm (
+ "	pushq %rdi\n"
+ "	pushq %rsi\n"
+ "	pushq %rdx\n"
++"	pushq %rcx\n"
+ "	call my_direct_func\n"
++"	popq %rcx\n"
+ "	popq %rdx\n"
+ "	popq %rsi\n"
+ "	popq %rdi\n"
+-- 
+2.40.1
