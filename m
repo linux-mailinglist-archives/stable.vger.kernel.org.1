@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F057974F908
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AAAC74F90B
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:31:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbjGKUab (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 16:30:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43726 "EHLO
+        id S230266AbjGKUbm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 16:31:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjGKUab (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:30:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1B99195
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:30:29 -0700 (PDT)
+        with ESMTP id S230038AbjGKUbm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:31:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03695B7
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:31:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37E15615E4
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:30:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F31C433C8;
-        Tue, 11 Jul 2023 20:30:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82CC3615E4
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:31:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF24C433C7;
+        Tue, 11 Jul 2023 20:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689107428;
-        bh=tWGT83VKsvaZCOu4hm69cP59ZFw359EYX+/ca7Mb6Kc=;
+        s=korg; t=1689107499;
+        bh=Sc1fMy7P+dkwhTONGTUt0hp0v+X6V4g8N4Wv7sBCiyU=;
         h=Subject:To:Cc:From:Date:From;
-        b=uo/4VOHdIHO5T+NGMZXU3mYykj0uWeNpm9j1/+CW/EiGkDIB00WToHdXEFnGRCGQs
-         VYXQrPV0Wttozd7dQQjTKFRenoUgjlLwMU0y1nrfHaBZmuELOp/MhhMaF5E98jqw/u
-         a76DJSeg4c908wpZjBA6qqyJtBL4NZKUKVu+mAJg=
-Subject: FAILED: patch "[PATCH] block: add overflow checks for Amiga partition support" failed to apply to 5.4-stable tree
-To:     schmitzmic@gmail.com, Martin@lichtvoll.de, axboe@kernel.dk,
-        geert@linux-m68k.org, hch@infradead.org, jdow@earthlink.net,
-        stable@vger.kernel.org
+        b=p5QXIIFH6ipaZPoXpPlwJBj3XPkCgrQWbLzzmBk0NQPRm5y54l8yQlNFhcOtDvTDp
+         irPbVknaWcNtfOCaOFsLkcS5eXz5SIhdBMjEe8lvISYC57P5jNcSfEZYk9ycw29nPz
+         LavJrhYFmBD7E6AVwmSOdr63cR6yO4XJSUJnZKD8=
+Subject: FAILED: patch "[PATCH] btrfs: fix race when deleting free space root from the dirty" failed to apply to 5.15-stable tree
+To:     fdmanana@suse.com, dsterba@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 11 Jul 2023 22:30:17 +0200
-Message-ID: <2023071117-convene-mockup-27f2@gregkh>
+Date:   Tue, 11 Jul 2023 22:31:36 +0200
+Message-ID: <2023071136-unbent-patronage-154e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x b6f3f28f604ba3de4724ad82bea6adb1300c0b5f
+git cherry-pick -x babebf023e661b90b1c78b2baa384fb03a226879
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071117-convene-mockup-27f2@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071136-unbent-patronage-154e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,200 +73,84 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b6f3f28f604ba3de4724ad82bea6adb1300c0b5f Mon Sep 17 00:00:00 2001
-From: Michael Schmitz <schmitzmic@gmail.com>
-Date: Wed, 21 Jun 2023 08:17:25 +1200
-Subject: [PATCH] block: add overflow checks for Amiga partition support
+From babebf023e661b90b1c78b2baa384fb03a226879 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Mon, 19 Jun 2023 17:21:48 +0100
+Subject: [PATCH] btrfs: fix race when deleting free space root from the dirty
+ cow roots list
 
-The Amiga partition parser module uses signed int for partition sector
-address and count, which will overflow for disks larger than 1 TB.
+When deleting the free space tree we are deleting the free space root
+from the list fs_info->dirty_cowonly_roots without taking the lock that
+protects it, which is struct btrfs_fs_info::trans_lock.
+This unsynchronized list manipulation may cause chaos if there's another
+concurrent manipulation of this list, such as when adding a root to it
+with ctree.c:add_root_to_dirty_list().
 
-Use u64 as type for sector address and size to allow using disks up to
-2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
-format allows to specify disk sizes up to 2^128 bytes (though native
-OS limitations reduce this somewhat, to max 2^68 bytes), so check for
-u64 overflow carefully to protect against overflowing sector_t.
+This can result in all sorts of weird failures caused by a race, such as
+the following crash:
 
-Bail out if sector addresses overflow 32 bits on kernels without LBD
-support.
+  [337571.278245] general protection fault, probably for non-canonical address 0xdead000000000108: 0000 [#1] PREEMPT SMP PTI
+  [337571.278933] CPU: 1 PID: 115447 Comm: btrfs Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
+  [337571.279153] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+  [337571.279572] RIP: 0010:commit_cowonly_roots+0x11f/0x250 [btrfs]
+  [337571.279928] Code: 85 38 06 00 (...)
+  [337571.280363] RSP: 0018:ffff9f63446efba0 EFLAGS: 00010206
+  [337571.280582] RAX: ffff942d98ec2638 RBX: ffff9430b82b4c30 RCX: 0000000449e1c000
+  [337571.280798] RDX: dead000000000100 RSI: ffff9430021e4900 RDI: 0000000000036070
+  [337571.281015] RBP: ffff942d98ec2000 R08: ffff942d98ec2000 R09: 000000000000015b
+  [337571.281254] R10: 0000000000000009 R11: 0000000000000001 R12: ffff942fe8fbf600
+  [337571.281476] R13: ffff942dabe23040 R14: ffff942dabe20800 R15: ffff942d92cf3b48
+  [337571.281723] FS:  00007f478adb7340(0000) GS:ffff94349fa40000(0000) knlGS:0000000000000000
+  [337571.281950] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [337571.282184] CR2: 00007f478ab9a3d5 CR3: 000000001e02c001 CR4: 0000000000370ee0
+  [337571.282416] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [337571.282647] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [337571.282874] Call Trace:
+  [337571.283101]  <TASK>
+  [337571.283327]  ? __die_body+0x1b/0x60
+  [337571.283570]  ? die_addr+0x39/0x60
+  [337571.283796]  ? exc_general_protection+0x22e/0x430
+  [337571.284022]  ? asm_exc_general_protection+0x22/0x30
+  [337571.284251]  ? commit_cowonly_roots+0x11f/0x250 [btrfs]
+  [337571.284531]  btrfs_commit_transaction+0x42e/0xf90 [btrfs]
+  [337571.284803]  ? _raw_spin_unlock+0x15/0x30
+  [337571.285031]  ? release_extent_buffer+0x103/0x130 [btrfs]
+  [337571.285305]  reset_balance_state+0x152/0x1b0 [btrfs]
+  [337571.285578]  btrfs_balance+0xa50/0x11e0 [btrfs]
+  [337571.285864]  ? __kmem_cache_alloc_node+0x14a/0x410
+  [337571.286086]  btrfs_ioctl+0x249a/0x3320 [btrfs]
+  [337571.286358]  ? mod_objcg_state+0xd2/0x360
+  [337571.286577]  ? refill_obj_stock+0xb0/0x160
+  [337571.286798]  ? seq_release+0x25/0x30
+  [337571.287016]  ? __rseq_handle_notify_resume+0x3ba/0x4b0
+  [337571.287235]  ? percpu_counter_add_batch+0x2e/0xa0
+  [337571.287455]  ? __x64_sys_ioctl+0x88/0xc0
+  [337571.287675]  __x64_sys_ioctl+0x88/0xc0
+  [337571.287901]  do_syscall_64+0x38/0x90
+  [337571.288126]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  [337571.288352] RIP: 0033:0x7f478aaffe9b
 
-This bug was reported originally in 2012, and the fix was created by
-the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
-discussed and reviewed on linux-m68k at that time but never officially
-submitted (now resubmitted as patch 1 in this series).
-This patch adds additional error checking and warning messages.
+So fix this by locking struct btrfs_fs_info::trans_lock before deleting
+the free space root from that list.
 
-Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Message-ID: <201206192146.09327.Martin@lichtvoll.de>
-Cc: <stable@vger.kernel.org> # 5.2
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Christoph Hellwig <hch@infradead.org>
-Link: https://lore.kernel.org/r/20230620201725.7020-4-schmitzmic@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: a5ed91828518 ("Btrfs: implement the free space B-tree")
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
-index 85c5c79aae48..ed222b9c901b 100644
---- a/block/partitions/amiga.c
-+++ b/block/partitions/amiga.c
-@@ -11,10 +11,18 @@
- #define pr_fmt(fmt) fmt
+diff --git a/fs/btrfs/free-space-tree.c b/fs/btrfs/free-space-tree.c
+index b21da1446f2a..045ddce32eca 100644
+--- a/fs/btrfs/free-space-tree.c
++++ b/fs/btrfs/free-space-tree.c
+@@ -1280,7 +1280,10 @@ int btrfs_delete_free_space_tree(struct btrfs_fs_info *fs_info)
+ 		goto abort;
  
- #include <linux/types.h>
-+#include <linux/mm_types.h>
-+#include <linux/overflow.h>
- #include <linux/affs_hardblocks.h>
+ 	btrfs_global_root_delete(free_space_root);
++
++	spin_lock(&fs_info->trans_lock);
+ 	list_del(&free_space_root->dirty_list);
++	spin_unlock(&fs_info->trans_lock);
  
- #include "check.h"
- 
-+/* magic offsets in partition DosEnvVec */
-+#define NR_HD	3
-+#define NR_SECT	5
-+#define LO_CYL	9
-+#define HI_CYL	10
-+
- static __inline__ u32
- checksum_block(__be32 *m, int size)
- {
-@@ -31,9 +39,12 @@ int amiga_partition(struct parsed_partitions *state)
- 	unsigned char *data;
- 	struct RigidDiskBlock *rdb;
- 	struct PartitionBlock *pb;
--	sector_t start_sect, nr_sects;
--	int blk, part, res = 0;
--	int blksize = 1;	/* Multiplier for disk block size */
-+	u64 start_sect, nr_sects;
-+	sector_t blk, end_sect;
-+	u32 cylblk;		/* rdb_CylBlocks = nr_heads*sect_per_track */
-+	u32 nr_hd, nr_sect, lo_cyl, hi_cyl;
-+	int part, res = 0;
-+	unsigned int blksize = 1;	/* Multiplier for disk block size */
- 	int slot = 1;
- 
- 	for (blk = 0; ; blk++, put_dev_sector(sect)) {
-@@ -41,7 +52,7 @@ int amiga_partition(struct parsed_partitions *state)
- 			goto rdb_done;
- 		data = read_part_sector(state, blk, &sect);
- 		if (!data) {
--			pr_err("Dev %s: unable to read RDB block %d\n",
-+			pr_err("Dev %s: unable to read RDB block %llu\n",
- 			       state->disk->disk_name, blk);
- 			res = -1;
- 			goto rdb_done;
-@@ -58,12 +69,12 @@ int amiga_partition(struct parsed_partitions *state)
- 		*(__be32 *)(data+0xdc) = 0;
- 		if (checksum_block((__be32 *)data,
- 				be32_to_cpu(rdb->rdb_SummedLongs) & 0x7F)==0) {
--			pr_err("Trashed word at 0xd0 in block %d ignored in checksum calculation\n",
-+			pr_err("Trashed word at 0xd0 in block %llu ignored in checksum calculation\n",
- 			       blk);
- 			break;
- 		}
- 
--		pr_err("Dev %s: RDB in block %d has bad checksum\n",
-+		pr_err("Dev %s: RDB in block %llu has bad checksum\n",
- 		       state->disk->disk_name, blk);
- 	}
- 
-@@ -80,10 +91,15 @@ int amiga_partition(struct parsed_partitions *state)
- 	blk = be32_to_cpu(rdb->rdb_PartitionList);
- 	put_dev_sector(sect);
- 	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
--		blk *= blksize;	/* Read in terms partition table understands */
-+		/* Read in terms partition table understands */
-+		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
-+			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
-+				state->disk->disk_name, blk, part);
-+			break;
-+		}
- 		data = read_part_sector(state, blk, &sect);
- 		if (!data) {
--			pr_err("Dev %s: unable to read partition block %d\n",
-+			pr_err("Dev %s: unable to read partition block %llu\n",
- 			       state->disk->disk_name, blk);
- 			res = -1;
- 			goto rdb_done;
-@@ -95,19 +111,70 @@ int amiga_partition(struct parsed_partitions *state)
- 		if (checksum_block((__be32 *)pb, be32_to_cpu(pb->pb_SummedLongs) & 0x7F) != 0 )
- 			continue;
- 
--		/* Tell Kernel about it */
-+		/* RDB gives us more than enough rope to hang ourselves with,
-+		 * many times over (2^128 bytes if all fields max out).
-+		 * Some careful checks are in order, so check for potential
-+		 * overflows.
-+		 * We are multiplying four 32 bit numbers to one sector_t!
-+		 */
-+
-+		nr_hd   = be32_to_cpu(pb->pb_Environment[NR_HD]);
-+		nr_sect = be32_to_cpu(pb->pb_Environment[NR_SECT]);
-+
-+		/* CylBlocks is total number of blocks per cylinder */
-+		if (check_mul_overflow(nr_hd, nr_sect, &cylblk)) {
-+			pr_err("Dev %s: heads*sects %u overflows u32, skipping partition!\n",
-+				state->disk->disk_name, cylblk);
-+			continue;
-+		}
-+
-+		/* check for consistency with RDB defined CylBlocks */
-+		if (cylblk > be32_to_cpu(rdb->rdb_CylBlocks)) {
-+			pr_warn("Dev %s: cylblk %u > rdb_CylBlocks %u!\n",
-+				state->disk->disk_name, cylblk,
-+				be32_to_cpu(rdb->rdb_CylBlocks));
-+		}
-+
-+		/* RDB allows for variable logical block size -
-+		 * normalize to 512 byte blocks and check result.
-+		 */
-+
-+		if (check_mul_overflow(cylblk, blksize, &cylblk)) {
-+			pr_err("Dev %s: partition %u bytes per cyl. overflows u32, skipping partition!\n",
-+				state->disk->disk_name, part);
-+			continue;
-+		}
-+
-+		/* Calculate partition start and end. Limit of 32 bit on cylblk
-+		 * guarantees no overflow occurs if LBD support is enabled.
-+		 */
-+
-+		lo_cyl = be32_to_cpu(pb->pb_Environment[LO_CYL]);
-+		start_sect = ((u64) lo_cyl * cylblk);
-+
-+		hi_cyl = be32_to_cpu(pb->pb_Environment[HI_CYL]);
-+		nr_sects = (((u64) hi_cyl - lo_cyl + 1) * cylblk);
- 
--		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
--			   be32_to_cpu(pb->pb_Environment[9])) *
--			   be32_to_cpu(pb->pb_Environment[3]) *
--			   be32_to_cpu(pb->pb_Environment[5]) *
--			   blksize;
- 		if (!nr_sects)
- 			continue;
--		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
--			     be32_to_cpu(pb->pb_Environment[3]) *
--			     be32_to_cpu(pb->pb_Environment[5]) *
--			     blksize;
-+
-+		/* Warn user if partition end overflows u32 (AmigaDOS limit) */
-+
-+		if ((start_sect + nr_sects) > UINT_MAX) {
-+			pr_warn("Dev %s: partition %u (%llu-%llu) needs 64 bit device support!\n",
-+				state->disk->disk_name, part,
-+				start_sect, start_sect + nr_sects);
-+		}
-+
-+		if (check_add_overflow(start_sect, nr_sects, &end_sect)) {
-+			pr_err("Dev %s: partition %u (%llu-%llu) needs LBD device support, skipping partition!\n",
-+				state->disk->disk_name, part,
-+				start_sect, end_sect);
-+			continue;
-+		}
-+
-+		/* Tell Kernel about it */
-+
- 		put_partition(state,slot++,start_sect,nr_sects);
- 		{
- 			/* Be even more informative to aid mounting */
+ 	btrfs_tree_lock(free_space_root->node);
+ 	btrfs_clear_buffer_dirty(trans, free_space_root->node);
 
