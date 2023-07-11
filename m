@@ -2,88 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD3BB74F1A8
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 16:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B502174F329
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 17:17:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230352AbjGKOTb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 10:19:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56496 "EHLO
+        id S230227AbjGKPQ7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Tue, 11 Jul 2023 11:16:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229959AbjGKOTa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 10:19:30 -0400
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A64311709;
-        Tue, 11 Jul 2023 07:19:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1689085127;
-        bh=e18NHVmYetnGq8YqkdNUELt5bY/GInm2niFBi9elCNI=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=HP04nBhBg1T7mrSzrnXH1M68xlu51VjuM+Nvr3qcxOkFXfDrin/JgsJHTz56YQA7N
-         xzpVdTRFDdcoGXHABdFg6uhJC55xGdQvmBl65y/RUd1/rsWg42U1nHdVrEs28XhTdO
-         KGr7CNt+NrKMBzeirjk4S+3lAUwP+Ra9PyBraugI=
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id D18D912861B5;
-        Tue, 11 Jul 2023 10:18:47 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id pWlZLUf5LftT; Tue, 11 Jul 2023 10:18:47 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1689085127;
-        bh=e18NHVmYetnGq8YqkdNUELt5bY/GInm2niFBi9elCNI=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=HP04nBhBg1T7mrSzrnXH1M68xlu51VjuM+Nvr3qcxOkFXfDrin/JgsJHTz56YQA7N
-         xzpVdTRFDdcoGXHABdFg6uhJC55xGdQvmBl65y/RUd1/rsWg42U1nHdVrEs28XhTdO
-         KGr7CNt+NrKMBzeirjk4S+3lAUwP+Ra9PyBraugI=
-Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 8203D1286195;
-        Tue, 11 Jul 2023 10:18:46 -0400 (EDT)
-Message-ID: <a8d0a627bbce5a82a874977fa4bcc3adf9d3aa2c.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
- Laptop Intel 12th gen
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Jason Gunthorpe <jgg@ziepe.ca>, Christian Hesse <mail@eworm.de>
-Cc:     linux-integrity@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Peter Huewe <peterhuewe@gmx.de>, stable@vger.kernel.org,
-        roubro1991@gmail.com
-Date:   Tue, 11 Jul 2023 10:18:44 -0400
-In-Reply-To: <ZKxHfTkgKHYqhBz2@ziepe.ca>
-References: <20230710133836.4367-1-mail@eworm.de>
-         <20230710142916.18162-1-mail@eworm.de> <ZKxHfTkgKHYqhBz2@ziepe.ca>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+        with ESMTP id S229512AbjGKPQ5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 11:16:57 -0400
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA766A0;
+        Tue, 11 Jul 2023 08:16:56 -0700 (PDT)
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-579e5d54e68so68961387b3.1;
+        Tue, 11 Jul 2023 08:16:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689088616; x=1691680616;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6rp97t0SvD8s0Who/ua4azUvnOtZZ5RKlcFsre7+/tw=;
+        b=PjTePUAZDZ0OPOG0z3dRT/Fm+WDPGZQ4hmSPrpSza6zPz6IH38xFao5oNusgnJeg7t
+         uJ3ocxuHhNoza+UH/nIGlPrSx5uWvWEFESDq3PjPSLeSX3wOM4RiLNawNxaIKe2S4dNw
+         Ua35zTtq6s7ijfVsg6kN/xnklaW4YIFA2sgwnSCwRXRBcAa08sKcSv3GEtGdrmod8CrU
+         kkcBnK8qzKZUCAM9ylByOl+8YR4nzJVRgpTuiVZR5iuprhmV1yy1kUBdPrn2H7eASa3h
+         S9NkPv68Efq56GUgecHkTlASTZAakN/QmvLuj5iLavvkx3BEjwQI6qCYMSDwnmhu6x/O
+         G7sA==
+X-Gm-Message-State: ABy/qLYR0yCc9o42H1ctlmTxdFt7PrGy6iOhproS0nLtprFpiq+b4wC8
+        6iDgkwpfUBcW8d0MNT5gwNotWtACjyjtsg==
+X-Google-Smtp-Source: APBJJlFkLS2Qz62XP3sReL988oxSMjFe0SGyWYOrproFPt4U60NPM3VmCuRgEbjHdak4yeRsBinsgw==
+X-Received: by 2002:a81:5303:0:b0:57a:6e41:948e with SMTP id h3-20020a815303000000b0057a6e41948emr10091943ywb.11.1689088615700;
+        Tue, 11 Jul 2023 08:16:55 -0700 (PDT)
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com. [209.85.219.170])
+        by smtp.gmail.com with ESMTPSA id r186-20020a8181c3000000b0056d3d7a59cesm619774ywf.12.2023.07.11.08.16.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Jul 2023 08:16:55 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-bd61dd9a346so6800350276.2;
+        Tue, 11 Jul 2023 08:16:54 -0700 (PDT)
+X-Received: by 2002:a25:cd85:0:b0:c60:fb80:99f7 with SMTP id
+ d127-20020a25cd85000000b00c60fb8099f7mr13925299ybf.16.1689088612983; Tue, 11
+ Jul 2023 08:16:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230710142227.965586663@linuxfoundation.org>
+In-Reply-To: <20230710142227.965586663@linuxfoundation.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 11 Jul 2023 17:16:38 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVcZ2W7o42ZAdMHfPYZ9d0MCRat_PKWoh=JDHK=m=dM1g@mail.gmail.com>
+Message-ID: <CAMuHMdVcZ2W7o42ZAdMHfPYZ9d0MCRat_PKWoh=JDHK=m=dM1g@mail.gmail.com>
+Subject: Re: [PATCH 6.3 000/424] 6.3.13-rc4 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 2023-07-10 at 15:01 -0300, Jason Gunthorpe wrote:
-> On Mon, Jul 10, 2023 at 04:28:43PM +0200, Christian Hesse wrote:
-> > This device suffer an irq storm, so add it in tpm_tis_dmi_table to
-> > force polling.
-> 
-> I can't help but feel like we are doing something wrong in the Linux
-> driver that we keep having IRQ problems.
-> 
-> Surely Windows uses the IRQ on these devices? How does it work
-> reliably there?
+Hi Greg,
 
-I've had some friends in the MS Linux team ask around to find out if
-anyone in the windows group is willing to divulge a little on this.  My
-suspicion is that if interrupts are enabled at all on Windows TIS, it's
-via a whitelist.
+On Mon, Jul 10, 2023 at 4:29 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> This is the start of the stable review cycle for the 6.3.13 release.
+> There are 424 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 12 Jul 2023 14:21:05 +0000.
+> Anything received after that time might be too late.
 
-James
+> Zhanhao Hu <zero12113@hust.edu.cn>
+>     clk: imx93: fix memory leak and missing unwind goto in imx93_clocks_probe
 
+This commit was flagged to contain a bug by two reporters almost 4 weeks
+ago, but no one took any action. Hence I have sent a fix
+https://lore.kernel.org/all/20230711150812.3562221-1-geert+renesas@glider.be
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
