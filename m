@@ -2,145 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1AD974F96F
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:58:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EA8C74F9A3
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 23:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231334AbjGKU61 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 16:58:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55964 "EHLO
+        id S230252AbjGKVS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 17:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231277AbjGKU60 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:58:26 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3F1F1711
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:58:24 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1b89114266dso46436935ad.0
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:58:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689109104; x=1691701104;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=g8KOiARB33Qn2eQiVXhRlyJdDsctValxz3yLwjk0g1Y=;
-        b=d0KLinwEBO85IyDrVcM2/y8PB0cmJhxtQOVyvg2twPerU70J8KrHLb4vsZ5fAE3l0N
-         Gyl5pfkZugVA2/lPDvG6hUDhcIDjgxVywglTXA8gEZnIne2JUebijAd6jPOlLXhHRe12
-         uLrm7TDexGzYePNOOryVRsVKzWV9H76hdIwuQIubI7tMwGFjZ/ZJc0trySOSQNPoV2em
-         CYmVN6R3jqKI9v3JAgyWJZQxwNompXOuFSWBtuRdeLuVOmXYjijfnRa1uvh0pT4zOA+I
-         Ne4tcR+KvxT/zW9zkNA2kCRW7fgtbrYDpaGhkkNDMSr1uENmkwHol8AbQ/3Rr0QxELIr
-         UPzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689109104; x=1691701104;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g8KOiARB33Qn2eQiVXhRlyJdDsctValxz3yLwjk0g1Y=;
-        b=KRV1EmkuJKBsmGd6Lxqpa/rH4ehP1U/X/u0ULewng64pMTZpxZf9B/X24QXSkBq27O
-         Zjurlx/4zzijh4/XKC6FPnrKN9BCqWLJq5wyrf5NoIOTueRcXjDmMurMrOJQN6pzFrTJ
-         kFSRF5uxnY5kAhUAyEM9BIm9cvq3vsFQP1w3oyW4wdSBEzczTGH1yP+p68xeLeQ3SjHI
-         dmQD3WHgBqKDc1l/e7t81WU70n4f/6jY0l6IzYD79Q1DjeIa8qqQxhVRPcme3XUBZ0kC
-         R+ljbaJNe4PVsuu9DKU9BIOVP+1bJgMnh97c9zkDdIqVqLU3PqMtRNSSNkCXVQheTcum
-         +qrw==
-X-Gm-Message-State: ABy/qLbOh9pvNYuCCodcU+jlUKbNEUXpqpUuRx/mJb+n3jRh0RjIaRuv
-        xF6O9oAew5m/jdnzHi5j7pQyxQ==
-X-Google-Smtp-Source: APBJJlEWupqXJzTkSXeMkFcC11KWGbsSJzERularWZNESQhAfks4Cr0DgcD0Z/PwTbTJxN73t/trag==
-X-Received: by 2002:a17:902:daca:b0:1b8:ae8c:7d88 with SMTP id q10-20020a170902daca00b001b8ae8c7d88mr21832491plx.7.1689109104339;
-        Tue, 11 Jul 2023 13:58:24 -0700 (PDT)
-Received: from fedora (61-114-134-192.ppp.bbiq.jp. [61.114.134.192])
-        by smtp.gmail.com with ESMTPSA id bg4-20020a1709028e8400b001b53be3d942sm2350749plb.232.2023.07.11.13.58.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 13:58:23 -0700 (PDT)
-Date:   Tue, 11 Jul 2023 16:58:19 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     linus.walleij@linaro.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, techsupport@winsystems.com,
-        stable@vger.kernel.org,
-        Paul Demetrotion <pdemetrotion@winsystems.com>
-Subject: Re: [RESEND] gpio: ws16c48: Fix off-by-one error in WS16C48 resource
- region extent
-Message-ID: <ZK3Ca825eTtNFL9V@fedora>
-References: <20230228081724.94786-1-william.gray@linaro.org>
- <CAMRc=MfD3=ifo9EJf=5_HZKLXnbASi=ehYm=Zs4WQA+YxfffQw@mail.gmail.com>
- <ZAXfZbywWOo2pg4L@fedora>
- <ZC2J9ru1VN5fmeXZ@fedora>
- <ZH3mxt4f5HaCCtph@fedora>
+        with ESMTP id S229505AbjGKVS6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 17:18:58 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB21133;
+        Tue, 11 Jul 2023 14:18:56 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.west.internal (Postfix) with ESMTP id 760143200941;
+        Tue, 11 Jul 2023 17:18:53 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Tue, 11 Jul 2023 17:18:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1689110332; x=1689196732; bh=9KRcgH1FI3iCJwcfvsgArzfpcVPSohGf5Iy
+        H+yund90=; b=E0wY824UWj0/hW11qDErCoyBBt6g8wDeh+pWG8PIaGYhZcIq2ki
+        RIcNCWcXpEKg6bj7OL7AwxlUMrnRVfiUT3rjwddRNXq5/ytdCiOb/z1pFUHUBBok
+        qdPd3Te9nOBiTX3JYXGQGBjy9IiAAlbE8CdxAHdAci/C4VKVnZ4aCXsRjU5qbgzW
+        UFIS0NNGVa4lhA4E+6BvXeS+yE/7BzuvHeqAK17A5Iq1DCu7MXT0dKaSJvRhnlPK
+        vPgMikduB+FpTYhLAL91hSFbmN82tIcXSXjP6aflfj1lkRbd8o3Oo3z/IOrO2LUh
+        3t6x1oF44UwUnWMcRO9slRmEjtkLcycFBqw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1689110332; x=1689196732; bh=9KRcgH1FI3iCJwcfvsgArzfpcVPSohGf5Iy
+        H+yund90=; b=cU3+XVXxpbgdtnLDiOFKcj7ronIUqqX3JZea+7MDieXjp32jEbb
+        5AzuEWXyAPZ2MH/mCUSw2akujhJfJSQbaMomVdhYITbraox8j5FYM2NusnO6aDvT
+        DHH9cSytxFYt/pCivePcrAKgONDGORtvLRCHfqsbXz8FMO1Dtkq6HtJC2eBjhfDa
+        C0mYGrfsWNXYvpXRhXuIeCqJE9llsTrCfM7VbJ3qeB7MvJr/qlel3ucvMeGow1/Z
+        o/QbHo4uLnOTFcCUcBhespcv2hENvx38y/tpywfWsCg9kJN3OoDB7EjlfutbIObV
+        ZHx7crcBCAxzXNJma1mVMcHA4CR2VzMRpxA==
+X-ME-Sender: <xms:PMetZKH_aaik2Cf59I0f1m19mbWiiw3L8jfDRBR-M4F9iBLZx7UBGg>
+    <xme:PMetZLWZLn_cTOLvff2m4vsTFt_85sMt-Y1kd4d1_uo49v9JDlNGK_JTmkpDG6QQ1
+    gXMtDcduGmNDA>
+X-ME-Received: <xmr:PMetZEJoLKXRxqTDBg5yG5TdaIdoHoCfrhJ6E42YGDpFIg3aViEZYf7X-OFb4LqeeXxl_VduxMNu848cvpLQO5RJjgOjTeESsNOwuZ-9K5k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrfedtgdduiedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegve
+    evtefgveejffffveeluefhjeefgeeuveeftedujedufeduteejtddtheeuffenucffohhm
+    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:PMetZEEcT9f9jj_3ixoljoooaMpGDlGBjyoOl7uJO4nW4HwcVav9Mw>
+    <xmx:PMetZAUyQWaLjJ406dkAM_ZdoF6Hr3KMNt_khUNYQSm_gmJYwoI2sw>
+    <xmx:PMetZHNmNRBa24uuq2unYaoYBVwltasXUXLObZyd6OcCK7mi9jq-Vg>
+    <xmx:PMetZErlrX7dwYxHULV8rkL9Qs5SAj2lOS0fx1ObHFpxdHVNn1fsqQ>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 11 Jul 2023 17:18:51 -0400 (EDT)
+Date:   Tue, 11 Jul 2023 23:18:50 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Vincent Whitchurch <Vincent.Whitchurch@axis.com>
+Cc:     "sashal@kernel.org" <sashal@kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>
+Subject: Re: Patch "mmc: core: Support zeroout using TRIM for eMMC" has been
+ added to the 5.15-stable tree
+Message-ID: <2023071140-enlisted-crucial-9231@gregkh>
+References: <20230709061209.483956-1-sashal@kernel.org>
+ <9dae21814b7b73cc0db1b974a868c4ced62287fa.camel@axis.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0SJN+oWbDHvdTo04"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ZH3mxt4f5HaCCtph@fedora>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9dae21814b7b73cc0db1b974a868c4ced62287fa.camel@axis.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, Jul 10, 2023 at 05:55:54AM +0000, Vincent Whitchurch wrote:
+> On Sun, 2023-07-09 at 02:12 -0400, Sasha Levin wrote:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >     mmc: core: Support zeroout using TRIM for eMMC
+> > 
+> > to the 5.15-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >      mmc-core-support-zeroout-using-trim-for-emmc.patch
+> > and it can be found in the queue-5.15 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> > 
+> > 
+> > 
+> > commit e71c90bcc65727d323b9a3cb40b263db7be5ee4c
+> > Author: Vincent Whitchurch <vincent.whitchurch@axis.com>
+> > Date:   Fri Apr 29 17:21:18 2022 +0200
+> > 
+> >     mmc: core: Support zeroout using TRIM for eMMC
+> >     
+> > 
+> >     [ Upstream commit f7b6fc327327698924ef3afa0c3e87a5b7466af3 ]
+> >     
+> > 
+> >     If an eMMC card supports TRIM and indicates that it erases to zeros, we can
+> >     use it to support hardware offloading of REQ_OP_WRITE_ZEROES, so let's add
+> >     support for this.
+> >     
+> > 
+> >     Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+> >     Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
+> >     Link: https://lore.kernel.org/r/20220429152118.3617303-1-vincent.whitchurch@axis.com
+> >     Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> >     Stable-dep-of: c467c8f08185 ("mmc: Add MMC_QUIRK_BROKEN_SD_CACHE for Kingston Canvas Go Plus from 11/2019")
+> >     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> I still[0] prefer that this not be backported to stable.
+> 
+> [0] https://lore.kernel.org/all/Y1owQYlr+vfxEmS8@axis.com/
 
---0SJN+oWbDHvdTo04
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ok, will go drop this, and the dependent patch.
 
-On Mon, Jun 05, 2023 at 09:44:38AM -0400, William Breathitt Gray wrote:
-> On Wed, Apr 05, 2023 at 10:47:18AM -0400, William Breathitt Gray wrote:
-> > On Mon, Mar 06, 2023 at 07:41:09AM -0500, William Breathitt Gray wrote:
-> > > On Mon, Mar 06, 2023 at 10:23:30AM +0100, Bartosz Golaszewski wrote:
-> > > > On Thu, Mar 2, 2023 at 11:30=E2=80=AFPM William Breathitt Gray
-> > > > <william.gray@linaro.org> wrote:
-> > > > >
-> > > > > The WinSystems WS16C48 I/O address region spans offsets 0x0 throu=
-gh 0xA,
-> > > > > which is a total of 11 bytes. Fix the WS16C48_EXTENT define to the
-> > > > > correct value of 11 so that access to necessary device registers =
-is
-> > > > > properly requested in the ws16c48_probe() callback by the
-> > > > > devm_request_region() function call.
-> > > > >
-> > > > > Fixes: 2c05a0f29f41 ("gpio: ws16c48: Implement and utilize regist=
-er structures")
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Cc: Paul Demetrotion <pdemetrotion@winsystems.com>
-> > > > > Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-> > > > > ---
-> > > >=20
-> > > > Why did you need to resend this? Anything changed?
-> > > >=20
-> > > > Bart
-> > >=20
-> > > No changes in code, just added the stable@ver.kernel.org Cc tag.
-> > >=20
-> > > William Breathitt Gray
-> >=20
-> > Hi Bart,
-> >=20
-> > Would you take this fix through the gpio tree?
-> >=20
-> > William Breathitt Gray
->=20
-> It looks like this patch was missed. Is there anything further needed or
-> can it be queued as it is now?
->=20
-> William Breathitt Gray
-
-The fix was missed again this past cycle. Are there any particular
-issues with merging this patch that I should address? WS16C48 interrupt
-handling is still broken so that's the motivation for getting this fix
-into the GPIO tree.
-
-William Breathitt Gray
-
---0SJN+oWbDHvdTo04
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZK3CawAKCRC1SFbKvhIj
-K9GCAP0cO7V37RWi59bgL6jwGculR+L+HxyeBXdQXQapKRTjKAEA56Xhu/irRplu
-kiskQAWIe3GpNBquZxY2ybeDe9G+Bg4=
-=KmlC
------END PGP SIGNATURE-----
-
---0SJN+oWbDHvdTo04--
+greg k-h
