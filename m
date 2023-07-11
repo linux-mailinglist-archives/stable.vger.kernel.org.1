@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AAAC74F90B
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BE8E74F90C
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:31:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230266AbjGKUbm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 16:31:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44274 "EHLO
+        id S230295AbjGKUbq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 16:31:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230038AbjGKUbm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:31:42 -0400
+        with ESMTP id S230038AbjGKUbp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:31:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03695B7
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:31:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25F4BB7
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:31:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 82CC3615E4
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:31:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF24C433C7;
-        Tue, 11 Jul 2023 20:31:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7F14615DD
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:31:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD002C433C7;
+        Tue, 11 Jul 2023 20:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689107499;
-        bh=Sc1fMy7P+dkwhTONGTUt0hp0v+X6V4g8N4Wv7sBCiyU=;
+        s=korg; t=1689107503;
+        bh=q/F53RjHLmKjF4YWdm5DMKojPaTUqR7WPRtKifVTR2g=;
         h=Subject:To:Cc:From:Date:From;
-        b=p5QXIIFH6ipaZPoXpPlwJBj3XPkCgrQWbLzzmBk0NQPRm5y54l8yQlNFhcOtDvTDp
-         irPbVknaWcNtfOCaOFsLkcS5eXz5SIhdBMjEe8lvISYC57P5jNcSfEZYk9ycw29nPz
-         LavJrhYFmBD7E6AVwmSOdr63cR6yO4XJSUJnZKD8=
-Subject: FAILED: patch "[PATCH] btrfs: fix race when deleting free space root from the dirty" failed to apply to 5.15-stable tree
+        b=VIUevRxyA4Kbx1cO8xEsjtYCrh7zC3MnzmR6GGhj0p0yBBifFG39UPYjs4lyZUC4o
+         khSRjaraNJTPgSelXKjOzggJpe6FpxA0wFWlcorjprxfdI8H9wR77kgcQCjK0UZplB
+         l9BXMIkMA7en61iYCvBmaYMYAqvEOzeoFJF0vaFk=
+Subject: FAILED: patch "[PATCH] btrfs: fix race when deleting free space root from the dirty" failed to apply to 5.10-stable tree
 To:     fdmanana@suse.com, dsterba@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 11 Jul 2023 22:31:36 +0200
-Message-ID: <2023071136-unbent-patronage-154e@gregkh>
+Date:   Tue, 11 Jul 2023 22:31:38 +0200
+Message-ID: <2023071138-squealer-subtext-3b3e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x babebf023e661b90b1c78b2baa384fb03a226879
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071136-unbent-patronage-154e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071138-squealer-subtext-3b3e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
