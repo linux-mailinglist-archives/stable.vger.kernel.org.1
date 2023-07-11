@@ -2,135 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8C1774F890
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 21:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0345D74F89B
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:01:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229963AbjGKTyx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 15:54:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59360 "EHLO
+        id S231309AbjGKUBV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 16:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbjGKTyw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 15:54:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311CB10D2;
-        Tue, 11 Jul 2023 12:54:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C3C0B615E0;
-        Tue, 11 Jul 2023 19:54:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D90C433C8;
-        Tue, 11 Jul 2023 19:54:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689105290;
-        bh=QD1kIvnVeFrYv8Gze2fLJLg0i/YqJFcXn0WrP/nZGg4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Xup7mWiwCHAi8aT6fbGucKKPxIBbP3jLmitcW/5X7SFIUjt4qsDbEuuYt8nC30oQu
-         ZemjvWFcLm/15nnd8pyYP5UqbEvcVj/BXnrt2Qx13pyqCCc9SLIOtPvDnVQkH5k3o5
-         cCTVu9Aa/FhbGfk42ZRYw0MTt+5TVPJxCZY+AAFE=
-Date:   Tue, 11 Jul 2023 21:54:46 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Sasha Levin <sashal@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Petr Pavlu <petr.pavlu@suse.com>, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        hpa@zytor.com, samitolvanen@google.com, x86@kernel.org,
-        linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, ndesaulniers@google.com,
-        Masami Hiramatsu <mhiramat@kernel.org>, stable@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] x86: kprobes: Fix CFI_CLANG related issues
-Message-ID: <2023071139-engorge-catchable-70fa@gregkh>
-References: <168899125356.80889.17967397360941194229.stgit@devnote2>
- <20230710155703.GA4021842@dev-arch.thelio-3990X>
- <20230711103303.287af608cc47dcf70d709070@kernel.org>
- <20230711183704.GA2758126@dev-arch.thelio-3990X>
+        with ESMTP id S231398AbjGKUBU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:01:20 -0400
+Received: from out-40.mta1.migadu.com (out-40.mta1.migadu.com [IPv6:2001:41d0:203:375::28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4478B1711
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 13:01:19 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1689105676;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=BW7lu2mzgzGoDumkBjzINg6OFqwOhCaVlVWH0EynxSc=;
+        b=lyVgupKC1qIjP3KD7eNvfKsAd1v8v8em8uJUofb+1dh3vYQFcPEvTWdYYG44rmUuKc4Eb1
+        AraP3PTFuP5b/Oq+8JOUkFnSgIuVdVugPlvBC2QLTHA17Sqre82Yd8QB8liZjhKSMjHljd
+        V4LCRrvNUnqzy3bVFke3mZmZrPGQ9OU=
+From:   Oliver Upton <oliver.upton@linux.dev>
+To:     Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org,
+        kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Cc:     Oliver Upton <oliver.upton@linux.dev>,
+        James Morse <james.morse@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: timers: Use CNTHCTL_EL2 when setting non-CNTKCTL_EL1 bits
+Date:   Tue, 11 Jul 2023 20:00:46 +0000
+Message-ID: <168910562677.2605377.4826778238561780912.b4-ty@linux.dev>
+In-Reply-To: <20230627140557.544885-1-maz@kernel.org>
+References: <20230627140557.544885-1-maz@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230711183704.GA2758126@dev-arch.thelio-3990X>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 11, 2023 at 11:37:04AM -0700, Nathan Chancellor wrote:
-> Masami, thanks for verifying!
+On Tue, 27 Jun 2023 15:05:57 +0100, Marc Zyngier wrote:
+> It recently appeared that, whien running VHE, there is a notable
+> difference between using CNTKCTL_EL1 and CNTHCTL_EL2, despite what
+> the architecture documents:
 > 
-> Hi Greg and Sasha,
+> - When accessed from EL2, bits [19:18] and [16:10] same bits have
+>   the same assignment as CNTHCTL_EL2
+> - When accessed from EL1, bits [19:18] and [16:10] are RES0
 > 
-> On Tue, Jul 11, 2023 at 10:33:03AM +0900, Masami Hiramatsu wrote:
-> > On Mon, 10 Jul 2023 08:57:03 -0700
-> > Nathan Chancellor <nathan@kernel.org> wrote:
-> > 
-> > > On Mon, Jul 10, 2023 at 09:14:13PM +0900, Masami Hiramatsu (Google) wrote:
-> > > > I just build tested, since I could not boot the kernel with CFI_CLANG=y.
-> > > > Would anyone know something about this error?
-> > > > 
-> > > > [    0.141030] MMIO Stale Data: Unknown: No mitigations
-> > > > [    0.153511] SMP alternatives: Using kCFI
-> > > > [    0.164593] Freeing SMP alternatives memory: 36K
-> > > > [    0.165053] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_kernel+0x472/0x48b
-> > > > [    0.166028] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.2-00002-g12b1b2fca8ef #126
-> > > > [    0.166028] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-> > > > [    0.166028] Call Trace:
-> > > > [    0.166028]  <TASK>
-> > > > [    0.166028]  dump_stack_lvl+0x6e/0xb0
-> > > > [    0.166028]  panic+0x146/0x2f0
-> > > > [    0.166028]  ? start_kernel+0x472/0x48b
-> > > > [    0.166028]  __stack_chk_fail+0x14/0x20
-> > > > [    0.166028]  start_kernel+0x472/0x48b
-> > > > [    0.166028]  x86_64_start_reservations+0x24/0x30
-> > > > [    0.166028]  x86_64_start_kernel+0xa6/0xbb
-> > > > [    0.166028]  secondary_startup_64_no_verify+0x106/0x11b
-> > > > [    0.166028]  </TASK>
-> > > > [    0.166028] ---[ end Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_kernel+0x472/0x48b ]---
-> > > 
-> > > This looks like https://github.com/ClangBuiltLinux/linux/issues/1815 to
-> > > me. What version of LLVM are you using? This was fixed in 16.0.4. Commit
-> > > 514ca14ed544 ("start_kernel: Add __no_stack_protector function
-> > > attribute") should resolve it on the Linux side, it looks like that is
-> > > in 6.5-rc1. Not sure if we should backport it or just let people upgrade
-> > > their toolchains on older releases.
-> > 
-> > Thanks for the info. I confirmed that the commit fixed the boot issue.
-> > So I think it should be backported to the stable tree.
-> 
-> Would you please apply commit 514ca14ed544 ("start_kernel: Add
-> __no_stack_protector function attribute") to linux-6.4.y? The series
-> ending with commit 611d4c716db0 ("x86/hyperv: Mark hv_ghcb_terminate()
-> as noreturn") that shipped in 6.4 exposes an LLVM issue that affected
-> 16.0.0 and 16.0.1, which was resolved in 16.0.2. When using those
-> affected LLVM releases, the following crash at boot occurs:
-> 
->   [    0.181667] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_kernel+0x3cf/0x3d0
->   [    0.182621] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.3 #1
->   [    0.182621] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
->   [    0.182621] Call Trace:
->   [    0.182621]  <TASK>
->   [    0.182621]  dump_stack_lvl+0x6a/0xa0
->   [    0.182621]  panic+0x124/0x2f0
->   [    0.182621]  ? start_kernel+0x3cf/0x3d0
->   [    0.182621]  ? acpi_enable+0x64/0xc0
->   [    0.182621]  __stack_chk_fail+0x14/0x20
->   [    0.182621]  start_kernel+0x3cf/0x3d0
->   [    0.182621]  x86_64_start_reservations+0x24/0x30
->   [    0.182621]  x86_64_start_kernel+0xab/0xb0
->   [    0.182621]  secondary_startup_64_no_verify+0x107/0x10b
->   [    0.182621]  </TASK>
->   [    0.182621] ---[ end Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_kernel+0x3cf/0x3d0 ]---
-> 
-> 514ca14ed544 aims to avoid this on the Linux side. I have verified that
-> it applies to 6.4.3 cleanly and resolves the issue there, as has Masami.
-> 
-> If there are any issues or questions, please let me know.
+> [...]
 
-Now queued up, thanks.
+Applied to kvmarm/fixes, thanks!
 
-greg k-h
+[1/1] KVM: arm64: timers: Use CNTHCTL_EL2 when setting non-CNTKCTL_EL1 bits
+      https://git.kernel.org/kvmarm/kvmarm/c/fe769e6c1f80
+
+--
+Best,
+Oliver
