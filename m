@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBCFB74F954
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CFE374F95C
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 22:52:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbjGKUtr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 16:49:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52410 "EHLO
+        id S230018AbjGKUwR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 16:52:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbjGKUtr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:49:47 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE56E9B;
-        Tue, 11 Jul 2023 13:49:45 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 7FF0F1C0AC1; Tue, 11 Jul 2023 22:49:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1689108583;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=pjvzqHFp8LIfdFXjHOUI6Im7LV07g2ArgXcDiJugfM8=;
-        b=dMl7NkMoZr9kB38vZDHQimokyDUoKjZ6f19n2vmw5fIdTSPZS7qkiu7X0Cx8+9rewDFTwl
-        EdBZ4RNT912YKtcrHQ597FWiZD79aiRc0zEE/T6UknW4+GC45QF1vBVzrVP11n4JRBTXyK
-        97CD0xQQLUa60aRiwNySkrXg7yQuLz0=
-Date:   Tue, 11 Jul 2023 22:49:43 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Steve French <stfrench@microsoft.com>, pc@cjr.nz,
-        lsahlber@redhat.com, pc@manguebit.com, ematsumiya@suse.de,
-        zhangxiaoxu5@huawei.com, dhowells@redhat.com, brauner@kernel.org,
-        vl@samba.org
-Subject: Re: [PATCH AUTOSEL 6.1 06/15] cifs: fix sockaddr comparison in
- iface_cmp
-Message-ID: <ZK3AZzm0BCglXXKN@duo.ucw.cz>
-References: <20230626215031.179159-1-sashal@kernel.org>
- <20230626215031.179159-6-sashal@kernel.org>
+        with ESMTP id S229655AbjGKUwP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 16:52:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE4C6E74;
+        Tue, 11 Jul 2023 13:52:14 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CDD56133D;
+        Tue, 11 Jul 2023 20:52:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877C5C433C8;
+        Tue, 11 Jul 2023 20:52:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689108733;
+        bh=2e3D4nEO0oazmItIIqJ4KsFxQqhU0nPH2CAqNnhQhD8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oWcGIIQygsQ6vxdjH5bouQVHaEfFsIkjvP72CF407S0n28HrUuqwrbTtzVB18hBzz
+         yDy/hFRXC92ZJ+ceN9scu4PPVtXYVNhSlS58DuVVW4M/FUKJhy58bNaWglaQGUy3bB
+         xHlhfYxcuTu4k1yn6zqq4I9idD7vuwTTkaZgmr5kzJXr+FhPZLBqE8rP2A24dEnvmH
+         NH8Zzrkos/ZMUzv1C8uLrMy1V16LVPqSyd1ikbiSxtQM4rF0ZLH5Hk8cxVwmv6Xs9k
+         bW4nkODMjwspsImYNgIcu5gyu2c22zP2QlfMuzzJTU0tWNBvxCRGC+vMYSHFTGC2KS
+         PHcGur28dAq5A==
+From:   Dinh Nguyen <dinguyen@kernel.org>
+To:     devicetree@vger.kernel.org
+Cc:     dinguyen@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowskii+dt@linaro.org, conor+dt@kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH] arm64: dts: stratix10: fix incorrect I2C property for SCL signal
+Date:   Tue, 11 Jul 2023 15:52:01 -0500
+Message-Id: <20230711205201.595876-1-dinguyen@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="PrDF4c4GHgG1I1r/"
-Content-Disposition: inline
-In-Reply-To: <20230626215031.179159-6-sashal@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,66 +53,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+The correct dts property for the SCL falling time is
+"i2c-scl-falling-time-ns".
 
---PrDF4c4GHgG1I1r/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: c8da1d15b8a4 ("arm64: dts: stratix10: i2c clock running out of spec")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+---
+ arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts      | 2 +-
+ arch/arm64/boot/dts/altera/socfpga_stratix10_socdk_nand.dts | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Hi!
+diff --git a/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts b/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts
+index 38ae674f2f02..3037f58057c9 100644
+--- a/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts
++++ b/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts
+@@ -145,7 +145,7 @@ &i2c1 {
+ 	status = "okay";
+ 	clock-frequency = <100000>;
+ 	i2c-sda-falling-time-ns = <890>;  /* hcnt */
+-	i2c-sdl-falling-time-ns = <890>;  /* lcnt */
++	i2c-scl-falling-time-ns = <890>;  /* lcnt */
+ 
+ 	pinctrl-names = "default", "gpio";
+ 	pinctrl-0 = <&i2c1_pmx_func>;
+diff --git a/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk_nand.dts b/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk_nand.dts
+index ede99dcc0558..f4cf30bac557 100644
+--- a/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk_nand.dts
++++ b/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk_nand.dts
+@@ -141,7 +141,7 @@ &i2c2 {
+ 	status = "okay";
+ 	clock-frequency = <100000>;
+ 	i2c-sda-falling-time-ns = <890>;  /* hcnt */
+-	i2c-sdl-falling-time-ns = <890>;  /* lcnt */
++	i2c-scl-falling-time-ns = <890>;  /* lcnt */
+ 
+ 	adc@14 {
+ 		compatible = "lltc,ltc2497";
+-- 
+2.25.1
 
-> +++ b/fs/cifs/connect.c
-> @@ -1332,6 +1332,56 @@ cifs_demultiplex_thread(void *p)
->  	module_put_and_kthread_exit(0);
->  }
-> =20
-> +++ b/fs/cifs/smb2ops.c
-> @@ -510,6 +510,43 @@ smb3_negotiate_rsize(struct cifs_tcon *tcon, struct =
-smb3_fs_context *ctx)
->  	return rsize;
->  }
-> =20
-> +/*
-> + * compare two interfaces a and b
-> + * return 0 if everything matches.
-> + * return 1 if a is rdma capable, or rss capable, or has higher link spe=
-ed
-> + * return -1 otherwise.
-> + */
-> +static int
-> +iface_cmp(struct cifs_server_iface *a, struct cifs_server_iface *b)
-> +{
-> +	int cmp_ret =3D 0;
-> +
-> +	WARN_ON(!a || !b);
-> +	if (a->rdma_capable =3D=3D b->rdma_capable) {
-> +		if (a->rss_capable =3D=3D b->rss_capable) {
-> +			if (a->speed =3D=3D b->speed) {
-> +				cmp_ret =3D cifs_ipaddr_cmp((struct sockaddr *) &a->sockaddr,
-> +							  (struct sockaddr *) &b->sockaddr);
-> +				if (!cmp_ret)
-> +					return 0;
-> +				else if (cmp_ret > 0)
-> +					return 1;
-> +				else
-> +					return -1;
-
-cifs_ipaddr_cmp already returns 0/1/-1, so this can really be "return cmp_r=
-et".
-
-Best regards,
-									Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---PrDF4c4GHgG1I1r/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZK3AZwAKCRAw5/Bqldv6
-8uRHAJwP4r0wJjkrQds9FYH8w/a4U5stQACcCF0ivTGiLDSBXupgRSc9djKk3QU=
-=c7q1
------END PGP SIGNATURE-----
-
---PrDF4c4GHgG1I1r/--
