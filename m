@@ -2,191 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DAD774EEC5
-	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 14:29:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1222774EF2A
+	for <lists+stable@lfdr.de>; Tue, 11 Jul 2023 14:41:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231669AbjGKM3Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 08:29:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59410 "EHLO
+        id S230018AbjGKMlO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 08:41:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbjGKM1n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 08:27:43 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32B471997
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 05:27:21 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2b700e85950so85869701fa.3
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 05:27:21 -0700 (PDT)
+        with ESMTP id S230455AbjGKMlO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 08:41:14 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 227C49E;
+        Tue, 11 Jul 2023 05:41:10 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-31297125334so4076277f8f.0;
+        Tue, 11 Jul 2023 05:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689078348; x=1691670348;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=808cWVgdSJtz5Dx4aZ53MdaH6Vo53NudM0hKAzBS+gA=;
-        b=NWOE0UlOKuwDy0QCKfAc4e3idVdnKINl1aCWDJOemRtNdmuPq4E2L9oATJGRT43RfF
-         aQ3yVgOlOM2r+eqo+IVUZ+ryxfHg/sMu9uvvG8xLYXykD0gFVyoZAxCjnRoEA8TKwbL0
-         NapBAVjL+ignJANMOGe0dk75CbdPpViciVJ+uNcuU9NjSjWtMDdCvEG/p5Q5BZbNnFK0
-         7pvLmqeeeW1uGGzkUki8ZmA1F0tTrSLrz9vYUTonhZv+2zGgMSlsFH503YgU+GyhRPXq
-         3ZmqV+v4/95UjrKZGbmiTM9JJiYSHbxTizUeLQijVkzhkxiT6H6DQRoMQU1lLIAJ/dz9
-         Q8ng==
+        d=gmail.com; s=20221208; t=1689079268; x=1691671268;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=t/3Y5eqgUDi7lnr0rk+hWsRfp5e3voV9c3ZLFxt0Inc=;
+        b=c7ka5wjnDDt+Qsm1M0tCumBT7q4VnoBU/CsY5j79PwKYyD0g31Tl6Mw6I6UJ4OHtxd
+         iEth1DprPLB6THVlX8GMLcacluvnaoJZlgq2l3wV1wdedTNDFSu8Af6HcG8fUoZvE+XH
+         3rXacNuOt9HJjfUrtLANBu858uBEO/34h5m86Hz7AbooJwmXmPVSBkHN+YHVs3C3UmUL
+         FiX3vG5S7pZt2YLf1kG0xFOPg6VyWjqs13KMoq0yxv72UncwUzSUe9tGTVbpC/G6ZAmK
+         YJfNvTmC8s4neip6dkvdyCOZCB9LalDtIv+5un3TJZk/4A+DIDkn16i8QVB5o+3po71k
+         /rNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689078348; x=1691670348;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=808cWVgdSJtz5Dx4aZ53MdaH6Vo53NudM0hKAzBS+gA=;
-        b=f/P7b0BPXA0nrEezw+GU8vJDZbWlVIpTQw0pQQzi603iF5+HwZMLB18rK1MZnUIY3J
-         q65LR0o0i6mFDW/Wfaa/MNZo2wcHSatGZbLpuYUf8jQa9bi38anv0sULy3zlQ0O8DCvN
-         mmBb+wacTj9qQGsgOffs67nrMG8IEMpX/3nD/S3eV1QIw2QMAMPTyDJyR7GUbVk+eiHd
-         IpEYHQjIPSZVucqe56rX3xtfeTpCP2qcScmbPpmoqhyXnqQaUVK+XZN/nLSt10qCHuPy
-         oiBT8IyYYMBT9dNQxdPbf6a9JTfRNzvr7TJe6gQ+Pr0HbWHZQSrO6wQxlRK8qTKgCbSg
-         aNJQ==
-X-Gm-Message-State: ABy/qLbbjM1jL2PJfpNizto1vqnpNsP4KZthoogIV5BkR4+yUSeHlVKu
-        b0/SE56B4MEjmtsVlOy1hFIA5g==
-X-Google-Smtp-Source: APBJJlHM7ZpG2kwuJtbfFitGyyFdNrjDc+3x9k+Fj32plpJVwQPrm41SKtcOMRcHWpDyhAxbtC4Pow==
-X-Received: by 2002:a2e:6e0e:0:b0:2b6:eb5a:d377 with SMTP id j14-20020a2e6e0e000000b002b6eb5ad377mr12663043ljc.5.1689078348096;
-        Tue, 11 Jul 2023 05:25:48 -0700 (PDT)
-Received: from [192.168.1.101] (abyl96.neoplus.adsl.tpnet.pl. [83.9.31.96])
-        by smtp.gmail.com with ESMTPSA id y21-20020a2e95d5000000b002b6d4a63cfdsm439953ljh.42.2023.07.11.05.25.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Jul 2023 05:25:47 -0700 (PDT)
-Message-ID: <e7be0a03-c980-589a-8b1a-947c467b0bc8@linaro.org>
-Date:   Tue, 11 Jul 2023 14:25:45 +0200
+        d=1e100.net; s=20221208; t=1689079268; x=1691671268;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=t/3Y5eqgUDi7lnr0rk+hWsRfp5e3voV9c3ZLFxt0Inc=;
+        b=Z3zOo61LWPoTabph9+LFiiv4i4qDM8ACMA5mGl1SKKPLSdo+og115R2x7kyAwe+hr/
+         uh7dDzB5ffPrpe5GmeCstRm5eg+W8n5T49pJh2Cl2+lu5TA29bgTK0oQPow3YgaMS7Oo
+         GA/hxC5XNVCFpHsMvSgfEIaleTVVL7ptcUOeLfmh/gNlNu9WY/t1/129zL/ymFCVrzg0
+         BuUxTIOdF40yAfIhLfs8DqOWCRaE5qBUlH0BCX7Ghzb0EjiAQU4o2S/KFp3bCcFSOijg
+         pkz90NTRdpdrZthNRPVg7+FWbgZY/k84eOWiPfX1+rjUW0jN9G3EVczlvh3YhDb3wSn0
+         FykA==
+X-Gm-Message-State: ABy/qLaIlFwM3odPp3Wey2+d1O/FjqrwYyk0FUNSCSwR9Dfg4VzP5lnX
+        eOc7ZVOgPKF301GLVuWQw0A=
+X-Google-Smtp-Source: APBJJlEi3QmwW3hwZSARaZwsURkuc1YZVSe0WBhWz6AyB6fPXT8oNYBGxh7NbHB6m6Pf32AJadzU2w==
+X-Received: by 2002:adf:ef89:0:b0:314:140a:e629 with SMTP id d9-20020adfef89000000b00314140ae629mr17326624wro.7.1689079268381;
+        Tue, 11 Jul 2023 05:41:08 -0700 (PDT)
+Received: from [192.168.1.23] ([176.232.61.170])
+        by smtp.gmail.com with ESMTPSA id b16-20020a5d5510000000b0031417b0d338sm2167257wrv.87.2023.07.11.05.41.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jul 2023 05:41:07 -0700 (PDT)
+Message-ID: <bb5580e93d244400c3330d7091bf64868aa2053f.camel@gmail.com>
+Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
+ Laptop Intel 12th gen
+From:   Grundik <ggrundik@gmail.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Christian Hesse <list@eworm.de>,
+        linux-integrity@vger.kernel.org
+Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
+        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Christian Hesse <mail@eworm.de>, stable@vger.kernel.org,
+        roubro1991@gmail.com,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 11 Jul 2023 15:41:05 +0300
+In-Reply-To: <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
+References: <20230710133836.4367-1-mail@eworm.de>
+         <20230710142916.18162-1-mail@eworm.de>
+         <20230710231315.4ef54679@leda.eworm.net>
+         <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 (by Flathub.org) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 00/17] Venus QoL / maintainability fixes
-Content-Language: en-US
-To:     Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Vikash Garodia <quic_vgarodia@quicinc.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Dikshita Agarwal <dikshita@qti.qualcomm.com>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Mansur Alisha Shaik <mansur@codeaurora.org>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Hans Verkuil <hans.verkuil@cisco.com>,
-        Dikshita Agarwal <quic_dikshita@quicinc.com>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        stable@vger.kernel.org
-References: <20230228-topic-venus-v4-0-feebb2f6e9b8@linaro.org>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230228-topic-venus-v4-0-feebb2f6e9b8@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 30.05.2023 14:30, Konrad Dybcio wrote:
-> v3 -> v4:
-> - Rebase on Stanimir's venus-for-next-v6.5
-> - Collapse 2 identical if-statements in "Sanitize venus_boot_core()
->   per-VPU-version"
-> - Reword "Assign registers based on VPU version"
-> - Check for IS_IRIS2_1() instead of wrongly checking for core->use_tz,
->   update commit msg in "media: venus: firmware: Correct IS_V6() checks"
-> - Access correct struct fields in "Use newly-introduced
->   hfi_buffer_requirements accessors", drop Bryan's r-b
-Stan,
+On Tue, 2023-07-11 at 00:29 +0300, Jarkko Sakkinen wrote:
+> On Mon, 2023-07-10 at 23:13 +0200, Christian Hesse wrote:
+>=20
+>=20
+> OK, this good to hear! I've been late with my pull request (past rc1)
+> because of kind of conflicting timing with Finnish holiday season and
+> relocating my home office.
+>=20
+> I'll replace v2 patches with v3 and send the PR for rc2 after that.
+> So unluck turned into luck this time :-)
+>=20
+> Thank you for spotting this!
 
-could you please pick this up?
+I want to say: this issue is NOT limited to Framework laptops.
 
-Konrad
-> 
-> v3: https://lore.kernel.org/r/20230228-topic-venus-v3-0-6092ae43b58f@linaro.org
-> 
-> v2 -> v3:
-> - Rephrase "Write to VIDC_CTRL_INIT after unmasking interrupts" commit msg
-> - Drop "Remap bufreq fields on HFI6XX"
-> - Rephrase "Introduce VPU version distinction" commit msg
-> - Better explain "Leave a clue for homegrown porters"
-> - Drop incorrect fixes tags/rephrase version check alternations
-> - Drop AR50L/IRIS1 from if-conditions, they'll be introduced separately
-> - pick up tags
-> - rebase on next-20230517 (no effective changes)
-> 
-> v2: https://lore.kernel.org/r/20230228-topic-venus-v2-0-d95d14949c79@linaro.org
-> 
-> v1 -> v2:
-> - Move "Write to VIDC_CTRL_INIT after unmasking interrupts" up and add
->   a Fixes tag & Cc stable
-> - Reword the comment in "Correct IS_V6() checks"
-> - Move up "media: venus: Remap bufreq fields on HFI6XX", add Fixes and
->   Cc stable
-> - Use better English in "Use newly-introduced hfi_buffer_requirements
->   accessors" commit message
-> - Mention "Restrict writing SCIACMDARG3 to Venus V1/V2" doesn't seem to
->   regress SM8250 in the commit message
-> - Pick up tags (note: I capitalized the R in Dikshita's 'reviewed-by'
->   and removed one occurrence of random '**' to make sure review tools
->   like b4 don't go crazy)
-> - Handle AR50_LITE in "Assign registers based on VPU version"
-> - Drop /* VPUn */ comments, they're invalid as explained by Vikash
-> - Take a different approach to the sys_idle problem in patch 1
-> 
-> v1: https://lore.kernel.org/r/20230228-topic-venus-v1-0-58c2c88384e9@linaro.org
-> 
-> Currently upstream assumes all (well, almost all - see 7280 or CrOS
-> specific checks) Venus implementations using the same version of the
-> Hardware Firmware Interface can be treated the same way. This is
-> however not the case.
-> 
-> This series tries to introduce the groundwork to start differentiating
-> them based on the VPU (Video Processing Unit) hardware type, fixes a
-> couple of issues that were an effect of that generalized assumption
-> and lays the foundation for supporting 8150 (IRIS1) and SM6115/QCM2290
-> (AR50 Lite), which will hopefully come soon.
-> 
-> Tested on 8250, but pretty please test it on your boards too!
-> 
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> ---
-> Konrad Dybcio (17):
->       media: venus: hfi_venus: Only consider sys_idle_indicator on V1
->       media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts
->       media: venus: Introduce VPU version distinction
->       media: venus: Add vpu_version to most SoCs
->       media: venus: firmware: Leave a clue about obtaining CP VARs
->       media: venus: hfi_venus: Sanitize venus_boot_core() per-VPU-version
->       media: venus: core: Assign registers based on VPU version
->       media: venus: hfi_venus: Sanitize venus_halt_axi() per-VPU-version
->       media: venus: hfi_venus: Sanitize venus_isr() per-VPU-version
->       media: venus: hfi_venus: Sanitize venus_cpu_and_video_core_idle() per-VPU-version
->       media: venus: hfi_venus: Sanitize venus_cpu_idle_and_pc_ready() per-VPU-version
->       media: venus: firmware: Sanitize per-VPU-version
->       media: venus: hfi_platform: Check vpu_version instead of device compatible
->       media: venus: vdec: Sanitize vdec_set_work_route() per-VPU-version
->       media: venus: Introduce accessors for remapped hfi_buffer_reqs members
->       media: venus: Use newly-introduced hfi_buffer_requirements accessors
->       media: venus: hfi_venus: Restrict writing SCIACMDARG3 to Venus V1/V2
-> 
->  drivers/media/platform/qcom/venus/core.c           |  7 ++-
->  drivers/media/platform/qcom/venus/core.h           | 15 ++++++
->  drivers/media/platform/qcom/venus/firmware.c       | 18 +++++--
->  drivers/media/platform/qcom/venus/helpers.c        |  7 +--
->  drivers/media/platform/qcom/venus/hfi_helper.h     | 61 +++++++++++++++++++---
->  drivers/media/platform/qcom/venus/hfi_msgs.c       |  2 +-
->  .../media/platform/qcom/venus/hfi_plat_bufs_v6.c   | 22 ++++----
->  drivers/media/platform/qcom/venus/hfi_platform.c   |  2 +-
->  drivers/media/platform/qcom/venus/hfi_venus.c      | 42 +++++++--------
->  drivers/media/platform/qcom/venus/vdec.c           | 10 ++--
->  drivers/media/platform/qcom/venus/vdec_ctrls.c     |  2 +-
->  drivers/media/platform/qcom/venus/venc.c           |  4 +-
->  drivers/media/platform/qcom/venus/venc_ctrls.c     |  2 +-
->  13 files changed, 133 insertions(+), 61 deletions(-)
-> ---
-> base-commit: 9f9f8ca6f012d25428f8605cb36369a449db8508
-> change-id: 20230228-topic-venus-70ea3bc76688
-> 
-> Best regards,
+For example this MSI gen12 i5-1240P laptop also suffers from same
+problem:
+        Manufacturer: Micro-Star International Co., Ltd.
+        Product Name: Summit E13FlipEvo A12MT
+        Version: REV:1.0
+        SKU Number: 13P3.1
+        Family: Summit
+
+So, probably just blacklisting affected models is not the best
+solution...
+
