@@ -2,74 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CDCA74FF03
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 08:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EFD974FFB0
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 08:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231418AbjGLGGk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 02:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52528 "EHLO
+        id S229660AbjGLGs7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 02:48:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229772AbjGLGGj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 02:06:39 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6A52A1;
-        Tue, 11 Jul 2023 23:06:35 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-98dfb3f9af6so840184366b.2;
-        Tue, 11 Jul 2023 23:06:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689141994; x=1691733994;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GzDlVHFtWng8mcmSi0ZdKyMrcr+HySjd81l4eJAURew=;
-        b=jk7xdo09NZmRSv7Wwrus1PLVrTJwd9BSERb3/+VuhKlQ0P8BoPWSvOsZH8S4qvHEE/
-         pD3FHd5LlqKqpQJK7Lj+HgVwxGmCvW6xQp+6AUlh5hc8naDwursg8BRp8dnsf2Zn9Bvn
-         8awZ+m/Mvvms8g00CggY4daHNQ2fUX2hU6usgOJom72PsCqfwcxETZgG+wcZALOjF0T5
-         u3qLwDJpQgP5/NldpApXI3YWWeyJIItRlN26Hhw5vhWXsXL2qgVx7LYaem5uPsampDcy
-         /LJSG7tXMqBZPUD156C+Q20TPp1J3KagZN075GUQs1yYZriIENGm0da7/EpqmKV3CRhG
-         BuJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689141994; x=1691733994;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GzDlVHFtWng8mcmSi0ZdKyMrcr+HySjd81l4eJAURew=;
-        b=iphJlJNxk1SLGeNU8FEG5q1CsUS529R15xzRGfgdEt6KLO6bhTaqLwDkxWhZ9U3Gq/
-         BTufRYIv5TLtwUKYbQWiBLTH1vNbRb/S8bFWfz0GKU8vyg2xReaMbJcPdjPTcDkp5jzQ
-         6n6r6P0qCQtJcHisbt2o2TvyD62MzbkJc8nPK3oVrGbWLjbb4+vxh+TuZ2VERR0ZrN0k
-         FlV+ky3eCr6q4Tzn4REiRHiAsUOO6GL91FLh0Y9ZLId/DPlCeCkpHOIeomhiP9heC7bX
-         p/rMg1vupN6ebh3JPfMPYZ7nZWnQJfEKVqlS46XGeoTZ4HqN3LDazECB/8yQTVp1PHxQ
-         Upgg==
-X-Gm-Message-State: ABy/qLaLtE2hY6p/rE/LrMU9B3PFcFIPhHV21YqP3qh36bKnbMvHYcWp
-        9I37WyhqZmFibvUfFiPdG+s=
-X-Google-Smtp-Source: APBJJlEqlyUo5p9DCmi9jShPBOKjyGjq3Cj8mGxAk1JO3vJ6oM5hHA7c4ew1OZL24xD+f+YYdJMoYQ==
-X-Received: by 2002:a17:906:2c9:b0:96a:3f29:40d9 with SMTP id 9-20020a17090602c900b0096a3f2940d9mr16314810ejk.25.1689141993935;
-        Tue, 11 Jul 2023 23:06:33 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id d20-20020a170906371400b0098e2eaec395sm2073666ejc.130.2023.07.11.23.06.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 23:06:32 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-        id 0E4FABE2DE0; Wed, 12 Jul 2023 08:06:32 +0200 (CEST)
-Date:   Wed, 12 Jul 2023 08:06:32 +0200
-From:   Salvatore Bonaccorso <carnil@debian.org>
-To:     Pablo Neira Ayuso <pablo@netfilter.org>
-Cc:     netfilter-devel@vger.kernel.org, sashal@kernel.org,
-        gregkh@linuxfoundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH -stable,5.10,v2 01/11] netfilter: nf_tables: use
- net_generic infra for transaction data
-Message-ID: <ZK5C6EL6Fz0o3w2D@eldamar.lan>
-References: <20230705150011.59408-1-pablo@netfilter.org>
- <20230705150011.59408-2-pablo@netfilter.org>
+        with ESMTP id S231238AbjGLGs6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 02:48:58 -0400
+Received: from mx.mylinuxtime.de (mx.mylinuxtime.de [195.201.174.144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0DEB10FC
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 23:48:56 -0700 (PDT)
+Received: from leda.eworm.net (unknown [194.36.25.21])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mx.mylinuxtime.de (Postfix) with ESMTPSA id BF48E23D399;
+        Wed, 12 Jul 2023 08:48:54 +0200 (CEST)
+Date:   Wed, 12 Jul 2023 08:48:50 +0200
+From:   Christian Hesse <list@eworm.de>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     linux-integrity@vger.kernel.org,
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Christian Hesse <mail@eworm.de>, stable@vger.kernel.org,
+        roubro1991@gmail.com,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
+ Laptop Intel 12th gen
+Message-ID: <20230712084850.1e12ca3f@leda.eworm.net>
+In-Reply-To: <31d20085105784a02b60f11d46f2c7fec4d3aa0a.camel@kernel.org>
+References: <20230710133836.4367-1-mail@eworm.de>
+        <20230710142916.18162-1-mail@eworm.de>
+        <20230710231315.4ef54679@leda.eworm.net>
+        <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
+        <31d20085105784a02b60f11d46f2c7fec4d3aa0a.camel@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+X-Face: %O:rCSk<c"<MpJ:yn<>HSKf7^4uF|FD$9$I0}g$nbnS1{DYPvs#:,~e`).mzj\$P9]V!WCveE/XdbL,L!{)6v%x4<jA|JaB-SKm74~Wa1m;|\QFlOg>\Bt!b#{;dS&h"7l=ow'^({02!2%XOugod|u*mYBVm-OS:VpZ"ZrRA4[Q&zye,^j;ftj!Hxx\1@;LM)Pz)|B%1#sfF;s;,N?*K*^)
+Face:   iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAGFBMVEUZFRFENy6KVTKEd23CiGHeqofJvrX4+vdHgItOAAAACXBIWXMAAA3XAAAN1wFCKJt4AAACUklEQVQ4y2VUTZeqMAxNxXG2Io5uGd64L35unbF9ax0b3OLxgFs4PcLff0lBHeb1QIq5uelNCEJNq/TIFGyeC+iugH0WJr+B1MvzWASpuP4CYHOB0VfoDdddwA7OIFQIEHjXDiCtV5e9QX0WMu8AG0mB7g7WP4GqeqVdsi4vv/5kFBvaF/zD7zDquL4DxbrDGDyAsgNYOsJOYzth4Q9ZF6iLV+6TLAT1pi2kuvgAtZxSjoG8cL+8vIn251uoe1OOEWwbIPU04gHsmMsoxyyhYsD2FdIigF1yxaVbBuSOCAlCoX324I7wNMhrO1bhOLsRoA6DC6wQ5eQiSG5BiWQfM4gN+uItQTRDMaJUhVbGyKWCuaaUGSVFVKpl4PdoDn3yY8J+YxQxyhlHfoYOyPgyDcO+cSQK6Bvabjcy2nwRo3pxgA8jslnCuYw23ESOzHAPYwo4ITNQMaOO+RGPEGhSlPEZBh2jmBEjQ5cKbxmr0ruAe/WCriUxW76I8T3h7vqY5VR5wXLdERodg2rHEzdxxk5KpXTL4FwnarvndKM5/MWDY5CuBBdQ+3/0ivsUJHicuHd+Xh3jOdBL+FjSGq4SPCwco+orpWlERRTNo7BHCvbNXFVSIQMp+P5QsIL9upmr8kMTUOfxEHoanwzKRcNAe76WbjBwex/RkdHu48xT5YqP70DaMOhBcTHmAVDxLaBdle93oJy1QKFUh2GXT4am+YH/GGel1CeI98GdMXsytjCKIq/9cMrlgxFCROv+3/BU1fijNpcVD6DxE8VfLBaxUGr1D5usgDYdjwiPAAAAAElFTkSuQmCC
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230705150011.59408-2-pablo@netfilter.org>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+Content-Type: multipart/signed; boundary="Sig_/yQI_sn/JO1S3ejmlYu+D=W5";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,22 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+--Sig_/yQI_sn/JO1S3ejmlYu+D=W5
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 05, 2023 at 05:00:01PM +0200, Pablo Neira Ayuso wrote:
-> From: Florian Westphal <fw@strlen.de>
-> 
-> [ 0854db2aaef3fcdd3498a9d299c60adea2aa3dc6 ]
+Jarkko Sakkinen <jarkko@kernel.org> on Tue, 2023/07/11 00:51:
+> On Tue, 2023-07-11 at 00:29 +0300, Jarkko Sakkinen wrote:
+> > OK, this good to hear! I've been late with my pull request (past rc1)
+> > because of kind of conflicting timing with Finnish holiday season and
+> > relocating my home office.
+> >=20
+> > I'll replace v2 patches with v3 and send the PR for rc2 after that.
+> > So unluck turned into luck this time :-)
+> >=20
+> > Thank you for spotting this! =20
+>=20
+> Please, sanity check before I send the PR for rc2:
+>=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/
 
-For all patches in this series, that should be either
+Looks good and works as expected on Framework Laptop 12th Gen, verified by =
+me
+and someone in the linked bugzilla ticket. I do not have Framework Laptop
+13th Gen available for testing.
 
-[ Upstream commit 0854db2aaef3fcdd3498a9d299c60adea2aa3dc6 ]
+Looks like there are general workarounds by disabling interrupts after a
+number of unhandled IRQs. Will this still go in?
+--=20
+main(a){char*c=3D/*    Schoene Gruesse                         */"B?IJj;MEH"
+"CX:;",b;for(a/*    Best regards             my address:    */=3D0;b=3Dc[a+=
++];)
+putchar(b-1/(/*    Chris            cc -ox -xc - && ./x    */b/42*2-3)*42);}
 
-or
+--Sig_/yQI_sn/JO1S3ejmlYu+D=W5
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-commit 0854db2aaef3fcdd3498a9d299c60adea2aa3dc6 upstream.
+-----BEGIN PGP SIGNATURE-----
 
-to keep current used formats?
+iQEzBAEBCAAdFiEEXHmveYAHrRp+prOviUUh18yA9HYFAmSuTNIACgkQiUUh18yA
+9HYg+QgAwzieNysWbqPhs/vDDbC2UQSFn9f7GXd/kHbjTSNbH3RMsJCwzB1W9kIl
+cjxizF1ljdu1YUfq/GgLn1GpOhqCOPbYDSmnCiPHI25I4h25djJwBxTHOwjYmYdR
+JvnSC8h3VczNcJLjswKX2lzl+nkNGclkszYF/RaTwX+Rj4sTRx56XbXsAxGYgQPN
+HMabdUlm34Tb9uOXETAl4k1nE1sS/iQDpgLnES9HOZPSvusjZ5oiKiwGypT/FFxe
+//Zu3u0fCFevFFHokDswB4keGaAh/skbZkpJhmGPMo80Pq8rayO5A7wou9yVLhO6
+KmVSNyN/dJiRaa0JxdnUxQI0Xq576w==
+=tP9E
+-----END PGP SIGNATURE-----
 
-Regards,
-Salvatore
+--Sig_/yQI_sn/JO1S3ejmlYu+D=W5--
