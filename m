@@ -2,67 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA107750596
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 13:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2847C750739
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 13:55:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232155AbjGLLIh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 07:08:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42634 "EHLO
+        id S233302AbjGLLzM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 07:55:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbjGLLIf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 07:08:35 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39FB1727
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 04:08:34 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-5149aafef44so8487039a12.0
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 04:08:34 -0700 (PDT)
+        with ESMTP id S233338AbjGLLyu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 07:54:50 -0400
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0716926B0;
+        Wed, 12 Jul 2023 04:53:59 -0700 (PDT)
+Received: by mail-ot1-x332.google.com with SMTP id 46e09a7af769-6b923910dd4so405642a34.1;
+        Wed, 12 Jul 2023 04:53:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citymesh.com; s=google; t=1689160113; x=1691752113;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PYbkaTHL0AVDHrq4F5UzM8O5/ZedTs7J/tvsChbMyqI=;
-        b=YZd+WO2vqcn3FDaFSId6HXRL6X8u3D4MmYihBMJ63Bm814qN7gLeEwHFgQ9/ZPw8iT
-         xfxND2FR2NK6zUv6eLDcNzf1WoaG30A7Q9T3lA7ynmlnCkHpg7VqeinvwjKqA7KvseDg
-         cGJ2bTGZu5JQeBMq93Ed8YhajcqHPs7kcYQ+bdxe85cSeAwt0znQlenVjCGZ/q7+T7QE
-         Hoz1ZoNIiIYxcpAuPCpcYwLB6Ydjn/s2LC7pEl/BXxDAgK9sMEn180B99GJFyCCklJtS
-         68xgNftYPCRv/YCRYDPttEka3hYJCXIYYWv5xse+KQXoltRqehuB2DeRtse6r8grpno8
-         i4XA==
+        d=gmail.com; s=20221208; t=1689162789; x=1689767589;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lk2CkawsWRPhUJhT7owy+MSUDnvJYEHIC5w9ORyYobQ=;
+        b=Km9zYC/U6UXcasyyGW1McNOjTg4581w63rMh1WmLdV8hhNk70SF+VsTtw72+4GSVhi
+         tjj3rxoSkaVcbqvPfr87FIikooOFnixJtOxSXNKKvMPqzicEA5Fg3goHUPjbzq7jQ6A3
+         yiaglOgdeLY99baAsNfsZMAc6cYhwhou8dukfGVwSeChImq+gC1DTIB9k7JIO6SLdRsU
+         7tcnD+MFbdcZjiHDogLqxH942DciGVQBc6kz/TQPOpZ3Uy0UhwPgdqAotlqYarj5fMxu
+         wSN0IsL5L/8X3RBwHIrxWo1x9hpFZbHEYqiuX0yMfFrDML+unOnMaa3HSekYxu24dPFc
+         /R1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689160113; x=1691752113;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PYbkaTHL0AVDHrq4F5UzM8O5/ZedTs7J/tvsChbMyqI=;
-        b=WIK2Vtifkl7SpK5bBU7Xy7XS/syRuG8OUnoloWNyIKUrhCnNrGMY0MYVBv/8rK8ctg
-         xZwa8WyWjYh7TTWcwRdQo8BR9jL6o5LPgkZ8pztMPGuBjfjKeTw4MeHTL0KW85q5d+X7
-         9BD86vHCNlknJwsJ9erpiHzzkYF/uZGI6RMFIi9aMsQsUFLCXowmd2113QT8i07fx96F
-         AvDiYOQ63h6ZayodiU7klpLSogc95VPxFixsa4v4J/w+lCPuGOLU6q6eeiqqHZ12YbrK
-         3M8roH8Xl+RVdo7/zCEvoyPqQagnzzv8kUHd1U55wJwAAlhsdzV6w+shCwKEt/uStp2b
-         Xr0A==
-X-Gm-Message-State: ABy/qLaj40YlTEPfoPyNf+QhxO+dK+srIUi9QZTGaDhha5axx71RZ/aG
-        wonqhfRNwsDuoRiNLeFwYTrkVritme9CKJyYYbBDBA==
-X-Google-Smtp-Source: APBJJlEJOiq68sxxfU5J7oFmwLARPITYcdmFCjS0hmsuzxOaJEzxlo1GWuwhXC0wCReFa/GX1IhP0G+Sul+vgFB5Mik=
-X-Received: by 2002:a50:ec99:0:b0:51e:ceb:7d71 with SMTP id
- e25-20020a50ec99000000b0051e0ceb7d71mr15990239edr.39.1689160113196; Wed, 12
- Jul 2023 04:08:33 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689162789; x=1689767589;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lk2CkawsWRPhUJhT7owy+MSUDnvJYEHIC5w9ORyYobQ=;
+        b=BxyhJGDYEvKBQ8FVIzcPiGUEkrT+LmvsUJC1c2CJxQBeqVAipnX5BE6aH/JuObtYQD
+         vo6pXxbyF7nVi2owY4U3JxgMyuYdf0KXYc3WUI7Ht0BgS5mzEsRGSFb/9SAD/h67DxqG
+         wDFTzh2crGqETGOjAegz2IvDU7yA8MNSGfNDX0oCoZNo9OUiL8NW0VglOq3ETsIZQtOC
+         V/6k9L8wU8grornepYzb0QbyRHdNQfwqCh10dwuvmbsUjrZT0lhMAeimWam7KtfrDQAl
+         2TdpFetk8drdxGCt48sxttFQxOTjUyrRrQT8Ff+DLZAx/KFwLG1I67/fxyX1/Qm/hDu6
+         bPKA==
+X-Gm-Message-State: ABy/qLZ4cr1JUMOX6BoNXMj44tgqNerF4QELM4UIoVNDXwo/9HqG11jl
+        R+FeHLb/+4b0/ja6mrMGt60=
+X-Google-Smtp-Source: APBJJlHEla6YNT5iMgxmsaeujd1HxpkpIWcPh/o2YYUbBsJqgGJgv5+E7pT2BZwaZYV6WiMOr2m5fw==
+X-Received: by 2002:a05:6870:230d:b0:1b0:6500:8045 with SMTP id w13-20020a056870230d00b001b065008045mr13859449oao.1.1689162789293;
+        Wed, 12 Jul 2023 04:53:09 -0700 (PDT)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:ce5f:dbc6:1eb6:2900])
+        by smtp.gmail.com with ESMTPSA id zh27-20020a0568716b9b00b001a663e49523sm1905890oab.36.2023.07.12.04.53.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Jul 2023 04:53:08 -0700 (PDT)
+From:   Fabio Estevam <festevam@gmail.com>
+To:     shawnguo@kernel.org
+Cc:     hs@denx.de, linux-arm-kernel@lists.infradead.org, sboyd@kernel.org,
+        abelvesa@kernel.org, linux-clk@vger.kernel.org,
+        Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
+Subject: [PATCH v3 1/3] ARM: dts: imx6sx: Remove LDB endpoint
+Date:   Wed, 12 Jul 2023 08:52:59 -0300
+Message-Id: <20230712115301.690714-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230712083841.222607-1-koen.vandeputte@citymesh.com>
- <9936de52da43347ba0ccfb8737440a9698fb4585.camel@sipsolutions.net>
- <CAPh3n82BY0bFkHs6DKKf6+ZUZw+DJmTy7=JEG8REFHyHFMqoVQ@mail.gmail.com> <82b75a5e344b23a388a8f078de730272e91f99d2.camel@sipsolutions.net>
-In-Reply-To: <82b75a5e344b23a388a8f078de730272e91f99d2.camel@sipsolutions.net>
-From:   Koen Vandeputte <koen.vandeputte@citymesh.com>
-Date:   Wed, 12 Jul 2023 13:08:21 +0200
-Message-ID: <CAPh3n82NPvU4AXgQ3y21kSkMWW18UNrOc1StKHuYeGRN4xNt5Q@mail.gmail.com>
-Subject: Re: [PATCH] wifi: nl80211: fix mbssid nesting
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>,
-        Aloka Dixit <alokad@codeaurora.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,62 +69,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 12:34=E2=80=AFPM Johannes Berg
-<johannes@sipsolutions.net> wrote:
->
-> On Wed, 2023-07-12 at 11:05 +0200, Koen Vandeputte wrote:
-> > On Wed, Jul 12, 2023 at 10:44=E2=80=AFAM Johannes Berg
-> > <johannes@sipsolutions.net> wrote:
-> > >
-> > > On Wed, 2023-07-12 at 10:38 +0200, Koen Vandeputte wrote:
-> > > > Executing command NL80211_CMD_GET_WIPHY and parsing it's output
-> > > > natively without libnl shows following attributes as part of
-> > > > the nl80211 generated netlink message (part 16):
-> > > >
-> > > > GetWiphy: Type: 1
-> > > > GetWiphy: Type: 2
-> > > > GetWiphy: Type: 46
-> > > > GetWiphy: Type: 33074 <-- wrong enum value, above MAX also ..
-> > >
-> > > That's not wrong, that's just NLA_F_NESTED | NL80211_ATTR_MBSSID_CONF=
-IG,
-> > > since it *is* in fact a nested attribute.
-> >
-> > ahha! so one should check on each received attribute if this flag is se=
-t?
->
-> Yeah, that indicates that it's nested, without having the out-of-band
-> information that it should be nested.
->
->
-> There's also NLA_F_NET_BYTEORDER, so we really only have 14 bits for the
-> type, so you should probably use NLA_TYPE_MASK.
->
-> > I guess all the ones with the noflag so far are using it to avoid
-> > breaking legacy stuff?
->
-> Right. When we realized that nla_put_nested() didn't actually put the
-> nested flag it was kind of too late - although a lot of userspace
-> probably would have handled it correctly (if it uses libnl, etc.) But
-> still, we converted it all to nla_put_nested_noflag(), but we really
-> shouldn't be adding new code that calls nla_put_nested_noflag() since by
-> definition new code is new attributes, and then userspace can be
-> updated.
->
-> Unless you're saying this somehow breaks old userspace that doesn't even
-> understand NL80211_ATTR_MBSSID_CONFIG yet? But that seems unlikely, you
-> have to be prepared to see attributes bigger than what you expected and
-> skip them?
->
-Yeah, I've already updated our internal code to filter netlink type
-using NLA_TYPE_MASK.
-Works like a charm now.
-Our codebase was initially made during kernel 3.x time when that
-filtering was not needed.. and within OpenWRT, the wireless stack got
-updated to 6.1.x
-bringing in mbssid netlink from 5.16.
-So this popped up suddenly :-)
+From: Fabio Estevam <festevam@denx.de>
 
-Thanks for the patience and sorry for the noise!
+Remove the LDB endpoint description from the common imx6sx.dtsi
+as it causes regression for boards that has the LCDIF connected
+directly to a parallel display.
 
-> johannes
+Let the LDB endpoint be described in the board devicetree file
+instead.
+
+Cc: stable@vger.kernel.org
+Fixes: b74edf626c4f ("ARM: dts: imx6sx: Add LDB support")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+---
+Changes since v2:
+- Rebased against 6.5-rc1.
+
+ arch/arm/boot/dts/nxp/imx/imx6sx.dtsi | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6sx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sx.dtsi
+index 3a4308666552..41c900929758 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6sx.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6sx.dtsi
+@@ -863,7 +863,6 @@ port@0 {
+ 							reg = <0>;
+ 
+ 							ldb_from_lcdif1: endpoint {
+-								remote-endpoint = <&lcdif1_to_ldb>;
+ 							};
+ 						};
+ 
+@@ -1309,11 +1308,8 @@ lcdif1: lcdif@2220000 {
+ 					power-domains = <&pd_disp>;
+ 					status = "disabled";
+ 
+-					ports {
+-						port {
+-							lcdif1_to_ldb: endpoint {
+-								remote-endpoint = <&ldb_from_lcdif1>;
+-							};
++					port {
++						lcdif1_to_ldb: endpoint {
+ 						};
+ 					};
+ 				};
+-- 
+2.34.1
+
