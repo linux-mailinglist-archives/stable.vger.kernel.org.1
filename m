@@ -2,86 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C96D7501F4
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 10:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F637750233
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 10:59:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232008AbjGLIoa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 04:44:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41350 "EHLO
+        id S232145AbjGLI7D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 04:59:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbjGLIoa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 04:44:30 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C711894;
-        Wed, 12 Jul 2023 01:44:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=ZLP3oZ1RCbimO+7JPSUEQLGcAJZSBa1VvbPrkzhanDQ=;
-        t=1689151468; x=1690361068; b=KMcgYF025YOwkY2t8q7ygmTR6w4fkO4mCJQvRQFw+KLstqp
-        NS3FZUM1wZyL++9WpwE3RejNUKNpc6WruHmYxXKe37FiXMiJygmpgf2cUTmrYBRnzJfCXNGarL7bh
-        XGIh7CQYIN9oC7+bdODI7Yw7sOwY1id9sBsx9YSnQXVagFLfOkTgcnpzJtSjvcAi5D5cp8WPx/WHD
-        mIdpXeLZ074unNDm7EW8COXmThWT6V0PfWLIIwsTzauxNNXcUHfhcEhdMRt22VZDl6nGpmzt5+jWF
-        TmI5w1OE/nH7PDWbuNVrzrJELPFemBV2xCR9/yBCQdUAPBkG2zrNORvxIGk4yUog==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qJVSM-00GYj9-0z;
-        Wed, 12 Jul 2023 10:44:18 +0200
-Message-ID: <9936de52da43347ba0ccfb8737440a9698fb4585.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: nl80211: fix mbssid nesting
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Koen Vandeputte <koen.vandeputte@citymesh.com>,
-        linux-wireless@vger.kernel.org
-Cc:     John Crispin <john@phrozen.org>,
-        Aloka Dixit <alokad@codeaurora.org>, stable@vger.kernel.org
-Date:   Wed, 12 Jul 2023 10:44:17 +0200
-In-Reply-To: <20230712083841.222607-1-koen.vandeputte@citymesh.com>
-References: <20230712083841.222607-1-koen.vandeputte@citymesh.com>
+        with ESMTP id S233122AbjGLI6n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 04:58:43 -0400
+Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE1702D73
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 01:57:27 -0700 (PDT)
+Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-55b523cf593so6819506a12.1
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 01:57:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1689152247; x=1691744247;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=o7IxMgsm10wM4UtHG5ILit3AGY4PCAIXBMJb8LPTjZE=;
+        b=5SdejOJp8VU3CbfzVdHrFiUZy9Sg2fjsaM+37a7NbRb4J1uX2H6b2OTG4pByTROd4n
+         spndSk5E/mTZ4GyVd7gmmxlztHqqrkvhK8pdSQaLHrmF5OjkH1Gb9fBZ0FuPpZw7xju6
+         zsdil8YofrGOKzU+l/Bcu9XbmzATqHHwdkqiggXgwUd9hPnMsM3cg5pLs88E9okRVwcv
+         U1Ml4d0AB4ZVhhKVe3ArL7v0tydYALwE5r9vaklttinSnPMQb/gsTCnw0jj+xGIpJvy8
+         2G+S+XvC89+gqJuVZRRF4GUjjtEjQt5JI+BHAC/uEb+DEMDIRp4vw9ttfXknF1G3wYSo
+         QohQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689152247; x=1691744247;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=o7IxMgsm10wM4UtHG5ILit3AGY4PCAIXBMJb8LPTjZE=;
+        b=Pb83I5AMcuNjmtMBkBfhCukk1NPY93Cx3O7k1ByPKWJ+vh9yMvrEFjApcGReoMgjEd
+         zo6zNeqz/+eOX+A2yDwABGKrRUmgrKL9JTjLOb9vfYro0rPaIyUi+UT3upa4G8ryhHql
+         1+cDP1QWyRKawIsKz2QJIDJESJh18MjcRqwjrHxyBZSUClhoVR95dNfHT9wlGi3uo2pZ
+         /M1cF/ztG9qVJ3qiKh6CuImEwtzyEbb5KYzG9Fwr5LjDJm1MWgc8Foyd7VoKp/r1XOmB
+         dGMZhRH5FWil0nNf8Mwigs0MjcJ4AkNmdrxItlamYAfWwcwfn32Kd93mUajdHB4HJHpo
+         VsCQ==
+X-Gm-Message-State: ABy/qLZpSJ2fcCsStxCCN5mTplJZj3vGHXCKspURtRfQuMZrJlMouJg+
+        hz8IKiw/w3nqGjJMYTUXjDKcVABeYKQ=
+X-Google-Smtp-Source: APBJJlFDBOcXKyheJrQ1mAmBe3SBY45tZsMMX1cuCQesKVTGIVmfD7ZeHEYqu96oAiKhRzN/JSkvy9DgqfI=
+X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
+ (user=badhri job=sendgmr) by 2002:a65:6a84:0:b0:55a:e746:31ef with SMTP id
+ q4-20020a656a84000000b0055ae74631efmr10155877pgu.1.1689152246932; Wed, 12 Jul
+ 2023 01:57:26 -0700 (PDT)
+Date:   Wed, 12 Jul 2023 08:57:22 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+Message-ID: <20230712085722.1414743-1-badhri@google.com>
+Subject: [PATCH v1] usb: typec: tcpm: Fix response to vsafe0V event
+From:   Badhri Jagan Sridharan <badhri@google.com>
+To:     gregkh@linuxfoundation.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, kyletso@google.com
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Badhri Jagan Sridharan <badhri@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 2023-07-12 at 10:38 +0200, Koen Vandeputte wrote:
-> Executing command NL80211_CMD_GET_WIPHY and parsing it's output
-> natively without libnl shows following attributes as part of
-> the nl80211 generated netlink message (part 16):
->=20
-> GetWiphy: Type: 1
-> GetWiphy: Type: 2
-> GetWiphy: Type: 46
-> GetWiphy: Type: 33074 <-- wrong enum value, above MAX also ..
+Do not transition to SNK_UNATTACHED state when receiving vsafe0v event
+while in SNK_HARD_RESET_WAIT_VBUS. Ignore VBUS off events as well as
+in some platforms VBUS off can be signalled more than once.
 
-That's not wrong, that's just NLA_F_NESTED | NL80211_ATTR_MBSSID_CONFIG,
-since it *is* in fact a nested attribute.
+[143515.364753] Requesting mux state 1, usb-role 2, orientation 2
+[143515.365520] pending state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_SINK_ON @ 650 ms [rev3 HARD_RESET]
+[143515.632281] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_HARD_RESET_SINK_OFF, polarity 1, disconnected]
+[143515.637214] VBUS on
+[143515.664985] VBUS off
+[143515.664992] state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_WAIT_VBUS [rev3 HARD_RESET]
+[143515.665564] VBUS VSAFE0V
+[143515.665566] state change SNK_HARD_RESET_WAIT_VBUS -> SNK_UNATTACHED [rev3 HARD_RESET]
 
-> Switching to nla_nest_start_noflag() which ommits the NLA_F_NESTED
-> flag (like most other similar functions do) fixes this:
->=20
-> GetWiphy: Type: 1
-> GetWiphy: Type: 2
-> GetWiphy: Type: 46
-> GetWiphy: Type: 306 <-- correct enum value
-> GetWiphy: Type: 316
+Fixes: 28b43d3d746b ("usb: typec: tcpm: Introduce vsafe0v for vbus")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+---
+ drivers/usb/typec/tcpm/tcpm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Let's say it _changes_ it, but it doesn't _fix_ it, since it's not
-broken.
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 829d75ebab42..cc1d83926497 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5349,6 +5349,10 @@ static void _tcpm_pd_vbus_off(struct tcpm_port *port)
+ 		/* Do nothing, vbus drop expected */
+ 		break;
+ 
++	case SNK_HARD_RESET_WAIT_VBUS:
++		/* Do nothing, its OK to receive vbus off events */
++		break;
++
+ 	default:
+ 		if (port->pwr_role == TYPEC_SINK && port->attached)
+ 			tcpm_set_state(port, SNK_UNATTACHED, tcpm_wait_for_discharge(port));
+@@ -5395,6 +5399,9 @@ static void _tcpm_pd_vbus_vsafe0v(struct tcpm_port *port)
+ 	case SNK_DEBOUNCED:
+ 		/*Do nothing, still waiting for VSAFE5V for connect */
+ 		break;
++	case SNK_HARD_RESET_WAIT_VBUS:
++		/* Do nothing, its OK to receive vbus off events */
++		break;
+ 	default:
+ 		if (port->pwr_role == TYPEC_SINK && port->auto_vbus_discharge_enabled)
+ 			tcpm_set_state(port, SNK_UNATTACHED, 0);
 
-Using nla_nest_start_noflag() is a legacy thing, it shouldn't be done
-any more. You need to update your userspace, I'm not applying this
-patch.
-
-johannes
+base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+-- 
+2.41.0.255.g8b1d071c50-goog
 
