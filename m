@@ -2,75 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6B257512CF
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 23:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2494F751333
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 00:06:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232077AbjGLV7m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 17:59:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54596 "EHLO
+        id S229570AbjGLWGc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 18:06:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232014AbjGLV7l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 17:59:41 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DD1A1FD8
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 14:59:39 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b701e1ca63so121621891fa.1
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 14:59:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689199178; x=1691791178;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=m1iTMnOkulGAjdkSjr5sFgiGCvdDIMihPf+seTqiI5c=;
-        b=Rff9hpVphO8sZK/CozjaHMwduL0CpTp5U5XQB9Rnm3jdGvQka0r4vR/Yf5ZqZ2p2Yi
-         mv4rN02TsatpXcOqSLMkuMOU2oAiuHlMG3lqItBELeh7Srw3n/YZYtls5MMMZQO1QZQ3
-         ncAzJTQBPULZ/LRj/tGzrVWFswy4U6jDVRhFzTJv7HyRS+kFWjyy+WB2bkeh801FqCFo
-         hFzlTd0rld8pYKYv2Vd4IKM/Hm8cBEsChirPT8X+5xNy13HVDyw11V4gWacpf0YJ5cRE
-         QUESAWd9BTJOMld8r+TqdAgc0+BQQQZa+6s5Nix5Jj706Z9ef/bZAEgYa9jSd4sY06M+
-         cMmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689199178; x=1691791178;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=m1iTMnOkulGAjdkSjr5sFgiGCvdDIMihPf+seTqiI5c=;
-        b=Ghfmf+7lntgg7f0X8VoxMPtOSjxogpvbryyZAjbAC6B5fKa4wVwfy5ZonCRtvfnphh
-         PpeLBCl44iDcv1lCSCqyC2CQtZ4d+U7V/S7illZHOAM/Z0t56WgBtC+DpovuYnzj5lv0
-         aiOoQNKxfpuZKPRSggYASDgyz7MblF93ezGCQeKwOrj7jAVuzrkuEURvLEfxZsswn62z
-         jHSqBMoWeqw3jusH4IESbAt82TctF7M4FKqVX/fc3efy1bwoN9soKmLJ+2L0+TcjPOry
-         iFHJS+Q8FBJ2N8q+HgWKO2+M6FSY7kXnPTaEa69nbNMKOaqbeQLXvG/zTWLcwF/7VaWX
-         TKXg==
-X-Gm-Message-State: ABy/qLZyFgicmPBBUEbFpAEvokjuLRgh1Z3veLzNSXU0Flx7nTDYqGW6
-        fL1a3dBIyw1FIVWDSsgeekHi210y2MGFlc3M/bM=
-X-Google-Smtp-Source: APBJJlG8FT+xJEc2p9cZG8IWyqOA5xyCMotLk1YtyA9AIjuryoJJsKvWqwKRdYjBdbULfBqJaGq4Dw==
-X-Received: by 2002:a2e:8ed0:0:b0:2b7:3b6c:a5e4 with SMTP id e16-20020a2e8ed0000000b002b73b6ca5e4mr2754195ljl.38.1689199178232;
-        Wed, 12 Jul 2023 14:59:38 -0700 (PDT)
-Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id h17-20020a2e9011000000b002b6c92fa161sm1129656ljg.61.2023.07.12.14.59.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jul 2023 14:59:37 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 12 Jul 2023 23:59:36 +0200
-Subject: [PATCH v2] mtd: spi-nor: Correct flags for Winbond w25q128
+        with ESMTP id S229572AbjGLWGb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 18:06:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1006CB0;
+        Wed, 12 Jul 2023 15:06:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82F1F6195D;
+        Wed, 12 Jul 2023 22:06:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD4AC433C8;
+        Wed, 12 Jul 2023 22:06:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689199589;
+        bh=3LvTkwHC1aXilpylTHfuT9Dd/jYCCcQvi0STTcj3u4Y=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=NbdF1saEXJmhy492uWVuPKrKChNGckdheEAFhSTAsQzFx1+WrcGPDEvfLb3PjcMuz
+         X4kYsdx3USScMgN6LmCQgu2Bnkb7ZnfRxG7A1E49+NwBBTCW6NhmDKlH3JQ1h33/pC
+         3zIVyQiWD7mntC/nSyTJrU/0KA4wFcyRvm5sHb1OhnsbIRB2Lb1HRXbQL2NuAl0a1x
+         vKGGW4RBiI7ZCYmfuFbIurvN+L11MyQ/PIIDGoUS6BNWWaBhbRGsdVh3gA1DyRBK4V
+         TA/YKNfMqvMKkqZvagtdmTGRjC10W3JoN389G48dPYkJn034zDrp3sgVyKMabGVQlr
+         7xaJAOPh15G1A==
+From:   Mark Brown <broonie@kernel.org>
+To:     Russell King <linux@armlinux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Saravana Kannan <saravanak@google.com>,
+        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
+        "Isaac J. Manjarres" <isaacmanjarres@google.com>
+Cc:     Amit Pundir <amit.pundir@linaro.org>,
+        John Stultz <jstultz@google.com>, stable@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        kernel-team@android.com,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230711193059.2480971-1-isaacmanjarres@google.com>
+References: <20230711193059.2480971-1-isaacmanjarres@google.com>
+Subject: Re: [PATCH v1] regmap-irq: Fix out-of-bounds access when
+ allocating config buffers
+Message-Id: <168919958636.823990.7053808708980391423.b4-ty@kernel.org>
+Date:   Wed, 12 Jul 2023 23:06:26 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAEcir2QC/3WNQQ6CMBBFr0Jm7RhmUCCuvIdhUWCASUyLrQEN6
- d2tJC5dvpf89zcI4lUCXLINvCwa1NkEfMigm4wdBbVPDJxzkVdEGGZF6zyualtne1z5/CCusWA
- yZc4iXFaQ1rOXQV97+dYknjQ8nX/vRwt97a/Jf5sLIeFQ1UPRtic21F3vao13R+dHaGKMH+AlZ
- eS/AAAA
-To:     Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Michael Walle <michael@walle.cc>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.12.3
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+X-Mailer: b4 0.13-dev-099c9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,66 +69,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The Winbond "w25q128" (actual vendor name W25Q128JV)
-has exactly the same flags as the sibling device
-"w25q128jv". The devices both require unlocking to
-enable write access.
+On Tue, 11 Jul 2023 12:30:58 -0700, Isaac J. Manjarres wrote:
+> When allocating the 2D array for handling IRQ type registers in
+> regmap_add_irq_chip_fwnode(), the intent is to allocate a matrix
+> with num_config_bases rows and num_config_regs columns.
+> 
+> This is currently handled by allocating a buffer to hold a pointer for
+> each row (i.e. num_config_bases). After that, the logic attempts to
+> allocate the memory required to hold the register configuration for
+> each row. However, instead of doing this allocation for each row
+> (i.e. num_config_bases allocations), the logic erroneously does this
+> allocation num_config_regs number of times.
+> 
+> [...]
 
-The actual product naming between devices vs the
-Linux strings in winbond.c:
+Applied to
 
-0xef4018: "w25q128"   W25Q128JV-IM/JM
-0xef7018: "w25q128jv" W25Q128JV-IN/IQ/JQ
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git for-next
 
-The latter device, "w25q128jv" supports features
-named DTQ and QPI, otherwise it is the same.
+Thanks!
 
-Not having the right flags has the annoying side
-effect that write access does not work.
+[1/1] regmap-irq: Fix out-of-bounds access when allocating config buffers
+      commit: 963b54df82b6d6206d7def273390bf3f7af558e1
 
-After this patch I can write to the flash on the
-Inteno XG6846 router.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-The flash memory also supports dual and quad SPI
-modes. This does not currently manifest, but by
-turning on SFDP parsing, the right SPI modes are
-emitted in
-/sys/kernel/debug/spi-nor/spi1.0/capabilities
-for this chip, so we also turn on this.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Cc: stable@vger.kernel.org
-Suggested-by: Michael Walle <michael@walle.cc>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-Changes in v2:
-- Only add the write access flags.
-- Use SFDP parsing to properly detect the various
-  available SPI modes.
-- Link to v1: https://lore.kernel.org/r/20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org
----
- drivers/mtd/spi-nor/winbond.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-diff --git a/drivers/mtd/spi-nor/winbond.c b/drivers/mtd/spi-nor/winbond.c
-index 834d6ba5ce70..6c82e525c801 100644
---- a/drivers/mtd/spi-nor/winbond.c
-+++ b/drivers/mtd/spi-nor/winbond.c
-@@ -121,7 +121,8 @@ static const struct flash_info winbond_nor_parts[] = {
- 	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
- 		NO_SFDP_FLAGS(SECT_4K) },
- 	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
--		NO_SFDP_FLAGS(SECT_4K) },
-+		PARSE_SFDP
-+		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
- 	{ "w25q256", INFO(0xef4019, 0, 64 * 1024, 512)
- 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
- 		.fixups = &w25q256_fixups },
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
----
-base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
-change-id: 20230711-spi-nor-winbond-w25q128-321a602ee267
-
-Best regards,
--- 
-Linus Walleij <linus.walleij@linaro.org>
+Thanks,
+Mark
 
