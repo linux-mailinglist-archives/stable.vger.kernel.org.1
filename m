@@ -2,112 +2,131 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE87E7510D5
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 21:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AE28751123
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 21:24:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232273AbjGLTAd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 15:00:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48032 "EHLO
+        id S232270AbjGLTYl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 15:24:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjGLTAc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 15:00:32 -0400
+        with ESMTP id S232373AbjGLTYj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 15:24:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CBEB1BF8;
-        Wed, 12 Jul 2023 12:00:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE671FD7;
+        Wed, 12 Jul 2023 12:24:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 050C3618CE;
-        Wed, 12 Jul 2023 19:00:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB81C433C8;
-        Wed, 12 Jul 2023 19:00:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689188430;
-        bh=C75X2BnyEWDXBPD/0Zfk2U9UagD2+DsJ0ryNEGmeRYc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kkxIXB1mjYsJzX/NO5wASfnLQjv3gxKU/O7ohYn38fe9Ls155Kge8I3xZGDCp/Hna
-         khFKdJ1mUtbXr22HE9R0HLg+2RilUQAUAC+SEKT9lzFZXRSYCVUBvtDcLHZFYqsgbv
-         HX1DK7bqMtC69K2ji+7JS373MAlvfvSxSSahzBaw=
-Date:   Wed, 12 Jul 2023 21:00:27 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Thorsten Leemhuis <linux@leemhuis.info>
-Cc:     stable@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [RFC PATCH v1 0/3] docs: stable-kernel-rules: add delayed
- backporting option and a few tweaks
-Message-ID: <2023071215-able-mushy-c889@gregkh>
-References: <cover.1689008220.git.linux@leemhuis.info>
- <2023071002-phrasing-tranquil-49d6@gregkh>
- <a97a37bf-86b5-cd8e-a8ce-00e38720cee4@leemhuis.info>
- <2023071221-blade-reactive-0707@gregkh>
- <d8403c45-3561-4759-f6c2-d18afa5e323a@leemhuis.info>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d8403c45-3561-4759-f6c2-d18afa5e323a@leemhuis.info>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 537C161908;
+        Wed, 12 Jul 2023 19:24:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0065C433C7;
+        Wed, 12 Jul 2023 19:24:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1689189876;
+        bh=CL+9QLp7hFd99QrFHJLpEEK0noeJHGYSWGzxMsyL6Uk=;
+        h=Date:To:From:Subject:From;
+        b=KvF0txWGU8TPm003zHV8yW4d8o4qYdMkGhfQPrWfdGjo3x+pWsPevh3/N1oSnJ/2h
+         021ulJUHpRlYZpOSQoJ7F91T36aFfkvFRddYQsJoS9l8fK3ijQCOr4Td3wJm4Glurd
+         nCcYylgY6Hh5fAfBXpPAfixbS9rIsTPohTxp2QsU=
+Date:   Wed, 12 Jul 2023 12:24:35 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        geert@linux-m68k.org, Liam.Howlett@oracle.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + maple_tree-fix-32-bit-mas_next-testing.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230712192436.A0065C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 07:02:34PM +0200, Thorsten Leemhuis wrote:
-> On 12.07.23 17:16, Greg KH wrote:
-> > On Wed, Jul 12, 2023 at 11:30:30AM +0200, Thorsten Leemhuis wrote:
-> >> While working on the latter I noticed one more thing:
-> >>
-> >> ```
-> >>     .. warning::
-> >>        The -stable-rc tree is a snapshot in time of the stable-queue
-> >> tree and
-> >>        will change frequently, hence will be rebased often. It should
-> >> only be
-> >>        used for testing purposes (e.g. to be consumed by CI systems).
-> >> ```
-> > [...]
-> >> I'll thus likely
-> >> change the text to something like this,
-> >> unless I'm missing something or someone has a better idea:
-> >> ```
-> >>   .. warning::
-> >>      The branches in the -stable-rc tree are rebased each time a new -rc
-> >>      is released, as they are created by taking the latest release and
-> >>      applying the patches from the stable-queue on top.
-> > 
-> > Yes, that is true, but they are also rebased sometimes in intermediate
-> > places, before a -rc is released, just to give CI systems a chance to
-> > test easier.
-> > 
-> > These are ONLY for CI systems to use, nothing else should be touching
-> > them.  So I think the current text is correct, what am I missing?
-> 
-> That I misunderstood things and forgot about the "rebased sometimes in
-> intermediate places" aspect I once knew about. Sorry. I'll leave the
-> text as it is then.
-> 
-> Nevertheless makes me wonder: is that strategy wise in times when some
-> ordinary users and some distributions are building kernels straight from
-> git repos instead of tarballs? I'm one of those, as I distribute
-> stable-rc packages for Fedora here:
-> https://copr.fedorainfracloud.org/groups/g/kernel-vanilla/coprs/
 
-As we keep the patches in quilt, not git, it's the best we can do.  The
--rc releases are never a straight-line if we have to do multiple ones,
-we remove patches in the middle, add them at the end or beginning, and
-sometimes even change existing ones.
+The patch titled
+     Subject: maple_tree: fix 32 bit mas_next testing
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     maple_tree-fix-32-bit-mas_next-testing.patch
 
-All of this is stuff that a linear history tool like git can't really
-model well, so we keep a quilt series of the patches in git for anyone
-that want to generate the tree themselves, and we provide the -rc git
-tree for those that don't want to generate it and can live with the
-constant rebasing.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/maple_tree-fix-32-bit-mas_next-testing.patch
 
-thanks,
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-greg k-h
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: maple_tree: fix 32 bit mas_next testing
+Date: Wed, 12 Jul 2023 13:39:15 -0400
+
+The test setup of mas_next is dependent on node entry size to create a 2
+level tree, but the tests did not account for this in the expected value
+when shifting beyond the scope of the tree.
+
+Fix this by setting up the test to succeed depending on the node entries
+which is dependent on the 32/64 bit setup.
+
+Link: https://lkml.kernel.org/r/20230712173916.168805-1-Liam.Howlett@oracle.com
+Fixes: 120b116208a0 ("maple_tree: reorganize testing to restore module testing")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+  Link: https://lore.kernel.org/linux-mm/CAMuHMdV4T53fOw7VPoBgPR7fP6RYqf=CBhD_y_vOg53zZX_DnA@mail.gmail.com/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/test_maple_tree.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+--- a/lib/test_maple_tree.c~maple_tree-fix-32-bit-mas_next-testing
++++ a/lib/test_maple_tree.c
+@@ -1898,13 +1898,16 @@ static noinline void __init next_prev_te
+ 						   725};
+ 	static const unsigned long level2_32[] = { 1747, 2000, 1750, 1755,
+ 						   1760, 1765};
++	unsigned long last_index;
+ 
+ 	if (MAPLE_32BIT) {
+ 		nr_entries = 500;
+ 		level2 = level2_32;
++		last_index = 0x138e;
+ 	} else {
+ 		nr_entries = 200;
+ 		level2 = level2_64;
++		last_index = 0x7d6;
+ 	}
+ 
+ 	for (i = 0; i <= nr_entries; i++)
+@@ -2011,7 +2014,7 @@ static noinline void __init next_prev_te
+ 
+ 	val = mas_next(&mas, ULONG_MAX);
+ 	MT_BUG_ON(mt, val != NULL);
+-	MT_BUG_ON(mt, mas.index != 0x7d6);
++	MT_BUG_ON(mt, mas.index != last_index);
+ 	MT_BUG_ON(mt, mas.last != ULONG_MAX);
+ 
+ 	val = mas_prev(&mas, 0);
+_
+
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
+
+mm-mlock-fix-vma-iterator-conversion-of-apply_vma_lock_flags.patch
+maple_tree-fix-32-bit-mas_next-testing.patch
+maple_tree-fix-node-allocation-testing-on-32-bit.patch
+
