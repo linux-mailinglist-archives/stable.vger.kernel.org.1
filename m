@@ -2,186 +2,199 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 454FE74FD92
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 05:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF55A74FE83
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 06:55:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbjGLDQH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 23:16:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60826 "EHLO
+        id S230352AbjGLEzf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 00:55:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbjGLDQG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 23:16:06 -0400
-Received: from mail-m11875.qiye.163.com (mail-m11875.qiye.163.com [115.236.118.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89EF210D4
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:16:03 -0700 (PDT)
-Received: from localhost.localdomain (unknown [IPV6:240e:3b7:3270:4fa0:68e8:99a6:210:534d])
-        by mail-m11875.qiye.163.com (Hmail) with ESMTPA id 0F57E2803BF;
-        Wed, 12 Jul 2023 11:16:01 +0800 (CST)
-From:   Ding Hui <dinghui@sangfor.com.cn>
-To:     stable@vger.kernel.org
-Cc:     chuck.lever@oracle.com, gregkh@linuxfoundation.org,
-        Ding Hui <dinghui@sangfor.com.cn>
-Subject: [PATCH 5.4.y] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()
-Date:   Wed, 12 Jul 2023 11:15:32 +0800
-Message-Id: <20230712031532.13294-1-dinghui@sangfor.com.cn>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <2023071115-freeway-undefined-38ac@gregkh>
-References: <2023071115-freeway-undefined-38ac@gregkh>
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-        tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZTUJMVh8aSU4ZGh9CT0hKGlUTARMWGhIXJBQOD1
-        lXWRgSC1lBWUlPSx5BSBlMQUhJTEtBTx0aS0FNQx5DQUJCGk1BSUpLQU5ITx9ZV1kWGg8SFR0UWU
-        FZT0tIVUpKS0hKTFVKS0tVS1kG
-X-HM-Tid: 0a8948193e302eb1kusn0f57e2803bf
-X-HM-MType: 1
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Kz46OCo5Lj1RHxg0SzkyMEsN
-        GRYKCVZVSlVKTUNCSkhKTE1JS0NOVTMWGhIXVR8SFRwTDhI7CBoVHB0UCVUYFBZVGBVFWVdZEgtZ
-        QVlJT0seQUgZTEFISUxLQU8dGktBTUMeQ0FCQhpNQUlKS0FOSE8fWVdZCAFZQU5NSUI3Bg++
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229610AbjGLEzd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 00:55:33 -0400
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C1E910CB
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 21:55:32 -0700 (PDT)
+Received: by mail-qv1-xf2c.google.com with SMTP id 6a1803df08f44-6348a8045a2so42914566d6.1
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 21:55:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689137731; x=1691729731;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=idYVulynbBuRNdgvqPl4F9p/PBeAuDZ2z8V50Rf/KPc=;
+        b=G0c2Oa7I6ZO0xXG2wulIQktiX78HUSFkcNvJlk0AEtrXKaruKzO92ZRTfqSt45qqo6
+         ePp0CZzeel6ECAIl0woCx19al7EV5VHqZOgVw+VmkPL7oHy32YCb/0obNX3gMOnE0UJP
+         DsrXHSdylLVEA5b3GsK1x8O21PU+u0L9KsJ0i7OUj6z7UIFSKahkiJs+6RwW7uvdutzq
+         v+09OguTm0FmFdiPzPOgthUK17lRNIf2tW4ALMyYItEOJpVEGGySJwiiGN76FR8uII3W
+         m96IZtXS9t491wfpF1yLGqIiCGeRfyWgyzX5l/zan4zzRaAgrSMAJvW/Arp6GVXyLLeP
+         fwWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689137731; x=1691729731;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=idYVulynbBuRNdgvqPl4F9p/PBeAuDZ2z8V50Rf/KPc=;
+        b=NeCvNgTdFpENeRonj5P/Z5+YD4h+gh4VdVoVjAyjOBgx9hyl6KKywRd4WD8RDAIwa1
+         V7x38Zt0gGUtoLHXkioD9I2xS4UKS47MqT5xn60FHaxZ2l0ZPLleloapeS1sUpvstqdy
+         9z9oBVCT+9Cqwx2Eev7jb33zvKWgaYqNIEGdhBk7W4TvmOvkWM2+gKlBks78N3pyqfMd
+         UBfunzAjkO3MB+Ivw27m6Df1QAIZRpepTwPLYgIv3HFxXcO3y5zkfwjTQl33lAqV629b
+         8DO51VO26ce2KzblSJDqSwVho79/zvduZNxCMB5dlFRe0WhZHDnsikcL9+9Twd8L5rYP
+         wM4w==
+X-Gm-Message-State: ABy/qLah7GHkUacl+4FeXTMotx090gp7L0FgrAEmVfFRB8AtcRaVn4at
+        cqPAcWtlRjoqdluen3iAXCNyP6UfJzgOSUu2C4ZoxA==
+X-Google-Smtp-Source: APBJJlF6hKGMmqvNNOYGbiO6MHeAE6BJOFtghPVlKlh1MzJJujybddPW9AazFThI7Zf52dS5LGlJolzNIo1xTkkPAzg=
+X-Received: by 2002:a0c:e150:0:b0:62d:e3d7:5b89 with SMTP id
+ c16-20020a0ce150000000b0062de3d75b89mr14932782qvl.38.1689137731231; Tue, 11
+ Jul 2023 21:55:31 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230711193059.2480971-1-isaacmanjarres@google.com>
+In-Reply-To: <20230711193059.2480971-1-isaacmanjarres@google.com>
+From:   Amit Pundir <amit.pundir@linaro.org>
+Date:   Wed, 12 Jul 2023 10:24:55 +0530
+Message-ID: <CAMi1Hd3K=Vc+j+s-AXDimkgEny+ZX9Lg=L+E9M-9VYSuw61-mw@mail.gmail.com>
+Subject: Re: [PATCH v1] regmap-irq: Fix out-of-bounds access when allocating
+ config buffers
+To:     "Isaac J. Manjarres" <isaacmanjarres@google.com>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Saravana Kannan <saravanak@google.com>,
+        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
+        John Stultz <jstultz@google.com>, stable@vger.kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        kernel-team@android.com,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-After the listener svc_sock is freed, and before invoking svc_tcp_accept()
-for the established child sock, there is a window that the newsock
-retaining a freed listener svc_sock in sk_user_data which cloning from
-parent. In the race window, if data is received on the newsock, we will
-observe use-after-free report in svc_tcp_listen_data_ready().
+On Wed, 12 Jul 2023 at 01:01, Isaac J. Manjarres
+<isaacmanjarres@google.com> wrote:
+>
+> When allocating the 2D array for handling IRQ type registers in
+> regmap_add_irq_chip_fwnode(), the intent is to allocate a matrix
+> with num_config_bases rows and num_config_regs columns.
+>
+> This is currently handled by allocating a buffer to hold a pointer for
+> each row (i.e. num_config_bases). After that, the logic attempts to
+> allocate the memory required to hold the register configuration for
+> each row. However, instead of doing this allocation for each row
+> (i.e. num_config_bases allocations), the logic erroneously does this
+> allocation num_config_regs number of times.
+>
+> This scenario can lead to out-of-bounds accesses when num_config_regs
+> is greater than num_config_bases. Fix this by updating the terminating
+> condition of the loop that allocates the memory for holding the register
+> configuration to allocate memory only for each row in the matrix.
+>
+> Amit Pundir reported a crash that was occurring on his db845c device
+> due to memory corruption (see "Closes" tag for Amit's report). The KASAN
+> report below helped narrow it down to this issue:
 
-Reproduce by two tasks:
+Tested-by: Amit Pundir <amit.pundir@linaro.org> # tested on Dragonboard 845c
 
-1. while :; do rpc.nfsd 0 ; rpc.nfsd; done
-2. while :; do echo "" | ncat -4 127.0.0.1 2049 ; done
-
-KASAN report:
-
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
-  Read of size 8 at addr ffff888139d96228 by task nc/102553
-  CPU: 7 PID: 102553 Comm: nc Not tainted 6.3.0+ #18
-  Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0x33/0x50
-   print_address_description.constprop.0+0x27/0x310
-   print_report+0x3e/0x70
-   kasan_report+0xae/0xe0
-   svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
-   tcp_data_queue+0x9f4/0x20e0
-   tcp_rcv_established+0x666/0x1f60
-   tcp_v4_do_rcv+0x51c/0x850
-   tcp_v4_rcv+0x23fc/0x2e80
-   ip_protocol_deliver_rcu+0x62/0x300
-   ip_local_deliver_finish+0x267/0x350
-   ip_local_deliver+0x18b/0x2d0
-   ip_rcv+0x2fb/0x370
-   __netif_receive_skb_one_core+0x166/0x1b0
-   process_backlog+0x24c/0x5e0
-   __napi_poll+0xa2/0x500
-   net_rx_action+0x854/0xc90
-   __do_softirq+0x1bb/0x5de
-   do_softirq+0xcb/0x100
-   </IRQ>
-   <TASK>
-   ...
-   </TASK>
-
-  Allocated by task 102371:
-   kasan_save_stack+0x1e/0x40
-   kasan_set_track+0x21/0x30
-   __kasan_kmalloc+0x7b/0x90
-   svc_setup_socket+0x52/0x4f0 [sunrpc]
-   svc_addsock+0x20d/0x400 [sunrpc]
-   __write_ports_addfd+0x209/0x390 [nfsd]
-   write_ports+0x239/0x2c0 [nfsd]
-   nfsctl_transaction_write+0xac/0x110 [nfsd]
-   vfs_write+0x1c3/0xae0
-   ksys_write+0xed/0x1c0
-   do_syscall_64+0x38/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-  Freed by task 102551:
-   kasan_save_stack+0x1e/0x40
-   kasan_set_track+0x21/0x30
-   kasan_save_free_info+0x2a/0x50
-   __kasan_slab_free+0x106/0x190
-   __kmem_cache_free+0x133/0x270
-   svc_xprt_free+0x1e2/0x350 [sunrpc]
-   svc_xprt_destroy_all+0x25a/0x440 [sunrpc]
-   nfsd_put+0x125/0x240 [nfsd]
-   nfsd_svc+0x2cb/0x3c0 [nfsd]
-   write_threads+0x1ac/0x2a0 [nfsd]
-   nfsctl_transaction_write+0xac/0x110 [nfsd]
-   vfs_write+0x1c3/0xae0
-   ksys_write+0xed/0x1c0
-   do_syscall_64+0x38/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Fix the UAF by simply doing nothing in svc_tcp_listen_data_ready()
-if state != TCP_LISTEN, that will avoid dereferencing svsk for all
-child socket.
-
-Link: https://lore.kernel.org/lkml/20230507091131.23540-1-dinghui@sangfor.com.cn/
-Fixes: fa9251afc33c ("SUNRPC: Call the default socket callbacks instead of open coding")
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-(cherry picked from commit fc80fc2d4e39137869da3150ee169b40bf879287)
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
----
- net/sunrpc/svcsock.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
-
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index d52abde51f1b..aeb0b3e48ad5 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -728,12 +728,6 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
- 	dprintk("svc: socket %p TCP (listen) state change %d\n",
- 		sk, sk->sk_state);
- 
--	if (svsk) {
--		/* Refer to svc_setup_socket() for details. */
--		rmb();
--		svsk->sk_odata(sk);
--	}
--
- 	/*
- 	 * This callback may called twice when a new connection
- 	 * is established as a child socket inherits everything
-@@ -742,15 +736,20 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
- 	 *    when one of child sockets become ESTABLISHED.
- 	 * 2) data_ready method of the child socket may be called
- 	 *    when it receives data before the socket is accepted.
--	 * In case of 2, we should ignore it silently.
-+	 * In case of 2, we should ignore it silently and DO NOT
-+	 * dereference svsk.
- 	 */
--	if (sk->sk_state == TCP_LISTEN) {
--		if (svsk) {
--			set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
--			svc_xprt_enqueue(&svsk->sk_xprt);
--		} else
--			printk("svc: socket %p: no user data\n", sk);
--	}
-+	if (sk->sk_state != TCP_LISTEN)
-+		return;
-+
-+	if (svsk) {
-+		/* Refer to svc_setup_socket() for details. */
-+		rmb();
-+		svsk->sk_odata(sk);
-+		set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
-+		svc_xprt_enqueue(&svsk->sk_xprt);
-+	} else
-+		printk("svc: socket %p: no user data\n", sk);
- }
- 
- /*
--- 
-2.17.1
-
+>
+> [   14.033877][    T1] ==================================================================
+> [   14.042507][    T1] BUG: KASAN: invalid-access in regmap_add_irq_chip_fwnode+0x594/0x1364
+> [   14.050796][    T1] Write of size 8 at addr 06ffff8081021850 by task init/1
+> [   14.057841][    T1] Pointer tag: [06], memory tag: [fe]
+> [   14.063124][    T1]
+> [   14.065349][    T1] CPU: 2 PID: 1 Comm: init Tainted: G        W   E      6.4.0-mainline-g6a4b67fef3e2 #1
+> [   14.075014][    T1] Hardware name: Thundercomm Dragonboard 845c (DT)
+> [   14.081432][    T1] Call trace:
+> [   14.084618][    T1]  dump_backtrace+0xe8/0x108
+> [   14.089144][    T1]  show_stack+0x18/0x30
+> [   14.093215][    T1]  dump_stack_lvl+0x50/0x6c
+> [   14.097642][    T1]  print_report+0x178/0x4c0
+> [   14.102070][    T1]  kasan_report+0xd4/0x12c
+> [   14.106407][    T1]  kasan_tag_mismatch+0x28/0x40
+> [   14.111178][    T1]  __hwasan_tag_mismatch+0x2c/0x5c
+> [   14.116222][    T1]  regmap_add_irq_chip_fwnode+0x594/0x1364
+> [   14.121961][    T1]  devm_regmap_add_irq_chip+0xb8/0x144
+> [   14.127346][    T1]  wcd934x_slim_status+0x210/0x28c [wcd934x]
+> [   14.133307][    T1]  slim_device_alloc_laddr+0x1ac/0x1ec [slimbus]
+> [   14.139669][    T1]  slim_device_probe+0x80/0x124 [slimbus]
+> [   14.145394][    T1]  really_probe+0x250/0x4d8
+> [   14.149826][    T1]  __driver_probe_device+0x104/0x1ac
+> [   14.155041][    T1]  driver_probe_device+0x80/0x218
+> [   14.159990][    T1]  __driver_attach+0x19c/0x2e4
+> [   14.164678][    T1]  bus_for_each_dev+0x158/0x1b4
+> [   14.169454][    T1]  driver_attach+0x34/0x44
+> [   14.173790][    T1]  bus_add_driver+0x1fc/0x328
+> [   14.178390][    T1]  driver_register+0xdc/0x1b4
+> [   14.182995][    T1]  __slim_driver_register+0x6c/0x84 [slimbus]
+> [   14.189068][    T1]  init_module+0x20/0xfe4 [wcd934x]
+> [   14.194219][    T1]  do_one_initcall+0x110/0x418
+> [   14.198916][    T1]  do_init_module+0x124/0x30c
+> [   14.203521][    T1]  load_module+0x1938/0x1ab0
+> [   14.208034][    T1]  __arm64_sys_finit_module+0x110/0x138
+> [   14.213509][    T1]  invoke_syscall+0x70/0x170
+> [   14.218015][    T1]  el0_svc_common+0xf0/0x138
+> [   14.222523][    T1]  do_el0_svc+0x40/0xb8
+> [   14.226596][    T1]  el0_svc+0x2c/0x78
+> [   14.230405][    T1]  el0t_64_sync_handler+0x68/0xb4
+> [   14.235354][    T1]  el0t_64_sync+0x19c/0x1a0
+> [   14.239778][    T1]
+> [   14.242004][    T1] The buggy address belongs to the object at ffffff8081021850
+> [   14.242004][    T1]  which belongs to the cache kmalloc-8 of size 8
+> [   14.255669][    T1] The buggy address is located 0 bytes inside of
+> [   14.255669][    T1]  8-byte region [ffffff8081021850, ffffff8081021858)
+> [   14.255685][    T1]
+> [   14.255689][    T1] The buggy address belongs to the physical page:
+> [   14.255699][    T1] page:0000000080887a30 refcount:1 mapcount:0 mapping:0000000000000000 index:0x85ffff8081021ee0 pfn:0x101021
+> [   14.275062][    T1] flags: 0x4000000000000200(slab|zone=1|kasantag=0x0)
+> [   14.275078][    T1] page_type: 0xffffffff()
+> [   14.275091][    T1] raw: 4000000000000200 49ffff8080002200 dead000000000122 0000000000000000
+> [   14.275103][    T1] raw: 85ffff8081021ee0 00000000810000ea 00000001ffffffff 0000000000000000
+> [   14.275110][    T1] page dumped because: kasan: bad access detected
+> [   14.275116][    T1]
+> [   14.275119][    T1] Memory state around the buggy address:
+> [   14.275125][    T1]  ffffff8081021600: fe fe fe 9a fe fe 5b 3c fe fe c9 fe b4 3f fe 54
+> [   14.275133][    T1]  ffffff8081021700: fe fe ad 6b fe fe fe 87 fe fe 39 c9 fe 03 fe ea
+> [   14.275143][    T1] >ffffff8081021800: fe fe e1 fe 06 fe fe 21 fe fe e7 fe de fe fe 70
+> [   14.275149][    T1]                                   ^
+> [   14.371674][    T1]  ffffff8081021900: d7 fe fe 87 fe a0 fe fe fe 80 e0 f0 05 fe fe fe
+> [   14.379667][    T1]  ffffff8081021a00: 94 fe 31 fe fe e5 c8 00 d0 fe a1 fe fe e2 e5 fe
+> [   14.387664][    T1] ==================================================================
+>
+> Fixes: faa87ce9196d ("regmap-irq: Introduce config registers for irq types")
+> Reported-by: Amit Pundir <amit.pundir@linaro.org>
+> Closes: https://lore.kernel.org/all/CAMi1Hd04mu6JojT3y6wyN2YeVkPR5R3qnkKJ8iR8if_YByCn4w@mail.gmail.com/
+> Tested-by: John Stultz <jstultz@google.com>
+> Cc: stable@vger.kernel.org # v6.0+
+> Cc: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+> Cc: Saravana Kannan <saravanak@google.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+> ---
+>  drivers/base/regmap/regmap-irq.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
+> index ced0dcf86e0b..45fd13ef13fc 100644
+> --- a/drivers/base/regmap/regmap-irq.c
+> +++ b/drivers/base/regmap/regmap-irq.c
+> @@ -717,7 +717,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+>                 if (!d->config_buf)
+>                         goto err_alloc;
+>
+> -               for (i = 0; i < chip->num_config_regs; i++) {
+> +               for (i = 0; i < chip->num_config_bases; i++) {
+>                         d->config_buf[i] = kcalloc(chip->num_config_regs,
+>                                                    sizeof(**d->config_buf),
+>                                                    GFP_KERNEL);
+> --
+> 2.41.0.255.g8b1d071c50-goog
+>
