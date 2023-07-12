@@ -2,110 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB377502AD
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 11:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E06A750105
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 10:16:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231767AbjGLJSA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 05:18:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34714 "EHLO
+        id S232170AbjGLIQH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 04:16:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231361AbjGLJRv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 05:17:51 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56AF7FB;
-        Wed, 12 Jul 2023 02:17:50 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3fbca8935bfso68656025e9.3;
-        Wed, 12 Jul 2023 02:17:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689153469; x=1691745469;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=X6FPPQORg8BA8HmUzK+CsSAH2CNPePIaX8RbDd2wjhw=;
-        b=CNn/x19mtxoqsmq4vc3WT3RNTrksvWMrfhJP/LHgEKIs9QJYpM/la9d8iYzmoOschq
-         k4UF8syzFoiaxdSA5N3Gj4PaIvB19d9OxYkKDmQ5WOunXNwdCONw136XUTl2zg0gbo4K
-         u22X10rENvm0zBDnpfYpWJn8ii1zKmAx7OGhiMyCTyPL18YHA0f3M2Q7AuX13mpqEe4p
-         /9K8RHXGP6kkAcbny6QVf8I4/8U80SWafScEOMclTEKWmRxhaXfVRAvpFMVHME4FKmqV
-         Ef2OfwTgbPPZ10y9K0oJZT86bCEso2seWtjm/VmAhA+tOh8tJ2eE9ctfMQ1q/JAIFuF+
-         0Ijg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689153469; x=1691745469;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X6FPPQORg8BA8HmUzK+CsSAH2CNPePIaX8RbDd2wjhw=;
-        b=LB36IiVn0jHvA6UDx31Nu3VmOPrM12SmPbGfgvmI32DCU2aHoVlNKd0Vtuo8dFpqOW
-         6eAsTe0vvOEgHR1NcIm9zgiIRG9iZtpxocqVI4FJ2hJWb9EINpyCxmq8Sb2jQxhfVnBI
-         jlT1PXMthdy4L3xy/DwfJpoboMTiKL47rETFYZv13SU2U3Wc974uWLTPdDI77gL2ZV+1
-         1UGERxxuphwWVhw4b++cJ7HbOzbOynicyMb5Z8x5IMIBe14dQXWZFa6BuEL5VRQ8Sx0r
-         WrZP+oaokCQzZbq9gVnK/mXpoFsJSW1CgiWtVC+crJQpCHAWS8HxFtAaO0X7KN3ovSMr
-         Gplg==
-X-Gm-Message-State: ABy/qLZTieBt83j6cn5rfrfgYZPG8DbIXgzIS0GShmKiz2leVuvzcDs2
-        A26QBstTfNWmfgNPA3jCHlA=
-X-Google-Smtp-Source: APBJJlHZ1eN2ZaZnb+H58NL4fR23HmWYBW/tI+5EtbLZEgpGw6wydopI9h5/MfvsxwURhee45OjjOw==
-X-Received: by 2002:a05:600c:2153:b0:3fb:dbd0:a7ea with SMTP id v19-20020a05600c215300b003fbdbd0a7eamr16822816wml.37.1689153468295;
-        Wed, 12 Jul 2023 02:17:48 -0700 (PDT)
-Received: from localhost.localdomain (93-34-93-173.ip49.fastwebnet.it. [93.34.93.173])
-        by smtp.googlemail.com with ESMTPSA id s6-20020a05600c044600b003fbdf8292a7sm4467099wmb.46.2023.07.12.02.17.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jul 2023 02:17:47 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Florian Fainelli <florian.fainelli@broadcom.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        =?UTF-8?q?Ren=C3=A9=20Kjellerup?= <rk.katana.steel@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Aleksey Nasibulin <alealexpro100@ya.ru>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        stable@vger.kernel.org
-Subject: [PATCH] ARM: dts: BCM5301X: Extend RAM to full 256MB for Linksys EA6500 V2
-Date:   Wed, 12 Jul 2023 03:40:17 +0200
-Message-Id: <20230712014017.28123-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S232223AbjGLIP2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 04:15:28 -0400
+X-Greylist: delayed 604 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 12 Jul 2023 01:14:33 PDT
+Received: from out-52.mta1.migadu.com (out-52.mta1.migadu.com [95.215.58.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45AD19B6
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 01:14:33 -0700 (PDT)
+Content-Type: text/plain;
+        charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1689149066;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1kQGtHc+N0kBzheMdTFEuRcExKmasAznpDZbENi8pLk=;
+        b=h+DR9B2FISyzDGCFrq/K/NU6zpYWWVYhJgPEvBQCkSLqHUchXRPV5dvh81F5Hdkp6mVqoq
+        mP/bwmQWfPEHqkySzty5kKM8gG5qRRYhgkXuqh74BgJf63KBhO2lKDeijzxBP6b0gIEDaK
+        KWikBffTqmCQxjje3bOwzeZUP4af+Ns=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 1/2] hugetlb: Do not clear hugetlb dtor until allocating
+ vmemmap
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20230711220942.43706-2-mike.kravetz@oracle.com>
+Date:   Wed, 12 Jul 2023 16:03:42 +0800
+Cc:     Linux Memory Management List <linux-mm@kvack.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Jiaqi Yan <jiaqiyan@google.com>,
+        Naoya Horiguchi <naoya.horiguchi@linux.dev>,
+        Muchun Song <songmuchun@bytedance.com>,
+        Miaohe Lin <linmiaohe@huawei.com>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        James Houghton <jthoughton@google.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4469DCBD-59B4-41F2-A097-E5F01DD9E967@linux.dev>
+References: <20230711220942.43706-1-mike.kravetz@oracle.com>
+ <20230711220942.43706-2-mike.kravetz@oracle.com>
+To:     Mike Kravetz <mike.kravetz@oracle.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aleksey Nasibulin <alealexpro100@ya.ru>
 
-Linksys ea6500-v2 have 256MB of ram. Currently we only use 128MB.
-Expand the definition to use all the available RAM.
 
-Fixes: 03e96644d7a8 ("ARM: dts: BCM5301X: Add basic DT for Linksys EA6500 V2")
-Signed-off-by: Aleksey Nasibulin <alealexpro100@ya.ru>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Cc: stable@vger.kernel.org
----
- arch/arm/boot/dts/broadcom/bcm4708-linksys-ea6500-v2.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> On Jul 12, 2023, at 06:09, Mike Kravetz <mike.kravetz@oracle.com> =
+wrote:
+>=20
+> Freeing a hugetlb page and releasing base pages back to the underlying
+> allocator such as buddy or cma is performed in two steps:
+> - remove_hugetlb_folio() is called to remove the folio from hugetlb
+>  lists, get a ref on the page and remove hugetlb destructor.  This
+>  all must be done under the hugetlb lock.  After this call, the page
+>  can be treated as a normal compound page or a collection of base
+>  size pages.
+> - update_and_free_hugetlb_folio() is called to allocate vmemmap if
+>  needed and the free routine of the underlying allocator is called
+>  on the resulting page.  We can not hold the hugetlb lock here.
+>=20
+> One issue with this scheme is that a memory error could occur between
+> these two steps.  In this case, the memory error handling code treats
+> the old hugetlb page as a normal compound page or collection of base
+> pages.  It will then try to SetPageHWPoison(page) on the page with an
+> error.  If the page with error is a tail page without vmemmap, a write
+> error will occur when trying to set the flag.
+>=20
+> Address this issue by modifying remove_hugetlb_folio() and
+> update_and_free_hugetlb_folio() such that the hugetlb destructor is =
+not
+> cleared until after allocating vmemmap.  Since clearing the destructor
+> requires holding the hugetlb lock, the clearing is done in
+> remove_hugetlb_folio() if the vmemmap is present.  This saves a
+> lock/unlock cycle.  Otherwise, destructor is cleared in
+> update_and_free_hugetlb_folio() after allocating vmemmap.
+>=20
+> Note that this will leave hugetlb pages in a state where they are =
+marked
+> free (by hugetlb specific page flag) and have a ref count.  This is =
+not
+> a normal state.  The only code that would notice is the memory error
+> code, and it is set up to retry in such a case.
+>=20
+> A subsequent patch will create a routine to do bulk processing of
+> vmemmap allocation.  This will eliminate a lock/unlock cycle for each
+> hugetlb page in the case where we are freeing a large number of pages.
+>=20
+> Fixes: ad2fa3717b74 ("mm: hugetlb: alloc the vmemmap pages associated =
+with each HugeTLB page")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm4708-linksys-ea6500-v2.dts b/arch/arm/boot/dts/broadcom/bcm4708-linksys-ea6500-v2.dts
-index f1412ba83def..0454423fe166 100644
---- a/arch/arm/boot/dts/broadcom/bcm4708-linksys-ea6500-v2.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm4708-linksys-ea6500-v2.dts
-@@ -19,7 +19,8 @@ chosen {
- 
- 	memory@0 {
- 		device_type = "memory";
--		reg = <0x00000000 0x08000000>;
-+		reg = <0x00000000 0x08000000>,
-+		      <0x88000000 0x08000000>;
- 	};
- 
- 	gpio-keys {
--- 
-2.40.1
+Hi Mike,
 
+I have seen an issue proposed by Jiaqi Yan in [1]. I didn't see any
+resolution for it. Am I missing something with this fix?
+
+[1] =
+https://lore.kernel.org/linux-mm/CACw3F53iPiLrJt4pyaX2aaZ5BVg9tj8x_k6-v7=3D=
+9Xn1nrh=3DUCw@mail.gmail.com/
+
+Thanks.=
