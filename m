@@ -2,118 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F637750233
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 10:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BAC5750274
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 11:06:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232145AbjGLI7D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 04:59:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47644 "EHLO
+        id S233185AbjGLJGQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 05:06:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233122AbjGLI6n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 04:58:43 -0400
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE1702D73
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 01:57:27 -0700 (PDT)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-55b523cf593so6819506a12.1
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 01:57:27 -0700 (PDT)
+        with ESMTP id S233232AbjGLJFk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 05:05:40 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F33E4F
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 02:05:13 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-51e99584a82so2182264a12.1
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 02:05:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689152247; x=1691744247;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=o7IxMgsm10wM4UtHG5ILit3AGY4PCAIXBMJb8LPTjZE=;
-        b=5SdejOJp8VU3CbfzVdHrFiUZy9Sg2fjsaM+37a7NbRb4J1uX2H6b2OTG4pByTROd4n
-         spndSk5E/mTZ4GyVd7gmmxlztHqqrkvhK8pdSQaLHrmF5OjkH1Gb9fBZ0FuPpZw7xju6
-         zsdil8YofrGOKzU+l/Bcu9XbmzATqHHwdkqiggXgwUd9hPnMsM3cg5pLs88E9okRVwcv
-         U1Ml4d0AB4ZVhhKVe3ArL7v0tydYALwE5r9vaklttinSnPMQb/gsTCnw0jj+xGIpJvy8
-         2G+S+XvC89+gqJuVZRRF4GUjjtEjQt5JI+BHAC/uEb+DEMDIRp4vw9ttfXknF1G3wYSo
-         QohQ==
+        d=citymesh.com; s=google; t=1689152711; x=1691744711;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WeB4LiCs/ui+KqHI7O7oRLQBQTEkfeBX6A3a7U04DuE=;
+        b=OC1jEvLimDJ8N4w1hhhqbtGTlaOPkUyeghFsqAaNWoSNtGJwxpFFCcTi2GOVX9Mq+E
+         Dr6neff4ksqwq2ycuDrF/sW5t7guUr0F74/9BksMoH0mrk/eig/xTOhJ91lKbgH4m3ju
+         KwaxTv8BC+u1rjIvktTWYc3FSbwgu1SvBRBGKRJMgpleOv39gcc9QzorGgrV+W7jOH9n
+         bLVj4BCoBmvXGwmphwCLrTu+RIjBIND7tXo9H9UFSm8hq0ryMFdqC7Nu9nBiulLX7LCp
+         3UquIN6Z+tAVLoTqK25g20BUvj/quOPn9oeqKffEY0NRsRdHA/t1+W+bfabQ2+AGDocu
+         Aa6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689152247; x=1691744247;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=o7IxMgsm10wM4UtHG5ILit3AGY4PCAIXBMJb8LPTjZE=;
-        b=Pb83I5AMcuNjmtMBkBfhCukk1NPY93Cx3O7k1ByPKWJ+vh9yMvrEFjApcGReoMgjEd
-         zo6zNeqz/+eOX+A2yDwABGKrRUmgrKL9JTjLOb9vfYro0rPaIyUi+UT3upa4G8ryhHql
-         1+cDP1QWyRKawIsKz2QJIDJESJh18MjcRqwjrHxyBZSUClhoVR95dNfHT9wlGi3uo2pZ
-         /M1cF/ztG9qVJ3qiKh6CuImEwtzyEbb5KYzG9Fwr5LjDJm1MWgc8Foyd7VoKp/r1XOmB
-         dGMZhRH5FWil0nNf8Mwigs0MjcJ4AkNmdrxItlamYAfWwcwfn32Kd93mUajdHB4HJHpo
-         VsCQ==
-X-Gm-Message-State: ABy/qLZpSJ2fcCsStxCCN5mTplJZj3vGHXCKspURtRfQuMZrJlMouJg+
-        hz8IKiw/w3nqGjJMYTUXjDKcVABeYKQ=
-X-Google-Smtp-Source: APBJJlFDBOcXKyheJrQ1mAmBe3SBY45tZsMMX1cuCQesKVTGIVmfD7ZeHEYqu96oAiKhRzN/JSkvy9DgqfI=
-X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
- (user=badhri job=sendgmr) by 2002:a65:6a84:0:b0:55a:e746:31ef with SMTP id
- q4-20020a656a84000000b0055ae74631efmr10155877pgu.1.1689152246932; Wed, 12 Jul
- 2023 01:57:26 -0700 (PDT)
-Date:   Wed, 12 Jul 2023 08:57:22 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230712085722.1414743-1-badhri@google.com>
-Subject: [PATCH v1] usb: typec: tcpm: Fix response to vsafe0V event
-From:   Badhri Jagan Sridharan <badhri@google.com>
-To:     gregkh@linuxfoundation.org, linux@roeck-us.net,
-        heikki.krogerus@linux.intel.com, kyletso@google.com
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Badhri Jagan Sridharan <badhri@google.com>
+        d=1e100.net; s=20221208; t=1689152711; x=1691744711;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WeB4LiCs/ui+KqHI7O7oRLQBQTEkfeBX6A3a7U04DuE=;
+        b=JOjXn4uCa/96sQ+uXsR5lR3lk/aMjFOXZIY7KQx7DwPnPA/t7itEyg9QTzlm2phrsB
+         egPjH3CiIp09faoEFcWDEibsXT3NEtHA1cmPziguwLpQB0Z520C9EElDB269/4IRLAn+
+         QLDVQvaF4phoO+k8bcV3TQE2D3z8/pxm+N2Yom0aJ33PyHdfj+jlfnu+O9uFFBKALk9p
+         SktEpbMocugjSfQ0HHh6OGBCHN7ieSLqgaZZA8I1kMoXh2sg30Fy0hVL11X0UFTivxU0
+         HzvC066qkg+9MMPhL74OLtnfaXjIswcnQ63SAnPsrMEMBA+aoMmBTkf2ALaCDqQYIo2s
+         UXaw==
+X-Gm-Message-State: ABy/qLZrHsD3yLooNJwDYm8FpPSOXBR7pBoumcHH/md4KEvB5gAGNaR+
+        hbEaonnMtgCs2az1E47LnVGcxxGFM+g9D3UqWpDXzw==
+X-Google-Smtp-Source: APBJJlH4LUJpLDeAxxDKd/GbjNuuMrcURiOMw+M8xengZ4aHcAF/5X2zSxUr1OowYplxlWHEAeCe4+5vBzLewCxn3uI=
+X-Received: by 2002:aa7:ccd9:0:b0:51e:362d:b172 with SMTP id
+ y25-20020aa7ccd9000000b0051e362db172mr6218843edt.32.1689152711504; Wed, 12
+ Jul 2023 02:05:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230712083841.222607-1-koen.vandeputte@citymesh.com> <9936de52da43347ba0ccfb8737440a9698fb4585.camel@sipsolutions.net>
+In-Reply-To: <9936de52da43347ba0ccfb8737440a9698fb4585.camel@sipsolutions.net>
+From:   Koen Vandeputte <koen.vandeputte@citymesh.com>
+Date:   Wed, 12 Jul 2023 11:05:00 +0200
+Message-ID: <CAPh3n82BY0bFkHs6DKKf6+ZUZw+DJmTy7=JEG8REFHyHFMqoVQ@mail.gmail.com>
+Subject: Re: [PATCH] wifi: nl80211: fix mbssid nesting
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>,
+        Aloka Dixit <alokad@codeaurora.org>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Do not transition to SNK_UNATTACHED state when receiving vsafe0v event
-while in SNK_HARD_RESET_WAIT_VBUS. Ignore VBUS off events as well as
-in some platforms VBUS off can be signalled more than once.
+On Wed, Jul 12, 2023 at 10:44=E2=80=AFAM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+>
+> On Wed, 2023-07-12 at 10:38 +0200, Koen Vandeputte wrote:
+> > Executing command NL80211_CMD_GET_WIPHY and parsing it's output
+> > natively without libnl shows following attributes as part of
+> > the nl80211 generated netlink message (part 16):
+> >
+> > GetWiphy: Type: 1
+> > GetWiphy: Type: 2
+> > GetWiphy: Type: 46
+> > GetWiphy: Type: 33074 <-- wrong enum value, above MAX also ..
+>
+> That's not wrong, that's just NLA_F_NESTED | NL80211_ATTR_MBSSID_CONFIG,
+> since it *is* in fact a nested attribute.
 
-[143515.364753] Requesting mux state 1, usb-role 2, orientation 2
-[143515.365520] pending state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_SINK_ON @ 650 ms [rev3 HARD_RESET]
-[143515.632281] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_HARD_RESET_SINK_OFF, polarity 1, disconnected]
-[143515.637214] VBUS on
-[143515.664985] VBUS off
-[143515.664992] state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_WAIT_VBUS [rev3 HARD_RESET]
-[143515.665564] VBUS VSAFE0V
-[143515.665566] state change SNK_HARD_RESET_WAIT_VBUS -> SNK_UNATTACHED [rev3 HARD_RESET]
+ahha! so one should check on each received attribute if this flag is set?
 
-Fixes: 28b43d3d746b ("usb: typec: tcpm: Introduce vsafe0v for vbus")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
----
- drivers/usb/typec/tcpm/tcpm.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+>
+> > Switching to nla_nest_start_noflag() which ommits the NLA_F_NESTED
+> > flag (like most other similar functions do) fixes this:
+> >
+> > GetWiphy: Type: 1
+> > GetWiphy: Type: 2
+> > GetWiphy: Type: 46
+> > GetWiphy: Type: 306 <-- correct enum value
+> > GetWiphy: Type: 316
+>
+> Let's say it _changes_ it, but it doesn't _fix_ it, since it's not
+> broken.
+noted
+>
+> Using nla_nest_start_noflag() is a legacy thing, it shouldn't be done
+> any more. You need to update your userspace, I'm not applying this
+> patch.
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 829d75ebab42..cc1d83926497 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -5349,6 +5349,10 @@ static void _tcpm_pd_vbus_off(struct tcpm_port *port)
- 		/* Do nothing, vbus drop expected */
- 		break;
- 
-+	case SNK_HARD_RESET_WAIT_VBUS:
-+		/* Do nothing, its OK to receive vbus off events */
-+		break;
-+
- 	default:
- 		if (port->pwr_role == TYPEC_SINK && port->attached)
- 			tcpm_set_state(port, SNK_UNATTACHED, tcpm_wait_for_discharge(port));
-@@ -5395,6 +5399,9 @@ static void _tcpm_pd_vbus_vsafe0v(struct tcpm_port *port)
- 	case SNK_DEBOUNCED:
- 		/*Do nothing, still waiting for VSAFE5V for connect */
- 		break;
-+	case SNK_HARD_RESET_WAIT_VBUS:
-+		/* Do nothing, its OK to receive vbus off events */
-+		break;
- 	default:
- 		if (port->pwr_role == TYPEC_SINK && port->auto_vbus_discharge_enabled)
- 			tcpm_set_state(port, SNK_UNATTACHED, 0);
+Sure, no problem.
+I guess all the ones with the noflag so far are using it to avoid
+breaking legacy stuff?
 
-base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
--- 
-2.41.0.255.g8b1d071c50-goog
+>
+> johannes
+>
 
+Thanks for the quick review.
+Highly appreciated!
