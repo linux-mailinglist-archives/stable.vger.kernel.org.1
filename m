@@ -2,155 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E53AE74FFD9
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 09:05:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C583574FFDD
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 09:07:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231625AbjGLHFE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 03:05:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50192 "EHLO
+        id S230352AbjGLHHN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 03:07:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230241AbjGLHFE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 03:05:04 -0400
-Received: from mail.3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20626B1;
-        Wed, 12 Jul 2023 00:05:01 -0700 (PDT)
-Received: from 3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        with ESMTP id S230241AbjGLHHM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 03:07:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 182A0136
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 00:07:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mail.3ffe.de (Postfix) with ESMTPSA id C9A2081A;
-        Wed, 12 Jul 2023 09:04:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
-        t=1689145496;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=C9iTjSBQ2cpJHR0/fytksLWYvIlt9SMZkZq0e9WtOSg=;
-        b=vmi5gQZlxACiaeV0fWn2byFIQWIzZn2z/GpeBZChBrd+vzpmczq1+qYJ/8Ftm/xi5Aj13G
-        8Y23dxmxM6RyGnDCAZC4XyUeRr1X6GHXWe8Hcn/4Oa5R2wBwz1PGRPdz4hgqXDGviTxSoZ
-        C2GfLvpIlVxAe2Owj0/5cPSrgZyp4qWQ75iw6XoYePUGgGH6TUFHUl2iQ64VyyNnfdxx2R
-        xo7ksN3xbUpriRIdg7tMWg1rNahN9X3VBYATJwNXxtSZSQkQoHcrxwo5b/9xRaNE8HZaP8
-        N33ETMJThiD3AafqpHWV7wzIi3y2HvsHU+pXlsD8pM0UORn9sA+/8I4L7HnIQQ==
-MIME-Version: 1.0
-Date:   Wed, 12 Jul 2023 09:04:56 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] mtd: spi-nor: Correct flags for Winbond w25q128
-In-Reply-To: <20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org>
-References: <20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org>
-Message-ID: <46d0846850df455901cf3d11c66c5a90@walle.cc>
-X-Sender: michael@walle.cc
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB338616DC
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 07:07:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150EAC433C7;
+        Wed, 12 Jul 2023 07:07:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689145629;
+        bh=b7noUKfcalyzf/CV7ybs9JEgNqDnhjOvrl4eBbRhLlM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HMFU8S0/nqVr7n2XC14ANUpJ5LPC0EAgwGBw06ZdUEBSrY2IsltHOphDIPJrP7iIz
+         NbCy47XWt4tOBp/Bf8eKkMMbKX8PvcpelKckOItgcjfCtrs0EYKSpgHWtv/MSsK4fF
+         8dWcnY0v12tiXzsOdgAECl/0G8nJ8Uvtg89m4JMcggTdh/gBmNRZl67ED7hwmV3pMT
+         JwixpKCM1Be2unRP8rh9UZFVS4HQQOoBUEoAe5FWcufjoS4gexXXrCf6rRYaL3QSQH
+         iuxTCJWMRdBHMP4Xijkb+7TdUqGMGJX9/tNXU/qxKq6P7SBCJhxLQbJMvJMv2Td9mH
+         Y6L+LS7FN8PsQ==
+Received: from ip-185-104-136-29.ptr.icomera.net ([185.104.136.29] helo=wait-a-minute.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1qJTwI-00CMIW-Ks;
+        Wed, 12 Jul 2023 08:07:06 +0100
+Date:   Wed, 12 Jul 2023 08:07:01 +0100
+Message-ID: <87jzv5a9re.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Oliver Upton <oliver.upton@linux.dev>
+Cc:     kvmarm@lists.linux.dev, James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Reiji Watanabe <reijiw@google.com>, stable@vger.kernel.org,
+        Yu Zhao <yuzhao@google.com>
+Subject: Re: [PATCH v2] KVM: arm64: Correctly handle page aging notifiers for unaligned memslot
+In-Reply-To: <ZK2Zq9YbN4G/Pf0+@linux.dev>
+References: <20230627235405.4069823-1-oliver.upton@linux.dev>
+        <86edlewyh2.wl-maz@kernel.org>
+        <ZK2Zq9YbN4G/Pf0+@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.104.136.29
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, reijiw@google.com, stable@vger.kernel.org, yuzhao@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Linus,
+Hi Oliver.,
 
-Am 2023-07-12 00:02, schrieb Linus Walleij:
-> The Winbond W25Q128 (actual vendor name W25Q128JV)
-
-Not necessarily see below. Do you know what part numbers is
-written on your flash?
-
-> has exactly the same flags as the sibling device
-> w25q128fw. The devices both require unlocking and
-> support dual and quad SPI transport.
+On Tue, 11 Jul 2023 19:04:27 +0100,
+Oliver Upton <oliver.upton@linux.dev> wrote:
 > 
-> The actual product naming between devices:
+> Hey Marc,
 > 
-> 0xef4018: "w25q128"   W25Q128JV-IM/JM
-> 0xef7018: "w25q128fw" W25Q128JV-IN/IQ/JQ
-
-Where do you get that string? from winbond.c? Because,
-then it's incorrect. For 0xef7018 its actually w25q128jv.
-
-But that being said, Winbond is known to reuse the IDs among its
-flashes. From a quick look at various datasheets:
-
-0x60 seems to be DW, FW and NW(Q) series
-0x70 seems to be JV(M)
-0x80 seems to be NW(M)
-0x40 seems to be BV, JV(Q), "V" (probably the first [1])
-
-(Q) denotes the fixed quad enable bit.
-
-Now 0x40 are the first ones who where added back in the days. I'm
-not sure, what kind of winbond devices there were and if they
-support dual/quad read.
-
-Normally, you'd use a .fixups (see w25q256_fixups for example) to
-dynamically detect the newer flash type and then refine the flags.
-But because we don't know how the older flashes look like, that
-would be just guessing :/ Although, I've once thought about
-fingerprinting the SFDP tables eg. by some hash. But that would
-assume the SFDP data is not changing a lot on a given device. Not
-sure if that is the case, we just began to collect SFDP tables
-of various devices.
-
-If it turns out that only SPI_NOR_HAS_LOCK and SPI_NOR_HAS_TB
-is needed, I'm leaning towards just adding these flags to the
-w25q128 entry. According to [1] this was already supported
-back in the days.
-
-> The latter device, "w25q128fw" supports features
-> named DTQ and QPI, otherwise it is the same.
+> On Tue, Jul 11, 2023 at 11:10:01AM +0100, Marc Zyngier wrote:
+> > On Wed, 28 Jun 2023 00:54:05 +0100, Oliver Upton <oliver.upton@linux.dev> wrote:
+> > > +static int stage2_age_walker(const struct kvm_pgtable_visit_ctx *ctx,
+> > > +			     enum kvm_pgtable_walk_flags visit)
+> > >  {
+> > > -	kvm_pte_t pte = 0;
+> > > -	stage2_update_leaf_attrs(pgt, addr, 1, 0, KVM_PTE_LEAF_ATTR_LO_S2_AF,
+> > > -				 &pte, NULL, 0);
+> > > +	kvm_pte_t new = ctx->old & ~KVM_PTE_LEAF_ATTR_LO_S2_AF;
+> > > +	struct stage2_age_data *data = ctx->arg;
+> > > +
+> > > +	if (!kvm_pte_valid(ctx->old) || new == ctx->old)
+> > > +		return 0;
+> > > +
+> > > +	data->young = true;
+> > > +
+> > > +	if (data->mkold && !stage2_try_set_pte(ctx, new))
+> > > +		return -EAGAIN;
+> > > +
+> > >  	/*
+> > >  	 * "But where's the TLBI?!", you scream.
+> > >  	 * "Over in the core code", I sigh.
+> > >  	 *
+> > >  	 * See the '->clear_flush_young()' callback on the KVM mmu notifier.
+> > >  	 */
+> > > -	return pte;
+> > > +	return 0;
+> > >  }
+> > >  
+> > > -bool kvm_pgtable_stage2_is_young(struct kvm_pgtable *pgt, u64 addr)
+> > > +bool kvm_pgtable_stage2_test_clear_young(struct kvm_pgtable *pgt, u64 addr,
+> > > +					 u64 size, bool mkold)
+> > >  {
+> > > -	kvm_pte_t pte = 0;
+> > > -	stage2_update_leaf_attrs(pgt, addr, 1, 0, 0, &pte, NULL, 0);
+> > > -	return pte & KVM_PTE_LEAF_ATTR_LO_S2_AF;
+> > > +	struct stage2_age_data data = {
+> > > +		.mkold		= mkold,
+> > > +	};
+> > > +	struct kvm_pgtable_walker walker = {
+> > > +		.cb		= stage2_age_walker,
+> > > +		.arg		= &data,
+> > > +		.flags		= KVM_PGTABLE_WALK_LEAF,
+> > > +	};
+> > > +
+> > > +	WARN_ON(kvm_pgtable_walk(pgt, addr, size, &walker));
+> > 
+> > Do we really want a WARN_ON() here? From what I can tell, it can be
+> > (trivially?) triggered by the previous function returning -EAGAIN if
+> > the pte update fails in the case of a shared walk.
 > 
-> Not having the right flags has the annoying side
-> effect that write access does not work.
+> I threw the -EAGAIN in there just due to reflexes, we're holding the MMU
+> write lock at this point so stage2_try_set_pte() will always succeed. A
+> tad fragile, but wanted to make it trivial to change the locking around
+> stage2_age_walker() in the future.
 
-This should only apply to FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB).
+Right, the notifier takes the write lock, ensuring that there is never
+a concurrent access. Maybe a small comment above the return would
+help, as '-EAGAIN' is easily interpreted as "we missed the boat, but
+we'll take the next one, no big deal".
 
-I'd guess your flash supports SFDP, then the NO_SFDP_FLAGS should be
-automatically detected. Could you please dump the SFDP tables
-(described in [2])?
-
-> After this patch I can write to the flash on the
-> Inteno XG6846 router.
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
->  drivers/mtd/spi-nor/winbond.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> The reason I wanted to have a WARN here is because we're unable to
+> return an error on the MMU notifier and might need some breadcrumbs to
+> debug any underlying issues in the table walker. I'd really like to keep
+> it in some form.
 > 
-> diff --git a/drivers/mtd/spi-nor/winbond.c 
-> b/drivers/mtd/spi-nor/winbond.c
-> index 834d6ba5ce70..a67e1d4206f3 100644
-> --- a/drivers/mtd/spi-nor/winbond.c
-> +++ b/drivers/mtd/spi-nor/winbond.c
-> @@ -121,7 +121,9 @@ static const struct flash_info winbond_nor_parts[] 
-> = {
->  	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
->  		NO_SFDP_FLAGS(SECT_4K) },
->  	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
-> -		NO_SFDP_FLAGS(SECT_4K) },
-> +		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB)
-> +		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ |
-> +			      SPI_NOR_QUAD_READ) },
+> I can either replace stage2_try_set_pte() with a direct WRITE_ONCE()
+> (eliminating the error path) or leave it as-is. Which do you prefer?
 
-As mentioned above, could you try without the DUAL_READ/QUAD_READ flags.
-You can have a look at the debugfs whether the detected capabilities
-are still the same with and without these flags.
+With the above nit addressed:
 
--michael
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 
-[1] https://www.elinux.org/images/f/f5/Winbond-w25q32.pdf
-[2] 
-https://lore.kernel.org/all/4304e19f3399a0a6e856119d01ccabe0@walle.cc/
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
