@@ -2,42 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BD8F75031D
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 11:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63384750367
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 11:40:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231472AbjGLJbY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 05:31:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46014 "EHLO
+        id S230038AbjGLJkw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 05:40:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232145AbjGLJbX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 05:31:23 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 867FB12F;
-        Wed, 12 Jul 2023 02:31:22 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A97302F4;
-        Wed, 12 Jul 2023 02:32:04 -0700 (PDT)
-Received: from [10.57.78.6] (unknown [10.57.78.6])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8B5353F73F;
-        Wed, 12 Jul 2023 02:31:21 -0700 (PDT)
-Message-ID: <67f68464-cc1f-dea3-6850-a1cad190073a@arm.com>
-Date:   Wed, 12 Jul 2023 10:31:19 +0100
+        with ESMTP id S232359AbjGLJkr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 05:40:47 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56F9D1734
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 02:40:45 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-977e0fbd742so839749266b.2
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 02:40:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=isovalent.com; s=google; t=1689154843; x=1691746843;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=G2i1XP2A0HKCYlf05QxH688mlDCGuWIn9TvOMRqdls8=;
+        b=a1MOscWWNBZ5HUCRZrW8jTUnRu9TC7zwd+t2IOESZJxrr8BGJvIPWmAdDPqJ19HSb4
+         GN44Orowm1cxHvP6U0Oyys6b0XEgfaAR05bXCrQmkmz3Or/NvJnK1c7HXBMHwBy11TOy
+         dWkXtF+iAsLkkRZGgxZuRsx0Ii29Vz2KDa7IShGAw59hUEoZyfQGE9fFH6uLw5YpMomN
+         kho2Egwa/Oeb4Z5ZRfn/IwonMJU7F7vI+bChbqg/zriGqc2LnvJ5gPQBOoGhBvQrhQ01
+         9Gz2MHELouRA1pvEhIZPhQ+fq6/uvhIeNZC7ylvOOcX0ThXn9UPzTipbux3s2CVncnZU
+         bL0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689154843; x=1691746843;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=G2i1XP2A0HKCYlf05QxH688mlDCGuWIn9TvOMRqdls8=;
+        b=Q4aAXHcz6butCi2y2c/7gOSoHwJoHXKnU56fmHa3quwDJWGPO2wT22tx42KXgb9zBS
+         b63hQaAti7LKmHxohvNiLC8/T17q9SagDuP3gjlq3ekFxe1GwG/ZbGaEG2qnhLw5rNIa
+         E8Br5WnpEvdrXU+Zi+Y14j5iy86F9XriMPc6suUCiRDyiT5jlhAYwYMwHlIBwalEvcTI
+         6GzvPhDJD1lW03t7jqhzBkwGrVeWv3TnCBOMVxQfBL2/yuW4OsFe+aPfLqRC16U2iui+
+         KCK2pPrGsa1RuldkrfDVGrp31nrHSuwzfhHHNyODXVjDSd/FjL1fMQ/ANWfyyLuZTAtO
+         P4HQ==
+X-Gm-Message-State: ABy/qLY2HBO4K9UEV5nF04SL+H5BD0SMO4/TUGgRF3zjm+BWbAAs8Ab1
+        QlUEPAb7IfCaOaebIl+OWtdrqCN+ouKQxvMKZHLr2dEhvM40hXYKc9TKgQ==
+X-Google-Smtp-Source: APBJJlEaiJfeuPzEZDsr+8Zp5GpNx1Nx7bEq3337a4Bn/+AdkhQXEJkL2rcElQOYo1rfMpdtIFVTN7KzHT3sT8B4poA=
+X-Received: by 2002:a17:906:3605:b0:970:1b2d:45cc with SMTP id
+ q5-20020a170906360500b009701b2d45ccmr18002142ejb.57.1689154843534; Wed, 12
+ Jul 2023 02:40:43 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH] mm/mlock: Fix vma iterator conversion of
- apply_vma_lock_flags()
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     stable@vger.kernel.org
-References: <20230711175020.4091336-1-Liam.Howlett@oracle.com>
-From:   Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20230711175020.4091336-1-Liam.Howlett@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+From:   Lorenz Bauer <lmb@isovalent.com>
+Date:   Wed, 12 Jul 2023 10:40:32 +0100
+Message-ID: <CAN+4W8j6G4f9Pg+rb+gcO06OU8ovudhbwXj0+E8Gg09zrozcZQ@mail.gmail.com>
+Subject: linux-5.10.y: please backport to fix BPF selftest breakage
+To:     stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,70 +61,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/07/2023 18:50, Liam R. Howlett wrote:
-> apply_vma_lock_flags() calls mlock_fixup(), which could merge the VMA
-> after where the vma iterator is located.  Although this is not an issue,
-> the next iteration of the loop will check the start of the vma to be
-> equal to the locally saved 'tmp' variable and cause an incorrect failure
-> scenario.  Fix the error by setting tmp to the end of the vma iterator
-> value before restarting the loop.
-> 
-> There is also a potential of the error code being overwritten when the
-> loop terminates early.  Fix the return issue by directly returning when
-> an error is encountered since there is nothing to undo after the loop.
-> 
-> Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-> Link: https://lore.kernel.org/linux-mm/50341ca1-d582-b33a-e3d0-acb08a65166f@arm.com/
-> Cc: <stable@vger.kernel.org>
-> Fixes: 37598f5a9d8b ("mlock: convert mlock to vma iterator")
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Hi stable team,
 
-Wow; thanks for the quick fix! I've tested this on arm64/v6.4 with the failing
-mm selftests that I reported: they are now passing.
+Building BPF selftests on 5.10.186 currently causes the following compile error:
 
-Tested-by: Ryan Roberts <ryan.roberts@arm.com>
+$ make -C tools/testing/selftests/bpf
+...
+  BINARY   test_verifier
+In file included from
+/usr/src/linux-5.10.186/tools/testing/selftests/bpf/verifier/tests.h:59,
+                 from test_verifier.c:355:
+/usr/src/linux-5.10.186/tools/testing/selftests/bpf/verifier/ref_tracking.c:935:10:
+error: 'struct bpf_test' has no member named 'fixup_map_ringbuf'; did
+you mean 'fixup_map_in_map'?
+  935 |         .fixup_map_ringbuf = { 11 },
+      |          ^~~~~~~~~~~~~~~~~
+      |          fixup_map_in_map
 
-> ---
->  mm/mlock.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/mlock.c b/mm/mlock.c
-> index d7db94519884..0a0c996c5c21 100644
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -477,7 +477,6 @@ static int apply_vma_lock_flags(unsigned long start, size_t len,
->  {
->  	unsigned long nstart, end, tmp;
->  	struct vm_area_struct *vma, *prev;
-> -	int error;
->  	VMA_ITERATOR(vmi, current->mm, start);
->  
->  	VM_BUG_ON(offset_in_page(start));
-> @@ -498,6 +497,7 @@ static int apply_vma_lock_flags(unsigned long start, size_t len,
->  	nstart = start;
->  	tmp = vma->vm_start;
->  	for_each_vma_range(vmi, vma, end) {
-> +		int error;
->  		vm_flags_t newflags;
->  
->  		if (vma->vm_start != tmp)
-> @@ -511,14 +511,15 @@ static int apply_vma_lock_flags(unsigned long start, size_t len,
->  			tmp = end;
->  		error = mlock_fixup(&vmi, vma, &prev, nstart, tmp, newflags);
->  		if (error)
-> -			break;
-> +			return error;
-> +		tmp = vma_iter_end(&vmi);
->  		nstart = tmp;
->  	}
->  
-> -	if (vma_iter_end(&vmi) < end)
-> +	if (tmp < end)
->  		return -ENOMEM;
->  
-> -	return error;
-> +	return 0;
->  }
->  
->  /*
+The problem was introduced by commit f4b8c0710ab6 ("selftests/bpf: Add
+verifier test for release_reference()") in your tree.
 
+Seems like at least commit 4237e9f4a962 ("selftests/bpf: Add verifier
+test for PTR_TO_MEM spill") is required for the build to succeed.
+
+I previously reported this but things probably fell through the
+cracks: https://lore.kernel.org/stable/CAN+4W8iMcwwVjmSekZ9txzZNxOZ0x98nBXo4cEoTU9G2zLe8HA@mail.gmail.com/#t
+
+Thanks!
+Lorenz
