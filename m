@@ -2,213 +2,258 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83448750AA1
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 16:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C24BB750BA9
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 17:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231145AbjGLOQV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 10:16:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51998 "EHLO
+        id S232777AbjGLPCu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 11:02:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232118AbjGLOQQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 10:16:16 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 637951BDF;
-        Wed, 12 Jul 2023 07:16:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689171373; x=1720707373;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=Os8ND3nqigTu76dQVguaSEK1X3J11jRaSqtTnbGNiqI=;
-  b=Rh4CsPGHXqHyUgpOoJcdlKbZRZX7w+Ir0YseszgrE//K1wNbau3QaWmz
-   MFfgV+ErjhofDuWFwLG/K4M5Z5tIzossSXW0QB4NnvXkgTyUPkkoNM10w
-   H37wB27OIhEZxCmJAYpo3G9O7s2/EFOL6M39nPfw2L8TOLy5r27bbWSSO
-   8MPK9vthRnQlifdXnXTMT4UEA3LUzO1XuZMfN0ErERoUthI3cZobm0kkU
-   SXyzNym3HyabcglBcB2xmUuRI4BtmVFIsqCfQJCHi4FE3/3TCeP4VFul+
-   y2HN4XirneXXPpYfhuDR1oreYkxv7RRf4zD/y+wSdbAlkjzMASbUUkKAt
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10769"; a="354807596"
-X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; 
-   d="scan'208";a="354807596"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 07:16:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10769"; a="791640967"
-X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; 
-   d="scan'208";a="791640967"
-Received: from agermosh-mobl1.amr.corp.intel.com ([10.252.43.42])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 07:16:09 -0700
-Date:   Wed, 12 Jul 2023 17:16:03 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Vinod Koul <vkoul@kernel.org>
-cc:     linux-serial <linux-serial@vger.kernel.org>,
-        Robert Baldyga <r.baldyga@samsung.com>,
-        dmaengine@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Richard Tresidder <rtresidd@electromag.com.au>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: pl330: Return DMA_PAUSED when transaction is
- paused
-In-Reply-To: <ZKUceu9iJuAAeYYT@matsya>
-Message-ID: <f99696c-df19-2e6d-d48c-b3f2c3481e22@linux.intel.com>
-References: <20230526105434.14959-1-ilpo.jarvinen@linux.intel.com> <ZKUceu9iJuAAeYYT@matsya>
+        with ESMTP id S232721AbjGLPCt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 11:02:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD3561BC6;
+        Wed, 12 Jul 2023 08:02:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D4EB61838;
+        Wed, 12 Jul 2023 15:02:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7B0C433C7;
+        Wed, 12 Jul 2023 15:02:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689174166;
+        bh=6Xg22ZHymwYTmng19kOz5rdixVHrp7FECHVhi5ZVNRY=;
+        h=From:Date:Subject:To:Cc:From;
+        b=RkS9IpV+zDCLI/qcDefAVyreomkcdm4E/iiUhgVEcqGYlU6WR81R4FlrKnfdSn48B
+         QY43TuYTGy7XFAkKfsDb1/oHWn+rYAUHQxfezHdxG/qzeU5lpSRcnYOWGcRA9jtGUX
+         Dk3HbZGDpKp3Bu8EBY7uDDrO6tRgoRMWRcq7dGoWYbV9hyxVey7eRkLZsDBzHbo0q8
+         1NXCLt3mrK8YNy94XyMUtq+Yg+kyq3KxWwBW/vTtMOfibzBq0q8+p8Qcefm4ZiWdey
+         SDh7Cb5SR1nCHYEdWWEZUCISIRfwtzcSRuI6ZFFPT4yGKz5vcE2FsBc0RZz+KEF2p9
+         fCSYxWW4CzhAA==
+From:   bentiss@kernel.org
+Date:   Wed, 12 Jul 2023 17:02:34 +0200
+Subject: [PATCH v2] HID: logitech-hidpp: rework one more time the retries
+ attempts
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-329618449-1689166921=:1670"
-Content-ID: <6466d25e-fcdb-cadb-f4f8-49c884fcba48@linux.intel.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230621-logitech-fixes-v2-1-3635f7f9c8af@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAInArmQC/3WOzQrCMBCEX6Xs2ZX8SMSefA/pYZuuzYI2kpSil
+ L67iZ48eJtvmGFmhcxJOEPbrJB4kSxxKmB2DfhA08goQ2EwyljljMZbHGVmH/AqT85IB6/YOSZ
+ DA5RST5mxTzT5UGu/6Rp4JP7qtrl0hYPkOabX58Ciq/t3a9Go0Ro+qpO1XvXqnHgINO99vEO3b
+ dsbEOsRNM4AAAA=
+To:     =?utf-8?q?Filipe_La=C3=ADns?= <lains@riseup.net>,
+        Bastien Nocera <hadess@hadess.net>,
+        Jiri Kosina <jikos@kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        stable@vger.kernel.org
+X-Mailer: b4 0.12.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1689174165; l=6340;
+ i=bentiss@kernel.org; s=20230215; h=from:subject:message-id;
+ bh=2070mtrzbWq9KfMRTaYvRvQiS5vfxAiTPm79NPC/Fuo=;
+ b=Q5UUrM9a43lmJebEn1JjZ1ypKSXWU+c4okJDTVF7PoOOff95alcWbFUJaS86JAgqvChxHRKpL
+ Sj7/1yD/h1NDwLEQpDL7l6nYdVdkdFFtFih0r0bsoCBURXehwLJleWX
+X-Developer-Key: i=bentiss@kernel.org; a=ed25519;
+ pk=7D1DyAVh6ajCkuUTudt/chMuXWIJHlv2qCsRkIizvFw=
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 
---8323329-329618449-1689166921=:1670
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Content-ID: <44d86a3c-f85c-567d-6dd2-de905c6fb7c0@linux.intel.com>
+Extract the internal code inside a helper function, fix the
+initialization of the parameters used in the helper function
+(`hidpp->answer_available` was not reset and `*response` wasn't either),
+and use a `do {...} while();` loop.
 
-On Wed, 5 Jul 2023, Vinod Koul wrote:
+Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when device is busy")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bastien Nocera <hadess@hadess.net>
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+---
+as requested by https://lore.kernel.org/all/CAHk-=wiMbF38KCNhPFiargenpSBoecSXTLQACKS2UMyo_Vu2ww@mail.gmail.com/
+This is a rewrite of that particular piece of code.
+---
+Changes in v2:
+- added __must_hold() for KASAN
+- Reworked the comment describing the functions and their return values
+- Link to v1: https://lore.kernel.org/r/20230621-logitech-fixes-v1-1-32e70933c0b0@redhat.com
+---
+ drivers/hid/hid-logitech-hidpp.c | 115 +++++++++++++++++++++++++--------------
+ 1 file changed, 75 insertions(+), 40 deletions(-)
 
-> On 26-05-23, 13:54, Ilpo Järvinen wrote:
-> > pl330_pause() does not set anything to indicate paused condition which
-> > causes pl330_tx_status() to return DMA_IN_PROGRESS. This breaks 8250
-> > DMA flush after the fix in commit 57e9af7831dc ("serial: 8250_dma: Fix
-> > DMA Rx rearm race"). The function comment for pl330_pause() claims
-> > pause is supported but resume is not which is enough for 8250 DMA flush
-> > to work as long as DMA status reports DMA_PAUSED when appropriate.
-> > 
-> > Add PAUSED state for descriptor and mark BUSY descriptors with PAUSED
-> > in pl330_pause(). Return DMA_PAUSED from pl330_tx_status() when the
-> > descriptor is PAUSED.
-> 
-> Have you noticed the comment in the code which reads:
-> 
-> /*
->  * We don't support DMA_RESUME command because of hardware
->  * limitations, so after pausing the channel we cannot restore
->  * it to active state. We have to terminate channel and setup
->  * DMA transfer again. This pause feature was implemented to
->  * allow safely read residue before channel termination.
->  */
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index 129b01be488d..09ba2086c95c 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -275,21 +275,22 @@ static int __hidpp_send_report(struct hid_device *hdev,
+ }
+ 
+ /*
+- * hidpp_send_message_sync() returns 0 in case of success, and something else
+- * in case of a failure.
+- * - If ' something else' is positive, that means that an error has been raised
+- *   by the protocol itself.
+- * - If ' something else' is negative, that means that we had a classic error
+- *   (-ENOMEM, -EPIPE, etc...)
++ * Effectively send the message to the device, waiting for its answer.
++ *
++ * Must be called with hidpp->send_mutex locked
++ *
++ * Same return protocol than hidpp_send_message_sync():
++ * - success on 0
++ * - negative error means transport error
++ * - positive value means protocol error
+  */
+-static int hidpp_send_message_sync(struct hidpp_device *hidpp,
++static int __do_hidpp_send_message_sync(struct hidpp_device *hidpp,
+ 	struct hidpp_report *message,
+ 	struct hidpp_report *response)
+ {
+-	int ret = -1;
+-	int max_retries = 3;
++	int ret;
+ 
+-	mutex_lock(&hidpp->send_mutex);
++	__must_hold(&hidpp->send_mutex);
+ 
+ 	hidpp->send_receive_buf = response;
+ 	hidpp->answer_available = false;
+@@ -300,47 +301,74 @@ static int hidpp_send_message_sync(struct hidpp_device *hidpp,
+ 	 */
+ 	*response = *message;
+ 
+-	for (; max_retries != 0 && ret; max_retries--) {
+-		ret = __hidpp_send_report(hidpp->hid_dev, message);
++	ret = __hidpp_send_report(hidpp->hid_dev, message);
++	if (ret) {
++		dbg_hid("__hidpp_send_report returned err: %d\n", ret);
++		memset(response, 0, sizeof(struct hidpp_report));
++		return ret;
++	}
+ 
+-		if (ret) {
+-			dbg_hid("__hidpp_send_report returned err: %d\n", ret);
+-			memset(response, 0, sizeof(struct hidpp_report));
+-			break;
+-		}
++	if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
++				5*HZ)) {
++		dbg_hid("%s:timeout waiting for response\n", __func__);
++		memset(response, 0, sizeof(struct hidpp_report));
++		return -ETIMEDOUT;
++	}
+ 
+-		if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
+-					5*HZ)) {
+-			dbg_hid("%s:timeout waiting for response\n", __func__);
+-			memset(response, 0, sizeof(struct hidpp_report));
+-			ret = -ETIMEDOUT;
+-			break;
+-		}
++	if (response->report_id == REPORT_ID_HIDPP_SHORT &&
++	    response->rap.sub_id == HIDPP_ERROR) {
++		ret = response->rap.params[1];
++		dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
++		return ret;
++	}
+ 
+-		if (response->report_id == REPORT_ID_HIDPP_SHORT &&
+-		    response->rap.sub_id == HIDPP_ERROR) {
+-			ret = response->rap.params[1];
+-			dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
++	if ((response->report_id == REPORT_ID_HIDPP_LONG ||
++	     response->report_id == REPORT_ID_HIDPP_VERY_LONG) &&
++	    response->fap.feature_index == HIDPP20_ERROR) {
++		ret = response->fap.params[1];
++		dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__, ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++/*
++ * hidpp_send_message_sync() returns 0 in case of success, and something else
++ * in case of a failure.
++ *
++ * See __do_hidpp_send_message_sync() for a detailed explanation of the returned
++ * value.
++ */
++static int hidpp_send_message_sync(struct hidpp_device *hidpp,
++	struct hidpp_report *message,
++	struct hidpp_report *response)
++{
++	int ret;
++	int max_retries = 3;
++
++	mutex_lock(&hidpp->send_mutex);
++
++	do {
++		ret = __do_hidpp_send_message_sync(hidpp, message, response);
++		if (ret != HIDPP20_ERROR_BUSY)
+ 			break;
+-		}
+ 
+-		if ((response->report_id == REPORT_ID_HIDPP_LONG ||
+-		     response->report_id == REPORT_ID_HIDPP_VERY_LONG) &&
+-		    response->fap.feature_index == HIDPP20_ERROR) {
+-			ret = response->fap.params[1];
+-			if (ret != HIDPP20_ERROR_BUSY) {
+-				dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__, ret);
+-				break;
+-			}
+-			dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", __func__, ret);
+-		}
+-	}
++		dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", __func__, ret);
++	} while (--max_retries);
+ 
+ 	mutex_unlock(&hidpp->send_mutex);
+ 	return ret;
+ 
+ }
+ 
++/*
++ * hidpp_send_fap_command_sync() returns 0 in case of success, and something else
++ * in case of a failure.
++ *
++ * See __do_hidpp_send_message_sync() for a detailed explanation of the returned
++ * value.
++ */
+ static int hidpp_send_fap_command_sync(struct hidpp_device *hidpp,
+ 	u8 feat_index, u8 funcindex_clientid, u8 *params, int param_count,
+ 	struct hidpp_report *response)
+@@ -373,6 +401,13 @@ static int hidpp_send_fap_command_sync(struct hidpp_device *hidpp,
+ 	return ret;
+ }
+ 
++/*
++ * hidpp_send_rap_command_sync() returns 0 in case of success, and something else
++ * in case of a failure.
++ *
++ * See __do_hidpp_send_message_sync() for a detailed explanation of the returned
++ * value.
++ */
+ static int hidpp_send_rap_command_sync(struct hidpp_device *hidpp_dev,
+ 	u8 report_id, u8 sub_id, u8 reg_address, u8 *params, int param_count,
+ 	struct hidpp_report *response)
 
-I'm aware of this limitation (and comment) but it's not causing a problem 
-here since serial8250_rx_dma_flush() does not need to call resume, it 
-requires only supporting pause + reading the state/status.
+---
+base-commit: 87854366176403438d01f368b09de3ec2234e0f5
+change-id: 20230621-logitech-fixes-a4c0e66ea2ad
 
-> So driver just stops when in pause.
-
-It not only stops but keeps claiming it's still not stopped which causes 
-the problem in 8250 code because 8250 DMA code assumes DMA side returns 
-the correct status.
-
-> Now the commit 57e9af7831dc returns when in progress state, so am not
-> sure how returning Paused would help here?
-
-In serial8250_rx_dma_flush() 8250 DMA code does this:
-		dmaengine_pause(dma->rxchan);
-                __dma_rx_complete(p);
-                dmaengine_terminate_async(dma->rxchan);
-
-As you can see, __dma_rx_complete() would not take that return when called 
-from serial8250_rx_dma_flush() if correct DMA_* status would be returned.
-
-The return in __dma_rx_complete() is meant for other paths (as shown in 
-57e9af7831dc's changelog) but is now currently taken also when called 
-from serial8250_rx_dma_flush() because pl330 keeps returning 
-DMA_IN_PROGRESS instead of DMA_PAUSED. Thus, I created this fix.
-
+Best regards,
 -- 
- i.
+Benjamin Tissoires <bentiss@kernel.org>
 
-
-> > Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
-> > Tested-by: Richard Tresidder <rtresidd@electromag.com.au>
-> > Fixes: 88987d2c7534 ("dmaengine: pl330: add DMA_PAUSE feature")
-> > Cc: stable@vger.kernel.org
-> > Link: https://lore.kernel.org/linux-serial/f8a86ecd-64b1-573f-c2fa-59f541083f1a@electromag.com.au/
-> > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> > ---
-> > 
-> > $ diff -u <(git grep -l -e '\.device_pause' -e '->device_pause') <(git grep -l DMA_PAUSED)
-> > 
-> > ...tells there might a few other drivers which do not properly return
-> > DMA_PAUSED status despite having a pause function.
-> > 
-> >  drivers/dma/pl330.c | 18 ++++++++++++++++--
-> >  1 file changed, 16 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
-> > index 0d9257fbdfb0..daad25f2c498 100644
-> > --- a/drivers/dma/pl330.c
-> > +++ b/drivers/dma/pl330.c
-> > @@ -403,6 +403,12 @@ enum desc_status {
-> >  	 * of a channel can be BUSY at any time.
-> >  	 */
-> >  	BUSY,
-> > +	/*
-> > +	 * Pause was called while descriptor was BUSY. Due to hardware
-> > +	 * limitations, only termination is possible for descriptors
-> > +	 * that have been paused.
-> > +	 */
-> > +	PAUSED,
-> >  	/*
-> >  	 * Sitting on the channel work_list but xfer done
-> >  	 * by PL330 core
-> > @@ -2041,7 +2047,7 @@ static inline void fill_queue(struct dma_pl330_chan *pch)
-> >  	list_for_each_entry(desc, &pch->work_list, node) {
-> >  
-> >  		/* If already submitted */
-> > -		if (desc->status == BUSY)
-> > +		if (desc->status == BUSY || desc->status == PAUSED)
-> >  			continue;
-> >  
-> >  		ret = pl330_submit_req(pch->thread, desc);
-> > @@ -2326,6 +2332,7 @@ static int pl330_pause(struct dma_chan *chan)
-> >  {
-> >  	struct dma_pl330_chan *pch = to_pchan(chan);
-> >  	struct pl330_dmac *pl330 = pch->dmac;
-> > +	struct dma_pl330_desc *desc;
-> >  	unsigned long flags;
-> >  
-> >  	pm_runtime_get_sync(pl330->ddma.dev);
-> > @@ -2335,6 +2342,10 @@ static int pl330_pause(struct dma_chan *chan)
-> >  	_stop(pch->thread);
-> >  	spin_unlock(&pl330->lock);
-> >  
-> > +	list_for_each_entry(desc, &pch->work_list, node) {
-> > +		if (desc->status == BUSY)
-> > +			desc->status = PAUSED;
-> > +	}
-> >  	spin_unlock_irqrestore(&pch->lock, flags);
-> >  	pm_runtime_mark_last_busy(pl330->ddma.dev);
-> >  	pm_runtime_put_autosuspend(pl330->ddma.dev);
-> > @@ -2425,7 +2436,7 @@ pl330_tx_status(struct dma_chan *chan, dma_cookie_t cookie,
-> >  		else if (running && desc == running)
-> >  			transferred =
-> >  				pl330_get_current_xferred_count(pch, desc);
-> > -		else if (desc->status == BUSY)
-> > +		else if (desc->status == BUSY || desc->status == PAUSED)
-> >  			/*
-> >  			 * Busy but not running means either just enqueued,
-> >  			 * or finished and not yet marked done
-> > @@ -2442,6 +2453,9 @@ pl330_tx_status(struct dma_chan *chan, dma_cookie_t cookie,
-> >  			case DONE:
-> >  				ret = DMA_COMPLETE;
-> >  				break;
-> > +			case PAUSED:
-> > +				ret = DMA_PAUSED;
-> > +				break;
-> >  			case PREP:
-> >  			case BUSY:
-> >  				ret = DMA_IN_PROGRESS;
-> > -- 
-> > 2.30.2
-> 
-> 
---8323329-329618449-1689166921=:1670--
