@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1EF174FDA1
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 05:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87C8E74FD8C
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 05:15:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229945AbjGLDUF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 11 Jul 2023 23:20:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34372 "EHLO
+        id S229845AbjGLDO7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 11 Jul 2023 23:14:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229742AbjGLDUE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 23:20:04 -0400
+        with ESMTP id S229718AbjGLDO5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 11 Jul 2023 23:14:57 -0400
+X-Greylist: delayed 128 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 11 Jul 2023 20:14:55 PDT
 Received: from mail-m11875.qiye.163.com (mail-m11875.qiye.163.com [115.236.118.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159F7133
-        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:20:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2581B93
+        for <stable@vger.kernel.org>; Tue, 11 Jul 2023 20:14:54 -0700 (PDT)
 Received: from localhost.localdomain (unknown [IPV6:240e:3b7:3270:4fa0:68e8:99a6:210:534d])
-        by mail-m11875.qiye.163.com (Hmail) with ESMTPA id B1FDA280F80;
-        Wed, 12 Jul 2023 11:12:37 +0800 (CST)
+        by mail-m11875.qiye.163.com (Hmail) with ESMTPA id A2232280DF5;
+        Wed, 12 Jul 2023 11:14:48 +0800 (CST)
 From:   Ding Hui <dinghui@sangfor.com.cn>
 To:     stable@vger.kernel.org
 Cc:     chuck.lever@oracle.com, gregkh@linuxfoundation.org,
         Ding Hui <dinghui@sangfor.com.cn>
-Subject: [PATCH 4.14.y] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()
-Date:   Wed, 12 Jul 2023 11:12:01 +0800
-Message-Id: <20230712031201.13103-1-dinghui@sangfor.com.cn>
+Subject: [PATCH 4.19.y] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()
+Date:   Wed, 12 Jul 2023 11:14:20 +0800
+Message-Id: <20230712031420.13203-1-dinghui@sangfor.com.cn>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <2023071119-underdone-monotype-f516@gregkh>
-References: <2023071119-underdone-monotype-f516@gregkh>
+In-Reply-To: <2023071117-anyplace-zipfile-8701@gregkh>
+References: <2023071117-anyplace-zipfile-8701@gregkh>
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-        tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCS00fVh5CH09KSEtJGEpDTlUTARMWGhIXJBQOD1
+        tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDGBlIVhgdHktNHxlDTENISlUTARMWGhIXJBQOD1
         lXWRgSC1lBWUlPSx5BSBlMQUhJTEtBTx0aS0FNQx5DQUJCGk1BSUpLQU5ITx9ZV1kWGg8SFR0UWU
         FZT0tIVUpKS0hKTFVKS0tVS1kG
-X-HM-Tid: 0a89481623d32eb1kusnb1fda280f80
+X-HM-Tid: 0a89481823402eb1kusna2232280df5
 X-HM-MType: 1
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Nww6Mxw*GD1PTBgyF0sUKw8U
-        NyMaFAtVSlVKTUNCSkhKTk5DQkpNVTMWGhIXVR8SFRwTDhI7CBoVHB0UCVUYFBZVGBVFWVdZEgtZ
-        QVlJT0seQUgZTEFISUxLQU8dGktBTUMeQ0FCQhpNQUlKS0FOSE8fWVdZCAFZQU5NSE43Bg++
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MVE6Tio*TD0CCxgOPU0YI0sh
+        HBcaCjdVSlVKTUNCSkhKTUNCTkpMVTMWGhIXVR8SFRwTDhI7CBoVHB0UCVUYFBZVGBVFWVdZEgtZ
+        QVlJT0seQUgZTEFISUxLQU8dGktBTUMeQ0FCQhpNQUlKS0FOSE8fWVdZCAFZQU5NSUw3Bg++
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -137,10 +138,10 @@ Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
  1 file changed, 13 insertions(+), 14 deletions(-)
 
 diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index d6771f3b715b..1f717654b4cb 100644
+index d0b5a1c47a32..b5ee21d5d1f3 100644
 --- a/net/sunrpc/svcsock.c
 +++ b/net/sunrpc/svcsock.c
-@@ -766,12 +766,6 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
+@@ -757,12 +757,6 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
  	dprintk("svc: socket %p TCP (listen) state change %d\n",
  		sk, sk->sk_state);
  
@@ -153,7 +154,7 @@ index d6771f3b715b..1f717654b4cb 100644
  	/*
  	 * This callback may called twice when a new connection
  	 * is established as a child socket inherits everything
-@@ -780,15 +774,20 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
+@@ -771,15 +765,20 @@ static void svc_tcp_listen_data_ready(struct sock *sk)
  	 *    when one of child sockets become ESTABLISHED.
  	 * 2) data_ready method of the child socket may be called
  	 *    when it receives data before the socket is accepted.
