@@ -2,234 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92B48750D5A
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 18:02:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 041D5750E57
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 18:23:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232562AbjGLQCT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 12:02:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40432 "EHLO
+        id S232012AbjGLQXP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 12:23:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232650AbjGLQCS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 12:02:18 -0400
-X-Greylist: delayed 334 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 12 Jul 2023 09:02:17 PDT
-Received: from out-36.mta1.migadu.com (out-36.mta1.migadu.com [IPv6:2001:41d0:203:375::24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07EDB1999
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 09:02:16 -0700 (PDT)
-Message-ID: <c1b2e321-be93-0082-2724-f0e36ff9872a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1689177398;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=f82FmMKNs0k+F4slhR8YHQfDgB6o931fLEw5RslQ0/c=;
-        b=CBcyyHou3Q2AgW9Tf34gCyM9iKxTUhOWIsvdhKXLMULfqCNWY72q6GAEOObIJePiKN/ykc
-        HAAj+yZVeu/y15xpmJVRk1ChBBttQl8AqnSXBJu/0717xNzxNwWr+NfKetUMtJtqc5Ccia
-        6t3zB/1WJM2PGn8ngb8bApS0wRbB/44=
-Date:   Wed, 12 Jul 2023 23:56:06 +0800
+        with ESMTP id S233262AbjGLQWm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 12:22:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 651ED2708;
+        Wed, 12 Jul 2023 09:21:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DD576183B;
+        Wed, 12 Jul 2023 16:21:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80352C433C7;
+        Wed, 12 Jul 2023 16:21:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689178914;
+        bh=hV01vRDBqDVhCk7HkDnQvXIyuKJkaKNeBRpl+iIAIWk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=b76h8IjetXfb90gQuJOmNTgw7qn0+gha+VuzsUX77igkDgFznRrwOvv7hJsZggrlm
+         LwGx9pHOWV64cbg85IuCQCzdkcTA/UDGzd4/sjK9+WH/ro83syk6fAlBVee5A9gqfS
+         JY9tLjCZ7SjQ5qsqmMWphekUfqwNXvjDercwpvC4=
+Date:   Wed, 12 Jul 2023 18:21:51 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Christian Brauner <brauner@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Weimer <fweimer@redhat.com>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        linux-fsdevel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] attr: block mode changes of symlinks
+Message-ID: <2023071228-puppet-regalia-484f@gregkh>
+References: <20230712-vfs-chmod-symlinks-v1-1-27921df6011f@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] KVM: arm64: vgic-v4: Consistently request doorbell irq
- for blocking vCPU
-Content-Language: en-US
-To:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-Cc:     Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev,
-        James Morse <james.morse@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        stable@vger.kernel.org, Xiang Chen <chenxiang66@hisilicon.com>
-References: <20230710175553.1477762-1-oliver.upton@linux.dev>
- <86jzv6x66q.wl-maz@kernel.org> <ZK0EPhvLzhaFepGk@linux.dev>
- <14acf0fd-e5eb-8a14-986a-b8fe4a44cec9@huawei.com>
- <86zg41utno.wl-maz@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <86zg41utno.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230712-vfs-chmod-symlinks-v1-1-27921df6011f@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023/7/12 21:49, Marc Zyngier wrote:
-> On Wed, 12 Jul 2023 13:09:45 +0100,
-> Zenghui Yu <yuzenghui@huawei.com> wrote:
->>
->> On 2023/7/11 15:26, Oliver Upton wrote:
->>> On Tue, Jul 11, 2023 at 08:23:25AM +0100, Marc Zyngier wrote:
->>>> On Mon, 10 Jul 2023 18:55:53 +0100,
->>>> Oliver Upton <oliver.upton@linux.dev> wrote:
->>>>>
->>>>> Xiang reports that VMs occasionally fail to boot on GICv4.1 systems when
->>>>> running a preemptible kernel, as it is possible that a vCPU is blocked
->>>>> without requesting a doorbell interrupt.
->>>>>
->>>>> The issue is that any preemption that occurs between vgic_v4_put() and
->>>>> schedule() on the block path will mark the vPE as nonresident and *not*
->>>>> request a doorbell irq.
->>>>
->>>> It'd be worth spelling out. You need to go via *three* schedule()
->>>> calls: one to be preempted (with DB set), one to be made resident
->>>> again, and then the final one in kvm_vcpu_halt(), clearing the DB on
->>>> vcpu_put() due to the bug.
->>>
->>> Yeah, a bit lazy in the wording. What I had meant to imply was
->>> preemption happening after the doorbell is set up and before the thread
->>> has an opportunity to explicitly schedule out. Perhaps I should just say
->>> that.
->>>
->>>>>
->>>>> Fix it by consistently requesting a doorbell irq in the vcpu put path if
->>>>> the vCPU is blocking.
->>
->> Yup. Agreed!
->>
->>>>> While this technically means we could drop the
->>>>> early doorbell irq request in kvm_vcpu_wfi(), deliberately leave it
->>>>> intact such that vCPU halt polling can properly detect the wakeup
->>>>> condition before actually scheduling out a vCPU.
->>
->> Yeah, just like what we did in commit 07ab0f8d9a12 ("KVM: Call
->> kvm_arch_vcpu_blocking early into the blocking sequence").
->>
->> My only concern is that if the preemption happens before halt polling,
->> we would enter the polling loop with VPE already resident on the RD and
->> can't recognize any firing GICv4.x virtual interrupts (targeting this
->> VPE) in polling. [1]
+On Wed, Jul 12, 2023 at 11:56:35AM +0200, Christian Brauner wrote:
+> Changing the mode of symlinks is meaningless as the vfs doesn't take the
+> mode of a symlink into account during path lookup permission checking.
 > 
-> The status of the pending bit is recorded in pending_last, so we don't
-> lose what was snapshot at the point of hitting WFI. But we indeed
-> don't have any idea for something firing during the polling loop.
+> However, the vfs doesn't block mode changes on symlinks. This however,
+> has lead to an untenable mess roughly classifiable into the following
+> two categories:
 > 
->> Given that making VPE resident on the vcpu block path (i.e., in
->> kvm_vcpu_halt()) makes little sense (right?) and leads to this sort of
->> problem, a crude idea is that we can probably keep track of the
->> "nested" vgic_v4_{put,load} calls (instead of a single vpe->resident
->> flag) and keep VPE *not resident* on the whole block path (like what we
->> had before commit 8e01d9a396e6). And we then rely on
->> kvm_vcpu_wfi/vgic_v4_load to actually schedule the VPE on...
+> (1) Filesystems that don't implement a i_op->setattr() for symlinks.
 > 
-> I'm not sure about the nested tracking part, but it's easy enough to
-> have a vcpu flag indicating that we're in WFI. So an *alternative* to
-> the current fix would be something like this:
+>     Such filesystems may or may not know that without i_op->setattr()
+>     defined, notify_change() falls back to simple_setattr() causing the
+>     inode's mode in the inode cache to be changed.
 > 
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index f54ba0a63669..417a0e85456b 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -817,6 +817,8 @@ struct kvm_vcpu_arch {
->  #define DBG_SS_ACTIVE_PENDING	__vcpu_single_flag(sflags, BIT(5))
->  /* PMUSERENR for the guest EL0 is on physical CPU */
->  #define PMUSERENR_ON_CPU	__vcpu_single_flag(sflags, BIT(6))
-> +/* WFI instruction trapped */
-> +#define IN_WFI			__vcpu_single_flag(sflags, BIT(7))
+>     That's a generic issue as this will affect all non-size changing
+>     inode attributes including ownership changes.
+> 
+>     Example: afs
+> 
+> (2) Filesystems that fail with EOPNOTSUPP but change the mode of the
+>     symlink nonetheless.
+> 
+>     Some filesystems will happily update the mode of a symlink but still
+>     return EOPNOTSUPP. This is the biggest source of confusion for
+>     userspace.
+> 
+>     The EOPNOTSUPP in this case comes from POSIX ACLs. Specifically it
+>     comes from filesystems that call posix_acl_chmod(), e.g., btrfs via
+> 
+>         if (!err && attr->ia_valid & ATTR_MODE)
+>                 err = posix_acl_chmod(idmap, dentry, inode->i_mode);
+> 
+>     Filesystems including btrfs don't implement i_op->set_acl() so
+>     posix_acl_chmod() will report EOPNOTSUPP.
+> 
+>     When posix_acl_chmod() is called, most filesystems will have
+>     finished updating the inode.
+> 
+>     Perversely, this has the consequences that this behavior may depend
+>     on two kconfig options and mount options:
+> 
+>     * CONFIG_POSIX_ACL={y,n}
+>     * CONFIG_${FSTYPE}_POSIX_ACL={y,n}
+>     * Opt_acl, Opt_noacl
+> 
+>     Example: btrfs, ext4, xfs
+> 
+> The only way to change the mode on a symlink currently involves abusing
+> an O_PATH file descriptor in the following manner:
+> 
+>         fd = openat(-1, "/path/to/link", O_CLOEXEC | O_PATH | O_NOFOLLOW);
+> 
+>         char path[PATH_MAX];
+>         snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
+>         chmod(path, 0000);
+> 
+> But for most major filesystems with POSIX ACL support such as btrfs,
+> ext4, ceph, tmpfs, xfs and others this will fail with EOPNOTSUPP with
+> the mode still updated due to the aforementioned posix_acl_chmod()
+> nonsense.
+> 
+> So, given that for all major filesystems this would fail with EOPNOTSUPP
+> and that both glibc (cf. [1]) and musl (cf. [2]) outright block mode
+> changes on symlinks we should just try and block mode changes on
+> symlinks directly in the vfs and have a clean break with this nonsense.
+> 
+> If this causes any regressions, we do the next best thing and fix up all
+> filesystems that do return EOPNOTSUPP with the mode updated to not call
+> posix_acl_chmod() on symlinks.
+> 
+> But as usual, let's try the clean cut solution first. It's a simple
+> patch that can be easily reverted. Not marking this for backport as I'll
+> do that manually if we're reasonably sure that this works and there are
+> no strong objections.
+> 
+> We could block this in chmod_common() but it's more appropriate to do it
+> notify_change() as it will also mean that we catch filesystems that
+> change symlink permissions explicitly or accidently.
+> 
+> Similar proposals were floated in the past as in [3] and [4] and again
+> recently in [5]. There's also a couple of bugs about this inconsistency
+> as in [6] and [7].
+> 
+> Link: https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/fchmodat.c;h=99527a3727e44cb8661ee1f743068f108ec93979;hb=HEAD [1]
+> Link: https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c [2]
+> Link: https://lore.kernel.org/all/20200911065733.GA31579@infradead.org [3]
+> Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00518.html [4]
+> Link: https://lore.kernel.org/lkml/87lefmbppo.fsf@oldenburg.str.redhat.com [5]
+> Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00467.html [6]
+> Link: https://sourceware.org/bugzilla/show_bug.cgi?id=14578#c17 [7]
+> Cc: stable@vger.kernel.org # no backport before v6.6-rc2 is tagged
 
-Ah, trust me that I was thinking about exactly the same vcpu flag
-when writing the last email. ;-) So here is my Ack for this
-alternative, thanks Marc for your quick reply!
+How far back should this go?
 
->  
->  /* vcpu entered with HCR_EL2.E2H set */
->  #define VCPU_HCR_E2H		__vcpu_single_flag(oflags, BIT(0))
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 236c5f1c9090..cf208d30a9ea 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -725,13 +725,15 @@ void kvm_vcpu_wfi(struct kvm_vcpu *vcpu)
->  	 */
->  	preempt_disable();
->  	kvm_vgic_vmcr_sync(vcpu);
-> -	vgic_v4_put(vcpu, true);
-> +	vcpu_set_flag(vcpu, IN_WFI);
-> +	vgic_v4_put(vcpu);
->  	preempt_enable();
->  
->  	kvm_vcpu_halt(vcpu);
->  	vcpu_clear_flag(vcpu, IN_WFIT);
->  
->  	preempt_disable();
-> +	vcpu_clear_flag(vcpu, IN_WFI);
->  	vgic_v4_load(vcpu);
->  	preempt_enable();
->  }
-> @@ -799,7 +801,7 @@ static int check_vcpu_requests(struct kvm_vcpu *vcpu)
->  		if (kvm_check_request(KVM_REQ_RELOAD_GICv4, vcpu)) {
->  			/* The distributor enable bits were changed */
->  			preempt_disable();
-> -			vgic_v4_put(vcpu, false);
-> +			vgic_v4_put(vcpu);
->  			vgic_v4_load(vcpu);
->  			preempt_enable();
->  		}
-> diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
-> index 49d35618d576..df61ead7c757 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v3.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v3.c
-> @@ -780,7 +780,7 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
->  	 * done a vgic_v4_put) and when running a nested guest (the
->  	 * vPE was never resident in order to generate a doorbell).
->  	 */
-> -	WARN_ON(vgic_v4_put(vcpu, false));
-> +	WARN_ON(vgic_v4_put(vcpu));
->  
->  	vgic_v3_vmcr_sync(vcpu);
->  
-> diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
-> index c1c28fe680ba..339a55194b2c 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v4.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v4.c
-> @@ -336,14 +336,14 @@ void vgic_v4_teardown(struct kvm *kvm)
->  	its_vm->vpes = NULL;
->  }
->  
-> -int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db)
-> +int vgic_v4_put(struct kvm_vcpu *vcpu)
->  {
->  	struct its_vpe *vpe = &vcpu->arch.vgic_cpu.vgic_v3.its_vpe;
->  
->  	if (!vgic_supports_direct_msis(vcpu->kvm) || !vpe->resident)
->  		return 0;
->  
-> -	return its_make_vpe_non_resident(vpe, need_db);
-> +	return its_make_vpe_non_resident(vpe, !!vcpu_get_flag(vcpu, IN_WFI));
->  }
->  
->  int vgic_v4_load(struct kvm_vcpu *vcpu)
-> @@ -354,6 +354,9 @@ int vgic_v4_load(struct kvm_vcpu *vcpu)
->  	if (!vgic_supports_direct_msis(vcpu->kvm) || vpe->resident)
->  		return 0;
->  
-> +	if (vcpu_get_flag(vcpu, IN_WFI))
-> +		return 0;
-> +
->  	/*
->  	 * Before making the VPE resident, make sure the redistributor
->  	 * corresponding to our current CPU expects us here. See the
-> diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
-> index 9b91a8135dac..765d801d1ddc 100644
-> --- a/include/kvm/arm_vgic.h
-> +++ b/include/kvm/arm_vgic.h
-> @@ -446,7 +446,7 @@ int kvm_vgic_v4_unset_forwarding(struct kvm *kvm, int irq,
->  
->  int vgic_v4_load(struct kvm_vcpu *vcpu);
->  void vgic_v4_commit(struct kvm_vcpu *vcpu);
-> -int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db);
-> +int vgic_v4_put(struct kvm_vcpu *vcpu);
->  
->  bool vgic_state_is_nested(struct kvm_vcpu *vcpu);
->  
-> 
-> Of course, it is totally untested... ;-) But I like that the doorbell
-> request is solely driven by the WFI state, and we avoid leaking the
-> knowledge outside of the vgic code.
+thanks,
 
-I'm happy with this approach and will have another look tomorrow. It'd
-also be great if Xiang can give this one a go on the appropriate HW.
-
-Thanks,
-Zenghui
+greg k-h
