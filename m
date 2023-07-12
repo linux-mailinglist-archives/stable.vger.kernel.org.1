@@ -2,110 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F528750F2B
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 19:02:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB0FD750F2D
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 19:02:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232689AbjGLRCN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 13:02:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55696 "EHLO
+        id S232234AbjGLRCp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 13:02:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233129AbjGLRCI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 13:02:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDFC1121
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 10:01:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689181271;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=V34PBFVRSyPmXY6TnLemmwcb7RItdmjHqC9gKS1fTBo=;
-        b=NnanpdSBUh1mtat2L7ppYBdEye5ecCqd9kBB3W67szFh+17WynQeBVeKR+bGfp5PKvy8T+
-        3Z7avzta/P2FhMQmlM5oK/JJmxi9bhSZSIcohfMzf1gBgzSAzgo0HOBPBtfmQ31PN8bXN1
-        BSeyARncNnpEnlL/PdU4VbTYV79WqlI=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-567-WmT8Mv_IMLSmHE9d3-o1nQ-1; Wed, 12 Jul 2023 13:00:11 -0400
-X-MC-Unique: WmT8Mv_IMLSmHE9d3-o1nQ-1
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7623a751435so690374385a.2
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 10:00:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689181208; x=1691773208;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V34PBFVRSyPmXY6TnLemmwcb7RItdmjHqC9gKS1fTBo=;
-        b=cgGBHXjy76hQp9dqR9vO9gcoD9e+kJ3OB+/SOoELpgfRJFZORPPqfDKAjpo8sFgxBc
-         eduVzk4MTf/04akud8XefeyuhseB4MZJPFUFH4E1iutWuE0tF5rHyt2Idj+B3AEmIXex
-         N9W8yYFRUzIAs1lbKQp2Kl9m0UN2q02rPj25TC3PHyDQeyCxuM31CRqQyWrMBrVdXWtp
-         qkb+xwJAKghAAkO0d0oUlvGLNRs9V0mhHGs4/ttHx40IactxYQrywr4zR5coKvcLuo+L
-         gwcR/UPeL+g8vvrfMnq1Xd7YrjX1njFdw38q22Y227aLkDBGuIgGXHYeLcpXY+5c3G9V
-         Xuqg==
-X-Gm-Message-State: ABy/qLaP6cv0cB3+GkAQS9WyyKS1k651cretXeP4NMQL55Dz3QbMDEGw
-        Zk6zVfAbr2HVb1ZA4Uw/xRSeNuP4zGjAx5zLFEh90036yAlDkEnrC/Kl7x+oE1SQpu5krV3nJF5
-        Pn6PUFhiwC/zODlvH
-X-Received: by 2002:a05:620a:318f:b0:765:4418:cac7 with SMTP id bi15-20020a05620a318f00b007654418cac7mr18968023qkb.73.1689181208072;
-        Wed, 12 Jul 2023 10:00:08 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGfbsBm1Dqr0aQLF1S4fgHLvR9TbsCSLLXCvHTFTZHyd5eS5VdOP6vDZI4492sbHtDleRsIrg==
-X-Received: by 2002:a05:620a:318f:b0:765:4418:cac7 with SMTP id bi15-20020a05620a318f00b007654418cac7mr18967998qkb.73.1689181207795;
-        Wed, 12 Jul 2023 10:00:07 -0700 (PDT)
-Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id w18-20020a0cb552000000b0063004b5482csm2342328qvd.92.2023.07.12.10.00.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jul 2023 10:00:07 -0700 (PDT)
-Date:   Wed, 12 Jul 2023 10:00:05 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Christian Hesse <mail@eworm.de>, linux-integrity@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Peter Huewe <peterhuewe@gmx.de>, stable@vger.kernel.org,
-        roubro1991@gmail.com
-Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
- Laptop Intel 12th gen
-Message-ID: <qvt4ndqc23ftspjtpljyv45yfhtxi6oomjios2nuk34bs7n5fi@2ye4znwhgn4a>
-References: <20230710133836.4367-1-mail@eworm.de>
- <20230710142916.18162-1-mail@eworm.de>
- <ZKxHfTkgKHYqhBz2@ziepe.ca>
+        with ESMTP id S232138AbjGLRCp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 13:02:45 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E54F01BD5;
+        Wed, 12 Jul 2023 10:02:43 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qJdEc-0005DU-C3; Wed, 12 Jul 2023 19:02:38 +0200
+Message-ID: <d8403c45-3561-4759-f6c2-d18afa5e323a@leemhuis.info>
+Date:   Wed, 12 Jul 2023 19:02:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZKxHfTkgKHYqhBz2@ziepe.ca>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US, de-DE
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+References: <cover.1689008220.git.linux@leemhuis.info>
+ <2023071002-phrasing-tranquil-49d6@gregkh>
+ <a97a37bf-86b5-cd8e-a8ce-00e38720cee4@leemhuis.info>
+ <2023071221-blade-reactive-0707@gregkh>
+From:   Thorsten Leemhuis <linux@leemhuis.info>
+Subject: Re: [RFC PATCH v1 0/3] docs: stable-kernel-rules: add delayed
+ backporting option and a few tweaks
+In-Reply-To: <2023071221-blade-reactive-0707@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1689181364;0e7d24e0;
+X-HE-SMSGID: 1qJdEc-0005DU-C3
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 03:01:33PM -0300, Jason Gunthorpe wrote:
-> On Mon, Jul 10, 2023 at 04:28:43PM +0200, Christian Hesse wrote:
-> > This device suffer an irq storm, so add it in tpm_tis_dmi_table to
-> > force polling.
+On 12.07.23 17:16, Greg KH wrote:
+> On Wed, Jul 12, 2023 at 11:30:30AM +0200, Thorsten Leemhuis wrote:
+>> While working on the latter I noticed one more thing:
+>>
+>> ```
+>>     .. warning::
+>>        The -stable-rc tree is a snapshot in time of the stable-queue
+>> tree and
+>>        will change frequently, hence will be rebased often. It should
+>> only be
+>>        used for testing purposes (e.g. to be consumed by CI systems).
+>> ```
+> [...]
+>> I'll thus likely
+>> change the text to something like this,
+>> unless I'm missing something or someone has a better idea:
+>> ```
+>>   .. warning::
+>>      The branches in the -stable-rc tree are rebased each time a new -rc
+>>      is released, as they are created by taking the latest release and
+>>      applying the patches from the stable-queue on top.
 > 
-> I can't help but feel like we are doing something wrong in the Linux
-> driver that we keep having IRQ problems.
+> Yes, that is true, but they are also rebased sometimes in intermediate
+> places, before a -rc is released, just to give CI systems a chance to
+> test easier.
 > 
-> Surely Windows uses the IRQ on these devices? How does it work
-> reliably there?
-> 
-> Jason
+> These are ONLY for CI systems to use, nothing else should be touching
+> them.  So I think the current text is correct, what am I missing?
 
-I worry about it as well, especially as more vendors get added to the
-list. On the other hand it seems like every 6-12 months I am
-interacting with vendors that repeatedly forget to have reserved
-memory regions added to IVRS and DMAR tables for devices that need
-them. So I guess it is possible for the problem to be on their end as
-well. For at least one case that someone looked at back in May, it
-looked like he could see the issue looking at a schematic for the
-system.
+That I misunderstood things and forgot about the "rebased sometimes in
+intermediate places" aspect I once knew about. Sorry. I'll leave the
+text as it is then.
 
-Regards,
-Jerry
+Nevertheless makes me wonder: is that strategy wise in times when some
+ordinary users and some distributions are building kernels straight from
+git repos instead of tarballs? I'm one of those, as I distribute
+stable-rc packages for Fedora here:
+https://copr.fedorainfracloud.org/groups/g/kernel-vanilla/coprs/
 
+And the "rebased sometimes in intermediate places" aspect complicated
+things for me (my scripts handle that and apparently I forgot about that
+since I wrote them; uhhps :-/ ).
+
+But whatever, not that important, feel free to ignore this remark. And I
+can see why you are doing it the way you do, too.
+
+Thx for you helpful feedback!
+
+Ciao, Thorsten
