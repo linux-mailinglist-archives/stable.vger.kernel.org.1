@@ -2,122 +2,244 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBD9C75094C
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 15:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 048307509F4
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 15:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231751AbjGLNMC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 09:12:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44546 "EHLO
+        id S230327AbjGLNtW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 09:49:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229931AbjGLNMB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 09:12:01 -0400
-Received: from mail-vk1-xa2e.google.com (mail-vk1-xa2e.google.com [IPv6:2607:f8b0:4864:20::a2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49A21198A
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 06:11:59 -0700 (PDT)
-Received: by mail-vk1-xa2e.google.com with SMTP id 71dfb90a1353d-47e06acce3bso2504572e0c.2
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 06:11:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689167518; x=1691759518;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mMTX55rsuAtxs8eoTMF0zmRGfyj0Pb2SnfXciWnbDRk=;
-        b=oODGvdD932AIbLChg31AWvPktzZ4m7FTZ6aQ1gLyUuWlnI3wXkOvvrIbbIi8uCqd6K
-         2DqwWEDw/fQbtPRvLRedVPOOzTHHsf/4HRHxNFxP2Pk6AD3zGU495vP9iEFnx3zwtWlR
-         2U9wGjnFkQAVowaGRwGExOWZmczAT6UqND7v5XIqWbDiLIB4+pd1kEjNyEUPRXB2t+cd
-         KSbQccVpwUXW9MgFExadDhAfNc6PtxFhlmkd9Qf3Xr8zxwO/yEbyTLdJSY2y1F+sI6hw
-         OZ0Z6hSly9/ApfbBL7ai06kUQFpp3+K3Qd325h0IqPNZ3Q4h3cKxEYPBZU3Hr9g2pzfX
-         0XEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689167518; x=1691759518;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mMTX55rsuAtxs8eoTMF0zmRGfyj0Pb2SnfXciWnbDRk=;
-        b=gGzV64lu2dXzgGXucWZt8dXtjK6OM5AqalNOcUsgByDiAXq5dvaEPr98vpzB4AKmoh
-         mkbFogBLeX4KeVfpVGm/8PvZ89fvQeLOo5t5oh1i0nsIZDIPjy72Bz1kajaB1sT/MS3K
-         aiRMemW5liCCnhDf3lS8qvlkvyModrLiY1Dr4FLNNzw2vBX4eGdISly7lsbGGaBFcDky
-         XKaDECDOH4q2f4lcjovJyo+nSsUJyx+Kb0tdhXfjbRmbHgOyOkqQBCncSel/zOUskIue
-         yZT4HRHOofX5cwMOTQ3TklvSozjbB23odg9315nRPOjXwgnARkuKojpIU8kOP8JhZiOz
-         e84g==
-X-Gm-Message-State: ABy/qLZHRNpMOtvovaNib58Smil3wqA/WMGgb39RRnujt7mr/tFw2DHD
-        MxYQDHdbkUCAOhRUlxlOidhiLF/FilNg+8VlnicgxA==
-X-Google-Smtp-Source: APBJJlHszP/BzjPgRktgE9ZmebvyBVKr6pfvWwTZjRe8dSb5sh4qROzT6nYqpk/0QxLKUnz2CT1ElQ7dwOmGZ7kEQMc=
-X-Received: by 2002:a1f:3fd0:0:b0:481:2ff5:c9a9 with SMTP id
- m199-20020a1f3fd0000000b004812ff5c9a9mr938260vka.13.1689167518233; Wed, 12
- Jul 2023 06:11:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230709203826.141774942@linuxfoundation.org> <CA+G9fYtEr-=GbcXNDYo3XOkwR+uYgehVoDjsP0pFLUpZ_AZcyg@mail.gmail.com>
- <20230711201506.25cc464d@kernel.org> <ZK5k7YnVA39sSXOv@duo.ucw.cz>
-In-Reply-To: <ZK5k7YnVA39sSXOv@duo.ucw.cz>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 12 Jul 2023 18:41:46 +0530
-Message-ID: <CA+G9fYvEJgcNhvJk6pvdQOkaS_+x105ZgSM1BVvYy0RRW+1TvA@mail.gmail.com>
-Subject: Re: [PATCH 6.4 0/6] 6.4.3-rc2 review
-To:     Jakub Kicinski <kuba@kernel.org>, Netdev <netdev@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Qingfang DENG <qingfang.deng@siflower.com.cn>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        YOSHIFUJI Hideaki <yoshfuji@linux-ipv6.org>,
-        Masahide NAKAMURA <nakam@linux-ipv6.org>,
-        Ville Nuorvala <vnuorval@tcs.hut.fi>,
-        Arnd Bergmann <arnd@arndb.de>, Pavel Machek <pavel@denx.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S231786AbjGLNtV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 09:49:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF9D510EA
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 06:49:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8597D617DB
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 13:49:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5610C433C8;
+        Wed, 12 Jul 2023 13:49:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689169757;
+        bh=QAoHzBlcPsI3h1ifZtKDeNtJ7LninhYCe47Wu+MoAGQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=hjUpZRQN/Tr7z7RRfHP5h4+3hErX50O17w/WsnXiZrX2cdR/I1Oegq0Ox1ewJgNfD
+         0vJ25Ea1vN79JwiAo4fKOtfIMndFM58icgpI4iF1AYI1tivZkJRYsibqUP7ir4Wqyf
+         MnYrSJWGlrfjCO4SRP99mF4tW4wlStvee2U2CXSd9joACAsWjlvJciiM31LEmlhh5y
+         H4dH8jnCoEh2AI57chwbj08NT96V1kcxic+s2Xw8X4P6ck2XTW9hpO2NM342MZ+cbJ
+         LP1Pm5Ihom11Eh9SBP0+06/yun4FOqB/KATbXsuhPF4joKC93ncIaQS8UWlBZ/Nvo/
+         6UU/PlEWq4eqg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1qJaDT-00CSyH-DO;
+        Wed, 12 Jul 2023 14:49:15 +0100
+Date:   Wed, 12 Jul 2023 14:49:15 +0100
+Message-ID: <86zg41utno.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Zenghui Yu <yuzenghui@huawei.com>
+Cc:     Oliver Upton <oliver.upton@linux.dev>, <kvmarm@lists.linux.dev>,
+        James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        <stable@vger.kernel.org>, Xiang Chen <chenxiang66@hisilicon.com>
+Subject: Re: [PATCH] KVM: arm64: vgic-v4: Consistently request doorbell irq for blocking vCPU
+In-Reply-To: <14acf0fd-e5eb-8a14-986a-b8fe4a44cec9@huawei.com>
+References: <20230710175553.1477762-1-oliver.upton@linux.dev>
+        <86jzv6x66q.wl-maz@kernel.org>
+        <ZK0EPhvLzhaFepGk@linux.dev>
+        <14acf0fd-e5eb-8a14-986a-b8fe4a44cec9@huawei.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: yuzenghui@huawei.com, oliver.upton@linux.dev, kvmarm@lists.linux.dev, james.morse@arm.com, suzuki.poulose@arm.com, stable@vger.kernel.org, chenxiang66@hisilicon.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 12 Jul 2023 at 14:01, Pavel Machek <pavel@denx.de> wrote:
->
-> Hi!
->
-> > >   git_repo: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-> > >   git_sha: 3e37df3ffd9a648c9f88f6bbca158e43d5077bef
-> >
-> > I can't find this sha :( Please report back if you can still repro this
-> > and how we get get the relevant code
->
-> That sha seems to be:
->
-> commit 3e37df3ffd9a648c9f88f6bbca158e43d5077bef
-> Author: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Date:   Sun Jul 9 22:38:22 2023 +0200
->
->     Linux 6.4.3-rc2
+On Wed, 12 Jul 2023 13:09:45 +0100,
+Zenghui Yu <yuzenghui@huawei.com> wrote:
+> 
+> On 2023/7/11 15:26, Oliver Upton wrote:
+> > On Tue, Jul 11, 2023 at 08:23:25AM +0100, Marc Zyngier wrote:
+> >> On Mon, 10 Jul 2023 18:55:53 +0100,
+> >> Oliver Upton <oliver.upton@linux.dev> wrote:
+> >>> 
+> >>> Xiang reports that VMs occasionally fail to boot on GICv4.1 systems when
+> >>> running a preemptible kernel, as it is possible that a vCPU is blocked
+> >>> without requesting a doorbell interrupt.
+> >>> 
+> >>> The issue is that any preemption that occurs between vgic_v4_put() and
+> >>> schedule() on the block path will mark the vPE as nonresident and *not*
+> >>> request a doorbell irq.
+> >> 
+> >> It'd be worth spelling out. You need to go via *three* schedule()
+> >> calls: one to be preempted (with DB set), one to be made resident
+> >> again, and then the final one in kvm_vcpu_halt(), clearing the DB on
+> >> vcpu_put() due to the bug.
+> > 
+> > Yeah, a bit lazy in the wording. What I had meant to imply was
+> > preemption happening after the doorbell is set up and before the thread
+> > has an opportunity to explicitly schedule out. Perhaps I should just say
+> > that.
+> > 
+> >>> 
+> >>> Fix it by consistently requesting a doorbell irq in the vcpu put path if
+> >>> the vCPU is blocking.
+> 
+> Yup. Agreed!
+> 
+> >>> While this technically means we could drop the
+> >>> early doorbell irq request in kvm_vcpu_wfi(), deliberately leave it
+> >>> intact such that vCPU halt polling can properly detect the wakeup
+> >>> condition before actually scheduling out a vCPU.
+> 
+> Yeah, just like what we did in commit 07ab0f8d9a12 ("KVM: Call
+> kvm_arch_vcpu_blocking early into the blocking sequence").
+> 
+> My only concern is that if the preemption happens before halt polling,
+> we would enter the polling loop with VPE already resident on the RD and
+> can't recognize any firing GICv4.x virtual interrupts (targeting this
+> VPE) in polling. [1]
 
-That is the commit id from stable-rc tree.
+The status of the pending bit is recorded in pending_last, so we don't
+lose what was snapshot at the point of hitting WFI. But we indeed
+don't have any idea for something firing during the polling loop.
 
-I have re-tested the reported issues multiple times and
-it seems that it is intermittently reproducible.
-Following list of links shows kernel crashes while testing
-selftest net pmtu.sh
+> Given that making VPE resident on the vcpu block path (i.e., in
+> kvm_vcpu_halt()) makes little sense (right?) and leads to this sort of
+> problem, a crude idea is that we can probably keep track of the
+> "nested" vgic_v4_{put,load} calls (instead of a single vpe->resident
+> flag) and keep VPE *not resident* on the whole block path (like what we
+> had before commit 8e01d9a396e6). And we then rely on
+> kvm_vcpu_wfi/vgic_v4_load to actually schedule the VPE on...
 
-1)
-Unable to handle kernel paging request at virtual address
-https://lkft.validation.linaro.org/scheduler/job/6579624#L4648
+I'm not sure about the nested tracking part, but it's easy enough to
+have a vcpu flag indicating that we're in WFI. So an *alternative* to
+the current fix would be something like this:
 
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index f54ba0a63669..417a0e85456b 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -817,6 +817,8 @@ struct kvm_vcpu_arch {
+ #define DBG_SS_ACTIVE_PENDING	__vcpu_single_flag(sflags, BIT(5))
+ /* PMUSERENR for the guest EL0 is on physical CPU */
+ #define PMUSERENR_ON_CPU	__vcpu_single_flag(sflags, BIT(6))
++/* WFI instruction trapped */
++#define IN_WFI			__vcpu_single_flag(sflags, BIT(7))
+ 
+ /* vcpu entered with HCR_EL2.E2H set */
+ #define VCPU_HCR_E2H		__vcpu_single_flag(oflags, BIT(0))
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 236c5f1c9090..cf208d30a9ea 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -725,13 +725,15 @@ void kvm_vcpu_wfi(struct kvm_vcpu *vcpu)
+ 	 */
+ 	preempt_disable();
+ 	kvm_vgic_vmcr_sync(vcpu);
+-	vgic_v4_put(vcpu, true);
++	vcpu_set_flag(vcpu, IN_WFI);
++	vgic_v4_put(vcpu);
+ 	preempt_enable();
+ 
+ 	kvm_vcpu_halt(vcpu);
+ 	vcpu_clear_flag(vcpu, IN_WFIT);
+ 
+ 	preempt_disable();
++	vcpu_clear_flag(vcpu, IN_WFI);
+ 	vgic_v4_load(vcpu);
+ 	preempt_enable();
+ }
+@@ -799,7 +801,7 @@ static int check_vcpu_requests(struct kvm_vcpu *vcpu)
+ 		if (kvm_check_request(KVM_REQ_RELOAD_GICv4, vcpu)) {
+ 			/* The distributor enable bits were changed */
+ 			preempt_disable();
+-			vgic_v4_put(vcpu, false);
++			vgic_v4_put(vcpu);
+ 			vgic_v4_load(vcpu);
+ 			preempt_enable();
+ 		}
+diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
+index 49d35618d576..df61ead7c757 100644
+--- a/arch/arm64/kvm/vgic/vgic-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-v3.c
+@@ -780,7 +780,7 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
+ 	 * done a vgic_v4_put) and when running a nested guest (the
+ 	 * vPE was never resident in order to generate a doorbell).
+ 	 */
+-	WARN_ON(vgic_v4_put(vcpu, false));
++	WARN_ON(vgic_v4_put(vcpu));
+ 
+ 	vgic_v3_vmcr_sync(vcpu);
+ 
+diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
+index c1c28fe680ba..339a55194b2c 100644
+--- a/arch/arm64/kvm/vgic/vgic-v4.c
++++ b/arch/arm64/kvm/vgic/vgic-v4.c
+@@ -336,14 +336,14 @@ void vgic_v4_teardown(struct kvm *kvm)
+ 	its_vm->vpes = NULL;
+ }
+ 
+-int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db)
++int vgic_v4_put(struct kvm_vcpu *vcpu)
+ {
+ 	struct its_vpe *vpe = &vcpu->arch.vgic_cpu.vgic_v3.its_vpe;
+ 
+ 	if (!vgic_supports_direct_msis(vcpu->kvm) || !vpe->resident)
+ 		return 0;
+ 
+-	return its_make_vpe_non_resident(vpe, need_db);
++	return its_make_vpe_non_resident(vpe, !!vcpu_get_flag(vcpu, IN_WFI));
+ }
+ 
+ int vgic_v4_load(struct kvm_vcpu *vcpu)
+@@ -354,6 +354,9 @@ int vgic_v4_load(struct kvm_vcpu *vcpu)
+ 	if (!vgic_supports_direct_msis(vcpu->kvm) || vpe->resident)
+ 		return 0;
+ 
++	if (vcpu_get_flag(vcpu, IN_WFI))
++		return 0;
++
+ 	/*
+ 	 * Before making the VPE resident, make sure the redistributor
+ 	 * corresponding to our current CPU expects us here. See the
+diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
+index 9b91a8135dac..765d801d1ddc 100644
+--- a/include/kvm/arm_vgic.h
++++ b/include/kvm/arm_vgic.h
+@@ -446,7 +446,7 @@ int kvm_vgic_v4_unset_forwarding(struct kvm *kvm, int irq,
+ 
+ int vgic_v4_load(struct kvm_vcpu *vcpu);
+ void vgic_v4_commit(struct kvm_vcpu *vcpu);
+-int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db);
++int vgic_v4_put(struct kvm_vcpu *vcpu);
+ 
+ bool vgic_state_is_nested(struct kvm_vcpu *vcpu);
+ 
 
-2)
-include/net/neighbour.h:302 suspicious rcu_dereference_check() usage!
+Of course, it is totally untested... ;-) But I like that the doorbell
+request is solely driven by the WFI state, and we avoid leaking the
+knowledge outside of the vgic code.
 
-https://lkft.validation.linaro.org/scheduler/job/6579625#L7500
-https://lkft.validation.linaro.org/scheduler/job/6579626#L7509
-https://lkft.validation.linaro.org/scheduler/job/6579622#L7537
-https://lkft.validation.linaro.org/scheduler/job/6579623#L7469
+Thoughts?
 
-- Naresh
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
