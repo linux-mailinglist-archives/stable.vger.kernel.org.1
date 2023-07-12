@@ -2,120 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E06A750105
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 10:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F05087500C4
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 10:09:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232170AbjGLIQH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 04:16:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46212 "EHLO
+        id S230504AbjGLIJR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 04:09:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232223AbjGLIP2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 04:15:28 -0400
-X-Greylist: delayed 604 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 12 Jul 2023 01:14:33 PDT
-Received: from out-52.mta1.migadu.com (out-52.mta1.migadu.com [95.215.58.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45AD19B6
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 01:14:33 -0700 (PDT)
-Content-Type: text/plain;
-        charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1689149066;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1kQGtHc+N0kBzheMdTFEuRcExKmasAznpDZbENi8pLk=;
-        b=h+DR9B2FISyzDGCFrq/K/NU6zpYWWVYhJgPEvBQCkSLqHUchXRPV5dvh81F5Hdkp6mVqoq
-        mP/bwmQWfPEHqkySzty5kKM8gG5qRRYhgkXuqh74BgJf63KBhO2lKDeijzxBP6b0gIEDaK
-        KWikBffTqmCQxjje3bOwzeZUP4af+Ns=
+        with ESMTP id S231179AbjGLIJP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 04:09:15 -0400
+Received: from mail.socialglobal.pl (mail.socialglobal.pl [51.195.90.253])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BCAA10EF
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 01:09:15 -0700 (PDT)
+Received: by mail.socialglobal.pl (Postfix, from userid 1002)
+        id 2DDB62511D; Wed, 12 Jul 2023 08:06:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=socialglobal.pl;
+        s=mail; t=1689149245;
+        bh=XwhyqI/moZPDJ7KCfcA6Gip8fA7ZKcg5SWsKuF/26zk=;
+        h=Date:From:To:Subject:From;
+        b=RZ32pvwSofs3AXeRxR3+IYR5v1fYOydPo9WGL2NBPUoaVCPIGCyHf2FSxULSVm1Xo
+         o1zaqptnLKYOVIO4i8nPS0lgpGGRJ72+gKJhqWZol6o8mqch2EGsCLpMD4+5KeTdPq
+         kTfXmFrDYvI9TPSzUkrTOrYwTHVLe//pyGvEcQu5Gh1Vc3qe3kn2JS/TcBxtXJnnrF
+         y+WP9B0sE4JHE9Kp67Zgm8tD3u+dI0nYo+Sw5KC7/iL0LixzMT+yAx076hLsuFEQFK
+         7Xe8uttpHbvRzKpbrAc6D310bow+2nH5gzI1CjW2r0TYYv5k5mltEjWvgy4HZcKnwq
+         5hgAEwdbiMBMw==
+Received: by mail.socialglobal.pl for <stable@vger.kernel.org>; Wed, 12 Jul 2023 08:06:02 GMT
+Message-ID: <20230712064501-0.1.74.29ijg.0.9ijghmi86i@socialglobal.pl>
+Date:   Wed, 12 Jul 2023 08:06:02 GMT
+From:   "Dominik Perkowski" <dominik.perkowski@socialglobal.pl>
+To:     <stable@vger.kernel.org>
+Subject: Pozycjonowanie- informacja
+X-Mailer: mail.socialglobal.pl
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/2] hugetlb: Do not clear hugetlb dtor until allocating
- vmemmap
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20230711220942.43706-2-mike.kravetz@oracle.com>
-Date:   Wed, 12 Jul 2023 16:03:42 +0800
-Cc:     Linux Memory Management List <linux-mm@kvack.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jiaqi Yan <jiaqiyan@google.com>,
-        Naoya Horiguchi <naoya.horiguchi@linux.dev>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Miaohe Lin <linmiaohe@huawei.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        James Houghton <jthoughton@google.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <4469DCBD-59B4-41F2-A097-E5F01DD9E967@linux.dev>
-References: <20230711220942.43706-1-mike.kravetz@oracle.com>
- <20230711220942.43706-2-mike.kravetz@oracle.com>
-To:     Mike Kravetz <mike.kravetz@oracle.com>
-X-Migadu-Flow: FLOW_OUT
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Dzie=C5=84 dobry,=20
+
+jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
+j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
+e Google.=20
+
+Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
+=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
+w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
+owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
+dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
+
+Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
+edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
+edstawi=C4=87 ofert=C4=99?=20
 
 
-> On Jul 12, 2023, at 06:09, Mike Kravetz <mike.kravetz@oracle.com> =
-wrote:
->=20
-> Freeing a hugetlb page and releasing base pages back to the underlying
-> allocator such as buddy or cma is performed in two steps:
-> - remove_hugetlb_folio() is called to remove the folio from hugetlb
->  lists, get a ref on the page and remove hugetlb destructor.  This
->  all must be done under the hugetlb lock.  After this call, the page
->  can be treated as a normal compound page or a collection of base
->  size pages.
-> - update_and_free_hugetlb_folio() is called to allocate vmemmap if
->  needed and the free routine of the underlying allocator is called
->  on the resulting page.  We can not hold the hugetlb lock here.
->=20
-> One issue with this scheme is that a memory error could occur between
-> these two steps.  In this case, the memory error handling code treats
-> the old hugetlb page as a normal compound page or collection of base
-> pages.  It will then try to SetPageHWPoison(page) on the page with an
-> error.  If the page with error is a tail page without vmemmap, a write
-> error will occur when trying to set the flag.
->=20
-> Address this issue by modifying remove_hugetlb_folio() and
-> update_and_free_hugetlb_folio() such that the hugetlb destructor is =
-not
-> cleared until after allocating vmemmap.  Since clearing the destructor
-> requires holding the hugetlb lock, the clearing is done in
-> remove_hugetlb_folio() if the vmemmap is present.  This saves a
-> lock/unlock cycle.  Otherwise, destructor is cleared in
-> update_and_free_hugetlb_folio() after allocating vmemmap.
->=20
-> Note that this will leave hugetlb pages in a state where they are =
-marked
-> free (by hugetlb specific page flag) and have a ref count.  This is =
-not
-> a normal state.  The only code that would notice is the memory error
-> code, and it is set up to retry in such a case.
->=20
-> A subsequent patch will create a routine to do bulk processing of
-> vmemmap allocation.  This will eliminate a lock/unlock cycle for each
-> hugetlb page in the case where we are freeing a large number of pages.
->=20
-> Fixes: ad2fa3717b74 ("mm: hugetlb: alloc the vmemmap pages associated =
-with each HugeTLB page")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-
-Hi Mike,
-
-I have seen an issue proposed by Jiaqi Yan in [1]. I didn't see any
-resolution for it. Am I missing something with this fix?
-
-[1] =
-https://lore.kernel.org/linux-mm/CACw3F53iPiLrJt4pyaX2aaZ5BVg9tj8x_k6-v7=3D=
-9Xn1nrh=3DUCw@mail.gmail.com/
-
-Thanks.=
+Pozdrawiam serdecznie,
+Dominik Perkowski
