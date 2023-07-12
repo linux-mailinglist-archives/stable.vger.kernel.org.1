@@ -2,48 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7A8D750426
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 12:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3627504A1
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 12:35:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232694AbjGLKMA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 06:12:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40324 "EHLO
+        id S230233AbjGLKe7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 06:34:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231615AbjGLKL7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 06:11:59 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772571993;
-        Wed, 12 Jul 2023 03:11:58 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id B9CD31C0E01; Wed, 12 Jul 2023 12:11:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1689156716;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=l2Y4PoQq7t84wSDXhTjv7xxRnyRD7me00mbEwlLgnHk=;
-        b=HSznmEO/ofiqKcE49Py+QgfRHivNm06Si3TCpCQUabEBo/MKU7poY5N34pV+UlECSTg2k0
-        r9L7WQcnWAcFUtZF9U+kTrKDaeo36HbREFgXaiiiBOjW4eYhPLt1+dvUrrmAFZfvLm43dO
-        JRDSfU8UiuP+TOMx3hGqYvm4o+1SY0A=
-Date:   Wed, 12 Jul 2023 12:11:56 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        "Paul E. McKenney" <paulmck@kernel.org>, frederic@kernel.org,
-        quic_neeraju@quicinc.com, joel@joelfernandes.org,
-        josh@joshtriplett.org, boqun.feng@gmail.com, rcu@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10] rcu: Mark rcu_cpu_kthread() accesses to
- ->rcu_cpu_has_work
-Message-ID: <ZK58bFy80qmsRI/c@duo.ucw.cz>
-References: <20230702195806.1793552-1-sashal@kernel.org>
+        with ESMTP id S230229AbjGLKez (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 06:34:55 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2DD61BEB;
+        Wed, 12 Jul 2023 03:34:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=BehkYB+NlC+IYLjEogwPvXscDT4PcOFLPYCBYNOXY10=;
+        t=1689158077; x=1690367677; b=eyBbliPHyW2VF/+v8BUdFWuuIQfFWf5D7eRhYHgz/Mxcgeg
+        xfQ7KD0z1r35m/M9sQTs3LoH1Bf0kOQsUk18AawBgj4jKFOz1xwGks5dsLBSMEjcEFaMbjvge0vSd
+        3LpOA5FVdVEgJgwQ2zeiUQ0JrdTqGegSWuLrmiRvbFtxye1KZDUPQN1oNAHDfQjHE14dstTx3oSaW
+        s26H+l4dF/896UoKwrFWSPHjv8R4WY7thSVanHvKPV5bfRbc3sUXOjmzr6FcgFncxx0wmc8AApEfB
+        cMMJZTsu2wme4mk48EhkUdkqAUNgbgcb0uLsPg1fq8OQK86ww2mne41qiB+PeGgQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qJXB4-00Gc0l-2S;
+        Wed, 12 Jul 2023 12:34:34 +0200
+Message-ID: <82b75a5e344b23a388a8f078de730272e91f99d2.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: nl80211: fix mbssid nesting
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Koen Vandeputte <koen.vandeputte@citymesh.com>
+Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>,
+        Aloka Dixit <alokad@codeaurora.org>, stable@vger.kernel.org
+Date:   Wed, 12 Jul 2023 12:34:33 +0200
+In-Reply-To: <CAPh3n82BY0bFkHs6DKKf6+ZUZw+DJmTy7=JEG8REFHyHFMqoVQ@mail.gmail.com>
+References: <20230712083841.222607-1-koen.vandeputte@citymesh.com>
+         <9936de52da43347ba0ccfb8737440a9698fb4585.camel@sipsolutions.net>
+         <CAPh3n82BY0bFkHs6DKKf6+ZUZw+DJmTy7=JEG8REFHyHFMqoVQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="T5plQyocUu8y0Gz4"
-Content-Disposition: inline
-In-Reply-To: <20230702195806.1793552-1-sashal@kernel.org>
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,39 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
---T5plQyocUu8y0Gz4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sun 2023-07-02 15:58:06, Sasha Levin wrote:
-> From: "Paul E. McKenney" <paulmck@kernel.org>
+On Wed, 2023-07-12 at 11:05 +0200, Koen Vandeputte wrote:
+> On Wed, Jul 12, 2023 at 10:44=E2=80=AFAM Johannes Berg
+> <johannes@sipsolutions.net> wrote:
+> >=20
+> > On Wed, 2023-07-12 at 10:38 +0200, Koen Vandeputte wrote:
+> > > Executing command NL80211_CMD_GET_WIPHY and parsing it's output
+> > > natively without libnl shows following attributes as part of
+> > > the nl80211 generated netlink message (part 16):
+> > >=20
+> > > GetWiphy: Type: 1
+> > > GetWiphy: Type: 2
+> > > GetWiphy: Type: 46
+> > > GetWiphy: Type: 33074 <-- wrong enum value, above MAX also ..
+> >=20
+> > That's not wrong, that's just NLA_F_NESTED | NL80211_ATTR_MBSSID_CONFIG=
+,
+> > since it *is* in fact a nested attribute.
 >=20
-> [ Upstream commit a24c1aab652ebacf9ea62470a166514174c96fe1 ]
->=20
-> The rcu_data structure's ->rcu_cpu_has_work field can be modified by
-> any CPU attempting to wake up the rcuc kthread.  Therefore, this commit
-> marks accesses to this field from the rcu_cpu_kthread() function.
->=20
-> This data race was reported by KCSAN.  Not appropriate for backporting
-> due to failure being unlikely.
+> ahha! so one should check on each received attribute if this flag is set?
 
-Please drop.
+Yeah, that indicates that it's nested, without having the out-of-band
+information that it should be nested.
 
-Best regards,
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
 
---T5plQyocUu8y0Gz4
-Content-Type: application/pgp-signature; name="signature.asc"
+There's also NLA_F_NET_BYTEORDER, so we really only have 14 bits for the
+type, so you should probably use NLA_TYPE_MASK.
 
------BEGIN PGP SIGNATURE-----
+> I guess all the ones with the noflag so far are using it to avoid
+> breaking legacy stuff?
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZK58bAAKCRAw5/Bqldv6
-8rD3AKCF4LKQV/oMG3jBaJY+I5XJc8o0+gCeOWkaQmErzClV1y77SKWv2TSDAKA=
-=R0/9
------END PGP SIGNATURE-----
+Right. When we realized that nla_put_nested() didn't actually put the
+nested flag it was kind of too late - although a lot of userspace
+probably would have handled it correctly (if it uses libnl, etc.) But
+still, we converted it all to nla_put_nested_noflag(), but we really
+shouldn't be adding new code that calls nla_put_nested_noflag() since by
+definition new code is new attributes, and then userspace can be
+updated.
 
---T5plQyocUu8y0Gz4--
+Unless you're saying this somehow breaks old userspace that doesn't even
+understand NL80211_ATTR_MBSSID_CONFIG yet? But that seems unlikely, you
+have to be prepared to see attributes bigger than what you expected and
+skip them?
+
+johannes
