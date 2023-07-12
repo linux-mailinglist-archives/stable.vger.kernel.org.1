@@ -2,52 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC3627504A1
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 12:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA107750596
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 13:08:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230233AbjGLKe7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 06:34:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49362 "EHLO
+        id S232155AbjGLLIh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 07:08:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230229AbjGLKez (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 06:34:55 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2DD61BEB;
-        Wed, 12 Jul 2023 03:34:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=BehkYB+NlC+IYLjEogwPvXscDT4PcOFLPYCBYNOXY10=;
-        t=1689158077; x=1690367677; b=eyBbliPHyW2VF/+v8BUdFWuuIQfFWf5D7eRhYHgz/Mxcgeg
-        xfQ7KD0z1r35m/M9sQTs3LoH1Bf0kOQsUk18AawBgj4jKFOz1xwGks5dsLBSMEjcEFaMbjvge0vSd
-        3LpOA5FVdVEgJgwQ2zeiUQ0JrdTqGegSWuLrmiRvbFtxye1KZDUPQN1oNAHDfQjHE14dstTx3oSaW
-        s26H+l4dF/896UoKwrFWSPHjv8R4WY7thSVanHvKPV5bfRbc3sUXOjmzr6FcgFncxx0wmc8AApEfB
-        cMMJZTsu2wme4mk48EhkUdkqAUNgbgcb0uLsPg1fq8OQK86ww2mne41qiB+PeGgQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qJXB4-00Gc0l-2S;
-        Wed, 12 Jul 2023 12:34:34 +0200
-Message-ID: <82b75a5e344b23a388a8f078de730272e91f99d2.camel@sipsolutions.net>
+        with ESMTP id S229524AbjGLLIf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 07:08:35 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39FB1727
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 04:08:34 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-5149aafef44so8487039a12.0
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 04:08:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=citymesh.com; s=google; t=1689160113; x=1691752113;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PYbkaTHL0AVDHrq4F5UzM8O5/ZedTs7J/tvsChbMyqI=;
+        b=YZd+WO2vqcn3FDaFSId6HXRL6X8u3D4MmYihBMJ63Bm814qN7gLeEwHFgQ9/ZPw8iT
+         xfxND2FR2NK6zUv6eLDcNzf1WoaG30A7Q9T3lA7ynmlnCkHpg7VqeinvwjKqA7KvseDg
+         cGJ2bTGZu5JQeBMq93Ed8YhajcqHPs7kcYQ+bdxe85cSeAwt0znQlenVjCGZ/q7+T7QE
+         Hoz1ZoNIiIYxcpAuPCpcYwLB6Ydjn/s2LC7pEl/BXxDAgK9sMEn180B99GJFyCCklJtS
+         68xgNftYPCRv/YCRYDPttEka3hYJCXIYYWv5xse+KQXoltRqehuB2DeRtse6r8grpno8
+         i4XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689160113; x=1691752113;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PYbkaTHL0AVDHrq4F5UzM8O5/ZedTs7J/tvsChbMyqI=;
+        b=WIK2Vtifkl7SpK5bBU7Xy7XS/syRuG8OUnoloWNyIKUrhCnNrGMY0MYVBv/8rK8ctg
+         xZwa8WyWjYh7TTWcwRdQo8BR9jL6o5LPgkZ8pztMPGuBjfjKeTw4MeHTL0KW85q5d+X7
+         9BD86vHCNlknJwsJ9erpiHzzkYF/uZGI6RMFIi9aMsQsUFLCXowmd2113QT8i07fx96F
+         AvDiYOQ63h6ZayodiU7klpLSogc95VPxFixsa4v4J/w+lCPuGOLU6q6eeiqqHZ12YbrK
+         3M8roH8Xl+RVdo7/zCEvoyPqQagnzzv8kUHd1U55wJwAAlhsdzV6w+shCwKEt/uStp2b
+         Xr0A==
+X-Gm-Message-State: ABy/qLaj40YlTEPfoPyNf+QhxO+dK+srIUi9QZTGaDhha5axx71RZ/aG
+        wonqhfRNwsDuoRiNLeFwYTrkVritme9CKJyYYbBDBA==
+X-Google-Smtp-Source: APBJJlEJOiq68sxxfU5J7oFmwLARPITYcdmFCjS0hmsuzxOaJEzxlo1GWuwhXC0wCReFa/GX1IhP0G+Sul+vgFB5Mik=
+X-Received: by 2002:a50:ec99:0:b0:51e:ceb:7d71 with SMTP id
+ e25-20020a50ec99000000b0051e0ceb7d71mr15990239edr.39.1689160113196; Wed, 12
+ Jul 2023 04:08:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230712083841.222607-1-koen.vandeputte@citymesh.com>
+ <9936de52da43347ba0ccfb8737440a9698fb4585.camel@sipsolutions.net>
+ <CAPh3n82BY0bFkHs6DKKf6+ZUZw+DJmTy7=JEG8REFHyHFMqoVQ@mail.gmail.com> <82b75a5e344b23a388a8f078de730272e91f99d2.camel@sipsolutions.net>
+In-Reply-To: <82b75a5e344b23a388a8f078de730272e91f99d2.camel@sipsolutions.net>
+From:   Koen Vandeputte <koen.vandeputte@citymesh.com>
+Date:   Wed, 12 Jul 2023 13:08:21 +0200
+Message-ID: <CAPh3n82NPvU4AXgQ3y21kSkMWW18UNrOc1StKHuYeGRN4xNt5Q@mail.gmail.com>
 Subject: Re: [PATCH] wifi: nl80211: fix mbssid nesting
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Koen Vandeputte <koen.vandeputte@citymesh.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>,
         Aloka Dixit <alokad@codeaurora.org>, stable@vger.kernel.org
-Date:   Wed, 12 Jul 2023 12:34:33 +0200
-In-Reply-To: <CAPh3n82BY0bFkHs6DKKf6+ZUZw+DJmTy7=JEG8REFHyHFMqoVQ@mail.gmail.com>
-References: <20230712083841.222607-1-koen.vandeputte@citymesh.com>
-         <9936de52da43347ba0ccfb8737440a9698fb4585.camel@sipsolutions.net>
-         <CAPh3n82BY0bFkHs6DKKf6+ZUZw+DJmTy7=JEG8REFHyHFMqoVQ@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,47 +70,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 2023-07-12 at 11:05 +0200, Koen Vandeputte wrote:
-> On Wed, Jul 12, 2023 at 10:44=E2=80=AFAM Johannes Berg
-> <johannes@sipsolutions.net> wrote:
-> >=20
-> > On Wed, 2023-07-12 at 10:38 +0200, Koen Vandeputte wrote:
-> > > Executing command NL80211_CMD_GET_WIPHY and parsing it's output
-> > > natively without libnl shows following attributes as part of
-> > > the nl80211 generated netlink message (part 16):
-> > >=20
-> > > GetWiphy: Type: 1
-> > > GetWiphy: Type: 2
-> > > GetWiphy: Type: 46
-> > > GetWiphy: Type: 33074 <-- wrong enum value, above MAX also ..
-> >=20
-> > That's not wrong, that's just NLA_F_NESTED | NL80211_ATTR_MBSSID_CONFIG=
-,
-> > since it *is* in fact a nested attribute.
->=20
-> ahha! so one should check on each received attribute if this flag is set?
+On Wed, Jul 12, 2023 at 12:34=E2=80=AFPM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+>
+> On Wed, 2023-07-12 at 11:05 +0200, Koen Vandeputte wrote:
+> > On Wed, Jul 12, 2023 at 10:44=E2=80=AFAM Johannes Berg
+> > <johannes@sipsolutions.net> wrote:
+> > >
+> > > On Wed, 2023-07-12 at 10:38 +0200, Koen Vandeputte wrote:
+> > > > Executing command NL80211_CMD_GET_WIPHY and parsing it's output
+> > > > natively without libnl shows following attributes as part of
+> > > > the nl80211 generated netlink message (part 16):
+> > > >
+> > > > GetWiphy: Type: 1
+> > > > GetWiphy: Type: 2
+> > > > GetWiphy: Type: 46
+> > > > GetWiphy: Type: 33074 <-- wrong enum value, above MAX also ..
+> > >
+> > > That's not wrong, that's just NLA_F_NESTED | NL80211_ATTR_MBSSID_CONF=
+IG,
+> > > since it *is* in fact a nested attribute.
+> >
+> > ahha! so one should check on each received attribute if this flag is se=
+t?
+>
+> Yeah, that indicates that it's nested, without having the out-of-band
+> information that it should be nested.
+>
+>
+> There's also NLA_F_NET_BYTEORDER, so we really only have 14 bits for the
+> type, so you should probably use NLA_TYPE_MASK.
+>
+> > I guess all the ones with the noflag so far are using it to avoid
+> > breaking legacy stuff?
+>
+> Right. When we realized that nla_put_nested() didn't actually put the
+> nested flag it was kind of too late - although a lot of userspace
+> probably would have handled it correctly (if it uses libnl, etc.) But
+> still, we converted it all to nla_put_nested_noflag(), but we really
+> shouldn't be adding new code that calls nla_put_nested_noflag() since by
+> definition new code is new attributes, and then userspace can be
+> updated.
+>
+> Unless you're saying this somehow breaks old userspace that doesn't even
+> understand NL80211_ATTR_MBSSID_CONFIG yet? But that seems unlikely, you
+> have to be prepared to see attributes bigger than what you expected and
+> skip them?
+>
+Yeah, I've already updated our internal code to filter netlink type
+using NLA_TYPE_MASK.
+Works like a charm now.
+Our codebase was initially made during kernel 3.x time when that
+filtering was not needed.. and within OpenWRT, the wireless stack got
+updated to 6.1.x
+bringing in mbssid netlink from 5.16.
+So this popped up suddenly :-)
 
-Yeah, that indicates that it's nested, without having the out-of-band
-information that it should be nested.
+Thanks for the patience and sorry for the noise!
 
-
-There's also NLA_F_NET_BYTEORDER, so we really only have 14 bits for the
-type, so you should probably use NLA_TYPE_MASK.
-
-> I guess all the ones with the noflag so far are using it to avoid
-> breaking legacy stuff?
-
-Right. When we realized that nla_put_nested() didn't actually put the
-nested flag it was kind of too late - although a lot of userspace
-probably would have handled it correctly (if it uses libnl, etc.) But
-still, we converted it all to nla_put_nested_noflag(), but we really
-shouldn't be adding new code that calls nla_put_nested_noflag() since by
-definition new code is new attributes, and then userspace can be
-updated.
-
-Unless you're saying this somehow breaks old userspace that doesn't even
-understand NL80211_ATTR_MBSSID_CONFIG yet? But that seems unlikely, you
-have to be prepared to see attributes bigger than what you expected and
-skip them?
-
-johannes
+> johannes
