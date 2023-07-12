@@ -2,42 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A72C8751124
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 21:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ABAB7511B6
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 22:12:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229775AbjGLTYo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 15:24:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55392 "EHLO
+        id S231269AbjGLUMn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 16:12:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232359AbjGLTYl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 15:24:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9B451FC3;
-        Wed, 12 Jul 2023 12:24:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66A5A618F5;
-        Wed, 12 Jul 2023 19:24:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B746EC433C9;
-        Wed, 12 Jul 2023 19:24:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1689189879;
-        bh=0tWo1zEKeSSpkRHrgAJVRHpHi/qIQoimw+RHhIfcwj8=;
-        h=Date:To:From:Subject:From;
-        b=Iw6E8eYrZYEa77eExrycf5f69K1LtN+tNFDrMD+dh9IvfDvy47FHnOxHQvcOap28l
-         JaykuLtfj9WQnPo42uuGwEXCzaWJTqu5aycBfVfq4/ZVa7z0AuG3+PIyyva8ssJoTE
-         8svefSsXv2hBevMC7U3GnYEwnrcVYpt/kZgV09oM=
-Date:   Wed, 12 Jul 2023 12:24:38 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        Liam.Howlett@oracle.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + maple_tree-fix-node-allocation-testing-on-32-bit.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230712192439.B746EC433C9@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        with ESMTP id S232159AbjGLUMm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 16:12:42 -0400
+Received: from out-46.mta1.migadu.com (out-46.mta1.migadu.com [95.215.58.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 065901BF7
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 13:12:40 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1689192759;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=c/76dSIGCZPJc1ER3XzczF+UfZspzAoA/3QU7AOycVY=;
+        b=SvfANLrhEJ0dR1PzUE/XNZtBrvTtJU+KIi1yXQeRJhmEPW3ybheULBfvRZY9rhtvpRhd79
+        ithjOWTU35WOH2L7QgTAXAmIxxlKRdtpQiu5NPIJbvLtUtDAwwvzaVwWaq50ORprEAoWqW
+        9zl0PhiSQ4z7T78V5QyO2rGgoKmzsbw=
+From:   Oliver Upton <oliver.upton@linux.dev>
+To:     Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev
+Cc:     Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Reiji Watanabe <reijiw@google.com>,
+        James Morse <james.morse@arm.com>, stable@vger.kernel.org,
+        Yu Zhao <yuzhao@google.com>, Zenghui Yu <yuzenghui@huawei.com>,
+        Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH v2] KVM: arm64: Correctly handle page aging notifiers for unaligned memslot
+Date:   Wed, 12 Jul 2023 20:12:29 +0000
+Message-ID: <168919265863.2750527.1463103200517783833.b4-ty@linux.dev>
+In-Reply-To: <20230627235405.4069823-1-oliver.upton@linux.dev>
+References: <20230627235405.4069823-1-oliver.upton@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        TO_EQ_FM_DIRECT_MX,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,71 +51,24 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, 27 Jun 2023 23:54:05 +0000, Oliver Upton wrote:
+> Userspace is allowed to select any PAGE_SIZE aligned hva to back guest
+> memory. This is even the case with hugepages, although it is a rather
+> suboptimal configuration as PTE level mappings are used at stage-2.
+> 
+> The arm64 page aging handlers have an assumption that the specified
+> range is exactly one page/block of memory, which in the aforementioned
+> case is not necessarily true. All together this leads to the WARN() in
+> kvm_age_gfn() firing.
+> 
+> [...]
 
-The patch titled
-     Subject: maple_tree: fix node allocation testing on 32 bit
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     maple_tree-fix-node-allocation-testing-on-32-bit.patch
+Applied to kvmarm/fixes, with Marc's suggestion to add a comment around the
+-EAGAIN path to indicate it is impossible while holding the MMU lock for write.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/maple_tree-fix-node-allocation-testing-on-32-bit.patch
+[1/1] KVM: arm64: Correctly handle page aging notifiers for unaligned memslot
+      https://git.kernel.org/kvmarm/kvmarm/c/df6556adf27b
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: maple_tree: fix node allocation testing on 32 bit
-Date: Wed, 12 Jul 2023 13:39:16 -0400
-
-Internal node counting was altered and the 64 bit test was updated,
-however the 32bit test was missed.
-
-Restore the 32bit test to a functional state.
-
-Link: https://lore.kernel.org/linux-mm/CAMuHMdV4T53fOw7VPoBgPR7fP6RYqf=CBhD_y_vOg53zZX_DnA@mail.gmail.com/
-Link: https://lkml.kernel.org/r/20230712173916.168805-2-Liam.Howlett@oracle.com
-Fixes: 541e06b772c1 ("maple_tree: remove GFP_ZERO from kmem_cache_alloc() and kmem_cache_alloc_bulk()")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/radix-tree/maple.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
---- a/tools/testing/radix-tree/maple.c~maple_tree-fix-node-allocation-testing-on-32-bit
-+++ a/tools/testing/radix-tree/maple.c
-@@ -206,9 +206,9 @@ static noinline void __init check_new_no
- 				e = i - 1;
- 		} else {
- 			if (i >= 4)
--				e = i - 4;
--			else if (i == 3)
--				e = i - 2;
-+				e = i - 3;
-+			else if (i >= 1)
-+				e = i - 1;
- 			else
- 				e = 0;
- 		}
-_
-
-Patches currently in -mm which might be from Liam.Howlett@oracle.com are
-
-mm-mlock-fix-vma-iterator-conversion-of-apply_vma_lock_flags.patch
-maple_tree-fix-32-bit-mas_next-testing.patch
-maple_tree-fix-node-allocation-testing-on-32-bit.patch
-
+--
+Best,
+Oliver
