@@ -2,138 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8FBB751208
-	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 22:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6CFF751237
+	for <lists+stable@lfdr.de>; Wed, 12 Jul 2023 23:10:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231960AbjGLU5s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 16:57:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60762 "EHLO
+        id S232582AbjGLVKg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 17:10:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231916AbjGLU5q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 16:57:46 -0400
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E311BEC;
-        Wed, 12 Jul 2023 13:57:45 -0700 (PDT)
-Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6b5d5e6b086so790491a34.1;
-        Wed, 12 Jul 2023 13:57:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689195464; x=1691787464;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=1RnYYOt2ROeAmSiJt8+HCO24CDCU5SuB0/XP79pTxVU=;
-        b=HoO3K91cclh+Ar8T00O5cP1lKwZeTWwAiaR/SLOkDnhDkXG+Xk0zKHG6XykVvda24i
-         Ak818Mw3+mPA1kgFE5DIVfcpGuhfXaAlGWTrCME+mnv6AjzSPkcxAtbQGgx9Dc6drHYV
-         lt+Mvppfu2m/rDowChjeOAbpCu9N/utyr6Plr5UEMTFEf03iOvTScbDdBtusSuL4Xdsi
-         6+TSgtHX7dlze9xjbIeEuTytDwRfYQNXNAPoI4An2QJlBMOvWp/dPT6YzIqpzShmRrNx
-         ha6lASemaLZ5SH8/qBsENOkXgUlfBTSXvZnzKqTl81bWUq3y07/a5Dq2GKV8oy+gyupA
-         35sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689195464; x=1691787464;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1RnYYOt2ROeAmSiJt8+HCO24CDCU5SuB0/XP79pTxVU=;
-        b=WDjDeJXQcB5pNNDznkax3Q4Ln9gQ1k1LtlkSiwLHuUz4kN512Ch8BnVHGW4xlZ6utE
-         mqmigN5Hido7wWiIPlODJkfXldgLAMt/5uB+yhkX7A+2rbwIYCYt/V3biXacbnOkOReU
-         JW18ru2TMFISOgEX2n2lvWesf4PgVnezaTy9cIv3I8HgggXrDX+RCiqDCLReFPp7CV3V
-         sMAaUUxjqhACBSMOkd1bJjrubRbsFqY+KDsqY9dbBGxJ+AzWlmlY+zNOHJfR+xo4S/iW
-         03EEdPir6SZ7DqISF93KI6sfIazY8JxiSAqK6TTGj0vcADdkQekFnFWmAQlKFhdVUjus
-         rYHA==
-X-Gm-Message-State: ABy/qLbXPvFqYdGwrkzULKXWCVYKGvC4sZ1u1XI8Wqb0QlgzQdTZolhb
-        ghl7cja/MQkV/G2TUkjJ0iA=
-X-Google-Smtp-Source: APBJJlE1MYhtH+H9dFumCjnqewXMgIlQ6LNofQwnPzRvk2hpc95lQHmslpfQWnbzhMZSs/hirn/rPA==
-X-Received: by 2002:a9d:7759:0:b0:6b8:b83c:a1f8 with SMTP id t25-20020a9d7759000000b006b8b83ca1f8mr1617676otl.19.1689195464515;
-        Wed, 12 Jul 2023 13:57:44 -0700 (PDT)
-Received: from localhost.localdomain ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id b3-20020a056830104300b006b469ace1b1sm2288715otp.22.2023.07.12.13.57.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jul 2023 13:57:43 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
-Subject: [PATCH] staging: 7811: Fix memory leak in _r8712_init_xmit_priv
-Date:   Wed, 12 Jul 2023 15:57:32 -0500
-Message-ID: <20230712205733.29794-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S232541AbjGLVKf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 17:10:35 -0400
+Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 961EF1FC9;
+        Wed, 12 Jul 2023 14:10:33 -0700 (PDT)
+Message-ID: <0bb4a367ebd7ae83dd1538965e3c0d2b.pc@manguebit.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+        s=dkim; t=1689196231;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=87D1wgXkCoqNsHuc4E5XEDcTC2UydNXgWk7WyKAXs04=;
+        b=ac2WVo9qoJrkyo+lyly2EEiXahbuPNp05ERxwFMbuiSTeebMGJY6pANq5YIEQk3PtD01ST
+        uIWZvewXSKHpf5XObiwAFmTuobKj6aPGC/LaQq3dHokk7dB63G/awyWXlZ+SvE5X0oUp2w
+        XeLzlD7dQ+MxqLHOMniTuN11JUKboAvOQiVqplL2ze3foBFMjDIhrH9ggsNklBNxi6UBNs
+        4dhmU9EPJ5jZlq49bq9LIBwf7rfR1iXEuh3kAKCzAEgH6j0FdNt7EHa75+Aw47ZO4SyE4m
+        go760Cg/ez5Ux9Qx9gPo0NOroq3bdsXk5Ve9x25BgIWpRd1cfOShAqvJfmmGEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+        s=dkim; t=1689196231;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=87D1wgXkCoqNsHuc4E5XEDcTC2UydNXgWk7WyKAXs04=;
+        b=rlm0uQraE0YBWwFiHeIa8DqB4Jcwntz2OKeSi49LeUXR+qN1sFiAe8iMIE0Jiz59eYUEuU
+        tl+mzlN9FHAWeQ+jzPyoMwtcyAJe5lJDcjd9P+7HklY3tlblE8F3Bi7nvisuA4AjYH23P4
+        biTTcSseBvF9GpQ9i+Q/F+cwcX8N8Qvpf+JjPmwKCPYn32lXIInB3XThobqHWgpN0Z43QX
+        g+es4r17L8Z4sM3J1uwQpHzNdePC3t0nDjWqW0G9gXzswMq0ADCkR5U0ml/q65qoK6FXKH
+        KLWZ9YBbnbOehuW5wCjpMJo0NIAJzccU7wx1CS3OAfmJA+IxcoDuEuELN54ttA==
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=pc@manguebit.com smtp.mailfrom=pc@manguebit.com
+ARC-Seal: i=1; s=dkim; d=manguebit.com; t=1689196231; a=rsa-sha256;
+        cv=none;
+        b=WUNnjkmo8Jz4mFmtub6TrzIo7XYgwURoaCmiMjREd3N5D/l9yp0lTq6cbrUkqYmAHXzcxS
+        nt8NJugqhY6MWWLFsX5Up/PtCir4dsl8PTY7KBYqHr45w1z7tUAdxJ/f/hlFlL6K/TdMMO
+        T6GEvLY01wAskO1lM1+cZWKYmdoTs2/iayqBZBtbw5pFCXavgH4aT5p+56Amv7c5qkJ1IB
+        ph+RvsNNYp5rsT0VyAU1N+JIOsxhXDy7cr9HPDhHDxeSKw3avsgW34p8aTNbIJWTS8u2A6
+        5me7AUxtqs9Cj2XudFLnDpkgwH0omYS3XxnXADNFPtlW7P/k8PILsuLyg9gKcQ==
+From:   Paulo Alcantara <pc@manguebit.com>
+To:     stable@vger.kernel.org
+Cc:     linux-cifs@vger.kernel.org, Steve French <smfrench@gmail.com>
+Subject: Re: [PATCH 4/4] smb: client: improve DFS mount check
+In-Reply-To: <20230628002450.18781-4-pc@manguebit.com>
+References: <20230628002450.18781-1-pc@manguebit.com>
+ <20230628002450.18781-4-pc@manguebit.com>
+Date:   Wed, 12 Jul 2023 18:10:27 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In the above mentioned routine, memory is allocated in several places.
-If the first succeeds and a later one fails, the routine will leak memory.
-Fixes commit 2865d42c78a9 ("staging: r8712u: Add the new driver to the
-mainline kernel").
+Paulo Alcantara <pc@manguebit.com> writes:
 
-Fixes: 2865d42c78a9 ("staging: r8712u: Add the new driver to the mainline kernel")
-Reported-by: syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
- drivers/staging/rtl8712/rtl871x_xmit.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+> Some servers may return error codes from REQ_GET_DFS_REFERRAL requests
+> that are unexpected by the client, so to make it easier, assume
+> non-DFS mounts when the client can't get the initial DFS referral of
+> @ctx->UNC in dfs_mount_share().
+>
+> Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+> ---
+>  fs/smb/client/dfs.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/smb/client/dfs.c b/fs/smb/client/dfs.c
+> index afbaef05a1f1..a7f2e0608adf 100644
 
-diff --git a/drivers/staging/rtl8712/rtl871x_xmit.c b/drivers/staging/rtl8712/rtl871x_xmit.c
-index 090345bad223..16b815588b97 100644
---- a/drivers/staging/rtl8712/rtl871x_xmit.c
-+++ b/drivers/staging/rtl8712/rtl871x_xmit.c
-@@ -117,11 +117,8 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
- 	_init_queue(&pxmitpriv->pending_xmitbuf_queue);
- 	pxmitpriv->pallocated_xmitbuf =
- 		kmalloc(NR_XMITBUFF * sizeof(struct xmit_buf) + 4, GFP_ATOMIC);
--	if (!pxmitpriv->pallocated_xmitbuf) {
--		kfree(pxmitpriv->pallocated_frame_buf);
--		pxmitpriv->pallocated_frame_buf = NULL;
--		return -ENOMEM;
--	}
-+	if (!pxmitpriv->pallocated_xmitbuf)
-+		goto clean_up_frame_buf;
- 	pxmitpriv->pxmitbuf = pxmitpriv->pallocated_xmitbuf + 4 -
- 			      ((addr_t)(pxmitpriv->pallocated_xmitbuf) & 3);
- 	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
-@@ -130,12 +127,12 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
- 		pxmitbuf->pallocated_buf =
- 			kmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ, GFP_ATOMIC);
- 		if (!pxmitbuf->pallocated_buf)
--			return -ENOMEM;
-+			goto clean_up_xmit_buf;
- 		pxmitbuf->pbuf = pxmitbuf->pallocated_buf + XMITBUF_ALIGN_SZ -
- 				 ((addr_t) (pxmitbuf->pallocated_buf) &
- 				 (XMITBUF_ALIGN_SZ - 1));
- 		if (r8712_xmit_resource_alloc(padapter, pxmitbuf))
--			return -ENOMEM;
-+			goto clean_up_xmit_buf;
- 		list_add_tail(&pxmitbuf->list,
- 				 &(pxmitpriv->free_xmitbuf_queue.queue));
- 		pxmitbuf++;
-@@ -146,6 +143,14 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
- 	init_hwxmits(pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
- 	tasklet_setup(&pxmitpriv->xmit_tasklet, r8712_xmit_bh);
- 	return 0;
-+
-+clean_up_xmit_buf:
-+	kfree(pxmitbuf->pallocated_xmitbuf);
-+	pxmitbuf->pallocated_buf = NULL;
-+clean_up_frame_buf:
-+	kfree(pxmitpriv->pallocated_frame_buf);
-+	pxmitpriv->pallocated_frame_buf = NULL;
-+	return -ENOMEM;
- }
- 
- void _free_xmit_priv(struct xmit_priv *pxmitpriv)
--- 
-2.41.0
+Stable team, could you please pick this up as a fix for
 
+        8e3554150d6c ("cifs: fix sharing of DFS connections")
+
+The upstream commit is 5f2a0afa9890 ("smb: client: improve DFS mount check").
+
+Thanks.
