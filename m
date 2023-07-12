@@ -2,242 +2,183 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADB977513FC
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 01:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 375D6751420
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 01:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232047AbjGLXCt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 19:02:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50632 "EHLO
+        id S232056AbjGLXIO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 19:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232793AbjGLXCV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 19:02:21 -0400
-Received: from mx0b-00230701.pphosted.com (mx0b-00230701.pphosted.com [148.163.158.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D19BF173F;
-        Wed, 12 Jul 2023 16:02:17 -0700 (PDT)
-Received: from pps.filterd (m0098572.ppops.net [127.0.0.1])
-        by mx0b-00230701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36CKZ4ul015545;
-        Wed, 12 Jul 2023 16:02:13 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-id : content-transfer-encoding : mime-version; s=pfptdkimsnps;
- bh=/hQp/2BYD8kzVAmyOuAESwnVIe1BMx8kSU48yniN9QE=;
- b=FpSvrsYyPyhAQa266ZS2kjerr6j1i9NfODwLHuwd0UZrqREuYjecGUneMcgxzeOwtLbs
- eKfyrwsFasTj+1vYVBs9hfj8Oqz4M42tHc/2RVpZxhjq5cXIbvZMyxACeEPGSN8q/R3O
- pDT4q3hqFyVwqlP3IQjY77XjEe5P8M0EA3Fhrmar0bEurpjrLS7ZwC8H/anIYyBOgj78
- GuBj9vcSAR8dQRAug2pq4FRlCeRjemDFAYnd4y7PxKXNaqp4QJbNgmssytL69KDr+zEu
- obMjgpSHOrqUEY9VKsbm6x7secU8CgKtVgRl+X1wO275MHGeN7ryhCnH+SIKA6s7V5me 1g== 
-Received: from smtprelay-out1.synopsys.com (smtprelay-out1.synopsys.com [149.117.87.133])
-        by mx0b-00230701.pphosted.com (PPS) with ESMTPS id 3rq6ef57xg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 12 Jul 2023 16:02:13 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
-        t=1689202932; bh=/hQp/2BYD8kzVAmyOuAESwnVIe1BMx8kSU48yniN9QE=;
-        h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-        b=iqiOpiektUUt5g9HbOys0um7zd1+rxtkX8oS8aodPExvwEwx6myv4v/Zjs3TJRzeQ
-         fXct5jFH8TxtW1l6gkScT4sZrcbawIC37jbRiY9HROGE4bAN6StmlNJn3qOkJIzvaT
-         Vv+FlE6QDJzaKaY5x5lqpDrwvycItwhAgQ38ityZUpE+a+Lpe4gEmH3g6yHOxgfv5m
-         wU8yGoEiOmppGWcjW5Q5CiNaolf6yH2GbuafBX0GiUIzaNX5p8d/LXtxRkZyep8AWH
-         CsR7UoKHRFPC56t2A5V/dLqebxKZEo+27NxqWyVDKr74G0kDivajlykM2UJrTzXumA
-         2iddMm4x3/jnw==
-Received: from mailhost.synopsys.com (sv2-mailhost2.synopsys.com [10.205.2.134])
+        with ESMTP id S233190AbjGLXHx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 19:07:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 988372130;
+        Wed, 12 Jul 2023 16:07:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits)
-         client-signature RSA-PSS (2048 bits))
-        (Client CN "mailhost.synopsys.com", Issuer "SNPSica2" (verified OK))
-        by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 1A5934013F;
-        Wed, 12 Jul 2023 23:02:12 +0000 (UTC)
-Received: from o365relay-in.synopsys.com (sv2-o365relay3.synopsys.com [10.202.1.139])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (Client CN "o365relay-in.synopsys.com", Issuer "Entrust Certification Authority - L1K" (verified OK))
-        by mailhost.synopsys.com (Postfix) with ESMTPS id B7818A00EA;
-        Wed, 12 Jul 2023 23:02:11 +0000 (UTC)
-Authentication-Results: o365relay-in.synopsys.com; dmarc=pass (p=reject dis=none) header.from=synopsys.com
-Authentication-Results: o365relay-in.synopsys.com; spf=pass smtp.mailfrom=synopsys.com
-Authentication-Results: o365relay-in.synopsys.com;
-        dkim=pass (1024-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=selector1 header.b=eCzS9e/E;
-        dkim-atps=neutral
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2176.outbound.protection.outlook.com [104.47.57.176])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "mail.protection.outlook.com", Issuer "DigiCert Cloud Services CA-1" (verified OK))
-        by o365relay-in.synopsys.com (Postfix) with ESMTPS id 2FDE140136;
-        Wed, 12 Jul 2023 23:02:11 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bC8LkpXE6Kc4bD4bRfF14ua0epyXCyq5YCHdPRJkpHmeP641bXY/6w075RpnjejWSBjHxgtdsUTVN7jF4QgO8lYkU4ck0rIvDCKG2+Y8URo24zPRWVmBGJYbIZJDKiepXRTsbTimjzVLStXdsVLa8Lb1U6Dt8iPNOUq0J+pPJGp3jdeXS5ovT4bBEz+tCifMsXWS2wIZ13+KE0Yrfdr8g7w4g/S+eT+/ej/+W+cKw7Cz7r6cBz142YSA1uY+jbjyM0KFiEQEKON/hPz92AD98f2MaJNSovdJzaz+O65a4jin1dz800g1DqY7DBVnUFLAXfFuaIZmQmbkVrTgSATUog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/hQp/2BYD8kzVAmyOuAESwnVIe1BMx8kSU48yniN9QE=;
- b=D0ynI+9+x2iT71sndf7HdYQ+ApWls15ENuc68nwLMeSglinIM8tamrJhWKgTqPcYaxWzBPVmi0PifqNpZ0CaytjSPW9CYtY6jvsBxdm1K9dFY90DGufZb1r8kg5JNGnwyDWtlBXUCIjtHbLmvO8fqZbVqBNtmPxBEwVsOfvmYFEfH4P0gpt9AuCp8J6y7WUMzc+5D4+S0z3FZKlsv8cbrvnyWMLk1pQRYo1f8utg+EikrftgJlylW3kgECFrXReOlx0PsumVbueqVfJQEcGyQDv1NRmGo1XGsj3anx+e7vUlrBv3FJG8j7QMocDqM54WZZKNVKmoPDVoLB6KyOGmWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
- dkim=pass header.d=synopsys.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/hQp/2BYD8kzVAmyOuAESwnVIe1BMx8kSU48yniN9QE=;
- b=eCzS9e/Exfm9lVWCAAkwN20eWqslkf6LoEXXVB6ZKs/RIhQwzkPalKrmqX7Nejm+rG1xFMv0QbBjyj4SNcMO+QQUujALQZxx61a4Hsb0fWv9vQuhY5kdf2J+rXWLomHioOL+XphY05synQLaQbi/1eiO2R0h+I5qLFf39W0p+RA=
-Received: from BYAPR12MB4791.namprd12.prod.outlook.com (2603:10b6:a03:10a::12)
- by SJ0PR12MB5504.namprd12.prod.outlook.com (2603:10b6:a03:3ad::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.24; Wed, 12 Jul
- 2023 23:02:08 +0000
-Received: from BYAPR12MB4791.namprd12.prod.outlook.com
- ([fe80::adba:1075:fd90:fe1d]) by BYAPR12MB4791.namprd12.prod.outlook.com
- ([fe80::adba:1075:fd90:fe1d%3]) with mapi id 15.20.6565.028; Wed, 12 Jul 2023
- 23:02:08 +0000
-X-SNPS-Relay: synopsys.com
-From:   Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-To:     =?utf-8?B?SmFrdWIgVmFuxJtr?= <linuxtardis@gmail.com>
-CC:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Mauro Ribeiro <mauro.ribeiro@hardkernel.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] usb: dwc3: Disable AutoRetry controller feature for
- dwc_usb3 v2.00a
-Thread-Topic: [PATCH] usb: dwc3: Disable AutoRetry controller feature for
- dwc_usb3 v2.00a
-Thread-Index: AQHZq6N8Rx/zK10gr0O1P8J0n8tAsq+rzjEAgAEZboCACEP7AIABo/eAgAAC5wA=
-Date:   Wed, 12 Jul 2023 23:02:08 +0000
-Message-ID: <20230712230204.j7g63skeitpdvsom@synopsys.com>
-References: <20230630223638.2250-1-linuxtardis@gmail.com>
- <20230705224754.zmffebz2geg3bclh@synopsys.com>
- <d4576e776d49498dcc1f82ddf2b81b415e0c6e4b.camel@gmail.com>
- <20230711214834.kyr6ulync32d4ktk@synopsys.com>
- <4246badbbe4c106f965cc8758849390effc48c36.camel@gmail.com>
-In-Reply-To: <4246badbbe4c106f965cc8758849390effc48c36.camel@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BYAPR12MB4791:EE_|SJ0PR12MB5504:EE_
-x-ms-office365-filtering-correlation-id: aa3cae4b-6264-4a36-ef66-08db832c04d2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: PVu7Lz1ggPpmZCi9nSWB8byJaWPpX6VOb/RYQIxFAnlKuxN6ELDMIPINEJjAE+m9wNESUhYwlCQeimZLUiZRnsE+RhXrL3Ojf6xVyXn3fuE5/SxRcZ+zvyFHYBuYxJlZBCqeDsFz9MBcyBsGX/AG18h+w8RifG+MuuxY4C6dToLFiyrL0gvj+gkuqVpnbM4BOfK9uwYMANuocfLnWc72rhrn/m4+ZmeG/zSaHt3esIPNEIPZejt/guHCcGDtXfq+dpwWSi/dMFJJXjrE2bvRAXlH5v4l95kuu4nT5/h1ozd6JSzxD7asiVF2g7VJf4W+ChSF+3/GpbGm/Gok3LIPhJZt0QQ36/uSpKNdFgdjhtXH45LhnMctRv9XiVX1o61QEDFywbGsNNbYue7z+eBvngntXQRZaExAh2TeVRoTWwxtwyxb0BMFlNrqGuLV/Sxp70MMf4XWdSBrM5ypnRL/ashodSbnZuBdXagPN4De8oD7TwzEcwPryVV7z2DQeeaMggAE4CtUjotvq8w6QeEqNl94GXmLGvo/DSYobzXpbko4ZZKTK1BTxHzNkoqMx4g5Ou/3xmUJhV1ERyusoW9tDr6IDNejDjhBGIl5KQ9Jx9k=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB4791.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(136003)(366004)(396003)(376002)(39860400002)(451199021)(6486002)(71200400001)(478600001)(83380400001)(2616005)(26005)(6506007)(1076003)(186003)(966005)(6512007)(36756003)(316002)(2906002)(38100700002)(41300700001)(122000001)(4326008)(76116006)(66446008)(66476007)(66556008)(66946007)(6916009)(64756008)(8936002)(86362001)(8676002)(38070700005)(5660300002)(54906003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?QmJYV2Z5SS9wWDRTR0xuRmxXbEJtZE4rcjhScU9UZjl5RUhGckFsYkxFeTIv?=
- =?utf-8?B?RkpkaWhQMzFRdVhDdWxFakc1UExLVDVTYXZVQjFIR2hUK2hYdjFENGR6UGJn?=
- =?utf-8?B?SDUraE9lZGFlM3NSRUl6YmE1U0l2b29Hd1d2RnZJUkFJSkx0VnJsNWVuODFp?=
- =?utf-8?B?djJsZkZkdWkvd25aUTJwb1ZWRlh1TDR6VUFBYkhhdXpiRXRpZ2huWllXZmpJ?=
- =?utf-8?B?em95Znh5bE5CbUVXZkpIRHhpRjExbkIrOC9FU2wvNjFGZ1U2aHMwYWpsMjNR?=
- =?utf-8?B?NkJYVVZ1SENLSUxYdHBkb2J5TFBNT0tLL1B2S0E0Z1BUbFpCd0dnTXByUnpw?=
- =?utf-8?B?dTRTbFc1cEZuWnB0VWhlREZJeXZSVWZMQWgzWmJxSjMwOFpmQWV5N3JUZ2dk?=
- =?utf-8?B?dFBDODFsVndXRk5RWTk3MXhGV2RheS9iSlVKOEQ1RVE1WkRhM2FnalZ4ZlVH?=
- =?utf-8?B?aXhFLzJDNE5xUzgxcHFxK1BLUS95M3VqZkVFSzluSDB3dFhLNXRWU2xYQjg5?=
- =?utf-8?B?ak9nekVmREdZRllhdlIxZEFVNWVKQXE2Sk1aWXpKejlCMzVSRkdiaDFFL1d6?=
- =?utf-8?B?cmZzdHNKUzI5L1ZZRkNaVjJGd0NsSy9kRm5qUFBRYjQvRkhrVnNPemwwUEtG?=
- =?utf-8?B?aWk1WGY2UG4wNmNpSVQ3cGxCWXFHcjdaUFlZUVp6RVB0cnpXRG1JdUFDZkxl?=
- =?utf-8?B?bDlTREtLTTMxWUhjTEh0aStuUi9wbjFacEI1MlVSTGNkNDd6QWJVd2F4dGhD?=
- =?utf-8?B?ZTdya2laZmUwb1JvSXpKRkM4YTkySTZBR1BLVWtUVW5XVS9MVUsydkxNWU5O?=
- =?utf-8?B?Z1NWNmpLTTFzd05PK0hoQXhoWDJHWnljeG1XRERaRlFXVUd1UnJEeGdCRnN4?=
- =?utf-8?B?azd4SWJ2SnlKWmtNa3NWRUFVK2R2M09YMlpUeDh4SVM4blpaQXlNUXZNOGZ4?=
- =?utf-8?B?czhJRGt5MFFicWRzYVlOc205TC9RbHlkYWZIVHFvQnVSMEZwMnI1MUNqRGJY?=
- =?utf-8?B?d2VGckhxdVRuWFNkUGxKelhocUsyVDI3azYvaCtwbm5pbWx3YWtvQmdUT3M3?=
- =?utf-8?B?NUMzR2tVdU1UOEQrS0M4T3U1YWlKOWRvY0Z3NkNYTVgrSWpLUTBnSjdjRU5h?=
- =?utf-8?B?a3BoS0RqNDFMZHpuTWY3Z1dQZTA2dzhEQm8wN1M0M25HaHJnN3h4aDRlbFdh?=
- =?utf-8?B?RGJQb21yWmt2cExaUUZGSGFyaWt2eXlZSGpzejFFV1Nka3BXTVR6TXFpWUNa?=
- =?utf-8?B?TFd0MmRSanBFWkI0OEdwVndoU2JmWThSUTYwUVVDb1o4MFpSMWJpelpKTkln?=
- =?utf-8?B?Z2pTWWdkcXVnUytmSnMzdUZIT0oxc1RWbytwZGMvR2NoQWFqNnBTWGszbkpx?=
- =?utf-8?B?NkFKdEpXT0N5Y1hSejNEM1N4R2x4WXF0N0RvTk83ckExeHpIWldyYkRhUEJH?=
- =?utf-8?B?aVYzdnc1cHE3bm9CQTJNNldIVXFJQ2c0aHpnUklXRWViMlNXMlJoaGdhd3BM?=
- =?utf-8?B?eVJabVN4Z2R6SFErVDJUNHRyN1N1N1pvNnltL1Q3dUFRUTkzZndBN25ldkV0?=
- =?utf-8?B?M0lZeDVLZWRyRXNqTlc5ZTU4ZjBqZ0pxN0RjZ1NQaG9DNWdjR3QzRklSVW5P?=
- =?utf-8?B?TVZ2OWJ0d1NyMm1MaWF4MzJiUVJHVDdRYTM4WmRTUEl1Q3AxdEhXQnJKQi9x?=
- =?utf-8?B?em01QlZxYWY0WkZtMGQ4WlFjSDhONEkxS0NlOWc1RXFrRFRvNDdvY2tsemJW?=
- =?utf-8?B?eXNOOXlVOE9aaStvQTBvZnpWbHgrLzYzY0FyVXk3ODRSVmF6Z3ZKUzZIdzhx?=
- =?utf-8?B?ay9IRjF3T0NHMFh4ck85OGZWTE5jUE0rUTdqOWpxVzJsSlJpeEY3L3VqeXFr?=
- =?utf-8?B?UGdjUkUzdE5YMDBiVW9OamtPeXRkb3pFWFJORWVSWWpZblIzWlR3VEorWWpQ?=
- =?utf-8?B?dXJMOFJzdFN1OXR4a3FyYkNxVVQvMUZnR3cwSDVhMEpqL0tVWHBLVStJZDdi?=
- =?utf-8?B?ZmdUempXRlF1UklKdENyYWNUNDVSeTVUUmRmNms4a3dvWTIzQ09lYWNkZ1pa?=
- =?utf-8?B?eVNFQXRtWnY4M1NXZVlwTDlnNG01K01KMzdBd25HaENGd2JDeGo3dTFHRmF4?=
- =?utf-8?Q?y+pr604zWVKkjc1cW9SZPwJHr?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <CCF4BBCA0CE98A4E915FD005300F408F@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 230CE61987;
+        Wed, 12 Jul 2023 23:07:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA62DC433C7;
+        Wed, 12 Jul 2023 23:07:25 +0000 (UTC)
+Date:   Wed, 12 Jul 2023 19:07:23 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Mohamed Khalfella <mkhalfella@purestorage.com>
+Cc:     stable@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
+        linux-kernel@vger.kernel.org (open list:TRACING),
+        linux-trace-kernel@vger.kernel.org (open list:TRACING),
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Tom Zanussi <zanussi@kernel.org>
+Subject: Re: [PATCH] tracing/histograms: Add histograms to hist_vars if they
+ have referenced variables
+Message-ID: <20230712190723.26ebadea@gandalf.local.home>
+In-Reply-To: <20230712223021.636335-1-mkhalfella@purestorage.com>
+References: <20230712223021.636335-1-mkhalfella@purestorage.com>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?aXVQY252M0YrdU5yYzBFaGJJRVBzNG9vd3p1MWc3RUd2WGNVRnoyUlREMTRs?=
- =?utf-8?B?YmZpbEovc25mRXpsS0o2TS9zNGRLQXlDeTY1dnF6a3BXUHRRSG9mTThyc2ND?=
- =?utf-8?B?MGRPYTdEeWVGUkdwTjRGNlVSTG5Dd0RTbEFRdHNJT25BOERyc1RmOTNuMW1t?=
- =?utf-8?B?VUxTMWhlTVRLaDRvZmRkYjRtVkhZbEFlZ0c5dm9QMXhySGxpckQ0clN1T2VC?=
- =?utf-8?B?WXRtOTJrWE5TYUJDY1F1SmZPdHFNTENxWCtqdm9vaS9aVTU4S1R4eFJHUjZJ?=
- =?utf-8?B?cjhwZEQzK1VabmZML3FqOXh4Ri9rTXlqWlZzQkRYNFdCNTRjMkZIZklhdkkv?=
- =?utf-8?B?NVYyTGZLbnpRSDduUUZkMkYyZ0wzYTJlajMzd05oaHMyVTlLL3RVenJJVXNt?=
- =?utf-8?B?ZmFvb3dKWnR4R0cwdGJYbjNBVlk0U0k4ZCtIM2lzOU9yME12WjY2QW9PZEtk?=
- =?utf-8?B?VGsvYlJScC8wQUQ5by9jTkF3NEJ5M0NGdlhxMmI3TVNadS9YQjZDOVdzZEhy?=
- =?utf-8?B?eERjZHhJZGxQTTJYOUIzTnFISVpTZlQ4WWoxSXNZaENld2JXWUhNci9kTWpD?=
- =?utf-8?B?K1RQSlJTVGNnQ21TT081ZU9UamtmdS9iNFFIOGdickVibFdWSXdtdHdleUZJ?=
- =?utf-8?B?NERNSHNWYzBUUGNqVkJKZnRwaVBpVTd4RDRZZHN5Q0hGNHpjNHgrUU0zTTlp?=
- =?utf-8?B?ODAvL1RVMXBWMExpcDB5eXFKMmRTS1gzNHZNU1FJRG9HMU5ueW05YjRMM2U0?=
- =?utf-8?B?Q3BOOE42K0h6YnRDTmlQNU95a3lMOG4wL1Z6bXNWUE0yelNocldGM2JwL0gx?=
- =?utf-8?B?c1lpWEE3NW5GZnhpMkRCbnlPTkJueG94RERpcmtycjhWTnVpTkZoa1R2d2d5?=
- =?utf-8?B?anE0S244Z0Rpckprck03dXFLc2dkeFBPUEJxeHFIa3lKdVNCcFpQN3FXL0FU?=
- =?utf-8?B?NWhTeStQbCt2aTZ0cVpZaEFNQ0FHUE9sM2xoclc4enR6RWVCZXZEZlNSaW5L?=
- =?utf-8?B?N256anBYNzB3OC9GSDZObW11a05BMlZPNkkyZzhvdUZmTDRZeWg2aFg2MS9o?=
- =?utf-8?B?VWFRdHdYQW1hR2ZOWEdwNW45aUl1bmtmQ291M0pGd04wVTBoSDgwcG5VZ1Vk?=
- =?utf-8?B?MjJFOXJvNDBEbnBjSVN0OUZ6OWdhU2tFYVZzcVVFTG5oS1d6dXI1b3BMRlR6?=
- =?utf-8?B?TFBjYXdmZHVzTlNNdmdUUHk0ek45TW90clZFakxxVVA3U0d0MU1ML0VIRDBr?=
- =?utf-8?B?bUY3UVgranBtODVya0FuUytWZUdqUnVOUmFZUkxkTHJab1NQQT09?=
-X-OriginatorOrg: synopsys.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB4791.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aa3cae4b-6264-4a36-ef66-08db832c04d2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jul 2023 23:02:08.5359
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5KsamkSXpkAEceU3c/gDqugKMmqEmqFWUnLSk8shAcvHbcaCPp7KeVY8Gxm8cu33jBsNtpXu6re3sxK13OLI2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5504
-X-Proofpoint-GUID: JWGDjQ0AtJRnajf8J2s3LZz72sJ5V8eS
-X-Proofpoint-ORIG-GUID: JWGDjQ0AtJRnajf8J2s3LZz72sJ5V8eS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-12_15,2023-07-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_active_cloned_notspam policy=outbound_active_cloned score=0
- mlxlogscore=579 phishscore=0 clxscore=1015 suspectscore=0
- lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0 adultscore=0
- malwarescore=0 impostorscore=0 bulkscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2307120203
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-T24gVGh1LCBKdWwgMTMsIDIwMjMsIEpha3ViIFZhbsSbayB3cm90ZToNCj4gSGkgVGhpbmgsDQo+
-IA0KPiBPbiBUdWUsIDIwMjMtMDctMTEgYXQgMjE6NDggKzAwMDAsIFRoaW5oIE5ndXllbiB3cm90
-ZToNCj4gPiBIaSBKYWt1YiwNCj4gPiANCj4gPiBPbiBUaHUsIEp1bCAwNiwgMjAyMywgSmFrdWIg
-VmFuxJtrIHdyb3RlOg0KPiA+ID4gT24gV2VkLCAyMDIzLTA3LTA1IGF0IDIyOjQ3ICswMDAwLCBU
-aGluaCBOZ3V5ZW4gd3JvdGU6DQo+ID4gPiA+IEkgYnJvdWdodCB1cCB0aGlzIGlucXVpcnkgaW50
-ZXJuYWxseS4gUGxlYXNlIHdhaXQgYXMgSSBuZWVkIHRvDQo+ID4gPiA+IHJldmlldw0KPiA+ID4g
-PiB0aGlzIGZ1cnRoZXIuIFRoZSBoYW5kbGluZyBmb3IgdGhpcyBtYXkgYmUgZGlmZmVyZW50IGRl
-cGVuZGluZyBvbg0KPiA+ID4gPiB0aGUNCj4gPiA+ID4gdGVhbSdzIGZlZWRiYWNrLg0KPiA+ID4g
-PiANCj4gPiA+IA0KPiA+ID4gT0s7IGZlZWwgZnJlZSB0byBjb250YWN0IG1lIGlmIEkgY291bGQg
-YmUgb2YgYW55IGhlbHAuDQo+ID4gPiANCj4gPiANCj4gPiBTb3JyeSBmb3IgdGhlIGRlbGF5LiBB
-ZnRlciBkaXNjdXNzaW9uLCB0aGlzIGJlaGF2aW9yIGlzIHRoZSBzYW1lDQo+ID4gYWNyb3NzDQo+
-ID4gZGlmZmVyZW50IGNvbnRyb2xsZXIgdmVyc2lvbnMuIFRoZSBjb25zZW5zdXMgaXMgdG8gZGlz
-YWJsZSB0aGlzDQo+ID4gZmVhdHVyZQ0KPiA+IGFsdG9naGV0aGVyLiBUaGVyZSB3aWxsIG5vdCBi
-ZSBhbnkgbm90aWNlYWJsZSBwZXJmb3JtYW5jZSBpbXBhY3QuDQo+ID4gDQo+ID4gV291bGQgeW91
-IG1pbmQgcmV2aXNlIHRoZSBwYXRjaCB0byBkaXNhYmxlIHRoaXMgZmVhdHVyZSBmb3IgYWxsPw0K
-PiANCj4gTm90IGF0IGFsbCwgSSBoYXZlIHNlbnQgYSBuZXcgcmV2aXNpb24gb2YgdGhlIHBhdGNo
-Og0KPiBodHRwczovL3VybGRlZmVuc2UuY29tL3YzL19faHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcv
-bGludXgtdXNiLzIwMjMwNzEyMjI0MDM3LjI0OTQ4LTEtbGludXh0YXJkaXNAZ21haWwuY29tL19f
-OyEhQTRGMlI5R19wZyFldXZtdkpWcl9BTUNweWQ1OXRpYXY0Q280dThwMFRLenNMcTBXN3lLb3lJ
-bE5fSzdXRnYyR1A1N3dYbXNkZHNKb3hzRXE2X0JoeDh5cDVnRzh2QXFlYktoa3ckIA0KPiANCj4g
-UmV2ZXJ0aW5nIHRoZSBjb21taXQgYWx0b2dldGhlciBzZWVtZWQgcHJlZmVyYWJsZSB0byBtZSB0
-byB1cGRhdGluZyB0aGUNCj4gcmV2aXNpb24tc3BlY2lmaWMgcGF0Y2guIEhvd2V2ZXIsIGlmIHRo
-ZSBvdGhlciB3YXkgd291bGQgYmUgYmV0dGVyLCBJDQo+IGNhbiBzZW5kIGFuIHVwZGF0ZWQgcmV2
-aXNpb24uDQo+IA0KDQpSZXZlcnRpbmcgaXQgaXMgZmluZSBhbHNvLiBXZSdsbCBrZWVwIHRoZSBk
-ZWZhdWx0IHNldHRpbmcgZnJvbQ0KQ29yZUNvbnN1bHRhbnQuDQoNClRoYW5rcywNClRoaW5o
+On Wed, 12 Jul 2023 22:30:21 +0000
+Mohamed Khalfella <mkhalfella@purestorage.com> wrote:
+
+> Hist triggers can have referenced variables without having direct
+> variables fields. This can be the case if referenced variables are added
+> for trigger actions. In this case the newly added references will not
+> have field variables. Not taking such referenced variables into
+> consideration can result in a bug where it would be possible to remove
+> hist trigger with variables being refenced. This will result in a bug
+> that is easily reproducable like so
+> 
+> $ cd /sys/kernel/tracing
+> $ echo 'synthetic_sys_enter char[] comm; long id' >> synthetic_events
+> $ echo 'hist:keys=common_pid.execname,id.syscall:vals=hitcount:comm=common_pid.execname' >> events/raw_syscalls/sys_enter/trigger
+> $ echo 'hist:keys=common_pid.execname,id.syscall:onmatch(raw_syscalls.sys_enter).synthetic_sys_enter($comm, id)' >> events/raw_syscalls/sys_enter/trigger
+> $ echo '!hist:keys=common_pid.execname,id.syscall:vals=hitcount:comm=common_pid.execname' >> events/raw_syscalls/sys_enter/trigger
+> 
+> [  100.263533] ==================================================================
+> [  100.264634] BUG: KASAN: slab-use-after-free in resolve_var_refs+0xc7/0x180
+> [  100.265520] Read of size 8 at addr ffff88810375d0f0 by task bash/439
+> [  100.266320]
+
+And Of course you send this to me right after I send a pull request with
+fixes to Linus :-p
+
+Thanks for the patch. I just did a quick test, and sure enough I can
+reproduce the bug, and your patch makes the bug go away.
+
+I run this through my full test suite, and then send Linus another pull
+request.
+
+Thanks!
+
+-- Steve
+
+
+> [  100.266533] CPU: 2 PID: 439 Comm: bash Not tainted 6.5.0-rc1 #4
+> [  100.267277] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
+> [  100.268561] Call Trace:
+> [  100.268902]  <TASK>
+> [  100.269189]  dump_stack_lvl+0x4c/0x70
+> [  100.269680]  print_report+0xc5/0x600
+> [  100.270165]  ? resolve_var_refs+0xc7/0x180
+> [  100.270697]  ? kasan_complete_mode_report_info+0x80/0x1f0
+> [  100.271389]  ? resolve_var_refs+0xc7/0x180
+> [  100.271913]  kasan_report+0xbd/0x100
+> [  100.272380]  ? resolve_var_refs+0xc7/0x180
+> [  100.272920]  __asan_load8+0x71/0xa0
+> [  100.273377]  resolve_var_refs+0xc7/0x180
+> [  100.273888]  event_hist_trigger+0x749/0x860
+> [  100.274505]  ? kasan_save_stack+0x2a/0x50
+> [  100.275024]  ? kasan_set_track+0x29/0x40
+> [  100.275536]  ? __pfx_event_hist_trigger+0x10/0x10
+> [  100.276138]  ? ksys_write+0xd1/0x170
+> [  100.276607]  ? do_syscall_64+0x3c/0x90
+> [  100.277099]  ? entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+> [  100.277771]  ? destroy_hist_data+0x446/0x470
+> [  100.278324]  ? event_hist_trigger_parse+0xa6c/0x3860
+> [  100.278962]  ? __pfx_event_hist_trigger_parse+0x10/0x10
+> [  100.279627]  ? __kasan_check_write+0x18/0x20
+> [  100.280177]  ? mutex_unlock+0x85/0xd0
+> [  100.280660]  ? __pfx_mutex_unlock+0x10/0x10
+> [  100.281200]  ? kfree+0x7b/0x120
+> [  100.281619]  ? ____kasan_slab_free+0x15d/0x1d0
+> [  100.282197]  ? event_trigger_write+0xac/0x100
+> [  100.282764]  ? __kasan_slab_free+0x16/0x20
+> [  100.283293]  ? __kmem_cache_free+0x153/0x2f0
+> [  100.283844]  ? sched_mm_cid_remote_clear+0xb1/0x250
+> [  100.284550]  ? __pfx_sched_mm_cid_remote_clear+0x10/0x10
+> [  100.285221]  ? event_trigger_write+0xbc/0x100
+> [  100.285781]  ? __kasan_check_read+0x15/0x20
+> [  100.286321]  ? __bitmap_weight+0x66/0xa0
+> [  100.286833]  ? _find_next_bit+0x46/0xe0
+> [  100.287334]  ? task_mm_cid_work+0x37f/0x450
+> [  100.287872]  event_triggers_call+0x84/0x150
+> [  100.288408]  trace_event_buffer_commit+0x339/0x430
+> [  100.289073]  ? ring_buffer_event_data+0x3f/0x60
+> [  100.292189]  trace_event_raw_event_sys_enter+0x8b/0xe0
+> [  100.295434]  syscall_trace_enter.constprop.0+0x18f/0x1b0
+> [  100.298653]  syscall_enter_from_user_mode+0x32/0x40
+> [  100.301808]  do_syscall_64+0x1a/0x90
+> [  100.304748]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+> [  100.307775] RIP: 0033:0x7f686c75c1cb
+> [  100.310617] Code: 73 01 c3 48 8b 0d 65 3c 10 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 21 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 35 3c 10 00 f7 d8 64 89 01 48
+> [  100.317847] RSP: 002b:00007ffc60137a38 EFLAGS: 00000246 ORIG_RAX: 0000000000000021
+> [  100.321200] RAX: ffffffffffffffda RBX: 000055f566469ea0 RCX: 00007f686c75c1cb
+> [  100.324631] RDX: 0000000000000001 RSI: 0000000000000001 RDI: 000000000000000a
+> [  100.328104] RBP: 00007ffc60137ac0 R08: 00007f686c818460 R09: 000000000000000a
+> [  100.331509] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+> [  100.334992] R13: 0000000000000007 R14: 000000000000000a R15: 0000000000000007
+> [  100.338381]  </TASK>
+> 
+> We hit the bug because when second hist trigger has was created
+> has_hist_vars() returned false because hist trigger did not have
+> variables. As a result of that save_hist_vars() was not called to add
+> the trigger to trace_array->hist_vars. Later on when we attempted to
+> remove the first histogram find_any_var_ref() failed to detect it is
+> being used because it did not find the second trigger in hist_vars list.
+> 
+> With this change we wait until trigger actions are created so we can take
+> into consideration if hist trigger has variable references. Also, now we
+> check the return value of save_hist_vars() and fail trigger creation if
+> save_hist_vars() fails.
+> 
+> Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  kernel/trace/trace_events_hist.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+> index b97d3ad832f1..c8c61381eba4 100644
+> --- a/kernel/trace/trace_events_hist.c
+> +++ b/kernel/trace/trace_events_hist.c
+> @@ -6663,13 +6663,15 @@ static int event_hist_trigger_parse(struct event_command *cmd_ops,
+>  	if (get_named_trigger_data(trigger_data))
+>  		goto enable;
+>  
+> -	if (has_hist_vars(hist_data))
+> -		save_hist_vars(hist_data);
+> -
+>  	ret = create_actions(hist_data);
+>  	if (ret)
+>  		goto out_unreg;
+>  
+> +	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
+> +		if (save_hist_vars(hist_data))
+> +			goto out_unreg;
+> +	}
+> +
+>  	ret = tracing_map_init(hist_data->map);
+>  	if (ret)
+>  		goto out_unreg;
+
