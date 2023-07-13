@@ -2,91 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25FF4752A79
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 20:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAE3D752B6C
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 22:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229992AbjGMSvE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 14:51:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
+        id S232662AbjGMULq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 16:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229620AbjGMSvD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 14:51:03 -0400
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F5AC1BD5;
-        Thu, 13 Jul 2023 11:51:03 -0700 (PDT)
-Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3a3790a0a48so830589b6e.1;
-        Thu, 13 Jul 2023 11:51:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689274262; x=1691866262;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=0SWbPYGf/VHa1Vrek8TS84jAYeRKRYqep/VhZf8G5PQ=;
-        b=UHXnNJWWgaeZbH+Im6rfsnEO6+5CNWnj3UtXdTDq5IMfUWlHGIQj8qZm54+qB5OQbo
-         og6qpu12lu6nLpbrsjuKuZDwXB1zify8A0M9xlPC35GyEN9icBdB6G60xVWkw/PZ+svR
-         dZRQCgv5rI4sxAb/7uJzQxCYAXVWNUpluPGCu8wdpM/D2EU1v+JL+vOBUfNrjZRjcxet
-         1rx5wTe3pgXIBQKzXBV4rGCn/DP/4g3tG18jBZRPLdW/eb70HMA6vYEVwgQEqzzXxoVt
-         oI+6h5spqAdhb/yF97AgPt2Ebv62BFMLfqdwtYw3OMETn8avGHbztJpTz1v8SpFzbBQz
-         MyLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689274262; x=1691866262;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0SWbPYGf/VHa1Vrek8TS84jAYeRKRYqep/VhZf8G5PQ=;
-        b=JFm2clQhhMSVXZuEU567hmkod2vw3eckjqfQVusqSGuAzXrLUALvWXLtv8ND6CYXpJ
-         jEU3vH4FmZTjoz0RIk2A4QLk2IQiXykfQpRkT+3l9A++Fzc4VKLAnfJa9szOsE/WRWhx
-         scEtnj7wnwRXVHq1ySZW93e9RXaGrOLM27OgzIMAcJrU/tWY7IpKjP2uvK1V+EUKxEAE
-         yedHwf5wDuPJ11F2zqU4gAMVSQaksK7+cGUeFWIbe33WefnGFk0DkcaYsuKVFsKmr+U4
-         4tVJk5U/s/IeZVKL+6J9jfrQ8hAXXjox4QtVbRoWz/VZnvsFGjPGixqEXVj9IkvYScNd
-         5AQA==
-X-Gm-Message-State: ABy/qLacH3RIOokC7yHmhZF2k4u6ky9plcaNXOsS/862WZcnnxHfMHGd
-        n9w+KvjLc7x2BkZOF4DJhhk=
-X-Google-Smtp-Source: APBJJlGsZaZS/WeRem6l3voNBw16PU9/3Aa1djVpMcdsJe0OYN0tMH7+t5C7WMbtkERM1UJ4HOxJZQ==
-X-Received: by 2002:a05:6808:f09:b0:3a1:d8bc:ff8b with SMTP id m9-20020a0568080f0900b003a1d8bcff8bmr2789761oiw.38.1689274262384;
-        Thu, 13 Jul 2023 11:51:02 -0700 (PDT)
-Received: from [192.168.0.202] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id k11-20020a54440b000000b003a1ec14d8c6sm3131600oiw.23.2023.07.13.11.51.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Jul 2023 11:51:01 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <b684a76e-7d22-fece-5358-f459e4a979ff@lwfinger.net>
-Date:   Thu, 13 Jul 2023 13:51:00 -0500
+        with ESMTP id S230309AbjGMULo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 16:11:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8347830C5;
+        Thu, 13 Jul 2023 13:11:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50FD561B24;
+        Thu, 13 Jul 2023 20:10:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A9AC433C8;
+        Thu, 13 Jul 2023 20:10:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689279057;
+        bh=b+mXPu6hNz1J3rv9s18G7fKwLpeHT94qeHP9x8G2zPo=;
+        h=From:Subject:Date:To:Cc:From;
+        b=R4Ebcd75+4TN8r4xX5AjQ0htMud9ZRjaNpBbh8127EbiyvvDj95qjKwznaS2XNnFJ
+         2I0o0y4B+1tTJs9Cz1AvOmrv6UbZp7u4nQK2xsTUZXkGP9bAE/AxOVm8hnvxlGk7s3
+         Fp7+2CUUAJOLtibvDdUXMsdaXbwz+gfj/u6ULp7IV8T3Ui/scdMSfF9D7Y5NjBWXDT
+         rbi3czlvzMFWn6VTu+HFCtP3fxDToZLjLdSC2jgAbu2YpflpWL9YT9Z1zrDToBv9hG
+         D+qX1QAzaa1uaX7A8tnZXZLOBgpYIXx8VN0o3kKge0Xhvq8BDjPP971GZFbdo7CYiv
+         HNwBogtp7gznQ==
+From:   Mark Brown <broonie@kernel.org>
+Subject: [PATCH 0/3] arm64/fpsimd: Fix use after free in SME when changing
+ SVE VL
+Date:   Thu, 13 Jul 2023 21:06:03 +0100
+Message-Id: <20230713-arm64-fix-sve-sme-vl-change-v1-0-129dd8611413@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] staging: 7811: Fix memory leak in _r8712_init_xmit_priv
-To:     Your Name <namcaov@gmail.com>
-Cc:     gregkh@linuxfoundation.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
-References: <20230712205733.29794-1-Larry.Finger@lwfinger.net>
- <ZLA1942ebuVcUT3h@nam-dell>
-Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <ZLA1942ebuVcUT3h@nam-dell>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-B4-Tracking: v=1; b=H4sIACtZsGQC/y3MQQqAIBBA0avErBvQCoWuEi2sphpICwckkO6eR
+ MsPj59BKDIJ9FWGSImFz1BC1xXMuwsbIS+loVFNq6xu0UVvOlz5RkmE4gnTgT81iia9OuOsslA
+ OV6QCv/swPs8LuM/wkW0AAAA=
+To:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc:     David Spickett <David.Spickett@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        stable@vger.kernel.org
+X-Mailer: b4 0.13-dev-099c9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=946; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=b+mXPu6hNz1J3rv9s18G7fKwLpeHT94qeHP9x8G2zPo=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBksFpM4XanCkYYveJuZ7ekHPux6xvnYhM82hbe788V
+ jXNeyzOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZLBaTAAKCRAk1otyXVSH0BlOB/
+ wIRvb6SdQQY9DllL88SkYw2v3TxsK5ZM/5AvbPiaHMBIys0TBmboBl7ux54eBHUENQJCDbU5AbT2zV
+ Lh0XUlpmKGAff7NqCKKOB0OiBCDlDDay+CWBsgbuW9HlGA6LI22Ir6mCkb/y9ib9DIpCt+UmtrBgFW
+ 35jYRzqncVW9mxS1w4k3D4nOOKbtNWv+eoYFfFPZ4m45pIRXMw3hHlahz0xJT9leotTKSUMRCCI9Ai
+ ypRU7jk1Ir//2PVrqLzUIud9b8l7SrZyE1LpFIbvbNL8NTgXpimJjP84OFH/fZmUDG6xrYl5OFv9Cj
+ 2K6K/qxJPirdWp6JeGGd6FdWrCBSJO
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/13/23 12:35, Your Name wrote:
-> The allocation was done in a loop. Shouldn't memory from previous loop iterations
-> also be freed? And allocation by r8712_xmit_resource_alloc() should be freed too.
+This series fixes an issue which David Spickett found where if we change
+the SVE VL while SME is in use we can end up attempting to save state to
+an unallocated buffer and adds testing coverage for that plus a bit more
+coverage of VL changes, just for paranioa.
 
-Nam,
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+Mark Brown (3):
+      arm64/fpsimd: Ensure SME storage is allocated after SVE VL changes
+      kselftest/arm64: Add a test case for SVE VL changes with SME active
+      kselftest/arm64: Validate that changing one VL type does not affect another
 
-You are right on both counts. I will prepare version 2.
+ arch/arm64/kernel/fpsimd.c                    |  32 +++++--
+ tools/testing/selftests/arm64/fp/vec-syscfg.c | 127 +++++++++++++++++++++++++-
+ 2 files changed, 148 insertions(+), 11 deletions(-)
+---
+base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+change-id: 20230713-arm64-fix-sve-sme-vl-change-60eb1fa6a707
 
-Larry
+Best regards,
+-- 
+Mark Brown <broonie@kernel.org>
 
