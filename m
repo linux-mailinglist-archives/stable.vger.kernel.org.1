@@ -2,226 +2,189 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E73F4751864
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 07:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BF4B751869
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 07:59:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233809AbjGMF6B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 01:58:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35560 "EHLO
+        id S233961AbjGMF7B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 01:59:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233971AbjGMF5x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 01:57:53 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 137822101
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 22:57:51 -0700 (PDT)
-Received: from kwepemi500016.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4R1kNZ303kzLnhN;
-        Thu, 13 Jul 2023 13:55:26 +0800 (CST)
-Received: from [10.40.193.166] (10.40.193.166) by
- kwepemi500016.china.huawei.com (7.221.188.220) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 13 Jul 2023 13:57:46 +0800
-Subject: Re: [PATCH] KVM: arm64: vgic-v4: Consistently request doorbell irq
- for blocking vCPU
-To:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-References: <20230710175553.1477762-1-oliver.upton@linux.dev>
- <86jzv6x66q.wl-maz@kernel.org> <ZK0EPhvLzhaFepGk@linux.dev>
- <14acf0fd-e5eb-8a14-986a-b8fe4a44cec9@huawei.com>
- <86zg41utno.wl-maz@kernel.org>
-CC:     Oliver Upton <oliver.upton@linux.dev>, <kvmarm@lists.linux.dev>,
-        James Morse <james.morse@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        <stable@vger.kernel.org>
-From:   "chenxiang (M)" <chenxiang66@hisilicon.com>
-Message-ID: <092f42c5-02d1-6f05-ea92-0eae3a55341e@hisilicon.com>
-Date:   Thu, 13 Jul 2023 13:57:46 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        with ESMTP id S233753AbjGMF7A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 01:59:00 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41BDE213E;
+        Wed, 12 Jul 2023 22:58:46 -0700 (PDT)
+X-UUID: 53382e3e214211ee9cb5633481061a41-20230713
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=E2jkB6QuAT5TlLxmNf2eeEz1sQnQ+ByDeLjjrUTWBMw=;
+        b=hv3ckB1Xns6N3GoUxMirUA0WCgMMx0un/B6rCi1RWMknilAc2TcARp/6okIsBFvfWq/8rkilxLFow7UL/yb/cINPjf1UlinkZo1QMoKrI+SHQYcomfPajL1eS4S7nW9AwyNYDDWtNymS8LYq+HVIjMKogHlQSZtXUFRA4ClXXEU=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.28,REQID:7eafe7a2-2856-4ca2-bb0b-83f63bdac10f,IP:0,U
+        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:-5
+X-CID-META: VersionHash:176cd25,CLOUDID:1f782e0e-c22b-45ab-8a43-3004e9216b56,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
+        DKR:0,DKP:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 53382e3e214211ee9cb5633481061a41-20230713
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
+        (envelope-from <mark-pk.tsai@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 953533169; Thu, 13 Jul 2023 13:58:44 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 13 Jul 2023 13:58:43 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 13 Jul 2023 13:58:43 +0800
+From:   Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+To:     Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@redhat.com>, <dm-devel@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+CC:     <yj.chiang@mediatek.com>, Peter Korsgaard <peter@korsgaard.com>,
+        Mike Snitzer <snitzer@kernel.org>, <stable@vger.kernel.org>,
+        Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 5.15] dm init: add dm-mod.waitfor to wait for asynchronously probed block devices
+Date:   Thu, 13 Jul 2023 13:58:37 +0800
+Message-ID: <20230713055841.24815-1-mark-pk.tsai@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-In-Reply-To: <86zg41utno.wl-maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.40.193.166]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemi500016.china.huawei.com (7.221.188.220)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,MAY_BE_FORGED,SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+From: Peter Korsgaard <peter@korsgaard.com>
 
+Just calling wait_for_device_probe() is not enough to ensure that
+asynchronously probed block devices are available (E.G. mmc, usb), so
+add a "dm-mod.waitfor=<device1>[,..,<deviceN>]" parameter to get
+dm-init to explicitly wait for specific block devices before
+initializing the tables with logic similar to the rootwait logic that
+was introduced with commit  cc1ed7542c8c ("init: wait for
+asynchronously scanned block devices").
 
-在 2023/7/12 星期三 21:49, Marc Zyngier 写道:
-> On Wed, 12 Jul 2023 13:09:45 +0100,
-> Zenghui Yu <yuzenghui@huawei.com> wrote:
->> On 2023/7/11 15:26, Oliver Upton wrote:
->>> On Tue, Jul 11, 2023 at 08:23:25AM +0100, Marc Zyngier wrote:
->>>> On Mon, 10 Jul 2023 18:55:53 +0100,
->>>> Oliver Upton <oliver.upton@linux.dev> wrote:
->>>>> Xiang reports that VMs occasionally fail to boot on GICv4.1 systems when
->>>>> running a preemptible kernel, as it is possible that a vCPU is blocked
->>>>> without requesting a doorbell interrupt.
->>>>>
->>>>> The issue is that any preemption that occurs between vgic_v4_put() and
->>>>> schedule() on the block path will mark the vPE as nonresident and *not*
->>>>> request a doorbell irq.
->>>> It'd be worth spelling out. You need to go via *three* schedule()
->>>> calls: one to be preempted (with DB set), one to be made resident
->>>> again, and then the final one in kvm_vcpu_halt(), clearing the DB on
->>>> vcpu_put() due to the bug.
->>> Yeah, a bit lazy in the wording. What I had meant to imply was
->>> preemption happening after the doorbell is set up and before the thread
->>> has an opportunity to explicitly schedule out. Perhaps I should just say
->>> that.
->>>
->>>>> Fix it by consistently requesting a doorbell irq in the vcpu put path if
->>>>> the vCPU is blocking.
->> Yup. Agreed!
->>
->>>>> While this technically means we could drop the
->>>>> early doorbell irq request in kvm_vcpu_wfi(), deliberately leave it
->>>>> intact such that vCPU halt polling can properly detect the wakeup
->>>>> condition before actually scheduling out a vCPU.
->> Yeah, just like what we did in commit 07ab0f8d9a12 ("KVM: Call
->> kvm_arch_vcpu_blocking early into the blocking sequence").
->>
->> My only concern is that if the preemption happens before halt polling,
->> we would enter the polling loop with VPE already resident on the RD and
->> can't recognize any firing GICv4.x virtual interrupts (targeting this
->> VPE) in polling. [1]
-> The status of the pending bit is recorded in pending_last, so we don't
-> lose what was snapshot at the point of hitting WFI. But we indeed
-> don't have any idea for something firing during the polling loop.
->
->> Given that making VPE resident on the vcpu block path (i.e., in
->> kvm_vcpu_halt()) makes little sense (right?) and leads to this sort of
->> problem, a crude idea is that we can probably keep track of the
->> "nested" vgic_v4_{put,load} calls (instead of a single vpe->resident
->> flag) and keep VPE *not resident* on the whole block path (like what we
->> had before commit 8e01d9a396e6). And we then rely on
->> kvm_vcpu_wfi/vgic_v4_load to actually schedule the VPE on...
-> I'm not sure about the nested tracking part, but it's easy enough to
-> have a vcpu flag indicating that we're in WFI. So an *alternative* to
-> the current fix would be something like this:
->
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index f54ba0a63669..417a0e85456b 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -817,6 +817,8 @@ struct kvm_vcpu_arch {
->   #define DBG_SS_ACTIVE_PENDING	__vcpu_single_flag(sflags, BIT(5))
->   /* PMUSERENR for the guest EL0 is on physical CPU */
->   #define PMUSERENR_ON_CPU	__vcpu_single_flag(sflags, BIT(6))
-> +/* WFI instruction trapped */
-> +#define IN_WFI			__vcpu_single_flag(sflags, BIT(7))
->   
->   /* vcpu entered with HCR_EL2.E2H set */
->   #define VCPU_HCR_E2H		__vcpu_single_flag(oflags, BIT(0))
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 236c5f1c9090..cf208d30a9ea 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -725,13 +725,15 @@ void kvm_vcpu_wfi(struct kvm_vcpu *vcpu)
->   	 */
->   	preempt_disable();
->   	kvm_vgic_vmcr_sync(vcpu);
-> -	vgic_v4_put(vcpu, true);
-> +	vcpu_set_flag(vcpu, IN_WFI);
-> +	vgic_v4_put(vcpu);
->   	preempt_enable();
->   
->   	kvm_vcpu_halt(vcpu);
->   	vcpu_clear_flag(vcpu, IN_WFIT);
->   
->   	preempt_disable();
-> +	vcpu_clear_flag(vcpu, IN_WFI);
->   	vgic_v4_load(vcpu);
->   	preempt_enable();
->   }
-> @@ -799,7 +801,7 @@ static int check_vcpu_requests(struct kvm_vcpu *vcpu)
->   		if (kvm_check_request(KVM_REQ_RELOAD_GICv4, vcpu)) {
->   			/* The distributor enable bits were changed */
->   			preempt_disable();
-> -			vgic_v4_put(vcpu, false);
-> +			vgic_v4_put(vcpu);
->   			vgic_v4_load(vcpu);
->   			preempt_enable();
->   		}
-> diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
-> index 49d35618d576..df61ead7c757 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v3.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v3.c
-> @@ -780,7 +780,7 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
->   	 * done a vgic_v4_put) and when running a nested guest (the
->   	 * vPE was never resident in order to generate a doorbell).
->   	 */
-> -	WARN_ON(vgic_v4_put(vcpu, false));
-> +	WARN_ON(vgic_v4_put(vcpu));
->   
->   	vgic_v3_vmcr_sync(vcpu);
->   
-> diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
-> index c1c28fe680ba..339a55194b2c 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v4.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v4.c
-> @@ -336,14 +336,14 @@ void vgic_v4_teardown(struct kvm *kvm)
->   	its_vm->vpes = NULL;
->   }
->   
-> -int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db)
-> +int vgic_v4_put(struct kvm_vcpu *vcpu)
->   {
->   	struct its_vpe *vpe = &vcpu->arch.vgic_cpu.vgic_v3.its_vpe;
->   
->   	if (!vgic_supports_direct_msis(vcpu->kvm) || !vpe->resident)
->   		return 0;
->   
-> -	return its_make_vpe_non_resident(vpe, need_db);
-> +	return its_make_vpe_non_resident(vpe, !!vcpu_get_flag(vcpu, IN_WFI));
->   }
->   
->   int vgic_v4_load(struct kvm_vcpu *vcpu)
-> @@ -354,6 +354,9 @@ int vgic_v4_load(struct kvm_vcpu *vcpu)
->   	if (!vgic_supports_direct_msis(vcpu->kvm) || vpe->resident)
->   		return 0;
->   
-> +	if (vcpu_get_flag(vcpu, IN_WFI))
-> +		return 0;
-> +
->   	/*
->   	 * Before making the VPE resident, make sure the redistributor
->   	 * corresponding to our current CPU expects us here. See the
-> diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
-> index 9b91a8135dac..765d801d1ddc 100644
-> --- a/include/kvm/arm_vgic.h
-> +++ b/include/kvm/arm_vgic.h
-> @@ -446,7 +446,7 @@ int kvm_vgic_v4_unset_forwarding(struct kvm *kvm, int irq,
->   
->   int vgic_v4_load(struct kvm_vcpu *vcpu);
->   void vgic_v4_commit(struct kvm_vcpu *vcpu);
-> -int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db);
-> +int vgic_v4_put(struct kvm_vcpu *vcpu);
->   
->   bool vgic_state_is_nested(struct kvm_vcpu *vcpu);
->   
->
-> Of course, it is totally untested... ;-) But I like that the doorbell
-> request is solely driven by the WFI state, and we avoid leaking the
-> knowledge outside of the vgic code.
+E.G. with dm-verity on mmc using:
+dm-mod.waitfor="PARTLABEL=hash-a,PARTLABEL=root-a"
 
-I have tested this approach and it also solves the issue. Please feel 
-free to add:
-Tested-by: Xiang Chen <chenxiang66@hisilicon.com>
+[    0.671671] device-mapper: init: waiting for all devices to be available before creating mapped devices
+[    0.671679] device-mapper: init: waiting for device PARTLABEL=hash-a ...
+[    0.710695] mmc0: new HS200 MMC card at address 0001
+[    0.711158] mmcblk0: mmc0:0001 004GA0 3.69 GiB
+[    0.715954] mmcblk0boot0: mmc0:0001 004GA0 partition 1 2.00 MiB
+[    0.722085] mmcblk0boot1: mmc0:0001 004GA0 partition 2 2.00 MiB
+[    0.728093] mmcblk0rpmb: mmc0:0001 004GA0 partition 3 512 KiB, chardev (249:0)
+[    0.738274]  mmcblk0: p1 p2 p3 p4 p5 p6 p7
+[    0.751282] device-mapper: init: waiting for device PARTLABEL=root-a ...
+[    0.751306] device-mapper: init: all devices available
+[    0.751683] device-mapper: verity: sha256 using implementation "sha256-generic"
+[    0.759344] device-mapper: ioctl: dm-0 (vroot) is ready
+[    0.766540] VFS: Mounted root (squashfs filesystem) readonly on device 254:0.
 
->
-> Thoughts?
->
-> 	M.
->
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+---
+ .../admin-guide/device-mapper/dm-init.rst     |  8 +++++++
+ drivers/md/dm-init.c                          | 22 ++++++++++++++++++-
+ 2 files changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/admin-guide/device-mapper/dm-init.rst b/Documentation/admin-guide/device-mapper/dm-init.rst
+index e5242ff17e9b..981d6a907699 100644
+--- a/Documentation/admin-guide/device-mapper/dm-init.rst
++++ b/Documentation/admin-guide/device-mapper/dm-init.rst
+@@ -123,3 +123,11 @@ Other examples (per target):
+     0 1638400 verity 1 8:1 8:2 4096 4096 204800 1 sha256
+     fb1a5a0f00deb908d8b53cb270858975e76cf64105d412ce764225d53b8f3cfd
+     51934789604d1b92399c52e7cb149d1b3a1b74bbbcb103b2a0aaacbed5c08584
++
++For setups using device-mapper on top of asynchronously probed block
++devices (MMC, USB, ..), it may be necessary to tell dm-init to
++explicitly wait for them to become available before setting up the
++device-mapper tables. This can be done with the "dm-mod.waitfor="
++module parameter, which takes a list of devices to wait for::
++
++  dm-mod.waitfor=<device1>[,..,<deviceN>]
+diff --git a/drivers/md/dm-init.c b/drivers/md/dm-init.c
+index b0c45c6ebe0b..dc4381d68313 100644
+--- a/drivers/md/dm-init.c
++++ b/drivers/md/dm-init.c
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include <linux/ctype.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/device-mapper.h>
+ #include <linux/init.h>
+@@ -18,12 +19,17 @@
+ #define DM_MAX_DEVICES 256
+ #define DM_MAX_TARGETS 256
+ #define DM_MAX_STR_SIZE 4096
++#define DM_MAX_WAITFOR 256
+ 
+ static char *create;
+ 
++static char *waitfor[DM_MAX_WAITFOR];
++
+ /*
+  * Format: dm-mod.create=<name>,<uuid>,<minor>,<flags>,<table>[,<table>+][;<name>,<uuid>,<minor>,<flags>,<table>[,<table>+]+]
+  * Table format: <start_sector> <num_sectors> <target_type> <target_args>
++ * Block devices to wait for to become available before setting up tables:
++ * dm-mod.waitfor=<device1>[,..,<deviceN>]
+  *
+  * See Documentation/admin-guide/device-mapper/dm-init.rst for dm-mod.create="..." format
+  * details.
+@@ -266,7 +272,7 @@ static int __init dm_init_init(void)
+ 	struct dm_device *dev;
+ 	LIST_HEAD(devices);
+ 	char *str;
+-	int r;
++	int i, r;
+ 
+ 	if (!create)
+ 		return 0;
+@@ -286,6 +292,17 @@ static int __init dm_init_init(void)
+ 	DMINFO("waiting for all devices to be available before creating mapped devices");
+ 	wait_for_device_probe();
+ 
++	for (i = 0; i < ARRAY_SIZE(waitfor); i++) {
++		if (waitfor[i]) {
++			DMINFO("waiting for device %s ...", waitfor[i]);
++			while (!dm_get_dev_t(waitfor[i]))
++				msleep(5);
++		}
++	}
++
++	if (waitfor[0])
++		DMINFO("all devices available");
++
+ 	list_for_each_entry(dev, &devices, list) {
+ 		if (dm_early_create(&dev->dmi, dev->table,
+ 				    dev->target_args_array))
+@@ -301,3 +318,6 @@ late_initcall(dm_init_init);
+ 
+ module_param(create, charp, 0);
+ MODULE_PARM_DESC(create, "Create a mapped device in early boot");
++
++module_param_array(waitfor, charp, NULL, 0);
++MODULE_PARM_DESC(waitfor, "Devices to wait for before setting up tables");
+-- 
+2.18.0
 
