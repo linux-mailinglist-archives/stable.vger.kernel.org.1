@@ -2,63 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D4B9752BF2
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 23:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 137C0752BF5
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 23:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232398AbjGMVRs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 17:17:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36298 "EHLO
+        id S232834AbjGMVRu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 17:17:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229516AbjGMVRs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 17:17:48 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 373B02D54
+        with ESMTP id S231235AbjGMVRt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 17:17:49 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4542D60
         for <stable@vger.kernel.org>; Thu, 13 Jul 2023 14:17:45 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3fbc63c2e84so9884535e9.3
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3fbc1218262so11072375e9.3
         for <stable@vger.kernel.org>; Thu, 13 Jul 2023 14:17:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1689283063; x=1691875063;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0SJ39/4emjSBqidxqqm+hSVoBmdKYwJWI9c6gIRJrwY=;
-        b=MQOKyAjPYTanB89cWMCX2J4We8mHG/LwU02ZcPmSgvFXX3VCxt/Gmx+J1azXF3R6Yu
-         kcZ7fHr7qI1B148BEzwGy4YwZlRXHns/ugmQ/gvvf6bYFUSC5BiBuZqZt912g4NVqHY8
-         2dA7NLxQ0fEZcLM6uMflFeSsnhAs1wvKDjMc9DLqH1XZCwVdt1e4H1LVRptsM1XHVxln
-         VMOxXII4JBos2e5ca7dSGI9hlq/pVSiNHy67kW5dVmSfEpz4LB/w9Gf8Nm8PgHYm2Xgk
-         fnfth5OVGJ0WCDxZQ9Rb7BMRcrrDaorWW6RiWeK5d/epMXUkey8zak8iLGf5Jg9Vylhm
-         aaBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689283063; x=1691875063;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=tessares.net; s=google; t=1689283064; x=1691875064;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0SJ39/4emjSBqidxqqm+hSVoBmdKYwJWI9c6gIRJrwY=;
-        b=bQGVRpkrYwUvVv0p7IYuvWJL2ZySUIAYSf6WTXWinmD1vTCHkkDhIheYlWAhVPHxtG
-         WFGcQGfw/lPWd7ECam98vmMStiROkG8iIHUPoKkSV8aGtIrXfD7oHlfsttE17B0mOvcU
-         mJtb8FlTRZqM3TivjqAxleadf7vzG4PWjVOp7CrTPvgIwefEZ+ng1kPyOjzTiKP98wPu
-         pFjau5p5DnXi6LQELQH5tIm90NTNEexUt/qY9iWLA7PLxbPbyGPxrYMjfk2F9S3XfRiW
-         5IrhI6HM9syE9qyw6SPJaK8aH5Cx5r3epYWIRt73QgIEOM1XJXliKbYf8H5Nl4mO1m5l
-         ZQXA==
-X-Gm-Message-State: ABy/qLbmYg9flzKP1EO5uaYaKIHjlOfRzNEamzG3r2BdpvRdKY/v0UnW
-        86mQCzBmpQPaax+ouKt8WaIWqw==
-X-Google-Smtp-Source: APBJJlHK1/lG2hgNlfU5T9vUiKYKjvPj4CCwde7DgVzxA8j+DT7soIe9qcuZieyexN1nyGW+IoLbPA==
-X-Received: by 2002:a7b:cbc9:0:b0:3fb:e1ed:7f83 with SMTP id n9-20020a7bcbc9000000b003fbe1ed7f83mr2882736wmi.33.1689283062844;
-        Thu, 13 Jul 2023 14:17:42 -0700 (PDT)
+        bh=nYnx/VDo8lOzEkd9RFmD+hOFqRYo9o9+grAoqaC0M7M=;
+        b=rLPmayOWzc6g9V910/q65nAuOjv00BAzsVc6mSA3lR0UWmv1lKPpxAH2Aab7J0z+Aq
+         DoZ3QmD9/bqByDzA8UvfhuoDOg0LF09+jj13aeqiKONl0qANDzxgLpwCoiQs5MwMCL/8
+         cdIXQ4Ed82QlAbNgMzo/kWfthEGfwBwUYbW3UnKd3BnRiPMNZu5fAAcM4f4NX117JN6Y
+         LNXh3yiJJECnC+45b1CCU1L9/4UEAel3HQ0rXqRjr23xxQd6nh02TMvdV1OkGGhISXog
+         JTJDvLxvlYAj+3bPRs1NH6MCSlJ9Srfe8p69z6lDtBxKExRFXlDJC6gaYtMj7ktSQJxh
+         Mkew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689283064; x=1691875064;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nYnx/VDo8lOzEkd9RFmD+hOFqRYo9o9+grAoqaC0M7M=;
+        b=AF5GOCNjlI/+B1kHt3XX1mZOKslhbamU7EJsEVxs8eQyHsVGKCEufW8/DRa+Y/lx+b
+         3C3cwQWiwJJqlFjyAq4dgtG8HPUllpCtHJ55MvrpC9CF2X8A6d9utDEjTo3r797B8YUQ
+         cqBGyMrz2KBEQW6P1vVHXXw2c7z/kaU1prr821pC11ewBfbVo52HI26027onYqyTyZhj
+         CCniymGMeYXBXdi16H0IpQEXexRUoBUGZ2szlwAek6ngC43AqBAPjz62iXgQPTnbR+6J
+         +kpROVE2SOOa5l3JM5EU4eCKOCTsg+B061/s0uXeRCG2bQYmZvVLmcsSSSrsYnkYDWBb
+         /QJg==
+X-Gm-Message-State: ABy/qLacUD4ZQlbSzcnESGXKwqbwArYrX48LAFSq+fM49LItT1toLWU7
+        O843xQToelsfJs7yakDhmud/jw==
+X-Google-Smtp-Source: APBJJlHeiVWzk4vdAI2ZN1b5nV0LGC0UwmaZEvJCTS/gMBXCGRbwK8bTiEpYGGZ853jMECajY/qKhQ==
+X-Received: by 2002:a7b:cc15:0:b0:3fa:9561:3016 with SMTP id f21-20020a7bcc15000000b003fa95613016mr2331758wmh.30.1689283063981;
+        Thu, 13 Jul 2023 14:17:43 -0700 (PDT)
 Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id m20-20020a7bcb94000000b003fbfea1afffsm8734136wmi.27.2023.07.13.14.17.41
+        by smtp.gmail.com with ESMTPSA id m20-20020a7bcb94000000b003fbfea1afffsm8734136wmi.27.2023.07.13.14.17.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jul 2023 14:17:42 -0700 (PDT)
+        Thu, 13 Jul 2023 14:17:43 -0700 (PDT)
 From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH net 0/3] selftests: tc: increase timeout and add missing
- kconfig
-Date:   Thu, 13 Jul 2023 23:16:43 +0200
-Message-Id: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
+Date:   Thu, 13 Jul 2023 23:16:44 +0200
+Subject: [PATCH net 1/3] selftests: tc: set timeout to 15 minutes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALtpsGQC/x3MQQqDMBBG4avIrB1ITLXYq4iLon/qUIklM0hBv
- LvB5bd47yBFFii9qoMydlHZUoGvK5qWd/qAZS6mxjXBPX1gm1ixRoOa8vqNxqELeLS9i961VLp
- fRpT//RwowWg8zwsrw3IxaAAAAA==
+Message-Id: <20230713-tc-selftests-lkft-v1-1-1eb4fd3a96e7@tessares.net>
+References: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
+In-Reply-To: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
 To:     Jamal Hadi Salim <jhs@mojatatu.com>,
         Cong Wang <xiyou.wangcong@gmail.com>,
         Jiri Pirko <jiri@resnulli.us>, Shuah Khan <shuah@kernel.org>,
@@ -74,26 +73,26 @@ Cc:     Pedro Tammela <pctammela@mojatatu.com>,
         Matthieu Baerts <matthieu.baerts@tessares.net>,
         stable@vger.kernel.org
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1319;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1433;
  i=matthieu.baerts@tessares.net; h=from:subject:message-id;
- bh=X7TmH0nuyH8IYOau93/uRL5n5B40ehly9tSIh/k77XU=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBksGn1fSBHW3xBP1UUe+C5C8geDtkmfExF5YBV1
- KB1xfHHozKJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZLBp9QAKCRD2t4JPQmmg
- c2IiD/4275C6eSBB6If2iVSrVVuu040rBtAxF3vjZTgGMw4h1d+VzvS52fSGSIksGR8bdY0gjED
- UnmPuLzrChpaGx+m8o8fuVpTgFLQNUn6BUt3Q68ipTHyWVQDMBSgW80Djso53UtEmSKZqRSBsXH
- cCHlqwShwov5L7sl6kQz5a9skY8LJPJAWxAUz5kSkHobGdmQpSwO/DPqryh9SY+1D08GKVoA0Va
- 4Qyjxw9CWe2EsjHfF6nShg7ufvS5hALVhw5cG68jOhIypW/DNnUvUFjaKaZHYRUjTOaj4RDJA/+
- 4o5mqV1FkNGcSh7fJArppllho7Uu3f7UlO+xL6eS0Hw6+09lsqR4xuFCsGetegggREG3S3LpYNa
- hhQu9xkgAvCbyI1a9dlZJCIoNHZyaafvRpaOqqBVlIofwEXPnKJaRSgylHtC4rAKtH3Le8lcP4f
- RJP5G5VN4mTwd/kfGHccEEviE+OBdGyD6GZAh+fJQz0Yo3F9IVeRGW+S3+zlfZOhZmCFFAzkIk1
- y5X3DK27ZQ6o+Na+sLw3htKtxW/Yixy4Np1IPAVsB5W5qA8U7s8UfXksSIRXcUYGGSb7gtsqkeS
- vDsqBg+WiFThnjxvJAsJuOZyRBJ/CyTaQeJFTXwVk6HoRjFQyhpz3yM2VX4E/kIulcaZqI+Tzt1
- 8YasD0mMn5Z06Mw==
+ bh=aRf2NUlWpQteg42pbw7DyQllMQTrdJ1OPx8sg9BiW2M=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBksGn1E1CyU82GEtiTz9Kn3atBqLCeF8gHpWsl/
+ QfpMKoJ40OJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZLBp9QAKCRD2t4JPQmmg
+ c/WRD/9f1JjmbA0ekElLhLbwzV9QM7ML9tP6qiaEiGIRxESQJvVnvwoBM74lJGLNLwoxh1RTPM7
+ BazpQpnWcvtP1g7+T5PLIajJ9xNxBasm+wLsssacLKdxMc4KkKZ9N4j4gg71aaWrNaM22Gsu9DO
+ x5K148C72MuH7vzcg1qKfmSUl3nLkzB+FYCIoHLl7Rm40IWR3ccHOdiw1lkGoABBHCYzjMUZkSR
+ 5HjtOkWwjuWMurPnW3JNrSYBtDszpC33kjxz9PJH6+mWYxG9f9YRMOX5+umyyTnRUeAQ6/78BBB
+ X3Ux4Aa3T4g1AIlUFJls0Drv8mX4fkf0qfi+brN4XGI3KSq6MLVqdl6fCSnRbN5Ab4NhWw0ZqhJ
+ SYcAiecUnZWjpz1GNOA9utPRGzEy+z4mXXKOjjLpOxVRahOMwjXzdYg03VaJ2EIH5nMTfwzL+Fv
+ j4IPDaulMsxNThGDll6SSx9jjYM3IZYAk4Vv6RH6te9TiXmv39crSUJaCraIAYFS3t0ZDnXjIgQ
+ OljCjFLAtHfBn6bj4Yu5MWLHiM0uXVHvUpljYAj/Rk7rGymqVpXmjUr4CbPTM1Dsor2JwGwzLR0
+ KghInxltcEu0T+ui9/rzcjCAr5SCzVGSzhBamCR3CRttgCxmGdcmEHtTOUuR6d0jOFK28wnNkRE
+ zgAHC1Q6JIX0V7g==
 X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -106,30 +105,33 @@ TC selftest ended with a timeout error:
 
   not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
 
-I also noticed most of the tests were skipped because the "teardown
-stage" did not complete successfully. It was due to missing kconfig.
+The timeout had been introduced 3 years ago, see the Fixes commit below.
 
-These patches fix these two errors plus an extra one because this
-selftest reads info from "/proc/net/nf_conntrack". Thank you Pedro for
-having helped me fixing these issues [2].
+This timeout is only in place when executing the selftests via the
+kselftests runner scripts. I guess this is not what most TC devs are
+using and nobody noticed the issue before.
 
+The new timeout is set to 15 minutes as suggested by Pedro [2]. It looks
+like it is plenty more time than what it takes in "normal" conditions.
+
+Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
+Cc: stable@vger.kernel.org
 Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
 Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
+Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
 Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 ---
-Matthieu Baerts (3):
-      selftests: tc: set timeout to 15 minutes
-      selftests: tc: add 'ct' action kconfig dep
-      selftests: tc: add ConnTrack procfs kconfig
-
- tools/testing/selftests/tc-testing/config   | 2 ++
  tools/testing/selftests/tc-testing/settings | 1 +
- 2 files changed, 3 insertions(+)
----
-base-commit: 9d23aac8a85f69239e585c8656c6fdb21be65695
-change-id: 20230713-tc-selftests-lkft-363e4590f105
+ 1 file changed, 1 insertion(+)
 
-Best regards,
+diff --git a/tools/testing/selftests/tc-testing/settings b/tools/testing/selftests/tc-testing/settings
+new file mode 100644
+index 000000000000..e2206265f67c
+--- /dev/null
++++ b/tools/testing/selftests/tc-testing/settings
+@@ -0,0 +1 @@
++timeout=900
+
 -- 
-Matthieu Baerts <matthieu.baerts@tessares.net>
+2.40.1
 
