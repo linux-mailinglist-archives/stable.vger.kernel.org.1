@@ -2,162 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C35E67529E3
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 19:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3ECF7529E8
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 19:36:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231695AbjGMRev (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 13:34:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55702 "EHLO
+        id S232331AbjGMRgD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 13:36:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229815AbjGMReq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 13:34:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80456268F;
-        Thu, 13 Jul 2023 10:34:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1514761ADA;
-        Thu, 13 Jul 2023 17:34:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B21CC433C8;
-        Thu, 13 Jul 2023 17:34:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1689269684;
-        bh=dz4so77AI2cXmabl9m4qHfwQD4U3XCjck1HXQIqBvlM=;
-        h=Date:To:From:Subject:From;
-        b=V/6aR37zJDzW+YBQvwZXUKzG220TzeyH6imfQCxz/rd4r4XCYAteTXTLMcSxpqw0W
-         zvouUdMD0+NG+NfVZiZfJv/VChj1PRzsyCeTbqd1jLtaI86NHV8raAmx+RNLxameIa
-         dwA9khoCOulwnfB2WsRBGcD8WNZu0t18VFcCaJMs=
-Date:   Thu, 13 Jul 2023 10:34:43 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        songmuchun@bytedance.com, naoya.horiguchi@linux.dev,
-        mhocko@suse.com, linmiaohe@huawei.com, jthoughton@google.com,
-        jiaqiyan@google.com, axelrasmussen@google.com,
-        mike.kravetz@oracle.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + hugetlb-optimize-update_and_free_pages_bulk-to-avoid-lock-cycles.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230713173444.6B21CC433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S232590AbjGMRgA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 13:36:00 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3973F2723;
+        Thu, 13 Jul 2023 10:35:55 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-986d8332f50so141956866b.0;
+        Thu, 13 Jul 2023 10:35:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689269753; x=1691861753;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XG/k/cRtJtXp+BY1mTTrU8F/8twPnwgKPwg/xoLbVKM=;
+        b=evZSon4l1w3MFy/kCvyyEqoToXQToZRIyQSE9MND+5jNfHLI1TOCN+fjMOdMWOA+eS
+         SzG6Y6kTOYR4Z/Krhkc6fJHoZayn+73DK3FCT9ATfk7bRASMH1TfvrUsJs60UlE/aYfP
+         qeEoeRn4twXlBqmEjfP74nuKcGUY9y7qtuT0vLISYCbtAsSQbbnOeRROTUlWHHPkkC+M
+         fH3JbQ6FuK8MZVAWkbkJrk/54EUGSnvXAtPfK5f7bh/aMvWrU5ott8xJPk29+ahNZ7uh
+         NVqogluvhA43Bj6BaNjawBGZs9zKBlK5fduPGsjcO3yyuB3MFukoncPmBtWdHzCqP5p7
+         njsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689269753; x=1691861753;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XG/k/cRtJtXp+BY1mTTrU8F/8twPnwgKPwg/xoLbVKM=;
+        b=aQoXX4n+4iq51i1tk2Bez8ubQ5isIrVIzw7L3AVTeVTKNQFNOY4CvzCre20i11j6RA
+         o95ULQYvDLRE/J5cBgHy7Hmd9B4vmOydlaHCW0GXGAWNzPCMycl1TzTBz55k57P7aCl7
+         Z965RkJ9UkYyff96Aif3uCmmMMUX/ifvsEXVFqBl6g86PdY8IE7MgMIoq9f0ziJdplwa
+         INxEFfPAsF5gbNdtvCG+dWXfqk6yXkTVdP9vKfDVgYLznH9q+FLYEpWhJ43ZSMSAmvvI
+         NnYAnEISeHUI3/IvHnjK/LeENGR+QHtojzm1iDas/QHU6E3FAxmp10FO//m88/xFGWeJ
+         rbCw==
+X-Gm-Message-State: ABy/qLYkTMfGtPCEr4z3LCtTpgwSJmutL3eA8r2D1uVWq+P2JSx03+CU
+        BU9sfsAgcfYdqwusSYE8a62brDHR0A8=
+X-Google-Smtp-Source: APBJJlEoVwCZyYqw2lRcbmkrycs1KkdtU2F3uyCceyq6KuekHGCkgPRN1+ZfVY/y4X2+tmz583Jdbw==
+X-Received: by 2002:a17:906:8474:b0:993:d589:8b70 with SMTP id hx20-20020a170906847400b00993d5898b70mr2158652ejc.10.1689269753041;
+        Thu, 13 Jul 2023 10:35:53 -0700 (PDT)
+Received: from nam-dell (ip-217-105-46-58.ip.prioritytelecom.net. [217.105.46.58])
+        by smtp.gmail.com with ESMTPSA id v11-20020a1709061dcb00b00986211f35bdsm4204682ejh.80.2023.07.13.10.35.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jul 2023 10:35:52 -0700 (PDT)
+From:   Your Name <namcaov@gmail.com>
+X-Google-Original-From: Your Name <my.email@gmail.com>
+Date:   Thu, 13 Jul 2023 19:35:51 +0200
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     gregkh@linuxfoundation.org, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] staging: 7811: Fix memory leak in _r8712_init_xmit_priv
+Message-ID: <ZLA1942ebuVcUT3h@nam-dell>
+References: <20230712205733.29794-1-Larry.Finger@lwfinger.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230712205733.29794-1-Larry.Finger@lwfinger.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, Jul 12, 2023 at 03:57:32PM -0500, Larry Finger wrote:
+> In the above mentioned routine, memory is allocated in several places.
+> If the first succeeds and a later one fails, the routine will leak memory.
+> Fixes commit 2865d42c78a9 ("staging: r8712u: Add the new driver to the
+> mainline kernel").
+> 
+> Fixes: 2865d42c78a9 ("staging: r8712u: Add the new driver to the mainline kernel")
+> Reported-by: syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> ---
+>  drivers/staging/rtl8712/rtl871x_xmit.c | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/staging/rtl8712/rtl871x_xmit.c b/drivers/staging/rtl8712/rtl871x_xmit.c
+> index 090345bad223..16b815588b97 100644
+> --- a/drivers/staging/rtl8712/rtl871x_xmit.c
+> +++ b/drivers/staging/rtl8712/rtl871x_xmit.c
+> @@ -117,11 +117,8 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
+>  	_init_queue(&pxmitpriv->pending_xmitbuf_queue);
+>  	pxmitpriv->pallocated_xmitbuf =
+>  		kmalloc(NR_XMITBUFF * sizeof(struct xmit_buf) + 4, GFP_ATOMIC);
+> -	if (!pxmitpriv->pallocated_xmitbuf) {
+> -		kfree(pxmitpriv->pallocated_frame_buf);
+> -		pxmitpriv->pallocated_frame_buf = NULL;
+> -		return -ENOMEM;
+> -	}
+> +	if (!pxmitpriv->pallocated_xmitbuf)
+> +		goto clean_up_frame_buf;
+>  	pxmitpriv->pxmitbuf = pxmitpriv->pallocated_xmitbuf + 4 -
+>  			      ((addr_t)(pxmitpriv->pallocated_xmitbuf) & 3);
+>  	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
+> @@ -130,12 +127,12 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
+>  		pxmitbuf->pallocated_buf =
+>  			kmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ, GFP_ATOMIC);
+>  		if (!pxmitbuf->pallocated_buf)
+> -			return -ENOMEM;
+> +			goto clean_up_xmit_buf;
+>  		pxmitbuf->pbuf = pxmitbuf->pallocated_buf + XMITBUF_ALIGN_SZ -
+>  				 ((addr_t) (pxmitbuf->pallocated_buf) &
+>  				 (XMITBUF_ALIGN_SZ - 1));
+>  		if (r8712_xmit_resource_alloc(padapter, pxmitbuf))
+> -			return -ENOMEM;
+> +			goto clean_up_xmit_buf;
+>  		list_add_tail(&pxmitbuf->list,
+>  				 &(pxmitpriv->free_xmitbuf_queue.queue));
+>  		pxmitbuf++;
+> @@ -146,6 +143,14 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
+>  	init_hwxmits(pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
+>  	tasklet_setup(&pxmitpriv->xmit_tasklet, r8712_xmit_bh);
+>  	return 0;
+> +
+> +clean_up_xmit_buf:
+> +	kfree(pxmitbuf->pallocated_xmitbuf);
+> +	pxmitbuf->pallocated_buf = NULL;
 
-The patch titled
-     Subject: hugetlb: optimize update_and_free_pages_bulk to avoid lock cycles
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     hugetlb-optimize-update_and_free_pages_bulk-to-avoid-lock-cycles.patch
+The allocation was done in a loop. Shouldn't memory from previous loop iterations
+also be freed? And allocation by r8712_xmit_resource_alloc() should be freed too.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/hugetlb-optimize-update_and_free_pages_bulk-to-avoid-lock-cycles.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Mike Kravetz <mike.kravetz@oracle.com>
-Subject: hugetlb: optimize update_and_free_pages_bulk to avoid lock cycles
-Date: Tue, 11 Jul 2023 15:09:42 -0700
-
-update_and_free_pages_bulk is designed to free a list of hugetlb pages
-back to their associated lower level allocators.  This may require
-allocating vmemmap pages associated with each hugetlb page.  The hugetlb
-page destructor must be changed before pages are freed to lower level
-allocators.  However, the destructor must be changed under the hugetlb
-lock.  This means there is potentially one lock cycle per page.
-
-Minimize the number of lock cycles in update_and_free_pages_bulk by:
-1) allocating necessary vmemmap for all hugetlb pages on the list
-2) take hugetlb lock and clear destructor for all pages on the list
-3) free all pages on list back to low level allocators
-
-Link: https://lkml.kernel.org/r/20230711220942.43706-3-mike.kravetz@oracle.com
-Fixes: ad2fa3717b74 ("mm: hugetlb: alloc the vmemmap pages associated with each HugeTLB page")
-Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: Naoya Horiguchi <naoya.horiguchi@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |   35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
-
---- a/mm/hugetlb.c~hugetlb-optimize-update_and_free_pages_bulk-to-avoid-lock-cycles
-+++ a/mm/hugetlb.c
-@@ -1855,11 +1855,44 @@ static void update_and_free_pages_bulk(s
- {
- 	struct page *page, *t_page;
- 	struct folio *folio;
-+	bool clear_dtor = false;
- 
-+	/*
-+	 * First allocate required vmemmmap for all pages on list.  If vmemmap
-+	 * can not be allocated, we can not free page to lower level allocator,
-+	 * so add back as hugetlb surplus page.
-+	 */
-+	list_for_each_entry_safe(page, t_page, list, lru) {
-+		if (HPageVmemmapOptimized(page)) {
-+			clear_dtor = true;
-+			if (hugetlb_vmemmap_restore(h, page)) {
-+				spin_lock_irq(&hugetlb_lock);
-+				add_hugetlb_folio(h, folio, true);
-+				spin_unlock_irq(&hugetlb_lock);
-+			}
-+			cond_resched();
-+		}
-+	}
-+
-+	/*
-+	 * If vmemmmap allocation performed above, then take lock * to clear
-+	 * destructor of all pages on list.
-+	 */
-+	if (clear_dtor) {
-+		spin_lock_irq(&hugetlb_lock);
-+		list_for_each_entry(page, list, lru)
-+			__clear_hugetlb_destructor(h, page_folio(page));
-+		spin_unlock_irq(&hugetlb_lock);
-+	}
-+
-+	/*
-+	 * Free pages back to low level allocators.  vmemmap and destructors
-+	 * were taken care of above, so update_and_free_hugetlb_folio will
-+	 * not need to take hugetlb lock.
-+	 */
- 	list_for_each_entry_safe(page, t_page, list, lru) {
- 		folio = page_folio(page);
- 		update_and_free_hugetlb_folio(h, folio, false);
--		cond_resched();
- 	}
- }
- 
-_
-
-Patches currently in -mm which might be from mike.kravetz@oracle.com are
-
-hugetlb-do-not-clear-hugetlb-dtor-until-allocating-vmemmap.patch
-hugetlb-optimize-update_and_free_pages_bulk-to-avoid-lock-cycles.patch
-
+Best regards,
+Nam
