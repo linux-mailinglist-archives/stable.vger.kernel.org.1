@@ -2,114 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E29B75273A
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 17:34:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C2A37526A1
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 17:21:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235009AbjGMPeX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 11:34:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37374 "EHLO
+        id S229867AbjGMPVl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 11:21:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234860AbjGMPeM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 11:34:12 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C17432721;
-        Thu, 13 Jul 2023 08:34:10 -0700 (PDT)
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36DE76Xf025621;
-        Thu, 13 Jul 2023 17:33:54 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=selector1;
- bh=9F6WErzaW9yZms4oqilaaA1OMFfEi8u05w2TDpODLdQ=;
- b=BxnAvAsVA1ARCXH+hP7D77fDRADWd8rY2vs2SR81btppIzV157crx8j60RomTdlIDbOq
- gwtZSmxJnU2YDODfyAJFwchoUf4Bha8g+lsW9Ime6MSdf3DSXJao4PbOEArayRzBV5AL
- oIzzwCcI+UNxpmEPuTnye7MhSudnNUyybKf2aX/nSLBIfci+aBGlwrcLJ0D+d30kcVnr
- TWIyw+DMs+bYkHU4tDvQ8Dhhl88mCozjJgyk7nnnCbOp+Y3J/JvWLvihIe2/uYMFQ+ro
- Tm6fojmYkCfj3dSD57O63CZjhcvRcx4P6xu0sX8zKmTIYwbA63lEO6pSsDItIKuJ7AHB 9A== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3rtjrc8h8r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Jul 2023 17:33:54 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 4E93E100056;
-        Thu, 13 Jul 2023 17:33:54 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 46A9B22A6FF;
-        Thu, 13 Jul 2023 17:33:54 +0200 (CEST)
-Received: from localhost (10.201.22.9) by SHFDAG1NODE3.st.com (10.75.129.71)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Thu, 13 Jul
- 2023 17:33:56 +0200
-From:   Thomas BOURGOIN <thomas.bourgoin@foss.st.com>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Lionel Debieve <lionel.debieve@foss.st.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-CC:     <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Thomas Bourgoin <thomas.bourgoin@foss.st.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v2 6/7] crypto: stm32 - fix MDMAT condition
-Date:   Thu, 13 Jul 2023 17:15:17 +0200
-Message-ID: <20230713151518.1513949-7-thomas.bourgoin@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230713151518.1513949-1-thomas.bourgoin@foss.st.com>
-References: <20230713151518.1513949-1-thomas.bourgoin@foss.st.com>
+        with ESMTP id S229809AbjGMPVk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 11:21:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49348B4;
+        Thu, 13 Jul 2023 08:21:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D3BF060C26;
+        Thu, 13 Jul 2023 15:21:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29396C433C8;
+        Thu, 13 Jul 2023 15:21:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689261698;
+        bh=sCUx5r2DZPKfzTRMP1CiZcMdAlioIinNWLALD/baR1A=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=gtlXRFf35r3ABG6O7A1f7oa74AK/iu9aoZ9HWGXimGfmO/feJhhSZ5ywjN/e0h1qZ
+         urcBI3CLd/JzHCXjRrjlL/q8VS/9yxed/4A+tUGjW4eemTxS0D34AHLpTvOGT2l46E
+         9or5s4or5qlc9YkF3/yxS2w9yAs/xbYNeer4NRACjB6TTQC3+EnO0F3XLE5wvxuMYv
+         wBfYMbQ7M4KAXvsqXwgDSF49mLS30o6m0zoRwBTARqGAshMUOEfA1T6JZJeQgd/yAv
+         ssZB5s1Stfz9GrFaJE7rwMkSI499MBuxxmgRk4TXKPxtENUQ7WfTOYKladSPSPfxot
+         HtBmCC+Dk8iOw==
+From:   Christian Brauner <brauner@kernel.org>
+To:     Aleksa Sarai <cyphar@cyphar.com>
+Cc:     Christian Brauner <brauner@kernel.org>,
+        Thomas Weissschuh <thomas@t-8ch.de>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dave Chinner <dchinner@redhat.com>,
+        xu xin <cgel.zte@gmail.com>, Al Viro <viro@zeniv.linux.org.uk>,
+        "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Stefan Roesch <shr@devkernel.io>,
+        Janis Danisevskis <jdanis@google.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v2] procfs: block chmod on /proc/thread-self/comm
+Date:   Thu, 13 Jul 2023 17:21:29 +0200
+Message-Id: <20230713-shrimps-urlaub-80a9818b50d9@brauner>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230713141001.27046-1-cyphar@cyphar.com>
+References: <20230713141001.27046-1-cyphar@cyphar.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1886; i=brauner@kernel.org; h=from:subject:message-id; bh=sCUx5r2DZPKfzTRMP1CiZcMdAlioIinNWLALD/baR1A=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaRsECvbwnyq/KSC1PLGZEExz9i2R907S/4VfRLvenJGgrvP jyGto5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCKHrzIynBNocnhh1K/F7rK8OXWheK ZxW03aRcH0S2q3nnt5vDxlxvBP2ZfP30fkaUeZRtb596VaD/rs1upezD4f9iJgXqFu2AQWAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.201.22.9]
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE3.st.com
- (10.75.129.71)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-13_06,2023-07-13_01,2023-05-22_02
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+On Fri, 14 Jul 2023 00:09:58 +1000, Aleksa Sarai wrote:
+> Due to an oversight in commit 1b3044e39a89 ("procfs: fix pthread
+> cross-thread naming if !PR_DUMPABLE") in switching from REG to NOD,
+> chmod operations on /proc/thread-self/comm were no longer blocked as
+> they are on almost all other procfs files.
+> 
+> A very similar situation with /proc/self/environ was used to as a root
+> exploit a long time ago, but procfs has SB_I_NOEXEC so this is simply a
+> correctness issue.
+> 
+> [...]
 
-If IP has MDMAT support, set or reset the bit MDMAT in Control Register.
+Just to reiterate: The long term fix to avoid these odd behavioral bugs
+in the future is to remove the fallback to simple_setattr() we still
+have in notify_change() that happens when no setattr inode operation has
+been explicitly defined. To do this we need to change all filesystem
+that rely on this fallback to explicitly set simple_setattr() as their
+inode operation. Then notify_change() would simply return EOPNOTSUPP
+when no setattr iop is defined making such omissions pretty obvious.
 
-Fixes: b56403a25af7 ("crypto: stm32/hash - Support Ux500 hash")
-Cc: stable@vger.kernel.org
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+But that's a bigger patch. This is a backportable fix for this issue.
+Needs long soaking in -next ofc.
 
 ---
-Changes in v2:
- - add Cc: stable@vger.kernel.org in commit message
- - add Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
- drivers/crypto/stm32/stm32-hash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied to the fs.proc.uapi branch of the vfs/vfs.git tree.
+Patches in the fs.proc.uapi branch should appear in linux-next soon.
 
-diff --git a/drivers/crypto/stm32/stm32-hash.c b/drivers/crypto/stm32/stm32-hash.c
-index 701995a72e57..a48e6a14da2e 100644
---- a/drivers/crypto/stm32/stm32-hash.c
-+++ b/drivers/crypto/stm32/stm32-hash.c
-@@ -544,7 +544,7 @@ static int stm32_hash_xmit_dma(struct stm32_hash_dev *hdev,
- 
- 	reg = stm32_hash_read(hdev, HASH_CR);
- 
--	if (!hdev->pdata->has_mdmat) {
-+	if (hdev->pdata->has_mdmat) {
- 		if (mdma)
- 			reg |= HASH_CR_MDMAT;
- 		else
--- 
-2.25.1
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: fs.proc.uapi
+
+[1/1] procfs: block chmod on /proc/thread-self/comm
+      https://git.kernel.org/vfs/vfs/c/ccf61486fe1e
