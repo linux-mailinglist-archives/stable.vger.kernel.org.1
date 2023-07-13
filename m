@@ -2,63 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE815751C1E
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 10:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD57A751C21
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 10:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234589AbjGMItB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 04:49:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50656 "EHLO
+        id S234667AbjGMItH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 04:49:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234871AbjGMIs2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 04:48:28 -0400
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AAF9726A0;
-        Thu, 13 Jul 2023 01:48:02 -0700 (PDT)
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     netfilter-devel@vger.kernel.org
-Cc:     gregkh@linuxfoundation.org, stable@vger.kernel.org,
-        sashal@kernel.org
-Subject: [PATCH -stable,5.15 v2 2/2] netfilter: nf_tables: unbind non-anonymous set if rule construction fails
-Date:   Thu, 13 Jul 2023 10:47:50 +0200
-Message-Id: <20230713084750.71456-3-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230713084750.71456-1-pablo@netfilter.org>
-References: <20230713084750.71456-1-pablo@netfilter.org>
+        with ESMTP id S231967AbjGMIsj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 04:48:39 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18CB9211F;
+        Thu, 13 Jul 2023 01:48:19 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qJrzj-00049e-RU; Thu, 13 Jul 2023 10:48:15 +0200
+Message-ID: <18238769-39c3-2b40-7725-367aa0e5c50b@leemhuis.info>
+Date:   Thu, 13 Jul 2023 10:48:14 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+References: <cover.1689008220.git.linux@leemhuis.info>
+ <2023071002-phrasing-tranquil-49d6@gregkh>
+ <a97a37bf-86b5-cd8e-a8ce-00e38720cee4@leemhuis.info>
+ <2023071221-blade-reactive-0707@gregkh>
+ <d8403c45-3561-4759-f6c2-d18afa5e323a@leemhuis.info>
+ <2023071215-able-mushy-c889@gregkh>
+Content-Language: en-US, de-DE
+From:   Thorsten Leemhuis <linux@leemhuis.info>
+Subject: Re: [RFC PATCH v1 0/3] docs: stable-kernel-rules: add delayed
+ backporting option and a few tweaks
+In-Reply-To: <2023071215-able-mushy-c889@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1689238099;33ba6bd9;
+X-HE-SMSGID: 1qJrzj-00049e-RU
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 3e70489721b6c870252c9082c496703677240f53 ]
+On 12.07.23 21:00, Greg KH wrote:
+> On Wed, Jul 12, 2023 at 07:02:34PM +0200, Thorsten Leemhuis wrote:
+>> On 12.07.23 17:16, Greg KH wrote:
+> [...]
+>>>>   .. warning::
+>>>>      The branches in the -stable-rc tree are rebased each time a new -rc
+>>>>      is released, as they are created by taking the latest release and
+>>>>      applying the patches from the stable-queue on top.
+>>>
+>>> Yes, that is true, but they are also rebased sometimes in intermediate
+>>> places, before a -rc is released, just to give CI systems a chance to
+>>> test easier.
+> [...]
+>> Nevertheless makes me wonder: is that strategy wise in times when some
+>> ordinary users and some distributions are building kernels straight from
+>> git repos instead of tarballs? I'm one of those, as I distribute
+>> stable-rc packages for Fedora here:
+>> https://copr.fedorainfracloud.org/groups/g/kernel-vanilla/coprs/
+> 
+> As we keep the patches in quilt, not git, it's the best we can do.  The
+> -rc releases are never a straight-line if we have to do multiple ones,
+> we remove patches in the middle, add them at the end or beginning, and
+> sometimes even change existing ones.
+> 
+> All of this is stuff that a linear history tool like git can't really
+> model well, so we keep a quilt series of the patches in git for anyone
+> that want to generate the tree themselves, and we provide the -rc git
+> tree for those that don't want to generate it and can live with the
+> constant rebasing.
 
-Otherwise a dangling reference to a rule object that is gone remains
-in the set binding list.
+/me first didn't want to reply, as this is not really important, but
+then reconsidered; again, feel free to just ignore this
 
-Fixes: 26b5a5712eb8 ("netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- net/netfilter/nf_tables_api.c | 2 ++
- 1 file changed, 2 insertions(+)
+FWIW, I do not consider that rebasing to be problem at all; it are those
+rebases "sometimes in intermediate places, before a -rc is released,
+just to give CI systems a chance to test easier" make things this
+slightly annoying bit harder when you want to distribute stable-rc
+releases to users.
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index f7b4e3f9d280..aa22c4a1f64c 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5042,6 +5042,8 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 		nft_set_trans_unbind(ctx, set);
- 		if (nft_set_is_anonymous(set))
- 			nft_deactivate_next(ctx->net, set);
-+		else
-+			list_del_rcu(&binding->list);
- 
- 		set->use--;
- 		break;
--- 
-2.30.2
+But as I said, I can fully understand why you do those as well. I just
+with there was a way to reliably get a -rc release from git as well.
+Simply tagging them when you do a -rc release would solve all that. Is
+that maybe something that could be easily added to your -rc release scripts?
 
+/me looks at https://github.com/gregkh/gregkh-linux/tree/master/stable
+but failed to find the -rc release script :-/
+
+Whatever, as I said, not really important. :-D Have a nice day everyone!
+
+Ciao, Thorsten
