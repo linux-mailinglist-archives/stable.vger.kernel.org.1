@@ -2,66 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7542175291C
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 18:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D27197529E2
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 19:34:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232566AbjGMQvf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 12:51:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60738 "EHLO
+        id S230337AbjGMRep (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 13:34:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231284AbjGMQve (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 12:51:34 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C085426B1;
-        Thu, 13 Jul 2023 09:51:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689267093; x=1720803093;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NeS/7wjO+6YFPllvD48mAowelFtPp+/XWfqr/d+lNKo=;
-  b=c85mKgIW4g3dx848npadeA2rLCPK6a2WMVaEFtT9OnqcSIXzkzJkCaX5
-   nRWWRTMu7w7vKcXxqU5IcvmKnIjyTIpG6nJ23/wAAiAZg6jCW4RwZeCca
-   eybJorvtmykbjEBjlSbjsv4mOXckr1N8HkJa8sLJj3loy2lC2r9XLvAX5
-   fRMukRajpHmQOf4/o0YlLIEN5ko9IuofAGur1DVGvxx5ohYmyEoiClI3l
-   60jCzuehGD6FYPeiiYL3vPHl2gM0RpK49E3TsHQH+mcimPWTl7F5wIbwy
-   G3xzBtujtwJH8whKaedXDsX/2zlzfIQ5K4ieg9bG8osXkAz1/eS0w5ABw
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="345567996"
-X-IronPort-AV: E=Sophos;i="6.01,203,1684825200"; 
-   d="scan'208";a="345567996"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2023 09:51:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="896090246"
-X-IronPort-AV: E=Sophos;i="6.01,203,1684825200"; 
-   d="scan'208";a="896090246"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005.jf.intel.com with ESMTP; 13 Jul 2023 09:51:16 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qJzX8-002RQl-2q;
-        Thu, 13 Jul 2023 19:51:14 +0300
-Date:   Thu, 13 Jul 2023 19:51:14 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Ruihong Luo <colorsu1922@gmail.com>
-Cc:     ilpo.jarvinen@linux.intel.com, gregkh@linuxfoundation.org,
-        jirislaby@kernel.org, linux-kernel@vger.kernel.org,
-        linux-serial@vger.kernel.org, stable@vger.kernel.org,
-        luoruihong@xiaomi.com, weipengliang@xiaomi.com,
-        wengjinfei@xiaomi.com
-Subject: Re: [PATCH v4] serial: 8250_dw: Preserve original value of DLF
- register
-Message-ID: <ZLArgoe3TXF27gsE@smile.fi.intel.com>
-References: <20230713004235.35904-1-colorsu1922@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230713004235.35904-1-colorsu1922@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        with ESMTP id S229815AbjGMRep (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 13:34:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94254268F;
+        Thu, 13 Jul 2023 10:34:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3169261B06;
+        Thu, 13 Jul 2023 17:34:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C77C433C8;
+        Thu, 13 Jul 2023 17:34:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1689269682;
+        bh=4TLiNGYN3OUSKMR5rVU7XthpUL1de5OuAMWQKKuLPQ8=;
+        h=Date:To:From:Subject:From;
+        b=x4KBHnu+jYUClvtVX3qp5sZ9dEnQLPbsQVvpwlwslDm8hsvCQiKRTJs6N5e1AmMgs
+         aBNvO1Kb0non4liXzsoibQyhGOa39oXpJ8poC7ZbbILkpO5sjsfv/SHCi0fU4uGhDp
+         /R0XTaIMZRvHXarVqQ+RLOf8M53UAuuUyGPcEHt4=
+Date:   Thu, 13 Jul 2023 10:34:41 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        songmuchun@bytedance.com, naoya.horiguchi@linux.dev,
+        mhocko@suse.com, linmiaohe@huawei.com, jthoughton@google.com,
+        jiaqiyan@google.com, axelrasmussen@google.com,
+        mike.kravetz@oracle.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + hugetlb-do-not-clear-hugetlb-dtor-until-allocating-vmemmap.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230713173442.83C77C433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,24 +48,232 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 13, 2023 at 08:42:36AM +0800, Ruihong Luo wrote:
-> Preserve the original value of the Divisor Latch Fraction (DLF) register.
-> When the DLF register is modified without preservation, it can disrupt
-> the baudrate settings established by firmware or bootloader, leading to
-> data corruption and the generation of unreadable or distorted characters.
 
-You forgot to add my tag. Why? Do you think the name of variable warrants this?
-Whatever,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+The patch titled
+     Subject: hugetlb: do not clear hugetlb dtor until allocating vmemmap
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     hugetlb-do-not-clear-hugetlb-dtor-until-allocating-vmemmap.patch
 
-Next time if you don't pick up somebody's tag, care to explain in the changelog
-why.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/hugetlb-do-not-clear-hugetlb-dtor-until-allocating-vmemmap.patch
 
-> Fixes: 701c5e73b296 ("serial: 8250_dw: add fractional divisor support")
-> Signed-off-by: Ruihong Luo <colorsu1922@gmail.com>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
--- 
-With Best Regards,
-Andy Shevchenko
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: hugetlb: do not clear hugetlb dtor until allocating vmemmap
+Date: Tue, 11 Jul 2023 15:09:41 -0700
+
+Patch series "Fix hugetlb free path race with memory errors".
+
+In the discussion of Jiaqi Yan's series "Improve hugetlbfs read on
+HWPOISON hugepages" the race window was discovered. 
+https://lore.kernel.org/linux-mm/20230616233447.GB7371@monkey/
+
+Freeing a hugetlb page back to low level memory allocators is performed
+in two steps.
+1) Under hugetlb lock, remove page from hugetlb lists and clear destructor
+2) Outside lock, allocate vmemmap if necessary and call low level free
+Between these two steps, the hugetlb page will appear as a normal
+compound page.  However, vmemmap for tail pages could be missing.
+If a memory error occurs at this time, we could try to update page
+flags non-existant page structs.
+
+A much more detailed description is in the first patch.
+
+The first patch addresses the race window.  However, it adds a
+hugetlb_lock lock/unlock cycle to every vmemmap optimized hugetlb page
+free operation.  This could lead to slowdowns if one is freeing a large
+number of hugetlb pages.
+
+The second path optimizes the update_and_free_pages_bulk routine to only
+take the lock once in bulk operations.
+
+The second patch is technically not a bug fix, but includes a Fixes tag
+and Cc stable to avoid a performance regression.  It can be combined with
+the first, but was done separately make reviewing easier.
+
+
+This patch (of 2):
+
+Freeing a hugetlb page and releasing base pages back to the underlying
+allocator such as buddy or cma is performed in two steps:
+- remove_hugetlb_folio() is called to remove the folio from hugetlb
+  lists, get a ref on the page and remove hugetlb destructor.  This
+  all must be done under the hugetlb lock.  After this call, the page
+  can be treated as a normal compound page or a collection of base
+  size pages.
+- update_and_free_hugetlb_folio() is called to allocate vmemmap if
+  needed and the free routine of the underlying allocator is called
+  on the resulting page.  We can not hold the hugetlb lock here.
+
+One issue with this scheme is that a memory error could occur between
+these two steps.  In this case, the memory error handling code treats
+the old hugetlb page as a normal compound page or collection of base
+pages.  It will then try to SetPageHWPoison(page) on the page with an
+error.  If the page with error is a tail page without vmemmap, a write
+error will occur when trying to set the flag.
+
+Address this issue by modifying remove_hugetlb_folio() and
+update_and_free_hugetlb_folio() such that the hugetlb destructor is not
+cleared until after allocating vmemmap.  Since clearing the destructor
+requires holding the hugetlb lock, the clearing is done in
+remove_hugetlb_folio() if the vmemmap is present.  This saves a
+lock/unlock cycle.  Otherwise, destructor is cleared in
+update_and_free_hugetlb_folio() after allocating vmemmap.
+
+Note that this will leave hugetlb pages in a state where they are marked
+free (by hugetlb specific page flag) and have a ref count.  This is not
+a normal state.  The only code that would notice is the memory error
+code, and it is set up to retry in such a case.
+
+A subsequent patch will create a routine to do bulk processing of
+vmemmap allocation.  This will eliminate a lock/unlock cycle for each
+hugetlb page in the case where we are freeing a large number of pages.
+
+Link: https://lkml.kernel.org/r/20230711220942.43706-2-mike.kravetz@oracle.com
+Fixes: ad2fa3717b74 ("mm: hugetlb: alloc the vmemmap pages associated with each HugeTLB page")
+Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: Naoya Horiguchi <naoya.horiguchi@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/hugetlb.c |   75 +++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 51 insertions(+), 24 deletions(-)
+
+--- a/mm/hugetlb.c~hugetlb-do-not-clear-hugetlb-dtor-until-allocating-vmemmap
++++ a/mm/hugetlb.c
+@@ -1579,9 +1579,37 @@ static inline void destroy_compound_giga
+ 						unsigned int order) { }
+ #endif
+ 
++static inline void __clear_hugetlb_destructor(struct hstate *h,
++						struct folio *folio)
++{
++	lockdep_assert_held(&hugetlb_lock);
++
++	/*
++	 * Very subtle
++	 *
++	 * For non-gigantic pages set the destructor to the normal compound
++	 * page dtor.  This is needed in case someone takes an additional
++	 * temporary ref to the page, and freeing is delayed until they drop
++	 * their reference.
++	 *
++	 * For gigantic pages set the destructor to the null dtor.  This
++	 * destructor will never be called.  Before freeing the gigantic
++	 * page destroy_compound_gigantic_folio will turn the folio into a
++	 * simple group of pages.  After this the destructor does not
++	 * apply.
++	 *
++	 */
++	if (hstate_is_gigantic(h))
++		folio_set_compound_dtor(folio, NULL_COMPOUND_DTOR);
++	else
++		folio_set_compound_dtor(folio, COMPOUND_PAGE_DTOR);
++}
++
+ /*
+- * Remove hugetlb folio from lists, and update dtor so that the folio appears
+- * as just a compound page.
++ * Remove hugetlb folio from lists.
++ * If vmemmap exists for the folio, update dtor so that the folio appears
++ * as just a compound page.  Otherwise, wait until after allocating vmemmap
++ * to update dtor.
+  *
+  * A reference is held on the folio, except in the case of demote.
+  *
+@@ -1612,31 +1640,19 @@ static void __remove_hugetlb_folio(struc
+ 	}
+ 
+ 	/*
+-	 * Very subtle
+-	 *
+-	 * For non-gigantic pages set the destructor to the normal compound
+-	 * page dtor.  This is needed in case someone takes an additional
+-	 * temporary ref to the page, and freeing is delayed until they drop
+-	 * their reference.
+-	 *
+-	 * For gigantic pages set the destructor to the null dtor.  This
+-	 * destructor will never be called.  Before freeing the gigantic
+-	 * page destroy_compound_gigantic_folio will turn the folio into a
+-	 * simple group of pages.  After this the destructor does not
+-	 * apply.
+-	 *
+-	 * This handles the case where more than one ref is held when and
+-	 * after update_and_free_hugetlb_folio is called.
+-	 *
+-	 * In the case of demote we do not ref count the page as it will soon
+-	 * be turned into a page of smaller size.
++	 * We can only clear the hugetlb destructor after allocating vmemmap
++	 * pages.  Otherwise, someone (memory error handling) may try to write
++	 * to tail struct pages.
++	 */
++	if (!folio_test_hugetlb_vmemmap_optimized(folio))
++		__clear_hugetlb_destructor(h, folio);
++
++	 /*
++	  * In the case of demote we do not ref count the page as it will soon
++	  * be turned into a page of smaller size.
+ 	 */
+ 	if (!demote)
+ 		folio_ref_unfreeze(folio, 1);
+-	if (hstate_is_gigantic(h))
+-		folio_set_compound_dtor(folio, NULL_COMPOUND_DTOR);
+-	else
+-		folio_set_compound_dtor(folio, COMPOUND_PAGE_DTOR);
+ 
+ 	h->nr_huge_pages--;
+ 	h->nr_huge_pages_node[nid]--;
+@@ -1705,6 +1721,7 @@ static void __update_and_free_hugetlb_fo
+ {
+ 	int i;
+ 	struct page *subpage;
++	bool clear_dtor = folio_test_hugetlb_vmemmap_optimized(folio);
+ 
+ 	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+ 		return;
+@@ -1735,6 +1752,16 @@ static void __update_and_free_hugetlb_fo
+ 	if (unlikely(folio_test_hwpoison(folio)))
+ 		folio_clear_hugetlb_hwpoison(folio);
+ 
++	/*
++	 * If vmemmap pages were allocated above, then we need to clear the
++	 * hugetlb destructor under the hugetlb lock.
++	 */
++	if (clear_dtor) {
++		spin_lock_irq(&hugetlb_lock);
++		__clear_hugetlb_destructor(h, folio);
++		spin_unlock_irq(&hugetlb_lock);
++	}
++
+ 	for (i = 0; i < pages_per_huge_page(h); i++) {
+ 		subpage = folio_page(folio, i);
+ 		subpage->flags &= ~(1 << PG_locked | 1 << PG_error |
+_
+
+Patches currently in -mm which might be from mike.kravetz@oracle.com are
+
+hugetlb-do-not-clear-hugetlb-dtor-until-allocating-vmemmap.patch
+hugetlb-optimize-update_and_free_pages_bulk-to-avoid-lock-cycles.patch
 
