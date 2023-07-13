@@ -2,124 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0EFC752197
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 14:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 185F9752211
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 15:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234050AbjGMMr0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 08:47:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57520 "EHLO
+        id S232596AbjGMNBa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 09:01:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233952AbjGMMrX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 08:47:23 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C3C30C0;
-        Thu, 13 Jul 2023 05:46:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689252410; x=1720788410;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=AAJmAZ+sXj0MECM7XPTmd1pa5VhGBIS57bxBnXZUE7M=;
-  b=aFeG0ZyWf1uzHA6KpqrodpF8tvGnLpuj82RD5IUKBQp7nFbyexIyDpa2
-   qfTRh9BmLyhjJ3W4b1Pm6LDZhzh0uS7JJZZ11d/7mvcuv8DxBvH8djpv1
-   f2fL+ljJgGpiozABoGcDaFZxYz8dppZr4VEfNmuie39bojowHgyYM1AMI
-   inQOxdHaXtwzOeZul9pmhG8SfI3rWj3XOMbYNwRFCFwJxCmJ+YYPiwzVH
-   91tuPLv/83D0xn1fpuvpQjjF42NDl78ZqWNi7BQsK3KKMua+3cP7nNnqD
-   93jqqzY2olgf7+oynU/UXmX+N/1odhd/h1awmvs+2eExJF42E+gCXylH4
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="367797041"
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="367797041"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2023 05:46:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="757144512"
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="757144512"
-Received: from ijarvine-mobl2.ger.corp.intel.com ([10.251.222.39])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2023 05:46:35 -0700
-From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>, Kalle Valo <kvalo@kernel.org>,
-        Michal Kazior <michal.kazior@tieto.com>,
-        Janusz Dziedzic <janusz.dziedzic@tieto.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Dean Luick <dean.luick@cornelisnetworks.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v4 10/11] wifi: ath10k: Use RMW accessors for changing LNKCTL
-Date:   Thu, 13 Jul 2023 15:45:04 +0300
-Message-Id: <20230713124505.94866-11-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230713124505.94866-1-ilpo.jarvinen@linux.intel.com>
-References: <20230713124505.94866-1-ilpo.jarvinen@linux.intel.com>
+        with ESMTP id S229600AbjGMNB3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 09:01:29 -0400
+Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1A19173B;
+        Thu, 13 Jul 2023 06:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+        t=1689253285; bh=yupFDaQfBUJDGYQkoGNGPCB4kwzNRglkYY4WfTsQAWc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QSW/8Nr5ap4LZT45TYM21VhMlU1KpKTveQU/R1eLWHTG7GcTes3d4N4Ugj7E2Dz/X
+         Ov6XIu/ywxhBG9gU8MQm0cIcHEPkyLeeIrSyEsAnPD4BXIvZCGfCE5MuutuFShyQq/
+         EmfmdBx6FGqYTaw1zz+rlCUm/6Ccq06GWTVd5Ads=
+Date:   Thu, 13 Jul 2023 15:01:24 +0200
+From:   Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+To:     Aleksa Sarai <cyphar@cyphar.com>
+Cc:     Willy Tarreau <w@1wt.eu>, Shuah Khan <shuah@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Dave Chinner <dchinner@redhat.com>,
+        xu xin <cgel.zte@gmail.com>, Al Viro <viro@zeniv.linux.org.uk>,
+        Stefan Roesch <shr@devkernel.io>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Janis Danisevskis <jdanis@google.com>,
+        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] procfs: block chmod on /proc/thread-self/comm
+Message-ID: <e26a9bab-6443-4a0a-809a-ca1c1b4d28c3@t-8ch.de>
+References: <20230713121907.9693-1-cyphar@cyphar.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230713121907.9693-1-cyphar@cyphar.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Don't assume that only the driver would be accessing LNKCTL. ASPM
-policy changes can trigger write to LNKCTL outside of driver's control.
+On 2023-07-13 22:19:04+1000, Aleksa Sarai wrote:
+> Due to an oversight in commit 1b3044e39a89 ("procfs: fix pthread
+> cross-thread naming if !PR_DUMPABLE") in switching from REG to NOD,
+> chmod operations on /proc/thread-self/comm were no longer blocked as
+> they are on almost all other procfs files.
+> 
+> A very similar situation with /proc/self/environ was used to as a root
+> exploit a long time ago, but procfs has SB_I_NOEXEC so this is simply a
+> correctness issue.
+> 
+> Ref: https://lwn.net/Articles/191954/
+> Ref: 6d76fa58b050 ("Don't allow chmod() on the /proc/<pid>/ files")
+> Fixes: 1b3044e39a89 ("procfs: fix pthread cross-thread naming if !PR_DUMPABLE")
+> Cc: stable@vger.kernel.org # v4.7+
+> Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+> ---
+>  fs/proc/base.c                               | 3 ++-
+>  tools/testing/selftests/nolibc/nolibc-test.c | 4 ++++
+>  2 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/proc/base.c b/fs/proc/base.c
+> index 05452c3b9872..7394229816f3 100644
+> --- a/fs/proc/base.c
+> +++ b/fs/proc/base.c
+> @@ -3583,7 +3583,8 @@ static int proc_tid_comm_permission(struct mnt_idmap *idmap,
+>  }
+>  
+>  static const struct inode_operations proc_tid_comm_inode_operations = {
+> -		.permission = proc_tid_comm_permission,
+> +		.setattr	= proc_setattr,
+> +		.permission	= proc_tid_comm_permission,
+>  };
 
-Use RMW capability accessors which does proper locking to avoid losing
-concurrent updates to the register value. On restore, clear the ASPMC
-field properly.
+Given that this seems to be a recurring theme a more systematic
+aproach would help.
 
-Fixes: 76d870ed09ab ("ath10k: enable ASPM")
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Cc: stable@vger.kernel.org
----
- drivers/net/wireless/ath/ath10k/pci.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Something like the following (untested) patch:
 
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index a7f44f6335fb..9275a672f90c 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -1963,8 +1963,9 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
- 	ath10k_pci_irq_enable(ar);
- 	ath10k_pci_rx_post(ar);
- 
--	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
--				   ar_pci->link_ctl);
-+	pcie_capability_clear_and_set_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPMC,
-+					   ar_pci->link_ctl & PCI_EXP_LNKCTL_ASPMC);
- 
- 	return 0;
- }
-@@ -2821,8 +2822,8 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
- 
- 	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
- 				  &ar_pci->link_ctl);
--	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
--				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
-+	pcie_capability_clear_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-+				   PCI_EXP_LNKCTL_ASPMC);
- 
- 	/*
- 	 * Bring the target up cleanly.
--- 
-2.30.2
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 05452c3b9872..b90f2e9cda66 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -2649,6 +2649,7 @@ static struct dentry *proc_pident_instantiate(struct dentry *dentry,
+ 		set_nlink(inode, 2);	/* Use getattr to fix if necessary */
+ 	if (p->iop)
+ 		inode->i_op = p->iop;
++	WARN_ON(!inode->i_op->setattr);
+ 	if (p->fop)
+ 		inode->i_fop = p->fop;
+ 	ei->op = p->op;
 
+>  /*
+> diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
+> index 486334981e60..08f0969208eb 100644
+> --- a/tools/testing/selftests/nolibc/nolibc-test.c
+> +++ b/tools/testing/selftests/nolibc/nolibc-test.c
+> @@ -580,6 +580,10 @@ int run_syscall(int min, int max)
+>  		CASE_TEST(chmod_net);         EXPECT_SYSZR(proc, chmod("/proc/self/net", 0555)); break;
+>  		CASE_TEST(chmod_self);        EXPECT_SYSER(proc, chmod("/proc/self", 0555), -1, EPERM); break;
+>  		CASE_TEST(chown_self);        EXPECT_SYSER(proc, chown("/proc/self", 0, 0), -1, EPERM); break;
+> +		CASE_TEST(chmod_self_comm);   EXPECT_SYSER(proc, chmod("/proc/self/comm", 0777), -1, EPERM); break;
+> +		CASE_TEST(chmod_tid_comm);    EXPECT_SYSER(proc, chmod("/proc/thread-self/comm", 0777), -1, EPERM); break;
+> +		CASE_TEST(chmod_self_environ);EXPECT_SYSER(proc, chmod("/proc/self/environ", 0777), -1, EPERM); break;
+> +		CASE_TEST(chmod_tid_environ); EXPECT_SYSER(proc, chmod("/proc/thread-self/environ", 0777), -1, EPERM); break;
+
+I'm not a big fan of this, it abuses the nolibc testsuite to test core
+kernel functionality.
+If this needs to be tested explicitly there is hopefully a better place.
+
+Those existing tests focus on testing functionality provided by nolibc.
+The test chmod_net just got removed because it suffered from the same
+bug as /proc/thread-self/comm.
+
+>  		CASE_TEST(chroot_root);       EXPECT_SYSZR(euid0, chroot("/")); break;
+>  		CASE_TEST(chroot_blah);       EXPECT_SYSER(1, chroot("/proc/self/blah"), -1, ENOENT); break;
+>  		CASE_TEST(chroot_exe);        EXPECT_SYSER(proc, chroot("/proc/self/exe"), -1, ENOTDIR); break;
+> -- 
+> 2.41.0
+> 
