@@ -2,120 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A867C75169A
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 05:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65B0A7516C5
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 05:32:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232133AbjGMDFc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 23:05:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37076 "EHLO
+        id S233645AbjGMDcf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 23:32:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231592AbjGMDFc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 23:05:32 -0400
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E0DED2113;
-        Wed, 12 Jul 2023 20:05:22 -0700 (PDT)
-Received: from loongson.cn (unknown [117.82.195.59])
-        by gateway (Coremail) with SMTP id _____8BxHOvwaa9k0EEEAA--.6757S3;
-        Thu, 13 Jul 2023 11:05:21 +0800 (CST)
-Received: from localhost.localdomain (unknown [117.82.195.59])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8CxriPuaa9kSZ4rAA--.16906S2;
-        Thu, 13 Jul 2023 11:05:20 +0800 (CST)
-From:   WANG Rui <wangrui@loongson.cn>
-To:     Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>
-Cc:     Jun Yi <yijun@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>,
-        loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
-        WANG Rui <wangrui@loongson.cn>, stable@vger.kernel.org,
-        Weihao Li <liweihao@loongson.cn>
-Subject: [PATCH] LoongArch: Fix return value underflow in exception path
-Date:   Thu, 13 Jul 2023 11:04:53 +0800
-Message-ID: <20230713030453.7404-1-wangrui@loongson.cn>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S231327AbjGMDce (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 23:32:34 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B4A1FFF
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 20:32:33 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-992ace062f3so42023166b.2
+        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 20:32:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689219152; x=1691811152;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=smbASMP1wavR2fxNdm/uJcjvjfKhnJ6qhTiLInOsKZE=;
+        b=I+h+HRvU9jKH5UKZ835EWs5+Pd4SyOvhdqz1nAw9eqcBgT+FCfbFG+uP3AEVnDi4+c
+         jM895zWJpaOYuilTDyaxMJ3QtkKVFSf6Zf7pkFLjx+3yD8lcv3+vRO3PSUcwg36nnIog
+         Uv8K8pVKv+GMsMiRD6IPb79gOYpiQFmhfbkVkH6zWmigDN0qmoffskuo0wnDesVQQ9gd
+         XRxv8nQQMeO+6V9XPGD5/NznFmzxdp0k+GRNI1NypAiqVczkwtTXfBfYBAw1wk4j5mhK
+         pQQdkyouAD+/YCgkzyEGhJ58y4yjBX1VW3QjQyAj7Tz+Pw6fkRFWBIclixiwJ9+NVXQN
+         IPbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689219152; x=1691811152;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=smbASMP1wavR2fxNdm/uJcjvjfKhnJ6qhTiLInOsKZE=;
+        b=Gu/VoTqG7iOF/TSHD94BgUVMrG509tDNDNNpnydE6rs9Ab1Jn6zP2xIJbmXr+corMJ
+         JeTqUGR/o3VEWGQvGgMvAfDk8VtjDixgfRSUDaWH2wGlizXuiCoGy6XrH7EKwvluMPD/
+         BVCmTySYy9+DOjcnrl+yWKv34/d123FEIlZP7FzFtuVwe54b+Cd6qGWGQPtvLXvQEO5r
+         A0fJd+POVtx6oiiMoP11N5BrU3h/xzphSE6C5hiO2U8mbM4RP2wMR9E6fJaOZmJr62TN
+         Kpf8txWuhWtt6SbMuJyF05Q3DAlM0QilT+6YfpcXtaaTHIoJgcoX/WqaBB1fs5F6F179
+         312Q==
+X-Gm-Message-State: ABy/qLbz/TmlXy93DY2uNFW4qhnWlU2/zgmqYd7wQGhsyZwgUHAoIwNo
+        +i+hQBAWcwmJSHyg7IUhA1cV1A==
+X-Google-Smtp-Source: APBJJlHyxuGfjJuxgNF5JFaeEz7+vEIs2LMJeBubz6BCjlUfNA27TKT62WBgzES8Y5w/sZZK7n0zhQ==
+X-Received: by 2002:a17:906:5dce:b0:992:aab0:533a with SMTP id p14-20020a1709065dce00b00992aab0533amr192001ejv.67.1689219151582;
+        Wed, 12 Jul 2023 20:32:31 -0700 (PDT)
+Received: from [192.168.0.173] ([79.115.63.146])
+        by smtp.gmail.com with ESMTPSA id i7-20020a17090671c700b0098cf565d98asm3344544ejk.22.2023.07.12.20.32.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Jul 2023 20:32:31 -0700 (PDT)
+Message-ID: <f00fa2ae-6d4a-90cb-3724-2bedb96cb4fb@linaro.org>
+Date:   Thu, 13 Jul 2023 06:32:29 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxriPuaa9kSZ4rAA--.16906S2
-X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7CrWxZFW3KFW3tw45Gw47WrX_yoW8Zw4fpr
-        y7Arn7KF48WFyfZa4YvF9YqrWrXF47Ww17uF4xAryrGa4DZFn5uryrGasxXFs0q395Xr10
-        qr1rKF4rCF48JwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-        sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-        0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-        IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-        e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-        0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-        xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-        AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-        XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-        AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
-        6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
-        CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
-        0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
-        AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
-        Ja73UjIFyTuYvjxU2G-eUUUUU
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] mtd: spi-nor: Correct flags for Winbond w25q128
+Content-Language: en-US
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Pratyush Yadav <pratyush@kernel.org>,
+        Michael Walle <michael@walle.cc>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org>
+From:   Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This patch fixes an underflow issue in the return value within the
-exception path, specifically at .Llt8 when the remaining length is less
-than 8 bytes.
+Hi, Linus,
 
-Cc: stable@vger.kernel.org
-Fixes: 8941e93ca590 ("LoongArch: Optimize memory ops (memset/memcpy/memmove)")
-Reported-by: Weihao Li <liweihao@loongson.cn>
-Signed-off-by: WANG Rui <wangrui@loongson.cn>
----
- arch/loongarch/lib/clear_user.S | 3 ++-
- arch/loongarch/lib/copy_user.S  | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+On 13.07.2023 00:59, Linus Walleij wrote:
+> The Winbond "w25q128" (actual vendor name W25Q128JV)
+> has exactly the same flags as the sibling device
+> "w25q128jv". The devices both require unlocking to
+> enable write access.
+> 
+> The actual product naming between devices vs the
+> Linux strings in winbond.c:
+> 
+> 0xef4018: "w25q128"   W25Q128JV-IM/JM
+> 0xef7018: "w25q128jv" W25Q128JV-IN/IQ/JQ
+> 
+> The latter device, "w25q128jv" supports features
+> named DTQ and QPI, otherwise it is the same.
+> 
+> Not having the right flags has the annoying side
+> effect that write access does not work.
 
-diff --git a/arch/loongarch/lib/clear_user.S b/arch/loongarch/lib/clear_user.S
-index fd1d62b244f2..9dcf71719387 100644
---- a/arch/loongarch/lib/clear_user.S
-+++ b/arch/loongarch/lib/clear_user.S
-@@ -108,6 +108,7 @@ SYM_FUNC_START(__clear_user_fast)
- 	addi.d	a3, a2, -8
- 	bgeu	a0, a3, .Llt8
- 15:	st.d	zero, a0, 0
-+	addi.d	a0, a0, 8
- 
- .Llt8:
- 16:	st.d	zero, a2, -8
-@@ -188,7 +189,7 @@ SYM_FUNC_START(__clear_user_fast)
- 	_asm_extable 13b, .L_fixup_handle_0
- 	_asm_extable 14b, .L_fixup_handle_1
- 	_asm_extable 15b, .L_fixup_handle_0
--	_asm_extable 16b, .L_fixup_handle_1
-+	_asm_extable 16b, .L_fixup_handle_0
- 	_asm_extable 17b, .L_fixup_handle_s0
- 	_asm_extable 18b, .L_fixup_handle_s0
- 	_asm_extable 19b, .L_fixup_handle_s0
-diff --git a/arch/loongarch/lib/copy_user.S b/arch/loongarch/lib/copy_user.S
-index b21f6d5d38f5..fecd08cad702 100644
---- a/arch/loongarch/lib/copy_user.S
-+++ b/arch/loongarch/lib/copy_user.S
-@@ -136,6 +136,7 @@ SYM_FUNC_START(__copy_user_fast)
- 	bgeu	a1, a4, .Llt8
- 30:	ld.d	t0, a1, 0
- 31:	st.d	t0, a0, 0
-+	addi.d	a0, a0, 8
- 
- .Llt8:
- 32:	ld.d	t0, a3, -8
-@@ -246,7 +247,7 @@ SYM_FUNC_START(__copy_user_fast)
- 	_asm_extable 30b, .L_fixup_handle_0
- 	_asm_extable 31b, .L_fixup_handle_0
- 	_asm_extable 32b, .L_fixup_handle_0
--	_asm_extable 33b, .L_fixup_handle_1
-+	_asm_extable 33b, .L_fixup_handle_0
- 	_asm_extable 34b, .L_fixup_handle_s0
- 	_asm_extable 35b, .L_fixup_handle_s0
- 	_asm_extable 36b, .L_fixup_handle_s0
--- 
-2.41.0
+I guess you refer to the locking flags. Probably your flash has the non
+volatile block protection (BP) bits from the Status Register set, which
+means the entire flash is write protected. The factory default for these
+bits is 0/disabled on this flash so someone must have played with them.
+The reason why one may want write protection set is to avoid inadvertent
+writes during power-up.
+One can control whether to disable the software write protection at boot
+time with the MTD_SPI_NOR_SWP_ configs.
+> 
+> After this patch I can write to the flash on the
+> Inteno XG6846 router.
+> 
+> The flash memory also supports dual and quad SPI
+> modes. This does not currently manifest, but by
 
+The fasted mode is chosen after SFDP parsing, so you should use quad
+reads if your controller also supports 4 I/O lines.
+> turning on SFDP parsing, the right SPI modes are
+> emitted in
+> /sys/kernel/debug/spi-nor/spi1.0/capabilities
+> for this chip, so we also turn on this.
+> 
+> Cc: stable@vger.kernel.org
+> Suggested-by: Michael Walle <michael@walle.cc>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> Changes in v2:
+> - Only add the write access flags.
+> - Use SFDP parsing to properly detect the various
+>   available SPI modes.
+> - Link to v1: https://lore.kernel.org/r/20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org
+> ---
+>  drivers/mtd/spi-nor/winbond.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/spi-nor/winbond.c b/drivers/mtd/spi-nor/winbond.c
+> index 834d6ba5ce70..6c82e525c801 100644
+> --- a/drivers/mtd/spi-nor/winbond.c
+> +++ b/drivers/mtd/spi-nor/winbond.c
+> @@ -121,7 +121,8 @@ static const struct flash_info winbond_nor_parts[] = {
+>  	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
+>  		NO_SFDP_FLAGS(SECT_4K) },
+>  	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
+
+while here try, using INFO with INFO(0xef4018, 0, 0, 0), those
+parameters shall be discovered at run-time, so we prepare to get rid of
+explicitly setting them sooner or later.
+
+> -		NO_SFDP_FLAGS(SECT_4K) },
+> +		PARSE_SFDP
+> +		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
+
+Looks good. Also I would like you to run a small sanity test, just to
+make sure the flash works after your changes. You can do that with
+mtd_debug utility, see an example on Miquel's commit message from:
+https://lore.kernel.org/linux-mtd/d479489736ee193609816dc2003bd0fb@walle.cc/T/#m3550973e0884ec4a288d344fabd4a9c3b64af46e
+
+Cheers,
+ta
