@@ -2,52 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55F04751663
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 04:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A867C75169A
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 05:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233641AbjGMCiW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 22:38:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56254 "EHLO
+        id S232133AbjGMDFc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 12 Jul 2023 23:05:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233647AbjGMCiV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 22:38:21 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66EDB2690
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 19:38:09 -0700 (PDT)
-Received: from kwepemi500016.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4R1dy92npbzLnhj;
-        Thu, 13 Jul 2023 10:35:45 +0800 (CST)
-Received: from [10.40.193.166] (10.40.193.166) by
- kwepemi500016.china.huawei.com (7.221.188.220) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 13 Jul 2023 10:38:05 +0800
-Subject: Re: [PATCH] KVM: arm64: vgic-v4: Consistently request doorbell irq
- for blocking vCPU
-To:     Zenghui Yu <zenghui.yu@linux.dev>, Marc Zyngier <maz@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-References: <20230710175553.1477762-1-oliver.upton@linux.dev>
- <86jzv6x66q.wl-maz@kernel.org> <ZK0EPhvLzhaFepGk@linux.dev>
- <14acf0fd-e5eb-8a14-986a-b8fe4a44cec9@huawei.com>
- <86zg41utno.wl-maz@kernel.org>
- <c1b2e321-be93-0082-2724-f0e36ff9872a@linux.dev>
-CC:     Oliver Upton <oliver.upton@linux.dev>, <kvmarm@lists.linux.dev>,
-        James Morse <james.morse@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        <stable@vger.kernel.org>
-From:   "chenxiang (M)" <chenxiang66@hisilicon.com>
-Message-ID: <55ae58b1-6513-5789-b0a6-8e23bf4b2148@hisilicon.com>
-Date:   Thu, 13 Jul 2023 10:38:05 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        with ESMTP id S231592AbjGMDFc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 23:05:32 -0400
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E0DED2113;
+        Wed, 12 Jul 2023 20:05:22 -0700 (PDT)
+Received: from loongson.cn (unknown [117.82.195.59])
+        by gateway (Coremail) with SMTP id _____8BxHOvwaa9k0EEEAA--.6757S3;
+        Thu, 13 Jul 2023 11:05:21 +0800 (CST)
+Received: from localhost.localdomain (unknown [117.82.195.59])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8CxriPuaa9kSZ4rAA--.16906S2;
+        Thu, 13 Jul 2023 11:05:20 +0800 (CST)
+From:   WANG Rui <wangrui@loongson.cn>
+To:     Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>
+Cc:     Jun Yi <yijun@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>,
+        loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+        WANG Rui <wangrui@loongson.cn>, stable@vger.kernel.org,
+        Weihao Li <liweihao@loongson.cn>
+Subject: [PATCH] LoongArch: Fix return value underflow in exception path
+Date:   Thu, 13 Jul 2023 11:04:53 +0800
+Message-ID: <20230713030453.7404-1-wangrui@loongson.cn>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-In-Reply-To: <c1b2e321-be93-0082-2724-f0e36ff9872a@linux.dev>
-Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.40.193.166]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemi500016.china.huawei.com (7.221.188.220)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+X-CM-TRANSID: AQAAf8CxriPuaa9kSZ4rAA--.16906S2
+X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7CrWxZFW3KFW3tw45Gw47WrX_yoW8Zw4fpr
+        y7Arn7KF48WFyfZa4YvF9YqrWrXF47Ww17uF4xAryrGa4DZFn5uryrGasxXFs0q395Xr10
+        qr1rKF4rCF48JwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+        sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+        0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+        IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+        e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+        0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+        xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+        AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+        XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+        AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
+        6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+        CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+        0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+        AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
+        Ja73UjIFyTuYvjxU2G-eUUUUU
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,202 +61,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+This patch fixes an underflow issue in the return value within the
+exception path, specifically at .Llt8 when the remaining length is less
+than 8 bytes.
 
+Cc: stable@vger.kernel.org
+Fixes: 8941e93ca590 ("LoongArch: Optimize memory ops (memset/memcpy/memmove)")
+Reported-by: Weihao Li <liweihao@loongson.cn>
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
+---
+ arch/loongarch/lib/clear_user.S | 3 ++-
+ arch/loongarch/lib/copy_user.S  | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-在 2023/7/12 星期三 23:56, Zenghui Yu 写道:
-> On 2023/7/12 21:49, Marc Zyngier wrote:
->> On Wed, 12 Jul 2023 13:09:45 +0100,
->> Zenghui Yu <yuzenghui@huawei.com> wrote:
->>>
->>> On 2023/7/11 15:26, Oliver Upton wrote:
->>>> On Tue, Jul 11, 2023 at 08:23:25AM +0100, Marc Zyngier wrote:
->>>>> On Mon, 10 Jul 2023 18:55:53 +0100,
->>>>> Oliver Upton <oliver.upton@linux.dev> wrote:
->>>>>>
->>>>>> Xiang reports that VMs occasionally fail to boot on GICv4.1 
->>>>>> systems when
->>>>>> running a preemptible kernel, as it is possible that a vCPU is 
->>>>>> blocked
->>>>>> without requesting a doorbell interrupt.
->>>>>>
->>>>>> The issue is that any preemption that occurs between 
->>>>>> vgic_v4_put() and
->>>>>> schedule() on the block path will mark the vPE as nonresident and 
->>>>>> *not*
->>>>>> request a doorbell irq.
->>>>>
->>>>> It'd be worth spelling out. You need to go via *three* schedule()
->>>>> calls: one to be preempted (with DB set), one to be made resident
->>>>> again, and then the final one in kvm_vcpu_halt(), clearing the DB on
->>>>> vcpu_put() due to the bug.
->>>>
->>>> Yeah, a bit lazy in the wording. What I had meant to imply was
->>>> preemption happening after the doorbell is set up and before the 
->>>> thread
->>>> has an opportunity to explicitly schedule out. Perhaps I should 
->>>> just say
->>>> that.
->>>>
->>>>>>
->>>>>> Fix it by consistently requesting a doorbell irq in the vcpu put 
->>>>>> path if
->>>>>> the vCPU is blocking.
->>>
->>> Yup. Agreed!
->>>
->>>>>> While this technically means we could drop the
->>>>>> early doorbell irq request in kvm_vcpu_wfi(), deliberately leave it
->>>>>> intact such that vCPU halt polling can properly detect the wakeup
->>>>>> condition before actually scheduling out a vCPU.
->>>
->>> Yeah, just like what we did in commit 07ab0f8d9a12 ("KVM: Call
->>> kvm_arch_vcpu_blocking early into the blocking sequence").
->>>
->>> My only concern is that if the preemption happens before halt polling,
->>> we would enter the polling loop with VPE already resident on the RD and
->>> can't recognize any firing GICv4.x virtual interrupts (targeting this
->>> VPE) in polling. [1]
->>
->> The status of the pending bit is recorded in pending_last, so we don't
->> lose what was snapshot at the point of hitting WFI. But we indeed
->> don't have any idea for something firing during the polling loop.
->>
->>> Given that making VPE resident on the vcpu block path (i.e., in
->>> kvm_vcpu_halt()) makes little sense (right?) and leads to this sort of
->>> problem, a crude idea is that we can probably keep track of the
->>> "nested" vgic_v4_{put,load} calls (instead of a single vpe->resident
->>> flag) and keep VPE *not resident* on the whole block path (like what we
->>> had before commit 8e01d9a396e6). And we then rely on
->>> kvm_vcpu_wfi/vgic_v4_load to actually schedule the VPE on...
->>
->> I'm not sure about the nested tracking part, but it's easy enough to
->> have a vcpu flag indicating that we're in WFI. So an *alternative* to
->> the current fix would be something like this:
->>
->> diff --git a/arch/arm64/include/asm/kvm_host.h 
->> b/arch/arm64/include/asm/kvm_host.h
->> index f54ba0a63669..417a0e85456b 100644
->> --- a/arch/arm64/include/asm/kvm_host.h
->> +++ b/arch/arm64/include/asm/kvm_host.h
->> @@ -817,6 +817,8 @@ struct kvm_vcpu_arch {
->>  #define DBG_SS_ACTIVE_PENDING    __vcpu_single_flag(sflags, BIT(5))
->>  /* PMUSERENR for the guest EL0 is on physical CPU */
->>  #define PMUSERENR_ON_CPU    __vcpu_single_flag(sflags, BIT(6))
->> +/* WFI instruction trapped */
->> +#define IN_WFI            __vcpu_single_flag(sflags, BIT(7))
->
-> Ah, trust me that I was thinking about exactly the same vcpu flag
-> when writing the last email. ;-) So here is my Ack for this
-> alternative, thanks Marc for your quick reply!
->
->>
->>  /* vcpu entered with HCR_EL2.E2H set */
->>  #define VCPU_HCR_E2H        __vcpu_single_flag(oflags, BIT(0))
->> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index 236c5f1c9090..cf208d30a9ea 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -725,13 +725,15 @@ void kvm_vcpu_wfi(struct kvm_vcpu *vcpu)
->>       */
->>      preempt_disable();
->>      kvm_vgic_vmcr_sync(vcpu);
->> -    vgic_v4_put(vcpu, true);
->> +    vcpu_set_flag(vcpu, IN_WFI);
->> +    vgic_v4_put(vcpu);
->>      preempt_enable();
->>
->>      kvm_vcpu_halt(vcpu);
->>      vcpu_clear_flag(vcpu, IN_WFIT);
->>
->>      preempt_disable();
->> +    vcpu_clear_flag(vcpu, IN_WFI);
->>      vgic_v4_load(vcpu);
->>      preempt_enable();
->>  }
->> @@ -799,7 +801,7 @@ static int check_vcpu_requests(struct kvm_vcpu 
->> *vcpu)
->>          if (kvm_check_request(KVM_REQ_RELOAD_GICv4, vcpu)) {
->>              /* The distributor enable bits were changed */
->>              preempt_disable();
->> -            vgic_v4_put(vcpu, false);
->> +            vgic_v4_put(vcpu);
->>              vgic_v4_load(vcpu);
->>              preempt_enable();
->>          }
->> diff --git a/arch/arm64/kvm/vgic/vgic-v3.c 
->> b/arch/arm64/kvm/vgic/vgic-v3.c
->> index 49d35618d576..df61ead7c757 100644
->> --- a/arch/arm64/kvm/vgic/vgic-v3.c
->> +++ b/arch/arm64/kvm/vgic/vgic-v3.c
->> @@ -780,7 +780,7 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
->>       * done a vgic_v4_put) and when running a nested guest (the
->>       * vPE was never resident in order to generate a doorbell).
->>       */
->> -    WARN_ON(vgic_v4_put(vcpu, false));
->> +    WARN_ON(vgic_v4_put(vcpu));
->>
->>      vgic_v3_vmcr_sync(vcpu);
->>
->> diff --git a/arch/arm64/kvm/vgic/vgic-v4.c 
->> b/arch/arm64/kvm/vgic/vgic-v4.c
->> index c1c28fe680ba..339a55194b2c 100644
->> --- a/arch/arm64/kvm/vgic/vgic-v4.c
->> +++ b/arch/arm64/kvm/vgic/vgic-v4.c
->> @@ -336,14 +336,14 @@ void vgic_v4_teardown(struct kvm *kvm)
->>      its_vm->vpes = NULL;
->>  }
->>
->> -int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db)
->> +int vgic_v4_put(struct kvm_vcpu *vcpu)
->>  {
->>      struct its_vpe *vpe = &vcpu->arch.vgic_cpu.vgic_v3.its_vpe;
->>
->>      if (!vgic_supports_direct_msis(vcpu->kvm) || !vpe->resident)
->>          return 0;
->>
->> -    return its_make_vpe_non_resident(vpe, need_db);
->> +    return its_make_vpe_non_resident(vpe, !!vcpu_get_flag(vcpu, 
->> IN_WFI));
->>  }
->>
->>  int vgic_v4_load(struct kvm_vcpu *vcpu)
->> @@ -354,6 +354,9 @@ int vgic_v4_load(struct kvm_vcpu *vcpu)
->>      if (!vgic_supports_direct_msis(vcpu->kvm) || vpe->resident)
->>          return 0;
->>
->> +    if (vcpu_get_flag(vcpu, IN_WFI))
->> +        return 0;
->> +
->>      /*
->>       * Before making the VPE resident, make sure the redistributor
->>       * corresponding to our current CPU expects us here. See the
->> diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
->> index 9b91a8135dac..765d801d1ddc 100644
->> --- a/include/kvm/arm_vgic.h
->> +++ b/include/kvm/arm_vgic.h
->> @@ -446,7 +446,7 @@ int kvm_vgic_v4_unset_forwarding(struct kvm *kvm, 
->> int irq,
->>
->>  int vgic_v4_load(struct kvm_vcpu *vcpu);
->>  void vgic_v4_commit(struct kvm_vcpu *vcpu);
->> -int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db);
->> +int vgic_v4_put(struct kvm_vcpu *vcpu);
->>
->>  bool vgic_state_is_nested(struct kvm_vcpu *vcpu);
->>
->>
->> Of course, it is totally untested... ;-) But I like that the doorbell
->> request is solely driven by the WFI state, and we avoid leaking the
->> knowledge outside of the vgic code.
->
-> I'm happy with this approach and will have another look tomorrow. It'd
-> also be great if Xiang can give this one a go on the appropriate HW.
-
-Ok, I will test this approach and feedback the result when finished.
-
->
-> Thanks,
-> Zenghui
-> .
->
+diff --git a/arch/loongarch/lib/clear_user.S b/arch/loongarch/lib/clear_user.S
+index fd1d62b244f2..9dcf71719387 100644
+--- a/arch/loongarch/lib/clear_user.S
++++ b/arch/loongarch/lib/clear_user.S
+@@ -108,6 +108,7 @@ SYM_FUNC_START(__clear_user_fast)
+ 	addi.d	a3, a2, -8
+ 	bgeu	a0, a3, .Llt8
+ 15:	st.d	zero, a0, 0
++	addi.d	a0, a0, 8
+ 
+ .Llt8:
+ 16:	st.d	zero, a2, -8
+@@ -188,7 +189,7 @@ SYM_FUNC_START(__clear_user_fast)
+ 	_asm_extable 13b, .L_fixup_handle_0
+ 	_asm_extable 14b, .L_fixup_handle_1
+ 	_asm_extable 15b, .L_fixup_handle_0
+-	_asm_extable 16b, .L_fixup_handle_1
++	_asm_extable 16b, .L_fixup_handle_0
+ 	_asm_extable 17b, .L_fixup_handle_s0
+ 	_asm_extable 18b, .L_fixup_handle_s0
+ 	_asm_extable 19b, .L_fixup_handle_s0
+diff --git a/arch/loongarch/lib/copy_user.S b/arch/loongarch/lib/copy_user.S
+index b21f6d5d38f5..fecd08cad702 100644
+--- a/arch/loongarch/lib/copy_user.S
++++ b/arch/loongarch/lib/copy_user.S
+@@ -136,6 +136,7 @@ SYM_FUNC_START(__copy_user_fast)
+ 	bgeu	a1, a4, .Llt8
+ 30:	ld.d	t0, a1, 0
+ 31:	st.d	t0, a0, 0
++	addi.d	a0, a0, 8
+ 
+ .Llt8:
+ 32:	ld.d	t0, a3, -8
+@@ -246,7 +247,7 @@ SYM_FUNC_START(__copy_user_fast)
+ 	_asm_extable 30b, .L_fixup_handle_0
+ 	_asm_extable 31b, .L_fixup_handle_0
+ 	_asm_extable 32b, .L_fixup_handle_0
+-	_asm_extable 33b, .L_fixup_handle_1
++	_asm_extable 33b, .L_fixup_handle_0
+ 	_asm_extable 34b, .L_fixup_handle_s0
+ 	_asm_extable 35b, .L_fixup_handle_s0
+ 	_asm_extable 36b, .L_fixup_handle_s0
+-- 
+2.41.0
 
