@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92BF8752483
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 16:01:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D093752497
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 16:06:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232795AbjGMOBN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 10:01:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53824 "EHLO
+        id S233837AbjGMOGS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 10:06:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232849AbjGMOBN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 10:01:13 -0400
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050:0:465::101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FECD270F;
-        Thu, 13 Jul 2023 07:01:11 -0700 (PDT)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+        with ESMTP id S229872AbjGMOGS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 10:06:18 -0400
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050:0:465::102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2349C1FF7;
+        Thu, 13 Jul 2023 07:06:17 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4R1x8z5ySJz9sWC;
-        Thu, 13 Jul 2023 16:01:07 +0200 (CEST)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4R1xGs48pSz9smd;
+        Thu, 13 Jul 2023 16:06:13 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
-        t=1689256867;
+        t=1689257173;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=xoZpC5tEyVOTQ6x0K7DEnPwvxgIBjqEXHKiZOKrXnL0=;
-        b=RafNTYVkuSE4BxJrsjFV5sGndm3C0bTsASsDMQLpI2Ka28pNDhpxtuUXkx3/XkWDVk1aAi
-        sG6wnN8oKoOuVtCXkQNev+E+2sKbWr/EC86bUTu7qqupDuxQTqeMtZFJk2kHWdLp2LAKCm
-        6jpjHcDrXD0XKTaIiRlJ2wpt4NB0Q853KscPqgJpYMmmfw+RmaWRd4IaQYdBV92invW7ZO
-        CcmV+nT+fx8uXL9mY7N8X9wKxv678T4PQXgJs4LtrYnmP4Dp1OJAND3MJ3XnCS5rOfim8z
-        KsDLtSGJGHABmP1ByFRGIAU0nXHPNVtqqBIoVSreuzN9oKfNTI87U2eKuwB8bg==
-Date:   Fri, 14 Jul 2023 00:00:51 +1000
+        bh=ZMZOWPNncf/1aOM0SqCrmeem2JnHn02pihgZxljBHmQ=;
+        b=QzJdzaU0KsG33pgKxrLZYRPQMPtvzQkcD8wGfhqq920WjbIqLouFXILrGp8umXb22H3vmJ
+        ozwnmt3RTGLKATrmyf6XtUslDxANMZPYGAhCcVLr/QrfW9da38NsnJpCK+z8kD8a6aEZVg
+        sb3sGDms4XaM0ciYU1A2bx+2DK6lqoDACJv5CrLBaei/cpHxvvA9rBYIXF46/onVQ8MkdO
+        jHyeG6fgoQYau/3ytcBUCrSPCOHX2rr+P72Pvss6gJ8oWzGjgwoB1cazRYdFOvRo5wJx4w
+        puPYQGdHwerjpvhNeInqhM6JbOIJEBBrp+Xv3wHfKn8xMVmIixoLUuqoPks5AA==
+Date:   Fri, 14 Jul 2023 00:06:02 +1000
 From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Christian Brauner <brauner@kernel.org>
-Cc:     Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
-        Willy Tarreau <w@1wt.eu>, Shuah Khan <shuah@kernel.org>,
+To:     Willy Tarreau <w@1wt.eu>
+Cc:     Shuah Khan <shuah@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
+        Christian Brauner <brauner@kernel.org>,
         Dave Chinner <dchinner@redhat.com>,
         xu xin <cgel.zte@gmail.com>, Al Viro <viro@zeniv.linux.org.uk>,
         Stefan Roesch <shr@devkernel.io>,
@@ -45,15 +46,18 @@ Cc:     Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
         Janis Danisevskis <jdanis@google.com>,
         Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org
+        linux-kselftest@vger.kernel.org,
+        Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
 Subject: Re: [PATCH] procfs: block chmod on /proc/thread-self/comm
-Message-ID: <nbzkbbahgsds4s4ujmkvno7w42xxy7gkpsrtw7lay3253uabzu@iqgtepoo4fgo>
-References: <20230713-unerschrocken-kutschieren-9be3c8958b5d@brauner>
+Message-ID: <jjls2w5xh2urrkgxzts6jfwbpa2zpi3p6nsvjy7rpsum7rtt4c@4e5z735u4ofz>
+References: <20230713121907.9693-1-cyphar@cyphar.com>
+ <ZK/vj5qnkaeBt6cR@1wt.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230713-unerschrocken-kutschieren-9be3c8958b5d@brauner>
-X-Rspamd-Queue-Id: 4R1x8z5ySJz9sWC
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZK/vj5qnkaeBt6cR@1wt.eu>
+X-Rspamd-Queue-Id: 4R1xGs48pSz9smd
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -64,30 +68,23 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-07-13, Christian Brauner <brauner@kernel.org> wrote:
-> > > diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-> > > index 486334981e60..08f0969208eb 100644
-> > > --- a/tools/testing/selftests/nolibc/nolibc-test.c
-> > > +++ b/tools/testing/selftests/nolibc/nolibc-test.c
-> > > @@ -580,6 +580,10 @@ int run_syscall(int min, int max)
-> > >  		CASE_TEST(chmod_net);         EXPECT_SYSZR(proc, chmod("/proc/self/net", 0555)); break;
-> > >  		CASE_TEST(chmod_self);        EXPECT_SYSER(proc, chmod("/proc/self", 0555), -1, EPERM); break;
-> > >  		CASE_TEST(chown_self);        EXPECT_SYSER(proc, chown("/proc/self", 0, 0), -1, EPERM); break;
-> > > +		CASE_TEST(chmod_self_comm);   EXPECT_SYSER(proc, chmod("/proc/self/comm", 0777), -1, EPERM); break;
-> > > +		CASE_TEST(chmod_tid_comm);    EXPECT_SYSER(proc, chmod("/proc/thread-self/comm", 0777), -1, EPERM); break;
-> > > +		CASE_TEST(chmod_self_environ);EXPECT_SYSER(proc, chmod("/proc/self/environ", 0777), -1, EPERM); break;
-> > > +		CASE_TEST(chmod_tid_environ); EXPECT_SYSER(proc, chmod("/proc/thread-self/environ", 0777), -1, EPERM); break;
+On 2023-07-13, Willy Tarreau <w@1wt.eu> wrote:
+> +Cc Thomas Weiﬂschuh <thomas@t-8ch.de> as this seems quite related to
+> his finding about /proc/self/net:
 > 
-> > 
-> > I'm not a big fan of this, it abuses the nolibc testsuite to test core
-> > kernel functionality.
-> 
-> Yes, this should be dropped.
-> We need a minimal patch to fix this. This just makes backporting harder
-> and any test doesn't need to be backported.
+>   https://lore.kernel.org/lkml/20230624-proc-net-setattr-v1-0-73176812adee@weissschuh.net/#b
 
-Alright, I'll drop it in v2 (though I'm not sure why there are tests for
-/proc/self and /proc/self/net then).
+Yeah I saw this patch and (along with an earlier discussion with
+Christian on the topic of chmod on symlinks -- see [1]) lead us to find
+that there were three other cases where this happens unintentionally:
+
+ * /proc/self (on the symlink itself)
+ * /proc/thread-self (on the symlink itself)
+ * /proc/thread-self/comm
+
+The first two will be fixed by [1] so fixing them isn't necessary.
+
+[1]: https://lore.kernel.org/linux-fsdevel/20230712-vfs-chmod-symlinks-v2-1-08cfb92b61dd@kernel.org/
 
 -- 
 Aleksa Sarai
