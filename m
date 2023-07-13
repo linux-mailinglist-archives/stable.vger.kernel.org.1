@@ -2,159 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65B0A7516C5
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 05:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7695751712
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 06:01:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233645AbjGMDcf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 12 Jul 2023 23:32:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46794 "EHLO
+        id S233652AbjGMEBh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 00:01:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231327AbjGMDce (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 12 Jul 2023 23:32:34 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B4A1FFF
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 20:32:33 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-992ace062f3so42023166b.2
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 20:32:33 -0700 (PDT)
+        with ESMTP id S233631AbjGMEBg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 00:01:36 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60A41FEE;
+        Wed, 12 Jul 2023 21:01:35 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-783549ef058so5415539f.2;
+        Wed, 12 Jul 2023 21:01:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689219152; x=1691811152;
+        d=gmail.com; s=20221208; t=1689220895; x=1691812895;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=smbASMP1wavR2fxNdm/uJcjvjfKhnJ6qhTiLInOsKZE=;
-        b=I+h+HRvU9jKH5UKZ835EWs5+Pd4SyOvhdqz1nAw9eqcBgT+FCfbFG+uP3AEVnDi4+c
-         jM895zWJpaOYuilTDyaxMJ3QtkKVFSf6Zf7pkFLjx+3yD8lcv3+vRO3PSUcwg36nnIog
-         Uv8K8pVKv+GMsMiRD6IPb79gOYpiQFmhfbkVkH6zWmigDN0qmoffskuo0wnDesVQQ9gd
-         XRxv8nQQMeO+6V9XPGD5/NznFmzxdp0k+GRNI1NypAiqVczkwtTXfBfYBAw1wk4j5mhK
-         pQQdkyouAD+/YCgkzyEGhJ58y4yjBX1VW3QjQyAj7Tz+Pw6fkRFWBIclixiwJ9+NVXQN
-         IPbg==
+        bh=ZvPz7QR4JAXFGgXXDMeNE/CMKbeqWBOzgEw9n9EVFQA=;
+        b=H8Ow31fiU+lKIWVElyRQWRVpN3jIJR1uvEN3V861sGwZFeC/9bFFv4dClFALae5Gjt
+         pGiCoBJs82lnzvKerYHsMRC6bbbM4pZcYraORrTAGlwskaSsgY52+XQgY42aTJyPFEy/
+         wQNXBYrBSldYwJQLYQ34EjSrORoQMsdLZcj6mDf3UCxUlQcb5EmYERO5tfvp5zW+Rplh
+         ql1gU7VcRYNqjGoSapoMB4WStH76zn51APNCfyVLiwI7ksq1ZEW2oDj+FDstZwlcPMqQ
+         A2mawokCOmwrAC5a6ayMANrWYDfo1/UtuQQGf4EGJOJXOadvlLpb/I0TbstPTV3Zq5pj
+         Motw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689219152; x=1691811152;
+        d=1e100.net; s=20221208; t=1689220895; x=1691812895;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=smbASMP1wavR2fxNdm/uJcjvjfKhnJ6qhTiLInOsKZE=;
-        b=Gu/VoTqG7iOF/TSHD94BgUVMrG509tDNDNNpnydE6rs9Ab1Jn6zP2xIJbmXr+corMJ
-         JeTqUGR/o3VEWGQvGgMvAfDk8VtjDixgfRSUDaWH2wGlizXuiCoGy6XrH7EKwvluMPD/
-         BVCmTySYy9+DOjcnrl+yWKv34/d123FEIlZP7FzFtuVwe54b+Cd6qGWGQPtvLXvQEO5r
-         A0fJd+POVtx6oiiMoP11N5BrU3h/xzphSE6C5hiO2U8mbM4RP2wMR9E6fJaOZmJr62TN
-         Kpf8txWuhWtt6SbMuJyF05Q3DAlM0QilT+6YfpcXtaaTHIoJgcoX/WqaBB1fs5F6F179
-         312Q==
-X-Gm-Message-State: ABy/qLbz/TmlXy93DY2uNFW4qhnWlU2/zgmqYd7wQGhsyZwgUHAoIwNo
-        +i+hQBAWcwmJSHyg7IUhA1cV1A==
-X-Google-Smtp-Source: APBJJlHyxuGfjJuxgNF5JFaeEz7+vEIs2LMJeBubz6BCjlUfNA27TKT62WBgzES8Y5w/sZZK7n0zhQ==
-X-Received: by 2002:a17:906:5dce:b0:992:aab0:533a with SMTP id p14-20020a1709065dce00b00992aab0533amr192001ejv.67.1689219151582;
-        Wed, 12 Jul 2023 20:32:31 -0700 (PDT)
-Received: from [192.168.0.173] ([79.115.63.146])
-        by smtp.gmail.com with ESMTPSA id i7-20020a17090671c700b0098cf565d98asm3344544ejk.22.2023.07.12.20.32.30
+        bh=ZvPz7QR4JAXFGgXXDMeNE/CMKbeqWBOzgEw9n9EVFQA=;
+        b=l72IaPsZYssYruGdkeJM8vFzDSgO4xgWoZYz4PbAjLn4E5d6lWtsJXe23gUzP9b9Rp
+         yjwUaNsyfH/8Kv2J0u0BOkgtf8u4mHmxyy46V4BeOQvF1mRkmwv2DLKwHbWyX8Teapci
+         TFLb4+XxSTLZyxSrGn1NGi3ZBv/XG8rQoRF56ExdO9ZRZG1myiclGBiCYYgBof5LN/mo
+         FYxhLoJNpfNDa6mrdLQVDArDwiZj3HQtlEMevtyoXAPTPiGBuE+4DDVIxtcWLHjqv884
+         uUyt+5GKeoQsS6rlmM0ZqpbcUR2oJVuIIij6Z/UbvqohUi2thalwNdPm1ZMrp+X8opOH
+         5kuQ==
+X-Gm-Message-State: ABy/qLaJQHLlJpjC3+cnP765XJBWV+yejrWgROHzWq0x7HQRJLvX+7nA
+        5cLKVnUJJyst5eZxPuNxpK8=
+X-Google-Smtp-Source: APBJJlFj1jDXbQHKFiTJHha1oQdNMVJ9Lju/CX0tSIFc1uUeBxHA4roZHmZmQ3YpcfOZ5B9YBOzJsQ==
+X-Received: by 2002:a5e:a719:0:b0:786:fff8:13c2 with SMTP id b25-20020a5ea719000000b00786fff813c2mr701931iod.11.1689220894970;
+        Wed, 12 Jul 2023 21:01:34 -0700 (PDT)
+Received: from ?IPV6:2601:282:800:7ed0:980b:bc27:a3dd:be78? ([2601:282:800:7ed0:980b:bc27:a3dd:be78])
+        by smtp.googlemail.com with ESMTPSA id j21-20020a02a695000000b0042bb296863asm1583706jam.56.2023.07.12.21.01.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Jul 2023 20:32:31 -0700 (PDT)
-Message-ID: <f00fa2ae-6d4a-90cb-3724-2bedb96cb4fb@linaro.org>
-Date:   Thu, 13 Jul 2023 06:32:29 +0300
+        Wed, 12 Jul 2023 21:01:34 -0700 (PDT)
+Message-ID: <6b374e37-68b3-346a-a6b7-212640e9c868@gmail.com>
+Date:   Wed, 12 Jul 2023 22:01:33 -0600
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2] mtd: spi-nor: Correct flags for Winbond w25q128
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH 6.4 0/6] 6.4.3-rc2 review
 Content-Language: en-US
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Michael Walle <michael@walle.cc>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org>
-From:   Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Netdev <netdev@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Qingfang DENG <qingfang.deng@siflower.com.cn>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        YOSHIFUJI Hideaki <yoshfuji@linux-ipv6.org>,
+        Masahide NAKAMURA <nakam@linux-ipv6.org>,
+        Ville Nuorvala <vnuorval@tcs.hut.fi>,
+        Arnd Bergmann <arnd@arndb.de>, Pavel Machek <pavel@denx.de>
+References: <20230709203826.141774942@linuxfoundation.org>
+ <CA+G9fYtEr-=GbcXNDYo3XOkwR+uYgehVoDjsP0pFLUpZ_AZcyg@mail.gmail.com>
+ <20230711201506.25cc464d@kernel.org> <ZK5k7YnVA39sSXOv@duo.ucw.cz>
+ <CA+G9fYvEJgcNhvJk6pvdQOkaS_+x105ZgSM1BVvYy0RRW+1TvA@mail.gmail.com>
+ <20230712110240.2b232f84@kernel.org>
+From:   David Ahern <dsahern@gmail.com>
+In-Reply-To: <20230712110240.2b232f84@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Linus,
+On 7/12/23 12:02 PM, Jakub Kicinski wrote:
+> On Wed, 12 Jul 2023 18:41:46 +0530 Naresh Kamboju wrote:
+>> That is the commit id from stable-rc tree.
+>>
+>> I have re-tested the reported issues multiple times and
+>> it seems that it is intermittently reproducible.
+>> Following list of links shows kernel crashes while testing
+>> selftest net pmtu.sh
+>>
+>> 1)
+>> Unable to handle kernel paging request at virtual address
+>> https://lkft.validation.linaro.org/scheduler/job/6579624#L4648
+>>
+>>
+>> 2)
+>> include/net/neighbour.h:302 suspicious rcu_dereference_check() usage!
+>>
+>> https://lkft.validation.linaro.org/scheduler/job/6579625#L7500
+>> https://lkft.validation.linaro.org/scheduler/job/6579626#L7509
+>> https://lkft.validation.linaro.org/scheduler/job/6579622#L7537
+>> https://lkft.validation.linaro.org/scheduler/job/6579623#L7469
+> 
+> Nothing jumps out at me.
+> 
+> David, any ideas?
 
-On 13.07.2023 00:59, Linus Walleij wrote:
-> The Winbond "w25q128" (actual vendor name W25Q128JV)
-> has exactly the same flags as the sibling device
-> "w25q128jv". The devices both require unlocking to
-> enable write access.
-> 
-> The actual product naming between devices vs the
-> Linux strings in winbond.c:
-> 
-> 0xef4018: "w25q128"   W25Q128JV-IM/JM
-> 0xef7018: "w25q128jv" W25Q128JV-IN/IQ/JQ
-> 
-> The latter device, "w25q128jv" supports features
-> named DTQ and QPI, otherwise it is the same.
-> 
-> Not having the right flags has the annoying side
-> effect that write access does not work.
-
-I guess you refer to the locking flags. Probably your flash has the non
-volatile block protection (BP) bits from the Status Register set, which
-means the entire flash is write protected. The factory default for these
-bits is 0/disabled on this flash so someone must have played with them.
-The reason why one may want write protection set is to avoid inadvertent
-writes during power-up.
-One can control whether to disable the software write protection at boot
-time with the MTD_SPI_NOR_SWP_ configs.
-> 
-> After this patch I can write to the flash on the
-> Inteno XG6846 router.
-> 
-> The flash memory also supports dual and quad SPI
-> modes. This does not currently manifest, but by
-
-The fasted mode is chosen after SFDP parsing, so you should use quad
-reads if your controller also supports 4 I/O lines.
-> turning on SFDP parsing, the right SPI modes are
-> emitted in
-> /sys/kernel/debug/spi-nor/spi1.0/capabilities
-> for this chip, so we also turn on this.
-> 
-> Cc: stable@vger.kernel.org
-> Suggested-by: Michael Walle <michael@walle.cc>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> Changes in v2:
-> - Only add the write access flags.
-> - Use SFDP parsing to properly detect the various
->   available SPI modes.
-> - Link to v1: https://lore.kernel.org/r/20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org
-> ---
->  drivers/mtd/spi-nor/winbond.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mtd/spi-nor/winbond.c b/drivers/mtd/spi-nor/winbond.c
-> index 834d6ba5ce70..6c82e525c801 100644
-> --- a/drivers/mtd/spi-nor/winbond.c
-> +++ b/drivers/mtd/spi-nor/winbond.c
-> @@ -121,7 +121,8 @@ static const struct flash_info winbond_nor_parts[] = {
->  	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
->  		NO_SFDP_FLAGS(SECT_4K) },
->  	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
-
-while here try, using INFO with INFO(0xef4018, 0, 0, 0), those
-parameters shall be discovered at run-time, so we prepare to get rid of
-explicitly setting them sooner or later.
-
-> -		NO_SFDP_FLAGS(SECT_4K) },
-> +		PARSE_SFDP
-> +		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
-
-Looks good. Also I would like you to run a small sanity test, just to
-make sure the flash works after your changes. You can do that with
-mtd_debug utility, see an example on Miquel's commit message from:
-https://lore.kernel.org/linux-mtd/d479489736ee193609816dc2003bd0fb@walle.cc/T/#m3550973e0884ec4a288d344fabd4a9c3b64af46e
-
-Cheers,
-ta
+No. Since it is a selftest in the linux repo, any chance for a git
+bisect based on that one test?
