@@ -2,65 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C733C752586
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 16:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 662017525D7
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 16:59:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229682AbjGMOuz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 10:50:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56454 "EHLO
+        id S232405AbjGMO7G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 10:59:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbjGMOuy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 10:50:54 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D185919A6
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 07:50:53 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36DDfSO0027713
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 16:50:52 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=selector1;
- bh=g89kIEKFciDnvQOHtk0QDO+7+XfbnRebdLqDJgJI6ww=;
- b=reFMYTJuvaeKgkNVv7HOtGE67NXyHozj3Q2ZUlhvkQkrJt+ho2kFVR6OXhIFNSZF0YZh
- 20CDIulREFXia6wmJc8/tTgTKmQD0PWr6bMmg9OsFuh0legD6sKr4m01lzE6JWoOzyIg
- q+O3/Sz7550dmo1W2Uebrnnzx691R6gYHI4Azu7a3ilTsNu319FpTUeoiJMyZejG6yq2
- ftTJVV9JzNSATzgFXsvLxgtZ7irwYqChVKTCs1juMCW/BtyV/yXOKQl53IhTnYufWlad
- 6Xub6o0a5vUidMWIO5f2j8v7bROD8r2ZeaB0QJYAq4Da9zMcHBjND40+oBWeRfvuM8zt IQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3rtjce0f48-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 16:50:52 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 70A24100056
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 16:50:51 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6B960226FD0
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 16:50:51 +0200 (CEST)
-Received: from localhost (10.201.22.9) by SHFDAG1NODE3.st.com (10.75.129.71)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Thu, 13 Jul
- 2023 16:50:53 +0200
-From:   Thomas BOURGOIN <thomas.bourgoin@foss.st.com>
-To:     Christophe Kerello <christophe.kerello@foss.st.com>,
-        Thomas BOURGOIN <thomas.bourgoin@foss.st.com>
-CC:     <stable@vger.kernel.org>
-Subject: [PATCH v2 4/7] crypto: stm32 - fix loop iterating through scatterlist for DMA
-Date:   Thu, 13 Jul 2023 16:50:00 +0200
-Message-ID: <20230713145003.1503178-5-thomas.bourgoin@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230713145003.1503178-1-thomas.bourgoin@foss.st.com>
-References: <20230713145003.1503178-1-thomas.bourgoin@foss.st.com>
+        with ESMTP id S232539AbjGMO67 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 10:58:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF506271F
+        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 07:57:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689260267;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=TH13VfP2krZahoQXK1VgL3LTSEeQF913+yNrAS5vlAs=;
+        b=ZHnroPlByymzareobgi7R7HPhhVPphBjGsI17e6HIaPQ4UJgFSyhDO6ynNAHi6VRgA3TOk
+        WyP9ZMXofpAMzag8mQ9dK/t/pJ4GddZT7ObpkMV/7Zb46zKDlABe/iUO/nXIaVkVBJ9u1J
+        KxhCSTc6/fRSuJA7XWMO8c9yDFWsGk8=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-7-qqqG4T1MNXmySeJdFLuYIA-1; Thu, 13 Jul 2023 10:57:45 -0400
+X-MC-Unique: qqqG4T1MNXmySeJdFLuYIA-1
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-39eab5800bdso1130268b6e.0
+        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 07:57:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689260265; x=1691852265;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TH13VfP2krZahoQXK1VgL3LTSEeQF913+yNrAS5vlAs=;
+        b=C/Up9Eo+HBNumOsacgJomcbjr0jciU2RZfctqMuwSQb7DLoxtfQZY0KOXMuLaj6agg
+         xrIPqw9foSHGEZe3IxXF2Y2I/C/XWjBLnkeE0OLHKj0vlj/Iyza/gXFgU8vmXIqMVWJ7
+         XgG5nkYtmDsKnFcev489DdA4OlfHbBgv5JzvMLErzpjFNJOCVsngWK3YIwm/N724TsJh
+         JiDB+woZF9vXcPW6H9z8Mf3Tq3U2iVOU+5ujLV9BsRQmy7erkMsZDSzTiARRWtRaaFMM
+         kioyc0jV1LHU1veqYrYNz0EWByo4lWidfgnGG8Y1iVh2dxhqqr2TeurGl3S7lBJ8wY7g
+         HCZA==
+X-Gm-Message-State: ABy/qLbSZ/VtLNrFiAFy1DT7Pvnq99UC8mu60h1WGLLMlXPwBloG/ARp
+        kgu2EMkH8ymL9fN9WByF67zC54bFXnUajOPiHT3m8UPqJ1wXXPPhecg9H+ToPjPcKhWepgMpDY1
+        LPG7GtI6EC1OIe7FQnjaeV+TBJDsu/tYPHff2QNC4
+X-Received: by 2002:a05:6808:171c:b0:3a3:4314:8dc0 with SMTP id bc28-20020a056808171c00b003a343148dc0mr1718884oib.5.1689260264753;
+        Thu, 13 Jul 2023 07:57:44 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGOhi9e7cYssZgb0dhMgRqQx9O0JPjhqJ2SiCjY+KBIIso6xxDnNiONR+hOOjcFCqb0Oz4LhwleGXARikiM/is=
+X-Received: by 2002:a05:6808:171c:b0:3a3:4314:8dc0 with SMTP id
+ bc28-20020a056808171c00b003a343148dc0mr1718874oib.5.1689260264494; Thu, 13
+ Jul 2023 07:57:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.201.22.9]
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE3.st.com
- (10.75.129.71)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-13_05,2023-07-13_01,2023-05-22_02
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+References: <20230713144029.3342637-1-aahringo@redhat.com> <2023071318-traffic-impeding-dc64@gregkh>
+In-Reply-To: <2023071318-traffic-impeding-dc64@gregkh>
+From:   Alexander Aring <aahringo@redhat.com>
+Date:   Thu, 13 Jul 2023 10:57:33 -0400
+Message-ID: <CAK-6q+j+vQL7nPnr==ZzgWfVoV9idX6k2OT0R_1DJ_qJo4J6mw@mail.gmail.com>
+Subject: Re: [PATCH v6.5-rc1 1/2] fs: dlm: introduce DLM_PLOCK_FL_NO_REPLY flag
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     teigland@redhat.com, cluster-devel@redhat.com,
+        stable@vger.kernel.org, agruenba@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,42 +74,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+Hi,
 
-We were reading the length of the scatterlist sg after copying value of
-tsg inside.
-So we are using the size of the previous scatterlist and for the first
-one we are using an unitialised value.
-Fix this by copying tsg in sg[0] before reading the size.
+On Thu, Jul 13, 2023 at 10:49=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Thu, Jul 13, 2023 at 10:40:28AM -0400, Alexander Aring wrote:
+> > This patch introduces a new flag DLM_PLOCK_FL_NO_REPLY in case an dlm
+> > plock operation should not send a reply back. Currently this is kind of
+> > being handled in DLM_PLOCK_FL_CLOSE, but DLM_PLOCK_FL_CLOSE has more
+> > meanings that it will remove all waiters for a specific nodeid/owner
+> > values in by doing a unlock operation. In case of an error in dlm user
+> > space software e.g. dlm_controld we get an reply with an error back.
+> > This cannot be matched because there is no op to match in recv_list. We
+> > filter now on DLM_PLOCK_FL_NO_REPLY in case we had an error back as
+> > reply. In newer dlm_controld version it will never send a result back
+> > when DLM_PLOCK_FL_NO_REPLY is set. This filter is a workaround to handl=
+e
+> > older dlm_controld versions.
+> >
+> > Fixes: 901025d2f319 ("dlm: make plock operation killable")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Alexander Aring <aahringo@redhat.com>
+>
+> Why is adding a new uapi a stable patch?
+>
 
-Fixes : 8a1012d3f2ab ("crypto: stm32 - Support for STM32 HASH module")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+because the user space is just to copy the flags back to the kernel. I
+thought it would work. :)
 
----
+> > ---
+> >  fs/dlm/plock.c                 | 23 +++++++++++++++++++----
+> >  include/uapi/linux/dlm_plock.h |  1 +
+> >  2 files changed, 20 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+> > index 70a4752ed913..7fe9f4b922d3 100644
+> > --- a/fs/dlm/plock.c
+> > +++ b/fs/dlm/plock.c
+> > @@ -96,7 +96,7 @@ static void do_unlock_close(const struct dlm_plock_in=
+fo *info)
+> >       op->info.end            =3D OFFSET_MAX;
+> >       op->info.owner          =3D info->owner;
+> >
+> > -     op->info.flags |=3D DLM_PLOCK_FL_CLOSE;
+> > +     op->info.flags |=3D (DLM_PLOCK_FL_CLOSE | DLM_PLOCK_FL_NO_REPLY);
+> >       send_op(op);
+> >  }
+> >
+> > @@ -293,7 +293,7 @@ int dlm_posix_unlock(dlm_lockspace_t *lockspace, u6=
+4 number, struct file *file,
+> >               op->info.owner  =3D (__u64)(long) fl->fl_owner;
+> >
+> >       if (fl->fl_flags & FL_CLOSE) {
+> > -             op->info.flags |=3D DLM_PLOCK_FL_CLOSE;
+> > +             op->info.flags |=3D (DLM_PLOCK_FL_CLOSE | DLM_PLOCK_FL_NO=
+_REPLY);
+> >               send_op(op);
+> >               rv =3D 0;
+> >               goto out;
+> > @@ -392,7 +392,7 @@ static ssize_t dev_read(struct file *file, char __u=
+ser *u, size_t count,
+> >       spin_lock(&ops_lock);
+> >       if (!list_empty(&send_list)) {
+> >               op =3D list_first_entry(&send_list, struct plock_op, list=
+);
+> > -             if (op->info.flags & DLM_PLOCK_FL_CLOSE)
+> > +             if (op->info.flags & DLM_PLOCK_FL_NO_REPLY)
+> >                       list_del(&op->list);
+> >               else
+> >                       list_move_tail(&op->list, &recv_list);
+> > @@ -407,7 +407,7 @@ static ssize_t dev_read(struct file *file, char __u=
+ser *u, size_t count,
+> >          that were generated by the vfs cleaning up for a close
+> >          (the process did not make an unlock call). */
+> >
+> > -     if (op->info.flags & DLM_PLOCK_FL_CLOSE)
+> > +     if (op->info.flags & DLM_PLOCK_FL_NO_REPLY)
+> >               dlm_release_plock_op(op);
+> >
+> >       if (copy_to_user(u, &info, sizeof(info)))
+> > @@ -433,6 +433,21 @@ static ssize_t dev_write(struct file *file, const =
+char __user *u, size_t count,
+> >       if (check_version(&info))
+> >               return -EINVAL;
+> >
+> > +     /* Some old dlm user space software will send replies back,
+> > +      * even if DLM_PLOCK_FL_NO_REPLY is set (because the flag is
+> > +      * new) e.g. if a error occur. We can't match them in recv_list
+> > +      * because they were never be part of it. We filter it here,
+> > +      * new dlm user space software will filter it in user space.
+> > +      *
+> > +      * In future this handling can be removed.
+> > +      */
+> > +     if (info.flags & DLM_PLOCK_FL_NO_REPLY) {
+> > +             pr_info("Received unexpected reply from op %d, "
+> > +                     "please update DLM user space software!\n",
+> > +                     info.optype);
+>
+> Never allow userspace to spam the kernel log.  And this is not going to
+> work, you need to handle the error and at most, report this to userspace
+> once.
+>
 
-Changes since V1:
-- Add Fixes 8a1012d3f2ab ("crypto: stm32 - Support for STM32 HASH module")
-- Add Cc: stable@vger.kernel.org
----
- drivers/crypto/stm32/stm32-hash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I will ignore handling this issue for older kernels because it would
+probably be fine that the user space never gets an invalid value
+handled.
 
-diff --git a/drivers/crypto/stm32/stm32-hash.c b/drivers/crypto/stm32/stm32-hash.c
-index c179a6c1a457..519fb716acee 100644
---- a/drivers/crypto/stm32/stm32-hash.c
-+++ b/drivers/crypto/stm32/stm32-hash.c
-@@ -678,9 +678,9 @@ static int stm32_hash_dma_send(struct stm32_hash_dev *hdev)
- 	}
- 
- 	for_each_sg(rctx->sg, tsg, rctx->nents, i) {
-+		sg[0] = *tsg;
- 		len = sg->length;
- 
--		sg[0] = *tsg;
- 		if (sg_is_last(sg)) {
- 			if (hdev->dma_mode == 1) {
- 				len = (ALIGN(sg->length, 16) - 16);
--- 
-2.25.1
+> Also, don't wrap your strings, checkpatch should have told you this.
+>
+
+That is correct and I was ignoring it as the implementation has
+another wrapped string somewhere else. It is a warning not an error.
+
+Will send a v2 to not wrap the string around and drop Fixes and cc stable.
+
+- Alex
 
