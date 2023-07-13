@@ -2,251 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06E6C75255D
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 16:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7313C752581
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 16:50:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230199AbjGMOlk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 10:41:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51460 "EHLO
+        id S230468AbjGMOuL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 10:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230081AbjGMOlk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 10:41:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED721FDB
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 07:40:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689259249;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hQx1HCdN3vWpRnuecu66mt4M6OauanxpE7AnobbO0Fw=;
-        b=HtxMPu/jG/d/w1BtK/a1iKFFTwro78FMsUCIO7tkgvnIJ/mV/ySiHMmCC7Ss+RGWJKc8Wa
-        kb2kobf+TyWOV8g7QreS1qU6KUUcxgXIumcL1Q3pQpqShfu8a/OAir0Oc4/KL+2p6ydokY
-        8WMnQHYJS+ntNDXDOPkSNhjAFnLcy6g=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-643-EbZqqwPFMM2MUs4V7DhWjQ-1; Thu, 13 Jul 2023 10:40:48 -0400
-X-MC-Unique: EbZqqwPFMM2MUs4V7DhWjQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S229750AbjGMOuK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 10:50:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5568E270B
+        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 07:49:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 115349EF603
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 14:40:48 +0000 (UTC)
-Received: from fs-i40c-03.fs.lab.eng.bos.redhat.com (fs-i40c-03.fs.lab.eng.bos.redhat.com [10.16.224.23])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D96374CD0CD;
-        Thu, 13 Jul 2023 14:40:47 +0000 (UTC)
-From:   Alexander Aring <aahringo@redhat.com>
-To:     teigland@redhat.com
-Cc:     cluster-devel@redhat.com, aahringo@redhat.com,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AAA461542
+        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 14:49:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF51C433C7;
+        Thu, 13 Jul 2023 14:49:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689259769;
+        bh=gNzRnvp7dpfaFyOH+Dfs0Pt/L1HXuYhOOR+SdyoBl0Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ma2NbpNVf4RyvhqBeKqPBOFsrWI0ZAVd7CU9+63uoFYnIWGXTQRhVWng9wUJ2wT7R
+         qRC3GfEfBrr9+mnMbmmBHROX1GlJvp2dnudr49dvK7LrQLudAO6kDsGHOqT6BhMhIZ
+         Q71VkeJDnL7qhQBFdxECJBj+vWHSle/Ay/Ky/0rU=
+Date:   Thu, 13 Jul 2023 16:49:26 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Alexander Aring <aahringo@redhat.com>
+Cc:     teigland@redhat.com, cluster-devel@redhat.com,
         stable@vger.kernel.org, agruenba@redhat.com
-Subject: [PATCH v6.5-rc1 2/2] fs: dlm: allow to F_SETLKW getting interrupted
-Date:   Thu, 13 Jul 2023 10:40:29 -0400
-Message-Id: <20230713144029.3342637-2-aahringo@redhat.com>
-In-Reply-To: <20230713144029.3342637-1-aahringo@redhat.com>
+Subject: Re: [PATCH v6.5-rc1 1/2] fs: dlm: introduce DLM_PLOCK_FL_NO_REPLY
+ flag
+Message-ID: <2023071318-traffic-impeding-dc64@gregkh>
 References: <20230713144029.3342637-1-aahringo@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230713144029.3342637-1-aahringo@redhat.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This patch implements dlm plock F_SETLKW interruption feature. If the
-pending plock operation is not sent to user space yet it can simple be
-dropped out of the send_list. In case it's already being sent we need to
-try to remove the waiters in dlm user space tool. If it was successful a
-reply with DLM_PLOCK_OP_CANCEL optype instead of DLM_PLOCK_OP_LOCK comes
-back (flag DLM_PLOCK_FL_NO_REPLY was then being cleared in user space)
-to signal the cancellation was successful. If a result with optype
-DLM_PLOCK_OP_LOCK came back then the cancellation was not successful.
+On Thu, Jul 13, 2023 at 10:40:28AM -0400, Alexander Aring wrote:
+> This patch introduces a new flag DLM_PLOCK_FL_NO_REPLY in case an dlm
+> plock operation should not send a reply back. Currently this is kind of
+> being handled in DLM_PLOCK_FL_CLOSE, but DLM_PLOCK_FL_CLOSE has more
+> meanings that it will remove all waiters for a specific nodeid/owner
+> values in by doing a unlock operation. In case of an error in dlm user
+> space software e.g. dlm_controld we get an reply with an error back.
+> This cannot be matched because there is no op to match in recv_list. We
+> filter now on DLM_PLOCK_FL_NO_REPLY in case we had an error back as
+> reply. In newer dlm_controld version it will never send a result back
+> when DLM_PLOCK_FL_NO_REPLY is set. This filter is a workaround to handle
+> older dlm_controld versions.
+> 
+> Fixes: 901025d2f319 ("dlm: make plock operation killable")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alexander Aring <aahringo@redhat.com>
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/plock.c                 | 91 ++++++++++++++++++++++++----------
- include/uapi/linux/dlm_plock.h |  1 +
- 2 files changed, 66 insertions(+), 26 deletions(-)
+Why is adding a new uapi a stable patch?
 
-diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-index 7fe9f4b922d3..5faa428fff1a 100644
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -29,6 +29,9 @@ struct plock_async_data {
- 
- struct plock_op {
- 	struct list_head list;
-+#define DLM_PLOCK_OP_FLAG_SENT		0
-+#define DLM_PLOCK_OP_FLAG_INTERRUPTED	1
-+	unsigned long flags;
- 	int done;
- 	struct dlm_plock_info info;
- 	/* if set indicates async handling */
-@@ -74,30 +77,25 @@ static void send_op(struct plock_op *op)
- 	wake_up(&send_wq);
- }
- 
--/* If a process was killed while waiting for the only plock on a file,
--   locks_remove_posix will not see any lock on the file so it won't
--   send an unlock-close to us to pass on to userspace to clean up the
--   abandoned waiter.  So, we have to insert the unlock-close when the
--   lock call is interrupted. */
--
--static void do_unlock_close(const struct dlm_plock_info *info)
-+static int do_lock_cancel(const struct plock_op *orig_op)
- {
- 	struct plock_op *op;
- 
- 	op = kzalloc(sizeof(*op), GFP_NOFS);
- 	if (!op)
--		return;
-+		return -ENOMEM;
-+
-+	op->info = orig_op->info;
-+	op->info.optype = DLM_PLOCK_OP_CANCEL;
-+	op->info.flags = DLM_PLOCK_FL_NO_REPLY;
- 
--	op->info.optype		= DLM_PLOCK_OP_UNLOCK;
--	op->info.pid		= info->pid;
--	op->info.fsid		= info->fsid;
--	op->info.number		= info->number;
--	op->info.start		= 0;
--	op->info.end		= OFFSET_MAX;
--	op->info.owner		= info->owner;
--
--	op->info.flags |= (DLM_PLOCK_FL_CLOSE | DLM_PLOCK_FL_NO_REPLY);
- 	send_op(op);
-+	wait_event(recv_wq, (orig_op->done != 0));
-+
-+	if (orig_op->info.optype == DLM_PLOCK_OP_CANCEL)
-+		return 0;
-+
-+	return 1;
- }
- 
- int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
-@@ -156,7 +154,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 	send_op(op);
- 
- 	if (op->info.wait) {
--		rv = wait_event_killable(recv_wq, (op->done != 0));
-+		rv = wait_event_interruptible(recv_wq, (op->done != 0));
- 		if (rv == -ERESTARTSYS) {
- 			spin_lock(&ops_lock);
- 			/* recheck under ops_lock if we got a done != 0,
-@@ -166,17 +164,37 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 				spin_unlock(&ops_lock);
- 				goto do_lock_wait;
- 			}
--			list_del(&op->list);
--			spin_unlock(&ops_lock);
-+
-+			if (!test_bit(DLM_PLOCK_OP_FLAG_SENT, &op->flags)) {
-+				/* part of send_list, user never saw the op */
-+				list_del(&op->list);
-+				spin_unlock(&ops_lock);
-+				rv = -EINTR;
-+			} else {
-+				set_bit(DLM_PLOCK_OP_FLAG_INTERRUPTED, &op->flags);
-+				spin_unlock(&ops_lock);
-+				rv = do_lock_cancel(op);
-+				switch (rv) {
-+				case 0:
-+					rv = -EINTR;
-+					break;
-+				case 1:
-+					/* cancellation wasn't successful but op is done */
-+					goto do_lock_wait;
-+				default:
-+					/* internal error doing cancel we need to wait */
-+					goto wait;
-+				}
-+			}
- 
- 			log_debug(ls, "%s: wait interrupted %x %llx pid %d",
- 				  __func__, ls->ls_global_id,
- 				  (unsigned long long)number, op->info.pid);
--			do_unlock_close(&op->info);
- 			dlm_release_plock_op(op);
- 			goto out;
- 		}
- 	} else {
-+wait:
- 		wait_event(recv_wq, (op->done != 0));
- 	}
- 
-@@ -392,10 +410,12 @@ static ssize_t dev_read(struct file *file, char __user *u, size_t count,
- 	spin_lock(&ops_lock);
- 	if (!list_empty(&send_list)) {
- 		op = list_first_entry(&send_list, struct plock_op, list);
--		if (op->info.flags & DLM_PLOCK_FL_NO_REPLY)
-+		if (op->info.flags & DLM_PLOCK_FL_NO_REPLY) {
- 			list_del(&op->list);
--		else
-+		} else {
- 			list_move_tail(&op->list, &recv_list);
-+			set_bit(DLM_PLOCK_OP_FLAG_SENT, &op->flags);
-+		}
- 		memcpy(&info, &op->info, sizeof(info));
- 	}
- 	spin_unlock(&ops_lock);
-@@ -457,6 +477,27 @@ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
- 	spin_lock(&ops_lock);
- 	if (info.wait) {
- 		list_for_each_entry(iter, &recv_list, list) {
-+			/* A very specific posix lock case allows two
-+			 * lock request with the same meaning by using
-+			 * threads. It makes no sense from the application
-+			 * to do such request, however it is possible.
-+			 * We need to check the state for cancellation because
-+			 * we need to know the instance which is interrupted
-+			 * if two or more of the "same" lock requests are
-+			 * in waiting state and got interrupted.
-+			 *
-+			 * TODO we should move to a instance reference from
-+			 * request and reply and not go over lock states, but
-+			 * it seems going over lock states and get the instance
-+			 * does not make any problems (at least there were no
-+			 * issues found yet) but it's much cleaner to not think
-+			 * about all possible special cases and states to instance
-+			 * has no 1:1 mapping anymore.
-+			 */
-+			if (info.optype == DLM_PLOCK_OP_CANCEL &&
-+			    !test_bit(DLM_PLOCK_OP_FLAG_INTERRUPTED, &iter->flags))
-+				continue;
-+
- 			if (iter->info.fsid == info.fsid &&
- 			    iter->info.number == info.number &&
- 			    iter->info.owner == info.owner &&
-@@ -480,9 +521,7 @@ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
- 
- 	if (op) {
- 		/* Sanity check that op and info match. */
--		if (info.wait)
--			WARN_ON(op->info.optype != DLM_PLOCK_OP_LOCK);
--		else
-+		if (!info.wait)
- 			WARN_ON(op->info.fsid != info.fsid ||
- 				op->info.number != info.number ||
- 				op->info.owner != info.owner ||
-diff --git a/include/uapi/linux/dlm_plock.h b/include/uapi/linux/dlm_plock.h
-index 8dfa272c929a..9c4c083c824a 100644
---- a/include/uapi/linux/dlm_plock.h
-+++ b/include/uapi/linux/dlm_plock.h
-@@ -22,6 +22,7 @@ enum {
- 	DLM_PLOCK_OP_LOCK = 1,
- 	DLM_PLOCK_OP_UNLOCK,
- 	DLM_PLOCK_OP_GET,
-+	DLM_PLOCK_OP_CANCEL,
- };
- 
- #define DLM_PLOCK_FL_CLOSE 1
--- 
-2.31.1
+> ---
+>  fs/dlm/plock.c                 | 23 +++++++++++++++++++----
+>  include/uapi/linux/dlm_plock.h |  1 +
+>  2 files changed, 20 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+> index 70a4752ed913..7fe9f4b922d3 100644
+> --- a/fs/dlm/plock.c
+> +++ b/fs/dlm/plock.c
+> @@ -96,7 +96,7 @@ static void do_unlock_close(const struct dlm_plock_info *info)
+>  	op->info.end		= OFFSET_MAX;
+>  	op->info.owner		= info->owner;
+>  
+> -	op->info.flags |= DLM_PLOCK_FL_CLOSE;
+> +	op->info.flags |= (DLM_PLOCK_FL_CLOSE | DLM_PLOCK_FL_NO_REPLY);
+>  	send_op(op);
+>  }
+>  
+> @@ -293,7 +293,7 @@ int dlm_posix_unlock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+>  		op->info.owner	= (__u64)(long) fl->fl_owner;
+>  
+>  	if (fl->fl_flags & FL_CLOSE) {
+> -		op->info.flags |= DLM_PLOCK_FL_CLOSE;
+> +		op->info.flags |= (DLM_PLOCK_FL_CLOSE | DLM_PLOCK_FL_NO_REPLY);
+>  		send_op(op);
+>  		rv = 0;
+>  		goto out;
+> @@ -392,7 +392,7 @@ static ssize_t dev_read(struct file *file, char __user *u, size_t count,
+>  	spin_lock(&ops_lock);
+>  	if (!list_empty(&send_list)) {
+>  		op = list_first_entry(&send_list, struct plock_op, list);
+> -		if (op->info.flags & DLM_PLOCK_FL_CLOSE)
+> +		if (op->info.flags & DLM_PLOCK_FL_NO_REPLY)
+>  			list_del(&op->list);
+>  		else
+>  			list_move_tail(&op->list, &recv_list);
+> @@ -407,7 +407,7 @@ static ssize_t dev_read(struct file *file, char __user *u, size_t count,
+>  	   that were generated by the vfs cleaning up for a close
+>  	   (the process did not make an unlock call). */
+>  
+> -	if (op->info.flags & DLM_PLOCK_FL_CLOSE)
+> +	if (op->info.flags & DLM_PLOCK_FL_NO_REPLY)
+>  		dlm_release_plock_op(op);
+>  
+>  	if (copy_to_user(u, &info, sizeof(info)))
+> @@ -433,6 +433,21 @@ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
+>  	if (check_version(&info))
+>  		return -EINVAL;
+>  
+> +	/* Some old dlm user space software will send replies back,
+> +	 * even if DLM_PLOCK_FL_NO_REPLY is set (because the flag is
+> +	 * new) e.g. if a error occur. We can't match them in recv_list
+> +	 * because they were never be part of it. We filter it here,
+> +	 * new dlm user space software will filter it in user space.
+> +	 *
+> +	 * In future this handling can be removed.
+> +	 */
+> +	if (info.flags & DLM_PLOCK_FL_NO_REPLY) {
+> +		pr_info("Received unexpected reply from op %d, "
+> +			"please update DLM user space software!\n",
+> +			info.optype);
 
+Never allow userspace to spam the kernel log.  And this is not going to
+work, you need to handle the error and at most, report this to userspace
+once.
+
+Also, don't wrap your strings, checkpatch should have told you this.
+
+thanks,
+
+greg k-h
