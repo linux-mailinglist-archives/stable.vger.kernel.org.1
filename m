@@ -2,21 +2,21 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68A52752045
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 13:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6775B7520B3
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 14:00:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234641AbjGMLlj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 07:41:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45038 "EHLO
+        id S233139AbjGMMAw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 08:00:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234755AbjGMLlF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 07:41:05 -0400
+        with ESMTP id S234531AbjGMMAu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 08:00:50 -0400
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C99C62D4C;
-        Thu, 13 Jul 2023 04:40:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4F0A1FC9;
+        Thu, 13 Jul 2023 05:00:47 -0700 (PDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
-        id 908F36732D; Thu, 13 Jul 2023 13:40:29 +0200 (CEST)
-Date:   Thu, 13 Jul 2023 13:40:29 +0200
+        id 84E3C6732D; Thu, 13 Jul 2023 14:00:43 +0200 (CEST)
+Date:   Thu, 13 Jul 2023 14:00:42 +0200
 From:   Christoph Hellwig <hch@lst.de>
 To:     Christian Brauner <brauner@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -26,32 +26,31 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-fsdevel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
         stable@vger.kernel.org
 Subject: Re: [PATCH v2] attr: block mode changes of symlinks
-Message-ID: <20230713114029.GA23375@lst.de>
+Message-ID: <20230713120042.GA23709@lst.de>
 References: <20230712-vfs-chmod-symlinks-v2-1-08cfb92b61dd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20230712-vfs-chmod-symlinks-v2-1-08cfb92b61dd@kernel.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Looks good:
+On Wed, Jul 12, 2023 at 08:58:49PM +0200, Christian Brauner wrote:
+> (1) Filesystems that don't implement a i_op->setattr() for symlinks.
+> 
+>     Such filesystems may or may not know that without i_op->setattr()
+>     defined, notify_change() falls back to simple_setattr() causing the
+>     inode's mode in the inode cache to be changed.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-
-one minor nitpick below:
-
->  	if ((ia_valid & ATTR_MODE)) {
-> +		if (S_ISLNK(inode->i_mode))
-> +			return -EOPNOTSUPP;
-
-Maybe some of the rationale on why we have this check from the commit
-log should go here?
+Btw, I think this fallback is pretty harmful.  At some point we should
+probably start auditing all instances and wire the ones up that should
+be using simple_setattr (probably mostly just in-memory file systems)
+and refuse attribute changes if .setattr is NULL.
 
