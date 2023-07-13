@@ -2,113 +2,139 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 927AD751F79
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 13:06:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1490A751FCF
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 13:21:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232542AbjGMLGV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 07:06:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51272 "EHLO
+        id S232547AbjGMLVz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 07:21:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233149AbjGMLGU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 07:06:20 -0400
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 801B426A0
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 04:06:11 -0700 (PDT)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-577ddda6ab1so7994167b3.0
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 04:06:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689246370; x=1691838370;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rU37mFTJD2ihTlHVA/622ea5niPv5pR87SNHOeXdqbo=;
-        b=zD2pOBqg0UxLMYk7lovuPhL4AZ891i7DGRJyYnEhT7/3B0HOgWzT7T10n5UCj5yACX
-         QXx2wdV1FMaZMvGwqs05xaMRiJBImblR+C6Cp8rOT+MWvCmKyMPu54MQuWnP5F3BVlN+
-         2woVYyF591A00TL+E45aDPxqIAwRsVfeOWxGoOGn4HkYSV+Km5oqb8lFtD2EdgDNNGMT
-         7u9jwDRVc07LePELQTu9NLbkPJnDVy6JM9WJLGxiI7JVSk3ciaCnVCgzenHQCuYlmj/7
-         jmY3I88pniSBSN3Ld3eC70a/7OS/VW6mBZg54lkyOF+qMb20RjK4bDpsvhjYKkIJPf2L
-         T4mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689246370; x=1691838370;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rU37mFTJD2ihTlHVA/622ea5niPv5pR87SNHOeXdqbo=;
-        b=goUbqDFdOnAtTEeZLVeCLNjv5Vn55L+DMjJKhRS7ZmLjqu8ZtAPfgjSY+mu8FKdvrO
-         sLCKWE+kCbteSsRUOh+bcNTkoVPWIsTzUnizbkrADseSGQ+XD7QUXbJeFqKdpimF1/is
-         VGLv+JYnCcJu9XDmJzp4PSlNmMJmcZm+XzMDduZ0uQo0tvCYZOx3l8yNqsj7j2aMHkLk
-         hvnl8HdBgd8ZKpFS8IZ9cRr8YZc68rm+03qAndN9GNPzYYhzQqsLqAUZ2Yzpk3spqjkc
-         C/4A4AJxkTuTjdiiY1+W8SWmcPXRVVolXDzo1yQroCn+naU8WWW7TM0IboPdqmmPCt41
-         TVHA==
-X-Gm-Message-State: ABy/qLa0Eh6tbBQkctAPzadkR7Yn6zAD2u+9rv7jhD3+gkOsVkP5eYTv
-        GRK9Cp+DV3IHVJemmRXfQ/uVKgNT2aB0MRFK4/J8wA==
-X-Google-Smtp-Source: APBJJlEeEyo7n9uRnp7pby4ugQLXjOATQgBLLR7fdtxhNtEtRowwGjZ2qpZCwEAf6C0TMmODlBHxXhF+SMLT3s7c5hs=
-X-Received: by 2002:a81:488a:0:b0:56c:f547:e058 with SMTP id
- v132-20020a81488a000000b0056cf547e058mr5155021ywa.18.1689246370067; Thu, 13
- Jul 2023 04:06:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230627120549.2400325-1-saproj@gmail.com>
-In-Reply-To: <20230627120549.2400325-1-saproj@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 13 Jul 2023 13:05:34 +0200
-Message-ID: <CAPDyKFr4eZQXUdjY6uAnftPAC8YGk=0zkn2a8ndWbO00cRo8zA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: moxart: read scr register without changing byte order
-To:     Sergei Antonov <saproj@gmail.com>
-Cc:     linux-mmc@vger.kernel.org, Jonas Jensen <jonas.jensen@gmail.com>,
+        with ESMTP id S233053AbjGMLVy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 07:21:54 -0400
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0801F26AE;
+        Thu, 13 Jul 2023 04:21:28 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 11B531BF208;
+        Thu, 13 Jul 2023 11:21:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1689247287;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=iaGYvCgK+q34WSSKPrB7Pwd2mXJV/fa98+tweN5VGpM=;
+        b=FO5o8KINBx1x1L7zhGkRhU8SP3FUAyfCOs7X7oc5mb8/MVXkEecsnsdJBw2FHsTj//zXWx
+        JF2fSPm9nqxFZBGb9/5AQfXTfkVzUIFwIMQ3+3JQ8NU7g00x4gaxx20bWeZw1UDPtudnJC
+        cdfX+WmX/UYI33ykOCFMb0uQp/Cxwr6pw7k3pAuMO0FwYoAxb9y3X0ZCEksDVf+U0xDp0Q
+        ROegZkDmZ9o0YOSgVxwKFckGtsSlOhVTvGGbLAPoblZe2NF/htdfOa9svxJ+rQtYCCxRW9
+        vw4wYqRsy4vLjPqfspqG4VheFVKN5AjaKX1IgbwVc2D4zZpjsTCmXCK5NQl33w==
+From:   Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To:     James Schulman <james.schulman@cirrus.com>,
+        David Rhodes <david.rhodes@cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
+        linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
+Date:   Thu, 13 Jul 2023 13:21:12 +0200
+Message-ID: <20230713112112.778576-1-thomas.petazzoni@bootlin.com>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: thomas.petazzoni@bootlin.com
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 27 Jun 2023 at 14:06, Sergei Antonov <saproj@gmail.com> wrote:
->
-> Conversion from big-endian to native is done in a common function
-> mmc_app_send_scr(). Converting in moxart_transfer_pio() is extra.
-> Double conversion on a LE system returns an incorrect SCR value,
-> leads to errors:
->
-> mmc0: unrecognised SCR structure version 8
->
-> Fixes: 1b66e94e6b99 ("mmc: moxart: Add MOXA ART SD/MMC driver")
-> Signed-off-by: Sergei Antonov <saproj@gmail.com>
-> Cc: Jonas Jensen <jonas.jensen@gmail.com>
-> Cc: stable@vger.kernel.org
+In commit 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table
+pointer"), 9 years ago, some random guy fixed the cs42l51 after it was
+split into a core part and an I2C part to properly match based on a
+Device Tree compatible string.
 
-Applied for fixes, thanks!
+However, the fix in this commit is wrong: the MODULE_DEVICE_TABLE(of,
+....) is in the core part of the driver, not the I2C part. Therefore,
+automatic module loading based on module.alias, based on matching with
+the DT compatible string, loads the core part of the driver, but not
+the I2C part. And threfore, the i2c_driver is not registered, and the
+codec is not known to the system, nor matched with a DT node with the
+corresponding compatible string.
 
-Kind regards
-Uffe
+In order to fix that, we move the MODULE_DEVICE_TABLE(of, ...) into
+the I2C part of the driver. The cs42l51_of_match[] array is also moved
+as well, as it is not possible to have this definition in one file,
+and the MODULE_DEVICE_TABLE(of, ...) invocation in another file, due
+to how MODULE_DEVICE_TABLE works.
 
+Thanks to this commit, the I2C part of the driver now properly
+autoloads, and thanks to its dependency on the core part, the core
+part gets autoloaded as well, resulting in a functional sound card
+without having to manually load kernel modules.
 
-> ---
->  drivers/mmc/host/moxart-mmc.c | 8 +-------
->  1 file changed, 1 insertion(+), 7 deletions(-)
->
-> diff --git a/drivers/mmc/host/moxart-mmc.c b/drivers/mmc/host/moxart-mmc.c
-> index 2d002c81dcf3..d0d6ffcf78d4 100644
-> --- a/drivers/mmc/host/moxart-mmc.c
-> +++ b/drivers/mmc/host/moxart-mmc.c
-> @@ -338,13 +338,7 @@ static void moxart_transfer_pio(struct moxart_host *host)
->                                 return;
->                         }
->                         for (len = 0; len < remain && len < host->fifo_width;) {
-> -                               /* SCR data must be read in big endian. */
-> -                               if (data->mrq->cmd->opcode == SD_APP_SEND_SCR)
-> -                                       *sgp = ioread32be(host->base +
-> -                                                         REG_DATA_WINDOW);
-> -                               else
-> -                                       *sgp = ioread32(host->base +
-> -                                                       REG_DATA_WINDOW);
-> +                               *sgp = ioread32(host->base + REG_DATA_WINDOW);
->                                 sgp++;
->                                 len += 4;
->                         }
-> --
-> 2.37.2
->
+Fixes: 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table pointer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ sound/soc/codecs/cs42l51-i2c.c | 6 ++++++
+ sound/soc/codecs/cs42l51.c     | 7 -------
+ sound/soc/codecs/cs42l51.h     | 1 -
+ 3 files changed, 6 insertions(+), 8 deletions(-)
+
+diff --git a/sound/soc/codecs/cs42l51-i2c.c b/sound/soc/codecs/cs42l51-i2c.c
+index b2106ff6a7cb..e7db7bcd0296 100644
+--- a/sound/soc/codecs/cs42l51-i2c.c
++++ b/sound/soc/codecs/cs42l51-i2c.c
+@@ -19,6 +19,12 @@ static struct i2c_device_id cs42l51_i2c_id[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, cs42l51_i2c_id);
+ 
++const struct of_device_id cs42l51_of_match[] = {
++	{ .compatible = "cirrus,cs42l51", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, cs42l51_of_match);
++
+ static int cs42l51_i2c_probe(struct i2c_client *i2c)
+ {
+ 	struct regmap_config config;
+diff --git a/sound/soc/codecs/cs42l51.c b/sound/soc/codecs/cs42l51.c
+index a67cd3ee84e0..a7079ae0ca09 100644
+--- a/sound/soc/codecs/cs42l51.c
++++ b/sound/soc/codecs/cs42l51.c
+@@ -823,13 +823,6 @@ int __maybe_unused cs42l51_resume(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(cs42l51_resume);
+ 
+-const struct of_device_id cs42l51_of_match[] = {
+-	{ .compatible = "cirrus,cs42l51", },
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(of, cs42l51_of_match);
+-EXPORT_SYMBOL_GPL(cs42l51_of_match);
+-
+ MODULE_AUTHOR("Arnaud Patard <arnaud.patard@rtp-net.org>");
+ MODULE_DESCRIPTION("Cirrus Logic CS42L51 ALSA SoC Codec Driver");
+ MODULE_LICENSE("GPL");
+diff --git a/sound/soc/codecs/cs42l51.h b/sound/soc/codecs/cs42l51.h
+index a79343e8a54e..125703ede113 100644
+--- a/sound/soc/codecs/cs42l51.h
++++ b/sound/soc/codecs/cs42l51.h
+@@ -16,7 +16,6 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap);
+ void cs42l51_remove(struct device *dev);
+ int __maybe_unused cs42l51_suspend(struct device *dev);
+ int __maybe_unused cs42l51_resume(struct device *dev);
+-extern const struct of_device_id cs42l51_of_match[];
+ 
+ #define CS42L51_CHIP_ID			0x1B
+ #define CS42L51_CHIP_REV_A		0x00
+-- 
+2.41.0
+
