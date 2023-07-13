@@ -2,161 +2,202 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 247D575193D
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 09:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 698B6751958
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 09:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233391AbjGMHBk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 03:01:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60240 "EHLO
+        id S234038AbjGMHIA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 03:08:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231431AbjGMHBg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 03:01:36 -0400
-X-Greylist: delayed 86195 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 13 Jul 2023 00:01:35 PDT
-Received: from mail.3ffe.de (0001.3ffe.de [159.69.201.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67D63119;
-        Thu, 13 Jul 2023 00:01:35 -0700 (PDT)
-Received: from 3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        with ESMTP id S234181AbjGMHH5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 03:07:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDE3272B;
+        Thu, 13 Jul 2023 00:07:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mail.3ffe.de (Postfix) with ESMTPSA id 6F6D2274;
-        Thu, 13 Jul 2023 09:01:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
-        t=1689231693;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4KyJcPj86wpm+joAeHLW9qgmm3L3ws49NQpsZj9t5vI=;
-        b=wG4HOiPI5/V1Jo2HNE4ElQjSmLJMfuVJyMb1Gt/nwycMmhv6wN+Ze/Xc6OslEkLcqMP6oi
-        x5ovQuQONhXPht7KgSdBZb+unayfafqg5YV7zgSy12N2RdANEAgEAVeMHsBClNqIvbXhs3
-        zwT+4wOWG4J2vCBJMdPZX/SKq6ehkxJRbZfNdOEdAyketbr5VyP5H8yASFSOHW+1C+0jUp
-        GnNH6c2IrtS0EcSB+ON4JtDdy54pAtUzl+6VSzitP7zV3pVBGcEtQMhziF5u+U/aeIhFIr
-        2a6I3xO/4/aTxlYxYjwnxe5zv9+o19/o/kuLqWJFKEz17TwOcceD1m9gJN5mOg==
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 702AC61A35;
+        Thu, 13 Jul 2023 07:07:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DCCC433C7;
+        Thu, 13 Jul 2023 07:07:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689232053;
+        bh=c0yEUSYW3jDU+Bip/M9LxYAfyMmi3Ngn1ODIWEjnvyo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=b6gUMZiiVCVDYqCvJtHwcRPdNqvPw153scobiJcGpIWJO0rBAdLU76aKtG4eyI+IW
+         70eDzeBntwwiCX7DYQHuqGO6vfhd1m0c3IPbZMEdlptwRTGNO2TQg9TqRFtyZOleoL
+         lVcvtz/sYHew6bMRrJl+j9n5sqCuylffp5WQomxaj+R8MSBU/FrxrXtaKYAeaA2eWq
+         B9w9IKubQWlmoC3KiqqmxuZbz6cCwJl5aZ6087wTqG6Rf791LKDK7ryUuGqtFrgrLo
+         4Oc+ZIp6ZQczEhLtb9IyZavqVNR2sT8MEJvX8sO+v9rTN+KAQ23+mUU/cHrfhONIOd
+         GKkQiaSOyk1lA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1qJqQF-00ChZk-JE;
+        Thu, 13 Jul 2023 08:07:31 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org,
+        Xiang Chen <chenxiang66@hisilicon.com>
+Subject: [PATCH] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t preemption
+Date:   Thu, 13 Jul 2023 08:06:57 +0100
+Message-Id: <20230713070657.3873244-1-maz@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Date:   Thu, 13 Jul 2023 09:01:33 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] mtd: spi-nor: Correct flags for Winbond w25q128
-In-Reply-To: <f00fa2ae-6d4a-90cb-3724-2bedb96cb4fb@linaro.org>
-References: <20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org>
- <f00fa2ae-6d4a-90cb-3724-2bedb96cb4fb@linaro.org>
-Message-ID: <0525440a652854a2a575256cd07d3559@walle.cc>
-X-Sender: michael@walle.cc
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, james.morse@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org, chenxiang66@hisilicon.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Xiang reports that VMs occasionally fail to boot on GICv4.1 systems when
+running a preemptible kernel, as it is possible that a vCPU is blocked
+without requesting a doorbell interrupt.
 
-Am 2023-07-13 05:32, schrieb Tudor Ambarus:
-> Hi, Linus,
-> 
-> On 13.07.2023 00:59, Linus Walleij wrote:
->> The Winbond "w25q128" (actual vendor name W25Q128JV)
->> has exactly the same flags as the sibling device
->> "w25q128jv". The devices both require unlocking to
->> enable write access.
->> 
->> The actual product naming between devices vs the
->> Linux strings in winbond.c:
->> 
->> 0xef4018: "w25q128"   W25Q128JV-IM/JM
->> 0xef7018: "w25q128jv" W25Q128JV-IN/IQ/JQ
->> 
->> The latter device, "w25q128jv" supports features
->> named DTQ and QPI, otherwise it is the same.
->> 
->> Not having the right flags has the annoying side
->> effect that write access does not work.
-> 
-> I guess you refer to the locking flags. Probably your flash has the non
-> volatile block protection (BP) bits from the Status Register set, which
-> means the entire flash is write protected. The factory default for 
-> these
-> bits is 0/disabled on this flash so someone must have played with them.
-> The reason why one may want write protection set is to avoid 
-> inadvertent
-> writes during power-up.
-> One can control whether to disable the software write protection at 
-> boot
-> time with the MTD_SPI_NOR_SWP_ configs.
->> 
->> After this patch I can write to the flash on the
->> Inteno XG6846 router.
->> 
->> The flash memory also supports dual and quad SPI
->> modes. This does not currently manifest, but by
-> 
-> The fasted mode is chosen after SFDP parsing, so you should use quad
-> reads if your controller also supports 4 I/O lines.
->> turning on SFDP parsing, the right SPI modes are
->> emitted in
->> /sys/kernel/debug/spi-nor/spi1.0/capabilities
->> for this chip, so we also turn on this.
->> 
->> Cc: stable@vger.kernel.org
->> Suggested-by: Michael Walle <michael@walle.cc>
->> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
->> ---
->> Changes in v2:
->> - Only add the write access flags.
->> - Use SFDP parsing to properly detect the various
->>   available SPI modes.
->> - Link to v1: 
->> https://lore.kernel.org/r/20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org
->> ---
->>  drivers/mtd/spi-nor/winbond.c | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->> 
->> diff --git a/drivers/mtd/spi-nor/winbond.c 
->> b/drivers/mtd/spi-nor/winbond.c
->> index 834d6ba5ce70..6c82e525c801 100644
->> --- a/drivers/mtd/spi-nor/winbond.c
->> +++ b/drivers/mtd/spi-nor/winbond.c
->> @@ -121,7 +121,8 @@ static const struct flash_info winbond_nor_parts[] 
->> = {
->>  	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
->>  		NO_SFDP_FLAGS(SECT_4K) },
->>  	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
-> 
-> while here try, using INFO with INFO(0xef4018, 0, 0, 0), those
-> parameters shall be discovered at run-time, so we prepare to get rid of
-> explicitly setting them sooner or later.
+The issue is that any preemption that occurs between vgic_v4_put() and
+schedule() on the block path will mark the vPE as nonresident and *not*
+request a doorbell irq. This occurs because when the vcpu thread is
+resumed on its way to block, vcpu_load() will make the vPE resident
+again. Once the vcpu actually blocks, we don't request a doorbell
+anymore, and the vcpu won't be woken up on interrupt delivery.
 
-This is an entry matching various flash families from Winbond, see my
-reply in v1. I'm not sure we should remove these as we could break the
-older ones, which might or might not have SFDP tables. We don't know.
+Fix it by tracking that we're entering WFI, and key the doorbell
+request on that flag. This allows us not to make the vPE resident
+when going through a preempt/schedule cycle, meaning we don't lose
+any state.
 
-> 
->> -		NO_SFDP_FLAGS(SECT_4K) },
+Cc: stable@vger.kernel.org
+Fixes: 8e01d9a396e6 ("KVM: arm64: vgic-v4: Move the GICv4 residency flow to be driven by vcpu_load/put")
+Reported-by: Xiang Chen <chenxiang66@hisilicon.com>
+Suggested-by: Zenghui Yu <yuzenghui@huawei.com>
+Tested-by: Xiang Chen <chenxiang66@hisilicon.com>
+Co-developed-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/include/asm/kvm_host.h | 2 ++
+ arch/arm64/kvm/arm.c              | 6 ++++--
+ arch/arm64/kvm/vgic/vgic-v3.c     | 2 +-
+ arch/arm64/kvm/vgic/vgic-v4.c     | 7 +++++--
+ include/kvm/arm_vgic.h            | 2 +-
+ 5 files changed, 13 insertions(+), 6 deletions(-)
 
-Thus, I'd also keep this one.
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index 1e768481f62f..914fc9c26e40 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -817,6 +817,8 @@ struct kvm_vcpu_arch {
+ #define DBG_SS_ACTIVE_PENDING	__vcpu_single_flag(sflags, BIT(5))
+ /* PMUSERENR for the guest EL0 is on physical CPU */
+ #define PMUSERENR_ON_CPU	__vcpu_single_flag(sflags, BIT(6))
++/* WFI instruction trapped */
++#define IN_WFI			__vcpu_single_flag(sflags, BIT(7))
+ 
+ /* vcpu entered with HCR_EL2.E2H set */
+ #define VCPU_HCR_E2H		__vcpu_single_flag(oflags, BIT(0))
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 236c5f1c9090..cf208d30a9ea 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -725,13 +725,15 @@ void kvm_vcpu_wfi(struct kvm_vcpu *vcpu)
+ 	 */
+ 	preempt_disable();
+ 	kvm_vgic_vmcr_sync(vcpu);
+-	vgic_v4_put(vcpu, true);
++	vcpu_set_flag(vcpu, IN_WFI);
++	vgic_v4_put(vcpu);
+ 	preempt_enable();
+ 
+ 	kvm_vcpu_halt(vcpu);
+ 	vcpu_clear_flag(vcpu, IN_WFIT);
+ 
+ 	preempt_disable();
++	vcpu_clear_flag(vcpu, IN_WFI);
+ 	vgic_v4_load(vcpu);
+ 	preempt_enable();
+ }
+@@ -799,7 +801,7 @@ static int check_vcpu_requests(struct kvm_vcpu *vcpu)
+ 		if (kvm_check_request(KVM_REQ_RELOAD_GICv4, vcpu)) {
+ 			/* The distributor enable bits were changed */
+ 			preempt_disable();
+-			vgic_v4_put(vcpu, false);
++			vgic_v4_put(vcpu);
+ 			vgic_v4_load(vcpu);
+ 			preempt_enable();
+ 		}
+diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
+index 49d35618d576..df61ead7c757 100644
+--- a/arch/arm64/kvm/vgic/vgic-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-v3.c
+@@ -780,7 +780,7 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
+ 	 * done a vgic_v4_put) and when running a nested guest (the
+ 	 * vPE was never resident in order to generate a doorbell).
+ 	 */
+-	WARN_ON(vgic_v4_put(vcpu, false));
++	WARN_ON(vgic_v4_put(vcpu));
+ 
+ 	vgic_v3_vmcr_sync(vcpu);
+ 
+diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
+index c1c28fe680ba..339a55194b2c 100644
+--- a/arch/arm64/kvm/vgic/vgic-v4.c
++++ b/arch/arm64/kvm/vgic/vgic-v4.c
+@@ -336,14 +336,14 @@ void vgic_v4_teardown(struct kvm *kvm)
+ 	its_vm->vpes = NULL;
+ }
+ 
+-int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db)
++int vgic_v4_put(struct kvm_vcpu *vcpu)
+ {
+ 	struct its_vpe *vpe = &vcpu->arch.vgic_cpu.vgic_v3.its_vpe;
+ 
+ 	if (!vgic_supports_direct_msis(vcpu->kvm) || !vpe->resident)
+ 		return 0;
+ 
+-	return its_make_vpe_non_resident(vpe, need_db);
++	return its_make_vpe_non_resident(vpe, !!vcpu_get_flag(vcpu, IN_WFI));
+ }
+ 
+ int vgic_v4_load(struct kvm_vcpu *vcpu)
+@@ -354,6 +354,9 @@ int vgic_v4_load(struct kvm_vcpu *vcpu)
+ 	if (!vgic_supports_direct_msis(vcpu->kvm) || vpe->resident)
+ 		return 0;
+ 
++	if (vcpu_get_flag(vcpu, IN_WFI))
++		return 0;
++
+ 	/*
+ 	 * Before making the VPE resident, make sure the redistributor
+ 	 * corresponding to our current CPU expects us here. See the
+diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
+index 9b91a8135dac..765d801d1ddc 100644
+--- a/include/kvm/arm_vgic.h
++++ b/include/kvm/arm_vgic.h
+@@ -446,7 +446,7 @@ int kvm_vgic_v4_unset_forwarding(struct kvm *kvm, int irq,
+ 
+ int vgic_v4_load(struct kvm_vcpu *vcpu);
+ void vgic_v4_commit(struct kvm_vcpu *vcpu);
+-int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db);
++int vgic_v4_put(struct kvm_vcpu *vcpu);
+ 
+ bool vgic_state_is_nested(struct kvm_vcpu *vcpu);
+ 
+-- 
+2.34.1
 
--michael
-
->> +		PARSE_SFDP
->> +		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
-> 
-> Looks good. Also I would like you to run a small sanity test, just to
-> make sure the flash works after your changes. You can do that with
-> mtd_debug utility, see an example on Miquel's commit message from:
-> https://lore.kernel.org/linux-mtd/d479489736ee193609816dc2003bd0fb@walle.cc/T/#m3550973e0884ec4a288d344fabd4a9c3b64af46e
-> 
-> Cheers,
-> ta
