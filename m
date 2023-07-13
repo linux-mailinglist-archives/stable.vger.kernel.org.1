@@ -2,128 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB53E752749
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 17:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AADB75276F
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 17:40:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231909AbjGMPep (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 11:34:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37292 "EHLO
+        id S233039AbjGMPkA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 11:40:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235001AbjGMPeW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 11:34:22 -0400
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on2059.outbound.protection.outlook.com [40.107.12.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF5592738;
-        Thu, 13 Jul 2023 08:34:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IzayopGNwXdpbf1Zc7+Sk7cadQYKEHUp4bWPzrSdVqtcRwWJRAY2kfsUA+rWXJA7uhMb9Egrj32CktGmwTXqU054A+3d5ANXc/+1WugEpB3es1GuAMUpKIpgjUZbELptCXWgpj3vgDY1e2/bE5ddG2g3Et+UK5IA3jBhZSQySu+FQOkdIhFugiwBmZno9iGncY4/n9PLpyeUXbVXGEU6sYiHJYtHPkrrxlOewwbi0UOMre4hZNuTxcjdcirz4zaLpztsJ7cceTZWF7nH5V+2cBgpETzHhSdJnPt+QPlKyJiGuyYSE1ofd4F7KiD2cKnbDcjRFaZklTahsCIe2YWewQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uUw7kP+xk+u/JqXXjyB5w0TA6IA8YYF920fGhJarXdg=;
- b=nxDheTbxFkk9CRCfHW5zOaOKNOJe9BahZfDGNKt/G8/679FtSKMESPx1HqNdyXzZ59PEHJd0s1c+LTAoLmlzgtOlyDG7tzlknSkEVZ7JM3jyAb1k5lShp7spIm8X6gOjS7Vtf3IHGbmKDQiSddStp6W/QDGNGjgsuzFbSRMdIBEFQumTwJz3o2PaGvits1aBbjwYAune4LXm4dnsMolGo75UQdYNCM42fhRN83tVBXyfdzZo1QtNejG7oi1nikIYABntDcDfHVLUkUcc1AaHFYFGqg6t74TQDSETqzD+iQXbuKo5jnx9VVM+7KFP2DS+zS1UuWA+ioG1nk7/D8YzyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uUw7kP+xk+u/JqXXjyB5w0TA6IA8YYF920fGhJarXdg=;
- b=hsJ479sJZ3o+v1rpjVYbAuCOZddH0C2jSZRQfElWSRg1YTBktjdT30qnLsm6UKTFhMIGllEDgUWlHRSX04vsTZ+q5iQ01ana03j8MrxNWtd3Le7sdlnT8v2bg2Vf6GktzZupryT0CKf3VSOo92zLHO5AW6lkA72VuWbgJwNfwyOBLX2H/FPzQ5PzwSd1j5Tn1J/5d/uUz67yy5Lm3LhRgBuBuxeHQA4yMy4h+PpXwJwApCPOObbAjDkVN0PMzNyk+nXtjgmTVAKr2ojNwmjF37LM/+/86p99Y9lNxkIfEXitlOCqBYblSMFQZrIdKnJ2xJyq9EW0qNwzDDIvkRHlEg==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB2102.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:d::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.24; Thu, 13 Jul
- 2023 15:34:10 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::19bf:f9b5:ef8f:b2a]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::19bf:f9b5:ef8f:b2a%6]) with mapi id 15.20.6588.024; Thu, 13 Jul 2023
- 15:34:10 +0000
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     linux-stable <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        BERGER Olivier <olivier.berger@csgroup.eu>,
-        TRINH-THAI Florent <florent.trinh-thai@csgroup.eu>,
-        CASAUBON Jean-Michel <jean-michel.casaubon@csgroup.eu>
-Subject: Backport to 4.14 and 4.19 commits 24c363623361 and 17ecffa28948 and
- a798a7086c38
-Thread-Topic: Backport to 4.14 and 4.19 commits 24c363623361 and 17ecffa28948
- and a798a7086c38
-Thread-Index: AQHZtZ93ynikpdZfvUSsdTkZPMTbbA==
-Date:   Thu, 13 Jul 2023 15:34:10 +0000
-Message-ID: <5201aa35-5855-53ec-d123-1a88523971da@csgroup.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB2102:EE_
-x-ms-office365-filtering-correlation-id: 83bcada5-5249-4924-f042-08db83b69a69
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: AXsN8xN0y0mazVSNzBchnN9vpqOPVKuQjLatwldTN84nuVznmuovmeMXL9YhCOEhq32wVrRpQ3QxxLdd1GxHxeqmAbqLTwa1z4CNASfaYYlaUDPXNsBMaNEsVVvax51KkEAW41tMcQWtj0aSvh2g4wStyNdgscGDVOIfFJL55TqxheWACfmVJQjigMBFqz7hRIIYbdvr1TiHGZycrXrC+0txsuM4r0NrkODnZeWN0Swqfl2C/nv8or0ZdHLpj4Htzcy2NeHvqT/UvyOfEy/w/6vZRuyaOBSI5ivNEbMIk/J1ZRjZ5YcyHM5VA/npbEDNgFdxNgMjq3af/DABdgAQE0cUQzF2SJEDr9DhsRWYI8B00ZM384tJw5V6qW34idYY4tG7QkNLRVVex9hR87j6s4YzxIh52Gt8ESMBXD+p34fiPSuMxgh4Kbu7b/F8HFfmz9mIjKhvGQJaIso4L8i8JP5udzz2A7MVa0vmFkd80nc7P/mKwenD03BOqVpnj5ctB0+kPqmxsmYuykYTAY3NZuu8AAnDRnF7J6u0peUuBfibMesVswgcuIueQoFVGq8LrYZ975r4tjhPZkq/hKdqY70yjliR9JyaWnoigtjBNWxGqoTUIjPe0vGYFmgwGQuczvCGRUUNFKGT4sLVou3oMs9wbFTLqB05+oYE7uB0O7TBMYbxCJNfrHrsIlb/e1pc9dPdZd3LwNg1gGCGP3NVECVKoPZmIijdqm0bchrnj7g=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39850400004)(396003)(136003)(366004)(376002)(346002)(451199021)(38070700005)(36756003)(31696002)(38100700002)(86362001)(478600001)(122000001)(71200400001)(110136005)(54906003)(8676002)(6512007)(6486002)(44832011)(5660300002)(66446008)(91956017)(316002)(66946007)(2906002)(76116006)(66476007)(64756008)(66556008)(41300700001)(4326008)(31686004)(8936002)(2616005)(83380400001)(6506007)(26005)(186003)(107886003)(138113003)(98903001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZklPOUluMGNiR0xacnlCSnBwOTBBVGlZTWdyNllIdzhtdWRsWHBhZUYyVTVF?=
- =?utf-8?B?bEszZ2VUYmNzUThobWs4Vjk1anB1N0VkOExIVkt3aGtCZ3d6R0RjblhMUmdy?=
- =?utf-8?B?RFBZNTRNNEpZVVV5MVV0MEVpdUZtbHBld0pZdWJXL2JtMDNieEVQZUZVNG5N?=
- =?utf-8?B?ZnhqMUhqQnZvZFlTVnQyS0FFSWtha2x1eE9TanYwczJ0STV6bEJNazI0Zms0?=
- =?utf-8?B?RFlsWDNDUGE3dUVwbXd5bUUzSVhORXVmWVl5VkFLbGkxR1g0Lys1YUQyWVNT?=
- =?utf-8?B?eVJwVlF0clVHVzNVZUxibXdOWFRLcFhpMjhITm1VMFNTQWEzSi9MTFZNSDFt?=
- =?utf-8?B?alhyaGoyeFZYRUNkaXc1dnQrWmRia2lHa2l0ZXY3ZVZCNGJUZHBKYWdmbS9O?=
- =?utf-8?B?OFlmVzA1SHRONno1ZUpXTGV5MTRmQVNZa090Rk04ZDJxUVBjUnhJajBDV1hI?=
- =?utf-8?B?NVk1MWpHcTBqYXIvT0hTTEZHTGZSbFhJd2NEbkE2cGtrbWdUS2RKblNuZFdM?=
- =?utf-8?B?NENnOE5LMWdmbGplcVhGdm1NVW9rM0hIWjB6Rjh5WnhnR0l4SUVtVGxMN09E?=
- =?utf-8?B?VmJDem5mQlpTYWoxOUw4ZEVqM09EL2xMa0hHOFZodTJlNnRhZ1J6NmhNcHVE?=
- =?utf-8?B?U3BhaWM1b2laZ3lERlpuY3Q1RTBsT3B3bThxdlpMVjJsUUQ5QXJ6b0ZCa2ti?=
- =?utf-8?B?TEUzVUR5anJYOVhRUGJNZ1Y0M1FTMzA4QkNleGtueUZYcGhqbENrK1FkYWFX?=
- =?utf-8?B?aEt1L0EvZ2cxTDQ2Z2YzZndacHZtNnNZaFhZajdWNGkzRm5LelRUWVI1MWtU?=
- =?utf-8?B?bmZqM3JQM09mRWtGSHA0b2k2ZFR5eFJqQWpoT1BDcVRXQmhkNXV5V2cvNUV1?=
- =?utf-8?B?OU5mTEFEcGdtcFNaYXVtWGtVZzF4b2Y5b24xWFFtT3BMejkvZitnSDFyUTlP?=
- =?utf-8?B?MDY0a09USzM2VkMxWlE4TGNoUGpZcU1lcUdreUVMMVRCZGpETXdaakE0VlZW?=
- =?utf-8?B?TS9KYjNEWVpaYU9XV0g4V3pDS05tQloxWHhMemR1NVErWlpwSFlVSVFDbm5Q?=
- =?utf-8?B?aDdZczlwS2xSVHZuK3l3WEFvK2c1QVJZSGgwQTBJRFhCVWcvY0tDYTBDNmtN?=
- =?utf-8?B?aWVRWkYyWnhLcG5iN25rd2FMN0Vmcndyc2JzdVZZZnBiTVJKcStoNVpsWTRq?=
- =?utf-8?B?V0ZCeDgxRW03ZWdZNy9pQk05TnhvTFRGb2Zxa0NzQ05SUS9QMXlRSTZ3RENO?=
- =?utf-8?B?ZUlNOHhkVTQ3aHlPZUx4SkhrYmVWdUxZQzk3UnBmWFJMckNNbGtXY2Jrcldy?=
- =?utf-8?B?QnVhWU1aYmJCQzNESGFYSDgyQ0Q4UWdLZGlkY2hxbWVUVHpGc0luaTNtL0tp?=
- =?utf-8?B?QzZGdmc1SlV1Q0hLR3V5UTBCQ012SGVDbmJ5QnpNSFYyREJGc3VSZ2VrcDAy?=
- =?utf-8?B?ajUwZkRZaCtIYXc0RmNqMHd2MklHMU5zUUZlT2xOd3d6RWtaME4zZFJyWEdx?=
- =?utf-8?B?WmxMR2grSUJ5MFZFSzlZbDR4YU9lby9IelYzQldTUTNiZ3FZWjYzZ0hWUFZK?=
- =?utf-8?B?SVdrd29BSG95SitaZ0YwMTdHNnhNall5Smd0OGp5SHAxcFhoa1pDalp3OTRH?=
- =?utf-8?B?OG5CVUdIRW1yTFpYTVpsUzRSODV0QTZlaWYvYzVxVzV5WTBIVHN0RW9sUGM1?=
- =?utf-8?B?UEJJakV4ZHhTL08wZjFMVy9yZllJbmhPaXFVZTlCQUxRd0tsWVd3MmlHN1NZ?=
- =?utf-8?B?N01vTkNBQzZmS2JxZkZKa2dTU0lBbmJscjM4QWVuM1BVMmlGVEMyRUpVV1kv?=
- =?utf-8?B?c21Tdmp4ZnNqOVlkbUlzTWZTR2pXQUVkSHduYXg0Z0lMTWM2YmoxaTNaelVh?=
- =?utf-8?B?MXJjQVJ2d3lsdmFQaGFOaTlMYzlVNXhVZzk0Y3VvQ2grUTQxT0xlVUpQc2ZF?=
- =?utf-8?B?K3dLZ2lVVU1XR29ISUV2UW9SMFB6dUFDMkd0YnB6Sldha0tZNW1aTUhxdUc2?=
- =?utf-8?B?aS9hdnFwUmJQNnM0VjNNNHdNdFJpMk9EajVZUTZycCtOQ0tOUzRLU0I3OG56?=
- =?utf-8?B?Ris0d2Rmd3BwVWxGYVplZ2pvMi8zbGcvRHpIWjVoR1Y5emJURFBCekRLZ0ZF?=
- =?utf-8?B?RFFIRFJkdjVxN0ZQbE1BdUFQR1BvOVo0Szlzb3BQWTFrTW5MVWVQR3pSb2pn?=
- =?utf-8?B?NWc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <60C31AC859FF3D4D9ACEB1C7A756CB89@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+        with ESMTP id S232479AbjGMPj7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 11:39:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AF2C2117;
+        Thu, 13 Jul 2023 08:39:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F9DD61A0D;
+        Thu, 13 Jul 2023 15:39:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A29C433C9;
+        Thu, 13 Jul 2023 15:39:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689262796;
+        bh=ucDuyNLNzA/3oK02pdOW1Qt7U+ttoZNdyoo8EnGWRFA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VfWfHok/E74jgDuSre3kPiXGu7mcfkYHn5jYUOj+8nWfbK243KYBZ3v2ZdyrDzjwU
+         /iiz0fMHkNi4xYIVXzm6hSAd2W3261aYrpvEihnadUyTE+N+DKwem2XOi0rSTU3y3T
+         h6KM7KsZJWXgFdgkLj2rgHDXOvobE6BY/sjZ9YTRMcRloviSEYKiAZlhah8Qd3eVP8
+         ZLftVX9S65R4g97BJNg6oxCQjQS4hr7GgjaPvp+BY32zZyUGFPLKDU62OAANbf2FQR
+         TmsormxOWLynkPHf6dwGwSif2fx2dVmbY94+U4NIbWgBS4rZKOd7q0SzDqyWfwWzXS
+         60C5YlduFPS5Q==
+Date:   Thu, 13 Jul 2023 16:39:52 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Thorsten Leemhuis <linux@leemhuis.info>, stable@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [RFC PATCH v1 0/3] docs: stable-kernel-rules: add delayed
+ backporting option and a few tweaks
+Message-ID: <20230713-irritant-rarity-5f7b424fe43e@spud>
+References: <cover.1689008220.git.linux@leemhuis.info>
+ <2023071002-phrasing-tranquil-49d6@gregkh>
+ <a97a37bf-86b5-cd8e-a8ce-00e38720cee4@leemhuis.info>
+ <2023071221-blade-reactive-0707@gregkh>
+ <d8403c45-3561-4759-f6c2-d18afa5e323a@leemhuis.info>
+ <2023071215-able-mushy-c889@gregkh>
+ <18238769-39c3-2b40-7725-367aa0e5c50b@leemhuis.info>
+ <2023071341-twitter-apron-e023@gregkh>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 83bcada5-5249-4924-f042-08db83b69a69
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jul 2023 15:34:10.0423
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IOOlCsCtn0nGWjP9PDxXw98tmQACPvTJ2bjuPwUyqyXMsFFGKY3DQXj2F6o8vuNKTJbqFO9SAZ8JbUE7bmVKArPtOOWHaZkArelW/CzXpKc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2102
-X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FORGED_SPF_HELO,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="5zCBt+dSDALTpKvC"
+Content-Disposition: inline
+In-Reply-To: <2023071341-twitter-apron-e023@gregkh>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -131,25 +65,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-SGksDQoNCkNvdWxkIHlvdSBwbGVhc2UgYmFja3BvcnQgdGhlIHRocmVlIGZvbGxvd2luZyBjb21t
-aXRzIHRvIDQuMTQgYW5kIDQuMTk6DQoNCjI0YzM2MzYyMzM2MSAoInNwaTogc3BpLWZzbC1zcGk6
-IHJlbW92ZSBhbHdheXMtdHJ1ZSBjb25kaXRpb25hbCBpbiANCmZzbF9zcGlfZG9fb25lX21zZyIp
-DQoxN2VjZmZhMjg5NDggKCJzcGk6IHNwaS1mc2wtc3BpOiByZWxheCBtZXNzYWdlIHNhbml0eSBj
-aGVja2luZyBhIGxpdHRsZSIpDQphNzk4YTcwODZjMzggKCJzcGk6IHNwaS1mc2wtc3BpOiBhbGxv
-dyBjaGFuZ2luZyBiaXRzX3Blcl93b3JkIHdoaWxlIENTIA0KaXMgc3RpbGwgYWN0aXZlIikNCg0K
-VGhvc2UgdGhyZWUgY29tbWl0cyAodGhlIGxhc3Qgb25lIGluZGVlZCkgYXJlIG5lZWRlZCB0byBv
-dmVyY29tZSBhIA0KcHJvYmxlbSBpbnRyb2R1Y2VkIGluIDQuMTQuMjMwIGJ5IGNvbW1pdCA0MmMw
-NDMxNmQ5MjcgKCJzcGk6IGZzbC1jcG06IA0KVXNlIDE2IGJpdCBtb2RlIGZvciBsYXJnZSB0cmFu
-c2ZlcnMgd2l0aCBldmVuIHNpemUiKSwgd2hpY2ggbGVhZHMgdG8gdGhlIA0KZm9sbG93aW5nIGVy
-cm9yIGluIGNlcnRhaW4gY2FzZXM6DQoNClsgIDE3NC45MDA1MjZdIGF0MjUgc3BpMC4zOiBiaXRz
-X3Blcl93b3JkL3NwZWVkX2h6IHNob3VsZCBiZSBzYW1lIGZvciANCnRoZSBzYW1lIFNQSSB0cmFu
-c2Zlcg0KWyAgMTc0LjkxMTg0NF0gc3BpX21hc3RlciBzcGkwOiBmYWlsZWQgdG8gdHJhbnNmZXIg
-b25lIG1lc3NhZ2UgZnJvbSBxdWV1ZQ0KWyAgMzY2LjYzOTQ2N10gSU5GTzogdGFzayBvZDo0MDYg
-YmxvY2tlZCBmb3IgbW9yZSB0aGFuIDEyMCBzZWNvbmRzLg0KWyAgMzY2LjY0NTE1NV0gICAgICAg
-Tm90IHRhaW50ZWQgNC4xNC4zMjAtczNrLWRldi1kaXJ0eSAjMzQyDQpbICAzNjYuNjUyOTk2XSAi
-ZWNobyAwID4gL3Byb2Mvc3lzL2tlcm5lbC9odW5nX3Rhc2tfdGltZW91dF9zZWNzIiANCmRpc2Fi
-bGVzIHRoaXMgbWVzc2FnZS4NClsgIDQ4OS41MTk0NTBdIElORk86IHRhc2sgb2Q6NDA2IGJsb2Nr
-ZWQgZm9yIG1vcmUgdGhhbiAxMjAgc2Vjb25kcy4NClsgIDQ4OS41MjUxNTZdICAgICAgIE5vdCB0
-YWludGVkIDQuMTQuMzIwLXMzay1kZXYtZGlydHkgIzM0Mg0KWyAgNDg5LjUzMjkxNV0gImVjaG8g
-MCA+IC9wcm9jL3N5cy9rZXJuZWwvaHVuZ190YXNrX3RpbWVvdXRfc2VjcyIgDQpkaXNhYmxlcyB0
-aGlzIG1lc3NhZ2UuDQouLi4NCg0KVGhhbmtzDQpDaHJpc3RvcGhlDQo=
+
+--5zCBt+dSDALTpKvC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Jul 13, 2023 at 05:06:22PM +0200, Greg KH wrote:
+> On Thu, Jul 13, 2023 at 10:48:14AM +0200, Thorsten Leemhuis wrote:
+> > On 12.07.23 21:00, Greg KH wrote:
+> > > On Wed, Jul 12, 2023 at 07:02:34PM +0200, Thorsten Leemhuis wrote:
+> > >> On 12.07.23 17:16, Greg KH wrote:
+> > > [...]
+> > >>>>   .. warning::
+> > >>>>      The branches in the -stable-rc tree are rebased each time a n=
+ew -rc
+> > >>>>      is released, as they are created by taking the latest release=
+ and
+> > >>>>      applying the patches from the stable-queue on top.
+> > >>>
+> > >>> Yes, that is true, but they are also rebased sometimes in intermedi=
+ate
+> > >>> places, before a -rc is released, just to give CI systems a chance =
+to
+> > >>> test easier.
+> > > [...]
+> > >> Nevertheless makes me wonder: is that strategy wise in times when so=
+me
+> > >> ordinary users and some distributions are building kernels straight =
+=66rom
+> > >> git repos instead of tarballs? I'm one of those, as I distribute
+> > >> stable-rc packages for Fedora here:
+> > >> https://copr.fedorainfracloud.org/groups/g/kernel-vanilla/coprs/
+> > >=20
+> > > As we keep the patches in quilt, not git, it's the best we can do.  T=
+he
+> > > -rc releases are never a straight-line if we have to do multiple ones,
+> > > we remove patches in the middle, add them at the end or beginning, and
+> > > sometimes even change existing ones.
+> > >=20
+> > > All of this is stuff that a linear history tool like git can't really
+> > > model well, so we keep a quilt series of the patches in git for anyone
+> > > that want to generate the tree themselves, and we provide the -rc git
+> > > tree for those that don't want to generate it and can live with the
+> > > constant rebasing.
+> >=20
+> > /me first didn't want to reply, as this is not really important, but
+> > then reconsidered; again, feel free to just ignore this
+> >=20
+> > FWIW, I do not consider that rebasing to be problem at all; it are those
+> > rebases "sometimes in intermediate places, before a -rc is released,
+> > just to give CI systems a chance to test easier" make things this
+> > slightly annoying bit harder when you want to distribute stable-rc
+> > releases to users.
+> >=20
+> > But as I said, I can fully understand why you do those as well. I just
+> > with there was a way to reliably get a -rc release from git as well.
+> > Simply tagging them when you do a -rc release would solve all that. Is
+> > that maybe something that could be easily added to your -rc release scr=
+ipts?
+>=20
+> I can add a tag, but it would have to be a tag that can be rebased, and
+> git doesn't like that very well :)
+
+I figure the desired tagging behaviour is that you do it when the email
+is sent out for a corresponding version & so the tag "should" not need to
+be rebased?
+
+> > /me looks at https://github.com/gregkh/gregkh-linux/tree/master/stable
+> > but failed to find the -rc release script :-/
+>=20
+> Hah, no github, it's at:
+> 	https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/=
+tree/scripts/quilt-mail
+>=20
+> But I don't think tags will help much.  I'll let anyone who actually
+> runs a CI that uses this to speak up to see if it would before adding
+> them.
+
+I'm not sure that it is particularly valuable to the usual flow of
+testing what is about to come down the tracks, at least in my simple
+case where I trigger it based on the -rc emails or whenever something
+else interesting happens, like a patch being dropped that breaks the
+build.
+
+I suppose it may be useful if an issue presents itself but disappears
+when a backport is dropped from the queue & some developers are
+interested in figuring out why the backport went awry?
+
+Other than that, I'm not sure what the value is in "I just with [sic]
+there was a way to reliably get a -rc release from git as well", in
+_my_ CI use case I don't care about the superseded stable -rc versions,
+just whatever is about to be released.
+
+Others with more complex CI infrastructure, like Linaro etc, might feel
+differently :)
+
+> Also, as proof this works, I just got a report of someone testing the
+> queues and finding a problem at the moment, before we sent anything out
+> for review.  So this is working well today.
+>=20
+> thanks,
+>=20
+> greg k-h
+
+--5zCBt+dSDALTpKvC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZLAaxQAKCRB4tDGHoIJi
+0ufnAPoDpPrRw9iwibvmWTaKWO72V+pyNZUp7/9FmQCwxMfs0QEAgV1zbDgb6hIu
+J1txvI3y+DExvTq+h1xUqgdvVZduRA8=
+=X8n3
+-----END PGP SIGNATURE-----
+
+--5zCBt+dSDALTpKvC--
