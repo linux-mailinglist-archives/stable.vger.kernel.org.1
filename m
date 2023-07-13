@@ -2,135 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEF2E752BF8
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 23:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F1E752C4A
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 23:40:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229516AbjGMVRx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 17:17:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36358 "EHLO
+        id S231425AbjGMVkc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 17:40:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232862AbjGMVRv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 17:17:51 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C882D67
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 14:17:47 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3fbc5d5742bso9921325e9.2
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 14:17:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1689283066; x=1691875066;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TsJALsxCC7W/CAsd1l447Gkg4QP+b67KVu4aEHXx1H8=;
-        b=bt3cywbmI2xlzlVR6vRTSp+EcwPMU/Po0YAkZsTxYd4qeBDWmBtWWW1L7ZLZu7/Rp0
-         /rorCNOUTXNVUWcLrGeCXbk9yTbznrWpdKIZ7g9alJTVVuqw2gcb2COuguuFWoQ4WVon
-         8Np8h5Mwx8NsaQNfcxYyX911xkWytdrDTsxbw4eODsgaFgUIe4+SqpMumx7RaLTQ5+8X
-         MIOFF8AO8Bz0TWAlXVTJYgThE16Hn01Y+16mpzsUXW83Vbix9Z+QtRQAytDsiOD3+9vj
-         z9e71xvYt+xLgB2ItMz8f8lLgv4n2Y8YAhJ+U0f4CoRe+c31H6HDYo85nab2G+EVApeg
-         4c9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689283066; x=1691875066;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TsJALsxCC7W/CAsd1l447Gkg4QP+b67KVu4aEHXx1H8=;
-        b=MvrtVTWsp9sIzNddXMnuMxpjdQAHXiv0sDJaBKYm0VhKybUUdPBlP9piP0Jrquhq4C
-         HpqZyRinVHhCVgRn1VKUSAmvSasHN76Bgn/yGO2d58wwSWLsNJghvu0j6WeIpXemPgL2
-         s4elciCuD1LWKv6YNaGnOUqs4pcTcLVhqPqKT8/NPJACdRYZXx3wYBp2mJwe/14juCSC
-         o8bu97KOjmtN+0s3m41pJn37HMHzCRv8H8ElscPFl6oZ26/Qy+X3t4Sf72R4ivNDpuQB
-         8O6GEOEpAZX80BxwQ2gCzb18xxkuSl16mf4xKja1R1PtM02Qq9tS/cIf/e1ixY195DdK
-         jVxA==
-X-Gm-Message-State: ABy/qLbaBP1/nn57I3pPbiNC0902Bqt5K+9ZyrNZoR3Vdzw9ApnlMUCq
-        +isvW8YNL30scPic52Tnh55Chw==
-X-Google-Smtp-Source: APBJJlEqHDqd/DaR1zZg8FeNIPs0jDRzB47sGZJXntmh5xucKXav31Pxi0b1G9aQg7Zs3wM4F2CWHg==
-X-Received: by 2002:a7b:cbc9:0:b0:3fb:e1ed:7f83 with SMTP id n9-20020a7bcbc9000000b003fbe1ed7f83mr2882825wmi.33.1689283066347;
-        Thu, 13 Jul 2023 14:17:46 -0700 (PDT)
-Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id m20-20020a7bcb94000000b003fbfea1afffsm8734136wmi.27.2023.07.13.14.17.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jul 2023 14:17:45 -0700 (PDT)
-From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-Date:   Thu, 13 Jul 2023 23:16:46 +0200
-Subject: [PATCH net 3/3] selftests: tc: add ConnTrack procfs kconfig
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230713-tc-selftests-lkft-v1-3-1eb4fd3a96e7@tessares.net>
-References: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
-In-Reply-To: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
-To:     Jamal Hadi Salim <jhs@mojatatu.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>, Shuah Khan <shuah@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paul Blakey <paulb@mellanox.com>,
-        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        mptcp@lists.linux.dev
-Cc:     Pedro Tammela <pctammela@mojatatu.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        stable@vger.kernel.org
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1295;
- i=matthieu.baerts@tessares.net; h=from:subject:message-id;
- bh=YxZMkeKTSYd/i12Y6hiS0Va0uPxVYaw6onSJrdJZ2xk=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBksGn1bBYwvMN9ZJOmDSJeapOx7V3gAfyEaaHiq
- u4fgEkD5s+JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZLBp9QAKCRD2t4JPQmmg
- c/79EADA/xNSe+OXe+fAkOmIazz02wIFBl+djuhBXh/Wq7uTJ/wXX2LVXz7haAPg0yi452RyvW6
- Y3umutQuwMqvWzIStUfkZHrvVTBjBp2u7zvgkknGe2hDS7tDLYXmbQ667Qs340s8OUMGqvptQk7
- y25FKL03KNuLSokg0OhB1Dp1u9hAYsuDmp18420NV6kDA3jPi1WMMzd9FV0iajheLOgk3TM1/JM
- CmY1+0inJwGExfLshAmG5soMIwQwZql8d1Lq4lD4hn2tkfUPO5tsrcoOaj3y2rDxE6vECvC9sWI
- 3syinI2F9TgnuGw/+OXCL7GkqLbD/1ok/fTu0M2AQV1e6dOEbi4xTxMlqhAOYlqC48rsNVrwiIC
- 5xxByReFo7qwwKI9y8JVMf98hF04OY8vwow1gw/Cbwf15/GZpWnIWqFRfA9PrYpyxFs0iq4ASeL
- 6opLFLVqXBXpeOsySZvp6gl3GqxMk0oNCpDRg29Q9E8EkzzMlIjqJKZUsQnFvrwJOOKNPzi00cZ
- +AWTZiSk7qawGmeIBg1KKMdLx0xcG1puAieB1bzmmSB4ZXlR4aogcXkAE+ku92dZ6PYvTxdt8nt
- 2UUXOHdQmUX2S4etArxuBVMbnXQ7cHk7oHy9Fat5T/EwBWQK3QQiWZEmdI/qPOxJotVjg3ZIiaG
- r69EzqvS4gPH/QQ==
-X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230212AbjGMVka (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 17:40:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3912691;
+        Thu, 13 Jul 2023 14:40:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 215C761B79;
+        Thu, 13 Jul 2023 21:40:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BA1C433C8;
+        Thu, 13 Jul 2023 21:40:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1689284428;
+        bh=kFcgQ8BD28xoK9hgBQWspmqvowV58PxRX9R2PNX84Zg=;
+        h=Date:To:From:Subject:From;
+        b=lrISmNhI1jDx783IK0AhtUiId+goQk+w5cEn1Kv2O8jiXpWzcGLAQxJyxeUdTjijC
+         ZnHupBkTtgy08lX6SccnaqYt7cpRqhLkzRqpZCjEU9R1QkShnOnSnd4r2irBdRzVRB
+         CJD1XRMtVB5NGQrcKhXouaA6jvcavtQZT8h4hHlc=
+Date:   Thu, 13 Jul 2023 14:40:26 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        songmuchun@bytedance.com, naoya.horiguchi@linux.dev,
+        mhocko@suse.com, linmiaohe@huawei.com, jthoughton@google.com,
+        jiaqiyan@google.com, axelrasmussen@google.com,
+        mike.kravetz@oracle.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] hugetlb-optimize-update_and_free_pages_bulk-to-avoid-lock-cycles.patch removed from -mm tree
+Message-Id: <20230713214028.75BA1C433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When looking at the TC selftest reports, I noticed one test was failing
-because /proc/net/nf_conntrack was not available.
 
-  not ok 373 3992 - Add ct action triggering DNAT tuple conflict
-  	Could not match regex pattern. Verify command output:
-  cat: /proc/net/nf_conntrack: No such file or directory
+The quilt patch titled
+     Subject: hugetlb: optimize update_and_free_pages_bulk to avoid lock cycles
+has been removed from the -mm tree.  Its filename was
+     hugetlb-optimize-update_and_free_pages_bulk-to-avoid-lock-cycles.patch
 
-It is only available if NF_CONNTRACK_PROCFS kconfig is set. So the issue
-can be fixed simply by adding it to the list of required kconfig.
+This patch was dropped because an updated version will be merged
 
-Fixes: e46905641316 ("tc-testing: add test for ct DNAT tuple collision")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [1]
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+------------------------------------------------------
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: hugetlb: optimize update_and_free_pages_bulk to avoid lock cycles
+Date: Tue, 11 Jul 2023 15:09:42 -0700
+
+update_and_free_pages_bulk is designed to free a list of hugetlb pages
+back to their associated lower level allocators.  This may require
+allocating vmemmap pages associated with each hugetlb page.  The hugetlb
+page destructor must be changed before pages are freed to lower level
+allocators.  However, the destructor must be changed under the hugetlb
+lock.  This means there is potentially one lock cycle per page.
+
+Minimize the number of lock cycles in update_and_free_pages_bulk by:
+1) allocating necessary vmemmap for all hugetlb pages on the list
+2) take hugetlb lock and clear destructor for all pages on the list
+3) free all pages on list back to low level allocators
+
+Link: https://lkml.kernel.org/r/20230711220942.43706-3-mike.kravetz@oracle.com
+Fixes: ad2fa3717b74 ("mm: hugetlb: alloc the vmemmap pages associated with each HugeTLB page")
+Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: Naoya Horiguchi <naoya.horiguchi@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- tools/testing/selftests/tc-testing/config | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/tc-testing/config b/tools/testing/selftests/tc-testing/config
-index d1ad29040c02..71706197ba0f 100644
---- a/tools/testing/selftests/tc-testing/config
-+++ b/tools/testing/selftests/tc-testing/config
-@@ -5,6 +5,7 @@ CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_MARK=y
- CONFIG_NF_CONNTRACK_ZONES=y
- CONFIG_NF_CONNTRACK_LABELS=y
-+CONFIG_NF_CONNTRACK_PROCFS=y
- CONFIG_NF_FLOW_TABLE=m
- CONFIG_NF_NAT=m
- CONFIG_NETFILTER_XT_TARGET_LOG=m
+ mm/hugetlb.c |   35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
--- 
-2.40.1
+--- a/mm/hugetlb.c~hugetlb-optimize-update_and_free_pages_bulk-to-avoid-lock-cycles
++++ a/mm/hugetlb.c
+@@ -1855,11 +1855,44 @@ static void update_and_free_pages_bulk(s
+ {
+ 	struct page *page, *t_page;
+ 	struct folio *folio;
++	bool clear_dtor = false;
+ 
++	/*
++	 * First allocate required vmemmmap for all pages on list.  If vmemmap
++	 * can not be allocated, we can not free page to lower level allocator,
++	 * so add back as hugetlb surplus page.
++	 */
++	list_for_each_entry_safe(page, t_page, list, lru) {
++		if (HPageVmemmapOptimized(page)) {
++			clear_dtor = true;
++			if (hugetlb_vmemmap_restore(h, page)) {
++				spin_lock_irq(&hugetlb_lock);
++				add_hugetlb_folio(h, folio, true);
++				spin_unlock_irq(&hugetlb_lock);
++			}
++			cond_resched();
++		}
++	}
++
++	/*
++	 * If vmemmmap allocation performed above, then take lock * to clear
++	 * destructor of all pages on list.
++	 */
++	if (clear_dtor) {
++		spin_lock_irq(&hugetlb_lock);
++		list_for_each_entry(page, list, lru)
++			__clear_hugetlb_destructor(h, page_folio(page));
++		spin_unlock_irq(&hugetlb_lock);
++	}
++
++	/*
++	 * Free pages back to low level allocators.  vmemmap and destructors
++	 * were taken care of above, so update_and_free_hugetlb_folio will
++	 * not need to take hugetlb lock.
++	 */
+ 	list_for_each_entry_safe(page, t_page, list, lru) {
+ 		folio = page_folio(page);
+ 		update_and_free_hugetlb_folio(h, folio, false);
+-		cond_resched();
+ 	}
+ }
+ 
+_
+
+Patches currently in -mm which might be from mike.kravetz@oracle.com are
+
+hugetlb-do-not-clear-hugetlb-dtor-until-allocating-vmemmap.patch
 
