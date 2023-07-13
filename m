@@ -2,49 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 337FC75187B
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 08:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 247D575193D
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 09:01:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234003AbjGMGBv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 02:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37586 "EHLO
+        id S233391AbjGMHBk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 03:01:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231935AbjGMGBu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 02:01:50 -0400
-Received: from out-59.mta0.migadu.com (out-59.mta0.migadu.com [91.218.175.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79EDD2102
-        for <stable@vger.kernel.org>; Wed, 12 Jul 2023 23:01:48 -0700 (PDT)
-Date:   Wed, 12 Jul 2023 23:01:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1689228105;
+        with ESMTP id S231431AbjGMHBg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 03:01:36 -0400
+X-Greylist: delayed 86195 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 13 Jul 2023 00:01:35 PDT
+Received: from mail.3ffe.de (0001.3ffe.de [159.69.201.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67D63119;
+        Thu, 13 Jul 2023 00:01:35 -0700 (PDT)
+Received: from 3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.3ffe.de (Postfix) with ESMTPSA id 6F6D2274;
+        Thu, 13 Jul 2023 09:01:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
+        t=1689231693;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PUd5QBFuIZqGlE60i0vexGbRuMlDcLS+ViVFV/4HNkE=;
-        b=Ytgk2lPDsLUI4qkJKqeWx16eIywoMzUTfFAkPbS5jQ90hBGFe86PN4ZaLGVbjPutCLbyZR
-        EOIOGWTkd+j3WM5f8pUfpmOCirTkRQ7C4H/qJQmVxWCiD7fU0cvvcHhn9fDN1ZfSgaNwPz
-        zvl4bXvIOM/F+m4kq/UBmMKwt8Uao/A=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Oliver Upton <oliver.upton@linux.dev>
-To:     "chenxiang (M)" <chenxiang66@hisilicon.com>
-Cc:     Marc Zyngier <maz@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
-        kvmarm@lists.linux.dev, James Morse <james.morse@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: vgic-v4: Consistently request doorbell irq
- for blocking vCPU
-Message-ID: <ZK+TQ7qRK51N1n7g@thinky-boi>
-References: <20230710175553.1477762-1-oliver.upton@linux.dev>
- <86jzv6x66q.wl-maz@kernel.org>
- <ZK0EPhvLzhaFepGk@linux.dev>
- <14acf0fd-e5eb-8a14-986a-b8fe4a44cec9@huawei.com>
- <86zg41utno.wl-maz@kernel.org>
- <092f42c5-02d1-6f05-ea92-0eae3a55341e@hisilicon.com>
+        bh=4KyJcPj86wpm+joAeHLW9qgmm3L3ws49NQpsZj9t5vI=;
+        b=wG4HOiPI5/V1Jo2HNE4ElQjSmLJMfuVJyMb1Gt/nwycMmhv6wN+Ze/Xc6OslEkLcqMP6oi
+        x5ovQuQONhXPht7KgSdBZb+unayfafqg5YV7zgSy12N2RdANEAgEAVeMHsBClNqIvbXhs3
+        zwT+4wOWG4J2vCBJMdPZX/SKq6ehkxJRbZfNdOEdAyketbr5VyP5H8yASFSOHW+1C+0jUp
+        GnNH6c2IrtS0EcSB+ON4JtDdy54pAtUzl+6VSzitP7zV3pVBGcEtQMhziF5u+U/aeIhFIr
+        2a6I3xO/4/aTxlYxYjwnxe5zv9+o19/o/kuLqWJFKEz17TwOcceD1m9gJN5mOg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <092f42c5-02d1-6f05-ea92-0eae3a55341e@hisilicon.com>
-X-Migadu-Flow: FLOW_OUT
+Date:   Thu, 13 Jul 2023 09:01:33 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Pratyush Yadav <pratyush@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] mtd: spi-nor: Correct flags for Winbond w25q128
+In-Reply-To: <f00fa2ae-6d4a-90cb-3724-2bedb96cb4fb@linaro.org>
+References: <20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org>
+ <f00fa2ae-6d4a-90cb-3724-2bedb96cb4fb@linaro.org>
+Message-ID: <0525440a652854a2a575256cd07d3559@walle.cc>
+X-Sender: michael@walle.cc
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -54,18 +62,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 13, 2023 at 01:57:46PM +0800, chenxiang (M) wrote:
-> > Of course, it is totally untested... ;-) But I like that the doorbell
-> > request is solely driven by the WFI state, and we avoid leaking the
-> > knowledge outside of the vgic code.
+Hi,
+
+Am 2023-07-13 05:32, schrieb Tudor Ambarus:
+> Hi, Linus,
 > 
-> I have tested this approach and it also solves the issue. Please feel free
-> to add:
-> Tested-by: Xiang Chen <chenxiang66@hisilicon.com>
+> On 13.07.2023 00:59, Linus Walleij wrote:
+>> The Winbond "w25q128" (actual vendor name W25Q128JV)
+>> has exactly the same flags as the sibling device
+>> "w25q128jv". The devices both require unlocking to
+>> enable write access.
+>> 
+>> The actual product naming between devices vs the
+>> Linux strings in winbond.c:
+>> 
+>> 0xef4018: "w25q128"   W25Q128JV-IM/JM
+>> 0xef7018: "w25q128jv" W25Q128JV-IN/IQ/JQ
+>> 
+>> The latter device, "w25q128jv" supports features
+>> named DTQ and QPI, otherwise it is the same.
+>> 
+>> Not having the right flags has the annoying side
+>> effect that write access does not work.
+> 
+> I guess you refer to the locking flags. Probably your flash has the non
+> volatile block protection (BP) bits from the Status Register set, which
+> means the entire flash is write protected. The factory default for 
+> these
+> bits is 0/disabled on this flash so someone must have played with them.
+> The reason why one may want write protection set is to avoid 
+> inadvertent
+> writes during power-up.
+> One can control whether to disable the software write protection at 
+> boot
+> time with the MTD_SPI_NOR_SWP_ configs.
+>> 
+>> After this patch I can write to the flash on the
+>> Inteno XG6846 router.
+>> 
+>> The flash memory also supports dual and quad SPI
+>> modes. This does not currently manifest, but by
+> 
+> The fasted mode is chosen after SFDP parsing, so you should use quad
+> reads if your controller also supports 4 I/O lines.
+>> turning on SFDP parsing, the right SPI modes are
+>> emitted in
+>> /sys/kernel/debug/spi-nor/spi1.0/capabilities
+>> for this chip, so we also turn on this.
+>> 
+>> Cc: stable@vger.kernel.org
+>> Suggested-by: Michael Walle <michael@walle.cc>
+>> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+>> ---
+>> Changes in v2:
+>> - Only add the write access flags.
+>> - Use SFDP parsing to properly detect the various
+>>   available SPI modes.
+>> - Link to v1: 
+>> https://lore.kernel.org/r/20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org
+>> ---
+>>  drivers/mtd/spi-nor/winbond.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/drivers/mtd/spi-nor/winbond.c 
+>> b/drivers/mtd/spi-nor/winbond.c
+>> index 834d6ba5ce70..6c82e525c801 100644
+>> --- a/drivers/mtd/spi-nor/winbond.c
+>> +++ b/drivers/mtd/spi-nor/winbond.c
+>> @@ -121,7 +121,8 @@ static const struct flash_info winbond_nor_parts[] 
+>> = {
+>>  	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
+>>  		NO_SFDP_FLAGS(SECT_4K) },
+>>  	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
+> 
+> while here try, using INFO with INFO(0xef4018, 0, 0, 0), those
+> parameters shall be discovered at run-time, so we prepare to get rid of
+> explicitly setting them sooner or later.
 
-Excellent, thanks for testing a couple of iterations for us here. Marc,
-do you want to add a changelog to this?
+This is an entry matching various flash families from Winbond, see my
+reply in v1. I'm not sure we should remove these as we could break the
+older ones, which might or might not have SFDP tables. We don't know.
 
---
-Thanks,
-Oliver
+> 
+>> -		NO_SFDP_FLAGS(SECT_4K) },
+
+Thus, I'd also keep this one.
+
+-michael
+
+>> +		PARSE_SFDP
+>> +		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
+> 
+> Looks good. Also I would like you to run a small sanity test, just to
+> make sure the flash works after your changes. You can do that with
+> mtd_debug utility, see an example on Miquel's commit message from:
+> https://lore.kernel.org/linux-mtd/d479489736ee193609816dc2003bd0fb@walle.cc/T/#m3550973e0884ec4a288d344fabd4a9c3b64af46e
+> 
+> Cheers,
+> ta
