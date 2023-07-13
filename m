@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0F667525E9
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 17:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59D887525EB
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 17:01:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232456AbjGMPB2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 11:01:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37258 "EHLO
+        id S232488AbjGMPB3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 11:01:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232429AbjGMPB1 (ORCPT
+        with ESMTP id S232422AbjGMPB1 (ORCPT
         <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 11:01:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0B0919B4;
-        Thu, 13 Jul 2023 08:01:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDCF2706;
+        Thu, 13 Jul 2023 08:01:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 41415617F1;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D247618C5;
         Thu, 13 Jul 2023 15:01:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B0FC433C8;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DE6C433C9;
         Thu, 13 Jul 2023 15:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=k20201202; t=1689260484;
-        bh=TXCscstt8foR9MlhQdbRGwgR6LOhBKjV5Dq6e0YdGzg=;
+        bh=sfmiO7castT7ell5jqLJUhNTWtiJ35JhwDwk7KkRsoA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rtPSscpQZY5IXoful4VY2d0tMiTOAdnUh594RSMwcMQ8Xsy+TMfdvVkKZLYCUWuOd
-         JJho1LWExjZmgiUZ445ECHLsDA5u+ULXOwfGmF3zn9xSrawoNYCZFw17+yPj7ups/V
-         Fe0GxB2XF9dMAo/SvBFYCWr2IOxtgqZTuEREVZQdXxZHdBoAkHmqY6lAmlKPGVUefI
-         yzfHdBjAEngDnlofRbx2+tTnVwQ0zRIJBZ6FSSUt6UgD17ccpfve6nD9PvxS1qNIhx
-         1PXq9oDDeU02eHj0wQ9YRjBmglrGcmpvAOFc7j3a4Rc59IkOoyL40EMyG+qg+kS0yd
-         jMtx2sWBvqZeg==
+        b=NelBhBDYU1VCxkGX+R4lWxNyD6GFU7dn8CYivAJvkjrp/4IbkoEXJT1Izk7xFLer6
+         XWQKXcUa4TxULl3Asd88+ui4GPlflFcszX8oc/7YRkqc6I+YfVmje20ShgrRI36udW
+         4thM3nbKxciLFpFegF9ryWOETfAwqzzLLKvwgUiZr0O+UmRXIGikFkSc/t0XYKFUjZ
+         ZDvn2gwJJy2JikDj4e84VBfyEoKwQXTk/5dXe7cO+YbIeg8bxs8SYLpsq9IPPE/H9K
+         CZ9j8s7Y7yoEw/JGVhqpecmvDo1vWOwe/HMZK7yNbyduZUoisVPPdQwEC9auC2awe0
+         jPbmfm79S692w==
 Received: from johan by xi.lan with local (Exim 4.96)
         (envelope-from <johan+linaro@kernel.org>)
-        id 1qJxor-0007vk-0R;
+        id 1qJxor-0007vo-0y;
         Thu, 13 Jul 2023 17:01:25 +0200
 From:   Johan Hovold <johan+linaro@kernel.org>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -47,10 +47,12 @@ Cc:     Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
         Tony Lindgren <tony@atomide.com>, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         linux-serial@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH 1/3] PM / wakeirq: fix wake irq arming
-Date:   Thu, 13 Jul 2023 16:57:39 +0200
-Message-ID: <20230713145741.30390-2-johan+linaro@kernel.org>
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>
+Subject: [PATCH 3/3] serial: qcom-geni: drop bogus runtime pm state update
+Date:   Thu, 13 Jul 2023 16:57:41 +0200
+Message-ID: <20230713145741.30390-4-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230713145741.30390-1-johan+linaro@kernel.org>
 References: <20230713145741.30390-1-johan+linaro@kernel.org>
@@ -66,86 +68,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The decision whether to enable a wake irq during suspend can not be done
-based on the runtime PM state directly as a driver may use wake irqs
-without implementing runtime PM. Such drivers specifically leave the
-state set to the default 'suspended' and the wake irq is thus never
-enabled at suspend.
+The runtime PM state should not be changed by drivers that do not
+implement runtime PM even if it happens to work around a bug in PM core.
 
-Add a new wake irq flag to track whether a dedicated wake irq has been
-enabled at runtime suspend and therefore must not be enabled at system
-suspend.
+With the wake irq arming now fixed, drop the bogus runtime PM state
+update which left the device in active state (and could potentially
+prevent a parent device from suspending).
 
-Note that pm_runtime_enabled() can not be used as runtime PM is always
-disabled during late suspend.
-
-Fixes: 69728051f5bf ("PM / wakeirq: Fix unbalanced IRQ enable for wakeirq")
-Cc: stable@vger.kernel.org      # 4.16
-Cc: Tony Lindgren <tony@atomide.com>
+Fixes: f3974413cf02 ("tty: serial: qcom_geni_serial: Wakeup IRQ cleanup")
+Cc: stable@vger.kernel.org      # 5.6
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Cc: Stephen Boyd <swboyd@chromium.org>
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- drivers/base/power/power.h   |  1 +
- drivers/base/power/wakeirq.c | 12 ++++++++----
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/base/power/power.h b/drivers/base/power/power.h
-index 0eb7f02b3ad5..922ed457db19 100644
---- a/drivers/base/power/power.h
-+++ b/drivers/base/power/power.h
-@@ -29,6 +29,7 @@ extern u64 pm_runtime_active_time(struct device *dev);
- #define WAKE_IRQ_DEDICATED_MASK		(WAKE_IRQ_DEDICATED_ALLOCATED | \
- 					 WAKE_IRQ_DEDICATED_MANAGED | \
- 					 WAKE_IRQ_DEDICATED_REVERSE)
-+#define WAKE_IRQ_DEDICATED_ENABLED	BIT(3)
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index 88ed5bbe25a8..b825b05e6137 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1681,13 +1681,6 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
- struct wake_irq {
- 	struct device *dev;
-diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
-index d487a6bac630..afd094dec5ca 100644
---- a/drivers/base/power/wakeirq.c
-+++ b/drivers/base/power/wakeirq.c
-@@ -314,8 +314,10 @@ void dev_pm_enable_wake_irq_check(struct device *dev,
- 	return;
- 
- enable:
--	if (!can_change_status || !(wirq->status & WAKE_IRQ_DEDICATED_REVERSE))
-+	if (!can_change_status || !(wirq->status & WAKE_IRQ_DEDICATED_REVERSE)) {
- 		enable_irq(wirq->irq);
-+		wirq->status |= WAKE_IRQ_DEDICATED_ENABLED;
-+	}
- }
- 
- /**
-@@ -336,8 +338,10 @@ void dev_pm_disable_wake_irq_check(struct device *dev, bool cond_disable)
- 	if (cond_disable && (wirq->status & WAKE_IRQ_DEDICATED_REVERSE))
- 		return;
- 
--	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED)
-+	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED) {
-+		wirq->status &= ~WAKE_IRQ_DEDICATED_ENABLED;
- 		disable_irq_nosync(wirq->irq);
-+	}
- }
- 
- /**
-@@ -376,7 +380,7 @@ void dev_pm_arm_wake_irq(struct wake_irq *wirq)
- 
- 	if (device_may_wakeup(wirq->dev)) {
- 		if (wirq->status & WAKE_IRQ_DEDICATED_ALLOCATED &&
--		    !pm_runtime_status_suspended(wirq->dev))
-+		    !(wirq->status & WAKE_IRQ_DEDICATED_ENABLED))
- 			enable_irq(wirq->irq);
- 
- 		enable_irq_wake(wirq->irq);
-@@ -399,7 +403,7 @@ void dev_pm_disarm_wake_irq(struct wake_irq *wirq)
- 		disable_irq_wake(wirq->irq);
- 
- 		if (wirq->status & WAKE_IRQ_DEDICATED_ALLOCATED &&
--		    !pm_runtime_status_suspended(wirq->dev))
-+		    !(wirq->status & WAKE_IRQ_DEDICATED_ENABLED))
- 			disable_irq_nosync(wirq->irq);
- 	}
- }
+-	/*
+-	 * Set pm_runtime status as ACTIVE so that wakeup_irq gets
+-	 * enabled/disabled from dev_pm_arm_wake_irq during system
+-	 * suspend/resume respectively.
+-	 */
+-	pm_runtime_set_active(&pdev->dev);
+-
+ 	if (port->wakeup_irq > 0) {
+ 		device_init_wakeup(&pdev->dev, true);
+ 		ret = dev_pm_set_dedicated_wake_irq(&pdev->dev,
 -- 
 2.41.0
 
