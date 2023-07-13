@@ -2,57 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD4867522AD
-	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 15:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FBCA752366
+	for <lists+stable@lfdr.de>; Thu, 13 Jul 2023 15:21:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234720AbjGMNEj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 09:04:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40626 "EHLO
+        id S235182AbjGMNVG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 09:21:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235001AbjGMNEG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 09:04:06 -0400
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EE0B1BC9;
-        Thu, 13 Jul 2023 06:04:02 -0700 (PDT)
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-66f3fc56ef4so1250986b3a.0;
-        Thu, 13 Jul 2023 06:04:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689253441; x=1691845441;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TrzJ8y0Z/nZGB4mQadBasiJCOVx3s6y7Fu8bLg3JcC8=;
-        b=gCMS4unnzh9VCmxl2sOxfaitatLIL39NXP0FzcKD6hRelDAwlfoJIx2bAElQEEnv1R
-         Xkd9NmWKR0eRlvK2C/fj9Ed9eXPTaKuT31xGl4T00NlJFr6EAEWiRWxyEbi45izrabHD
-         RQriKB7mVZFPvLgNcd1yZxWnnNhdLnffnD30kApsiSZXKuwVRBZ24EIJvjUPr+RDhrAn
-         FcE5yXkf8WFH74uI8ZN+d5kxLBa5hPxNXCaRAlbIywMkQoQVA2g2o3B1ju3sVODEXpA1
-         r2Hwj49EjwBGOcWa6wqsIX1SL3jbmdVx+eoEuvRrPx++VyFz04mxtIqvhVVp2DGOWOlJ
-         5Cdw==
-X-Gm-Message-State: ABy/qLZPgUwHx9T71tbA8DSUZu6B8OD32Q0lZ2wYWmQ2/I+XkIzedsBD
-        s9KuJkdjLFYJ/sKt2cgsDzZMVothh6g=
-X-Google-Smtp-Source: APBJJlGUAFdm1TSIoS4CnMB2eMVGv3hy+Xo0nkQMI+xfJ0ENoK4osOiXnh1dBQ/+HLcr27gPjamp/Q==
-X-Received: by 2002:a17:902:d50b:b0:1b8:865e:44e7 with SMTP id b11-20020a170902d50b00b001b8865e44e7mr6788390plg.20.1689253441284;
-        Thu, 13 Jul 2023 06:04:01 -0700 (PDT)
-Received: from localhost.localdomain ([211.49.23.9])
-        by smtp.gmail.com with ESMTPSA id mu1-20020a17090b388100b0026356c056cbsm5445497pjb.34.2023.07.13.06.03.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jul 2023 06:03:59 -0700 (PDT)
-From:   Namjae Jeon <linkinjeon@kernel.org>
-To:     linux-fsdevel@vger.kernel.org
-Cc:     Namjae Jeon <linkinjeon@kernel.org>, stable@vger.kernel.org,
-        Yuezhang Mo <Yuezhang.Mo@sony.com>,
-        Maxim Suhanov <dfirblog@gmail.com>,
-        Sungjong Seo <sj1557.seo@samsung.com>
-Subject: [PATCH] exfat: check if filename entries exceeds max filename length
-Date:   Thu, 13 Jul 2023 22:03:10 +0900
-Message-Id: <20230713130310.8445-1-linkinjeon@kernel.org>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S234481AbjGMNUl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 09:20:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61830270A;
+        Thu, 13 Jul 2023 06:20:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2C7461077;
+        Thu, 13 Jul 2023 13:20:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA113C433C8;
+        Thu, 13 Jul 2023 13:20:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689254431;
+        bh=/HyMH976r1TkXdXXLMFe5egKFttnbGRT4cnSU1IDGSE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IyX8o5M49S3zdzIxtruMjTRp3CoLKS1Rhzh8MHa3gYd3oaysfgiI9455gtBEoX6/h
+         VbqM0gkLxd4eQvSWW7TISIVbalZNozQIlll8xozP/Mpus0rGu4PKXHlVyyOaDlD8Nm
+         MLz+0GsLu/xdnFlvqHh5WF5qicq294o0Dn9/hQp3R3SN5d/FjQLuMIOEbYVwPvBGkV
+         3pZL3qgJ3VM0f7sHcfQmUY8ueP8p88W4jCtOqXictAbtRiKpiIxS6sBpv5C7XYkSe3
+         I03sippl4hiN2aJerdZ/8LQgvMnUA8TpzL9Fg6A61oDg35Njc6Ts11QAdJ1MBAVhhm
+         G+bK9ll/f7X2A==
+Date:   Thu, 13 Jul 2023 15:20:20 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+Cc:     Aleksa Sarai <cyphar@cyphar.com>, Willy Tarreau <w@1wt.eu>,
+        Shuah Khan <shuah@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dave Chinner <dchinner@redhat.com>,
+        xu xin <cgel.zte@gmail.com>, Al Viro <viro@zeniv.linux.org.uk>,
+        Stefan Roesch <shr@devkernel.io>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Janis Danisevskis <jdanis@google.com>,
+        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] procfs: block chmod on /proc/thread-self/comm
+Message-ID: <20230713-shrimps-sachkenntnis-0343cc776cc2@brauner>
+References: <20230713121907.9693-1-cyphar@cyphar.com>
+ <e26a9bab-6443-4a0a-809a-ca1c1b4d28c3@t-8ch.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+In-Reply-To: <e26a9bab-6443-4a0a-809a-ca1c1b4d28c3@t-8ch.de>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,58 +66,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-exfat_extract_uni_name copies characters from a given file name entry into
-the 'uniname' variable. This variable is actually defined on the stack of
-the exfat_readdir() function. According to the definition of
-the 'exfat_uni_name' type, the file name should be limited 255 characters
-(+ null teminator space), but the exfat_get_uniname_from_ext_entry()
-function can write more characters because there is no check if filename
-entries exceeds max filename length. This patch add the check not to copy
-filename characters when exceeding max filename length.
+On Thu, Jul 13, 2023 at 03:01:24PM +0200, Thomas Weißschuh wrote:
+> On 2023-07-13 22:19:04+1000, Aleksa Sarai wrote:
+> > Due to an oversight in commit 1b3044e39a89 ("procfs: fix pthread
+> > cross-thread naming if !PR_DUMPABLE") in switching from REG to NOD,
+> > chmod operations on /proc/thread-self/comm were no longer blocked as
+> > they are on almost all other procfs files.
+> > 
+> > A very similar situation with /proc/self/environ was used to as a root
+> > exploit a long time ago, but procfs has SB_I_NOEXEC so this is simply a
+> > correctness issue.
+> > 
+> > Ref: https://lwn.net/Articles/191954/
+> > Ref: 6d76fa58b050 ("Don't allow chmod() on the /proc/<pid>/ files")
+> > Fixes: 1b3044e39a89 ("procfs: fix pthread cross-thread naming if !PR_DUMPABLE")
+> > Cc: stable@vger.kernel.org # v4.7+
+> > Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+> > ---
+> >  fs/proc/base.c                               | 3 ++-
+> >  tools/testing/selftests/nolibc/nolibc-test.c | 4 ++++
+> >  2 files changed, 6 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/fs/proc/base.c b/fs/proc/base.c
+> > index 05452c3b9872..7394229816f3 100644
+> > --- a/fs/proc/base.c
+> > +++ b/fs/proc/base.c
+> > @@ -3583,7 +3583,8 @@ static int proc_tid_comm_permission(struct mnt_idmap *idmap,
+> >  }
+> >  
+> >  static const struct inode_operations proc_tid_comm_inode_operations = {
+> > -		.permission = proc_tid_comm_permission,
+> > +		.setattr	= proc_setattr,
+> > +		.permission	= proc_tid_comm_permission,
+> >  };
+> 
+> Given that this seems to be a recurring theme a more systematic
+> aproach would help.
+> 
+> Something like the following (untested) patch:
+> 
+> diff --git a/fs/proc/base.c b/fs/proc/base.c
+> index 05452c3b9872..b90f2e9cda66 100644
+> --- a/fs/proc/base.c
+> +++ b/fs/proc/base.c
+> @@ -2649,6 +2649,7 @@ static struct dentry *proc_pident_instantiate(struct dentry *dentry,
+>  		set_nlink(inode, 2);	/* Use getattr to fix if necessary */
+>  	if (p->iop)
+>  		inode->i_op = p->iop;
+> +	WARN_ON(!inode->i_op->setattr);
 
-Cc: stable@vger.kernel.org
-Cc: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reported-by: Maxim Suhanov <dfirblog@gmail.com>
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
----
- fs/exfat/dir.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Hm, no. This is hacky.
 
-diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
-index 957574180a5e..bc48f3329921 100644
---- a/fs/exfat/dir.c
-+++ b/fs/exfat/dir.c
-@@ -34,6 +34,7 @@ static int exfat_get_uniname_from_ext_entry(struct super_block *sb,
- {
- 	int i, err;
- 	struct exfat_entry_set_cache es;
-+	unsigned int uni_len = 0, len;
- 
- 	err = exfat_get_dentry_set(&es, sb, p_dir, entry, ES_ALL_ENTRIES);
- 	if (err)
-@@ -52,7 +53,10 @@ static int exfat_get_uniname_from_ext_entry(struct super_block *sb,
- 		if (exfat_get_entry_type(ep) != TYPE_EXTEND)
- 			break;
- 
--		exfat_extract_uni_name(ep, uniname);
-+		len = exfat_extract_uni_name(ep, uniname);
-+		uni_len += len;
-+		if (len != EXFAT_FILE_NAME_LEN || uni_len >= MAX_NAME_LENGTH)
-+			break;
- 		uniname += EXFAT_FILE_NAME_LEN;
- 	}
- 
-@@ -1079,7 +1083,8 @@ int exfat_find_dir_entry(struct super_block *sb, struct exfat_inode_info *ei,
- 			if (entry_type == TYPE_EXTEND) {
- 				unsigned short entry_uniname[16], unichar;
- 
--				if (step != DIRENT_STEP_NAME) {
-+				if (step != DIRENT_STEP_NAME ||
-+				    name_len >= MAX_NAME_LENGTH) {
- 					step = DIRENT_STEP_FILE;
- 					continue;
- 				}
--- 
-2.25.1
+To fix this properly we will need to wean off notify_change() from
+falling back to simple_setattr() when no i_op->setattr() method is
+defined. To do that we will have to go through every filesystem and port
+all that rely on this fallback to set simple_setattr() explicitly as
+their i_op->setattr() method.
 
+Christoph and I just discussed this in relation to another patch.
+
+This is a bugfix so it should be as minimal as possible for easy
+backport.
