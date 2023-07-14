@@ -2,63 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F5975456D
-	for <lists+stable@lfdr.de>; Sat, 15 Jul 2023 01:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 407BA754576
+	for <lists+stable@lfdr.de>; Sat, 15 Jul 2023 01:41:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbjGNXgK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 19:36:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48220 "EHLO
+        id S229580AbjGNXlw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 19:41:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjGNXgJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 19:36:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF7753A92;
-        Fri, 14 Jul 2023 16:36:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C4F061E15;
-        Fri, 14 Jul 2023 23:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925F2C433C9;
-        Fri, 14 Jul 2023 23:36:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689377767;
-        bh=QeueiOpDQZwo6rtEiZoJ8qhJKkd5jWANfodFVO3UgnI=;
-        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=XZqdXW3oB1OA9npd73eLtv/UBG5Scu7Gm/HetbtRBr1UGMYwh65+KUMe01Kn4GgU4
-         q2Jz1V+G92sDeoO2CF5EyqhvK70W+MGZ8Z2NFCeTu+96ikE+QHnKU9GelJZJwRQMTU
-         niqyUujd0BW+4UYKz3YPXgknNQgGSoO/u2x3ctS2qt9lO9U/xsWMDjr151ZYOO7MR5
-         nuJHn+QT3CGYqdKbcAXhbF44rNZI9bnMIllNVQhZieAU4QUHqKRkelJFkDsWxHFHNd
-         erynCy1bOqvj9GHi/Y0qWMaPqGL+ro5IyFAxmVFh454+4vvM131WG/AK9dRlm6OgS8
-         AAzAjvKAleHJg==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-56597d949b1so1689905eaf.1;
-        Fri, 14 Jul 2023 16:36:07 -0700 (PDT)
-X-Gm-Message-State: ABy/qLYXvUZteR0AZK79E2TF+/9r69cqJhWPRvf/LXNl2rGlwyPEJNRj
-        aBHB7NoFWSgwk98YQ8IikvHn0fwkJwRlnGat28k=
-X-Google-Smtp-Source: APBJJlEFqDCFObfCfrVlv0+B4OnBTopnGMsqKu25XX1NhpPE9jqO/7EtxY8CDN72Va1Re9Ujl3gcn9mGcMs+qhDJkEI=
-X-Received: by 2002:a05:6870:c588:b0:1b7:613c:2eb2 with SMTP id
- ba8-20020a056870c58800b001b7613c2eb2mr8323917oab.6.1689377766742; Fri, 14 Jul
- 2023 16:36:06 -0700 (PDT)
+        with ESMTP id S229502AbjGNXlv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 19:41:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0655B3A92
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 16:41:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689378061;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=xA2SFKFW47h/K7YYUZodON0lmABcyisGtc9hpSnJfHA=;
+        b=ff23wAwHi1K/OQnODZvnMtEtvRQwzKUlyPKBixzXCr7JA+W8437erEI11w01d/tfuy+PkL
+        dI0MHJztxhXgHNO5w7f7WRPW8EiZXG5ESzoMSBq9fIuHwQYTqPjDY6GQTglMmmcbicBao7
+        8R/ldsGar7GVh55lABf16RQAAx/hYds=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-281-3vhMOyTvPYSfwlGf-Qd_QA-1; Fri, 14 Jul 2023 19:40:59 -0400
+X-MC-Unique: 3vhMOyTvPYSfwlGf-Qd_QA-1
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-5704995f964so20362867b3.2
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 16:40:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689378059; x=1691970059;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xA2SFKFW47h/K7YYUZodON0lmABcyisGtc9hpSnJfHA=;
+        b=h7QgO3JoBw9KqMDetBUog8iD6WFM2UFYMsPT2nHvX6/uDiMZjHvFMWvCLQhvGCVlpF
+         M3vBP5gw9DMWxTGSqRNb8hGhLZ3ncghH4i2nbXdMF0v1gVIZVbvbDmVfl5FyHphTtWAj
+         pY5/J3MDGe4xxuQuZ3ZJLh7eAbY6gjJcbQPYIG+VsDHd81AmbDZ0PO71x01R9ILxQawL
+         sBp3LlYZAqK624vCcxKmqMD3epMeDgwNaj7WN6k9nIvveA26Rr7hpfIiBG6Weq6mJraE
+         LwiwqWZeXeeIQKJM3nku/evpHydxWYFQedvspy5cWQTeNAKn5PxW9Dl4ASakoQqZ9ud6
+         NnjA==
+X-Gm-Message-State: ABy/qLZrJfBdi0qCjocYoOFpgQFXewWEoYrjh4n3ObuqxfSbxQCg79yi
+        gB8kIRzR1+cav3Rdy16rLmF86PthgG7t2PYlO+vUt2w+ncYUvdg4lEVWGmWCWr8BKjJYWkEjec7
+        J9QPgfj7JjHeVvqKpiD1OACbPtMBn3Jr/
+X-Received: by 2002:a0d:e5c6:0:b0:576:bfd7:1dac with SMTP id o189-20020a0de5c6000000b00576bfd71dacmr5841398ywe.24.1689378059311;
+        Fri, 14 Jul 2023 16:40:59 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGFR1U1r+iOWq9LG5xJ+j5zphVL8W6yGkoGpCz8p7aKlhTSlLIhprGVAG72NYrRMw4GJ+h8npxiLqmTp60Ag+w=
+X-Received: by 2002:a0d:e5c6:0:b0:576:bfd7:1dac with SMTP id
+ o189-20020a0de5c6000000b00576bfd71dacmr5841390ywe.24.1689378059101; Fri, 14
+ Jul 2023 16:40:59 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a8a:4c7:0:b0:4e8:f6ff:2aab with HTTP; Fri, 14 Jul 2023
- 16:36:06 -0700 (PDT)
-In-Reply-To: <20230714084354.1959951-1-sj1557.seo@samsung.com>
-References: <CGME20230714084427epcas1p2ce3efb1524c8efae6038d1940149ae54@epcas1p2.samsung.com>
- <20230714084354.1959951-1-sj1557.seo@samsung.com>
-From:   Namjae Jeon <linkinjeon@kernel.org>
-Date:   Sat, 15 Jul 2023 08:36:06 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd-+_M=7b-E7RyJj+S3w=_WF8VDRyunYdXPdpD1dTtRA=Q@mail.gmail.com>
-Message-ID: <CAKYAXd-+_M=7b-E7RyJj+S3w=_WF8VDRyunYdXPdpD1dTtRA=Q@mail.gmail.com>
-Subject: Re: [PATCH] exfat: release s_lock before calling dir_emit()
-To:     Sungjong Seo <sj1557.seo@samsung.com>
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org,
-        syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com
+References: <20230713164838.3583052-1-aahringo@redhat.com> <20230713164838.3583052-4-aahringo@redhat.com>
+In-Reply-To: <20230713164838.3583052-4-aahringo@redhat.com>
+From:   Alexander Aring <aahringo@redhat.com>
+Date:   Fri, 14 Jul 2023 19:40:47 -0400
+Message-ID: <CAK-6q+gNoZw9HSWvKKb2jS1m4W-NxbrsrPE4x_DudmpHiAhw0w@mail.gmail.com>
+Subject: Re: [PATCHv2 v6.5-rc1 3/3] fs: dlm: allow to F_SETLKW getting interrupted
+To:     teigland@redhat.com
+Cc:     cluster-devel@redhat.com, stable@vger.kernel.org,
+        agruenba@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,45 +75,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-2023-07-14 17:43 GMT+09:00, Sungjong Seo <sj1557.seo@samsung.com>:
-> There is a potential deadlock reported by syzbot as below:
+Hi,
+
+On Thu, Jul 13, 2023 at 12:49=E2=80=AFPM Alexander Aring <aahringo@redhat.c=
+om> wrote:
 >
-> ======================================================
-> WARNING: possible circular locking dependency detected
-> 6.4.0-next-20230707-syzkaller #0 Not tainted
-> ------------------------------------------------------
-> syz-executor330/5073 is trying to acquire lock:
-> ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: mmap_read_lock_killable
-> include/linux/mmap_lock.h:151 [inline]
-> ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: get_mmap_lock_carefully
-> mm/memory.c:5293 [inline]
-> ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at:
-> lock_mm_and_find_vma+0x369/0x510 mm/memory.c:5344
-> but task is already holding lock:
-> ffff888019f760e0 (&sbi->s_lock){+.+.}-{3:3}, at: exfat_iterate+0x117/0xb50
-> fs/exfat/dir.c:232
->
-> which lock already depends on the new lock.
->
-> Chain exists of:
->   &mm->mmap_lock --> mapping.invalidate_lock#3 --> &sbi->s_lock
->
->  Possible unsafe locking scenario:
->
->        CPU0                    CPU1
->        ----                    ----
->   lock(&sbi->s_lock);
->                                lock(mapping.invalidate_lock#3);
->                                lock(&sbi->s_lock);
->   rlock(&mm->mmap_lock);
->
-> Let's try to avoid above potential deadlock condition by moving dir_emit*()
-> out of sbi->s_lock coverage.
->
-> Fixes: ca06197382bd ("exfat: add directory operations")
-> Cc: stable@vger.kernel.org #v5.7+
-> Reported-by: syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com
-> Link:
-> https://lore.kernel.org/lkml/00000000000078ee7e060066270b@google.com/T/#u
-> Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
-Applied it to #dev, Thanks for your patch!
+> This patch implements dlm plock F_SETLKW interruption feature. If the
+> pending plock operation is not sent to user space yet it can simple be
+> dropped out of the send_list. In case it's already being sent we need to
+> try to remove the waiters in dlm user space tool. If it was successful a
+> reply with DLM_PLOCK_OP_CANCEL optype instead of DLM_PLOCK_OP_LOCK comes
+> back (flag DLM_PLOCK_FL_NO_REPLY was then being cleared in user space)
+> to signal the cancellation was successful. If a result with optype
+> DLM_PLOCK_OP_LOCK came back then the cancellation was not successful.
+
+There is another use-case for this op that's only used kernel
+internally by nfs. It's F_CANCELLK [0]. I will try to implement this
+feature as I think the current behaviour is broken [1].
+An unlock is not a revert and if the lock request is in waiting state,
+unlocking will do exactly nothing.
+
+I am still questioning how the API of [0] is supposed to work as [0]
+does not evaluate any return value if it was successfully canceled or
+not. Maybe they meant cancel and if it was not successful unlock it,
+but an unlock is not a revert and posix locks support up/downgrade
+locking e.g. read/write locks. However I think unlocking if
+cancellation wasn't successful is meant here.
+
+Besides that, I will change that DLM_PLOCK_OP_CANCEL will always
+expect a reply back.
+
+- Alex
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/fs/lockd/svclock.c#n705
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/fs/gfs2/file.c?h=3Dv6.5-rc1#n1439
+
