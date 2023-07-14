@@ -2,82 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0797753F22
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 17:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1309753FE8
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 18:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233758AbjGNPjo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 11:39:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59530 "EHLO
+        id S235747AbjGNQkR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 12:40:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235454AbjGNPjn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 11:39:43 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1DA130E3;
-        Fri, 14 Jul 2023 08:39:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1689349178;
+        with ESMTP id S235470AbjGNQkQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 12:40:16 -0400
+Received: from out-57.mta1.migadu.com (out-57.mta1.migadu.com [95.215.58.57])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3253E30FD
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 09:40:15 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1689352813;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OyBc4HygQ+C3p3pazjwJiG3/UxFzCI/AV+IJeiS4VBY=;
-        b=kAFz7Mb3jX6mJrhmvWWpEf1IAik0/+mEHUrn4NzmohB/FINeYSJ1jwhfXRISEKSBWVfbCE
-        C9/vuZdHavRuVhN9hdIau/DA8JIcZKwjxX0AkgYTiYD+BvOVtCFUyAu46torKBaGVWqLNC
-        e3owR9xmrbwSoBWFjXUCl8cV6+55Tso=
-Message-ID: <a7b7afa6ef2aed620c342f569e1911120aa2a6e5.camel@crapouillou.net>
-Subject: Re: [PATCH] ARM: dts: exynos/i9100: Fix LCD screen's physical size
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     Alim Akhtar <alim.akhtar@samsung.com>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sam Ravnborg <sam@ravnborg.org>, stable@vger.kernel.org
-Date:   Fri, 14 Jul 2023 17:39:37 +0200
-In-Reply-To: <20230714153720.336990-1-paul@crapouillou.net>
-References: <20230714153720.336990-1-paul@crapouillou.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+        bh=mM3Yg48NFa+D2LoOnZ1L1kCdrFfUaYCzsidjkRTZz0Y=;
+        b=M1lhNaWkAm7c9Fx70S/ExpSO3tvt26cOFul7lrqXLRFuuvO1R/SBh7K7VjqDSf8ovNJDp6
+        EyMG6WRn8BbPuR0cL0XVt3/pL/rBHcmyWFQiQJg/KZ8Z2UN+AcMGUIOFD0WibGNPLINsKi
+        q7UnTuPkUzEDR1tYPOqP2Zsnwb5yL8M=
+From:   Oliver Upton <oliver.upton@linux.dev>
+To:     linux-arm-kernel@lists.infradead.org,
+        Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org,
+        kvmarm@lists.linux.dev
+Cc:     Oliver Upton <oliver.upton@linux.dev>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Xiang Chen <chenxiang66@hisilicon.com>, stable@vger.kernel.org,
+        James Morse <james.morse@arm.com>
+Subject: Re: [PATCH] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t preemption
+Date:   Fri, 14 Jul 2023 16:40:01 +0000
+Message-ID: <168935279432.510537.2896936960411016313.b4-ty@linux.dev>
+In-Reply-To: <20230713070657.3873244-1-maz@kernel.org>
+References: <20230713070657.3873244-1-maz@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-T29vcHMsIHNob3VsZCBoYXZlIGJlZW4gVjMuCgpWMS9WMiB3YXMgcGFydCBvZiBteSAiR2FsYXh5
-IFMyIChpOTEwMCkgcGFuZWwgdXBkYXRlcyIgc2VyaWVzLiBUaGlzIG9uZQpwYXRjaCBkaWQgbm90
-IGNoYW5nZSBzaW5jZSBWMSAtIGV4Y2VwdCB0aGUgQUNLIGZyb20gU2FtLgoKLVBhdWwKCkxlIHZl
-bmRyZWRpIDE0IGp1aWxsZXQgMjAyMyDDoCAxNzozNyArMDIwMCwgUGF1bCBDZXJjdWVpbCBhIMOp
-Y3JpdMKgOgo+IFRoZSBwcmV2aW91cyB2YWx1ZXMgd2VyZSBjb21wbGV0ZWx5IGJvZ3VzLCBhbmQg
-cmVzdWx0ZWQgaW4gdGhlCj4gY29tcHV0ZWQKPiBEUEkgcmF0aW8gYmVpbmcgbXVjaCBsb3dlciB0
-aGFuIHJlYWxpdHksIGNhdXNpbmcgYXBwbGljYXRpb25zIGFuZCBVSXMKPiB0bwo+IG1pc2JlaGF2
-ZS4KPiAKPiBUaGUgbmV3IHZhbHVlcyB3ZXJlIG1lYXN1cmVkIGJ5IG15c2VsZiB3aXRoIGEgcnVs
-ZXIuCj4gCj4gU2lnbmVkLW9mZi1ieTogUGF1bCBDZXJjdWVpbCA8cGF1bEBjcmFwb3VpbGxvdS5u
-ZXQ+Cj4gQWNrZWQtYnk6IFNhbSBSYXZuYm9yZyA8c2FtQHJhdm5ib3JnLm9yZz4KPiBGaXhlczog
-ODYyMGNjMmY5OWI3ICgiQVJNOiBkdHM6IGV4eW5vczogQWRkIGRldmljZXRyZWUgZmlsZSBmb3Ig
-dGhlCj4gR2FsYXh5IFMyIikKPiBDYzogPHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+ICMgdjUuOCsK
-PiAtLS0KPiDCoGFyY2gvYXJtL2Jvb3QvZHRzL3NhbXN1bmcvZXh5bm9zNDIxMC1pOTEwMC5kdHMg
-fCA0ICsrLS0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25z
-KC0pCj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jvb3QvZHRzL3NhbXN1bmcvZXh5bm9zNDIx
-MC1pOTEwMC5kdHMKPiBiL2FyY2gvYXJtL2Jvb3QvZHRzL3NhbXN1bmcvZXh5bm9zNDIxMC1pOTEw
-MC5kdHMKPiBpbmRleCAzN2NkNGRkZTUzZTQuLmE5ZWMxZjZjMWRlYSAxMDA2NDQKPiAtLS0gYS9h
-cmNoL2FybS9ib290L2R0cy9zYW1zdW5nL2V4eW5vczQyMTAtaTkxMDAuZHRzCj4gKysrIGIvYXJj
-aC9hcm0vYm9vdC9kdHMvc2Ftc3VuZy9leHlub3M0MjEwLWk5MTAwLmR0cwo+IEBAIC0yMDcsOCAr
-MjA3LDggQEAgbGNkQDAgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoHBvd2VyLW9uLWRlbGF5ID0gPDEwPjsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXNldC1kZWxheSA9IDwxMD47Cj4gwqAKPiAtwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBhbmVsLXdpZHRoLW1t
-ID0gPDkwPjsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oHBhbmVsLWhlaWdodC1tbSA9IDwxNTQ+Owo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgcGFuZWwtd2lkdGgtbW0gPSA8NTY+Owo+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcGFuZWwtaGVpZ2h0LW1tID0gPDkzPjsK
-PiDCoAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRp
-c3BsYXktdGltaW5ncyB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRpbWluZyB7Cgo=
+On Thu, 13 Jul 2023 08:06:57 +0100, Marc Zyngier wrote:
+> Xiang reports that VMs occasionally fail to boot on GICv4.1 systems when
+> running a preemptible kernel, as it is possible that a vCPU is blocked
+> without requesting a doorbell interrupt.
+> 
+> The issue is that any preemption that occurs between vgic_v4_put() and
+> schedule() on the block path will mark the vPE as nonresident and *not*
+> request a doorbell irq. This occurs because when the vcpu thread is
+> resumed on its way to block, vcpu_load() will make the vPE resident
+> again. Once the vcpu actually blocks, we don't request a doorbell
+> anymore, and the vcpu won't be woken up on interrupt delivery.
+> 
+> [...]
 
+Applied to kvmarm/fixes, thanks!
+
+[1/1] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t preemption
+      https://git.kernel.org/kvmarm/kvmarm/c/b321c31c9b7b
+
+--
+Best,
+Oliver
