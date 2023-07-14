@@ -2,145 +2,198 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE2347541B5
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 19:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 532357541FE
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 20:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236448AbjGNRu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 13:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35446 "EHLO
+        id S236816AbjGNR4S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 13:56:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236191AbjGNRun (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 13:50:43 -0400
+        with ESMTP id S236820AbjGNR4D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 13:56:03 -0400
 Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA68B3AA3
-        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 10:50:08 -0700 (PDT)
-Received: by mail-oo1-xc31.google.com with SMTP id 006d021491bc7-565f3881cbeso1524029eaf.2
-        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 10:50:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 023E24234;
+        Fri, 14 Jul 2023 10:55:33 -0700 (PDT)
+Received: by mail-oo1-xc31.google.com with SMTP id 006d021491bc7-56597d949b1so1499528eaf.1;
+        Fri, 14 Jul 2023 10:55:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20221208.gappssmtp.com; s=20221208; t=1689356948; x=1691948948;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I7DDN8GbZMG3KlpuHTN+v0LnOTBPGrIWfYxu7LMvL/8=;
-        b=EsObdH5GmfJY05wMbzoDxMZl7qGlDG1hB3mWeD4J9KH+vhPUO8vzmrTibNYCg3HFsX
-         N/yHTsKtySUpQBqoznTOulPdXkVf5BdhhRbu9EJ5Plf9zeBRSvrgCTYrz9g9r9YKgv7P
-         /THveqSATuTYP4pJoUUX65Uan3QgCrP+vldmXjs13ym6CziZ2rBvZP2Xn0T2UKRIVHRM
-         AochMDIvMr3iWvDt4ot+U2i+6lwRdJJyOJtOSxXxo0HTi0zV9wlssvgbjSZEyuoRkFiD
-         d7e0tq9zTPgg6hRtHTm4SCr/NXDD25LFVWKsc5TWQsXVNx76aIbvTrm0/36SWRYONc5H
-         2iZA==
+        d=gmail.com; s=20221208; t=1689357265; x=1691949265;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=HhWHTihqEVGZ7UbRv5sTAqbNbXFXUqhxoeSzHop6+CY=;
+        b=ZqnJP5TgvB9Lbcr1drQHWN2xw4IoFriyJOsINZdBIg8yPdKqgUpTyWotRA4+3dAd7x
+         qCCrJGHQsZc1Ylu3vyhfwJWHNHpicMGfwx6yZ69c/uT49vlFsAF52jfi+xXzi6rpGWCO
+         71oMDwUet79DbxBmbD4fGEw+qbDrnSM/2Pf6xDGOtBO/5JJuL5vQI4hnEpBJNWdj+5nb
+         XOXBCTN64a/bvOG7KesoCIZ/GeHerSQ4Z2Rz48W8Ag/uu1V1W9STrnzE4/LYbsOwlUWY
+         W3Ws+tGgBmTo42GqwBXjVyIRosbhl0Tv92zfyO/HZM171bjctfcvALC0gTvQSN/OT9ap
+         5xJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689356948; x=1691948948;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I7DDN8GbZMG3KlpuHTN+v0LnOTBPGrIWfYxu7LMvL/8=;
-        b=CQTvsH3r5VnBxtWlNSDlI68LWEceA2rR/WHyQS9BWBk1inCG8G4HO0Go0jhWaD+J/T
-         FwnMd3NpCmh/4GoYajekx94g5kjzBg/Mb2Q29e0FJ0MIrrWCPkFswOnw8luh4MTC/0OE
-         oJW1RDfuFGZex/R0I+9PJF3Aq2AeH7i7l2XflUj3YnIPEVzUvDmOWq+M0ecIFGO2/k8i
-         bSZGpAMFvBEC6yH1pKFo5V+Th9dNjFQv9VEFQh1thy3MHqR+SRwxJTCxyYSGhov/qaiK
-         euKUWl+UqYw750TRm+jzXI3Zbnhs1DyWbZ+iQDrqr55z5o1NxD1pOyJrDXHcBv451Wu6
-         7SZA==
-X-Gm-Message-State: ABy/qLYauCITSpSPPqlwR3kroEaxLg9VR7ESLpDOPnQOIQFknplPsgX3
-        08PjWpHI3kmhVu4vE1k9ekuN9A==
-X-Google-Smtp-Source: APBJJlEFEC11jJ2OVWqVyq80ycE+Wi778tCXgrJAAGfwWU4P6AqQ9H0EWkwamlDgNCerFGk1EU/3MA==
-X-Received: by 2002:a4a:d298:0:b0:566:6928:2e3c with SMTP id h24-20020a4ad298000000b0056669282e3cmr5186911oos.9.1689356947824;
-        Fri, 14 Jul 2023 10:49:07 -0700 (PDT)
-Received: from ?IPV6:2804:14d:5c5e:44fb:860d:7d54:c6cc:ceb3? ([2804:14d:5c5e:44fb:860d:7d54:c6cc:ceb3])
-        by smtp.gmail.com with ESMTPSA id 184-20020a4a1dc1000000b0055e3dd89c12sm3065807oog.1.2023.07.14.10.49.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Jul 2023 10:49:07 -0700 (PDT)
-Message-ID: <deeb8fe7-1f0e-bc1c-cde5-74e9af160bf7@mojatatu.com>
-Date:   Fri, 14 Jul 2023 14:49:01 -0300
+        d=1e100.net; s=20221208; t=1689357265; x=1691949265;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HhWHTihqEVGZ7UbRv5sTAqbNbXFXUqhxoeSzHop6+CY=;
+        b=FudmG3DSHt41Aqxri/RnnHO5O8h1MXgvFXsmRN/RcMcCo57L4eAF7vWitV1MJx+bZT
+         Ir96wEf8H4AwopqO5lSLcaDGZkZ9a4La55e3DaJW9/6pmyLwE4n0wtjXLCfTkX7xBLpH
+         r1QjuDdkWVIIWhMUe4L4lQJjd7fai+JTjj4mtIHGrNXP4fNAwBshzPbtPOz7ijpuHTva
+         1CCAY5OhwyKYjxlRCtVXpqOVY5HSARgFQ2OyjJeXO1xStRUSUa7zX+sHqAuvQAIMvEhC
+         L5NX3wHnmbmbSsS8y8Ii7KLlL55zKzLss5oyhFaISxnM2nCnHFxMZtM4DkWiZ8Q3AQV/
+         FKVQ==
+X-Gm-Message-State: ABy/qLYF+E6QaJtWIV2yMv8fFOko9jqMmERf8j8SJrN2uIAEJlHStqN6
+        vmUvvs93OKU5uQYdY/z9rG8=
+X-Google-Smtp-Source: APBJJlFRMJy3SCUvftpzui2PVWcCf3sofTpwhHmYLPTFjbDJmiarSyS69sn5j+6JI+Ew88FEBQR/Ow==
+X-Received: by 2002:a4a:92ce:0:b0:566:f94f:cd28 with SMTP id j14-20020a4a92ce000000b00566f94fcd28mr4605215ooh.3.1689357264827;
+        Fri, 14 Jul 2023 10:54:24 -0700 (PDT)
+Received: from localhost.localdomain ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id i19-20020a4a8d93000000b005660ed0becesm4116129ook.39.2023.07.14.10.54.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jul 2023 10:54:24 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     gregkh@linuxfoundation.org
+Cc:     linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
+        stable@vger.kernel.org, Nam Cao <namcaov@gmail.com>
+Subject: [PATCH v2] staging: r8712: Fix memory leak in _r8712_init_xmit_priv()
+Date:   Fri, 14 Jul 2023 12:54:17 -0500
+Message-ID: <20230714175417.18578-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH net 1/3] selftests: tc: set timeout to 15 minutes
-Content-Language: en-US
-To:     shaozhengchao <shaozhengchao@huawei.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>, Shuah Khan <shuah@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paul Blakey <paulb@mellanox.com>,
-        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        mptcp@lists.linux.dev
-Cc:     Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-References: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
- <20230713-tc-selftests-lkft-v1-1-1eb4fd3a96e7@tessares.net>
- <bf7f8867-6b14-dd53-a6e4-2addee4a5ad8@huawei.com>
-From:   Pedro Tammela <pctammela@mojatatu.com>
-In-Reply-To: <bf7f8867-6b14-dd53-a6e4-2addee4a5ad8@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 13/07/2023 23:25, shaozhengchao wrote:
-> 
-> 
-> On 2023/7/14 5:16, Matthieu Baerts wrote:
->> When looking for something else in LKFT reports [1], I noticed that the
->> TC selftest ended with a timeout error:
->>
->>    not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
->>
->> The timeout had been introduced 3 years ago, see the Fixes commit below.
->>
->> This timeout is only in place when executing the selftests via the
->> kselftests runner scripts. I guess this is not what most TC devs are
->> using and nobody noticed the issue before.
->>
->> The new timeout is set to 15 minutes as suggested by Pedro [2]. It looks
->> like it is plenty more time than what it takes in "normal" conditions.
->>
->> Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second 
->> timeout per test")
->> Cc: stable@vger.kernel.org
->> Link: 
->> https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
->> Link: 
->> https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
->> Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
->> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
->> ---
->>   tools/testing/selftests/tc-testing/settings | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/tools/testing/selftests/tc-testing/settings 
->> b/tools/testing/selftests/tc-testing/settings
->> new file mode 100644
->> index 000000000000..e2206265f67c
->> --- /dev/null
->> +++ b/tools/testing/selftests/tc-testing/settings
->> @@ -0,0 +1 @@
->> +timeout=900
->>
-> I remember last year when I tested all the tdc cases（qdisc + filter +
-> action + infra） in my vm machine, it took me nearly 20 minutes.
-> So I think it should be more than 1200 seconds if all cases need to be
-> tested.
-> 
-> Maybe we should really optimize the parallel execution process of tdc.
+In the above mentioned routine, memory is allocated in several places.
+If the first succeeds and a later one fails, the routine will leak memory.
+This patch fixes commit 2865d42c78a9 ("staging: r8712u: Add the new driver
+to the mainline kernel"). A potential memory leak in
+r8712_xmit_resource_alloc() is also addressed.
 
-Let's try to spend some cycles improving the tdc code performance first.
-TDC boils down essentially to:
-- Setup namespace (if needed)
-- Setup network interfaces
-- Spawn a few processes
-- Match a regex
-- Bring down namespace
+Fixes: 2865d42c78a9 ("staging: r8712u: Add the new driver to the mainline kernel")
+Reported-by: syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/x/log.txt?x=11ac3fa0a80000
+Cc: stable@vger.kernel.org
+Cc: Nam Cao <namcaov@gmail.com>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+v2 - Added allocations within the loop and urb allocations as suppested by Nam Cao
+---
+ drivers/staging/rtl8712/rtl871x_xmit.c | 43 ++++++++++++++++++++------
+ drivers/staging/rtl8712/xmit_linux.c   |  6 ++++
+ 2 files changed, 40 insertions(+), 9 deletions(-)
 
-Nothing above screams expensive, so I'm sure there are some low hanging 
-fruits to improve the overall wall time even in debug kernels.
+diff --git a/drivers/staging/rtl8712/rtl871x_xmit.c b/drivers/staging/rtl8712/rtl871x_xmit.c
+index 090345bad223..6353dbe554d3 100644
+--- a/drivers/staging/rtl8712/rtl871x_xmit.c
++++ b/drivers/staging/rtl8712/rtl871x_xmit.c
+@@ -21,6 +21,7 @@
+ #include "osdep_intf.h"
+ #include "usb_ops.h"
+ 
++#include <linux/usb.h>
+ #include <linux/ieee80211.h>
+ 
+ static const u8 P802_1H_OUI[P80211_OUI_LEN] = {0x00, 0x00, 0xf8};
+@@ -55,6 +56,7 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
+ 	sint i;
+ 	struct xmit_buf *pxmitbuf;
+ 	struct xmit_frame *pxframe;
++	int j;
+ 
+ 	memset((unsigned char *)pxmitpriv, 0, sizeof(struct xmit_priv));
+ 	spin_lock_init(&pxmitpriv->lock);
+@@ -117,11 +119,8 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
+ 	_init_queue(&pxmitpriv->pending_xmitbuf_queue);
+ 	pxmitpriv->pallocated_xmitbuf =
+ 		kmalloc(NR_XMITBUFF * sizeof(struct xmit_buf) + 4, GFP_ATOMIC);
+-	if (!pxmitpriv->pallocated_xmitbuf) {
+-		kfree(pxmitpriv->pallocated_frame_buf);
+-		pxmitpriv->pallocated_frame_buf = NULL;
+-		return -ENOMEM;
+-	}
++	if (!pxmitpriv->pallocated_xmitbuf)
++		goto clean_up_frame_buf;
+ 	pxmitpriv->pxmitbuf = pxmitpriv->pallocated_xmitbuf + 4 -
+ 			      ((addr_t)(pxmitpriv->pallocated_xmitbuf) & 3);
+ 	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
+@@ -129,13 +128,17 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
+ 		INIT_LIST_HEAD(&pxmitbuf->list);
+ 		pxmitbuf->pallocated_buf =
+ 			kmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ, GFP_ATOMIC);
+-		if (!pxmitbuf->pallocated_buf)
+-			return -ENOMEM;
++		if (!pxmitbuf->pallocated_buf) {
++			j = 0;
++			goto clean_up_alloc_buf;
++		}
+ 		pxmitbuf->pbuf = pxmitbuf->pallocated_buf + XMITBUF_ALIGN_SZ -
+ 				 ((addr_t) (pxmitbuf->pallocated_buf) &
+ 				 (XMITBUF_ALIGN_SZ - 1));
+-		if (r8712_xmit_resource_alloc(padapter, pxmitbuf))
+-			return -ENOMEM;
++		if (r8712_xmit_resource_alloc(padapter, pxmitbuf)) {
++			j = 1;
++			goto clean_up_alloc_buf;
++		}
+ 		list_add_tail(&pxmitbuf->list,
+ 				 &(pxmitpriv->free_xmitbuf_queue.queue));
+ 		pxmitbuf++;
+@@ -146,6 +149,28 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
+ 	init_hwxmits(pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
+ 	tasklet_setup(&pxmitpriv->xmit_tasklet, r8712_xmit_bh);
+ 	return 0;
++
++clean_up_alloc_buf:
++	if (j) {
++		/* failure happened in r8712_xmit_resource_alloc()
++		 * delete extra pxmitbuf->pallocated_buf
++		 */
++		kfree(pxmitbuf->pallocated_buf);
++	}
++	for (j = 0; j < i; j++) {
++		int k;
++
++		pxmitbuf--;			/* reset pointer */
++		kfree(pxmitbuf->pallocated_buf);
++		for (k = 0; k < 8; k++)		/* delete xmit urb's */
++			usb_free_urb(pxmitbuf->pxmit_urb[k]);
++	}
++	kfree(pxmitpriv->pallocated_xmitbuf);
++	pxmitpriv->pallocated_xmitbuf = NULL;
++clean_up_frame_buf:
++	kfree(pxmitpriv->pallocated_frame_buf);
++	pxmitpriv->pallocated_frame_buf = NULL;
++	return -ENOMEM;
+ }
+ 
+ void _free_xmit_priv(struct xmit_priv *pxmitpriv)
+diff --git a/drivers/staging/rtl8712/xmit_linux.c b/drivers/staging/rtl8712/xmit_linux.c
+index 132afbf49dde..ceb6b590b310 100644
+--- a/drivers/staging/rtl8712/xmit_linux.c
++++ b/drivers/staging/rtl8712/xmit_linux.c
+@@ -112,6 +112,12 @@ int r8712_xmit_resource_alloc(struct _adapter *padapter,
+ 	for (i = 0; i < 8; i++) {
+ 		pxmitbuf->pxmit_urb[i] = usb_alloc_urb(0, GFP_KERNEL);
+ 		if (!pxmitbuf->pxmit_urb[i]) {
++			int k;
++
++			for (k = i - 1; k >= 0; k--) {
++				/* handle allocation errors part way through loop */
++				usb_free_urb(pxmitbuf->pxmit_urb[k]);
++			}
+ 			netdev_err(padapter->pnetdev, "pxmitbuf->pxmit_urb[i] == NULL\n");
+ 			return -ENOMEM;
+ 		}
+-- 
+2.41.0
 
