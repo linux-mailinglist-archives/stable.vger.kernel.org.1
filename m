@@ -2,130 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 154C3754043
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 19:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2347541B5
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 19:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235747AbjGNRPw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 13:15:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43992 "EHLO
+        id S236448AbjGNRu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 13:50:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235733AbjGNRPv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 13:15:51 -0400
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2082.outbound.protection.outlook.com [40.107.6.82])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07BF51BC9
-        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 10:15:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kaDMl9j9T008Pq2yCbVK9FPeyfrf5TkVjULVHbWjecbWWnt26i4DOEvnnulFNgg2vLKO7GWdoveSRqY8CR9hmRdBjA3XyjZe5av+IJUPTZm3mVGJw2ZVBQxmXsbmUnbNGUsNnPayFigMGxXnuWDnmCmTaRJqlLpQuadVvbhtJAFOZLr2oCQ+B0D4UvgEC7Fwavrr4qYF+0WM+QdAP3z5bD0iJiKAZWiYUgHUk2uNG4ioa7I3ecuIkMkbiCUfxlSb79v2kBpTLvCjjLkk7fRMc2Qyh1FOhs4cxK6CXdcyz7G8HKRYcufB/8IDF4uctoPbVQCervX8qRIVsW3cFIU3Ig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZzhpBGnipYQ5HUu321+1vv3DqmRb2jJkOLfoLLD+czY=;
- b=MViHYvMNp8YgnaZoUnq68AzMxfl/zbMx1yeKFSV4u3QvJP+iejCik/cpgc12vnQQ4C+7nMPAigYc74aCR1joomuQ+moRd9Ti5vHhoX2utYeF3SFZumNbiqgoSmQjckzzSMA8HoURwVnqlBOEU2lNGyQ7/pnX6cMBY5n43luNI1+fYbw5+KoAxObZ8VJTMgzTKAcjJO5e4Kj1+xFHYABs4aD92ZDcLh1n9UoNRQWBEbntGZBKnV3b2UauwDMmEu64ivIPLSphr2av4qiDrTtGJwTOhAaULoAxpW5rlif6N2T02PQRjlCOLfjxGcC/Xb0EUrXTH9JxuAfpBgFPGJKohQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kunbus.com; dmarc=pass action=none header.from=kunbus.com;
- dkim=pass header.d=kunbus.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kunbus.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZzhpBGnipYQ5HUu321+1vv3DqmRb2jJkOLfoLLD+czY=;
- b=cldU4OgLRKE7dnTU+chBok1yd9WkWp8wKSwncV066CA9xFzeKRyUXmASWljXTpN1hRih/9YhMu/AMYN8IZYsoPUR5jsaZYXw6c4ZloijN253+vZ0rWAmg7PAL4xuUYkcgYrNXeEq4yYMmo1TdtkA6r8tSdkBPOMASOJt7+MD/l4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kunbus.com;
-Received: from VI1P193MB0413.EURP193.PROD.OUTLOOK.COM (2603:10a6:803:4e::14)
- by DB9P193MB1371.EURP193.PROD.OUTLOOK.COM (2603:10a6:10:2a2::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.27; Fri, 14 Jul
- 2023 17:15:47 +0000
-Received: from VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
- ([fe80::33e5:1608:50a0:38a7]) by VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
- ([fe80::33e5:1608:50a0:38a7%3]) with mapi id 15.20.6588.027; Fri, 14 Jul 2023
- 17:15:46 +0000
-Message-ID: <c9c3fe87-9f70-2131-24d3-bbb626042c16@kunbus.com>
-Date:   Fri, 14 Jul 2023 19:15:38 +0200
+        with ESMTP id S236191AbjGNRun (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 13:50:43 -0400
+Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA68B3AA3
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 10:50:08 -0700 (PDT)
+Received: by mail-oo1-xc31.google.com with SMTP id 006d021491bc7-565f3881cbeso1524029eaf.2
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 10:50:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20221208.gappssmtp.com; s=20221208; t=1689356948; x=1691948948;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I7DDN8GbZMG3KlpuHTN+v0LnOTBPGrIWfYxu7LMvL/8=;
+        b=EsObdH5GmfJY05wMbzoDxMZl7qGlDG1hB3mWeD4J9KH+vhPUO8vzmrTibNYCg3HFsX
+         N/yHTsKtySUpQBqoznTOulPdXkVf5BdhhRbu9EJ5Plf9zeBRSvrgCTYrz9g9r9YKgv7P
+         /THveqSATuTYP4pJoUUX65Uan3QgCrP+vldmXjs13ym6CziZ2rBvZP2Xn0T2UKRIVHRM
+         AochMDIvMr3iWvDt4ot+U2i+6lwRdJJyOJtOSxXxo0HTi0zV9wlssvgbjSZEyuoRkFiD
+         d7e0tq9zTPgg6hRtHTm4SCr/NXDD25LFVWKsc5TWQsXVNx76aIbvTrm0/36SWRYONc5H
+         2iZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689356948; x=1691948948;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I7DDN8GbZMG3KlpuHTN+v0LnOTBPGrIWfYxu7LMvL/8=;
+        b=CQTvsH3r5VnBxtWlNSDlI68LWEceA2rR/WHyQS9BWBk1inCG8G4HO0Go0jhWaD+J/T
+         FwnMd3NpCmh/4GoYajekx94g5kjzBg/Mb2Q29e0FJ0MIrrWCPkFswOnw8luh4MTC/0OE
+         oJW1RDfuFGZex/R0I+9PJF3Aq2AeH7i7l2XflUj3YnIPEVzUvDmOWq+M0ecIFGO2/k8i
+         bSZGpAMFvBEC6yH1pKFo5V+Th9dNjFQv9VEFQh1thy3MHqR+SRwxJTCxyYSGhov/qaiK
+         euKUWl+UqYw750TRm+jzXI3Zbnhs1DyWbZ+iQDrqr55z5o1NxD1pOyJrDXHcBv451Wu6
+         7SZA==
+X-Gm-Message-State: ABy/qLYauCITSpSPPqlwR3kroEaxLg9VR7ESLpDOPnQOIQFknplPsgX3
+        08PjWpHI3kmhVu4vE1k9ekuN9A==
+X-Google-Smtp-Source: APBJJlEFEC11jJ2OVWqVyq80ycE+Wi778tCXgrJAAGfwWU4P6AqQ9H0EWkwamlDgNCerFGk1EU/3MA==
+X-Received: by 2002:a4a:d298:0:b0:566:6928:2e3c with SMTP id h24-20020a4ad298000000b0056669282e3cmr5186911oos.9.1689356947824;
+        Fri, 14 Jul 2023 10:49:07 -0700 (PDT)
+Received: from ?IPV6:2804:14d:5c5e:44fb:860d:7d54:c6cc:ceb3? ([2804:14d:5c5e:44fb:860d:7d54:c6cc:ceb3])
+        by smtp.gmail.com with ESMTPSA id 184-20020a4a1dc1000000b0055e3dd89c12sm3065807oog.1.2023.07.14.10.49.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Jul 2023 10:49:07 -0700 (PDT)
+Message-ID: <deeb8fe7-1f0e-bc1c-cde5-74e9af160bf7@mojatatu.com>
+Date:   Fri, 14 Jul 2023 14:49:01 -0300
+MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 5.15 070/371] tpm, tpm_tis: Claim locality before writing
- interrupt registers
+Subject: Re: [PATCH net 1/3] selftests: tc: set timeout to 15 minutes
 Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Felix Riemann <felix.riemann@sma.de>, patches@lists.linux.dev,
-        sashal@kernel.org, stable@vger.kernel.org,
-        Lino Sanfilippo <l.sanfilippo@kunbus.com>
-References: <20230508094814.897191675@linuxfoundation.org>
- <20230515153759.2072-1-svc.sw.rte.linux@sma.de>
- <382309d7c0ae593d507eb816982f6a66c2cda00a.camel@kernel.org>
- <2023060906-starter-scrounger-1bca@gregkh>
- <3bdaa40e-16dc-6c04-b9e4-9e5951267e7e@kunbus.com>
- <2023062100-retrace-kitten-7241@gregkh>
-From:   Lino Sanfilippo <l.sanfilippo@kunbus.com>
-In-Reply-To: <2023062100-retrace-kitten-7241@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI1PR02CA0042.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::17) To VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
- (2603:10a6:803:4e::14)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1P193MB0413:EE_|DB9P193MB1371:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5572dff6-3798-4ad2-4ba5-08db848df679
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: n0ncmN5W5R4Ak4TZPXRAytFr0RvqDwO7PRmbUrcR8HJj3u2jv0xCzS1+JTuJxVJpBr7bmw7G0P9jKmlhdzixCPVAmD0O+K4mInOAz3rAj2NL6OxuNEY1ob7xKXsxifhzrUAC+TSErNxtckL8k9qKV0BHYhrbs6yALzrFy3AoKyu3PmFhtynQn+Nv6f9n7strvoq+/RfurkrSgGmoh1/5MFLfY6xj3mLl0S13LsK26r+jkCD4D1p9L+XvRNd+KsVRhNI3iT9DnEyxRbL7QaYAg4C7lkxCWjiGqdQrhb3p5GqnVpIIHqLUzTUG8Nx8Q7YtId3Y8a0OCU3oROZFLe3wuBVujmsDISoeMyFeap+Tkun4/nZqmvdrKpTuCeLpKnLzaVnCS8y4Dt/yYFds9dRbzz9MWtlVTee2tVaFTO5Q4h0QwNsvSI+vT52BHhqlBtCIvpMnJkxWVKC4pf/x7iILGnoqFitth8wlsNyB7TtZVUXttBNjVSBMAW/0RWKSeQXPihlPsz2kP+oolNIGjlJnd0WuyYuaIuunGIU4j+vZUyumxF641gJqfdNxXo5pgRERAUo3c38YKAvrnnVb9bdfcj6T33V7JSwwbaV54+ZhIjWX70pVQ23uNY+RMK40z2OYJy9fGq/MmSr/OGPvWO7D2pU4MVim7DUkz3HNwA++eLdROlfiE0PLzOk+vjSGxsRz
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1P193MB0413.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(136003)(39840400004)(376002)(346002)(396003)(451199021)(66556008)(66476007)(38100700002)(38350700002)(52116002)(6666004)(54906003)(6486002)(45080400002)(8676002)(478600001)(41300700001)(5660300002)(8936002)(316002)(6916009)(4326008)(66946007)(2616005)(6506007)(186003)(83380400001)(6512007)(26005)(53546011)(107886003)(31696002)(86362001)(36756003)(2906002)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bVB2MGpqcWRXZkYydFVMem5ER0VWdlh4VDZSYVg1V3hCZWVaWEdHQW5uSEo1?=
- =?utf-8?B?Vm5QdHhuOFZwOGczUUdya0hKeVFUUG1zUUtSZUduRFZMN3hSVEZJZTE2Z2NX?=
- =?utf-8?B?YTNNWDBOOFYxUGE4MHZFREl0eGlIQkszYlZCcjBXOTc5dCtzcXR1SG9HbEZU?=
- =?utf-8?B?N1FKQldaRUZjYVFibjBhVWNiSTRlSnB3ZzVrcDJJMDJNbXlFL29RVHJySWpR?=
- =?utf-8?B?b1YyVDVYQTRRQ3ZxdUF5QytUanpvR3hrVjhIbVJ1N2RMcWFpWkVOUnlpeGFy?=
- =?utf-8?B?MWJuTG05K0JEUExRc3lDNFRRcUkrNW5TZXJUS2hpWHNyNWlUOWF6OTVSUU1t?=
- =?utf-8?B?NWRURzRNbjNxdTR1VDJHOWhYaG1tbmlzbCszZmVtSUwvRzhINDlPaEJ0aUdK?=
- =?utf-8?B?SjBVT2JZTy9aR2V3T1ZTdE1XMENUV01ybWVsdTRBelRSSlBXOHhNY0ZMMkRn?=
- =?utf-8?B?d2FMNVBPTzNleXhIVEFiaFN1d2pWMHRVbnhuVW1TcFJLZGNkMWFidWxTUW9t?=
- =?utf-8?B?TTNCS2FNb2VmRGlkY3N4VGkvbkxJSXhMdFFkRGpwWWZRN1hjNVY3WUd2aHFE?=
- =?utf-8?B?YnJtZU9IU0x5K1FLRjFmcThRTkNJVkJBK0xWaVg1SkJXVHVCdmxOcjJHa2tt?=
- =?utf-8?B?YzRBMjdhNTRqRUoycVI5YmlPaWh5cGdrTlJtRnJRYVVOeUt2RitnemYzblZP?=
- =?utf-8?B?VHdFa2ZkZ0UzM2lHUnQwdDFISkNTeTk5M1c0YnNUTGhORnNrQlJ5K3ptVW9i?=
- =?utf-8?B?alE4ajVkalczcTJUL2NGcS9UYWQxcUFzaUxVeFRob3J1SVZZYVptRXhpTVVJ?=
- =?utf-8?B?a3BLcHFOT0gxcEpoYnA1RzlYVGhMNWlHWXJjOGpVUjN0VUwwNVBheUk4aTlB?=
- =?utf-8?B?UDMrKzl4TEJObzBjNWZ5Q0YrVWJuc2pSQytRaGRXNzJ4WGVqT3VNdFZGbzZ5?=
- =?utf-8?B?a0xLd3RFcXFhcTNLbm0zdjlvcFc2eGpvVk5PTzJZZHN6ckhNL1l1ZDBSMFdp?=
- =?utf-8?B?Uno2Y0dQcjRZQ0M0cCtkL0tpeit2N1pmVkxDVDF3VmVMYVYySFVmTTAxRGpz?=
- =?utf-8?B?NWpoaEQ0VWVncGZQT3hVN3ppZWNTSmNZTk1PQnR1cVliZ3VRR3hwN0VnL3BO?=
- =?utf-8?B?NzdJR0MwWHMrOHo5TWtIUEpHQUxlVDBEMWpmQ2NBbUxhbmhJRm1tZmJLbmxW?=
- =?utf-8?B?aTh1ZGJiZjdIeHFWWHo4TUJVSE9yVnppOE9KWHVwd2JLMFFKVkNBelV1VHhO?=
- =?utf-8?B?NDFyRHZzaFloOGtRRXNweDdWcGhXSnZoSFFVcGJjcUhXTXIzQUdmajdUZXhK?=
- =?utf-8?B?UGFVUHJwWVliRFljZis1dDJVNTM5YVl4RUdJTlNCektXU1JQVk9kZTlTYkJ0?=
- =?utf-8?B?Zldvd3dHenVIOGFYYXZtQ1pRUW5qUU1lUDZYczRBZGk4K201ZlNBUHN2anNK?=
- =?utf-8?B?S0ZjeXhFQ2VOTE5rM014TUplR1dnL1RUb1JuVXREaDFGT0RlVHJxM2h1ZDNO?=
- =?utf-8?B?ODgvRVlxdUptVWxxSXp2SmFMZjVQOUEyUW9CUVVEVmllVHhOdkNYVEJadEZP?=
- =?utf-8?B?ZXJtZHgydTlaekhTNUpBelcvZ2EyeUloMmFDc3FvbWtGR0drTVVobDNBVjlr?=
- =?utf-8?B?NGtrdDdhdmxZSTl4eHhURXZhQ2ZXSGh0K1lLVmRtWCtVRDB6ckFOSnNGOEdO?=
- =?utf-8?B?NXFrN2xwVzJaTkxEOCtOWmdIUnZWSis5L1E5bEw1OWtiVlZ6T1I3WERORUhr?=
- =?utf-8?B?YUJTam5hNnMvcW9FNzJBZ1FUbkJhMEVrVlkwNGdIRlV6NVlhWHM2MXRpM01N?=
- =?utf-8?B?S1d0MDNPYnROckZqN3NqZW10OWt4UERyblo5YTBzNlBEVFZ0Vmt5TFc2ZTJS?=
- =?utf-8?B?dzYvNzNBVG5ZTG5BbzMxZHRCV0I0eXpYdFY3Ri8vcUl0SGNENGowd1NFMkd2?=
- =?utf-8?B?azI5SDB0ZWlUVkRVcFFnRGdKV3Q3SGV3QnE4QnMzK2Y2WUxFeVJmUnpLby84?=
- =?utf-8?B?b1NpS1BWZlc0UzFVVnJwL0JkQ1hZbFRZQXl1aWhSdlRSRTlwSnVtS2Y2Ui8v?=
- =?utf-8?B?MmhLY1lmaFdqV0NmTXJJWXBhMXdaRmdYUlRKZTVBMkVNZnpXUFlpNk81cktZ?=
- =?utf-8?B?RjQ0Q25ZeHBXWWdaL2FJYmVKbHhiVm5DcnNLdzZNYjdyQVZNcDhOa0c5Y2Nm?=
- =?utf-8?B?S1E9PQ==?=
-X-OriginatorOrg: kunbus.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5572dff6-3798-4ad2-4ba5-08db848df679
-X-MS-Exchange-CrossTenant-AuthSource: VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2023 17:15:46.7058
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: aaa4d814-e659-4b0a-9698-1c671f11520b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +yW+pWiu5Ia79JfXCVXPT9fIfU0YD0UvN1n2Guab/TRUitN04b6I6jVPOLPVK1ViP0o2Ea+CKa1pyWyzvBHONw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P193MB1371
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+To:     shaozhengchao <shaozhengchao@huawei.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        Jiri Pirko <jiri@resnulli.us>, Shuah Khan <shuah@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Paul Blakey <paulb@mellanox.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        mptcp@lists.linux.dev
+Cc:     Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+References: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
+ <20230713-tc-selftests-lkft-v1-1-1eb4fd3a96e7@tessares.net>
+ <bf7f8867-6b14-dd53-a6e4-2addee4a5ad8@huawei.com>
+From:   Pedro Tammela <pctammela@mojatatu.com>
+In-Reply-To: <bf7f8867-6b14-dd53-a6e4-2addee4a5ad8@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -134,101 +86,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
-
-On 21.06.23 20:45, Greg KH wrote:
-
-> On Fri, Jun 09, 2023 at 05:42:20PM +0200, Lino Sanfilippo wrote:
->> Hi,
->>
->> On 09.06.23 11:07, Greg KH wrote:
->>>
->>> On Wed, May 24, 2023 at 04:07:41AM +0300, Jarkko Sakkinen wrote:
->>>> On Mon, 2023-05-15 at 17:37 +0200, Felix Riemann wrote:
->>>>> Hi!
->>>>>
->>>>>> [ Upstream commit 15d7aa4e46eba87242a320f39773aa16faddadee ]
->>>>>>
->>>>>> In tpm_tis_probe_single_irq() interrupt registers TPM_INT_VECTOR,
->>>>>> TPM_INT_STATUS and TPM_INT_ENABLE are modified to setup the interrupts.
->>>>>> Currently these modifications are done without holding a locality thus they
->>>>>> have no effect. Fix this by claiming the (default) locality before the
->>>>>> registers are written.
->>>>>>
->>>>>> Since now tpm_tis_gen_interrupt() is called with the locality already
->>>>>> claimed remove locality request and release from this function.
->>>>>
->>>>> On systems with SPI-connected TPM and the interrupt still configured
->>>>> (despite it not working before) this may introduce a kernel crash.
->>>>> The issue is that it will now trigger an SPI transfer (which will wait)
->>>>> from the IRQ handler:
->>>>>
->>>>> BUG: scheduling while atomic: systemd-journal/272/0x00010001
->>>>> Modules linked in: spi_fsl_lpspi
->>>>> CPU: 0 PID: 272 Comm: systemd-journal Not tainted 5.15.111-06679-g56b9923f2840 #50
->>>>> Call trace:
->>>>>  dump_backtrace+0x0/0x1e0
->>>>>  show_stack+0x18/0x40
->>>>>  dump_stack_lvl+0x68/0x84
->>>>>  dump_stack+0x18/0x34
->>>>>  __schedule_bug+0x54/0x70
->>>>>  __schedule+0x664/0x760
->>>>>  schedule+0x88/0x100
->>>>>  schedule_timeout+0x80/0xf0
->>>>>  wait_for_completion_timeout+0x80/0x10c
->>>>>  fsl_lpspi_transfer_one+0x25c/0x4ac [spi_fsl_lpspi]
->>>>>  spi_transfer_one_message+0x22c/0x440
->>>>>  __spi_pump_messages+0x330/0x5b4
->>>>>  __spi_sync+0x230/0x264
->>>>>  spi_sync_locked+0x10/0x20
->>>>>  tpm_tis_spi_transfer+0x1ec/0x250
->>>>>  tpm_tis_spi_read_bytes+0x14/0x20
->>>>>  tpm_tis_spi_read32+0x38/0x70
->>>>>  tis_int_handler+0x48/0x15c
->>>>>  *snip*
->>>>>
->>>>> The immediate error is fixable by also picking 0c7e66e5fd ("tpm, tpm_tis:
->>>>> Request threaded interrupt handler") from the same patchset[1].
->>>>> However, as
->>>>> the driver's IRQ test logic is still faulty it will fail the check and fall
->>>>> back to the polling behaviour without actually disabling the IRQ in hard-
->>>>> and software again. For this at least e644b2f498 ("tpm, tpm_tis: Enable
->>>>> interrupt test") and 0e069265bc ("tpm, tpm_tis: Claim locality in interrupt
->>>>> handler") are necessary.
->>>>>
->>>>> At this point 9 of the set's 14 patches are applied and I am not sure
->>>>> whether it's better to pick the remaining five patches as well or just
->>>>> revert the initial six patches. Especially considering there were initially
->>>>> no plans to submit these patches to stable[2] and the IRQ feature was (at
->>>>> least on SPI) not working before.
->>>>
->>>> I think the right thing to do would be to revert 6 initial patches.
->>>
->>> Ok, I think this isn't needed anymore with the latest 5.15.116 release,
->>> right?  If not, please let me know.
->>>
->>
->>
-
-
->> With 0c7e66e5fd ("tpm, tpm_tis: Request threaded interrupt handler") applied the
->> above bug is fixed in 5.15.y. There is however still the issue that the interrupts may
->> not be acknowledged properly in the interrupt handler, since the concerning register is written
->> without the required locality held (Felix mentions this above).
->> This can be fixed with 0e069265bce5 ("tpm, tpm_tis: Claim locality in interrupt handler").
->>
->> So instead of reverting the initial patches, I suggest to
->>
->> 1. also apply 0e069265bce5 ("tpm, tpm_tis: Claim locality in interrupt handler")
+On 13/07/2023 23:25, shaozhengchao wrote:
 > 
-> I've now done this, thanks.
 > 
-> greg k-h
+> On 2023/7/14 5:16, Matthieu Baerts wrote:
+>> When looking for something else in LKFT reports [1], I noticed that the
+>> TC selftest ended with a timeout error:
+>>
+>>    not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
+>>
+>> The timeout had been introduced 3 years ago, see the Fixes commit below.
+>>
+>> This timeout is only in place when executing the selftests via the
+>> kselftests runner scripts. I guess this is not what most TC devs are
+>> using and nobody noticed the issue before.
+>>
+>> The new timeout is set to 15 minutes as suggested by Pedro [2]. It looks
+>> like it is plenty more time than what it takes in "normal" conditions.
+>>
+>> Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second 
+>> timeout per test")
+>> Cc: stable@vger.kernel.org
+>> Link: 
+>> https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
+>> Link: 
+>> https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
+>> Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
+>> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+>> ---
+>>   tools/testing/selftests/tc-testing/settings | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/tools/testing/selftests/tc-testing/settings 
+>> b/tools/testing/selftests/tc-testing/settings
+>> new file mode 100644
+>> index 000000000000..e2206265f67c
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/tc-testing/settings
+>> @@ -0,0 +1 @@
+>> +timeout=900
+>>
+> I remember last year when I tested all the tdc cases（qdisc + filter +
+> action + infra） in my vm machine, it took me nearly 20 minutes.
+> So I think it should be more than 1200 seconds if all cases need to be
+> tested.
+> 
+> Maybe we should really optimize the parallel execution process of tdc.
 
-While 5.15.y, 6.1.y and 6.3.y should be fine AFAICS commit 
-0e069265bc ("tpm, tpm_tis: Claim locality in interrupt handler") is
-still missing in 5.10.y. This commit is needed to make sure that TPM interrupts
-are properly acknowledge (see text above).
+Let's try to spend some cycles improving the tdc code performance first.
+TDC boils down essentially to:
+- Setup namespace (if needed)
+- Setup network interfaces
+- Spawn a few processes
+- Match a regex
+- Bring down namespace
 
-Best regards,
-Lino
+Nothing above screams expensive, so I'm sure there are some low hanging 
+fruits to improve the overall wall time even in debug kernels.
+
