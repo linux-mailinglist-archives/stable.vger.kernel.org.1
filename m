@@ -2,94 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79AC9753E68
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 17:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B78EF753F16
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 17:37:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235976AbjGNPIH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 11:08:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40558 "EHLO
+        id S235360AbjGNPhl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 11:37:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234425AbjGNPIG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 11:08:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6086F2702;
-        Fri, 14 Jul 2023 08:08:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F349761D48;
-        Fri, 14 Jul 2023 15:08:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591D0C433C7;
-        Fri, 14 Jul 2023 15:08:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689347284;
-        bh=ocPhOzFijupIUUD2Bp7JtiNo8d0/cn/ky2mmjm36hgQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RcszFiUEGzq3FlUItGxNuvKWEHBh1AfacWryEi7hRHmCJ4Fd51i5qSG18fpY+OoNM
-         as8q7Ii0vpGch75W8Tqc5213EyPArf+Um+Ic3cT47a/lfbyL7rwZboh/m/Yyevdc7A
-         erYd1dUsqwryTaIohi60la+dY8EVLXwvJTlf3/tDcE3hlwdSoeKM3xKVKxVxprLoVz
-         Vwh5sXKBmLQuRWFmOgtcaXx7CStoALoolBrdO1aYmDhVU++VNpmTWxtEmLUQ4ZsjAW
-         Yf+8SgCp1dMQb64QanX1u9q8bKDcPQWQBhR/D62RAHmdYAqsuc1naL2IWaDyQE9lqT
-         S+YTUzUN7dfpA==
-Received: from johan by xi.lan with local (Exim 4.96)
-        (envelope-from <johan@kernel.org>)
-        id 1qKKOr-0004qL-0l;
-        Fri, 14 Jul 2023 17:08:05 +0200
-Date:   Fri, 14 Jul 2023 17:08:05 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Rajendra Nayak <quic_rjendra@quicinc.com>,
-        Matthias Kaehlcke <mka@chromium.org>
-Subject: Re: [PATCH 1/2] serial: qcom-geni: fix opp vote on shutdown
-Message-ID: <ZLFk1Q0pTfYmB5EU@hovoldconsulting.com>
-References: <20230714130214.14552-1-johan+linaro@kernel.org>
- <20230714130214.14552-2-johan+linaro@kernel.org>
- <e99b5975-b770-5460-1ce4-cd4eb1a50291@linaro.org>
+        with ESMTP id S236016AbjGNPhd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 11:37:33 -0400
+Received: from aposti.net (aposti.net [89.234.176.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D02F63AAC;
+        Fri, 14 Jul 2023 08:37:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1689349047;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=iB4MLkaNbIMlX2miQHHC4OLh5yJC/IsGcGP+bRXSFjA=;
+        b=mKKxX92whhko9sWa9pykrYKsScSbbnnwy1Mf7cvAx61n5Cltg0vHLy+Lq4M0sTvYEawirt
+        bIkI7b0gIgSsHeEMo+GUCcA/4B/5VUl2mZWVBrodQj1xNx2bYYYbdDPXNLG/OTd3vpsenB
+        zACSXIRjtQfqhAw31Vy79fbwdyK92y0=
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     Alim Akhtar <alim.akhtar@samsung.com>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Paul Cercueil <paul@crapouillou.net>,
+        Sam Ravnborg <sam@ravnborg.org>, stable@vger.kernel.org
+Subject: [PATCH] ARM: dts: exynos/i9100: Fix LCD screen's physical size
+Date:   Fri, 14 Jul 2023 17:37:20 +0200
+Message-Id: <20230714153720.336990-1-paul@crapouillou.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e99b5975-b770-5460-1ce4-cd4eb1a50291@linaro.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam: Yes
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 14, 2023 at 04:29:08PM +0200, Konrad Dybcio wrote:
-> On 14.07.2023 15:02, Johan Hovold wrote:
-> > The operating-performance-point vote needs to be dropped when shutting
-> > down the port to avoid wasting power by keeping resources like power
-> > domains in an unnecessarily high performance state (e.g. when a UART
-> > connected Bluetooth controller is not in use).
-> > 
-> > Fixes: a5819b548af0 ("tty: serial: qcom_geni_serial: Use OPP API to set clk/perf state")
-> > Cc: stable@vger.kernel.org      # 5.9
-> > Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
-> > Cc: Matthias Kaehlcke <mka@chromium.org>
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > ---
-> I don't know a whole lot about this subsystem, but the PM call has
-> a pointer to uport which already contains this clock rate.. Is it
-> zeroed out by the core before we reach it, which would prevent us
-> from reusing it?
+The previous values were completely bogus, and resulted in the computed
+DPI ratio being much lower than reality, causing applications and UIs to
+misbehave.
 
-No, but this driver has other issues and I couldn't be arsed fixing them
-before addressing this bug.
+The new values were measured by myself with a ruler.
 
-Specifically that uartclk variable can currently be set by userspace...
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
+Cc: <stable@vger.kernel.org> # v5.8+
+---
+ arch/arm/boot/dts/samsung/exynos4210-i9100.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I'll fix that up next week.
+diff --git a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
+index 37cd4dde53e4..a9ec1f6c1dea 100644
+--- a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
+@@ -207,8 +207,8 @@ lcd@0 {
+ 			power-on-delay = <10>;
+ 			reset-delay = <10>;
+ 
+-			panel-width-mm = <90>;
+-			panel-height-mm = <154>;
++			panel-width-mm = <56>;
++			panel-height-mm = <93>;
+ 
+ 			display-timings {
+ 				timing {
+-- 
+2.40.1
 
-Johan
