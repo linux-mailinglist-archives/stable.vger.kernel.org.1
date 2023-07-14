@@ -2,146 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D0DF753C57
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 15:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CDF5753D61
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 16:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235939AbjGNN7N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 09:59:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53208 "EHLO
+        id S235695AbjGNO3b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 10:29:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235900AbjGNN7L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 09:59:11 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91EE426B5;
-        Fri, 14 Jul 2023 06:59:06 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36EBrE9l028598;
-        Fri, 14 Jul 2023 13:58:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=RKiLvVyTbirgw09WubHCuDGi667YE5Ck8Aegz+gLNbk=;
- b=Al2Dhd4xiOamIye89agaIWhnNhc/BlrNT7N3XJa4RqaMarZvbamrlnv52XUB6S8oAOfB
- 0RKpRZRbDKII9zSuqE4UpBU80qiieWFSb0qk75O/ihlKjM7UXjlPRDKbd0whSI5qleSK
- 1DaKLX4r2hAxO6MfHJVm+GJ2HlRg1+/EhPck6s/Ft4rP+cxzDXSm/01eo3taVy42tjSi
- Y2/tSKc82lZOallt1HERDil5XoOd2+6uGMYjpDg70DlJRKWYhfaBQ+9Z0ZSOVRvQ7sE5
- YQ1Qu2dYhdo5NrNC/NixI0viBZiB6P42+wsocoujQD3bld14zVdt+/Qjo9lwDdk5oruY 9A== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rtpuksum6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Jul 2023 13:58:37 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36EDwaIP008960
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Jul 2023 13:58:36 GMT
-Received: from [10.216.8.198] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Fri, 14 Jul
- 2023 06:58:29 -0700
-Message-ID: <99084f51-f156-664b-cd69-51bf224674ac@quicinc.com>
-Date:   Fri, 14 Jul 2023 19:28:24 +0530
+        with ESMTP id S235972AbjGNO3W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 10:29:22 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 709BF3AB5
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 07:29:11 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-4fba86f069bso3364726e87.3
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 07:29:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689344949; x=1691936949;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=K7XSLJw52T0/1qLiEhQ2mFyEX8hNR7J0cXAXpzjTkNY=;
+        b=Ho4ZjRdLf3WGzWiRolCzfv9gXW/0Psx3vukeJjTNb5OOqvI4xEX5FjRQlTlH0VrjpJ
+         5wjUqnQb6BBfGcQgbH2jWkwjmE+jqezpHa3fGY/MyyF49vWlXwIBwJnolKVlDtgT4ofQ
+         c8Py9ac1aIzpvUIZQPtCmO7g5IhXcGvq1wOimgli2ibG7uUS60HIgoXFwPVaZspW2Rwq
+         kVJUzpAmtRdXbAfMQygzchEnDXSb73F9W+EnelAfBcQkxC6QNfpmiT/95RK27xlhzzhS
+         c1LRyhqN/BBobG0bldsWkzljxPCSpFmL9ar1uyYmdtOCz73tJBp46cMikqLPIcHbv9uk
+         od0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689344949; x=1691936949;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K7XSLJw52T0/1qLiEhQ2mFyEX8hNR7J0cXAXpzjTkNY=;
+        b=XqmfN8Yv35YF5cY5b50X3iN1/alqNZLQlnR0PFzZ5TtV4cIHoaYi8F3IOOKfOEx9bg
+         2iZgk8lAJjjFHBMI8eVZgLHqqxSbjVDwccfpeeFN9ni+DNMS33x47bDY3+I6BBOA3Keo
+         0QXZvqJKHt6RyWYMuxLU02yv/ws3OVU5YJyZmXF95ays3Mh2Tz0UlSAJpDN8RNwdLjM6
+         A5evqJG22xsLmreT7YiZpubbmViwRQVjMFOBdZdfZNpDQLdgdpgOEyBN/jHPUrUQO1Q7
+         2CqwGKO7nDuyK/E4seRDPzl94toVZO6EZBzQIwYYb25J28s/Sw+YEC+KjDoNs+n/pSmw
+         giHg==
+X-Gm-Message-State: ABy/qLYG1AjnGWECcvZ8b0ReidKPlYNDE0ua2ni+AYNinnEkhjJSLHS/
+        d6438KQm25lQ3jJWptGr8kXg5A==
+X-Google-Smtp-Source: APBJJlFwywm3zM4vbYjAAFhEZVa6kL+w6/fFOY0Ro2l1QhI0tt+F5E2zDMKtpVWsnOkrYMuuTZtsKA==
+X-Received: by 2002:a05:6512:3ca5:b0:4f9:6c44:1bf3 with SMTP id h37-20020a0565123ca500b004f96c441bf3mr4529346lfv.62.1689344949598;
+        Fri, 14 Jul 2023 07:29:09 -0700 (PDT)
+Received: from [192.168.1.101] (abxj146.neoplus.adsl.tpnet.pl. [83.9.3.146])
+        by smtp.gmail.com with ESMTPSA id w28-20020ac2599c000000b004fb759964a9sm1506768lfn.168.2023.07.14.07.29.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Jul 2023 07:29:09 -0700 (PDT)
+Message-ID: <e99b5975-b770-5460-1ce4-cd4eb1a50291@linaro.org>
+Date:   Fri, 14 Jul 2023 16:29:08 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH V2] firmware: qcom_scm: use the SCM_CONVENTION based on
- ARM / ARM64
-From:   Kathiravan T <quic_kathirav@quicinc.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Elliot Berman <eberman@codeaurora.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <quic_eberman@quicinc.com>, <stable@vger.kernel.org>
-References: <20230607045345.25049-1-quic_kathirav@quicinc.com>
- <2f915104-952f-3e3d-b3d5-4c0400b4f331@quicinc.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] serial: qcom-geni: fix opp vote on shutdown
 Content-Language: en-US
-In-Reply-To: <2f915104-952f-3e3d-b3d5-4c0400b4f331@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: fzRa-E1oNp2sYMYiiNvpk4tNU_tm9ao7
-X-Proofpoint-GUID: fzRa-E1oNp2sYMYiiNvpk4tNU_tm9ao7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-14_06,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1011 bulkscore=0
- phishscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307140126
+To:     Johan Hovold <johan+linaro@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Rajendra Nayak <quic_rjendra@quicinc.com>,
+        Matthias Kaehlcke <mka@chromium.org>
+References: <20230714130214.14552-1-johan+linaro@kernel.org>
+ <20230714130214.14552-2-johan+linaro@kernel.org>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230714130214.14552-2-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 14.07.2023 15:02, Johan Hovold wrote:
+> The operating-performance-point vote needs to be dropped when shutting
+> down the port to avoid wasting power by keeping resources like power
+> domains in an unnecessarily high performance state (e.g. when a UART
+> connected Bluetooth controller is not in use).
+> 
+> Fixes: a5819b548af0 ("tty: serial: qcom_geni_serial: Use OPP API to set clk/perf state")
+> Cc: stable@vger.kernel.org      # 5.9
+> Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
+> Cc: Matthias Kaehlcke <mka@chromium.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+I don't know a whole lot about this subsystem, but the PM call has
+a pointer to uport which already contains this clock rate.. Is it
+zeroed out by the core before we reach it, which would prevent us
+from reusing it?
 
-On 6/20/2023 11:43 AM, Kathiravan T wrote:
->
-> On 6/7/2023 10:23 AM, Kathiravan T wrote:
->> During SCM probe, to identify the SCM convention, scm call is made with
->> SMC_CONVENTION_ARM_64 followed by SMC_CONVENTION_ARM_32. Based on the
->> result what convention to be used is decided.
->>
->> IPQ chipsets starting from IPQ807x, supports both 32bit and 64bit kernel
->> variants, however TZ firmware runs in 64bit mode. When running on 32bit
->> kernel, scm call is made with SMC_CONVENTION_ARM_64 is causing the
->> system crash, due to the difference in the register sets between ARM and
->> AARCH64, which is accessed by the TZ.
->>
->> To avoid this, use SMC_CONVENTION_ARM_64 only on ARM64 builds.
->
->
-> Gentle Reminder...
-
-
-Bjorn,
-
-Can you share your thoughts on this patch?
-
-
-Thanks, Kathiravan T.
-
-
->
->
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC 
->> and legacy conventions")
->> Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
->> ---
->> Changes in V2:
->>     - Added the Fixes tag and cc'd stable mailing list
->>
->>   drivers/firmware/qcom_scm.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
->> index fde33acd46b7..db6754db48a0 100644
->> --- a/drivers/firmware/qcom_scm.c
->> +++ b/drivers/firmware/qcom_scm.c
->> @@ -171,6 +171,7 @@ static enum qcom_scm_convention 
->> __get_convention(void)
->>       if (likely(qcom_scm_convention != SMC_CONVENTION_UNKNOWN))
->>           return qcom_scm_convention;
->>   +#if IS_ENABLED(CONFIG_ARM64)
->>       /*
->>        * Device isn't required as there is only one argument - no device
->>        * needed to dma_map_single to secure world
->> @@ -191,6 +192,7 @@ static enum qcom_scm_convention 
->> __get_convention(void)
->>           forced = true;
->>           goto found;
->>       }
->> +#endif
->>         probed_convention = SMC_CONVENTION_ARM_32;
->>       ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
+Konrad
+>  drivers/tty/serial/qcom_geni_serial.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+> index b825b05e6137..8be896dbaa88 100644
+> --- a/drivers/tty/serial/qcom_geni_serial.c
+> +++ b/drivers/tty/serial/qcom_geni_serial.c
+> @@ -126,6 +126,7 @@ struct qcom_geni_serial_port {
+>  	dma_addr_t rx_dma_addr;
+>  	bool setup;
+>  	unsigned int baud;
+> +	unsigned long clk_rate;
+>  	void *rx_buf;
+>  	u32 loopback;
+>  	bool brk;
+> @@ -1249,6 +1250,7 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
+>  			baud * sampling_rate, clk_rate, clk_div);
+>  
+>  	uport->uartclk = clk_rate;
+> +	port->clk_rate = clk_rate;
+>  	dev_pm_opp_set_rate(uport->dev, clk_rate);
+>  	ser_clk_cfg = SER_CLK_EN;
+>  	ser_clk_cfg |= clk_div << CLK_DIV_SHFT;
+> @@ -1513,10 +1515,13 @@ static void qcom_geni_serial_pm(struct uart_port *uport,
+>  
+>  	if (new_state == UART_PM_STATE_ON && old_state == UART_PM_STATE_OFF) {
+>  		geni_icc_enable(&port->se);
+> +		if (port->clk_rate)
+> +			dev_pm_opp_set_rate(uport->dev, port->clk_rate);
+>  		geni_se_resources_on(&port->se);
+>  	} else if (new_state == UART_PM_STATE_OFF &&
+>  			old_state == UART_PM_STATE_ON) {
+>  		geni_se_resources_off(&port->se);
+> +		dev_pm_opp_set_rate(uport->dev, 0);
+>  		geni_icc_disable(&port->se);
+>  	}
+>  }
