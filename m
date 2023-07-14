@@ -2,123 +2,208 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A25B4752D1E
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 00:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50980752E24
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 02:07:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232804AbjGMWmI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 13 Jul 2023 18:42:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37498 "EHLO
+        id S232577AbjGNAHn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 13 Jul 2023 20:07:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232783AbjGMWmG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 18:42:06 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EDF2D45
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 15:42:03 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-3144098df56so1456994f8f.2
-        for <stable@vger.kernel.org>; Thu, 13 Jul 2023 15:42:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20221208.gappssmtp.com; s=20221208; t=1689288122; x=1691880122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=66oQixs0sOJ03BwYJKzyLzAVjZdZk6ZVHTMW5daqX2M=;
-        b=pvGmhS9tWsWAM4bX9LyGRkltvlh95F2keTxYpyOzqrZQSSRVGFsmdACMTTkURT9/8s
-         T/JFpxOyD8hHDVq6zJTkViDAYqenypzqNib59lk1mXnhNfyXr8yl1Qf43depQE/6ooqg
-         1L6wp1ugWbqkPPSXZuoJY3ypLWl4IGbTN69zKoa/r0vi2vfCCfFpyEGRcJgJEZgNOJcD
-         ax+sD+d6GVw6uqHc3EJsFiUkENauJh8DKPIEw5QX/BB7OZG41UG1mMEvh/XDLnbFu4bL
-         tR06rXRvJgWhUbBacZHWXzCTZ7bYaUdkl77V/Xgbd/AyPUbh1AM7sA6ttphssF8+c6Iv
-         YrFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689288122; x=1691880122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=66oQixs0sOJ03BwYJKzyLzAVjZdZk6ZVHTMW5daqX2M=;
-        b=K60aa3X3Ugg5GTrigShK3mM04RbSSjaA+U4qT+1M5gFslfTYe4TdWH5ripE4JIZ/Nt
-         8wzZlUV9KYtFAm27OFkF2CJyYyKa5jy6RxKTuOxW+/Mr3B/z4XbHgoBwA2FOTyCwT9bi
-         /W43fKtWEzix3OCjUfmUJfG1m6Gi+kNLuTzz2WaPrL/gPKBCc1Yrnyi1aJuOR6w9zMXy
-         uEFCmTlttysjw9n9JB4e6JPzSUpcQCwkhOsziVPOUT7CPNs9GofDUuzbHRPx8AOojnSI
-         GTnBYcVLu02nw/41cv1ypE2i+EBt6KJtOdeHcCcGnKBexyqU0L0SygA2PvAmdbj5Zk0k
-         1wDQ==
-X-Gm-Message-State: ABy/qLaWTWcqD7JeQIElM/JSZH0YCDLwREpVeqvVXADrZsnHoa/sZLLQ
-        nUL9TznOzvIWlJ7EnvDhpZ6eu7dYBwVRMjCWCjTgoA==
-X-Google-Smtp-Source: APBJJlFs/7oapWO3mK2wFO6rXB5Ht1CL2A/vfl4PqJ1XLNNooCppcH0pS9lrQ/MK/bOgbwvx7Jl7P1HVYapHEvwGkl0=
-X-Received: by 2002:adf:de0e:0:b0:313:f18d:1f2c with SMTP id
- b14-20020adfde0e000000b00313f18d1f2cmr2556330wrm.38.1689288121758; Thu, 13
- Jul 2023 15:42:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
-In-Reply-To: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
-From:   Jamal Hadi Salim <jhs@mojatatu.com>
-Date:   Thu, 13 Jul 2023 18:41:50 -0400
-Message-ID: <CAM0EoMk4ZE6WZYCc_YkraGT5+CUbr7J9J6UEdH3=KLQ7akOYMw@mail.gmail.com>
-Subject: Re: [PATCH net 0/3] selftests: tc: increase timeout and add missing kconfig
-To:     Matthieu Baerts <matthieu.baerts@tessares.net>
-Cc:     Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>, Shuah Khan <shuah@kernel.org>,
+        with ESMTP id S229976AbjGNAHn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 13 Jul 2023 20:07:43 -0400
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0293B2691;
+        Thu, 13 Jul 2023 17:07:40 -0700 (PDT)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4R2Bcn3Mnzz9smQ;
+        Fri, 14 Jul 2023 02:07:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+        t=1689293257;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=OxAPE5PWCAcXqFIorj18HGTh/eNPcEPw2BzrDqE7QOk=;
+        b=REmtctvxEJLDq1JtNm0+KBL/TGwaI3oEFMWaulKzejxxrE1ptEB21Q/D95oMpkwMNuy4NL
+        OXlPLuS6jAg8CBCm4smppRN9U1EHg8LI4Z4xHMxsxKMQbXcnN5cVMIShrrlh6kVQWoZCjM
+        0oWawiir/mzs+Pl0F5KJCu+op+68v81tUmOA07jATIuFaZB2+TeYs0G8R4Ipvtjg5k65lf
+        TsH/dra5lOANgOgPP/6afTuVl7HhJGJPLRczs1A90/AgtKeJjZDKdxC6mG8T8UJfY3dMqy
+        fNhteInF8njLziq7XklRiIsj5M+z5Se72b0vtysOMmpSer0CcGsf1XQDxNPMPQ==
+Date:   Fri, 14 Jul 2023 10:07:21 +1000
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Jeff Xu <jeffxu@google.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
         Kees Cook <keescook@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paul Blakey <paulb@mellanox.com>,
-        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        mptcp@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        Daniel Verkamp <dverkamp@chromium.org>
+Cc:     linux-mm@kvack.org, Dominique Martinet <asmadeus@codewreck.org>,
+        Christian Brauner <brauner@kernel.org>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/3] memfd: remove racheting feature from
+ vm.memfd_noexec
+Message-ID: <pyylsri7uzypafzv7ar2w4j2lr6puh6bfowedalr226rswdzoo@dg54fdtx5nwd>
+References: <20230713143406.14342-1-cyphar@cyphar.com>
+ <20230713143406.14342-3-cyphar@cyphar.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4ubij2xktskdezgp"
+Content-Disposition: inline
+In-Reply-To: <20230713143406.14342-3-cyphar@cyphar.com>
+X-Rspamd-Queue-Id: 4R2Bcn3Mnzz9smQ
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 13, 2023 at 5:17=E2=80=AFPM Matthieu Baerts
-<matthieu.baerts@tessares.net> wrote:
->
-> When looking for something else in LKFT reports [1], I noticed that the
-> TC selftest ended with a timeout error:
->
->   not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
->
-> I also noticed most of the tests were skipped because the "teardown
-> stage" did not complete successfully. It was due to missing kconfig.
->
-> These patches fix these two errors plus an extra one because this
-> selftest reads info from "/proc/net/nf_conntrack". Thank you Pedro for
-> having helped me fixing these issues [2].
->
-> Link: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-202=
-30711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/lo=
-g [1]
-> Link: https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7=
-@tessares.net/T/ [2]
-> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-For the patchset:
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+--4ubij2xktskdezgp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for all the effort Matthieu!
+On 2023-07-14, Aleksa Sarai <cyphar@cyphar.com> wrote:
+> This sysctl has the very unusal behaviour of not allowing any user (even
+> CAP_SYS_ADMIN) to reduce the restriction setting, meaning that if you
+> were to set this sysctl to a more restrictive option in the host pidns
+> you would need to reboot your machine in order to reset it.
+>=20
+> The justification given in [1] is that this is a security feature and
+> thus it should not be possible to disable. Aside from the fact that we
+> have plenty of security-related sysctls that can be disabled after being
+> enabled (fs.protected_symlinks for instance), the protection provided by
+> the sysctl is to stop users from being able to create a binary and then
+> execute it. A user with CAP_SYS_ADMIN can trivially do this without
+> memfd_create(2):
+>=20
+>   % cat mount-memfd.c
+>   #include <fcntl.h>
+>   #include <string.h>
+>   #include <stdio.h>
+>   #include <stdlib.h>
+>   #include <unistd.h>
+>   #include <linux/mount.h>
+>=20
+>   #define SHELLCODE "#!/bin/echo this file was executed from this totally=
+ private tmpfs:"
+>=20
+>   int main(void)
+>   {
+>   	int fsfd =3D fsopen("tmpfs", FSOPEN_CLOEXEC);
+>   	assert(fsfd >=3D 0);
+>   	assert(!fsconfig(fsfd, FSCONFIG_CMD_CREATE, NULL, NULL, 2));
+>=20
+>   	int dfd =3D fsmount(fsfd, FSMOUNT_CLOEXEC, 0);
+>   	assert(dfd >=3D 0);
+>=20
+>   	int execfd =3D openat(dfd, "exe", O_CREAT | O_RDWR | O_CLOEXEC, 0782);
+                                                                      0777
 
-cheers,
-jamal
+Oops. I must've garbled something when copying from my test program.
+
+>   	assert(execfd >=3D 0);
+>   	assert(write(execfd, SHELLCODE, strlen(SHELLCODE)) =3D=3D strlen(SHELL=
+CODE));
+>   	assert(!close(execfd));
+>=20
+>   	char *execpath =3D NULL;
+>   	char *argv[] =3D { "bad-exe", NULL }, *envp[] =3D { NULL };
+>   	execfd =3D openat(dfd, "exe", O_PATH | O_CLOEXEC);
+>   	assert(execfd >=3D 0);
+>   	assert(asprintf(&execpath, "/proc/self/fd/%d", execfd) > 0);
+>   	assert(!execve(execpath, argv, envp));
+>   }
+>   % ./mount-memfd
+>   this file was executed from this totally private tmpfs: /proc/self/fd/5
+>   %
+>=20
+> Given that it is possible for CAP_SYS_ADMIN users to create executable
+> binaries without memfd_create(2) and without touching the host
+> filesystem (not to mention the many other things a CAP_SYS_ADMIN process
+> would be able to do that would be equivalent or worse), it seems strange
+> to cause a fair amount of headache to admins when there doesn't appear
+> to be an actual security benefit to blocking this.
+>=20
+> It should be noted that with this change, programs that can do an
+> unprivileged unshare(CLONE_NEWUSER) would be able to create an
+> executable memfd even if their current pidns didn't allow it. However,
+> the same sample program above can also be used in this scenario, meaning
+> that even with this consideration, blocking CAP_SYS_ADMIN makes little
+> sense:
+>=20
+>   % unshare -rm ./mount-memfd
+>   this file was executed from this totally private tmpfs: /proc/self/fd/5
+>=20
+> This simply further reinforces that locked-down environments need to
+> disallow CLONE_NEWUSER for unprivileged users (as is already the case in
+> most container environments).
+>=20
+> [1]: https://lore.kernel.org/all/CABi2SkWnAgHK1i6iqSqPMYuNEhtHBkO8jUuCvmG=
+3RmUB5TKHJw@mail.gmail.com/
+>=20
+> Cc: Dominique Martinet <asmadeus@codewreck.org>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: stable@vger.kernel.org # v6.3+
+> Fixes: 105ff5339f49 ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_EXEC")
+> Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
 > ---
-> Matthieu Baerts (3):
->       selftests: tc: set timeout to 15 minutes
->       selftests: tc: add 'ct' action kconfig dep
->       selftests: tc: add ConnTrack procfs kconfig
->
->  tools/testing/selftests/tc-testing/config   | 2 ++
->  tools/testing/selftests/tc-testing/settings | 1 +
->  2 files changed, 3 insertions(+)
-> ---
-> base-commit: 9d23aac8a85f69239e585c8656c6fdb21be65695
-> change-id: 20230713-tc-selftests-lkft-363e4590f105
->
-> Best regards,
-> --
-> Matthieu Baerts <matthieu.baerts@tessares.net>
->
+>  kernel/pid_sysctl.h | 7 -------
+>  1 file changed, 7 deletions(-)
+>=20
+> diff --git a/kernel/pid_sysctl.h b/kernel/pid_sysctl.h
+> index b26e027fc9cd..8a22bc29ebb4 100644
+> --- a/kernel/pid_sysctl.h
+> +++ b/kernel/pid_sysctl.h
+> @@ -24,13 +24,6 @@ static int pid_mfd_noexec_dointvec_minmax(struct ctl_t=
+able *table,
+>  	if (ns !=3D &init_pid_ns)
+>  		table_copy.data =3D &ns->memfd_noexec_scope;
+> =20
+> -	/*
+> -	 * set minimum to current value, the effect is only bigger
+> -	 * value is accepted.
+> -	 */
+> -	if (*(int *)table_copy.data > *(int *)table_copy.extra1)
+> -		table_copy.extra1 =3D table_copy.data;
+> -
+>  	return proc_dointvec_minmax(&table_copy, write, buf, lenp, ppos);
+>  }
+
+I also have a patch to properly tie the sysctl to the pid namespace
+rather that having a global sysctl that magically has its value changed
+in this pid_mfd_noexec_dointvec_minmax() and another to do the same for
+the other pidns-tied sysctl (kernel.ns_last_pid) but I'm not sure
+whether it's needed. It does make vm.memfd_noexec a bit cleaner but
+because the two sysctls are in different tables you can't register them
+together AFAICS which means a bunch of needless duplication.
+
+> =20
+> --=20
+> 2.41.0
+>=20
+
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--4ubij2xktskdezgp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS2TklVsp+j1GPyqQYol/rSt+lEbwUCZLCRuQAKCRAol/rSt+lE
+bycBAQCsJjBVjXfGnfUjczZi2Uw40z/FGWKZ7Na80SxTTtsRGgEArv1CYjnaQLTR
+YVTNeXzuho+Bp3RaPonAbsjEAACsEwM=
+=J8sH
+-----END PGP SIGNATURE-----
+
+--4ubij2xktskdezgp--
