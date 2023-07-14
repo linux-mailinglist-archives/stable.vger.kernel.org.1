@@ -2,132 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7116753A55
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 14:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 147C8753ADD
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 14:26:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235322AbjGNMHu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 08:07:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56030 "EHLO
+        id S235834AbjGNM0I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 08:26:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230101AbjGNMHt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 08:07:49 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AED7212B;
-        Fri, 14 Jul 2023 05:07:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689336468; x=1720872468;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=/htYl69qlNj31QSX3mVg5JuWkegOCtKSr3VzQLqpegg=;
-  b=IxfPROnrLQk9jqvbh2JGJ8sAIn0p6o/FwmYdKsvg9LLmHzi7c2aH/fuV
-   3r2oV4xTrObClI4urRlEIZNafbgSdWUhuvvjgGjvrup19vTjrvVvNDYgX
-   B7rAJdOoAbSZqDJyPWDt0d9GoZda6LhMjwatb5l0wUPNZbiXnpvj9D84/
-   ldvC6TU5x7E/n3VFW1MwfjMAaHrSO6m22Iwk4unlF4VT7M4UBvqqxWBtb
-   YeJoHj0lGn133RF9nUKRE+3IUxuAGo8VBDjZPt37mePAe34dT+D+YLSlz
-   ucdWvTAeIf5cg8nlVcgjgJEZ2kvpKV2HgZlQ4YE2WaQN9p65VvLMclLnj
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="362926043"
-X-IronPort-AV: E=Sophos;i="6.01,205,1684825200"; 
-   d="scan'208";a="362926043"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2023 05:07:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="846433196"
-X-IronPort-AV: E=Sophos;i="6.01,205,1684825200"; 
-   d="scan'208";a="846433196"
-Received: from rchauhax-mobl1.gar.corp.intel.com ([10.249.35.123])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2023 05:07:44 -0700
-Date:   Fri, 14 Jul 2023 15:07:42 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Ruihong Luo <colorsu1922@gmail.com>
-cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        stable@vger.kernel.org, luoruihong@xiaomi.com,
-        weipengliang@xiaomi.com, wengjinfei@xiaomi.com
-Subject: Re: [PATCH v4] serial: 8250_dw: Preserve original value of DLF
- register
-In-Reply-To: <20230713004235.35904-1-colorsu1922@gmail.com>
-Message-ID: <5fac4a28-ff70-d6e6-dcee-8cb45916789@linux.intel.com>
-References: <20230713004235.35904-1-colorsu1922@gmail.com>
+        with ESMTP id S235887AbjGNMZh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 08:25:37 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B19743C1B;
+        Fri, 14 Jul 2023 05:25:06 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-98de21518fbso251154866b.0;
+        Fri, 14 Jul 2023 05:25:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689337492; x=1691929492;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vkPYI3Vjys6HUZ7g47wuaPMnyVLdDQufL5+zqucCKZc=;
+        b=AzmkvcnjqYrirYQYyNP9UwZF5wOxd8pOG9kLaNfd+JwBNM5D3VmWa7s4BPIzzvr+vy
+         O9Uu1GL0Ak1ZG/K8oujzVXP4vXDm8cqXZOq+z8GpgNWVELyxY8o2v/x4J4nbkjuYSrzY
+         b7xVin8dXKYhqulfRyIHJQXUURZCW0Wz55EjWfwxfzhTUZsNjhccMXp6s8K4TVu4NpLm
+         qwGeO7S4rKUiUl9waTXoPhS3vi5DTkaubrSuwqR1J+5ms2ecAocYVKmmU/0d45UAL5E3
+         t0S3MX0mEl1nXMXKnec8oi6YokGZqT90K+Q4QTjl+WIYKTNqJ/GbbLxHODir1tkHCJDb
+         y9Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689337492; x=1691929492;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vkPYI3Vjys6HUZ7g47wuaPMnyVLdDQufL5+zqucCKZc=;
+        b=Q6ihlVx9YgJpfwVgHXAQyuin2wcpHtruL211s/+QitVHWmk2BA2MlwZVQo0GTHpUF2
+         QsxhMoZm4VOL8G5IPf/ehJJWIGP1Cd0whVmK2Gn47OOe1ODAi+IiVGhTdhfp5XC2RSoD
+         N0E91kMzNsnp4SFJIqXOwhdj4nILD2WbR0CTlD4nFMlxPaY0kBhqMtCJVs3ZDRtotLjp
+         tX+8pDSROJ7w8Nvj75nKj9oufVDzAoPWgdarzQyDZkJA+U6jRU4OqdKBhu7CWsATVrTN
+         B8USS+Lh7z1LM6tR2WJyMsXveZ3gol83U4C4saPiTZP++V6xWXstsvVx47F3k4SvDkLI
+         YqGg==
+X-Gm-Message-State: ABy/qLZU8DSm+ScUgXB3pc6xSZqu9cyT9m7Qv+SmNj360I2V1O0eK+ne
+        eicwztOyh+hgfCPqz9/WtDY=
+X-Google-Smtp-Source: APBJJlGP00fXjQi9ojrEp9x2syWFzQt0DOIFe1J/unjIM3SHAChHfvWXet0XqhTd5Mg4zVQ6vhoLgA==
+X-Received: by 2002:a17:906:a897:b0:982:1936:ad27 with SMTP id ha23-20020a170906a89700b009821936ad27mr4178686ejb.11.1689337492399;
+        Fri, 14 Jul 2023 05:24:52 -0700 (PDT)
+Received: from localhost.localdomain (snat-11.cgn.sat-an.net. [176.222.226.11])
+        by smtp.gmail.com with ESMTPSA id h19-20020a170906719300b00993cc1242d4sm5314054ejk.151.2023.07.14.05.24.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jul 2023 05:24:52 -0700 (PDT)
+From:   Jakub Vanek <linuxtardis@gmail.com>
+To:     Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Jakub Vanek <linuxtardis@gmail.com>, stable@vger.kernel.org,
+        Mauro Ribeiro <mauro.ribeiro@hardkernel.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3] Revert "usb: dwc3: core: Enable AutoRetry feature in the controller"
+Date:   Fri, 14 Jul 2023 14:24:19 +0200
+Message-Id: <20230714122419.27741-1-linuxtardis@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-16913354-1689336427=:1695"
-Content-ID: <93c61472-25c0-bc4d-bf2c-23a581131bc@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+This reverts commit b138e23d3dff90c0494925b4c1874227b81bddf7.
 
---8323329-16913354-1689336427=:1695
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Content-ID: <6b473574-4ff8-9b19-862f-115f12225a5@linux.intel.com>
+AutoRetry has been found to sometimes cause controller freezes when
+communicating with buggy USB devices.
 
-On Thu, 13 Jul 2023, Ruihong Luo wrote:
+This controller feature allows the controller in host mode to send
+non-terminating/burst retry ACKs instead of terminating retry ACKs
+to devices when a transaction error (CRC error or overflow) occurs.
 
-> Preserve the original value of the Divisor Latch Fraction (DLF) register.
-> When the DLF register is modified without preservation, it can disrupt
-> the baudrate settings established by firmware or bootloader, leading to
-> data corruption and the generation of unreadable or distorted characters.
-> 
-> Fixes: 701c5e73b296 ("serial: 8250_dw: add fractional divisor support")
+Unfortunately, if the USB device continues to respond with a CRC error,
+the controller will not complete endpoint-related commands while it
+keeps trying to auto-retry. [3] The xHCI driver will notice this once
+it tries to abort the transfer using a Stop Endpoint command and
+does not receive a completion in time. [1]
+This situation is reported to dmesg:
 
-You forgot to add:
+[sda] tag#29 uas_eh_abort_handler 0 uas-tag 1 inflight: CMD IN
+[sda] tag#29 CDB: opcode=0x28 28 00 00 69 42 80 00 00 48 00
+xhci-hcd: xHCI host not responding to stop endpoint command
+xhci-hcd: xHCI host controller not responding, assume dead
+xhci-hcd: HC died; cleaning up
 
+Some users observed this problem on an Odroid HC2 with the JMS578
+USB3-to-SATA bridge. The issue can be triggered by starting
+a read-heavy workload on an attached SSD. After a while, the host
+controller would die and the SSD would disappear from the system. [1]
+
+Further analysis by Synopsys determined that controller revisions
+other than the one in Odroid HC2 are also affected by this.
+The recommended solution was to disable AutoRetry altogether.
+This change does not have a noticeable performance impact. [2]
+
+Revert the enablement commit. This will keep the AutoRetry bit in
+the default state configured during SoC design [2].
+
+Fixes: b138e23d3dff ("usb: dwc3: core: Enable AutoRetry feature in the controller")
+Link: https://lore.kernel.org/r/a21f34c04632d250cd0a78c7c6f4a1c9c7a43142.camel@gmail.com/ [1]
+Link: https://lore.kernel.org/r/20230711214834.kyr6ulync32d4ktk@synopsys.com/ [2]
+Link: https://lore.kernel.org/r/20230712225518.2smu7wse6djc7l5o@synopsys.com/ [3]
 Cc: stable@vger.kernel.org
+Cc: Mauro Ribeiro <mauro.ribeiro@hardkernel.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Jakub Vanek <linuxtardis@gmail.com>
+---
+V2 -> V3: Include more findings in changelog
+V1 -> V2: Updated to disable AutoRetry everywhere based on Synopsys feedback
+          Reworded the changelog a bit to make it clearer
 
-> Signed-off-by: Ruihong Luo <colorsu1922@gmail.com>
+ drivers/usb/dwc3/core.c | 16 ----------------
+ drivers/usb/dwc3/core.h |  3 ---
+ 2 files changed, 19 deletions(-)
 
-Other than that,
-
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index f6689b731718..a4e079d37566 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1209,22 +1209,6 @@ static int dwc3_core_init(struct dwc3 *dwc)
+ 		dwc3_writel(dwc->regs, DWC3_GUCTL1, reg);
+ 	}
+ 
+-	if (dwc->dr_mode == USB_DR_MODE_HOST ||
+-	    dwc->dr_mode == USB_DR_MODE_OTG) {
+-		reg = dwc3_readl(dwc->regs, DWC3_GUCTL);
+-
+-		/*
+-		 * Enable Auto retry Feature to make the controller operating in
+-		 * Host mode on seeing transaction errors(CRC errors or internal
+-		 * overrun scenerios) on IN transfers to reply to the device
+-		 * with a non-terminating retry ACK (i.e, an ACK transcation
+-		 * packet with Retry=1 & Nump != 0)
+-		 */
+-		reg |= DWC3_GUCTL_HSTINAUTORETRY;
+-
+-		dwc3_writel(dwc->regs, DWC3_GUCTL, reg);
+-	}
+-
+ 	/*
+ 	 * Must config both number of packets and max burst settings to enable
+ 	 * RX and/or TX threshold.
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 8b1295e4dcdd..a69ac67d89fe 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -256,9 +256,6 @@
+ #define DWC3_GCTL_GBLHIBERNATIONEN	BIT(1)
+ #define DWC3_GCTL_DSBLCLKGTNG		BIT(0)
+ 
+-/* Global User Control Register */
+-#define DWC3_GUCTL_HSTINAUTORETRY	BIT(14)
+-
+ /* Global User Control 1 Register */
+ #define DWC3_GUCTL1_DEV_DECOUPLE_L1L2_EVT	BIT(31)
+ #define DWC3_GUCTL1_TX_IPGAP_LINECHECK_DIS	BIT(28)
 -- 
- i.
+2.25.1
 
-> ---
-> v4:
-> * Use the old_dlf to hold the DLF register value
-> 
->  drivers/tty/serial/8250/8250_dwlib.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_dwlib.c b/drivers/tty/serial/8250/8250_dwlib.c
-> index 75f32f054ebb..84843e204a5e 100644
-> --- a/drivers/tty/serial/8250/8250_dwlib.c
-> +++ b/drivers/tty/serial/8250/8250_dwlib.c
-> @@ -244,7 +244,7 @@ void dw8250_setup_port(struct uart_port *p)
->  	struct dw8250_port_data *pd = p->private_data;
->  	struct dw8250_data *data = to_dw8250_data(pd);
->  	struct uart_8250_port *up = up_to_u8250p(p);
-> -	u32 reg;
-> +	u32 reg, old_dlf;
->  
->  	pd->hw_rs485_support = dw8250_detect_rs485_hw(p);
->  	if (pd->hw_rs485_support) {
-> @@ -270,9 +270,11 @@ void dw8250_setup_port(struct uart_port *p)
->  	dev_dbg(p->dev, "Designware UART version %c.%c%c\n",
->  		(reg >> 24) & 0xff, (reg >> 16) & 0xff, (reg >> 8) & 0xff);
->  
-> +	/* Preserve value written by firmware or bootloader  */
-> +	old_dlf = dw8250_readl_ext(p, DW_UART_DLF);
->  	dw8250_writel_ext(p, DW_UART_DLF, ~0U);
->  	reg = dw8250_readl_ext(p, DW_UART_DLF);
-> -	dw8250_writel_ext(p, DW_UART_DLF, 0);
-> +	dw8250_writel_ext(p, DW_UART_DLF, old_dlf);
->  
->  	if (reg) {
->  		pd->dlf_size = fls(reg);
-> 
---8323329-16913354-1689336427=:1695--
