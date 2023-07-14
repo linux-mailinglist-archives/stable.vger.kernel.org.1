@@ -2,152 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96E19754379
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 21:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4012E75428C
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 20:29:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235438AbjGNTye (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 15:54:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48746 "EHLO
+        id S235666AbjGNS3K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 14:29:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229915AbjGNTyc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 15:54:32 -0400
-Received: from imsantv23.netvigator.com (imsantv23.netvigator.com [210.87.247.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37D342D57
-        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 12:54:29 -0700 (PDT)
-Received: from ybironout4a.netvigator.com (ybironout4a.netvigator.com [210.87.250.9])
-        by imsantv23.netvigator.com (8.14.4/8.14.4) with ESMTP id 36EHWn3N027046;
-        Sat, 15 Jul 2023 01:32:52 +0800
-X-IPAS-Result: =?us-ascii?q?A0D//wCHhbFk/5JCtUFaGgEBAQEBPAEBAQECAgEBAQECA?=
- =?us-ascii?q?QEBAQMBAQEBFQmBPwIBAQEBAwEXAQEBgS4CAQEBTQEBAQEDAQITMR1aCRIuE?=
- =?us-ascii?q?h2Ee4QCg2sxAYcYgWwDAYRfhzyLSIZGgX0PAQEBERIBLAECBAEBgUSDOAEtL?=
- =?us-ascii?q?QEBARWFQQEUETwCDQECBAEBAQEDAgMBAQEBAQEDAQEFAwIBBwSBChOFTieBX?=
- =?us-ascii?q?QEBAQM1DAEBg1EBAQECAwEBAQEQAQEZFR8BLAIIAhENAgUTDgIWAQQaDTgCA?=
- =?us-ascii?q?QIDASMBAQEBAx+BTgICCEtEAQEBgWABNAMFnXOCNIUWh1aBMhoCZTuEJBiPU?=
- =?us-ascii?q?J9BgQeBFSsCAQEBAQFvhwwBih0bgg2BWIIwiRUWI4IuBIsZDgyCaII3kQiEU?=
- =?us-ascii?q?GeBVwINGYFviD4LCYEygUh5gX8XgWQ/g3NUgxyEYwyCRwQxgRxNAwkDBwUbE?=
- =?us-ascii?q?SILJwwLGA0UNxEsNQgtAgE/B0odFxcygR99pjyCP4l7iwyDdIxtY6AwCwoGh?=
- =?us-ascii?q?AWBWAefWBeDbpNRA5EzZLwMhmkOgVlwFYFZCYFBPxIZjgUBAQGUITdsAgcLA?=
- =?us-ascii?q?QEDCYVEAQEBAYNMgjQB?=
-IronPort-Data: A9a23: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
- AuOw0U=
-IronPort-HdrOrdr: A9a23:B96kNqGRKFnCracjpLqE48eALOsnbusQ8zAXPidKKSC9E/b4qy
- nAppsmPHPP5Qr5O0tPpTnjAsK9qBrnnPZICO8qV4tKNzOLhILTFvAB0WKb+UyEJ8SjzJ846U
- 4aSdkcNOHN
-X-Talos-CUID: 9a23:3nN/mmNUL6GqUu5DYDZK1B8rQJ8fUSfT0zDtKlOjM0J3R+jA
-X-Talos-MUID: 9a23:X6S2pAU76ch83e/q/Dj1vWpiF9lj2YeNFUYvmI5B6s2aMQUlbg==
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.01,206,1684771200"; 
-   d="scan'208";a="323775817"
-Received: from unknown (HELO singnet.com.sg) ([65.181.66.146])
-  by ybironout4v2.netvigator.com with SMTP; 15 Jul 2023 01:32:39 +0800
-Message-ID: <A1A412414A9EB023FFFAB30F8B065BC9@netvigator.com>
-Reply-To: "Taras Volodymyr" <rifaataboud@cheapnet.it>
-From:   "Taras Volodymyr" <wongcphk@netvigator.com>
-Subject: I wish for a prompt response
-Date:   Sat, 15 Jul 2023 01:32:37 +0800
+        with ESMTP id S236841AbjGNS3I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 14:29:08 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 318EA26B6
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 11:29:07 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b703c900e3so34152861fa.1
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 11:29:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689359345; x=1691951345;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=V8Wt8cMGCqy9CZq6012XBPM2kyz2Mn90yzkk5uGQWyU=;
+        b=mvajMGQNG+5AvAaKOl4BVvuCD4zs13l7V8u70iG64R7IMoL+YUkkqskXvWa83uZY/G
+         tU2iLxRoo/usmgBwqJQk4hnIuumPHp19LW+BiipO4d1rxi2u/CW7DEk8Yt9q13RhReES
+         2p//ZDhe8aHwjamAXl7mWylHty+53enF4TOZDB36PCmCe8ivLlh7OtkCMjTN7rzH+Gbm
+         YDFDQWE4OvKL1PwI3DpuPkZDOYfDT9tMiURUd6t+IOFsBp7ANcagPRbr84Wtyp46RDXV
+         jtSrCA7MfuO5SyUHaqx/HwpKeFeC69gB1NJpbjhEI6uEEppjTmShQZkt5zvClfZNim9b
+         zbdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689359345; x=1691951345;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V8Wt8cMGCqy9CZq6012XBPM2kyz2Mn90yzkk5uGQWyU=;
+        b=YLfcCdhgXCPlD1TeZADA7UaDQZ6+1aGoEl7kjM6LJnKrs3cZA4HBrCWalQUr8YoyP7
+         +IfDYo2aNzHaBbR86bR+/Ur4wln7Xh0fB68DFKLqAKtRPBTw9dlGRp9SlcBRhFs3v8lc
+         RmR5pTR2Mz81Oqcq7LUiF/kKECs7B5F2yrIrRdX3Sd+ldVm3uVQrDWr07iYzHLSZ2FZG
+         Z1p4sdXe5tEbudb4HV9y48NxtnDtje73FYcxtn6+du1LGC72qizgGS1wpOp5hXr00s0R
+         oVKJi9LT2qRrnT0TRLxAe0p2OrXFGR6+s8C3BufDItY6jkt/QfFkhlHwC8c6GQalIgPo
+         YK3A==
+X-Gm-Message-State: ABy/qLY/bW5Iz/0Ni1Oe+pljqUsf1+RKF0NylOv3iG8eVwCgSBJeHXRn
+        78i6MdI32o1swFPM4kdC06IMEQ==
+X-Google-Smtp-Source: APBJJlHCw4a7udF2Olxu1CeYC6D6ejTjPUE0r4lNRWXVSMD4v6zAA/CEHUxPcOzwszw4xt6K9ozOZA==
+X-Received: by 2002:a2e:9c93:0:b0:2b6:e536:a2a9 with SMTP id x19-20020a2e9c93000000b002b6e536a2a9mr4728029lji.47.1689359345403;
+        Fri, 14 Jul 2023 11:29:05 -0700 (PDT)
+Received: from [127.0.1.1] ([85.235.12.238])
+        by smtp.gmail.com with ESMTPSA id f21-20020a2e9e95000000b002b1b92910c8sm2092229ljk.86.2023.07.14.11.29.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jul 2023 11:29:05 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 14 Jul 2023 20:29:03 +0200
+Subject: [PATCH v3] mtd: spi-nor: Correct flags for Winbond w25q128
 MIME-Version: 1.0
-Content-Type: text/plain;
-        format=flowed;
-        charset="utf-8";
-        reply-type=original
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5931
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.6157
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,MISSING_HEADERS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,RCVD_IN_SBL,
-        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,STOX_REPLY_TYPE,
-        STOX_REPLY_TYPE_WITHOUT_QUOTES,T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *      [210.87.247.11 listed in zen.spamhaus.org]
-        *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [210.87.247.11 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.4 STOX_REPLY_TYPE No description available.
-        *  0.0 RCVD_IN_MSPIKE_L3 RBL: Low reputation (-3)
-        *      [210.87.247.11 listed in bl.mailspike.net]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 T_SPF_PERMERROR SPF: test of record failed (permerror)
-        *  1.0 MISSING_HEADERS Missing To: header
-        *  0.0 RCVD_IN_MSPIKE_BL Mailspike blocklisted
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  1.8 STOX_REPLY_TYPE_WITHOUT_QUOTES No description available.
-        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
-X-Spam-Level: *****
+Message-Id: <20230714-spi-nor-winbond-w25q128-v3-1-bdb2192f079b@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAO6TsWQC/43NTQrCMBCG4auUrI1kJvZHV95DXKRN0g5IUhNJl
+ dK7mxZcuBBcvh/MMzOLJpCJ7FTMLJhEkbzLIXcF6wblesNJ52YoUIoagMeRuPOBT+Ra7zSfsLw
+ DNlwiqEqgMVjVLF+PwVh6bvLlmnug+PDhtT1KsK4fE3+aCThwWzdWtu0BFXTnGzkV/N6Hnq1ow
+ j8hzFApuqMFXTa6+oaWZXkD23C8bggBAAA=
+To:     Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Pratyush Yadav <pratyush@kernel.org>,
+        Michael Walle <michael@walle.cc>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.12.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-D e a r Sir,
+The Winbond "w25q128" (actual vendor name W25Q128JV) has
+exactly the same flags as the sibling device "w25q128jv".
+The devices both require unlocking to enable write access.
 
-I am M r. Taras Volodymyr from U k r a i n e but lived in Russia for many years, I am a successful business?m a n here in Russia as I have been involved oil serving business.
+The actual product naming between devices vs the Linux
+strings in winbond.c:
 
-Based on what is going here I found you very capable of handling this h u g e business magnitude, there is a genuine need for an investment of a substantial amount in your country. If you are willing to p a r t n e r with me I will advise you to get back to me for proceedings-details on the way forward.
+0xef4018: "w25q128"   W25Q128JV-IM/JM
+0xef7018: "w25q128jv" W25Q128JV-IN/IQ/JQ
 
-I wish for a prompt response from you regarding my letter.
+The latter device, "w25q128jv" supports features named DTQ
+and QPI, otherwise it is the same.
 
-Warm regards,
+Not having the right flags has the annoying side effect
+that write access does not work.
 
-Mr. Taras Volodymyr
+After this patch I can write to the flash on the Inteno
+XG6846 router.
+
+The flash memory also supports dual and quad SPI modes.
+This does not currently manifest, but by turning on SFDP
+parsing, the right SPI modes are emitted in
+/sys/kernel/debug/spi-nor/spi1.0/capabilities
+for this chip, so we also turn on this.
+
+Since we suspect that older chips may be using the same
+device ID, we need to keep NO_SFDP_FLAGS(SECT_4K) as these
+older chips may not support SFDP.
+
+cat jedec_id
+ef4018
+cat manufacturer
+winbond
+cat partname
+w25q128
+hexdump -v -C sfdp
+00000000  53 46 44 50 05 01 00 ff  00 05 01 10 80 00 00 ff
+00000010  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000020  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000030  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000040  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000050  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000060  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000070  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000080  e5 20 f9 ff ff ff ff 07  44 eb 08 6b 08 3b 42 bb
+00000090  fe ff ff ff ff ff 00 00  ff ff 40 eb 0c 20 0f 52
+000000a0  10 d8 00 00 36 02 a6 00  82 ea 14 c9 e9 63 76 33
+000000b0  7a 75 7a 75 f7 a2 d5 5c  19 f7 4d ff e9 30 f8 80
+
+Cc: stable@vger.kernel.org
+Suggested-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Changes in v3:
+- Keep NO_SFDP_FLAGS(SECT_4K) around.
+- Update commit message
+- Link to v2: https://lore.kernel.org/r/20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org
+
+Changes in v2:
+- Only add the write access flags.
+- Use SFDP parsing to properly detect the various
+  available SPI modes.
+- Link to v1: https://lore.kernel.org/r/20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org
+---
+ drivers/mtd/spi-nor/winbond.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/mtd/spi-nor/winbond.c b/drivers/mtd/spi-nor/winbond.c
+index 834d6ba5ce70..8f30a67cd27a 100644
+--- a/drivers/mtd/spi-nor/winbond.c
++++ b/drivers/mtd/spi-nor/winbond.c
+@@ -121,6 +121,8 @@ static const struct flash_info winbond_nor_parts[] = {
+ 	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
+ 		NO_SFDP_FLAGS(SECT_4K) },
+ 	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
++		PARSE_SFDP
++		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB)
+ 		NO_SFDP_FLAGS(SECT_4K) },
+ 	{ "w25q256", INFO(0xef4019, 0, 64 * 1024, 512)
+ 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
+
+---
+base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+change-id: 20230711-spi-nor-winbond-w25q128-321a602ee267
+
+Best regards,
+-- 
+Linus Walleij <linus.walleij@linaro.org>
+
