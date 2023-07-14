@@ -2,144 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 993547535E1
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 10:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A67C6753544
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 10:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235716AbjGNI7A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 04:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34280 "EHLO
+        id S235496AbjGNIoj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 04:44:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234131AbjGNI6z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 04:58:55 -0400
-X-Greylist: delayed 5959 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 14 Jul 2023 01:58:53 PDT
-Received: from mx0a-0014ca01.pphosted.com (mx0a-0014ca01.pphosted.com [208.84.65.235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B767E26B2;
-        Fri, 14 Jul 2023 01:58:53 -0700 (PDT)
-Received: from pps.filterd (m0042385.ppops.net [127.0.0.1])
-        by mx0a-0014ca01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36DNKFuq006459;
-        Fri, 14 Jul 2023 00:19:24 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=proofpoint;
- bh=W+64vxahE9VVgqUrPXaYSSnf/z3FI7BI6CIYdOQF1MA=;
- b=lyhrn4ImGmf1d7N49s7rzwqYgp6LFPzeLTO3N25lL4vPImfnpZ44NmlZkXZNE0yeYtk/
- Xak5n0VaBzlHGIpTPeZ9+oWRY7wEwqHJtIXMqMlVlMZuGJaL6XKm1tC0+2dau3X1aiFb
- vMSywiRZ6CxYnhRVUKgcUGQYvd+FhtxROa8pc+r5ug4IcuOAVkAvzOLPWqX0OlbYinQQ
- mQZAcAIuR0KdrwAipI3++DrxxURhskFXuhFkZI2k0wBUMyyhxRUjs/2kwdoVhL2Zki6y
- n3QS9sSJGBr5SonnRd+cUrDmt2kImO3X3cNsh3NQE2Ex6tl2qr4+NajeN4DnHWFR5JJk Cg== 
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2108.outbound.protection.outlook.com [104.47.55.108])
-        by mx0a-0014ca01.pphosted.com (PPS) with ESMTPS id 3rtputa368-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Jul 2023 00:19:24 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h4XD8NOIBlgUcuq8g0saym9M7km8kypDNOOhRHQReqGia9DDj9zrSMliKFJwyP3EY2QtIlBci5QLUxnJlMp33AN65uauO6SUiHTdEnsygvtNjzz1wfvwiI0PvpBxcmMDvQvNFMhRHKTIxVUmN7QnYsxYNpI+XWjknQPj3OArEr3OFvBaOQHiHrIMBH4bE2a2tyFmAehDryePqeT7MfVlwCT54I4nTxoEpEeUOi22VwBPguuO7mzhgsxIb9CIKVONq92gmhN0tKQn9oyWJP64bCer2LZgLapkS3aW9xcAZk1gbr0OLnlPXCTf+o7wicEJHwK6DwYlmqDJupwzdWLE7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W+64vxahE9VVgqUrPXaYSSnf/z3FI7BI6CIYdOQF1MA=;
- b=eDFSx3QvIqrEYWqm0a+7Jv/XMs0mDzblhQSwuS4ciw7dHvcT//3nGwz2Af0ttf7Jjv0oUiaNUR3ak8ehj1Ymi3UU8PWfYjpEUAHYjPpkPbXumIM3G1NhQ3waGw0oC/cbSEi2v7PJesN7vcqfpD8nmAGaBYL074mBcpDkuEBbu9TLj12SQ7FIr2QKJKofmsSV5dLeRqXQW5Bvl4fkjSrs58Uinv83YbtkgE3VsaI9pbHqSgwANqCE0wMZApUqqinSDsRQ8mYgrCuivju6MyqmLdTeU3qqChTiNhkF3MyNAC2tGu5neH6RyjG39ASt3rd8J0w6RAKx170YBpO/T9zPvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
- dkim=pass header.d=cadence.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W+64vxahE9VVgqUrPXaYSSnf/z3FI7BI6CIYdOQF1MA=;
- b=hovY4OdStS4HJUVFfX8Pa4LXNDw4h0FD3i5+AAmUikqMcxdZZmdMMc2PJSCvbA9OGDgchh0XaDPLdZwmxu9BlRXN1do0MH+1Cwev4IKL6rm2JSAPzT89yKEEYwfZjoT+fdlPxZV444S2N2nRAiHhxL9C216mPKfbjq8UH+++qMk=
-Received: from BYAPR07MB5381.namprd07.prod.outlook.com (2603:10b6:a03:6d::24)
- by PH0PR07MB9236.namprd07.prod.outlook.com (2603:10b6:510:117::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30; Fri, 14 Jul
- 2023 07:19:22 +0000
-Received: from BYAPR07MB5381.namprd07.prod.outlook.com
- ([fe80::2c3a:d722:8479:28e9]) by BYAPR07MB5381.namprd07.prod.outlook.com
- ([fe80::2c3a:d722:8479:28e9%6]) with mapi id 15.20.6588.027; Fri, 14 Jul 2023
- 07:19:21 +0000
-From:   Pawel Laszczak <pawell@cadence.com>
-To:     Peter Chen <peter.chen@kernel.org>
-CC:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] usb: cdnsp: Fixes issue with dequeuing not queued
- requests
-Thread-Topic: [PATCH] usb: cdnsp: Fixes issue with dequeuing not queued
- requests
-Thread-Index: AQHZtWIUOnzlmDC91EyICLRPIn7cGq+4hxoAgABUPOA=
-Date:   Fri, 14 Jul 2023 07:19:21 +0000
-Message-ID: <BYAPR07MB5381BA3F7A34D18BC16B86DFDD34A@BYAPR07MB5381.namprd07.prod.outlook.com>
-References: <20230713081429.326660-1-pawell@cadence.com>
- <20230714021436.GA2520702@nchen-desktop>
-In-Reply-To: <20230714021436.GA2520702@nchen-desktop>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNccGF3ZWxsXGFwcGRhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEyOWUzNWJcbXNnc1xtc2ctYmVhNjc5YmMtMjIxNi0xMWVlLWE4NmQtMDBiZTQzMTQxNTFlXGFtZS10ZXN0XGJlYTY3OWJlLTIyMTYtMTFlZS1hODZkLTAwYmU0MzE0MTUxZWJvZHkudHh0IiBzej0iMTQwMyIgdD0iMTMzMzM3OTI3NTg4NDMwMjI3IiBoPSJIRVVEazdIU0dFcjhKYmozbVVjVU1IVVV2V2c9IiBpZD0iIiBibD0iMCIgYm89IjEiLz48L21ldGE+
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BYAPR07MB5381:EE_|PH0PR07MB9236:EE_
-x-ms-office365-filtering-correlation-id: 9e908f0a-b8cc-4a82-5d73-08db843aa52c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 1hf0VAN7xvqTBqX26ujJT38mmHuSX8yd7M0D2x5vyO/eVKv2W5dy6Fn148CE2gfwLEXXi8hWlc/FINNeLQ2wqX1SDERxn9KQrLBs/uWZy3YraMhW/rddiCfh8wN8b4+Mnptifh6Gz5bwQfyXYSxW4K3X58iAhHnyyscFziH2vHs9JFdpNXF1s+escPAkMJ7/IwKB9X23fp4Nu+oTM6yW3kLdLNPrlBnpnXnKTA6Tr2NOM6gEzy67bjbd2WLWxvqe3yGPCFF+qXEM2T6Y3VgXwjqUWpj3ycG0ZxQXTbY/fZ/hHmB3hY1BLOQnwPDKr3gNnPXqvX0RrQl8llcG8fla6uu73FmT+WzhSV/Mh9jcemi3ubpMDJDNr5h7r3plNHFiqLkiuKRQepjxsgKdoMRVz+9vH/i4QMfIRWfexRkfNMZ6H+QHmypRI5RRohEFQx8JEKIDr9ZW4RsSMhyke71pePGAM/VqgMjicfg+uQfu6EEcsjN183Efy8OPMUhhbsNlhHX7Fa06Wwm2b+dPydKn2HDsyU09Ue7yIj5RW8VSz2kcdcE4//y+PxCl3yzJjU78NQhgG8azyCxwjkDqV/Y4PSYIKoXrPfHiV/YfzrtYMU5YAY25jRBf/dpsB3DbFXlR
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR07MB5381.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(366004)(136003)(376002)(39860400002)(346002)(36092001)(451199021)(52536014)(83380400001)(8676002)(8936002)(38100700002)(5660300002)(2906002)(186003)(478600001)(26005)(122000001)(41300700001)(6506007)(54906003)(38070700005)(9686003)(55016003)(71200400001)(86362001)(66446008)(6916009)(7696005)(316002)(66476007)(66556008)(76116006)(33656002)(4326008)(64756008)(66946007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?+Njh/prtfWY6H7KR7rqWyiKdPGR0KICi+cgxM0uR6OXyDq5EI08b0KF0u7fc?=
- =?us-ascii?Q?XaOP9qppFCBPwvrrzGg5qRlb4iO0+1djA3S5TvMOP/ay+VFsVjVSphoGjYT2?=
- =?us-ascii?Q?P0lx3PT5n9AEELkwV56+unCK0Hy0c9ju9m9fSrMFWNummLBhUXWszuuSijMA?=
- =?us-ascii?Q?kv+ACDJygguQchgGqlMp+Zi8clhQMw84r2dqfBEDAkP6npMswLkRW69vGqLM?=
- =?us-ascii?Q?F3gofk2AfRkrZPhdQrbBmr8CrHElaDUGRpmbLjYff+9xADTumR1bY7RHahVe?=
- =?us-ascii?Q?diK3Gc2CpnN7qGfATtwX3JcM9cMdGuB9w+IjOxacQ09fiKK2z0IXo5odHCZl?=
- =?us-ascii?Q?+zXVWVGGP3Td60v/9f2F98mdKXKnORndSLVxSg86zikhjxJCATL0/Ms452ha?=
- =?us-ascii?Q?X7m/PxhBjNFdmmnA2X6l2TiN0tTEl3Rlgc5rWOWTWsjGsw35+cgOWAewWM0n?=
- =?us-ascii?Q?BL8p0obTTasQnJCtshNci0eyLY9ryxByD0Td2nIxdGGLg9jFFP5uZr02V/lb?=
- =?us-ascii?Q?bK6rMJ2GKsPt2qhCUNOPlSY8gBarYk8JfYkAh8zOvxBelA2hzZJgdv8G08l9?=
- =?us-ascii?Q?9Yn+L8Nib0vG1eN1tFp7J86cK3FGO/9Rw0uIiqpoBNYVYQtTvQl1yK5/rZx+?=
- =?us-ascii?Q?cPnwY/pN3UhprJRkRySHJKWNAWpI9Oqf2TgcROR/DKAa+A52UxayY1vOXgTL?=
- =?us-ascii?Q?Q5bqt3T1BUo+IpDY8Xtwkmz5ePZ1DguvoXne3T0doEQEe+fguUtYgJrzbzFc?=
- =?us-ascii?Q?Zc1Vll+v52mYpeoNrABVko8PnDhy+K4cjp2rJJCIlUEoKHnCLa5HNb9ye8aC?=
- =?us-ascii?Q?xZ837RSslvpnl+6ORxvs93l45yHL/k6wEtQDqbI8w9+FmWVAPjsvVsBXNffI?=
- =?us-ascii?Q?px24fDQYug0F5IbYh1K19E4dge6mFrmRxhCkS5HufMEWssjaSKDNLzhOg4I1?=
- =?us-ascii?Q?Vnr7Dm3B04fC/nIMvXIRd/Bol16OGFiccz4AudceQBxSY+XVuLJMSwYOT8wL?=
- =?us-ascii?Q?Juu0dPOH/YQXPEov0yckjx+RIqAF0zexWflDL0ly7ysTEs2Cgodh1l/xIXJR?=
- =?us-ascii?Q?0boKkzfiXiFATSXUvN8Rjrw1My+4Xhw/6zRDB2No67BN0fxAO3koSK8QoqQa?=
- =?us-ascii?Q?MMPDayR/lrYEpou6jWYJQidx2LVFKmtnR/jZYFzf5OKQRM7bavWBjGAZc1ah?=
- =?us-ascii?Q?Ee3mhHNQ9DPoQiN6D85JyqL6KrPcb1u3DuBPO7d9z4BAAruU6UDqX69DhNgN?=
- =?us-ascii?Q?IlNg5jScWcSoAFyUxbyIa0lVHPjeIgTNUPETeL/u6BzEsKNy3kJOEw77Dqsk?=
- =?us-ascii?Q?dTpqAgLYIgVY90xELE0OzzCbQ69LmbiHefp0FMixCdLW2/lrQHincGNGIPcz?=
- =?us-ascii?Q?qSUotVQwBMbGqJI3XB+OT+8lh0w4MKXa7TMAkHih/gisbpuZxbQE0JO3FJaj?=
- =?us-ascii?Q?KfkZx7Ibbaex4ervwILEfAC1HWDVe6v4VocGrgNkCwV7ahHwfY95l37aGDGQ?=
- =?us-ascii?Q?fcrb6MQwuQt4JPdwHjL2vI7fVjYGie73+Fg93LCYbsYlRcMaZydEBXvRaJ6V?=
- =?us-ascii?Q?SYcaErqxOROEm6YNktrivMUhdlnqCnmPyG4pxBkR?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S235432AbjGNIog (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 04:44:36 -0400
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3046B26B7
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 01:44:30 -0700 (PDT)
+Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
+        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20230714084428epoutp01b2bdbb84a46be08ed35acbd1bc117afb~xr3jRiD8S2632526325epoutp01b
+        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 08:44:28 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20230714084428epoutp01b2bdbb84a46be08ed35acbd1bc117afb~xr3jRiD8S2632526325epoutp01b
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1689324268;
+        bh=jCixhGitxuy0+wkzMAMbT5vldcqoFl060dWpDRTxXbo=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=CG5KrflUPVyfhKkC9girhV90nGtSbZf3gTXkxSn5lvRwN6ttoX/LWe3q/rVQ3/wBb
+         03YvbrwBylj3i3QJ4fzLTmaGfkqSp+UYdclEzPHAn0aW3Vld0xQ1iAr0Il3NHKIyt7
+         hmAV9jbz+nKF+vwn70RAVTuFrioIXLCgM7mPgz7E=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
+        20230714084428epcas1p388583486e99e57700ebbcd52982ba721~xr3isUJ6h2998429984epcas1p3d;
+        Fri, 14 Jul 2023 08:44:28 +0000 (GMT)
+Received: from epsmges1p3.samsung.com (unknown [182.195.38.241]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 4R2Q574wvqz4x9Pw; Fri, 14 Jul
+        2023 08:44:27 +0000 (GMT)
+Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
+        epsmges1p3.samsung.com (Symantec Messaging Gateway) with SMTP id
+        9A.21.27561.BEA01B46; Fri, 14 Jul 2023 17:44:27 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20230714084427epcas1p2ce3efb1524c8efae6038d1940149ae54~xr3hwMja21505315053epcas1p24;
+        Fri, 14 Jul 2023 08:44:27 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20230714084427epsmtrp2df9ffff115b17eb733eba2aab52f7856~xr3hvkQr21755817558epsmtrp2G;
+        Fri, 14 Jul 2023 08:44:27 +0000 (GMT)
+X-AuditID: b6c32a37-98ffc70000006ba9-b8-64b10aeb39e8
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+        22.F3.64355.AEA01B46; Fri, 14 Jul 2023 17:44:26 +0900 (KST)
+Received: from u20pb1-0435.tn.corp.samsungelectronics.net (unknown
+        [10.91.133.14]) by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20230714084426epsmtip22100f33b3ded7defa2ed6b8737f85b32~xr3hnAqrj0524405244epsmtip2n;
+        Fri, 14 Jul 2023 08:44:26 +0000 (GMT)
+From:   Sungjong Seo <sj1557.seo@samsung.com>
+To:     linkinjeon@kernel.org
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sungjong Seo <sj1557.seo@samsung.com>, stable@vger.kernel.org,
+        syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com
+Subject: [PATCH] exfat: release s_lock before calling dir_emit()
+Date:   Fri, 14 Jul 2023 17:43:54 +0900
+Message-Id: <20230714084354.1959951-1-sj1557.seo@samsung.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-OriginatorOrg: cadence.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR07MB5381.namprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e908f0a-b8cc-4a82-5d73-08db843aa52c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2023 07:19:21.6647
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PTfVc3dheZNqLb6w5LmANv73mwkj+rXRlMsBfETEgl/xYsPZtQOgKebxXipmQESQ8DWvvp4nqsmC6XVOzqjeR7kqlBdxVLJrbiHwjJVHThs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR07MB9236
-X-Proofpoint-GUID: F3vnk_sZ-Nrg3WHSfCrEhALP9npCNnI_
-X-Proofpoint-ORIG-GUID: F3vnk_sZ-Nrg3WHSfCrEhALP9npCNnI_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-14_04,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0
- priorityscore=1501 clxscore=1015 bulkscore=0 mlxscore=0 phishscore=0
- impostorscore=0 suspectscore=0 spamscore=0 mlxlogscore=551 malwarescore=0
- adultscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2306200000 definitions=main-2307140067
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrIJsWRmVeSWpSXmKPExsWy7bCmru5rro0pBk+XKFtMnLaU2WLP3pMs
+        Fpd3zWGz2PLvCKvFgo2PGC1ev5FxYPPYtKqTzaNvyypGj5lv1Tw+b5ILYIlqYLRJLErOyCxL
+        VUjNS85PycxLt1UKDXHTtVBSyMgvLrFVijY0NNIzNDDXMzIy0jM1irUyMlVSyEvMTbVVqtCF
+        6lVSKEouAKrNrSwGGpCTqgcV1ytOzUtxyMovBblXrzgxt7g0L10vOT9XSaEsMacUaISSfsI3
+        xowdm2czFuxVrLj/yLCB8YNUFyMnh4SAicTxRw8Zuxi5OIQEdjBKXD2ygBkkISTwiVGiezc3
+        RALIPr91BlsXIwdYx7eVchDxnYwSs5YeYYRoaGeS6PvLAWKzCWhLLG9axgxSLyIgKbH2fipI
+        PTNI/enWyUwgNcICDhKvvi8DW8YioCrx9u1edhCbV8BWYn7/dGaI6+QlZl76DhUXlDg58wkL
+        iM0MFG/eOpsZZKiEwDZ2iTOrLjFDHOcicX1iHESvsMSr41vYIWwpic/v9rJB1HczShz/+I4F
+        IjGDUWJJhwOEbS/R3NoM9iSzgKbE+l36EGFFiZ2/5zJC7OWTePe1hxUiLihx+lo31FpeiY42
+        IYiwisT3DztZYNZe+XGVCcL2kDi9cjUbJKhiJR4c/cQ0gVFhFpLPZiH5bBbCEQsYmVcxiqUW
+        FOempxYbFhgjR/AmRnDq1DLfwTjt7Qe9Q4xMHIyHGCU4mJVEeFW2rUsR4k1JrKxKLcqPLyrN
+        SS0+xJgMDOuJzFKiyfnA5J1XEm9oZmZpYWlkYmhsZmhIWNjE0sDEzMjEwtjS2ExJnPfWs94U
+        IYH0xJLU7NTUgtQimC1MHJxSDUzCRg9eHAjlf8uwqtxyYtGqr9plxyY2vhA4eepTVve+byJH
+        09gn/Dl64BJve5bRetemnfUJ+zWzfVoylpocub1N69h068uHtaYHMp5z2vJubmyC4/dbsX93
+        fs9NeLzs/OraLxOzzl1dte9q68Tvj9WX1km+/sEssinGfW19y7rrOw9fWLrI90/nilO/q8/r
+        SIu+mWglGFl8suioYJ5Pdpt0sNj5yDVJ6+S+Wa2+Pv0fa0Cc4qurap37xH9tDEna1rFoUfGp
+        B56rdC2DHFSjvmQdTnc+q9Ww5uzMcK0DydcLJrgzTpkk9+5kz+M519kXnlPeuWBpvdq8/OLJ
+        +xsiX/5hTjblD3/IIl//+9S2VrYpLUosxRmJhlrMRcWJALvTxCVUBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprJLMWRmVeSWpSXmKPExsWy7bCSvO5rro0pBht4LSZOW8pssWfvSRaL
+        y7vmsFls+XeE1WLBxkeMFq/fyDiweWxa1cnm0bdlFaPHzLdqHp83yQWwRHHZpKTmZJalFunb
+        JXBl7Ng8m7Fgr2LF/UeGDYwfpLoYOTgkBEwkvq2U62Lk4hAS2M4osXLGEVaIuJTEwX2aEKaw
+        xOHDxRAlrUwSZ1fPY+xi5ORgE9CWWN60jBmkRkRAUmLt/VSQMLPAXkaJK3eEQWxhAQeJV99B
+        Sjg5WARUJd6+3csOYvMK2ErM758OFpcQkJeYeek7VFxQ4uTMJywQc+QlmrfOZp7AyDcLSWoW
+        ktQCRqZVjKKpBcW56bnJBYZ6xYm5xaV56XrJ+bmbGMGhpxW0g3HZ+r96hxiZOBgPMUpwMCuJ
+        8KpsW5cixJuSWFmVWpQfX1Sak1p8iFGag0VJnFc5pzNFSCA9sSQ1OzW1ILUIJsvEwSnVwJRz
+        tsMzZMdbkd+Fs9j983mn3+Zdd8BlxvWjp3mXZdj/WztxdryQencY/3bWtGUeVvvUruluPfxS
+        uTlHuqC+8PWHgiNXqo+sTv8qpLR1f1JV06G5LrMqPVZf2qJY+6zc826ZtYjubh69Xe6vy//q
+        XBXgXFuuKtxQXtAdck3g4xnW/6b713CVSb0+/uzi39L450r1uw/cPPuUfWFoV/PbSzedrtkm
+        GxtlnDCdE3D9r0T0x42lbTq2ERw5pv/SQ3R+mclH8d03sj+Wdl7v68yHoptsecTlC+7ezj71
+        lm3Oc4HfybX/+jsvLorVKY5tLO24vv3c5nP72RVMRHaUX7v/IHr3BF/hC/Kf01NmdXSqlymx
+        FGckGmoxFxUnAgA7QcB6rAIAAA==
+X-CMS-MailID: 20230714084427epcas1p2ce3efb1524c8efae6038d1940149ae54
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+X-ArchiveUser: EV
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20230714084427epcas1p2ce3efb1524c8efae6038d1940149ae54
+References: <CGME20230714084427epcas1p2ce3efb1524c8efae6038d1940149ae54@epcas1p2.samsung.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -147,55 +114,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
->
->On 23-07-13 04:14:29, Pawel Laszczak wrote:
->> Gadget ACM while unloading module try to dequeue not queued usb
->> request which causes the kernel to crash.
->> Patch adds extra condition to check whether usb request is processed
->> by CDNSP driver.
->>
->
->Why ACM does that?
->
->> cc: <stable@vger.kernel.org>
->> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence
->> USBSSP DRD Driver")
->> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
->> ---
->>  drivers/usb/cdns3/cdnsp-gadget.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/drivers/usb/cdns3/cdnsp-gadget.c
->> b/drivers/usb/cdns3/cdnsp-gadget.c
->> index fff9ec9c391f..3a30c2af0c00 100644
->> --- a/drivers/usb/cdns3/cdnsp-gadget.c
->> +++ b/drivers/usb/cdns3/cdnsp-gadget.c
->> @@ -1125,6 +1125,9 @@ static int cdnsp_gadget_ep_dequeue(struct
->usb_ep *ep,
->>  	unsigned long flags;
->>  	int ret;
->>
->> +	if (request->status !=3D -EINPROGRESS)
->> +		return 0;
->> +
->
->Why not you use pending list which used at cdnsp_ep_enqueue to do this?
+There is a potential deadlock reported by syzbot as below:
 
-It's just simpler and faster way - no other reasons.=20
+======================================================
+WARNING: possible circular locking dependency detected
+6.4.0-next-20230707-syzkaller #0 Not tainted
+------------------------------------------------------
+syz-executor330/5073 is trying to acquire lock:
+ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: mmap_read_lock_killable include/linux/mmap_lock.h:151 [inline]
+ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: get_mmap_lock_carefully mm/memory.c:5293 [inline]
+ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: lock_mm_and_find_vma+0x369/0x510 mm/memory.c:5344
+but task is already holding lock:
+ffff888019f760e0 (&sbi->s_lock){+.+.}-{3:3}, at: exfat_iterate+0x117/0xb50 fs/exfat/dir.c:232
 
-Thank,
-Pawel
+which lock already depends on the new lock.
 
->
->
->>  	if (!pep->endpoint.desc) {
->>  		dev_err(pdev->dev,
->>  			"%s: can't dequeue to disabled endpoint\n",
->> --
->> 2.37.2
->>
->
->--
->
->Thanks,
->Peter Chen
+Chain exists of:
+  &mm->mmap_lock --> mapping.invalidate_lock#3 --> &sbi->s_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&sbi->s_lock);
+                               lock(mapping.invalidate_lock#3);
+                               lock(&sbi->s_lock);
+  rlock(&mm->mmap_lock);
+
+Let's try to avoid above potential deadlock condition by moving dir_emit*()
+out of sbi->s_lock coverage.
+
+Fixes: ca06197382bd ("exfat: add directory operations")
+Cc: stable@vger.kernel.org #v5.7+
+Reported-by: syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/lkml/00000000000078ee7e060066270b@google.com/T/#u
+Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+---
+ fs/exfat/dir.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
+
+diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
+index 957574180a5e..4e3743341ce7 100644
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -214,7 +214,10 @@ static void exfat_free_namebuf(struct exfat_dentry_namebuf *nb)
+ 	exfat_init_namebuf(nb);
+ }
+ 
+-/* skip iterating emit_dots when dir is empty */
++/*
++ * Before calling dir_emit*(), sbi->s_lock should be released
++ * because page fault can occur in dir_emit*().
++ */
+ #define ITER_POS_FILLED_DOTS    (2)
+ static int exfat_iterate(struct file *file, struct dir_context *ctx)
+ {
+@@ -229,11 +232,10 @@ static int exfat_iterate(struct file *file, struct dir_context *ctx)
+ 	int err = 0, fake_offset = 0;
+ 
+ 	exfat_init_namebuf(nb);
+-	mutex_lock(&EXFAT_SB(sb)->s_lock);
+ 
+ 	cpos = ctx->pos;
+ 	if (!dir_emit_dots(file, ctx))
+-		goto unlock;
++		goto out;
+ 
+ 	if (ctx->pos == ITER_POS_FILLED_DOTS) {
+ 		cpos = 0;
+@@ -245,16 +247,18 @@ static int exfat_iterate(struct file *file, struct dir_context *ctx)
+ 	/* name buffer should be allocated before use */
+ 	err = exfat_alloc_namebuf(nb);
+ 	if (err)
+-		goto unlock;
++		goto out;
+ get_new:
++	mutex_lock(&EXFAT_SB(sb)->s_lock);
++
+ 	if (ei->flags == ALLOC_NO_FAT_CHAIN && cpos >= i_size_read(inode))
+ 		goto end_of_dir;
+ 
+ 	err = exfat_readdir(inode, &cpos, &de);
+ 	if (err) {
+ 		/*
+-		 * At least we tried to read a sector.  Move cpos to next sector
+-		 * position (should be aligned).
++		 * At least we tried to read a sector.
++		 * Move cpos to next sector position (should be aligned).
+ 		 */
+ 		if (err == -EIO) {
+ 			cpos += 1 << (sb->s_blocksize_bits);
+@@ -277,16 +281,10 @@ static int exfat_iterate(struct file *file, struct dir_context *ctx)
+ 		inum = iunique(sb, EXFAT_ROOT_INO);
+ 	}
+ 
+-	/*
+-	 * Before calling dir_emit(), sb_lock should be released.
+-	 * Because page fault can occur in dir_emit() when the size
+-	 * of buffer given from user is larger than one page size.
+-	 */
+ 	mutex_unlock(&EXFAT_SB(sb)->s_lock);
+ 	if (!dir_emit(ctx, nb->lfn, strlen(nb->lfn), inum,
+ 			(de.attr & ATTR_SUBDIR) ? DT_DIR : DT_REG))
+-		goto out_unlocked;
+-	mutex_lock(&EXFAT_SB(sb)->s_lock);
++		goto out;
+ 	ctx->pos = cpos;
+ 	goto get_new;
+ 
+@@ -294,9 +292,8 @@ static int exfat_iterate(struct file *file, struct dir_context *ctx)
+ 	if (!cpos && fake_offset)
+ 		cpos = ITER_POS_FILLED_DOTS;
+ 	ctx->pos = cpos;
+-unlock:
+ 	mutex_unlock(&EXFAT_SB(sb)->s_lock);
+-out_unlocked:
++out:
+ 	/*
+ 	 * To improve performance, free namebuf after unlock sb_lock.
+ 	 * If namebuf is not allocated, this function do nothing
+-- 
+2.25.1
+
