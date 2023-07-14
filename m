@@ -2,67 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 147C8753ADD
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 14:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D82C8753AF1
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 14:29:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235834AbjGNM0I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 08:26:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36002 "EHLO
+        id S235322AbjGNM3E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 08:29:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235887AbjGNMZh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 08:25:37 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B19743C1B;
-        Fri, 14 Jul 2023 05:25:06 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-98de21518fbso251154866b.0;
-        Fri, 14 Jul 2023 05:25:06 -0700 (PDT)
+        with ESMTP id S235324AbjGNM3C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 08:29:02 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A64DA3A88;
+        Fri, 14 Jul 2023 05:28:29 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-3fb4146e8deso18227735e9.0;
+        Fri, 14 Jul 2023 05:28:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689337492; x=1691929492;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vkPYI3Vjys6HUZ7g47wuaPMnyVLdDQufL5+zqucCKZc=;
-        b=AzmkvcnjqYrirYQYyNP9UwZF5wOxd8pOG9kLaNfd+JwBNM5D3VmWa7s4BPIzzvr+vy
-         O9Uu1GL0Ak1ZG/K8oujzVXP4vXDm8cqXZOq+z8GpgNWVELyxY8o2v/x4J4nbkjuYSrzY
-         b7xVin8dXKYhqulfRyIHJQXUURZCW0Wz55EjWfwxfzhTUZsNjhccMXp6s8K4TVu4NpLm
-         qwGeO7S4rKUiUl9waTXoPhS3vi5DTkaubrSuwqR1J+5ms2ecAocYVKmmU/0d45UAL5E3
-         t0S3MX0mEl1nXMXKnec8oi6YokGZqT90K+Q4QTjl+WIYKTNqJ/GbbLxHODir1tkHCJDb
-         y9Cg==
+        d=gmail.com; s=20221208; t=1689337696; x=1691929696;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HsH5BhWMqpapCjo+dPiG/QjqD9vBy5DSGQneLw018qY=;
+        b=qi2dMtc6j/ohACXD06K/c1LyKQ4IDpYDzEbLxVCoDfoHcg1voNg31x6vxcDuDnicNG
+         3bXK8AXZ5GlnirbSD6Zz4Q+5DcaZZNszReREu2dOvt8xsWFXsHSn0B8JARE5EH4LmlFj
+         FoxQfoyVUbbsjH5mo92KoHKwfuYPpLWTZqYmPuDsCevPkIi1X2nDPl5zxTzzNSlC5wi2
+         hRZb9I0LzNnDxaACJ/375L5hv56vBLeHpmIXfBZr7X9e40zDNM4tcaopawvzzZ6IT40b
+         JpyfnqqKShsS9l+inoIQcGN4uaM0b20g0u/0zbMqSO0ycGKs396DAglxjXbwVDqLyFyP
+         HSzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689337492; x=1691929492;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vkPYI3Vjys6HUZ7g47wuaPMnyVLdDQufL5+zqucCKZc=;
-        b=Q6ihlVx9YgJpfwVgHXAQyuin2wcpHtruL211s/+QitVHWmk2BA2MlwZVQo0GTHpUF2
-         QsxhMoZm4VOL8G5IPf/ehJJWIGP1Cd0whVmK2Gn47OOe1ODAi+IiVGhTdhfp5XC2RSoD
-         N0E91kMzNsnp4SFJIqXOwhdj4nILD2WbR0CTlD4nFMlxPaY0kBhqMtCJVs3ZDRtotLjp
-         tX+8pDSROJ7w8Nvj75nKj9oufVDzAoPWgdarzQyDZkJA+U6jRU4OqdKBhu7CWsATVrTN
-         B8USS+Lh7z1LM6tR2WJyMsXveZ3gol83U4C4saPiTZP++V6xWXstsvVx47F3k4SvDkLI
-         YqGg==
-X-Gm-Message-State: ABy/qLZU8DSm+ScUgXB3pc6xSZqu9cyT9m7Qv+SmNj360I2V1O0eK+ne
-        eicwztOyh+hgfCPqz9/WtDY=
-X-Google-Smtp-Source: APBJJlGP00fXjQi9ojrEp9x2syWFzQt0DOIFe1J/unjIM3SHAChHfvWXet0XqhTd5Mg4zVQ6vhoLgA==
-X-Received: by 2002:a17:906:a897:b0:982:1936:ad27 with SMTP id ha23-20020a170906a89700b009821936ad27mr4178686ejb.11.1689337492399;
-        Fri, 14 Jul 2023 05:24:52 -0700 (PDT)
-Received: from localhost.localdomain (snat-11.cgn.sat-an.net. [176.222.226.11])
-        by smtp.gmail.com with ESMTPSA id h19-20020a170906719300b00993cc1242d4sm5314054ejk.151.2023.07.14.05.24.51
+        d=1e100.net; s=20221208; t=1689337696; x=1691929696;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HsH5BhWMqpapCjo+dPiG/QjqD9vBy5DSGQneLw018qY=;
+        b=IQQcAQApTlPG+wgTwGNAA29qkEnBd/A9fmK2gnUd1lS8OQZh0s8iFFqttFyCd2hqcG
+         /gkViyFdE+15AXDbbRmPMeb0Gyyat//xrI+CHHca02BbM8i6XRw+Bz9DJjA+hcGbTIHg
+         SjutQOMwvKh5EqOTsVT5gwhcSq9VhGYxoprdmQGEwDBkZOx+a7KmRNUDINpi0/OUtlyt
+         tA52VXRy2Mq0LhKjKwmtIEy33nv7VPT/HKXU5tGnC+pBmzB4JEEdUX2/lLQlTkEuQn4C
+         5ok+7JD3IDdotIcKErw8dKlyrvJ+8whKIa90hmea9RpFiLc1mhz+eR3Y/vW9/LKdch2X
+         7T0w==
+X-Gm-Message-State: ABy/qLZNZHwphGBgJYBOIhxHDuVRmKCgQhhBpmHf8+PBYTfxQzmj5dsn
+        DwcNQc2R6dYWoVSUmAvzc4DBSa1CYtJinq/m
+X-Google-Smtp-Source: APBJJlHJQywVsEdNGq398BgzB8IbvwaHfHsJOA95oLJmnl5vEn113aG8tCQ3cIGcFAbTT0NKUMDu8w==
+X-Received: by 2002:a05:600c:2353:b0:3fc:8a:7c14 with SMTP id 19-20020a05600c235300b003fc008a7c14mr4717710wmq.18.1689337695920;
+        Fri, 14 Jul 2023 05:28:15 -0700 (PDT)
+Received: from [10.0.0.98] (snat-11.cgn.sat-an.net. [176.222.226.11])
+        by smtp.gmail.com with ESMTPSA id n22-20020a7bc5d6000000b003fa968e9c27sm1324977wmk.9.2023.07.14.05.28.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jul 2023 05:24:52 -0700 (PDT)
-From:   Jakub Vanek <linuxtardis@gmail.com>
-To:     Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jakub Vanek <linuxtardis@gmail.com>, stable@vger.kernel.org,
+        Fri, 14 Jul 2023 05:28:15 -0700 (PDT)
+Message-ID: <c9ab901161e8c1cc552e8486a847296ce3662be2.camel@gmail.com>
+Subject: Re: [PATCH v2] Revert "usb: dwc3: core: Enable AutoRetry feature in
+ the controller"
+From:   Jakub =?iso-8859-2?Q?Van=ECk?= <linuxtardis@gmail.com>
+To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
         Mauro Ribeiro <mauro.ribeiro@hardkernel.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v3] Revert "usb: dwc3: core: Enable AutoRetry feature in the controller"
-Date:   Fri, 14 Jul 2023 14:24:19 +0200
-Message-Id: <20230714122419.27741-1-linuxtardis@gmail.com>
-X-Mailer: git-send-email 2.25.1
+Date:   Fri, 14 Jul 2023 14:28:15 +0200
+In-Reply-To: <20230714003032.qcl7jnnm2ou34ucy@synopsys.com>
+References: <20230712224037.24948-1-linuxtardis@gmail.com>
+         <20230712225518.2smu7wse6djc7l5o@synopsys.com>
+         <aad3936c41c6520f6863a859eb4c4cdb5fdc0549.camel@gmail.com>
+         <20230714003032.qcl7jnnm2ou34ucy@synopsys.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,100 +80,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This reverts commit b138e23d3dff90c0494925b4c1874227b81bddf7.
+Hi Thinh,
 
-AutoRetry has been found to sometimes cause controller freezes when
-communicating with buggy USB devices.
+On Fri, 2023-07-14 at 00:30 +0000, Thinh Nguyen wrote:
+> On Thu, Jul 13, 2023, Jakub Van=C4=9Bk wrote:
+> > Hi Thinh,
+> >=20
+> > On Wed, 2023-07-12 at 22:55 +0000, Thinh Nguyen wrote:
+> > > On Thu, Jul 13, 2023, Jakub Vanek wrote:
+> > > > This reverts commit b138e23d3dff90c0494925b4c1874227b81bddf7.
+> > > >=20
+> > > > AutoRetry has been found to cause some issues. This feature
+> > > > allows
+> > > > the controller in host mode (further referred to as the xHC) to
+> > > > send
+> > > > non-terminating/burst retry ACKs (Retry=3D1 and Nump!=3D0) instead
+> > > > of
+> > > > terminating retry ACKs (Retry=3D1 and Nump=3D0) to devices when
+> > > > a transaction error occurs.
+> > > >=20
+> > > > Unfortunately, some USB devices fail to retry transactions when
+> > > > the xHC sends them a burst retry ACK. When this happens, the
+> > > > xHC
+> > >=20
+> > > For some clarity: if the device continues to respond with CRC
+> > > error,
+> > > the xHC will not complete endpoint related commands while it
+> > > keeps
+> > > autoretry.
+> >=20
+> > Acknowledged. Do you think it it would be better to respin this
+> > patch
+> > once more to include this in the changelog?
+> >=20
+>=20
+> It'll be better to provide more detail. However, I'm fine whether you
+> want to send v3 with this or not.
 
-This controller feature allows the controller in host mode to send
-non-terminating/burst retry ACKs instead of terminating retry ACKs
-to devices when a transaction error (CRC error or overflow) occurs.
+The urge to scratch the itch was too strong :D I have sent a v3 in
+https://lore.kernel.org/linux-usb/20230714122419.27741-1-linuxtardis@gmail.=
+com/
+with an updated changelog.
 
-Unfortunately, if the USB device continues to respond with a CRC error,
-the controller will not complete endpoint-related commands while it
-keeps trying to auto-retry. [3] The xHCI driver will notice this once
-it tries to abort the transfer using a Stop Endpoint command and
-does not receive a completion in time. [1]
-This situation is reported to dmesg:
+>=20
+> Thanks,
+> Thinh
 
-[sda] tag#29 uas_eh_abort_handler 0 uas-tag 1 inflight: CMD IN
-[sda] tag#29 CDB: opcode=0x28 28 00 00 69 42 80 00 00 48 00
-xhci-hcd: xHCI host not responding to stop endpoint command
-xhci-hcd: xHCI host controller not responding, assume dead
-xhci-hcd: HC died; cleaning up
-
-Some users observed this problem on an Odroid HC2 with the JMS578
-USB3-to-SATA bridge. The issue can be triggered by starting
-a read-heavy workload on an attached SSD. After a while, the host
-controller would die and the SSD would disappear from the system. [1]
-
-Further analysis by Synopsys determined that controller revisions
-other than the one in Odroid HC2 are also affected by this.
-The recommended solution was to disable AutoRetry altogether.
-This change does not have a noticeable performance impact. [2]
-
-Revert the enablement commit. This will keep the AutoRetry bit in
-the default state configured during SoC design [2].
-
-Fixes: b138e23d3dff ("usb: dwc3: core: Enable AutoRetry feature in the controller")
-Link: https://lore.kernel.org/r/a21f34c04632d250cd0a78c7c6f4a1c9c7a43142.camel@gmail.com/ [1]
-Link: https://lore.kernel.org/r/20230711214834.kyr6ulync32d4ktk@synopsys.com/ [2]
-Link: https://lore.kernel.org/r/20230712225518.2smu7wse6djc7l5o@synopsys.com/ [3]
-Cc: stable@vger.kernel.org
-Cc: Mauro Ribeiro <mauro.ribeiro@hardkernel.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Jakub Vanek <linuxtardis@gmail.com>
----
-V2 -> V3: Include more findings in changelog
-V1 -> V2: Updated to disable AutoRetry everywhere based on Synopsys feedback
-          Reworded the changelog a bit to make it clearer
-
- drivers/usb/dwc3/core.c | 16 ----------------
- drivers/usb/dwc3/core.h |  3 ---
- 2 files changed, 19 deletions(-)
-
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index f6689b731718..a4e079d37566 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1209,22 +1209,6 @@ static int dwc3_core_init(struct dwc3 *dwc)
- 		dwc3_writel(dwc->regs, DWC3_GUCTL1, reg);
- 	}
- 
--	if (dwc->dr_mode == USB_DR_MODE_HOST ||
--	    dwc->dr_mode == USB_DR_MODE_OTG) {
--		reg = dwc3_readl(dwc->regs, DWC3_GUCTL);
--
--		/*
--		 * Enable Auto retry Feature to make the controller operating in
--		 * Host mode on seeing transaction errors(CRC errors or internal
--		 * overrun scenerios) on IN transfers to reply to the device
--		 * with a non-terminating retry ACK (i.e, an ACK transcation
--		 * packet with Retry=1 & Nump != 0)
--		 */
--		reg |= DWC3_GUCTL_HSTINAUTORETRY;
--
--		dwc3_writel(dwc->regs, DWC3_GUCTL, reg);
--	}
--
- 	/*
- 	 * Must config both number of packets and max burst settings to enable
- 	 * RX and/or TX threshold.
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index 8b1295e4dcdd..a69ac67d89fe 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -256,9 +256,6 @@
- #define DWC3_GCTL_GBLHIBERNATIONEN	BIT(1)
- #define DWC3_GCTL_DSBLCLKGTNG		BIT(0)
- 
--/* Global User Control Register */
--#define DWC3_GUCTL_HSTINAUTORETRY	BIT(14)
--
- /* Global User Control 1 Register */
- #define DWC3_GUCTL1_DEV_DECOUPLE_L1L2_EVT	BIT(31)
- #define DWC3_GUCTL1_TX_IPGAP_LINECHECK_DIS	BIT(28)
--- 
-2.25.1
-
+Thanks,
+Jakub
