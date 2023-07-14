@@ -2,198 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 569D0753C3E
-	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 15:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D0DF753C57
+	for <lists+stable@lfdr.de>; Fri, 14 Jul 2023 15:59:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235303AbjGNNzT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 09:55:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50654 "EHLO
+        id S235939AbjGNN7N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 09:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234693AbjGNNzS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 09:55:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A8AF3599
-        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 06:54:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689342861;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7PK6HaFz82C/bdWyaRva/u+XDHKqnF71p3ds0rNqF6w=;
-        b=AoE5Mhe553Be/91VfXB/btjr7BSLC5rmDcjFZyA/HPukatOJh2snjeqDreMVEASFXJRL8P
-        uVFztbqz0dTwgd3mecr3M7r0xowh/P9LbFMByAAZr4u4AglofzTGcXPVU0wrmn0vVE1NZe
-        uhV2AUFo1M3FYo+eT8Iedch5R6LJFZE=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-5LdpiV98Md6UsRpKalQD4Q-1; Fri, 14 Jul 2023 09:54:19 -0400
-X-MC-Unique: 5LdpiV98Md6UsRpKalQD4Q-1
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-55c1c7f872bso875726a12.1
-        for <stable@vger.kernel.org>; Fri, 14 Jul 2023 06:54:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689342858; x=1691934858;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7PK6HaFz82C/bdWyaRva/u+XDHKqnF71p3ds0rNqF6w=;
-        b=lRAMV0aqCHod/55AdiGBEmvI4CYPKnG81W5ueTuA1UVc54QY2l1juIFDWqor1AXcXV
-         sSYMbKCglt0X6bp7TJsjfwAmq6x/O6yVpo0YRRxHnhhdX/m+co3/NHamPkd6MwB/joJA
-         U7dvMHoZvNEFHqtUAsBAidnBM4husXbl4wImm5/0x4NZ5uVR9mXacKhgeGS9Nu+aqQmj
-         sma2Pbw1vr6SXAqH+l4njPSCuxsHFWuur0gDJiAkUtfYdqOH5x4NKM7ovrUTLz1id10q
-         k0WeeY14SdEyxJGn8qV2SeO0YE52icWM7A4RfaUniJPY8/2XAsXGKUUaKU8BTPwpUwXK
-         6UTw==
-X-Gm-Message-State: ABy/qLaSJKz2zkG8iveu3tS4uoMnQKS4IjXi4Yk9wbwIbfsGvQMNYdVF
-        fwbTyc9QHaIMVikgMwkJ1U6fP9EW4AtNmR/pT77Dw+p3RZtGntWx7COV4JH8C+u6w631PHjfSbz
-        s8eu13lBE11D2ERNnl8U1+Y0Bhb5EJi0H
-X-Received: by 2002:a05:6a20:2588:b0:12e:49f3:88d4 with SMTP id k8-20020a056a20258800b0012e49f388d4mr4368006pzd.1.1689342858636;
-        Fri, 14 Jul 2023 06:54:18 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHLQqVnt/mSH9AqHCVbmDj2KJ8TP2QEeDyFhtvzbrRfZYYONJeztval1fWTb8L/71DlqSxGqJw0P7geoPeWBIU=
-X-Received: by 2002:a05:6a20:2588:b0:12e:49f3:88d4 with SMTP id
- k8-20020a056a20258800b0012e49f388d4mr4367984pzd.1.1689342858224; Fri, 14 Jul
- 2023 06:54:18 -0700 (PDT)
+        with ESMTP id S235900AbjGNN7L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 09:59:11 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91EE426B5;
+        Fri, 14 Jul 2023 06:59:06 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36EBrE9l028598;
+        Fri, 14 Jul 2023 13:58:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=RKiLvVyTbirgw09WubHCuDGi667YE5Ck8Aegz+gLNbk=;
+ b=Al2Dhd4xiOamIye89agaIWhnNhc/BlrNT7N3XJa4RqaMarZvbamrlnv52XUB6S8oAOfB
+ 0RKpRZRbDKII9zSuqE4UpBU80qiieWFSb0qk75O/ihlKjM7UXjlPRDKbd0whSI5qleSK
+ 1DaKLX4r2hAxO6MfHJVm+GJ2HlRg1+/EhPck6s/Ft4rP+cxzDXSm/01eo3taVy42tjSi
+ Y2/tSKc82lZOallt1HERDil5XoOd2+6uGMYjpDg70DlJRKWYhfaBQ+9Z0ZSOVRvQ7sE5
+ YQ1Qu2dYhdo5NrNC/NixI0viBZiB6P42+wsocoujQD3bld14zVdt+/Qjo9lwDdk5oruY 9A== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rtpuksum6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jul 2023 13:58:37 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36EDwaIP008960
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jul 2023 13:58:36 GMT
+Received: from [10.216.8.198] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Fri, 14 Jul
+ 2023 06:58:29 -0700
+Message-ID: <99084f51-f156-664b-cd69-51bf224674ac@quicinc.com>
+Date:   Fri, 14 Jul 2023 19:28:24 +0530
 MIME-Version: 1.0
-References: <20230713144029.3342637-1-aahringo@redhat.com>
-In-Reply-To: <20230713144029.3342637-1-aahringo@redhat.com>
-From:   Andreas Gruenbacher <agruenba@redhat.com>
-Date:   Fri, 14 Jul 2023 15:54:06 +0200
-Message-ID: <CAHc6FU542V6T8F8W-npN24zVJih5iRckGHqHLPrVHLhLqWBOgA@mail.gmail.com>
-Subject: Re: [PATCH v6.5-rc1 1/2] fs: dlm: introduce DLM_PLOCK_FL_NO_REPLY flag
-To:     Alexander Aring <aahringo@redhat.com>
-Cc:     teigland@redhat.com, cluster-devel@redhat.com,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH V2] firmware: qcom_scm: use the SCM_CONVENTION based on
+ ARM / ARM64
+From:   Kathiravan T <quic_kathirav@quicinc.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Elliot Berman <eberman@codeaurora.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <quic_eberman@quicinc.com>, <stable@vger.kernel.org>
+References: <20230607045345.25049-1-quic_kathirav@quicinc.com>
+ <2f915104-952f-3e3d-b3d5-4c0400b4f331@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <2f915104-952f-3e3d-b3d5-4c0400b4f331@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: fzRa-E1oNp2sYMYiiNvpk4tNU_tm9ao7
+X-Proofpoint-GUID: fzRa-E1oNp2sYMYiiNvpk4tNU_tm9ao7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-14_06,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ adultscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1011 bulkscore=0
+ phishscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2307140126
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 13, 2023 at 4:40=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
-m> wrote:
-> This patch introduces a new flag DLM_PLOCK_FL_NO_REPLY in case an dlm
-> plock operation should not send a reply back. Currently this is kind of
-> being handled in DLM_PLOCK_FL_CLOSE, but DLM_PLOCK_FL_CLOSE has more
-> meanings that it will remove all waiters for a specific nodeid/owner
-> values in by doing a unlock operation. In case of an error in dlm user
-> space software e.g. dlm_controld we get an reply with an error back.
-> This cannot be matched because there is no op to match in recv_list. We
-> filter now on DLM_PLOCK_FL_NO_REPLY in case we had an error back as
-> reply. In newer dlm_controld version it will never send a result back
-> when DLM_PLOCK_FL_NO_REPLY is set. This filter is a workaround to handle
-> older dlm_controld versions.
 
-I don't think this makes sense. If dlm_controld understands a
-particular request, it already knows whether or not that request
-should receive a reply. On the other hand, if dlm_controld doesn't
-understand a particular request, it should communicate that fact back
-to the kernel so that the kernel will know. The kernel knows which
-kinds of requests should and shouldn't receive replies, so when it is
-sent a reply it doesn't expect, it knows that dlm_controld didn't
-understand the request and is either outdated or plain broken. The
-kernel doesn't need to pipe a flag through dlm_controld for figuring
-that out.
+On 6/20/2023 11:43 AM, Kathiravan T wrote:
+>
+> On 6/7/2023 10:23 AM, Kathiravan T wrote:
+>> During SCM probe, to identify the SCM convention, scm call is made with
+>> SMC_CONVENTION_ARM_64 followed by SMC_CONVENTION_ARM_32. Based on the
+>> result what convention to be used is decided.
+>>
+>> IPQ chipsets starting from IPQ807x, supports both 32bit and 64bit kernel
+>> variants, however TZ firmware runs in 64bit mode. When running on 32bit
+>> kernel, scm call is made with SMC_CONVENTION_ARM_64 is causing the
+>> system crash, due to the difference in the register sets between ARM and
+>> AARCH64, which is accessed by the TZ.
+>>
+>> To avoid this, use SMC_CONVENTION_ARM_64 only on ARM64 builds.
+>
+>
+> Gentle Reminder...
 
-Thanks,
-Andreas
 
-> Fixes: 901025d2f319 ("dlm: make plock operation killable")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Alexander Aring <aahringo@redhat.com>
-> ---
->  fs/dlm/plock.c                 | 23 +++++++++++++++++++----
->  include/uapi/linux/dlm_plock.h |  1 +
->  2 files changed, 20 insertions(+), 4 deletions(-)
->
-> diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-> index 70a4752ed913..7fe9f4b922d3 100644
-> --- a/fs/dlm/plock.c
-> +++ b/fs/dlm/plock.c
-> @@ -96,7 +96,7 @@ static void do_unlock_close(const struct dlm_plock_info=
- *info)
->         op->info.end            =3D OFFSET_MAX;
->         op->info.owner          =3D info->owner;
->
-> -       op->info.flags |=3D DLM_PLOCK_FL_CLOSE;
-> +       op->info.flags |=3D (DLM_PLOCK_FL_CLOSE | DLM_PLOCK_FL_NO_REPLY);
->         send_op(op);
->  }
->
-> @@ -293,7 +293,7 @@ int dlm_posix_unlock(dlm_lockspace_t *lockspace, u64 =
-number, struct file *file,
->                 op->info.owner  =3D (__u64)(long) fl->fl_owner;
->
->         if (fl->fl_flags & FL_CLOSE) {
-> -               op->info.flags |=3D DLM_PLOCK_FL_CLOSE;
-> +               op->info.flags |=3D (DLM_PLOCK_FL_CLOSE | DLM_PLOCK_FL_NO=
-_REPLY);
->                 send_op(op);
->                 rv =3D 0;
->                 goto out;
-> @@ -392,7 +392,7 @@ static ssize_t dev_read(struct file *file, char __use=
-r *u, size_t count,
->         spin_lock(&ops_lock);
->         if (!list_empty(&send_list)) {
->                 op =3D list_first_entry(&send_list, struct plock_op, list=
-);
-> -               if (op->info.flags & DLM_PLOCK_FL_CLOSE)
-> +               if (op->info.flags & DLM_PLOCK_FL_NO_REPLY)
->                         list_del(&op->list);
->                 else
->                         list_move_tail(&op->list, &recv_list);
-> @@ -407,7 +407,7 @@ static ssize_t dev_read(struct file *file, char __use=
-r *u, size_t count,
->            that were generated by the vfs cleaning up for a close
->            (the process did not make an unlock call). */
->
-> -       if (op->info.flags & DLM_PLOCK_FL_CLOSE)
-> +       if (op->info.flags & DLM_PLOCK_FL_NO_REPLY)
->                 dlm_release_plock_op(op);
->
->         if (copy_to_user(u, &info, sizeof(info)))
-> @@ -433,6 +433,21 @@ static ssize_t dev_write(struct file *file, const ch=
-ar __user *u, size_t count,
->         if (check_version(&info))
->                 return -EINVAL;
->
-> +       /* Some old dlm user space software will send replies back,
-> +        * even if DLM_PLOCK_FL_NO_REPLY is set (because the flag is
-> +        * new) e.g. if a error occur. We can't match them in recv_list
-> +        * because they were never be part of it. We filter it here,
-> +        * new dlm user space software will filter it in user space.
-> +        *
-> +        * In future this handling can be removed.
-> +        */
-> +       if (info.flags & DLM_PLOCK_FL_NO_REPLY) {
-> +               pr_info("Received unexpected reply from op %d, "
-> +                       "please update DLM user space software!\n",
-> +                       info.optype);
-> +               return count;
-> +       }
-> +
->         /*
->          * The results for waiting ops (SETLKW) can be returned in any
->          * order, so match all fields to find the op.  The results for
-> diff --git a/include/uapi/linux/dlm_plock.h b/include/uapi/linux/dlm_ploc=
-k.h
-> index 63b6c1fd9169..8dfa272c929a 100644
-> --- a/include/uapi/linux/dlm_plock.h
-> +++ b/include/uapi/linux/dlm_plock.h
-> @@ -25,6 +25,7 @@ enum {
->  };
->
->  #define DLM_PLOCK_FL_CLOSE 1
-> +#define DLM_PLOCK_FL_NO_REPLY 2
->
->  struct dlm_plock_info {
->         __u32 version[3];
-> --
-> 2.31.1
->
+Bjorn,
 
+Can you share your thoughts on this patch?
+
+
+Thanks, Kathiravan T.
+
+
+>
+>
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC 
+>> and legacy conventions")
+>> Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+>> ---
+>> Changes in V2:
+>>     - Added the Fixes tag and cc'd stable mailing list
+>>
+>>   drivers/firmware/qcom_scm.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+>> index fde33acd46b7..db6754db48a0 100644
+>> --- a/drivers/firmware/qcom_scm.c
+>> +++ b/drivers/firmware/qcom_scm.c
+>> @@ -171,6 +171,7 @@ static enum qcom_scm_convention 
+>> __get_convention(void)
+>>       if (likely(qcom_scm_convention != SMC_CONVENTION_UNKNOWN))
+>>           return qcom_scm_convention;
+>>   +#if IS_ENABLED(CONFIG_ARM64)
+>>       /*
+>>        * Device isn't required as there is only one argument - no device
+>>        * needed to dma_map_single to secure world
+>> @@ -191,6 +192,7 @@ static enum qcom_scm_convention 
+>> __get_convention(void)
+>>           forced = true;
+>>           goto found;
+>>       }
+>> +#endif
+>>         probed_convention = SMC_CONVENTION_ARM_32;
+>>       ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
