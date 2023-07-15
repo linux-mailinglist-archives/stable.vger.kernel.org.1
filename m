@@ -2,83 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 889EF7548E1
-	for <lists+stable@lfdr.de>; Sat, 15 Jul 2023 15:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0A3C754944
+	for <lists+stable@lfdr.de>; Sat, 15 Jul 2023 16:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229665AbjGONsC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 15 Jul 2023 09:48:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35788 "EHLO
+        id S229977AbjGOOTl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 15 Jul 2023 10:19:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbjGONsB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 15 Jul 2023 09:48:01 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC00110CE
-        for <stable@vger.kernel.org>; Sat, 15 Jul 2023 06:48:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689428881; x=1720964881;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=h/HgrvF3zglUJAjb3DAYgi/AlNNTXbQJ1hTrRY4kC6c=;
-  b=iCQSLMbLxNJiXhbJNj7w5+xFn7e68e4es36T7w6P8yXY31upjgoGKLBH
-   lj4yn2IT6+APJtx4MDHomKH7zZSUGQFpgKZf0I0KFYJttdSlAB9Iv995x
-   poSWREffHUuxulpwXhAmbG1VIbuaZBe1wh5qtEKrtDr8EdYPDaRUAZEdr
-   gON/OPCMf2ovvMMsVRVmRi559ja0X39QJeUV1xPKmZlrNN1Uy9FdUBqzi
-   PAhV/Op/mFrDu52yW1ZUxz4XVnNqgssnnGHJNsxWufu2YReYPtcSQW28i
-   DNIu8nuglrHBbpGFmL2rJB+NqFSujgvzEBDqKWq5rO+rwH15TUSGFOQtz
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10772"; a="368304467"
-X-IronPort-AV: E=Sophos;i="6.01,208,1684825200"; 
-   d="scan'208";a="368304467"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2023 06:48:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10772"; a="969325972"
-X-IronPort-AV: E=Sophos;i="6.01,208,1684825200"; 
-   d="scan'208";a="969325972"
-Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 15 Jul 2023 06:47:59 -0700
-Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qKfcs-0008BJ-28;
-        Sat, 15 Jul 2023 13:47:58 +0000
-Date:   Sat, 15 Jul 2023 21:46:58 +0800
-From:   kernel test robot <lkp@intel.com>
+        with ESMTP id S229919AbjGOOTk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 15 Jul 2023 10:19:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC1B1BDA;
+        Sat, 15 Jul 2023 07:19:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E4AF60A26;
+        Sat, 15 Jul 2023 14:19:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5476CC433C8;
+        Sat, 15 Jul 2023 14:19:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689430777;
+        bh=+Zc6MkX4Je1o4oRfyxtSq9WhWkGFgbpOiD6Q71QeBYI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Zy3rfFDF9/RcEDqv/V++Mi0WYdWrN0WzDeIRaOAJtqNziHBGyxmQCrOpfIJF193ZZ
+         SKIEF2VT9uOU3GbnWIiyD2NLSdjwASvzp6befCgGeHVVK+/oBns/kK6RspFIzyOxZ5
+         BK1HNxTZ1+H1pH/VVp3C7+hLEHvSf9B2R5sKe7uM=
+Date:   Sat, 15 Jul 2023 16:19:33 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
 To:     guoren@kernel.org
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/2] riscv: stack: Fixup independent irq stack for
+Cc:     palmer@rivosinc.com, paul.walmsley@sifive.com, falcon@tinylab.org,
+        bjorn@kernel.org, conor.dooley@microchip.com,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
+        Guo Ren <guoren@linux.alibaba.com>
+Subject: Re: [PATCH 2/2] riscv: stack: Fixup independent softirq stack for
  CONFIG_FRAME_POINTER=n
-Message-ID: <ZLKjUh2YTdjsgK2M@a1daa7802ad8>
+Message-ID: <2023071528-traverse-parting-14b2@gregkh>
+References: <20230715134552.3437933-1-guoren@kernel.org>
+ <20230715134552.3437933-3-guoren@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230715134552.3437933-2-guoren@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230715134552.3437933-3-guoren@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Sat, Jul 15, 2023 at 09:45:52AM -0400, guoren@kernel.org wrote:
+> From: Guo Ren <guoren@linux.alibaba.com>
+> 
+> The independent softirq stack uses s0 to save & restore sp, but s0 would
+> be corrupted when CONFIG_FRAME_POINTER=n. So add s0 in the clobber list
+> to fix the problem.
+> 
+> Fixes: dd69d07a5a6c ("riscv: stack: Support HAVE_SOFTIRQ_ON_OWN_STACK")
+> Reported-by: Zhangjin Wu <falcon@tinylab.org>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> ---
+>  arch/riscv/kernel/irq.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/riscv/kernel/irq.c b/arch/riscv/kernel/irq.c
+> index d0577cc6a081..0b58720109db 100644
+> --- a/arch/riscv/kernel/irq.c
+> +++ b/arch/riscv/kernel/irq.c
+> @@ -83,7 +83,7 @@ void do_softirq_own_stack(void)
+>  		:
+>  		: [sp] "r" (sp)
+>  		: "a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7",
+> -		  "t0", "t1", "t2", "t3", "t4", "t5", "t6",
+> +		  "t0", "t1", "t2", "t3", "t4", "t5", "t6", "s0",
+>  		  "memory");
+>  	} else
+>  #endif
+> -- 
+> 2.36.1
+> 
 
-Thanks for your patch.
+<formletter>
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH 1/2] riscv: stack: Fixup independent irq stack for CONFIG_FRAME_POINTER=n
-Link: https://lore.kernel.org/stable/20230715134552.3437933-2-guoren%40kernel.org
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+</formletter>
