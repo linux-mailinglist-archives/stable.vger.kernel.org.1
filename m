@@ -2,65 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A222E754CCE
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 01:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2970B754CCF
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 01:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbjGOX1H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 15 Jul 2023 19:27:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36294 "EHLO
+        id S229665AbjGOX2i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 15 Jul 2023 19:28:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjGOX1G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 15 Jul 2023 19:27:06 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FA11B9
-        for <stable@vger.kernel.org>; Sat, 15 Jul 2023 16:27:05 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1b8bbce9980so19036215ad.2
-        for <stable@vger.kernel.org>; Sat, 15 Jul 2023 16:27:05 -0700 (PDT)
+        with ESMTP id S229481AbjGOX2i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 15 Jul 2023 19:28:38 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D111B9
+        for <stable@vger.kernel.org>; Sat, 15 Jul 2023 16:28:36 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-666eb03457cso2044113b3a.1
+        for <stable@vger.kernel.org>; Sat, 15 Jul 2023 16:28:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689463624; x=1692055624;
+        d=gmail.com; s=20221208; t=1689463716; x=1692055716;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=9kFckUyA19ohDArb00ubnLcooTg0tpvSPj+yFk6MbW8=;
-        b=pvZC7O7NPdByCqJh6BEORiauTQI5YQpXyY+q6L9g8q4+SG+m39+4mr14Do5bWviuuJ
-         MJfm+fGMi6EmcF6fufhXJz3X6AbfXdtbnBBtXioQG29YSzmZHagnN/+VFludbRI+qu63
-         0qfiqg8OKeUvjPDOs9XfiAr7t8wX7QBVnSs7UQ3oUl/QIEYRvfv/2P/eUH/Ca6oF8b/V
-         ssr1N68Gj66Pk99NmCcHl4t9iD5k9LOsaDiusCi0wSWAnLqmyGCld0wcDCzEgZac+jht
-         fxTU0Fgcrc1b1RdK2hZfuPUHRDTLAITysWb0ZLe/AGWO3Y17kNGThwnnLx4Qx3kr72VA
-         olQA==
+        bh=rxdDGFgKi6T11oeh14znfdo2pyDiJNLt/6xzQQRf+uk=;
+        b=Gva7qgSgNnSKQF+drj8+fV5EXI+s5BUVIyGbv/QbC2oQdM0+mQBYH8tpE4uDyATRix
+         T032H1Vy6b0BC2ye8+uAmgLW54/R8j1y3KlHyr3tRpqtu85Q8ZIk5nh93UBZJIAlkmKd
+         jSEUojbPujECpf60z09YDzlDnN7tQDK3jTlKsIouAWd2wIdYk1+zthEX9LWPF+0YItuP
+         lA+L6ssv4hUHDNjHONNMbIQcAUjzX64iSghjTd8xK/Ywg1t9QikMA8WEGkjvWS1W4Lhe
+         skDLe9wPmRud7O+uU/8oydUpWxZt6h+FGW7GuicXsiB8qPu0TgA9Sy2SpM/DEaHSBziu
+         ltyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689463624; x=1692055624;
+        d=1e100.net; s=20221208; t=1689463716; x=1692055716;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9kFckUyA19ohDArb00ubnLcooTg0tpvSPj+yFk6MbW8=;
-        b=Y76Z7Xt1lULn1pOcUKI26Kb7BoGQotEUK+9Ks57UhucJ5EV9FvxXQfvs7zSM18JIOV
-         1ERi5hW+ChdWNqvnFRd37JBusijKVrF9A5LbhWBblrUKR02ORHodkdPw0KHlzU//OMGl
-         zfbNtYF+l+KxqwX8pKp7Q2+8/iRXccZe53o2MPOzLNrvGgpWaHhUrjJQft0M03lRL0F5
-         DC5sO68hccd/7vyYFflgdnr8DxAPdwVeA2+2cK4a+lqPzJmby3llQjnD7MiZBGCvRvPt
-         oHuSD37xSH44ioLmtmYEuO9idxlUulxRZyU0EdeKhm/UuoltT1XetVNFs8fpah9jnNwn
-         iCgg==
-X-Gm-Message-State: ABy/qLZ9b/HvOwmBS7oIgi3rPSAP9dz2g0TvwJWn2Q1WwkBRaWko1cEc
-        U6jW1hULlU5K83dWTPyJCtE0OGhrRCM=
-X-Google-Smtp-Source: APBJJlGcOwBViyZ9wSgM6t+bWtwAftaABxHWXvcuaa1+Q+SAKXCVI5lqDUBWMbVfSTvAzhVdiWC1Ig==
-X-Received: by 2002:a17:903:26c9:b0:1b8:6850:c3c4 with SMTP id jg9-20020a17090326c900b001b86850c3c4mr6884747plb.22.1689463624324;
-        Sat, 15 Jul 2023 16:27:04 -0700 (PDT)
+        bh=rxdDGFgKi6T11oeh14znfdo2pyDiJNLt/6xzQQRf+uk=;
+        b=k+rx48EzuqUaLA3BhhmAynyzd+hnkDJZZFmJiMjBn/V8/hcH+yQ88IQhsrkcXxAzTS
+         bw9yYGmXX2flD71ITtLULJyhY2fUcP87YXnzkiYkDkLyJWBcd9Fn6SrHWA8+AQ/larbI
+         iXd50oz1HJ9g4y07XTe1wS72EmqRZV/OKp9ZD6KDb5VP/vSYzexAe/gvZj+VoXo+IIvv
+         nufi+v5PGCQbl5KdF6E4OLHJadsl4sP4ji0TayGgjbaXa603qDqSqBpt/wAXrjlFVFVb
+         Zf1a7q2zI40aNaE1J4zqkXnmVRqGuhxvBWv3pIYI3VceJXfdMnbL+kzgGRQIzX7/YUfP
+         EeBw==
+X-Gm-Message-State: ABy/qLa+IIyIPNYuzWJUvTP6s/cDrmaCIT5Le4VxB1PBtScepriZB5QK
+        Im4GMIcBKsZC+6cFUsc6rUAEDVVc4tg=
+X-Google-Smtp-Source: APBJJlEbZTJzHExV3wJmCdwcCo27PE5nOjcDDkc58IWUKY86xVH0kq4c0BRjfOzq55rczTEga3cB5w==
+X-Received: by 2002:a05:6a21:7892:b0:134:9868:812e with SMTP id bf18-20020a056a21789200b001349868812emr235183pzc.39.1689463715958;
+        Sat, 15 Jul 2023 16:28:35 -0700 (PDT)
 Received: from xplor.waratah.dyndns.org (222-152-184-54-fibre.sparkbb.co.nz. [222.152.184.54])
-        by smtp.gmail.com with ESMTPSA id o17-20020a637e51000000b0055b30275adasm9842685pgn.37.2023.07.15.16.27.03
+        by smtp.gmail.com with ESMTPSA id e30-20020a63745e000000b0055c02b8688asm9849219pgn.20.2023.07.15.16.28.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Jul 2023 16:27:03 -0700 (PDT)
+        Sat, 15 Jul 2023 16:28:35 -0700 (PDT)
 Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id D73E0360318; Sun, 16 Jul 2023 11:26:59 +1200 (NZST)
+        id 4A9FD360318; Sun, 16 Jul 2023 11:28:32 +1200 (NZST)
 From:   Michael Schmitz <schmitzmic@gmail.com>
 To:     stable@vger.kernel.org
 Cc:     schmitzmic@gmail.com, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4.y] block: add overflow checks for Amiga partition support
-Date:   Sun, 16 Jul 2023 11:26:56 +1200
-Message-Id: <20230715232656.8632-1-schmitzmic@gmail.com>
+Subject: [PATCH 5.10.y] block: add overflow checks for Amiga partition support
+Date:   Sun, 16 Jul 2023 11:28:20 +1200
+Message-Id: <20230715232820.8735-1-schmitzmic@gmail.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <2023071117-convene-mockup-27f2@gregkh>
-References: <2023071117-convene-mockup-27f2@gregkh>
+In-Reply-To: <2023071116-umbrella-fog-a65f@gregkh>
+References: <2023071116-umbrella-fog-a65f@gregkh>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -101,18 +101,18 @@ Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
 
 ---
 
-Changes from linux-block:
+Changes since 5.10-stable:
 
-- fix merge conflict in 5.4-stable
+- fix merge conflicts
 ---
  block/partitions/amiga.c | 103 ++++++++++++++++++++++++++++++++-------
  1 file changed, 85 insertions(+), 18 deletions(-)
 
 diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
-index 4a4160221183..a38fe08778c3 100644
+index 64f0844468aa..7abc09d8fc73 100644
 --- a/block/partitions/amiga.c
 +++ b/block/partitions/amiga.c
-@@ -11,11 +11,19 @@
+@@ -11,10 +11,18 @@
  #define pr_fmt(fmt) fmt
  
  #include <linux/types.h>
@@ -121,7 +121,6 @@ index 4a4160221183..a38fe08778c3 100644
  #include <linux/affs_hardblocks.h>
  
  #include "check.h"
- #include "amiga.h"
  
 +/* magic offsets in partition DosEnvVec */
 +#define NR_HD	3
@@ -132,7 +131,7 @@ index 4a4160221183..a38fe08778c3 100644
  static __inline__ u32
  checksum_block(__be32 *m, int size)
  {
-@@ -32,9 +40,12 @@ int amiga_partition(struct parsed_partitions *state)
+@@ -31,9 +39,12 @@ int amiga_partition(struct parsed_partitions *state)
  	unsigned char *data;
  	struct RigidDiskBlock *rdb;
  	struct PartitionBlock *pb;
@@ -148,16 +147,16 @@ index 4a4160221183..a38fe08778c3 100644
  	int slot = 1;
  	char b[BDEVNAME_SIZE];
  
-@@ -44,7 +55,7 @@ int amiga_partition(struct parsed_partitions *state)
+@@ -42,7 +53,7 @@ int amiga_partition(struct parsed_partitions *state)
+ 			goto rdb_done;
  		data = read_part_sector(state, blk, &sect);
  		if (!data) {
- 			if (warn_no_part)
--				pr_err("Dev %s: unable to read RDB block %d\n",
-+				pr_err("Dev %s: unable to read RDB block %llu\n",
- 				       bdevname(state->bdev, b), blk);
+-			pr_err("Dev %s: unable to read RDB block %d\n",
++			pr_err("Dev %s: unable to read RDB block %llu\n",
+ 			       bdevname(state->bdev, b), blk);
  			res = -1;
  			goto rdb_done;
-@@ -61,12 +72,12 @@ int amiga_partition(struct parsed_partitions *state)
+@@ -59,12 +70,12 @@ int amiga_partition(struct parsed_partitions *state)
  		*(__be32 *)(data+0xdc) = 0;
  		if (checksum_block((__be32 *)data,
  				be32_to_cpu(rdb->rdb_SummedLongs) & 0x7F)==0) {
@@ -172,7 +171,7 @@ index 4a4160221183..a38fe08778c3 100644
  		       bdevname(state->bdev, b), blk);
  	}
  
-@@ -83,11 +94,16 @@ int amiga_partition(struct parsed_partitions *state)
+@@ -81,10 +92,15 @@ int amiga_partition(struct parsed_partitions *state)
  	blk = be32_to_cpu(rdb->rdb_PartitionList);
  	put_dev_sector(sect);
  	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
@@ -185,13 +184,12 @@ index 4a4160221183..a38fe08778c3 100644
 +		}
  		data = read_part_sector(state, blk, &sect);
  		if (!data) {
- 			if (warn_no_part)
--				pr_err("Dev %s: unable to read partition block %d\n",
-+				pr_err("Dev %s: unable to read partition block %llu\n",
- 				       bdevname(state->bdev, b), blk);
+-			pr_err("Dev %s: unable to read partition block %d\n",
++			pr_err("Dev %s: unable to read partition block %llu\n",
+ 			       bdevname(state->bdev, b), blk);
  			res = -1;
  			goto rdb_done;
-@@ -99,19 +115,70 @@ int amiga_partition(struct parsed_partitions *state)
+@@ -96,19 +112,70 @@ int amiga_partition(struct parsed_partitions *state)
  		if (checksum_block((__be32 *)pb, be32_to_cpu(pb->pb_SummedLongs) & 0x7F) != 0 )
  			continue;
  
