@@ -2,56 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7D2B7545AD
+	by mail.lfdr.de (Postfix) with ESMTP id EE4607545AE
 	for <lists+stable@lfdr.de>; Sat, 15 Jul 2023 02:47:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230179AbjGOArW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 14 Jul 2023 20:47:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58926 "EHLO
+        id S230151AbjGOArX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 14 Jul 2023 20:47:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjGOArV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 20:47:21 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 436BE3A9B
+        with ESMTP id S230177AbjGOArW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 14 Jul 2023 20:47:22 -0400
+Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD0DE65
         for <stable@vger.kernel.org>; Fri, 14 Jul 2023 17:47:19 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-3460aee1d57so11575155ab.0
+Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-3465ec72cc8so12103385ab.0
         for <stable@vger.kernel.org>; Fri, 14 Jul 2023 17:47:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1689382037; x=1691974037;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/ZJjYV9nmYHhdWBo7q69wFF51OLjPoIEX5333fEgEUI=;
-        b=aQUWuuFUT6YqG1qs6Qan4mOHVx0kx0nnIkBffGtSrJalgydnaLNFnZMmHtESM6qAR4
-         UiVZh2TCBVbuXbJ4mvWvLXutP2FK8BfZ8KrPMrPcGArBwPBJQt2EjW/QfrDcujURm+1o
-         mIbCMRNtwZV7Z9ytkEX9DV1m7prZazo2+iagM=
+        d=joelfernandes.org; s=google; t=1689382038; x=1691974038;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P1zzKzgVRY9zmHgPSop4Tyduic2XprYhiiyL/nFZ/2A=;
+        b=Q/+9z5x0kf00bfBR/cKdonGau8zV5auPbIcL0Ss/M7oDKSleeoqg9jzN23YpqwIuXB
+         CWDNpw9IlZqPeSX5R5gGK7vXzlZcDSC20LaW8BYO5ya7VBImbunLCdEWVBEc3EwFS+DP
+         99x8QPDqhnUeJsnT+OTMbvQndxjWzEpS3q+pg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689382037; x=1691974037;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/ZJjYV9nmYHhdWBo7q69wFF51OLjPoIEX5333fEgEUI=;
-        b=ickyZFu4PksBX7xAIcy7sDBglXel03vG2ce9K+tnuYKiWYfZGxOq+RJtLEUHLMmA2M
-         Kgex/FvfkoAeUE6wvd/Nv0xJqcHd9qbAWSqi37XbVLEHoM4rZeKRcFHEtgG/seD5UA9L
-         yERc3AjsbnxosGkn3LRMEuVEXtpLGRhSjAEG4S9TvxayPlbzDZ8EqOKngCNwtjPNMaU3
-         l7oJVieFeBYU49F2klyKuXgrIyDxGejCncdVoLGizLkQXgI6QvjA/Lo3KyxzM2sxjFli
-         vaVGSSxR6S2j4Wfv1OF/DRGRnPwCZrC2FBfnvcqlCZ9WNza0kEOkozaFopFzLZTra9Nz
-         gFpw==
-X-Gm-Message-State: ABy/qLbaFhN1UolBGCt4KU8q1U1ikBylhxcOs3gJMnk8k3MqI9HPLXa/
-        tDrW8sjBV5tR/DwFHy2Pcl2O8oirvq7vhED0BRI=
-X-Google-Smtp-Source: APBJJlFwb1+NgaLwZCZAWgwHjUyXdqRaHFfA6VDYnCtvyeERX07UVAZoSey4F1U5Sym+0I4isY6hwg==
-X-Received: by 2002:a92:502:0:b0:347:223f:92f4 with SMTP id q2-20020a920502000000b00347223f92f4mr6302379ile.24.1689382037498;
-        Fri, 14 Jul 2023 17:47:17 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689382038; x=1691974038;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P1zzKzgVRY9zmHgPSop4Tyduic2XprYhiiyL/nFZ/2A=;
+        b=XLKQCNgEpURuUpr/5QwuZ4BfViVsp1jTO2l8QqDvDPv+miV3QmHWC16nSzhvG79BBO
+         MYpadoE6xpiGhxxkoKHQwV6F3F0HuOMeTH9UCVbuUVckhGgcTx9y6Sp55K2HTX6lLu2Z
+         9xXweKV+hvmDIa4WgZF7OhCWt9bJsacMpIV5M5uZPu/SugegbvTOuqJUMNUl7BGSGGAU
+         Lqvtv8Dp2zBPm7//GOt2Ouw6Ii+kQBoZ6RMBIwCfk/AKc6mro2wm4U+4Q2ANpqNR7gAS
+         pOjlBgUyioq5xwAJX7YFU5YQq5CnTCfl+OGZ2ynmOGlJelXNin7+jMRGYB8aZBi0c5gz
+         CT1Q==
+X-Gm-Message-State: ABy/qLZWlzkxzwxRiOARlNJjOa9nIUewTucTXLcRPaNSkSPln6FDLM8R
+        lZYSV2IaB9JtXUQB5UavVkNWAti00DFo7YPETQM=
+X-Google-Smtp-Source: APBJJlH+qoM9kODr//WYPAW3UlWJDwTUaOMqfhJJCx9By6wP1/Y4F8F3MFZ3Qk6eCeUE46r/WTuRoQ==
+X-Received: by 2002:a05:6e02:809:b0:346:6550:d30 with SMTP id u9-20020a056e02080900b0034665500d30mr6406116ilm.20.1689382038372;
+        Fri, 14 Jul 2023 17:47:18 -0700 (PDT)
 Received: from rcubot2.c.googlers.com.com (30.64.135.34.bc.googleusercontent.com. [34.135.64.30])
-        by smtp.gmail.com with ESMTPSA id x16-20020a92d310000000b003486fa3e78csm643420ila.11.2023.07.14.17.47.16
+        by smtp.gmail.com with ESMTPSA id x16-20020a92d310000000b003486fa3e78csm643420ila.11.2023.07.14.17.47.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jul 2023 17:47:16 -0700 (PDT)
+        Fri, 14 Jul 2023 17:47:17 -0700 (PDT)
 From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
 To:     stable@vger.kernel.org
-Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Subject: [PATCH -stable v5.10 0/3] Fixes for rcutorture TRACE02 warning
-Date:   Sat, 15 Jul 2023 00:47:08 +0000
-Message-ID: <20230715004711.2938489-1-joel@joelfernandes.org>
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>
+Subject: [PATCH -stable v5.10 1/3] rcu-tasks: Mark ->trc_reader_nesting data races
+Date:   Sat, 15 Jul 2023 00:47:09 +0000
+Message-ID: <20230715004711.2938489-2-joel@joelfernandes.org>
 X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+In-Reply-To: <20230715004711.2938489-1-joel@joelfernandes.org>
+References: <20230715004711.2938489-1-joel@joelfernandes.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -64,32 +68,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-These patches required to prevent the following TRACE02 warning when running rcutorture.
+From: "Paul E. McKenney" <paulmck@kernel.org>
 
-I confirmed the patch fixes the following splat:
+[ Upstream commit bdb0cca0d11060fce8a8a44588ac1470c25d62bc ]
 
-[  765.941351] WARNING: CPU: 0 PID: 80 at kernel/rcu/tasks.h:895 trc_read_check_handler+0x61/0xe0
-[  765.949880] Modules linked in:
-[  765.953006] CPU: 0 PID: 80 Comm: rcu_torture_rea Not tainted 5.15.86-rc1+ #25
-[  765.959982] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-[  765.967964] RIP: 0010:trc_read_check_handler+0x61/0xe0
-[  765.973050] Code: 01 00 89 c0 48 03 2c c5 80 f8 a5 ae c6 45 00 00 [..]
-[  765.991768] RSP: 0000:ffffa64ac0003fb0 EFLAGS: 00010047
-[  765.997042] RAX: ffffffffad4f8610 RBX: ffffa26b41bd3000 RCX: ffffa26b5f4ac8c0
-[  766.004418] RDX: 0000000000000000 RSI: ffffffffae978121 RDI: ffffa26b41bd3000
-[  766.011502] RBP: ffffa26b41bd6000 R08: ffffa26b41bd3000 R09: 0000000000000000
-[  766.018778] R10: 0000000000000000 R11: ffffa64ac0003ff8 R12: 0000000000000000
-[  766.025943] R13: ffffa26b5f4ac8c0 R14: 0000000000000000 R15: 0000000000000000
-[  766.034383] FS:  0000000000000000(0000) GS:ffffa26b5f400000(0000) knlGS:0000000000000000
-[  766.042925] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  766.048775] CR2: 0000000000000000 CR3: 0000000001924000 CR4: 00000000000006f0
-[  766.055991] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  766.063135] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  766.070711] Call Trace:
-[  766.073515]  <IRQ>
-[  766.075807]  flush_smp_call_function_queue+0xec/0x1a0
-[  766.081087]  __sysvec_call_function_single+0x3e/0x1d0
-[  766.086466]  sysvec_call_function_single+0x89/0xc0
-[  766.091431]  </IRQ>
-[  766.093713]  <TASK>
-[  766.095930]  asm_sysvec_call_function_single+0x16/0x20
+There are several ->trc_reader_nesting data races that are too
+low-probability for KCSAN to notice, but which will happen sooner or
+later.  This commit therefore marks these accesses, and comments one
+that cannot race.
+
+Cc: <stable@vger.kernel.org> # 5.10.x
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+---
+ kernel/rcu/tasks.h | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index c66d47685b28..2b16a86163af 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -848,7 +848,7 @@ static void trc_read_check_handler(void *t_in)
+ 
+ 	// If the task is not in a read-side critical section, and
+ 	// if this is the last reader, awaken the grace-period kthread.
+-	if (likely(!t->trc_reader_nesting)) {
++	if (likely(!READ_ONCE(t->trc_reader_nesting))) {
+ 		if (WARN_ON_ONCE(atomic_dec_and_test(&trc_n_readers_need_end)))
+ 			wake_up(&trc_wait);
+ 		// Mark as checked after decrement to avoid false
+@@ -857,7 +857,7 @@ static void trc_read_check_handler(void *t_in)
+ 		goto reset_ipi;
+ 	}
+ 	// If we are racing with an rcu_read_unlock_trace(), try again later.
+-	if (unlikely(t->trc_reader_nesting < 0)) {
++	if (unlikely(READ_ONCE(t->trc_reader_nesting) < 0)) {
+ 		if (WARN_ON_ONCE(atomic_dec_and_test(&trc_n_readers_need_end)))
+ 			wake_up(&trc_wait);
+ 		goto reset_ipi;
+@@ -904,6 +904,7 @@ static bool trc_inspect_reader(struct task_struct *t, void *arg)
+ 			n_heavy_reader_ofl_updates++;
+ 		in_qs = true;
+ 	} else {
++		// The task is not running, so C-language access is safe.
+ 		in_qs = likely(!t->trc_reader_nesting);
+ 	}
+ 
+@@ -936,7 +937,7 @@ static void trc_wait_for_one_reader(struct task_struct *t,
+ 	// The current task had better be in a quiescent state.
+ 	if (t == current) {
+ 		t->trc_reader_checked = true;
+-		WARN_ON_ONCE(t->trc_reader_nesting);
++		WARN_ON_ONCE(READ_ONCE(t->trc_reader_nesting));
+ 		return;
+ 	}
+ 
+@@ -1046,7 +1047,7 @@ static void show_stalled_task_trace(struct task_struct *t, bool *firstreport)
+ 		 ".I"[READ_ONCE(t->trc_ipi_to_cpu) > 0],
+ 		 ".i"[is_idle_task(t)],
+ 		 ".N"[cpu > 0 && tick_nohz_full_cpu(cpu)],
+-		 t->trc_reader_nesting,
++		 READ_ONCE(t->trc_reader_nesting),
+ 		 " N"[!!t->trc_reader_special.b.need_qs],
+ 		 cpu);
+ 	sched_show_task(t);
+@@ -1141,7 +1142,7 @@ static void rcu_tasks_trace_postgp(struct rcu_tasks *rtp)
+ static void exit_tasks_rcu_finish_trace(struct task_struct *t)
+ {
+ 	WRITE_ONCE(t->trc_reader_checked, true);
+-	WARN_ON_ONCE(t->trc_reader_nesting);
++	WARN_ON_ONCE(READ_ONCE(t->trc_reader_nesting));
+ 	WRITE_ONCE(t->trc_reader_nesting, 0);
+ 	if (WARN_ON_ONCE(READ_ONCE(t->trc_reader_special.b.need_qs)))
+ 		rcu_read_unlock_trace_special(t, 0);
+-- 
+2.41.0.255.g8b1d071c50-goog
+
