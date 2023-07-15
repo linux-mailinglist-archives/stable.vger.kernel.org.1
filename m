@@ -2,117 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 134AF7547BA
-	for <lists+stable@lfdr.de>; Sat, 15 Jul 2023 11:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3C4D754804
+	for <lists+stable@lfdr.de>; Sat, 15 Jul 2023 11:45:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230216AbjGOJUc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 15 Jul 2023 05:20:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50208 "EHLO
+        id S229556AbjGOJpE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 15 Jul 2023 05:45:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230376AbjGOJUY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 15 Jul 2023 05:20:24 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 483793A95
-        for <stable@vger.kernel.org>; Sat, 15 Jul 2023 02:19:49 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b935316214so28381fa.1
-        for <stable@vger.kernel.org>; Sat, 15 Jul 2023 02:19:49 -0700 (PDT)
+        with ESMTP id S230085AbjGOJpE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 15 Jul 2023 05:45:04 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3117635A2
+        for <stable@vger.kernel.org>; Sat, 15 Jul 2023 02:45:03 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-521662a6c9cso1616998a12.1
+        for <stable@vger.kernel.org>; Sat, 15 Jul 2023 02:45:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689412782; x=1692004782;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uU8z7MQTAseycVhm4xqzUABfIdWki0oWoHTG+Qvxumg=;
-        b=E/QxtJJg7rHSK74wng1uBblyEJAvHyi9rIbOgRvmnrOqdTePkkIc2d2L1EsBjf+7/w
-         szSVY+/9ELsj/2AW7y0eBokhMRI6+cyyLOIcrNNRy9G4Y6ysojkjK05kfoWIqYilKlgU
-         EEjI4dtteU2DbNPNWQ47hWuu7jAVoaoR1PN5SfXGBKMzpie0KKFwsScCi2kf9Cd/tFRo
-         CNGiQ0rWp5O2EBVdN+jfPBwJpzhAtT2MMxcsiGZ39PMQ0SyqUXSJh4/gk/7Gyl8DUtFF
-         JucZWGefkiibHvhP6VY+B2C0LxJj7uOvPTlTKa2lhyzLhNIw3fZ1I8/sbGg84wA0SunG
-         mokQ==
+        d=gmail.com; s=20221208; t=1689414301; x=1692006301;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8rd7EcdjpHZnpl97A2dYWJXnY3/LTkIe+Qq5CeS9NCY=;
+        b=B8ZSLTcynd7YAu1mqOQtTIcCnQkSKVszvuofuV3KBodSRTvPSLgt72wU5nYfDoVx/h
+         CSRn7OMponkMfE6nMaRy2wquvnbbEogBNNfsiT4sN8ZYUPeUM0rLIK2aZ9Grq2mCIFQ1
+         95FL7T44P8pTP0F9BbaM64AC+KikNNRX8i4kviUqmo26hvmaQRAn3qHucF9fppiuQOIr
+         ej6ITstzQCXmF0Cztul6WDXfWh+bGpqDnixatxT+5XEPy3H4V/uS79ySLmDpX0DoRMCE
+         KUKFWN7sVoQtbuVkuKGzuepVCw4c+5ox2BRTXvfEQa9cMDHAWY7sc43NdZ+N4KBKHzev
+         SvZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689412782; x=1692004782;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1689414301; x=1692006301;
+        h=to:subject:message-id:date:from:sender:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uU8z7MQTAseycVhm4xqzUABfIdWki0oWoHTG+Qvxumg=;
-        b=WYoS1lnse17uKhjJIrYj9nZhfVQUBZ8gk4ZI1Eify21yWA818SScztG879w+ueRd4/
-         TALmc238JzcQOFarxucx1R26pepvwhQuIPS/hAQk6LJNP/jE+5mE8GiwKHNVDvF4AUAU
-         irSt5qA2Llvc0qe0JHDNGuV+nZKsi4TYVrx4ANciaNr968FJCQmbQASKoY9JcH0XWZav
-         MR4FBP56NhM9ix8O24vf7gmzq/k3qav0qxgDf5gQTr1n9zK5tHiSDZ4L+TFYWj7krDIq
-         SZEEmMIneJjzJpLVIkli45tRTlVtrZZ1OERHpkCTHj3J3oajlERfXZ4sEN50XXNURvZs
-         DF0w==
-X-Gm-Message-State: ABy/qLayLlwDTtism4va5FP4E6wZvZkOKt5TcLAFjQ9rV9uRZtjgF6Mw
-        3peGvZF2S8qDOAU2fQWgJFso9Q==
-X-Google-Smtp-Source: APBJJlH5qiMARhz72CyMoSOuAfv7V2ZINmpLIFogNEf03pLosGVr8PzBltaLAaiBJUlBF7z/ficHOQ==
-X-Received: by 2002:a2e:9f46:0:b0:2b7:18ff:946e with SMTP id v6-20020a2e9f46000000b002b718ff946emr1564213ljk.25.1689412781998;
-        Sat, 15 Jul 2023 02:19:41 -0700 (PDT)
-Received: from [192.168.1.101] (abxi167.neoplus.adsl.tpnet.pl. [83.9.2.167])
-        by smtp.gmail.com with ESMTPSA id z13-20020a2e9b8d000000b002b70206cd45sm2391907lji.90.2023.07.15.02.19.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Jul 2023 02:19:41 -0700 (PDT)
-Message-ID: <de6b5727-e15a-5d59-9b79-6ca7b01c8d63@linaro.org>
-Date:   Sat, 15 Jul 2023 11:19:39 +0200
+        bh=8rd7EcdjpHZnpl97A2dYWJXnY3/LTkIe+Qq5CeS9NCY=;
+        b=YY84Izf19SPze3oBCGpfotBhlRYcTsSfL4HI31pFn7AjCm5OW45Pm1WI7C+lXncG+p
+         UbLrdObZmN3joJeTIJsLE2Zk7dHkoV+3RU80CjlRqkRJV07mohs3VNDNJRhDAP0Bdzu1
+         pnuAr1h5oa7QrIscXWWk9IFDOdVcVib+Y/Pr7dKire5aq4rUrrSX3AEt8detXKwfT3W5
+         VrWDqT72k2XslxMfjLwArEPl/1g/IOl/67v7QDEoBrLvsZWXgaVEIk8H8YvxVnMiHv07
+         y8fOt0mu6NFH/NCa+lF5fwK3MuBgJn7AGnGL5xagTH4eOlc+syS0UCrnOFttcA5DVFMN
+         gbYA==
+X-Gm-Message-State: ABy/qLYO40bEe/OZxgA1gbqqOXnW2KxV7nTkXjORpwb3bICFDHFVqVqf
+        NWHza+Pc+5dkhR6uzfL4QJJHd55NkSV04OUgq5k=
+X-Google-Smtp-Source: APBJJlFrujjmpQv+PuBc9WdeZoG7IQQkR/YMu5oo7TmgxkuHNG7HPdODPLbwrsbtN1WxEhznoaUc8iO6W7Mbcv41fMc=
+X-Received: by 2002:a05:6402:68e:b0:51e:17d:a1c3 with SMTP id
+ f14-20020a056402068e00b0051e017da1c3mr6003043edy.32.1689414301271; Sat, 15
+ Jul 2023 02:45:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/2] serial: qcom-geni: fix opp vote on shutdown
-Content-Language: en-US
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Rajendra Nayak <quic_rjendra@quicinc.com>,
-        Matthias Kaehlcke <mka@chromium.org>
-References: <20230714130214.14552-1-johan+linaro@kernel.org>
- <20230714130214.14552-2-johan+linaro@kernel.org>
- <e99b5975-b770-5460-1ce4-cd4eb1a50291@linaro.org>
- <ZLFk1Q0pTfYmB5EU@hovoldconsulting.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <ZLFk1Q0pTfYmB5EU@hovoldconsulting.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+Sender: kaboreabrahamstewart@gmail.com
+Received: by 2002:a05:7208:53c3:b0:6e:fff9:e047 with HTTP; Sat, 15 Jul 2023
+ 02:45:00 -0700 (PDT)
+From:   "Dr. Thomsom Jack." <jackthomsom7@gmail.com>
+Date:   Sat, 15 Jul 2023 10:45:00 +0100
+X-Google-Sender-Auth: tVnVRaSnbeeTpCZN3rtNt5kS6fQ
+Message-ID: <CAJpCdcQFSURRRZyQKzbKMODUOugnA5tPsrQ-OM7ZL6yBqcoodQ@mail.gmail.com>
+Subject: I NEEDS YOUR URGENT RESPONSE
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY,URG_BIZ autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 14.07.2023 17:08, Johan Hovold wrote:
-> On Fri, Jul 14, 2023 at 04:29:08PM +0200, Konrad Dybcio wrote:
->> On 14.07.2023 15:02, Johan Hovold wrote:
->>> The operating-performance-point vote needs to be dropped when shutting
->>> down the port to avoid wasting power by keeping resources like power
->>> domains in an unnecessarily high performance state (e.g. when a UART
->>> connected Bluetooth controller is not in use).
->>>
->>> Fixes: a5819b548af0 ("tty: serial: qcom_geni_serial: Use OPP API to set clk/perf state")
->>> Cc: stable@vger.kernel.org      # 5.9
->>> Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
->>> Cc: Matthias Kaehlcke <mka@chromium.org>
->>> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
->>> ---
->> I don't know a whole lot about this subsystem, but the PM call has
->> a pointer to uport which already contains this clock rate.. Is it
->> zeroed out by the core before we reach it, which would prevent us
->> from reusing it?
-> 
-> No, but this driver has other issues and I couldn't be arsed fixing them
-> before addressing this bug.
-> 
-> Specifically that uartclk variable can currently be set by userspace...
-> 
-> I'll fix that up next week.
-OK sounds good
+Greetings to You,
 
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+I have a good news for you.Please contact me for more details. Sorry
+if
+you received this letter in your spam, Due to recent connection error
+here in my country.a
 
-Konrad
-> 
-> Johan
+Looking forward for your immediate response to me through my private
+e-
+mail id: (jackthomsom7@gmail.com)
+
+Best Regards,
+
+Regards,
+Dr. Thomsom Jack.
+My Telephone number
