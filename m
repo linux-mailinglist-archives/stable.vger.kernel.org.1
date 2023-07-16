@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 124B6755691
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 839F9755444
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:28:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232889AbjGPUwC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:52:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40398 "EHLO
+        id S232051AbjGPU2a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:28:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232921AbjGPUvx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:51:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88838E61
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:49 -0700 (PDT)
+        with ESMTP id S232045AbjGPU23 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:28:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFF959F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:28:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 20FAC60DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32314C433C7;
-        Sun, 16 Jul 2023 20:51:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5511860E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:28:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62684C433C7;
+        Sun, 16 Jul 2023 20:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540708;
-        bh=rdJAI9EbsBAXhn0C9LVplba24PBsH/+/m+vs0Edv/XU=;
+        s=korg; t=1689539307;
+        bh=kJAXm+MBAC0cvz5i7jMDS6QF2fonnFEUwLuk9YssPJs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L03MNc4TnAOcsbyFbcLCdUitO4NiG7bsjM62SimxB9wF6/AatEpXc2NtzmNJyrR5h
-         ST1H4BJrPn3XeRZhLGlPL6djehGCMk0rRlSSXM9U9o5wvBSnNg+l6fSLiI2fvKWvi3
-         oBGMzPfiuRmO4rBuDbUikb1Yh2iDUZ15XWE/0ue0=
+        b=lhEwE9DdpubHEyEAJQhxHHJrs0U2epZZAu6/EI0zrKoOsQwPT6/Wzojp/dNpZBuQJ
+         a4AtP3K2JuMfbpqU2rAY9TfDc3hHccpLqWGYM1UJJZOWq7/7c8FGwXCBzKhBpFZUr2
+         BPIPhrM+ef/oZa13HMG6uqM3dBhAOgWapKaz3obs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Andrew Halaney <ahalaney@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 433/591] usb: dwc3: qcom: Fix an error handling path in dwc3_qcom_probe()
-Date:   Sun, 16 Jul 2023 21:49:32 +0200
-Message-ID: <20230716194935.116810765@linuxfoundation.org>
+        patches@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Eirik Fuller <efuller@redhat.com>
+Subject: [PATCH 6.4 720/800] nfsd: move init of percpu reply_cache_stats counters back to nfsd_init_net
+Date:   Sun, 16 Jul 2023 21:49:33 +0200
+Message-ID: <20230716195005.842568579@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +55,159 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 4a944da707123686d372ec01ea60056902fadf35 ]
+commit ed9ab7346e908496816cffdecd46932035f66e2e upstream.
 
-If dwc3_qcom_create_urs_usb_platdev() fails, some resources still need to
-be released, as already done in the other error handling path of the
-probe.
+Commit f5f9d4a314da ("nfsd: move reply cache initialization into nfsd
+startup") moved the initialization of the reply cache into nfsd startup,
+but didn't account for the stats counters, which can be accessed before
+nfsd is ever started. The result can be a NULL pointer dereference when
+someone accesses /proc/fs/nfsd/reply_cache_stats while nfsd is still
+shut down.
 
-Fixes: c25c210f590e ("usb: dwc3: qcom: add URS Host support for sdm845 ACPI boot")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Message-ID: <b69fa8dd68d816e7d24c88d3eda776ceb28c5dc5.1685890571.git.christophe.jaillet@wanadoo.fr>
+This is a regression and a user-triggerable oops in the right situation:
+
+- non-x86_64 arch
+- /proc/fs/nfsd is mounted in the namespace
+- nfsd is not started in the namespace
+- unprivileged user calls "cat /proc/fs/nfsd/reply_cache_stats"
+
+Although this is easy to trigger on some arches (like aarch64), on
+x86_64, calling this_cpu_ptr(NULL) evidently returns a pointer to the
+fixed_percpu_data. That struct looks just enough like a newly
+initialized percpu var to allow nfsd_reply_cache_stats_show to access
+it without Oopsing.
+
+Move the initialization of the per-net+per-cpu reply-cache counters
+back into nfsd_init_net, while leaving the rest of the reply cache
+allocations to be done at nfsd startup time.
+
+Kudos to Eirik who did most of the legwork to track this down.
+
+Cc: stable@vger.kernel.org # v6.3+
+Fixes: f5f9d4a314da ("nfsd: move reply cache initialization into nfsd startup")
+Reported-and-tested-by: Eirik Fuller <efuller@redhat.com>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2215429
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-qcom.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/nfsd/cache.h    |    2 ++
+ fs/nfsd/nfscache.c |   25 ++++++++++++++-----------
+ fs/nfsd/nfsctl.c   |   10 +++++++++-
+ 3 files changed, 25 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
-index 9c01e963ae467..72c22851d7eef 100644
---- a/drivers/usb/dwc3/dwc3-qcom.c
-+++ b/drivers/usb/dwc3/dwc3-qcom.c
-@@ -865,9 +865,10 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
- 			if (IS_ERR_OR_NULL(qcom->urs_usb)) {
- 				dev_err(dev, "failed to create URS USB platdev\n");
- 				if (!qcom->urs_usb)
--					return -ENODEV;
-+					ret = -ENODEV;
- 				else
--					return PTR_ERR(qcom->urs_usb);
-+					ret = PTR_ERR(qcom->urs_usb);
-+				goto clk_disable;
- 			}
+--- a/fs/nfsd/cache.h
++++ b/fs/nfsd/cache.h
+@@ -80,6 +80,8 @@ enum {
+ 
+ int	nfsd_drc_slab_create(void);
+ void	nfsd_drc_slab_free(void);
++int	nfsd_net_reply_cache_init(struct nfsd_net *nn);
++void	nfsd_net_reply_cache_destroy(struct nfsd_net *nn);
+ int	nfsd_reply_cache_init(struct nfsd_net *);
+ void	nfsd_reply_cache_shutdown(struct nfsd_net *);
+ int	nfsd_cache_lookup(struct svc_rqst *);
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -148,12 +148,23 @@ void nfsd_drc_slab_free(void)
+ 	kmem_cache_destroy(drc_slab);
+ }
+ 
+-static int nfsd_reply_cache_stats_init(struct nfsd_net *nn)
++/**
++ * nfsd_net_reply_cache_init - per net namespace reply cache set-up
++ * @nn: nfsd_net being initialized
++ *
++ * Returns zero on succes; otherwise a negative errno is returned.
++ */
++int nfsd_net_reply_cache_init(struct nfsd_net *nn)
+ {
+ 	return nfsd_percpu_counters_init(nn->counter, NFSD_NET_COUNTERS_NUM);
+ }
+ 
+-static void nfsd_reply_cache_stats_destroy(struct nfsd_net *nn)
++/**
++ * nfsd_net_reply_cache_destroy - per net namespace reply cache tear-down
++ * @nn: nfsd_net being freed
++ *
++ */
++void nfsd_net_reply_cache_destroy(struct nfsd_net *nn)
+ {
+ 	nfsd_percpu_counters_destroy(nn->counter, NFSD_NET_COUNTERS_NUM);
+ }
+@@ -169,17 +180,13 @@ int nfsd_reply_cache_init(struct nfsd_ne
+ 	hashsize = nfsd_hashsize(nn->max_drc_entries);
+ 	nn->maskbits = ilog2(hashsize);
+ 
+-	status = nfsd_reply_cache_stats_init(nn);
+-	if (status)
+-		goto out_nomem;
+-
+ 	nn->nfsd_reply_cache_shrinker.scan_objects = nfsd_reply_cache_scan;
+ 	nn->nfsd_reply_cache_shrinker.count_objects = nfsd_reply_cache_count;
+ 	nn->nfsd_reply_cache_shrinker.seeks = 1;
+ 	status = register_shrinker(&nn->nfsd_reply_cache_shrinker,
+ 				   "nfsd-reply:%s", nn->nfsd_name);
+ 	if (status)
+-		goto out_stats_destroy;
++		return status;
+ 
+ 	nn->drc_hashtbl = kvzalloc(array_size(hashsize,
+ 				sizeof(*nn->drc_hashtbl)), GFP_KERNEL);
+@@ -195,9 +202,6 @@ int nfsd_reply_cache_init(struct nfsd_ne
+ 	return 0;
+ out_shrinker:
+ 	unregister_shrinker(&nn->nfsd_reply_cache_shrinker);
+-out_stats_destroy:
+-	nfsd_reply_cache_stats_destroy(nn);
+-out_nomem:
+ 	printk(KERN_ERR "nfsd: failed to allocate reply cache\n");
+ 	return -ENOMEM;
+ }
+@@ -217,7 +221,6 @@ void nfsd_reply_cache_shutdown(struct nf
+ 									rp, nn);
  		}
  	}
--- 
-2.39.2
-
+-	nfsd_reply_cache_stats_destroy(nn);
+ 
+ 	kvfree(nn->drc_hashtbl);
+ 	nn->drc_hashtbl = NULL;
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1488,6 +1488,9 @@ static __net_init int nfsd_init_net(stru
+ 	retval = nfsd_idmap_init(net);
+ 	if (retval)
+ 		goto out_idmap_error;
++	retval = nfsd_net_reply_cache_init(nn);
++	if (retval)
++		goto out_repcache_error;
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
+ 	nfsd4_init_leases_net(nn);
+@@ -1496,6 +1499,8 @@ static __net_init int nfsd_init_net(stru
+ 
+ 	return 0;
+ 
++out_repcache_error:
++	nfsd_idmap_shutdown(net);
+ out_idmap_error:
+ 	nfsd_export_shutdown(net);
+ out_export_error:
+@@ -1504,9 +1509,12 @@ out_export_error:
+ 
+ static __net_exit void nfsd_exit_net(struct net *net)
+ {
++	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
++
++	nfsd_net_reply_cache_destroy(nn);
+ 	nfsd_idmap_shutdown(net);
+ 	nfsd_export_shutdown(net);
+-	nfsd_netns_free_versions(net_generic(net, nfsd_net_id));
++	nfsd_netns_free_versions(nn);
+ }
+ 
+ static struct pernet_operations nfsd_net_ops = {
 
 
