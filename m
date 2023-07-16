@@ -2,102 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5477C7552AA
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C80AF7554CB
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231423AbjGPUK2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:10:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38728 "EHLO
+        id S232300AbjGPUe3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:34:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231424AbjGPUK1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8316FC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:26 -0700 (PDT)
+        with ESMTP id S232304AbjGPUe2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE4CEBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2249B60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D802C433C8;
-        Sun, 16 Jul 2023 20:10:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 848AF60EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933B3C433C7;
+        Sun, 16 Jul 2023 20:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538225;
-        bh=M84IB0Aj6rp8lwBlVDuz47ca0nf96ibsRGYv7+sL9t8=;
+        s=korg; t=1689539666;
+        bh=A/MalDIto8ZcXAGagnesCMHnrzFeETs0MT/EXgKM7Jo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N3I4MGDDL58S2Mq0c6eNHKHNwqeaybn4Ag8mFp2HO/k8h9VUYAFRWzkn1DUSeRb0H
-         2Xiit2w5RK7D5uSNRcKkqLpUl1nMhSwWhrlYniYXJJiQdDpIc3aw/OeCL5ceVn0W6q
-         38xh7aXxxfz1qbmZrAiPRg+BuWW2bMfkCbsFW5rg=
+        b=ckluGnAdEKIwvNnuP8cYIdN9n19SqeWSPzlQzDd3KERZEwUSF+sj0aaWlY2w95qiP
+         i1qHBBj0oHx9B/wEygV9LDIyvvePlbKIEh1a6s70lQXs07jXvXV2CAVobuxL7Z/kK4
+         bnP2ARyXB/h06KX0gT/qcus4pfP3OVEjmZQ9SbX4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adam Skladowski <a39.skl@gmail.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Rob Clark <robdclark@chromium.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 375/800] drm/msm/a5xx: really check for A510 in a5xx_gpu_init
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 089/591] wifi: wl3501_cs: Fix an error handling path in wl3501_probe()
 Date:   Sun, 16 Jul 2023 21:43:48 +0200
-Message-ID: <20230716194957.785832472@linuxfoundation.org>
+Message-ID: <20230716194926.180511718@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 736a9327365644b460e4498b1ce172ca411efcbc ]
+[ Upstream commit 391af06a02e7642039ac5f6c4b2c034ab0992b5d ]
 
-The commit 010c8bbad2cb ("drm: msm: adreno: Disable preemption on Adreno
-510") added special handling for a510 (this SKU doesn't seem to support
-preemption, so the driver should clamp nr_rings to 1). However the
-gpu->revn is not yet set (it is set later, in adreno_gpu_init()) and
-thus the condition is always false. Check config->rev instead.
+Should wl3501_config() fail, some resources need to be released as already
+done in the remove function.
 
-Fixes: 010c8bbad2cb ("drm: msm: adreno: Disable preemption on Adreno 510")
-Reported-by: Adam Skladowski <a39.skl@gmail.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Adam Skladowski <a39.skl@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/531511/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/7cc9c9316489b7d69b36aeb0edd3123538500b41.1684569865.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/wl3501_cs.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 1e8d2982d603c..a99310b687932 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -1743,6 +1743,7 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
+index 7fb2f95134760..c45c4b7cbbaf1 100644
+--- a/drivers/net/wireless/wl3501_cs.c
++++ b/drivers/net/wireless/wl3501_cs.c
+@@ -1862,6 +1862,7 @@ static int wl3501_probe(struct pcmcia_device *p_dev)
  {
- 	struct msm_drm_private *priv = dev->dev_private;
- 	struct platform_device *pdev = priv->gpu_pdev;
-+	struct adreno_platform_config *config = pdev->dev.platform_data;
- 	struct a5xx_gpu *a5xx_gpu = NULL;
- 	struct adreno_gpu *adreno_gpu;
- 	struct msm_gpu *gpu;
-@@ -1769,7 +1770,7 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+ 	struct net_device *dev;
+ 	struct wl3501_card *this;
++	int ret;
  
- 	nr_rings = 4;
+ 	/* The io structure describes IO port mapping */
+ 	p_dev->resource[0]->end	= 16;
+@@ -1873,8 +1874,7 @@ static int wl3501_probe(struct pcmcia_device *p_dev)
  
--	if (adreno_is_a510(adreno_gpu))
-+	if (adreno_cmp_rev(ADRENO_REV(5, 1, 0, ANY_ID), config->rev))
- 		nr_rings = 1;
+ 	dev = alloc_etherdev(sizeof(struct wl3501_card));
+ 	if (!dev)
+-		goto out_link;
+-
++		return -ENOMEM;
  
- 	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, nr_rings);
+ 	dev->netdev_ops		= &wl3501_netdev_ops;
+ 	dev->watchdog_timeo	= 5 * HZ;
+@@ -1887,9 +1887,15 @@ static int wl3501_probe(struct pcmcia_device *p_dev)
+ 	netif_stop_queue(dev);
+ 	p_dev->priv = dev;
+ 
+-	return wl3501_config(p_dev);
+-out_link:
+-	return -ENOMEM;
++	ret = wl3501_config(p_dev);
++	if (ret)
++		goto out_free_etherdev;
++
++	return 0;
++
++out_free_etherdev:
++	free_netdev(dev);
++	return ret;
+ }
+ 
+ static int wl3501_config(struct pcmcia_device *link)
 -- 
 2.39.2
 
