@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FCD6755703
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE057556E5
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:55:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233052AbjGPU4V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:56:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
+        id S233023AbjGPUzF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233053AbjGPU4U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:56:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A799E41
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:56:18 -0700 (PDT)
+        with ESMTP id S233011AbjGPUzD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:55:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E361CE51
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:55:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C32D760EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:56:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C7CC433C8;
-        Sun, 16 Jul 2023 20:56:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 713BC60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:55:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B11C433C7;
+        Sun, 16 Jul 2023 20:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540977;
-        bh=TWu0evTuPxw936WiDTsRfIjShbqTRbY34OcOiEIALVE=;
+        s=korg; t=1689540901;
+        bh=ydMKwpmqX27pSEKaKFl/BhNnMeo6f0eTuu/5tsKX/24=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wNol2IlHsxOExcSCE6tJirKi4a6x25P5Nknjk1KLBXMpFuiAsHapwXHz8N/0EDsmX
-         aPWhKNPr/djNXJs8b+RdmEAl79LJ52Crd89A1J8eDxZf+Ua46nRmDKFzBIgX9uSrOa
-         KKz8uS+EF3Xs95c1xIGWkw4jz8dP7yqYg2da14wM=
+        b=XwOeUJ+xhVTA7Gqxh4YRkOtepxdSOKJR76QvGEfAgRymXZACNKS5SCAbUVDNBvSKG
+         g/x/zabnMC5d/uB6kQaKFMteWC0nZgYgilc5ayAvjCKcI72pqE1aTBHuCKTuPQtedu
+         QSlya1dD8KiPooAee+xTp1l435LrqW4qQ2mhRMsc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 528/591] io_uring: wait interruptibly for request completions on exit
-Date:   Sun, 16 Jul 2023 21:51:07 +0200
-Message-ID: <20230716194937.532775800@linuxfoundation.org>
+        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 529/591] mmc: core: disable TRIM on Kingston EMMC04G-M627
+Date:   Sun, 16 Jul 2023 21:51:08 +0200
+Message-ID: <20230716194937.558793858@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -53,73 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Robert Marko <robimarko@gmail.com>
 
-commit 4826c59453b3b4677d6bf72814e7ababdea86949 upstream.
+commit f1738a1f816233e6dfc2407f24a31d596643fd90 upstream.
 
-WHen the ring exits, cleanup is done and the final cancelation and
-waiting on completions is done by io_ring_exit_work. That function is
-invoked by kworker, which doesn't take any signals. Because of that, it
-doesn't really matter if we wait for completions in TASK_INTERRUPTIBLE
-or TASK_UNINTERRUPTIBLE state. However, it does matter to the hung task
-detection checker!
+It seems that Kingston EMMC04G-M627 despite advertising TRIM support does
+not work when the core is trying to use REQ_OP_WRITE_ZEROES.
 
-Normally we expect cancelations and completions to happen rather
-quickly. Some test cases, however, will exit the ring and park the
-owning task stopped (eg via SIGSTOP). If the owning task needs to run
-task_work to complete requests, then io_ring_exit_work won't make any
-progress until the task is runnable again. Hence io_ring_exit_work can
-trigger the hung task detection, which is particularly problematic if
-panic-on-hung-task is enabled.
+We are seeing I/O errors in OpenWrt under 6.1 on Zyxel NBG7815 that we did
+not previously have and tracked it down to REQ_OP_WRITE_ZEROES.
 
-As the ring exit doesn't take signals to begin with, have it wait
-interruptibly rather than uninterruptibly. io_uring has a separate
-stuck-exit warning that triggers independently anyway, so we're not
-really missing anything by making this switch.
+Trying to use fstrim seems to also throw errors like:
+[93010.835112] I/O error, dev loop0, sector 16902 op 0x3:(DISCARD) flags 0x800 phys_seg 1 prio class 2
 
-Cc: stable@vger.kernel.org # 5.10+
-Link: https://lore.kernel.org/r/b0e4aaef-7088-56ce-244c-976edeac0e66@kernel.dk
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Disabling TRIM makes the error go away, so lets add a quirk for this eMMC
+to disable TRIM.
+
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230619193621.437358-1-robimarko@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/mmc/core/quirks.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2748,7 +2748,18 @@ static __cold void io_ring_exit_work(str
- 			/* there is little hope left, don't run it too often */
- 			interval = HZ * 60;
- 		}
--	} while (!wait_for_completion_timeout(&ctx->ref_comp, interval));
-+		/*
-+		 * This is really an uninterruptible wait, as it has to be
-+		 * complete. But it's also run from a kworker, which doesn't
-+		 * take signals, so it's fine to make it interruptible. This
-+		 * avoids scenarios where we knowingly can wait much longer
-+		 * on completions, for example if someone does a SIGSTOP on
-+		 * a task that needs to finish task_work to make this loop
-+		 * complete. That's a synthetic situation that should not
-+		 * cause a stuck task backtrace, and hence a potential panic
-+		 * on stuck tasks if that is enabled.
-+		 */
-+	} while (!wait_for_completion_interruptible_timeout(&ctx->ref_comp, interval));
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -110,6 +110,13 @@ static const struct mmc_fixup __maybe_un
+ 		  MMC_QUIRK_TRIM_BROKEN),
  
- 	init_completion(&exit.completion);
- 	init_task_work(&exit.task_work, io_tctx_exit_cb);
-@@ -2772,7 +2783,12 @@ static __cold void io_ring_exit_work(str
- 			continue;
- 
- 		mutex_unlock(&ctx->uring_lock);
--		wait_for_completion(&exit.completion);
-+		/*
-+		 * See comment above for
-+		 * wait_for_completion_interruptible_timeout() on why this
-+		 * wait is marked as interruptible.
-+		 */
-+		wait_for_completion_interruptible(&exit.completion);
- 		mutex_lock(&ctx->uring_lock);
- 	}
- 	mutex_unlock(&ctx->uring_lock);
+ 	/*
++	 * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
++	 * support being used to offload WRITE_ZEROES.
++	 */
++	MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
++		  MMC_QUIRK_TRIM_BROKEN),
++
++	/*
+ 	 * Some SD cards reports discard support while they don't
+ 	 */
+ 	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
 
 
