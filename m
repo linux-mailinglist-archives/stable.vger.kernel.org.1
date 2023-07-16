@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 589B27552D7
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 123F3755525
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231486AbjGPUMh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:12:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39912 "EHLO
+        id S232400AbjGPUhy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:37:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231501AbjGPUMg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:12:36 -0400
+        with ESMTP id S232435AbjGPUhx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:37:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE5AC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:12:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C52BD9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:37:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8052560DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:12:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B2FC433C7;
-        Sun, 16 Jul 2023 20:12:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0ADA60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:37:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCC0C433C8;
+        Sun, 16 Jul 2023 20:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538352;
-        bh=m3MN6iNSXzX7PWvHuaNtSu/W2QwNhkIubJYUn40I3X4=;
+        s=korg; t=1689539871;
+        bh=h+lbDox9nEPp8JR8EJMLT3dbpHjQMjZOTHVeaNxnQ5g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LbPjTor4JzeJDKOzb1wcQfDFh4udXhucFXXFNHZF3yv/imuLx4qmWrPngkXOWFL4P
-         J4rE5l6k237FavURkgKEhbhhFI9t7a2suY1VfUM8i4BGiJqdOBWFLHYwJt2A22gq3S
-         vRziye3NAicjlOWrDgPlBr84wOzP154ENqB474LQ=
+        b=vvDdfUIOihWZEvWdlliVlUtAqD1BxHVAVk1XXmeIpf5p3JJ6jzZd5v/SklQw3WxZR
+         i1f2I6+tpe1diNYkaYVXNm8MmkC+HXuTrVvRBK1muCOzCmJFyCXXuPZVXbtnVrohR+
+         nFTiFs5qn+dPr7WKtxxlUnG+mYjyX//lheTtHuOQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+        Edward Cree <ecree.xilinx@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 420/800] clk: si5341: free unused memory on probe failure
+Subject: [PATCH 6.1 134/591] sfc: fix crash when reading stats while NIC is resetting
 Date:   Sun, 16 Jul 2023 21:44:33 +0200
-Message-ID: <20230716194958.841016390@linuxfoundation.org>
+Message-ID: <20230716194927.341259040@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,84 +57,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Edward Cree <ecree.xilinx@gmail.com>
 
-[ Upstream commit 267ad94b13c53d8c99a336f0841b1fa1595b1d0f ]
+[ Upstream commit d1b355438b8325a486f087e506d412c4e852f37b ]
 
-Pointers from synth_clock_names[] should be freed at the end of probe
-either on probe success or failure path.
+efx_net_stats() (.ndo_get_stats64) can be called during an ethtool
+ selftest, during which time nic_data->mc_stats is NULL as the NIC has
+ been fini'd.  In this case do not attempt to fetch the latest stats
+ from the hardware, else we will crash on a NULL dereference:
+    BUG: kernel NULL pointer dereference, address: 0000000000000038
+    RIP efx_nic_update_stats
+    abridged calltrace:
+    efx_ef10_update_stats_pf
+    efx_net_stats
+    dev_get_stats
+    dev_seq_printf_stats
+Skipping the read is safe, we will simply give out stale stats.
+To ensure that the free in efx_ef10_fini_nic() does not race against
+ efx_ef10_update_stats_pf(), which could cause a TOCTTOU bug, take the
+ efx->stats_lock in fini_nic (it is already held across update_stats).
 
-Fixes: b7bbf6ec4940 ("clk: si5341: Allow different output VDD_SEL values")
-Fixes: 9b13ff4340df ("clk: si5341: Add sysfs properties to allow checking/resetting device faults")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230530093913.1656095-6-claudiu.beznea@microchip.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: d3142c193dca ("sfc: refactor EF10 stats handling")
+Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-si5341.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/sfc/ef10.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
-index b2cf7edc8b308..c7d8cbd22bacc 100644
---- a/drivers/clk/clk-si5341.c
-+++ b/drivers/clk/clk-si5341.c
-@@ -1744,7 +1744,7 @@ static int si5341_probe(struct i2c_client *client)
- 		if (err) {
- 			dev_err(&client->dev,
- 				"output %u registration failed\n", i);
--			goto cleanup;
-+			goto free_clk_names;
- 		}
- 		if (config[i].always_on)
- 			clk_prepare(data->clk[i].hw.clk);
-@@ -1754,7 +1754,7 @@ static int si5341_probe(struct i2c_client *client)
- 			data);
- 	if (err) {
- 		dev_err(&client->dev, "unable to add clk provider\n");
--		goto cleanup;
-+		goto free_clk_names;
- 	}
+diff --git a/drivers/net/ethernet/sfc/ef10.c b/drivers/net/ethernet/sfc/ef10.c
+index b63e47af63655..8c019f382a7f3 100644
+--- a/drivers/net/ethernet/sfc/ef10.c
++++ b/drivers/net/ethernet/sfc/ef10.c
+@@ -1297,8 +1297,10 @@ static void efx_ef10_fini_nic(struct efx_nic *efx)
+ {
+ 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
  
- 	if (initialization_required) {
-@@ -1762,11 +1762,11 @@ static int si5341_probe(struct i2c_client *client)
- 		regcache_cache_only(data->regmap, false);
- 		err = regcache_sync(data->regmap);
- 		if (err < 0)
--			goto cleanup;
-+			goto free_clk_names;
++	spin_lock_bh(&efx->stats_lock);
+ 	kfree(nic_data->mc_stats);
+ 	nic_data->mc_stats = NULL;
++	spin_unlock_bh(&efx->stats_lock);
+ }
  
- 		err = si5341_finalize_defaults(data);
- 		if (err < 0)
--			goto cleanup;
-+			goto free_clk_names;
- 	}
+ static int efx_ef10_init_nic(struct efx_nic *efx)
+@@ -1852,9 +1854,14 @@ static size_t efx_ef10_update_stats_pf(struct efx_nic *efx, u64 *full_stats,
  
- 	/* wait for device to report input clock present and PLL lock */
-@@ -1775,21 +1775,19 @@ static int si5341_probe(struct i2c_client *client)
- 	       10000, 250000);
- 	if (err) {
- 		dev_err(&client->dev, "Error waiting for input clock or PLL lock\n");
--		goto cleanup;
-+		goto free_clk_names;
- 	}
+ 	efx_ef10_get_stat_mask(efx, mask);
  
- 	/* clear sticky alarm bits from initialization */
- 	err = regmap_write(data->regmap, SI5341_STATUS_STICKY, 0);
- 	if (err) {
- 		dev_err(&client->dev, "unable to clear sticky status\n");
--		goto cleanup;
-+		goto free_clk_names;
- 	}
+-	efx_nic_copy_stats(efx, nic_data->mc_stats);
+-	efx_nic_update_stats(efx_ef10_stat_desc, EF10_STAT_COUNT,
+-			     mask, stats, nic_data->mc_stats, false);
++	/* If NIC was fini'd (probably resetting), then we can't read
++	 * updated stats right now.
++	 */
++	if (nic_data->mc_stats) {
++		efx_nic_copy_stats(efx, nic_data->mc_stats);
++		efx_nic_update_stats(efx_ef10_stat_desc, EF10_STAT_COUNT,
++				     mask, stats, nic_data->mc_stats, false);
++	}
  
- 	err = sysfs_create_files(&client->dev.kobj, si5341_attributes);
--	if (err) {
-+	if (err)
- 		dev_err(&client->dev, "unable to create sysfs files\n");
--		goto cleanup;
--	}
- 
- free_clk_names:
- 	/* Free the names, clk framework makes copies */
+ 	/* Update derived statistics */
+ 	efx_nic_fix_nodesc_drop_stat(efx,
 -- 
 2.39.2
 
