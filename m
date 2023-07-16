@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80D11755518
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58AC27552E6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:13:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232371AbjGPUhU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:37:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57834 "EHLO
+        id S231519AbjGPUNR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:13:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232374AbjGPUhT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:37:19 -0400
+        with ESMTP id S231529AbjGPUNQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:13:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F31103
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:37:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E09990
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:13:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5335860EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:37:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE75C433C8;
-        Sun, 16 Jul 2023 20:37:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FBC560E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:13:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B417FC433C7;
+        Sun, 16 Jul 2023 20:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539837;
-        bh=6sI+5E3Tr18K6pGRWCmu0t2jg4B2ooFw+4mx2O9h4cc=;
+        s=korg; t=1689538395;
+        bh=/wGeUWe8BL1f1MtKsA3xbZ543ses7K57FuQrpu4d/lo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nY+iRqtEAZveA9h0cSbcwFvC/APOeq0LUWl9GSB6jD/2I+aJmmpyXVaMnZa+ipwPm
-         XplacHGXfRU9PWKoVH3k6nyF+XqmUbBR3g6UPtLfQkWS3dJgQsReIbb19sPy1/sw+K
-         Bts+C8698BYe9AYn5chO8WeEvkZ4OXFJPwmZ2ss8=
+        b=FyH3sEeNhdGeVJCKR5lbgTgyeJ/MVKjIs1UC7Y8wCM+DVz0ebEnyRjqBVTAO6kNiV
+         zNUNsldtTNoeXic2GZfjIJDgz0otkMOtBtCP3YFbrkjxOrLL3BBPD+k2tWxcZvrQXE
+         R/d12qfoPEb4r59I5dfycCv4GZIn/xO7r02fTYtw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Francesco Dolcini <francesco.dolcini@toradex.com>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/591] drm/bridge: tc358768: fix TCLK_ZEROCNT computation
+        Nirmal Patel <nirmal.patel@linux.intel.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Jon Derrick <jonathan.derrick@linux.dev>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 436/800] PCI: vmd: Reset VMD config register between soft reboots
 Date:   Sun, 16 Jul 2023 21:44:49 +0200
-Message-ID: <20230716194927.746929027@linuxfoundation.org>
+Message-ID: <20230716194959.211673362@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +57,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Nirmal Patel <nirmal.patel@linux.intel.com>
 
-[ Upstream commit f9cf811374f42fca31ac34aaf59ee2ae72b89879 ]
+[ Upstream commit b61cf04c49c3dfa70a0d6725d3eb40bf9b35cf71 ]
 
-Correct computation of TCLK_ZEROCNT register.
+VMD driver can disable or enable MSI remapping by changing
+VMCONFIG_MSI_REMAP register. This register needs to be set to the
+default value during soft reboots. Drives failed to enumerate
+when Windows boots after performing a soft reboot from Linux.
+Windows doesn't support MSI remapping disable feature and stale
+register value hinders Windows VMD driver initialization process.
+Adding vmd_shutdown function to make sure to set the VMCONFIG
+register to the default value.
 
-This register must be set to a value that ensure that
-(TCLK-PREPARECNT + TCLK-ZERO) > 300ns
-
-with the actual value of (TCLK-PREPARECNT + TCLK-ZERO) being
-
-(1 to 2) + (TCLK_ZEROCNT + 1)) x HSByteClkCycle + (PHY output delay)
-
-with PHY output delay being about
-
-(2 to 3) x MIPIBitClk cycle in the BitClk conversion.
-
-Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230427142934.55435-5-francesco@dolcini.it
+Link: https://lore.kernel.org/r/20230224202811.644370-1-nirmal.patel@linux.intel.com
+Fixes: ee81ee84f873 ("PCI: vmd: Disable MSI-X remapping when possible")
+Signed-off-by: Nirmal Patel <nirmal.patel@linux.intel.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Jon Derrick <jonathan.derrick@linux.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/controller/vmd.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
-index 9bc726b79dd57..765bdebbd06f9 100644
---- a/drivers/gpu/drm/bridge/tc358768.c
-+++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -743,10 +743,10 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
+index 990630ec57c6a..30ec18283aaf4 100644
+--- a/drivers/pci/controller/vmd.c
++++ b/drivers/pci/controller/vmd.c
+@@ -1036,6 +1036,13 @@ static void vmd_remove(struct pci_dev *dev)
+ 	ida_simple_remove(&vmd_instance_ida, vmd->instance);
+ }
  
- 	/* 38ns < TCLK_PREPARE < 95ns */
- 	val = tc358768_ns_to_cnt(65, dsibclk_nsk) - 1;
--	/* TCLK_PREPARE > 300ns */
--	val2 = tc358768_ns_to_cnt(300 + tc358768_to_ns(3 * ui_nsk),
--				  dsibclk_nsk);
--	val |= (val2 - tc358768_to_ns(phy_delay_nsk - dsibclk_nsk)) << 8;
-+	/* TCLK_PREPARE + TCLK_ZERO > 300ns */
-+	val2 = tc358768_ns_to_cnt(300 - tc358768_to_ns(2 * ui_nsk),
-+				  dsibclk_nsk) - 2;
-+	val |= val2 << 8;
- 	dev_dbg(priv->dev, "TCLK_HEADERCNT: 0x%x\n", val);
- 	tc358768_write(priv, TC358768_TCLK_HEADERCNT, val);
- 
++static void vmd_shutdown(struct pci_dev *dev)
++{
++        struct vmd_dev *vmd = pci_get_drvdata(dev);
++
++        vmd_remove_irq_domain(vmd);
++}
++
+ #ifdef CONFIG_PM_SLEEP
+ static int vmd_suspend(struct device *dev)
+ {
+@@ -1101,6 +1108,7 @@ static struct pci_driver vmd_drv = {
+ 	.id_table	= vmd_ids,
+ 	.probe		= vmd_probe,
+ 	.remove		= vmd_remove,
++	.shutdown	= vmd_shutdown,
+ 	.driver		= {
+ 		.pm	= &vmd_dev_pm_ops,
+ 	},
 -- 
 2.39.2
 
