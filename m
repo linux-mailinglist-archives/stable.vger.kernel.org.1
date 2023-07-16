@@ -2,211 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5737C75532D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21539755562
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231633AbjGPUQS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:16:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41932 "EHLO
+        id S232519AbjGPUk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:40:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231636AbjGPUQQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:16 -0400
+        with ESMTP id S232524AbjGPUkY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A83CC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC569F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3214960E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EC6C433C7;
-        Sun, 16 Jul 2023 20:16:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CEDE060EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4EAC433C7;
+        Sun, 16 Jul 2023 20:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538573;
-        bh=llTlCzM7qVZO9ZtCK1keGAC3stq2SMv5PEPDyQtoHNM=;
+        s=korg; t=1689540020;
+        bh=oN5GZesW5DeVHv0zzJsWgM/T1GNoayPofxM/GylSqFE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IKwL4zoYw7OIUszXgoG7QUFBz2s+6BNSZc8RRnFLgvE4hmh55A3e/j8nPYKmAu6qV
-         tB+Fds6tgUwCbSrY6cC3twn9DvAb2sS6MLhAe6TJvIyWJ3R+1pyDbPtXVxdpP5ch5C
-         tM7Ewkcdp7OpANvs7WbJsPWpHUh6RhiGXSWH9h+Q=
+        b=u+qahXGllxZUZBneLVSiX+n46MJ76LHZTcrN4iqrtnWNQ5qmALx/AkjGMdgATI1AE
+         OmeG6pCie8f9ylY+mcA7UnYXIJd6UuBedTBKxR1t5vb2cHGvRlrZQ5Go0RQoRvawXz
+         3HQk7VR5SnfrgfmxCVYwx16OkTMyt7vnSm4CUX7A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
+        patches@lists.linux.dev, Markus Mayer <mmayer@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 500/800] modpost: remove broken calculation of exception_table_entry size
+Subject: [PATCH 6.1 214/591] memory: brcmstb_dpfe: fix testing array offset after use
 Date:   Sun, 16 Jul 2023 21:45:53 +0200
-Message-ID: <20230716195000.708275561@linuxfoundation.org>
+Message-ID: <20230716194929.406512907@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d0acc76a49aa917c1a455d11d32d34a01e8b2835 ]
+[ Upstream commit 1d9e93fad549bc38f593147479ee063f2872c170 ]
 
-find_extable_entry_size() is completely broken. It has awesome comments
-about how to calculate sizeof(struct exception_table_entry).
+Code should first check for valid value of array offset, then use it as
+the index.  Fixes smatch warning:
 
-It was based on these assumptions:
+  drivers/memory/brcmstb_dpfe.c:443 __send_command() error: testing array offset 'cmd' after use.
 
-  - struct exception_table_entry has two fields
-  - both of the fields have the same size
-
-Then, we came up with this equation:
-
-  (offset of the second field) * 2 == (size of struct)
-
-It was true for all architectures when commit 52dc0595d540 ("modpost:
-handle relocations mismatch in __ex_table.") was applied.
-
-Our mathematics broke when commit 548acf19234d ("x86/mm: Expand the
-exception table logic to allow new handling options") introduced the
-third field.
-
-Now, the definition of exception_table_entry is highly arch-dependent.
-
-For x86, sizeof(struct exception_table_entry) is apparently 12, but
-find_extable_entry_size() sets extable_entry_size to 8.
-
-I could fix it, but I do not see much value in this code.
-
-extable_entry_size is used just for selecting a slightly different
-error message.
-
-If the first field ("insn") references to a non-executable section,
-
-    The relocation at %s+0x%lx references
-    section "%s" which is not executable, IOW
-    it is not possible for the kernel to fault
-    at that address.  Something is seriously wrong
-    and should be fixed.
-
-If the second field ("fixup") references to a non-executable section,
-
-    The relocation at %s+0x%lx references
-    section "%s" which is not executable, IOW
-    the kernel will fault if it ever tries to
-    jump to it.  Something is seriously wrong
-    and should be fixed.
-
-Merge the two error messages rather than adding even more complexity.
-
-Change fatal() to error() to make it continue running and catch more
-possible errors.
-
-Fixes: 548acf19234d ("x86/mm: Expand the exception table logic to allow new handling options")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 2f330caff577 ("memory: brcmstb: Add driver for DPFE")
+Acked-by: Markus Mayer <mmayer@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20230513112931.176066-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/modpost.c | 60 +++----------------------------------------
- 1 file changed, 3 insertions(+), 57 deletions(-)
+ drivers/memory/brcmstb_dpfe.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index c12150f96b884..9b6e8109af83f 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -1292,43 +1292,6 @@ static int is_executable_section(struct elf_info* elf, unsigned int section_inde
- 	return ((elf->sechdrs[section_index].sh_flags & SHF_EXECINSTR) == SHF_EXECINSTR);
- }
+diff --git a/drivers/memory/brcmstb_dpfe.c b/drivers/memory/brcmstb_dpfe.c
+index 76c82e9c8fceb..9339f80b21c50 100644
+--- a/drivers/memory/brcmstb_dpfe.c
++++ b/drivers/memory/brcmstb_dpfe.c
+@@ -434,15 +434,17 @@ static void __finalize_command(struct brcmstb_dpfe_priv *priv)
+ static int __send_command(struct brcmstb_dpfe_priv *priv, unsigned int cmd,
+ 			  u32 result[])
+ {
+-	const u32 *msg = priv->dpfe_api->command[cmd];
+ 	void __iomem *regs = priv->regs;
+ 	unsigned int i, chksum, chksum_idx;
++	const u32 *msg;
+ 	int ret = 0;
+ 	u32 resp;
  
--/*
-- * We rely on a gross hack in section_rel[a]() calling find_extable_entry_size()
-- * to know the sizeof(struct exception_table_entry) for the target architecture.
-- */
--static unsigned int extable_entry_size = 0;
--static void find_extable_entry_size(const char* const sec, const Elf_Rela* r)
--{
--	/*
--	 * If we're currently checking the second relocation within __ex_table,
--	 * that relocation offset tells us the offsetof(struct
--	 * exception_table_entry, fixup) which is equal to sizeof(struct
--	 * exception_table_entry) divided by two.  We use that to our advantage
--	 * since there's no portable way to get that size as every architecture
--	 * seems to go with different sized types.  Not pretty but better than
--	 * hard-coding the size for every architecture..
--	 */
--	if (!extable_entry_size)
--		extable_entry_size = r->r_offset * 2;
--}
--
--static inline bool is_extable_fault_address(Elf_Rela *r)
--{
--	/*
--	 * extable_entry_size is only discovered after we've handled the
--	 * _second_ relocation in __ex_table, so only abort when we're not
--	 * handling the first reloc and extable_entry_size is zero.
--	 */
--	if (r->r_offset && extable_entry_size == 0)
--		fatal("extable_entry size hasn't been discovered!\n");
--
--	return ((r->r_offset == 0) ||
--		(r->r_offset % extable_entry_size == 0));
--}
--
--#define is_second_extable_reloc(Start, Cur, Sec)			\
--	(((Cur) == (Start) + 1) && (strcmp("__ex_table", (Sec)) == 0))
--
- static void report_extable_warnings(const char* modname, struct elf_info* elf,
- 				    const struct sectioncheck* const mismatch,
- 				    Elf_Rela* r, Elf_Sym* sym,
-@@ -1384,22 +1347,9 @@ static void extable_mismatch_handler(const char* modname, struct elf_info *elf,
- 		      "You might get more information about where this is\n"
- 		      "coming from by using scripts/check_extable.sh %s\n",
- 		      fromsec, (long)r->r_offset, tosec, modname);
--	else if (!is_executable_section(elf, get_secindex(elf, sym))) {
--		if (is_extable_fault_address(r))
--			fatal("The relocation at %s+0x%lx references\n"
--			      "section \"%s\" which is not executable, IOW\n"
--			      "it is not possible for the kernel to fault\n"
--			      "at that address.  Something is seriously wrong\n"
--			      "and should be fixed.\n",
--			      fromsec, (long)r->r_offset, tosec);
--		else
--			fatal("The relocation at %s+0x%lx references\n"
--			      "section \"%s\" which is not executable, IOW\n"
--			      "the kernel will fault if it ever tries to\n"
--			      "jump to it.  Something is seriously wrong\n"
--			      "and should be fixed.\n",
--			      fromsec, (long)r->r_offset, tosec);
--	}
-+	else if (!is_executable_section(elf, get_secindex(elf, sym)))
-+		error("%s+0x%lx references non-executable section '%s'\n",
-+		      fromsec, (long)r->r_offset, tosec);
- }
+ 	if (cmd >= DPFE_CMD_MAX)
+ 		return -1;
  
- static void check_section_mismatch(const char *modname, struct elf_info *elf,
-@@ -1574,8 +1524,6 @@ static void section_rela(const char *modname, struct elf_info *elf,
- 		/* Skip special sections */
- 		if (is_shndx_special(sym->st_shndx))
- 			continue;
--		if (is_second_extable_reloc(start, rela, fromsec))
--			find_extable_entry_size(fromsec, &r);
- 		check_section_mismatch(modname, elf, &r, sym, fromsec);
- 	}
- }
-@@ -1633,8 +1581,6 @@ static void section_rel(const char *modname, struct elf_info *elf,
- 		/* Skip special sections */
- 		if (is_shndx_special(sym->st_shndx))
- 			continue;
--		if (is_second_extable_reloc(start, rel, fromsec))
--			find_extable_entry_size(fromsec, &r);
- 		check_section_mismatch(modname, elf, &r, sym, fromsec);
- 	}
- }
++	msg = priv->dpfe_api->command[cmd];
++
+ 	mutex_lock(&priv->lock);
+ 
+ 	/* Wait for DCPU to become ready */
 -- 
 2.39.2
 
