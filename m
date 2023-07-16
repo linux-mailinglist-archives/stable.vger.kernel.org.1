@@ -2,122 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33F0575534B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1256755580
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231661AbjGPUR3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:17:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43368 "EHLO
+        id S232541AbjGPUlb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:41:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231655AbjGPUR2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95B611BF
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:27 -0700 (PDT)
+        with ESMTP id S232546AbjGPUl3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94BAFBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28BE060E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D712C433C8;
-        Sun, 16 Jul 2023 20:17:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28FC860EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38991C433C8;
+        Sun, 16 Jul 2023 20:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538646;
-        bh=g+3ruqFHovZ8MFFYXii+O9VihbOq6uqSxPTrEf1wkks=;
+        s=korg; t=1689540087;
+        bh=8HAJNczVHP92Z4BKrjpiWGM76WZ6OKvcaIJB8v7GkVc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jsIeF8o1DBNJVJjPkT2vOYCBVV3mpaukIgI4CVuMbRLdEOtmGOB6eX8sRoBJx3DTY
-         UYj90uep/6evCF49LPNzCaWHnLQTBhZTEEUlGHvdfO1IrEV0kVZmtlDtSM10ef+CTq
-         c8iDxkvcjgswph9kMk3BPMbHia749WHrtla2E2ws=
+        b=C4KX5qVlamEkP8Z45h+Ik5GX/zo5KLP/b8IBVKFBXlks9JtxLBlsMeODUceNjMQ3k
+         6OcpYOvahf4UcztNhvIKbmNcPHd5YMbsC6aMj1bXACtQvMJk2nufui5de3oT1tjKwm
+         DT+Y1CQAyFobeaqc+zCRcTKPfnCH9HIyZsrg2BoQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 524/800] block: fix signed int overflow in Amiga partition support
-Date:   Sun, 16 Jul 2023 21:46:17 +0200
-Message-ID: <20230716195001.264062468@linuxfoundation.org>
+        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 239/591] soc: mediatek: SVS: Fix MT8192 GPU node name
+Date:   Sun, 16 Jul 2023 21:46:18 +0200
+Message-ID: <20230716194930.052854013@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-commit fc3d092c6bb48d5865fec15ed5b333c12f36288c upstream.
+[ Upstream commit 95094495401bdf6a0649d220dfd095e6079b5e39 ]
 
-The Amiga partition parser module uses signed int for partition sector
-address and count, which will overflow for disks larger than 1 TB.
+Device tree node names should be generic. The planned device node name
+for the GPU, according to the bindings and posted DT changes, is "gpu",
+not "mali".
 
-Use sector_t as type for sector address and size to allow using disks
-up to 2 TB without LBD support, and disks larger than 2 TB with LBD.
+Fix the GPU node name in the SVS driver to follow.
 
-This bug was reported originally in 2012, and the fix was created by
-the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
-discussed and reviewed on linux-m68k at that time but never officially
-submitted. This patch differs from Joanne's patch only in its use of
-sector_t instead of unsigned int. No checking for overflows is done
-(see patch 3 of this series for that).
-
-Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Message-ID: <201206192146.09327.Martin@lichtvoll.de>
-Cc: <stable@vger.kernel.org> # 5.2
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Tested-by: Martin Steigerwald <Martin@lichtvoll.de>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230620201725.7020-2-schmitzmic@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0bbb09b2af9d ("soc: mediatek: SVS: add mt8192 SVS GPU driver")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Link: https://lore.kernel.org/r/20230531063532.2240038-1-wenst@chromium.org
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/amiga.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/soc/mediatek/mtk-svs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/block/partitions/amiga.c
-+++ b/block/partitions/amiga.c
-@@ -31,7 +31,8 @@ int amiga_partition(struct parsed_partit
- 	unsigned char *data;
- 	struct RigidDiskBlock *rdb;
- 	struct PartitionBlock *pb;
--	int start_sect, nr_sects, blk, part, res = 0;
-+	sector_t start_sect, nr_sects;
-+	int blk, part, res = 0;
- 	int blksize = 1;	/* Multiplier for disk block size */
- 	int slot = 1;
+diff --git a/drivers/soc/mediatek/mtk-svs.c b/drivers/soc/mediatek/mtk-svs.c
+index e55fb16fdc5ac..f00cd5c723499 100644
+--- a/drivers/soc/mediatek/mtk-svs.c
++++ b/drivers/soc/mediatek/mtk-svs.c
+@@ -2114,9 +2114,9 @@ static int svs_mt8192_platform_probe(struct svs_platform *svsp)
+ 		svsb = &svsp->banks[idx];
  
-@@ -96,14 +97,14 @@ int amiga_partition(struct parsed_partit
+ 		if (svsb->type == SVSB_HIGH)
+-			svsb->opp_dev = svs_add_device_link(svsp, "mali");
++			svsb->opp_dev = svs_add_device_link(svsp, "gpu");
+ 		else if (svsb->type == SVSB_LOW)
+-			svsb->opp_dev = svs_get_subsys_device(svsp, "mali");
++			svsb->opp_dev = svs_get_subsys_device(svsp, "gpu");
  
- 		/* Tell Kernel about it */
- 
--		nr_sects = (be32_to_cpu(pb->pb_Environment[10]) + 1 -
--			    be32_to_cpu(pb->pb_Environment[9])) *
-+		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
-+			   be32_to_cpu(pb->pb_Environment[9])) *
- 			   be32_to_cpu(pb->pb_Environment[3]) *
- 			   be32_to_cpu(pb->pb_Environment[5]) *
- 			   blksize;
- 		if (!nr_sects)
- 			continue;
--		start_sect = be32_to_cpu(pb->pb_Environment[9]) *
-+		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
- 			     be32_to_cpu(pb->pb_Environment[3]) *
- 			     be32_to_cpu(pb->pb_Environment[5]) *
- 			     blksize;
+ 		if (IS_ERR(svsb->opp_dev))
+ 			return dev_err_probe(svsp->dev, PTR_ERR(svsb->opp_dev),
+-- 
+2.39.2
+
 
 
