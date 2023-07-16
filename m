@@ -2,123 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 622057556AF
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BD5A75544B
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:28:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232934AbjGPUw6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:52:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41022 "EHLO
+        id S232054AbjGPU2t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:28:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232935AbjGPUw6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F7B4109
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:57 -0700 (PDT)
+        with ESMTP id S232063AbjGPU2t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:28:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C0C6BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:28:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE8BD60DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA66C433C7;
-        Sun, 16 Jul 2023 20:52:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BEDD160EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:28:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48CDC433C8;
+        Sun, 16 Jul 2023 20:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540776;
-        bh=iOL6T904AKaSomWeVSUah6/IhD2adloQI9ifXwaLOSU=;
+        s=korg; t=1689539327;
+        bh=t0q7hWDDmB95pLpmNdBJHani2wC1DX8DURrk7cL5Va8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u1oTXGbqi4z6RV4k9mBfS1ngSxUkKlUAteAY3uD7JyPH0p48QL2Zn8V2s/lReHTjl
-         U4QQG3gSUhtYkMFcwtCHe+/xNTxz9/e0Et8txNsh4stYdyI/FK9tb9Vy7nf8ie/nwi
-         mQz8DCX2wD/518WfJCTOp36uySDLefRNaEItJrS0=
+        b=P9fJm2LvXNWfAE4XvSNqTkpHkwf4kLw7jvpY0FzIgDrqHLHXsT/aQ4OKw9ZCYHimV
+         E0TycvV57VKbwvKpVnR7R5gNxukuy3BRm7lW9J/Karqo2p4suKFTy0tuHdEi8osm7C
+         2byhRz8NDPCVeTJoHwJcs+Yueq4QahGJyC77x7GI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 483/591] Bluetooth: MGMT: add CIS feature bits to controller information
+        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.4 769/800] ARM: dts: qcom: msm8660: Fix regulator node names
 Date:   Sun, 16 Jul 2023 21:50:22 +0200
-Message-ID: <20230716194936.394818225@linuxfoundation.org>
+Message-ID: <20230716195007.011667697@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 2394186a2cefb9a45a029281a55749804dd8c556 ]
+commit a0f19091d4f5bbe97485592257b88007eb5b1998 upstream.
 
-Userspace needs to know whether the adapter has feature support for
-Connected Isochronous Stream - Central/Peripheral, so it can set up
-LE Audio features accordingly.
+commit 04715461abf7 altered the node names in a DTSI file
+used by qcom-apq8060-dragonboard.dts breaking the board.
+Align the node names in the DTS file and the board boots
+again.
 
-Expose these feature bits as settings in MGMT controller info.
-
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 73f55453ea52 ("Bluetooth: MGMT: Fix marking SCAN_RSP as not connectable")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 85055a1eecc1 ("ARM: dts: qcom-msm8660: align RPM regulators node name with bindings")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230414135747.34994-1-linus.walleij@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/mgmt.h |  2 ++
- net/bluetooth/mgmt.c         | 12 ++++++++++++
- 2 files changed, 14 insertions(+)
+ arch/arm/boot/dts/qcom-apq8060-dragonboard.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/bluetooth/mgmt.h b/include/net/bluetooth/mgmt.h
-index 743f6f59dff81..e18a927669c0a 100644
---- a/include/net/bluetooth/mgmt.h
-+++ b/include/net/bluetooth/mgmt.h
-@@ -109,6 +109,8 @@ struct mgmt_rp_read_index_list {
- #define MGMT_SETTING_STATIC_ADDRESS	0x00008000
- #define MGMT_SETTING_PHY_CONFIGURATION	0x00010000
- #define MGMT_SETTING_WIDEBAND_SPEECH	0x00020000
-+#define MGMT_SETTING_CIS_CENTRAL	0x00040000
-+#define MGMT_SETTING_CIS_PERIPHERAL	0x00080000
+--- a/arch/arm/boot/dts/qcom-apq8060-dragonboard.dts
++++ b/arch/arm/boot/dts/qcom-apq8060-dragonboard.dts
+@@ -451,7 +451,7 @@
+ 	 * PM8901 supplies "preliminary regulators" whatever
+ 	 * that means
+ 	 */
+-	pm8901-regulators {
++	regulators-0 {
+ 		vdd_l0-supply = <&pm8901_s4>;
+ 		vdd_l1-supply = <&vph>;
+ 		vdd_l2-supply = <&vph>;
+@@ -537,7 +537,7 @@
  
- #define MGMT_OP_READ_INFO		0x0004
- #define MGMT_READ_INFO_SIZE		0
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index fc4ba0884da96..815f2abe918ef 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -859,6 +859,12 @@ static u32 get_supported_settings(struct hci_dev *hdev)
- 	    hdev->set_bdaddr)
- 		settings |= MGMT_SETTING_CONFIGURATION;
+ 	};
  
-+	if (cis_central_capable(hdev))
-+		settings |= MGMT_SETTING_CIS_CENTRAL;
-+
-+	if (cis_peripheral_capable(hdev))
-+		settings |= MGMT_SETTING_CIS_PERIPHERAL;
-+
- 	settings |= MGMT_SETTING_PHY_CONFIGURATION;
- 
- 	return settings;
-@@ -932,6 +938,12 @@ static u32 get_current_settings(struct hci_dev *hdev)
- 	if (hci_dev_test_flag(hdev, HCI_WIDEBAND_SPEECH_ENABLED))
- 		settings |= MGMT_SETTING_WIDEBAND_SPEECH;
- 
-+	if (cis_central_capable(hdev))
-+		settings |= MGMT_SETTING_CIS_CENTRAL;
-+
-+	if (cis_peripheral_capable(hdev))
-+		settings |= MGMT_SETTING_CIS_PERIPHERAL;
-+
- 	return settings;
- }
- 
--- 
-2.39.2
-
+-	pm8058-regulators {
++	regulators-1 {
+ 		vdd_l0_l1_lvs-supply = <&pm8058_s3>;
+ 		vdd_l2_l11_l12-supply = <&vph>;
+ 		vdd_l3_l4_l5-supply = <&vph>;
 
 
