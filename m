@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 777D97551F8
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 014BC7551F9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:02:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231128AbjGPUCR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:02:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33054 "EHLO
+        id S231136AbjGPUCT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:02:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231135AbjGPUCQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:02:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FFB8A3
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:02:15 -0700 (PDT)
+        with ESMTP id S231135AbjGPUCT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:02:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007319D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:02:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA2FB60EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:02:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D839EC433C8;
-        Sun, 16 Jul 2023 20:02:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 92BE260EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:02:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14A1C433C7;
+        Sun, 16 Jul 2023 20:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537734;
-        bh=gYfdTBs1eIr9Rd4w/07/7LeLBDfJ7HHunX30tXio8Nk=;
+        s=korg; t=1689537737;
+        bh=aSFztE/Hnv/5WU1pSBSgTCzojyVJh2zx9DX9efzEbxE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Scp8j0fq46PXI7+D1BOLgdnQJe4cuV670x2hT3ednqeXzCwqIEEzCRA8RFfNq3NcW
-         /voeiTBBq8vtEef6NPhxwApC+/t4j3vpU7zXzQSaVtnNheYzYjkayUX7IymESXxMlo
-         De5U62LW7vyxxD0tYNzYDVRJx6HAjaamOR9Eqkqk=
+        b=il98ziK4S31kTGt/Ow2ksMgWANXwiw31cJOPulGTslK6xiHAv5FxJZj8FTEvsi9Vb
+         8GeTarzouMg0SI0cQ+ONEH83VdmIubb19hSQt54iPnCpkv79WbN7aTj3WJ+0fHAn1e
+         YLtQgiusRPWgShNMgnzAxRGctixt9+yFbG0ftaYE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-        Kurt Kanzenbach <kurt@linutronix.de>,
         Naama Meir <naamax.meir@linux.intel.com>,
         Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 201/800] igc: Retrieve TX timestamp during interrupt handling
-Date:   Sun, 16 Jul 2023 21:40:54 +0200
-Message-ID: <20230716194953.769006252@linuxfoundation.org>
+Subject: [PATCH 6.4 202/800] igc: Work around HW bug causing missing timestamps
+Date:   Sun, 16 Jul 2023 21:40:55 +0200
+Message-ID: <20230716194953.791529849@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -48,10 +47,10 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -60,155 +59,116 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[ Upstream commit afa141583d82725f682b2fa762cb36a07f58b3f3 ]
+[ Upstream commit c789ad7cbebcac5d5f417296c140a1252c689524 ]
 
-When the interrupt is handled, the TXTT_0 bit in the TSYNCTXCTL
-register should already be set and the timestamp value already loaded
-in the appropriate register.
+There's an hardware issue that can cause missing timestamps. The bug
+is that the interrupt is only cleared if the IGC_TXSTMPH_0 register is
+read.
 
-This simplifies the handling, and reduces the latency for retrieving
-the TX timestamp, which increase the amount of TX timestamps that can
-be handled in a given time period.
+The bug can cause a race condition if a timestamp is captured at the
+wrong time, and we will miss that timestamp. To reduce the time window
+that the problem is able to happen, in case no timestamp was ready, we
+read the "previous" value of the timestamp registers, and we compare
+with the "current" one, if it didn't change we can be reasonably sure
+that no timestamp was captured. If they are different, we use the new
+value as the captured timestamp.
 
-As the "work" function doesn't run in a workqueue anymore, rename it
-to something more sensible, a event handler.
+The HW bug is not easy to reproduce, got to reproduce it when smashing
+the NIC with timestamping requests from multiple applications (e.g.
+multiple ntpperf instances + ptp4l), after 10s of minutes.
 
-Using ntpperf[1] we can see the following performance improvements:
+This workaround has more impact when multiple timestamp registers are
+used, and the IGC_TXSTMPH_0 register always need to be read, so the
+interrupt is cleared.
 
-Before:
-
-$ sudo ./ntpperf -i enp3s0 -m 10:22:22:22:22:21 -d 192.168.1.3 -s 172.18.0.0/16 -I -H -o -37
-               |          responses            |     TX timestamp offset (ns)
-rate   clients |  lost invalid   basic  xleave |    min    mean     max stddev
-1000       100   0.00%   0.00%   0.00% 100.00%      -56      +9     +52     19
-1500       150   0.00%   0.00%   0.00% 100.00%      -40     +30     +75     22
-2250       225   0.00%   0.00%   0.00% 100.00%      -11     +29     +72     15
-3375       337   0.00%   0.00%   0.00% 100.00%      -18     +40     +88     22
-5062       506   0.00%   0.00%   0.00% 100.00%      -19     +23     +77     15
-7593       759   0.00%   0.00%   0.00% 100.00%       +7     +47   +5168     43
-11389     1138   0.00%   0.00%   0.00% 100.00%      -11     +41   +5240     39
-17083     1708   0.00%   0.00%   0.00% 100.00%      +19     +60   +5288     50
-25624     2562   0.00%   0.00%   0.00% 100.00%       +1     +56   +5368     58
-38436     3843   0.00%   0.00%   0.00% 100.00%      -84     +12   +8847     66
-57654     5765   0.00%   0.00% 100.00%   0.00%
-86481     8648   0.00%   0.00% 100.00%   0.00%
-129721   12972   0.00%   0.00% 100.00%   0.00%
-194581   16384   0.00%   0.00% 100.00%   0.00%
-291871   16384  27.35%   0.00%  72.65%   0.00%
-437806   16384  50.05%   0.00%  49.95%   0.00%
-
-After:
-
-$ sudo ./ntpperf -i enp3s0 -m 10:22:22:22:22:21 -d 192.168.1.3 -s 172.18.0.0/16 -I -H -o -37
-               |          responses            |     TX timestamp offset (ns)
-rate   clients |  lost invalid   basic  xleave |    min    mean     max stddev
-1000       100   0.00%   0.00%   0.00% 100.00%      -44      +0     +61     19
-1500       150   0.00%   0.00%   0.00% 100.00%       -6     +39     +81     16
-2250       225   0.00%   0.00%   0.00% 100.00%      -22     +25     +69     15
-3375       337   0.00%   0.00%   0.00% 100.00%      -28     +15     +56     14
-5062       506   0.00%   0.00%   0.00% 100.00%       +7     +78    +143     27
-7593       759   0.00%   0.00%   0.00% 100.00%      -54     +24    +144     47
-11389     1138   0.00%   0.00%   0.00% 100.00%      -90     -33     +28     21
-17083     1708   0.00%   0.00%   0.00% 100.00%      -50      -2     +35     14
-25624     2562   0.00%   0.00%   0.00% 100.00%      -62      +7     +66     23
-38436     3843   0.00%   0.00%   0.00% 100.00%      -33     +30   +5395     36
-57654     5765   0.00%   0.00% 100.00%   0.00%
-86481     8648   0.00%   0.00% 100.00%   0.00%
-129721   12972   0.00%   0.00% 100.00%   0.00%
-194581   16384  19.50%   0.00%  80.50%   0.00%
-291871   16384  35.81%   0.00%  64.19%   0.00%
-437806   16384  55.40%   0.00%  44.60%   0.00%
-
-[1] https://github.com/mlichvar/ntpperf
-
+Fixes: 2c344ae24501 ("igc: Add support for TX timestamping")
 Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
 Tested-by: Naama Meir <naamax.meir@linux.intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: c789ad7cbebc ("igc: Work around HW bug causing missing timestamps")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc.h      |  2 +-
- drivers/net/ethernet/intel/igc/igc_main.c |  2 +-
- drivers/net/ethernet/intel/igc/igc_ptp.c  | 15 +++++----------
- 3 files changed, 7 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 48 ++++++++++++++++++------
+ 1 file changed, 37 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-index 70de8b9bbe591..9dc9b982a7ea6 100644
---- a/drivers/net/ethernet/intel/igc/igc.h
-+++ b/drivers/net/ethernet/intel/igc/igc.h
-@@ -229,7 +229,6 @@ struct igc_adapter {
- 
- 	struct ptp_clock *ptp_clock;
- 	struct ptp_clock_info ptp_caps;
--	struct work_struct ptp_tx_work;
- 	/* Access to ptp_tx_skb and ptp_tx_start are protected by the
- 	 * ptp_tx_lock.
- 	 */
-@@ -666,6 +665,7 @@ int igc_ptp_set_ts_config(struct net_device *netdev, struct ifreq *ifr);
- int igc_ptp_get_ts_config(struct net_device *netdev, struct ifreq *ifr);
- void igc_ptp_tx_hang(struct igc_adapter *adapter);
- void igc_ptp_read(struct igc_adapter *adapter, struct timespec64 *ts);
-+void igc_ptp_tx_tstamp_event(struct igc_adapter *adapter);
- 
- #define igc_rx_pg_size(_ring) (PAGE_SIZE << igc_rx_pg_order(_ring))
- 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index d0c067da7aac8..5f2e8bcd75973 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -5245,7 +5245,7 @@ static void igc_tsync_interrupt(struct igc_adapter *adapter)
- 
- 	if (tsicr & IGC_TSICR_TXTS) {
- 		/* retrieve hardware timestamp */
--		schedule_work(&adapter->ptp_tx_work);
-+		igc_ptp_tx_tstamp_event(adapter);
- 		ack |= IGC_TSICR_TXTS;
- 	}
- 
 diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index 42f622ceb64bb..cf963a12a92fe 100644
+index cf963a12a92fe..32ef112f8291a 100644
 --- a/drivers/net/ethernet/intel/igc/igc_ptp.c
 +++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -540,8 +540,6 @@ static void igc_ptp_clear_tx_tstamp(struct igc_adapter *adapter)
- {
- 	unsigned long flags;
+@@ -685,14 +685,49 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
+ 	struct sk_buff *skb = adapter->ptp_tx_skb;
+ 	struct skb_shared_hwtstamps shhwtstamps;
+ 	struct igc_hw *hw = &adapter->hw;
++	u32 tsynctxctl;
+ 	int adjust = 0;
+ 	u64 regval;
  
--	cancel_work_sync(&adapter->ptp_tx_work);
--
+ 	if (WARN_ON_ONCE(!skb))
+ 		return;
+ 
+-	regval = rd32(IGC_TXSTMPL);
+-	regval |= (u64)rd32(IGC_TXSTMPH) << 32;
++	tsynctxctl = rd32(IGC_TSYNCTXCTL);
++	tsynctxctl &= IGC_TSYNCTXCTL_TXTT_0;
++	if (tsynctxctl) {
++		regval = rd32(IGC_TXSTMPL);
++		regval |= (u64)rd32(IGC_TXSTMPH) << 32;
++	} else {
++		/* There's a bug in the hardware that could cause
++		 * missing interrupts for TX timestamping. The issue
++		 * is that for new interrupts to be triggered, the
++		 * IGC_TXSTMPH_0 register must be read.
++		 *
++		 * To avoid discarding a valid timestamp that just
++		 * happened at the "wrong" time, we need to confirm
++		 * that there was no timestamp captured, we do that by
++		 * assuming that no two timestamps in sequence have
++		 * the same nanosecond value.
++		 *
++		 * So, we read the "low" register, read the "high"
++		 * register (to latch a new timestamp) and read the
++		 * "low" register again, if "old" and "new" versions
++		 * of the "low" register are different, a valid
++		 * timestamp was captured, we can read the "high"
++		 * register again.
++		 */
++		u32 txstmpl_old, txstmpl_new;
++
++		txstmpl_old = rd32(IGC_TXSTMPL);
++		rd32(IGC_TXSTMPH);
++		txstmpl_new = rd32(IGC_TXSTMPL);
++
++		if (txstmpl_old == txstmpl_new)
++			return;
++
++		regval = txstmpl_new;
++		regval |= (u64)rd32(IGC_TXSTMPH) << 32;
++	}
+ 	if (igc_ptp_systim_to_hwtstamp(adapter, &shhwtstamps, regval))
+ 		return;
+ 
+@@ -730,22 +765,13 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
+  */
+ void igc_ptp_tx_tstamp_event(struct igc_adapter *adapter)
+ {
+-	struct igc_hw *hw = &adapter->hw;
+ 	unsigned long flags;
+-	u32 tsynctxctl;
+ 
  	spin_lock_irqsave(&adapter->ptp_tx_lock, flags);
  
- 	dev_kfree_skb_any(adapter->ptp_tx_skb);
-@@ -724,16 +722,14 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
- }
+ 	if (!adapter->ptp_tx_skb)
+ 		goto unlock;
  
- /**
-- * igc_ptp_tx_work
-- * @work: pointer to work struct
-+ * igc_ptp_tx_tstamp_event
-+ * @adapter: board private structure
-  *
-- * This work function checks the TSYNCTXCTL valid bit to determine when
-- * a timestamp has been taken for the current stored skb.
-+ * Called when a TX timestamp interrupt happens to retrieve the
-+ * timestamp and send it up to the socket.
-  */
--static void igc_ptp_tx_work(struct work_struct *work)
-+void igc_ptp_tx_tstamp_event(struct igc_adapter *adapter)
- {
--	struct igc_adapter *adapter = container_of(work, struct igc_adapter,
--						   ptp_tx_work);
- 	struct igc_hw *hw = &adapter->hw;
- 	unsigned long flags;
- 	u32 tsynctxctl;
-@@ -1004,7 +1000,6 @@ void igc_ptp_init(struct igc_adapter *adapter)
+-	tsynctxctl = rd32(IGC_TSYNCTXCTL);
+-	tsynctxctl &= IGC_TSYNCTXCTL_TXTT_0;
+-	if (!tsynctxctl) {
+-		WARN_ONCE(1, "Received a TSTAMP interrupt but no TSTAMP is ready.\n");
+-		goto unlock;
+-	}
+-
+ 	igc_ptp_tx_hwtstamp(adapter);
  
- 	spin_lock_init(&adapter->ptp_tx_lock);
- 	spin_lock_init(&adapter->tmreg_lock);
--	INIT_WORK(&adapter->ptp_tx_work, igc_ptp_tx_work);
- 
- 	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
- 	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
+ unlock:
 -- 
 2.39.2
 
