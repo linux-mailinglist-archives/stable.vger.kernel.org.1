@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7105755559
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3992755351
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232464AbjGPUkG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:40:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59324 "EHLO
+        id S231684AbjGPURn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:17:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232475AbjGPUkF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7AB7D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:04 -0700 (PDT)
+        with ESMTP id S231675AbjGPURm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C02B126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39BB260E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5FAC433C8;
-        Sun, 16 Jul 2023 20:40:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 34B4C60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4462FC433C8;
+        Sun, 16 Jul 2023 20:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540003;
-        bh=DKwoDzISkE9wh3vvu2XI482adqoYiLokyx+1GWjJ6Ik=;
+        s=korg; t=1689538660;
+        bh=/UyJFN8YF2iwl/EKXJKmFOlG+TPPmgaKLa2LZEvvaHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p1RVlB0ZJdpMzqxutY9xi+BNwQVjcYmtU2GiJ9rKeXh86jK3wsIhYSuIR9kcwY69J
-         VrezKEbvbZaXOafMDlzXPOcL5dhK0yaSlG9BNfwcfVNFSROb+HHP+0C6HLJBcVzYD1
-         LLka1BEXQWFSQPTVydSVnXJGx/a3XvO5pGaCIF7E=
+        b=QezsCjqrX9t6INp2zJ4yRVfAOGAC10zzLFrfE1gwXw5aNdvN5HDvawAQYoRo5VNDZ
+         jYGwKt7ppi3kA/EjxEAjKpe5e6NgLBFbhsYpVwnM1TdYEqZ2s50NmdfZpVoouw2ZZ1
+         T8diRfHRvMtQ+i1kfipYuREpGiNMbbhrBLKsZbH8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 209/591] ARM: omap2: fix missing tick_broadcast() prototype
+        patches@lists.linux.dev, Shunsuke Mie <mie@igel.co.jp>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 495/800] PCI: endpoint: Fix a Kconfig prompt of vNTB driver
 Date:   Sun, 16 Jul 2023 21:45:48 +0200
-Message-ID: <20230716194929.279431946@linuxfoundation.org>
+Message-ID: <20230716195000.578892660@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,39 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Shunsuke Mie <mie@igel.co.jp>
 
-[ Upstream commit 861bc1d2886d47bd57a2cbf2cda87fdbe3eb9d08 ]
+[ Upstream commit 37587673cda963ec950e4983db5023802f9b5ff2 ]
 
-omap2 contains a hack to define tick_broadcast() on non-SMP
-configurations in place of the normal SMP definition. This one
-causes a warning because of a missing prototype:
+vNTB driver and NTB driver have same Kconfig prompt. Changed to make it
+distinguishable.
 
-arch/arm/mach-omap2/board-generic.c:44:6: error: no previous prototype for 'tick_broadcast'
-
-Make sure to always include the header with the declaration.
-
-Fixes: d86ad463d670 ("ARM: OMAP2+: Fix regression for using local timer on non-SMP SoCs")
-Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Link: https://lore.kernel.org/r/20230516153109.514251-9-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230202103832.2038286-1-mie@igel.co.jp
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Shunsuke Mie <mie@igel.co.jp>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/board-generic.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/endpoint/functions/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap2/board-generic.c b/arch/arm/mach-omap2/board-generic.c
-index 1610c567a6a3a..10d2f078e4a8e 100644
---- a/arch/arm/mach-omap2/board-generic.c
-+++ b/arch/arm/mach-omap2/board-generic.c
-@@ -13,6 +13,7 @@
- #include <linux/of_platform.h>
- #include <linux/irqdomain.h>
- #include <linux/clocksource.h>
-+#include <linux/clockchips.h>
+diff --git a/drivers/pci/endpoint/functions/Kconfig b/drivers/pci/endpoint/functions/Kconfig
+index 9fd5608868718..8efb6a869e7ce 100644
+--- a/drivers/pci/endpoint/functions/Kconfig
++++ b/drivers/pci/endpoint/functions/Kconfig
+@@ -27,7 +27,7 @@ config PCI_EPF_NTB
+ 	  If in doubt, say "N" to disable Endpoint NTB driver.
  
- #include <asm/setup.h>
- #include <asm/mach/arch.h>
+ config PCI_EPF_VNTB
+-	tristate "PCI Endpoint NTB driver"
++	tristate "PCI Endpoint Virtual NTB driver"
+ 	depends on PCI_ENDPOINT
+ 	depends on NTB
+ 	select CONFIGFS_FS
 -- 
 2.39.2
 
