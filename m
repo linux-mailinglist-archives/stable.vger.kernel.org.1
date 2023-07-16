@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07991755598
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A445755364
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232474AbjGPUmc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:42:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33094 "EHLO
+        id S231703AbjGPUSd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:18:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232558AbjGPUmb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12203D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:31 -0700 (PDT)
+        with ESMTP id S231708AbjGPUSc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C2B126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A17860EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1192C433C8;
-        Sun, 16 Jul 2023 20:42:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CA3A60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40537C433C7;
+        Sun, 16 Jul 2023 20:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540150;
-        bh=AIs4TM6qFhPWaaOEEp0k66DbhXiXWcecuxXuUZIp5rQ=;
+        s=korg; t=1689538710;
+        bh=7zDQq9YlMZNjdo/ueWRSgcT7+mIdw9btaxgvLORz2Fg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yxkwoD5rf0daX3HUWjNfzFGLoPeQvATj3mMY8nU87hmAkuLjxamfy4mdHtIn7GMrd
-         U5InTMM3+7eNvxB0TB5Sk2kCWPCp0QjEocgpT57ZlrCm6bk7cqGgCokP6QaEIVH/tX
-         zWrVu0vICoS+SNdL2bzMBJqdnE5dOixigLJvyRWw=
+        b=NBphDjb8jt1zxIJ5yPAxVIDTVcTi8IXexlLGh6mqq1qCOHp0e9aUV8psF7ehTsM05
+         0uA+/Kl+618Cr4dwCq9RmmjvdGU5huUIhxuZ3cmlp3zBgT9TVRxt8kDsQWJkgNwpTm
+         9jsVzgf23MWxY+P9mLQ/jENslUczR2u1B6T6XRT8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        patches@lists.linux.dev, Stefan Wahren <stefan.wahren@i2se.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 261/591] drm/msm/dpu: Fix slice_last_group_size calculation
-Date:   Sun, 16 Jul 2023 21:46:40 +0200
-Message-ID: <20230716194930.636049998@linuxfoundation.org>
+Subject: [PATCH 6.4 548/800] w1: w1_therm: fix locking behavior in convert_t
+Date:   Sun, 16 Jul 2023 21:46:41 +0200
+Message-ID: <20230716195001.820995556@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,42 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Stefan Wahren <stefan.wahren@i2se.com>
 
-[ Upstream commit c223059e6f8340f7eac2319470984cbfc39c433b ]
+[ Upstream commit dca5480ab7b77a889088ab7cac81934604510ac7 ]
 
-Correct the math for slice_last_group_size so that it matches the
-calculations downstream.
+The commit 67b392f7b8ed ("w1_therm: optimizing temperature read timings")
+accidentially inverted the logic for lock handling of the bus mutex.
 
-Fixes: c110cfd1753e ("drm/msm/disp/dpu1: Add support for DSC")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/539269/
-Link: https://lore.kernel.org/r/20230329-rfc-msm-dsc-helper-v14-7-bafc7be95691@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Before:
+  pullup -> release lock before sleep
+  no pullup -> release lock after sleep
+
+After:
+  pullup -> release lock after sleep
+  no pullup -> release lock before sleep
+
+This cause spurious measurements of 85 degree (powerup value) on the
+Tarragon board with connected 1-w temperature sensor
+(w1_therm.w1_strong_pull=0).
+
+In the meantime a new feature for polling the conversion
+completion has been integrated in these branches with
+commit 021da53e65fd ("w1: w1_therm: Add sysfs entries to control
+conversion time and driver features"). But this feature isn't
+available for parasite power mode, so handle this separately.
+
+Link: https://lore.kernel.org/regressions/2023042645-attentive-amends-7b0b@gregkh/T/
+Fixes: 67b392f7b8ed ("w1_therm: optimizing temperature read timings")
+Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+Link: https://lore.kernel.org/r/20230427112152.12313-1-stefan.wahren@i2se.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/w1/slaves/w1_therm.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-index 3662df698dae5..c8f14555834a8 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-@@ -52,9 +52,10 @@ static void dpu_hw_dsc_config(struct dpu_hw_dsc *hw_dsc,
- 	if (is_cmd_mode)
- 		initial_lines += 1;
+diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
+index 067692626cf07..99c58bd9d2df0 100644
+--- a/drivers/w1/slaves/w1_therm.c
++++ b/drivers/w1/slaves/w1_therm.c
+@@ -1159,29 +1159,26 @@ static int convert_t(struct w1_slave *sl, struct therm_info *info)
  
--	slice_last_group_size = 3 - (dsc->slice_width % 3);
-+	slice_last_group_size = (dsc->slice_width + 2) % 3;
-+
- 	data = (initial_lines << 20);
--	data |= ((slice_last_group_size - 1) << 18);
-+	data |= (slice_last_group_size << 18);
- 	/* bpp is 6.4 format, 4 LSBs bits are for fractional part */
- 	data |= (dsc->bits_per_pixel << 8);
- 	data |= (dsc->block_pred_enable << 7);
+ 			w1_write_8(dev_master, W1_CONVERT_TEMP);
+ 
+-			if (strong_pullup) { /*some device need pullup */
++			if (SLAVE_FEATURES(sl) & W1_THERM_POLL_COMPLETION) {
++				ret = w1_poll_completion(dev_master, W1_POLL_CONVERT_TEMP);
++				if (ret) {
++					dev_dbg(&sl->dev, "%s: Timeout\n", __func__);
++					goto mt_unlock;
++				}
++				mutex_unlock(&dev_master->bus_mutex);
++			} else if (!strong_pullup) { /*no device need pullup */
+ 				sleep_rem = msleep_interruptible(t_conv);
+ 				if (sleep_rem != 0) {
+ 					ret = -EINTR;
+ 					goto mt_unlock;
+ 				}
+ 				mutex_unlock(&dev_master->bus_mutex);
+-			} else { /*no device need pullup */
+-				if (SLAVE_FEATURES(sl) & W1_THERM_POLL_COMPLETION) {
+-					ret = w1_poll_completion(dev_master, W1_POLL_CONVERT_TEMP);
+-					if (ret) {
+-						dev_dbg(&sl->dev, "%s: Timeout\n", __func__);
+-						goto mt_unlock;
+-					}
+-					mutex_unlock(&dev_master->bus_mutex);
+-				} else {
+-					/* Fixed delay */
+-					mutex_unlock(&dev_master->bus_mutex);
+-					sleep_rem = msleep_interruptible(t_conv);
+-					if (sleep_rem != 0) {
+-						ret = -EINTR;
+-						goto dec_refcnt;
+-					}
++			} else { /*some device need pullup */
++				mutex_unlock(&dev_master->bus_mutex);
++				sleep_rem = msleep_interruptible(t_conv);
++				if (sleep_rem != 0) {
++					ret = -EINTR;
++					goto dec_refcnt;
+ 				}
+ 			}
+ 			ret = read_scratchpad(sl, info);
 -- 
 2.39.2
 
