@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94D9E7551FD
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4F58755205
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231143AbjGPUCd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:02:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33172 "EHLO
+        id S231157AbjGPUCy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:02:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231142AbjGPUCc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:02:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D458123
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:02:31 -0700 (PDT)
+        with ESMTP id S231159AbjGPUCx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:02:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98AE7199
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:02:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B794D60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:02:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C614EC433C7;
-        Sun, 16 Jul 2023 20:02:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3305560EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:02:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45564C433C7;
+        Sun, 16 Jul 2023 20:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537748;
-        bh=QSf/KIAm1ANSPVBcpe+CVWX6ZKrcPfCxwR+F7bvvM7s=;
+        s=korg; t=1689537770;
+        bh=D3qR7Rw7TW1U8YX1PfSVsazmVpoFDDLkdJUHAB+QyEg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MWKJIo+FmM5LmOk3eEW7xW/0i7Qx8kzR/3BavJiJDlSY0cqQ2LFky2M7Exmyn8c3b
-         EvLTd9Dz/3blOb+147tkIq0hsqOdnwjGhHIcj4jlq/3ORTrfv0e2TgKEHI4VTQpWeQ
-         3tKijum0rQPgSvTYjSdTzeiGHEWZvZqCb+8lR5kw=
+        b=lE7uOgRCG/5lU8P995dAJAElhmbPSIeDECpl4BnzrfdGypjfm8w/4xoHeDlWpmnw7
+         uLT79KyNgV+q5uzhj0QOTWxUb9iFH5EPkFeeKHgd0MmGFizZwLiX7kVVT4Gfx2fjXp
+         JakvapqccyDlBCWep/AIHkSeoGnVj2omy/Lr41o8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
         Eric Dumazet <edumazet@google.com>,
-        Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 205/800] netlink: do not hard code device address lenth in fdb dumps
-Date:   Sun, 16 Jul 2023 21:40:58 +0200
-Message-ID: <20230716194953.860097669@linuxfoundation.org>
+Subject: [PATCH 6.4 207/800] sch_netem: fix issues in netem_change() vs get_dist_table()
+Date:   Sun, 16 Jul 2023 21:41:00 +0200
+Message-ID: <20230716194953.905401084@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -46,10 +49,10 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,153 +61,148 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit aa5406950726e336c5c9585b09799a734b6e77bf ]
+[ Upstream commit 11b73313c12403f617b47752db0ab3deef201af7 ]
 
-syzbot reports that some netdev devices do not have a six bytes
-address [1]
+In blamed commit, I missed that get_dist_table() was allocating
+memory using GFP_KERNEL, and acquiring qdisc lock to perform
+the swap of newly allocated table with current one.
 
-Replace ETH_ALEN by dev->addr_len.
+In this patch, get_dist_table() is allocating memory and
+copy user data before we acquire the qdisc lock.
 
-[1] (Case of a device where dev->addr_len = 4)
+Then we perform swap operations while being protected by the lock.
 
-BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-BUG: KMSAN: kernel-infoleak in copyout+0xb8/0x100 lib/iov_iter.c:169
-instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-copyout+0xb8/0x100 lib/iov_iter.c:169
-_copy_to_iter+0x6d8/0x1d00 lib/iov_iter.c:536
-copy_to_iter include/linux/uio.h:206 [inline]
-simple_copy_to_iter+0x68/0xa0 net/core/datagram.c:513
-__skb_datagram_iter+0x123/0xdc0 net/core/datagram.c:419
-skb_copy_datagram_iter+0x5c/0x200 net/core/datagram.c:527
-skb_copy_datagram_msg include/linux/skbuff.h:3960 [inline]
-netlink_recvmsg+0x4ae/0x15a0 net/netlink/af_netlink.c:1970
-sock_recvmsg_nosec net/socket.c:1019 [inline]
-sock_recvmsg net/socket.c:1040 [inline]
-____sys_recvmsg+0x283/0x7f0 net/socket.c:2722
-___sys_recvmsg+0x223/0x840 net/socket.c:2764
-do_recvmmsg+0x4f9/0xfd0 net/socket.c:2858
-__sys_recvmmsg net/socket.c:2937 [inline]
-__do_sys_recvmmsg net/socket.c:2960 [inline]
-__se_sys_recvmmsg net/socket.c:2953 [inline]
-__x64_sys_recvmmsg+0x397/0x490 net/socket.c:2953
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Note that after this patch netem_change() no longer can do partial changes.
+If an error is returned, qdisc conf is left unchanged.
 
-Uninit was stored to memory at:
-__nla_put lib/nlattr.c:1009 [inline]
-nla_put+0x1c6/0x230 lib/nlattr.c:1067
-nlmsg_populate_fdb_fill+0x2b8/0x600 net/core/rtnetlink.c:4071
-nlmsg_populate_fdb net/core/rtnetlink.c:4418 [inline]
-ndo_dflt_fdb_dump+0x616/0x840 net/core/rtnetlink.c:4456
-rtnl_fdb_dump+0x14ff/0x1fc0 net/core/rtnetlink.c:4629
-netlink_dump+0x9d1/0x1310 net/netlink/af_netlink.c:2268
-netlink_recvmsg+0xc5c/0x15a0 net/netlink/af_netlink.c:1995
-sock_recvmsg_nosec+0x7a/0x120 net/socket.c:1019
-____sys_recvmsg+0x664/0x7f0 net/socket.c:2720
-___sys_recvmsg+0x223/0x840 net/socket.c:2764
-do_recvmmsg+0x4f9/0xfd0 net/socket.c:2858
-__sys_recvmmsg net/socket.c:2937 [inline]
-__do_sys_recvmmsg net/socket.c:2960 [inline]
-__se_sys_recvmmsg net/socket.c:2953 [inline]
-__x64_sys_recvmmsg+0x397/0x490 net/socket.c:2953
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Uninit was created at:
-slab_post_alloc_hook+0x12d/0xb60 mm/slab.h:716
-slab_alloc_node mm/slub.c:3451 [inline]
-__kmem_cache_alloc_node+0x4ff/0x8b0 mm/slub.c:3490
-kmalloc_trace+0x51/0x200 mm/slab_common.c:1057
-kmalloc include/linux/slab.h:559 [inline]
-__hw_addr_create net/core/dev_addr_lists.c:60 [inline]
-__hw_addr_add_ex+0x2e5/0x9e0 net/core/dev_addr_lists.c:118
-__dev_mc_add net/core/dev_addr_lists.c:867 [inline]
-dev_mc_add+0x9a/0x130 net/core/dev_addr_lists.c:885
-igmp6_group_added+0x267/0xbc0 net/ipv6/mcast.c:680
-ipv6_mc_up+0x296/0x3b0 net/ipv6/mcast.c:2754
-ipv6_mc_remap+0x1e/0x30 net/ipv6/mcast.c:2708
-addrconf_type_change net/ipv6/addrconf.c:3731 [inline]
-addrconf_notify+0x4d3/0x1d90 net/ipv6/addrconf.c:3699
-notifier_call_chain kernel/notifier.c:93 [inline]
-raw_notifier_call_chain+0xe4/0x430 kernel/notifier.c:461
-call_netdevice_notifiers_info net/core/dev.c:1935 [inline]
-call_netdevice_notifiers_extack net/core/dev.c:1973 [inline]
-call_netdevice_notifiers+0x1ee/0x2d0 net/core/dev.c:1987
-bond_enslave+0xccd/0x53f0 drivers/net/bonding/bond_main.c:1906
-do_set_master net/core/rtnetlink.c:2626 [inline]
-rtnl_newlink_create net/core/rtnetlink.c:3460 [inline]
-__rtnl_newlink net/core/rtnetlink.c:3660 [inline]
-rtnl_newlink+0x378c/0x40e0 net/core/rtnetlink.c:3673
-rtnetlink_rcv_msg+0x16a6/0x1840 net/core/rtnetlink.c:6395
-netlink_rcv_skb+0x371/0x650 net/netlink/af_netlink.c:2546
-rtnetlink_rcv+0x34/0x40 net/core/rtnetlink.c:6413
-netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-netlink_unicast+0xf28/0x1230 net/netlink/af_netlink.c:1365
-netlink_sendmsg+0x122f/0x13d0 net/netlink/af_netlink.c:1913
-sock_sendmsg_nosec net/socket.c:724 [inline]
-sock_sendmsg net/socket.c:747 [inline]
-____sys_sendmsg+0x999/0xd50 net/socket.c:2503
-___sys_sendmsg+0x28d/0x3c0 net/socket.c:2557
-__sys_sendmsg net/socket.c:2586 [inline]
-__do_sys_sendmsg net/socket.c:2595 [inline]
-__se_sys_sendmsg net/socket.c:2593 [inline]
-__x64_sys_sendmsg+0x304/0x490 net/socket.c:2593
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Bytes 2856-2857 of 3500 are uninitialized
-Memory access of size 3500 starts at ffff888018d99104
-Data copied to user address 0000000020000480
-
-Fixes: d83b06036048 ("net: add fdb generic dump routine")
+Fixes: 2174a08db80d ("sch_netem: acquire qdisc lock in netem_change()")
 Reported-by: syzbot <syzkaller@googlegroups.com>
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20230621174720.1845040-1-edumazet@google.com
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230622181503.2327695-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/sched/sch_netem.c | 59 ++++++++++++++++++-------------------------
+ 1 file changed, 25 insertions(+), 34 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index d1815122298d5..2fe6a3379aaed 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -4096,7 +4096,7 @@ static int nlmsg_populate_fdb_fill(struct sk_buff *skb,
- 	ndm->ndm_ifindex = dev->ifindex;
- 	ndm->ndm_state   = ndm_state;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index e79be1b3e74da..b93ec2a3454eb 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -773,12 +773,10 @@ static void dist_free(struct disttable *d)
+  * signed 16 bit values.
+  */
  
--	if (nla_put(skb, NDA_LLADDR, ETH_ALEN, addr))
-+	if (nla_put(skb, NDA_LLADDR, dev->addr_len, addr))
- 		goto nla_put_failure;
- 	if (vid)
- 		if (nla_put(skb, NDA_VLAN, sizeof(u16), &vid))
-@@ -4110,10 +4110,10 @@ static int nlmsg_populate_fdb_fill(struct sk_buff *skb,
- 	return -EMSGSIZE;
- }
- 
--static inline size_t rtnl_fdb_nlmsg_size(void)
-+static inline size_t rtnl_fdb_nlmsg_size(const struct net_device *dev)
+-static int get_dist_table(struct Qdisc *sch, struct disttable **tbl,
+-			  const struct nlattr *attr)
++static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
  {
- 	return NLMSG_ALIGN(sizeof(struct ndmsg)) +
--	       nla_total_size(ETH_ALEN) +	/* NDA_LLADDR */
-+	       nla_total_size(dev->addr_len) +	/* NDA_LLADDR */
- 	       nla_total_size(sizeof(u16)) +	/* NDA_VLAN */
- 	       0;
+ 	size_t n = nla_len(attr)/sizeof(__s16);
+ 	const __s16 *data = nla_data(attr);
+-	spinlock_t *root_lock;
+ 	struct disttable *d;
+ 	int i;
+ 
+@@ -793,13 +791,7 @@ static int get_dist_table(struct Qdisc *sch, struct disttable **tbl,
+ 	for (i = 0; i < n; i++)
+ 		d->table[i] = data[i];
+ 
+-	root_lock = qdisc_root_sleeping_lock(sch);
+-
+-	spin_lock_bh(root_lock);
+-	swap(*tbl, d);
+-	spin_unlock_bh(root_lock);
+-
+-	dist_free(d);
++	*tbl = d;
+ 	return 0;
  }
-@@ -4125,7 +4125,7 @@ static void rtnl_fdb_notify(struct net_device *dev, u8 *addr, u16 vid, int type,
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
  
--	skb = nlmsg_new(rtnl_fdb_nlmsg_size(), GFP_ATOMIC);
-+	skb = nlmsg_new(rtnl_fdb_nlmsg_size(dev), GFP_ATOMIC);
- 	if (!skb)
- 		goto errout;
+@@ -956,6 +948,8 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ {
+ 	struct netem_sched_data *q = qdisc_priv(sch);
+ 	struct nlattr *tb[TCA_NETEM_MAX + 1];
++	struct disttable *delay_dist = NULL;
++	struct disttable *slot_dist = NULL;
+ 	struct tc_netem_qopt *qopt;
+ 	struct clgstate old_clg;
+ 	int old_loss_model = CLG_RANDOM;
+@@ -966,6 +960,18 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	if (ret < 0)
+ 		return ret;
  
++	if (tb[TCA_NETEM_DELAY_DIST]) {
++		ret = get_dist_table(&delay_dist, tb[TCA_NETEM_DELAY_DIST]);
++		if (ret)
++			goto table_free;
++	}
++
++	if (tb[TCA_NETEM_SLOT_DIST]) {
++		ret = get_dist_table(&slot_dist, tb[TCA_NETEM_SLOT_DIST]);
++		if (ret)
++			goto table_free;
++	}
++
+ 	sch_tree_lock(sch);
+ 	/* backup q->clg and q->loss_model */
+ 	old_clg = q->clg;
+@@ -975,26 +981,17 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 		ret = get_loss_clg(q, tb[TCA_NETEM_LOSS]);
+ 		if (ret) {
+ 			q->loss_model = old_loss_model;
++			q->clg = old_clg;
+ 			goto unlock;
+ 		}
+ 	} else {
+ 		q->loss_model = CLG_RANDOM;
+ 	}
+ 
+-	if (tb[TCA_NETEM_DELAY_DIST]) {
+-		ret = get_dist_table(sch, &q->delay_dist,
+-				     tb[TCA_NETEM_DELAY_DIST]);
+-		if (ret)
+-			goto get_table_failure;
+-	}
+-
+-	if (tb[TCA_NETEM_SLOT_DIST]) {
+-		ret = get_dist_table(sch, &q->slot_dist,
+-				     tb[TCA_NETEM_SLOT_DIST]);
+-		if (ret)
+-			goto get_table_failure;
+-	}
+-
++	if (delay_dist)
++		swap(q->delay_dist, delay_dist);
++	if (slot_dist)
++		swap(q->slot_dist, slot_dist);
+ 	sch->limit = qopt->limit;
+ 
+ 	q->latency = PSCHED_TICKS2NS(qopt->latency);
+@@ -1044,17 +1041,11 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 
+ unlock:
+ 	sch_tree_unlock(sch);
+-	return ret;
+ 
+-get_table_failure:
+-	/* recover clg and loss_model, in case of
+-	 * q->clg and q->loss_model were modified
+-	 * in get_loss_clg()
+-	 */
+-	q->clg = old_clg;
+-	q->loss_model = old_loss_model;
+-
+-	goto unlock;
++table_free:
++	dist_free(delay_dist);
++	dist_free(slot_dist);
++	return ret;
+ }
+ 
+ static int netem_init(struct Qdisc *sch, struct nlattr *opt,
 -- 
 2.39.2
 
