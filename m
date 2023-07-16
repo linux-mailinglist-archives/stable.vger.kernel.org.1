@@ -2,117 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8E3755624
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37E2B7553C0
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:22:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232749AbjGPUsA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:48:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37096 "EHLO
+        id S231852AbjGPUWe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:22:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232771AbjGPUr6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:47:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CDBCD9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:47:57 -0700 (PDT)
+        with ESMTP id S231844AbjGPUWd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 233599F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D59F060EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:47:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59F7C433C9;
-        Sun, 16 Jul 2023 20:47:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B466360EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED83C433C8;
+        Sun, 16 Jul 2023 20:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540476;
-        bh=ESw5PTgcFGhXVY9B/ul/ln1wXI8h8W1NvvrvvZA0/NY=;
+        s=korg; t=1689538952;
+        bh=IX9g3VATn63s/wmhFRgR5k1LRVqlkZ/xUZzZPPCGzSY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cYbKXLKf6ePto8vGv6WGI/LHWL5fxM+Smf2Cl0ur/4JsGZt0lF6oSc/jYLriDitTg
-         pZu7R6lB08F9eWSi6fH+13FzGaQE5q7c2GGpSkZSZxxv2fCHpaDNnYabJaYFVYKhgz
-         75sswULTJmWgGhbyttQO5afWSofER7fGclpoK9ls=
+        b=G0U8s8+Qb13GT1o5LGqVezI6iG6lZRUR2lAx4LVqBusdWJfj252dzVbIY1M3XY+A2
+         xvJbzb70Nd5AQevJ8j0H4aKJCAOXkkSWSCg76/Xapm5lq1HUVMj/AejoNokID9P/Uf
+         nkBWODWycqm06vaBuTICh6yzv5SK8sbS0oayZZF8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Talpey <tom@talpey.com>,
-        Bharath SM <bharathsm@microsoft.com>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 349/591] SMB3: Do not send lease break acknowledgment if all file handles have been closed
+        patches@lists.linux.dev,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 635/800] mfd: stmfx: Nullify stmfx->vdd in case of error
 Date:   Sun, 16 Jul 2023 21:48:08 +0200
-Message-ID: <20230716194932.940800729@linuxfoundation.org>
+Message-ID: <20230716195003.862191121@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-[ Upstream commit da787d5b74983f7525d1eb4b9c0b4aff2821511a ]
+[ Upstream commit 7c81582c0bccb4757186176f0ee12834597066ad ]
 
-In case if all existing file handles are deferred handles and if all of
-them gets closed due to handle lease break then we dont need to send
-lease break acknowledgment to server, because last handle close will be
-considered as lease break ack.
-After closing deferred handels, we check for openfile list of inode,
-if its empty then we skip sending lease break ack.
+Nullify stmfx->vdd in case devm_regulator_get_optional() returns an error.
+And simplify code by returning an error only if return code is not -ENODEV,
+which means there is no vdd regulator and it is not an issue.
 
-Fixes: 59a556aebc43 ("SMB3: drop reference to cfile before sending oplock break")
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: d75846ed08e6 ("mfd: stmfx: Fix dev_err_probe() call in stmfx_chip_init()")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Link: https://lore.kernel.org/r/20230609092804.793100-2-amelie.delaunay@foss.st.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/file.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/mfd/stmfx.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 87dcffece7623..9a367d4c74e47 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -5140,20 +5140,19 @@ void cifs_oplock_break(struct work_struct *work)
+diff --git a/drivers/mfd/stmfx.c b/drivers/mfd/stmfx.c
+index bfe89df276112..76188212c66eb 100644
+--- a/drivers/mfd/stmfx.c
++++ b/drivers/mfd/stmfx.c
+@@ -330,9 +330,8 @@ static int stmfx_chip_init(struct i2c_client *client)
+ 	stmfx->vdd = devm_regulator_get_optional(&client->dev, "vdd");
+ 	ret = PTR_ERR_OR_ZERO(stmfx->vdd);
+ 	if (ret) {
+-		if (ret == -ENODEV)
+-			stmfx->vdd = NULL;
+-		else
++		stmfx->vdd = NULL;
++		if (ret != -ENODEV)
+ 			return dev_err_probe(&client->dev, ret, "Failed to get VDD regulator\n");
+ 	}
  
- 	_cifsFileInfo_put(cfile, false /* do not wait for ourself */, false);
- 	/*
--	 * releasing stale oplock after recent reconnect of smb session using
--	 * a now incorrect file handle is not a data integrity issue but do
--	 * not bother sending an oplock release if session to server still is
--	 * disconnected since oplock already released by the server
-+	 * MS-SMB2 3.2.5.19.1 and 3.2.5.19.2 (and MS-CIFS 3.2.5.42) do not require
-+	 * an acknowledgment to be sent when the file has already been closed.
-+	 * check for server null, since can race with kill_sb calling tree disconnect.
- 	 */
--	if (!oplock_break_cancelled) {
--		/* check for server null since can race with kill_sb calling tree disconnect */
--		if (tcon->ses && tcon->ses->server) {
--			rc = tcon->ses->server->ops->oplock_response(tcon, persistent_fid,
--				volatile_fid, net_fid, cinode);
--			cifs_dbg(FYI, "Oplock release rc = %d\n", rc);
--		} else
--			pr_warn_once("lease break not sent for unmounted share\n");
--	}
-+	spin_lock(&cinode->open_file_lock);
-+	if (tcon->ses && tcon->ses->server && !oplock_break_cancelled &&
-+					!list_empty(&cinode->openFileList)) {
-+		spin_unlock(&cinode->open_file_lock);
-+		rc = tcon->ses->server->ops->oplock_response(tcon, persistent_fid,
-+						volatile_fid, net_fid, cinode);
-+		cifs_dbg(FYI, "Oplock release rc = %d\n", rc);
-+	} else
-+		spin_unlock(&cinode->open_file_lock);
- 
- 	cifs_done_oplock_break(cinode);
- }
 -- 
 2.39.2
 
