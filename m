@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D98CA755451
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFCB07556B4
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:53:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232070AbjGPU3G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:29:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50798 "EHLO
+        id S232935AbjGPUxM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:53:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232073AbjGPU3F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:05 -0400
+        with ESMTP id S232943AbjGPUxM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:53:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47D89F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65CAB10D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:53:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6890E60EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735AFC433C7;
-        Sun, 16 Jul 2023 20:29:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E98A560E2C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:53:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04941C433C9;
+        Sun, 16 Jul 2023 20:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539343;
-        bh=QJo7hMnKjNvCErSeuQpWNr0b5EOJDH+mwZwQH30bBtQ=;
+        s=korg; t=1689540790;
+        bh=hKNWUXNZcOWVuU1YDo7CVRHECdh+lhkt/o3IYjMKjcg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kZvfF/glFTlN9K3yfcUNGoPHkrGAO8V/3aUlSP4QDlFv3M382i8evsxVlHPG99NCr
-         Kixn3x1yGKL8lK8cuwVuKp2UJxzgr9JRgtiDWNM8nQ3F1yz09sqzeXY7kQJV0ib+Ft
-         xfv05N8KSO3I249/+NSk2EgGgeinXOrj2W7cvsB4=
+        b=gAq2+m8/mQOOD7HXNzmOXRI71IGb2RgJWjtcVNvJgFraYVzVw2Cg5Q2z+M2WZIGil
+         2ZPaTt2Q2Bp54hgT2HMn0S6R+3lokFHiRi0PYNR6kPNMFMpHOoJ9jzt6xw6Vy0yD6C
+         RoXI6cVs3Lwu9UDRnzzDLzdOz5DI526XUH3nN/ng=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.4 774/800] Input: ads7846 - Fix usage of match data
+        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 488/591] mlxsw: minimal: fix potential memory leak in mlxsw_m_linecards_init
 Date:   Sun, 16 Jul 2023 21:50:27 +0200
-Message-ID: <20230716195007.126529199@linuxfoundation.org>
+Message-ID: <20230716194936.519359049@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,47 +57,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-commit 8f7913c04f6a7b90bcf998ece17395d7090f6d44 upstream.
+[ Upstream commit 08fc75735fda3be97194bfbf3c899c87abb3d0fe ]
 
-device_get_match_data() returns the match data directly, fix
-this up and fix the probe crash.
+The line cards array is not freed in the error path of
+mlxsw_m_linecards_init(), which can lead to a memory leak. Fix by
+freeing the array in the error path, thereby making the error path
+identical to mlxsw_m_linecards_fini().
 
-Fixes: 767d83361aaa ("Input: ads7846 - Convert to use software nodes")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20230606191304.3804174-1-linus.walleij@linaro.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 01328e23a476 ("mlxsw: minimal: Extend module to port mapping with slot index")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/20230630012647.1078002-1-shaozhengchao@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/ads7846.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/minimal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/input/touchscreen/ads7846.c
-+++ b/drivers/input/touchscreen/ads7846.c
-@@ -1117,20 +1117,13 @@ MODULE_DEVICE_TABLE(of, ads7846_dt_ids);
- static const struct ads7846_platform_data *ads7846_get_props(struct device *dev)
- {
- 	struct ads7846_platform_data *pdata;
--	const struct platform_device_id *pdev_id;
- 	u32 value;
- 
--	pdev_id = device_get_match_data(dev);
--	if (!pdev_id) {
--		dev_err(dev, "Unknown device model\n");
--		return ERR_PTR(-EINVAL);
--	}
--
- 	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
- 	if (!pdata)
- 		return ERR_PTR(-ENOMEM);
- 
--	pdata->model = (unsigned long)pdev_id->driver_data;
-+	pdata->model = (u32)device_get_match_data(dev);
- 
- 	device_property_read_u16(dev, "ti,vref-delay-usecs",
- 				 &pdata->vref_delay_usecs);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/minimal.c b/drivers/net/ethernet/mellanox/mlxsw/minimal.c
+index 55b3c42bb0071..15116d9305f8e 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/minimal.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/minimal.c
+@@ -430,6 +430,7 @@ static int mlxsw_m_linecards_init(struct mlxsw_m *mlxsw_m)
+ err_kmalloc_array:
+ 	for (i--; i >= 0; i--)
+ 		kfree(mlxsw_m->line_cards[i]);
++	kfree(mlxsw_m->line_cards);
+ err_kcalloc:
+ 	kfree(mlxsw_m->ports);
+ 	return err;
+-- 
+2.39.2
+
 
 
