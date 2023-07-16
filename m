@@ -2,99 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82775755298
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 982297554D0
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231379AbjGPUJn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38020 "EHLO
+        id S232331AbjGPUeh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:34:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231378AbjGPUJm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:09:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4CDD9D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:09:41 -0700 (PDT)
+        with ESMTP id S232304AbjGPUeh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45175BA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A26E60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:09:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7926EC433C7;
-        Sun, 16 Jul 2023 20:09:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D97D960EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E23C433C7;
+        Sun, 16 Jul 2023 20:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538180;
-        bh=UiqqXZ++JBiFTwwcgou0jjN6pHlQiMzC22X5bmzRlAU=;
+        s=korg; t=1689539675;
+        bh=/cbw91GvUaxkY+uphb9z/G+ChWUnLk4wExz/DElnENc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jK+8dxESpZu2UdTY9SLu+pLAVbFx4jh9kNV54XJnz7T0cLHN4WauUDB74ddhzvNnY
-         nymVvUBHSCioXoo2rl70sYQKMxYTOumYFM1twQr/nCoMu2m16bVDbotNFf03kN37mg
-         bNq48A/yrCCFEd0Hku6qPYrbAjhQ505I0IPTQK8Q=
+        b=otUZtVf+IE1p3hP3GNejzUBUNmvBwOecVmatXMqYe8Wst2yf2HZuqbficCp60qTWI
+         JTx4vbIgI7z0C6OAv3xTTFLsLXFFyrK9DzROORcCAk0aTUDBkfqqQtt77XHTaABuOY
+         cCJJyvuOZ2TRV2By4Wx6UYl8AGMPKz43XWfZbUIs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tim Harvey <tharvey@gateworks.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 360/800] hwmon: (gsc-hwmon) fix fan pwm temperature scaling
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 074/591] wifi: mwifiex: Fix the size of a memory allocation in mwifiex_ret_802_11_scan()
 Date:   Sun, 16 Jul 2023 21:43:33 +0200
-Message-ID: <20230716194957.441780408@linuxfoundation.org>
+Message-ID: <20230716194925.800475528@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit a6d80df47ee2c69db99e4f2f8871aa4db154620b ]
+[ Upstream commit d9aef04fcfa81ee4fb2804a21a3712b7bbd936af ]
 
-The GSC fan pwm temperature register is in centidegrees celcius but the
-Linux hwmon convention is to use milidegrees celcius. Fix the scaling.
+The type of "mwifiex_adapter->nd_info" is "struct cfg80211_wowlan_nd_info",
+not "struct cfg80211_wowlan_nd_match".
 
-Fixes: 3bce5377ef66 ("hwmon: Add Gateworks System Controller support")
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Link: https://lore.kernel.org/r/20230606153004.1448086-1-tharvey@gateworks.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Use struct_size() to ease the computation of the needed size.
+
+The current code over-allocates some memory, so is safe.
+But it wastes 32 bytes.
+
+Fixes: 7d7f07d8c5d3 ("mwifiex: add wowlan net-detect support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/7a6074fb056d2181e058a3cc6048d8155c20aec7.1683371982.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/gsc-hwmon.c | 6 +++---
+ drivers/net/wireless/marvell/mwifiex/scan.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/gsc-hwmon.c b/drivers/hwmon/gsc-hwmon.c
-index 73e5d92b200b0..1501ceb551e79 100644
---- a/drivers/hwmon/gsc-hwmon.c
-+++ b/drivers/hwmon/gsc-hwmon.c
-@@ -82,8 +82,8 @@ static ssize_t pwm_auto_point_temp_store(struct device *dev,
- 	if (kstrtol(buf, 10, &temp))
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index ac8001c842935..644b1e134b01c 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -2187,9 +2187,9 @@ int mwifiex_ret_802_11_scan(struct mwifiex_private *priv,
  
--	temp = clamp_val(temp, 0, 10000);
--	temp = DIV_ROUND_CLOSEST(temp, 10);
-+	temp = clamp_val(temp, 0, 100000);
-+	temp = DIV_ROUND_CLOSEST(temp, 100);
+ 	if (nd_config) {
+ 		adapter->nd_info =
+-			kzalloc(sizeof(struct cfg80211_wowlan_nd_match) +
+-				sizeof(struct cfg80211_wowlan_nd_match *) *
+-				scan_rsp->number_of_sets, GFP_ATOMIC);
++			kzalloc(struct_size(adapter->nd_info, matches,
++					    scan_rsp->number_of_sets),
++				GFP_ATOMIC);
  
- 	regs[0] = temp & 0xff;
- 	regs[1] = (temp >> 8) & 0xff;
-@@ -100,7 +100,7 @@ static ssize_t pwm_auto_point_pwm_show(struct device *dev,
- {
- 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
- 
--	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)) / 100);
-+	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)));
- }
- 
- static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point1_pwm, pwm_auto_point_pwm, 0);
+ 		if (adapter->nd_info)
+ 			adapter->nd_info->n_matches = scan_rsp->number_of_sets;
 -- 
 2.39.2
 
