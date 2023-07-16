@@ -2,103 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FC597552D6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE1B755519
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:37:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231506AbjGPUMe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:12:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39882 "EHLO
+        id S232382AbjGPUhX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:37:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231486AbjGPUMc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:12:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 150BC90
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:12:31 -0700 (PDT)
+        with ESMTP id S232374AbjGPUhW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:37:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4C7D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:37:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E48560E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:12:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDECC433C9;
-        Sun, 16 Jul 2023 20:12:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D50660E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:37:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F945C433C7;
+        Sun, 16 Jul 2023 20:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538350;
-        bh=7pWwn1HJ76qqQSBtHTRw0FgRArX4N6PElcbsAba4Y9M=;
+        s=korg; t=1689539840;
+        bh=zlvEsLOkG4kkRovVqDbJ/93nGlrHZJk91USNVtd+s3o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EJAyvpVOBeXwyMP54s8wcHuW8PVTYIgSBS4vxd6PQw4LWyxzvJN08fV1jFzyDuYz+
-         GrNuGQ5uf8MOhqLPoW6M9bvTkZ8aQBoEd8g5fCrHyLuSiL8u+V2+gmFybQnse/1JmM
-         L5eNgfZd5E2B7p1LwHb1B48PnBkAF/KFwHzilRzU=
+        b=b5weafPEtdS/gKENiwZq5UuQ7c2CxOBY4obptueMzg3kHOWTetQvd02rCtY+SbILa
+         Dyi6UOnhz3nGmrLo7mDxwwC3DEuwiowMc0hzFU10BIkO6efqlEz3ubudUMQhjMu+sp
+         xP90touTfvjWbmajmFT33tf9X8hz5WVBv7Nwc/Yg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Kurt Hackel <kurt.hackel@oracle.com>,
+        Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        ocfs2-devel@oss.oracle.com, Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 419/800] clk: si5341: check return value of {devm_}kasprintf()
+Subject: [PATCH 6.1 133/591] ocfs2: Fix use of slab data with sendpage
 Date:   Sun, 16 Jul 2023 21:44:32 +0200
-Message-ID: <20230716194958.818298977@linuxfoundation.org>
+Message-ID: <20230716194927.316678989@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 36e4ef82016a2b785cf2317eade77e76699b7bff ]
+[ Upstream commit 86d7bd6e66e9925f0f04a7bcf3c92c05fdfefb5a ]
 
-{devm_}kasprintf() returns a pointer to dynamically allocated memory.
-Pointer could be NULL in case allocation fails. Check pointer validity.
-Identified with coccinelle (kmerr.cocci script).
+ocfs2 uses kzalloc() to allocate buffers for o2net_hand, o2net_keep_req and
+o2net_keep_resp and then passes these to sendpage.  This isn't really
+allowed as the lifetime of slab objects is not controlled by page ref -
+though in this case it will probably work.  sendmsg() with MSG_SPLICE_PAGES
+will, however, print a warning and give an error.
 
-Fixes: 3044a860fd09 ("clk: Add Si5341/Si5340 driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230530093913.1656095-5-claudiu.beznea@microchip.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fix it to use folio_alloc() instead to allocate a buffer for the handshake
+message, keepalive request and reply messages.
+
+Fixes: 98211489d414 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Mark Fasheh <mark@fasheh.com>
+cc: Kurt Hackel <kurt.hackel@oracle.com>
+cc: Joel Becker <jlbec@evilplan.org>
+cc: Joseph Qi <joseph.qi@linux.alibaba.com>
+cc: ocfs2-devel@oss.oracle.com
+Link: https://lore.kernel.org/r/20230623225513.2732256-14-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-si5341.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ocfs2/cluster/tcp.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
-index 6dca3288c8940..b2cf7edc8b308 100644
---- a/drivers/clk/clk-si5341.c
-+++ b/drivers/clk/clk-si5341.c
-@@ -1697,6 +1697,10 @@ static int si5341_probe(struct i2c_client *client)
- 	for (i = 0; i < data->num_synth; ++i) {
- 		synth_clock_names[i] = devm_kasprintf(&client->dev, GFP_KERNEL,
- 				"%s.N%u", client->dev.of_node->name, i);
-+		if (!synth_clock_names[i]) {
-+			err = -ENOMEM;
-+			goto free_clk_names;
-+		}
- 		init.name = synth_clock_names[i];
- 		data->synth[i].index = i;
- 		data->synth[i].data = data;
-@@ -1715,6 +1719,10 @@ static int si5341_probe(struct i2c_client *client)
- 	for (i = 0; i < data->num_outputs; ++i) {
- 		init.name = kasprintf(GFP_KERNEL, "%s.%d",
- 			client->dev.of_node->name, i);
-+		if (!init.name) {
-+			err = -ENOMEM;
-+			goto free_clk_names;
-+		}
- 		init.flags = config[i].synth_master ? CLK_SET_RATE_PARENT : 0;
- 		data->clk[i].index = i;
- 		data->clk[i].data = data;
+diff --git a/fs/ocfs2/cluster/tcp.c b/fs/ocfs2/cluster/tcp.c
+index 785cabd71d670..4e083e25d0e7d 100644
+--- a/fs/ocfs2/cluster/tcp.c
++++ b/fs/ocfs2/cluster/tcp.c
+@@ -2083,18 +2083,24 @@ void o2net_stop_listening(struct o2nm_node *node)
+ 
+ int o2net_init(void)
+ {
++	struct folio *folio;
++	void *p;
+ 	unsigned long i;
+ 
+ 	o2quo_init();
+-
+ 	o2net_debugfs_init();
+ 
+-	o2net_hand = kzalloc(sizeof(struct o2net_handshake), GFP_KERNEL);
+-	o2net_keep_req = kzalloc(sizeof(struct o2net_msg), GFP_KERNEL);
+-	o2net_keep_resp = kzalloc(sizeof(struct o2net_msg), GFP_KERNEL);
+-	if (!o2net_hand || !o2net_keep_req || !o2net_keep_resp)
++	folio = folio_alloc(GFP_KERNEL | __GFP_ZERO, 0);
++	if (!folio)
+ 		goto out;
+ 
++	p = folio_address(folio);
++	o2net_hand = p;
++	p += sizeof(struct o2net_handshake);
++	o2net_keep_req = p;
++	p += sizeof(struct o2net_msg);
++	o2net_keep_resp = p;
++
+ 	o2net_hand->protocol_version = cpu_to_be64(O2NET_PROTOCOL_VERSION);
+ 	o2net_hand->connector_id = cpu_to_be64(1);
+ 
+@@ -2120,9 +2126,6 @@ int o2net_init(void)
+ 	return 0;
+ 
+ out:
+-	kfree(o2net_hand);
+-	kfree(o2net_keep_req);
+-	kfree(o2net_keep_resp);
+ 	o2net_debugfs_exit();
+ 	o2quo_exit();
+ 	return -ENOMEM;
+@@ -2131,8 +2134,6 @@ int o2net_init(void)
+ void o2net_exit(void)
+ {
+ 	o2quo_exit();
+-	kfree(o2net_hand);
+-	kfree(o2net_keep_req);
+-	kfree(o2net_keep_resp);
+ 	o2net_debugfs_exit();
++	folio_put(virt_to_folio(o2net_hand));
+ }
 -- 
 2.39.2
 
