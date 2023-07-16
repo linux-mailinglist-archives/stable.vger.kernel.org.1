@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DF877555CC
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9014C75539B
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232633AbjGPUom (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:44:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34202 "EHLO
+        id S231802AbjGPUUz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:20:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232630AbjGPUol (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:44:41 -0400
+        with ESMTP id S231796AbjGPUUz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:20:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA437D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:44:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58C75126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:20:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DE2360EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:44:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F31C433C8;
-        Sun, 16 Jul 2023 20:44:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E391260E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:20:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C9CC433C8;
+        Sun, 16 Jul 2023 20:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540279;
-        bh=U3nwGdPbT9I/ZVSItLdYNIIfVO3tJWnS+NU7PhdK4nc=;
+        s=korg; t=1689538853;
+        bh=7jsq5kicvkJ4PImkuR14h7n1quMms7GQLz7ONQp0CSg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aI1PQlBrCPI1E0ScVgvrY+Wdsj+6726yr6UXqOVP15pxvhXQgFUcXeomLjZmLNVFs
-         wWS+A5+giQbAUqwFnllGb3FWGY6tU2/W54CZtYmU2HGp+b1YhLx4Jmnuo4iBAOHXic
-         LwZSCkvuZxQbzIqtZiEdE/zFXfjGzDCzvdqEzzLY=
+        b=DVsYZCKsxQXcdLBuzWE27SuJSwelBP+pUL8Ks316rg4yW0tB2sQSOMoeSFDfeFvzJ
+         Jn5mSzAWBBnOamrUCWjTaBX1N3J4ntr7I8FqKoCGgtXt458xbdFgecoS4ZrZhIULXv
+         YMPh+1OCmynUznzXQw26m2j2WKKjKmfb+L7qp4Q4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marco Elver <elver@google.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Li Yang <lidaxian@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 306/591] kcsan: Dont expect 64 bits atomic builtins from 32 bits architectures
+Subject: [PATCH 6.4 592/800] usb: phy: phy-tahvo: fix memory leak in tahvo_usb_probe()
 Date:   Sun, 16 Jul 2023 21:47:25 +0200
-Message-ID: <20230716194931.808729125@linuxfoundation.org>
+Message-ID: <20230716195002.851352763@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,68 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Li Yang <lidaxian@hust.edu.cn>
 
-[ Upstream commit 353e7300a1db928e427462f2745f9a2cd1625b3d ]
+[ Upstream commit 342161c11403ea00e9febc16baab1d883d589d04 ]
 
-Activating KCSAN on a 32 bits architecture leads to the following
-link-time failure:
+Smatch reports:
+drivers/usb/phy/phy-tahvo.c: tahvo_usb_probe()
+warn: missing unwind goto?
 
-    LD      .tmp_vmlinux.kallsyms1
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_load':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_load_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_store':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_store_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_exchange':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_exchange_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_add':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_add_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_sub':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_sub_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_and':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_and_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_or':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_or_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_xor':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_xor_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_nand':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_nand_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_compare_exchange_strong':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_compare_exchange_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_compare_exchange_weak':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_compare_exchange_8'
-  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_compare_exchange_val':
-  kernel/kcsan/core.c:1273: undefined reference to `__atomic_compare_exchange_8'
+After geting irq, if ret < 0, it will return without error handling to
+free memory.
+Just add error handling to fix this problem.
 
-32 bits architectures don't have 64 bits atomic builtins. Only
-include DEFINE_TSAN_ATOMIC_OPS(64) on 64 bits architectures.
-
-Fixes: 0f8ad5f2e934 ("kcsan: Add support for atomic builtins")
-Suggested-by: Marco Elver <elver@google.com>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Marco Elver <elver@google.com>
-Acked-by: Marco Elver <elver@google.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/d9c6afc28d0855240171a4e0ad9ffcdb9d07fceb.1683892665.git.christophe.leroy@csgroup.eu
+Fixes: 0d45a1373e66 ("usb: phy: tahvo: add IRQ check")
+Signed-off-by: Li Yang <lidaxian@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230420140832.9110-1-lidaxian@hust.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kcsan/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/phy/phy-tahvo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index 5a60cc52adc0c..8a7baf4e332e3 100644
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -1270,7 +1270,9 @@ static __always_inline void kcsan_atomic_builtin_memorder(int memorder)
- DEFINE_TSAN_ATOMIC_OPS(8);
- DEFINE_TSAN_ATOMIC_OPS(16);
- DEFINE_TSAN_ATOMIC_OPS(32);
-+#ifdef CONFIG_64BIT
- DEFINE_TSAN_ATOMIC_OPS(64);
-+#endif
+diff --git a/drivers/usb/phy/phy-tahvo.c b/drivers/usb/phy/phy-tahvo.c
+index 47562d49dfc1b..5cac31c6029b3 100644
+--- a/drivers/usb/phy/phy-tahvo.c
++++ b/drivers/usb/phy/phy-tahvo.c
+@@ -391,7 +391,7 @@ static int tahvo_usb_probe(struct platform_device *pdev)
  
- void __tsan_atomic_thread_fence(int memorder);
- void __tsan_atomic_thread_fence(int memorder)
+ 	tu->irq = ret = platform_get_irq(pdev, 0);
+ 	if (ret < 0)
+-		return ret;
++		goto err_remove_phy;
+ 	ret = request_threaded_irq(tu->irq, NULL, tahvo_usb_vbus_interrupt,
+ 				   IRQF_ONESHOT,
+ 				   "tahvo-vbus", tu);
 -- 
 2.39.2
 
