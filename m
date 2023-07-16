@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A91377556DF
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69646755459
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233016AbjGPUy4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:54:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41978 "EHLO
+        id S232076AbjGPU32 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:29:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232997AbjGPUyu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:54:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D27D10D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:54:49 -0700 (PDT)
+        with ESMTP id S232087AbjGPU32 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C201BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C095060EBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:54:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D031EC433C8;
-        Sun, 16 Jul 2023 20:54:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4F2A60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EE2C433C7;
+        Sun, 16 Jul 2023 20:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540888;
-        bh=cJqifwuERA06ApiVzWBz2gOclVrm/KcZ8A3XQemGKOM=;
+        s=korg; t=1689539366;
+        bh=YD8PeVKYec326jB4vb1w1BlrF8rUeEsg8mCZ2sXsE5A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2JdaENC3eH4HbJNdVZPTmSO78aI5Cx8EQg1mqas4ES2qkCF+LBu90xN7bsCBm+ZLu
-         /Xx0otoRUVlS+niWNXAWvrteaVA6zbz9W+zWbdER4AYVaVAUPBut6+hPCVBNkdJ86v
-         rJOVOzxccr8vL2KDb4v13cu4H15eD/ueH8BZynJw=
+        b=CoeAkpQPFl9g2FqJd0IGg8bWjeLqXTmrwkmUlslYICC4OcFPNwpO2E+4idEqfwDuw
+         M2zYohKntpw1iXgdK56S/W5nkctV69vUCiKgR9BcovJ4YtBhzXsb9daYJ4FqABF3wU
+         4jY9lSFoYVZZeTWG3p+KgeaMvXlwgPdRvxISLEwY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+9fcea5ef6dc4dc72d334@syzkaller.appspotmail.com,
-        Zeng Heng <zengheng4@huawei.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 496/591] ntfs: Fix panic about slab-out-of-bounds caused by ntfs_listxattr()
+        patches@lists.linux.dev, Tom Rini <trini@konsulko.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.4 782/800] kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS
 Date:   Sun, 16 Jul 2023 21:50:35 +0200
-Message-ID: <20230716194936.728986567@linuxfoundation.org>
+Message-ID: <20230716195007.310692828@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,52 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 3c675ddffb17a8b1e32efad5c983254af18b12c2 ]
+commit feb843a469fb0ab00d2d23cfb9bcc379791011bb upstream.
 
-Here is a BUG report from syzbot:
+When preprocessing arch/*/kernel/vmlinux.lds.S, the target triple is
+not passed to $(CPP) because we add it only to KBUILD_{C,A}FLAGS.
 
-BUG: KASAN: slab-out-of-bounds in ntfs_list_ea fs/ntfs3/xattr.c:191 [inline]
-BUG: KASAN: slab-out-of-bounds in ntfs_listxattr+0x401/0x570 fs/ntfs3/xattr.c:710
-Read of size 1 at addr ffff888021acaf3d by task syz-executor128/3632
+As a result, the linker script is preprocessed with predefined macros
+for the build host instead of the target.
 
-Call Trace:
- ntfs_list_ea fs/ntfs3/xattr.c:191 [inline]
- ntfs_listxattr+0x401/0x570 fs/ntfs3/xattr.c:710
- vfs_listxattr fs/xattr.c:457 [inline]
- listxattr+0x293/0x2d0 fs/xattr.c:804
+Assuming you use an x86 build machine, compare the following:
 
-Fix the logic of ea_all iteration. When the ea->name_len is 0,
-return immediately, or Add2Ptr() would visit invalid memory
-in the next loop.
+ $ clang -dM -E -x c /dev/null
+ $ clang -dM -E -x c /dev/null -target aarch64-linux-gnu
 
-Fixes: be71b5cba2e6 ("fs/ntfs3: Add attrib operations")
-Reported-by: syzbot+9fcea5ef6dc4dc72d334@syzkaller.appspotmail.com
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-[almaz.alexandrovich@paragon-software.com: lines of the patch have changed]
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There is no actual problem presumably because our linker scripts do not
+rely on such predefined macros, but it is better to define correct ones.
+
+Move $(CLANG_FLAGS) to KBUILD_CPPFLAGS, so that all *.c, *.S, *.lds.S
+will be processed with the proper target triple.
+
+[Note]
+After the patch submission, we got an actual problem that needs this
+commit. (CBL issue 1859)
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/1859
+Reported-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/xattr.c | 3 +++
- 1 file changed, 3 insertions(+)
+ scripts/Makefile.clang |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
-index ea582b4fe1d9d..88866bcd1a218 100644
---- a/fs/ntfs3/xattr.c
-+++ b/fs/ntfs3/xattr.c
-@@ -178,6 +178,9 @@ static ssize_t ntfs_list_ea(struct ntfs_inode *ni, char *buffer,
- 	for (ret = 0, off = 0; off < size; off += unpacked_ea_size(ea)) {
- 		ea = Add2Ptr(ea_all, off);
- 
-+		if (!ea->name_len)
-+			break;
-+
- 		if (buffer) {
- 			if (ret + ea->name_len + 1 > bytes_per_buffer) {
- 				err = -ERANGE;
--- 
-2.39.2
-
+--- a/scripts/Makefile.clang
++++ b/scripts/Makefile.clang
+@@ -34,6 +34,5 @@ CLANG_FLAGS	+= -Werror=unknown-warning-o
+ CLANG_FLAGS	+= -Werror=ignored-optimization-argument
+ CLANG_FLAGS	+= -Werror=option-ignored
+ CLANG_FLAGS	+= -Werror=unused-command-line-argument
+-KBUILD_CFLAGS	+= $(CLANG_FLAGS)
+-KBUILD_AFLAGS	+= $(CLANG_FLAGS)
++KBUILD_CPPFLAGS	+= $(CLANG_FLAGS)
+ export CLANG_FLAGS
 
 
