@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FF7375548C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21BB875528C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:09:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232230AbjGPUbs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:31:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53016 "EHLO
+        id S231359AbjGPUJM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:09:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232204AbjGPUbp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:31:45 -0400
+        with ESMTP id S231358AbjGPUJL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:09:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C47A9E6A
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:31:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0064FD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:09:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48CB860EBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:31:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CB0C433C8;
-        Sun, 16 Jul 2023 20:31:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BEC660EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:09:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1BBC433C7;
+        Sun, 16 Jul 2023 20:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539492;
-        bh=hSOF0jAotdGOIT87382V22vW40IhnrVH2Vbu2EYMJPE=;
+        s=korg; t=1689538149;
+        bh=j4och7nCAkF13DV5Uw0/KIW4DGuQsKygYq1aIi/WC0w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0tUI8/U00jd+9xJXwzGS7nakcFjCQvwV4C+zyI9icNF5bcPbBx58pj18Wguv1/WXK
-         guVrqri/xPgf1VhQxtLJbgYDNVnhRzYHUCDqeA38lIbh8Rfw8OCoRLtu5bn6pHV3X6
-         weIYwv0hSMUXRAoXkm0/tIPRHaD/BxnUn+1A3ds4=
+        b=wVQadmcgUqb8sAsEwbjckII9bn7+PKzQZJlE4r5/eR+gIaL1vNY2TdUnwxTU8ka7H
+         0FYr08gyoNI6Rsknrq6mGyD0/68nssNGi0lkjv/l9ays4QiTF3Z4fncpXG+b3d4IFq
+         Lice74Ka1RaVM2NB+7797CMDKkA+GJLYeLVwItVY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
-        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/591] md/raid10: fix null-ptr-deref of mreplace in raid10_sync_request
-Date:   Sun, 16 Jul 2023 21:42:46 +0200
-Message-ID: <20230716194924.567702096@linuxfoundation.org>
+Subject: [PATCH 6.4 314/800] arm64: dts: qcom: sm8350: correct USB phy unit address
+Date:   Sun, 16 Jul 2023 21:42:47 +0200
+Message-ID: <20230716194956.366926241@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,79 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Li Nan <linan122@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 34817a2441747b48e444cb0e05d84e14bc9443da ]
+[ Upstream commit a560ab70c6e28ba784a824611d3f58969d8fadba ]
 
-There are two check of 'mreplace' in raid10_sync_request(). In the first
-check, 'need_replace' will be set and 'mreplace' will be used later if
-no-Faulty 'mreplace' exists, In the second check, 'mreplace' will be
-set to NULL if it is Faulty, but 'need_replace' will not be changed
-accordingly. null-ptr-deref occurs if Faulty is set between two check.
+Match unit-address to reg entry to fix dtbs W=1 warnings:
 
-Fix it by merging two checks into one. And replace 'need_replace' with
-'mreplace' because their values are always the same.
+  Warning (simple_bus_reg): /soc@0/phy@88e9000: simple-bus unit address format error, expected "88e8000"
 
-Fixes: ee37d7314a32 ("md/raid10: Fix raid10 replace hang when new added disk faulty")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230527072218.2365857-2-linan666@huaweicloud.com
+Fixes: 2458a305e80e ("arm64: dts: qcom: sm8350: switch to combo usb3/dp phy")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230419211856.79332-15-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 67398394cc9c9..0eb2eb83ddb9e 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -3436,7 +3436,6 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
- 			int must_sync;
- 			int any_working;
- 			int need_recover = 0;
--			int need_replace = 0;
- 			struct raid10_info *mirror = &conf->mirrors[i];
- 			struct md_rdev *mrdev, *mreplace;
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+index 5ca21cd1cbec6..425af2c38a37f 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -2140,7 +2140,7 @@ usb_2_hsphy: phy@88e4000 {
+ 			resets = <&gcc GCC_QUSB2PHY_SEC_BCR>;
+ 		};
  
-@@ -3448,11 +3447,10 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
- 			    !test_bit(Faulty, &mrdev->flags) &&
- 			    !test_bit(In_sync, &mrdev->flags))
- 				need_recover = 1;
--			if (mreplace != NULL &&
--			    !test_bit(Faulty, &mreplace->flags))
--				need_replace = 1;
-+			if (mreplace && test_bit(Faulty, &mreplace->flags))
-+				mreplace = NULL;
+-		usb_1_qmpphy: phy@88e9000 {
++		usb_1_qmpphy: phy@88e8000 {
+ 			compatible = "qcom,sm8350-qmp-usb3-dp-phy";
+ 			reg = <0 0x088e8000 0 0x3000>;
  
--			if (!need_recover && !need_replace) {
-+			if (!need_recover && !mreplace) {
- 				rcu_read_unlock();
- 				continue;
- 			}
-@@ -3468,8 +3466,6 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
- 				rcu_read_unlock();
- 				continue;
- 			}
--			if (mreplace && test_bit(Faulty, &mreplace->flags))
--				mreplace = NULL;
- 			/* Unless we are doing a full sync, or a replacement
- 			 * we only need to recover the block if it is set in
- 			 * the bitmap
-@@ -3592,11 +3588,11 @@ static sector_t raid10_sync_request(struct mddev *mddev, sector_t sector_nr,
- 				bio = r10_bio->devs[1].repl_bio;
- 				if (bio)
- 					bio->bi_end_io = NULL;
--				/* Note: if need_replace, then bio
-+				/* Note: if replace is not NULL, then bio
- 				 * cannot be NULL as r10buf_pool_alloc will
- 				 * have allocated it.
- 				 */
--				if (!need_replace)
-+				if (!mreplace)
- 					break;
- 				bio->bi_next = biolist;
- 				biolist = bio;
 -- 
 2.39.2
 
