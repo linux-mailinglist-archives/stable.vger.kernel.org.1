@@ -2,110 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67E9B75535E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8FB07555B3
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231700AbjGPUSQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:18:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43898 "EHLO
+        id S232608AbjGPUnn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:43:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231702AbjGPUSP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D42C0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:14 -0700 (PDT)
+        with ESMTP id S232606AbjGPUnm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871B8E43
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BEAA60E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A256C433C8;
-        Sun, 16 Jul 2023 20:18:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D0B160EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B778C433C8;
+        Sun, 16 Jul 2023 20:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538693;
-        bh=yDqoYyolOhXZiUdodRj5eON6xQilIZb2fQV6ErBmigQ=;
+        s=korg; t=1689540220;
+        bh=bWAkDfDK2FZoit3t0CvM1Fh5j1tQCps5OwpjAk4ySL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fToxNpbMZgLFLxFGbjfMDJQc4OzeDIWZttmaGHWOgItCsexhN29dMLEFFSIsxncEI
-         qmK/rKhywNTGbUzVxl4XW1o3AM1Z+njBx4pbC2U9tLmraurvLXMLZ7bLNLON3krEjp
-         5lNT7pK8uXc/04Ai6RduqkL+5jLejSli/+W5WrlI=
+        b=0f21i5lmxNcIo53o8QlBQ8piqFS99njR3Ysu9eR1+Io4ZJSRtN2U2x0Jf/QYZayXY
+         ULBhXFdRnkHiHYzYTVKjSJRmYMO/VG+8LaQ1RHGuKotd4IWggWWpDwifFbWJ6b+Fex
+         6hmyxf4RFQt8mSM/mPwYJQKtvyDFp9hvdpOSrNsc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 543/800] smb: client: fix broken file attrs with nodfs mounts
-Date:   Sun, 16 Jul 2023 21:46:36 +0200
-Message-ID: <20230716195001.704341131@linuxfoundation.org>
+Subject: [PATCH 6.1 258/591] clk: tegra: tegra124-emc: Fix potential memory leak
+Date:   Sun, 16 Jul 2023 21:46:37 +0200
+Message-ID: <20230716194930.558949581@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit d439b29057e26464120fc6c18f97433aa003b5fe ]
+[ Upstream commit 53a06e5924c0d43c11379a08c5a78529c3e61595 ]
 
-*_get_inode_info() functions expect -EREMOTE when query path info
-calls find a DFS link, regardless whether !CONFIG_CIFS_DFS_UPCALL or
-'nodfs' mount option.  Otherwise, those files will miss the fake DFS
-file attributes.
+The tegra and tegra needs to be freed in the error handling path, otherwise
+it will be leaked.
 
-Before patch
-
-  $ mount.cifs //srv/dfs /mnt/1 -o ...,nodfs
-  $ ls -l /mnt/1
-  ls: cannot access '/mnt/1/link': Operation not supported
-  total 0
-  -rwxr-xr-x 1 root root 0 Jul 26  2022 dfstest2_file1.txt
-  drwxr-xr-x 2 root root 0 Aug  8  2022 dir1
-  d????????? ? ?    ?    ?            ? link
-
-After patch
-
-  $ mount.cifs //srv/dfs /mnt/1 -o ...,nodfs
-  $ ls -l /mnt/1
-  total 0
-  -rwxr-xr-x 1 root root 0 Jul 26  2022 dfstest2_file1.txt
-  drwxr-xr-x 2 root root 0 Aug  8  2022 dir1
-  drwx--x--x 2 root root 0 Jun 26 20:29 link
-
-Fixes: c877ce47e137 ("cifs: reduce roundtrips on create/qinfo requests")
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 2db04f16b589 ("clk: tegra: Add EMC clock driver")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Link: https://lore.kernel.org/r/20221209094124.71043-1-yuancan@huawei.com
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/clk/tegra/clk-tegra124-emc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 7e3ac4cb4efa6..8e696fbd72fa8 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -609,9 +609,6 @@ int smb2_query_path_info(const unsigned int xid, struct cifs_tcon *tcon,
- 			if (islink)
- 				rc = -EREMOTE;
+diff --git a/drivers/clk/tegra/clk-tegra124-emc.c b/drivers/clk/tegra/clk-tegra124-emc.c
+index 219c80653dbdb..2a6db04342815 100644
+--- a/drivers/clk/tegra/clk-tegra124-emc.c
++++ b/drivers/clk/tegra/clk-tegra124-emc.c
+@@ -464,6 +464,7 @@ static int load_timings_from_dt(struct tegra_clk_emc *tegra,
+ 		err = load_one_timing_from_dt(tegra, timing, child);
+ 		if (err) {
+ 			of_node_put(child);
++			kfree(tegra->timings);
+ 			return err;
  		}
--		if (rc == -EREMOTE && IS_ENABLED(CONFIG_CIFS_DFS_UPCALL) && cifs_sb &&
--		    (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_DFS))
--			rc = -EOPNOTSUPP;
- 	}
  
- out:
+@@ -515,6 +516,7 @@ struct clk *tegra124_clk_register_emc(void __iomem *base, struct device_node *np
+ 		err = load_timings_from_dt(tegra, node, node_ram_code);
+ 		if (err) {
+ 			of_node_put(node);
++			kfree(tegra);
+ 			return ERR_PTR(err);
+ 		}
+ 	}
 -- 
 2.39.2
 
