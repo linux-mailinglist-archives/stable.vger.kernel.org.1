@@ -2,55 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D7E3755311
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D154E755541
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231603AbjGPUPC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:15:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41238 "EHLO
+        id S232437AbjGPUjG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:39:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231599AbjGPUPB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:15:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94F591BE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:59 -0700 (PDT)
+        with ESMTP id S232433AbjGPUjG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:39:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9D4BA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:39:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AC9360EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115D6C433C8;
-        Sun, 16 Jul 2023 20:14:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A7A760EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:39:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B62BC433C8;
+        Sun, 16 Jul 2023 20:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538498;
-        bh=WvwUjWJMfD0SL9pbZfYk/rYV+dUpluyu12Sr1ip0kUI=;
+        s=korg; t=1689539944;
+        bh=qgvRXjIK/PrIs88OuIxM0cHWjn9U2WfptcCXOSFv7aQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ikQQ21/O3/F5t01YhWyqBvxdoascI5TYChjXEHpbEnHkjBt7Q4cOM8Opssdw2ZjCW
-         6YMzRcRRacZ1v8T/t0CkuXn9c26z4+eVigp0CBQd2W+DwTnL0z1FK0fAykNYAquref
-         IYJk5EuIXcb+RW2x8vv7g1qhp7a65gSWnb6Z5wVA=
+        b=K+oZtcPE04Y/+RRqj3TS9QrioezxXIkLjLJDpxAd7dOcbF0QwafmVJD4b3qhUFnUl
+         ENEtlkH9osboWDwa0orbLTX9s7fsqTOetcfAvzTy4Cjr6MaQsp38JjbOXuugHXSH9f
+         ZX0N5tSArJtVBSqpxVA33f8nNjkIQTTpowymSf3Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aditya Gupta <adityag@linux.ibm.com>,
-        Disha Goel <disgoel@linux.vnet.ibm.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        John Garry <john.g.garry@oracle.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Petar Gligoric <petar.gligoric@rohde-schwarz.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Kajol Jain <kjain@linux.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 473/800] perf tests task_analyzer: Skip tests if no libtraceevent support
+        patches@lists.linux.dev, Akihiko Odaki <akihiko.odaki@daynix.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 187/591] iommu/virtio: Detach domain on endpoint release
 Date:   Sun, 16 Jul 2023 21:45:26 +0200
-Message-ID: <20230716195000.067159112@linuxfoundation.org>
+Message-ID: <20230716194928.713592402@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -65,104 +55,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-[ Upstream commit c3ac3b0779770acd3ad7eecb5099ab4419ef2e2e ]
+[ Upstream commit 809d0810e3520da669d231303608cdf5fe5c1a70 ]
 
-Test "perf script task-analyzer tests" fails in environment with missing
-libtraceevent support, as perf record fails to create the perf.data
-file, which further tests depend on.
+When an endpoint is released, for example a PCIe VF being destroyed or a
+function hot-unplugged, it should be detached from its domain. Send a
+DETACH request.
 
-Instead, when perf is not compiled with libtraceevent support, skip
-those tests instead of failing them, by checking the output of `perf
-record --dry-run` to see if it prints the error "libtraceevent is
-necessary for tracepoint support"
-
-For the following output, perf compiled with: `make NO_LIBTRACEEVENT=1`
-
-Before the patch:
-
-108: perf script task-analyzer tests                                 :
-test child forked, pid 24105
-failed to open perf.data: No such file or directory  (try 'perf record' first)
-FAIL: "invokation of perf script report task-analyzer command failed" Error message: ""
-FAIL: "test_basic" Error message: "Failed to find required string:'Comm'."
-failed to open perf.data: No such file or directory  (try 'perf record' first)
-FAIL: "invokation of perf script report task-analyzer --ns --rename-comms-by-tids 0:random command failed" Error message: ""
-FAIL: "test_ns_rename" Error message: "Failed to find required string:'Comm'."
-failed to open perf.data: No such file or directory  (try 'perf record' first)
-<...>
-perf script task-analyzer tests: FAILED!
-
-With this patch, the script instead returns 2 signifying SKIP, and after
-the patch:
-
-108: perf script task-analyzer tests                                 :
-test child forked, pid 26010
-libtraceevent is necessary for tracepoint support
-WARN: Skipping tests. No libtraceevent support
-test child finished with -2
-perf script task-analyzer tests: Skip
-
-Fixes: e8478b84d6ba9ccf ("perf test: Add new task-analyzer tests")
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Petar Gligoric <petar.gligoric@rohde-schwarz.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20230613164145.50488-18-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: edcd69ab9a32 ("iommu: Add virtio-iommu driver")
+Reported-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Link: https://lore.kernel.org/all/15bf1b00-3aa0-973a-3a86-3fa5c4d41d2c@daynix.com/
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Link: https://lore.kernel.org/r/20230515113946.1017624-2-jean-philippe@linaro.org
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/test_task_analyzer.sh | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/iommu/virtio-iommu.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/tools/perf/tests/shell/test_task_analyzer.sh b/tools/perf/tests/shell/test_task_analyzer.sh
-index 6b3343234a6b2..1b7f3c1ec218b 100755
---- a/tools/perf/tests/shell/test_task_analyzer.sh
-+++ b/tools/perf/tests/shell/test_task_analyzer.sh
-@@ -44,9 +44,20 @@ find_str_or_fail() {
- 	fi
+diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
+index 8b1b5c270e502..fe02ac772b651 100644
+--- a/drivers/iommu/virtio-iommu.c
++++ b/drivers/iommu/virtio-iommu.c
+@@ -789,6 +789,29 @@ static int viommu_attach_dev(struct iommu_domain *domain, struct device *dev)
+ 	return 0;
  }
  
-+# check if perf is compiled with libtraceevent support
-+skip_no_probe_record_support() {
-+	perf record -e "sched:sched_switch" -a -- sleep 1 2>&1 | grep "libtraceevent is necessary for tracepoint support" && return 2
-+	return 0
++static void viommu_detach_dev(struct viommu_endpoint *vdev)
++{
++	int i;
++	struct virtio_iommu_req_detach req;
++	struct viommu_domain *vdomain = vdev->vdomain;
++	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(vdev->dev);
++
++	if (!vdomain)
++		return;
++
++	req = (struct virtio_iommu_req_detach) {
++		.head.type	= VIRTIO_IOMMU_T_DETACH,
++		.domain		= cpu_to_le32(vdomain->id),
++	};
++
++	for (i = 0; i < fwspec->num_ids; i++) {
++		req.endpoint = cpu_to_le32(fwspec->ids[i]);
++		WARN_ON(viommu_send_req_sync(vdev->viommu, &req, sizeof(req)));
++	}
++	vdomain->nr_endpoints--;
++	vdev->vdomain = NULL;
 +}
 +
- prepare_perf_data() {
- 	# 1s should be sufficient to catch at least some switches
- 	perf record -e sched:sched_switch -a -- sleep 1 > /dev/null 2>&1
-+	# check if perf data file got created in above step.
-+	if [ ! -e "perf.data" ]; then
-+		printf "FAIL: perf record failed to create \"perf.data\" \n"
-+		return 1
-+	fi
- }
+ static int viommu_map_pages(struct iommu_domain *domain, unsigned long iova,
+ 			    phys_addr_t paddr, size_t pgsize, size_t pgcount,
+ 			    int prot, gfp_t gfp, size_t *mapped)
+@@ -991,6 +1014,7 @@ static void viommu_release_device(struct device *dev)
+ {
+ 	struct viommu_endpoint *vdev = dev_iommu_priv_get(dev);
  
- # check standard inkvokation with no arguments
-@@ -134,6 +145,13 @@ test_csvsummary_extended() {
- 	find_str_or_fail "Out-Out;" csvsummary ${FUNCNAME[0]}
++	viommu_detach_dev(vdev);
+ 	iommu_put_resv_regions(dev, &vdev->resv_regions);
+ 	kfree(vdev);
  }
- 
-+skip_no_probe_record_support
-+err=$?
-+if [ $err -ne 0 ]; then
-+	echo "WARN: Skipping tests. No libtraceevent support"
-+	cleanup
-+	exit $err
-+fi
- prepare_perf_data
- test_basic
- test_ns_rename
 -- 
 2.39.2
 
