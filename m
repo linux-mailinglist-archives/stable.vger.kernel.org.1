@@ -2,134 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A21287552B1
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0B707554D6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231433AbjGPUKr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:10:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38958 "EHLO
+        id S232341AbjGPUet (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:34:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231434AbjGPUKr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D2F123
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:46 -0700 (PDT)
+        with ESMTP id S232340AbjGPUes (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 873BCBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EBBF60EA6
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315B0C433C9;
-        Sun, 16 Jul 2023 20:10:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 264C060EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E71C433C8;
+        Sun, 16 Jul 2023 20:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538245;
-        bh=ZOmRidyhuEmK41QAJu2xoGUIVe+XPR0nxZB6XSn9Sec=;
+        s=korg; t=1689539686;
+        bh=2vJkdluu4T7Octu3p1FPWdkQ/m7rdK+h2dFwYjeNKgk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lXMkc1ITMr+8nDZ108105cuqJ52UWrAX3ilzshk+oXtdJASrtIDZO7m9kC3j47DSk
-         eVLnwTD0HwnrHgml2d8wjxq1Z7GQ/+Oable8KtWe0xVar0Uyk0hKkTgEPvXJjCAmjo
-         QRZkx0O3FTb/M8SYr13VGryPasz7m575w/kFJifY=
+        b=tL23BeYw/TXXD7xy0FNyrBBAQ5tA+EPbTnPsBeD4ElXXT0n+v/keIQa/SvpTdFjgl
+         xoaJwj71xNwDfWYUj8xuJl3mFt7OcEuftBjkQJZTLLlMs5JcHeWQRdPTs/ZPYyBiFM
+         z/YtGTxbkj7YXAAXdUnOJFqUHI7/7cBvTkPDtinY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhanhao Hu <zero12113@hust.edu.cn>,
-        Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Jesper Dangaard Brouer <brouer@redhat.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Simon Horman <simon.horman@corigine.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 381/800] clk: imx93: fix memory leak and missing unwind goto in imx93_clocks_probe
+Subject: [PATCH 6.1 095/591] selftests/bpf: Fix check_mtu using wrong variable type
 Date:   Sun, 16 Jul 2023 21:43:54 +0200
-Message-ID: <20230716194957.924875865@linuxfoundation.org>
+Message-ID: <20230716194926.335716478@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhanhao Hu <zero12113@hust.edu.cn>
+From: Jesper Dangaard Brouer <brouer@redhat.com>
 
-[ Upstream commit e02ba11b457647050cb16e7cad16cec3c252fade ]
+[ Upstream commit 095641817e1bf6aa2560e025e47575188ee3edaf ]
 
-In function probe(), it returns directly without unregistered hws
-when error occurs.
+Dan Carpenter found via Smatch static checker, that unsigned 'mtu_lo' is
+never less than zero.
 
-Fix this by adding 'goto unregister_hws;' on line 295 and
-line 310.
+Variable mtu_lo should have been an 'int', because read_mtu_device_lo()
+uses minus as error indications.
 
-Use devm_kzalloc() instead of kzalloc() to automatically
-free the memory using devm_kfree() when error occurs.
-
-Replace of_iomap() with devm_of_iomap() to automatically
-handle the unused ioremap region and delete 'iounmap(anatop_base);'
-in unregister_hws.
-
-Fixes: 24defbe194b6 ("clk: imx: add i.MX93 clk")
-Signed-off-by: Zhanhao Hu <zero12113@hust.edu.cn>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230601033825.336558-1-zero12113@hust.edu.cn
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fixes: b62eba563229 ("selftests/bpf: Tests using bpf_check_mtu BPF-helper")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/bpf/168605104733.3636467.17945947801753092590.stgit@firesoul
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx93.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/check_mtu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx93.c b/drivers/clk/imx/clk-imx93.c
-index 07b4a043e4495..b6c7c2725906c 100644
---- a/drivers/clk/imx/clk-imx93.c
-+++ b/drivers/clk/imx/clk-imx93.c
-@@ -264,7 +264,7 @@ static int imx93_clocks_probe(struct platform_device *pdev)
- 	void __iomem *base, *anatop_base;
- 	int i, ret;
+diff --git a/tools/testing/selftests/bpf/prog_tests/check_mtu.c b/tools/testing/selftests/bpf/prog_tests/check_mtu.c
+index 12f4395f18b37..a756760a45edb 100644
+--- a/tools/testing/selftests/bpf/prog_tests/check_mtu.c
++++ b/tools/testing/selftests/bpf/prog_tests/check_mtu.c
+@@ -183,7 +183,7 @@ static void test_check_mtu_tc(__u32 mtu, __u32 ifindex)
  
--	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws,
-+	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
- 					  IMX93_CLK_END), GFP_KERNEL);
- 	if (!clk_hw_data)
- 		return -ENOMEM;
-@@ -288,10 +288,12 @@ static int imx93_clocks_probe(struct platform_device *pdev)
- 								    "sys_pll_pfd2", 1, 2);
+ void serial_test_check_mtu(void)
+ {
+-	__u32 mtu_lo;
++	int mtu_lo;
  
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx93-anatop");
--	anatop_base = of_iomap(np, 0);
-+	anatop_base = devm_of_iomap(dev, np, 0, NULL);
- 	of_node_put(np);
--	if (WARN_ON(!anatop_base))
--		return -ENOMEM;
-+	if (WARN_ON(IS_ERR(anatop_base))) {
-+		ret = PTR_ERR(base);
-+		goto unregister_hws;
-+	}
- 
- 	clks[IMX93_CLK_ARM_PLL] = imx_clk_fracn_gppll_integer("arm_pll", "osc_24m",
- 							      anatop_base + 0x1000,
-@@ -304,8 +306,8 @@ static int imx93_clocks_probe(struct platform_device *pdev)
- 	np = dev->of_node;
- 	base = devm_platform_ioremap_resource(pdev, 0);
- 	if (WARN_ON(IS_ERR(base))) {
--		iounmap(anatop_base);
--		return PTR_ERR(base);
-+		ret = PTR_ERR(base);
-+		goto unregister_hws;
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(root_array); i++) {
-@@ -345,7 +347,6 @@ static int imx93_clocks_probe(struct platform_device *pdev)
- 
- unregister_hws:
- 	imx_unregister_hw_clocks(clks, IMX93_CLK_END);
--	iounmap(anatop_base);
- 
- 	return ret;
- }
+ 	if (test__start_subtest("bpf_check_mtu XDP-attach"))
+ 		test_check_mtu_xdp_attach();
 -- 
 2.39.2
 
