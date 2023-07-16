@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D896755412
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAD3875566A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbjGPU0R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:26:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48362 "EHLO
+        id S230331AbjGPUuV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:50:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231985AbjGPU0Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:26:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560C81BF
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:14 -0700 (PDT)
+        with ESMTP id S232845AbjGPUuV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:50:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED998D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:50:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DDD0560EBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1353C433C8;
-        Sun, 16 Jul 2023 20:26:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B24E60EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:50:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973EEC433C8;
+        Sun, 16 Jul 2023 20:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539173;
-        bh=We2kocMXluKFKpdPMw84G6zb1nTOESd3rMKf2L8O7ic=;
+        s=korg; t=1689540619;
+        bh=5yUpshApNav88vZIvKAdFXNkOTF+7eIyBAzeo0SK7Yo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OZb3MU2qp25dRiLCDmfGlhATCCjbd9N0pJ/sYWCBCh9VGXIvQ/SRXJhPWo7cXb0/h
-         N4oxj6WzvrwGcS3/NQE5EaNHKwLqombifjXpQ+zZf7lEthzjNLVmEE2x5FsNaWxiaZ
-         zz3xmFLbphwqYWm4qvJtl5TQx+HAoNPMbGeEDyus=
+        b=Y/rthxLBMNEiUEOJztF0sF2sWFddGKKOFbwOWuLT7ux6mKWkXimg1h+mFBcDgoVJs
+         vIh/vd7MZFHlYYPbqN1vy1kuWByz0+KTBu4qqLQ4Ih4vJuEKkxaDW47fMhJ21lUO7b
+         KBxmDZ1+Es77+BbCXepP+8KZumZ9M2ZspalBTSDQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        John Johansen <john.johansen@canonical.com>,
-        Jon Tourville <jontourville@me.com>,
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 713/800] apparmor: fix profile verification and enable it
+Subject: [PATCH 6.1 427/591] sh: Avoid using IRQ0 on SH3 and SH4
 Date:   Sun, 16 Jul 2023 21:49:26 +0200
-Message-ID: <20230716195005.679990547@linuxfoundation.org>
+Message-ID: <20230716194934.962902864@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,178 +56,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Johansen <john.johansen@canonical.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit 6f442d42c0d89876994a4a135eadf82b0e6ff6e4 ]
+[ Upstream commit a8ac2961148e8c720dc760f2e06627cd5c55a154 ]
 
-The transition table size was not being set by compat mappings
-resulting in the profile verification code not being run. Unfortunately
-the checks were also buggy not being correctly updated from the old
-accept perms, to the new layout.
+IRQ0 is no longer returned by platform_get_irq() and its ilk -- they now
+return -EINVAL instead.  However, the kernel code supporting SH3/4-based
+SoCs still maps the IRQ #s starting at 0 -- modify that code to start the
+IRQ #s from 16 instead.
 
-Also indicate to userspace that the kernel has the permstable verification
-fixes.
+The patch should mostly affect the AP-SH4A-3A/AP-SH4AD-0A boards as they
+indeed are using IRQ0 for the SMSC911x compatible Ethernet chip.
 
-BugLink: http://bugs.launchpad.net/bugs/2017903
-Fixes: 670f31774ab6 ("apparmor: verify permission table indexes")
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Reviewed-by: Jon Tourville <jontourville@me.com>
+Fixes: ce753ad1549c ("platform: finally disallow IRQ0 in platform_get_irq() and its ilk")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/71105dbf-cdb0-72e1-f9eb-eeda8e321696@omp.ru
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_compat.c | 18 ++++++++++------
- security/apparmor/policy_unpack.c | 34 ++++++++++++++-----------------
- 2 files changed, 27 insertions(+), 25 deletions(-)
+ arch/sh/include/mach-common/mach/highlander.h | 2 +-
+ arch/sh/include/mach-common/mach/r2d.h        | 2 +-
+ arch/sh/include/mach-dreamcast/mach/sysasic.h | 2 +-
+ arch/sh/include/mach-se/mach/se7724.h         | 2 +-
+ arch/sh/kernel/cpu/sh3/entry.S                | 4 ++--
+ include/linux/sh_intc.h                       | 6 +++---
+ 6 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/security/apparmor/policy_compat.c b/security/apparmor/policy_compat.c
-index 6fa185ce8d9dc..0cb02da8a3193 100644
---- a/security/apparmor/policy_compat.c
-+++ b/security/apparmor/policy_compat.c
-@@ -146,7 +146,8 @@ static struct aa_perms compute_fperms_other(struct aa_dfa *dfa,
-  *
-  * Returns: remapped perm table
+diff --git a/arch/sh/include/mach-common/mach/highlander.h b/arch/sh/include/mach-common/mach/highlander.h
+index fb44c299d0337..b12c795584225 100644
+--- a/arch/sh/include/mach-common/mach/highlander.h
++++ b/arch/sh/include/mach-common/mach/highlander.h
+@@ -176,7 +176,7 @@
+ #define IVDR_CK_ON	4		/* iVDR Clock ON */
+ #endif
+ 
+-#define HL_FPGA_IRQ_BASE	200
++#define HL_FPGA_IRQ_BASE	(200 + 16)
+ #define HL_NR_IRL		15
+ 
+ #define IRQ_AX88796		(HL_FPGA_IRQ_BASE + 0)
+diff --git a/arch/sh/include/mach-common/mach/r2d.h b/arch/sh/include/mach-common/mach/r2d.h
+index 0d7e483c7d3f5..69bc1907c5637 100644
+--- a/arch/sh/include/mach-common/mach/r2d.h
++++ b/arch/sh/include/mach-common/mach/r2d.h
+@@ -47,7 +47,7 @@
+ 
+ #define IRLCNTR1	(PA_BCR + 0)	/* Interrupt Control Register1 */
+ 
+-#define R2D_FPGA_IRQ_BASE	100
++#define R2D_FPGA_IRQ_BASE	(100 + 16)
+ 
+ #define IRQ_VOYAGER		(R2D_FPGA_IRQ_BASE + 0)
+ #define IRQ_EXT			(R2D_FPGA_IRQ_BASE + 1)
+diff --git a/arch/sh/include/mach-dreamcast/mach/sysasic.h b/arch/sh/include/mach-dreamcast/mach/sysasic.h
+index ed69ce7f20301..3b27be9a527ea 100644
+--- a/arch/sh/include/mach-dreamcast/mach/sysasic.h
++++ b/arch/sh/include/mach-dreamcast/mach/sysasic.h
+@@ -22,7 +22,7 @@
+    takes.
+ */
+ 
+-#define HW_EVENT_IRQ_BASE  48
++#define HW_EVENT_IRQ_BASE  (48 + 16)
+ 
+ /* IRQ 13 */
+ #define HW_EVENT_VSYNC     (HW_EVENT_IRQ_BASE +  5) /* VSync */
+diff --git a/arch/sh/include/mach-se/mach/se7724.h b/arch/sh/include/mach-se/mach/se7724.h
+index 1fe28820dfa95..ea6c46633b337 100644
+--- a/arch/sh/include/mach-se/mach/se7724.h
++++ b/arch/sh/include/mach-se/mach/se7724.h
+@@ -37,7 +37,7 @@
+ #define IRQ2_IRQ        evt2irq(0x640)
+ 
+ /* Bits in IRQ012 registers */
+-#define SE7724_FPGA_IRQ_BASE	220
++#define SE7724_FPGA_IRQ_BASE	(220 + 16)
+ 
+ /* IRQ0 */
+ #define IRQ0_BASE	SE7724_FPGA_IRQ_BASE
+diff --git a/arch/sh/kernel/cpu/sh3/entry.S b/arch/sh/kernel/cpu/sh3/entry.S
+index e48b3dd996f58..b1f5b3c58a018 100644
+--- a/arch/sh/kernel/cpu/sh3/entry.S
++++ b/arch/sh/kernel/cpu/sh3/entry.S
+@@ -470,9 +470,9 @@ ENTRY(handle_interrupt)
+ 	mov	r4, r0		! save vector->jmp table offset for later
+ 
+ 	shlr2	r4		! vector to IRQ# conversion
+-	add	#-0x10, r4
+ 
+-	cmp/pz	r4		! is it a valid IRQ?
++	mov	#0x10, r5
++	cmp/hs	r5, r4		! is it a valid IRQ?
+ 	bt	10f
+ 
+ 	/*
+diff --git a/include/linux/sh_intc.h b/include/linux/sh_intc.h
+index 37ad81058d6ae..27ae79191bdc3 100644
+--- a/include/linux/sh_intc.h
++++ b/include/linux/sh_intc.h
+@@ -13,9 +13,9 @@
+ /*
+  * Convert back and forth between INTEVT and IRQ values.
   */
--static struct aa_perms *compute_fperms(struct aa_dfa *dfa)
-+static struct aa_perms *compute_fperms(struct aa_dfa *dfa,
-+				       u32 *size)
- {
- 	aa_state_t state;
- 	unsigned int state_count;
-@@ -159,6 +160,7 @@ static struct aa_perms *compute_fperms(struct aa_dfa *dfa)
- 	table = kvcalloc(state_count * 2, sizeof(struct aa_perms), GFP_KERNEL);
- 	if (!table)
- 		return NULL;
-+	*size = state_count * 2;
- 
- 	for (state = 0; state < state_count; state++) {
- 		table[state * 2] = compute_fperms_user(dfa, state);
-@@ -168,7 +170,8 @@ static struct aa_perms *compute_fperms(struct aa_dfa *dfa)
- 	return table;
- }
- 
--static struct aa_perms *compute_xmatch_perms(struct aa_dfa *xmatch)
-+static struct aa_perms *compute_xmatch_perms(struct aa_dfa *xmatch,
-+				      u32 *size)
- {
- 	struct aa_perms *perms;
- 	int state;
-@@ -181,6 +184,7 @@ static struct aa_perms *compute_xmatch_perms(struct aa_dfa *xmatch)
- 	perms = kvcalloc(state_count, sizeof(struct aa_perms), GFP_KERNEL);
- 	if (!perms)
- 		return NULL;
-+	*size = state_count;
- 
- 	/* zero init so skip the trap state (state == 0) */
- 	for (state = 1; state < state_count; state++)
-@@ -241,7 +245,8 @@ static struct aa_perms compute_perms_entry(struct aa_dfa *dfa,
- 	return perms;
- }
- 
--static struct aa_perms *compute_perms(struct aa_dfa *dfa, u32 version)
-+static struct aa_perms *compute_perms(struct aa_dfa *dfa, u32 version,
-+				      u32 *size)
- {
- 	unsigned int state;
- 	unsigned int state_count;
-@@ -254,6 +259,7 @@ static struct aa_perms *compute_perms(struct aa_dfa *dfa, u32 version)
- 	table = kvcalloc(state_count, sizeof(struct aa_perms), GFP_KERNEL);
- 	if (!table)
- 		return NULL;
-+	*size = state_count;
- 
- 	/* zero init so skip the trap state (state == 0) */
- 	for (state = 1; state < state_count; state++)
-@@ -288,7 +294,7 @@ static void remap_dfa_accept(struct aa_dfa *dfa, unsigned int factor)
- /* TODO: merge different dfa mappings into single map_policy fn */
- int aa_compat_map_xmatch(struct aa_policydb *policy)
- {
--	policy->perms = compute_xmatch_perms(policy->dfa);
-+	policy->perms = compute_xmatch_perms(policy->dfa, &policy->size);
- 	if (!policy->perms)
- 		return -ENOMEM;
- 
-@@ -299,7 +305,7 @@ int aa_compat_map_xmatch(struct aa_policydb *policy)
- 
- int aa_compat_map_policy(struct aa_policydb *policy, u32 version)
- {
--	policy->perms = compute_perms(policy->dfa, version);
-+	policy->perms = compute_perms(policy->dfa, version, &policy->size);
- 	if (!policy->perms)
- 		return -ENOMEM;
- 
-@@ -310,7 +316,7 @@ int aa_compat_map_policy(struct aa_policydb *policy, u32 version)
- 
- int aa_compat_map_file(struct aa_policydb *policy)
- {
--	policy->perms = compute_fperms(policy->dfa);
-+	policy->perms = compute_fperms(policy->dfa, &policy->size);
- 	if (!policy->perms)
- 		return -ENOMEM;
- 
-diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
-index d50774a16494f..bc9f436d49cca 100644
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -1164,22 +1164,16 @@ static int verify_header(struct aa_ext *e, int required, const char **ns)
- 	return 0;
- }
- 
--static bool verify_xindex(int xindex, int table_size)
--{
--	int index, xtype;
--	xtype = xindex & AA_X_TYPE_MASK;
--	index = xindex & AA_X_INDEX_MASK;
--	if (xtype == AA_X_TABLE && index >= table_size)
--		return false;
--	return true;
--}
--
--/* verify dfa xindexes are in range of transition tables */
--static bool verify_dfa_xindex(struct aa_dfa *dfa, int table_size)
-+/**
-+ * verify_dfa_accept_xindex - verify accept indexes are in range of perms table
-+ * @dfa: the dfa to check accept indexes are in range
-+ * table_size: the permission table size the indexes should be within
-+ */
-+static bool verify_dfa_accept_index(struct aa_dfa *dfa, int table_size)
- {
- 	int i;
- 	for (i = 0; i < dfa->tables[YYTD_ID_ACCEPT]->td_lolen; i++) {
--		if (!verify_xindex(ACCEPT_TABLE(dfa)[i], table_size))
-+		if (ACCEPT_TABLE(dfa)[i] >= table_size)
- 			return false;
- 	}
- 	return true;
-@@ -1216,11 +1210,13 @@ static bool verify_perms(struct aa_policydb *pdb)
- 		if (!verify_perm(&pdb->perms[i]))
- 			return false;
- 		/* verify indexes into str table */
--		if (pdb->perms[i].xindex >= pdb->trans.size)
-+		if ((pdb->perms[i].xindex & AA_X_TYPE_MASK) == AA_X_TABLE &&
-+		    (pdb->perms[i].xindex & AA_X_INDEX_MASK) >= pdb->trans.size)
- 			return false;
--		if (pdb->perms[i].tag >= pdb->trans.size)
-+		if (pdb->perms[i].tag && pdb->perms[i].tag >= pdb->trans.size)
- 			return false;
--		if (pdb->perms[i].label >= pdb->trans.size)
-+		if (pdb->perms[i].label &&
-+		    pdb->perms[i].label >= pdb->trans.size)
- 			return false;
- 	}
- 
-@@ -1242,10 +1238,10 @@ static int verify_profile(struct aa_profile *profile)
- 	if (!rules)
- 		return 0;
- 
--	if ((rules->file.dfa && !verify_dfa_xindex(rules->file.dfa,
--						  rules->file.trans.size)) ||
-+	if ((rules->file.dfa && !verify_dfa_accept_index(rules->file.dfa,
-+							 rules->file.size)) ||
- 	    (rules->policy.dfa &&
--	     !verify_dfa_xindex(rules->policy.dfa, rules->policy.trans.size))) {
-+	     !verify_dfa_accept_index(rules->policy.dfa, rules->policy.size))) {
- 		audit_iface(profile, NULL, NULL,
- 			    "Unpack: Invalid named transition", NULL, -EPROTO);
- 		return -EPROTO;
+-#ifdef CONFIG_CPU_HAS_INTEVT
+-#define evt2irq(evt)		(((evt) >> 5) - 16)
+-#define irq2evt(irq)		(((irq) + 16) << 5)
++#ifdef CONFIG_CPU_HAS_INTEVT	/* Avoid IRQ0 (invalid for platform devices) */
++#define evt2irq(evt)		((evt) >> 5)
++#define irq2evt(irq)		((irq) << 5)
+ #else
+ #define evt2irq(evt)		(evt)
+ #define irq2evt(irq)		(irq)
 -- 
 2.39.2
 
