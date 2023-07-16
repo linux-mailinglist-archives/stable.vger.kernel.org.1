@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACD68755343
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6482D755577
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231657AbjGPURM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:17:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43056 "EHLO
+        id S232527AbjGPUlP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:41:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231639AbjGPURL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A7AE43
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:10 -0700 (PDT)
+        with ESMTP id S232523AbjGPUlM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AA4A197
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FB8460EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D19C433C8;
-        Sun, 16 Jul 2023 20:17:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 819E960E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C09C433C8;
+        Sun, 16 Jul 2023 20:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538629;
-        bh=ZMlpBJfPXb5crgdB59APBKKc4aikpXVZX7+D6Yz3Blg=;
+        s=korg; t=1689540070;
+        bh=G/+TS5VFaATf3n+2/coTI5rD/c41vh+4AU2iPlLxxcA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bB59v5ikYMthkDv9oj5OSBBxzeERuHTgDy6f2NXRjQfHEcAxr++LnLnK5P8iPonRk
-         bSmO+w6UWQ84YRLiC0BjmZzTgWAubhznf6fIlGnB557e8u/f6P9NTB8JPLdUNxx1EG
-         nFLetwKR13urxo/qF/jEfjBWqJZWeUhrOSEQUmA0=
+        b=a8w/+UMT5gHomVNDylRL6FRnE0htJIe3Nh8mCyW+m9AyD6HzJbAoMgwvE3XPi8xrV
+         rtj4UtlUhXAmWIZMIMPxCr6rnQxscYfzfjZ4SA7MFSsEGo8YTHlf/9xS7Psi5+Eif0
+         IF2gR0CCRQNEcwJiipFLNSLLfwJb4G+BRxcje24o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andy Chi <andy.chi@canonical.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.4 519/800] ALSA: hda/realtek: Enable mute/micmute LEDs and limit mic boost on EliteBook
+        patches@lists.linux.dev, Christian Lamparter <chunkeey@gmail.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 233/591] ARM: dts: BCM5301X: fix duplex-full => full-duplex
 Date:   Sun, 16 Jul 2023 21:46:12 +0200
-Message-ID: <20230716195001.150078218@linuxfoundation.org>
+Message-ID: <20230716194929.902525068@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Chi <andy.chi@canonical.com>
+From: Christian Lamparter <chunkeey@gmail.com>
 
-commit e94f1f96f108ba96c0ed8bf3fbdd8ee6a6703880 upstream.
+[ Upstream commit fd274b733bfdde3ca72f0fa2a37f032f3a8c402c ]
 
-On HP EliteBook 835/845/845W G10, the audio LEDs can be enabled by
-ALC285_FIXUP_HP_MUTE_LED. So use it accordingly.
+this typo was found by the dtbs_check
+| ports:port@5:fixed-link: 'oneOf' conditional failed,
+|  {'speed': [[1000]], 'duplex-full': True} is not of type 'array'
+| 'duplex-full' does not match any of the regexes: 'pinctrl-[0-]..."
 
-Signed-off-by: Andy Chi <andy.chi@canonical.com>
-Cc: <stable@vger.kernel.org>
-Fixes: 3e10f6ca76c4 ("ALSA: hda/realtek: Add quirk for HP EliteBook G10 laptops")
-Link: https://lore.kernel.org/r/20230626130301.301712-1-andy.chi@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+this should have been full-duplex;
+
+Fixes: 935327a73553 ("ARM: dts: BCM5301X: Add DT for Meraki MR26")
+Fixes: ec88a9c344d9 ("ARM: BCM5301X: Add DT for Meraki MR32")
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+Link: https://lore.kernel.org/r/50522f45566951a9eabd22820647924cc6b4a264.1686238550.git.chunkeey@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/bcm53015-meraki-mr26.dts | 2 +-
+ arch/arm/boot/dts/bcm53016-meraki-mr32.dts | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9490,9 +9490,9 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8b63, "HP Elite Dragonfly 13.5 inch G4", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b65, "HP ProBook 455 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8b66, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
--	SND_PCI_QUIRK(0x103c, 0x8b70, "HP EliteBook 835 G10", ALC287_FIXUP_CS35L41_I2C_2),
--	SND_PCI_QUIRK(0x103c, 0x8b72, "HP EliteBook 845 G10", ALC287_FIXUP_CS35L41_I2C_2),
--	SND_PCI_QUIRK(0x103c, 0x8b74, "HP EliteBook 845W G10", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8b70, "HP EliteBook 835 G10", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8b72, "HP EliteBook 845 G10", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8b74, "HP EliteBook 845W G10", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b77, "HP ElieBook 865 G10", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8b7a, "HP", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b7d, "HP", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/arch/arm/boot/dts/bcm53015-meraki-mr26.dts b/arch/arm/boot/dts/bcm53015-meraki-mr26.dts
+index 14f58033efeb9..ca2266b936ee2 100644
+--- a/arch/arm/boot/dts/bcm53015-meraki-mr26.dts
++++ b/arch/arm/boot/dts/bcm53015-meraki-mr26.dts
+@@ -128,7 +128,7 @@ port@5 {
+ 
+ 			fixed-link {
+ 				speed = <1000>;
+-				duplex-full;
++				full-duplex;
+ 			};
+ 		};
+ 	};
+diff --git a/arch/arm/boot/dts/bcm53016-meraki-mr32.dts b/arch/arm/boot/dts/bcm53016-meraki-mr32.dts
+index e678bc03d8165..008de8ee2584a 100644
+--- a/arch/arm/boot/dts/bcm53016-meraki-mr32.dts
++++ b/arch/arm/boot/dts/bcm53016-meraki-mr32.dts
+@@ -187,7 +187,7 @@ port@5 {
+ 
+ 			fixed-link {
+ 				speed = <1000>;
+-				duplex-full;
++				full-duplex;
+ 			};
+ 		};
+ 	};
+-- 
+2.39.2
+
 
 
