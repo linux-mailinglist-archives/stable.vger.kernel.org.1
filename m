@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18CD47555D5
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C4A375537E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232640AbjGPUpE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:45:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34456 "EHLO
+        id S231744AbjGPUTk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:19:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232642AbjGPUpE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:45:04 -0400
+        with ESMTP id S231749AbjGPUTk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C15FE41
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:45:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CB8890
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0795C60EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:45:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F1AC433C7;
-        Sun, 16 Jul 2023 20:45:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E47760DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3277C433C8;
+        Sun, 16 Jul 2023 20:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540302;
-        bh=NGvdTmxaNyf5Fp6TrIthmgVZfGQ63NyS2Cte8J9IvJI=;
+        s=korg; t=1689538778;
+        bh=8M/JMwttDdJna+e2sGSEmjJKf9t9p0CDBzIIaqsNmXc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AnOz9ZssWiV9zEDR+nfHWF+omr3kjA21WffA3RXfC9jFgkckg7I5ymzx4ZSie3Yy2
-         TaltLtVms1fFDaU7hhcKufGJrLcbV3MpCfXyr5JVZJchJ9cjVZjgO6rCYrEmNma+vS
-         hdk6RMoSRC3p6CijEyPfABdnwR82C6uGHXju7lDw=
+        b=FL/PSY+0y6f18OkCF+WDSVBe4MlyMUZTW+TT1YBLNaidU/06PXF2369gJmjaHUrl9
+         8TG1/xvqWcOe5buL3fd27FfBQsWJAYPtBLEEJ/SzABUksgHeSrYw+0gql8k4gvZNDd
+         +lHlFe618YiRQqre+YR3yni/IENK3iOtEG3gU4Ss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinhong Zhu <jinhongzhu@hust.edu.cn>,
-        Dan Carpenter <error27@gmail.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 287/591] scsi: qedf: Fix NULL dereference in error handling
+Subject: [PATCH 6.4 573/800] media: i2c: imx296: fix error checking in imx296_read_temperature()
 Date:   Sun, 16 Jul 2023 21:47:06 +0200
-Message-ID: <20230716194931.318052907@linuxfoundation.org>
+Message-ID: <20230716195002.395194927@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jinhong Zhu <jinhongzhu@hust.edu.cn>
+From: Dan Carpenter <error27@gmail.com>
 
-[ Upstream commit f025312b089474a54e4859f3453771314d9e3d4f ]
+[ Upstream commit 1b3565dbc6aa124f34674e3dcf6966f663817e05 ]
 
-Smatch reported:
+The "& IMX296_TMDOUT_MASK" means that "tmdout" can't be negative so the
+error checking will not work.
 
-drivers/scsi/qedf/qedf_main.c:3056 qedf_alloc_global_queues()
-warn: missing unwind goto?
-
-At this point in the function, nothing has been allocated so we can return
-directly. In particular the "qedf->global_queues" have not been allocated
-so calling qedf_free_global_queues() will lead to a NULL dereference when
-we check if (!gl[i]) and "gl" is NULL.
-
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Signed-off-by: Jinhong Zhu <jinhongzhu@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230502140022.2852-1-jinhongzhu@hust.edu.cn
-Reviewed-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: cb33db2b6ccf ("media: i2c: IMX296 camera sensor driver")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/i2c/imx296.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index e045c6e250902..ecff2ec83a002 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -3046,9 +3046,8 @@ static int qedf_alloc_global_queues(struct qedf_ctx *qedf)
- 	 * addresses of our queues
- 	 */
- 	if (!qedf->p_cpuq) {
--		status = -EINVAL;
- 		QEDF_ERR(&qedf->dbg_ctx, "p_cpuq is NULL.\n");
--		goto mem_alloc_failure;
-+		return -EINVAL;
- 	}
+diff --git a/drivers/media/i2c/imx296.c b/drivers/media/i2c/imx296.c
+index 4f22c0515ef8d..c3d6d52fc7727 100644
+--- a/drivers/media/i2c/imx296.c
++++ b/drivers/media/i2c/imx296.c
+@@ -922,10 +922,12 @@ static int imx296_read_temperature(struct imx296 *sensor, int *temp)
+ 	if (ret < 0)
+ 		return ret;
  
- 	qedf->global_queues = kzalloc((sizeof(struct global_queue *)
+-	tmdout = imx296_read(sensor, IMX296_TMDOUT) & IMX296_TMDOUT_MASK;
++	tmdout = imx296_read(sensor, IMX296_TMDOUT);
+ 	if (tmdout < 0)
+ 		return tmdout;
+ 
++	tmdout &= IMX296_TMDOUT_MASK;
++
+ 	/* T(°C) = 246.312 - 0.304 * TMDOUT */;
+ 	*temp = 246312 - 304 * tmdout;
+ 
 -- 
 2.39.2
 
