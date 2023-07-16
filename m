@@ -2,156 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABD017555FF
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EE547553A2
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232699AbjGPUql (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:46:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35790 "EHLO
+        id S231807AbjGPUVN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:21:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232713AbjGPUqk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:46:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4C8FE66
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:46:32 -0700 (PDT)
+        with ESMTP id S231806AbjGPUVM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:21:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 431A190
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:21:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E7A560DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:46:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D53EC433C7;
-        Sun, 16 Jul 2023 20:46:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C57B160E9D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:21:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A34C433C9;
+        Sun, 16 Jul 2023 20:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540391;
-        bh=mBmUGl8w4CJ/CyI7fpfR/NN12ecmnndRgBlqDk/7EM0=;
+        s=korg; t=1689538870;
+        bh=Uhk18Bmsbi7YcOKOtaIXMSdyvYyYn1t8ysq/pQrMDmw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ajsbvzm9wvqgkJWnQejKzoeJi0hsZVpYywvblW4utl9ZJ9FqXsonisRHuTEEjur7d
-         yX/B8EcJ+uYpyXm1UJDTXmFod6kr0a8FFUcyBay07LMkVpGL7Y2p8A5nebbuVpKKQS
-         tkNFCkWfDB82N89rC3ecbaMc1cH77z59ZElzYzx8=
+        b=ohfC4kiKpzxncpvfFWm5ZOVgnBGob1bsFSMAqcnHAi72jaAcSd429xvTblJka3x2U
+         j1gyY9b7D0i4rUMphO4MKrbLgtQ6sFJIKP6CT+tFTYIIS0rRvFwAZv2yQ7sNOev04D
+         RCitnUtQyDRIeTjaClzIO7CgV5xcsLyOgK3vZhE4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aditya Gupta <adityag@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH 6.1 320/591] powerpc: update ppc_save_regs to save current r1 in pt_regs
+        patches@lists.linux.dev,
+        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 606/800] media: venus: helpers: Fix ALIGN() of non power of two
 Date:   Sun, 16 Jul 2023 21:47:39 +0200
-Message-ID: <20230716194932.171218750@linuxfoundation.org>
+Message-ID: <20230716195003.182400066@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+From: Rikard Falkeborn <rikard.falkeborn@gmail.com>
 
-[ Upstream commit b684c09f09e7a6af3794d4233ef785819e72db79 ]
+[ Upstream commit 927e78ac8bc58155316cf6f46026e1912bbbbcfc ]
 
-ppc_save_regs() skips one stack frame while saving the CPU register states.
-Instead of saving current R1, it pulls the previous stack frame pointer.
+ALIGN() expects its second argument to be a power of 2, otherwise
+incorrect results are produced for some inputs. The output can be
+both larger or smaller than what is expected.
 
-When vmcores caused by direct panic call (such as `echo c >
-/proc/sysrq-trigger`), are debugged with gdb, gdb fails to show the
-backtrace correctly. On further analysis, it was found that it was because
-of mismatch between r1 and NIP.
+For example, ALIGN(304, 192) equals 320 instead of 384, and
+ALIGN(65, 192) equals 256 instead of 192.
 
-GDB uses NIP to get current function symbol and uses corresponding debug
-info of that function to unwind previous frames, but due to the
-mismatching r1 and NIP, the unwinding does not work, and it fails to
-unwind to the 2nd frame and hence does not show the backtrace.
+However, nestling two ALIGN() as is done in this case seem to only
+produce results equal to or bigger than the expected result if ALIGN()
+had handled non powers of two, and that in turn results in framesizes
+that are either the correct size or too large.
 
-GDB backtrace with vmcore of kernel without this patch:
+Fortunately, since 192 * 4 / 3 equals 256, it turns out that one ALIGN()
+is sufficient.
 
----------
-(gdb) bt
- #0  0xc0000000002a53e8 in crash_setup_regs (oldregs=<optimized out>,
-    newregs=0xc000000004f8f8d8) at ./arch/powerpc/include/asm/kexec.h:69
- #1  __crash_kexec (regs=<optimized out>) at kernel/kexec_core.c:974
- #2  0x0000000000000063 in ?? ()
- #3  0xc000000003579320 in ?? ()
----------
-
-Further analysis revealed that the mismatch occurred because
-"ppc_save_regs" was saving the previous stack's SP instead of the current
-r1. This patch fixes this by storing current r1 in the saved pt_regs.
-
-GDB backtrace with vmcore of patched kernel:
-
---------
-(gdb) bt
- #0  0xc0000000002a53e8 in crash_setup_regs (oldregs=0x0, newregs=0xc00000000670b8d8)
-    at ./arch/powerpc/include/asm/kexec.h:69
- #1  __crash_kexec (regs=regs@entry=0x0) at kernel/kexec_core.c:974
- #2  0xc000000000168918 in panic (fmt=fmt@entry=0xc000000001654a60 "sysrq triggered crash\n")
-    at kernel/panic.c:358
- #3  0xc000000000b735f8 in sysrq_handle_crash (key=<optimized out>) at drivers/tty/sysrq.c:155
- #4  0xc000000000b742cc in __handle_sysrq (key=key@entry=99, check_mask=check_mask@entry=false)
-    at drivers/tty/sysrq.c:602
- #5  0xc000000000b7506c in write_sysrq_trigger (file=<optimized out>, buf=<optimized out>,
-    count=2, ppos=<optimized out>) at drivers/tty/sysrq.c:1163
- #6  0xc00000000069a7bc in pde_write (ppos=<optimized out>, count=<optimized out>,
-    buf=<optimized out>, file=<optimized out>, pde=0xc00000000362cb40) at fs/proc/inode.c:340
- #7  proc_reg_write (file=<optimized out>, buf=<optimized out>, count=<optimized out>,
-    ppos=<optimized out>) at fs/proc/inode.c:352
- #8  0xc0000000005b3bbc in vfs_write (file=file@entry=0xc000000006aa6b00,
-    buf=buf@entry=0x61f498b4f60 <error: Cannot access memory at address 0x61f498b4f60>,
-    count=count@entry=2, pos=pos@entry=0xc00000000670bda0) at fs/read_write.c:582
- #9  0xc0000000005b4264 in ksys_write (fd=<optimized out>,
-    buf=0x61f498b4f60 <error: Cannot access memory at address 0x61f498b4f60>, count=2)
-    at fs/read_write.c:637
- #10 0xc00000000002ea2c in system_call_exception (regs=0xc00000000670be80, r0=<optimized out>)
-    at arch/powerpc/kernel/syscall.c:171
- #11 0xc00000000000c270 in system_call_vectored_common ()
-    at arch/powerpc/kernel/interrupt_64.S:192
---------
-
-Nick adds:
-  So this now saves regs as though it was an interrupt taken in the
-  caller, at the instruction after the call to ppc_save_regs, whereas
-  previously the NIP was there, but R1 came from the caller's caller and
-  that mismatch is what causes gdb's dwarf unwinder to go haywire.
-
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Fixes: d16a58f8854b1 ("powerpc: Improve ppc_save_regs()")
-Reivewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230615091047.90433-1-adityag@linux.ibm.com
+Fixes: ab1eda449c6e ("media: venus: vdec: handle 10bit bitstreams")
+Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/ppc_save_regs.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/platform/qcom/venus/helpers.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/ppc_save_regs.S b/arch/powerpc/kernel/ppc_save_regs.S
-index 6e86f3bf46735..235ae24284519 100644
---- a/arch/powerpc/kernel/ppc_save_regs.S
-+++ b/arch/powerpc/kernel/ppc_save_regs.S
-@@ -31,10 +31,10 @@ _GLOBAL(ppc_save_regs)
- 	lbz	r0,PACAIRQSOFTMASK(r13)
- 	PPC_STL	r0,SOFTE(r3)
- #endif
--	/* go up one stack frame for SP */
--	PPC_LL	r4,0(r1)
--	PPC_STL	r4,GPR1(r3)
-+	/* store current SP */
-+	PPC_STL	r1,GPR1(r3)
- 	/* get caller's LR */
-+	PPC_LL	r4,0(r1)
- 	PPC_LL	r0,LRSAVE(r4)
- 	PPC_STL	r0,_LINK(r3)
- 	mflr	r0
+diff --git a/drivers/media/platform/qcom/venus/helpers.c b/drivers/media/platform/qcom/venus/helpers.c
+index a2ceab7f9ddbf..a68389b0aae0a 100644
+--- a/drivers/media/platform/qcom/venus/helpers.c
++++ b/drivers/media/platform/qcom/venus/helpers.c
+@@ -1036,8 +1036,8 @@ static u32 get_framesize_raw_yuv420_tp10_ubwc(u32 width, u32 height)
+ 	u32 extradata = SZ_16K;
+ 	u32 size;
+ 
+-	y_stride = ALIGN(ALIGN(width, 192) * 4 / 3, 256);
+-	uv_stride = ALIGN(ALIGN(width, 192) * 4 / 3, 256);
++	y_stride = ALIGN(width * 4 / 3, 256);
++	uv_stride = ALIGN(width * 4 / 3, 256);
+ 	y_sclines = ALIGN(height, 16);
+ 	uv_sclines = ALIGN((height + 1) >> 1, 16);
+ 
 -- 
 2.39.2
 
