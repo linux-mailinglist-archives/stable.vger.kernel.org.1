@@ -2,47 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6D68755564
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3BCC75532E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232530AbjGPUk2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:40:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59662 "EHLO
+        id S231629AbjGPUQU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:16:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232517AbjGPUk0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:26 -0400
+        with ESMTP id S231626AbjGPUQT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3264FE64
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D60FE43;
+        Sun, 16 Jul 2023 13:16:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FFDF60EBD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEE1C433C8;
-        Sun, 16 Jul 2023 20:40:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A89960EAE;
+        Sun, 16 Jul 2023 20:16:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E407BC433C8;
+        Sun, 16 Jul 2023 20:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540023;
-        bh=H0bl3O/5mTtwmdTDLAGX/Fc6KG7K1WQ4xenjjATDrA0=;
+        s=korg; t=1689538576;
+        bh=Oc4BTr5K3vTeSxq00miA1QYT23jOa88djcW0k/clk4w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cpPanpn68fmV/LZfDpleyo28iRofNOvz3kqoj1D0u1VHeR7sk7p+LgZfoKBpcTPEm
-         7qhlIUghTl6zQJRoIja0iVvw4kXwfN1p91Yrn/ZTzvxS75PU71osK7LNdAmOKPHUHq
-         Wu3uONWxK2FvsQyfl45C2umsrTJFZsQv7JtHIFaY=
+        b=bGe9napxUyK/4tdwao8Ae0nlmRu8cUIHeGLMfCpCr7ZKkCeySuWJr5K4YVpA28qUB
+         05N+GvS6GuaPl2r/KaQChWPhC6pJ7YaUVJfgeCbVbgKmFRfoV9ydzuK7VfasySDEZ4
+         kj9DtzAILC/lvl83hekEBnG1NUpHvBeAkGnXOU/4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 215/591] ARM: dts: qcom: apq8074-dragonboard: Set DMA as remotely controlled
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 501/800] crypto: nx - fix build warnings when DEBUG_FS is not enabled
 Date:   Sun, 16 Jul 2023 21:45:54 +0200
-Message-ID: <20230716194929.432597584@linuxfoundation.org>
+Message-ID: <20230716195000.731459159@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,40 +63,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit e60c230588d88036f974cec7e93361e2c4f62226 ]
+[ Upstream commit b04b076fb56560b39d695ac3744db457e12278fd ]
 
-Add the qcom,controlled-remotely property for the blsp2_bam
-controller node. This board requires this, otherwise the board stalls
-during the boot for some reason (most probably because TZ mishandles the
-protection error and keeps on looping somewhere inside).
+Fix build warnings when DEBUG_FS is not enabled by using an empty
+do-while loop instead of a value:
 
-Fixes: 62bc81792223 dts: msm8974: Add blsp2_bam dma node
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230507190735.2333145-3-dmitry.baryshkov@linaro.org
+In file included from ../drivers/crypto/nx/nx.c:27:
+../drivers/crypto/nx/nx.c: In function 'nx_register_algs':
+../drivers/crypto/nx/nx.h:173:33: warning: statement with no effect [-Wunused-value]
+  173 | #define NX_DEBUGFS_INIT(drv)    (0)
+../drivers/crypto/nx/nx.c:573:9: note: in expansion of macro 'NX_DEBUGFS_INIT'
+  573 |         NX_DEBUGFS_INIT(&nx_driver);
+../drivers/crypto/nx/nx.c: In function 'nx_remove':
+../drivers/crypto/nx/nx.h:174:33: warning: statement with no effect [-Wunused-value]
+  174 | #define NX_DEBUGFS_FINI(drv)    (0)
+../drivers/crypto/nx/nx.c:793:17: note: in expansion of macro 'NX_DEBUGFS_FINI'
+  793 |                 NX_DEBUGFS_FINI(&nx_driver);
+
+Also, there is no need to build nx_debugfs.o when DEBUG_FS is not
+enabled, so change the Makefile to accommodate that.
+
+Fixes: ae0222b7289d ("powerpc/crypto: nx driver code supporting nx encryption")
+Fixes: aef7b31c8833 ("powerpc/crypto: Build files for the nx device driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Breno Leitão <leitao@debian.org>
+Cc: Nayna Jain <nayna@linux.ibm.com>
+Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-crypto@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-apq8074-dragonboard.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/crypto/nx/Makefile | 2 +-
+ drivers/crypto/nx/nx.h     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-apq8074-dragonboard.dts b/arch/arm/boot/dts/qcom-apq8074-dragonboard.dts
-index 91716298ec5ed..be1ab7eff8ff4 100644
---- a/arch/arm/boot/dts/qcom-apq8074-dragonboard.dts
-+++ b/arch/arm/boot/dts/qcom-apq8074-dragonboard.dts
-@@ -23,6 +23,10 @@ &blsp1_uart2 {
- 	status = "okay";
- };
+diff --git a/drivers/crypto/nx/Makefile b/drivers/crypto/nx/Makefile
+index d00181a26dd65..483cef62acee8 100644
+--- a/drivers/crypto/nx/Makefile
++++ b/drivers/crypto/nx/Makefile
+@@ -1,7 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_CRYPTO_DEV_NX_ENCRYPT) += nx-crypto.o
+ nx-crypto-objs := nx.o \
+-		  nx_debugfs.o \
+ 		  nx-aes-cbc.o \
+ 		  nx-aes-ecb.o \
+ 		  nx-aes-gcm.o \
+@@ -11,6 +10,7 @@ nx-crypto-objs := nx.o \
+ 		  nx-sha256.o \
+ 		  nx-sha512.o
  
-+&blsp2_dma {
-+	qcom,controlled-remotely;
-+};
-+
- &blsp2_i2c5 {
- 	status = "okay";
- 	clock-frequency = <200000>;
++nx-crypto-$(CONFIG_DEBUG_FS) += nx_debugfs.o
+ obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_PSERIES) += nx-compress-pseries.o nx-compress.o
+ obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_POWERNV) += nx-compress-powernv.o nx-compress.o
+ nx-compress-objs := nx-842.o
+diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
+index c6233173c612e..2697baebb6a35 100644
+--- a/drivers/crypto/nx/nx.h
++++ b/drivers/crypto/nx/nx.h
+@@ -170,8 +170,8 @@ struct nx_sg *nx_walk_and_build(struct nx_sg *, unsigned int,
+ void nx_debugfs_init(struct nx_crypto_driver *);
+ void nx_debugfs_fini(struct nx_crypto_driver *);
+ #else
+-#define NX_DEBUGFS_INIT(drv)	(0)
+-#define NX_DEBUGFS_FINI(drv)	(0)
++#define NX_DEBUGFS_INIT(drv)	do {} while (0)
++#define NX_DEBUGFS_FINI(drv)	do {} while (0)
+ #endif
+ 
+ #define NX_PAGE_NUM(x)		((u64)(x) & 0xfffffffffffff000ULL)
 -- 
 2.39.2
 
