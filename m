@@ -2,91 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6759F7552BA
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68F5E7554FA
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:36:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231453AbjGPULN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:11:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39220 "EHLO
+        id S232328AbjGPUgB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:36:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231452AbjGPULM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD99C0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:12 -0700 (PDT)
+        with ESMTP id S232327AbjGPUgA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:36:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D198BA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:36:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7ACC560EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869F2C433C9;
-        Sun, 16 Jul 2023 20:11:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FD8160EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:35:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF32C433C8;
+        Sun, 16 Jul 2023 20:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538270;
-        bh=aMYVRjG8oIKf/ytaQaupzuMdxiQbCQI98FVgUgPGaRI=;
+        s=korg; t=1689539759;
+        bh=rvKtnN98+cSQHDuLVFywgMt/5YiKKt0Jw0+1rq4baBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jbUZt7Tnj3Y3+18WuwjZmbeotpYHdMevVeUpY08lriyCSiwEr3noPoqlIinkgKn+I
-         66WnHrzy3UbPQOUgjvYZxOc7/f5But7XARpkca0A8EQOHhh4aAf4m1YlisCzXZ2GPF
-         CLGlFaiphwRQg+QRzKfiWHCkHGe1rxEO1IOKxktg=
+        b=HezIPzg6lnuUPTauQL3t0uPgOe0AqWu78gBScEMKS6kdp0dFN5SS2k2Je1Ri8qxLP
+         ou1pV2shFPCKvJ7XDAU62DsBW0LWX/vkH6PDR6264YM05lpDdu4+hSr3akWwwwiM2K
+         D0hsYUJYonfIu/BDrqt4ftTdlcGXDwBK7e4nW0jM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abel Vesa <abel.vesa@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 389/800] arm64: dts: qcom: sm8550: Add missing interconnect path to USB HC
-Date:   Sun, 16 Jul 2023 21:44:02 +0200
-Message-ID: <20230716194958.108016139@linuxfoundation.org>
+Subject: [PATCH 6.1 104/591] memstick r592: make memstick_debug_get_tpc_name() static
+Date:   Sun, 16 Jul 2023 21:44:03 +0200
+Message-ID: <20230716194926.565614001@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 11a1397bbf69e408223bb691858a0fcd295a8f76 ]
+[ Upstream commit 434587df9f7fd68575f99a889cc5f2efc2eaee5e ]
 
-The USB HC node is missing the interconnect paths, so add them.
+There are no other files referencing this function, apparently
+it was left global to avoid an 'unused function' warning when
+the only caller is left out. With a 'W=1' build, it causes
+a 'missing prototype' warning though:
 
-Fixes: 7f7e5c1b037f ("arm64: dts: qcom: sm8550: Add USB PHYs and controller nodes")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230601103817.4066446-1-abel.vesa@linaro.org
+drivers/memstick/host/r592.c:47:13: error: no previous prototype for 'memstick_debug_get_tpc_name' [-Werror=missing-prototypes]
+
+Annotate the function as 'static __maybe_unused' to avoid both
+problems.
+
+Fixes: 926341250102 ("memstick: add driver for Ricoh R5C592 card reader")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230516202714.560929-1-arnd@kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/memstick/host/r592.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index 13fd8f516d182..d2b404736a8e4 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -2769,6 +2769,10 @@ usb_1: usb@a6f8800 {
+diff --git a/drivers/memstick/host/r592.c b/drivers/memstick/host/r592.c
+index 42bfc46842b82..461f5ffd02bc1 100644
+--- a/drivers/memstick/host/r592.c
++++ b/drivers/memstick/host/r592.c
+@@ -44,12 +44,10 @@ static const char *tpc_names[] = {
+  * memstick_debug_get_tpc_name - debug helper that returns string for
+  * a TPC number
+  */
+-const char *memstick_debug_get_tpc_name(int tpc)
++static __maybe_unused const char *memstick_debug_get_tpc_name(int tpc)
+ {
+ 	return tpc_names[tpc-1];
+ }
+-EXPORT_SYMBOL(memstick_debug_get_tpc_name);
+-
  
- 			resets = <&gcc GCC_USB30_PRIM_BCR>;
- 
-+			interconnects = <&aggre1_noc MASTER_USB3_0 0 &mc_virt SLAVE_EBI1 0>,
-+					<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_USB3_0 0>;
-+			interconnect-names = "usb-ddr", "apps-usb";
-+
- 			status = "disabled";
- 
- 			usb_1_dwc3: usb@a600000 {
+ /* Read a register*/
+ static inline u32 r592_read_reg(struct r592_device *dev, int address)
 -- 
 2.39.2
 
