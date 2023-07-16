@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C227755727
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C393755706
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:56:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233102AbjGPU5p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:57:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44436 "EHLO
+        id S233053AbjGPU4b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:56:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233115AbjGPU5o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:57:44 -0400
+        with ESMTP id S233060AbjGPU4a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:56:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 535EDE45
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:57:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9650E9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:56:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDD5760EBD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:57:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4EDC433C8;
-        Sun, 16 Jul 2023 20:57:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4727060EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:56:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55322C433C9;
+        Sun, 16 Jul 2023 20:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689541061;
-        bh=bb+x+YNfGLSwq3QwuoRB1NAmzyH3LLk+4qfqi+OPpjQ=;
+        s=korg; t=1689540985;
+        bh=RCYAsltuHJui4rgkb4cVJaFY4XqvAe5byByXsawD33Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RVSRn12f7G1jaQJ6GktzsKYEzboXLKhc/LysDsvT/dXgC/+t3W8EoGFBSW3wnaI8L
-         Uv9JKD6PN5T3kqNrhMayt/g/pQJMe1wkIpD9Sln9AK83sgdnDY7oWFC83eWXg8lCDE
-         UJyzI6JZu3IvphyNZGXM3EJeVgPkqAA033/EI/uo=
+        b=aJFIhNRhd3LyhlH0JvhSu/32ehmahacErKxh8vkG+aNa1MXYDaAUr+GshrFVMY7Ne
+         UrOnlOkw+t/DncihcVFCicVllWpgjPHJ7sKgyv/5j7kDEEEe07F7e6WhMEHD3Jpkv1
+         j81TScFQS9ZRncy3SM9i6HPI7EYK4vFqUEf8UPXE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 558/591] btrfs: add block-group tree to lockdep classes
-Date:   Sun, 16 Jul 2023 21:51:37 +0200
-Message-ID: <20230716194938.292139506@linuxfoundation.org>
+        patches@lists.linux.dev, Naohiro Aota <naohiro.aota@wdc.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 559/591] btrfs: reinsert BGs failed to reclaim
+Date:   Sun, 16 Jul 2023 21:51:38 +0200
+Message-ID: <20230716194938.318680723@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -53,41 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Sterba <dsterba@suse.com>
+From: Naohiro Aota <naota@elisp.net>
 
-commit 1a1b0e729d227f9f758f7b5f1c997e874e94156e upstream.
+commit 7e27180994383b7c741ad87749db01e4989a02ba upstream.
 
-The block group tree was not present among the lockdep classes. We could
-get potentially lockdep warnings but so far none has been seen, also
-because block-group-tree is a relatively new feature.
+The reclaim process can temporarily fail. For example, if the space is
+getting tight, it fails to make the block group read-only. If there are no
+further writes on that block group, the block group will never get back to
+the reclaim list, and the BG never gets reclaimed. In a certain workload,
+we can leave many such block groups never reclaimed.
 
-CC: stable@vger.kernel.org # 6.1+
+So, let's get it back to the list and give it a chance to be reclaimed.
+
+Fixes: 18bb8bbf13c1 ("btrfs: zoned: automatically reclaim zones")
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/locking.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/block-group.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/locking.c
-+++ b/fs/btrfs/locking.c
-@@ -56,8 +56,8 @@
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1642,6 +1642,8 @@ void btrfs_reclaim_bgs_work(struct work_
+ 		}
  
- static struct btrfs_lockdep_keyset {
- 	u64			id;		/* root objectid */
--	/* Longest entry: btrfs-free-space-00 */
--	char			names[BTRFS_MAX_LEVEL][20];
-+	/* Longest entry: btrfs-block-group-00 */
-+	char			names[BTRFS_MAX_LEVEL][24];
- 	struct lock_class_key	keys[BTRFS_MAX_LEVEL];
- } btrfs_lockdep_keysets[] = {
- 	{ .id = BTRFS_ROOT_TREE_OBJECTID,	DEFINE_NAME("root")	},
-@@ -71,6 +71,7 @@ static struct btrfs_lockdep_keyset {
- 	{ .id = BTRFS_DATA_RELOC_TREE_OBJECTID,	DEFINE_NAME("dreloc")	},
- 	{ .id = BTRFS_UUID_TREE_OBJECTID,	DEFINE_NAME("uuid")	},
- 	{ .id = BTRFS_FREE_SPACE_TREE_OBJECTID,	DEFINE_NAME("free-space") },
-+	{ .id = BTRFS_BLOCK_GROUP_TREE_OBJECTID, DEFINE_NAME("block-group") },
- 	{ .id = 0,				DEFINE_NAME("tree")	},
- };
+ next:
++		if (ret)
++			btrfs_mark_bg_to_reclaim(bg);
+ 		btrfs_put_block_group(bg);
  
+ 		mutex_unlock(&fs_info->reclaim_bgs_lock);
 
 
