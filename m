@@ -2,195 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AD857554BD
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7767275527B
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232287AbjGPUdo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:33:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54502 "EHLO
+        id S231339AbjGPUIY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:08:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232292AbjGPUdo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26225D2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:43 -0700 (PDT)
+        with ESMTP id S231338AbjGPUIX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 488399D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC5F160EBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2C5C433C8;
-        Sun, 16 Jul 2023 20:33:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8DBD60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66AAC433C8;
+        Sun, 16 Jul 2023 20:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539622;
-        bh=XZxRv0Z4vEuORBLah3djlAkLJdsyBjNhm0Ao32rLkDE=;
+        s=korg; t=1689538102;
+        bh=oN5GZesW5DeVHv0zzJsWgM/T1GNoayPofxM/GylSqFE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XiMPsHngTwsyQThQ9cY+quOGhCa78OfnaLXuuuQT7zxuvpyIxUzXXfRD/emxzIIBe
-         dObVKGO6i6wHb8MQNh+7fZuPamXoKEENVGbKZKlos9koA9C4PfsNLnmmGKVrAR7xqG
-         USTujqyc6jLpFU/Mrst6Xr5aDCrI3XLrBMokq7V8=
+        b=1tMs/OG8SuQplqF7Kew9t5YTexdhljZN5h+/5IDZzf/sx5YXOzL48kfsDpcV0E0tv
+         kC1FojI40CDzRFq57sltVeM3f86C/gvPLtZzcydpXoJ3elQIzb2jJYUZqfgzsNjEy1
+         kdh6ZvUqkQmifh0uP2c4tSQ813+WJTe8zp0inPBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        patches@lists.linux.dev, Markus Mayer <mmayer@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/591] x86/tdx: Fix race between set_memory_encrypted() and load_unaligned_zeropad()
+Subject: [PATCH 6.4 331/800] memory: brcmstb_dpfe: fix testing array offset after use
 Date:   Sun, 16 Jul 2023 21:43:04 +0200
-Message-ID: <20230716194925.048326642@linuxfoundation.org>
+Message-ID: <20230716194956.771783650@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 195edce08b63d293377f615f4f7f086715d2d212 ]
+[ Upstream commit 1d9e93fad549bc38f593147479ee063f2872c170 ]
 
-tl;dr: There is a race in the TDX private<=>shared conversion code
-       which could kill the TDX guest.  Fix it by changing conversion
-       ordering to eliminate the window.
+Code should first check for valid value of array offset, then use it as
+the index.  Fixes smatch warning:
 
-TDX hardware maintains metadata to track which pages are private and
-shared. Additionally, TDX guests use the guest x86 page tables to
-specify whether a given mapping is intended to be private or shared.
-Bad things happen when the intent and metadata do not match.
+  drivers/memory/brcmstb_dpfe.c:443 __send_command() error: testing array offset 'cmd' after use.
 
-So there are two thing in play:
- 1. "the page" -- the physical TDX page metadata
- 2. "the mapping" -- the guest-controlled x86 page table intent
-
-For instance, an unrecoverable exit to VMM occurs if a guest touches a
-private mapping that points to a shared physical page.
-
-In summary:
-	* Private mapping => Private Page == OK (obviously)
-	* Shared mapping  => Shared Page  == OK (obviously)
-	* Private mapping => Shared Page  == BIG BOOM!
-	* Shared mapping  => Private Page == OK-ish
-	  (It will read generate a recoverable #VE via handle_mmio())
-
-Enter load_unaligned_zeropad(). It can touch memory that is adjacent but
-otherwise unrelated to the memory it needs to touch. It will cause one
-of those unrecoverable exits (aka. BIG BOOM) if it blunders into a
-shared mapping pointing to a private page.
-
-This is a problem when __set_memory_enc_pgtable() converts pages from
-shared to private. It first changes the mapping and second modifies
-the TDX page metadata.  It's moving from:
-
-        * Shared mapping  => Shared Page  == OK
-to:
-        * Private mapping => Shared Page  == BIG BOOM!
-
-This means that there is a window with a shared mapping pointing to a
-private page where load_unaligned_zeropad() can strike.
-
-Add a TDX handler for guest.enc_status_change_prepare(). This converts
-the page from shared to private *before* the page becomes private.  This
-ensures that there is never a private mapping to a shared page.
-
-Leave a guest.enc_status_change_finish() in place but only use it for
-private=>shared conversions.  This will delay updating the TDX metadata
-marking the page private until *after* the mapping matches the metadata.
-This also ensures that there is never a private mapping to a shared page.
-
-[ dhansen: rewrite changelog ]
-
-Fixes: 7dbde7631629 ("x86/mm/cpa: Add support for TDX shared memory")
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Link: https://lore.kernel.org/all/20230606095622.1939-3-kirill.shutemov%40linux.intel.com
+Fixes: 2f330caff577 ("memory: brcmstb: Add driver for DPFE")
+Acked-by: Markus Mayer <mmayer@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20230513112931.176066-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/coco/tdx/tdx.c | 51 ++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 48 insertions(+), 3 deletions(-)
+ drivers/memory/brcmstb_dpfe.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index b8998cf0508a6..8a1d48b8c2a3e 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -756,6 +756,30 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- 	return true;
- }
- 
-+static bool tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
-+					  bool enc)
-+{
-+	/*
-+	 * Only handle shared->private conversion here.
-+	 * See the comment in tdx_early_init().
-+	 */
-+	if (enc)
-+		return tdx_enc_status_changed(vaddr, numpages, enc);
-+	return true;
-+}
-+
-+static bool tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
-+					 bool enc)
-+{
-+	/*
-+	 * Only handle private->shared conversion here.
-+	 * See the comment in tdx_early_init().
-+	 */
-+	if (!enc)
-+		return tdx_enc_status_changed(vaddr, numpages, enc);
-+	return true;
-+}
-+
- void __init tdx_early_init(void)
+diff --git a/drivers/memory/brcmstb_dpfe.c b/drivers/memory/brcmstb_dpfe.c
+index 76c82e9c8fceb..9339f80b21c50 100644
+--- a/drivers/memory/brcmstb_dpfe.c
++++ b/drivers/memory/brcmstb_dpfe.c
+@@ -434,15 +434,17 @@ static void __finalize_command(struct brcmstb_dpfe_priv *priv)
+ static int __send_command(struct brcmstb_dpfe_priv *priv, unsigned int cmd,
+ 			  u32 result[])
  {
- 	u64 cc_mask;
-@@ -780,9 +804,30 @@ void __init tdx_early_init(void)
- 	 */
- 	physical_mask &= cc_mask - 1;
+-	const u32 *msg = priv->dpfe_api->command[cmd];
+ 	void __iomem *regs = priv->regs;
+ 	unsigned int i, chksum, chksum_idx;
++	const u32 *msg;
+ 	int ret = 0;
+ 	u32 resp;
  
--	x86_platform.guest.enc_cache_flush_required = tdx_cache_flush_required;
--	x86_platform.guest.enc_tlb_flush_required   = tdx_tlb_flush_required;
--	x86_platform.guest.enc_status_change_finish = tdx_enc_status_changed;
-+	/*
-+	 * The kernel mapping should match the TDX metadata for the page.
-+	 * load_unaligned_zeropad() can touch memory *adjacent* to that which is
-+	 * owned by the caller and can catch even _momentary_ mismatches.  Bad
-+	 * things happen on mismatch:
-+	 *
-+	 *   - Private mapping => Shared Page  == Guest shutdown
-+         *   - Shared mapping  => Private Page == Recoverable #VE
-+	 *
-+	 * guest.enc_status_change_prepare() converts the page from
-+	 * shared=>private before the mapping becomes private.
-+	 *
-+	 * guest.enc_status_change_finish() converts the page from
-+	 * private=>shared after the mapping becomes private.
-+	 *
-+	 * In both cases there is a temporary shared mapping to a private page,
-+	 * which can result in a #VE.  But, there is never a private mapping to
-+	 * a shared page.
-+	 */
-+	x86_platform.guest.enc_status_change_prepare = tdx_enc_status_change_prepare;
-+	x86_platform.guest.enc_status_change_finish  = tdx_enc_status_change_finish;
+ 	if (cmd >= DPFE_CMD_MAX)
+ 		return -1;
+ 
++	msg = priv->dpfe_api->command[cmd];
 +
-+	x86_platform.guest.enc_cache_flush_required  = tdx_cache_flush_required;
-+	x86_platform.guest.enc_tlb_flush_required    = tdx_tlb_flush_required;
+ 	mutex_lock(&priv->lock);
  
- 	pr_info("Guest detected\n");
- }
+ 	/* Wait for DCPU to become ready */
 -- 
 2.39.2
 
