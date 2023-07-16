@@ -2,106 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9D5875531B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5B4375556F
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231604AbjGPUP0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:15:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41384 "EHLO
+        id S232565AbjGPUlI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:41:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231614AbjGPUPZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:15:25 -0400
+        with ESMTP id S232543AbjGPUlF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9171390
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:15:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D29CD10CC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E55E60EA6
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:15:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DDFC433C7;
-        Sun, 16 Jul 2023 20:15:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 63AC460EBD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE94C433C7;
+        Sun, 16 Jul 2023 20:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538523;
-        bh=c/Sx1O0dI4YsBKOAQ1zxB045CMtXjZGrRimk8AwEQyo=;
+        s=korg; t=1689540045;
+        bh=OIKGTJaaRAdzVI6pT3FCln6/I1Gcbt32AxXRxcrRIDo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Pc2uazws+r5znb26ygOS6reviS/o3o3Qx5TJ9Xl1oLPYl7lUoiaHxNP7l7y9cvTAI
-         1NKwU7FQEC1McAcBCT/Q9eDZdA4DsOL18XMFlOoRVNoMSXD+8rUQpOLDspl+0d35y9
-         Y7H0GgZI7eEs9WAe80KT9eGdFzIhvGL6/cvNDPVs=
+        b=wvKiye5AMEFdbS4COeGKXKVPlIDTGUGMm6jK4TDnVoLEQ8brLZWGefMTtWWOO7gNw
+         H+p9GelxhKXURohcD/di3DGb8OVXkip/OEPZUdKNwARBgAXd+RTTfcA/cXuyFcK9jn
+         kQ/MQb6Q49LUYNeSwXcoBwkCRKsn64aoTHAR9A0Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 481/800] perf stat: Reset aggr stats for each run
-Date:   Sun, 16 Jul 2023 21:45:34 +0200
-Message-ID: <20230716195000.251307845@linuxfoundation.org>
+Subject: [PATCH 6.1 196/591] arm64: dts: qcom: msm8994: correct SPMI unit address
+Date:   Sun, 16 Jul 2023 21:45:35 +0200
+Message-ID: <20230716194928.944398385@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit ed4090a22c123b9b33368741253edddc6ff8d18f ]
+[ Upstream commit 24f0f6a8059c7108d4ee3476c95db1e7ff4feb79 ]
 
-When it runs multiple times with -r option, it missed to reset the
-aggregation counters and the values were added up.  The aggregation
-count has the values to be printed in the end.  It should reset the
-counters at the beginning of each run.  But the current code does that
-only when -I/--interval-print option is given.
+Match unit-address to reg entry to fix dtbs W=1 warnings:
 
-Fixes: 91f85f98da7ab8c3 ("perf stat: Display event stats using aggr counts")
-Reported-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230616073211.1057936-1-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+  Warning (simple_bus_reg): /soc/spmi@fc4c0000: simple-bus unit address format error, expected "fc4cf000"
+
+Fixes: b0ad598f8ec0 ("arm64: dts: qcom: msm8994: Add SPMI PMIC arbiter device")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230419211856.79332-8-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-stat.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8994.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index b9ad32f21e575..463643cda0d5f 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -723,6 +723,8 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
- 			all_counters_use_bpf = false;
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/msm8994.dtsi b/arch/arm64/boot/dts/qcom/msm8994.dtsi
+index 7ed59e698c14d..3c6c2cf99fb9d 100644
+--- a/arch/arm64/boot/dts/qcom/msm8994.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8994.dtsi
+@@ -746,7 +746,7 @@ restart@fc4ab000 {
+ 			reg = <0xfc4ab000 0x4>;
+ 		};
  
-+	evlist__reset_aggr_stats(evsel_list);
-+
- 	evlist__for_each_cpu(evlist_cpu_itr, evsel_list, affinity) {
- 		counter = evlist_cpu_itr.evsel;
- 
+-		spmi_bus: spmi@fc4c0000 {
++		spmi_bus: spmi@fc4cf000 {
+ 			compatible = "qcom,spmi-pmic-arb";
+ 			reg = <0xfc4cf000 0x1000>,
+ 			      <0xfc4cb000 0x1000>,
 -- 
 2.39.2
 
