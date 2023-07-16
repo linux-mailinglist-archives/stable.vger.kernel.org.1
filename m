@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D8175560A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44CBC7553C8
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232713AbjGPUrA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36036 "EHLO
+        id S231882AbjGPUW6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:22:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232718AbjGPUq5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:46:57 -0400
+        with ESMTP id S231866AbjGPUWx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09474E51
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:46:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9265F1B7
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD6D660EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:46:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58CDC433C7;
-        Sun, 16 Jul 2023 20:46:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2275560EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA3CC433C7;
+        Sun, 16 Jul 2023 20:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540414;
-        bh=I/gAgxAegltHGfiiN1GE0Pjs2Fu+1IVjhlp7uXSwtdE=;
+        s=korg; t=1689538971;
+        bh=dQvGgRmeWDebYmrjcUuW9pJlQaoBZO15RZPdm+KoYXI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JlPomIKXwa+tamMIa1eaUnsHVZmsfUNV2x9GW8cC3/SWfDDRs1bhOUppwLnTtTrAK
-         lmeCqKwO7ACOPfE2mqFgZ33jp0Mql4DIQ5sCyucFvtxyzLtcocaGqwPEGSNcXlMbY5
-         3ALisZAshk5q2NiQyXLwndj+hGFb1JK2yYQ+LHz0=
+        b=QAUoR5FxeLgy4ubYEIUZn2pLuUTAqoRQoo8Zb99L3bChnkrTOd+K85OgX+ce+YKfL
+         8KehWl+0LILwj/d7Sy+hVztjVlGGH2l2/JodxahH1GW9iROU2xBlAtRHDVJ5jyj+ME
+         BW6Ir47oPr0F5WPj5W0Wpy0VauglOMx/qqRZtqss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Glenn Washburn <development@efficientek.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 355/591] efi/libstub: Disable PCI DMA before grabbing the EFI memory map
-Date:   Sun, 16 Jul 2023 21:48:14 +0200
-Message-ID: <20230716194933.096945766@linuxfoundation.org>
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 642/800] phy: qcom: qmp-combo: fix Display Port PHY configuration for SM8550
+Date:   Sun, 16 Jul 2023 21:48:15 +0200
+Message-ID: <20230716195004.025321157@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,61 +56,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 2e28a798c3092ea42b968fa16ac835969d124898 ]
+[ Upstream commit 6cd52a2a06774c6c454ffef084c3d9b17618ca23 ]
 
-Currently, the EFI stub will disable PCI DMA as the very last thing it
-does before calling ExitBootServices(), to avoid interfering with the
-firmware's normal operation as much as possible.
+The SM8550 PHY also uses a different offset for the CMN_STATUS reg,
+use the right one for the v6 Display Port configuration.
 
-However, the stub will invoke DisconnectController() on all endpoints
-downstream of the PCI bridges it disables, and this may affect the
-layout of the EFI memory map, making it substantially more likely that
-ExitBootServices() will fail the first time around, and that the EFI
-memory map needs to be reloaded.
-
-This, in turn, increases the likelihood that the slack space we
-allocated is insufficient (and we can no longer allocate memory via boot
-services after having called ExitBootServices() once), causing the
-second call to GetMemoryMap (and therefore the boot) to fail. This makes
-the PCI DMA disable feature a bit more fragile than it already is, so
-let's make it more robust, by allocating the space for the EFI memory
-map after disabling PCI DMA.
-
-Fixes: 4444f8541dad16fe ("efi: Allow disabling PCI busmastering on bridges during boot")
-Reported-by: Glenn Washburn <development@efficientek.com>
-Acked-by: Matthew Garrett <mjg59@srcf.ucam.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 49742e9edab3 ("phy: qcom-qmp-combo: Add support for SM8550")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230601-topic-sm8550-upstream-dp-phy-init-fix-v1-1-4e9da9f97991@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/efi-stub-helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 0c493521b25b8..3d9b2469a0dfd 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -521,6 +521,9 @@ efi_status_t efi_exit_boot_services(void *handle, void *priv,
- 	struct efi_boot_memmap *map;
- 	efi_status_t status;
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+index 87b17e5877ab8..1fdcc81661ed8 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+@@ -2142,6 +2142,7 @@ static void qmp_v4_configure_dp_tx(struct qmp_combo *qmp)
+ static int qmp_v456_configure_dp_phy(struct qmp_combo *qmp,
+ 				     unsigned int com_resetm_ctrl_reg,
+ 				     unsigned int com_c_ready_status_reg,
++				     unsigned int com_cmn_status_reg,
+ 				     unsigned int dp_phy_status_reg)
+ {
+ 	const struct phy_configure_opts_dp *dp_opts = &qmp->dp_opts;
+@@ -2198,14 +2199,14 @@ static int qmp_v456_configure_dp_phy(struct qmp_combo *qmp,
+ 			10000))
+ 		return -ETIMEDOUT;
  
-+	if (efi_disable_pci_dma)
-+		efi_pci_disable_bridge_busmaster();
-+
- 	status = efi_get_memory_map(&map, true);
- 	if (status != EFI_SUCCESS)
- 		return status;
-@@ -531,9 +534,6 @@ efi_status_t efi_exit_boot_services(void *handle, void *priv,
- 		return status;
- 	}
+-	if (readl_poll_timeout(qmp->dp_serdes + QSERDES_V4_COM_CMN_STATUS,
++	if (readl_poll_timeout(qmp->dp_serdes + com_cmn_status_reg,
+ 			status,
+ 			((status & BIT(0)) > 0),
+ 			500,
+ 			10000))
+ 		return -ETIMEDOUT;
  
--	if (efi_disable_pci_dma)
--		efi_pci_disable_bridge_busmaster();
--
- 	status = efi_bs_call(exit_boot_services, handle, map->map_key);
+-	if (readl_poll_timeout(qmp->dp_serdes + QSERDES_V4_COM_CMN_STATUS,
++	if (readl_poll_timeout(qmp->dp_serdes + com_cmn_status_reg,
+ 			status,
+ 			((status & BIT(1)) > 0),
+ 			500,
+@@ -2241,6 +2242,7 @@ static int qmp_v4_configure_dp_phy(struct qmp_combo *qmp)
  
- 	if (status == EFI_INVALID_PARAMETER) {
+ 	ret = qmp_v456_configure_dp_phy(qmp, QSERDES_V4_COM_RESETSM_CNTRL,
+ 					QSERDES_V4_COM_C_READY_STATUS,
++					QSERDES_V4_COM_CMN_STATUS,
+ 					QSERDES_V4_DP_PHY_STATUS);
+ 	if (ret < 0)
+ 		return ret;
+@@ -2305,6 +2307,7 @@ static int qmp_v5_configure_dp_phy(struct qmp_combo *qmp)
+ 
+ 	ret = qmp_v456_configure_dp_phy(qmp, QSERDES_V4_COM_RESETSM_CNTRL,
+ 					QSERDES_V4_COM_C_READY_STATUS,
++					QSERDES_V4_COM_CMN_STATUS,
+ 					QSERDES_V4_DP_PHY_STATUS);
+ 	if (ret < 0)
+ 		return ret;
+@@ -2364,6 +2367,7 @@ static int qmp_v6_configure_dp_phy(struct qmp_combo *qmp)
+ 
+ 	ret = qmp_v456_configure_dp_phy(qmp, QSERDES_V6_COM_RESETSM_CNTRL,
+ 					QSERDES_V6_COM_C_READY_STATUS,
++					QSERDES_V6_COM_CMN_STATUS,
+ 					QSERDES_V6_DP_PHY_STATUS);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.39.2
 
