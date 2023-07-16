@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0008755701
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FCD6755703
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233056AbjGPU4R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:56:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42864 "EHLO
+        id S233052AbjGPU4V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:56:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233057AbjGPU4Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:56:16 -0400
+        with ESMTP id S233053AbjGPU4U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:56:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64BA6E5D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:56:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A799E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:56:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0425860EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:56:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1095CC433C7;
-        Sun, 16 Jul 2023 20:56:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C32D760EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:56:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C7CC433C8;
+        Sun, 16 Jul 2023 20:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540974;
-        bh=WTF+Rhh+rbXklaIQQY7LS/BlqhgGQv4BvVPL7nhVPno=;
+        s=korg; t=1689540977;
+        bh=TWu0evTuPxw936WiDTsRfIjShbqTRbY34OcOiEIALVE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YgpM9oS6QIPpz07tn3UA8Vi3gA99CnXAwMBix0i3WQ58X8BMOiKIPyAZ1mnI5ZoxK
-         89yBqN+op1T/EESV6uTsEYOKfc7iR8gFqWwQ1OBEyoENqROCeYzVWylK+eEjpiY7Dk
-         zl/CkNd0kdbSxrOq3+p2aVKM3hGIm6uJ4Beduns0=
+        b=wNol2IlHsxOExcSCE6tJirKi4a6x25P5Nknjk1KLBXMpFuiAsHapwXHz8N/0EDsmX
+         aPWhKNPr/djNXJs8b+RdmEAl79LJ52Crd89A1J8eDxZf+Ua46nRmDKFzBIgX9uSrOa
+         KKz8uS+EF3Xs95c1xIGWkw4jz8dP7yqYg2da14wM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Huacai Chen <chenhuacai@loongson.cn>,
-        liuyun <liuyun@loongson.cn>, Jianmin Lv <lvjianmin@loongson.cn>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.1 527/591] irqchip/loongson-pch-pic: Fix initialization of HT vector register
-Date:   Sun, 16 Jul 2023 21:51:06 +0200
-Message-ID: <20230716194937.505715331@linuxfoundation.org>
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 528/591] io_uring: wait interruptibly for request completions on exit
+Date:   Sun, 16 Jul 2023 21:51:07 +0200
+Message-ID: <20230716194937.532775800@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -55,71 +53,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jianmin Lv <lvjianmin@loongson.cn>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit f679616565f1cf1a4acb245dbc0032dafcd40637 upstream.
+commit 4826c59453b3b4677d6bf72814e7ababdea86949 upstream.
 
-In an ACPI-based dual-bridge system, IRQ of each bridge's
-PCH PIC sent to CPU is always a zero-based number, which
-means that the IRQ on PCH PIC of each bridge is mapped into
-vector range from 0 to 63 of upstream irqchip(e.g. EIOINTC).
+WHen the ring exits, cleanup is done and the final cancelation and
+waiting on completions is done by io_ring_exit_work. That function is
+invoked by kworker, which doesn't take any signals. Because of that, it
+doesn't really matter if we wait for completions in TASK_INTERRUPTIBLE
+or TASK_UNINTERRUPTIBLE state. However, it does matter to the hung task
+detection checker!
 
-      EIOINTC N: [0 ... 63 | 64 ... 255]
-                  --------   ----------
-                      ^          ^
-                      |          |
-                  PCH PIC N      |
-                             PCH MSI N
+Normally we expect cancelations and completions to happen rather
+quickly. Some test cases, however, will exit the ring and park the
+owning task stopped (eg via SIGSTOP). If the owning task needs to run
+task_work to complete requests, then io_ring_exit_work won't make any
+progress until the task is runnable again. Hence io_ring_exit_work can
+trigger the hung task detection, which is particularly problematic if
+panic-on-hung-task is enabled.
 
-For example, the IRQ vector number of sata controller on
-PCH PIC of each bridge is 16, which is sent to upstream
-irqchip of EIOINTC when an interrupt occurs, which will set
-bit 16 of EIOINTC. Since hwirq of 16 on EIOINTC has been
-mapped to a irq_desc for sata controller during hierarchy
-irq allocation, the related mapped IRQ will be found through
-irq_resolve_mapping() in the IRQ domain of EIOINTC.
+As the ring exit doesn't take signals to begin with, have it wait
+interruptibly rather than uninterruptibly. io_uring has a separate
+stuck-exit warning that triggers independently anyway, so we're not
+really missing anything by making this switch.
 
-So, the IRQ number set in HT vector register should be fixed
-to be a zero-based number.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Co-developed-by: liuyun <liuyun@loongson.cn>
-Signed-off-by: liuyun <liuyun@loongson.cn>
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230614115936.5950-2-lvjianmin@loongson.cn
+Cc: stable@vger.kernel.org # 5.10+
+Link: https://lore.kernel.org/r/b0e4aaef-7088-56ce-244c-976edeac0e66@kernel.dk
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-loongson-pch-pic.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ io_uring/io_uring.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
---- a/drivers/irqchip/irq-loongson-pch-pic.c
-+++ b/drivers/irqchip/irq-loongson-pch-pic.c
-@@ -350,14 +350,12 @@ static int __init acpi_cascade_irqdomain
- int __init pch_pic_acpi_init(struct irq_domain *parent,
- 					struct acpi_madt_bio_pic *acpi_pchpic)
- {
--	int ret, vec_base;
-+	int ret;
- 	struct fwnode_handle *domain_handle;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2748,7 +2748,18 @@ static __cold void io_ring_exit_work(str
+ 			/* there is little hope left, don't run it too often */
+ 			interval = HZ * 60;
+ 		}
+-	} while (!wait_for_completion_timeout(&ctx->ref_comp, interval));
++		/*
++		 * This is really an uninterruptible wait, as it has to be
++		 * complete. But it's also run from a kworker, which doesn't
++		 * take signals, so it's fine to make it interruptible. This
++		 * avoids scenarios where we knowingly can wait much longer
++		 * on completions, for example if someone does a SIGSTOP on
++		 * a task that needs to finish task_work to make this loop
++		 * complete. That's a synthetic situation that should not
++		 * cause a stuck task backtrace, and hence a potential panic
++		 * on stuck tasks if that is enabled.
++		 */
++	} while (!wait_for_completion_interruptible_timeout(&ctx->ref_comp, interval));
  
- 	if (find_pch_pic(acpi_pchpic->gsi_base) >= 0)
- 		return 0;
+ 	init_completion(&exit.completion);
+ 	init_task_work(&exit.task_work, io_tctx_exit_cb);
+@@ -2772,7 +2783,12 @@ static __cold void io_ring_exit_work(str
+ 			continue;
  
--	vec_base = acpi_pchpic->gsi_base - GSI_MIN_PCH_IRQ;
--
- 	domain_handle = irq_domain_alloc_fwnode(&acpi_pchpic->address);
- 	if (!domain_handle) {
- 		pr_err("Unable to allocate domain handle\n");
-@@ -365,7 +363,7 @@ int __init pch_pic_acpi_init(struct irq_
+ 		mutex_unlock(&ctx->uring_lock);
+-		wait_for_completion(&exit.completion);
++		/*
++		 * See comment above for
++		 * wait_for_completion_interruptible_timeout() on why this
++		 * wait is marked as interruptible.
++		 */
++		wait_for_completion_interruptible(&exit.completion);
+ 		mutex_lock(&ctx->uring_lock);
  	}
- 
- 	ret = pch_pic_init(acpi_pchpic->address, acpi_pchpic->size,
--				vec_base, parent, domain_handle, acpi_pchpic->gsi_base);
-+				0, parent, domain_handle, acpi_pchpic->gsi_base);
- 
- 	if (ret < 0) {
- 		irq_domain_free_fwnode(domain_handle);
+ 	mutex_unlock(&ctx->uring_lock);
 
 
