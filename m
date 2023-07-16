@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AACE47556AE
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F1AB75544A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232936AbjGPUw4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:52:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40978 "EHLO
+        id S232056AbjGPU2r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:28:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232935AbjGPUwz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA74E41
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:54 -0700 (PDT)
+        with ESMTP id S232063AbjGPU2q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:28:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748521B7
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:28:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 38AA260EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44374C433C7;
-        Sun, 16 Jul 2023 20:52:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 037E760E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:28:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11896C433C8;
+        Sun, 16 Jul 2023 20:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540773;
-        bh=mzqmqfhRMZTWcTbwYS/fjxUGQC08RlqhBlXG9X2gSeQ=;
+        s=korg; t=1689539324;
+        bh=7rEibQ5YmuAqqDQYxCbxtVddeAgT4Zv5EKxTXfHNkII=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F/A+ZkzLf/Fed5z4xm0gQBih0vO1oecgXeirTBqcJlwtgp3dq5h6Zrg9+aKAeJF0U
-         auhYioK3o75DFa35aJoYd2mtj/hman763qmYUhYjYYkA16wytkTi6lsm+scB4lw7L0
-         PRPqBIqUsfS8lDa1f6TnYRC+HB5exfkpQEXeiMTw=
+        b=Qhfp65ctd3530rzYQAIyHDtcNZ8uGgl80jQYIHTI3gjtr90n4+uEHrF8MblNZ/gjy
+         02WN90PeTktzLiUfXEIuQ/Dx9OBHlYZ6jFdrCbGg2V/oA7Y7OGzIMxt/yC30o/EGD2
+         l09Wmlp66Xw4EfXDhHkXe5hJnGR4hFcdOCN184vA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 482/591] Bluetooth: ISO: use hci_sync for setting CIG parameters
+        patches@lists.linux.dev
+Subject: [PATCH 6.4 768/800] regulator: tps65219: Fix matching interrupts for their regulators
 Date:   Sun, 16 Jul 2023 21:50:21 +0200
-Message-ID: <20230716194936.369738456@linuxfoundation.org>
+Message-ID: <20230716195006.988116948@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,117 +53,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 6b9545dc9f8ff01d8bc1229103960d9cd265343f ]
+commit f050e56de80591fee55bedbdf5b6b998c740cd0c upstream.
 
-When reconfiguring CIG after disconnection of the last CIS, LE Remove
-CIG shall be sent before LE Set CIG Parameters.  Otherwise, it fails
-because CIG is in the inactive state and not configurable (Core v5.3
-Vol 6 Part B Sec. 4.5.14.3). This ordering is currently wrong under
-suitable timing conditions, because LE Remove CIG is sent via the
-hci_sync queue and may be delayed, but Set CIG Parameters is via
-hci_send_cmd.
+The driver's probe() first registers regulators in a loop and then in a
+second loop passes them as irq data to the interrupt handlers.  However
+the function to get the regulator for given name
+tps65219_get_rdev_by_name() was a no-op due to argument passed by value,
+not pointer, thus the second loop assigned always same value - from
+previous loop.  The interrupts, when fired, where executed with wrong
+data.  Compiler also noticed it:
 
-Make the ordering well-defined by sending also Set CIG Parameters via
-hci_sync.
+  drivers/regulator/tps65219-regulator.c: In function ‘tps65219_get_rdev_by_name’:
+  drivers/regulator/tps65219-regulator.c:292:60: error: parameter ‘dev’ set but not used [-Werror=unused-but-set-parameter]
 
-Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
+Cc: <stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org
+Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com
+Link: https://lore.kernel.org/r/20230507144656.192800-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c | 47 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 39 insertions(+), 8 deletions(-)
+ drivers/regulator/tps65219-regulator.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index ab9f00252dc2a..fef09d2121384 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -770,6 +770,11 @@ static void le_conn_timeout(struct work_struct *work)
- 	hci_abort_conn(conn, HCI_ERROR_REMOTE_USER_TERM);
- }
+--- a/drivers/regulator/tps65219-regulator.c
++++ b/drivers/regulator/tps65219-regulator.c
+@@ -289,13 +289,13 @@ static irqreturn_t tps65219_regulator_ir
  
-+struct iso_cig_params {
-+	struct hci_cp_le_set_cig_params cp;
-+	struct hci_cis_params cis[0x1f];
-+};
-+
- struct iso_list_data {
- 	union {
- 		u8  cig;
-@@ -781,10 +786,7 @@ struct iso_list_data {
- 		u16 sync_handle;
- 	};
- 	int count;
--	struct {
--		struct hci_cp_le_set_cig_params cp;
--		struct hci_cis_params cis[0x11];
--	} pdu;
-+	struct iso_cig_params pdu;
- };
- 
- static void bis_list(struct hci_conn *conn, void *data)
-@@ -1705,10 +1707,33 @@ static int hci_le_create_big(struct hci_conn *conn, struct bt_iso_qos *qos)
- 	return hci_send_cmd(hdev, HCI_OP_LE_CREATE_BIG, sizeof(cp), &cp);
- }
- 
-+static void set_cig_params_complete(struct hci_dev *hdev, void *data, int err)
-+{
-+	struct iso_cig_params *pdu = data;
-+
-+	bt_dev_dbg(hdev, "");
-+
-+	if (err)
-+		bt_dev_err(hdev, "Unable to set CIG parameters: %d", err);
-+
-+	kfree(pdu);
-+}
-+
-+static int set_cig_params_sync(struct hci_dev *hdev, void *data)
-+{
-+	struct iso_cig_params *pdu = data;
-+	u32 plen;
-+
-+	plen = sizeof(pdu->cp) + pdu->cp.num_cis * sizeof(pdu->cis[0]);
-+	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_CIG_PARAMS, plen, pdu,
-+				     HCI_CMD_TIMEOUT);
-+}
-+
- static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
+ static int tps65219_get_rdev_by_name(const char *regulator_name,
+ 				     struct regulator_dev *rdevtbl[7],
+-				     struct regulator_dev *dev)
++				     struct regulator_dev **dev)
  {
- 	struct hci_dev *hdev = conn->hdev;
- 	struct iso_list_data data;
-+	struct iso_cig_params *pdu;
+ 	int i;
  
- 	memset(&data, 0, sizeof(data));
+ 	for (i = 0; i < ARRAY_SIZE(regulators); i++) {
+ 		if (strcmp(regulator_name, regulators[i].name) == 0) {
+-			dev = rdevtbl[i];
++			*dev = rdevtbl[i];
+ 			return 0;
+ 		}
+ 	}
+@@ -348,7 +348,7 @@ static int tps65219_regulator_probe(stru
+ 		irq_data[i].dev = tps->dev;
+ 		irq_data[i].type = irq_type;
  
-@@ -1779,12 +1804,18 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
- 	if (qos->cis == BT_ISO_QOS_CIS_UNSET || !data.pdu.cp.num_cis)
- 		return false;
- 
--	if (hci_send_cmd(hdev, HCI_OP_LE_SET_CIG_PARAMS,
--			 sizeof(data.pdu.cp) +
--			 (data.pdu.cp.num_cis * sizeof(*data.pdu.cis)),
--			 &data.pdu) < 0)
-+	pdu = kzalloc(sizeof(*pdu), GFP_KERNEL);
-+	if (!pdu)
- 		return false;
- 
-+	memcpy(pdu, &data.pdu, sizeof(*pdu));
-+
-+	if (hci_cmd_sync_queue(hdev, set_cig_params_sync, pdu,
-+			       set_cig_params_complete) < 0) {
-+		kfree(pdu);
-+		return false;
-+	}
-+
- 	return true;
- }
- 
--- 
-2.39.2
-
+-		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
++		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, &rdev);
+ 		if (IS_ERR(rdev)) {
+ 			dev_err(tps->dev, "Failed to get rdev for %s\n",
+ 				irq_type->regulator_name);
 
 
