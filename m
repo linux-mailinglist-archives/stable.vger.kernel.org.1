@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AD2575569F
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75F4275545B
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232918AbjGPUwW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:52:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40646 "EHLO
+        id S232089AbjGPU3e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232916AbjGPUwV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A85C0D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:20 -0700 (PDT)
+        with ESMTP id S232088AbjGPU3d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2CF59F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 47EB860DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B19AC433C8;
-        Sun, 16 Jul 2023 20:52:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 76E1A60EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C6AC433C8;
+        Sun, 16 Jul 2023 20:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540739;
-        bh=3PgARpoWSwEpNQz1h07/Ra0r2oN1jwiPWQOElYi2O1Q=;
+        s=korg; t=1689539371;
+        bh=TPN4eboNSU9FTdcGiI1lPpiBQSxXZybB9e7GNfEhcUM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dNzA0dGHZQYICTqYxs8cjyvH4ChGZlKRPRYKOaafU9y59CrKcLBwsUPC7KkwiBq3b
-         dUpLd/TdTzoCn6CNofq6QzSKqH47gfPfsaekHWbyf9C4LglOlTVNShOhevu1dXQy/5
-         Z0UBFb6ytEPSikB3qOu7zRnZsI7ppFmkdeMjTO4s=
+        b=eNRhFbwEMZ+S3bl1gQcGD75Qmnl4JpFeAuoQQQ8AqoaF5KuEWoNpVzBe9gDXq3B32
+         JbBfH7agpqW15eeJ3Ty0XHMjb0gHztm0kBgE6cNUFY9be/dfcRq1HwtJiHia+p5N8p
+         fzptBq/dWFwr3FkaeBugfH5rKgxZshz7G/kxaWWM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 471/591] net/sched: act_ipt: add sanity checks on table name and hook locations
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Naohiro Aota <naohiro.aota@wdc.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 757/800] btrfs: delete unused BGs while reclaiming BGs
 Date:   Sun, 16 Jul 2023 21:50:10 +0200
-Message-ID: <20230716194936.092319534@linuxfoundation.org>
+Message-ID: <20230716195006.726194975@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,101 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Naohiro Aota <naota@elisp.net>
 
-[ Upstream commit b4ee93380b3c891fea996af8d1d3ca0e36ad31f0 ]
+commit 3ed01616bad6c7e3de196676b542ae3df8058592 upstream.
 
-Looks like "tc" hard-codes "mangle" as the only supported table
-name, but on kernel side there are no checks.
+The reclaiming process only starts after the filesystem volumes are
+allocated to a certain level (75% by default). Thus, the list of
+reclaiming target block groups can build up so huge at the time the
+reclaim process kicks in. On a test run, there were over 1000 BGs in the
+reclaim list.
 
-This is wrong.  Not all xtables targets are safe to call from tc.
-E.g. "nat" targets assume skb has a conntrack object assigned to it.
-Normally those get called from netfilter nat core which consults the
-nat table to obtain the address mapping.
+As the reclaim involves rewriting the data, it takes really long time to
+reclaim the BGs. While the reclaim is running, btrfs_delete_unused_bgs()
+won't proceed because the reclaim side is holding
+fs_info->reclaim_bgs_lock. As a result, we will have a large number of
+unused BGs kept in the unused list. On my test run, I got 1057 unused BGs.
 
-"tc" userspace either sets PRE or POSTROUTING as hook number, but there
-is no validation of this on kernel side, so update netlink policy to
-reject bogus numbers.  Some targets may assume skb_dst is set for
-input/forward hooks, so prevent those from being used.
+Since deleting a block group is relatively easy and fast work, we can call
+btrfs_delete_unused_bgs() while it reclaims BGs, to avoid building up
+unused BGs.
 
-act_ipt uses the hook number in two places:
-1. the state hook number, this is fine as-is
-2. to set par.hook_mask
-
-The latter is a bit mask, so update the assignment to make
-xt_check_target() to the right thing.
-
-Followup patch adds required checks for the skb/packet headers before
-calling the targets evaluation function.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 18bb8bbf13c1 ("btrfs: zoned: automatically reclaim zones")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ipt.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ fs/btrfs/block-group.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/net/sched/act_ipt.c b/net/sched/act_ipt.c
-index 1625e10374161..dc92975a9374f 100644
---- a/net/sched/act_ipt.c
-+++ b/net/sched/act_ipt.c
-@@ -47,7 +47,7 @@ static int ipt_init_target(struct net *net, struct xt_entry_target *t,
- 	par.entryinfo = &e;
- 	par.target    = target;
- 	par.targinfo  = t->data;
--	par.hook_mask = hook;
-+	par.hook_mask = 1 << hook;
- 	par.family    = NFPROTO_IPV4;
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1831,10 +1831,24 @@ void btrfs_reclaim_bgs_work(struct work_
  
- 	ret = xt_check_target(&par, t->u.target_size - sizeof(*t), 0, false);
-@@ -84,7 +84,8 @@ static void tcf_ipt_release(struct tc_action *a)
- 
- static const struct nla_policy ipt_policy[TCA_IPT_MAX + 1] = {
- 	[TCA_IPT_TABLE]	= { .type = NLA_STRING, .len = IFNAMSIZ },
--	[TCA_IPT_HOOK]	= { .type = NLA_U32 },
-+	[TCA_IPT_HOOK]	= NLA_POLICY_RANGE(NLA_U32, NF_INET_PRE_ROUTING,
-+					   NF_INET_NUMHOOKS),
- 	[TCA_IPT_INDEX]	= { .type = NLA_U32 },
- 	[TCA_IPT_TARG]	= { .len = sizeof(struct xt_entry_target) },
- };
-@@ -157,15 +158,27 @@ static int __tcf_ipt_init(struct net *net, unsigned int id, struct nlattr *nla,
- 			return -EEXIST;
- 		}
+ next:
+ 		btrfs_put_block_group(bg);
++
++		mutex_unlock(&fs_info->reclaim_bgs_lock);
++		/*
++		 * Reclaiming all the block groups in the list can take really
++		 * long.  Prioritize cleaning up unused block groups.
++		 */
++		btrfs_delete_unused_bgs(fs_info);
++		/*
++		 * If we are interrupted by a balance, we can just bail out. The
++		 * cleaner thread restart again if necessary.
++		 */
++		if (!mutex_trylock(&fs_info->reclaim_bgs_lock))
++			goto end;
+ 		spin_lock(&fs_info->unused_bgs_lock);
  	}
-+
-+	err = -EINVAL;
- 	hook = nla_get_u32(tb[TCA_IPT_HOOK]);
-+	switch (hook) {
-+	case NF_INET_PRE_ROUTING:
-+		break;
-+	case NF_INET_POST_ROUTING:
-+		break;
-+	default:
-+		goto err1;
-+	}
-+
-+	if (tb[TCA_IPT_TABLE]) {
-+		/* mangle only for now */
-+		if (nla_strcmp(tb[TCA_IPT_TABLE], "mangle"))
-+			goto err1;
-+	}
- 
--	err = -ENOMEM;
--	tname = kmalloc(IFNAMSIZ, GFP_KERNEL);
-+	tname = kstrdup("mangle", GFP_KERNEL);
- 	if (unlikely(!tname))
- 		goto err1;
--	if (tb[TCA_IPT_TABLE] == NULL ||
--	    nla_strscpy(tname, tb[TCA_IPT_TABLE], IFNAMSIZ) >= IFNAMSIZ)
--		strcpy(tname, "mangle");
- 
- 	t = kmemdup(td, td->u.target_size, GFP_KERNEL);
- 	if (unlikely(!t))
--- 
-2.39.2
-
+ 	spin_unlock(&fs_info->unused_bgs_lock);
+ 	mutex_unlock(&fs_info->reclaim_bgs_lock);
++end:
+ 	btrfs_exclop_finish(fs_info);
+ 	sb_end_write(fs_info->sb);
+ }
 
 
