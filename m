@@ -2,110 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DCF375541E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84849755653
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231990AbjGPU1C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:27:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49382 "EHLO
+        id S232858AbjGPUtj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:49:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232018AbjGPU1A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:00 -0400
+        with ESMTP id S232865AbjGPUtd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA21EE79
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B87EA10E4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AEB960EC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BDFC433C7;
-        Sun, 16 Jul 2023 20:26:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 56F5060EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65437C433C8;
+        Sun, 16 Jul 2023 20:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539206;
-        bh=Y5HPuNF436/Hd3+GuB2D25fM4XvVm4AEF5TWKw2OUg8=;
+        s=korg; t=1689540568;
+        bh=bBaFDHZhDoEXvt0yc8DPrqJ9k2QIoLBwiOqwTA+HsGo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n9FfF0odR8iPVQyirqrM/t1NGjMZ197e6P2ChP1TngVLlxSfSq3gryHNHDSt29/Re
-         6fP4vFpE/en3LC90NCwJhtuNnmNS9ouWvuS6oBnU267ftf91KH3LdSNRH7d0kd58zq
-         Evq+Q7eS1I4lDdIgQHXfq9NZN9oMYNaSOxMH7D9w=
+        b=uiVJSbii/aSMGuFrK009pcEuG/kdYsPYr2fe3EAHtG9enRjerAZoiIaR4Sihzvs8u
+         X0AYFt9CJpwpOGrfJfR5cUrrEL4k2xlwIHylCbdUqeMeKQgxs/JA+5Hw9XIRyUxY4a
+         FjVP3XJc0MWw2QfMjqacQNmFnQmpMLYbtbbiIZIY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alexander Egorenkov <Alexander.Egorenkov@ibm.com>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        SeongJae Park <sj@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jiri Olsa <jolsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 696/800] bpf, btf: Warn but return no error for NULL btf from __register_btf_kfunc_id_set()
+        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 410/591] usb: gadget: u_serial: Add null pointer check in gserial_suspend
 Date:   Sun, 16 Jul 2023 21:49:09 +0200
-Message-ID: <20230716195005.288287230@linuxfoundation.org>
+Message-ID: <20230716194934.521292017@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: SeongJae Park <sj@kernel.org>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-[ Upstream commit 3de4d22cc9ac7c9f38e10edcf54f9a8891a9c2aa ]
+[ Upstream commit 2f6ecb89fe8feb2b60a53325b0eeb9866d88909a ]
 
-__register_btf_kfunc_id_set() assumes .BTF to be part of the module's .ko
-file if CONFIG_DEBUG_INFO_BTF is enabled. If that's not the case, the
-function prints an error message and return an error. As a result, such
-modules cannot be loaded.
+Consider a case where gserial_disconnect has already cleared
+gser->ioport. And if gserial_suspend gets called afterwards,
+it will lead to accessing of gser->ioport and thus causing
+null pointer dereference.
 
-However, the section could be stripped out during a build process. It would
-be better to let the modules loaded, because their basic functionalities
-have no problem [0], though the BTF functionalities will not be supported.
-Make the function to lower the level of the message from error to warn, and
-return no error.
+Avoid this by adding a null pointer check. Added a static
+spinlock to prevent gser->ioport from becoming null after
+the newly added null pointer check.
 
-  [0] https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion
-
-Fixes: c446fdacb10d ("bpf: fix register_btf_kfunc_id_set for !CONFIG_DEBUG_INFO_BTF")
-Reported-by: Alexander Egorenkov <Alexander.Egorenkov@ibm.com>
-Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/87y228q66f.fsf@oc8242746057.ibm.com
-Link: https://lore.kernel.org/bpf/20220219082037.ow2kbq5brktf4f2u@apollo.legion
-Link: https://lore.kernel.org/bpf/20230701171447.56464-1-sj@kernel.org
+Fixes: aba3a8d01d62 ("usb: gadget: u_serial: add suspend resume callbacks")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Link: https://lore.kernel.org/r/1683278317-11774-1-git-send-email-quic_prashk@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/function/u_serial.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 72b32b7cd9cd9..25ca17a8e1964 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -7848,10 +7848,8 @@ static int __register_btf_kfunc_id_set(enum btf_kfunc_hook hook,
- 			pr_err("missing vmlinux BTF, cannot register kfuncs\n");
- 			return -ENOENT;
- 		}
--		if (kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF_MODULES)) {
--			pr_err("missing module BTF, cannot register kfuncs\n");
--			return -ENOENT;
--		}
-+		if (kset->owner && IS_ENABLED(CONFIG_DEBUG_INFO_BTF_MODULES))
-+			pr_warn("missing module BTF, cannot register kfuncs\n");
- 		return 0;
- 	}
- 	if (IS_ERR(btf))
+diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadget/function/u_serial.c
+index db6fd0238d4b4..ea2c5b6cde8cd 100644
+--- a/drivers/usb/gadget/function/u_serial.c
++++ b/drivers/usb/gadget/function/u_serial.c
+@@ -1419,10 +1419,19 @@ EXPORT_SYMBOL_GPL(gserial_disconnect);
+ 
+ void gserial_suspend(struct gserial *gser)
+ {
+-	struct gs_port	*port = gser->ioport;
++	struct gs_port	*port;
+ 	unsigned long	flags;
+ 
+-	spin_lock_irqsave(&port->port_lock, flags);
++	spin_lock_irqsave(&serial_port_lock, flags);
++	port = gser->ioport;
++
++	if (!port) {
++		spin_unlock_irqrestore(&serial_port_lock, flags);
++		return;
++	}
++
++	spin_lock(&port->port_lock);
++	spin_unlock(&serial_port_lock);
+ 	port->suspended = true;
+ 	spin_unlock_irqrestore(&port->port_lock, flags);
+ }
 -- 
 2.39.2
 
