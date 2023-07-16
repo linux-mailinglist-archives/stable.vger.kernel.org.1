@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6D24755629
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22C647553E1
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232777AbjGPUsH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37158 "EHLO
+        id S231898AbjGPUYB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232769AbjGPUsG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:48:06 -0400
+        with ESMTP id S231896AbjGPUYA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:24:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 995A7E1
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:48:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E2B2BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E6D460EA2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:48:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BADAC433C9;
-        Sun, 16 Jul 2023 20:48:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0273060E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142E1C433C8;
+        Sun, 16 Jul 2023 20:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540484;
-        bh=w62NsMXgYitHZoLxNzRJa/ijgKhotOSQz0kuWoVT9pQ=;
+        s=korg; t=1689539038;
+        bh=oNcKor8YxzGCcaFkm4zYjmsdqphe2u6l+7pp4eimGvg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GFfFUA2swt4UFo7N71qBTRsgZmROrsaLtAQ+oMQrxY5LbxkbiQ7XA55yObe4Y1uiF
-         sYw3PHW6UaAAfpp2hUFk8q7jqbvzmXDemPc0eNgT/rEmWOd4H4sLyhcRlpkcJoDtOr
-         lgY+iJFehOXqI9R8H64QgKKzLUezAoAz7TiE9R60=
+        b=FotKYHEe+zHRQYkx1ynPPW5ir+/oYjcbWwVMj81E5o0ZzTrVqumjTu65ZITnTcqoa
+         KQQKaHE9e/HojcqocicyYfhgu4EPKlRqMvi3NRL9/IE+07cBbBy4xqgq0gmAMuCASZ
+         ZvaK2vIxituPEpXmGnnoj2WkuhP+dPq0zTQ7jTnQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 380/591] btrfs: fix race when deleting free space root from the dirty cow roots list
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 666/800] net: mscc: ocelot: dont report that RX timestamping is enabled by default
 Date:   Sun, 16 Jul 2023 21:48:39 +0200
-Message-ID: <20230716194933.752769708@linuxfoundation.org>
+Message-ID: <20230716195004.581790745@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,85 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit babebf023e661b90b1c78b2baa384fb03a226879 upstream.
+[ Upstream commit 4fd44b82b7aceaa35c2901c6546d2c4198e0799d ]
 
-When deleting the free space tree we are deleting the free space root
-from the list fs_info->dirty_cowonly_roots without taking the lock that
-protects it, which is struct btrfs_fs_info::trans_lock.
-This unsynchronized list manipulation may cause chaos if there's another
-concurrent manipulation of this list, such as when adding a root to it
-with ctree.c:add_root_to_dirty_list().
+PTP RX timestamping should be enabled when the user requests it, not by
+default. If it is enabled by default, it can be problematic when the
+ocelot driver is a DSA master, and it sidesteps what DSA tries to avoid
+through __dsa_master_hwtstamp_validate().
 
-This can result in all sorts of weird failures caused by a race, such as
-the following crash:
+Additionally, after the change which made ocelot trap PTP packets only
+to the CPU at ocelot_hwtstamp_set() time, it is no longer even true that
+RX timestamping is enabled by default, because until ocelot_hwtstamp_set()
+is called, the PTP traps are actually not set up. So the rx_filter field
+of ocelot->hwtstamp_config reflects an incorrect reality.
 
-  [337571.278245] general protection fault, probably for non-canonical address 0xdead000000000108: 0000 [#1] PREEMPT SMP PTI
-  [337571.278933] CPU: 1 PID: 115447 Comm: btrfs Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
-  [337571.279153] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-  [337571.279572] RIP: 0010:commit_cowonly_roots+0x11f/0x250 [btrfs]
-  [337571.279928] Code: 85 38 06 00 (...)
-  [337571.280363] RSP: 0018:ffff9f63446efba0 EFLAGS: 00010206
-  [337571.280582] RAX: ffff942d98ec2638 RBX: ffff9430b82b4c30 RCX: 0000000449e1c000
-  [337571.280798] RDX: dead000000000100 RSI: ffff9430021e4900 RDI: 0000000000036070
-  [337571.281015] RBP: ffff942d98ec2000 R08: ffff942d98ec2000 R09: 000000000000015b
-  [337571.281254] R10: 0000000000000009 R11: 0000000000000001 R12: ffff942fe8fbf600
-  [337571.281476] R13: ffff942dabe23040 R14: ffff942dabe20800 R15: ffff942d92cf3b48
-  [337571.281723] FS:  00007f478adb7340(0000) GS:ffff94349fa40000(0000) knlGS:0000000000000000
-  [337571.281950] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [337571.282184] CR2: 00007f478ab9a3d5 CR3: 000000001e02c001 CR4: 0000000000370ee0
-  [337571.282416] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  [337571.282647] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  [337571.282874] Call Trace:
-  [337571.283101]  <TASK>
-  [337571.283327]  ? __die_body+0x1b/0x60
-  [337571.283570]  ? die_addr+0x39/0x60
-  [337571.283796]  ? exc_general_protection+0x22e/0x430
-  [337571.284022]  ? asm_exc_general_protection+0x22/0x30
-  [337571.284251]  ? commit_cowonly_roots+0x11f/0x250 [btrfs]
-  [337571.284531]  btrfs_commit_transaction+0x42e/0xf90 [btrfs]
-  [337571.284803]  ? _raw_spin_unlock+0x15/0x30
-  [337571.285031]  ? release_extent_buffer+0x103/0x130 [btrfs]
-  [337571.285305]  reset_balance_state+0x152/0x1b0 [btrfs]
-  [337571.285578]  btrfs_balance+0xa50/0x11e0 [btrfs]
-  [337571.285864]  ? __kmem_cache_alloc_node+0x14a/0x410
-  [337571.286086]  btrfs_ioctl+0x249a/0x3320 [btrfs]
-  [337571.286358]  ? mod_objcg_state+0xd2/0x360
-  [337571.286577]  ? refill_obj_stock+0xb0/0x160
-  [337571.286798]  ? seq_release+0x25/0x30
-  [337571.287016]  ? __rseq_handle_notify_resume+0x3ba/0x4b0
-  [337571.287235]  ? percpu_counter_add_batch+0x2e/0xa0
-  [337571.287455]  ? __x64_sys_ioctl+0x88/0xc0
-  [337571.287675]  __x64_sys_ioctl+0x88/0xc0
-  [337571.287901]  do_syscall_64+0x38/0x90
-  [337571.288126]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-  [337571.288352] RIP: 0033:0x7f478aaffe9b
-
-So fix this by locking struct btrfs_fs_info::trans_lock before deleting
-the free space root from that list.
-
-Fixes: a5ed91828518 ("Btrfs: implement the free space B-tree")
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 96ca08c05838 ("net: mscc: ocelot: set up traps for PTP packets")
+Fixes: 4e3b0468e6d7 ("net: mscc: PTP Hardware Clock (PHC) support")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/free-space-tree.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mscc/ocelot_ptp.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/fs/btrfs/free-space-tree.c
-+++ b/fs/btrfs/free-space-tree.c
-@@ -1275,7 +1275,10 @@ int btrfs_delete_free_space_tree(struct
- 		goto abort;
+diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
+index 2180ae94c7447..673bfd70867a6 100644
+--- a/drivers/net/ethernet/mscc/ocelot_ptp.c
++++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
+@@ -824,11 +824,6 @@ int ocelot_init_timestamp(struct ocelot *ocelot,
  
- 	btrfs_global_root_delete(free_space_root);
-+
-+	spin_lock(&fs_info->trans_lock);
- 	list_del(&free_space_root->dirty_list);
-+	spin_unlock(&fs_info->trans_lock);
+ 	ocelot_write(ocelot, PTP_CFG_MISC_PTP_EN, PTP_CFG_MISC);
  
- 	btrfs_tree_lock(free_space_root->node);
- 	btrfs_clean_tree_block(free_space_root->node);
+-	/* There is no device reconfiguration, PTP Rx stamping is always
+-	 * enabled.
+-	 */
+-	ocelot->hwtstamp_config.rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+-
+ 	return 0;
+ }
+ EXPORT_SYMBOL(ocelot_init_timestamp);
+-- 
+2.39.2
+
 
 
