@@ -2,113 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32EBE7550DA
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD5E17550DB
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229774AbjGPTKz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 15:10:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45558 "EHLO
+        id S229451AbjGPTLR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 15:11:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjGPTKy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:10:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C83F29F;
-        Sun, 16 Jul 2023 12:10:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D75460E55;
-        Sun, 16 Jul 2023 19:10:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E10C433C7;
-        Sun, 16 Jul 2023 19:10:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689534652;
-        bh=2xv23cyqChGOvmMFc4gjPsEPeAdHKXCa1xqaiod61p8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Sv273MnVtjJXakzIkTQLlpd2JNk38A4njcF1xV+lSuffmbnNo9IecwLzm1zGbl805
-         2poG/Z7//Gk2OTajfXu8PiSi4dJ+YKqcLbSu9XBKCyx9H+RATadZvoTXzsdxSRZWK5
-         9MFLcAukeUaJ1w+askvIsa1KQD45qO+j/hMjmR7w=
-Date:   Sun, 16 Jul 2023 21:10:50 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Paulo Alcantara <pc@manguebit.com>
-Cc:     stable@vger.kernel.org, linux-cifs@vger.kernel.org,
-        Steve French <smfrench@gmail.com>
-Subject: Re: [PATCH 4/4] smb: client: improve DFS mount check
-Message-ID: <2023071646-freeness-untrue-230d@gregkh>
-References: <20230628002450.18781-1-pc@manguebit.com>
- <20230628002450.18781-4-pc@manguebit.com>
- <0bb4a367ebd7ae83dd1538965e3c0d2b.pc@manguebit.com>
- <2023071306-nearly-saved-a419@gregkh>
- <b95eb538478eab38fac638dbeaf97e70.pc@manguebit.com>
+        with ESMTP id S229450AbjGPTLQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:11:16 -0400
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52B149F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:11:15 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id BD0115C0090;
+        Sun, 16 Jul 2023 15:11:14 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Sun, 16 Jul 2023 15:11:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
+        cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1689534674; x=1689621074; bh=kP
+        /RcOeOYT+8hoSSNd292f4CaPhvr0jncH4UwzD64Y4=; b=cv25O+T/fMEA5axs7o
+        8iJhu/k6R8yyGs6VimRpky9Oy5saCMpkZIbdhUqeikoE7dtCL0Q3O7F6rcOXETUy
+        G3ySHpZf4S6SV1DnG5qkKEhTxgtFcy0hUm0PCnNoiGpvtB6DJ3+IFLRmrqgBUz7M
+        va+yIgXJpEAW6uhQaA9IW6Ll4mM2+rUUHCWKAkITTM7fNI249XN3YgTxw4Z0PohY
+        U/gyM0YcmNnfsednXx67SbFesMGAFSSP9vYAxfxOPdyuLx6V1G1Uhys+zcGOj2KD
+        Bas/po22AwtpUgVcB+kFsA0vC2rraGxLsViCrQy1xgR8w5x5l3sCFOjAvFD6/oar
+        2qJQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1689534674; x=1689621074; bh=kP/RcOeOYT+8h
+        oSSNd292f4CaPhvr0jncH4UwzD64Y4=; b=ukTYEwIc7jJ90oevQDxGKQUnPDywb
+        2YWby0HWxuZdqv4fzQndqolvpE9WOWK7RfXmRTisVD7uvjoTnwHyUmC0I8HtVJ5t
+        89D/nb6Hcgwu852JPPHroaqVuSElQhBdznwDaJ6afBQhDF5K0U4MZampdVpPMdHC
+        q0nIGcyreRi7oQ3QsesA2fV24eQ628V719AGfUeci1NXiJMCdH/uV5vVLl6Mxl1x
+        F7PtSenVDJ9Mc75N8HekqRATu9REFBUBXCZloQ3Vrn//WQQd1nNAbR1FZOCgkRic
+        jLVoAO2EqqKcOPBv4xDWkwCjRUQ8Y6mulIAiDYXTKt80kgLdXbVns5E6w==
+X-ME-Sender: <xms:0kC0ZMb3JoO6UUR39u7Vfkyj3gOlwhENHEsJKDu1S3zVwdz12iDouw>
+    <xme:0kC0ZHZ_sUDG1WyJfGFW4oqFHl2s5V1E4omYsHLGEQf7x1tarj4Yf0FSFbpl_CTya
+    3Yga2wdLp3SBK0RBQ>
+X-ME-Received: <xmr:0kC0ZG-hP9AbxFkrUw9Q9enpkIZ7Kyq19TrodLsPLBPkVvIDKYfEMeSGZzt1goRHoW9cdEeVvg-NvBYkU3O2yDSo3i9OG8ZUXryA9Yg2FR-Fup-MrDB9u--yOhAo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgedtgddufeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehnughr
+    vghsucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuggftrf
+    grthhtvghrnhepvdfffeevhfetveffgeeiteefhfdtvdffjeevhfeuteegleduheetvedu
+    ieettddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghnughrvghssegrnhgrrhgriigvlhdruggv
+X-ME-Proxy: <xmx:0kC0ZGriWC-Yy2dHaCDcTkLzqo3R4xIj2tnS3N1HObl4IPGKNg4DAw>
+    <xmx:0kC0ZHpnP-aIGaXs-mDChJ2gnAxaKBM2yo_9Y830b3qK8BcsT4tBfg>
+    <xmx:0kC0ZERHVbFFfBqYPoDuKhRp2kfFR08LTcajoN-wd-YbJw17jM3mEw>
+    <xmx:0kC0ZO0p3oaMdU87Vspy-36eifIHRzVQngcV90s5e38ccunE_Dqhdg>
+Feedback-ID: id4a34324:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 16 Jul 2023 15:11:14 -0400 (EDT)
+Date:   Sun, 16 Jul 2023 12:11:13 -0700
+From:   Andres Freund <andres@anarazel.de>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     gregkh@linuxfoundation.org, asml.silence@gmail.com,
+        stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] io_uring: Use io_schedule* in cqring
+ wait" failed to apply to 6.1-stable tree
+Message-ID: <20230716191113.waiypudo6iqwsm56@awork3.anarazel.de>
+References: <2023071620-litigate-debunk-939a@gregkh>
+ <0cfb74bb-c203-39a1-eab7-abeeae724b68@kernel.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b95eb538478eab38fac638dbeaf97e70.pc@manguebit.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <0cfb74bb-c203-39a1-eab7-abeeae724b68@kernel.dk>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 13, 2023 at 06:48:00PM -0300, Paulo Alcantara wrote:
-> Hi Greg,
-> 
-> Greg KH <gregkh@linuxfoundation.org> writes:
-> 
-> > On Wed, Jul 12, 2023 at 06:10:27PM -0300, Paulo Alcantara wrote:
-> >> Paulo Alcantara <pc@manguebit.com> writes:
-> >> 
-> >> > Some servers may return error codes from REQ_GET_DFS_REFERRAL requests
-> >> > that are unexpected by the client, so to make it easier, assume
-> >> > non-DFS mounts when the client can't get the initial DFS referral of
-> >> > @ctx->UNC in dfs_mount_share().
-> >> >
-> >> > Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-> >> > ---
-> >> >  fs/smb/client/dfs.c | 5 +++--
-> >> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> >> >
-> >> > diff --git a/fs/smb/client/dfs.c b/fs/smb/client/dfs.c
-> >> > index afbaef05a1f1..a7f2e0608adf 100644
-> >> 
-> >> Stable team, could you please pick this up as a fix for
-> >> 
-> >>         8e3554150d6c ("cifs: fix sharing of DFS connections")
-> >> 
-> >> The upstream commit is 5f2a0afa9890 ("smb: client: improve DFS mount check").
-> >
-> > Does not apply cleanly, can you provide a working backport?
-> 
-> Find attached backport of
+Hi,
 
-> >From 435048ee0f477947d1d93f5a9b60b2d2df2b7554 Mon Sep 17 00:00:00 2001
-> From: Paulo Alcantara <pc@manguebit.com>
-> Date: Tue, 27 Jun 2023 21:24:50 -0300
-> Subject: [PATCH stable v6.3] smb: client: improve DFS mount check
+On 2023-07-16 12:13:45 -0600, Jens Axboe wrote:
+> Here's one for 6.1-stable.
 
-I'm confused, 6.3.y is end-of-life, and:
+Thanks for working on that!
 
-> 
-> Some servers may return error codes from REQ_GET_DFS_REFERRAL requests
-> that are unexpected by the client, so to make it easier, assume
-> non-DFS mounts when the client can't get the initial DFS referral of
-> @ctx->UNC in dfs_mount_share().
-> 
-> Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
-> ---
->  fs/cifs/dfs.c | 5 +++--
 
-This file is not in the 6.4.y or any older kernel tree.
+> diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+> index cc35aba1e495..de117d3424b2 100644
+> --- a/io_uring/io_uring.c
+> +++ b/io_uring/io_uring.c
+> @@ -2346,7 +2346,7 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+>  					  struct io_wait_queue *iowq,
+>  					  ktime_t *timeout)
+>  {
+> -	int ret;
+> +	int token, ret;
+>  	unsigned long check_cq;
+>  
+>  	/* make sure we run task_work before checking for signals */
+> @@ -2362,9 +2362,18 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+>  		if (check_cq & BIT(IO_CHECK_CQ_DROPPED_BIT))
+>  			return -EBADR;
+>  	}
+> +
+> +	/*
+> +	 * Use io_schedule_prepare/finish, so cpufreq can take into account
+> +	 * that the task is waiting for IO - turns out to be important for low
+> +	 * QD IO.
+> +	 */
+> +	token = io_schedule_prepare();
+> +	ret = 0;
+>  	if (!schedule_hrtimeout(timeout, HRTIMER_MODE_ABS))
+> -		return -ETIME;
+> -	return 1;
+> +		ret = -ETIME;
+> +	io_schedule_finish(token);
+> +	return ret;
+>  }
 
-So what tree did you make this against, and where should it be applied
-to?
+To me it looks like this might have changed more than intended? Previously
+io_cqring_wait_schedule() returned 0 in case schedule_hrtimeout() returned
+non-zero, now io_cqring_wait_schedule() returns 1 in that case?  Am I missing
+something?
 
-totally confused,
+Greetings,
 
-greg k-h
+Andres Freund
