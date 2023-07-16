@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 208167552D2
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C676D755503
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231489AbjGPUMV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:12:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39822 "EHLO
+        id S232348AbjGPUga (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:36:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231486AbjGPUMU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:12:20 -0400
+        with ESMTP id S232355AbjGPUg3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:36:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D9F90
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:12:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66763E43
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:36:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45DAA60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:12:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A48C433C9;
-        Sun, 16 Jul 2023 20:12:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DDE1E60DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:36:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC50C433C7;
+        Sun, 16 Jul 2023 20:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538338;
-        bh=+m9bvWEQPAGLwKZF/Wcbhzo/GlF94TIOApA2HLekngU=;
+        s=korg; t=1689539784;
+        bh=C8PLL0Cav3DkvT7QU9xIFOFJBnW6+Faals+hiEkzQE4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dxhq5wys64oYvynFZpL2Kn/IJU5veaPlhtj7KJP/N4vep4gf8Pt9j1yOBhxMUW/ic
-         qk6eN4rBa8SUtiGQB4bZy5SSnLdWctOrhxypOfLgugsa8hL/ziOhZB1/gFLgAwB7Q2
-         B6c7NBRFj2OoV4dH1qlGV/tNff/HlViQ+or4LKHE=
+        b=TAqfgVEk8LJhokvtFn/OyiblPW2l9JSZvBvmr5/w/F7xZ0Z8A6d8pmvZpJ+Gao2Gj
+         N3DcWqcTg1tqHd1iHUCwr3V2fuABLX8WC+51ehA+torG9GNHj5Rax0utpuqR+31vDh
+         mrJ9BQB3AGapGs+xsnrjKavkXn85wc/kk4ltPhGo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 415/800] clk: mediatek: clk-mt8173-apmixedsys: Fix iomap not released issue
-Date:   Sun, 16 Jul 2023 21:44:28 +0200
-Message-ID: <20230716194958.726971259@linuxfoundation.org>
+Subject: [PATCH 6.1 130/591] selftests: rtnetlink: remove netdevsim device after ipsec offload test
+Date:   Sun, 16 Jul 2023 21:44:29 +0200
+Message-ID: <20230716194927.240054938@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,47 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit b270ae61730e0ebccee39a21dd3311d6896a38ae ]
+[ Upstream commit 5f789f103671fec3733ebe756e56adf15c90c21d ]
 
-In case of error after of_ioremap() the resource must be released:
-call iounmap() where appropriate to fix that.
+On systems where netdevsim is built-in or loaded before the test
+starts, kci_test_ipsec_offload doesn't remove the netdevsim device it
+created during the test.
 
-Fixes: 41138fbf876c ("clk: mediatek: mt8173: Migrate to platform driver and common probe")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230615122051.546985-4-angelogioacchino.delregno@collabora.com
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: e05b2d141fef ("netdevsim: move netdev creation/destruction to dev probe")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/e1cb94f4f82f4eca4a444feec4488a1323396357.1687466906.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt8173-apmixedsys.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/rtnetlink.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/mediatek/clk-mt8173-apmixedsys.c b/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
-index c7adcfcc12e27..307c24aa1fb41 100644
---- a/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
-@@ -151,8 +151,10 @@ static int clk_mt8173_apmixed_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/tools/testing/selftests/net/rtnetlink.sh b/tools/testing/selftests/net/rtnetlink.sh
+index 275491be3da2f..cafd14b1ed2ab 100755
+--- a/tools/testing/selftests/net/rtnetlink.sh
++++ b/tools/testing/selftests/net/rtnetlink.sh
+@@ -835,6 +835,7 @@ EOF
+ 	fi
  
- 	clk_data = mtk_alloc_clk_data(CLK_APMIXED_NR_CLK);
--	if (IS_ERR_OR_NULL(clk_data))
-+	if (IS_ERR_OR_NULL(clk_data)) {
-+		iounmap(base);
- 		return -ENOMEM;
-+	}
+ 	# clean up any leftovers
++	echo 0 > /sys/bus/netdevsim/del_device
+ 	$probed && rmmod netdevsim
  
- 	fhctl_parse_dt(fhctl_node, pllfhs, ARRAY_SIZE(pllfhs));
- 	r = mtk_clk_register_pllfhs(node, plls, ARRAY_SIZE(plls),
-@@ -186,6 +188,7 @@ static int clk_mt8173_apmixed_probe(struct platform_device *pdev)
- 				  ARRAY_SIZE(pllfhs), clk_data);
- free_clk_data:
- 	mtk_free_clk_data(clk_data);
-+	iounmap(base);
- 	return r;
- }
- 
+ 	if [ $ret -ne 0 ]; then
 -- 
 2.39.2
 
