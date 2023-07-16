@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC2E37552A6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CD597554C7
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231417AbjGPUKV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:10:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38630 "EHLO
+        id S232298AbjGPUeU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:34:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231429AbjGPUKU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:20 -0400
+        with ESMTP id S232300AbjGPUeU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3489F1B4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A82BA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B55A160EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9561C433C8;
-        Sun, 16 Jul 2023 20:10:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FFC160EBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D778C433C7;
+        Sun, 16 Jul 2023 20:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538214;
-        bh=5Xs0rP7IrtOLhUV4Wke7GmulTfWYdBbBkBkJ00NlK0M=;
+        s=korg; t=1689539658;
+        bh=JjH1o7vXcnPx4jxPljo2uQ3pa+zew3WkmOp1B7oNTYA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q6NZ3TuUtvTQ7U8fRTh40L/P1coIzPd1ujCgY4Q28rtjsGsoG+RWwz2XKMBXcCppv
-         ozNz4FedYgR8KtUEwD3PvJzq8ZdhUu97Ebl+3KMPsOQOr2K7aaQVcbR7Tk0SgWkSNh
-         yC27VUQMcJtFs9ptfhrOGoJQys0Hk/KvAjoNRXzc=
+        b=pBJIziKNH/1xOZq/n8ORAI+lyVVs7rwFW00+U5rzBc5H1OWCgrpn2LsHVPjV0pOOC
+         CjlHsjqU+m4+I3UbWAAi9d1lNeoaWtLSqV/hh7oXu5xkkQvzYXgYv4VG+lxKdN8bi6
+         3Ra84WGz8UzDukDjJwATZhepJ+VlHh3gtItQOjjw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        David Gow <davidgow@google.com>,
-        =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 371/800] HID: uclogic: Modular KUnit tests should not depend on KUNIT=y
-Date:   Sun, 16 Jul 2023 21:43:44 +0200
-Message-ID: <20230716194957.692816284@linuxfoundation.org>
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 086/591] wifi: orinoco: Fix an error handling path in spectrum_cs_probe()
+Date:   Sun, 16 Jul 2023 21:43:45 +0200
+Message-ID: <20230716194926.107171332@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,39 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 49904a0ebf23b15aad288a10f5354e7cd8193121 ]
+[ Upstream commit 925244325159824385209e3e0e3f91fa6bf0646c ]
 
-While KUnit tests that cannot be built as a loadable module must depend
-on "KUNIT=y", this is not true for modular tests, where it adds an
-unnecessary limitation.
+Should spectrum_cs_config() fail, some resources need to be released as
+already done in the remove function.
 
-Fix this by relaxing the dependency to "KUNIT".
+While at it, remove a useless and erroneous comment. The probe is
+spectrum_cs_probe(), not spectrum_cs_attach().
 
-Fixes: 08809e482a1c44d9 ("HID: uclogic: KUnit best practices and naming conventions")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: José Expósito <jose.exposito89@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/c0bc0c21c58ca477fc5521607615bafbf2aef8eb.1684567733.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intersil/orinoco/spectrum_cs.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index 4ce012f83253e..b977450cac752 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -1285,7 +1285,7 @@ config HID_MCP2221
+diff --git a/drivers/net/wireless/intersil/orinoco/spectrum_cs.c b/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
+index 291ef97ed45ec..841d623c621ac 100644
+--- a/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
++++ b/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
+@@ -157,6 +157,7 @@ spectrum_cs_probe(struct pcmcia_device *link)
+ {
+ 	struct orinoco_private *priv;
+ 	struct orinoco_pccard *card;
++	int ret;
  
- config HID_KUNIT_TEST
- 	tristate "KUnit tests for HID" if !KUNIT_ALL_TESTS
--	depends on KUNIT=y
-+	depends on KUNIT
- 	depends on HID_BATTERY_STRENGTH
- 	depends on HID_UCLOGIC
- 	default KUNIT_ALL_TESTS
+ 	priv = alloc_orinocodev(sizeof(*card), &link->dev,
+ 				spectrum_cs_hard_reset,
+@@ -169,8 +170,16 @@ spectrum_cs_probe(struct pcmcia_device *link)
+ 	card->p_dev = link;
+ 	link->priv = priv;
+ 
+-	return spectrum_cs_config(link);
+-}				/* spectrum_cs_attach */
++	ret = spectrum_cs_config(link);
++	if (ret)
++		goto err_free_orinocodev;
++
++	return 0;
++
++err_free_orinocodev:
++	free_orinocodev(priv);
++	return ret;
++}
+ 
+ static void spectrum_cs_detach(struct pcmcia_device *link)
+ {
 -- 
 2.39.2
 
