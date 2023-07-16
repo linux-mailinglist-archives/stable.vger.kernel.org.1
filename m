@@ -2,160 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94718754F59
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 17:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C980B754F5A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 17:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229954AbjGPPSU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 11:18:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44530 "EHLO
+        id S229558AbjGPPS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 11:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229575AbjGPPSU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 11:18:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62A7190
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 08:18:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCF0060D36
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 15:18:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95A0C433C7;
-        Sun, 16 Jul 2023 15:18:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689520698;
-        bh=wdzrjiRF1UzNEzLy6JH3W2VtncpZ6QgP8nNgQQA1Eig=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WtygqVOipt1wiISgL4CHSNIVJ+4iNmvt4RugTePJxkAraZ18DtlD1vvwdXyiXzNkk
-         yPYi+uw2bqsUnrADuWwmuzmbsscUh0AgBZQhl9ueRk+MaEDiVKhR6m3xrbOgImczUS
-         NqOJ8gK4ld1XtREUjvojRFyTPuXGkXy7GSSiJF2Q=
-Date:   Sun, 16 Jul 2023 17:18:10 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Felix Riemann <felix.riemann@sma.de>, patches@lists.linux.dev,
-        sashal@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 5.15 070/371] tpm, tpm_tis: Claim locality before writing
- interrupt registers
-Message-ID: <2023071600-backdrop-carless-b990@gregkh>
-References: <20230508094814.897191675@linuxfoundation.org>
- <20230515153759.2072-1-svc.sw.rte.linux@sma.de>
- <382309d7c0ae593d507eb816982f6a66c2cda00a.camel@kernel.org>
- <2023060906-starter-scrounger-1bca@gregkh>
- <3bdaa40e-16dc-6c04-b9e4-9e5951267e7e@kunbus.com>
- <2023062100-retrace-kitten-7241@gregkh>
- <c9c3fe87-9f70-2131-24d3-bbb626042c16@kunbus.com>
+        with ESMTP id S229515AbjGPPS6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 11:18:58 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50B5690
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 08:18:57 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id BD0A75C00FF;
+        Sun, 16 Jul 2023 11:18:56 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Sun, 16 Jul 2023 11:18:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1689520736; x=1689607136; bh=dP
+        MwpnZhJ5lYquB8kdbBEmTSZy4/uIyKNNT1a+mfeKI=; b=sSDOsxuEPpgSQxLSTP
+        HSN8nkrQt1U6mx/D6uc1A4clGrD2aq5Vq+X0OZu2gkdQkk3UUn2z9vZ9VYxCgrUg
+        BtvV3rGhh9PGKbUeaGSBwXdVMVvV1NCAiJ5t/tRVB8cmb0nFSQpNtCRb05zCKEtP
+        hJ6Tpv/joLRMYdu9tHLU4UMIFeqeVTPPcYKkCGVS3PuKzEQRMxyPZL5Be7XosJwi
+        AQRoxRV5gI8M6kx2mD75GsF708FTjDFu1S56n+FEHi0BlslFZvhrdSch/Mr32W1b
+        75TNXuFg5/GOG5xbm4+oAoY9fcdgBFSZSc6WbNWFuYpwTZxX5mQHKlhCIvdi6YQt
+        /pGA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1689520736; x=1689607136; bh=dPMwpnZhJ5lYq
+        uB8kdbBEmTSZy4/uIyKNNT1a+mfeKI=; b=Sad8FCn5V60NAW48O213pvc7pVai6
+        8PiUZaVejkiF4T8PH2S8zJEIItjOUKZo/jZ2tPkUm94YyfnaFm1/+CPjr4gFAj7s
+        DhaP7iOsRHApiO8NIRF3MPO/DInaOHllbV/c3YtwIAiS7k7kYLm5CoPZXWXTh5Gp
+        JCKcADkmz3MQ+fpXOulZMkjj6rfdnwJ5iwsuvBWs5yyf/7JJ5pzfU1CYhS75oEY8
+        KR1RnaUK51u8rAEH4+4g8f9PE2HPzY0wnw6z6+X4oIc+2omDkfwsxeL5bDPSXnXo
+        9wVfI26FNlCten9jYiepQoPNT4Ak8WQqLsNFsWxXSSSjhzvo+H0OPWETw==
+X-ME-Sender: <xms:YAq0ZLdpHYiyrQqXzu7-IVYEifcSNi-lIDdhxW-I0nHo-eKvqbDi2g>
+    <xme:YAq0ZBOJKtBLk4CuMxyYYRgXdzA50S0Fp3EXQjKUtcr2qfLWer0QvAmyUlQaflCvR
+    n7r8_6yIZoQyQ>
+X-ME-Received: <xmr:YAq0ZEjHJ6jC9KL0DkY-NMCDaGdh7VG5O0u2N4boetF0FpnSMmp2TEIhdA_574X2bsqu6sBePVqC42-7X28QAa-UtS5EYnHTgMzQKbX4pPw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgedtgdekiecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtre
+    dttddtvdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheq
+    necuggftrfgrthhtvghrnhepgeehueehgfdtledutdelkeefgeejteegieekheefudeiff
+    dvudeffeelvedttddvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomh
+X-ME-Proxy: <xmx:YAq0ZM_1PcHt8hJS4slHeOhCOe0qXGfM2PubS3J3ip096sLBN9JJcw>
+    <xmx:YAq0ZHtnUUsSn6iu6O98qYA53kLuOnMTyuvlZVJ48BJiI3qLXmvQ8g>
+    <xmx:YAq0ZLEt7MSBNuLJLcIIuWHPPQJFU_tzjXOnjJi5vhC5uvrV3_HtHA>
+    <xmx:YAq0ZA7JVVuVHVZPy7zEF1k2ReCvzXaBs1LJHUT0w-HmSE_Bz5DX-g>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 16 Jul 2023 11:18:56 -0400 (EDT)
+Date:   Sun, 16 Jul 2023 17:18:54 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Lorenz Bauer <lmb@isovalent.com>
+Cc:     stable@vger.kernel.org
+Subject: Re: linux-5.10.y: please backport to fix BPF selftest breakage
+Message-ID: <2023071647-retiring-embroider-2e33@gregkh>
+References: <CAN+4W8j6G4f9Pg+rb+gcO06OU8ovudhbwXj0+E8Gg09zrozcZQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c9c3fe87-9f70-2131-24d3-bbb626042c16@kunbus.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAN+4W8j6G4f9Pg+rb+gcO06OU8ovudhbwXj0+E8Gg09zrozcZQ@mail.gmail.com>
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jul 14, 2023 at 07:15:38PM +0200, Lino Sanfilippo wrote:
-> Hi Greg,
+On Wed, Jul 12, 2023 at 10:40:32AM +0100, Lorenz Bauer wrote:
+> Hi stable team,
 > 
-> On 21.06.23 20:45, Greg KH wrote:
+> Building BPF selftests on 5.10.186 currently causes the following compile error:
 > 
-> > On Fri, Jun 09, 2023 at 05:42:20PM +0200, Lino Sanfilippo wrote:
-> >> Hi,
-> >>
-> >> On 09.06.23 11:07, Greg KH wrote:
-> >>>
-> >>> On Wed, May 24, 2023 at 04:07:41AM +0300, Jarkko Sakkinen wrote:
-> >>>> On Mon, 2023-05-15 at 17:37 +0200, Felix Riemann wrote:
-> >>>>> Hi!
-> >>>>>
-> >>>>>> [ Upstream commit 15d7aa4e46eba87242a320f39773aa16faddadee ]
-> >>>>>>
-> >>>>>> In tpm_tis_probe_single_irq() interrupt registers TPM_INT_VECTOR,
-> >>>>>> TPM_INT_STATUS and TPM_INT_ENABLE are modified to setup the interrupts.
-> >>>>>> Currently these modifications are done without holding a locality thus they
-> >>>>>> have no effect. Fix this by claiming the (default) locality before the
-> >>>>>> registers are written.
-> >>>>>>
-> >>>>>> Since now tpm_tis_gen_interrupt() is called with the locality already
-> >>>>>> claimed remove locality request and release from this function.
-> >>>>>
-> >>>>> On systems with SPI-connected TPM and the interrupt still configured
-> >>>>> (despite it not working before) this may introduce a kernel crash.
-> >>>>> The issue is that it will now trigger an SPI transfer (which will wait)
-> >>>>> from the IRQ handler:
-> >>>>>
-> >>>>> BUG: scheduling while atomic: systemd-journal/272/0x00010001
-> >>>>> Modules linked in: spi_fsl_lpspi
-> >>>>> CPU: 0 PID: 272 Comm: systemd-journal Not tainted 5.15.111-06679-g56b9923f2840 #50
-> >>>>> Call trace:
-> >>>>>  dump_backtrace+0x0/0x1e0
-> >>>>>  show_stack+0x18/0x40
-> >>>>>  dump_stack_lvl+0x68/0x84
-> >>>>>  dump_stack+0x18/0x34
-> >>>>>  __schedule_bug+0x54/0x70
-> >>>>>  __schedule+0x664/0x760
-> >>>>>  schedule+0x88/0x100
-> >>>>>  schedule_timeout+0x80/0xf0
-> >>>>>  wait_for_completion_timeout+0x80/0x10c
-> >>>>>  fsl_lpspi_transfer_one+0x25c/0x4ac [spi_fsl_lpspi]
-> >>>>>  spi_transfer_one_message+0x22c/0x440
-> >>>>>  __spi_pump_messages+0x330/0x5b4
-> >>>>>  __spi_sync+0x230/0x264
-> >>>>>  spi_sync_locked+0x10/0x20
-> >>>>>  tpm_tis_spi_transfer+0x1ec/0x250
-> >>>>>  tpm_tis_spi_read_bytes+0x14/0x20
-> >>>>>  tpm_tis_spi_read32+0x38/0x70
-> >>>>>  tis_int_handler+0x48/0x15c
-> >>>>>  *snip*
-> >>>>>
-> >>>>> The immediate error is fixable by also picking 0c7e66e5fd ("tpm, tpm_tis:
-> >>>>> Request threaded interrupt handler") from the same patchset[1].
-> >>>>> However, as
-> >>>>> the driver's IRQ test logic is still faulty it will fail the check and fall
-> >>>>> back to the polling behaviour without actually disabling the IRQ in hard-
-> >>>>> and software again. For this at least e644b2f498 ("tpm, tpm_tis: Enable
-> >>>>> interrupt test") and 0e069265bc ("tpm, tpm_tis: Claim locality in interrupt
-> >>>>> handler") are necessary.
-> >>>>>
-> >>>>> At this point 9 of the set's 14 patches are applied and I am not sure
-> >>>>> whether it's better to pick the remaining five patches as well or just
-> >>>>> revert the initial six patches. Especially considering there were initially
-> >>>>> no plans to submit these patches to stable[2] and the IRQ feature was (at
-> >>>>> least on SPI) not working before.
-> >>>>
-> >>>> I think the right thing to do would be to revert 6 initial patches.
-> >>>
-> >>> Ok, I think this isn't needed anymore with the latest 5.15.116 release,
-> >>> right?  If not, please let me know.
-> >>>
-> >>
-> >>
+> $ make -C tools/testing/selftests/bpf
+> ...
+>   BINARY   test_verifier
+> In file included from
+> /usr/src/linux-5.10.186/tools/testing/selftests/bpf/verifier/tests.h:59,
+>                  from test_verifier.c:355:
+> /usr/src/linux-5.10.186/tools/testing/selftests/bpf/verifier/ref_tracking.c:935:10:
+> error: 'struct bpf_test' has no member named 'fixup_map_ringbuf'; did
+> you mean 'fixup_map_in_map'?
+>   935 |         .fixup_map_ringbuf = { 11 },
+>       |          ^~~~~~~~~~~~~~~~~
+>       |          fixup_map_in_map
 > 
+> The problem was introduced by commit f4b8c0710ab6 ("selftests/bpf: Add
+> verifier test for release_reference()") in your tree.
 > 
-> >> With 0c7e66e5fd ("tpm, tpm_tis: Request threaded interrupt handler") applied the
-> >> above bug is fixed in 5.15.y. There is however still the issue that the interrupts may
-> >> not be acknowledged properly in the interrupt handler, since the concerning register is written
-> >> without the required locality held (Felix mentions this above).
-> >> This can be fixed with 0e069265bce5 ("tpm, tpm_tis: Claim locality in interrupt handler").
-> >>
-> >> So instead of reverting the initial patches, I suggest to
-> >>
-> >> 1. also apply 0e069265bce5 ("tpm, tpm_tis: Claim locality in interrupt handler")
-> > 
-> > I've now done this, thanks.
-> > 
-> > greg k-h
+> Seems like at least commit 4237e9f4a962 ("selftests/bpf: Add verifier
+> test for PTR_TO_MEM spill") is required for the build to succeed.
 > 
-> While 5.15.y, 6.1.y and 6.3.y should be fine AFAICS commit 
-> 0e069265bc ("tpm, tpm_tis: Claim locality in interrupt handler") is
-> still missing in 5.10.y. This commit is needed to make sure that TPM interrupts
-> are properly acknowledge (see text above).
+> I previously reported this but things probably fell through the
+> cracks: https://lore.kernel.org/stable/CAN+4W8iMcwwVjmSekZ9txzZNxOZ0x98nBXo4cEoTU9G2zLe8HA@mail.gmail.com/#t
 
-Ok, now queued up, thanks.
+Now queued up, thanks.
 
 greg k-h
