@@ -2,48 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85CDA7553CD
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27176755612
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231865AbjGPUXH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:23:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46618 "EHLO
+        id S232725AbjGPUrO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:47:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231853AbjGPUXH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:23:07 -0400
+        with ESMTP id S232715AbjGPUrN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:47:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D7B9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44792E50
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:47:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E7E460DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324B6C433C8;
-        Sun, 16 Jul 2023 20:23:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1E1560E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:47:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5909C433C7;
+        Sun, 16 Jul 2023 20:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538985;
-        bh=lN9GC96fFjomqeeakVzw8SDRD0GIjjAzMzuPCM4RI5g=;
+        s=korg; t=1689540431;
+        bh=yR3tLSxtRZAvF1rRQ4nojQYQYF38Es+hEftBMrpqFvU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EjNFf5qG9VxmCiUrXwnjq7Dxs14f8sdNRAko5hfO0ocCAfg4HM6x+yNVpMQz7Jctu
-         qMxx4ilGbrDyTCONdklge/cwiimCNEjVoVbC7mNIYMTjCBN0k5Dfaw6nX5HA1IsGV+
-         HAxr4PZpwH3m9Jb2E2zMNNkN8ordvgzaZveVx0Lw=
+        b=Yq5RlW/UwiBYdHGAsT36EfijTCitVXPhUX7wbi6jiWjpx/USz75dtEvACe88DPZ+D
+         mWUsFYZ/T1j0uD9U3YZODqQDxe17iIoiwP5F694U1d2RxZEnr9KAiRgxm97eRD+YWq
+         /yWO+rIcRjOMf1Os6uNsihka/X9+KQ3DdJDMiJgw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fancy Fang <chen.fang@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Will Deacon <will@kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 646/800] pwm: imx-tpm: force real_period to be zero in suspend
+Subject: [PATCH 6.1 360/591] arm64: sme: Use STR P to clear FFR context field in streaming SVE mode
 Date:   Sun, 16 Jul 2023 21:48:19 +0200
-Message-ID: <20230716195004.120025226@linuxfoundation.org>
+Message-ID: <20230716194933.227283046@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,43 +60,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fancy Fang <chen.fang@nxp.com>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit 661dfb7f46298e53f6c3deaa772fa527aae86193 ]
+[ Upstream commit 893b24181b4c4bf1fa2841b1ed192e5413a97cb1 ]
 
-During suspend, all the tpm registers will lose values.
-So the 'real_period' value of struct 'imx_tpm_pwm_chip'
-should be forced to be zero to force the period update
-code can be executed after system resume back.
+The FFR is a predicate register which can vary between 16 and 256 bits
+in size depending upon the configured vector length. When saving the
+SVE state in streaming SVE mode, the FFR register is inaccessible and
+so commit 9f5848665788 ("arm64/sve: Make access to FFR optional") simply
+clears the FFR field of the in-memory context structure. Unfortunately,
+it achieves this using an unconditional 8-byte store and so if the SME
+vector length is anything other than 64 bytes in size we will either
+fail to clear the entire field or, worse, we will corrupt memory
+immediately following the structure. This has led to intermittent kfence
+splats in CI [1] and can trigger kmalloc Redzone corruption messages
+when running the 'fp-stress' kselftest:
 
-Signed-off-by: Fancy Fang <chen.fang@nxp.com>
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+ | =============================================================================
+ | BUG kmalloc-1k (Not tainted): kmalloc Redzone overwritten
+ | -----------------------------------------------------------------------------
+ |
+ | 0xffff000809bf1e22-0xffff000809bf1e27 @offset=7714. First byte 0x0 instead of 0xcc
+ | Allocated in do_sme_acc+0x9c/0x220 age=2613 cpu=1 pid=531
+ |  __kmalloc+0x8c/0xcc
+ |  do_sme_acc+0x9c/0x220
+ |  ...
+
+Replace the 8-byte store with a store of a predicate register which has
+been zero-initialised with PFALSE, ensuring that the entire field is
+cleared in memory.
+
+[1] https://lore.kernel.org/r/CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com
+
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: 9f5848665788 ("arm64/sve: Make access to FFR optional")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Link: https://lore.kernel.org/r/20230628155605.22296-1-will@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-imx-tpm.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/include/asm/fpsimdmacros.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
-index 5e2b452ee5f2e..98ab65c896850 100644
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -397,6 +397,13 @@ static int __maybe_unused pwm_imx_tpm_suspend(struct device *dev)
- 	if (tpm->enable_count > 0)
- 		return -EBUSY;
- 
-+	/*
-+	 * Force 'real_period' to be zero to force period update code
-+	 * can be executed after system resume back, since suspend causes
-+	 * the period related registers to become their reset values.
-+	 */
-+	tpm->real_period = 0;
-+
- 	clk_disable_unprepare(tpm->clk);
- 
- 	return 0;
+diff --git a/arch/arm64/include/asm/fpsimdmacros.h b/arch/arm64/include/asm/fpsimdmacros.h
+index 5e0910cf48321..696d247cf8fb0 100644
+--- a/arch/arm64/include/asm/fpsimdmacros.h
++++ b/arch/arm64/include/asm/fpsimdmacros.h
+@@ -294,12 +294,12 @@
+  _for n, 0, 15,	_sve_str_p	\n, \nxbase, \n - 16
+ 		cbz		\save_ffr, 921f
+ 		_sve_rdffr	0
+-		_sve_str_p	0, \nxbase
+-		_sve_ldr_p	0, \nxbase, -16
+ 		b		922f
+ 921:
+-		str		xzr, [x\nxbase]		// Zero out FFR
++		_sve_pfalse	0			// Zero out FFR
+ 922:
++		_sve_str_p	0, \nxbase
++		_sve_ldr_p	0, \nxbase, -16
+ 		mrs		x\nxtmp, fpsr
+ 		str		w\nxtmp, [\xpfpsr]
+ 		mrs		x\nxtmp, fpcr
 -- 
 2.39.2
 
