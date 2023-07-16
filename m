@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E850B7553FC
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:25:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1075575564C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231942AbjGPUZR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47742 "EHLO
+        id S232870AbjGPUtZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:49:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231939AbjGPUZQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:16 -0400
+        with ESMTP id S232810AbjGPUtR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B749F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B74D010CC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B22D360EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CCBC433C8;
-        Sun, 16 Jul 2023 20:25:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D7DB60EA2
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A0CC433C8;
+        Sun, 16 Jul 2023 20:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539114;
-        bh=ylC9+P9HFpZwtOoIbN96sdhpaT7qaKkT+xJlBYChV8U=;
+        s=korg; t=1689540554;
+        bh=aLsoAU4GKBCzVNsViIDcKrZvQm4ut7qWoFzZhucaViE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n/fcBxLUAOVXW+mONeaCmuJTIeFnCpvSWM5dKoXZpOb9h5S+MWnZAldDqvm4W09F4
-         coDu1pK4f3mnCLIK3pVHyE6flktoaHrGwzsFUEcMccAYx7ptjq6IopL0+DXLhy64j7
-         ZTiElw2QOZ+2UMgDFY0jetv6ndYYygSOIOAKoaBw=
+        b=uxm0XVlGgTfwM1QjAXcFoleKUNBcp2xGOO/p1Bgk5Am0uoCMOU6JicPyhaveFTN/5
+         /U1Jjf92yM3k0r4TsjWzyHUHwlbOjziL1rM5bYWh7QIjQY8uvZvYJEZy6dSpcE20mK
+         5MHcYUOPhcDmZ+vkxG4+L0YGVfHP674XNkS/wJXY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 663/800] net/sched: act_ipt: add sanity checks on skb before calling target
+        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 377/591] block: add overflow checks for Amiga partition support
 Date:   Sun, 16 Jul 2023 21:48:36 +0200
-Message-ID: <20230716195004.512098547@linuxfoundation.org>
+Message-ID: <20230716194933.673020771@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,91 +57,202 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-[ Upstream commit b2dc32dcba08bf55cec600caa76f4afd2e3614df ]
+commit b6f3f28f604ba3de4724ad82bea6adb1300c0b5f upstream.
 
-Netfilter targets make assumptions on the skb state, for example
-iphdr is supposed to be in the linear area.
+The Amiga partition parser module uses signed int for partition sector
+address and count, which will overflow for disks larger than 1 TB.
 
-This is normally done by IP stack, but in act_ipt case no
-such checks are made.
+Use u64 as type for sector address and size to allow using disks up to
+2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+format allows to specify disk sizes up to 2^128 bytes (though native
+OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+u64 overflow carefully to protect against overflowing sector_t.
 
-Some targets can even assume that skb_dst will be valid.
-Make a minimum effort to check for this:
+Bail out if sector addresses overflow 32 bits on kernels without LBD
+support.
 
-- Don't call the targets eval function for non-ipv4 skbs.
-- Don't call the targets eval function for POSTROUTING
-  emulation when the skb has no dst set.
+This bug was reported originally in 2012, and the fix was created by
+the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+discussed and reviewed on linux-m68k at that time but never officially
+submitted (now resubmitted as patch 1 in this series).
+This patch adds additional error checking and warning messages.
 
-v3: use skb_protocol helper (Davide Caratti)
-
+Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Christoph Hellwig <hch@infradead.org>
+Link: https://lore.kernel.org/r/20230620201725.7020-4-schmitzmic@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ipt.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ block/partitions/amiga.c |  103 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 85 insertions(+), 18 deletions(-)
 
-diff --git a/net/sched/act_ipt.c b/net/sched/act_ipt.c
-index ea7f151e7dd29..a6b522b512dc3 100644
---- a/net/sched/act_ipt.c
-+++ b/net/sched/act_ipt.c
-@@ -230,6 +230,26 @@ static int tcf_xt_init(struct net *net, struct nlattr *nla,
- 			      a, &act_xt_ops, tp, flags);
- }
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -11,10 +11,18 @@
+ #define pr_fmt(fmt) fmt
  
-+static bool tcf_ipt_act_check(struct sk_buff *skb)
-+{
-+	const struct iphdr *iph;
-+	unsigned int nhoff, len;
-+
-+	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
-+		return false;
-+
-+	nhoff = skb_network_offset(skb);
-+	iph = ip_hdr(skb);
-+	if (iph->ihl < 5 || iph->version != 4)
-+		return false;
-+
-+	len = skb_ip_totlen(skb);
-+	if (skb->len < nhoff + len || len < (iph->ihl * 4u))
-+		return false;
-+
-+	return pskb_may_pull(skb, iph->ihl * 4u);
-+}
-+
- TC_INDIRECT_SCOPE int tcf_ipt_act(struct sk_buff *skb,
- 				  const struct tc_action *a,
- 				  struct tcf_result *res)
-@@ -244,9 +264,22 @@ TC_INDIRECT_SCOPE int tcf_ipt_act(struct sk_buff *skb,
- 		.pf	= NFPROTO_IPV4,
- 	};
+ #include <linux/types.h>
++#include <linux/mm_types.h>
++#include <linux/overflow.h>
+ #include <linux/affs_hardblocks.h>
  
-+	if (skb_protocol(skb, false) != htons(ETH_P_IP))
-+		return TC_ACT_UNSPEC;
-+
- 	if (skb_unclone(skb, GFP_ATOMIC))
- 		return TC_ACT_UNSPEC;
+ #include "check.h"
  
-+	if (!tcf_ipt_act_check(skb))
-+		return TC_ACT_UNSPEC;
++/* magic offsets in partition DosEnvVec */
++#define NR_HD	3
++#define NR_SECT	5
++#define LO_CYL	9
++#define HI_CYL	10
 +
-+	if (state.hook == NF_INET_POST_ROUTING) {
-+		if (!skb_dst(skb))
-+			return TC_ACT_UNSPEC;
-+
-+		state.out = skb->dev;
-+	}
-+
- 	spin_lock(&ipt->tcf_lock);
+ static __inline__ u32
+ checksum_block(__be32 *m, int size)
+ {
+@@ -31,9 +39,12 @@ int amiga_partition(struct parsed_partit
+ 	unsigned char *data;
+ 	struct RigidDiskBlock *rdb;
+ 	struct PartitionBlock *pb;
+-	sector_t start_sect, nr_sects;
+-	int blk, part, res = 0;
+-	int blksize = 1;	/* Multiplier for disk block size */
++	u64 start_sect, nr_sects;
++	sector_t blk, end_sect;
++	u32 cylblk;		/* rdb_CylBlocks = nr_heads*sect_per_track */
++	u32 nr_hd, nr_sect, lo_cyl, hi_cyl;
++	int part, res = 0;
++	unsigned int blksize = 1;	/* Multiplier for disk block size */
+ 	int slot = 1;
  
- 	tcf_lastuse_update(&ipt->tcf_tm);
--- 
-2.39.2
-
+ 	for (blk = 0; ; blk++, put_dev_sector(sect)) {
+@@ -41,7 +52,7 @@ int amiga_partition(struct parsed_partit
+ 			goto rdb_done;
+ 		data = read_part_sector(state, blk, &sect);
+ 		if (!data) {
+-			pr_err("Dev %s: unable to read RDB block %d\n",
++			pr_err("Dev %s: unable to read RDB block %llu\n",
+ 			       state->disk->disk_name, blk);
+ 			res = -1;
+ 			goto rdb_done;
+@@ -58,12 +69,12 @@ int amiga_partition(struct parsed_partit
+ 		*(__be32 *)(data+0xdc) = 0;
+ 		if (checksum_block((__be32 *)data,
+ 				be32_to_cpu(rdb->rdb_SummedLongs) & 0x7F)==0) {
+-			pr_err("Trashed word at 0xd0 in block %d ignored in checksum calculation\n",
++			pr_err("Trashed word at 0xd0 in block %llu ignored in checksum calculation\n",
+ 			       blk);
+ 			break;
+ 		}
+ 
+-		pr_err("Dev %s: RDB in block %d has bad checksum\n",
++		pr_err("Dev %s: RDB in block %llu has bad checksum\n",
+ 		       state->disk->disk_name, blk);
+ 	}
+ 
+@@ -80,10 +91,15 @@ int amiga_partition(struct parsed_partit
+ 	blk = be32_to_cpu(rdb->rdb_PartitionList);
+ 	put_dev_sector(sect);
+ 	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
+-		blk *= blksize;	/* Read in terms partition table understands */
++		/* Read in terms partition table understands */
++		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
++			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
++				state->disk->disk_name, blk, part);
++			break;
++		}
+ 		data = read_part_sector(state, blk, &sect);
+ 		if (!data) {
+-			pr_err("Dev %s: unable to read partition block %d\n",
++			pr_err("Dev %s: unable to read partition block %llu\n",
+ 			       state->disk->disk_name, blk);
+ 			res = -1;
+ 			goto rdb_done;
+@@ -95,19 +111,70 @@ int amiga_partition(struct parsed_partit
+ 		if (checksum_block((__be32 *)pb, be32_to_cpu(pb->pb_SummedLongs) & 0x7F) != 0 )
+ 			continue;
+ 
+-		/* Tell Kernel about it */
++		/* RDB gives us more than enough rope to hang ourselves with,
++		 * many times over (2^128 bytes if all fields max out).
++		 * Some careful checks are in order, so check for potential
++		 * overflows.
++		 * We are multiplying four 32 bit numbers to one sector_t!
++		 */
++
++		nr_hd   = be32_to_cpu(pb->pb_Environment[NR_HD]);
++		nr_sect = be32_to_cpu(pb->pb_Environment[NR_SECT]);
++
++		/* CylBlocks is total number of blocks per cylinder */
++		if (check_mul_overflow(nr_hd, nr_sect, &cylblk)) {
++			pr_err("Dev %s: heads*sects %u overflows u32, skipping partition!\n",
++				state->disk->disk_name, cylblk);
++			continue;
++		}
++
++		/* check for consistency with RDB defined CylBlocks */
++		if (cylblk > be32_to_cpu(rdb->rdb_CylBlocks)) {
++			pr_warn("Dev %s: cylblk %u > rdb_CylBlocks %u!\n",
++				state->disk->disk_name, cylblk,
++				be32_to_cpu(rdb->rdb_CylBlocks));
++		}
++
++		/* RDB allows for variable logical block size -
++		 * normalize to 512 byte blocks and check result.
++		 */
++
++		if (check_mul_overflow(cylblk, blksize, &cylblk)) {
++			pr_err("Dev %s: partition %u bytes per cyl. overflows u32, skipping partition!\n",
++				state->disk->disk_name, part);
++			continue;
++		}
++
++		/* Calculate partition start and end. Limit of 32 bit on cylblk
++		 * guarantees no overflow occurs if LBD support is enabled.
++		 */
++
++		lo_cyl = be32_to_cpu(pb->pb_Environment[LO_CYL]);
++		start_sect = ((u64) lo_cyl * cylblk);
++
++		hi_cyl = be32_to_cpu(pb->pb_Environment[HI_CYL]);
++		nr_sects = (((u64) hi_cyl - lo_cyl + 1) * cylblk);
+ 
+-		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
+-			   be32_to_cpu(pb->pb_Environment[9])) *
+-			   be32_to_cpu(pb->pb_Environment[3]) *
+-			   be32_to_cpu(pb->pb_Environment[5]) *
+-			   blksize;
+ 		if (!nr_sects)
+ 			continue;
+-		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
+-			     be32_to_cpu(pb->pb_Environment[3]) *
+-			     be32_to_cpu(pb->pb_Environment[5]) *
+-			     blksize;
++
++		/* Warn user if partition end overflows u32 (AmigaDOS limit) */
++
++		if ((start_sect + nr_sects) > UINT_MAX) {
++			pr_warn("Dev %s: partition %u (%llu-%llu) needs 64 bit device support!\n",
++				state->disk->disk_name, part,
++				start_sect, start_sect + nr_sects);
++		}
++
++		if (check_add_overflow(start_sect, nr_sects, &end_sect)) {
++			pr_err("Dev %s: partition %u (%llu-%llu) needs LBD device support, skipping partition!\n",
++				state->disk->disk_name, part,
++				start_sect, end_sect);
++			continue;
++		}
++
++		/* Tell Kernel about it */
++
+ 		put_partition(state,slot++,start_sect,nr_sects);
+ 		{
+ 			/* Be even more informative to aid mounting */
 
 
