@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A0FB7553F4
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 787C675564A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231926AbjGPUYy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:24:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47570 "EHLO
+        id S232835AbjGPUtU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:49:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231905AbjGPUYx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:24:53 -0400
+        with ESMTP id S232884AbjGPUtH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E16959F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:24:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0216E61
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:48:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77DF960EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:24:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87DFAC433C7;
-        Sun, 16 Jul 2023 20:24:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 65C6960EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:48:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FF4C433C8;
+        Sun, 16 Jul 2023 20:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539091;
-        bh=H9FIY/Na+OMcJuPlbpyr2AflDyB9HGFfSbjH/P6nK2E=;
+        s=korg; t=1689540537;
+        bh=uqzcoGTQxWhlqcdiTjuBwRgVzV99Yg6+MGtQFxaFySs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1jjVRYanX1QHDVRczrotegyS42kjSctMVTrfcClF/qWocg99Uq+HQXAtGLJxiGLwR
-         O7xP2MTKDtboMwjVMHoJ0XrIG+NElAJbwjm8n2npkzED4S+azQaSrO6Ymo7qNPmfWt
-         y1rcx9gEKnTJLiyeENSayOfED9yF7sVmSWnaKWGs=
+        b=J9KyGpw93RtuIBFvA02V8veYJL2W+qi/GsgGrj1IELhUqL3WlgJXGUwmUYgGHeKBn
+         fIZqQ/fhq8TOMu/3tCRf1O7iS5/Tvkoj8Dp8wsy5Ta+52WtpXjD+f/Xxr6TBlTC2w5
+         QaFtA/no147OF6NW9kGpYtanDrrHY0jUPCSJzgBk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hariprasad Kelam <hkelam@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 684/800] octeontx2-af: cn10kb: fix interrupt csr addresses
+Subject: [PATCH 6.1 398/591] media: videodev2.h: Fix struct v4l2_input tuner index comment
 Date:   Sun, 16 Jul 2023 21:48:57 +0200
-Message-ID: <20230716195005.011954981@linuxfoundation.org>
+Message-ID: <20230716194934.216099490@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,56 +55,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 4c5a331cacda995e995a7857f0e44e8937d98d2c ]
+[ Upstream commit 26ae58f65e64fa7ba61d64bae752e59e08380c6a ]
 
-The current design is that, for asynchronous events like link_up and
-link_down firmware raises the interrupt to kernel. The previous patch
-which added RPM_USX driver has a bug where it uses old csr addresses
-for configuring interrupts. Which is resulting in losing interrupts
-from source firmware.
+VIDIOC_ENUMINPUT documentation describes the tuner field of
+struct v4l2_input as index:
 
-This patch fixes the issue by correcting csr addresses.
+Documentation/userspace-api/media/v4l/vidioc-enuminput.rst
+"
+* - __u32
+  - ``tuner``
+  - Capture devices can have zero or more tuners (RF demodulators).
+    When the ``type`` is set to ``V4L2_INPUT_TYPE_TUNER`` this is an
+    RF connector and this field identifies the tuner. It corresponds
+    to struct :c:type:`v4l2_tuner` field ``index``. For
+    details on tuners see :ref:`tuner`.
+"
 
-Fixes: b9d0fedc6234 ("octeontx2-af: cn10kb: Add RPM_USX MAC support")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Drivers I could find also use the 'tuner' field as an index, e.g.:
+drivers/media/pci/bt8xx/bttv-driver.c bttv_enum_input()
+drivers/media/usb/go7007/go7007-v4l2.c vidioc_enum_input()
+
+However, the UAPI comment claims this field is 'enum v4l2_tuner_type':
+include/uapi/linux/videodev2.h
+
+This field being 'enum v4l2_tuner_type' is unlikely as it seems to be
+never used that way in drivers, and documentation confirms it. It seem
+this comment got in accidentally in the commit which this patch fixes.
+Fix the UAPI comment to stop confusion.
+
+This was pointed out by Dmitry while reviewing VIDIOC_ENUMINPUT
+support for strace.
+
+Fixes: 6016af82eafc ("[media] v4l2: use __u32 rather than enums in ioctl() structs")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rpm.c | 2 +-
- drivers/net/ethernet/marvell/octeontx2/af/rpm.h | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ include/uapi/linux/videodev2.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-index de0d88dd10d65..a433f92c51eae 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-@@ -47,7 +47,7 @@ static struct mac_ops		rpm2_mac_ops   = {
- 	.int_set_reg    =       RPM2_CMRX_SW_INT_ENA_W1S,
- 	.irq_offset     =       1,
- 	.int_ena_bit    =       BIT_ULL(0),
--	.lmac_fwi	=	RPM_LMAC_FWI,
-+	.lmac_fwi	=	RPM2_LMAC_FWI,
- 	.non_contiguous_serdes_lane = true,
- 	.rx_stats_cnt   =       43,
- 	.tx_stats_cnt   =       34,
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.h b/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
-index 22147b4c21370..be294eebab265 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
-@@ -94,7 +94,8 @@
- 
- /* CN10KB CSR Declaration */
- #define  RPM2_CMRX_SW_INT				0x1b0
--#define  RPM2_CMRX_SW_INT_ENA_W1S			0x1b8
-+#define  RPM2_CMRX_SW_INT_ENA_W1S			0x1c8
-+#define  RPM2_LMAC_FWI					0x12
- #define  RPM2_CMR_CHAN_MSK_OR				0x3120
- #define  RPM2_CMR_RX_OVR_BP_EN				BIT_ULL(2)
- #define  RPM2_CMR_RX_OVR_BP_BP				BIT_ULL(1)
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index 29da1f4b4578e..45fa03882ef18 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -1693,7 +1693,7 @@ struct v4l2_input {
+ 	__u8	     name[32];		/*  Label */
+ 	__u32	     type;		/*  Type of input */
+ 	__u32	     audioset;		/*  Associated audios (bitfield) */
+-	__u32        tuner;             /*  enum v4l2_tuner_type */
++	__u32        tuner;             /*  Tuner index */
+ 	v4l2_std_id  std;
+ 	__u32	     status;
+ 	__u32	     capabilities;
 -- 
 2.39.2
 
