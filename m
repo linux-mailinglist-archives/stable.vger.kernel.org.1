@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7CC67555D8
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 465F77555B8
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232642AbjGPUpN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:45:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34522 "EHLO
+        id S232601AbjGPUn5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:43:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232649AbjGPUpM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:45:12 -0400
+        with ESMTP id S232615AbjGPUn4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B48F6E45
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:45:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B632FD9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 54A8460EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:45:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6879CC433C9;
-        Sun, 16 Jul 2023 20:45:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5539B60EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF2FC433C8;
+        Sun, 16 Jul 2023 20:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540310;
-        bh=H6AQEucR+NeeiJtWOFSzGLNQac2h7ccUxIC3aOhoBbQ=;
+        s=korg; t=1689540234;
+        bh=FyInWm0q1Wkpii3gFFMCFUgbcTHa3j4jUVZVbCaa/6E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wKpXxyfBTSUH7ergWkP0qw1a9AAs9OVHtKE9VB9d6gRC3GBGIyKQn7fh6VYghf1Bt
-         ryc5VBRXtPCjasCU9pkltZKLgv2FQPrsTu0uKg6XkjfMtj0BcLS87FarFgyk2IAL2b
-         /pNP10gXu9ldZDen8/Q1g7zlGUYLSfUO3TtuUCx8=
+        b=iIZlS6cX0cv5Qsnn4W2HywTuXvP/qzkNqFUs/EWUI1ZhwND1l9EtuuAKXR8DNw0vE
+         P0qxiD7ZB7gA6A5Nh2zAcECTE8v7UCsxlBvJF+wUVXhycWN80fN0HKZMyFMUvyF96F
+         HpbQX7IkjwJJpiOI19BReEB+ltwBXlCrlTDdY/OQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 290/591] platform/x86: lenovo-yogabook: Reprobe devices on remove()
-Date:   Sun, 16 Jul 2023 21:47:09 +0200
-Message-ID: <20230716194931.396837388@linuxfoundation.org>
+Subject: [PATCH 6.1 291/591] platform/x86: lenovo-yogabook: Set default keyboard backligh brightness on probe()
+Date:   Sun, 16 Jul 2023 21:47:10 +0200
+Message-ID: <20230716194931.422305644@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -56,46 +56,33 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 711bcc0cb34e96a60e88d7b0260862781de3e530 ]
+[ Upstream commit 9e6380d6573181c555ca1b5019b08d19a9ee581c ]
 
-Ensure that both the keyboard touchscreen and the digitizer have their
-driver bound after remove(). Without this modprobing lenovo-yogabook-wmi
-after a rmmod fails because lenovo-yogabook-wmi defers probing until
-both devices have their driver bound.
+Set default keyboard backlight brightness on probe(), this fixes
+the backlight being off after a rmmod + modprobe.
 
 Fixes: c0549b72d99d ("platform/x86: lenovo-yogabook-wmi: Add driver for Lenovo Yoga Book")
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230430165807.472798-4-hdegoede@redhat.com
+Link: https://lore.kernel.org/r/20230430165807.472798-5-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lenovo-yogabook-wmi.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/platform/x86/lenovo-yogabook-wmi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/platform/x86/lenovo-yogabook-wmi.c b/drivers/platform/x86/lenovo-yogabook-wmi.c
-index 3a6de4ab74a41..5948ffa74acd5 100644
+index 5948ffa74acd5..d57fcc8388519 100644
 --- a/drivers/platform/x86/lenovo-yogabook-wmi.c
 +++ b/drivers/platform/x86/lenovo-yogabook-wmi.c
-@@ -332,9 +332,20 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
- static void yogabook_wmi_remove(struct wmi_device *wdev)
- {
- 	struct yogabook_wmi *data = dev_get_drvdata(&wdev->dev);
-+	int r = 0;
+@@ -295,6 +295,9 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
+ 	}
+ 	data->backside_hall_irq = r;
  
- 	free_irq(data->backside_hall_irq, data);
- 	cancel_work_sync(&data->work);
++	/* Set default brightness before enabling the IRQ */
++	yogabook_wmi_set_kbd_backlight(data->wdev, YB_KBD_BL_DEFAULT);
 +
-+	if (!test_bit(YB_KBD_IS_ON, &data->flags))
-+		r |= device_reprobe(data->kbd_dev);
-+
-+	if (!test_bit(YB_DIGITIZER_IS_ON, &data->flags))
-+		r |= device_reprobe(data->dig_dev);
-+
-+	if (r)
-+		dev_warn(&wdev->dev, "Reprobe of devices failed\n");
-+
- 	put_device(data->dig_dev);
- 	put_device(data->kbd_dev);
- 	acpi_dev_put(data->dig_adev);
+ 	r = request_irq(data->backside_hall_irq, yogabook_backside_hall_irq,
+ 			IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
+ 			"backside_hall_sw", data);
 -- 
 2.39.2
 
