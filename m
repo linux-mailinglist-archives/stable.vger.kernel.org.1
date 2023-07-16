@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB2EE75561B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD35A75561C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232729AbjGPUrg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:47:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36782 "EHLO
+        id S232727AbjGPUrj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:47:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232727AbjGPUrf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:47:35 -0400
+        with ESMTP id S232736AbjGPUri (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:47:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00912E4B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:47:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6C3ED9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:47:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EC3B60EA2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED05C433C7;
-        Sun, 16 Jul 2023 20:47:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F19060DFD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:47:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7191AC433C7;
+        Sun, 16 Jul 2023 20:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540453;
-        bh=G0JELBG+eTpjG3XjdxxENXCVDNvJrB7/CZ6lP7dUrLA=;
+        s=korg; t=1689540456;
+        bh=FQ41aqXCriix0jCvOKjju00opULUpNoItFYwY/0in6E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KnG0ziboyhdseNJG5RDmtYJTrhNsjc2YnoL4oU1Ev9UF/XqBoBd/sF3cJQiUwaFbc
-         OEWhzSjYJSLGfkTrDPLmEDef73ZET68NY+j7ojFF8KmKwFmfC9K+nDGtmgZjTuhcl6
-         4r6ZzXCYENtWpVSDidRsqwucLoUEb+Ix1kBNVp9k=
+        b=suk0tKrKPSfY24C83BPT7hyFKdH+R2KyZP5+crB3AGbEGmnfuft1w0KDCDNYh1fx9
+         2VjtRS5b8vJ2Q91WvNDNZyCFtNyYXXGste5kLhy3D82wncUQcLdZYbb4N6rgtzO01J
+         wkLDtOS3jGyL2DYyUZx+WZkxmPQ7qhreI7zqgvU8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Sean Nyekjaer <sean@geanix.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 368/591] iio: accel: fxls8962af: errata bug only applicable for FXLS8962AF
-Date:   Sun, 16 Jul 2023 21:48:27 +0200
-Message-ID: <20230716194933.439692711@linuxfoundation.org>
+Subject: [PATCH 6.1 369/591] iio: accel: fxls8962af: fixup buffer scan element type
+Date:   Sun, 16 Jul 2023 21:48:28 +0200
+Message-ID: <20230716194933.465028097@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -56,34 +56,33 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Sean Nyekjaer <sean@geanix.com>
 
-commit b410a9307bc3a7cdee3c930c98f6fc9cf1d2c484 upstream.
+commit d1cfbd52ede5e5fabc09992894c5733b4057f159 upstream.
 
-Remove special errata handling if FXLS8964AF is used.
+Scan elements for x,y,z channels is little endian and requires no bit shifts.
+LE vs. BE is controlled in register SENS_CONFIG2 and bit LE_BE, default
+value is LE.
 
-Fixes: af959b7b96b8 ("iio: accel: fxls8962af: fix errata bug E3 - I2C burst reads")
+Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
 Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230605103223.1400980-2-sean@geanix.com
+Link: https://lore.kernel.org/r/20230605103223.1400980-1-sean@geanix.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/fxls8962af-core.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/accel/fxls8962af-core.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 --- a/drivers/iio/accel/fxls8962af-core.c
 +++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -905,9 +905,10 @@ static int fxls8962af_fifo_transfer(stru
- 	int total_length = samples * sample_length;
- 	int ret;
- 
--	if (i2c_verify_client(dev))
-+	if (i2c_verify_client(dev) &&
-+	    data->chip_info->chip_id == FXLS8962AF_DEVICE_ID)
- 		/*
--		 * Due to errata bug:
-+		 * Due to errata bug (only applicable on fxls8962af):
- 		 * E3: FIFO burst read operation error using I2C interface
- 		 * We have to avoid burst reads on I2C..
- 		 */
+@@ -725,8 +725,7 @@ static const struct iio_event_spec fxls8
+ 		.sign = 's', \
+ 		.realbits = 12, \
+ 		.storagebits = 16, \
+-		.shift = 4, \
+-		.endianness = IIO_BE, \
++		.endianness = IIO_LE, \
+ 	}, \
+ 	.event_spec = fxls8962af_event, \
+ 	.num_event_specs = ARRAY_SIZE(fxls8962af_event), \
 
 
