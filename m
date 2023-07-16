@@ -2,103 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 811697555A6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9377475539A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232591AbjGPUnM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:43:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33470 "EHLO
+        id S231801AbjGPUUy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:20:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232578AbjGPUnL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631E5D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:10 -0700 (PDT)
+        with ESMTP id S231802AbjGPUUw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:20:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6272E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:20:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E541660EBD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001BEC433C7;
-        Sun, 16 Jul 2023 20:43:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BBAC60EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:20:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2D2C433C8;
+        Sun, 16 Jul 2023 20:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540189;
-        bh=7pWwn1HJ76qqQSBtHTRw0FgRArX4N6PElcbsAba4Y9M=;
+        s=korg; t=1689538850;
+        bh=R7YhuNAAvshuejcLFVFLZf//fiL8d3wI/DJ0Wu47wxM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=voueC3iF+6NjJ/XykuH+D3peo/2HUDrS22X5exhljoRUciy9fM1Vl5C+U9SCS6Cxl
-         XlSnbXUFssQKgScXcIQ89hKbla8YRC36uJSC2qPw8s3QgUCT8HBn7oRARVvEUKqztH
-         uIzZkiRHst6qYGaGb/16dblg5wWLGLQhXSWkEiK8=
+        b=PeS4ttaKKGrWKT+ACAz5Dhj5rQV5QzoDdp9dESIqITKWm0dGmZDmCTfDwvriyXtYI
+         nV4R8bwyfzzvYvht8rOSrtLZ1uGeiDZXPrHbogb8tDfBlAzHs4PLa7EO2OB6QZn+6R
+         uS/X4HWAzgt773nv+RmQqN3UDKjpHZ5i3j9hI76Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Kathiravan T <quic_kathirav@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 274/591] clk: si5341: check return value of {devm_}kasprintf()
+Subject: [PATCH 6.4 560/800] clk: qcom: gcc: ipq5332: Use floor ops for SDCC clocks
 Date:   Sun, 16 Jul 2023 21:46:53 +0200
-Message-ID: <20230716194930.984581028@linuxfoundation.org>
+Message-ID: <20230716195002.096499501@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Kathiravan T <quic_kathirav@quicinc.com>
 
-[ Upstream commit 36e4ef82016a2b785cf2317eade77e76699b7bff ]
+[ Upstream commit a30e62bf6bf4d3230fa9164c7e174e32b9be7ba5 ]
 
-{devm_}kasprintf() returns a pointer to dynamically allocated memory.
-Pointer could be NULL in case allocation fails. Check pointer validity.
-Identified with coccinelle (kmerr.cocci script).
+SDCC clocks must be rounded down to avoid overclocking the controller.
 
-Fixes: 3044a860fd09 ("clk: Add Si5341/Si5340 driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230530093913.1656095-5-claudiu.beznea@microchip.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 3d89d52970fd ("clk: qcom: add Global Clock controller (GCC) driver for IPQ5332 SoC")
+Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230508163145.9678-1-quic_kathirav@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-si5341.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/clk/qcom/gcc-ipq5332.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
-index 6dca3288c8940..b2cf7edc8b308 100644
---- a/drivers/clk/clk-si5341.c
-+++ b/drivers/clk/clk-si5341.c
-@@ -1697,6 +1697,10 @@ static int si5341_probe(struct i2c_client *client)
- 	for (i = 0; i < data->num_synth; ++i) {
- 		synth_clock_names[i] = devm_kasprintf(&client->dev, GFP_KERNEL,
- 				"%s.N%u", client->dev.of_node->name, i);
-+		if (!synth_clock_names[i]) {
-+			err = -ENOMEM;
-+			goto free_clk_names;
-+		}
- 		init.name = synth_clock_names[i];
- 		data->synth[i].index = i;
- 		data->synth[i].data = data;
-@@ -1715,6 +1719,10 @@ static int si5341_probe(struct i2c_client *client)
- 	for (i = 0; i < data->num_outputs; ++i) {
- 		init.name = kasprintf(GFP_KERNEL, "%s.%d",
- 			client->dev.of_node->name, i);
-+		if (!init.name) {
-+			err = -ENOMEM;
-+			goto free_clk_names;
-+		}
- 		init.flags = config[i].synth_master ? CLK_SET_RATE_PARENT : 0;
- 		data->clk[i].index = i;
- 		data->clk[i].data = data;
+diff --git a/drivers/clk/qcom/gcc-ipq5332.c b/drivers/clk/qcom/gcc-ipq5332.c
+index bdb4a0a11d07b..1ad23aa8aa5a9 100644
+--- a/drivers/clk/qcom/gcc-ipq5332.c
++++ b/drivers/clk/qcom/gcc-ipq5332.c
+@@ -963,7 +963,7 @@ static struct clk_rcg2 gcc_sdcc1_apps_clk_src = {
+ 		.name = "gcc_sdcc1_apps_clk_src",
+ 		.parent_data = gcc_parent_data_9,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_9),
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_floor_ops,
+ 	},
+ };
+ 
 -- 
 2.39.2
 
