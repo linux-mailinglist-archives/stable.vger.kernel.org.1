@@ -2,52 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 700CC7555F5
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00F7D7553BB
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:22:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232686AbjGPUqR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35138 "EHLO
+        id S231827AbjGPUWU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232689AbjGPUqQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:46:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5478E45
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:46:15 -0700 (PDT)
+        with ESMTP id S231844AbjGPUWT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17B949F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B06C60EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:46:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6338EC433C7;
-        Sun, 16 Jul 2023 20:46:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E88260EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4F2C433C8;
+        Sun, 16 Jul 2023 20:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540374;
-        bh=NamyjZLwDGs2YaSjbnqfaM1hm3x8cLrwCYMrFZaDtyw=;
+        s=korg; t=1689538938;
+        bh=I/OFoFv17kJnFy4vrXrjKYDJqDnIUd9a4CPtVf08Ftk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AyCTepMctvxdPCIxdRLu/leg7yKbJp/ZYBK6omvK1iL/Ac9x1xj6KNBwyi56unmU5
-         5j7Kr8fI+MWLKtxGBGpZeSvOu7xbjS2gJhj1jKHnW88oR+RZe2iiBx111rjj4faGz+
-         P+E4WfVUZWNgDgpNqo0GnyueSYa7WUu4sz++li5I=
+        b=BHOHqqVYI9WH/gal+zm9xCriPgVr8crnWTV9t4nRDzAxD+j7rB3Vu/95WdixYVIwg
+         meucln3mdAcqsiMgbFyinoDF1rnGQDQD86hRZSyKn769kVqAPDMo60DPPhCSLAJ3Yn
+         08fHCtU02wEcK1SiXxEGtyMgojEXEvNXGd0x+5kE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
+        patches@lists.linux.dev, Yue Zhao <findns94@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 314/591] perf tool x86: Fix perf_env memory leak
+Subject: [PATCH 6.4 600/800] lkdtm: replace ll_rw_block with submit_bh
 Date:   Sun, 16 Jul 2023 21:47:33 +0200
-Message-ID: <20230716194932.014567010@linuxfoundation.org>
+Message-ID: <20230716195003.039161767@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -62,68 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ian Rogers <irogers@google.com>
+From: Yue Zhao <findns94@gmail.com>
 
-[ Upstream commit 99d4850062a84564f36923764bb93935ef2ed108 ]
+[ Upstream commit b290df06811852d4cc36f4b8a2a30c2063197a74 ]
 
-Found by leak sanitizer:
-```
-==1632594==ERROR: LeakSanitizer: detected memory leaks
+Function ll_rw_block was removed in commit 79f597842069 ("fs/buffer:
+remove ll_rw_block() helper"). There is no unified function to sumbit
+read or write buffer in block layer for now. Consider similar sematics,
+we can choose submit_bh() to replace ll_rw_block() as predefined crash
+point. In submit_bh(), it also takes read or write flag as the first
+argument and invoke submit_bio() to submit I/O request to block layer.
 
-Direct leak of 21 byte(s) in 1 object(s) allocated from:
-    #0 0x7f2953a7077b in __interceptor_strdup ../../../../src/libsanitizer/asan/asan_interceptors.cpp:439
-    #1 0x556701d6fbbf in perf_env__read_cpuid util/env.c:369
-    #2 0x556701d70589 in perf_env__cpuid util/env.c:465
-    #3 0x55670204bba2 in x86__is_amd_cpu arch/x86/util/env.c:14
-    #4 0x5567020487a2 in arch__post_evsel_config arch/x86/util/evsel.c:83
-    #5 0x556701d8f78b in evsel__config util/evsel.c:1366
-    #6 0x556701ef5872 in evlist__config util/record.c:108
-    #7 0x556701cd6bcd in test__PERF_RECORD tests/perf-record.c:112
-    #8 0x556701cacd07 in run_test tests/builtin-test.c:236
-    #9 0x556701cacfac in test_and_print tests/builtin-test.c:265
-    #10 0x556701cadddb in __cmd_test tests/builtin-test.c:402
-    #11 0x556701caf2aa in cmd_test tests/builtin-test.c:559
-    #12 0x556701d3b557 in run_builtin tools/perf/perf.c:323
-    #13 0x556701d3bac8 in handle_internal_command tools/perf/perf.c:377
-    #14 0x556701d3be90 in run_argv tools/perf/perf.c:421
-    #15 0x556701d3c3f8 in main tools/perf/perf.c:537
-    #16 0x7f2952a46189 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
-
-SUMMARY: AddressSanitizer: 21 byte(s) leaked in 1 allocation(s).
-```
-
-Fixes: f7b58cbdb3ff36eb ("perf mem/c2c: Add load store event mappings for AMD")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20230613235416.1650755-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 79f597842069 ("fs/buffer: remove ll_rw_block() helper")
+Signed-off-by: Yue Zhao <findns94@gmail.com>
+Acked-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230503162944.3969-1-findns94@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/arch/x86/util/env.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/fault-injection/provoke-crashes.rst | 2 +-
+ drivers/misc/lkdtm/core.c                         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/arch/x86/util/env.c b/tools/perf/arch/x86/util/env.c
-index 33b87f8ac1cc1..3e537ffb1353a 100644
---- a/tools/perf/arch/x86/util/env.c
-+++ b/tools/perf/arch/x86/util/env.c
-@@ -13,7 +13,7 @@ bool x86__is_amd_cpu(void)
+diff --git a/Documentation/fault-injection/provoke-crashes.rst b/Documentation/fault-injection/provoke-crashes.rst
+index 3abe842256139..1f087e502ca6d 100644
+--- a/Documentation/fault-injection/provoke-crashes.rst
++++ b/Documentation/fault-injection/provoke-crashes.rst
+@@ -29,7 +29,7 @@ recur_count
+ cpoint_name
+ 	Where in the kernel to trigger the action. It can be
+ 	one of INT_HARDWARE_ENTRY, INT_HW_IRQ_EN, INT_TASKLET_ENTRY,
+-	FS_DEVRW, MEM_SWAPOUT, TIMERADD, SCSI_QUEUE_RQ, or DIRECT.
++	FS_SUBMIT_BH, MEM_SWAPOUT, TIMERADD, SCSI_QUEUE_RQ, or DIRECT.
  
- 	perf_env__cpuid(&env);
- 	is_amd = env.cpuid && strstarts(env.cpuid, "AuthenticAMD") ? 1 : -1;
--
-+	perf_env__exit(&env);
- ret:
- 	return is_amd >= 1 ? true : false;
- }
+ cpoint_type
+ 	Indicates the action to be taken on hitting the crash point.
+diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
+index b4712ff196b4e..0772e4a4757e9 100644
+--- a/drivers/misc/lkdtm/core.c
++++ b/drivers/misc/lkdtm/core.c
+@@ -79,7 +79,7 @@ static struct crashpoint crashpoints[] = {
+ 	CRASHPOINT("INT_HARDWARE_ENTRY", "do_IRQ"),
+ 	CRASHPOINT("INT_HW_IRQ_EN",	 "handle_irq_event"),
+ 	CRASHPOINT("INT_TASKLET_ENTRY",	 "tasklet_action"),
+-	CRASHPOINT("FS_DEVRW",		 "ll_rw_block"),
++	CRASHPOINT("FS_SUBMIT_BH",		 "submit_bh"),
+ 	CRASHPOINT("MEM_SWAPOUT",	 "shrink_inactive_list"),
+ 	CRASHPOINT("TIMERADD",		 "hrtimer_start"),
+ 	CRASHPOINT("SCSI_QUEUE_RQ",	 "scsi_queue_rq"),
 -- 
 2.39.2
 
