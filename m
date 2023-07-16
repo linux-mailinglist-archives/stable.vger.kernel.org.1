@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8A8A75550E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 447547552F9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232353AbjGPUhF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:37:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57544 "EHLO
+        id S231567AbjGPUOK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:14:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232354AbjGPUhB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:37:01 -0400
+        with ESMTP id S231562AbjGPUOJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:14:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 030A4198
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:36:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C8890
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D000960EBD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:36:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC49DC433C8;
-        Sun, 16 Jul 2023 20:36:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD47B60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E075FC433C8;
+        Sun, 16 Jul 2023 20:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539812;
-        bh=t5kppTVDtydrcMnWFPQJieEi7Cy2DCG1zIdibxQNoEk=;
+        s=korg; t=1689538448;
+        bh=PnPAnvrqw/dVRWaLGv37cyp+zCHXUr/NVoBySgyapW4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MSPExVcujSBSJ8Ll6/Rd6ESm8WBZFkHO1afqUuDJQYAJDjSfJhkBUd7RTj1s32GY3
-         vftwNIhm/lGNWdTIaLsE6XMcTw+sh+EUbIb7QU4QH4TeAUSUEOsTMENKtsGabSXVMv
-         lBbuhQf46xn+ZBg88ImNftsfatj9UWNSqS6HmB3M=
+        b=KK5BMlVJ8Flgi2JX6+11VpGRrG4hreOvbFXW2O0XeVXrenFerIL090xuohpVPOn5K
+         zXBa0QVRbKDxsN8PPrL6NbVrruZ7orpCmkISZjI2jaKlnBXGnnvzpZOL8ONUJ9yHgz
+         LBANnvsJ2dbk/lTg98goABlvcN8yLm028gyGjuKg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wesley Chalmers <Wesley.Chalmers@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Fei Shao <fshao@chromium.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/591] drm/amd/display: Add logging for display MALL refresh setting
+Subject: [PATCH 6.4 427/800] clk: Fix memory leak in devm_clk_notifier_register()
 Date:   Sun, 16 Jul 2023 21:44:40 +0200
-Message-ID: <20230716194927.518622526@linuxfoundation.org>
+Message-ID: <20230716194959.005277851@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,38 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wesley Chalmers <Wesley.Chalmers@amd.com>
+From: Fei Shao <fshao@chromium.org>
 
-[ Upstream commit cd8f067a46d34dee3188da184912ae3d64d98444 ]
+[ Upstream commit 7fb933e56f77a57ef7cfc59fc34cbbf1b1fa31ff ]
 
-[WHY]
-Add log entry for when display refresh from MALL
-settings are sent to SMU.
+devm_clk_notifier_register() allocates a devres resource for clk
+notifier but didn't register that to the device, so the notifier didn't
+get unregistered on device detach and the allocated resource was leaked.
 
-Fixes: 1664641ea946 ("drm/amd/display: Add logger for SMU msg")
-Signed-off-by: Wesley Chalmers <Wesley.Chalmers@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix the issue by registering the resource through devres_add().
+
+This issue was found with kmemleak on a Chromebook.
+
+Fixes: 6d30d50d037d ("clk: add devm variant of clk_notifier_register")
+Signed-off-by: Fei Shao <fshao@chromium.org>
+Link: https://lore.kernel.org/r/20230619112253.v2.1.I13f060c10549ef181603e921291bdea95f83033c@changeid
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/clk_mgr/dcn30/dcn30_clk_mgr_smu_msg.c   | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/clk.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn30/dcn30_clk_mgr_smu_msg.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn30/dcn30_clk_mgr_smu_msg.c
-index 1fbf1c105dc12..bdbf183066981 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn30/dcn30_clk_mgr_smu_msg.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn30/dcn30_clk_mgr_smu_msg.c
-@@ -312,6 +312,9 @@ void dcn30_smu_set_display_refresh_from_mall(struct clk_mgr_internal *clk_mgr, b
- 	/* bits 8:7 for cache timer scale, bits 6:1 for cache timer delay, bit 0 = 1 for enable, = 0 for disable */
- 	uint32_t param = (cache_timer_scale << 7) | (cache_timer_delay << 1) | (enable ? 1 : 0);
- 
-+	smu_print("SMU Set display refresh from mall: enable = %d, cache_timer_delay = %d, cache_timer_scale = %d\n",
-+		enable, cache_timer_delay, cache_timer_scale);
-+
- 	dcn30_smu_send_msg_with_param(clk_mgr,
- 			DALSMC_MSG_SetDisplayRefreshFromMall, param, NULL);
- }
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index e495dd7a1eae1..8c13bcf57f1ae 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -4696,6 +4696,7 @@ int devm_clk_notifier_register(struct device *dev, struct clk *clk,
+ 	if (!ret) {
+ 		devres->clk = clk;
+ 		devres->nb = nb;
++		devres_add(dev, devres);
+ 	} else {
+ 		devres_free(devres);
+ 	}
 -- 
 2.39.2
 
