@@ -2,122 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE6DA75564B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E84C97553FB
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:25:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232864AbjGPUtZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38090 "EHLO
+        id S231941AbjGPUZO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:25:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232865AbjGPUtO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:14 -0400
+        with ESMTP id S231939AbjGPUZN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B77AA10C6
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BBF8BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97E0260EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30D0C433C8;
-        Sun, 16 Jul 2023 20:49:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE4EE60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C7EC433C8;
+        Sun, 16 Jul 2023 20:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540552;
-        bh=g+3ruqFHovZ8MFFYXii+O9VihbOq6uqSxPTrEf1wkks=;
+        s=korg; t=1689539111;
+        bh=jooB9f2UUfNrDrT9W/2rEGMLLbq+wtdriwsqDDXK9Pc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j6u9b5P/8A9wgF5cZzgZlQVehhNkN5zOogceGD61Z2DYPv7CrFnyuyMCZx2GGLO69
-         PZHmmz/JDB4CNaE5R6/g/0zRmxugImzCYRV77iVWrLlKEV4GyqSGE1sdu5yazLDwxj
-         Y/izsaETQetCDU4cebdcO/wB/PoWSWaKLM4eRGw0=
+        b=mfUrIDYNZ3YqmBFi/mCh90lHBm2IFljvzjseLbHgrhagIo7xSN7jVC0Z2lI5eeDkx
+         37MA9P09T8dvnT+ZRLg4H7v/VU8txV7mbHe91iJ58m38lBZVLF5yOXu9ciOjMOy3Md
+         eS+z9eZv8g+MzYPtR5rSXAdwU+kr7kG/g+t0SLno=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 376/591] block: fix signed int overflow in Amiga partition support
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 662/800] net/sched: act_ipt: add sanity checks on table name and hook locations
 Date:   Sun, 16 Jul 2023 21:48:35 +0200
-Message-ID: <20230716194933.645708202@linuxfoundation.org>
+Message-ID: <20230716195004.488838108@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit fc3d092c6bb48d5865fec15ed5b333c12f36288c upstream.
+[ Upstream commit b4ee93380b3c891fea996af8d1d3ca0e36ad31f0 ]
 
-The Amiga partition parser module uses signed int for partition sector
-address and count, which will overflow for disks larger than 1 TB.
+Looks like "tc" hard-codes "mangle" as the only supported table
+name, but on kernel side there are no checks.
 
-Use sector_t as type for sector address and size to allow using disks
-up to 2 TB without LBD support, and disks larger than 2 TB with LBD.
+This is wrong.  Not all xtables targets are safe to call from tc.
+E.g. "nat" targets assume skb has a conntrack object assigned to it.
+Normally those get called from netfilter nat core which consults the
+nat table to obtain the address mapping.
 
-This bug was reported originally in 2012, and the fix was created by
-the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
-discussed and reviewed on linux-m68k at that time but never officially
-submitted. This patch differs from Joanne's patch only in its use of
-sector_t instead of unsigned int. No checking for overflows is done
-(see patch 3 of this series for that).
+"tc" userspace either sets PRE or POSTROUTING as hook number, but there
+is no validation of this on kernel side, so update netlink policy to
+reject bogus numbers.  Some targets may assume skb_dst is set for
+input/forward hooks, so prevent those from being used.
 
-Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+act_ipt uses the hook number in two places:
+1. the state hook number, this is fine as-is
+2. to set par.hook_mask
+
+The latter is a bit mask, so update the assignment to make
+xt_check_target() to the right thing.
+
+Followup patch adds required checks for the skb/packet headers before
+calling the targets evaluation function.
+
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Message-ID: <201206192146.09327.Martin@lichtvoll.de>
-Cc: <stable@vger.kernel.org> # 5.2
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Tested-by: Martin Steigerwald <Martin@lichtvoll.de>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230620201725.7020-2-schmitzmic@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/amiga.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/sched/act_ipt.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
---- a/block/partitions/amiga.c
-+++ b/block/partitions/amiga.c
-@@ -31,7 +31,8 @@ int amiga_partition(struct parsed_partit
- 	unsigned char *data;
- 	struct RigidDiskBlock *rdb;
- 	struct PartitionBlock *pb;
--	int start_sect, nr_sects, blk, part, res = 0;
-+	sector_t start_sect, nr_sects;
-+	int blk, part, res = 0;
- 	int blksize = 1;	/* Multiplier for disk block size */
- 	int slot = 1;
+diff --git a/net/sched/act_ipt.c b/net/sched/act_ipt.c
+index 5d96ffebd40f0..ea7f151e7dd29 100644
+--- a/net/sched/act_ipt.c
++++ b/net/sched/act_ipt.c
+@@ -48,7 +48,7 @@ static int ipt_init_target(struct net *net, struct xt_entry_target *t,
+ 	par.entryinfo = &e;
+ 	par.target    = target;
+ 	par.targinfo  = t->data;
+-	par.hook_mask = hook;
++	par.hook_mask = 1 << hook;
+ 	par.family    = NFPROTO_IPV4;
  
-@@ -96,14 +97,14 @@ int amiga_partition(struct parsed_partit
+ 	ret = xt_check_target(&par, t->u.target_size - sizeof(*t), 0, false);
+@@ -85,7 +85,8 @@ static void tcf_ipt_release(struct tc_action *a)
  
- 		/* Tell Kernel about it */
+ static const struct nla_policy ipt_policy[TCA_IPT_MAX + 1] = {
+ 	[TCA_IPT_TABLE]	= { .type = NLA_STRING, .len = IFNAMSIZ },
+-	[TCA_IPT_HOOK]	= { .type = NLA_U32 },
++	[TCA_IPT_HOOK]	= NLA_POLICY_RANGE(NLA_U32, NF_INET_PRE_ROUTING,
++					   NF_INET_NUMHOOKS),
+ 	[TCA_IPT_INDEX]	= { .type = NLA_U32 },
+ 	[TCA_IPT_TARG]	= { .len = sizeof(struct xt_entry_target) },
+ };
+@@ -158,15 +159,27 @@ static int __tcf_ipt_init(struct net *net, unsigned int id, struct nlattr *nla,
+ 			return -EEXIST;
+ 		}
+ 	}
++
++	err = -EINVAL;
+ 	hook = nla_get_u32(tb[TCA_IPT_HOOK]);
++	switch (hook) {
++	case NF_INET_PRE_ROUTING:
++		break;
++	case NF_INET_POST_ROUTING:
++		break;
++	default:
++		goto err1;
++	}
++
++	if (tb[TCA_IPT_TABLE]) {
++		/* mangle only for now */
++		if (nla_strcmp(tb[TCA_IPT_TABLE], "mangle"))
++			goto err1;
++	}
  
--		nr_sects = (be32_to_cpu(pb->pb_Environment[10]) + 1 -
--			    be32_to_cpu(pb->pb_Environment[9])) *
-+		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
-+			   be32_to_cpu(pb->pb_Environment[9])) *
- 			   be32_to_cpu(pb->pb_Environment[3]) *
- 			   be32_to_cpu(pb->pb_Environment[5]) *
- 			   blksize;
- 		if (!nr_sects)
- 			continue;
--		start_sect = be32_to_cpu(pb->pb_Environment[9]) *
-+		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
- 			     be32_to_cpu(pb->pb_Environment[3]) *
- 			     be32_to_cpu(pb->pb_Environment[5]) *
- 			     blksize;
+-	err = -ENOMEM;
+-	tname = kmalloc(IFNAMSIZ, GFP_KERNEL);
++	tname = kstrdup("mangle", GFP_KERNEL);
+ 	if (unlikely(!tname))
+ 		goto err1;
+-	if (tb[TCA_IPT_TABLE] == NULL ||
+-	    nla_strscpy(tname, tb[TCA_IPT_TABLE], IFNAMSIZ) >= IFNAMSIZ)
+-		strcpy(tname, "mangle");
+ 
+ 	t = kmemdup(td, td->u.target_size, GFP_KERNEL);
+ 	if (unlikely(!t))
+-- 
+2.39.2
+
 
 
