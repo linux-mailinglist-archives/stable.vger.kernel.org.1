@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0436E755507
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0007C7552CE
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:12:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232356AbjGPUgp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:36:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57134 "EHLO
+        id S231483AbjGPUMK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:12:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232355AbjGPUgo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:36:44 -0400
+        with ESMTP id S231487AbjGPUMJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:12:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D218EE64
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:36:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77F899D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:12:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1993360EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:36:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27123C433C8;
-        Sun, 16 Jul 2023 20:36:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15FD960DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:12:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246F0C433C8;
+        Sun, 16 Jul 2023 20:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539795;
-        bh=M4yrUy9LDSgVVxB4R2vhTByc0ljDeuEJonatVHu8gkA=;
+        s=korg; t=1689538327;
+        bh=Dn5O9FtzjDO3T1bXEQU9cHUp6OVsz+LhmVVkGMdlkdk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sKn7A3a5sRi2BqKr//pOR4wW2nyTaZTqc4hpPxc5ecp/13TAcjbruCxs/8Tx7/oUL
-         q7lTT89Zc+i6FSuM9O5xyerzhFYSZbTvF7ks5i2CRhW+3DQ3ZpZ1l8mNF5siWoYdYb
-         FS8iO0vFRuvO4YN9qcHIxhFSRnGflx6vE2kCaRR0=
+        b=eT5d+oQSBDESMwk8jNwbue6saAiU8JfptAdhjsjTae8Qck3VlztVKwfrjJ3Flciwd
+         NsukwnSS/vqR8R+PKgi1Pam+QMuA/RlC8zPBukzzTM157PSiImP45lyVrJeWUn16my
+         ko/oWiewmq58jO7TG8okA+EcJxxMKoYpdkUVIx3M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        Udit Kumar <u-kumar1@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/591] wifi: ath11k: Add missing check for ioremap
+Subject: [PATCH 6.4 394/800] arm64: dts: ti: k3-j784s4-evm: Fix main_i2c0 alias
 Date:   Sun, 16 Jul 2023 21:44:07 +0200
-Message-ID: <20230716194926.673878995@linuxfoundation.org>
+Message-ID: <20230716194958.222499629@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,46 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit 16e0077e14a73866e9b0f4a6bf4ad3d4a5cb0f2a ]
+[ Upstream commit c10a9df30e3401bd5a5ee43f1afd6c2b2ca75ad7 ]
 
-Add check for ioremap() and return the error if it fails in order to
-guarantee the success of ioremap(), same as in
-ath11k_qmi_load_file_target_mem().
+main_i2c0 is aliased as i2c0 which creates a problem for u-boot R5
+SPL attempting to reuse the same definition in the common board
+detection logic as it looks for the first i2c instance as the bus on
+which to detect the eeprom to understand the board variant involved.
+Switch main_i2c0 to i2c3 alias allowing us to introduce wkup_i2c0
+and potentially space for mcu_i2c instances in the gap for follow on
+patches.
 
-Fixes: 6ac04bdc5edb ("ath11k: Use reserved host DDR addresses from DT for PCI devices")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230608022858.27405-1-jiasheng@iscas.ac.cn
+Fixes: e20a06aca5c9 ("arm64: dts: ti: Add support for J784S4 EVM board")
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20230602214937.2349545-2-nm@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/ti/k3-j784s4-evm.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 381c6b390dd78..01b02c03fa89c 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2058,6 +2058,9 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
- 			ab->qmi.target_mem[idx].iaddr =
- 				ioremap(ab->qmi.target_mem[idx].paddr,
- 					ab->qmi.target_mem[i].size);
-+			if (!ab->qmi.target_mem[idx].iaddr)
-+				return -EIO;
-+
- 			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
- 			host_ddr_sz = ab->qmi.target_mem[i].size;
- 			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
-@@ -2083,6 +2086,8 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
- 					ab->qmi.target_mem[idx].iaddr =
- 						ioremap(ab->qmi.target_mem[idx].paddr,
- 							ab->qmi.target_mem[i].size);
-+					if (!ab->qmi.target_mem[idx].iaddr)
-+						return -EIO;
- 				} else {
- 					ab->qmi.target_mem[idx].paddr =
- 						ATH11K_QMI_CALDB_ADDRESS;
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
+index f33815953e779..e8e007e4a7d4f 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
+@@ -23,7 +23,7 @@ aliases {
+ 		serial2 = &main_uart8;
+ 		mmc0 = &main_sdhci0;
+ 		mmc1 = &main_sdhci1;
+-		i2c0 = &main_i2c0;
++		i2c3 = &main_i2c0;
+ 	};
+ 
+ 	memory@80000000 {
 -- 
 2.39.2
 
