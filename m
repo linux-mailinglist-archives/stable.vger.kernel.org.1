@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45E17755684
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C735755427
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232887AbjGPUvU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:51:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39926 "EHLO
+        id S232014AbjGPU1O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:27:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232876AbjGPUvT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:51:19 -0400
+        with ESMTP id S232006AbjGPU1O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEBF8E4B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61327BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:27:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 683BC60EA2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727B7C433C7;
-        Sun, 16 Jul 2023 20:51:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF70A60EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:27:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA75AC433C8;
+        Sun, 16 Jul 2023 20:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540677;
-        bh=q5UAS5Nui34djyXulS6JauA8VFifRPbLLFsoRAI07qU=;
+        s=korg; t=1689539232;
+        bh=t+mQAqKIG1bYQ4sJqz/Z0EiolhbitRiHFhpSduuYwZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D+DDzeKfZbpvtgVutm94L+U0nIIfLKqfUO2J7LjNaUjqd4LQV8sllUi2oAnynujND
-         iwQjh4IZ5RmlGnQGZrtsdh/XALclcWAWT7zvK8dhlVQPr+THXnU04+ZmtjfiZvAf0g
-         Pu6kBkIyreIoztfm0pqya9O8rtk5y9yFCXilqGqM=
+        b=pih22o/D0rVEmbHCyE/WSqpUZtWf4JYdiI/ogG/x1UYrU0IUO5KdHsOIdVMYNa7EC
+         /K3mUP5ZZiXmU3+oFwa47eP+sdL71FouaF/7NnZfTEv5ADy0HueanB4ysYg9hpizCJ
+         cIYaCiAlmltoVYKUtqD4aDTclvqNHMsvSS7+bOgE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pierre Morel <pmorel@linux.ibm.com>,
-        Marc Hartmayer <mhartmay@linux.ibm.com>,
-        Nico Boehr <nrb@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 449/591] KVM: s390/diag: fix racy access of physical cpu number in diag 9c handler
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Coly Li <colyli@suse.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 735/800] bcache: Remove unnecessary NULL point check in node allocations
 Date:   Sun, 16 Jul 2023 21:49:48 +0200
-Message-ID: <20230716194935.525514873@linuxfoundation.org>
+Message-ID: <20230716195006.188508671@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,59 +54,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 0bc380beb78aa352eadbc21d934dd9606fcee808 ]
+commit 028ddcac477b691dd9205c92f991cc15259d033e upstream.
 
-We do check for target CPU == -1, but this might change at the time we
-are going to use it. Hold the physical target CPU in a local variable to
-avoid out-of-bound accesses to the cpu arrays.
+Due to the previous fix of __bch_btree_node_alloc, the return value will
+never be a NULL pointer. So IS_ERR is enough to handle the failure
+situation. Fix it by replacing IS_ERR_OR_NULL check by an IS_ERR check.
 
-Cc: Pierre Morel <pmorel@linux.ibm.com>
-Fixes: 87e28a15c42c ("KVM: s390: diag9c (directed yield) forwarding")
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
-Reviewed-by: Pierre Morel <pmorel@linux.ibm.com>
-Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cafe56359144 ("bcache: A block layer cache")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20230615121223.22502-5-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kvm/diag.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/md/bcache/btree.c |   10 +++++-----
+ drivers/md/bcache/super.c |    4 ++--
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/s390/kvm/diag.c b/arch/s390/kvm/diag.c
-index 807fa9da1e721..3c65b8258ae67 100644
---- a/arch/s390/kvm/diag.c
-+++ b/arch/s390/kvm/diag.c
-@@ -166,6 +166,7 @@ static int diag9c_forwarding_overrun(void)
- static int __diag_time_slice_end_directed(struct kvm_vcpu *vcpu)
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1138,7 +1138,7 @@ static struct btree *btree_node_alloc_re
  {
- 	struct kvm_vcpu *tcpu;
-+	int tcpu_cpu;
- 	int tid;
+ 	struct btree *n = bch_btree_node_alloc(b->c, op, b->level, b->parent);
  
- 	tid = vcpu->run->s.regs.gprs[(vcpu->arch.sie_block->ipa & 0xf0) >> 4];
-@@ -181,14 +182,15 @@ static int __diag_time_slice_end_directed(struct kvm_vcpu *vcpu)
- 		goto no_yield;
+-	if (!IS_ERR_OR_NULL(n)) {
++	if (!IS_ERR(n)) {
+ 		mutex_lock(&n->write_lock);
+ 		bch_btree_sort_into(&b->keys, &n->keys, &b->c->sort);
+ 		bkey_copy_key(&n->key, &b->key);
+@@ -1340,7 +1340,7 @@ static int btree_gc_coalesce(struct btre
+ 	memset(new_nodes, 0, sizeof(new_nodes));
+ 	closure_init_stack(&cl);
  
- 	/* target guest VCPU already running */
--	if (READ_ONCE(tcpu->cpu) >= 0) {
-+	tcpu_cpu = READ_ONCE(tcpu->cpu);
-+	if (tcpu_cpu >= 0) {
- 		if (!diag9c_forwarding_hz || diag9c_forwarding_overrun())
- 			goto no_yield;
+-	while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
++	while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
+ 		keys += r[nodes++].keys;
  
- 		/* target host CPU already running */
--		if (!vcpu_is_preempted(tcpu->cpu))
-+		if (!vcpu_is_preempted(tcpu_cpu))
- 			goto no_yield;
--		smp_yield_cpu(tcpu->cpu);
-+		smp_yield_cpu(tcpu_cpu);
- 		VCPU_EVENT(vcpu, 5,
- 			   "diag time slice end directed to %d: yield forwarded",
- 			   tid);
--- 
-2.39.2
-
+ 	blocks = btree_default_blocks(b->c) * 2 / 3;
+@@ -1352,7 +1352,7 @@ static int btree_gc_coalesce(struct btre
+ 
+ 	for (i = 0; i < nodes; i++) {
+ 		new_nodes[i] = btree_node_alloc_replacement(r[i].b, NULL);
+-		if (IS_ERR_OR_NULL(new_nodes[i]))
++		if (IS_ERR(new_nodes[i]))
+ 			goto out_nocoalesce;
+ 	}
+ 
+@@ -1487,7 +1487,7 @@ out_nocoalesce:
+ 	bch_keylist_free(&keylist);
+ 
+ 	for (i = 0; i < nodes; i++)
+-		if (!IS_ERR_OR_NULL(new_nodes[i])) {
++		if (!IS_ERR(new_nodes[i])) {
+ 			btree_node_free(new_nodes[i]);
+ 			rw_unlock(true, new_nodes[i]);
+ 		}
+@@ -1669,7 +1669,7 @@ static int bch_btree_gc_root(struct btre
+ 	if (should_rewrite) {
+ 		n = btree_node_alloc_replacement(b, NULL);
+ 
+-		if (!IS_ERR_OR_NULL(n)) {
++		if (!IS_ERR(n)) {
+ 			bch_btree_node_write_sync(n);
+ 
+ 			bch_btree_set_root(n);
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1723,7 +1723,7 @@ static void cache_set_flush(struct closu
+ 	if (!IS_ERR_OR_NULL(c->gc_thread))
+ 		kthread_stop(c->gc_thread);
+ 
+-	if (!IS_ERR_OR_NULL(c->root))
++	if (!IS_ERR(c->root))
+ 		list_add(&c->root->list, &c->btree_cache);
+ 
+ 	/*
+@@ -2087,7 +2087,7 @@ static int run_cache_set(struct cache_se
+ 
+ 		err = "cannot allocate new btree root";
+ 		c->root = __bch_btree_node_alloc(c, NULL, 0, true, NULL);
+-		if (IS_ERR_OR_NULL(c->root))
++		if (IS_ERR(c->root))
+ 			goto err;
+ 
+ 		mutex_lock(&c->root->write_lock);
 
 
