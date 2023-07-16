@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0A7F7553E6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDFC3755632
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:48:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231908AbjGPUYR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:24:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47188 "EHLO
+        id S232787AbjGPUsZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:48:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231905AbjGPUYQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:24:16 -0400
+        with ESMTP id S232788AbjGPUsY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:48:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9977B9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:24:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9151E6B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:48:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 231B460EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360A1C433C8;
-        Sun, 16 Jul 2023 20:24:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F73960EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:48:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1D8C433C7;
+        Sun, 16 Jul 2023 20:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539052;
-        bh=PVdffZlP8Rr2g7Lgv3eidZxuLO/ZIdMU7IqIJfKRMQU=;
+        s=korg; t=1689540498;
+        bh=PqoHqylkvKeyqihceY6ozM+TZjJhLGixMqK3mvawCsM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fKPrTD8Z53PucOxcZfDxOBtHxNHwj8mB5XuclIxyXxS7ZePt9tEGdEDRHv+LAztyt
-         K+JGeSxEhxy9ojdVJ2CqQrm3gZdQZa0HOszhP5RsxJcV9sKHhs2jRapDuikSYDALp7
-         9Uln6AR/ukBeuOSKrFdh8zzRWjb+WNsd4E+qwghc=
+        b=VKMxR5huXETh6Kl51JermCuqtRBRH/795MNz+ppvonvmEkfgi8D/ifIC8uUcGY2l3
+         KYBkkvM6UszH6VrffIJapBOQBbRG1/sDeguwJFIOTlDTR9uMTIWTh8kciN+Oa2shbH
+         TRBG9fdgOGUoQpBmGFEcvGm9LHBMd8Kg0f/ESxsI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tobias Heider <me@tobhe.de>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Qi Han <hanqi@vivo.com>,
+        Yangtao Li <frank.li@vivo.com>, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 671/800] Add MODULE_FIRMWARE() for FIRMWARE_TG357766.
+Subject: [PATCH 6.1 385/591] f2fs: do not allow to defragment files have FI_COMPRESS_RELEASED
 Date:   Sun, 16 Jul 2023 21:48:44 +0200
-Message-ID: <20230716195004.708831578@linuxfoundation.org>
+Message-ID: <20230716194933.881210856@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,35 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tobias Heider <me@tobhe.de>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit 046f753da6143ee16452966915087ec8b0de3c70 ]
+[ Upstream commit 7cd2e5f75b86a1befa99834f3ed1d735eeff69e6 ]
 
-Fixes a bug where on the M1 mac mini initramfs-tools fails to
-include the necessary firmware into the initrd.
+If a file has FI_COMPRESS_RELEASED, all writes for it should not be
+allowed.
 
-Fixes: c4dab50697ff ("tg3: Download 57766 EEE service patch firmware")
-Signed-off-by: Tobias Heider <me@tobhe.de>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/ZJt7LKzjdz8+dClx@tobhe.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5fdb322ff2c2 ("f2fs: add F2FS_IOC_DECOMPRESS_FILE and F2FS_IOC_COMPRESS_FILE")
+Signed-off-by: Qi Han <hanqi@vivo.com>
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/file.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 58747292521d8..a52cf9aae4988 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -224,6 +224,7 @@ MODULE_AUTHOR("David S. Miller (davem@redhat.com) and Jeff Garzik (jgarzik@pobox
- MODULE_DESCRIPTION("Broadcom Tigon3 ethernet driver");
- MODULE_LICENSE("GPL");
- MODULE_FIRMWARE(FIRMWARE_TG3);
-+MODULE_FIRMWARE(FIRMWARE_TG357766);
- MODULE_FIRMWARE(FIRMWARE_TG3TSO);
- MODULE_FIRMWARE(FIRMWARE_TG3TSO5);
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index dbad2db68f1bc..370c40858b42f 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2588,6 +2588,11 @@ static int f2fs_defragment_range(struct f2fs_sb_info *sbi,
  
+ 	inode_lock(inode);
+ 
++	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
++		err = -EINVAL;
++		goto unlock_out;
++	}
++
+ 	/* if in-place-update policy is enabled, don't waste time here */
+ 	set_inode_flag(inode, FI_OPU_WRITE);
+ 	if (f2fs_should_update_inplace(inode, NULL)) {
+@@ -2712,6 +2717,7 @@ static int f2fs_defragment_range(struct f2fs_sb_info *sbi,
+ 	clear_inode_flag(inode, FI_SKIP_WRITES);
+ out:
+ 	clear_inode_flag(inode, FI_OPU_WRITE);
++unlock_out:
+ 	inode_unlock(inode);
+ 	if (!err)
+ 		range->len = (u64)total << PAGE_SHIFT;
 -- 
 2.39.2
 
