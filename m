@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5774755370
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 811697555A6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231725AbjGPUTG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:19:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44340 "EHLO
+        id S232591AbjGPUnM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:43:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231720AbjGPUTG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:06 -0400
+        with ESMTP id S232578AbjGPUnL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43A7AC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631E5D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB1A160EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A31C433C8;
-        Sun, 16 Jul 2023 20:19:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E541660EBD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001BEC433C7;
+        Sun, 16 Jul 2023 20:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538744;
-        bh=kLTvxJc1uDb7VTx6/ZOdc/wyvbrfBrGbXRw+vJP+hv8=;
+        s=korg; t=1689540189;
+        bh=7pWwn1HJ76qqQSBtHTRw0FgRArX4N6PElcbsAba4Y9M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HMWs9IZOoQIzO+X60kNlSm67D+Q6q611s2nDDsCZw7zqTybfm/rVdo+aLEtEbNSkN
-         v5qdPMl3UumW4mEG5kwDjVGPfqJFK5iGZwTMgHcD8VukMEkmHJcxHRZ37Sm25LdFN0
-         qmUV/bLzBvXQg6sM5NpZ4hIfEZImcp+4/BHJZpzE=
+        b=voueC3iF+6NjJ/XykuH+D3peo/2HUDrS22X5exhljoRUciy9fM1Vl5C+U9SCS6Cxl
+         XlSnbXUFssQKgScXcIQ89hKbla8YRC36uJSC2qPw8s3QgUCT8HBn7oRARVvEUKqztH
+         uIzZkiRHst6qYGaGb/16dblg5wWLGLQhXSWkEiK8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Georgi Djakov <djakov@kernel.org>,
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 559/800] interconnect: qcom: rpm: Dont use clk_get_optional for bus clocks anymore
-Date:   Sun, 16 Jul 2023 21:46:52 +0200
-Message-ID: <20230716195002.073408858@linuxfoundation.org>
+Subject: [PATCH 6.1 274/591] clk: si5341: check return value of {devm_}kasprintf()
+Date:   Sun, 16 Jul 2023 21:46:53 +0200
+Message-ID: <20230716194930.984581028@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit 1ff7aedcdcdd4fe02201269ab428b09491e5cf6e ]
+[ Upstream commit 36e4ef82016a2b785cf2317eade77e76699b7bff ]
 
-Commit dd42ec8ea5b9 ("interconnect: qcom: rpm: Use _optional func for provider clocks")
-relaxed the requirements around probing bus clocks. This was a decent
-solution for making sure MSM8996 would still boot with old DTs, but
-now that there's a proper fix in place that both old and new DTs
-will be happy about, revert back to the safer variant of the
-function.
+{devm_}kasprintf() returns a pointer to dynamically allocated memory.
+Pointer could be NULL in case allocation fails. Check pointer validity.
+Identified with coccinelle (kmerr.cocci script).
 
-Fixes: dd42ec8ea5b9 ("interconnect: qcom: rpm: Use _optional func for provider clocks")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230228-topic-qos-v8-7-ee696a2c15a9@linaro.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Fixes: 3044a860fd09 ("clk: Add Si5341/Si5340 driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230530093913.1656095-5-claudiu.beznea@microchip.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/icc-rpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/clk-si5341.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/interconnect/qcom/icc-rpm.c b/drivers/interconnect/qcom/icc-rpm.c
-index ec39861c1764c..8d3138e8c1ee3 100644
---- a/drivers/interconnect/qcom/icc-rpm.c
-+++ b/drivers/interconnect/qcom/icc-rpm.c
-@@ -494,7 +494,7 @@ int qnoc_probe(struct platform_device *pdev)
- 	}
- 
- regmap_done:
--	ret = devm_clk_bulk_get_optional(dev, qp->num_bus_clks, qp->bus_clks);
-+	ret = devm_clk_bulk_get(dev, qp->num_bus_clks, qp->bus_clks);
- 	if (ret)
- 		return ret;
- 
+diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
+index 6dca3288c8940..b2cf7edc8b308 100644
+--- a/drivers/clk/clk-si5341.c
++++ b/drivers/clk/clk-si5341.c
+@@ -1697,6 +1697,10 @@ static int si5341_probe(struct i2c_client *client)
+ 	for (i = 0; i < data->num_synth; ++i) {
+ 		synth_clock_names[i] = devm_kasprintf(&client->dev, GFP_KERNEL,
+ 				"%s.N%u", client->dev.of_node->name, i);
++		if (!synth_clock_names[i]) {
++			err = -ENOMEM;
++			goto free_clk_names;
++		}
+ 		init.name = synth_clock_names[i];
+ 		data->synth[i].index = i;
+ 		data->synth[i].data = data;
+@@ -1715,6 +1719,10 @@ static int si5341_probe(struct i2c_client *client)
+ 	for (i = 0; i < data->num_outputs; ++i) {
+ 		init.name = kasprintf(GFP_KERNEL, "%s.%d",
+ 			client->dev.of_node->name, i);
++		if (!init.name) {
++			err = -ENOMEM;
++			goto free_clk_names;
++		}
+ 		init.flags = config[i].synth_master ? CLK_SET_RATE_PARENT : 0;
+ 		data->clk[i].index = i;
+ 		data->clk[i].data = data;
 -- 
 2.39.2
 
