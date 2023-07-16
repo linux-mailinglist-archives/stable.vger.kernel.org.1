@@ -2,174 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E5FE7554F8
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE5C07552C9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232323AbjGPUf5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:35:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56052 "EHLO
+        id S231474AbjGPULz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:11:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232313AbjGPUfz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:35:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E0FBBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:35:54 -0700 (PDT)
+        with ESMTP id S231478AbjGPULz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4726B9B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E546360EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:35:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006D3C433C8;
-        Sun, 16 Jul 2023 20:35:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D987F60EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8054C433C8;
+        Sun, 16 Jul 2023 20:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539753;
-        bh=x0F1b6UMJPpSmxpjCxJpLbiPwt2pmLE9zKWRb3bIv4s=;
+        s=korg; t=1689538313;
+        bh=AcWtZuvJMBQWsl+Hq4xNLyPtoh7RARy/BYNDpaEPaFQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0lxKHuZYHQL0z5ZFgtungjtgC5H99YHkw/4SKVzZ1h+ZVsf8t+iv9AsUxsBC2hQIQ
-         rSlrher3muZMDKADhFLyB7Wflr0UzcmPN2Md4bPDsnimzv5Tuv6mbxqVa6nbtUNVER
-         7N4Zp5noudQw6RszxbEOPRxj5Q23l8f0wqxF28T4=
+        b=H7i7ZcyTH4eW1dLAyYI5kUCBT4AkKDGSjT/Y7dDY967PULBW2QEFliMJnKslBx0UD
+         8KFRw4SSWTrkofW6uk8OxubvK9+spN1zAkyjR3G+b7HdSgHJEmUJfiHF4kCiDK+fUX
+         eng7Sr0bGUpr7MMFXLSZkHD2M3XqJIaEHDFxM02E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gilad Sever <gilad9366@gmail.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Shmulik Ladkani <shmulik.ladkani@gmail.com>,
-        Eyal Birger <eyal.birger@gmail.com>,
-        Stanislav Fomichev <sdf@google.com>,
+        patches@lists.linux.dev, Tao Zhou <tao.zhou1@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Alex Deucher <Alexander.Deucher@amd.com>,
+        Luben Tuikov <luben.tuikov@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/591] bpf: Factor out socket lookup functions for the TC hookpoint.
-Date:   Sun, 16 Jul 2023 21:44:19 +0200
-Message-ID: <20230716194926.981030039@linuxfoundation.org>
+Subject: [PATCH 6.4 407/800] drm/amdgpu: Fix usage of UMC fill record in RAS
+Date:   Sun, 16 Jul 2023 21:44:20 +0200
+Message-ID: <20230716194958.525742080@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gilad Sever <gilad9366@gmail.com>
+From: Luben Tuikov <luben.tuikov@amd.com>
 
-[ Upstream commit 6e98730bc0b44acaf86eccc75f823128aa9c9e79 ]
+[ Upstream commit 71344a718a9fda8c551cdc4381d354f9a9907f6f ]
 
-Change BPF helper socket lookup functions to use TC specific variants:
-bpf_tc_sk_lookup_tcp() / bpf_tc_sk_lookup_udp() / bpf_tc_skc_lookup_tcp()
-instead of sharing implementation with the cg / sk_skb hooking points.
-This allows introducing a separate logic for the TC flow.
+The fixed commit listed in the Fixes tag below, introduced a bug in
+amdgpu_ras.c::amdgpu_reserve_page_direct(), in that when introducing the new
+amdgpu_umc_fill_error_record() and internally in that new function the physical
+address (argument "uint64_t retired_page"--wrong name) is right-shifted by
+AMDGPU_GPU_PAGE_SHIFT. Thus, in amdgpu_reserve_page_direct() when we pass
+"address" to that new function, we should NOT right-shift it, since this
+results, erroneously, in the page address to be 0 for first
+2^(2*AMDGPU_GPU_PAGE_SHIFT) memory addresses.
 
-The tc functions are identical to the original code.
+This commit fixes this bug.
 
-Signed-off-by: Gilad Sever <gilad9366@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Shmulik Ladkani <shmulik.ladkani@gmail.com>
-Reviewed-by: Eyal Birger <eyal.birger@gmail.com>
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Link: https://lore.kernel.org/bpf/20230621104211.301902-2-gilad9366@gmail.com
-Stable-dep-of: 9a5cb79762e0 ("bpf: Fix bpf socket lookup from tc/xdp to respect socket VRF bindings")
+Cc: Tao Zhou <tao.zhou1@amd.com>
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Alex Deucher <Alexander.Deucher@amd.com>
+Fixes: 400013b268cb ("drm/amdgpu: add umc_fill_error_record to make code more simple")
+Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
+Link: https://lore.kernel.org/r/20230610113536.10621-1-luben.tuikov@amd.com
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 63 ++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 60 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b79a070fa8246..e0f73ed8821e1 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -6646,6 +6646,63 @@ static const struct bpf_func_proto bpf_sk_lookup_udp_proto = {
- 	.arg5_type	= ARG_ANYTHING,
- };
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index 3ab8a88789c8f..dcca63019ea76 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -171,8 +171,7 @@ static int amdgpu_reserve_page_direct(struct amdgpu_device *adev, uint64_t addre
  
-+BPF_CALL_5(bpf_tc_skc_lookup_tcp, struct sk_buff *, skb,
-+	   struct bpf_sock_tuple *, tuple, u32, len, u64, netns_id, u64, flags)
-+{
-+	return (unsigned long)bpf_skc_lookup(skb, tuple, len, IPPROTO_TCP,
-+					     netns_id, flags);
-+}
-+
-+static const struct bpf_func_proto bpf_tc_skc_lookup_tcp_proto = {
-+	.func		= bpf_tc_skc_lookup_tcp,
-+	.gpl_only	= false,
-+	.pkt_access	= true,
-+	.ret_type	= RET_PTR_TO_SOCK_COMMON_OR_NULL,
-+	.arg1_type	= ARG_PTR_TO_CTX,
-+	.arg2_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
-+	.arg3_type	= ARG_CONST_SIZE,
-+	.arg4_type	= ARG_ANYTHING,
-+	.arg5_type	= ARG_ANYTHING,
-+};
-+
-+BPF_CALL_5(bpf_tc_sk_lookup_tcp, struct sk_buff *, skb,
-+	   struct bpf_sock_tuple *, tuple, u32, len, u64, netns_id, u64, flags)
-+{
-+	return (unsigned long)bpf_sk_lookup(skb, tuple, len, IPPROTO_TCP,
-+					    netns_id, flags);
-+}
-+
-+static const struct bpf_func_proto bpf_tc_sk_lookup_tcp_proto = {
-+	.func		= bpf_tc_sk_lookup_tcp,
-+	.gpl_only	= false,
-+	.pkt_access	= true,
-+	.ret_type	= RET_PTR_TO_SOCKET_OR_NULL,
-+	.arg1_type	= ARG_PTR_TO_CTX,
-+	.arg2_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
-+	.arg3_type	= ARG_CONST_SIZE,
-+	.arg4_type	= ARG_ANYTHING,
-+	.arg5_type	= ARG_ANYTHING,
-+};
-+
-+BPF_CALL_5(bpf_tc_sk_lookup_udp, struct sk_buff *, skb,
-+	   struct bpf_sock_tuple *, tuple, u32, len, u64, netns_id, u64, flags)
-+{
-+	return (unsigned long)bpf_sk_lookup(skb, tuple, len, IPPROTO_UDP,
-+					    netns_id, flags);
-+}
-+
-+static const struct bpf_func_proto bpf_tc_sk_lookup_udp_proto = {
-+	.func		= bpf_tc_sk_lookup_udp,
-+	.gpl_only	= false,
-+	.pkt_access	= true,
-+	.ret_type	= RET_PTR_TO_SOCKET_OR_NULL,
-+	.arg1_type	= ARG_PTR_TO_CTX,
-+	.arg2_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
-+	.arg3_type	= ARG_CONST_SIZE,
-+	.arg4_type	= ARG_ANYTHING,
-+	.arg5_type	= ARG_ANYTHING,
-+};
-+
- BPF_CALL_1(bpf_sk_release, struct sock *, sk)
- {
- 	if (sk && sk_is_refcounted(sk))
-@@ -7902,9 +7959,9 @@ tc_cls_act_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
- #endif
- #ifdef CONFIG_INET
- 	case BPF_FUNC_sk_lookup_tcp:
--		return &bpf_sk_lookup_tcp_proto;
-+		return &bpf_tc_sk_lookup_tcp_proto;
- 	case BPF_FUNC_sk_lookup_udp:
--		return &bpf_sk_lookup_udp_proto;
-+		return &bpf_tc_sk_lookup_udp_proto;
- 	case BPF_FUNC_sk_release:
- 		return &bpf_sk_release_proto;
- 	case BPF_FUNC_tcp_sock:
-@@ -7912,7 +7969,7 @@ tc_cls_act_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
- 	case BPF_FUNC_get_listener_sock:
- 		return &bpf_get_listener_sock_proto;
- 	case BPF_FUNC_skc_lookup_tcp:
--		return &bpf_skc_lookup_tcp_proto;
-+		return &bpf_tc_skc_lookup_tcp_proto;
- 	case BPF_FUNC_tcp_check_syncookie:
- 		return &bpf_tcp_check_syncookie_proto;
- 	case BPF_FUNC_skb_ecn_set_ce:
+ 	memset(&err_rec, 0x0, sizeof(struct eeprom_table_record));
+ 	err_data.err_addr = &err_rec;
+-	amdgpu_umc_fill_error_record(&err_data, address,
+-			(address >> AMDGPU_GPU_PAGE_SHIFT), 0, 0);
++	amdgpu_umc_fill_error_record(&err_data, address, address, 0, 0);
+ 
+ 	if (amdgpu_bad_page_threshold != 0) {
+ 		amdgpu_ras_add_bad_pages(adev, err_data.err_addr,
 -- 
 2.39.2
 
