@@ -2,55 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D749C755569
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4545E755334
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232518AbjGPUkk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59942 "EHLO
+        id S231650AbjGPUQf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:16:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232521AbjGPUkj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:39 -0400
+        with ESMTP id S231638AbjGPUQe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFB5E5C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9DA4E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D5E3060E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF030C433C8;
-        Sun, 16 Jul 2023 20:40:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 518F060EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C4BC433C8;
+        Sun, 16 Jul 2023 20:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540034;
-        bh=TsMM2clemeACUsTCzTeJUymJha9TsDKJPtDWybjLNVg=;
+        s=korg; t=1689538587;
+        bh=GkWTux36hETjWavF7BEv1VhI2waDC62Dp+gNcL3pfn4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UtxtueBrTbj/cHGf7C7NfyFA1uN4HDqnOkK5NqBAv+LdYD7g1/IZmr7/6AX4ynJMd
-         MjFjPlKkZCewOG00f3F1ClGUQ8AVmb4M3yhgFRCtU8feQDaTYTvV5/eZvlLhyaKk9e
-         NM2sB0dZi/EWTKaHjXJylF4XGB4a0+pKySDVF2nA=
+        b=okxRXmPv7GHJhPrp9l0m3JtZ07rUhMruiU6LYIvJm46BQewExsK/Hq2c7VyfsJJpb
+         OIlMGuskM9gD6/YTvPV1DJq9MNQ279U037/v96aBjBeBRE0zMBQN20y6kbMIHottHp
+         MSntODEh9Wr+4ITcUjJbaA4PsbkoqdKvaNVw0hIw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Leo Li <leoyang.li@nxp.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Qiang Zhao <qiang.zhao@nxp.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Kumar Gala <galak@kernel.crashing.org>,
-        Nicolas Schier <nicolas@jasle.eu>,
+        patches@lists.linux.dev, Joachim Vandersmissen <git@jvdsn.com>,
+        Stephan Mueller <smueller@chronox.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 219/591] soc/fsl/qe: fix usb.c build errors
+Subject: [PATCH 6.4 505/800] crypto: jitter - correct health test during initialization
 Date:   Sun, 16 Jul 2023 21:45:58 +0200
-Message-ID: <20230716194929.537396705@linuxfoundation.org>
+Message-ID: <20230716195000.823543546@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -65,58 +56,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Stephan Müller <smueller@chronox.de>
 
-[ Upstream commit 7b1a78babd0d2cd27aa07255dee0c2d7ac0f31e3 ]
+[ Upstream commit d23659769ad1bf2cbafaa0efcbae20ef1a74f77e ]
 
-Fix build errors in soc/fsl/qe/usb.c when QUICC_ENGINE is not set.
-This happens when PPC_EP88XC is set, which selects CPM1 & CPM.
-When CPM is set, USB_FSL_QE can be set without QUICC_ENGINE
-being set. When USB_FSL_QE is set, QE_USB deafults to y, which
-causes build errors when QUICC_ENGINE is not set. Making
-QE_USB depend on QUICC_ENGINE prevents QE_USB from defaulting to y.
+With the update of the permanent and intermittent health errors, the
+actual indicator for the health test indicates a potential error only
+for the one offending time stamp gathered in the current iteration
+round. The next iteration round will "overwrite" the health test result.
 
-Fixes these build errors:
+Thus, the entropy collection loop in jent_gen_entropy checks for
+the health test failure upon each loop iteration. However, the
+initialization operation checked for the APT health test once for
+an APT window which implies it would not catch most errors.
 
-drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
-usb.c:(.text+0x1e): undefined reference to `qe_immr'
-powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
-powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
-powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
-powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
+Thus, the check for all health errors is now invoked unconditionally
+during each loop iteration for the startup test.
 
-Fixes: 5e41486c408e ("powerpc/QE: add support for QE USB clocks routing")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/all/202301101500.pillNv6R-lkp@intel.com/
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Leo Li <leoyang.li@nxp.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Kumar Gala <galak@kernel.crashing.org>
-Acked-by: Nicolas Schier <nicolas@jasle.eu>
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
+With the change, the error JENT_ERCT becomes unused as all health
+errors are only reported with the JENT_HEALTH return code. This
+allows the removal of the error indicator.
+
+Fixes: 3fde2fe99aa6 ("crypto: jitter - permanent and intermittent health errors"
+)
+Reported-by: Joachim Vandersmissen <git@jvdsn.com>
+Signed-off-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qe/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ crypto/jitterentropy.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
-index 357c5800b112f..7afa796dbbb89 100644
---- a/drivers/soc/fsl/qe/Kconfig
-+++ b/drivers/soc/fsl/qe/Kconfig
-@@ -39,6 +39,7 @@ config QE_TDM
+diff --git a/crypto/jitterentropy.c b/crypto/jitterentropy.c
+index 22f48bf4c6f57..227cedfa4f0ae 100644
+--- a/crypto/jitterentropy.c
++++ b/crypto/jitterentropy.c
+@@ -117,7 +117,6 @@ struct rand_data {
+ 				   * zero). */
+ #define JENT_ESTUCK		8 /* Too many stuck results during init. */
+ #define JENT_EHEALTH		9 /* Health test failed during initialization */
+-#define JENT_ERCT		10 /* RCT failed during initialization */
  
- config QE_USB
- 	bool
-+	depends on QUICC_ENGINE
- 	default y if USB_FSL_QE
- 	help
- 	  QE USB Controller support
+ /*
+  * The output n bits can receive more than n bits of min entropy, of course,
+@@ -762,14 +761,12 @@ int jent_entropy_init(void)
+ 			if ((nonstuck % JENT_APT_WINDOW_SIZE) == 0) {
+ 				jent_apt_reset(&ec,
+ 					       delta & JENT_APT_WORD_MASK);
+-				if (jent_health_failure(&ec))
+-					return JENT_EHEALTH;
+ 			}
+ 		}
+ 
+-		/* Validate RCT */
+-		if (jent_rct_failure(&ec))
+-			return JENT_ERCT;
++		/* Validate health test result */
++		if (jent_health_failure(&ec))
++			return JENT_EHEALTH;
+ 
+ 		/* test whether we have an increasing timer */
+ 		if (!(time2 > time))
 -- 
 2.39.2
 
