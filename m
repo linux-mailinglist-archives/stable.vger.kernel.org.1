@@ -2,111 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52419754D33
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 05:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC3AE754DD9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 10:41:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjGPDUp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 15 Jul 2023 23:20:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56042 "EHLO
+        id S229589AbjGPIl0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 04:41:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjGPDUn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 15 Jul 2023 23:20:43 -0400
-Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41816EE
-        for <stable@vger.kernel.org>; Sat, 15 Jul 2023 20:20:41 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.30.67.143])
-        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4R3VpT0vXmz4f3jMw
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 11:20:33 +0800 (CST)
-Received: from [10.174.176.73] (unknown [10.174.176.73])
-        by APP4 (Coremail) with SMTP id gCh0CgCXaK8CYrNkrLpMOA--.65121S3;
-        Sun, 16 Jul 2023 11:20:35 +0800 (CST)
-Subject: Re: Build failures / crashes in stable queue branches
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     stable <stable@vger.kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "yukuai (C)" <yukuai3@huawei.com>
-References: <897ebb05-5a1f-e353-8877-49721c52d065@roeck-us.net>
- <20230715154923.GA2193946@google.com>
-From:   Yu Kuai <yukuai1@huaweicloud.com>
-Message-ID: <907909df-d64f-e40a-0c9c-fc5c225a235c@huaweicloud.com>
-Date:   Sun, 16 Jul 2023 11:20:33 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        with ESMTP id S229462AbjGPIlZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 04:41:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB627D3
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 01:41:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F98360C19
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 08:41:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424FEC433C8;
+        Sun, 16 Jul 2023 08:41:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689496883;
+        bh=OYDyK+R+COpdcDjHUwSPXQaIhwMnX15jBU3dq5tS8lA=;
+        h=Subject:To:Cc:From:Date:From;
+        b=Z/4Afca/30fC35YGVgZ9BcVXMLH8UcKPjQnI1zr0r9LhuKgsVoeXh4zh7jLf2TZIL
+         o988NqZEyLsFGav1+RtpWjcGlQS1H7yTMMsRbgeZ+jm72xfWYcc6aPAp/28zjS+xec
+         /fAHjX8Wzdry6wgV1OReXS65aNxCLYSGOz3PjakA=
+Subject: FAILED: patch "[PATCH] io_uring: Use io_schedule* in cqring wait" failed to apply to 6.1-stable tree
+To:     andres@anarazel.de, asml.silence@gmail.com, axboe@kernel.dk
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 16 Jul 2023 10:41:20 +0200
+Message-ID: <2023071620-litigate-debunk-939a@gregkh>
 MIME-Version: 1.0
-In-Reply-To: <20230715154923.GA2193946@google.com>
-Content-Type: text/plain; charset=gbk; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: gCh0CgCXaK8CYrNkrLpMOA--.65121S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7AF1UZr4ruw4kAF43GrWxZwb_yoW8GF4kpF
-        93J39Ikr1UXr4Iywn7Zr1ftw1jq34rGrWrXwnxGrWruFW2yr13Zrs2qryv9Fy2q3ykKa9F
-        g3W5Cas8JFWDXw7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUyKb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0E
-        wIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E74
-        80Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0
-        I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04
-        k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY
-        1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzsqWUUUUU
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        MAY_BE_FORGED,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-ÔÚ 2023/07/15 23:49, Joel Fernandes Ð´µÀ:
-> Hi Yu,
-> 
-> On Fri, Jul 14, 2023 at 03:21:46AM -0700, Guenter Roeck wrote:
-> [..]
->> ---------
->> 6.1.y:
->>
->> Build reference: v6.1.38-393-gb6386e7314b4
->> Compiler version: alpha-linux-gcc (GCC) 11.4.0
->> Assembler version: GNU assembler (GNU Binutils) 2.40
->>
->> Building alpha:allmodconfig ... failed
->> Building m68k:allmodconfig ... failed
->> --------------
->> Error log:
->> <stdin>:1517:2: warning: #warning syscall clone3 not implemented [-Wcpp]
->> In file included from block/genhd.c:28:
->> block/genhd.c: In function 'disk_release':
->> include/linux/blktrace_api.h:88:57: error: statement with no effect [-Werror=unused-value]
->>     88 | # define blk_trace_remove(q)                            (-ENOTTY)
->>        |                                                         ^
->> block/genhd.c:1185:9: note: in expansion of macro 'blk_trace_remove'
->>   1185 |         blk_trace_remove(disk->queue);
-> 
-> 6.1 stable is broken and gives build warning without:
-> 
-> cbe7cff4a76b ("blktrace: use inline function for blk_trace_remove() while blktrace is disabled")
-> 
-> Could you please submit it to stable for 6.1? (I could have done that but it
-> looks like you already backported related patches so its best for you to do
-> it, thanks for your help!).
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Thanks for the notice, however, I'll suggest to revert this patch for
-now, because there are follow up fixes that is not applied yet.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Kuai
-> 
-> thanks,
-> 
->   - Joel
-> 
-> .
-> 
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8a796565cec3601071cbbd27d6304e202019d014
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071620-litigate-debunk-939a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+8a796565cec3 ("io_uring: Use io_schedule* in cqring wait")
+d33a39e57768 ("io_uring: keep timeout in io_wait_queue")
+46ae7eef44f6 ("io_uring: optimise non-timeout waiting")
+846072f16eed ("io_uring: mimimise io_cqring_wait_schedule")
+3fcf19d592d5 ("io_uring: parse check_cq out of wq waiting")
+12521a5d5cb7 ("io_uring: fix CQ waiting timeout handling")
+52ea806ad983 ("io_uring: finish waiting before flushing overflow entries")
+35d90f95cfa7 ("io_uring: include task_work run after scheduling in wait for events")
+1b346e4aa8e7 ("io_uring: don't check overflow flush failures")
+a85381d8326d ("io_uring: skip overflow CQE posting for dying ring")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8a796565cec3601071cbbd27d6304e202019d014 Mon Sep 17 00:00:00 2001
+From: Andres Freund <andres@anarazel.de>
+Date: Fri, 7 Jul 2023 09:20:07 -0700
+Subject: [PATCH] io_uring: Use io_schedule* in cqring wait
+
+I observed poor performance of io_uring compared to synchronous IO. That
+turns out to be caused by deeper CPU idle states entered with io_uring,
+due to io_uring using plain schedule(), whereas synchronous IO uses
+io_schedule().
+
+The losses due to this are substantial. On my cascade lake workstation,
+t/io_uring from the fio repository e.g. yields regressions between 20%
+and 40% with the following command:
+./t/io_uring -r 5 -X0 -d 1 -s 1 -c 1 -p 0 -S$use_sync -R 0 /mnt/t2/fio/write.0.0
+
+This is repeatable with different filesystems, using raw block devices
+and using different block devices.
+
+Use io_schedule_prepare() / io_schedule_finish() in
+io_cqring_wait_schedule() to address the difference.
+
+After that using io_uring is on par or surpassing synchronous IO (using
+registered files etc makes it reliably win, but arguably is a less fair
+comparison).
+
+There are other calls to schedule() in io_uring/, but none immediately
+jump out to be similarly situated, so I did not touch them. Similarly,
+it's possible that mutex_lock_io() should be used, but it's not clear if
+there are cases where that matters.
+
+Cc: stable@vger.kernel.org # 5.10+
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: io-uring@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Andres Freund <andres@anarazel.de>
+Link: https://lore.kernel.org/r/20230707162007.194068-1-andres@anarazel.de
+[axboe: minor style fixup]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index e8096d502a7c..7505de2428e0 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2489,6 +2489,8 @@ int io_run_task_work_sig(struct io_ring_ctx *ctx)
+ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+ 					  struct io_wait_queue *iowq)
+ {
++	int token, ret;
++
+ 	if (unlikely(READ_ONCE(ctx->check_cq)))
+ 		return 1;
+ 	if (unlikely(!llist_empty(&ctx->work_llist)))
+@@ -2499,11 +2501,20 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+ 		return -EINTR;
+ 	if (unlikely(io_should_wake(iowq)))
+ 		return 0;
++
++	/*
++	 * Use io_schedule_prepare/finish, so cpufreq can take into account
++	 * that the task is waiting for IO - turns out to be important for low
++	 * QD IO.
++	 */
++	token = io_schedule_prepare();
++	ret = 0;
+ 	if (iowq->timeout == KTIME_MAX)
+ 		schedule();
+ 	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
+-		return -ETIME;
+-	return 0;
++		ret = -ETIME;
++	io_schedule_finish(token);
++	return ret;
+ }
+ 
+ /*
 
