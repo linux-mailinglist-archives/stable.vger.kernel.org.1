@@ -2,165 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1CB2755587
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6420755363
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232549AbjGPUlr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:41:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60924 "EHLO
+        id S231707AbjGPUSa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:18:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232544AbjGPUlq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F43ED9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:45 -0700 (PDT)
+        with ESMTP id S231703AbjGPUS3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9D8A90
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1F2160EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091A2C433C7;
-        Sun, 16 Jul 2023 20:41:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 68CF560EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FC8C433C7;
+        Sun, 16 Jul 2023 20:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540104;
-        bh=p0AwJQQnmfSA6VDdFZlwD0hKUQWU3qXco1wuZvc0aaQ=;
+        s=korg; t=1689538707;
+        bh=Ivuf+0SuMYrUq0yJBznwxLtuVdQP/7bUl4P8Ejn9llE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qI3AK4+0ndvNY76gR3UlVZjQ+GR1FT5lxEPzFI37fJDTPQuJh9M1ZUwxk/F9eCYDQ
-         Q0wmkyGg2LoK8Bsx0SaOpuyVL3HStNKgOvr/ztvnnSr552UmkhJ/FOR9HLRwvC7SCt
-         DNfCqu9dkiWWoPL4uUl5OtOZVknX3lUOaBMBeJOg=
+        b=HV7dbWbIseLHCTPDe63VU1Za/BhBR+7EYWD1bHX1l7OV1sQz3+f2U/V2Ax2AUwJHa
+         bpGBC++9R6bYj4tn+A//HUJXwEbUY1wj8jqfWDoPWFkSgMe8msZnOrGGaJgoeZM0G9
+         KTUxfDuQfMzYeZ4RkkTNZZyjgDDULPgz2H3DxgeY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/591] RDMA/rxe: Replace pr_xxx by rxe_dbg_xxx in rxe_mw.c
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 530/800] btrfs: do not BUG_ON() on tree mod log failure at balance_level()
 Date:   Sun, 16 Jul 2023 21:46:23 +0200
-Message-ID: <20230716194930.183703248@linuxfoundation.org>
+Message-ID: <20230716195001.404517473@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit e8a87efdf87455454d0a14fd486c679769bfeee2 ]
+commit 39020d8abc7ec62c4de9b260e3d10d4a1c2478ce upstream.
 
-Replace calls to pr_xxx() int rxe_mw.c with rxe_dbg_xxx().
+At balance_level(), instead of doing a BUG_ON() in case we fail to record
+tree mod log operations, do a transaction abort and return the error to
+the callers. There's really no need for the BUG_ON() as we can release
+all resources in this context, and we have to abort because other future
+tree searches that use the tree mod log (btrfs_search_old_slot()) may get
+inconsistent results if other operations modify the tree after that
+failure and before the tree mod log based search.
 
-Link: https://lore.kernel.org/r/20221103171013.20659-6-rpearsonhpe@gmail.com
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 425e1c9018fd ("RDMA/rxe: Fix access checks in rxe_check_bind_mw")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe_mw.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ fs/btrfs/ctree.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_mw.c b/drivers/infiniband/sw/rxe/rxe_mw.c
-index 902b7df7aaedb..70252991320a0 100644
---- a/drivers/infiniband/sw/rxe/rxe_mw.c
-+++ b/drivers/infiniband/sw/rxe/rxe_mw.c
-@@ -52,14 +52,14 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
- {
- 	if (mw->ibmw.type == IB_MW_TYPE_1) {
- 		if (unlikely(mw->state != RXE_MW_STATE_VALID)) {
--			pr_err_once(
-+			rxe_dbg_mw(mw,
- 				"attempt to bind a type 1 MW not in the valid state\n");
- 			return -EINVAL;
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -1042,7 +1042,12 @@ static noinline int balance_level(struct
  		}
  
- 		/* o10-36.2.2 */
- 		if (unlikely((mw->access & IB_ZERO_BASED))) {
--			pr_err_once("attempt to bind a zero based type 1 MW\n");
-+			rxe_dbg_mw(mw, "attempt to bind a zero based type 1 MW\n");
- 			return -EINVAL;
+ 		ret = btrfs_tree_mod_log_insert_root(root->node, child, true);
+-		BUG_ON(ret < 0);
++		if (ret < 0) {
++			btrfs_tree_unlock(child);
++			free_extent_buffer(child);
++			btrfs_abort_transaction(trans, ret);
++			goto enospc;
++		}
+ 		rcu_assign_pointer(root->node, child);
+ 
+ 		add_root_to_dirty_list(root);
+@@ -1130,7 +1135,10 @@ static noinline int balance_level(struct
+ 			btrfs_node_key(right, &right_key, 0);
+ 			ret = btrfs_tree_mod_log_insert_key(parent, pslot + 1,
+ 					BTRFS_MOD_LOG_KEY_REPLACE);
+-			BUG_ON(ret < 0);
++			if (ret < 0) {
++				btrfs_abort_transaction(trans, ret);
++				goto enospc;
++			}
+ 			btrfs_set_node_key(parent, &right_key, pslot + 1);
+ 			btrfs_mark_buffer_dirty(parent);
  		}
+@@ -1176,7 +1184,10 @@ static noinline int balance_level(struct
+ 		btrfs_node_key(mid, &mid_key, 0);
+ 		ret = btrfs_tree_mod_log_insert_key(parent, pslot,
+ 						    BTRFS_MOD_LOG_KEY_REPLACE);
+-		BUG_ON(ret < 0);
++		if (ret < 0) {
++			btrfs_abort_transaction(trans, ret);
++			goto enospc;
++		}
+ 		btrfs_set_node_key(parent, &mid_key, pslot);
+ 		btrfs_mark_buffer_dirty(parent);
  	}
-@@ -67,21 +67,21 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
- 	if (mw->ibmw.type == IB_MW_TYPE_2) {
- 		/* o10-37.2.30 */
- 		if (unlikely(mw->state != RXE_MW_STATE_FREE)) {
--			pr_err_once(
-+			rxe_dbg_mw(mw,
- 				"attempt to bind a type 2 MW not in the free state\n");
- 			return -EINVAL;
- 		}
- 
- 		/* C10-72 */
- 		if (unlikely(qp->pd != to_rpd(mw->ibmw.pd))) {
--			pr_err_once(
-+			rxe_dbg_mw(mw,
- 				"attempt to bind type 2 MW with qp with different PD\n");
- 			return -EINVAL;
- 		}
- 
- 		/* o10-37.2.40 */
- 		if (unlikely(!mr || wqe->wr.wr.mw.length == 0)) {
--			pr_err_once(
-+			rxe_dbg_mw(mw,
- 				"attempt to invalidate type 2 MW by binding with NULL or zero length MR\n");
- 			return -EINVAL;
- 		}
-@@ -92,13 +92,13 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
- 		return 0;
- 
- 	if (unlikely(mr->access & IB_ZERO_BASED)) {
--		pr_err_once("attempt to bind MW to zero based MR\n");
-+		rxe_dbg_mw(mw, "attempt to bind MW to zero based MR\n");
- 		return -EINVAL;
- 	}
- 
- 	/* C10-73 */
- 	if (unlikely(!(mr->access & IB_ACCESS_MW_BIND))) {
--		pr_err_once(
-+		rxe_dbg_mw(mw,
- 			"attempt to bind an MW to an MR without bind access\n");
- 		return -EINVAL;
- 	}
-@@ -107,7 +107,7 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
- 	if (unlikely((mw->access &
- 		      (IB_ACCESS_REMOTE_WRITE | IB_ACCESS_REMOTE_ATOMIC)) &&
- 		     !(mr->access & IB_ACCESS_LOCAL_WRITE))) {
--		pr_err_once(
-+		rxe_dbg_mw(mw,
- 			"attempt to bind an Writable MW to an MR without local write access\n");
- 		return -EINVAL;
- 	}
-@@ -115,7 +115,7 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
- 	/* C10-75 */
- 	if (mw->access & IB_ZERO_BASED) {
- 		if (unlikely(wqe->wr.wr.mw.length > mr->ibmr.length)) {
--			pr_err_once(
-+			rxe_dbg_mw(mw,
- 				"attempt to bind a ZB MW outside of the MR\n");
- 			return -EINVAL;
- 		}
-@@ -123,7 +123,7 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
- 		if (unlikely((wqe->wr.wr.mw.addr < mr->ibmr.iova) ||
- 			     ((wqe->wr.wr.mw.addr + wqe->wr.wr.mw.length) >
- 			      (mr->ibmr.iova + mr->ibmr.length)))) {
--			pr_err_once(
-+			rxe_dbg_mw(mw,
- 				"attempt to bind a VA MW outside of the MR\n");
- 			return -EINVAL;
- 		}
--- 
-2.39.2
-
 
 
