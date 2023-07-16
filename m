@@ -2,142 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62A2675527D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E40B7554D7
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231343AbjGPUIa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:08:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37372 "EHLO
+        id S231552AbjGPUet (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:34:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231341AbjGPUI3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81719D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:28 -0700 (PDT)
+        with ESMTP id S230245AbjGPUdt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0B95BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 658FE60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B685C433C8;
-        Sun, 16 Jul 2023 20:08:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54F8460DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668C1C433CB;
+        Sun, 16 Jul 2023 20:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538107;
-        bh=ZFUKeQMv2/5IXuSni5PoXlSJzgb3v4+r83XNpyafnP0=;
+        s=korg; t=1689539627;
+        bh=awaN+eUt8VBn8UW12/r6g0Imd9YTTN2BmBDDs9KghAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AP30O3ROLC0qWi2k/1tqtmbgYndDEZrhQPOOQblwKx4wRwU86ZXSYsUz24AUDXzv9
-         yh0p6SfdVePTQD0dqJ233bJInA8zpYHyPi06xaFXLs7LMgt8Q6ejaRg1ZBWMJpNYbx
-         rN2LxznpkYSzodSh2KTQCMc3TQRgoVKlaOVMjR2s=
+        b=o7R7IlNyjFwbz5MW8TI/32UOwY7DVI27bXJWkDJ5P2qqovRF57+994Uw0y3J8xtH3
+         DomUqUMTSKhq4Dw1KDAVwp1//RgYoMkNYc0YxID8D/z6uxLv+JxmCCpbUD8GjwRZpi
+         m27uzS5Kt2XZ3DS1QDVUfib6EWAxKvjprP8P/a0w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 333/800] ASoC: es8316: Increment max value for ALC Capture Target Volume control
+Subject: [PATCH 6.1 047/591] powercap: RAPL: Fix CONFIG_IOSF_MBI dependency
 Date:   Sun, 16 Jul 2023 21:43:06 +0200
-Message-ID: <20230716194956.817357993@linuxfoundation.org>
+Message-ID: <20230716194925.099914069@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 6f073429037cd79d7311cd8236311c53f5ea8f01 ]
+[ Upstream commit 4658fe81b3f8afe8adf37734ec5fe595d90415c6 ]
 
-The following error occurs when trying to restore a previously saved
-ALSA mixer state (tested on a Rock 5B board):
+After commit 3382388d7148 ("intel_rapl: abstract RAPL common code"),
+accessing to IOSF_MBI interface is done in the RAPL common code.
 
-  $ alsactl --no-ucm -f /tmp/asound.state store hw:Analog
-  $ alsactl --no-ucm -I -f /tmp/asound.state restore hw:Analog
-  alsactl: set_control:1475: Cannot write control '2:0:0:ALC Capture Target Volume:0' : Invalid argument
+Thus it is the CONFIG_INTEL_RAPL_CORE that has dependency of
+CONFIG_IOSF_MBI, while CONFIG_INTEL_RAPL_MSR does not.
 
-According to ES8316 datasheet, the register at address 0x2B, which is
-related to the above mixer control, contains by default the value 0xB0.
-Considering the corresponding ALC target bits (ALCLVL) are 7:4, the
-control is initialized with 11, which is one step above the maximum
-value allowed by the driver:
+This problem was not exposed previously because all the previous RAPL
+common code users, aka, the RAPL MSR and MMIO I/F drivers, have
+CONFIG_IOSF_MBI selected.
 
- ALCLVL | dB gain
- -------+--------
-  0000  |  -16.5
-  0001  |  -15.0
-  0010  |  -13.5
-  ....  |  .....
-  0111  |   -6.0
-  1000  |   -4.5
-  1001  |   -3.0
-  1010  |   -1.5
-  ....  |  .....
-  1111  |   -1.5
+Fix the CONFIG_IOSF_MBI dependency in RAPL code. This also fixes a build
+time failure when the RAPL TPMI I/F driver is introduced without
+selecting CONFIG_IOSF_MBI.
 
-The tests performed using the VU meter feature (--vumeter=TYPE) of
-arecord/aplay confirm the specs are correct and there is no measured
-gain if the 1011-1111 range would have been mapped to 0 dB:
+x86_64-linux-ld: vmlinux.o: in function `set_floor_freq_atom':
+intel_rapl_common.c:(.text+0x2dac9b8): undefined reference to `iosf_mbi_write'
+x86_64-linux-ld: intel_rapl_common.c:(.text+0x2daca66): undefined reference to `iosf_mbi_read'
 
- dB gain | VU meter %
- --------+-----------
-   -6.0  |  30-31
-   -4.5  |  35-36
-   -3.0  |  42-43
-   -1.5  |  50-51
-    0.0  |  50-51
+Reference to iosf_mbi.h is also removed from the RAPL MSR I/F driver.
 
-Increment the max value allowed for ALC Capture Target Volume control,
-so that it matches the hardware default.  Additionally, update the
-related TLV to prevent an artificial extension of the dB gain range.
-
-Fixes: b8b88b70875a ("ASoC: add es8316 codec driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20230530181140.483936-2-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 3382388d7148 ("intel_rapl: abstract RAPL common code")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/all/20230601213246.3271412-1-arnd@kernel.org
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/es8316.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/powercap/Kconfig          | 4 +++-
+ drivers/powercap/intel_rapl_msr.c | 1 -
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
-index a27d809564593..18d485e6921a7 100644
---- a/sound/soc/codecs/es8316.c
-+++ b/sound/soc/codecs/es8316.c
-@@ -52,7 +52,12 @@ static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(dac_vol_tlv, -9600, 50, 1);
- static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(adc_vol_tlv, -9600, 50, 1);
- static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_max_gain_tlv, -650, 150, 0);
- static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_min_gain_tlv, -1200, 150, 0);
--static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_target_tlv, -1650, 150, 0);
-+
-+static const SNDRV_CTL_TLVD_DECLARE_DB_RANGE(alc_target_tlv,
-+	0, 10, TLV_DB_SCALE_ITEM(-1650, 150, 0),
-+	11, 11, TLV_DB_SCALE_ITEM(-150, 0, 0),
-+);
-+
- static const SNDRV_CTL_TLVD_DECLARE_DB_RANGE(hpmixer_gain_tlv,
- 	0, 4, TLV_DB_SCALE_ITEM(-1200, 150, 0),
- 	8, 11, TLV_DB_SCALE_ITEM(-450, 150, 0),
-@@ -115,7 +120,7 @@ static const struct snd_kcontrol_new es8316_snd_controls[] = {
- 		       alc_max_gain_tlv),
- 	SOC_SINGLE_TLV("ALC Capture Min Volume", ES8316_ADC_ALC2, 0, 28, 0,
- 		       alc_min_gain_tlv),
--	SOC_SINGLE_TLV("ALC Capture Target Volume", ES8316_ADC_ALC3, 4, 10, 0,
-+	SOC_SINGLE_TLV("ALC Capture Target Volume", ES8316_ADC_ALC3, 4, 11, 0,
- 		       alc_target_tlv),
- 	SOC_SINGLE("ALC Capture Hold Time", ES8316_ADC_ALC3, 0, 10, 0),
- 	SOC_SINGLE("ALC Capture Decay Time", ES8316_ADC_ALC4, 4, 10, 0),
+diff --git a/drivers/powercap/Kconfig b/drivers/powercap/Kconfig
+index 515e3ceb3393a..863e240b37e01 100644
+--- a/drivers/powercap/Kconfig
++++ b/drivers/powercap/Kconfig
+@@ -18,10 +18,12 @@ if POWERCAP
+ # Client driver configurations go here.
+ config INTEL_RAPL_CORE
+ 	tristate
++	depends on PCI
++	select IOSF_MBI
+ 
+ config INTEL_RAPL
+ 	tristate "Intel RAPL Support via MSR Interface"
+-	depends on X86 && IOSF_MBI
++	depends on X86 && PCI
+ 	select INTEL_RAPL_CORE
+ 	help
+ 	  This enables support for the Intel Running Average Power Limit (RAPL)
+diff --git a/drivers/powercap/intel_rapl_msr.c b/drivers/powercap/intel_rapl_msr.c
+index bc6adda588835..65adb4cbaaf8e 100644
+--- a/drivers/powercap/intel_rapl_msr.c
++++ b/drivers/powercap/intel_rapl_msr.c
+@@ -22,7 +22,6 @@
+ #include <linux/processor.h>
+ #include <linux/platform_device.h>
+ 
+-#include <asm/iosf_mbi.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/intel-family.h>
+ 
 -- 
 2.39.2
 
