@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C7B6755469
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD91E7556D0
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232100AbjGPUaJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:30:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51524 "EHLO
+        id S232984AbjGPUyT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:54:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232119AbjGPUaJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:30:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C76D69F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:30:06 -0700 (PDT)
+        with ESMTP id S232977AbjGPUyT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:54:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9030CE45;
+        Sun, 16 Jul 2023 13:54:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 32AD960E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:30:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA3AC433C9;
-        Sun, 16 Jul 2023 20:30:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D85560E2C;
+        Sun, 16 Jul 2023 20:54:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AB6C433C8;
+        Sun, 16 Jul 2023 20:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539405;
-        bh=EV7DvH5ohIoIrD7esThuyEXLGDjyXa+WMDw0jmVhzT4=;
+        s=korg; t=1689540857;
+        bh=dQJNXT7z4f+Rc/2+nxexWGiBHtZg0gmSSzhOCGso6Ks=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FQEaY9Sw5i1BUnPS7JHFcrUlpdPb+ZtegxntueT4dTsACZd6jof5BC7+mG3rJx9mX
-         P+pTzTvMhvk080V1z//AQiQsv9K3o72okmQRdvi2UzwFgVW5YRFsbKXWzbugFwXyKO
-         EL6ANu3IahEkzXlRQZj4kmbFKv4oc3pc41NMnt1M=
+        b=m+j4jUT1KOs1iEc6lZKkRq9q0Wsa3q+rG3RH5Tj/+CeNOWRGquiCaeM8Jf0o2/76F
+         wIsbVBztJL/5lnrBFnECAwIHCnnmxhyhwbPlxToio9MV49TKtLRFwAJbk49VHDdENG
+         F0sMoAQoTIsgzn+l0vg4ICDLQnnNEYducfkFR79A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
+        patches@lists.linux.dev, Marc Dionne <marc.dionne@auristor.com>,
+        David Howells <dhowells@redhat.com>,
+        Jeffrey Altman <jaltman@auristor.com>,
+        linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Manuel Leiner <manuel.leiner@gmx.de>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.4 797/800] wireguard: queueing: use saner cpu selection wrapping
-Date:   Sun, 16 Jul 2023 21:50:50 +0200
-Message-ID: <20230716195007.663377060@linuxfoundation.org>
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 512/591] afs: Fix accidental truncation when storing data
+Date:   Sun, 16 Jul 2023 21:50:51 +0200
+Message-ID: <20230716194937.129813314@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,111 +58,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 7387943fa35516f6f8017a3b0e9ce48a3bef9faa upstream.
+[ Upstream commit 03275585cabd0240944f19f33d7584a1b099a3a8 ]
 
-Using `% nr_cpumask_bits` is slow and complicated, and not totally
-robust toward dynamic changes to CPU topologies. Rather than storing the
-next CPU in the round-robin, just store the last one, and also return
-that value. This simplifies the loop drastically into a much more common
-pattern.
+When an AFS FS.StoreData RPC call is made, amongst other things it is
+given the resultant file size to be.  On the server, this is processed
+by truncating the file to new size and then writing the data.
 
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Cc: stable@vger.kernel.org
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Tested-by: Manuel Leiner <manuel.leiner@gmx.de>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Now, kafs has a lock (vnode->io_lock) that serves to serialise
+operations against a specific vnode (ie.  inode), but the parameters for
+the op are set before the lock is taken.  This allows two writebacks
+(say sync and kswapd) to race - and if writes are ongoing the writeback
+for a later write could occur before the writeback for an earlier one if
+the latter gets interrupted.
+
+Note that afs_writepages() cannot take i_mutex and only takes a shared
+lock on vnode->validate_lock.
+
+Also note that the server does the truncation and the write inside a
+lock, so there's no problem at that end.
+
+Fix this by moving the calculation for the proposed new i_size inside
+the vnode->io_lock.  Also reset the iterator (which we might have read
+from) and update the mtime setting there.
+
+Fixes: bd80d8a80e12 ("afs: Use ITER_XARRAY for writing")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/3526895.1687960024@warthog.procyon.org.uk/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireguard/queueing.c |    1 +
- drivers/net/wireguard/queueing.h |   25 +++++++++++--------------
- drivers/net/wireguard/receive.c  |    2 +-
- drivers/net/wireguard/send.c     |    2 +-
- 4 files changed, 14 insertions(+), 16 deletions(-)
+ fs/afs/write.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireguard/queueing.c
-+++ b/drivers/net/wireguard/queueing.c
-@@ -28,6 +28,7 @@ int wg_packet_queue_init(struct crypt_qu
- 	int ret;
+diff --git a/fs/afs/write.c b/fs/afs/write.c
+index 08fd456dde67c..3ecc212b62099 100644
+--- a/fs/afs/write.c
++++ b/fs/afs/write.c
+@@ -381,17 +381,19 @@ static int afs_store_data(struct afs_vnode *vnode, struct iov_iter *iter, loff_t
+ 	afs_op_set_vnode(op, 0, vnode);
+ 	op->file[0].dv_delta = 1;
+ 	op->file[0].modification = true;
+-	op->store.write_iter = iter;
+ 	op->store.pos = pos;
+ 	op->store.size = size;
+-	op->store.i_size = max(pos + size, vnode->netfs.remote_i_size);
+ 	op->store.laundering = laundering;
+-	op->mtime = vnode->netfs.inode.i_mtime;
+ 	op->flags |= AFS_OPERATION_UNINTR;
+ 	op->ops = &afs_store_data_operation;
  
- 	memset(queue, 0, sizeof(*queue));
-+	queue->last_cpu = -1;
- 	ret = ptr_ring_init(&queue->ring, len, GFP_KERNEL);
- 	if (ret)
- 		return ret;
---- a/drivers/net/wireguard/queueing.h
-+++ b/drivers/net/wireguard/queueing.h
-@@ -117,20 +117,17 @@ static inline int wg_cpumask_choose_onli
- 	return cpu;
- }
+ try_next_key:
+ 	afs_begin_vnode_operation(op);
++
++	op->store.write_iter = iter;
++	op->store.i_size = max(pos + size, vnode->netfs.remote_i_size);
++	op->mtime = vnode->netfs.inode.i_mtime;
++
+ 	afs_wait_for_operation(op);
  
--/* This function is racy, in the sense that next is unlocked, so it could return
-- * the same CPU twice. A race-free version of this would be to instead store an
-- * atomic sequence number, do an increment-and-return, and then iterate through
-- * every possible CPU until we get to that index -- choose_cpu. However that's
-- * a bit slower, and it doesn't seem like this potential race actually
-- * introduces any performance loss, so we live with it.
-+/* This function is racy, in the sense that it's called while last_cpu is
-+ * unlocked, so it could return the same CPU twice. Adding locking or using
-+ * atomic sequence numbers is slower though, and the consequences of racing are
-+ * harmless, so live with it.
-  */
--static inline int wg_cpumask_next_online(int *next)
-+static inline int wg_cpumask_next_online(int *last_cpu)
- {
--	int cpu = *next;
--
--	while (unlikely(!cpumask_test_cpu(cpu, cpu_online_mask)))
--		cpu = cpumask_next(cpu, cpu_online_mask) % nr_cpumask_bits;
--	*next = cpumask_next(cpu, cpu_online_mask) % nr_cpumask_bits;
-+	int cpu = cpumask_next(*last_cpu, cpu_online_mask);
-+	if (cpu >= nr_cpu_ids)
-+		cpu = cpumask_first(cpu_online_mask);
-+	*last_cpu = cpu;
- 	return cpu;
- }
- 
-@@ -159,7 +156,7 @@ static inline void wg_prev_queue_drop_pe
- 
- static inline int wg_queue_enqueue_per_device_and_peer(
- 	struct crypt_queue *device_queue, struct prev_queue *peer_queue,
--	struct sk_buff *skb, struct workqueue_struct *wq, int *next_cpu)
-+	struct sk_buff *skb, struct workqueue_struct *wq)
- {
- 	int cpu;
- 
-@@ -173,7 +170,7 @@ static inline int wg_queue_enqueue_per_d
- 	/* Then we queue it up in the device queue, which consumes the
- 	 * packet as soon as it can.
- 	 */
--	cpu = wg_cpumask_next_online(next_cpu);
-+	cpu = wg_cpumask_next_online(&device_queue->last_cpu);
- 	if (unlikely(ptr_ring_produce_bh(&device_queue->ring, skb)))
- 		return -EPIPE;
- 	queue_work_on(cpu, wq, &per_cpu_ptr(device_queue->worker, cpu)->work);
---- a/drivers/net/wireguard/receive.c
-+++ b/drivers/net/wireguard/receive.c
-@@ -524,7 +524,7 @@ static void wg_packet_consume_data(struc
- 		goto err;
- 
- 	ret = wg_queue_enqueue_per_device_and_peer(&wg->decrypt_queue, &peer->rx_queue, skb,
--						   wg->packet_crypt_wq, &wg->decrypt_queue.last_cpu);
-+						   wg->packet_crypt_wq);
- 	if (unlikely(ret == -EPIPE))
- 		wg_queue_enqueue_per_peer_rx(skb, PACKET_STATE_DEAD);
- 	if (likely(!ret || ret == -EPIPE)) {
---- a/drivers/net/wireguard/send.c
-+++ b/drivers/net/wireguard/send.c
-@@ -318,7 +318,7 @@ static void wg_packet_create_data(struct
- 		goto err;
- 
- 	ret = wg_queue_enqueue_per_device_and_peer(&wg->encrypt_queue, &peer->tx_queue, first,
--						   wg->packet_crypt_wq, &wg->encrypt_queue.last_cpu);
-+						   wg->packet_crypt_wq);
- 	if (unlikely(ret == -EPIPE))
- 		wg_queue_enqueue_per_peer_tx(first, PACKET_STATE_DEAD);
- err:
+ 	switch (op->error) {
+-- 
+2.39.2
+
 
 
