@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CAB775558B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BCD4755375
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232553AbjGPUl6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:41:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32872 "EHLO
+        id S231740AbjGPUTS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:19:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232557AbjGPUl5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:57 -0400
+        with ESMTP id S231735AbjGPUTR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BF0A9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3E55126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3405B60EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A01C433C8;
-        Sun, 16 Jul 2023 20:41:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A12B60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2DFC433C7;
+        Sun, 16 Jul 2023 20:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540115;
-        bh=SORK1aoTIiGQJFzCcLYGUvM8u2A529jDTokNZs7c/Fw=;
+        s=korg; t=1689538755;
+        bh=jRSihTJI2EMdEgMB0WWBFvNNICXqTi0ER/XzAzwH8v4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wW6gWvmGxCoR6wQalZlD1r0S60oAdI8GUU2OjSJwRIGfVb+jJ2nhBDYV11pvSASP1
-         n27gjidCw+Z/4cU/FKvZH7k6ZUfYoCVne8Wm2yVsYubQY/2gQ8a6WcAgQZTec/B9E+
-         aDGfh4Jm/ygAlKcpGVuKWYqicVSXltqlv2725hGA=
+        b=BykCqFZIcxIo7m43yWUltrZkRcXKvkDvXFJ6yQ77ygGoZg0kqHg0A7yBx1g1RTfrO
+         e4OXZZO1Vv1xJuSfNUDOEvdWjbKXd7HFSmBqp7s+94GPjAq4JXGXGzz/6/4go/q1vY
+         6LaVuU/vyqFLJxrgWqccwPgVVvj5NIMDjwP8AmYw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 248/591] RDMA/bnxt_re: wraparound mbox producer index
-Date:   Sun, 16 Jul 2023 21:46:27 +0200
-Message-ID: <20230716194930.288375435@linuxfoundation.org>
+Subject: [PATCH 6.4 535/800] cxl/region: Flag partially torn down regions as unusable
+Date:   Sun, 16 Jul 2023 21:46:28 +0200
+Message-ID: <20230716195001.521202249@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,53 +57,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 0af91306e17ef3d18e5f100aa58aa787869118af ]
+[ Upstream commit 2ab47045ac96a605e3037d479a7d5854570ee5bf ]
 
-Driver is not handling the wraparound of the mbox producer index correctly.
-Currently the wraparound happens once u32 max is reached.
+cxl_region_decode_reset() walks all the decoders associated with a given
+region and disables them. Due to decoder ordering rules it is possible
+that a switch in the topology notices that a given decoder can not be
+shutdown before another region with a higher HPA is shutdown first. That
+can leave the region in a partially committed state.
 
-Bit 31 of the producer index register is special and should be set
-only once for the first command. Because the producer index overflow
-setting bit31 after a long time, FW goes to initialization sequence
-and this causes FW hang.
+Capture that state in a new CXL_REGION_F_NEEDS_RESET flag and require
+that a successful cxl_region_decode_reset() attempt must be completed
+before cxl_region_probe() accepts the region.
 
-Fix is to wraparound the mbox producer index once it reaches u16 max.
+This is a corollary for the bug that Jonathan identified in "CXL/region
+:  commit reset of out of order region appears to succeed." [1].
 
-Fixes: cee0c7bba486 ("RDMA/bnxt_re: Refactor command queue management code")
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/1686308514-11996-2-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Link: http://lore.kernel.org/r/20230316171441.0000205b@Huawei.com [1]
+Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/168696507423.3590522.16254212607926684429.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cxl/core/region.c | 12 ++++++++++++
+ drivers/cxl/cxl.h         |  8 ++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-index 9c63b8b62edfc..3d76fa71641a4 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-@@ -181,7 +181,7 @@ static int __send_message(struct bnxt_qplib_rcfw *rcfw, struct cmdq_base *req,
- 	} while (size > 0);
- 	cmdq->seq_num++;
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 594ce3c2565df..fa29bd2ec3227 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -182,14 +182,19 @@ static int cxl_region_decode_reset(struct cxl_region *cxlr, int count)
+ 				rc = cxld->reset(cxld);
+ 			if (rc)
+ 				return rc;
++			set_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
+ 		}
  
--	cmdq_prod = hwq->prod;
-+	cmdq_prod = hwq->prod & 0xFFFF;
- 	if (test_bit(FIRMWARE_FIRST_FLAG, &cmdq->flags)) {
- 		/* The very first doorbell write
- 		 * is required to set this flag
-@@ -598,7 +598,7 @@ int bnxt_qplib_alloc_rcfw_channel(struct bnxt_qplib_res *res,
- 		rcfw->cmdq_depth = BNXT_QPLIB_CMDQE_MAX_CNT_8192;
+ endpoint_reset:
+ 		rc = cxled->cxld.reset(&cxled->cxld);
+ 		if (rc)
+ 			return rc;
++		set_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
+ 	}
  
- 	sginfo.pgsize = bnxt_qplib_cmdqe_page_size(rcfw->cmdq_depth);
--	hwq_attr.depth = rcfw->cmdq_depth;
-+	hwq_attr.depth = rcfw->cmdq_depth & 0x7FFFFFFF;
- 	hwq_attr.stride = BNXT_QPLIB_CMDQE_UNITS;
- 	hwq_attr.type = HWQ_TYPE_CTX;
- 	if (bnxt_qplib_alloc_init_hwq(&cmdq->hwq, &hwq_attr)) {
++	/* all decoders associated with this region have been torn down */
++	clear_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
++
+ 	return 0;
+ }
+ 
+@@ -2864,6 +2869,13 @@ static int cxl_region_probe(struct device *dev)
+ 		goto out;
+ 	}
+ 
++	if (test_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags)) {
++		dev_err(&cxlr->dev,
++			"failed to activate, re-commit region and retry\n");
++		rc = -ENXIO;
++		goto out;
++	}
++
+ 	/*
+ 	 * From this point on any path that changes the region's state away from
+ 	 * CXL_CONFIG_COMMIT is also responsible for releasing the driver.
+diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+index 70ab8fcd0377c..dcebe48bb5bb5 100644
+--- a/drivers/cxl/cxl.h
++++ b/drivers/cxl/cxl.h
+@@ -469,6 +469,14 @@ struct cxl_region_params {
+  */
+ #define CXL_REGION_F_AUTO 0
+ 
++/*
++ * Require that a committed region successfully complete a teardown once
++ * any of its associated decoders have been torn down. This maintains
++ * the commit state for the region since there are committed decoders,
++ * but blocks cxl_region_probe().
++ */
++#define CXL_REGION_F_NEEDS_RESET 1
++
+ /**
+  * struct cxl_region - CXL region
+  * @dev: This region's device
 -- 
 2.39.2
 
