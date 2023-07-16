@@ -2,199 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B756755528
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF79755308
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232398AbjGPUiC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:38:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58282 "EHLO
+        id S231585AbjGPUOg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:14:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232403AbjGPUiC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1F619F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:00 -0700 (PDT)
+        with ESMTP id S231587AbjGPUOf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:14:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86E761B7
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A8C060EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A433C433C8;
-        Sun, 16 Jul 2023 20:37:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1093E60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2519DC433C7;
+        Sun, 16 Jul 2023 20:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539879;
-        bh=lp04nvsECuj9Z3KYPrWIO7o5fBWoIIQVz2IrryEAFGo=;
+        s=korg; t=1689538473;
+        bh=+nvfuXGaWBc5EfdQEZttQ/wkcL89p5cqfTmmq3UQDLk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pyCnjpRJtkieVOiOl92nWR19LjFDWLR67AaFPugKKQS91t6lXwxC+CXzsqYKBc+XO
-         228U/l5fP3JVJmsy5FLwbMjEp296MjwyJdGp9b7s+CqTRUxcyNgbku61RNTmflody5
-         BnpZ94B6Bj5eyGKlaFYzcrZdnESdMcVkHb6MXtM0=
+        b=kR4WgULbo+C/h3x8A4A2oCRzecuxSL2PDnmGIYAH0mcozUEmMnOsJ+ie4R2RSZnxH
+         BjjO2xd2ouhPYpjjxD4h0Uph6TrDkUFc7b414cGCIJv41DeP2SWfq8ilYXfaCCOk68
+         2RjMTiULy3DSqRhmQV3zGcfBNYHleUROb26bant8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Alexey Romanov <avromanov@sberdevices.ru>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/591] netfilter: conntrack: dccp: copy entire header to stack buffer, not just basic one
-Date:   Sun, 16 Jul 2023 21:44:36 +0200
-Message-ID: <20230716194927.416720073@linuxfoundation.org>
+Subject: [PATCH 6.4 424/800] drivers: meson: secure-pwrc: always enable DMA domain
+Date:   Sun, 16 Jul 2023 21:44:37 +0200
+Message-ID: <20230716194958.937931394@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Alexey Romanov <avromanov@sberdevices.ru>
 
-[ Upstream commit ff0a3a7d52ff7282dbd183e7fc29a1fe386b0c30 ]
+[ Upstream commit 0bb4644d583789c97e74d3e3047189f0c59c4742 ]
 
-Eric Dumazet says:
-  nf_conntrack_dccp_packet() has an unique:
+Starting from commit e45f243409db ("firmware: meson_sm:
+populate platform devices from sm device tree data") pwrc
+is probed successfully and disables unused pwr domains.
+By A1 SoC family design, any TEE requires DMA pwr domain
+always enabled.
 
-  dh = skb_header_pointer(skb, dataoff, sizeof(_dh), &_dh);
-
-  And nothing more is 'pulled' from the packet, depending on the content.
-  dh->dccph_doff, and/or dh->dccph_x ...)
-  So dccp_ack_seq() is happily reading stuff past the _dh buffer.
-
-BUG: KASAN: stack-out-of-bounds in nf_conntrack_dccp_packet+0x1134/0x11c0
-Read of size 4 at addr ffff000128f66e0c by task syz-executor.2/29371
-[..]
-
-Fix this by increasing the stack buffer to also include room for
-the extra sequence numbers and all the known dccp packet type headers,
-then pull again after the initial validation of the basic header.
-
-While at it, mark packets invalid that lack 48bit sequence bit but
-where RFC says the type MUST use them.
-
-Compile tested only.
-
-v2: first skb_header_pointer() now needs to adjust the size to
-    only pull the generic header. (Eric)
-
-Heads-up: I intend to remove dccp conntrack support later this year.
-
-Fixes: 2bc780499aa3 ("[NETFILTER]: nf_conntrack: add DCCP protocol support")
-Reported-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: b3dde5013e13 ("soc: amlogic: Add support for Secure power domains controller")
+Signed-off-by: Alexey Romanov <avromanov@sberdevices.ru>
+Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20230610090414.90529-1-avromanov@sberdevices.ru
+[narmstrong: added fixes tag]
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_proto_dccp.c | 52 +++++++++++++++++++++++--
- 1 file changed, 49 insertions(+), 3 deletions(-)
+ drivers/soc/amlogic/meson-secure-pwrc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_proto_dccp.c b/net/netfilter/nf_conntrack_proto_dccp.c
-index c1557d47ccd1e..d4fd626d2b8c3 100644
---- a/net/netfilter/nf_conntrack_proto_dccp.c
-+++ b/net/netfilter/nf_conntrack_proto_dccp.c
-@@ -432,9 +432,19 @@ static bool dccp_error(const struct dccp_hdr *dh,
- 		       struct sk_buff *skb, unsigned int dataoff,
- 		       const struct nf_hook_state *state)
- {
-+	static const unsigned long require_seq48 = 1 << DCCP_PKT_REQUEST |
-+						   1 << DCCP_PKT_RESPONSE |
-+						   1 << DCCP_PKT_CLOSEREQ |
-+						   1 << DCCP_PKT_CLOSE |
-+						   1 << DCCP_PKT_RESET |
-+						   1 << DCCP_PKT_SYNC |
-+						   1 << DCCP_PKT_SYNCACK;
- 	unsigned int dccp_len = skb->len - dataoff;
- 	unsigned int cscov;
- 	const char *msg;
-+	u8 type;
-+
-+	BUILD_BUG_ON(DCCP_PKT_INVALID >= BITS_PER_LONG);
- 
- 	if (dh->dccph_doff * 4 < sizeof(struct dccp_hdr) ||
- 	    dh->dccph_doff * 4 > dccp_len) {
-@@ -459,34 +469,70 @@ static bool dccp_error(const struct dccp_hdr *dh,
- 		goto out_invalid;
- 	}
- 
--	if (dh->dccph_type >= DCCP_PKT_INVALID) {
-+	type = dh->dccph_type;
-+	if (type >= DCCP_PKT_INVALID) {
- 		msg = "nf_ct_dccp: reserved packet type ";
- 		goto out_invalid;
- 	}
-+
-+	if (test_bit(type, &require_seq48) && !dh->dccph_x) {
-+		msg = "nf_ct_dccp: type lacks 48bit sequence numbers";
-+		goto out_invalid;
-+	}
-+
- 	return false;
- out_invalid:
- 	nf_l4proto_log_invalid(skb, state, IPPROTO_DCCP, "%s", msg);
- 	return true;
- }
- 
-+struct nf_conntrack_dccp_buf {
-+	struct dccp_hdr dh;	 /* generic header part */
-+	struct dccp_hdr_ext ext; /* optional depending dh->dccph_x */
-+	union {			 /* depends on header type */
-+		struct dccp_hdr_ack_bits ack;
-+		struct dccp_hdr_request req;
-+		struct dccp_hdr_response response;
-+		struct dccp_hdr_reset rst;
-+	} u;
-+};
-+
-+static struct dccp_hdr *
-+dccp_header_pointer(const struct sk_buff *skb, int offset, const struct dccp_hdr *dh,
-+		    struct nf_conntrack_dccp_buf *buf)
-+{
-+	unsigned int hdrlen = __dccp_hdr_len(dh);
-+
-+	if (hdrlen > sizeof(*buf))
-+		return NULL;
-+
-+	return skb_header_pointer(skb, offset, hdrlen, buf);
-+}
-+
- int nf_conntrack_dccp_packet(struct nf_conn *ct, struct sk_buff *skb,
- 			     unsigned int dataoff,
- 			     enum ip_conntrack_info ctinfo,
- 			     const struct nf_hook_state *state)
- {
- 	enum ip_conntrack_dir dir = CTINFO2DIR(ctinfo);
--	struct dccp_hdr _dh, *dh;
-+	struct nf_conntrack_dccp_buf _dh;
- 	u_int8_t type, old_state, new_state;
- 	enum ct_dccp_roles role;
- 	unsigned int *timeouts;
-+	struct dccp_hdr *dh;
- 
--	dh = skb_header_pointer(skb, dataoff, sizeof(_dh), &_dh);
-+	dh = skb_header_pointer(skb, dataoff, sizeof(*dh), &_dh.dh);
- 	if (!dh)
- 		return NF_DROP;
- 
- 	if (dccp_error(dh, skb, dataoff, state))
- 		return -NF_ACCEPT;
- 
-+	/* pull again, including possible 48 bit sequences and subtype header */
-+	dh = dccp_header_pointer(skb, dataoff, dh, &_dh);
-+	if (!dh)
-+		return NF_DROP;
-+
- 	type = dh->dccph_type;
- 	if (!nf_ct_is_confirmed(ct) && !dccp_new(ct, skb, dh, state))
- 		return -NF_ACCEPT;
+diff --git a/drivers/soc/amlogic/meson-secure-pwrc.c b/drivers/soc/amlogic/meson-secure-pwrc.c
+index e935187635267..25b4b71df9b89 100644
+--- a/drivers/soc/amlogic/meson-secure-pwrc.c
++++ b/drivers/soc/amlogic/meson-secure-pwrc.c
+@@ -105,7 +105,7 @@ static struct meson_secure_pwrc_domain_desc a1_pwrc_domains[] = {
+ 	SEC_PD(ACODEC,	0),
+ 	SEC_PD(AUDIO,	0),
+ 	SEC_PD(OTP,	0),
+-	SEC_PD(DMA,	0),
++	SEC_PD(DMA,	GENPD_FLAG_ALWAYS_ON | GENPD_FLAG_IRQ_SAFE),
+ 	SEC_PD(SD_EMMC,	0),
+ 	SEC_PD(RAMA,	0),
+ 	/* SRAMB is used as ATF runtime memory, and should be always on */
 -- 
 2.39.2
 
