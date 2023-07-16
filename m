@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3CAA7554A4
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC3A4755487
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232207AbjGPUci (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:32:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53866 "EHLO
+        id S232187AbjGPUbV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:31:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232248AbjGPUcg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:36 -0400
+        with ESMTP id S232186AbjGPUbU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:31:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 980AEBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD5729F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:31:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37E7860EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B0FC433C8;
-        Sun, 16 Jul 2023 20:32:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5991860E2C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:31:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC51C433C8;
+        Sun, 16 Jul 2023 20:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539554;
-        bh=YXvYdF+Qwxgwp1C3JL3h5U5vYkGcLm1MqW0tFTIq1Sk=;
+        s=korg; t=1689539478;
+        bh=gi6bl1L5R6UYGDoOwdY9l7MyoGfhc0hEWHGcsODqnIA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BUutq2mCxEh8GEPXSaqsLjBdBRTSyvypKGfo9IWibDbKqzJZSYh6qkiNIuvI7DrRy
-         RJ0Z2FwHSQOCdhBUIO3LJ+tfiv6VpQJE5g8b2fTVQzZDMcZQ36Rlbs5h7bGizpDj2q
-         QyOLqIsl+XZ7qqMyAZ7dgw7F2tQ4rKyzISbQqp9Q=
+        b=LVmE99dQNQbzPt7a3gYBF0MR8Xu0u+3LafQ+gINqqGzMfA3ElzA2lgfIxFr5A4Bhe
+         9Y3TeTryZ2PaZD8sLUIe1fYi6HL4ogRqJgMIYw3olBWDjQy+EyyuvRaEkyMt0QZZ/m
+         Fixhh2l2qEmP9geEG2yQOqxW7zUZgUzfrPHKUGVc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hannes Reinecke <hare@suse.de>,
+        patches@lists.linux.dev, Chaitanya Kulkarni <kch@nvidia.com>,
+        Yi Zhang <yi.zhang@redhat.com>, Christoph Hellwig <hch@lst.de>,
         Sagi Grimberg <sagi@grimberg.me>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/591] nvme-auth: dont ignore key generation failures when initializing ctrl keys
-Date:   Sun, 16 Jul 2023 21:42:40 +0200
-Message-ID: <20230716194924.412386163@linuxfoundation.org>
+        Keith Busch <kbusch@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 022/591] nvme-core: add missing fault-injection cleanup
+Date:   Sun, 16 Jul 2023 21:42:41 +0200
+Message-ID: <20230716194924.437527830@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -56,101 +57,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Chaitanya Kulkarni <kch@nvidia.com>
 
-[ Upstream commit 193a8c7e5f1a8481841636cec9c185543ec5c759 ]
+[ Upstream commit 3a12a0b868a512fcada564699d00f5e652c0998c ]
 
-nvme_auth_generate_key can fail, don't ignore it upon initialization.
+Add missing fault-injection cleanup in nvme_init_ctrl() in the error
+unwind path that also fixes following message for blktests:-
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+linux-block (for-next) # grep debugfs debugfs-err.log
+[  147.853464] debugfs: Directory 'nvme1' with parent '/' already present!
+[  147.853973] nvme1: failed to create debugfs attr
+[  148.802490] debugfs: Directory 'nvme1' with parent '/' already present!
+[  148.803244] nvme1: failed to create debugfs attr
+[  148.877304] debugfs: Directory 'nvme1' with parent '/' already present!
+[  148.877775] nvme1: failed to create debugfs attr
+[  149.816652] debugfs: Directory 'nvme1' with parent '/' already present!
+[  149.818011] nvme1: failed to create debugfs attr
+
+Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Stable-dep-of: 7ed5cf8e6d9b ("nvme-core: fix dev_pm_qos memleak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/auth.c | 19 +++++++++++++++----
- drivers/nvme/host/core.c |  6 +++++-
- drivers/nvme/host/nvme.h |  7 +++++--
- 3 files changed, 25 insertions(+), 7 deletions(-)
+ drivers/nvme/host/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvme/host/auth.c b/drivers/nvme/host/auth.c
-index 1a27d7fb4fa91..9dfd3d0293054 100644
---- a/drivers/nvme/host/auth.c
-+++ b/drivers/nvme/host/auth.c
-@@ -956,15 +956,26 @@ static void nvme_ctrl_auth_work(struct work_struct *work)
- 	 */
- }
- 
--void nvme_auth_init_ctrl(struct nvme_ctrl *ctrl)
-+int nvme_auth_init_ctrl(struct nvme_ctrl *ctrl)
- {
-+	int ret;
-+
- 	INIT_LIST_HEAD(&ctrl->dhchap_auth_list);
- 	INIT_WORK(&ctrl->dhchap_auth_work, nvme_ctrl_auth_work);
- 	mutex_init(&ctrl->dhchap_auth_mutex);
- 	if (!ctrl->opts)
--		return;
--	nvme_auth_generate_key(ctrl->opts->dhchap_secret, &ctrl->host_key);
--	nvme_auth_generate_key(ctrl->opts->dhchap_ctrl_secret, &ctrl->ctrl_key);
-+		return 0;
-+	ret = nvme_auth_generate_key(ctrl->opts->dhchap_secret,
-+			&ctrl->host_key);
-+	if (ret)
-+		return ret;
-+	ret = nvme_auth_generate_key(ctrl->opts->dhchap_ctrl_secret,
-+			&ctrl->ctrl_key);
-+	if (ret) {
-+		nvme_auth_free_key(ctrl->host_key);
-+		ctrl->host_key = NULL;
-+	}
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(nvme_auth_init_ctrl);
- 
 diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 2b07a67958b46..09ff0d75aaf38 100644
+index 09ff0d75aaf38..8414e1a036464 100644
 --- a/drivers/nvme/host/core.c
 +++ b/drivers/nvme/host/core.c
-@@ -5171,9 +5171,13 @@ int nvme_init_ctrl(struct nvme_ctrl *ctrl, struct device *dev,
- 
- 	nvme_fault_inject_init(&ctrl->fault_inject, dev_name(ctrl->device));
- 	nvme_mpath_init_ctrl(ctrl);
--	nvme_auth_init_ctrl(ctrl);
-+	ret = nvme_auth_init_ctrl(ctrl);
-+	if (ret)
-+		goto out_free_cdev;
+@@ -5177,6 +5177,7 @@ int nvme_init_ctrl(struct nvme_ctrl *ctrl, struct device *dev,
  
  	return 0;
-+out_free_cdev:
-+	cdev_device_del(&ctrl->cdev, ctrl->device);
+ out_free_cdev:
++	nvme_fault_inject_fini(&ctrl->fault_inject);
+ 	cdev_device_del(&ctrl->cdev, ctrl->device);
  out_free_name:
  	nvme_put_ctrl(ctrl);
- 	kfree_const(ctrl->device->kobj.name);
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 5ed771d576c6d..69f9e69208f68 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -1028,13 +1028,16 @@ static inline bool nvme_ctrl_sgl_supported(struct nvme_ctrl *ctrl)
- }
- 
- #ifdef CONFIG_NVME_AUTH
--void nvme_auth_init_ctrl(struct nvme_ctrl *ctrl);
-+int nvme_auth_init_ctrl(struct nvme_ctrl *ctrl);
- void nvme_auth_stop(struct nvme_ctrl *ctrl);
- int nvme_auth_negotiate(struct nvme_ctrl *ctrl, int qid);
- int nvme_auth_wait(struct nvme_ctrl *ctrl, int qid);
- void nvme_auth_free(struct nvme_ctrl *ctrl);
- #else
--static inline void nvme_auth_init_ctrl(struct nvme_ctrl *ctrl) {};
-+static inline int nvme_auth_init_ctrl(struct nvme_ctrl *ctrl)
-+{
-+	return 0;
-+}
- static inline void nvme_auth_stop(struct nvme_ctrl *ctrl) {};
- static inline int nvme_auth_negotiate(struct nvme_ctrl *ctrl, int qid)
- {
 -- 
 2.39.2
 
