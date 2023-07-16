@@ -2,100 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47C5D755583
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BFED755338
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232550AbjGPUlf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:41:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60796 "EHLO
+        id S231656AbjGPUQu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:16:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232544AbjGPUle (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34DC59F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:34 -0700 (PDT)
+        with ESMTP id S231657AbjGPUQr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC94810DA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF6A960EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F99C433C7;
-        Sun, 16 Jul 2023 20:41:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D5AC60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E92CC433C7;
+        Sun, 16 Jul 2023 20:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540093;
-        bh=sRe831DrJdiIgE09fwtktx67qKztkVDTNsm/VW7LuN0=;
+        s=korg; t=1689538598;
+        bh=1bI9VTkb064C9miAHigDSoX5dmCr6mkoMBRm9f4279A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=16f3rS6xhUWIibtdltd/tXi3IOOdzIhKQcPvMu3sxAcJWqMcq6d5o4HlkuEkaQYr7
-         i0Vhh2QfjWJXZzfcHMBlPAXgIIfAHU5NQ0oEIFArKKLX/Dzpr8B5Yg2hq+8fToqQwh
-         MBZF32XoR/gyoWJbNHgd/5ySP45AGvZF96UAMV/4=
+        b=GlE7/HoTCgrrhaSRddlHkJfz4ZEjnWPUi5QHRrGuuJPIZk7Txh4ty5r2kpBwqkAWi
+         B7YQ87AScOezAjNag5SUVmbqMiTp/G9xQKjd8rCQ/6YBHYNSG7Rotgsfo9oxMrPcgh
+         QjXLWPs96lNq/6eNs3ShiE/1llT82QLv+bxRHGq8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 223/591] ARM: dts: iwg20d-q7-common: Fix backlight pwm specifier
+Subject: [PATCH 6.4 509/800] ARC: define ASM_NL and __ALIGN(_STR) outside #ifdef __ASSEMBLY__ guard
 Date:   Sun, 16 Jul 2023 21:46:02 +0200
-Message-ID: <20230716194929.641597920@linuxfoundation.org>
+Message-ID: <20230716195000.915657511@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 0501fdec106a291c43b3c1b525cf22ab4c24b2d8 ]
+[ Upstream commit 92e2921eeafdfca9acd9b83f07d2b7ca099bac24 ]
 
-make dtbs_check:
+ASM_NL is useful not only in *.S files but also in .c files for using
+inline assembler in C code.
 
-    arch/arm/boot/dts/renesas/r8a7743-iwg20d-q7.dtb: backlight: pwms: [[58, 0, 5000000], [0]] is too long
-	    From schema: Documentation/devicetree/bindings/leds/backlight/pwm-backlight.yaml
-    arch/arm/boot/dts/renesas/r8a7743-iwg20d-q7-dbcm-ca.dtb: backlight: pwms: [[67, 0, 5000000], [0]] is too long
-	    From schema: Documentation/devicetree/bindings/leds/backlight/pwm-backlight.yaml
-    arch/arm/boot/dts/renesas/r8a7744-iwg20d-q7-dbcm-ca.dtb: backlight: pwms: [[67, 0, 5000000], [0]] is too long
-	    From schema: Documentation/devicetree/bindings/leds/backlight/pwm-backlight.yaml
-    arch/arm/boot/dts/renesas/r8a7744-iwg20d-q7.dtb: backlight: pwms: [[58, 0, 5000000], [0]] is too long
-	    From schema: Documentation/devicetree/bindings/leds/backlight/pwm-backlight.yaml
+On ARC, however, ASM_NL is evaluated inconsistently. It is expanded to
+a backquote (`) in *.S files, but a semicolon (;) in *.c files because
+arch/arc/include/asm/linkage.h defines it inside #ifdef __ASSEMBLY__,
+so the definition for C code falls back to the default value defined in
+include/linux/linkage.h.
 
-PWM specifiers referring to R-Car PWM Timer Controllers should contain
-only two cells.
+If ASM_NL is used in inline assembler in .c files, it will result in
+wrong assembly code because a semicolon is not an instruction separator,
+but the start of a comment for ARC.
 
-Fix this by dropping the bogus third cell.
+Move ASM_NL (also __ALIGN and __ALIGN_STR) out of the #ifdef.
 
-Fixes: 6f89dd9e9325d05b ("ARM: dts: iwg20d-q7-common: Add LCD support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/6e5c3167424a43faf8c1fa68d9667b3d87dc86d8.1684855911.git.geert+renesas@glider.be
+Fixes: 9df62f054406 ("arch: use ASM_NL instead of ';' for assembler new line character in the macro")
+Fixes: 8d92e992a785 ("ARC: define __ALIGN_STR and __ALIGN symbols for ARC")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/iwg20d-q7-common.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arc/include/asm/linkage.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/iwg20d-q7-common.dtsi b/arch/arm/boot/dts/iwg20d-q7-common.dtsi
-index 03caea6fc6ffa..4351c5a02fa59 100644
---- a/arch/arm/boot/dts/iwg20d-q7-common.dtsi
-+++ b/arch/arm/boot/dts/iwg20d-q7-common.dtsi
-@@ -49,7 +49,7 @@ audio_clock: audio_clock {
- 	lcd_backlight: backlight {
- 		compatible = "pwm-backlight";
+diff --git a/arch/arc/include/asm/linkage.h b/arch/arc/include/asm/linkage.h
+index c9434ff3aa4ce..8a3fb71e9cfad 100644
+--- a/arch/arc/include/asm/linkage.h
++++ b/arch/arc/include/asm/linkage.h
+@@ -8,6 +8,10 @@
  
--		pwms = <&pwm3 0 5000000 0>;
-+		pwms = <&pwm3 0 5000000>;
- 		brightness-levels = <0 4 8 16 32 64 128 255>;
- 		default-brightness-level = <7>;
- 		enable-gpios = <&gpio5 14 GPIO_ACTIVE_HIGH>;
+ #include <asm/dwarf.h>
+ 
++#define ASM_NL		 `	/* use '`' to mark new line in macro */
++#define __ALIGN		.align 4
++#define __ALIGN_STR	__stringify(__ALIGN)
++
+ #ifdef __ASSEMBLY__
+ 
+ .macro ST2 e, o, off
+@@ -28,10 +32,6 @@
+ #endif
+ .endm
+ 
+-#define ASM_NL		 `	/* use '`' to mark new line in macro */
+-#define __ALIGN		.align 4
+-#define __ALIGN_STR	__stringify(__ALIGN)
+-
+ /* annotation for data we want in DCCM - if enabled in .config */
+ .macro ARCFP_DATA nm
+ #ifdef CONFIG_ARC_HAS_DCCM
 -- 
 2.39.2
 
