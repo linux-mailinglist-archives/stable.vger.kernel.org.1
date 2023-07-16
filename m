@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9566D755709
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8E3A75570A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:56:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233061AbjGPU4k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:56:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43462 "EHLO
+        id S233055AbjGPU4o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:56:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233064AbjGPU4i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:56:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1FA7E51
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:56:34 -0700 (PDT)
+        with ESMTP id S233058AbjGPU4n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:56:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1B44E50
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:56:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 848E460E9E
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:56:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F1FC433C7;
-        Sun, 16 Jul 2023 20:56:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54C3F60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:56:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED7CC433C8;
+        Sun, 16 Jul 2023 20:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540994;
-        bh=RFS0HhjUudssGt59fZUw8MvUc3HdKHdWQsfjKNPDqMQ=;
+        s=korg; t=1689540996;
+        bh=7GFPJhu90ftDjTmTinvvsXLYrv27eCZNYZX8jkLybLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GkxNwHnlGdbPFWwOcfyvHspBXRp3Hivi4laDJOJklxskYdAdup//1z4FV8k+y4mZw
-         KLE1FiMjyIKCyplbB1fLO8dtReUf6uOuN9YiDrJOyAlNDoLmoVaC2+G1sNizaVXg3l
-         PgVfRSYhSBNk/SiT+Fje9qhxky49vNi6K3zFk3f0=
+        b=cliHAYbHLcq96TymCeLJQyhU9/6tTfmjGK1VQNBivm4vHu/S/hLiYKzDOgXSsb5/Z
+         uZq2YAF8+8OaMv9HNaBCCnk0tWD6xlW73BDHNUJI4f3nmRa69jY58uPGxETBCLXxJ7
+         BcLC0VvSC7ZJQHUFrZ65y9ddBI/U0nvdx/2BB1zw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
         Filipe Manana <fdmanana@suse.com>,
         David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 562/591] btrfs: fix extent buffer leak after tree mod log failure at split_node()
-Date:   Sun, 16 Jul 2023 21:51:41 +0200
-Message-ID: <20230716194938.397142861@linuxfoundation.org>
+Subject: [PATCH 6.1 563/591] btrfs: do not BUG_ON() on tree mod log failure at __btrfs_cow_block()
+Date:   Sun, 16 Jul 2023 21:51:42 +0200
+Message-ID: <20230716194938.425376459@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -57,14 +57,14 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Filipe Manana <fdmanana@suse.com>
 
-commit ede600e497b1461d06d22a7d17703d9096868bc3 upstream.
+commit 40b0a749388517de244643c09bdbb98f7dcb6ef1 upstream.
 
-At split_node(), if we fail to log the tree mod log copy operation, we
-return without unlocking the split extent buffer we just allocated and
-without decrementing the reference we own on it. Fix this by unlocking
-it and decrementing the ref count before returning.
+At __btrfs_cow_block(), instead of doing a BUG_ON() in case we fail to
+record a tree mod log root insertion operation, do a transaction abort
+instead. There's really no need for the BUG_ON(), we can properly
+release all resources in this context and turn the filesystem to RO mode
+and in an error state instead.
 
-Fixes: 5de865eebb83 ("Btrfs: fix tree mod logging")
 CC: stable@vger.kernel.org # 5.4+
 Reviewed-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: Filipe Manana <fdmanana@suse.com>
@@ -72,19 +72,27 @@ Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ctree.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/ctree.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 --- a/fs/btrfs/ctree.c
 +++ b/fs/btrfs/ctree.c
-@@ -2861,6 +2861,8 @@ static noinline int split_node(struct bt
+@@ -475,9 +475,14 @@ static noinline int __btrfs_cow_block(st
+ 		    btrfs_header_backref_rev(buf) < BTRFS_MIXED_BACKREF_REV)
+ 			parent_start = buf->start;
  
- 	ret = btrfs_tree_mod_log_eb_copy(split, c, 0, mid, c_nritems - mid);
- 	if (ret) {
-+		btrfs_tree_unlock(split);
-+		free_extent_buffer(split);
- 		btrfs_abort_transaction(trans, ret);
- 		return ret;
- 	}
+-		atomic_inc(&cow->refs);
+ 		ret = btrfs_tree_mod_log_insert_root(root->node, cow, true);
+-		BUG_ON(ret < 0);
++		if (ret < 0) {
++			btrfs_tree_unlock(cow);
++			free_extent_buffer(cow);
++			btrfs_abort_transaction(trans, ret);
++			return ret;
++		}
++		atomic_inc(&cow->refs);
+ 		rcu_assign_pointer(root->node, cow);
+ 
+ 		btrfs_free_tree_block(trans, btrfs_root_id(root), buf,
 
 
