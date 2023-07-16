@@ -2,203 +2,278 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76BC0755270
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A5DF755498
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231318AbjGPUHy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:07:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37054 "EHLO
+        id S232218AbjGPUcK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:32:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231325AbjGPUHy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:07:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC58B9B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:07:52 -0700 (PDT)
+        with ESMTP id S232257AbjGPUcH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509AD10CA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7014760E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:07:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC3CC433C8;
-        Sun, 16 Jul 2023 20:07:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 193DF60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C881C433C7;
+        Sun, 16 Jul 2023 20:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538071;
-        bh=vMnCLSoW0dTWYSTCN4z7h5iEWtPxxE1zwUwS1wVou94=;
+        s=korg; t=1689539520;
+        bh=oUW0ngMxfkHaKm/wF1V0uBn+sFeVsKYQMFkpS3I4Oqk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oAQ6xiAP8BwEx+kBmmd4I+r9Kh6V1JO4NdECaEN0zE6PBQLa0E4uOb5bBPDh8N8c1
-         0NNDi+3rkQTCWCzXeLgkQ1RJ/qajtMRGNsa1RUbtSm++IeK44/m+kMw8WHk3l9Nq9d
-         Zgg0nrQSEKCyFi8vafGDEck1tyq6b3G5/uaovZEs=
+        b=Vi3aaCZmjN8KyV7Fn40pSq0CnVTHaYeYc5CM7PnlEiyO+VWSMJeMSk46E1ALqg6nb
+         fWW561Dx0GnVvZrqRK+u2x36faIktohhEMVN4RtKl3HRKVqWtRIvfjsHYVsEZKh+19
+         52bKSTarnO7OfSwqDNRHqOa+Au99ogytxftey4jY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
+        patches@lists.linux.dev, Yue Hu <huyue2@coolpad.com>,
+        Jingbo Xu <jefflexu@linux.alibaba.com>,
+        Chao Yu <chao@kernel.org>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 321/800] drm: bridge: samsung-dsim: Fix PMS Calculator on imx8m[mnp]
-Date:   Sun, 16 Jul 2023 21:42:54 +0200
-Message-ID: <20230716194956.527272417@linuxfoundation.org>
+Subject: [PATCH 6.1 036/591] erofs: simplify iloc()
+Date:   Sun, 16 Jul 2023 21:42:55 +0200
+Message-ID: <20230716194924.815371147@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adam Ford <aford173@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 54f1a83c72250b182fa7722b0c5f6eb5e769598d ]
+[ Upstream commit b780d3fc6107464dcc43631a6208c43b6421f1e6 ]
 
-According to Table 13-45 of the i.MX8M Mini Reference Manual, the min
-and max values for M and the frequency range for the VCO_out
-calculator were incorrect.  This information was contradicted in other
-parts of the mini, nano and plus manuals.  After reaching out to my
-NXP Rep, when confronting him about discrepencies in the Nano manual,
-he responded with:
- "Yes it is definitely wrong, the one that is part
-  of the NOTE in MIPI_DPHY_M_PLLPMS register table against PMS_P,
-  PMS_M and PMS_S is not correct. I will report this to Doc team,
-  the one customer should be take into account is the Table 13-40
-  DPHY PLL Parameters and the Note above."
+Actually we could pass in inodes directly to clean up all callers.
+Also rename iloc() as erofs_iloc().
 
-These updated values also match what is used in the NXP downstream
-kernel.
-
-To fix this, make new variables to hold the min and max values of m
-and the minimum value of VCO_out, and update the PMS calculator to
-use these new variables instead of using hard-coded values to keep
-the backwards compatibility with other parts using this driver.
-
-Fixes: 4d562c70c4dc ("drm: bridge: samsung-dsim: Add i.MX8M Mini/Nano support")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-Tested-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Jagan Teki <jagan@amarulasolutions.com>
-Tested-by: Jagan Teki <jagan@amarulasolutions.com> # imx8mm-icore
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230526030559.326566-3-aford173@gmail.com
+Link: https://lore.kernel.org/r/20230114150823.432069-1-xiang@kernel.org
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Stable-dep-of: 001b8ccd0650 ("erofs: fix compact 4B support for 16k block size")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 22 ++++++++++++++++++++--
- include/drm/bridge/samsung-dsim.h     |  3 +++
- 2 files changed, 23 insertions(+), 2 deletions(-)
+ fs/erofs/data.c              |  9 +++------
+ fs/erofs/inode.c             |  2 +-
+ fs/erofs/internal.h          | 16 +++++++++-------
+ fs/erofs/xattr.c             | 20 +++++++-------------
+ fs/erofs/zmap.c              | 13 +++++--------
+ include/trace/events/erofs.h |  4 ++--
+ 6 files changed, 27 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index e0a402a85787c..3194cabb26b32 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -405,6 +405,9 @@ static const struct samsung_dsim_driver_data exynos3_dsi_driver_data = {
- 	.num_bits_resol = 11,
- 	.pll_p_offset = 13,
- 	.reg_values = reg_values,
-+	.m_min = 41,
-+	.m_max = 125,
-+	.min_freq = 500,
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index fe8ac0e163f7e..b32801d716f89 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -95,11 +95,8 @@ static int erofs_map_blocks_flatmode(struct inode *inode,
+ 		map->m_pa = blknr_to_addr(vi->raw_blkaddr) + map->m_la;
+ 		map->m_plen = blknr_to_addr(lastblk) - offset;
+ 	} else if (tailendpacking) {
+-		/* 2 - inode inline B: inode, [xattrs], inline last blk... */
+-		struct erofs_sb_info *sbi = EROFS_SB(inode->i_sb);
+-
+-		map->m_pa = iloc(sbi, vi->nid) + vi->inode_isize +
+-			vi->xattr_isize + erofs_blkoff(map->m_la);
++		map->m_pa = erofs_iloc(inode) + vi->inode_isize +
++			vi->xattr_isize + erofs_blkoff(offset);
+ 		map->m_plen = inode->i_size - offset;
+ 
+ 		/* inline data should be located in the same meta block */
+@@ -154,7 +151,7 @@ int erofs_map_blocks(struct inode *inode,
+ 		unit = EROFS_BLOCK_MAP_ENTRY_SIZE;	/* block map */
+ 
+ 	chunknr = map->m_la >> vi->chunkbits;
+-	pos = ALIGN(iloc(EROFS_SB(sb), vi->nid) + vi->inode_isize +
++	pos = ALIGN(erofs_iloc(inode) + vi->inode_isize +
+ 		    vi->xattr_isize, unit) + unit * chunknr;
+ 
+ 	kaddr = erofs_read_metabuf(&buf, sb, erofs_blknr(pos), EROFS_KMAP);
+diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
+index ad2a82f2eb4cd..5aadc73d57652 100644
+--- a/fs/erofs/inode.c
++++ b/fs/erofs/inode.c
+@@ -14,7 +14,7 @@ static void *erofs_read_inode(struct erofs_buf *buf,
+ 	struct super_block *sb = inode->i_sb;
+ 	struct erofs_sb_info *sbi = EROFS_SB(sb);
+ 	struct erofs_inode *vi = EROFS_I(inode);
+-	const erofs_off_t inode_loc = iloc(sbi, vi->nid);
++	const erofs_off_t inode_loc = erofs_iloc(inode);
+ 
+ 	erofs_blk_t blkaddr, nblks = 0;
+ 	void *kaddr;
+diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+index 340bd56a57559..d8d09fc3ed655 100644
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -273,11 +273,6 @@ struct erofs_buf {
+ #define erofs_blkoff(addr)      ((addr) % EROFS_BLKSIZ)
+ #define blknr_to_addr(nr)       ((erofs_off_t)(nr) * EROFS_BLKSIZ)
+ 
+-static inline erofs_off_t iloc(struct erofs_sb_info *sbi, erofs_nid_t nid)
+-{
+-	return blknr_to_addr(sbi->meta_blkaddr) + (nid << sbi->islotbits);
+-}
+-
+ #define EROFS_FEATURE_FUNCS(name, compat, feature) \
+ static inline bool erofs_sb_has_##name(struct erofs_sb_info *sbi) \
+ { \
+@@ -342,8 +337,15 @@ struct erofs_inode {
+ 	struct inode vfs_inode;
  };
  
- static const struct samsung_dsim_driver_data exynos4_dsi_driver_data = {
-@@ -418,6 +421,9 @@ static const struct samsung_dsim_driver_data exynos4_dsi_driver_data = {
- 	.num_bits_resol = 11,
- 	.pll_p_offset = 13,
- 	.reg_values = reg_values,
-+	.m_min = 41,
-+	.m_max = 125,
-+	.min_freq = 500,
- };
+-#define EROFS_I(ptr)	\
+-	container_of(ptr, struct erofs_inode, vfs_inode)
++#define EROFS_I(ptr)	container_of(ptr, struct erofs_inode, vfs_inode)
++
++static inline erofs_off_t erofs_iloc(struct inode *inode)
++{
++	struct erofs_sb_info *sbi = EROFS_I_SB(inode);
++
++	return blknr_to_addr(sbi->meta_blkaddr) +
++		(EROFS_I(inode)->nid << sbi->islotbits);
++}
  
- static const struct samsung_dsim_driver_data exynos5_dsi_driver_data = {
-@@ -429,6 +435,9 @@ static const struct samsung_dsim_driver_data exynos5_dsi_driver_data = {
- 	.num_bits_resol = 11,
- 	.pll_p_offset = 13,
- 	.reg_values = reg_values,
-+	.m_min = 41,
-+	.m_max = 125,
-+	.min_freq = 500,
- };
+ static inline unsigned long erofs_inode_datablocks(struct inode *inode)
+ {
+diff --git a/fs/erofs/xattr.c b/fs/erofs/xattr.c
+index 8106bcb5a38d1..a2776abf36986 100644
+--- a/fs/erofs/xattr.c
++++ b/fs/erofs/xattr.c
+@@ -22,8 +22,7 @@ static int init_inode_xattrs(struct inode *inode)
+ 	struct xattr_iter it;
+ 	unsigned int i;
+ 	struct erofs_xattr_ibody_header *ih;
+-	struct super_block *sb;
+-	struct erofs_sb_info *sbi;
++	struct super_block *sb = inode->i_sb;
+ 	int ret = 0;
  
- static const struct samsung_dsim_driver_data exynos5433_dsi_driver_data = {
-@@ -441,6 +450,9 @@ static const struct samsung_dsim_driver_data exynos5433_dsi_driver_data = {
- 	.num_bits_resol = 12,
- 	.pll_p_offset = 13,
- 	.reg_values = exynos5433_reg_values,
-+	.m_min = 41,
-+	.m_max = 125,
-+	.min_freq = 500,
- };
- 
- static const struct samsung_dsim_driver_data exynos5422_dsi_driver_data = {
-@@ -453,6 +465,9 @@ static const struct samsung_dsim_driver_data exynos5422_dsi_driver_data = {
- 	.num_bits_resol = 12,
- 	.pll_p_offset = 13,
- 	.reg_values = exynos5422_reg_values,
-+	.m_min = 41,
-+	.m_max = 125,
-+	.min_freq = 500,
- };
- 
- static const struct samsung_dsim_driver_data imx8mm_dsi_driver_data = {
-@@ -469,6 +484,9 @@ static const struct samsung_dsim_driver_data imx8mm_dsi_driver_data = {
+ 	/* the most case is that xattrs of this inode are initialized. */
+@@ -52,15 +51,14 @@ static int init_inode_xattrs(struct inode *inode)
+ 	 *    undefined right now (maybe use later with some new sb feature).
  	 */
- 	.pll_p_offset = 14,
- 	.reg_values = imx8mm_dsim_reg_values,
-+	.m_min = 64,
-+	.m_max = 1023,
-+	.min_freq = 1050,
- };
+ 	if (vi->xattr_isize == sizeof(struct erofs_xattr_ibody_header)) {
+-		erofs_err(inode->i_sb,
++		erofs_err(sb,
+ 			  "xattr_isize %d of nid %llu is not supported yet",
+ 			  vi->xattr_isize, vi->nid);
+ 		ret = -EOPNOTSUPP;
+ 		goto out_unlock;
+ 	} else if (vi->xattr_isize < sizeof(struct erofs_xattr_ibody_header)) {
+ 		if (vi->xattr_isize) {
+-			erofs_err(inode->i_sb,
+-				  "bogus xattr ibody @ nid %llu", vi->nid);
++			erofs_err(sb, "bogus xattr ibody @ nid %llu", vi->nid);
+ 			DBG_BUGON(1);
+ 			ret = -EFSCORRUPTED;
+ 			goto out_unlock;	/* xattr ondisk layout error */
+@@ -69,11 +67,9 @@ static int init_inode_xattrs(struct inode *inode)
+ 		goto out_unlock;
+ 	}
  
- static const struct samsung_dsim_driver_data *
-@@ -547,12 +565,12 @@ static unsigned long samsung_dsim_pll_find_pms(struct samsung_dsim *dsi,
- 			tmp = (u64)fout * (_p << _s);
- 			do_div(tmp, fin);
- 			_m = tmp;
--			if (_m < 41 || _m > 125)
-+			if (_m < driver_data->m_min || _m > driver_data->m_max)
- 				continue;
+-	sb = inode->i_sb;
+-	sbi = EROFS_SB(sb);
+ 	it.buf = __EROFS_BUF_INITIALIZER;
+-	it.blkaddr = erofs_blknr(iloc(sbi, vi->nid) + vi->inode_isize);
+-	it.ofs = erofs_blkoff(iloc(sbi, vi->nid) + vi->inode_isize);
++	it.blkaddr = erofs_blknr(erofs_iloc(inode) + vi->inode_isize);
++	it.ofs = erofs_blkoff(erofs_iloc(inode) + vi->inode_isize);
  
- 			tmp = (u64)_m * fin;
- 			do_div(tmp, _p);
--			if (tmp < 500 * MHZ ||
-+			if (tmp < driver_data->min_freq  * MHZ ||
- 			    tmp > driver_data->max_freq * MHZ)
- 				continue;
+ 	/* read in shared xattr array (non-atomic, see kmalloc below) */
+ 	it.kaddr = erofs_read_metabuf(&it.buf, sb, it.blkaddr, EROFS_KMAP);
+@@ -159,7 +155,6 @@ static int inline_xattr_iter_begin(struct xattr_iter *it,
+ 				   struct inode *inode)
+ {
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+-	struct erofs_sb_info *const sbi = EROFS_SB(inode->i_sb);
+ 	unsigned int xattr_header_sz, inline_xattr_ofs;
  
-diff --git a/include/drm/bridge/samsung-dsim.h b/include/drm/bridge/samsung-dsim.h
-index ba5484de2b30e..a1a5b2b89a7ab 100644
---- a/include/drm/bridge/samsung-dsim.h
-+++ b/include/drm/bridge/samsung-dsim.h
-@@ -54,11 +54,14 @@ struct samsung_dsim_driver_data {
- 	unsigned int has_freqband:1;
- 	unsigned int has_clklane_stop:1;
- 	unsigned int num_clks;
-+	unsigned int min_freq;
- 	unsigned int max_freq;
- 	unsigned int wait_for_reset;
- 	unsigned int num_bits_resol;
- 	unsigned int pll_p_offset;
- 	const unsigned int *reg_values;
-+	u16 m_min;
-+	u16 m_max;
- };
+ 	xattr_header_sz = inlinexattr_header_size(inode);
+@@ -170,9 +165,8 @@ static int inline_xattr_iter_begin(struct xattr_iter *it,
  
- struct samsung_dsim_host_ops {
+ 	inline_xattr_ofs = vi->inode_isize + xattr_header_sz;
+ 
+-	it->blkaddr = erofs_blknr(iloc(sbi, vi->nid) + inline_xattr_ofs);
+-	it->ofs = erofs_blkoff(iloc(sbi, vi->nid) + inline_xattr_ofs);
+-
++	it->blkaddr = erofs_blknr(erofs_iloc(inode) + inline_xattr_ofs);
++	it->ofs = erofs_blkoff(erofs_iloc(inode) + inline_xattr_ofs);
+ 	it->kaddr = erofs_read_metabuf(&it->buf, inode->i_sb, it->blkaddr,
+ 				       EROFS_KMAP_ATOMIC);
+ 	if (IS_ERR(it->kaddr))
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index bb91cc6499725..3961bb55dea11 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -55,8 +55,7 @@ static int z_erofs_fill_inode_lazy(struct inode *inode)
+ 	if (test_bit(EROFS_I_Z_INITED_BIT, &vi->flags))
+ 		goto out_unlock;
+ 
+-	pos = ALIGN(iloc(EROFS_SB(sb), vi->nid) + vi->inode_isize +
+-		    vi->xattr_isize, 8);
++	pos = ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
+ 	kaddr = erofs_read_metabuf(&buf, sb, erofs_blknr(pos), EROFS_KMAP);
+ 	if (IS_ERR(kaddr)) {
+ 		err = PTR_ERR(kaddr);
+@@ -169,10 +168,9 @@ static int legacy_load_cluster_from_disk(struct z_erofs_maprecorder *m,
+ {
+ 	struct inode *const inode = m->inode;
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+-	const erofs_off_t ibase = iloc(EROFS_I_SB(inode), vi->nid);
+ 	const erofs_off_t pos =
+-		Z_EROFS_VLE_LEGACY_INDEX_ALIGN(ibase + vi->inode_isize +
+-					       vi->xattr_isize) +
++		Z_EROFS_VLE_LEGACY_INDEX_ALIGN(erofs_iloc(inode) +
++				vi->inode_isize + vi->xattr_isize) +
+ 		lcn * sizeof(struct z_erofs_vle_decompressed_index);
+ 	struct z_erofs_vle_decompressed_index *di;
+ 	unsigned int advise, type;
+@@ -376,9 +374,8 @@ static int compacted_load_cluster_from_disk(struct z_erofs_maprecorder *m,
+ 	struct inode *const inode = m->inode;
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+ 	const unsigned int lclusterbits = vi->z_logical_clusterbits;
+-	const erofs_off_t ebase = ALIGN(iloc(EROFS_I_SB(inode), vi->nid) +
+-					vi->inode_isize + vi->xattr_isize, 8) +
+-		sizeof(struct z_erofs_map_header);
++	const erofs_off_t ebase = sizeof(struct z_erofs_map_header) +
++		ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
+ 	const unsigned int totalidx = DIV_ROUND_UP(inode->i_size, EROFS_BLKSIZ);
+ 	unsigned int compacted_4b_initial, compacted_2b;
+ 	unsigned int amortizedshift;
+diff --git a/include/trace/events/erofs.h b/include/trace/events/erofs.h
+index 4f4c44ea3a655..e095d36db9391 100644
+--- a/include/trace/events/erofs.h
++++ b/include/trace/events/erofs.h
+@@ -66,8 +66,8 @@ TRACE_EVENT(erofs_fill_inode,
+ 	TP_fast_assign(
+ 		__entry->dev		= inode->i_sb->s_dev;
+ 		__entry->nid		= EROFS_I(inode)->nid;
+-		__entry->blkaddr	= erofs_blknr(iloc(EROFS_I_SB(inode), __entry->nid));
+-		__entry->ofs		= erofs_blkoff(iloc(EROFS_I_SB(inode), __entry->nid));
++		__entry->blkaddr	= erofs_blknr(erofs_iloc(inode));
++		__entry->ofs		= erofs_blkoff(erofs_iloc(inode));
+ 	),
+ 
+ 	TP_printk("dev = (%d,%d), nid = %llu, blkaddr %u ofs %u",
 -- 
 2.39.2
 
