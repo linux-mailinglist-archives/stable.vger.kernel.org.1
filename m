@@ -2,44 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D48F754F09
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 16:36:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FB6A754F1F
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 16:59:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229579AbjGPOg3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 10:36:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34760 "EHLO
+        id S229544AbjGPO7V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 10:59:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjGPOg2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 10:36:28 -0400
+        with ESMTP id S229454AbjGPO7V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 10:59:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2701FE66
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 07:36:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 303561B7;
+        Sun, 16 Jul 2023 07:59:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFA0C60C90
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 14:36:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B847AC433C8;
-        Sun, 16 Jul 2023 14:36:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1FEB60D27;
+        Sun, 16 Jul 2023 14:59:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA81C433C7;
+        Sun, 16 Jul 2023 14:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689518187;
-        bh=kN1BusoXm4sbmfRwMFsiw7nfSxlOatfA/VwSoEFdJIY=;
+        s=korg; t=1689519559;
+        bh=BcbGvIMw7IzFmFTJrFkd9Hfe38MZzNMEsk3MFlGVA74=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=btgJVYagHyBp0ODen4Um4iEv5wPHkQp+S+zuhlpD5ewoNQc4InJzSQZDEkeSby2BH
-         TC2AJttWaFWxnW4AN1SZ5ieOoxhScu+sM6ga8akP519GWH0V1Nv2Lpc08J0W6vdEGr
-         nCfaHAdrxJeK2V6m3HtsPJgQzaR4TitbvXvp36DY=
-Date:   Sun, 16 Jul 2023 16:36:23 +0200
+        b=QcNz99QuVZYxxcw2U2cGSpcGjD43YIx+H5GX6BO7uJ21wLImuVdfTxhCVP01TpHl7
+         KUmqbjUFBlnTAstJIFBF8eFWEdvwCgQ3AxvUVklqLxD8hqBDuTG0xdkfEU8dQvhSMA
+         kROvTdrVCGB5LCsch8I48YqKtsLl1xDO25EYQBGw=
+Date:   Sun, 16 Jul 2023 16:58:58 +0200
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Chris Paterson <Chris.Paterson2@renesas.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: 4.14.321-rc1 build error
-Message-ID: <2023071616-overture-flatbed-28e0@gregkh>
-References: <TY2PR01MB37883616B104E56A1DDCA286B737A@TY2PR01MB3788.jpnprd01.prod.outlook.com>
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Tomasz Rostanski <tomasz.rostanski@thalesgroup.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux USB <linux-usb@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: Fwd: dwc3: regression in USB DWC3 driver in kernel 5.15 branch
+Message-ID: <2023071638-extrovert-batting-1f93@gregkh>
+References: <bfee63a3-16ee-0061-94c0-9c9af5318634@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <TY2PR01MB37883616B104E56A1DDCA286B737A@TY2PR01MB3788.jpnprd01.prod.outlook.com>
+In-Reply-To: <bfee63a3-16ee-0061-94c0-9c9af5318634@gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -50,24 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 13, 2023 at 08:15:11AM +0000, Chris Paterson wrote:
-> Hello Greg,
+On Sat, Jul 15, 2023 at 06:03:06PM +0700, Bagas Sanjaya wrote:
+> Hi,
 > 
-> I know you haven't formally released 4.14.321-rc1 for review yet, but our CI picked up a build issue so I thought I may as well report it in case it's useful information for you.
+> I notice a stable-specific regression on Bugzilla [1]. Quoting from it:
 > 
-> SHA: Linux 4.14.321-rc1 (bc1094b21392)
-> Failed build log: https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/4635722359
-> defconfig used: https://gitlab.com/cip-project/cip-kernel/cip-kernel-config/-/blob/master/4.14.y/arm/moxa_mxc_defconfig
+> > The backport commit to 5.15 branch:
+> > 9d4f84a15f9c9727bc07f59d9dafc89e65aadb34 "arm64: dts: imx8mp: Add snps,gfladj-refclk-lpm-sel quirk to USB nodes"  (from upstream commit 5c3d5ecf48ab06c709c012bf1e8f0c91e1fcd7ad)
+> > switched from "snps,dis-u2-freeclk-exists-quirk" to "snps,gfladj-refclk-lpm-sel-quirk".
+> > 
+> > The problem is that the gfladj-refclk-lpm-sel-quirk quirk is not implemented / backported to 5.15 branch.
+> > 
+> > This commit should be either reverted, or the commit introducing gfladj-refclk-lpm-sel-quirk needs to be merged to 5.15 kernel branch.
+> > 
+> > As a result of this patch, on Gateworks Venice GW7400 revB board the USB 3.x devices which are connected to the USB Type C port does not enumerate and the following errors are generated:
+> > 
+> > [   14.906302] xhci-hcd xhci-hcd.0.auto: Timeout while waiting for setup device command
+> > [   15.122383] usb 2-1: device not accepting address 2, error -62
+> > [   25.282195] xhci-hcd xhci-hcd.0.auto: Abort failed to stop command ring: -110
+> > [   25.297408] xhci-hcd xhci-hcd.0.auto: xHCI host controller not responding, assume dead
+> > [   25.305345] xhci-hcd xhci-hcd.0.auto: HC died; cleaning up
+> > [   25.311058] xhci-hcd xhci-hcd.0.auto: Timeout while waiting for stop endpoint command
+> > [   25.334361] usb usb2-port1: couldn't allocate usb_device
+> > 
+> > When the commit is reverted the USB 3.x drives works fine.
 > 
-> Error log:
-> /builds/cip-project/cip-testing/linux-stable-rc-ci/gcc/gcc-11.1.0-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi-ld: arch/arm/probes/kprobes/core.o: in function `jprobe_return':
-> /builds/cip-project/cip-testing/linux-stable-rc-ci/arch/arm/probes/kprobes/core.c:555: undefined reference to `kprobe_handler'
-> Makefile:1049: recipe for target 'vmlinux' failed
-> make: *** [vmlinux] Error 1
+> See Bugzilla for the full thread and attach dmesgs.
 > 
-> Problem patch:
-> Reverting 1c18f6ba04d8 ("ARM: 9303/1: kprobes: avoid missing-declaration warnings") makes the problem go away.
+> Anyway, I'm adding it to regzbot:
+> 
+> #regzbot introduced: 9d4f84a15f9c97 https://bugzilla.kernel.org/show_bug.cgi?id=217670
+> #regzbot title: regression in USB DWC3 driver due to missing gfladj-refclk-lpm-sel-quirk quirk
 
-SHould now be fixed, thanks.
-
-greg k-h
+This isn't helpful as I don't know what commit eactly this missing
+quirk is :(
