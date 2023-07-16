@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 808EC755594
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB862755578
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232568AbjGPUmX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:42:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33026 "EHLO
+        id S232521AbjGPUlO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:41:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232558AbjGPUmX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66135A4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:22 -0700 (PDT)
+        with ESMTP id S232544AbjGPUlI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 684A5BA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0474860EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143F4C433C7;
-        Sun, 16 Jul 2023 20:42:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F190260E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C61BC433C8;
+        Sun, 16 Jul 2023 20:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540141;
-        bh=eFWoOiPfC4EiZU4f1jA6mdIYei3/g1E2KX3yg/W0jj0=;
+        s=korg; t=1689540065;
+        bh=EdD/NB5tGPCH+ZTXDFjbMjDtC2zNh+tkJW6weMZWKdE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ta319e7I1ik+m0X5t/gCHU/4eS5r8TstLX/F5lLE+ntkQMbiqAE5pTXc6ZCQg/St2
-         q/wScxTPqcorUN+OOoQXknffdwz0R35nCgbnQAzHga/OQryalmNyLLhEFW6xI8nLPv
-         vExhkJZZr4fcYiTmihGeaQkZSUUE0tHDssE5bBQA=
+        b=0k2zleUgGvfVkQtR3houh1Cc0Bk80GZVchXp2FhnaYrDYixN8UBFKoeEeIQlI7qx4
+         +mzfW0vGDN9CtjQG7c+5Ypl3lxJuYhTOhEyjQWzpobo/5ERxB3lyzV8kxMOpr3s+Zx
+         UwHVyHZOXBALXizCrHPBbcgcOPWD9BhdLeqzko7M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        patches@lists.linux.dev, Tim Harvey <tharvey@gateworks.com>,
+        Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 230/591] ARM: dts: stm32: fix i2s endpoint format property for stm32mp15xx-dkx
-Date:   Sun, 16 Jul 2023 21:46:09 +0200
-Message-ID: <20230716194929.823391901@linuxfoundation.org>
+Subject: [PATCH 6.1 231/591] hwmon: (gsc-hwmon) fix fan pwm temperature scaling
+Date:   Sun, 16 Jul 2023 21:46:10 +0200
+Message-ID: <20230716194929.850337646@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -56,34 +55,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Olivier Moysan <olivier.moysan@foss.st.com>
+From: Tim Harvey <tharvey@gateworks.com>
 
-[ Upstream commit 076c74c592cabe4a47537fe5205b5b678bed010d ]
+[ Upstream commit a6d80df47ee2c69db99e4f2f8871aa4db154620b ]
 
-Use "dai-format" to configure DAI audio format as specified in
-audio-graph-port.yaml bindings.
+The GSC fan pwm temperature register is in centidegrees celcius but the
+Linux hwmon convention is to use milidegrees celcius. Fix the scaling.
 
-Fixes: 144d1ba70548 ("ARM: dts: stm32: Adapt STM32MP157 DK boards to stm32 DT diversity")
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: 3bce5377ef66 ("hwmon: Add Gateworks System Controller support")
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Link: https://lore.kernel.org/r/20230606153004.1448086-1-tharvey@gateworks.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32mp15xx-dkx.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/gsc-hwmon.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/stm32mp15xx-dkx.dtsi b/arch/arm/boot/dts/stm32mp15xx-dkx.dtsi
-index 8b48d3c89a047..fdc48536e97d1 100644
---- a/arch/arm/boot/dts/stm32mp15xx-dkx.dtsi
-+++ b/arch/arm/boot/dts/stm32mp15xx-dkx.dtsi
-@@ -438,7 +438,7 @@ &i2s2 {
- 	i2s2_port: port {
- 		i2s2_endpoint: endpoint {
- 			remote-endpoint = <&sii9022_tx_endpoint>;
--			format = "i2s";
-+			dai-format = "i2s";
- 			mclk-fs = <256>;
- 		};
- 	};
+diff --git a/drivers/hwmon/gsc-hwmon.c b/drivers/hwmon/gsc-hwmon.c
+index b60ec95b5edbf..74bfc21c2767b 100644
+--- a/drivers/hwmon/gsc-hwmon.c
++++ b/drivers/hwmon/gsc-hwmon.c
+@@ -82,8 +82,8 @@ static ssize_t pwm_auto_point_temp_store(struct device *dev,
+ 	if (kstrtol(buf, 10, &temp))
+ 		return -EINVAL;
+ 
+-	temp = clamp_val(temp, 0, 10000);
+-	temp = DIV_ROUND_CLOSEST(temp, 10);
++	temp = clamp_val(temp, 0, 100000);
++	temp = DIV_ROUND_CLOSEST(temp, 100);
+ 
+ 	regs[0] = temp & 0xff;
+ 	regs[1] = (temp >> 8) & 0xff;
+@@ -100,7 +100,7 @@ static ssize_t pwm_auto_point_pwm_show(struct device *dev,
+ {
+ 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
+ 
+-	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)) / 100);
++	return sprintf(buf, "%d\n", 255 * (50 + (attr->index * 10)));
+ }
+ 
+ static SENSOR_DEVICE_ATTR_RO(pwm1_auto_point1_pwm, pwm_auto_point_pwm, 0);
 -- 
 2.39.2
 
