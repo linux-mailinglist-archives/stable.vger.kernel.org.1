@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 779AE75544D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6EE27556B1
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:53:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232066AbjGPU2z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:28:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50720 "EHLO
+        id S232937AbjGPUxE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:53:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232069AbjGPU2z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:28:55 -0400
+        with ESMTP id S232935AbjGPUxD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:53:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFD5F126
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:28:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFAECE9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:53:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B3EE60E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:28:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F07EC433C7;
-        Sun, 16 Jul 2023 20:28:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 850EE60EA2
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:53:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E1FC433C7;
+        Sun, 16 Jul 2023 20:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539332;
-        bh=XKwpodVx4pE0wG/xfjochq/EXojhxjcsfoMdwl0hzKs=;
+        s=korg; t=1689540782;
+        bh=I7j5rnv/HC4Qm/5j1txqUuzvZgeySl2Sn3VtHTJcavQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ecK2TZmHBzRm0FHR/iUdRVNuQP9keHUEt8ktfLghEUpGUPtQ/wFd5kx9tQ9fnVdPp
-         kefUlo6ii2Wm79yIzUFb0aiik0wWDOlTpBkkEuE92nPjaFzVS13PvOBk2H9ZfBAiwT
-         fkeiewpPSW6J+I9lnCC6dkNhVHPLyfYFgcZqGCDk=
+        b=PPQQV3VQ4QDpX7ftAiJn9oHzrjJImX1DTylb8BvfqU/SgzJDV0jh9Z/K9Vbkrn/YB
+         MqLF2D6CH3+A5xGghv3QUUltuwcMMmrUkMDdY1aMxr97EN378KQJofr9AhTqJicyQs
+         qsW/NYQztSKlGfWcawvYtRuw029oyP1ONcLHAPpI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Lunn <andrew@lunn.ch>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.4 771/800] ARM: orion5x: fix d2net gpio initialization
+        patches@lists.linux.dev,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 485/591] Bluetooth: MGMT: Fix marking SCAN_RSP as not connectable
 Date:   Sun, 16 Jul 2023 21:50:24 +0200
-Message-ID: <20230716195007.056984393@linuxfoundation.org>
+Message-ID: <20230716194936.444421942@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,55 +56,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit f8ef1233939495c405a9faa4bd1ae7d3f581bae4 upstream.
+[ Upstream commit 73f55453ea5236a586a7f1b3d5e2ee051d655351 ]
 
-The DT version of this board has a custom file with the gpio
-device. However, it does nothing because the d2net_init()
-has no caller or prototype:
+When receiving a scan response there is no way to know if the remote
+device is connectable or not, so when it cannot be merged don't
+make any assumption and instead just mark it with a new flag defined as
+MGMT_DEV_FOUND_SCAN_RSP so userspace can tell it is a standalone
+SCAN_RSP.
 
-arch/arm/mach-orion5x/board-d2net.c:101:13: error: no previous prototype for 'd2net_init'
-
-Call it from the board-dt file as intended.
-
-Fixes: 94b0bd366e36 ("ARM: orion5x: convert d2net to Device Tree")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230516153109.514251-10-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-bluetooth/CABBYNZ+CYMsDSPTxBn09Js3BcdC-x7vZFfyLJ3ppZGGwJKmUTw@mail.gmail.com/
+Fixes: c70a7e4cc8d2 ("Bluetooth: Add support for Not Connectable flag for Device Found events")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-orion5x/board-dt.c |    3 +++
- arch/arm/mach-orion5x/common.h   |    6 ++++++
- 2 files changed, 9 insertions(+)
+ include/net/bluetooth/mgmt.h |  1 +
+ net/bluetooth/hci_event.c    | 15 +++++----------
+ 2 files changed, 6 insertions(+), 10 deletions(-)
 
---- a/arch/arm/mach-orion5x/board-dt.c
-+++ b/arch/arm/mach-orion5x/board-dt.c
-@@ -60,6 +60,9 @@ static void __init orion5x_dt_init(void)
- 	if (of_machine_is_compatible("maxtor,shared-storage-2"))
- 		mss2_init();
+diff --git a/include/net/bluetooth/mgmt.h b/include/net/bluetooth/mgmt.h
+index a5801649f6196..5e68b3dd44222 100644
+--- a/include/net/bluetooth/mgmt.h
++++ b/include/net/bluetooth/mgmt.h
+@@ -979,6 +979,7 @@ struct mgmt_ev_auth_failed {
+ #define MGMT_DEV_FOUND_NOT_CONNECTABLE		BIT(2)
+ #define MGMT_DEV_FOUND_INITIATED_CONN		BIT(3)
+ #define MGMT_DEV_FOUND_NAME_REQUEST_FAILED	BIT(4)
++#define MGMT_DEV_FOUND_SCAN_RSP			BIT(5)
  
-+	if (of_machine_is_compatible("lacie,d2-network"))
-+		d2net_init();
-+
- 	of_platform_default_populate(NULL, orion5x_auxdata_lookup, NULL);
- }
+ #define MGMT_EV_DEVICE_FOUND		0x0012
+ struct mgmt_ev_device_found {
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 21416ccc30ab2..b272cc1f36481 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6307,23 +6307,18 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
+ 		return;
+ 	}
  
---- a/arch/arm/mach-orion5x/common.h
-+++ b/arch/arm/mach-orion5x/common.h
-@@ -73,6 +73,12 @@ extern void mss2_init(void);
- static inline void mss2_init(void) {}
- #endif
+-	/* When receiving non-connectable or scannable undirected
+-	 * advertising reports, this means that the remote device is
+-	 * not connectable and then clearly indicate this in the
+-	 * device found event.
+-	 *
+-	 * When receiving a scan response, then there is no way to
++	/* When receiving a scan response, then there is no way to
+ 	 * know if the remote device is connectable or not. However
+ 	 * since scan responses are merged with a previously seen
+ 	 * advertising report, the flags field from that report
+ 	 * will be used.
+ 	 *
+-	 * In the really unlikely case that a controller get confused
+-	 * and just sends a scan response event, then it is marked as
+-	 * not connectable as well.
++	 * In the unlikely case that a controller just sends a scan
++	 * response event that doesn't match the pending report, then
++	 * it is marked as a standalone SCAN_RSP.
+ 	 */
+ 	if (type == LE_ADV_SCAN_RSP)
+-		flags = MGMT_DEV_FOUND_NOT_CONNECTABLE;
++		flags = MGMT_DEV_FOUND_SCAN_RSP;
  
-+#ifdef CONFIG_MACH_D2NET_DT
-+void d2net_init(void);
-+#else
-+static inline void d2net_init(void) {}
-+#endif
-+
- /*****************************************************************************
-  * Helpers to access Orion registers
-  ****************************************************************************/
+ 	/* If there's nothing pending either store the data from this
+ 	 * event or send an immediate device found event if the data
+-- 
+2.39.2
+
 
 
