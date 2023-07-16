@@ -2,92 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D86D755260
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D93437554A1
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231304AbjGPUHR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:07:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36630 "EHLO
+        id S232211AbjGPUc2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:32:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231298AbjGPUHO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:07:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD417E76
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:07:03 -0700 (PDT)
+        with ESMTP id S232207AbjGPUc1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F6009F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59AE860EC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:07:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E11C433C8;
-        Sun, 16 Jul 2023 20:07:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2B1860EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C68C433C7;
+        Sun, 16 Jul 2023 20:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538022;
-        bh=KqhD3U5+QxGIj4Jidye8uyHNvEJuozklz/c6hoSxGmE=;
+        s=korg; t=1689539546;
+        bh=xjDmeQhu9wh2E3dfIi6488d6FXt3ReDiKcW7QIYxEgc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p7Mlq/fVcdQBRC+iew3jP7O6dkiX4ripFJv+pYcOXZ+cOdHjjNCDC6wPZRSvDKCh+
-         L0dn1jAjf6WfsV9RLNhI+mGwRSCSSLUHEpgeLME2jMkjbxgG1BuryN25fEvDm3sCOP
-         fZ5Td7vK00wJIHdxcSySL7DKu+nJeXas88wi5Odg=
+        b=x8BgQ43HFq+d/mbzkQ+u87zhfigP3NOTSYwNs9eYyrrUctT5EaMnLf0dZtT9ebtn0
+         hU4bzFBycDfaAbe7JFIsBJSnYWrUQ7xowkO52CpKlcVKXY3AYjQjagwjd6RqHp6Fm8
+         mwUS9GmtWoOBDNPtyH9DB3K+SmWw6u0t0GxhtzzM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 303/800] arm64: dts: qcom: msm8916: correct WCNSS unit address
-Date:   Sun, 16 Jul 2023 21:42:36 +0200
-Message-ID: <20230716194956.115768053@linuxfoundation.org>
+        patches@lists.linux.dev, Hannes Reinecke <hare@suse.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 018/591] nvme-auth: no need to reset chap contexts on re-authentication
+Date:   Sun, 16 Jul 2023 21:42:37 +0200
+Message-ID: <20230716194924.334475947@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit 1f9a41bb0bba7b373c26a6f2cc8d35cc3159c861 ]
+[ Upstream commit e8a420efb637f52c586596283d6fd96f2a7ecb5c ]
 
-Match unit-address to reg entry to fix dtbs W=1 warnings:
+Now that the chap context is reset upon completion, this is no longer
+needed. Also remove nvme_auth_reset as no callers are left.
 
-  Warning (simple_bus_reg): /soc@0/remoteproc@a21b000: simple-bus unit address format error, expected "a204000"
-
-Fixes: 88106096cbf8 ("ARM: dts: msm8916: Add and enable wcnss node")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230419211856.79332-4-krzysztof.kozlowski@linaro.org
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: a836ca33c5b0 ("nvme-core: fix memory leak in dhchap_secret_store")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8916.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/auth.c | 13 -------------
+ drivers/nvme/host/core.c |  4 ----
+ drivers/nvme/host/nvme.h |  1 -
+ 3 files changed, 18 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-index f6ccce0dad4e2..bf88c10ff55b0 100644
---- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-@@ -1871,7 +1871,7 @@ usb_hs_phy: phy {
- 			};
- 		};
+diff --git a/drivers/nvme/host/auth.c b/drivers/nvme/host/auth.c
+index 2f823c6b84fd3..1a27d7fb4fa91 100644
+--- a/drivers/nvme/host/auth.c
++++ b/drivers/nvme/host/auth.c
+@@ -920,19 +920,6 @@ int nvme_auth_wait(struct nvme_ctrl *ctrl, int qid)
+ }
+ EXPORT_SYMBOL_GPL(nvme_auth_wait);
  
--		wcnss: remoteproc@a21b000 {
-+		wcnss: remoteproc@a204000 {
- 			compatible = "qcom,pronto-v2-pil", "qcom,pronto";
- 			reg = <0x0a204000 0x2000>, <0x0a202000 0x1000>, <0x0a21b000 0x3000>;
- 			reg-names = "ccu", "dxe", "pmu";
+-void nvme_auth_reset(struct nvme_ctrl *ctrl)
+-{
+-	struct nvme_dhchap_queue_context *chap;
+-
+-	mutex_lock(&ctrl->dhchap_auth_mutex);
+-	list_for_each_entry(chap, &ctrl->dhchap_auth_list, entry) {
+-		mutex_unlock(&ctrl->dhchap_auth_mutex);
+-		flush_work(&chap->auth_work);
+-		nvme_auth_reset_dhchap(chap);
+-	}
+-	mutex_unlock(&ctrl->dhchap_auth_mutex);
+-}
+-
+ static void nvme_ctrl_auth_work(struct work_struct *work)
+ {
+ 	struct nvme_ctrl *ctrl =
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index a7d9b5b42b388..b63511f481a7f 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3832,8 +3832,6 @@ static ssize_t nvme_ctrl_dhchap_secret_store(struct device *dev,
+ 		host_key = ctrl->host_key;
+ 		ctrl->host_key = key;
+ 		nvme_auth_free_key(host_key);
+-		/* Key has changed; re-authentication with new key */
+-		nvme_auth_reset(ctrl);
+ 	}
+ 	/* Start re-authentication */
+ 	dev_info(ctrl->device, "re-authenticating controller\n");
+@@ -3886,8 +3884,6 @@ static ssize_t nvme_ctrl_dhchap_ctrl_secret_store(struct device *dev,
+ 		ctrl_key = ctrl->ctrl_key;
+ 		ctrl->ctrl_key = key;
+ 		nvme_auth_free_key(ctrl_key);
+-		/* Key has changed; re-authentication with new key */
+-		nvme_auth_reset(ctrl);
+ 	}
+ 	/* Start re-authentication */
+ 	dev_info(ctrl->device, "re-authenticating controller\n");
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 2aa514c3dfa17..5ed771d576c6d 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -1032,7 +1032,6 @@ void nvme_auth_init_ctrl(struct nvme_ctrl *ctrl);
+ void nvme_auth_stop(struct nvme_ctrl *ctrl);
+ int nvme_auth_negotiate(struct nvme_ctrl *ctrl, int qid);
+ int nvme_auth_wait(struct nvme_ctrl *ctrl, int qid);
+-void nvme_auth_reset(struct nvme_ctrl *ctrl);
+ void nvme_auth_free(struct nvme_ctrl *ctrl);
+ #else
+ static inline void nvme_auth_init_ctrl(struct nvme_ctrl *ctrl) {};
 -- 
 2.39.2
 
