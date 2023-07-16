@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D237555A0
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE0AF75536C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232587AbjGPUmz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:42:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33316 "EHLO
+        id S231716AbjGPUS4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:18:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232586AbjGPUmy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756D7E41
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:53 -0700 (PDT)
+        with ESMTP id S231726AbjGPUSy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A3C126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1416960EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5F6C433C9;
-        Sun, 16 Jul 2023 20:42:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 92AE360EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F21C433C8;
+        Sun, 16 Jul 2023 20:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540172;
-        bh=UTEuWEHz7U2+y8HbfUKNCmIIGiEzeIEPM01UABI50pU=;
+        s=korg; t=1689538733;
+        bh=E/83GT2Yh6gB5M00dSWsw4qpqdS/Zp2L1iZb8b9Pfxo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GT+sUeXZkzNajAQb/U8FtOjOoYv5r28yXpyLJfH1HtPpeCGZj/x/0bQwGA+cvQK9C
-         u/R0mmiZ8WdjNhABcGTVtB/FW/wXQl0Sa1tnid9hrnlRFHaHoC4k4EmzC/o4xYwFi2
-         nidf3H4w2FaGE30xlGRji6Gr846Ju8aYTpo2WlxM=
+        b=M3b+wqP6LpcBqcNr7QbddG5bN6rO2xVfzgfU8KvVdRy8TIbZZsfTI1Vq2P/6g8ysc
+         l4qD2T5EWMCivtSVFEJ+4qAJrvOscwtxeoAW25a9mhhR9vtS+DfZ7UJ1ZYAYtJNb97
+         w8hEaHaDoPSZsbjYEOskcNIqDtA1OiyJC7QQBCwA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tao Zhou <tao.zhou1@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        Alex Deucher <Alexander.Deucher@amd.com>,
-        Luben Tuikov <luben.tuikov@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 269/591] drm/amdgpu: Fix usage of UMC fill record in RAS
-Date:   Sun, 16 Jul 2023 21:46:48 +0200
-Message-ID: <20230716194930.858270605@linuxfoundation.org>
+Subject: [PATCH 6.4 556/800] usb: dwc2: Fix some error handling paths
+Date:   Sun, 16 Jul 2023 21:46:49 +0200
+Message-ID: <20230716195002.005041234@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,48 +55,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luben Tuikov <luben.tuikov@amd.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 71344a718a9fda8c551cdc4381d354f9a9907f6f ]
+[ Upstream commit ada050c69108bc34be13ecc11f7fad0f20ebadc4 ]
 
-The fixed commit listed in the Fixes tag below, introduced a bug in
-amdgpu_ras.c::amdgpu_reserve_page_direct(), in that when introducing the new
-amdgpu_umc_fill_error_record() and internally in that new function the physical
-address (argument "uint64_t retired_page"--wrong name) is right-shifted by
-AMDGPU_GPU_PAGE_SHIFT. Thus, in amdgpu_reserve_page_direct() when we pass
-"address" to that new function, we should NOT right-shift it, since this
-results, erroneously, in the page address to be 0 for first
-2^(2*AMDGPU_GPU_PAGE_SHIFT) memory addresses.
+dwc2_driver_probe() calls dwc2_lowlevel_hw_init() which deassert some reset
+lines.
+Should an error happen in dwc2_lowlevel_hw_init() after calling
+reset_control_deassert() or in the probe after calling
+dwc2_lowlevel_hw_init(), the reset lines remain deasserted.
 
-This commit fixes this bug.
+Add some devm_add_action_or_reset() calls to re-assert the lines if needed.
 
-Cc: Tao Zhou <tao.zhou1@amd.com>
-Cc: Hawking Zhang <Hawking.Zhang@amd.com>
-Cc: Alex Deucher <Alexander.Deucher@amd.com>
-Fixes: 400013b268cb ("drm/amdgpu: add umc_fill_error_record to make code more simple")
-Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
-Link: https://lore.kernel.org/r/20230610113536.10621-1-luben.tuikov@amd.com
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Update the remove function accordingly.
+
+This change is compile-tested only.
+
+Fixes: 83f8da562f8b ("usb: dwc2: Add reset control to dwc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/c64537b5339342bd00f7c2152b8fc23792b9f95a.1683306479.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/dwc2/platform.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index a4b47e1bd111d..09fc464f5f128 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -170,8 +170,7 @@ static int amdgpu_reserve_page_direct(struct amdgpu_device *adev, uint64_t addre
+diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
+index 5aee284018c00..5cf025511cce6 100644
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -203,6 +203,11 @@ int dwc2_lowlevel_hw_disable(struct dwc2_hsotg *hsotg)
+ 	return ret;
+ }
  
- 	memset(&err_rec, 0x0, sizeof(struct eeprom_table_record));
- 	err_data.err_addr = &err_rec;
--	amdgpu_umc_fill_error_record(&err_data, address,
--			(address >> AMDGPU_GPU_PAGE_SHIFT), 0, 0);
-+	amdgpu_umc_fill_error_record(&err_data, address, address, 0, 0);
++static void dwc2_reset_control_assert(void *data)
++{
++	reset_control_assert(data);
++}
++
+ static int dwc2_lowlevel_hw_init(struct dwc2_hsotg *hsotg)
+ {
+ 	int i, ret;
+@@ -213,6 +218,10 @@ static int dwc2_lowlevel_hw_init(struct dwc2_hsotg *hsotg)
+ 				     "error getting reset control\n");
  
- 	if (amdgpu_bad_page_threshold != 0) {
- 		amdgpu_ras_add_bad_pages(adev, err_data.err_addr,
+ 	reset_control_deassert(hsotg->reset);
++	ret = devm_add_action_or_reset(hsotg->dev, dwc2_reset_control_assert,
++				       hsotg->reset);
++	if (ret)
++		return ret;
+ 
+ 	hsotg->reset_ecc = devm_reset_control_get_optional(hsotg->dev, "dwc2-ecc");
+ 	if (IS_ERR(hsotg->reset_ecc))
+@@ -220,6 +229,10 @@ static int dwc2_lowlevel_hw_init(struct dwc2_hsotg *hsotg)
+ 				     "error getting reset control for ecc\n");
+ 
+ 	reset_control_deassert(hsotg->reset_ecc);
++	ret = devm_add_action_or_reset(hsotg->dev, dwc2_reset_control_assert,
++				       hsotg->reset_ecc);
++	if (ret)
++		return ret;
+ 
+ 	/*
+ 	 * Attempt to find a generic PHY, then look for an old style
+@@ -339,9 +352,6 @@ static int dwc2_driver_remove(struct platform_device *dev)
+ 	if (hsotg->ll_hw_enabled)
+ 		dwc2_lowlevel_hw_disable(hsotg);
+ 
+-	reset_control_assert(hsotg->reset);
+-	reset_control_assert(hsotg->reset_ecc);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.39.2
 
