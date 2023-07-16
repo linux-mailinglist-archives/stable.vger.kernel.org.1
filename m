@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A6C97555F6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9365975539C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232689AbjGPUqV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35264 "EHLO
+        id S231803AbjGPUU6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:20:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232699AbjGPUqU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:46:20 -0400
+        with ESMTP id S231806AbjGPUU6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:20:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F75E5D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:46:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2155D1B9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:20:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5350A60EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:46:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ADCC433C8;
-        Sun, 16 Jul 2023 20:46:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8DE860EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2D0C433C8;
+        Sun, 16 Jul 2023 20:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540377;
-        bh=iST81elIs5GPAvhGF4+LF4I6fZSLGev//0T7+nEx3Go=;
+        s=korg; t=1689538856;
+        bh=XZS/KRT6+rroDkcBeQwrKdTOSWOjd6ZTk8AWqLBfZE8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m0+YFvuaJFzzDLUi0GZPDDPtpwNN/HboE+rbqWD1vad2CUS2lwKIZkzb8ioV/hNK5
-         yjOitkKjax6Yt9+/DK2i76XwoE5Nhf23IdvrFePQuG8U+jZT5UJRgzLBRvz27c16Td
-         qnSeiVdvsr5pnmWv/C53jzdqEidbkCpSRm442MLI=
+        b=Q0y5fQ/fxaeZoYa72jqOB0bGoXRJBuf6g6lIrzbA0XIa3hfr5+ixVvJkE2X99RVbJ
+         zOrC+WxL46bEQ50GVia5AdqxkxC50KaoPH4jjsq4owL9BsmtI0244ooQlCUqN8NjqX
+         4WmK/zJKC3nUUFKnB5P/68YgoXqOjpD5DyQwPQ3w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sachin Sant <sachinp@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Clark Wang <xiaoning.wang@nxp.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 315/591] powerpc/64s: Fix VAS mm use after free
+Subject: [PATCH 6.4 601/800] i3c: master: svc: fix cpu schedule in spin lock
 Date:   Sun, 16 Jul 2023 21:47:34 +0200
-Message-ID: <20230716194932.041041042@linuxfoundation.org>
+Message-ID: <20230716195003.062437399@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,53 +56,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-[ Upstream commit b4bda59b47879cce38a6ec5a01cd3cac702b5331 ]
+[ Upstream commit 33beadb3b1ab74e69db2c49d9663f3a93a273943 ]
 
-The refcount on mm is dropped before the coprocessor is detached.
+pm_runtime_resume_and_get() may call sleep(). It cannot be used in
+svc_i3c_master_start_xfer_locked(), because it is in a spin lock.
 
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Fixes: 7bc6f71bdff5f ("powerpc/vas: Define and use common vas_window struct")
-Fixes: b22f2d88e435c ("powerpc/pseries/vas: Integrate API with open/close windows")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230607101024.14559-1-npiggin@gmail.com
+Move the pm runtime operations to svc_i3c_master_enqueue_xfer().
+
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Fixes: 05be23ef78f7 ("i3c: master: svc: add runtime pm support")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20230517033030.3068085-2-xiaoning.wang@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/vas-window.c | 2 +-
- arch/powerpc/platforms/pseries/vas.c        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
-index 0072682531d80..b664838008c12 100644
---- a/arch/powerpc/platforms/powernv/vas-window.c
-+++ b/arch/powerpc/platforms/powernv/vas-window.c
-@@ -1310,8 +1310,8 @@ int vas_win_close(struct vas_window *vwin)
- 	/* if send window, drop reference to matching receive window */
- 	if (window->tx_win) {
- 		if (window->user_win) {
--			put_vas_user_win_ref(&vwin->task_ref);
- 			mm_context_remove_vas_window(vwin->task_ref.mm);
-+			put_vas_user_win_ref(&vwin->task_ref);
- 		}
- 		put_rx_win(window->rxwin);
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index e3f454123805e..79b08942a925d 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -1090,12 +1090,6 @@ static void svc_i3c_master_start_xfer_locked(struct svc_i3c_master *master)
+ 	if (!xfer)
+ 		return;
+ 
+-	ret = pm_runtime_resume_and_get(master->dev);
+-	if (ret < 0) {
+-		dev_err(master->dev, "<%s> Cannot get runtime PM.\n", __func__);
+-		return;
+-	}
+-
+ 	svc_i3c_master_clear_merrwarn(master);
+ 	svc_i3c_master_flush_fifo(master);
+ 
+@@ -1110,9 +1104,6 @@ static void svc_i3c_master_start_xfer_locked(struct svc_i3c_master *master)
+ 			break;
  	}
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 94c023bb13e05..880b962afc057 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -507,8 +507,8 @@ static int vas_deallocate_window(struct vas_window *vwin)
- 	vascaps[win->win_type].nr_open_windows--;
- 	mutex_unlock(&vas_pseries_mutex);
  
--	put_vas_user_win_ref(&vwin->task_ref);
- 	mm_context_remove_vas_window(vwin->task_ref.mm);
-+	put_vas_user_win_ref(&vwin->task_ref);
+-	pm_runtime_mark_last_busy(master->dev);
+-	pm_runtime_put_autosuspend(master->dev);
+-
+ 	xfer->ret = ret;
+ 	complete(&xfer->comp);
  
- 	kfree(win);
- 	return 0;
+@@ -1133,6 +1124,13 @@ static void svc_i3c_master_enqueue_xfer(struct svc_i3c_master *master,
+ 					struct svc_i3c_xfer *xfer)
+ {
+ 	unsigned long flags;
++	int ret;
++
++	ret = pm_runtime_resume_and_get(master->dev);
++	if (ret < 0) {
++		dev_err(master->dev, "<%s> Cannot get runtime PM.\n", __func__);
++		return;
++	}
+ 
+ 	init_completion(&xfer->comp);
+ 	spin_lock_irqsave(&master->xferqueue.lock, flags);
+@@ -1143,6 +1141,9 @@ static void svc_i3c_master_enqueue_xfer(struct svc_i3c_master *master,
+ 		svc_i3c_master_start_xfer_locked(master);
+ 	}
+ 	spin_unlock_irqrestore(&master->xferqueue.lock, flags);
++
++	pm_runtime_mark_last_busy(master->dev);
++	pm_runtime_put_autosuspend(master->dev);
+ }
+ 
+ static bool
 -- 
 2.39.2
 
