@@ -2,102 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C558755332
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D749C755569
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231644AbjGPUQc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:16:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42322 "EHLO
+        id S232518AbjGPUkk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:40:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231652AbjGPUQb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51333E5B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:26 -0700 (PDT)
+        with ESMTP id S232521AbjGPUkj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFB5E5C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AC0A60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4F3C433C9;
-        Sun, 16 Jul 2023 20:16:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D5E3060E2C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF030C433C8;
+        Sun, 16 Jul 2023 20:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538584;
-        bh=Das22z4GLBnvRGB9TZFJek2UaW1AHz7fRpx9uomxse8=;
+        s=korg; t=1689540034;
+        bh=TsMM2clemeACUsTCzTeJUymJha9TsDKJPtDWybjLNVg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=09t5lsrUenCxigNk3RTt0JbnTlx6pMXQeZHCf69FQfx3QZ6h/xUcUm8OC60UqejBn
-         eEcXiqonTt+1yACSiN4tr0/+YqDPyMXmj2i+BGi+Nl+mxZcW/0FNY64YB/Sy8xFwdh
-         ERD2J48WnauyE29H5sbKqvBn3DgDgUWST2JLQ/fE=
+        b=UtxtueBrTbj/cHGf7C7NfyFA1uN4HDqnOkK5NqBAv+LdYD7g1/IZmr7/6AX4ynJMd
+         MjFjPlKkZCewOG00f3F1ClGUQ8AVmb4M3yhgFRCtU8feQDaTYTvV5/eZvlLhyaKk9e
+         NM2sB0dZi/EWTKaHjXJylF4XGB4a0+pKySDVF2nA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Leo Li <leoyang.li@nxp.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Qiang Zhao <qiang.zhao@nxp.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Kumar Gala <galak@kernel.crashing.org>,
+        Nicolas Schier <nicolas@jasle.eu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 504/800] crypto: marvell/cesa - Fix type mismatch warning
-Date:   Sun, 16 Jul 2023 21:45:57 +0200
-Message-ID: <20230716195000.800645251@linuxfoundation.org>
+Subject: [PATCH 6.1 219/591] soc/fsl/qe: fix usb.c build errors
+Date:   Sun, 16 Jul 2023 21:45:58 +0200
+Message-ID: <20230716194929.537396705@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit efbc7764c4446566edb76ca05e903b5905673d2e ]
+[ Upstream commit 7b1a78babd0d2cd27aa07255dee0c2d7ac0f31e3 ]
 
-Commit df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3") uncovered
-a type mismatch in cesa 3des support that leads to a memcpy beyond the
-end of a structure:
+Fix build errors in soc/fsl/qe/usb.c when QUICC_ENGINE is not set.
+This happens when PPC_EP88XC is set, which selects CPM1 & CPM.
+When CPM is set, USB_FSL_QE can be set without QUICC_ENGINE
+being set. When USB_FSL_QE is set, QE_USB deafults to y, which
+causes build errors when QUICC_ENGINE is not set. Making
+QE_USB depend on QUICC_ENGINE prevents QE_USB from defaulting to y.
 
-In function 'fortify_memcpy_chk',
-    inlined from 'mv_cesa_des3_ede_setkey' at drivers/crypto/marvell/cesa/cipher.c:307:2:
-include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  583 |                         __write_overflow_field(p_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Fixes these build errors:
 
-This is probably harmless as the actual data that is copied has the correct
-type, but clearly worth fixing nonetheless.
+drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
+usb.c:(.text+0x1e): undefined reference to `qe_immr'
+powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
+powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
+powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
+powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
 
-Fixes: 4ada48397823 ("crypto: marvell/cesa - add Triple-DES support")
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 5e41486c408e ("powerpc/QE: add support for QE USB clocks routing")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/all/202301101500.pillNv6R-lkp@intel.com/
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Leo Li <leoyang.li@nxp.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: Kumar Gala <galak@kernel.crashing.org>
+Acked-by: Nicolas Schier <nicolas@jasle.eu>
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/cipher.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/fsl/qe/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
-index c6f2fa753b7c0..0f37dfd42d850 100644
---- a/drivers/crypto/marvell/cesa/cipher.c
-+++ b/drivers/crypto/marvell/cesa/cipher.c
-@@ -297,7 +297,7 @@ static int mv_cesa_des_setkey(struct crypto_skcipher *cipher, const u8 *key,
- static int mv_cesa_des3_ede_setkey(struct crypto_skcipher *cipher,
- 				   const u8 *key, unsigned int len)
- {
--	struct mv_cesa_des_ctx *ctx = crypto_skcipher_ctx(cipher);
-+	struct mv_cesa_des3_ctx *ctx = crypto_skcipher_ctx(cipher);
- 	int err;
+diff --git a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
+index 357c5800b112f..7afa796dbbb89 100644
+--- a/drivers/soc/fsl/qe/Kconfig
++++ b/drivers/soc/fsl/qe/Kconfig
+@@ -39,6 +39,7 @@ config QE_TDM
  
- 	err = verify_skcipher_des3_key(cipher, key);
+ config QE_USB
+ 	bool
++	depends on QUICC_ENGINE
+ 	default y if USB_FSL_QE
+ 	help
+ 	  QE USB Controller support
 -- 
 2.39.2
 
