@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A6CC755276
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC6C875549D
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231332AbjGPUIK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:08:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37222 "EHLO
+        id S232228AbjGPUcS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:32:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231330AbjGPUIK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:10 -0400
+        with ESMTP id S232226AbjGPUcR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EA189B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AF769F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 031CB60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146C5C433C7;
-        Sun, 16 Jul 2023 20:08:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EBE460DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30533C433C7;
+        Sun, 16 Jul 2023 20:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538088;
-        bh=XAVVqNWA1cFqnzxlsghtjTHTdQEQo27SW9tKe+OTRwM=;
+        s=korg; t=1689539534;
+        bh=JHT+iMQO8LqS+kJkeHNuaxe3v0vmIk4Xw3W1hDP7sx0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tfoSMukV7wYuaxpFx/OYRlv8Iqz97nNqqkMEg+1eBH2Ba/NxVKBJn7JxZtYeyrNFU
-         6RoQJZ8OCZudT9Nu9Stt1K7WD5lCemZZnh2zbV1CYzZSiv4ynZ4Bq4KFqGdwg3QC2i
-         YZnw1mM2ByNn+5WezWnFOFRlMzenmIt8gfA81N1k=
+        b=RoI7rbw+DZujKZaZhMRMTEaXUvttvSUk4yHIlDUGy8yYTw9uPdRO2eqPZQf7ZNJYy
+         hatnuK5Sf4kYy6B38qlGylrezlfOh/YzArU6dSUhmiFAfuIqWMbPEvmMRQpaHV+Lnz
+         G+qz6Zm35h6paaV6dlJ+H2NM1BUy3FQscY/b3yys=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Julius Werner <jwerner@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        patches@lists.linux.dev, Feng Mingxi <m202271825@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        Michal Simek <michal.simek@amd.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 327/800] arm64: dts: mediatek: mt8183: Add mediatek,broken-save-restore-fw to kukui
+Subject: [PATCH 6.1 041/591] clocksource/drivers/cadence-ttc: Fix memory leak in ttc_timer_probe
 Date:   Sun, 16 Jul 2023 21:43:00 +0200
-Message-ID: <20230716194956.678024192@linuxfoundation.org>
+Message-ID: <20230716194924.945181725@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,41 +57,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Feng Mingxi <m202271825@hust.edu.cn>
 
-[ Upstream commit 42127f578ebde652d1373e0233356fbd351675c4 ]
+[ Upstream commit 8b5bf64c89c7100c921bd807ba39b2eb003061ab ]
 
-Firmware shipped on mt8183 Chromebooks is affected by the GICR
-save/restore issue as described by the patch ("dt-bindings:
-interrupt-controller: arm,gic-v3: Add quirk for Mediatek SoCs w/
-broken FW"). Add the quirk property.
+Smatch reports:
+drivers/clocksource/timer-cadence-ttc.c:529 ttc_timer_probe()
+warn: 'timer_baseaddr' from of_iomap() not released on lines: 498,508,516.
 
-Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
-Reviewed-by: Julius Werner <jwerner@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230515131353.v2.3.I525a2ed4260046d43c885ee1275e91707743df1c@changeid
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+timer_baseaddr may have the problem of not being released after use,
+I replaced it with the devm_of_iomap() function and added the clk_put()
+function to cleanup the "clk_ce" and "clk_cs".
+
+Fixes: e932900a3279 ("arm: zynq: Use standard timer binding")
+Fixes: 70504f311d4b ("clocksource/drivers/cadence_ttc: Convert init function to return error")
+Signed-off-by: Feng Mingxi <m202271825@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230425065611.702917-1-m202271825@hust.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clocksource/timer-cadence-ttc.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-index 63952c1251dfd..8892b2f64a0f0 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -292,6 +292,10 @@ dsi_out: endpoint {
- 	};
- };
+diff --git a/drivers/clocksource/timer-cadence-ttc.c b/drivers/clocksource/timer-cadence-ttc.c
+index 4efd0cf3b602d..0d52e28fea4de 100644
+--- a/drivers/clocksource/timer-cadence-ttc.c
++++ b/drivers/clocksource/timer-cadence-ttc.c
+@@ -486,10 +486,10 @@ static int __init ttc_timer_probe(struct platform_device *pdev)
+ 	 * and use it. Note that the event timer uses the interrupt and it's the
+ 	 * 2nd TTC hence the irq_of_parse_and_map(,1)
+ 	 */
+-	timer_baseaddr = of_iomap(timer, 0);
+-	if (!timer_baseaddr) {
++	timer_baseaddr = devm_of_iomap(&pdev->dev, timer, 0, NULL);
++	if (IS_ERR(timer_baseaddr)) {
+ 		pr_err("ERROR: invalid timer base address\n");
+-		return -ENXIO;
++		return PTR_ERR(timer_baseaddr);
+ 	}
  
-+&gic {
-+	mediatek,broken-save-restore-fw;
-+};
+ 	irq = irq_of_parse_and_map(timer, 1);
+@@ -513,20 +513,27 @@ static int __init ttc_timer_probe(struct platform_device *pdev)
+ 	clk_ce = of_clk_get(timer, clksel);
+ 	if (IS_ERR(clk_ce)) {
+ 		pr_err("ERROR: timer input clock not found\n");
+-		return PTR_ERR(clk_ce);
++		ret = PTR_ERR(clk_ce);
++		goto put_clk_cs;
+ 	}
+ 
+ 	ret = ttc_setup_clocksource(clk_cs, timer_baseaddr, timer_width);
+ 	if (ret)
+-		return ret;
++		goto put_clk_ce;
+ 
+ 	ret = ttc_setup_clockevent(clk_ce, timer_baseaddr + 4, irq);
+ 	if (ret)
+-		return ret;
++		goto put_clk_ce;
+ 
+ 	pr_info("%pOFn #0 at %p, irq=%d\n", timer, timer_baseaddr, irq);
+ 
+ 	return 0;
 +
- &gpu {
- 	mali-supply = <&mt6358_vgpu_reg>;
- };
++put_clk_ce:
++	clk_put(clk_ce);
++put_clk_cs:
++	clk_put(clk_cs);
++	return ret;
+ }
+ 
+ static const struct of_device_id ttc_timer_of_match[] = {
 -- 
 2.39.2
 
