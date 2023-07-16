@@ -2,130 +2,155 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E7A6755665
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CC7175540E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:26:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232807AbjGPUuH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:50:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39306 "EHLO
+        id S231975AbjGPU0E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:26:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232803AbjGPUuG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:50:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E768AD9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:50:05 -0700 (PDT)
+        with ESMTP id S231972AbjGPU0D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:26:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00FD9BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F38860EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:50:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E120C433C7;
-        Sun, 16 Jul 2023 20:50:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 94BDF60EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6163C433C8;
+        Sun, 16 Jul 2023 20:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540604;
-        bh=hDpL2A7ocdiTfNxc9l3GHz7iVW4RnqulqfgJ/1KS4Jw=;
+        s=korg; t=1689539162;
+        bh=2s7RTo3VNv6TmVXLN6GEj8GSY4RWSlqZJQSydBtaFVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wXjUcPA93nW+rWHgl+JzNyTALHotuWPR/dGhuEtUhsDAvjm3nX6Ya4sBmHG1FkYNK
-         LpC2mffKG2gq7YMYariFB363E9gQjIUy3zj6sgl7U4FoSvIbqOCsUqejhNnIvPZvu/
-         FEhB8tnC+/t55DCdCP4FqwVB88jF4XWyWDdipgdQ=
+        b=On6TZLxpjbeRR9/9SAlkj1abcrQubWm8NWACC60uqVkVRjq0lPefdjZY99nu86FYf
+         XC4qbUZUecMbgv39vjCHJlEHVxevw27Pp5KjTX9cOfqHzwxrZE0OCVxl+REkLLgP3u
+         aOKfhDdz1AMG33Z4g6AuBSA7Ux8QSgUII9ArAaEw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Clark Wang <xiaoning.wang@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        patches@lists.linux.dev, Artur Rojek <contact@artur-rojek.eu>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 422/591] i3c: master: svc: fix cpu schedule in spin lock
-Date:   Sun, 16 Jul 2023 21:49:21 +0200
-Message-ID: <20230716194934.833584091@linuxfoundation.org>
+Subject: [PATCH 6.4 709/800] sh: dma: Fix DMA channel offset calculation
+Date:   Sun, 16 Jul 2023 21:49:22 +0200
+Message-ID: <20230716195005.587854831@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+From: Artur Rojek <contact@artur-rojek.eu>
 
-[ Upstream commit 33beadb3b1ab74e69db2c49d9663f3a93a273943 ]
+[ Upstream commit e82e47584847129a20b8c9f4a1dcde09374fb0e0 ]
 
-pm_runtime_resume_and_get() may call sleep(). It cannot be used in
-svc_i3c_master_start_xfer_locked(), because it is in a spin lock.
+Various SoCs of the SH3, SH4 and SH4A family, which use this driver,
+feature a differing number of DMA channels, which can be distributed
+between up to two DMAC modules. The existing implementation fails to
+correctly accommodate for all those variations, resulting in wrong
+channel offset calculations and leading to kernel panics.
 
-Move the pm runtime operations to svc_i3c_master_enqueue_xfer().
+Rewrite dma_base_addr() in order to properly calculate channel offsets
+in a DMAC module. Fix dmaor_read_reg() and dmaor_write_reg(), so that
+the correct DMAC module base is selected for the DMAOR register.
 
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Fixes: 05be23ef78f7 ("i3c: master: svc: add runtime pm support")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20230517033030.3068085-2-xiaoning.wang@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 7f47c7189b3e8f19 ("sh: dma: More legacy cpu dma chainsawing.")
+Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230527164452.64797-2-contact@artur-rojek.eu
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ arch/sh/drivers/dma/dma-sh.c | 37 +++++++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index d6e9ed74cdcf4..d47360f8a1f36 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1090,12 +1090,6 @@ static void svc_i3c_master_start_xfer_locked(struct svc_i3c_master *master)
- 	if (!xfer)
- 		return;
+diff --git a/arch/sh/drivers/dma/dma-sh.c b/arch/sh/drivers/dma/dma-sh.c
+index 96c626c2cd0a4..306fba1564e5e 100644
+--- a/arch/sh/drivers/dma/dma-sh.c
++++ b/arch/sh/drivers/dma/dma-sh.c
+@@ -18,6 +18,18 @@
+ #include <cpu/dma-register.h>
+ #include <cpu/dma.h>
  
--	ret = pm_runtime_resume_and_get(master->dev);
--	if (ret < 0) {
--		dev_err(master->dev, "<%s> Cannot get runtime PM.\n", __func__);
--		return;
--	}
--
- 	svc_i3c_master_clear_merrwarn(master);
- 	svc_i3c_master_flush_fifo(master);
++/*
++ * Some of the SoCs feature two DMAC modules. In such a case, the channels are
++ * distributed equally among them.
++ */
++#ifdef	SH_DMAC_BASE1
++#define	SH_DMAC_NR_MD_CH	(CONFIG_NR_ONCHIP_DMA_CHANNELS / 2)
++#else
++#define	SH_DMAC_NR_MD_CH	CONFIG_NR_ONCHIP_DMA_CHANNELS
++#endif
++
++#define	SH_DMAC_CH_SZ		0x10
++
+ /*
+  * Define the default configuration for dual address memory-memory transfer.
+  * The 0x400 value represents auto-request, external->external.
+@@ -29,7 +41,7 @@ static unsigned long dma_find_base(unsigned int chan)
+ 	unsigned long base = SH_DMAC_BASE0;
  
-@@ -1110,9 +1104,6 @@ static void svc_i3c_master_start_xfer_locked(struct svc_i3c_master *master)
- 			break;
- 	}
+ #ifdef SH_DMAC_BASE1
+-	if (chan >= 6)
++	if (chan >= SH_DMAC_NR_MD_CH)
+ 		base = SH_DMAC_BASE1;
+ #endif
  
--	pm_runtime_mark_last_busy(master->dev);
--	pm_runtime_put_autosuspend(master->dev);
--
- 	xfer->ret = ret;
- 	complete(&xfer->comp);
- 
-@@ -1133,6 +1124,13 @@ static void svc_i3c_master_enqueue_xfer(struct svc_i3c_master *master,
- 					struct svc_i3c_xfer *xfer)
+@@ -40,13 +52,13 @@ static unsigned long dma_base_addr(unsigned int chan)
  {
- 	unsigned long flags;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(master->dev);
-+	if (ret < 0) {
-+		dev_err(master->dev, "<%s> Cannot get runtime PM.\n", __func__);
-+		return;
-+	}
+ 	unsigned long base = dma_find_base(chan);
  
- 	init_completion(&xfer->comp);
- 	spin_lock_irqsave(&master->xferqueue.lock, flags);
-@@ -1143,6 +1141,9 @@ static void svc_i3c_master_enqueue_xfer(struct svc_i3c_master *master,
- 		svc_i3c_master_start_xfer_locked(master);
- 	}
- 	spin_unlock_irqrestore(&master->xferqueue.lock, flags);
+-	/* Normalize offset calculation */
+-	if (chan >= 9)
+-		chan -= 6;
+-	if (chan >= 4)
+-		base += 0x10;
++	chan = (chan % SH_DMAC_NR_MD_CH) * SH_DMAC_CH_SZ;
 +
-+	pm_runtime_mark_last_busy(master->dev);
-+	pm_runtime_put_autosuspend(master->dev);
++	/* DMAOR is placed inside the channel register space. Step over it. */
++	if (chan >= DMAOR)
++		base += SH_DMAC_CH_SZ;
+ 
+-	return base + (chan * 0x10);
++	return base + chan;
  }
  
- static bool
+ #ifdef CONFIG_SH_DMA_IRQ_MULTI
+@@ -250,12 +262,11 @@ static int sh_dmac_get_dma_residue(struct dma_channel *chan)
+ #define NR_DMAOR	1
+ #endif
+ 
+-/*
+- * DMAOR bases are broken out amongst channel groups. DMAOR0 manages
+- * channels 0 - 5, DMAOR1 6 - 11 (optional).
+- */
+-#define dmaor_read_reg(n)		__raw_readw(dma_find_base((n)*6))
+-#define dmaor_write_reg(n, data)	__raw_writew(data, dma_find_base(n)*6)
++#define dmaor_read_reg(n)		__raw_readw(dma_find_base((n) * \
++						    SH_DMAC_NR_MD_CH) + DMAOR)
++#define dmaor_write_reg(n, data)	__raw_writew(data, \
++						     dma_find_base((n) * \
++						     SH_DMAC_NR_MD_CH) + DMAOR)
+ 
+ static inline int dmaor_reset(int no)
+ {
 -- 
 2.39.2
 
