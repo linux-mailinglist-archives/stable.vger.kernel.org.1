@@ -2,152 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4B20754FB9
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 18:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1DBC754FC2
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 18:32:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229798AbjGPQaW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 12:30:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53130 "EHLO
+        id S229805AbjGPQct (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 12:32:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjGPQaW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 12:30:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A4DAE4B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 09:30:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8990860D42
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 16:30:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AEEC433C7;
-        Sun, 16 Jul 2023 16:30:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689525019;
-        bh=1KdjfWWTZ5cvYI0hAxKzKZQpfjCB2VhhDjb2RSf4lf8=;
-        h=Subject:To:Cc:From:Date:From;
-        b=ScoSIX1ku+BgSImKVxAfUYbFJf9kInKrws/Ha++XEU2pVCAVK1Z4lw1VD1YMRjNTA
-         hN779inotfUlQGh6HBPw5xmFEbCrjS1/dbz883gTUfyql5LpXKubWSu2PIt4+kqZzT
-         D8LsTwWSGqLi9CrwkcflBsPqipujbS+LBo4BtxX0=
-Subject: FAILED: patch "[PATCH] ovl: fix null pointer dereference in ovl_permission()" failed to apply to 6.1-stable tree
-To:     chengzhihao1@huawei.com, amir73il@gmail.com, brauner@kernel.org,
-        mszeredi@redhat.com, stable@vger.kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 18:30:16 +0200
-Message-ID: <2023071616-vastly-cognition-78ba@gregkh>
+        with ESMTP id S229461AbjGPQct (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 12:32:49 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B33518D;
+        Sun, 16 Jul 2023 09:32:48 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 1F2A05C0077;
+        Sun, 16 Jul 2023 12:32:45 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Sun, 16 Jul 2023 12:32:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1689525165; x=1689611565; bh=A+tvdRKwdX+WeVQUPv6fO8IIiv2UhaqZMsA
+        F7ADDL9I=; b=O0mNPHSN+o54d7wQFryJSPOVdUD5SFhQxV/Moxu+y6BjeZbvL2Y
+        Cv9h75LVEePVhI/mJ+PKFuR1tAD/pbNHKlb+NqGJBugS5B+sq1Q7l5JiiU3dTsWs
+        wW6170Rg4n032B9IlOn/wEd0RAa0hTJUJZ2PvwiEi3FBPlG6/NW4RPGMqJ8BmJAG
+        JV+70nR/D6+e8+2LYsHvwTS8Vh/v/1tXNgSTc++UIFQupfc8GHOQVCsKYOefsuJF
+        f2+J+EhhdKTwjPQ0cSsnIDomX3sUdRsNQmwmxbiCl5aIlkFrQgb6E+N5Ca9cBTpS
+        Q864DAQgvpQHFZ5qBiv9QCumwn+96+Eq/QQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+        1689525165; x=1689611565; bh=A+tvdRKwdX+WeVQUPv6fO8IIiv2UhaqZMsA
+        F7ADDL9I=; b=OjWm1uesvUzF1BcepDPInpE3Z18QDC+e9qWEMIFepQ0E2FwIrJu
+        q6axm8AeKZoqMc2/R0O7uJoaAHm+avxNbp4bCp+e7dHBf830WjRhxd0GFbrGalIP
+        ravHEQPhq4JZYv+d4AmyYQm/GDzhSccg8yMn0ECmQz37ZMB/JvhitQmeT+iu7g+5
+        EQ0qiFqQN8YhUtHMWr2hL2clqyBv5ssMK9WWrxie6CiFqJoiXC7pgX+zmP9tHhbB
+        vYgys1lfOQpFDn087y2tY2H2+RyoNcblp3oMIpCSuYWl/4Nh3mAnjUO+GBC0QiJ/
+        lBLaJCJVbQ+mqmdLrlk+ELs3sTLcgNpHkGA==
+X-ME-Sender: <xms:rBu0ZDneAMflJT4qF_N6TG8ltoEdsPPlvhKCC5BalnvvpP7UGcXY8g>
+    <xme:rBu0ZG3whxW0xo1KYTWIEO6LAPxldfGtys_OHoA7dAIlvrnOSBJEanfo-apqtbAfC
+    ilLH0ZgrcHkFw>
+X-ME-Received: <xmr:rBu0ZJqkv25NHfFLIPK5exaOrYxvZkGhrtTP9okTKWppso18PN0kpOK5BLF27O1cSYnJpybhGPpkA0iaXrwH5ELym2ylVcdRP1stwILenY0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgedtgddutddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeelhe
+    ehudduueeggeejgfehueduffehveeukefgkeeufeeltdejteeiuedtkeekleenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
+    grhhdrtghomh
+X-ME-Proxy: <xmx:rBu0ZLndVuQ_GvIlMAs21rJxMLJjUiYAS9jFYaPZWnhaBvEJI1TDFA>
+    <xmx:rBu0ZB1iAFUwyhUn6V3DbkgpQnTH3R2l1wfg3KMlVOIrPyBPCwMVxQ>
+    <xmx:rBu0ZKtw8qLlNX7P0w9T28TTwbAcrVvs3SQufd64_pu2ZeCUuTOTQQ>
+    <xmx:rRu0ZKLnaCuSqolPZ4AD9KIgIzGxFsQTcD0KjPRaDowi8sKT-qV5sA>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 16 Jul 2023 12:32:44 -0400 (EDT)
+Date:   Sun, 16 Jul 2023 18:32:42 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: Backporting commits for generating rpi dtb symbols to stable
+Message-ID: <2023071644-earflap-amazingly-3989@gregkh>
+References: <20230716162444.zzvkm4rh7s7lu37x@pali>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230716162444.zzvkm4rh7s7lu37x@pali>
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sun, Jul 16, 2023 at 06:24:44PM +0200, Pali Rohár wrote:
+> Hello,
+> 
+> I see that raspberry pi bootloader throws ton of warnings when supplied
+> DTB file does not contain /__symbols__/ node.
+> 
+> On RPI 1B rev1 it looks like this:
+> 
+> dterror: no symbols found
+> dterror: no symbols found
+> dterror: no symbols found
+> dterror: no symbols found
+> dterror: no symbols found
+> dterror: no symbols found
+> dterror: no symbols found
+> dterror: no symbols found
+> dterror: no symbols found
+> dterror: no symbols found
+> 
+> Bootloader also propagates these warnings to kernel via dtb property
+> chosen/user-warnings and they can be read by simple command:
+> 
+> $ cat /sys/firmware/devicetree/base/chosen/user-warnings
+> ...
+> 
+> Upstream Linux kernel build process by default does not generate
+> /__symbols__/ node for DTB files, but DTB files provided by raspberrypi
+> foundation have them for a longer time.
+> 
+> I wanted to look at this issue, but I figured out that it is already
+> solved by just recent Aurelien's patches:
+> 
+> e925743edc0d ("arm: dts: bcm: Enable device-tree overlay support for RPi devices")
+> 3cdba279c5e9 ("arm64: dts: broadcom: Enable device-tree overlay support for RPi devices")
+> 
+> My testing showed that /__symbols__/ node is required by rpi bootloader
+> for overlay support even when overlayed DTB file does not use any DTB
+> symbol (and reference everything via full node path). So seems that
+> /__symbols__/ node is crucial for rpi bootloader even when symbols from
+> them are not used at all.
+> 
+> So I would like to ask, would you consider backporting these two
+> raspberry pi specific patches to stable kernel trees? Upstream kernel
+> would get rid of those bootloader warnings and also allow users to use
+> overlayed dtbs...
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+What kernel tree(s) should these be applied to?  What trees did you test
+them for?
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 1a73f5b8f079fd42a544c1600beface50c63af7c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071616-vastly-cognition-78ba@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-1a73f5b8f079 ("ovl: fix null pointer dereference in ovl_permission()")
+Also, adding dt-overlay support does not seem like a stable kernel fix,
+as this isn't a bugfix from what I can tell, right?
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 1a73f5b8f079fd42a544c1600beface50c63af7c Mon Sep 17 00:00:00 2001
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Date: Tue, 16 May 2023 22:16:18 +0800
-Subject: [PATCH] ovl: fix null pointer dereference in ovl_permission()
-
-Following process:
-          P1                     P2
- path_lookupat
-  link_path_walk
-   inode_permission
-    ovl_permission
-      ovl_i_path_real(inode, &realpath)
-        path->dentry = ovl_i_dentry_upper(inode)
-                          drop_cache
-			   __dentry_kill(ovl_dentry)
-		            iput(ovl_inode)
-		             ovl_destroy_inode(ovl_inode)
-		              dput(oi->__upperdentry)
-		               dentry_kill(upperdentry)
-		                dentry_unlink_inode
-				 upperdentry->d_inode = NULL
-      realinode = d_inode(realpath.dentry) // return NULL
-      inode_permission(realinode)
-       inode->i_sb  // NULL pointer dereference
-, will trigger an null pointer dereference at realinode:
-  [  335.664979] BUG: kernel NULL pointer dereference,
-                 address: 0000000000000002
-  [  335.668032] CPU: 0 PID: 2592 Comm: ls Not tainted 6.3.0
-  [  335.669956] RIP: 0010:inode_permission+0x33/0x2c0
-  [  335.678939] Call Trace:
-  [  335.679165]  <TASK>
-  [  335.679371]  ovl_permission+0xde/0x320
-  [  335.679723]  inode_permission+0x15e/0x2c0
-  [  335.680090]  link_path_walk+0x115/0x550
-  [  335.680771]  path_lookupat.isra.0+0xb2/0x200
-  [  335.681170]  filename_lookup+0xda/0x240
-  [  335.681922]  vfs_statx+0xa6/0x1f0
-  [  335.682233]  vfs_fstatat+0x7b/0xb0
-
-Fetch a reproducer in [Link].
-
-Use the helper ovl_i_path_realinode() to get realinode and then do
-non-nullptr checking.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217405
-Fixes: 4b7791b2e958 ("ovl: handle idmappings in ovl_permission()")
-Cc: <stable@vger.kernel.org> # v5.19
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Suggested-by: Christian Brauner <brauner@kernel.org>
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index 541cf3717fc2..ca56b1328a2c 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -288,8 +288,8 @@ int ovl_permission(struct mnt_idmap *idmap,
- 	int err;
- 
- 	/* Careful in RCU walk mode */
--	ovl_i_path_real(inode, &realpath);
--	if (!realpath.dentry) {
-+	realinode = ovl_i_path_real(inode, &realpath);
-+	if (!realinode) {
- 		WARN_ON(!(mask & MAY_NOT_BLOCK));
- 		return -ECHILD;
- 	}
-@@ -302,7 +302,6 @@ int ovl_permission(struct mnt_idmap *idmap,
- 	if (err)
- 		return err;
- 
--	realinode = d_inode(realpath.dentry);
- 	old_cred = ovl_override_creds(inode->i_sb);
- 	if (!upperinode &&
- 	    !special_file(realinode->i_mode) && mask & MAY_WRITE) {
-
