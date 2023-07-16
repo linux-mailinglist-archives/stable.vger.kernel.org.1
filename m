@@ -2,95 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9307575520C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C93C5755123
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231164AbjGPUDM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:03:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33642 "EHLO
+        id S229912AbjGPTv4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 15:51:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231161AbjGPUDM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:03:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B57F9D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:03:11 -0700 (PDT)
+        with ESMTP id S229461AbjGPTv4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:51:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04F2F116;
+        Sun, 16 Jul 2023 12:51:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE5A660E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:03:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC3FC433C7;
-        Sun, 16 Jul 2023 20:03:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537790;
-        bh=h3CBeke6BN2KMMEmGF4X7sLsNn5zhHMuRoUGiMuYAME=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gr1vd4t7RchWLTKR81aMrP7gyZlky+RPz80xYIPwsBY5EB9j/0ZcSXe4/ASCan5b9
-         1225hfq6wQ15j4aeMmoMmMOK5vC8rzIHJQa6YcKDap7AVmfS8ZHZfsrUJjuYZruaaT
-         IahyP/LjYVwEB24MrUf1I+o/B7sieMN58zQDyDb4=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 222/800] drm/imx/lcdc: fix a NULL vs IS_ERR() bug in probe
-Date:   Sun, 16 Jul 2023 21:41:15 +0200
-Message-ID: <20230716194954.248741691@linuxfoundation.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
-User-Agent: quilt/0.67
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 80D2660EAA;
+        Sun, 16 Jul 2023 19:51:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D1AC433C7;
+        Sun, 16 Jul 2023 19:51:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689537113;
+        bh=QdXpkPclnK4lAqXxNcl60QtzTf94NQuVLe8JOwaCt6E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JxAZwT70NVGlbZwQfXs3bRxY95QOyNb56ICJHT63Ik/34d1A11athkHOPz1rJPaK9
+         rstt+VVVi58wSaEN6phoRt7kp1/3OX3JRRbqt8AnKdDybNqwG/PXsudab/5ZNhSWvU
+         Eco80gOdIg6oZzLZYaqLBWQIvDPnjgFDEa1/P+KmFYaDJxXFSGeMathB2cWyGq964Q
+         cCM0oJaH6fGCBh5przmwdRWODurk63sOAT1UVfh6zoXTfi00mPl/qK0d6+/g+YZVsn
+         UOr3COFNiHaG9jbE8fVJaI2yVBG4NxcWfhjkoF0LqGs4ZpGF8bS1+WOpDkoBvyLMpx
+         PDl1ITKjsvn4g==
+Received: by pali.im (Postfix)
+        id A645C70C; Sun, 16 Jul 2023 21:51:50 +0200 (CEST)
+Date:   Sun, 16 Jul 2023 21:51:50 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Greg KH <greg@kroah.com>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: Backporting commits for generating rpi dtb symbols to stable
+Message-ID: <20230716195150.ppa6vdjogjevlzgq@pali>
+References: <20230716162444.zzvkm4rh7s7lu37x@pali>
+ <2023071644-earflap-amazingly-3989@gregkh>
+ <20230716163852.jnd4u4ylvifgmpby@pali>
+ <2023071611-lustiness-rename-8b47@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <2023071611-lustiness-rename-8b47@gregkh>
+User-Agent: NeoMutt/20180716
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <error27@gmail.com>
+On Sunday 16 July 2023 21:08:38 Greg KH wrote:
+> On Sun, Jul 16, 2023 at 06:38:52PM +0200, Pali Rohár wrote:
+> > On Sunday 16 July 2023 18:32:42 Greg KH wrote:
+> > > On Sun, Jul 16, 2023 at 06:24:44PM +0200, Pali Rohár wrote:
+> > > > Hello,
+> > > > 
+> > > > I see that raspberry pi bootloader throws ton of warnings when supplied
+> > > > DTB file does not contain /__symbols__/ node.
+> > > > 
+> > > > On RPI 1B rev1 it looks like this:
+> > > > 
+> > > > dterror: no symbols found
+> > > > dterror: no symbols found
+> > > > dterror: no symbols found
+> > > > dterror: no symbols found
+> > > > dterror: no symbols found
+> > > > dterror: no symbols found
+> > > > dterror: no symbols found
+> > > > dterror: no symbols found
+> > > > dterror: no symbols found
+> > > > dterror: no symbols found
+> > > > 
+> > > > Bootloader also propagates these warnings to kernel via dtb property
+> > > > chosen/user-warnings and they can be read by simple command:
+> > > > 
+> > > > $ cat /sys/firmware/devicetree/base/chosen/user-warnings
+> > > > ...
+> > > > 
+> > > > Upstream Linux kernel build process by default does not generate
+> > > > /__symbols__/ node for DTB files, but DTB files provided by raspberrypi
+> > > > foundation have them for a longer time.
+> > > > 
+> > > > I wanted to look at this issue, but I figured out that it is already
+> > > > solved by just recent Aurelien's patches:
+> > > > 
+> > > > e925743edc0d ("arm: dts: bcm: Enable device-tree overlay support for RPi devices")
+> > > > 3cdba279c5e9 ("arm64: dts: broadcom: Enable device-tree overlay support for RPi devices")
+> > > > 
+> > > > My testing showed that /__symbols__/ node is required by rpi bootloader
+> > > > for overlay support even when overlayed DTB file does not use any DTB
+> > > > symbol (and reference everything via full node path). So seems that
+> > > > /__symbols__/ node is crucial for rpi bootloader even when symbols from
+> > > > them are not used at all.
+> > > > 
+> > > > So I would like to ask, would you consider backporting these two
+> > > > raspberry pi specific patches to stable kernel trees? Upstream kernel
+> > > > would get rid of those bootloader warnings and also allow users to use
+> > > > overlayed dtbs...
+> > > 
+> > > What kernel tree(s) should these be applied to?  What trees did you test
+> > > them for?
+> > > 
+> > > Also, adding dt-overlay support does not seem like a stable kernel fix,
+> > > as this isn't a bugfix from what I can tell, right?
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > 
+> > I wanted to discuss what do you think about it. As I wrote my motivation
+> > was to understood and get rid of those warnings "dterror: no symbols
+> > found" from bootloader when using DTB files from mainline kernel (as
+> > opposite of the DTB files from rpi foundation). And fix for it was just
+> > to generate DTB files from kernel via dtc's -@ parameter, same what are
+> > doing those mentioned patches (but they describe different problem for
+> > which is same fix). I thought that fixing those bootloader warnings is a
+> > bugfix.
+> 
+> Why not just use the next kernel version instead?  What's forcing you to
+> use an older stable kernel that didn't have dt-overlay support?
+> 
+> thanks,
+> 
+> greg k-h
 
-[ Upstream commit dae2f7b89a8436351a2982d0d96a8a56accca576 ]
-
-The devm_drm_dev_alloc() function returns error pointers.  It never
-returns NULL.  Fix the check.
-
-Fixes: c87e859cdeb5 ("drm/imx/lcdc: Implement DRM driver for imx25")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/d0a1fc55-3ef6-444e-b3ef-fdc937d8d57a@kili.mountain
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-index 8e6d457917daf..277ead6a459a4 100644
---- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-+++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-@@ -400,8 +400,8 @@ static int imx_lcdc_probe(struct platform_device *pdev)
- 
- 	lcdc = devm_drm_dev_alloc(dev, &imx_lcdc_drm_driver,
- 				  struct imx_lcdc, drm);
--	if (!lcdc)
--		return -ENOMEM;
-+	if (IS_ERR(lcdc))
-+		return PTR_ERR(lcdc);
- 
- 	drm = &lcdc->drm;
- 
--- 
-2.39.2
-
-
-
+Why not use the next kernel? It is pretty simple, next is the
+development tree, not for production. And as I wrote in previous email,
+I do not need here dt-overlay support. I wanted to get rid off that
+warning messages.
