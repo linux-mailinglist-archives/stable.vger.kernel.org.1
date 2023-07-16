@@ -2,128 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 223BC7556D9
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AC9F755456
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232991AbjGPUyj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:54:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41832 "EHLO
+        id S232084AbjGPU3U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:29:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232993AbjGPUyj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:54:39 -0400
+        with ESMTP id S232078AbjGPU3T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 312EEE45
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:54:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2520BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A933E60DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:54:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBB1C433C8;
-        Sun, 16 Jul 2023 20:54:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DF0E60EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789D7C433C8;
+        Sun, 16 Jul 2023 20:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540877;
-        bh=yTFUlZDJjTcr1C1DRjOI2O99KYizK97NKDf20O2z42Y=;
+        s=korg; t=1689539357;
+        bh=hBD+EzXPiQw6PDfQtkXx+sOammQYpCaP1Ke3UMb+4RY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jt+dGEGtujBwTM+7GOzoQ2l/JGO5eoHCFcDaIoSDOAuvaq3dKtaJkWeae+ySxh/h3
-         NF+F3g/bd71gg4tZqR7F3O3uGVfqNwMvpM1d+40wcvFFghuHN2+ceYvxDJ9Yovofu9
-         +dWjlGC2eHcKsC2M07YMEkW5JPLUtcrOI9oPAoTA=
+        b=BLLcC8u+ljo/CmZbRyTPb5VEPBn9ErHDLs+9qU7asym6lONtLP/pJ0+BpxUjoPxfM
+         gS7H9pRFOAQ7cZjcjnRq7EJpFoXjhHY3MLB/aFQWr2q8sRSRN2v0HzE57KuL5A/Kwp
+         sB+jIVFaGyvYsw3clLJXAP/K4/HxsJylfduuc+Ao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 492/591] mailbox: ti-msgmgr: Fill non-message tx data fields with 0x0
-Date:   Sun, 16 Jul 2023 21:50:31 +0200
-Message-ID: <20230716194936.618917711@linuxfoundation.org>
+        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.4 779/800] powerpc/vdso: Include CLANG_FLAGS explicitly in ldflags-y
+Date:   Sun, 16 Jul 2023 21:50:32 +0200
+Message-ID: <20230716195007.242114093@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nishanth Menon <nm@ti.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 1b712f18c461bd75f018033a15cf381e712806b5 ]
+commit a7e5eb53bf9b800d086e2ebcfebd9a3bb16bd1b0 upstream.
 
-Sec proxy/message manager data buffer is 60 bytes with the last of the
-registers indicating transmission completion. This however poses a bit
-of a challenge.
+A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
+KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
+When that occurs, the following error appears when building the compat
+PowerPC vDSO:
 
-The backing memory for sec_proxy / message manager is regular memory,
-and all sec proxy does is to trigger a burst of all 60 bytes of data
-over to the target thread backing ring accelerator. It doesn't do a
-memory scrub when it moves data out in the burst. When we transmit
-multiple messages, remnants of previous message is also transmitted
-which results in some random data being set in TISCI fields of
-messages that have been expanded forward.
+  clang: error: unsupported option '-mbig-endian' for target 'x86_64-pc-linux-gnu'
+  make[3]: *** [.../arch/powerpc/kernel/vdso/Makefile:76: arch/powerpc/kernel/vdso/vdso32.so.dbg] Error 1
 
-The entire concept of backward compatibility hinges on the fact that
-the unused message fields remain 0x0 allowing for 0x0 value to be
-specially considered when backward compatibility of message extension
-is done.
+Explicitly add CLANG_FLAGS to ldflags-y, so that '--target' will always
+be present.
 
-So, instead of just writing the completion register, we continue
-to fill the message buffer up with 0x0 (note: for partial message
-involving completion, we already do this).
-
-This allows us to scale and introduce ABI changes back also work with
-other boot stages that may have left data in the internal memory.
-
-While at this, be consistent and explicit with the data_reg pointer
-increment.
-
-Fixes: aace66b170ce ("mailbox: Introduce TI message manager driver")
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/ti-msgmgr.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/vdso/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/ti-msgmgr.c b/drivers/mailbox/ti-msgmgr.c
-index ddac423ac1a91..03048cbda525e 100644
---- a/drivers/mailbox/ti-msgmgr.c
-+++ b/drivers/mailbox/ti-msgmgr.c
-@@ -430,14 +430,20 @@ static int ti_msgmgr_send_data(struct mbox_chan *chan, void *data)
- 		/* Ensure all unused data is 0 */
- 		data_trail &= 0xFFFFFFFF >> (8 * (sizeof(u32) - trail_bytes));
- 		writel(data_trail, data_reg);
--		data_reg++;
-+		data_reg += sizeof(u32);
- 	}
-+
- 	/*
- 	 * 'data_reg' indicates next register to write. If we did not already
- 	 * write on tx complete reg(last reg), we must do so for transmit
-+	 * In addition, we also need to make sure all intermediate data
-+	 * registers(if any required), are reset to 0 for TISCI backward
-+	 * compatibility to be maintained.
- 	 */
--	if (data_reg <= qinst->queue_buff_end)
--		writel(0, qinst->queue_buff_end);
-+	while (data_reg <= qinst->queue_buff_end) {
-+		writel(0, data_reg);
-+		data_reg += sizeof(u32);
-+	}
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -54,7 +54,7 @@ KASAN_SANITIZE := n
+ KCSAN_SANITIZE := n
  
- 	/* If we are in polled mode, wait for a response before proceeding */
- 	if (ti_msgmgr_chan_has_polled_queue_rx(message->chan_rx))
--- 
-2.39.2
-
+ ccflags-y := -fno-common -fno-builtin
+-ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack
++ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack $(CLANG_FLAGS)
+ ldflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
+ # Filter flags that clang will warn are unused for linking
+ ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
 
 
