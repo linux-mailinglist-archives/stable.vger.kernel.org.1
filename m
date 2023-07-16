@@ -2,50 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D77C4755312
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78308755544
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231602AbjGPUPD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41260 "EHLO
+        id S232439AbjGPUjN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231599AbjGPUPD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:15:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9E51B7
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:15:02 -0700 (PDT)
+        with ESMTP id S232433AbjGPUjM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:39:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 758069F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:39:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E63BA60EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:15:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027A4C433C7;
-        Sun, 16 Jul 2023 20:15:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1A7F60EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:39:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD7FC433C8;
+        Sun, 16 Jul 2023 20:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538501;
-        bh=NRFJa74ckjxQsHN0APTOipxGEglvwSnL5vPcFgFgiKE=;
+        s=korg; t=1689539950;
+        bh=VrZCTbEH8M41kjEkzalOeLtKUjpJlL8fT2tuBrxJxTU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FPvZptKIFUtkLPT3OWnJZ3/ForD0KIZTUsu1S62369zYXarwIorAGa/Telu82ItzU
-         MqLFf1KMzQ0FDX3Qg5k+UGdbjeoH73o8Sdb3HGwFopaZCQWOkPqm5+6zUeQ9yM29kB
-         KJtWvZ8Y5Hu60aEVqlq9yvtk5iNSFU3GrhIRYThQ=
+        b=gjoHF3z/KggVZ2A/b87L15y2a5WnBkohmLrVT0tUbEpIHUhMq5IVZqeHeru72QeN1
+         iSZQ82ZYb+pLT1hmdju7f5/mEh6tGwyqlQUMos4b8h1TsUztwqFn74Gyq4LOjDviPV
+         q2JLw9t9jJrz5CecKK+dpGBIR/kABHvubQanOpaE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 474/800] platform/x86/dell/dell-rbtn: Fix resources leaking on error path
-Date:   Sun, 16 Jul 2023 21:45:27 +0200
-Message-ID: <20230716195000.089769258@linuxfoundation.org>
+Subject: [PATCH 6.1 189/591] clk: renesas: rzg2l: Fix CPG_SIPLL5_CLK1 register write
+Date:   Sun, 16 Jul 2023 21:45:28 +0200
+Message-ID: <20230716194928.765400092@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,78 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michal Wilczynski <michal.wilczynski@intel.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 966cca72ab20289083521a385fa56035d85a222d ]
+[ Upstream commit d1c20885d3b01e6a62e920af4b227abd294d22f3 ]
 
-Currently rbtn_add() in case of failure is leaking resources. Fix this
-by adding a proper rollback. Move devm_kzalloc() before rbtn_acquire(),
-so it doesn't require rollback in case of failure. While at it, remove
-unnecessary assignment of NULL to device->driver_data and unnecessary
-whitespace, plus add a break for the default case in a switch.
+As per the RZ/G2L HW(Rev.1.30 May2023) manual, there are no "write enable"
+bits in the CPG_SIPLL5_CLK1 register.  So fix the CPG_SIPLL5_CLK register
+write by removing the "write enable" bits.
 
-Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Suggested-by: Pali Rohár <pali@kernel.org>
-Fixes: 817a5cdb40c8 ("dell-rbtn: Dell Airplane Mode Switch driver")
-Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Link: https://lore.kernel.org/r/20230613084310.2775896-1-michal.wilczynski@intel.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 1561380ee72f ("clk: renesas: rzg2l: Add FOUTPOSTDIV clk support")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230518152334.514922-1-biju.das.jz@bp.renesas.com
+[geert: Remove CPG_SIPLL5_CLK1_*_WEN bit definitions]
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-rbtn.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/clk/renesas/rzg2l-cpg.c | 6 ++----
+ drivers/clk/renesas/rzg2l-cpg.h | 3 ---
+ 2 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell-rbtn.c b/drivers/platform/x86/dell/dell-rbtn.c
-index aa0e6c9074942..c8fcb537fd65d 100644
---- a/drivers/platform/x86/dell/dell-rbtn.c
-+++ b/drivers/platform/x86/dell/dell-rbtn.c
-@@ -395,16 +395,16 @@ static int rbtn_add(struct acpi_device *device)
- 		return -EINVAL;
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index 3ff6ecd617565..2c877576c5729 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -600,10 +600,8 @@ static int rzg2l_cpg_sipll5_set_rate(struct clk_hw *hw,
  	}
  
-+	rbtn_data = devm_kzalloc(&device->dev, sizeof(*rbtn_data), GFP_KERNEL);
-+	if (!rbtn_data)
-+		return -ENOMEM;
-+
- 	ret = rbtn_acquire(device, true);
- 	if (ret < 0) {
- 		dev_err(&device->dev, "Cannot enable device\n");
- 		return ret;
- 	}
+ 	/* Output clock setting 1 */
+-	writel(CPG_SIPLL5_CLK1_POSTDIV1_WEN | CPG_SIPLL5_CLK1_POSTDIV2_WEN |
+-	       CPG_SIPLL5_CLK1_REFDIV_WEN  | (params.pl5_postdiv1 << 0) |
+-	       (params.pl5_postdiv2 << 4) | (params.pl5_refdiv << 8),
+-	       priv->base + CPG_SIPLL5_CLK1);
++	writel((params.pl5_postdiv1 << 0) | (params.pl5_postdiv2 << 4) |
++	       (params.pl5_refdiv << 8), priv->base + CPG_SIPLL5_CLK1);
  
--	rbtn_data = devm_kzalloc(&device->dev, sizeof(*rbtn_data), GFP_KERNEL);
--	if (!rbtn_data)
--		return -ENOMEM;
--
- 	rbtn_data->type = type;
- 	device->driver_data = rbtn_data;
+ 	/* Output clock setting, SSCG modulation value setting 3 */
+ 	writel((params.pl5_fracin << 8), priv->base + CPG_SIPLL5_CLK3);
+diff --git a/drivers/clk/renesas/rzg2l-cpg.h b/drivers/clk/renesas/rzg2l-cpg.h
+index cecbdf5e4f93a..b33a3e79161b6 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.h
++++ b/drivers/clk/renesas/rzg2l-cpg.h
+@@ -32,9 +32,6 @@
+ #define CPG_SIPLL5_STBY_RESETB_WEN	BIT(16)
+ #define CPG_SIPLL5_STBY_SSCG_EN_WEN	BIT(18)
+ #define CPG_SIPLL5_STBY_DOWNSPREAD_WEN	BIT(20)
+-#define CPG_SIPLL5_CLK1_POSTDIV1_WEN	BIT(16)
+-#define CPG_SIPLL5_CLK1_POSTDIV2_WEN	BIT(20)
+-#define CPG_SIPLL5_CLK1_REFDIV_WEN	BIT(24)
+ #define CPG_SIPLL5_CLK4_RESV_LSB	(0xFF)
+ #define CPG_SIPLL5_MON_PLL5_LOCK	BIT(4)
  
-@@ -420,10 +420,12 @@ static int rbtn_add(struct acpi_device *device)
- 		break;
- 	default:
- 		ret = -EINVAL;
-+		break;
- 	}
-+	if (ret)
-+		rbtn_acquire(device, false);
- 
- 	return ret;
--
- }
- 
- static void rbtn_remove(struct acpi_device *device)
-@@ -442,7 +444,6 @@ static void rbtn_remove(struct acpi_device *device)
- 	}
- 
- 	rbtn_acquire(device, false);
--	device->driver_data = NULL;
- }
- 
- static void rbtn_notify(struct acpi_device *device, u32 event)
 -- 
 2.39.2
 
