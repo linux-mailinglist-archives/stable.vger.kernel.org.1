@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB7BD755346
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E41575557A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231667AbjGPURW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:17:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43142 "EHLO
+        id S232543AbjGPUlS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:41:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231684AbjGPURU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:20 -0400
+        with ESMTP id S232526AbjGPUlQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C736E57
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3EDED9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 13CD760E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253A6C433C7;
-        Sun, 16 Jul 2023 20:17:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 547EA60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CAAC433C8;
+        Sun, 16 Jul 2023 20:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538635;
-        bh=TzzLNrg9q+AQP2isG22Oxm9uZNLbvn2aDiiLqrzC5s8=;
+        s=korg; t=1689540073;
+        bh=GF7garfkVz2ofUvqBzFL9Hhc4p1ABazuqJgAzXxmy5w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ooXXlwTn0mb54kR7iIWWEGGrDFqq3di3c1X85PBsKuq2drV5b3hyTTYYtuY9h2IQx
-         61TBepPNPS5G8xzjPt4cn7qaRPlhKBrfoX5NGpXiTxJKQhJcnOueKfxqC9YKn8IEvX
-         J2xYKCmLUAV05NhrQ/3UuCrrxVDMj2bNx1CS6rxk=
+        b=cqbXZk+tYkwHoA6G6qRhlhWy3ZIAoNz7fPMWa2mKcxc/9f9e+hvDMlVCBHPVDRIkU
+         C+DRx4hkxW8pvO39FpXrgD7Yx7SmNUyZvwQ5wneenhtm6nKS9wrbXcFYzOhop3Q8Nv
+         fH88tbvguVXzUsDS8FWZg+M+wpA1b6DINcq/mWDI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.4 520/800] ALSA: hda/realtek: Add quirk for Clevo NPx0SNx
+        patches@lists.linux.dev, Maxime Ripard <maxime@cerno.tech>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 234/591] clk: Export clk_hw_forward_rate_request()
 Date:   Sun, 16 Jul 2023 21:46:13 +0200
-Message-ID: <20230716195001.172413150@linuxfoundation.org>
+Message-ID: <20230716194929.926804001@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,31 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Maxime Ripard <maxime@cerno.tech>
 
-commit 22065e4214c1196b54fc164892c2e193a743caf3 upstream.
+[ Upstream commit ed046ac74da0b5602566073023a1519b5ae657b7 ]
 
-This applies a SND_PCI_QUIRK(...) to the Clevo NPx0SNx barebones fixing the
-microphone not being detected on the headset combo port.
+Commit 262ca38f4b6e ("clk: Stop forwarding clk_rate_requests to the
+parent") introduced the public clk_hw_forward_rate_request() function,
+but didn't export the symbol. Make sure it's the case.
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230628155434.584159-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 262ca38f4b6e ("clk: Stop forwarding clk_rate_requests to the parent")
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+Link: https://lore.kernel.org/r/20221018-clk-range-checks-fixes-v4-1-971d5077e7d2@cerno.tech
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
+ drivers/clk/clk.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9682,6 +9682,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1558, 0x971d, "Clevo N970T[CDF]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0xa500, "Clevo NL5[03]RU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0xa600, "Clevo NL50NU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1558, 0xa650, "Clevo NP[567]0SN[CD]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0xa671, "Clevo NP70SN[CDE]", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0xb018, "Clevo NP50D[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1558, 0xb019, "Clevo NH77D[BE]Q", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 57b83665e5c3a..d4a74759fe292 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -1525,6 +1525,7 @@ void clk_hw_forward_rate_request(const struct clk_hw *hw,
+ 				  parent->core, req,
+ 				  parent_rate);
+ }
++EXPORT_SYMBOL_GPL(clk_hw_forward_rate_request);
+ 
+ static bool clk_core_can_round(struct clk_core * const core)
+ {
+-- 
+2.39.2
+
 
 
