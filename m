@@ -2,99 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBEFC755356
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92466755554
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:39:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231681AbjGPUR7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:17:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43792 "EHLO
+        id S232466AbjGPUjw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:39:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231702AbjGPUR6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:58 -0400
+        with ESMTP id S232464AbjGPUjv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:39:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 893EFC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2268AB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:39:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 288A660EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3816CC433C8;
-        Sun, 16 Jul 2023 20:17:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5676E60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:39:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CB5C433C7;
+        Sun, 16 Jul 2023 20:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538674;
-        bh=6aA1n+PwuxV39DByCKJBPk8LXhWjNlUOrF11QTq1ccc=;
+        s=korg; t=1689539989;
+        bh=coVrhg8Qr0Gk6SHK5yF3H/T18HAzhoyj69Gtq8o0nSc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J5ffppaHkmiFumyr1sYejRPr4xH5X7/k/qVn1ziwpOjJ6tr8VXap2bYHdR1nE76fL
-         SB6HI94V8/zxjHaWSRIlHJlr5f7VzqbTA19qFbgc7/6GB2mBccylJkSo4L6Lmix2rc
-         u1DPVGrTzJTyBU7/0phsuEcYjY2oi6x6tOCzRnXg=
+        b=dSFk6KUc6tNmwB8xrWiGYJgtNUGiX8bQkbrb6lmhQMGBjU4jTGdaIvv9P1h9cakHS
+         3yw87xDAHoUCJm8LLc6oomR9B7b2w73ueMk63uZQrVdGfg5RCXHEq8K2DFCJZjFVD2
+         PiuIARyRHJabjVn5oVdKaSoAAmqvhw6btEO7y5QY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tiezhu Yang <yangtiezhu@loongson.cn>,
-        Oleg Nesterov <oleg@redhat.com>, Guo Ren <guoren@kernel.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 490/800] riscv: uprobes: Restore thread.bad_cause
+Subject: [PATCH 6.1 204/591] arm64: dts: qcom: apq8016-sbc: Fix 1.8V power rail on LS expansion
 Date:   Sun, 16 Jul 2023 21:45:43 +0200
-Message-ID: <20230716195000.462101255@linuxfoundation.org>
+Message-ID: <20230716194929.147184701@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Stephan Gerhold <stephan@gerhold.net>
 
-[ Upstream commit 58b1294dd1d65bb62f08dddbf418f954210c2057 ]
+[ Upstream commit 5500f823db38db073d30557af159b77fb1f2bf26 ]
 
-thread.bad_cause is saved in arch_uprobe_pre_xol(), it should be restored
-in arch_uprobe_{post,abort}_xol() accordingly, otherwise the save operation
-is meaningless, this change is similar with x86 and powerpc.
+The 96Boards specification expects a 1.8V power rail on the low-speed
+expansion connector that is able to provide at least 0.18W / 100 mA.
+According to the DB410c hardware user manual this is done by connecting
+both L15 and L16 in parallel with up to 55mA each (for 110 mA total) [1].
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Fixes: 74784081aac8 ("riscv: Add uprobes supported")
-Link: https://lore.kernel.org/r/1682214146-3756-1-git-send-email-yangtiezhu@loongson.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Unfortunately the current regulator setup in the DB410c device tree
+does not implement the specification correctly and only provides 5 mA:
+
+  - Only L15 is marked always-on, so L16 is never enabled.
+  - Without specifying a load the regulator is put into LPM where
+    it can only provide 5 mA.
+
+Fix this by:
+
+  - Adding proper voltage constraints for L16.
+  - Making L16 always-on.
+  - Adding regulator-system-load for both L15 and L16. 100 mA should be
+    available in total, so specify 50 mA for each. (The regulator
+    hardware can only be in normal (55 mA) or low-power mode (5 mA) so
+    this will actually result in the expected 110 mA total...)
+
+[1]: https://www.96boards.org/documentation/consumer/dragonboard/dragonboard410c/hardware-docs/hardware-user-manual.md.html#power-supplies
+
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Fixes: 828dd5d66f0f ("arm64: dts: apq8016-sbc: make 1.8v available on LS expansion")
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230510-msm8916-regulators-v1-2-54d4960a05fc@gerhold.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/probes/uprobes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
-index c976a21cd4bd5..194f166b2cc40 100644
---- a/arch/riscv/kernel/probes/uprobes.c
-+++ b/arch/riscv/kernel/probes/uprobes.c
-@@ -67,6 +67,7 @@ int arch_uprobe_post_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
- 	struct uprobe_task *utask = current->utask;
+diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+index c6f4ee7b82042..e3e90ad92cc59 100644
+--- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
++++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+@@ -527,19 +527,27 @@ l14 {
+ 		regulator-max-microvolt = <3300000>;
+ 	};
  
- 	WARN_ON_ONCE(current->thread.bad_cause != UPROBE_TRAP_NR);
-+	current->thread.bad_cause = utask->autask.saved_cause;
+-	/**
+-	 * 1.8v required on LS expansion
+-	 * for mezzanine boards
++	/*
++	 * The 96Boards specification expects a 1.8V power rail on the low-speed
++	 * expansion connector that is able to provide at least 0.18W / 100 mA.
++	 * L15/L16 are connected in parallel to provide 55 mA each. A minimum load
++	 * must be specified to ensure the regulators are not put in LPM where they
++	 * would only provide 5 mA.
+ 	 */
+ 	l15 {
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <1800000>;
++		regulator-system-load = <50000>;
++		regulator-allow-set-load;
+ 		regulator-always-on;
+ 	};
  
- 	instruction_pointer_set(regs, utask->vaddr + auprobe->insn_size);
+ 	l16 {
+ 		regulator-min-microvolt = <1800000>;
+-		regulator-max-microvolt = <3300000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-system-load = <50000>;
++		regulator-allow-set-load;
++		regulator-always-on;
+ 	};
  
-@@ -102,6 +103,7 @@ void arch_uprobe_abort_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
- {
- 	struct uprobe_task *utask = current->utask;
- 
-+	current->thread.bad_cause = utask->autask.saved_cause;
- 	/*
- 	 * Task has received a fatal signal, so reset back to probbed
- 	 * address.
+ 	l17 {
 -- 
 2.39.2
 
