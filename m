@@ -2,123 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8C96755383
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6047D7555BA
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231751AbjGPUTz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:19:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44778 "EHLO
+        id S232606AbjGPUoA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:44:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231759AbjGPUTy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0639FE40
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:53 -0700 (PDT)
+        with ESMTP id S232611AbjGPUn7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0145E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E20160DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9953BC433C8;
-        Sun, 16 Jul 2023 20:19:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44D1C60EC0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C6FC433C8;
+        Sun, 16 Jul 2023 20:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538792;
-        bh=5w/SXJvSSN0lvDF8NdC5CubC4dBvV/ZW1pOyj+a4LPA=;
+        s=korg; t=1689540237;
+        bh=Ij6xrpprFN7SDHIVIG3FAh9ocTKPdxPTaLqlVAQMQQE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Da9J3AVRSgPxv5gitqnSEpdFOqf4q9p9u3SZDd8OkgQ+XEmsx0yQ6jHIlvtQ32tjN
-         bNLOZZqIc2WSiwQE9EMIX+VxzDfLp1+TTNAHB3p/25oZvicCsJNpeazovQlKM+qGyl
-         N+6cfejMrJRiCjnE8LCbV6INp4EWlhQkraqfKQjg=
+        b=X7nnTBI3jHypXtfIM6MzTdLA1QahMpNY4rnbwTjCIY9F5HORSnbjHe4jMz40gDZya
+         96CoUY18CkEgMNnNHsn42LuUAecmKwTtcMqbYW/chnqyVgik2SEAjjjCgkItgm91QO
+         m8ENZHkLeJk9Vc09EOBAZ4+QmEvMsJKIvi8u5tUs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 578/800] clk: qcom: ipq6018: fix networking resets
+        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+        Ding Hui <dinghui@sangfor.com.cn>,
+        Sasha Levin <sashal@kernel.org>,
+        Zongquan Qin <qinzongquan@sangfor.com.cn>
+Subject: [PATCH 6.1 292/591] PCI/ASPM: Disable ASPM on MFD function removal to avoid use-after-free
 Date:   Sun, 16 Jul 2023 21:47:11 +0200
-Message-ID: <20230716195002.509771371@linuxfoundation.org>
+Message-ID: <20230716194931.449552451@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robert Marko <robimarko@gmail.com>
+From: Ding Hui <dinghui@sangfor.com.cn>
 
-[ Upstream commit 349b5bed539b491b7894a5186a895751fd8ba6c7 ]
+[ Upstream commit 456d8aa37d0f56fc9e985e812496e861dcd6f2f2 ]
 
-Networking resets in IPQ6018 all use bitmask as they require multiple
-bits to be set and cleared instead of a single bit.
+Struct pcie_link_state->downstream is a pointer to the pci_dev of function
+0.  Previously we retained that pointer when removing function 0, and
+subsequent ASPM policy changes dereferenced it, resulting in a
+use-after-free warning from KASAN, e.g.:
 
-So, current networking resets have the same register and bit 0 set which
-is clearly incorrect.
+  # echo 1 > /sys/bus/pci/devices/0000:03:00.0/remove
+  # echo powersave > /sys/module/pcie_aspm/parameters/policy
 
-Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
-Signed-off-by: Robert Marko <robimarko@gmail.com>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230526190855.2941291-2-robimarko@gmail.com
+  BUG: KASAN: slab-use-after-free in pcie_config_aspm_link+0x42d/0x500
+  Call Trace:
+   kasan_report+0xae/0xe0
+   pcie_config_aspm_link+0x42d/0x500
+   pcie_aspm_set_policy+0x8e/0x1a0
+   param_attr_store+0x162/0x2c0
+   module_attr_store+0x3e/0x80
+
+PCIe spec r6.0, sec 7.5.3.7, recommends that software program the same ASPM
+Control value in all functions of multi-function devices.
+
+Disable ASPM and free the pcie_link_state when any child function is
+removed so we can discard the dangling pcie_link_state->downstream pointer
+and maintain the same ASPM Control configuration for all functions.
+
+[bhelgaas: commit log and comment]
+Debugged-by: Zongquan Qin <qinzongquan@sangfor.com.cn>
+Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: b5a0a9b59c81 ("PCI/ASPM: Read and set up L1 substate capabilities")
+Link: https://lore.kernel.org/r/20230507034057.20970-1-dinghui@sangfor.com.cn
+Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq6018.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/pci/pcie/aspm.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
-index 5c5d1b04ea7af..cde62a11f5736 100644
---- a/drivers/clk/qcom/gcc-ipq6018.c
-+++ b/drivers/clk/qcom/gcc-ipq6018.c
-@@ -4517,24 +4517,24 @@ static const struct qcom_reset_map gcc_ipq6018_resets[] = {
- 	[GCC_PCIE0_AHB_ARES] = { 0x75040, 5 },
- 	[GCC_PCIE0_AXI_MASTER_STICKY_ARES] = { 0x75040, 6 },
- 	[GCC_PCIE0_AXI_SLAVE_STICKY_ARES] = { 0x75040, 7 },
--	[GCC_PPE_FULL_RESET] = { 0x68014, 0 },
--	[GCC_UNIPHY0_SOFT_RESET] = { 0x56004, 0 },
-+	[GCC_PPE_FULL_RESET] = { .reg = 0x68014, .bitmask = 0xf0000 },
-+	[GCC_UNIPHY0_SOFT_RESET] = { .reg = 0x56004, .bitmask = 0x3ff2 },
- 	[GCC_UNIPHY0_XPCS_RESET] = { 0x56004, 2 },
--	[GCC_UNIPHY1_SOFT_RESET] = { 0x56104, 0 },
-+	[GCC_UNIPHY1_SOFT_RESET] = { .reg = 0x56104, .bitmask = 0x32 },
- 	[GCC_UNIPHY1_XPCS_RESET] = { 0x56104, 2 },
--	[GCC_EDMA_HW_RESET] = { 0x68014, 0 },
--	[GCC_NSSPORT1_RESET] = { 0x68014, 0 },
--	[GCC_NSSPORT2_RESET] = { 0x68014, 0 },
--	[GCC_NSSPORT3_RESET] = { 0x68014, 0 },
--	[GCC_NSSPORT4_RESET] = { 0x68014, 0 },
--	[GCC_NSSPORT5_RESET] = { 0x68014, 0 },
--	[GCC_UNIPHY0_PORT1_ARES] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT2_ARES] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT3_ARES] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT4_ARES] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT5_ARES] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT_4_5_RESET] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT_4_RESET] = { 0x56004, 0 },
-+	[GCC_EDMA_HW_RESET] = { .reg = 0x68014, .bitmask = 0x300000 },
-+	[GCC_NSSPORT1_RESET] = { .reg = 0x68014, .bitmask = 0x1000003 },
-+	[GCC_NSSPORT2_RESET] = { .reg = 0x68014, .bitmask = 0x200000c },
-+	[GCC_NSSPORT3_RESET] = { .reg = 0x68014, .bitmask = 0x4000030 },
-+	[GCC_NSSPORT4_RESET] = { .reg = 0x68014, .bitmask = 0x8000300 },
-+	[GCC_NSSPORT5_RESET] = { .reg = 0x68014, .bitmask = 0x10000c00 },
-+	[GCC_UNIPHY0_PORT1_ARES] = { .reg = 0x56004, .bitmask = 0x30 },
-+	[GCC_UNIPHY0_PORT2_ARES] = { .reg = 0x56004, .bitmask = 0xc0 },
-+	[GCC_UNIPHY0_PORT3_ARES] = { .reg = 0x56004, .bitmask = 0x300 },
-+	[GCC_UNIPHY0_PORT4_ARES] = { .reg = 0x56004, .bitmask = 0xc00 },
-+	[GCC_UNIPHY0_PORT5_ARES] = { .reg = 0x56004, .bitmask = 0x3000 },
-+	[GCC_UNIPHY0_PORT_4_5_RESET] = { .reg = 0x56004, .bitmask = 0x3c02 },
-+	[GCC_UNIPHY0_PORT_4_RESET] = { .reg = 0x56004, .bitmask = 0xc02 },
- 	[GCC_LPASS_BCR] = {0x1F000, 0},
- 	[GCC_UBI32_TBU_BCR] = {0x65000, 0},
- 	[GCC_LPASS_TBU_BCR] = {0x6C000, 0},
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 4b4184563a927..74b8183c305df 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1010,21 +1010,24 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
+ 
+ 	down_read(&pci_bus_sem);
+ 	mutex_lock(&aspm_lock);
+-	/*
+-	 * All PCIe functions are in one slot, remove one function will remove
+-	 * the whole slot, so just wait until we are the last function left.
+-	 */
+-	if (!list_empty(&parent->subordinate->devices))
+-		goto out;
+ 
+ 	link = parent->link_state;
+ 	root = link->root;
+ 	parent_link = link->parent;
+ 
+-	/* All functions are removed, so just disable ASPM for the link */
++	/*
++	 * link->downstream is a pointer to the pci_dev of function 0.  If
++	 * we remove that function, the pci_dev is about to be deallocated,
++	 * so we can't use link->downstream again.  Free the link state to
++	 * avoid this.
++	 *
++	 * If we're removing a non-0 function, it's possible we could
++	 * retain the link state, but PCIe r6.0, sec 7.5.3.7, recommends
++	 * programming the same ASPM Control value for all functions of
++	 * multi-function devices, so disable ASPM for all of them.
++	 */
+ 	pcie_config_aspm_link(link, 0);
+ 	list_del(&link->sibling);
+-	/* Clock PM is for endpoint device */
+ 	free_link_state(link);
+ 
+ 	/* Recheck latencies and configure upstream links */
+@@ -1032,7 +1035,7 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
+ 		pcie_update_aspm_capable(root);
+ 		pcie_config_aspm_path(parent_link);
+ 	}
+-out:
++
+ 	mutex_unlock(&aspm_lock);
+ 	up_read(&pci_bus_sem);
+ }
 -- 
 2.39.2
 
