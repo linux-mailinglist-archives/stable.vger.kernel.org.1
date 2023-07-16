@@ -2,89 +2,211 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8002C755560
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5737C75532D
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232513AbjGPUkU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:40:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59486 "EHLO
+        id S231633AbjGPUQS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:16:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232507AbjGPUkT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:19 -0400
+        with ESMTP id S231636AbjGPUQQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8112E197
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A83CC0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 104E760EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2373CC433C8;
-        Sun, 16 Jul 2023 20:40:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3214960E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EC6C433C7;
+        Sun, 16 Jul 2023 20:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540017;
-        bh=dxtod1BFb6C84L1YQyrN7JN4ESgCOOuzwFwxUHH8KQg=;
+        s=korg; t=1689538573;
+        bh=llTlCzM7qVZO9ZtCK1keGAC3stq2SMv5PEPDyQtoHNM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z8wocUalq53JVuDk8H1tXxJAdTX8izt9Ueh7S/990jNdvaEOghYEDh3tiQnNi/ZPC
-         yKZ6QgGu/Mxw1iySbyVbbXQTuOUallrESm77PiEXK1IUPqwir2sU1Ym8nraGTI0dDW
-         d66MIYEzQ4fIN7K+V7CM/QdxCOvIUJk4SqPPLW08=
+        b=IKwL4zoYw7OIUszXgoG7QUFBz2s+6BNSZc8RRnFLgvE4hmh55A3e/j8nPYKmAu6qV
+         tB+Fds6tgUwCbSrY6cC3twn9DvAb2sS6MLhAe6TJvIyWJ3R+1pyDbPtXVxdpP5ch5C
+         tM7Ewkcdp7OpANvs7WbJsPWpHUh6RhiGXSWH9h+Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 213/591] ARM: dts: stm32: Shorten the AV96 HDMI sound card name
-Date:   Sun, 16 Jul 2023 21:45:52 +0200
-Message-ID: <20230716194929.380012906@linuxfoundation.org>
+Subject: [PATCH 6.4 500/800] modpost: remove broken calculation of exception_table_entry size
+Date:   Sun, 16 Jul 2023 21:45:53 +0200
+Message-ID: <20230716195000.708275561@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 0cf765e598712addec34d0208cc1418c151fefb2 ]
+[ Upstream commit d0acc76a49aa917c1a455d11d32d34a01e8b2835 ]
 
-Fix the following error in kernel log due to too long sound card name:
-"
-asoc-audio-graph-card sound: ASoC: driver name too long 'STM32MP1-AV96-HDMI' -> 'STM32MP1-AV96-H'
-"
+find_extable_entry_size() is completely broken. It has awesome comments
+about how to calculate sizeof(struct exception_table_entry).
 
-Fixes: e027da342772 ("ARM: dts: stm32: Add bindings for audio on AV96")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+It was based on these assumptions:
+
+  - struct exception_table_entry has two fields
+  - both of the fields have the same size
+
+Then, we came up with this equation:
+
+  (offset of the second field) * 2 == (size of struct)
+
+It was true for all architectures when commit 52dc0595d540 ("modpost:
+handle relocations mismatch in __ex_table.") was applied.
+
+Our mathematics broke when commit 548acf19234d ("x86/mm: Expand the
+exception table logic to allow new handling options") introduced the
+third field.
+
+Now, the definition of exception_table_entry is highly arch-dependent.
+
+For x86, sizeof(struct exception_table_entry) is apparently 12, but
+find_extable_entry_size() sets extable_entry_size to 8.
+
+I could fix it, but I do not see much value in this code.
+
+extable_entry_size is used just for selecting a slightly different
+error message.
+
+If the first field ("insn") references to a non-executable section,
+
+    The relocation at %s+0x%lx references
+    section "%s" which is not executable, IOW
+    it is not possible for the kernel to fault
+    at that address.  Something is seriously wrong
+    and should be fixed.
+
+If the second field ("fixup") references to a non-executable section,
+
+    The relocation at %s+0x%lx references
+    section "%s" which is not executable, IOW
+    the kernel will fault if it ever tries to
+    jump to it.  Something is seriously wrong
+    and should be fixed.
+
+Merge the two error messages rather than adding even more complexity.
+
+Change fatal() to error() to make it continue running and catch more
+possible errors.
+
+Fixes: 548acf19234d ("x86/mm: Expand the exception table logic to allow new handling options")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/mod/modpost.c | 60 +++----------------------------------------
+ 1 file changed, 3 insertions(+), 57 deletions(-)
 
-diff --git a/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi b/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi
-index 2c246ac641533..f068e4fcc404f 100644
---- a/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi
-+++ b/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi
-@@ -88,7 +88,7 @@ sd_switch: regulator-sd_switch {
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index c12150f96b884..9b6e8109af83f 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -1292,43 +1292,6 @@ static int is_executable_section(struct elf_info* elf, unsigned int section_inde
+ 	return ((elf->sechdrs[section_index].sh_flags & SHF_EXECINSTR) == SHF_EXECINSTR);
+ }
  
- 	sound {
- 		compatible = "audio-graph-card";
--		label = "STM32MP1-AV96-HDMI";
-+		label = "STM32-AV96-HDMI";
- 		dais = <&sai2a_port>;
- 		status = "okay";
- 	};
+-/*
+- * We rely on a gross hack in section_rel[a]() calling find_extable_entry_size()
+- * to know the sizeof(struct exception_table_entry) for the target architecture.
+- */
+-static unsigned int extable_entry_size = 0;
+-static void find_extable_entry_size(const char* const sec, const Elf_Rela* r)
+-{
+-	/*
+-	 * If we're currently checking the second relocation within __ex_table,
+-	 * that relocation offset tells us the offsetof(struct
+-	 * exception_table_entry, fixup) which is equal to sizeof(struct
+-	 * exception_table_entry) divided by two.  We use that to our advantage
+-	 * since there's no portable way to get that size as every architecture
+-	 * seems to go with different sized types.  Not pretty but better than
+-	 * hard-coding the size for every architecture..
+-	 */
+-	if (!extable_entry_size)
+-		extable_entry_size = r->r_offset * 2;
+-}
+-
+-static inline bool is_extable_fault_address(Elf_Rela *r)
+-{
+-	/*
+-	 * extable_entry_size is only discovered after we've handled the
+-	 * _second_ relocation in __ex_table, so only abort when we're not
+-	 * handling the first reloc and extable_entry_size is zero.
+-	 */
+-	if (r->r_offset && extable_entry_size == 0)
+-		fatal("extable_entry size hasn't been discovered!\n");
+-
+-	return ((r->r_offset == 0) ||
+-		(r->r_offset % extable_entry_size == 0));
+-}
+-
+-#define is_second_extable_reloc(Start, Cur, Sec)			\
+-	(((Cur) == (Start) + 1) && (strcmp("__ex_table", (Sec)) == 0))
+-
+ static void report_extable_warnings(const char* modname, struct elf_info* elf,
+ 				    const struct sectioncheck* const mismatch,
+ 				    Elf_Rela* r, Elf_Sym* sym,
+@@ -1384,22 +1347,9 @@ static void extable_mismatch_handler(const char* modname, struct elf_info *elf,
+ 		      "You might get more information about where this is\n"
+ 		      "coming from by using scripts/check_extable.sh %s\n",
+ 		      fromsec, (long)r->r_offset, tosec, modname);
+-	else if (!is_executable_section(elf, get_secindex(elf, sym))) {
+-		if (is_extable_fault_address(r))
+-			fatal("The relocation at %s+0x%lx references\n"
+-			      "section \"%s\" which is not executable, IOW\n"
+-			      "it is not possible for the kernel to fault\n"
+-			      "at that address.  Something is seriously wrong\n"
+-			      "and should be fixed.\n",
+-			      fromsec, (long)r->r_offset, tosec);
+-		else
+-			fatal("The relocation at %s+0x%lx references\n"
+-			      "section \"%s\" which is not executable, IOW\n"
+-			      "the kernel will fault if it ever tries to\n"
+-			      "jump to it.  Something is seriously wrong\n"
+-			      "and should be fixed.\n",
+-			      fromsec, (long)r->r_offset, tosec);
+-	}
++	else if (!is_executable_section(elf, get_secindex(elf, sym)))
++		error("%s+0x%lx references non-executable section '%s'\n",
++		      fromsec, (long)r->r_offset, tosec);
+ }
+ 
+ static void check_section_mismatch(const char *modname, struct elf_info *elf,
+@@ -1574,8 +1524,6 @@ static void section_rela(const char *modname, struct elf_info *elf,
+ 		/* Skip special sections */
+ 		if (is_shndx_special(sym->st_shndx))
+ 			continue;
+-		if (is_second_extable_reloc(start, rela, fromsec))
+-			find_extable_entry_size(fromsec, &r);
+ 		check_section_mismatch(modname, elf, &r, sym, fromsec);
+ 	}
+ }
+@@ -1633,8 +1581,6 @@ static void section_rel(const char *modname, struct elf_info *elf,
+ 		/* Skip special sections */
+ 		if (is_shndx_special(sym->st_shndx))
+ 			continue;
+-		if (is_second_extable_reloc(start, rel, fromsec))
+-			find_extable_entry_size(fromsec, &r);
+ 		check_section_mismatch(modname, elf, &r, sym, fromsec);
+ 	}
+ }
 -- 
 2.39.2
 
