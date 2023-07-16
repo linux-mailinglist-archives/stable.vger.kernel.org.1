@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F34575549A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DEF3755273
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232131AbjGPUcO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:32:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53322 "EHLO
+        id S231329AbjGPUIC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:08:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232222AbjGPUcN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:13 -0400
+        with ESMTP id S231327AbjGPUIB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EF18BC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D2D7C0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A297B60EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08EAC433C8;
-        Sun, 16 Jul 2023 20:32:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B0BCA60DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48D3C433C8;
+        Sun, 16 Jul 2023 20:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539526;
-        bh=4rTdc/T2DNXWxcPuwMno5T5ZJrQ9yC3prMiN+PNcexQ=;
+        s=korg; t=1689538080;
+        bh=DKwoDzISkE9wh3vvu2XI482adqoYiLokyx+1GWjJ6Ik=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C61IgJ2RPi/alOgMUvq/Pwp81CMRTALG9zzyxE98/R3/25AHbmzGQyNKgNg3caS3r
-         L8sNDZeUegaUSnEyyj8E9HRTLY5i+GVOHoleEJSlXDeSb9230m3hBJ6KYwmoemGQCK
-         sf1XpBqF40JesCjBK0jgJt7A5NnqNiindHIvkXeA=
+        b=ll3jeaKJ1E14YYHJGA5EhZI2d52+GARSur1vkDSOsYrYF2l3hVvBVwfu9ZI/7+ACz
+         Ma4Ug0AS6+rXCdctt9zcnV3+NSfbPAaxIvzfwicNA0Zgu5OtbuIzfFl2FdtGsO+B0L
+         Yh4DvdvfhkLIiM/a12oXIexRByQ0Gxxmp/EiTjlM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/591] posix-timers: Prevent RT livelock in itimer_delete()
+        patches@lists.linux.dev, Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 324/800] ARM: omap2: fix missing tick_broadcast() prototype
 Date:   Sun, 16 Jul 2023 21:42:57 +0200
-Message-ID: <20230716194924.866071599@linuxfoundation.org>
+Message-ID: <20230716194956.596434772@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,108 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 9d9e522010eb5685d8b53e8a24320653d9d4cbbf ]
+[ Upstream commit 861bc1d2886d47bd57a2cbf2cda87fdbe3eb9d08 ]
 
-itimer_delete() has a retry loop when the timer is concurrently expired. On
-non-RT kernels this just spin-waits until the timer callback has completed,
-except for posix CPU timers which have HAVE_POSIX_CPU_TIMERS_TASK_WORK
-enabled.
+omap2 contains a hack to define tick_broadcast() on non-SMP
+configurations in place of the normal SMP definition. This one
+causes a warning because of a missing prototype:
 
-In that case and on RT kernels the existing task could live lock when
-preempting the task which does the timer delivery.
+arch/arm/mach-omap2/board-generic.c:44:6: error: no previous prototype for 'tick_broadcast'
 
-Replace spin_unlock() with an invocation of timer_wait_running() to handle
-it the same way as the other retry loops in the posix timer code.
+Make sure to always include the header with the declaration.
 
-Fixes: ec8f954a40da ("posix-timers: Use a callback for cancel synchronization on PREEMPT_RT")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/87v8g7c50d.ffs@tglx
+Fixes: d86ad463d670 ("ARM: OMAP2+: Fix regression for using local timer on non-SMP SoCs")
+Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Link: https://lore.kernel.org/r/20230516153109.514251-9-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/posix-timers.c | 43 +++++++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 8 deletions(-)
+ arch/arm/mach-omap2/board-generic.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 808a247205a9a..ed3c4a9543982 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -1037,27 +1037,52 @@ SYSCALL_DEFINE1(timer_delete, timer_t, timer_id)
- }
+diff --git a/arch/arm/mach-omap2/board-generic.c b/arch/arm/mach-omap2/board-generic.c
+index 1610c567a6a3a..10d2f078e4a8e 100644
+--- a/arch/arm/mach-omap2/board-generic.c
++++ b/arch/arm/mach-omap2/board-generic.c
+@@ -13,6 +13,7 @@
+ #include <linux/of_platform.h>
+ #include <linux/irqdomain.h>
+ #include <linux/clocksource.h>
++#include <linux/clockchips.h>
  
- /*
-- * return timer owned by the process, used by exit_itimers
-+ * Delete a timer if it is armed, remove it from the hash and schedule it
-+ * for RCU freeing.
-  */
- static void itimer_delete(struct k_itimer *timer)
- {
--retry_delete:
--	spin_lock_irq(&timer->it_lock);
-+	unsigned long flags;
-+
-+	/*
-+	 * irqsave is required to make timer_wait_running() work.
-+	 */
-+	spin_lock_irqsave(&timer->it_lock, flags);
- 
-+retry_delete:
-+	/*
-+	 * Even if the timer is not longer accessible from other tasks
-+	 * it still might be armed and queued in the underlying timer
-+	 * mechanism. Worse, that timer mechanism might run the expiry
-+	 * function concurrently.
-+	 */
- 	if (timer_delete_hook(timer) == TIMER_RETRY) {
--		spin_unlock_irq(&timer->it_lock);
-+		/*
-+		 * Timer is expired concurrently, prevent livelocks
-+		 * and pointless spinning on RT.
-+		 *
-+		 * timer_wait_running() drops timer::it_lock, which opens
-+		 * the possibility for another task to delete the timer.
-+		 *
-+		 * That's not possible here because this is invoked from
-+		 * do_exit() only for the last thread of the thread group.
-+		 * So no other task can access and delete that timer.
-+		 */
-+		if (WARN_ON_ONCE(timer_wait_running(timer, &flags) != timer))
-+			return;
-+
- 		goto retry_delete;
- 	}
- 	list_del(&timer->list);
- 
--	spin_unlock_irq(&timer->it_lock);
-+	spin_unlock_irqrestore(&timer->it_lock, flags);
- 	release_posix_timer(timer, IT_ID_SET);
- }
- 
- /*
-- * This is called by do_exit or de_thread, only when nobody else can
-- * modify the signal->posix_timers list. Yet we need sighand->siglock
-- * to prevent the race with /proc/pid/timers.
-+ * Invoked from do_exit() when the last thread of a thread group exits.
-+ * At that point no other task can access the timers of the dying
-+ * task anymore.
-  */
- void exit_itimers(struct task_struct *tsk)
- {
-@@ -1067,10 +1092,12 @@ void exit_itimers(struct task_struct *tsk)
- 	if (list_empty(&tsk->signal->posix_timers))
- 		return;
- 
-+	/* Protect against concurrent read via /proc/$PID/timers */
- 	spin_lock_irq(&tsk->sighand->siglock);
- 	list_replace_init(&tsk->signal->posix_timers, &timers);
- 	spin_unlock_irq(&tsk->sighand->siglock);
- 
-+	/* The timers are not longer accessible via tsk::signal */
- 	while (!list_empty(&timers)) {
- 		tmr = list_first_entry(&timers, struct k_itimer, list);
- 		itimer_delete(tmr);
+ #include <asm/setup.h>
+ #include <asm/mach/arch.h>
 -- 
 2.39.2
 
