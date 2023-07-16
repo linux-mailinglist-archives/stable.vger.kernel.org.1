@@ -2,55 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBCDE7552C6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1E0B7554F6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231470AbjGPULr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:11:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39576 "EHLO
+        id S232321AbjGPUfu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:35:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231477AbjGPULr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:47 -0400
+        with ESMTP id S232318AbjGPUft (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:35:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02EB712E
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFA459F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:35:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AE2B60EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974FFC433C7;
-        Sun, 16 Jul 2023 20:11:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 695D560DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:35:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D532C433C8;
+        Sun, 16 Jul 2023 20:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538305;
-        bh=ShogA3wFM7YEKbrmd0qPdQo1chb4s7R1gnfKM6tCKpk=;
+        s=korg; t=1689539747;
+        bh=f8Y3PYvUpqFeAUOxRGB/dn5s4Fu5TFz+kBvif6MbHDo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EWFx7QRk6t1WF/sNps3YpfuaByHavoaWPcq+QqlsuvY5hlFrmJg7W7ntWxqKDHADR
-         a05pRlzmP6rAyPaLxbYrzZx2Lk+9lYrSi+Usjw5E458p02qj+VOZyfmUW2kXDLfYel
-         K7nWksx0kT2V/nOMeEL61cGBYfqy9RXCS5tEUPFA=
+        b=WAXIAGPHgy13q6OZUlsDQWtu+pVv72mC25bg/DGyAA/kK4iKMNPVa22Vd/fNa249R
+         O46c4JZy1nNXPSYSWlpLNZp8nQYJGXkAI7Tk85bt9jjERktUazPcwzXDGWUuZ4f1jn
+         hJdj71ou8GWwOOsf6RVa6UTrUreB01lkZT2o5U+k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
-        <nfraprado@collabora.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 404/800] arm64: dts: mediatek: mt8192: Fix CPUs capacity-dmips-mhz
+Subject: [PATCH 6.1 118/591] wifi: iwlwifi: mvm: indicate HW decrypt for beacon protection
 Date:   Sun, 16 Jul 2023 21:44:17 +0200
-Message-ID: <20230716194958.456144727@linuxfoundation.org>
+Message-ID: <20230716194926.929566950@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,81 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a4366b5695c984b8a3fc8b31de9e758c8f6d1aed ]
+[ Upstream commit 2db72b8a700943aa54dce0aabe6ff1b72b615162 ]
 
-The capacity-dmips-mhz parameter was miscalculated: this SoC runs
-the first (Cortex-A55) cluster at a maximum of 2000MHz and the
-second (Cortex-A76) cluster at a maximum of 2200MHz.
+We've already done the 'decryption' here, so tell
+mac80211 it need not do it again.
 
-In order to calculate the right capacity-dmips-mhz, the following
-test was performed:
-1. CPUFREQ governor was set to 'performance' on both clusters
-2. Ran dhrystone with 500000000 iterations for 10 times on each cluster
-3. Calculated the mean result for each cluster
-4. Calculated DMIPS/MHz: dmips_mhz = dmips_per_second / cpu_mhz
-5. Scaled results to 1024:
-   result_c0 = dmips_mhz_c0 / dmips_mhz_c1 * 1024
-
-The mean results for this SoC are:
-Cluster 0 (LITTLE): 12016411 Dhry/s
-Cluster 1 (BIG): 31702034 Dhry/s
-
-The calculated scaled results are:
-Cluster 0: 426.953226899238 (rounded to 427)
-Cluster 1: 1024
-
-Fixes: 48489980e27e ("arm64: dts: Add Mediatek SoC MT8192 and evaluation board dts and Makefile")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230602183515.3778780-1-nfraprado@collabora.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Fixes: b1fdc2505abc ("iwlwifi: mvm: advertise BIGTK client support if available")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230620125813.a50cf68fbf2e.Ieceacbe3789d81ea02ae085ad8d1f8813a33c31b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8192.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8192.dtsi b/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-index 6593cd0ef2972..75eeba539e6fe 100644
---- a/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8192.dtsi
-@@ -71,7 +71,7 @@ cpu0: cpu@0 {
- 			d-cache-sets = <128>;
- 			next-level-cache = <&l2_0>;
- 			performance-domains = <&performance 0>;
--			capacity-dmips-mhz = <530>;
-+			capacity-dmips-mhz = <427>;
- 		};
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 02c2a06301076..f268a31ce26d9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -296,7 +296,8 @@ static void iwl_mvm_get_signal_strength(struct iwl_mvm *mvm,
+ static int iwl_mvm_rx_mgmt_prot(struct ieee80211_sta *sta,
+ 				struct ieee80211_hdr *hdr,
+ 				struct iwl_rx_mpdu_desc *desc,
+-				u32 status)
++				u32 status,
++				struct ieee80211_rx_status *stats)
+ {
+ 	struct iwl_mvm_sta *mvmsta;
+ 	struct iwl_mvm_vif *mvmvif;
+@@ -325,8 +326,10 @@ static int iwl_mvm_rx_mgmt_prot(struct ieee80211_sta *sta,
  
- 		cpu1: cpu@100 {
-@@ -89,7 +89,7 @@ cpu1: cpu@100 {
- 			d-cache-sets = <128>;
- 			next-level-cache = <&l2_0>;
- 			performance-domains = <&performance 0>;
--			capacity-dmips-mhz = <530>;
-+			capacity-dmips-mhz = <427>;
- 		};
+ 	/* good cases */
+ 	if (likely(status & IWL_RX_MPDU_STATUS_MIC_OK &&
+-		   !(status & IWL_RX_MPDU_STATUS_REPLAY_ERROR)))
++		   !(status & IWL_RX_MPDU_STATUS_REPLAY_ERROR))) {
++		stats->flag |= RX_FLAG_DECRYPTED;
+ 		return 0;
++	}
  
- 		cpu2: cpu@200 {
-@@ -107,7 +107,7 @@ cpu2: cpu@200 {
- 			d-cache-sets = <128>;
- 			next-level-cache = <&l2_0>;
- 			performance-domains = <&performance 0>;
--			capacity-dmips-mhz = <530>;
-+			capacity-dmips-mhz = <427>;
- 		};
+ 	if (!sta)
+ 		return -1;
+@@ -395,7 +398,7 @@ static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
  
- 		cpu3: cpu@300 {
-@@ -125,7 +125,7 @@ cpu3: cpu@300 {
- 			d-cache-sets = <128>;
- 			next-level-cache = <&l2_0>;
- 			performance-domains = <&performance 0>;
--			capacity-dmips-mhz = <530>;
-+			capacity-dmips-mhz = <427>;
- 		};
+ 	if (unlikely(ieee80211_is_mgmt(hdr->frame_control) &&
+ 		     !ieee80211_has_protected(hdr->frame_control)))
+-		return iwl_mvm_rx_mgmt_prot(sta, hdr, desc, status);
++		return iwl_mvm_rx_mgmt_prot(sta, hdr, desc, status, stats);
  
- 		cpu4: cpu@400 {
+ 	if (!ieee80211_has_protected(hdr->frame_control) ||
+ 	    (status & IWL_RX_MPDU_STATUS_SEC_MASK) ==
 -- 
 2.39.2
 
