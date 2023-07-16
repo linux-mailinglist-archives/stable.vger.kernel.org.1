@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 671E3755563
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6460E755353
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232490AbjGPUkO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:40:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59396 "EHLO
+        id S231695AbjGPURu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:17:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232469AbjGPUkN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F23C4197
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:12 -0700 (PDT)
+        with ESMTP id S231698AbjGPURs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8FF1BF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EAEA60EC2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97995C433C7;
-        Sun, 16 Jul 2023 20:40:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9E1A60EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B43C433C8;
+        Sun, 16 Jul 2023 20:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540012;
-        bh=hZr3tAXKWEulM937V6CHeO6PMLvRbshiHPi+q+Nalwo=;
+        s=korg; t=1689538666;
+        bh=rZ8cr4f6MXhE0fL75aITSnSdYoSLbEzaTc2DgnyWeyI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fY257xFLkLuVj6w010eHZm8P7Yp7gvQE9SXr50wHVlQNYr0FnDT2w6KRznoN7WTWc
-         5UEiviGf8VcKN+N8sAV3m+Z65bmckrQZNQRRdyY8HyqjeeZyjEVl4dXOfLGNT2zOej
-         2Pn8iOuAxkRiIJQALDS7a4lPAHP9CH+UGwHB8En4=
+        b=F6Q4KQetwhGdBq0e5u2PBfImSB5C6bkPlWoWpSQF+RDkustHWjwqldLMvabwVr+7w
+         DP8+goD/5pYuVBYyhvn2sxha7tH4CYTziM3l1h9hxBPNVprEeuWQRKuVu9kIaHqQ+T
+         byc7qYII2Rgs17nOxRd56/0T77ooRbSU7BPCli2Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Xinghui Li <korantli@tencent.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Nirmal Patel <nirmal.patel@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 211/591] arm64: dts: qcom: apq8096: fix fixed regulator name property
+Subject: [PATCH 6.4 497/800] PCI: vmd: Fix uninitialized variable usage in vmd_enable_domain()
 Date:   Sun, 16 Jul 2023 21:45:50 +0200
-Message-ID: <20230716194929.328777516@linuxfoundation.org>
+Message-ID: <20230716195000.624596910@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,47 +58,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Xinghui Li <korantli@tencent.com>
 
-[ Upstream commit c77612a07d18d4425fd8ddd532a8a9b8e1970c53 ]
+[ Upstream commit 0c0206dc4f5ba2d18b15e24d2047487d6f73916b ]
 
-Correct the typo in 'regulator-name' property.
+The ret variable in the vmd_enable_domain() function was used
+uninitialized when printing a warning message upon failure of
+the pci_reset_bus() function.
 
-  apq8096-ifc6640.dtb: v1p05-regulator: 'regulator-name' is a required property
-  apq8096-ifc6640.dtb: v1p05-regulator: Unevaluated properties are not allowed ('reglator-name' was unexpected)
+Thus, fix the issue by assigning ret with the value returned from
+pci_reset_bus() before referencing it in the warning message.
 
-Fixes: 6cbdec2d3ca6 ("arm64: dts: qcom: msm8996: Introduce IFC6640")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230507174516.264936-3-krzysztof.kozlowski@linaro.org
+This was detected by Smatch:
+
+  drivers/pci/controller/vmd.c:931 vmd_enable_domain() error: uninitialized symbol 'ret'.
+
+[kwilczynski: drop the second patch from the series, add missing reported
+by tag, commit log]
+Fixes: 0a584655ef89 ("PCI: vmd: Fix secondary bus reset for Intel bridges")
+Link: https://lore.kernel.org/all/202305270219.B96IiIfv-lkp@intel.com
+Link: https://lore.kernel.org/linux-pci/20230420094332.1507900-2-korantwork@gmail.com
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Xinghui Li <korantli@tencent.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Nirmal Patel <nirmal.patel@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/vmd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts b/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts
-index 92f264891d84b..9b20c1a47a186 100644
---- a/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts
-@@ -26,7 +26,7 @@ chosen {
+diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
+index 30ec18283aaf4..e718a816d4814 100644
+--- a/drivers/pci/controller/vmd.c
++++ b/drivers/pci/controller/vmd.c
+@@ -927,7 +927,8 @@ static int vmd_enable_domain(struct vmd_dev *vmd, unsigned long features)
+ 		if (!list_empty(&child->devices)) {
+ 			dev = list_first_entry(&child->devices,
+ 					       struct pci_dev, bus_list);
+-			if (pci_reset_bus(dev))
++			ret = pci_reset_bus(dev);
++			if (ret)
+ 				pci_warn(dev, "can't reset device: %d\n", ret);
  
- 	v1p05: v1p05-regulator {
- 		compatible = "regulator-fixed";
--		reglator-name = "v1p05";
-+		regulator-name = "v1p05";
- 		regulator-always-on;
- 		regulator-boot-on;
- 
-@@ -38,7 +38,7 @@ v1p05: v1p05-regulator {
- 
- 	v12_poe: v12-poe-regulator {
- 		compatible = "regulator-fixed";
--		reglator-name = "v12_poe";
-+		regulator-name = "v12_poe";
- 		regulator-always-on;
- 		regulator-boot-on;
- 
+ 			break;
 -- 
 2.39.2
 
