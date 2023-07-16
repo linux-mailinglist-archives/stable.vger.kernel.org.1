@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06FD47552F4
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB05E75553A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231551AbjGPUN6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40784 "EHLO
+        id S232422AbjGPUit (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:38:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231558AbjGPUN5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:13:57 -0400
+        with ESMTP id S232433AbjGPUir (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65B011BF
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:13:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149ABAB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C50C960E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:13:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87B9C433C8;
-        Sun, 16 Jul 2023 20:13:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A706760EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09B2C433C7;
+        Sun, 16 Jul 2023 20:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538434;
-        bh=jQwJZ0AjWWaoUEth8BSH8wvlKHw2L6MboJusA8XizdI=;
+        s=korg; t=1689539925;
+        bh=/f/qe/x5uw5guA6TWeQzDNDdWGfZFolipMOvbV/kCZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ic8TCO+1LJuQwbZIH1uqHftJVIY0O1C9X3RWOTqnS5WdNec8YYW7jCl+DJP3jGxBR
-         c+eh/DAk+TqyQZimkgHai5oi+0IOKAVpK0hIgp6G3wOLyxFMXuNqhZ9PXsQ/MOMxwj
-         yLUke0nKAjJq6484hoRQutYHSDzzcXS8LhEVJK24=
+        b=wJ/d0tPRjrpejvNXw/oFn/eh7nGUvNLsYFxEculYG9QJbVbLr/EXtXzdb6aGo1qoy
+         c9TpNOyiMTOjc8fBrocNDXyNG999Ev2e3eoEJeEAQHhbcdwV2BQTVg8XGtDH13iWF7
+         ARLUPeqv60iyFwnImNh9cmCEiygpCoqNDmgKPGEA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bart Van Assche <bvanassche@acm.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Keoseong Park <keosung.park@samsung.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Marek Vasut <marek.vasut+renesas@mailbox.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 449/800] scsi: ufs: Declare ufshcd_{hold,release}() once
+Subject: [PATCH 6.1 163/591] clk: vc7: Fix .driver_data content in i2c_device_id
 Date:   Sun, 16 Jul 2023 21:45:02 +0200
-Message-ID: <20230716194959.512733208@linuxfoundation.org>
+Message-ID: <20230716194928.082850237@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,39 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 4b68b7f9c46d90c541d39c8b397a86ac0ca4c765 ]
+[ Upstream commit b5e10beeafaa3266559c582dde7534ae3fe8cefb ]
 
-ufshcd_hold() and ufshcd_release are declared twice: once in
-drivers/ufs/core/ufshcd-priv.h and a second time in include/ufs/ufshcd.h.
-Remove the declarations from ufshcd-priv.h.
+The .driver_data content in i2c_device_id table must match the
+.data content in of_device_id table, else device_get_match_data()
+would return bogus value on i2c_device_id match. Align the two
+tables.
 
-Fixes: dd11376b9f1b ("scsi: ufs: Split the drivers/scsi/ufs directory")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230529202640.11883-5-bvanassche@acm.org
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Keoseong Park <keosung.park@samsung.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The i2c_device_id table is now converted from of_device_id using
+'s@.compatible = "renesas,\([^"]\+"\), .data = \(.*\)@"\1, .driver_data = (kernel_ulong_t)\2@'
+
+Fixes: 48c5e98fedd9 ("clk: Renesas versaclock7 ccf device driver")
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Link: https://lore.kernel.org/r/20230507133906.15061-2-marek.vasut+renesas@mailbox.org
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd-priv.h | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/clk/clk-versaclock7.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd-priv.h b/drivers/ufs/core/ufshcd-priv.h
-index d53b93c21a0c6..8f58c21693985 100644
---- a/drivers/ufs/core/ufshcd-priv.h
-+++ b/drivers/ufs/core/ufshcd-priv.h
-@@ -84,9 +84,6 @@ unsigned long ufshcd_mcq_poll_cqe_lock(struct ufs_hba *hba,
- int ufshcd_read_string_desc(struct ufs_hba *hba, u8 desc_index,
- 			    u8 **buf, bool ascii);
+diff --git a/drivers/clk/clk-versaclock7.c b/drivers/clk/clk-versaclock7.c
+index 8e4f86e852aa0..0ae191f50b4b2 100644
+--- a/drivers/clk/clk-versaclock7.c
++++ b/drivers/clk/clk-versaclock7.c
+@@ -1282,7 +1282,7 @@ static const struct regmap_config vc7_regmap_config = {
+ };
  
--int ufshcd_hold(struct ufs_hba *hba, bool async);
--void ufshcd_release(struct ufs_hba *hba);
--
- int ufshcd_send_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd);
- 
- int ufshcd_exec_raw_upiu_cmd(struct ufs_hba *hba,
+ static const struct i2c_device_id vc7_i2c_id[] = {
+-	{ "rc21008a", VC7_RC21008A },
++	{ "rc21008a", .driver_data = (kernel_ulong_t)&vc7_rc21008a_info },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(i2c, vc7_i2c_id);
 -- 
 2.39.2
 
