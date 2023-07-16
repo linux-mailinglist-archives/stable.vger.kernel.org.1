@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C841C755584
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D969475534F
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232547AbjGPUli (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:41:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60836 "EHLO
+        id S231679AbjGPURi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:17:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232544AbjGPUli (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07A0CD9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:37 -0700 (PDT)
+        with ESMTP id S231673AbjGPURh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17C5DC0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A56760EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EA6C433C7;
-        Sun, 16 Jul 2023 20:41:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1E3960EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4D4C433C8;
+        Sun, 16 Jul 2023 20:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540096;
-        bh=eChpkFqjQpgHo+0kp79sDAgmC8+UC7KJ0eA+G6EKAcQ=;
+        s=korg; t=1689538655;
+        bh=TXdBClRXVvi48yJrwfyN5ghEtX7rxVGUBD6tVegiZis=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m2i0GvGwjkqhg+aZ/zDe9tXCyVqO06aA+fC4i9uF5Ou9AAIW3WdtELqWzNuVVxauB
-         qeyLb2pcyRGS9WCBJLJRyigMT9mo6yXTrvNx1HkVE0YOjf05hDqQUeqFcE8AuV6xVT
-         DFIeQGI3IS1prtcPN8hCrgav2TCCMNSkicB6r72c=
+        b=Vr7uO29YvEI9mm6Dl4mj88N5vdmDCoCTSQlTEbUK1VjEXxDVDaNYNeKb266yXHaxu
+         krCjtypX7ijHRZ8l6gUSwyAgXP+YkAtAl6RHeViVFIZqfkYU7qtmvNY9FmfNohghXV
+         ugQ2vWVRSsAhyAR9lf+nAlkbCmm1//bauSQOCwzY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 241/591] drm/radeon: fix possible division-by-zero errors
+        patches@lists.linux.dev, Christoph Hellwig <hch@infradead.org>,
+        Demi Marie Obenour <demi@invisiblethingslab.com>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 527/800] block: increment diskseq on all media change events
 Date:   Sun, 16 Jul 2023 21:46:20 +0200
-Message-ID: <20230716194930.103595086@linuxfoundation.org>
+Message-ID: <20230716195001.334797800@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,94 +55,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Demi Marie Obenour <demi@invisiblethingslab.com>
 
-[ Upstream commit 1becc57cd1a905e2aa0e1eca60d2a37744525c4a ]
+commit b90ecc0379eb7bbe79337b0c7289390a98752646 upstream.
 
-Function rv740_get_decoded_reference_divider() may return 0 due to
-unpredictable reference divider value calculated in
-radeon_atom_get_clock_dividers(). This will lead to
-division-by-zero error once that value is used as a divider
-in calculating 'clk_s'.
-While unlikely, this issue should nonetheless be prevented so add a
-sanity check for such cases by testing 'decoded_ref' value against 0.
+Currently, associating a loop device with a different file descriptor
+does not increment its diskseq.  This allows the following race
+condition:
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+1. Program X opens a loop device
+2. Program X gets the diskseq of the loop device.
+3. Program X associates a file with the loop device.
+4. Program X passes the loop device major, minor, and diskseq to
+   something.
+5. Program X exits.
+6. Program Y detaches the file from the loop device.
+7. Program Y attaches a different file to the loop device.
+8. The opener finally gets around to opening the loop device and checks
+   that the diskseq is what it expects it to be.  Even though the
+   diskseq is the expected value, the result is that the opener is
+   accessing the wrong file.
 
-v2: minor coding style fixes (Alex)
-In practice this should actually happen as the vbios should be
-properly populated.
+>From discussions with Christoph Hellwig, it appears that
+disk_force_media_change() was supposed to call inc_diskseq(), but in
+fact it does not.  Adding a Fixes: tag to indicate this.  Christoph's
+Reported-by is because he stated that disk_force_media_change()
+calls inc_diskseq(), which is what led me to discover that it should but
+does not.
 
-Fixes: 66229b200598 ("drm/radeon/kms: add dpm support for rv7xx (v4)")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Christoph Hellwig <hch@infradead.org>
+Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
+Fixes: e6138dc12de9 ("block: add a helper to raise a media changed event")
+Cc: stable@vger.kernel.org # 5.15+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230607170837.1559-1-demi@invisiblethingslab.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/cypress_dpm.c | 8 ++++++--
- drivers/gpu/drm/radeon/ni_dpm.c      | 8 ++++++--
- drivers/gpu/drm/radeon/rv740_dpm.c   | 8 ++++++--
- 3 files changed, 18 insertions(+), 6 deletions(-)
+ block/disk-events.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/radeon/cypress_dpm.c b/drivers/gpu/drm/radeon/cypress_dpm.c
-index fdddbbaecbb74..72a0768df00f7 100644
---- a/drivers/gpu/drm/radeon/cypress_dpm.c
-+++ b/drivers/gpu/drm/radeon/cypress_dpm.c
-@@ -557,8 +557,12 @@ static int cypress_populate_mclk_value(struct radeon_device *rdev,
- 						     ASIC_INTERNAL_MEMORY_SS, vco_freq)) {
- 			u32 reference_clock = rdev->clock.mpll.reference_freq;
- 			u32 decoded_ref = rv740_get_decoded_reference_divider(dividers.ref_div);
--			u32 clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
--			u32 clk_v = ss.percentage *
-+			u32 clk_s, clk_v;
-+
-+			if (!decoded_ref)
-+				return -EINVAL;
-+			clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
-+			clk_v = ss.percentage *
- 				(0x4000 * dividers.whole_fb_div + 0x800 * dividers.frac_fb_div) / (clk_s * 625);
+--- a/block/disk-events.c
++++ b/block/disk-events.c
+@@ -307,6 +307,7 @@ bool disk_force_media_change(struct gend
+ 	if (!(events & DISK_EVENT_MEDIA_CHANGE))
+ 		return false;
  
- 			mpll_ss1 &= ~CLKV_MASK;
-diff --git a/drivers/gpu/drm/radeon/ni_dpm.c b/drivers/gpu/drm/radeon/ni_dpm.c
-index 672d2239293e0..3e1c1a392fb7b 100644
---- a/drivers/gpu/drm/radeon/ni_dpm.c
-+++ b/drivers/gpu/drm/radeon/ni_dpm.c
-@@ -2241,8 +2241,12 @@ static int ni_populate_mclk_value(struct radeon_device *rdev,
- 						     ASIC_INTERNAL_MEMORY_SS, vco_freq)) {
- 			u32 reference_clock = rdev->clock.mpll.reference_freq;
- 			u32 decoded_ref = rv740_get_decoded_reference_divider(dividers.ref_div);
--			u32 clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
--			u32 clk_v = ss.percentage *
-+			u32 clk_s, clk_v;
-+
-+			if (!decoded_ref)
-+				return -EINVAL;
-+			clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
-+			clk_v = ss.percentage *
- 				(0x4000 * dividers.whole_fb_div + 0x800 * dividers.frac_fb_div) / (clk_s * 625);
- 
- 			mpll_ss1 &= ~CLKV_MASK;
-diff --git a/drivers/gpu/drm/radeon/rv740_dpm.c b/drivers/gpu/drm/radeon/rv740_dpm.c
-index d57a3e1df8d63..4464fd21a3029 100644
---- a/drivers/gpu/drm/radeon/rv740_dpm.c
-+++ b/drivers/gpu/drm/radeon/rv740_dpm.c
-@@ -249,8 +249,12 @@ int rv740_populate_mclk_value(struct radeon_device *rdev,
- 						     ASIC_INTERNAL_MEMORY_SS, vco_freq)) {
- 			u32 reference_clock = rdev->clock.mpll.reference_freq;
- 			u32 decoded_ref = rv740_get_decoded_reference_divider(dividers.ref_div);
--			u32 clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
--			u32 clk_v = 0x40000 * ss.percentage *
-+			u32 clk_s, clk_v;
-+
-+			if (!decoded_ref)
-+				return -EINVAL;
-+			clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
-+			clk_v = 0x40000 * ss.percentage *
- 				(dividers.whole_fb_div + (dividers.frac_fb_div / 8)) / (clk_s * 10000);
- 
- 			mpll_ss1 &= ~CLKV_MASK;
--- 
-2.39.2
-
++	inc_diskseq(disk);
+ 	if (__invalidate_device(disk->part0, true))
+ 		pr_warn("VFS: busy inodes on changed media %s\n",
+ 			disk->disk_name);
 
 
