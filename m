@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D3EB7552DB
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B756755528
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231517AbjGPUMr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:12:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40014 "EHLO
+        id S232398AbjGPUiC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:38:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231510AbjGPUMq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:12:46 -0400
+        with ESMTP id S232403AbjGPUiC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F67C0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:12:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1F619F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6DDE60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:12:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CBFC433C8;
-        Sun, 16 Jul 2023 20:12:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A8C060EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A433C433C8;
+        Sun, 16 Jul 2023 20:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538364;
-        bh=E+o87KNxCfTBEnyE+gF/Z3QTgmEvlLDwlURGDvXgTao=;
+        s=korg; t=1689539879;
+        bh=lp04nvsECuj9Z3KYPrWIO7o5fBWoIIQVz2IrryEAFGo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DujFptJ5ChD5DJaK4vDKzX2yYFmZGq7I58ao1wwQM6BzKjKHmmzRVtBUam5ARGO/k
-         wB3XPDtUhwZrWR/Z8u+FUPTOdbOt1LyOUcO+w7eWa3lsjGpQOg8MplMmVg/PnuYiEl
-         eikX7KFTqnO8qp8J7RSb74jXM4Iw9RjOzo+zkxPA=
+        b=pyCnjpRJtkieVOiOl92nWR19LjFDWLR67AaFPugKKQS91t6lXwxC+CXzsqYKBc+XO
+         228U/l5fP3JVJmsy5FLwbMjEp296MjwyJdGp9b7s+CqTRUxcyNgbku61RNTmflody5
+         BnpZ94B6Bj5eyGKlaFYzcrZdnESdMcVkHb6MXtM0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 423/800] clk: clocking-wizard: check return value of devm_kasprintf()
+Subject: [PATCH 6.1 137/591] netfilter: conntrack: dccp: copy entire header to stack buffer, not just basic one
 Date:   Sun, 16 Jul 2023 21:44:36 +0200
-Message-ID: <20230716194958.914688292@linuxfoundation.org>
+Message-ID: <20230716194927.416720073@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,39 +56,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit b1356ed1a4461de06dfdc02bf549c3e8750162e5 ]
+[ Upstream commit ff0a3a7d52ff7282dbd183e7fc29a1fe386b0c30 ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory.
-Pointer could be NULL in case allocation fails. Check pointer validity.
-Identified with coccinelle (kmerr.cocci script).
+Eric Dumazet says:
+  nf_conntrack_dccp_packet() has an unique:
 
-Fixes: 2046338dcbc6 ("ARM: mxs: Use soc bus infrastructure")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230530093913.1656095-9-claudiu.beznea@microchip.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+  dh = skb_header_pointer(skb, dataoff, sizeof(_dh), &_dh);
+
+  And nothing more is 'pulled' from the packet, depending on the content.
+  dh->dccph_doff, and/or dh->dccph_x ...)
+  So dccp_ack_seq() is happily reading stuff past the _dh buffer.
+
+BUG: KASAN: stack-out-of-bounds in nf_conntrack_dccp_packet+0x1134/0x11c0
+Read of size 4 at addr ffff000128f66e0c by task syz-executor.2/29371
+[..]
+
+Fix this by increasing the stack buffer to also include room for
+the extra sequence numbers and all the known dccp packet type headers,
+then pull again after the initial validation of the basic header.
+
+While at it, mark packets invalid that lack 48bit sequence bit but
+where RFC says the type MUST use them.
+
+Compile tested only.
+
+v2: first skb_header_pointer() now needs to adjust the size to
+    only pull the generic header. (Eric)
+
+Heads-up: I intend to remove dccp conntrack support later this year.
+
+Fixes: 2bc780499aa3 ("[NETFILTER]: nf_conntrack: add DCCP protocol support")
+Reported-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/xilinx/clk-xlnx-clock-wizard.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/nf_conntrack_proto_dccp.c | 52 +++++++++++++++++++++++--
+ 1 file changed, 49 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/xilinx/clk-xlnx-clock-wizard.c b/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-index 16df34f46280f..d56822ce6126c 100644
---- a/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-+++ b/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-@@ -648,6 +648,11 @@ static int clk_wzrd_probe(struct platform_device *pdev)
+diff --git a/net/netfilter/nf_conntrack_proto_dccp.c b/net/netfilter/nf_conntrack_proto_dccp.c
+index c1557d47ccd1e..d4fd626d2b8c3 100644
+--- a/net/netfilter/nf_conntrack_proto_dccp.c
++++ b/net/netfilter/nf_conntrack_proto_dccp.c
+@@ -432,9 +432,19 @@ static bool dccp_error(const struct dccp_hdr *dh,
+ 		       struct sk_buff *skb, unsigned int dataoff,
+ 		       const struct nf_hook_state *state)
+ {
++	static const unsigned long require_seq48 = 1 << DCCP_PKT_REQUEST |
++						   1 << DCCP_PKT_RESPONSE |
++						   1 << DCCP_PKT_CLOSEREQ |
++						   1 << DCCP_PKT_CLOSE |
++						   1 << DCCP_PKT_RESET |
++						   1 << DCCP_PKT_SYNC |
++						   1 << DCCP_PKT_SYNCACK;
+ 	unsigned int dccp_len = skb->len - dataoff;
+ 	unsigned int cscov;
+ 	const char *msg;
++	u8 type;
++
++	BUILD_BUG_ON(DCCP_PKT_INVALID >= BITS_PER_LONG);
+ 
+ 	if (dh->dccph_doff * 4 < sizeof(struct dccp_hdr) ||
+ 	    dh->dccph_doff * 4 > dccp_len) {
+@@ -459,34 +469,70 @@ static bool dccp_error(const struct dccp_hdr *dh,
+ 		goto out_invalid;
  	}
  
- 	clkout_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s_out0", dev_name(&pdev->dev));
-+	if (!clkout_name) {
-+		ret = -ENOMEM;
-+		goto err_disable_clk;
+-	if (dh->dccph_type >= DCCP_PKT_INVALID) {
++	type = dh->dccph_type;
++	if (type >= DCCP_PKT_INVALID) {
+ 		msg = "nf_ct_dccp: reserved packet type ";
+ 		goto out_invalid;
+ 	}
++
++	if (test_bit(type, &require_seq48) && !dh->dccph_x) {
++		msg = "nf_ct_dccp: type lacks 48bit sequence numbers";
++		goto out_invalid;
 +	}
 +
- 	if (nr_outputs == 1) {
- 		clk_wzrd->clkout[0] = clk_wzrd_register_divider
- 				(&pdev->dev, clkout_name,
+ 	return false;
+ out_invalid:
+ 	nf_l4proto_log_invalid(skb, state, IPPROTO_DCCP, "%s", msg);
+ 	return true;
+ }
+ 
++struct nf_conntrack_dccp_buf {
++	struct dccp_hdr dh;	 /* generic header part */
++	struct dccp_hdr_ext ext; /* optional depending dh->dccph_x */
++	union {			 /* depends on header type */
++		struct dccp_hdr_ack_bits ack;
++		struct dccp_hdr_request req;
++		struct dccp_hdr_response response;
++		struct dccp_hdr_reset rst;
++	} u;
++};
++
++static struct dccp_hdr *
++dccp_header_pointer(const struct sk_buff *skb, int offset, const struct dccp_hdr *dh,
++		    struct nf_conntrack_dccp_buf *buf)
++{
++	unsigned int hdrlen = __dccp_hdr_len(dh);
++
++	if (hdrlen > sizeof(*buf))
++		return NULL;
++
++	return skb_header_pointer(skb, offset, hdrlen, buf);
++}
++
+ int nf_conntrack_dccp_packet(struct nf_conn *ct, struct sk_buff *skb,
+ 			     unsigned int dataoff,
+ 			     enum ip_conntrack_info ctinfo,
+ 			     const struct nf_hook_state *state)
+ {
+ 	enum ip_conntrack_dir dir = CTINFO2DIR(ctinfo);
+-	struct dccp_hdr _dh, *dh;
++	struct nf_conntrack_dccp_buf _dh;
+ 	u_int8_t type, old_state, new_state;
+ 	enum ct_dccp_roles role;
+ 	unsigned int *timeouts;
++	struct dccp_hdr *dh;
+ 
+-	dh = skb_header_pointer(skb, dataoff, sizeof(_dh), &_dh);
++	dh = skb_header_pointer(skb, dataoff, sizeof(*dh), &_dh.dh);
+ 	if (!dh)
+ 		return NF_DROP;
+ 
+ 	if (dccp_error(dh, skb, dataoff, state))
+ 		return -NF_ACCEPT;
+ 
++	/* pull again, including possible 48 bit sequences and subtype header */
++	dh = dccp_header_pointer(skb, dataoff, dh, &_dh);
++	if (!dh)
++		return NF_DROP;
++
+ 	type = dh->dccph_type;
+ 	if (!nf_ct_is_confirmed(ct) && !dccp_new(ct, skb, dh, state))
+ 		return -NF_ACCEPT;
 -- 
 2.39.2
 
