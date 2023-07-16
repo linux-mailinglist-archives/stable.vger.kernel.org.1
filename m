@@ -2,130 +2,203 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A64E75532B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63300755538
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231630AbjGPUQH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:16:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41844 "EHLO
+        id S232425AbjGPUim (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:38:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231626AbjGPUQH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 601DE1B9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:06 -0700 (PDT)
+        with ESMTP id S232422AbjGPUil (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9294EBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA8E360EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0545AC433C8;
-        Sun, 16 Jul 2023 20:16:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16B9560EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272D0C433C8;
+        Sun, 16 Jul 2023 20:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538565;
-        bh=B32SVhQMe+FpiMbO6keH5Pk5eWOnQv6AS1MyQdnAyUk=;
+        s=korg; t=1689539919;
+        bh=JWXS6jErpeXi+JEzl+x0XNhfuTEEi5lbiBjSm6aQ+mQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B6tGgzOe2R4tPs3+CGxGwL1gNpOOryaAF+FB/OlHwBtppxum/or/4RtO1iPO3uSWV
-         WjbpCdKcwF0umS0urDjoLap2uzEF5cJFzyTrnHprJvCQpdKmcMQ9k6Jwvig/OSCt0p
-         g+xr4VvTQk6m70TV+YeEGP0Ez23ea532buysCN7Q=
+        b=LM4lxvXVZp4kf8j+Vh/OMYJgtHmbRawOBGaPxmaAw6a8vIc2Ls5H36tYGEHLTDYju
+         nweVVfVeUX1QDafeOIw948TkQKA+vX/6+bzl1FltEyaAmVFAN0heNZka2BzNBf15pA
+         oEo2j893ffTCFclPd/vVvF9ODzhwAW46eRmPIoGY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 465/800] powerpc/signal32: Force inlining of __unsafe_save_user_regs() and save_tm_user_regs_unsafe()
+Subject: [PATCH 6.1 179/591] RDMA/bnxt_re: Disable/kill tasklet only if it is enabled
 Date:   Sun, 16 Jul 2023 21:45:18 +0200
-Message-ID: <20230716194959.881427999@linuxfoundation.org>
+Message-ID: <20230716194928.497010568@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit a03b1a0b19398a47489fdcef02ec19c2ba05a15d ]
+[ Upstream commit ab112ee7899d6171da5acd77a7ed7ae103f488de ]
 
-Looking at generated code for handle_signal32() shows calls to a
-function called __unsafe_save_user_regs.constprop.0 while user access
-is open.
+When the ulp hook to start the IRQ fails because the rings are not
+available, tasklets are not enabled. In this case when the driver is
+unloaded, driver calls CREQ tasklet_kill. This causes an indefinite hang
+as the tasklet is not enabled.
 
-And that __unsafe_save_user_regs.constprop.0 function has two nops at
-the begining, allowing it to be traced, which is unexpected during
-user access open window.
+Driver shouldn't call tasklet_kill if it is not enabled. So using the
+creq->requested and nq->requested flags to identify if both tasklets/irqs
+are registered. Checking this flag while scheduling the tasklet from
+ISR. Also, added a cleanup for disabling tasklet, in case request_irq
+fails during start_irq.
 
-The solution could be to mark __unsafe_save_user_regs() no trace, but
-to be on the safe side the most efficient is to flag it __always_inline
-as already done for function __unsafe_restore_general_regs(). The
-function is relatively small and only called twice, so the size
-increase will remain in the noise.
+Check for return value for bnxt_qplib_rcfw_start_irq and in case the
+bnxt_qplib_rcfw_start_irq fails, return bnxt_re_start_irq without
+attempting to start NQ IRQs.
 
-Do the same with save_tm_user_regs_unsafe() as it may suffer the
-same issue.
-
-Fixes: ef75e7318294 ("powerpc/signal32: Transform save_user_regs() and save_tm_user_regs() in 'unsafe' version")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/7e469c8f01860a69c1ada3ca6a5e2aa65f0f74b2.1685955220.git.christophe.leroy@csgroup.eu
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Link: https://lore.kernel.org/r/1684478897-12247-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/signal_32.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/infiniband/hw/bnxt_re/main.c       | 12 +++++++++---
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c   | 16 ++++++++++------
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 14 +++++++++-----
+ 3 files changed, 28 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
-index c114c7f25645c..7a718ed32b277 100644
---- a/arch/powerpc/kernel/signal_32.c
-+++ b/arch/powerpc/kernel/signal_32.c
-@@ -264,8 +264,9 @@ static void prepare_save_user_regs(int ctx_has_vsx_region)
- #endif
+diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
+index 8c0c80a8d3384..1589b1105f2ec 100644
+--- a/drivers/infiniband/hw/bnxt_re/main.c
++++ b/drivers/infiniband/hw/bnxt_re/main.c
+@@ -333,15 +333,21 @@ static void bnxt_re_start_irq(void *handle, struct bnxt_msix_entry *ent)
+ 	for (indx = 0; indx < rdev->num_msix; indx++)
+ 		rdev->msix_entries[indx].vector = ent[indx].vector;
+ 
+-	bnxt_qplib_rcfw_start_irq(rcfw, msix_ent[BNXT_RE_AEQ_IDX].vector,
+-				  false);
++	rc = bnxt_qplib_rcfw_start_irq(rcfw, msix_ent[BNXT_RE_AEQ_IDX].vector,
++				       false);
++	if (rc) {
++		ibdev_warn(&rdev->ibdev, "Failed to reinit CREQ\n");
++		return;
++	}
+ 	for (indx = BNXT_RE_NQ_IDX ; indx < rdev->num_msix; indx++) {
+ 		nq = &rdev->nq[indx - 1];
+ 		rc = bnxt_qplib_nq_start_irq(nq, indx - 1,
+ 					     msix_ent[indx].vector, false);
+-		if (rc)
++		if (rc) {
+ 			ibdev_warn(&rdev->ibdev, "Failed to reinit NQ index %d\n",
+ 				   indx - 1);
++			return;
++		}
+ 	}
  }
  
--static int __unsafe_save_user_regs(struct pt_regs *regs, struct mcontext __user *frame,
--				   struct mcontext __user *tm_frame, int ctx_has_vsx_region)
-+static __always_inline int
-+__unsafe_save_user_regs(struct pt_regs *regs, struct mcontext __user *frame,
-+			struct mcontext __user *tm_frame, int ctx_has_vsx_region)
- {
- 	unsigned long msr = regs->msr;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index ab2cc1c67f70b..a143bd3580a27 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -405,6 +405,9 @@ static irqreturn_t bnxt_qplib_nq_irq(int irq, void *dev_instance)
  
-@@ -364,8 +365,9 @@ static void prepare_save_tm_user_regs(void)
- 		current->thread.ckvrsave = mfspr(SPRN_VRSAVE);
+ void bnxt_qplib_nq_stop_irq(struct bnxt_qplib_nq *nq, bool kill)
+ {
++	if (!nq->requested)
++		return;
++
+ 	tasklet_disable(&nq->nq_tasklet);
+ 	/* Mask h/w interrupt */
+ 	bnxt_qplib_ring_nq_db(&nq->nq_db.dbinfo, nq->res->cctx, false);
+@@ -412,11 +415,10 @@ void bnxt_qplib_nq_stop_irq(struct bnxt_qplib_nq *nq, bool kill)
+ 	synchronize_irq(nq->msix_vec);
+ 	if (kill)
+ 		tasklet_kill(&nq->nq_tasklet);
+-	if (nq->requested) {
+-		irq_set_affinity_hint(nq->msix_vec, NULL);
+-		free_irq(nq->msix_vec, nq);
+-		nq->requested = false;
+-	}
++
++	irq_set_affinity_hint(nq->msix_vec, NULL);
++	free_irq(nq->msix_vec, nq);
++	nq->requested = false;
  }
  
--static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
--				    struct mcontext __user *tm_frame, unsigned long msr)
-+static __always_inline int
-+save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
-+			 struct mcontext __user *tm_frame, unsigned long msr)
- {
- 	/* Save both sets of general registers */
- 	unsafe_save_general_regs(&current->thread.ckpt_regs, frame, failed);
-@@ -444,8 +446,9 @@ static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user
- #else
- static void prepare_save_tm_user_regs(void) { }
+ void bnxt_qplib_disable_nq(struct bnxt_qplib_nq *nq)
+@@ -455,8 +457,10 @@ int bnxt_qplib_nq_start_irq(struct bnxt_qplib_nq *nq, int nq_indx,
  
--static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
--				    struct mcontext __user *tm_frame, unsigned long msr)
-+static __always_inline int
-+save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
-+			 struct mcontext __user *tm_frame, unsigned long msr)
- {
- 	return 0;
+ 	snprintf(nq->name, sizeof(nq->name), "bnxt_qplib_nq-%d", nq_indx);
+ 	rc = request_irq(nq->msix_vec, bnxt_qplib_nq_irq, 0, nq->name, nq);
+-	if (rc)
++	if (rc) {
++		tasklet_disable(&nq->nq_tasklet);
+ 		return rc;
++	}
+ 
+ 	cpumask_clear(&nq->mask);
+ 	cpumask_set_cpu(nq_indx, &nq->mask);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 061b2895dd9b5..e28f0eb5b55d4 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -635,6 +635,10 @@ void bnxt_qplib_rcfw_stop_irq(struct bnxt_qplib_rcfw *rcfw, bool kill)
+ 	struct bnxt_qplib_creq_ctx *creq;
+ 
+ 	creq = &rcfw->creq;
++
++	if (!creq->requested)
++		return;
++
+ 	tasklet_disable(&creq->creq_tasklet);
+ 	/* Mask h/w interrupts */
+ 	bnxt_qplib_ring_nq_db(&creq->creq_db.dbinfo, rcfw->res->cctx, false);
+@@ -643,10 +647,8 @@ void bnxt_qplib_rcfw_stop_irq(struct bnxt_qplib_rcfw *rcfw, bool kill)
+ 	if (kill)
+ 		tasklet_kill(&creq->creq_tasklet);
+ 
+-	if (creq->requested) {
+-		free_irq(creq->msix_vec, rcfw);
+-		creq->requested = false;
+-	}
++	free_irq(creq->msix_vec, rcfw);
++	creq->requested = false;
  }
+ 
+ void bnxt_qplib_disable_rcfw_channel(struct bnxt_qplib_rcfw *rcfw)
+@@ -692,8 +694,10 @@ int bnxt_qplib_rcfw_start_irq(struct bnxt_qplib_rcfw *rcfw, int msix_vector,
+ 		tasklet_enable(&creq->creq_tasklet);
+ 	rc = request_irq(creq->msix_vec, bnxt_qplib_creq_irq, 0,
+ 			 "bnxt_qplib_creq", rcfw);
+-	if (rc)
++	if (rc) {
++		tasklet_disable(&creq->creq_tasklet);
+ 		return rc;
++	}
+ 	creq->requested = true;
+ 
+ 	bnxt_qplib_ring_nq_db(&creq->creq_db.dbinfo, rcfw->res->cctx, true);
 -- 
 2.39.2
 
