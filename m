@@ -2,106 +2,202 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 306677552BF
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B3717554B8
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:33:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231447AbjGPUL1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:11:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39388 "EHLO
+        id S232285AbjGPUda (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:33:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231454AbjGPUL1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DD779B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:26 -0700 (PDT)
+        with ESMTP id S232282AbjGPUda (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 178E3BA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7D3960E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75DEC433C7;
-        Sun, 16 Jul 2023 20:11:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB51260E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06AFC433C8;
+        Sun, 16 Jul 2023 20:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538285;
-        bh=0PtIYive8b/RYSKz5SvHu5OKERzc2exDMUsiW5EeQJs=;
+        s=korg; t=1689539608;
+        bh=AkErFN6BUJKC+tcfoooSMfA/76h6swvkRxlQiduVSBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d9mtza2Zl/u4OeWpQO8W0ZCobVHEHHNMck4Xg8OvNl9ZZeoldWe+Eqt1ii0hz5ctK
-         S0pTyn/RMw28vUyhcX4EgstDYst7ZUEZrziX5yhVquWhsHOrSsxo7nKkjZ2Db96Z2d
-         7LHFUI5Q+qM1IoaHZK4my9YWBImNS6gaXVXX8Aqk=
+        b=LZSGvQDrPpNZcnwBNWsjkr0e5ThQSqP05jdlKt1OKWTg+jOSdu1bbqYc57KDHpgPy
+         eqyegKIU4SM3gLuisovOTL3zn5sf0r6DAV3oqqjUD4V4AX+0uh6kCXXTt2plZDVfCA
+         +1fC/H9Xxu8ZXxEcJJU0G1ElZWbTMSIUfKn7MQnw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Heiko Stuebner <heiko@sntech.de>,
+        Jesper Dangaard Brouer <brouer@redhat.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Song Yoong Siang <yoong.siang.song@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 353/800] arm64: dts: rockchip: Assign ES8316 MCLK rate on rk3588-rock-5b
+Subject: [PATCH 6.1 067/591] igc: Enable and fix RX hash usage by netstack
 Date:   Sun, 16 Jul 2023 21:43:26 +0200
-Message-ID: <20230716194957.279055789@linuxfoundation.org>
+Message-ID: <20230716194925.613708766@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Jesper Dangaard Brouer <brouer@redhat.com>
 
-[ Upstream commit 28ee08cef4f838c343013330a3cd12674c4dd113 ]
+[ Upstream commit 84214ab4689f962b4bfc47fc9a5838d25ac4274d ]
 
-The I2S0_8CH_MCLKOUT clock rate on Rock 5B board defaults to 12 MHz and
-it is used to provide the master clock (MCLK) for the ES8316 audio
-codec.
+When function igc_rx_hash() was introduced in v4.20 via commit 0507ef8a0372
+("igc: Add transmit and receive fastpath and interrupt handlers"), the
+hardware wasn't configured to provide RSS hash, thus it made sense to not
+enable net_device NETIF_F_RXHASH feature bit.
 
-On sound card initialization, this limits the allowed sample rates
-according to the MCLK/LRCK ratios supported by the codec, which results
-in the following non-standard rates: 15625, 30000, 31250, 46875.
+The NIC hardware was configured to enable RSS hash info in v5.2 via commit
+2121c2712f82 ("igc: Add multiple receive queues control supporting"), but
+forgot to set the NETIF_F_RXHASH feature bit.
 
-Hence, the very first access of the sound card fails:
+The original implementation of igc_rx_hash() didn't extract the associated
+pkt_hash_type, but statically set PKT_HASH_TYPE_L3. The largest portions of
+this patch are about extracting the RSS Type from the hardware and mapping
+this to enum pkt_hash_types. This was based on Foxville i225 software user
+manual rev-1.3.1 and tested on Intel Ethernet Controller I225-LM (rev 03).
 
-  Broken configuration for playback: no configurations available: Invalid argument
-  Setting of hwparams failed: Invalid argument
+For UDP it's worth noting that RSS (type) hashing have been disabled both for
+IPv4 and IPv6 (see IGC_MRQC_RSS_FIELD_IPV4_UDP + IGC_MRQC_RSS_FIELD_IPV6_UDP)
+because hardware RSS doesn't handle fragmented pkts well when enabled (can
+cause out-of-order). This results in PKT_HASH_TYPE_L3 for UDP packets, and
+hash value doesn't include UDP port numbers. Not being PKT_HASH_TYPE_L4, have
+the effect that netstack will do a software based hash calc calling into
+flow_dissect, but only when code calls skb_get_hash(), which doesn't
+necessary happen for local delivery.
 
-However, all subsequent attempts will succeed, as the audio graph card
-will request a correct clock frequency, based on the stream sample rate
-and the multiplication factor.
+For QA verification testing I wrote a small bpftrace prog:
+ [0] https://github.com/xdp-project/xdp-project/blob/master/areas/hints/monitor_skb_hash_on_dev.bt
 
-Assign MCLK to 12.288 MHz, which allows the codec to advertise most of
-the standard sample rates.
-
-Fixes: 55529fe3f32d ("arm64: dts: rockchip: Add rk3588-rock-5b analog audio")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20230530181140.483936-4-cristian.ciocaltea@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 2121c2712f82 ("igc: Add multiple receive queues control supporting")
+Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Song Yoong Siang <yoong.siang.song@intel.com>
+Link: https://lore.kernel.org/bpf/168182464270.616355.11391652654430626584.stgit@firesoul
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/igc/igc.h      | 28 ++++++++++++++++++++
+ drivers/net/ethernet/intel/igc/igc_main.c | 31 ++++++++++++++++++++---
+ 2 files changed, 55 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts b/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts
-index 3e4aee8f70c1b..30cdd366813fb 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts
-@@ -133,6 +133,8 @@ es8316: audio-codec@11 {
- 		reg = <0x11>;
- 		clocks = <&cru I2S0_8CH_MCLKOUT>;
- 		clock-names = "mclk";
-+		assigned-clocks = <&cru I2S0_8CH_MCLKOUT>;
-+		assigned-clock-rates = <12288000>;
- 		#sound-dai-cells = <0>;
+diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
+index df3e26c0cf01a..f83cbc4a1afa8 100644
+--- a/drivers/net/ethernet/intel/igc/igc.h
++++ b/drivers/net/ethernet/intel/igc/igc.h
+@@ -13,6 +13,7 @@
+ #include <linux/ptp_clock_kernel.h>
+ #include <linux/timecounter.h>
+ #include <linux/net_tstamp.h>
++#include <linux/bitfield.h>
  
- 		port {
+ #include "igc_hw.h"
+ 
+@@ -311,6 +312,33 @@ extern char igc_driver_name[];
+ #define IGC_MRQC_RSS_FIELD_IPV4_UDP	0x00400000
+ #define IGC_MRQC_RSS_FIELD_IPV6_UDP	0x00800000
+ 
++/* RX-desc Write-Back format RSS Type's */
++enum igc_rss_type_num {
++	IGC_RSS_TYPE_NO_HASH		= 0,
++	IGC_RSS_TYPE_HASH_TCP_IPV4	= 1,
++	IGC_RSS_TYPE_HASH_IPV4		= 2,
++	IGC_RSS_TYPE_HASH_TCP_IPV6	= 3,
++	IGC_RSS_TYPE_HASH_IPV6_EX	= 4,
++	IGC_RSS_TYPE_HASH_IPV6		= 5,
++	IGC_RSS_TYPE_HASH_TCP_IPV6_EX	= 6,
++	IGC_RSS_TYPE_HASH_UDP_IPV4	= 7,
++	IGC_RSS_TYPE_HASH_UDP_IPV6	= 8,
++	IGC_RSS_TYPE_HASH_UDP_IPV6_EX	= 9,
++	IGC_RSS_TYPE_MAX		= 10,
++};
++#define IGC_RSS_TYPE_MAX_TABLE		16
++#define IGC_RSS_TYPE_MASK		GENMASK(3,0) /* 4-bits (3:0) = mask 0x0F */
++
++/* igc_rss_type - Rx descriptor RSS type field */
++static inline u32 igc_rss_type(const union igc_adv_rx_desc *rx_desc)
++{
++	/* RSS Type 4-bits (3:0) number: 0-9 (above 9 is reserved)
++	 * Accessing the same bits via u16 (wb.lower.lo_dword.hs_rss.pkt_info)
++	 * is slightly slower than via u32 (wb.lower.lo_dword.data)
++	 */
++	return le32_get_bits(rx_desc->wb.lower.lo_dword.data, IGC_RSS_TYPE_MASK);
++}
++
+ /* Interrupt defines */
+ #define IGC_START_ITR			648 /* ~6000 ints/sec */
+ #define IGC_4K_ITR			980
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 3509974c1f8e4..b67a6a81474f5 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1684,14 +1684,36 @@ static void igc_rx_checksum(struct igc_ring *ring,
+ 		   le32_to_cpu(rx_desc->wb.upper.status_error));
+ }
+ 
++/* Mapping HW RSS Type to enum pkt_hash_types */
++static const enum pkt_hash_types igc_rss_type_table[IGC_RSS_TYPE_MAX_TABLE] = {
++	[IGC_RSS_TYPE_NO_HASH]		= PKT_HASH_TYPE_L2,
++	[IGC_RSS_TYPE_HASH_TCP_IPV4]	= PKT_HASH_TYPE_L4,
++	[IGC_RSS_TYPE_HASH_IPV4]	= PKT_HASH_TYPE_L3,
++	[IGC_RSS_TYPE_HASH_TCP_IPV6]	= PKT_HASH_TYPE_L4,
++	[IGC_RSS_TYPE_HASH_IPV6_EX]	= PKT_HASH_TYPE_L3,
++	[IGC_RSS_TYPE_HASH_IPV6]	= PKT_HASH_TYPE_L3,
++	[IGC_RSS_TYPE_HASH_TCP_IPV6_EX] = PKT_HASH_TYPE_L4,
++	[IGC_RSS_TYPE_HASH_UDP_IPV4]	= PKT_HASH_TYPE_L4,
++	[IGC_RSS_TYPE_HASH_UDP_IPV6]	= PKT_HASH_TYPE_L4,
++	[IGC_RSS_TYPE_HASH_UDP_IPV6_EX] = PKT_HASH_TYPE_L4,
++	[10] = PKT_HASH_TYPE_NONE, /* RSS Type above 9 "Reserved" by HW  */
++	[11] = PKT_HASH_TYPE_NONE, /* keep array sized for SW bit-mask   */
++	[12] = PKT_HASH_TYPE_NONE, /* to handle future HW revisons       */
++	[13] = PKT_HASH_TYPE_NONE,
++	[14] = PKT_HASH_TYPE_NONE,
++	[15] = PKT_HASH_TYPE_NONE,
++};
++
+ static inline void igc_rx_hash(struct igc_ring *ring,
+ 			       union igc_adv_rx_desc *rx_desc,
+ 			       struct sk_buff *skb)
+ {
+-	if (ring->netdev->features & NETIF_F_RXHASH)
+-		skb_set_hash(skb,
+-			     le32_to_cpu(rx_desc->wb.lower.hi_dword.rss),
+-			     PKT_HASH_TYPE_L3);
++	if (ring->netdev->features & NETIF_F_RXHASH) {
++		u32 rss_hash = le32_to_cpu(rx_desc->wb.lower.hi_dword.rss);
++		u32 rss_type = igc_rss_type(rx_desc);
++
++		skb_set_hash(skb, rss_hash, igc_rss_type_table[rss_type]);
++	}
+ }
+ 
+ static void igc_rx_vlan(struct igc_ring *rx_ring,
+@@ -6518,6 +6540,7 @@ static int igc_probe(struct pci_dev *pdev,
+ 	netdev->features |= NETIF_F_TSO;
+ 	netdev->features |= NETIF_F_TSO6;
+ 	netdev->features |= NETIF_F_TSO_ECN;
++	netdev->features |= NETIF_F_RXHASH;
+ 	netdev->features |= NETIF_F_RXCSUM;
+ 	netdev->features |= NETIF_F_HW_CSUM;
+ 	netdev->features |= NETIF_F_SCTP_CRC;
 -- 
 2.39.2
 
