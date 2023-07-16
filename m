@@ -2,96 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1219755400
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88C8775566F
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231951AbjGPUZ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:25:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47824 "EHLO
+        id S232851AbjGPUud (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:50:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231939AbjGPUZ1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:27 -0400
+        with ESMTP id S232855AbjGPUuc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:50:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B3E5BC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DFB6D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:50:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A63A60EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012FBC433C8;
-        Sun, 16 Jul 2023 20:25:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B3A5260EA2
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:50:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3030C433C7;
+        Sun, 16 Jul 2023 20:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539125;
-        bh=GbF4QTj0XoUx37i0f4E6PV9+Lue9ml50zSFuV8w4Qvw=;
+        s=korg; t=1689540630;
+        bh=5w/SXJvSSN0lvDF8NdC5CubC4dBvV/ZW1pOyj+a4LPA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OYeB7it7Ek3lsLDsOqnf1AqBDp2jbFPYcwbxxYUtbXa8EH1x9ACOxEEr6i/0/6K0r
-         4EpifBSPwx6lsocApnhsSeKkijdaQuutCPGKbOfWZGxRk5rMPIp+1cNO19vqZ8Wflh
-         QqqXhYMuQ1iF5qhdV/rLxAUdKN7qHdnfdPbDomAo=
+        b=iFA9xMJVpob9prenSD/RJpnDzJ3amLzH+khoWIAps+A/XTnUCYroopdJwfxCRoCgD
+         zi7Az6Y7xcHemRK4fB6s3a6/T1Fkd4EbPS1x2V9uoFq5qdbziTFVbbSaklgG8hmpti
+         MGUkoNRCFyh7IqThwQxZm20YXlWotf73IINhW/3E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 689/800] powerpc: allow PPC_EARLY_DEBUG_CPM only when SERIAL_CPM=y
-Date:   Sun, 16 Jul 2023 21:49:02 +0200
-Message-ID: <20230716195005.128095435@linuxfoundation.org>
+Subject: [PATCH 6.1 404/591] clk: qcom: ipq6018: fix networking resets
+Date:   Sun, 16 Jul 2023 21:49:03 +0200
+Message-ID: <20230716194934.369766237@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Robert Marko <robimarko@gmail.com>
 
-[ Upstream commit 39f49684036d24af800ff194c33c7b2653c591d7 ]
+[ Upstream commit 349b5bed539b491b7894a5186a895751fd8ba6c7 ]
 
-In a randconfig with CONFIG_SERIAL_CPM=m and
-CONFIG_PPC_EARLY_DEBUG_CPM=y, there is a build error:
-ERROR: modpost: "udbg_putc" [drivers/tty/serial/cpm_uart/cpm_uart.ko] undefined!
+Networking resets in IPQ6018 all use bitmask as they require multiple
+bits to be set and cleared instead of a single bit.
 
-Prevent the build error by allowing PPC_EARLY_DEBUG_CPM only when
-SERIAL_CPM=y.
+So, current networking resets have the same register and bit 0 set which
+is clearly incorrect.
 
-Fixes: c374e00e17f1 ("[POWERPC] Add early debug console for CPM serial ports.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230701054714.30512-1-rdunlap@infradead.org
+Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230526190855.2941291-2-robimarko@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Kconfig.debug | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-ipq6018.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
-index 6aaf8dc60610d..2a54fadbeaf51 100644
---- a/arch/powerpc/Kconfig.debug
-+++ b/arch/powerpc/Kconfig.debug
-@@ -240,7 +240,7 @@ config PPC_EARLY_DEBUG_40x
- 
- config PPC_EARLY_DEBUG_CPM
- 	bool "Early serial debugging for Freescale CPM-based serial ports"
--	depends on SERIAL_CPM
-+	depends on SERIAL_CPM=y
- 	help
- 	  Select this to enable early debugging for Freescale chips
- 	  using a CPM-based serial port.  This assumes that the bootwrapper
+diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
+index 5c5d1b04ea7af..cde62a11f5736 100644
+--- a/drivers/clk/qcom/gcc-ipq6018.c
++++ b/drivers/clk/qcom/gcc-ipq6018.c
+@@ -4517,24 +4517,24 @@ static const struct qcom_reset_map gcc_ipq6018_resets[] = {
+ 	[GCC_PCIE0_AHB_ARES] = { 0x75040, 5 },
+ 	[GCC_PCIE0_AXI_MASTER_STICKY_ARES] = { 0x75040, 6 },
+ 	[GCC_PCIE0_AXI_SLAVE_STICKY_ARES] = { 0x75040, 7 },
+-	[GCC_PPE_FULL_RESET] = { 0x68014, 0 },
+-	[GCC_UNIPHY0_SOFT_RESET] = { 0x56004, 0 },
++	[GCC_PPE_FULL_RESET] = { .reg = 0x68014, .bitmask = 0xf0000 },
++	[GCC_UNIPHY0_SOFT_RESET] = { .reg = 0x56004, .bitmask = 0x3ff2 },
+ 	[GCC_UNIPHY0_XPCS_RESET] = { 0x56004, 2 },
+-	[GCC_UNIPHY1_SOFT_RESET] = { 0x56104, 0 },
++	[GCC_UNIPHY1_SOFT_RESET] = { .reg = 0x56104, .bitmask = 0x32 },
+ 	[GCC_UNIPHY1_XPCS_RESET] = { 0x56104, 2 },
+-	[GCC_EDMA_HW_RESET] = { 0x68014, 0 },
+-	[GCC_NSSPORT1_RESET] = { 0x68014, 0 },
+-	[GCC_NSSPORT2_RESET] = { 0x68014, 0 },
+-	[GCC_NSSPORT3_RESET] = { 0x68014, 0 },
+-	[GCC_NSSPORT4_RESET] = { 0x68014, 0 },
+-	[GCC_NSSPORT5_RESET] = { 0x68014, 0 },
+-	[GCC_UNIPHY0_PORT1_ARES] = { 0x56004, 0 },
+-	[GCC_UNIPHY0_PORT2_ARES] = { 0x56004, 0 },
+-	[GCC_UNIPHY0_PORT3_ARES] = { 0x56004, 0 },
+-	[GCC_UNIPHY0_PORT4_ARES] = { 0x56004, 0 },
+-	[GCC_UNIPHY0_PORT5_ARES] = { 0x56004, 0 },
+-	[GCC_UNIPHY0_PORT_4_5_RESET] = { 0x56004, 0 },
+-	[GCC_UNIPHY0_PORT_4_RESET] = { 0x56004, 0 },
++	[GCC_EDMA_HW_RESET] = { .reg = 0x68014, .bitmask = 0x300000 },
++	[GCC_NSSPORT1_RESET] = { .reg = 0x68014, .bitmask = 0x1000003 },
++	[GCC_NSSPORT2_RESET] = { .reg = 0x68014, .bitmask = 0x200000c },
++	[GCC_NSSPORT3_RESET] = { .reg = 0x68014, .bitmask = 0x4000030 },
++	[GCC_NSSPORT4_RESET] = { .reg = 0x68014, .bitmask = 0x8000300 },
++	[GCC_NSSPORT5_RESET] = { .reg = 0x68014, .bitmask = 0x10000c00 },
++	[GCC_UNIPHY0_PORT1_ARES] = { .reg = 0x56004, .bitmask = 0x30 },
++	[GCC_UNIPHY0_PORT2_ARES] = { .reg = 0x56004, .bitmask = 0xc0 },
++	[GCC_UNIPHY0_PORT3_ARES] = { .reg = 0x56004, .bitmask = 0x300 },
++	[GCC_UNIPHY0_PORT4_ARES] = { .reg = 0x56004, .bitmask = 0xc00 },
++	[GCC_UNIPHY0_PORT5_ARES] = { .reg = 0x56004, .bitmask = 0x3000 },
++	[GCC_UNIPHY0_PORT_4_5_RESET] = { .reg = 0x56004, .bitmask = 0x3c02 },
++	[GCC_UNIPHY0_PORT_4_RESET] = { .reg = 0x56004, .bitmask = 0xc02 },
+ 	[GCC_LPASS_BCR] = {0x1F000, 0},
+ 	[GCC_UBI32_TBU_BCR] = {0x65000, 0},
+ 	[GCC_LPASS_TBU_BCR] = {0x6C000, 0},
 -- 
 2.39.2
 
