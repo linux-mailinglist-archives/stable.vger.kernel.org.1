@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 044527556A1
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD7BA7556A3
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232922AbjGPUw2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:52:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40692 "EHLO
+        id S232923AbjGPUwb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:52:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232916AbjGPUw1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69DA109
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:26 -0700 (PDT)
+        with ESMTP id S232916AbjGPUwa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 712BEE9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CF8E60DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508CDC433C8;
-        Sun, 16 Jul 2023 20:52:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FD7660EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A07C433C8;
+        Sun, 16 Jul 2023 20:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540745;
-        bh=VxWXYK5W+H+kk+CJD8Av1oPIjEv2yvNZrh4WyIRiZnM=;
+        s=korg; t=1689540748;
+        bh=wIhVIxw9S833HrnfEukz1tQG3b6q0/sNhMaUJ5ePRFE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ObEsw2R0eIodEHkVhGO6K5pWCtM/XmcK+TaosKmOTmq+POEMVHsOqRaUIaUxry0xY
-         fE0cACwhjhvOY0svJw6xKAwMYzMz5siOPSYALPdOXHM5cTBYuLhEDoTTIZH6PaRnt6
-         YwqaSn1tGO+WrLrm+jqq7fusjbhFAZJloxWg6QZk=
+        b=mG5qcI19bmzmS0ta+WY/g/8xu2JRXZRP8c4a9fuj7HpfJ/xAFyeFT4nrhrIax74vZ
+         gt3nbAQ5f+VuA72RsJDTwRvYe3c2PHgdBgHWu/8OBkf9RDDk32/gcmQgaKozi5JtgF
+         U06smUM9AUae0sv0KJAQfBvlTSsqIHwRLBtstZpw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 473/591] net/sched: act_ipt: add sanity checks on skb before calling target
-Date:   Sun, 16 Jul 2023 21:50:12 +0200
-Message-ID: <20230716194936.144494329@linuxfoundation.org>
+Subject: [PATCH 6.1 474/591] spi: spi-geni-qcom: enable SPI_CONTROLLER_MUST_TX for GPI DMA mode
+Date:   Sun, 16 Jul 2023 21:50:13 +0200
+Message-ID: <20230716194936.169022249@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -57,86 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b2dc32dcba08bf55cec600caa76f4afd2e3614df ]
+[ Upstream commit d10005837be83906bbd2078c3b4f9dfcbd6c95b6 ]
 
-Netfilter targets make assumptions on the skb state, for example
-iphdr is supposed to be in the linear area.
+The GPI DMA mode requires for TX DMA to be prepared. Force SPI core to
+provide TX buffer even if the caller didn't provide one by setting the
+SPI_CONTROLLER_MUST_TX flag.
 
-This is normally done by IP stack, but in act_ipt case no
-such checks are made.
-
-Some targets can even assume that skb_dst will be valid.
-Make a minimum effort to check for this:
-
-- Don't call the targets eval function for non-ipv4 skbs.
-- Don't call the targets eval function for POSTROUTING
-  emulation when the skb has no dst set.
-
-v3: use skb_protocol helper (Davide Caratti)
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b59c122484ec ("spi: spi-geni-qcom: Add support for GPI dma")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230629095847.3648597-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_ipt.c |   33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ drivers/spi/spi-geni-qcom.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/sched/act_ipt.c
-+++ b/net/sched/act_ipt.c
-@@ -229,6 +229,26 @@ static int tcf_xt_init(struct net *net,
- 			      a, &act_xt_ops, tp, flags);
- }
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 689b94fc5570a..7b76dcd11e2bb 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -979,6 +979,12 @@ static int spi_geni_probe(struct platform_device *pdev)
+ 	if (mas->cur_xfer_mode == GENI_SE_FIFO)
+ 		spi->set_cs = spi_geni_set_cs;
  
-+static bool tcf_ipt_act_check(struct sk_buff *skb)
-+{
-+	const struct iphdr *iph;
-+	unsigned int nhoff, len;
++	/*
++	 * TX is required per GSI spec, see setup_gsi_xfer().
++	 */
++	if (mas->cur_xfer_mode == GENI_GPI_DMA)
++		spi->flags = SPI_CONTROLLER_MUST_TX;
 +
-+	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
-+		return false;
-+
-+	nhoff = skb_network_offset(skb);
-+	iph = ip_hdr(skb);
-+	if (iph->ihl < 5 || iph->version != 4)
-+		return false;
-+
-+	len = skb_ip_totlen(skb);
-+	if (skb->len < nhoff + len || len < (iph->ihl * 4u))
-+		return false;
-+
-+	return pskb_may_pull(skb, iph->ihl * 4u);
-+}
-+
- static int tcf_ipt_act(struct sk_buff *skb, const struct tc_action *a,
- 		       struct tcf_result *res)
- {
-@@ -242,9 +262,22 @@ static int tcf_ipt_act(struct sk_buff *s
- 		.pf	= NFPROTO_IPV4,
- 	};
- 
-+	if (skb_protocol(skb, false) != htons(ETH_P_IP))
-+		return TC_ACT_UNSPEC;
-+
- 	if (skb_unclone(skb, GFP_ATOMIC))
- 		return TC_ACT_UNSPEC;
- 
-+	if (!tcf_ipt_act_check(skb))
-+		return TC_ACT_UNSPEC;
-+
-+	if (state.hook == NF_INET_POST_ROUTING) {
-+		if (!skb_dst(skb))
-+			return TC_ACT_UNSPEC;
-+
-+		state.out = skb->dev;
-+	}
-+
- 	spin_lock(&ipt->tcf_lock);
- 
- 	tcf_lastuse_update(&ipt->tcf_tm);
+ 	ret = request_irq(mas->irq, geni_spi_isr, 0, dev_name(dev), spi);
+ 	if (ret)
+ 		goto spi_geni_release_dma;
+-- 
+2.39.2
+
 
 
