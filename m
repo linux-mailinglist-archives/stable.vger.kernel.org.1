@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C395755480
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E46F755252
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:06:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232180AbjGPUbC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:31:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52528 "EHLO
+        id S231273AbjGPUGc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:06:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232185AbjGPUbB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:31:01 -0400
+        with ESMTP id S231263AbjGPUGb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:06:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 044C3E40
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:31:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7DBE1B9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:06:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A97260E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:30:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3E6C433C8;
-        Sun, 16 Jul 2023 20:30:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B45F860EB3
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:06:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C99C433C8;
+        Sun, 16 Jul 2023 20:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539458;
-        bh=4wdoPoDoU/I0fBOLHS9pBXLVVZzKXJs+p+bUTI6z/y4=;
+        s=korg; t=1689537986;
+        bh=fM7MXoRh561eUhBiVWTw5xraAefrjR8zlVXUFbc1UQE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E46iiybdkXq4XPaMvjbcTdwiPyLzrc0EczyQPER9b18XlpjkUtoTPrJTghWRMEmxh
-         BGJnVJ4Al0j/uaeKm06EuvErGdY7V14j1ay0FYI8hHmmv3AzjL0LebSvU9Mm+Ijm5m
-         TjAa28tayPWWvpuFUUGHhPvCI92JAz859iDI/8PE=
+        b=mxnYK72FfVp+qrgE+DNHhlfs4qaGNMKILWrsz1oUPl5fZRQFGxV3XJlpBZKH00TcG
+         Y01UbU6KRAIFz5r/u6NmlsxoUariRgxeOWkCXtt8Upmb436UPsFwdULKoHcWEvdIQu
+         7exd61pX5g/CXBjxc/82ATA5KcaFmEkU041TvWhA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yue Hu <huyue2@coolpad.com>,
-        Chao Yu <chao@kernel.org>,
-        Gao Xiang <hsiangkao@linux.alibaba.com>,
+        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/591] erofs: avoid tagged pointers to mark sync decompression
+Subject: [PATCH 6.4 291/800] ARM: omap1: Fix up the Nokia 770 board device IRQs
 Date:   Sun, 16 Jul 2023 21:42:24 +0200
-Message-ID: <20230716194924.004567620@linuxfoundation.org>
+Message-ID: <20230716194955.843846399@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,157 +54,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit cdba55067f2f9fdc7870ffcb6aef912d3468cff8 ]
+[ Upstream commit 084b6f216778b4109123b396b531f12ff6c354e9 ]
 
-We could just use a boolean in z_erofs_decompressqueue for sync
-decompression to simplify the code.
+The platform devices on the Nokia 770 is using some
+board-specific IRQs that get statically assigned to platform
+devices in the boardfile.
 
-Reviewed-by: Yue Hu <huyue2@coolpad.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230204093040.97967-2-hsiangkao@linux.alibaba.com
-Stable-dep-of: 967c28b23f6c ("erofs: kill hooked chains to avoid loops on deduplicated compressed images")
+This does not work with dynamic IRQ chip bases.
+
+Utilize the NULL device to define some board-specific
+GPIO lookups and use these to immediately look up the
+same GPIOs, convert to IRQ numbers and pass as resources
+to the devices. This is ugly but should work.
+
+Fixes: 92bf78b33b0b ("gpio: omap: use dynamic allocation of base")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 42 ++++++++++++++++--------------------------
- fs/erofs/zdata.h |  2 +-
- 2 files changed, 17 insertions(+), 27 deletions(-)
+ arch/arm/mach-omap1/board-nokia770.c | 58 +++++++++++++++++++++-------
+ 1 file changed, 45 insertions(+), 13 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index ccf7c55d477fe..8e80871a8c1d7 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1157,12 +1157,12 @@ static void z_erofs_decompressqueue_work(struct work_struct *work)
- }
+diff --git a/arch/arm/mach-omap1/board-nokia770.c b/arch/arm/mach-omap1/board-nokia770.c
+index 9583417f5bea8..dd1a8f439fac4 100644
+--- a/arch/arm/mach-omap1/board-nokia770.c
++++ b/arch/arm/mach-omap1/board-nokia770.c
+@@ -6,7 +6,7 @@
+  */
+ #include <linux/clkdev.h>
+ #include <linux/irq.h>
+-#include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/gpio/machine.h>
+ #include <linux/gpio/property.h>
+ #include <linux/kernel.h>
+@@ -251,19 +251,25 @@ static struct i2c_board_info nokia770_i2c_board_info_2[] __initdata = {
  
- static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
--				       bool sync, int bios)
-+				       int bios)
+ static void __init nokia770_cbus_init(void)
  {
- 	struct erofs_sb_info *const sbi = EROFS_SB(io->sb);
- 
- 	/* wake up the caller thread for sync decompression */
--	if (sync) {
-+	if (io->sync) {
- 		if (!atomic_add_return(bios, &io->pending_bios))
- 			complete(&io->u.done);
- 		return;
-@@ -1294,9 +1294,8 @@ static struct page *pickup_page_for_submission(struct z_erofs_pcluster *pcl,
- 	return page;
- }
- 
--static struct z_erofs_decompressqueue *
--jobqueue_init(struct super_block *sb,
--	      struct z_erofs_decompressqueue *fgq, bool *fg)
-+static struct z_erofs_decompressqueue *jobqueue_init(struct super_block *sb,
-+			      struct z_erofs_decompressqueue *fgq, bool *fg)
- {
- 	struct z_erofs_decompressqueue *q;
- 
-@@ -1313,6 +1312,7 @@ jobqueue_init(struct super_block *sb,
- 		init_completion(&fgq->u.done);
- 		atomic_set(&fgq->pending_bios, 0);
- 		q->eio = false;
-+		q->sync = true;
- 	}
- 	q->sb = sb;
- 	q->head = Z_EROFS_PCLUSTER_TAIL_CLOSED;
-@@ -1326,20 +1326,6 @@ enum {
- 	NR_JOBQUEUES,
- };
- 
--static void *jobqueueset_init(struct super_block *sb,
--			      struct z_erofs_decompressqueue *q[],
--			      struct z_erofs_decompressqueue *fgq, bool *fg)
--{
--	/*
--	 * if managed cache is enabled, bypass jobqueue is needed,
--	 * no need to read from device for all pclusters in this queue.
--	 */
--	q[JQ_BYPASS] = jobqueue_init(sb, fgq + JQ_BYPASS, NULL);
--	q[JQ_SUBMIT] = jobqueue_init(sb, fgq + JQ_SUBMIT, fg);
+-	const int retu_irq_gpio = 62;
+-	const int tahvo_irq_gpio = 40;
 -
--	return tagptr_cast_ptr(tagptr_fold(tagptr1_t, q[JQ_SUBMIT], *fg));
--}
--
- static void move_to_bypass_jobqueue(struct z_erofs_pcluster *pcl,
- 				    z_erofs_next_pcluster_t qtail[],
- 				    z_erofs_next_pcluster_t owned_head)
-@@ -1361,8 +1347,7 @@ static void move_to_bypass_jobqueue(struct z_erofs_pcluster *pcl,
- 
- static void z_erofs_decompressqueue_endio(struct bio *bio)
- {
--	tagptr1_t t = tagptr_init(tagptr1_t, bio->bi_private);
--	struct z_erofs_decompressqueue *q = tagptr_unfold_ptr(t);
-+	struct z_erofs_decompressqueue *q = bio->bi_private;
- 	blk_status_t err = bio->bi_status;
- 	struct bio_vec *bvec;
- 	struct bvec_iter_all iter_all;
-@@ -1381,7 +1366,7 @@ static void z_erofs_decompressqueue_endio(struct bio *bio)
- 	}
- 	if (err)
- 		q->eio = true;
--	z_erofs_decompress_kickoff(q, tagptr_unfold_tags(t), -1);
-+	z_erofs_decompress_kickoff(q, -1);
- 	bio_put(bio);
- }
- 
-@@ -1394,7 +1379,6 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 	struct address_space *mc = MNGD_MAPPING(EROFS_SB(sb));
- 	z_erofs_next_pcluster_t qtail[NR_JOBQUEUES];
- 	struct z_erofs_decompressqueue *q[NR_JOBQUEUES];
--	void *bi_private;
- 	z_erofs_next_pcluster_t owned_head = f->owned_head;
- 	/* bio is NULL initially, so no need to initialize last_{index,bdev} */
- 	pgoff_t last_index;
-@@ -1404,7 +1388,13 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 	unsigned long pflags;
- 	int memstall = 0;
- 
--	bi_private = jobqueueset_init(sb, q, fgq, force_fg);
-+	/*
-+	 * if managed cache is enabled, bypass jobqueue is needed,
-+	 * no need to read from device for all pclusters in this queue.
-+	 */
-+	q[JQ_BYPASS] = jobqueue_init(sb, fgq + JQ_BYPASS, NULL);
-+	q[JQ_SUBMIT] = jobqueue_init(sb, fgq + JQ_SUBMIT, force_fg);
+-	if (gpio_request_one(retu_irq_gpio, GPIOF_IN, "Retu IRQ"))
+-		return;
+-	if (gpio_request_one(tahvo_irq_gpio, GPIOF_IN, "Tahvo IRQ")) {
+-		gpio_free(retu_irq_gpio);
+-		return;
++	struct gpio_desc *d;
++	int irq;
 +
- 	qtail[JQ_BYPASS] = &q[JQ_BYPASS]->head;
- 	qtail[JQ_SUBMIT] = &q[JQ_SUBMIT]->head;
- 
-@@ -1473,7 +1463,7 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 				last_bdev = mdev.m_bdev;
- 				bio->bi_iter.bi_sector = (sector_t)cur <<
- 					LOG_SECTORS_PER_BLOCK;
--				bio->bi_private = bi_private;
-+				bio->bi_private = q[JQ_SUBMIT];
- 				if (f->readahead)
- 					bio->bi_opf |= REQ_RAHEAD;
- 				++nr_bios;
-@@ -1506,7 +1496,7 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 		kvfree(q[JQ_SUBMIT]);
- 		return;
++	d = gpiod_get(NULL, "retu_irq", GPIOD_IN);
++	if (IS_ERR(d)) {
++		pr_err("Unable to get CBUS Retu IRQ GPIO descriptor\n");
++	} else {
++		irq = gpiod_to_irq(d);
++		irq_set_irq_type(irq, IRQ_TYPE_EDGE_RISING);
++		nokia770_i2c_board_info_2[0].irq = irq;
++	}
++	d = gpiod_get(NULL, "tahvo_irq", GPIOD_IN);
++	if (IS_ERR(d)) {
++		pr_err("Unable to get CBUS Tahvo IRQ GPIO descriptor\n");
++	} else {
++		irq = gpiod_to_irq(d);
++		irq_set_irq_type(irq, IRQ_TYPE_EDGE_RISING);
++		nokia770_i2c_board_info_2[1].irq = irq;
  	}
--	z_erofs_decompress_kickoff(q[JQ_SUBMIT], *force_fg, nr_bios);
-+	z_erofs_decompress_kickoff(q[JQ_SUBMIT], nr_bios);
+-	irq_set_irq_type(gpio_to_irq(retu_irq_gpio), IRQ_TYPE_EDGE_RISING);
+-	irq_set_irq_type(gpio_to_irq(tahvo_irq_gpio), IRQ_TYPE_EDGE_RISING);
+-	nokia770_i2c_board_info_2[0].irq = gpio_to_irq(retu_irq_gpio);
+-	nokia770_i2c_board_info_2[1].irq = gpio_to_irq(tahvo_irq_gpio);
+ 	i2c_register_board_info(2, nokia770_i2c_board_info_2,
+ 				ARRAY_SIZE(nokia770_i2c_board_info_2));
+ 	device_create_managed_software_node(&nokia770_cbus_device.dev,
+@@ -276,8 +282,26 @@ static void __init nokia770_cbus_init(void)
  }
+ #endif /* CONFIG_I2C_CBUS_GPIO */
  
- static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
-diff --git a/fs/erofs/zdata.h b/fs/erofs/zdata.h
-index d98c952129852..b139de5473a97 100644
---- a/fs/erofs/zdata.h
-+++ b/fs/erofs/zdata.h
-@@ -110,7 +110,7 @@ struct z_erofs_decompressqueue {
- 		struct work_struct work;
- 	} u;
++static struct gpiod_lookup_table nokia770_irq_gpio_table = {
++	.dev_id = NULL,
++	.table = {
++		/* GPIO used by SPI device 1 */
++		GPIO_LOOKUP("gpio-0-15", 15, "ads7846_irq",
++			    GPIO_ACTIVE_HIGH),
++		/* GPIO used for retu IRQ */
++		GPIO_LOOKUP("gpio-48-63", 15, "retu_irq",
++			    GPIO_ACTIVE_HIGH),
++		/* GPIO used for tahvo IRQ */
++		GPIO_LOOKUP("gpio-32-47", 8, "tahvo_irq",
++			    GPIO_ACTIVE_HIGH),
++		{ }
++	},
++};
++
+ static void __init omap_nokia770_init(void)
+ {
++	struct gpio_desc *d;
++
+ 	/* On Nokia 770, the SleepX signal is masked with an
+ 	 * MPUIO line by default.  It has to be unmasked for it
+ 	 * to become functional */
+@@ -289,6 +313,14 @@ static void __init omap_nokia770_init(void)
  
--	bool eio;
-+	bool eio, sync;
- };
- 
- static inline bool z_erofs_is_inline_pcluster(struct z_erofs_pcluster *pcl)
+ 	software_node_register_node_group(nokia770_gpiochip_nodes);
+ 	platform_add_devices(nokia770_devices, ARRAY_SIZE(nokia770_devices));
++
++	gpiod_add_lookup_table(&nokia770_irq_gpio_table);
++	d = gpiod_get(NULL, "ads7846_irq", GPIOD_IN);
++	if (IS_ERR(d))
++		pr_err("Unable to get ADS7846 IRQ GPIO descriptor\n");
++	else
++		nokia770_spi_board_info[1].irq = gpiod_to_irq(d);
++
+ 	spi_register_board_info(nokia770_spi_board_info,
+ 				ARRAY_SIZE(nokia770_spi_board_info));
+ 	omap_serial_init();
 -- 
 2.39.2
 
