@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 202C67555A8
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E64375537A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232592AbjGPUnO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:43:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33490 "EHLO
+        id S231741AbjGPUT3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:19:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232578AbjGPUnO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:14 -0400
+        with ESMTP id S231743AbjGPUT2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ACD0D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF562126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C544E60EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D7DC433C8;
-        Sun, 16 Jul 2023 20:43:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6565860EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7213DC433C7;
+        Sun, 16 Jul 2023 20:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540192;
-        bh=m3MN6iNSXzX7PWvHuaNtSu/W2QwNhkIubJYUn40I3X4=;
+        s=korg; t=1689538766;
+        bh=XAn90j28PlqBuotgxphtM4hf5LN+4nlSWCgByg1PUkU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dxngp7fM6vyeBOMzau8IVogqYGtTic7/3ncA51UGHqsztJDRSvWdL9s7zSQe3+gtp
-         6RJR21B+2w2ZIFNmM/NPpDKYPpbkpP+YzvQ8hf7LUa2GKmaHqz4hoqEgL3uZJ6at/X
-         KL+8WP+2fVGmed5b47xkwQ83/4Lj4DtUjxidI7EE=
+        b=uDIqdcJexn+aE8aghM0ik0Osp3UHba4l4cgiEj43gF8JrLJSIsAXmnX6QDlXMYysV
+         JklGiT/3TyQDsBYL6Yviymu/L2ugjloN83wH7tMYI2HOBqemkONe3vBV3NV/Kpykzm
+         hHnLlmJu5UAwkl2joUtuV2XIpYp4IcCgWcBBKqFM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 275/591] clk: si5341: free unused memory on probe failure
+Subject: [PATCH 6.4 561/800] clk: qcom: mmcc-msm8974: remove oxili_ocmemgx_clk
 Date:   Sun, 16 Jul 2023 21:46:54 +0200
-Message-ID: <20230716194931.011152043@linuxfoundation.org>
+Message-ID: <20230716195002.119626164@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,84 +57,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 267ad94b13c53d8c99a336f0841b1fa1595b1d0f ]
+[ Upstream commit 853c064b57491d739bfd0cc35ff75c5ea9c5e8f5 ]
 
-Pointers from synth_clock_names[] should be freed at the end of probe
-either on probe success or failure path.
+After the internal discussions, it looks like this clock is managed by
+RPM itself. Linux kernel should not touch it on its own, as this causes
+disagreement with RPM. Shutting down this clock causes the OCMEM<->GPU
+interface to stop working, resulting in GPU hangchecks/timeouts.
 
-Fixes: b7bbf6ec4940 ("clk: si5341: Allow different output VDD_SEL values")
-Fixes: 9b13ff4340df ("clk: si5341: Add sysfs properties to allow checking/resetting device faults")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230530093913.1656095-6-claudiu.beznea@microchip.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: d8b212014e69 ("clk: qcom: Add support for MSM8974's multimedia clock controller (MMCC)")
+Suggested-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Luca Weiss <luca@z3ntu.xyz>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230508153319.2371645-1-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-si5341.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ drivers/clk/qcom/mmcc-msm8974.c | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
-diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
-index b2cf7edc8b308..c7d8cbd22bacc 100644
---- a/drivers/clk/clk-si5341.c
-+++ b/drivers/clk/clk-si5341.c
-@@ -1744,7 +1744,7 @@ static int si5341_probe(struct i2c_client *client)
- 		if (err) {
- 			dev_err(&client->dev,
- 				"output %u registration failed\n", i);
--			goto cleanup;
-+			goto free_clk_names;
- 		}
- 		if (config[i].always_on)
- 			clk_prepare(data->clk[i].hw.clk);
-@@ -1754,7 +1754,7 @@ static int si5341_probe(struct i2c_client *client)
- 			data);
- 	if (err) {
- 		dev_err(&client->dev, "unable to add clk provider\n");
--		goto cleanup;
-+		goto free_clk_names;
- 	}
+diff --git a/drivers/clk/qcom/mmcc-msm8974.c b/drivers/clk/qcom/mmcc-msm8974.c
+index 4273fce9a4a4c..b90a9f362f5f7 100644
+--- a/drivers/clk/qcom/mmcc-msm8974.c
++++ b/drivers/clk/qcom/mmcc-msm8974.c
+@@ -2204,23 +2204,6 @@ static struct clk_branch ocmemcx_ocmemnoc_clk = {
+ 	},
+ };
  
- 	if (initialization_required) {
-@@ -1762,11 +1762,11 @@ static int si5341_probe(struct i2c_client *client)
- 		regcache_cache_only(data->regmap, false);
- 		err = regcache_sync(data->regmap);
- 		if (err < 0)
--			goto cleanup;
-+			goto free_clk_names;
- 
- 		err = si5341_finalize_defaults(data);
- 		if (err < 0)
--			goto cleanup;
-+			goto free_clk_names;
- 	}
- 
- 	/* wait for device to report input clock present and PLL lock */
-@@ -1775,21 +1775,19 @@ static int si5341_probe(struct i2c_client *client)
- 	       10000, 250000);
- 	if (err) {
- 		dev_err(&client->dev, "Error waiting for input clock or PLL lock\n");
--		goto cleanup;
-+		goto free_clk_names;
- 	}
- 
- 	/* clear sticky alarm bits from initialization */
- 	err = regmap_write(data->regmap, SI5341_STATUS_STICKY, 0);
- 	if (err) {
- 		dev_err(&client->dev, "unable to clear sticky status\n");
--		goto cleanup;
-+		goto free_clk_names;
- 	}
- 
- 	err = sysfs_create_files(&client->dev.kobj, si5341_attributes);
--	if (err) {
-+	if (err)
- 		dev_err(&client->dev, "unable to create sysfs files\n");
--		goto cleanup;
--	}
- 
- free_clk_names:
- 	/* Free the names, clk framework makes copies */
+-static struct clk_branch oxili_ocmemgx_clk = {
+-	.halt_reg = 0x402c,
+-	.clkr = {
+-		.enable_reg = 0x402c,
+-		.enable_mask = BIT(0),
+-		.hw.init = &(struct clk_init_data){
+-			.name = "oxili_ocmemgx_clk",
+-			.parent_data = (const struct clk_parent_data[]){
+-				{ .fw_name = "gfx3d_clk_src", .name = "gfx3d_clk_src" },
+-			},
+-			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT,
+-			.ops = &clk_branch2_ops,
+-		},
+-	},
+-};
+-
+ static struct clk_branch ocmemnoc_clk = {
+ 	.halt_reg = 0x50b4,
+ 	.clkr = {
+@@ -2512,7 +2495,6 @@ static struct clk_regmap *mmcc_msm8226_clocks[] = {
+ 	[MMSS_MMSSNOC_AXI_CLK] = &mmss_mmssnoc_axi_clk.clkr,
+ 	[MMSS_S0_AXI_CLK] = &mmss_s0_axi_clk.clkr,
+ 	[OCMEMCX_AHB_CLK] = &ocmemcx_ahb_clk.clkr,
+-	[OXILI_OCMEMGX_CLK] = &oxili_ocmemgx_clk.clkr,
+ 	[OXILI_GFX3D_CLK] = &oxili_gfx3d_clk.clkr,
+ 	[OXILICX_AHB_CLK] = &oxilicx_ahb_clk.clkr,
+ 	[OXILICX_AXI_CLK] = &oxilicx_axi_clk.clkr,
+@@ -2670,7 +2652,6 @@ static struct clk_regmap *mmcc_msm8974_clocks[] = {
+ 	[MMSS_S0_AXI_CLK] = &mmss_s0_axi_clk.clkr,
+ 	[OCMEMCX_AHB_CLK] = &ocmemcx_ahb_clk.clkr,
+ 	[OCMEMCX_OCMEMNOC_CLK] = &ocmemcx_ocmemnoc_clk.clkr,
+-	[OXILI_OCMEMGX_CLK] = &oxili_ocmemgx_clk.clkr,
+ 	[OCMEMNOC_CLK] = &ocmemnoc_clk.clkr,
+ 	[OXILI_GFX3D_CLK] = &oxili_gfx3d_clk.clkr,
+ 	[OXILICX_AHB_CLK] = &oxilicx_ahb_clk.clkr,
 -- 
 2.39.2
 
