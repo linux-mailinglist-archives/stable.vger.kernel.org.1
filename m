@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0FE5755454
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 546377556CB
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232082AbjGPU3O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:29:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50860 "EHLO
+        id S232970AbjGPUyJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:54:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232076AbjGPU3N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05C949F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:13 -0700 (PDT)
+        with ESMTP id S232977AbjGPUyI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:54:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84779E9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:54:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91B0360EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7846C433C8;
-        Sun, 16 Jul 2023 20:29:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 228DC60E2C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:54:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F91C433C8;
+        Sun, 16 Jul 2023 20:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539352;
-        bh=gIZYEkEaFs16W+lz+gz10R4SOe88xnJ0rJVtdSOq2jY=;
+        s=korg; t=1689540846;
+        bh=LLKQHnej0ML21gq3UooSclP0rCrTMJhT/RjP/2hTKIk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VQbkvyNBaThfppfqXPMgCFpUNk4945NfMo6dBS75yQLNohCX4JbdeBFA566ZeQ/It
-         GLQWBqBRE5SeXqSo5PvYHvj4gDRX6z2pzbJ+LHyEdjgaNMYpncRqjn5MAX1OkPEP5G
-         X5nL42NxXArGlV4yS5WUpzyklN3GWRq+GITPLeoI=
+        b=AdAx8jick83n9FdgikUfpHPwgVLFspEoSLDxlUbgbXZzGvT6prnKEJpwNjSYh2tNl
+         ZB5IguwaiJqiJZlrf1tPE0EMUKG4591+DXhSZ7VcJOHjr75VIE6KqFFul/2o3VMfwN
+         mu7PhXA97yhb7hzq1HITLD1XzFCM1Sis4kFchBPw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.4 777/800] Input: ads7846 - fix pointer cast warning
+        patches@lists.linux.dev, Filip Hejsek <filip.hejsek@gmail.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 491/591] drm/amd: Dont try to enable secure display TA multiple times
 Date:   Sun, 16 Jul 2023 21:50:30 +0200
-Message-ID: <20230716195007.196633296@linuxfoundation.org>
+Message-ID: <20230716194936.593764082@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 11ca605653480b2ddc70ec142a0a686796a7fc87 upstream.
+[ Upstream commit 5c6d52ff4b61e5267b25be714eb5a9ba2a338199 ]
 
-The previous bugfix caused a warning on 64-bit builds:
+If the securedisplay TA failed to load the first time, it's unlikely
+to work again after a suspend/resume cycle or reset cycle and it appears
+to be causing problems in futher attempts.
 
-drivers/input/touchscreen/ads7846.c:1126:17: warning: cast to smaller integer type 'u32' (aka 'unsigned int') from 'const void *' [-Wvoid-pointer-to-int-cast]
-
-Change the cast back to something that works on both 32-bit and 64-bit
-kernels.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202306100442.jStknDT1-lkp@intel.com/
-Fixes: 8f7913c04f6a7 ("Input: ads7846 - Fix usage of match data")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e42dfa66d592 ("drm/amdgpu: Add secure display TA load for Renoir")
+Reported-by: Filip Hejsek <filip.hejsek@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2633
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/ads7846.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/input/touchscreen/ads7846.c
-+++ b/drivers/input/touchscreen/ads7846.c
-@@ -1123,7 +1123,7 @@ static const struct ads7846_platform_dat
- 	if (!pdata)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index a3cd816f98a14..0af9fb4098e8a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -1959,6 +1959,8 @@ static int psp_securedisplay_initialize(struct psp_context *psp)
+ 		psp_securedisplay_parse_resp_status(psp, securedisplay_cmd->status);
+ 		dev_err(psp->adev->dev, "SECUREDISPLAY: query securedisplay TA failed. ret 0x%x\n",
+ 			securedisplay_cmd->securedisplay_out_message.query_ta.query_cmd_ret);
++		/* don't try again */
++		psp->securedisplay_context.context.bin_desc.size_bytes = 0;
+ 	}
  
--	pdata->model = (u32)device_get_match_data(dev);
-+	pdata->model = (uintptr_t)device_get_match_data(dev);
- 
- 	device_property_read_u16(dev, "ti,vref-delay-usecs",
- 				 &pdata->vref_delay_usecs);
+ 	return 0;
+-- 
+2.39.2
+
 
 
