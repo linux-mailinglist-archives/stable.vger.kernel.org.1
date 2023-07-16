@@ -2,112 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B0B2755345
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0D59755557
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231671AbjGPURU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:17:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43124 "EHLO
+        id S232461AbjGPUkA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:40:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231667AbjGPURP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:15 -0400
+        with ESMTP id S232464AbjGPUkA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2437E40
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A5399F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:39:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D0BC60E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CBDC433C8;
-        Sun, 16 Jul 2023 20:17:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ADA9960EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:39:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB204C433C7;
+        Sun, 16 Jul 2023 20:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538632;
-        bh=/eCpOHVdDejXBXh6t0gTTlmuVTbygfJ3hKHPWPmuelg=;
+        s=korg; t=1689539998;
+        bh=/G/qLtXpDDx/5coR0e4vtX5Sbq428Jsu6+aE1Z4OviU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W7drjnIcFZu+wpWt4dl7fu40BT/VYDObEtHr45sQpg/F8zwNIj+5+KjjTFnwVaqZc
-         EWE7plI5LNiFruB6Iu+m2CqEFtdnirgVO1m4eYPaqjaROpkiHVxxRaT/kP5sqNHZKV
-         Sim5nkJ+XX5QisYu7Iw/S68UDU3eXua4l0dhRpiI=
+        b=bp9AdRo1YFl8RGuuEXzkvBqe89VO4cxszIekZ7Ji3cWyyFAV9rscZmACQo/QAh/kv
+         SDxUciZhqqBl9/8NrWbEMG8akjo4WOBGKB6W09OGmgBd5J/4sJuzckHVxxoDL1JsLu
+         900DOhCvxHZ4u2v2OAZDp3eA/ejUnnCIgEocaUVU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Petar Gligoric <petar.gligoric@rohde-schwarz.com>,
-        Hagen Paul Pfeifer <hagen@jauu.net>,
-        Aditya Gupta <adityag@linux.ibm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Ian Rogers <irogers@google.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 493/800] perf test: Set PERF_EXEC_PATH for script execution
+Subject: [PATCH 6.1 207/591] drm/panel: simple: fix active size for Ampire AM-480272H3TMQW-T01H
 Date:   Sun, 16 Jul 2023 21:45:46 +0200
-Message-ID: <20230716195000.532023390@linuxfoundation.org>
+Message-ID: <20230716194929.227641811@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit e4ef3ef1bc0a3d2535427da78b8095ef657eb474 ]
+[ Upstream commit f24b49550814fdee4a98b9552e35e243ccafd4a8 ]
 
-The task-analyzer.py script (actually every other scripts too) requires
-PERF_EXEC_PATH env to find dependent libraries and scripts. For scripts
-test to run correctly, it needs to set PERF_EXEC_PATH to the perf tool
-source directory.
+The previous setting was related to the overall dimension and not to the
+active display area.
+In the "PHYSICAL SPECIFICATIONS" section, the datasheet shows the
+following parameters:
 
-Instead of blindly update the env, let's check the directory structure
-to make sure it points to the correct location.
+ ----------------------------------------------------------
+|       Item        |         Specifications        | unit |
+ ----------------------------------------------------------
+| Display area      | 98.7 (W) x 57.5 (H)           |  mm  |
+ ----------------------------------------------------------
+| Overall dimension | 105.5(W) x 67.2(H) x 4.96(D)  |  mm  |
+ ----------------------------------------------------------
 
-Fixes: e8478b84d6ba ("perf test: add new task-analyzer tests")
-Cc: Petar Gligoric <petar.gligoric@rohde-schwarz.com>
-Cc: Hagen Paul Pfeifer <hagen@jauu.net>
-Cc: Aditya Gupta <adityag@linux.ibm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Acked-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 966fea78adf2 ("drm/panel: simple: Add support for Ampire AM-480272H3TMQW-T01H")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+[narmstrong: fixed Fixes commit id length]
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230516085039.3797303-1-dario.binacchi@amarulasolutions.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/test_task_analyzer.sh | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/panel/panel-simple.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/tests/shell/test_task_analyzer.sh b/tools/perf/tests/shell/test_task_analyzer.sh
-index 1b7f3c1ec218b..365b61aea519a 100755
---- a/tools/perf/tests/shell/test_task_analyzer.sh
-+++ b/tools/perf/tests/shell/test_task_analyzer.sh
-@@ -5,6 +5,12 @@
- tmpdir=$(mktemp -d /tmp/perf-script-task-analyzer-XXXXX)
- err=0
- 
-+# set PERF_EXEC_PATH to find scripts in the source directory
-+perfdir=$(dirname "$0")/../..
-+if [ -e "$perfdir/scripts/python/Perf-Trace-Util" ]; then
-+  export PERF_EXEC_PATH=$perfdir
-+fi
-+
- cleanup() {
-   rm -f perf.data
-   rm -f perf.data.old
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 8a3b685c2fcc0..7ca00b0323362 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -759,8 +759,8 @@ static const struct panel_desc ampire_am_480272h3tmqw_t01h = {
+ 	.num_modes = 1,
+ 	.bpc = 8,
+ 	.size = {
+-		.width = 105,
+-		.height = 67,
++		.width = 99,
++		.height = 58,
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+ };
 -- 
 2.39.2
 
