@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9660754F4F
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 17:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EEBF754F50
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 17:14:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbjGPPOa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 11:14:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43470 "EHLO
+        id S229995AbjGPPOe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 11:14:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230116AbjGPPO2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 11:14:28 -0400
+        with ESMTP id S230115AbjGPPOe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 11:14:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF06D10D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 08:14:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4C761BF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 08:14:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FFDC60D2D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 15:14:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450D2C433C8;
-        Sun, 16 Jul 2023 15:14:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5212660D2B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 15:14:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D11C433C8;
+        Sun, 16 Jul 2023 15:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689520464;
-        bh=7nlg8mWYdGa8lZ06gb2ls3XJf3To/5HIL2kTKpxZC+0=;
+        s=korg; t=1689520467;
+        bh=ni3m9Fq21qZfABxpOoi94bA5B68S+uMe+caRWwdjsJM=;
         h=Subject:To:Cc:From:Date:From;
-        b=ck7PBZqFWN1kKgdlGDa5hNiS4rDXtD/bZaw0fmWyJfLIJ5iNjTnls62QblsGvXiE5
-         43C/pFDIPf02eHfHbWln/JH/OYv0Jt7tAZN5d1U3VR8UkG9sVmeEGRl+nanHjx+zc7
-         ul5CUJjWbNtRONOJAh1j9xomj1ru4GiPNjlkoeQ8=
-Subject: FAILED: patch "[PATCH] ovl: fix null pointer dereference in ovl_get_acl_rcu()" failed to apply to 6.1-stable tree
+        b=rPhaN8DaXLVL9owcOgBKe2GvIK7yGUlAOdAn8aPpjcHcUD1gTDxMj4QCpeXAGiQdW
+         m5D5UvbMrkc26N7xQQLe2dcgqQM9pEsnzw9Mvff/h45SpB94VHpniOxEZlfc7XZFnD
+         6pNoaY0K4cwK88VHUeS2qtIxgRrRfoKQ6KjudDz8=
+Subject: FAILED: patch "[PATCH] ovl: fix null pointer dereference in ovl_get_acl_rcu()" failed to apply to 5.15-stable tree
 To:     chengzhihao1@huawei.com, amir73il@gmail.com, brauner@kernel.org,
         mszeredi@redhat.com, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 17:14:21 +0200
-Message-ID: <2023071621-charcoal-prewashed-932b@gregkh>
+Date:   Sun, 16 Jul 2023 17:14:24 +0200
+Message-ID: <2023071624-existing-recoup-f59b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,25 +50,28 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x f4e19e595cc2e76a8a58413eb19d3d9c51328b53
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071621-charcoal-prewashed-932b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071624-existing-recoup-f59b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 f4e19e595cc2 ("ovl: fix null pointer dereference in ovl_get_acl_rcu()")
 6c0a8bfb84af ("ovl: implement get acl method")
 cac2f8b8d8b5 ("fs: rename current get acl method")
+6b70fe0601ad ("acl: add vfs_set_acl_prepare()")
+abfcf55d8b07 ("acl: handle idmapped mounts for idmapped filesystems")
+65512eb0e9e6 ("Merge tag 'ovl-update-6.0' of git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs")
 
 thanks,
 
