@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A7047554C4
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ECF67552A4
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232297AbjGPUeM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:34:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54804 "EHLO
+        id S231383AbjGPUKN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:10:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232296AbjGPUeL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:11 -0400
+        with ESMTP id S231429AbjGPUKL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ACC0BA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2F83E57
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A49CB60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A91C433C7;
-        Sun, 16 Jul 2023 20:34:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B71E60EB3
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E866C433C8;
+        Sun, 16 Jul 2023 20:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539650;
-        bh=RZ4Z2oa4BDF6jLfbGaxI6McBDfkzvnUK45mJkBbIReI=;
+        s=korg; t=1689538208;
+        bh=nehc9UeoDg/AFZKaXKFYGmUBU8oSUPIovkkEZ2zK570=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FU9DlmsnAlUFd2M6znkCF+5ii+fG0fSLElCwQKTHPHhjx07cW/gqenDHo4vujLlzM
-         ztjJWDf0wACTG4zM75+o4KyARYnVJY6Ua+hKwC0CREejfPd6NtzTs43yHeqAqFA/3+
-         8jry+PUhq/Uz5xTTqmzGmSkWu6iYSCvv/sGCAcNU=
+        b=DP+o5401ZLnTV8S6l0Vh6Ax3Cokz2GaPxzqGyHXgWh58Plde5Lf52MUVi/n652c0/
+         WVFZulluvW+jMDvwPjkCmwyDDR+h97kW7MRjMsuk+m/1iV3Xy/rZbBYEDpLLQSyjjE
+         3I2WDoJGH9flZ20+R73fMPq5kHOLcXW8TO+fNctw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexey Gladkov <legion@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Stanislav Fomichev <sdf@google.com>,
+        patches@lists.linux.dev,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/591] selftests/bpf: Do not use sign-file as testcase
+Subject: [PATCH 6.4 369/800] drm/amd/display: Fix artifacting on eDP panels when engaging freesync video mode
 Date:   Sun, 16 Jul 2023 21:43:42 +0200
-Message-ID: <20230716194926.029454935@linuxfoundation.org>
+Message-ID: <20230716194957.646246341@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,52 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexey Gladkov <legion@kernel.org>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-[ Upstream commit f04a32b2c5b539e3c097cb5c7c1df12a8f4a0cf0 ]
+[ Upstream commit b18f05a0666aecd5cb19c26a8305bcfa4e9d6502 ]
 
-The sign-file utility (from scripts/) is used in prog_tests/verify_pkcs7_sig.c,
-but the utility should not be called as a test. Executing this utility produces
-the following error:
+[Why]
+When freesync video mode is enabled, switching resolution from native
+mode to one of the freesync video compatible modes can trigger continous
+artifacts on some eDP panels when running under KDE. The articating can be seen in the
+attached bug report.
 
-  selftests: /linux/tools/testing/selftests/bpf: urandom_read
-  ok 16 selftests: /linux/tools/testing/selftests/bpf: urandom_read
+[How]
+Fix this by restricting updates that require full commit by using the same checks
+for stream and scaling changes in the the enable pass of dm_update_crtc_state()
+along with the check for compatible timings for freesync vide mode.
 
-  selftests: /linux/tools/testing/selftests/bpf: sign-file
-  not ok 17 selftests: /linux/tools/testing/selftests/bpf: sign-file # exit=2
-
-Also, urandom_read is mistakenly used as a test. It does not lead to an error,
-but should be moved over to TEST_GEN_FILES as well. The empty TEST_CUSTOM_PROGS
-can then be removed.
-
-Fixes: fc97590668ae ("selftests/bpf: Add test for bpf_verify_pkcs7_signature() kfunc")
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Link: https://lore.kernel.org/bpf/ZEuWFk3QyML9y5QQ@example.org
-Link: https://lore.kernel.org/bpf/88e3ab23029d726a2703adcf6af8356f7a2d3483.1684316821.git.legion@kernel.org
+Bug: https://gitlab.freedesktop.org/drm/amd/-/issues/2162
+Fixes: da5e14909776 ("drm/amd/display: Fix hang when skipping modeset")
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index 0465ddc81f352..3b57fbf8fff4a 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -85,8 +85,7 @@ TEST_GEN_PROGS_EXTENDED = test_sock_addr test_skb_cgroup_id_user \
- 	test_lirc_mode2_user xdping test_cpp runqslower bench bpf_testmod.ko \
- 	xskxceiver xdp_redirect_multi xdp_synproxy veristat
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -9259,6 +9259,8 @@ static int dm_update_crtc_state(struct a
  
--TEST_CUSTOM_PROGS = $(OUTPUT)/urandom_read $(OUTPUT)/sign-file
--TEST_GEN_FILES += liburandom_read.so
-+TEST_GEN_FILES += liburandom_read.so urandom_read sign-file
- 
- # Emit succinct information message describing current building step
- # $1 - generic step name (e.g., CC, LINK, etc);
--- 
-2.39.2
-
+ 		/* Now check if we should set freesync video mode */
+ 		if (amdgpu_freesync_vid_mode && dm_new_crtc_state->stream &&
++		    dc_is_stream_unchanged(new_stream, dm_old_crtc_state->stream) &&
++		    dc_is_stream_scaling_unchanged(new_stream, dm_old_crtc_state->stream) &&
+ 		    is_timing_unchanged_for_freesync(new_crtc_state,
+ 						     old_crtc_state)) {
+ 			new_crtc_state->mode_changed = false;
 
 
