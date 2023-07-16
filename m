@@ -2,92 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B360755688
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FED575542A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232873AbjGPUv2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:51:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40046 "EHLO
+        id S232021AbjGPU1X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:27:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232892AbjGPUv2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:51:28 -0400
+        with ESMTP id S232006AbjGPU1W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BB71E45
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B7E9F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:27:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE86360DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE45BC433C8;
-        Sun, 16 Jul 2023 20:51:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 35F3460EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:27:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D94C433C7;
+        Sun, 16 Jul 2023 20:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540686;
-        bh=EJz73ZbXKgKBDytimUerB75VxU9y57I2UoRp3f3MSVA=;
+        s=korg; t=1689539240;
+        bh=PZb9GWddQADOiJrKrzADKUB01skpQR8H/5gD991yoPM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2rLIzB/omNVijM+7dJHLSgGMue7kdqrFHw9e/8KleuHL4EDnUOOBJu44hSFkieLLD
-         otErkdGdD+U6As8fjEY1XDIW83qkjquFriA0SyjxRNlZUtUBa9neCezntZVtrcLXsC
-         wUnQ0k8uWmKWI44Dd2RmG/x5ICimJsq3KwG7geto=
+        b=HdoXA4ztK0OcJMpCtq01eB7FqN9ogsCrL/1yYR4YkX5CrpswxA46UtsViWU8XkVqI
+         qq1vWUEGO4Sbq0b6RdpfsnuOSHehlceFjyik6hEkOBUun0bcl8uOta3FMZ3bxA0PJU
+         6m+XGSXvFbZSBGRswXCEiLGeKcFI/ZuuYHnhELso=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 451/591] misc: fastrpc: check return value of devm_kasprintf()
-Date:   Sun, 16 Jul 2023 21:49:50 +0200
-Message-ID: <20230716194935.577313563@linuxfoundation.org>
+        patches@lists.linux.dev, Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Azeem Shaikh <azeemshaikh38@gmail.com>,
+        linux-um@lists.infradead.org, Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.4 738/800] um: Use HOST_DIR for mrproper
+Date:   Sun, 16 Jul 2023 21:49:51 +0200
+Message-ID: <20230716195006.258998624@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit af2e19d82a116bc622eea84c9faadd5f7e20bec4 ]
+commit a5a319ec2c2236bb96d147c16196d2f1f3799301 upstream.
 
-devm_kasprintf() returns a pointer to dynamically allocated memory.
-Pointer could be NULL in case allocation fails. Check pointer validity.
-Identified with coccinelle (kmerr.cocci script).
+When HEADER_ARCH was introduced, the MRPROPER_FILES (then MRPROPER_DIRS)
+list wasn't adjusted, leaving SUBARCH as part of the path argument.
+This resulted in the "mrproper" target not cleaning up arch/x86/... when
+SUBARCH was specified. Since HOST_DIR is arch/$(HEADER_ARCH), use it
+instead to get the correct path.
 
-Fixes: 3abe3ab3cdab ("misc: fastrpc: add secure domain support")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230615102546.581899-1-claudiu.beznea@microchip.com
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Azeem Shaikh <azeemshaikh38@gmail.com>
+Cc: linux-um@lists.infradead.org
+Fixes: 7bbe7204e937 ("um: merge Makefile-{i386,x86_64}")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230606222442.never.807-kees@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/um/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index 8b1e8661c3d73..e5cabb9012135 100644
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2030,6 +2030,9 @@ static int fastrpc_device_register(struct device *dev, struct fastrpc_channel_ct
- 	fdev->miscdev.fops = &fastrpc_fops;
- 	fdev->miscdev.name = devm_kasprintf(dev, GFP_KERNEL, "fastrpc-%s%s",
- 					    domain, is_secured ? "-secure" : "");
-+	if (!fdev->miscdev.name)
-+		return -ENOMEM;
-+
- 	err = misc_register(&fdev->miscdev);
- 	if (!err) {
- 		if (is_secured)
--- 
-2.39.2
-
+--- a/arch/um/Makefile
++++ b/arch/um/Makefile
+@@ -149,7 +149,7 @@ export CFLAGS_vmlinux := $(LINK-y) $(LIN
+ # When cleaning we don't include .config, so we don't include
+ # TT or skas makefiles and don't clean skas_ptregs.h.
+ CLEAN_FILES += linux x.i gmon.out
+-MRPROPER_FILES += arch/$(SUBARCH)/include/generated
++MRPROPER_FILES += $(HOST_DIR)/include/generated
+ 
+ archclean:
+ 	@find . \( -name '*.bb' -o -name '*.bbg' -o -name '*.da' \
 
 
