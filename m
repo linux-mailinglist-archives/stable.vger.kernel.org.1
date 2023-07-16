@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CD597554C7
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 800ED7552A7
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232298AbjGPUeU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:34:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54854 "EHLO
+        id S231420AbjGPUKV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:10:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232300AbjGPUeU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:20 -0400
+        with ESMTP id S231419AbjGPUKU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A82BA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFCD3123
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FFC160EBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D778C433C7;
-        Sun, 16 Jul 2023 20:34:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EC1760EB3
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4FEC433C8;
+        Sun, 16 Jul 2023 20:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539658;
-        bh=JjH1o7vXcnPx4jxPljo2uQ3pa+zew3WkmOp1B7oNTYA=;
+        s=korg; t=1689538216;
+        bh=SML7ZeZSwp5kkA8sla9Afe2oM7xoLvyaBJCjP+3g0YA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pBJIziKNH/1xOZq/n8ORAI+lyVVs7rwFW00+U5rzBc5H1OWCgrpn2LsHVPjV0pOOC
-         CjlHsjqU+m4+I3UbWAAi9d1lNeoaWtLSqV/hh7oXu5xkkQvzYXgYv4VG+lxKdN8bi6
-         3Ra84WGz8UzDukDjJwATZhepJ+VlHh3gtItQOjjw=
+        b=QR31vwUgFqLmqG3M4YZS0dJ9JXs15DXPhE6r04UqrV5SJSeefqGnzldEFyPjhOc6g
+         i6z9n646BGvayKYQhR+nsCZhiaQhzRY7EXy9XILfdt2qcYJGE1EkhtpyrEAhp3+XWG
+         +2A6Yr815jwfRY4nEpCnY6nujGPIIpVsUrQNtqvc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/591] wifi: orinoco: Fix an error handling path in spectrum_cs_probe()
+        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 372/800] RDMA/rxe: Fix access checks in rxe_check_bind_mw
 Date:   Sun, 16 Jul 2023 21:43:45 +0200
-Message-ID: <20230716194926.107171332@linuxfoundation.org>
+Message-ID: <20230716194957.715334686@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,57 +55,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit 925244325159824385209e3e0e3f91fa6bf0646c ]
+[ Upstream commit 425e1c9018fdf25cb4531606cc92d9d01a55534f ]
 
-Should spectrum_cs_config() fail, some resources need to be released as
-already done in the remove function.
+The subroutine rxe_check_bind_mw() in rxe_mw.c performs checks on the mw
+access flags before they are set so they always succeed.  This patch
+instead checks the access flags passed in the send wqe.
 
-While at it, remove a useless and erroneous comment. The probe is
-spectrum_cs_probe(), not spectrum_cs_attach().
-
-Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/c0bc0c21c58ca477fc5521607615bafbf2aef8eb.1684567733.git.christophe.jaillet@wanadoo.fr
+Fixes: 32a577b4c3a9 ("RDMA/rxe: Add support for bind MW work requests")
+Link: https://lore.kernel.org/r/20230530221334.89432-4-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intersil/orinoco/spectrum_cs.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_mw.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intersil/orinoco/spectrum_cs.c b/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
-index 291ef97ed45ec..841d623c621ac 100644
---- a/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
-+++ b/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
-@@ -157,6 +157,7 @@ spectrum_cs_probe(struct pcmcia_device *link)
+diff --git a/drivers/infiniband/sw/rxe/rxe_mw.c b/drivers/infiniband/sw/rxe/rxe_mw.c
+index afa5ce1a71166..a7ec57ab8fadd 100644
+--- a/drivers/infiniband/sw/rxe/rxe_mw.c
++++ b/drivers/infiniband/sw/rxe/rxe_mw.c
+@@ -48,7 +48,7 @@ int rxe_dealloc_mw(struct ib_mw *ibmw)
+ }
+ 
+ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+-			 struct rxe_mw *mw, struct rxe_mr *mr)
++			 struct rxe_mw *mw, struct rxe_mr *mr, int access)
  {
- 	struct orinoco_private *priv;
- 	struct orinoco_pccard *card;
-+	int ret;
+ 	if (mw->ibmw.type == IB_MW_TYPE_1) {
+ 		if (unlikely(mw->state != RXE_MW_STATE_VALID)) {
+@@ -58,7 +58,7 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+ 		}
  
- 	priv = alloc_orinocodev(sizeof(*card), &link->dev,
- 				spectrum_cs_hard_reset,
-@@ -169,8 +170,16 @@ spectrum_cs_probe(struct pcmcia_device *link)
- 	card->p_dev = link;
- 	link->priv = priv;
+ 		/* o10-36.2.2 */
+-		if (unlikely((mw->access & IB_ZERO_BASED))) {
++		if (unlikely((access & IB_ZERO_BASED))) {
+ 			rxe_dbg_mw(mw, "attempt to bind a zero based type 1 MW\n");
+ 			return -EINVAL;
+ 		}
+@@ -104,7 +104,7 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+ 	}
  
--	return spectrum_cs_config(link);
--}				/* spectrum_cs_attach */
-+	ret = spectrum_cs_config(link);
-+	if (ret)
-+		goto err_free_orinocodev;
-+
-+	return 0;
-+
-+err_free_orinocodev:
-+	free_orinocodev(priv);
-+	return ret;
-+}
+ 	/* C10-74 */
+-	if (unlikely((mw->access &
++	if (unlikely((access &
+ 		      (IB_ACCESS_REMOTE_WRITE | IB_ACCESS_REMOTE_ATOMIC)) &&
+ 		     !(mr->access & IB_ACCESS_LOCAL_WRITE))) {
+ 		rxe_dbg_mw(mw,
+@@ -113,7 +113,7 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+ 	}
  
- static void spectrum_cs_detach(struct pcmcia_device *link)
+ 	/* C10-75 */
+-	if (mw->access & IB_ZERO_BASED) {
++	if (access & IB_ZERO_BASED) {
+ 		if (unlikely(wqe->wr.wr.mw.length > mr->ibmr.length)) {
+ 			rxe_dbg_mw(mw,
+ 				"attempt to bind a ZB MW outside of the MR\n");
+@@ -133,12 +133,12 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+ }
+ 
+ static void rxe_do_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+-		      struct rxe_mw *mw, struct rxe_mr *mr)
++		      struct rxe_mw *mw, struct rxe_mr *mr, int access)
  {
+ 	u32 key = wqe->wr.wr.mw.rkey & 0xff;
+ 
+ 	mw->rkey = (mw->rkey & ~0xff) | key;
+-	mw->access = wqe->wr.wr.mw.access;
++	mw->access = access;
+ 	mw->state = RXE_MW_STATE_VALID;
+ 	mw->addr = wqe->wr.wr.mw.addr;
+ 	mw->length = wqe->wr.wr.mw.length;
+@@ -169,6 +169,7 @@ int rxe_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe)
+ 	struct rxe_dev *rxe = to_rdev(qp->ibqp.device);
+ 	u32 mw_rkey = wqe->wr.wr.mw.mw_rkey;
+ 	u32 mr_lkey = wqe->wr.wr.mw.mr_lkey;
++	int access = wqe->wr.wr.mw.access;
+ 
+ 	mw = rxe_pool_get_index(&rxe->mw_pool, mw_rkey >> 8);
+ 	if (unlikely(!mw)) {
+@@ -198,11 +199,11 @@ int rxe_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe)
+ 
+ 	spin_lock_bh(&mw->lock);
+ 
+-	ret = rxe_check_bind_mw(qp, wqe, mw, mr);
++	ret = rxe_check_bind_mw(qp, wqe, mw, mr, access);
+ 	if (ret)
+ 		goto err_unlock;
+ 
+-	rxe_do_bind_mw(qp, wqe, mw, mr);
++	rxe_do_bind_mw(qp, wqe, mw, mr, access);
+ err_unlock:
+ 	spin_unlock_bh(&mw->lock);
+ err_drop_mr:
 -- 
 2.39.2
 
