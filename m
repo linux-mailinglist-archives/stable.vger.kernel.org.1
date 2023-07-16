@@ -2,192 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30A5E75543D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:28:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 820CF7556BB
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232035AbjGPU2L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:28:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50294 "EHLO
+        id S232950AbjGPUxd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:53:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbjGPU2K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:28:10 -0400
+        with ESMTP id S232955AbjGPUxc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:53:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 453E89F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:28:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 148A110D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:53:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C883460EBD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:28:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D520EC433C8;
-        Sun, 16 Jul 2023 20:28:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 91C5960E2C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:53:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A419FC433C9;
+        Sun, 16 Jul 2023 20:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539288;
-        bh=enMMDHpShdt2cP7fUH14f5wWJ9G1pcFxrLXF94ANYHg=;
+        s=korg; t=1689540810;
+        bh=R0QNjeLgR9Vga4TfzejPaAfL22GXEdlss4H5o8JRznM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hz2/I3u7BMCCFhofnBxgR2me8+Nic4nBA9lcp/kuSYGbpkjk5DxZHkK8kS/pdah0f
-         ZgVL/yzDn5Gn/Mg3sRfHAANLp8xbHsAhUpflwkwTHlkOcTlBwF0tnV0q4aoGYduNT1
-         1LJBdzZJWhusHOhJH4UMa4fC0XCtl/vMFSyBYi24=
+        b=gj+ZhyozCPtq3EwO2ydRzW8jrCryM06m0dLigjSw4QvuwN4eMTKYq1OTZ2yU5cKJD
+         txE/Zpf4PCThLLzRBXH0xuUrPTJcbEyamXD4dD5PbfndbWhsPWjGQlJxYSMdmROZzj
+         Ej7PRt3lyeS8FTVLurXCVCiBmt7Xe4vFwkygu6sE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matt Corallo <blnxfsl@bluematt.me>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.4 753/800] btrfs: add handling for RAID1C23/DUP to btrfs_reduce_alloc_profile
-Date:   Sun, 16 Jul 2023 21:50:06 +0200
-Message-ID: <20230716195006.614147985@linuxfoundation.org>
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 468/591] f2fs: check return value of freeze_super()
+Date:   Sun, 16 Jul 2023 21:50:07 +0200
+Message-ID: <20230716194936.013034051@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matt Corallo <blnxfsl@bluematt.me>
+From: Chao Yu <chao@kernel.org>
 
-commit 160fe8f6fdb13da6111677be6263e5d65e875987 upstream.
+[ Upstream commit 8bec7dd1b3f7d7769d433d67bde404de948a2d95 ]
 
-Callers of `btrfs_reduce_alloc_profile` expect it to return exactly
-one allocation profile flag, and failing to do so may ultimately
-result in a WARN_ON and remount-ro when allocating new blocks, like
-the below transaction abort on 6.1.
+freeze_super() can fail, it needs to check its return value and do
+error handling in f2fs_resize_fs().
 
-`btrfs_reduce_alloc_profile` has two ways of determining the profile,
-first it checks if a conversion balance is currently running and
-uses the profile we're converting to. If no balance is currently
-running, it returns the max-redundancy profile which at least one
-block in the selected block group has.
-
-This works by simply checking each known allocation profile bit in
-redundancy order. However, `btrfs_reduce_alloc_profile` has not been
-updated as new flags have been added - first with the `DUP` profile
-and later with the RAID1C34 profiles.
-
-Because of the way it checks, if we have blocks with different
-profiles and at least one is known, that profile will be selected.
-However, if none are known we may return a flag set with multiple
-allocation profiles set.
-
-This is currently only possible when a balance from one of the three
-unhandled profiles to another of the unhandled profiles is canceled
-after allocating at least one block using the new profile.
-
-In that case, a transaction abort like the below will occur and the
-filesystem will need to be mounted with -o skip_balance to get it
-mounted rw again (but the balance cannot be resumed without a
-similar abort).
-
-  [770.648] ------------[ cut here ]------------
-  [770.648] BTRFS: Transaction aborted (error -22)
-  [770.648] WARNING: CPU: 43 PID: 1159593 at fs/btrfs/extent-tree.c:4122 find_free_extent+0x1d94/0x1e00 [btrfs]
-  [770.648] CPU: 43 PID: 1159593 Comm: btrfs Tainted: G        W 6.1.0-0.deb11.7-powerpc64le #1  Debian 6.1.20-2~bpo11+1a~test
-  [770.648] Hardware name: T2P9D01 REV 1.00 POWER9 0x4e1202 opal:skiboot-bc106a0 PowerNV
-  [770.648] NIP:  c00800000f6784fc LR: c00800000f6784f8 CTR: c000000000d746c0
-  [770.648] REGS: c000200089afe9a0 TRAP: 0700   Tainted: G        W (6.1.0-0.deb11.7-powerpc64le Debian 6.1.20-2~bpo11+1a~test)
-  [770.648] MSR:  9000000002029033 <SF,HV,VEC,EE,ME,IR,DR,RI,LE>  CR: 28848282  XER: 20040000
-  [770.648] CFAR: c000000000135110 IRQMASK: 0
-	    GPR00: c00800000f6784f8 c000200089afec40 c00800000f7ea800 0000000000000026
-	    GPR04: 00000001004820c2 c000200089afea00 c000200089afe9f8 0000000000000027
-	    GPR08: c000200ffbfe7f98 c000000002127f90 ffffffffffffffd8 0000000026d6a6e8
-	    GPR12: 0000000028848282 c000200fff7f3800 5deadbeef0000122 c00000002269d000
-	    GPR16: c0002008c7797c40 c000200089afef17 0000000000000000 0000000000000000
-	    GPR20: 0000000000000000 0000000000000001 c000200008bc5a98 0000000000000001
-	    GPR24: 0000000000000000 c0000003c73088d0 c000200089afef17 c000000016d3a800
-	    GPR28: c0000003c7308800 c00000002269d000 ffffffffffffffea 0000000000000001
-  [770.648] NIP [c00800000f6784fc] find_free_extent+0x1d94/0x1e00 [btrfs]
-  [770.648] LR [c00800000f6784f8] find_free_extent+0x1d90/0x1e00 [btrfs]
-  [770.648] Call Trace:
-  [770.648] [c000200089afec40] [c00800000f6784f8] find_free_extent+0x1d90/0x1e00 [btrfs] (unreliable)
-  [770.648] [c000200089afed30] [c00800000f681398] btrfs_reserve_extent+0x1a0/0x2f0 [btrfs]
-  [770.648] [c000200089afeea0] [c00800000f681bf0] btrfs_alloc_tree_block+0x108/0x670 [btrfs]
-  [770.648] [c000200089afeff0] [c00800000f66bd68] __btrfs_cow_block+0x170/0x850 [btrfs]
-  [770.648] [c000200089aff100] [c00800000f66c58c] btrfs_cow_block+0x144/0x288 [btrfs]
-  [770.648] [c000200089aff1b0] [c00800000f67113c] btrfs_search_slot+0x6b4/0xcb0 [btrfs]
-  [770.648] [c000200089aff2a0] [c00800000f679f60] lookup_inline_extent_backref+0x128/0x7c0 [btrfs]
-  [770.648] [c000200089aff3b0] [c00800000f67b338] lookup_extent_backref+0x70/0x190 [btrfs]
-  [770.648] [c000200089aff470] [c00800000f67b54c] __btrfs_free_extent+0xf4/0x1490 [btrfs]
-  [770.648] [c000200089aff5a0] [c00800000f67d770] __btrfs_run_delayed_refs+0x328/0x1530 [btrfs]
-  [770.648] [c000200089aff740] [c00800000f67ea2c] btrfs_run_delayed_refs+0xb4/0x3e0 [btrfs]
-  [770.648] [c000200089aff800] [c00800000f699aa4] btrfs_commit_transaction+0x8c/0x12b0 [btrfs]
-  [770.648] [c000200089aff8f0] [c00800000f6dc628] reset_balance_state+0x1c0/0x290 [btrfs]
-  [770.648] [c000200089aff9a0] [c00800000f6e2f7c] btrfs_balance+0x1164/0x1500 [btrfs]
-  [770.648] [c000200089affb40] [c00800000f6f8e4c] btrfs_ioctl+0x2b54/0x3100 [btrfs]
-  [770.648] [c000200089affc80] [c00000000053be14] sys_ioctl+0x794/0x1310
-  [770.648] [c000200089affd70] [c00000000002af98] system_call_exception+0x138/0x250
-  [770.648] [c000200089affe10] [c00000000000c654] system_call_common+0xf4/0x258
-  [770.648] --- interrupt: c00 at 0x7fff94126800
-  [770.648] NIP:  00007fff94126800 LR: 0000000107e0b594 CTR: 0000000000000000
-  [770.648] REGS: c000200089affe80 TRAP: 0c00   Tainted: G        W (6.1.0-0.deb11.7-powerpc64le Debian 6.1.20-2~bpo11+1a~test)
-  [770.648] MSR:  900000000000d033 <SF,HV,EE,PR,ME,IR,DR,RI,LE>  CR: 24002848  XER: 00000000
-  [770.648] IRQMASK: 0
-	    GPR00: 0000000000000036 00007fffc9439da0 00007fff94217100 0000000000000003
-	    GPR04: 00000000c4009420 00007fffc9439ee8 0000000000000000 0000000000000000
-	    GPR08: 00000000803c7416 0000000000000000 0000000000000000 0000000000000000
-	    GPR12: 0000000000000000 00007fff9467d120 0000000107e64c9c 0000000107e64d0a
-	    GPR16: 0000000107e64d06 0000000107e64cf1 0000000107e64cc4 0000000107e64c73
-	    GPR20: 0000000107e64c31 0000000107e64bf1 0000000107e64be7 0000000000000000
-	    GPR24: 0000000000000000 00007fffc9439ee0 0000000000000003 0000000000000001
-	    GPR28: 00007fffc943f713 0000000000000000 00007fffc9439ee8 0000000000000000
-  [770.648] NIP [00007fff94126800] 0x7fff94126800
-  [770.648] LR [0000000107e0b594] 0x107e0b594
-  [770.648] --- interrupt: c00
-  [770.648] Instruction dump:
-  [770.648] 3b00ffe4 e8898828 481175f5 60000000 4bfff4fc 3be00000 4bfff570 3d220000
-  [770.648] 7fc4f378 e8698830 4811cd95 e8410018 <0fe00000> f9c10060 f9e10068 fa010070
-  [770.648] ---[ end trace 0000000000000000 ]---
-  [770.648] BTRFS: error (device dm-2: state A) in find_free_extent_update_loop:4122: errno=-22 unknown
-  [770.648] BTRFS info (device dm-2: state EA): forced readonly
-  [770.648] BTRFS: error (device dm-2: state EA) in __btrfs_free_extent:3070: errno=-22 unknown
-  [770.648] BTRFS error (device dm-2: state EA): failed to run delayed ref for logical 17838685708288 num_bytes 24576 type 184 action 2 ref_mod 1: -22
-  [770.648] BTRFS: error (device dm-2: state EA) in btrfs_run_delayed_refs:2144: errno=-22 unknown
-  [770.648] BTRFS: error (device dm-2: state EA) in reset_balance_state:3599: errno=-22 unknown
-
-Fixes: 47e6f7423b91 ("btrfs: add support for 3-copy replication (raid1c3)")
-Fixes: 8d6fac0087e5 ("btrfs: add support for 4-copy replication (raid1c4)")
-CC: stable@vger.kernel.org # 5.10+
-Signed-off-by: Matt Corallo <blnxfsl@bluematt.me>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 04f0b2eaa3b3 ("f2fs: ioctl for removing a range from F2FS")
+Fixes: b4b10061ef98 ("f2fs: refactor resize_fs to avoid meta updates in progress")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/f2fs/gc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -95,14 +95,21 @@ static u64 btrfs_reduce_alloc_profile(st
- 	}
- 	allowed &= flags;
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 3de887d07c060..aa4d513daa8f8 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -2186,7 +2186,9 @@ int f2fs_resize_fs(struct file *filp, __u64 block_count)
+ 	if (err)
+ 		return err;
  
--	if (allowed & BTRFS_BLOCK_GROUP_RAID6)
-+	/* Select the highest-redundancy RAID level. */
-+	if (allowed & BTRFS_BLOCK_GROUP_RAID1C4)
-+		allowed = BTRFS_BLOCK_GROUP_RAID1C4;
-+	else if (allowed & BTRFS_BLOCK_GROUP_RAID6)
- 		allowed = BTRFS_BLOCK_GROUP_RAID6;
-+	else if (allowed & BTRFS_BLOCK_GROUP_RAID1C3)
-+		allowed = BTRFS_BLOCK_GROUP_RAID1C3;
- 	else if (allowed & BTRFS_BLOCK_GROUP_RAID5)
- 		allowed = BTRFS_BLOCK_GROUP_RAID5;
- 	else if (allowed & BTRFS_BLOCK_GROUP_RAID10)
- 		allowed = BTRFS_BLOCK_GROUP_RAID10;
- 	else if (allowed & BTRFS_BLOCK_GROUP_RAID1)
- 		allowed = BTRFS_BLOCK_GROUP_RAID1;
-+	else if (allowed & BTRFS_BLOCK_GROUP_DUP)
-+		allowed = BTRFS_BLOCK_GROUP_DUP;
- 	else if (allowed & BTRFS_BLOCK_GROUP_RAID0)
- 		allowed = BTRFS_BLOCK_GROUP_RAID0;
+-	freeze_super(sbi->sb);
++	err = freeze_super(sbi->sb);
++	if (err)
++		return err;
  
+ 	if (f2fs_readonly(sbi->sb)) {
+ 		thaw_super(sbi->sb);
+-- 
+2.39.2
+
 
 
