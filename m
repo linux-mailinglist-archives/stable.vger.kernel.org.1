@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4545E755334
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 026D8755335
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231650AbjGPUQf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:16:35 -0400
+        id S231687AbjGPUQo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:16:44 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231638AbjGPUQe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9DA4E41
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:28 -0700 (PDT)
+        with ESMTP id S231652AbjGPUQi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA7FE1B9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 518F060EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C4BC433C8;
-        Sun, 16 Jul 2023 20:16:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2079960EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314E2C433C7;
+        Sun, 16 Jul 2023 20:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538587;
-        bh=GkWTux36hETjWavF7BEv1VhI2waDC62Dp+gNcL3pfn4=;
+        s=korg; t=1689538590;
+        bh=uKPyK+Pc7JZg48MAe+fgXGwF8PbvxfRnA2D2QFWBClQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=okxRXmPv7GHJhPrp9l0m3JtZ07rUhMruiU6LYIvJm46BQewExsK/Hq2c7VyfsJJpb
-         OIlMGuskM9gD6/YTvPV1DJq9MNQ279U037/v96aBjBeBRE0zMBQN20y6kbMIHottHp
-         MSntODEh9Wr+4ITcUjJbaA4PsbkoqdKvaNVw0hIw=
+        b=0toZeJBIMHOscElAL5ZApFdsEl5DKy/pNQFQQRtC5R6klx3DelB4qY7jnq4oJe2Io
+         GzZ7ztmWv4xp7saPgerIYfAbXQjENcoflyFkQE0Rzn9Ih+CESejDpQZAsGDSt6msRb
+         FebH57n/SI98xDi+smflNDH8hwKRld6KU/Y9cdPM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joachim Vandersmissen <git@jvdsn.com>,
-        Stephan Mueller <smueller@chronox.de>,
+        patches@lists.linux.dev,
+        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 505/800] crypto: jitter - correct health test during initialization
-Date:   Sun, 16 Jul 2023 21:45:58 +0200
-Message-ID: <20230716195000.823543546@linuxfoundation.org>
+Subject: [PATCH 6.4 506/800] dt-bindings: qcom-qce: Fix compatible combinations for SM8150 and IPQ4019 SoCs
+Date:   Sun, 16 Jul 2023 21:45:59 +0200
+Message-ID: <20230716195000.846549297@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -46,77 +50,55 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stephan Müller <smueller@chronox.de>
+From: Bhupesh Sharma <bhupesh.sharma@linaro.org>
 
-[ Upstream commit d23659769ad1bf2cbafaa0efcbae20ef1a74f77e ]
+[ Upstream commit b3b266fa15552ba342831653f2b8b02c91451e73 ]
 
-With the update of the permanent and intermittent health errors, the
-actual indicator for the health test indicates a potential error only
-for the one offending time stamp gathered in the current iteration
-round. The next iteration round will "overwrite" the health test result.
+Currently the compatible list available in 'qce' dt-bindings does not
+support SM8150 and IPQ4019 SoCs directly which may lead to potential
+'dtbs_check' error(s).
 
-Thus, the entropy collection loop in jent_gen_entropy checks for
-the health test failure upon each loop iteration. However, the
-initialization operation checked for the APT health test once for
-an APT window which implies it would not catch most errors.
+Fix the same.
 
-Thus, the check for all health errors is now invoked unconditionally
-during each loop iteration for the startup test.
-
-With the change, the error JENT_ERCT becomes unused as all health
-errors are only reported with the JENT_HEALTH return code. This
-allows the removal of the error indicator.
-
-Fixes: 3fde2fe99aa6 ("crypto: jitter - permanent and intermittent health errors"
-)
-Reported-by: Joachim Vandersmissen <git@jvdsn.com>
-Signed-off-by: Stephan Mueller <smueller@chronox.de>
+Fixes: 00f3bc2db351 ("dt-bindings: qcom-qce: Add new SoC compatible strings for Qualcomm QCE IP")
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Signed-off-by: Bhupesh Sharma <bhupesh.sharma@linaro.org>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/jitterentropy.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/crypto/qcom-qce.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/crypto/jitterentropy.c b/crypto/jitterentropy.c
-index 22f48bf4c6f57..227cedfa4f0ae 100644
---- a/crypto/jitterentropy.c
-+++ b/crypto/jitterentropy.c
-@@ -117,7 +117,6 @@ struct rand_data {
- 				   * zero). */
- #define JENT_ESTUCK		8 /* Too many stuck results during init. */
- #define JENT_EHEALTH		9 /* Health test failed during initialization */
--#define JENT_ERCT		10 /* RCT failed during initialization */
+diff --git a/Documentation/devicetree/bindings/crypto/qcom-qce.yaml b/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
+index e375bd9813009..90ddf98a6df92 100644
+--- a/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
++++ b/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
+@@ -24,6 +24,12 @@ properties:
+         deprecated: true
+         description: Kept only for ABI backward compatibility
  
- /*
-  * The output n bits can receive more than n bits of min entropy, of course,
-@@ -762,14 +761,12 @@ int jent_entropy_init(void)
- 			if ((nonstuck % JENT_APT_WINDOW_SIZE) == 0) {
- 				jent_apt_reset(&ec,
- 					       delta & JENT_APT_WORD_MASK);
--				if (jent_health_failure(&ec))
--					return JENT_EHEALTH;
- 			}
- 		}
- 
--		/* Validate RCT */
--		if (jent_rct_failure(&ec))
--			return JENT_ERCT;
-+		/* Validate health test result */
-+		if (jent_health_failure(&ec))
-+			return JENT_EHEALTH;
- 
- 		/* test whether we have an increasing timer */
- 		if (!(time2 > time))
++      - items:
++          - enum:
++              - qcom,ipq4019-qce
++              - qcom,sm8150-qce
++          - const: qcom,qce
++
+       - items:
+           - enum:
+               - qcom,ipq6018-qce
 -- 
 2.39.2
 
