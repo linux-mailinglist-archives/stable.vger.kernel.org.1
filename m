@@ -2,41 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98AA3755699
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F8EC75567A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232911AbjGPUwI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:52:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40514 "EHLO
+        id S232877AbjGPUu4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:50:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232775AbjGPUwH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:07 -0400
+        with ESMTP id S232861AbjGPUuy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:50:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86DCADD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48462E1
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:50:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15E8860DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2090CC433C8;
-        Sun, 16 Jul 2023 20:52:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB02660EA2
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:50:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF8AC433C8;
+        Sun, 16 Jul 2023 20:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540725;
-        bh=PZQztYQ6zC6OqkpQ/4P/V7hz6gn3EC12uJ2n8Tp4kK8=;
+        s=korg; t=1689540652;
+        bh=lC0vgdu+RR9Fgb2u7+nRwnWXVmhCFRi3N5AXzIwjtpE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jaSeFNpNvwzo3O8HpVGageZARGw3lurSgvKV3oVbGuQRvWlVQOKZmIFOPhMN96wQk
-         8ECc5VTAfkTQ0nr1sRjZtVspXORwrvUxDz0QZg3KjD9qZfPt4MqFsNRgOIYfZ/T4PK
-         PGDFKkUCYLae5hPyYJMAeIwym32fZ/Av7LZKcxZo=
+        b=kkGTsmr6wySVUHTZAnKN/UyAZPRJ6630+QjB/NlEfLXXAZYJ+M6xoyOKta0yNcQod
+         CawPp8fcxuy3F6yvewKTvZP5smG7/GP0kK4kg+6n//W/xtrIbXlKutaug3S8aqo+f1
+         FvS2BEHUI2bnzbh0ROQxJRt0VPJfvS6U7kgNbrFQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
-        Dhruva Gole <d-gole@ti.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 439/591] serial: 8250_omap: Use force_suspend and resume for system suspend
-Date:   Sun, 16 Jul 2023 21:49:38 +0200
-Message-ID: <20230716194935.269112555@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 440/591] device property: Fix documentation for fwnode_get_next_parent()
+Date:   Sun, 16 Jul 2023 21:49:39 +0200
+Message-ID: <20230716194935.294360634@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -54,76 +58,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 20a41a62618df85f3a2981008edec5cadd785e0a ]
+[ Upstream commit f18caf261398a7f2de4fa3f600deb87072fe7b8d ]
 
-We should not rely on autosuspend timeout for system suspend. Instead,
-let's use force_suspend and force_resume functions. Otherwise the serial
-port controller device may not be idled on suspend.
+Use fwnode_handle_put() on the node pointer to release the refcount.
+Change fwnode_handle_node() to fwnode_handle_put().
 
-As we are doing a register write on suspend to configure the serial port,
-we still need to runtime PM resume the port on suspend.
-
-While at it, let's switch to pm_runtime_resume_and_get() and check for
-errors returned. And let's add the missing line break before return to the
-suspend function while at it.
-
-Fixes: 09d8b2bdbc5c ("serial: 8250: omap: Provide ability to enable/disable UART as wakeup source")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Tested-by: Dhruva Gole <d-gole@ti.com>
-Message-ID: <20230614045922.4798-1-tony@atomide.com>
+Fixes: 233872585de1 ("device property: Add fwnode_get_next_parent()")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Daniel Scally <djrscally@gmail.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20221207112219.2652411-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 39d422555e43 ("drivers: fwnode: fix fwnode_irq_get[_byname]()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/base/property.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 17a230281ebe0..adc85e250822c 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1505,25 +1505,35 @@ static int omap8250_suspend(struct device *dev)
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 7f338cb4fb7b8..f2f7829ad36b9 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -601,7 +601,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_parent);
+  * node's parents.
+  *
+  * Returns a node pointer with refcount incremented, use
+- * fwnode_handle_node() on it when done.
++ * fwnode_handle_put() on it when done.
+  */
+ struct fwnode_handle *fwnode_get_next_parent(struct fwnode_handle *fwnode)
  {
- 	struct omap8250_priv *priv = dev_get_drvdata(dev);
- 	struct uart_8250_port *up = serial8250_get_port(priv->line);
-+	int err;
- 
- 	serial8250_suspend_port(priv->line);
- 
--	pm_runtime_get_sync(dev);
-+	err = pm_runtime_resume_and_get(dev);
-+	if (err)
-+		return err;
- 	if (!device_may_wakeup(dev))
- 		priv->wer = 0;
- 	serial_out(up, UART_OMAP_WER, priv->wer);
--	pm_runtime_mark_last_busy(dev);
--	pm_runtime_put_autosuspend(dev);
--
-+	err = pm_runtime_force_suspend(dev);
- 	flush_work(&priv->qos_work);
--	return 0;
-+
-+	return err;
- }
- 
- static int omap8250_resume(struct device *dev)
- {
- 	struct omap8250_priv *priv = dev_get_drvdata(dev);
-+	int err;
- 
-+	err = pm_runtime_force_resume(dev);
-+	if (err)
-+		return err;
- 	serial8250_resume_port(priv->line);
-+	/* Paired with pm_runtime_resume_and_get() in omap8250_suspend() */
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
-+
- 	return 0;
- }
- #else
 -- 
 2.39.2
 
