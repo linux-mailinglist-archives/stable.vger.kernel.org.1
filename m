@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7AA57553D1
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57CA1755617
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231873AbjGPUXT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:23:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46702 "EHLO
+        id S232733AbjGPUr1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:47:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231853AbjGPUXS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:23:18 -0400
+        with ESMTP id S232742AbjGPUr0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:47:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C66BA9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEBD0E51
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:47:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4820960E9D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACB4C433C7;
-        Sun, 16 Jul 2023 20:23:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4369D60DFD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:47:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B14C433C8;
+        Sun, 16 Jul 2023 20:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538996;
-        bh=k0TOuhxos0JrL/VOJne01SVXGH/erMui/Lzn2RLo0aE=;
+        s=korg; t=1689540442;
+        bh=V14iCNd3HiqaAiIk0JlBs60dP7RbH2dn+gqfahy/bt4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PAPPmht9IpLooesr2w7YBqYxg62S0K269d9C8VtNpKIRIwqAIEoaD8InIP9pBAl0E
-         im2kutERchQAuU2HCh9qUBqB1ylBSae82kM4rbhAKdJ97nkHu3odtuEHAOa6xXw2fc
-         DoHkLZJiscp1gaZRNaBqakxOW2O5+J5EuE50TY8k=
+        b=MEn3bRbpFE5an87hLPaJajVa6gbUDrTWM9oq4VAyw2L2tslpg3i++glLMIarKq0Tt
+         GN/VRw4ZGOhRmMnv6j/MBBTkPLxXGxV6LMBfjBp1mWdaB8WSm54oH8L9DtD0JhzI7h
+         SKILVjtBQu9GXBNkJ3VbCeOwONB22cxDfzCOqW1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 650/800] md/raid10: fix the condition to call bio_end_io_acct()
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Krishna Kurapati <quic_kriskura@quicinc.com>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 364/591] usb: dwc3: gadget: Propagate core init errors to UDC during pullup
 Date:   Sun, 16 Jul 2023 21:48:23 +0200
-Message-ID: <20230716195004.212411239@linuxfoundation.org>
+Message-ID: <20230716194933.335149359@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,63 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Li Nan <linan122@huawei.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 125bfc7cd750e68c99f1d446e2c22abea08c237f ]
+commit c0aabed9cabe057309779a9e26fe86a113d24dad upstream.
 
-/sys/block/[device]/queue/iostats is used to control whether to count io
-stat. Write 0 to it will clear queue_flags QUEUE_FLAG_IO_STAT which means
-iostats is disabled. If we disable iostats and later endable it, the io
-issued during this period will be counted incorrectly, inflight will be
-decreased to -1.
+In scenarios where pullup relies on resume (get sync) to initialize
+the controller and set the run stop bit, then core_init is followed by
+gadget_resume which will eventually set run stop bit.
 
-  //T1 set iostats
-  echo 0 > /sys/block/md0/queue/iostats
-   clear QUEUE_FLAG_IO_STAT
+But in cases where the core_init fails, the return value is not sent
+back to udc appropriately. So according to UDC the controller has
+started but in reality we never set the run stop bit.
 
-			//T2 issue io
-			if (QUEUE_FLAG_IO_STAT) -> false
-			 bio_start_io_acct
-			  inflight++
+On systems like Android, there are uevents sent to HAL depending on
+whether the configfs_bind / configfs_disconnect were invoked. In the
+above mentioned scnenario, if the core init fails, the run stop won't
+be set and the cable plug-out won't result in generation of any
+disconnect event and userspace would never get any uevent regarding
+cable plug out and we never call pullup(0) again. Furthermore none of
+the next Plug-In/Plug-Out's would be known to configfs.
 
-  echo 1 > /sys/block/md0/queue/iostats
-   set QUEUE_FLAG_IO_STAT
+Return back the appropriate result to UDC to let the userspace/
+configfs know that the pullup failed so they can take appropriate
+action.
 
-					//T3 io end
-					if (QUEUE_FLAG_IO_STAT) -> true
-					 bio_end_io_acct
-					  inflight--	-> -1
-
-Also, if iostats is enabled while issuing io but disabled while io end,
-inflight will never be decreased.
-
-Fix it by checking start_time when io end. If start_time is not 0, call
-bio_end_io_acct().
-
-Fixes: 528bc2cf2fcc ("md/raid10: enable io accounting")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230609094320.2397604-1-linan666@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 77adb8bdf422 ("usb: dwc3: gadget: Allow runtime suspend if UDC unbinded")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Message-ID: <20230618120949.14868-1-quic_kriskura@quicinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/gadget.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 9d11a52367d17..9d23963496194 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -325,7 +325,7 @@ static void raid_end_bio_io(struct r10bio *r10_bio)
- 	if (!test_bit(R10BIO_Uptodate, &r10_bio->state))
- 		bio->bi_status = BLK_STS_IOERR;
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2631,7 +2631,9 @@ static int dwc3_gadget_pullup(struct usb
+ 	ret = pm_runtime_get_sync(dwc->dev);
+ 	if (!ret || ret < 0) {
+ 		pm_runtime_put(dwc->dev);
+-		return 0;
++		if (ret < 0)
++			pm_runtime_set_suspended(dwc->dev);
++		return ret;
+ 	}
  
--	if (blk_queue_io_stat(bio->bi_bdev->bd_disk->queue))
-+	if (r10_bio->start_time)
- 		bio_end_io_acct(bio, r10_bio->start_time);
- 	bio_endio(bio);
- 	/*
--- 
-2.39.2
-
+ 	if (dwc->pullups_connected == is_on) {
 
 
