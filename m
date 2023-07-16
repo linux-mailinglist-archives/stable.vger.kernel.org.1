@@ -2,49 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D76F755608
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 010207553C6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:22:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232710AbjGPUq7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36054 "EHLO
+        id S231844AbjGPUWt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:22:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232716AbjGPUq4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:46:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713EFE9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:46:52 -0700 (PDT)
+        with ESMTP id S231864AbjGPUWs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 074CC1B9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04A3B60EC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:46:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBD6C433C7;
-        Sun, 16 Jul 2023 20:46:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 911D560EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2580C433C8;
+        Sun, 16 Jul 2023 20:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540411;
-        bh=ZxZY4b5R+RmS3aIFmyAvLDMX6D1DFZwLP88inrfSPZM=;
+        s=korg; t=1689538966;
+        bh=KrIBqy1Ot0TB8Xp0dMdP9cDe8NFmNetwgzdvTQsGgr4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FcX2dgVXHFqAIM73/JrGGVz9dhCEVCQyywsg+Gb6GbGWXAFlasPbPlWPMUheKTmtE
-         urP9bMq/C3+PbknHgH6PgYdNASJmE1YHO8oPfGT9w35/njWOJqiKacaQtFV7/ww9/H
-         H9b/PhUC6OBJEyepmwNo2wwZrpX3Q/abt3lXzzng=
+        b=gKk44ptJrSmvM0OOSJQBaPcxqusBQzOB3LAE2DbsBQxNfoVvwHca1HKV00ththHp/
+         wQd1JwEMkqGfPwIZvbLhW6dZtWjcIhPTEx316P2afPKfTJ9BumqZUWkLqsh9G+dstT
+         qWTzF+AHk6Se1l7+ps3NkYoqvKYMTWRxd016tFv4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joe Fradley <joefradley@google.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Rajendra Nayak <quic_rjendra@quicinc.com>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 354/591] kbuild: Disable GCOV for *.mod.o
+Subject: [PATCH 6.4 640/800] clk: qcom: mmcc-msm8974: fix MDSS_GDSC power flags
 Date:   Sun, 16 Jul 2023 21:48:13 +0200
-Message-ID: <20230716194933.067986238@linuxfoundation.org>
+Message-ID: <20230716195003.979250326@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,48 +58,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sami Tolvanen <samitolvanen@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 25a21fbb934a0d989e1858f83c2ddf4cfb2ebe30 ]
+[ Upstream commit 4e13c7a55cf752887f2b8d8008711dbbc64ea796 ]
 
-With GCOV_PROFILE_ALL, Clang injects __llvm_gcov_* functions to each
-object file, including the *.mod.o. As we filter out CC_FLAGS_CFI
-for *.mod.o, the compiler won't generate type hashes for the
-injected functions, and therefore indirectly calling them during
-module loading trips indirect call checking.
+Using PWRSTS_RET on msm8974's MDSS_GDSC causes display to stop working.
+The gdsc doesn't fully come out of retention mode. Change it's pwrsts
+flags to PWRSTS_OFF_ON.
 
-Enabling CFI for *.mod.o isn't sufficient to fix this issue after
-commit 0c3e806ec0f9 ("x86/cfi: Add boot time hash randomization"),
-as *.mod.o aren't processed by objtool, which means any hashes
-emitted there won't be randomized. Therefore, in addition to
-disabling CFI for *.mod.o, also disable GCOV, as the object files
-don't otherwise contain any executable code.
-
-Fixes: cf68fffb66d6 ("add support for Clang CFI")
-Reported-by: Joe Fradley <joefradley@google.com>
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: d399723950c4 ("clk: qcom: gdsc: Fix the handling of PWRSTS_RET support")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Rajendra Nayak <quic_rjendra@quicinc.com>
+Tested-by: Luca Weiss <luca@z3ntu.xyz>
+Link: https://lore.kernel.org/r/20230507175335.2321503-2-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.modfinal | 2 +-
+ drivers/clk/qcom/mmcc-msm8974.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
-index 25bedd83644b0..3af5e5807983a 100644
---- a/scripts/Makefile.modfinal
-+++ b/scripts/Makefile.modfinal
-@@ -23,7 +23,7 @@ modname = $(notdir $(@:.mod.o=))
- part-of-module = y
+diff --git a/drivers/clk/qcom/mmcc-msm8974.c b/drivers/clk/qcom/mmcc-msm8974.c
+index d2fec5d5b22e2..82f6bad144a9a 100644
+--- a/drivers/clk/qcom/mmcc-msm8974.c
++++ b/drivers/clk/qcom/mmcc-msm8974.c
+@@ -2384,7 +2384,7 @@ static struct gdsc mdss_gdsc = {
+ 	.pd = {
+ 		.name = "mdss",
+ 	},
+-	.pwrsts = PWRSTS_RET_ON,
++	.pwrsts = PWRSTS_OFF_ON,
+ };
  
- quiet_cmd_cc_o_c = CC [M]  $@
--      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI), $(c_flags)) -c -o $@ $<
-+      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV), $(c_flags)) -c -o $@ $<
- 
- %.mod.o: %.mod.c FORCE
- 	$(call if_changed_dep,cc_o_c)
+ static struct gdsc camss_jpeg_gdsc = {
 -- 
 2.39.2
 
