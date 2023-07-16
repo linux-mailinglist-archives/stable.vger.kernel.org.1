@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE187552C1
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78A1F7554BA
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:33:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231462AbjGPULd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:11:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39448 "EHLO
+        id S232286AbjGPUdg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:33:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231454AbjGPULc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:32 -0400
+        with ESMTP id S232282AbjGPUdf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D344F9B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C15F1BA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6974A60EA6
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A56AC433C7;
-        Sun, 16 Jul 2023 20:11:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 56E7A60DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61525C433C8;
+        Sun, 16 Jul 2023 20:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538290;
-        bh=YlodnbUFJXb4lIyu3JpaArbvJlF+M+ZzwzlB3xj8AZM=;
+        s=korg; t=1689539613;
+        bh=5dAIn7Nr+d7M9/hyO4N8LiqjnNv8Yzt4wctCtt/euJg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dBPnB11JJbEREZflH07XheZKkjcHECiAgnDY35oEOzukdO0kRFaDDMDWP5nlZA5Vk
-         u7HEUj1V3Y1W7Zq5mF7QqcIOJVg7u1VjUw8cHqS8m8cBMaMTesBUQ4Z6lV8JpQYBdk
-         4DlQlFS4qnFPAlyIM6NUv76MoeXHsQ8DpH9mwlyI=
+        b=Y7AbxV0VkZD6f8Pw/yhv2nW6a62Da8t6MKHp1otDmsyO7CljEyssEDrscC5B2dDg6
+         +UB7uh4UkaG0RJcyidVpP2ezP8Mo5tH9ZWW3u6P9UVr680H10eW/Dt6Kjwe0Z8iZG2
+         ZB5gbNoDjzmdxHS2zGwhA1l3VchrbNqN0zkoBgjo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 355/800] Input: pm8941-powerkey - fix debounce on gen2+ PMICs
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 069/591] wifi: ath9k: avoid referencing uninit memory in ath9k_wmi_ctrl_rx
 Date:   Sun, 16 Jul 2023 21:43:28 +0200
-Message-ID: <20230716194957.324761534@linuxfoundation.org>
+Message-ID: <20230716194925.668639231@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,74 +57,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Caleb Connolly <caleb.connolly@linaro.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 8c9cce9cb81b5fdc6e66bf3f129727b89e8daab7 ]
+[ Upstream commit f24292e827088bba8de7158501ac25a59b064953 ]
 
-Since PM8998/PM660, the power key debounce register was redefined to
-support shorter debounce times. On PM8941 the shortest debounce time
-(represented by register value 0) was 15625us, on PM8998 the shortest
-debounce time is 62us, with the default being 2ms.
+For the reasons also described in commit b383e8abed41 ("wifi: ath9k: avoid
+uninit memory read in ath9k_htc_rx_msg()"), ath9k_htc_rx_msg() should
+validate pkt_len before accessing the SKB.
 
-Adjust the bit shift to correctly program debounce on PM8998 and newer.
+For example, the obtained SKB may have been badly constructed with
+pkt_len = 8. In this case, the SKB can only contain a valid htc_frame_hdr
+but after being processed in ath9k_htc_rx_msg() and passed to
+ath9k_wmi_ctrl_rx() endpoint RX handler, it is expected to have a WMI
+command header which should be located inside its data payload.
 
-Fixes: 68c581d5e7d8 ("Input: add Qualcomm PM8941 power key driver")
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-Link: https://lore.kernel.org/r/20230529-pm8941-pwrkey-debounce-v1-2-c043a6d5c814@linaro.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Implement sanity checking inside ath9k_wmi_ctrl_rx(). Otherwise, uninit
+memory can be referenced.
+
+Tested on Qualcomm Atheros Communications AR9271 802.11n .
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Reported-and-tested-by: syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230424183348.111355-1-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/pm8941-pwrkey.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath9k/wmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/input/misc/pm8941-pwrkey.c b/drivers/input/misc/pm8941-pwrkey.c
-index b6a27ebae977b..74d77d8aaeff2 100644
---- a/drivers/input/misc/pm8941-pwrkey.c
-+++ b/drivers/input/misc/pm8941-pwrkey.c
-@@ -50,7 +50,10 @@
- #define  PON_RESIN_PULL_UP		BIT(0)
+diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
+index 19345b8f7bfd5..d652c647d56b5 100644
+--- a/drivers/net/wireless/ath/ath9k/wmi.c
++++ b/drivers/net/wireless/ath/ath9k/wmi.c
+@@ -221,6 +221,10 @@ static void ath9k_wmi_ctrl_rx(void *priv, struct sk_buff *skb,
+ 	if (unlikely(wmi->stopped))
+ 		goto free_skb;
  
- #define PON_DBC_CTL			0x71
--#define  PON_DBC_DELAY_MASK		0x7
-+#define  PON_DBC_DELAY_MASK_GEN1	0x7
-+#define  PON_DBC_DELAY_MASK_GEN2	0xf
-+#define  PON_DBC_SHIFT_GEN1		6
-+#define  PON_DBC_SHIFT_GEN2		14
- 
- struct pm8941_data {
- 	unsigned int	pull_up_bit;
-@@ -247,7 +250,7 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
- 	struct device *parent;
- 	struct device_node *regmap_node;
- 	const __be32 *addr;
--	u32 req_delay;
-+	u32 req_delay, mask, delay_shift;
- 	int error;
- 
- 	if (of_property_read_u32(pdev->dev.of_node, "debounce", &req_delay))
-@@ -336,12 +339,20 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
- 	pwrkey->input->phys = pwrkey->data->phys;
- 
- 	if (pwrkey->data->supports_debounce_config) {
--		req_delay = (req_delay << 6) / USEC_PER_SEC;
-+		if (pwrkey->subtype >= PON_SUBTYPE_GEN2_PRIMARY) {
-+			mask = PON_DBC_DELAY_MASK_GEN2;
-+			delay_shift = PON_DBC_SHIFT_GEN2;
-+		} else {
-+			mask = PON_DBC_DELAY_MASK_GEN1;
-+			delay_shift = PON_DBC_SHIFT_GEN1;
-+		}
++	/* Validate the obtained SKB. */
++	if (unlikely(skb->len < sizeof(struct wmi_cmd_hdr)))
++		goto free_skb;
 +
-+		req_delay = (req_delay << delay_shift) / USEC_PER_SEC;
- 		req_delay = ilog2(req_delay);
+ 	hdr = (struct wmi_cmd_hdr *) skb->data;
+ 	cmd_id = be16_to_cpu(hdr->command_id);
  
- 		error = regmap_update_bits(pwrkey->regmap,
- 					   pwrkey->baseaddr + PON_DBC_CTL,
--					   PON_DBC_DELAY_MASK,
-+					   mask,
- 					   req_delay);
- 		if (error) {
- 			dev_err(&pdev->dev, "failed to set debounce: %d\n",
 -- 
 2.39.2
 
