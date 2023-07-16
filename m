@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B6F75543E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42F41755698
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229496AbjGPU2O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50326 "EHLO
+        id S232904AbjGPUwG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:52:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232041AbjGPU2N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:28:13 -0400
+        with ESMTP id S232775AbjGPUwE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A4459F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:28:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA878D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B5A5660E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:28:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E98C433C7;
-        Sun, 16 Jul 2023 20:28:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FF3C60DFD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4180BC433C7;
+        Sun, 16 Jul 2023 20:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539291;
-        bh=2ToeI4h8HJSyPcpKchTff4xkYB9cZXaSoxGZQ4BbGO4=;
+        s=korg; t=1689540722;
+        bh=BPwsSy3rbyn3axhgZNDt8YLPpsHv+/zt8YMxnZfNXec=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LDJr6t90+Hsc/An+7ZasQ0gjkaTcf1vcvRVxZJMl7Fq7HwMX5CFe6wjTed83xOAKf
-         yGZL5WMYblK5v23dDyumbnw+/xDG7om3mh0Sb3f6kRh2wAbUic+uQveyC74bNo8BDC
-         l+LmSigws/q/m6/wdqgIC01mkz7xe40afcmuJ3V0=
+        b=viO+bpt7BooGxPbp1zJhJH3GGTmj3cvxQfBmIZBLHxwUJUvtgP0E5jfPFL7sgyGGy
+         KsNqIUiIkurULDC+FSUGnVcNmYQNjjNXsbM/BDWKb2h/E65Npd3pw08B+0xhA/S08Z
+         LxeVFSsVo+Cl2467cMvnjJZOyua+CDUpv9yLW8IU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 724/800] io_uring: wait interruptibly for request completions on exit
+        patches@lists.linux.dev,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Prashanth K <quic_prashk@quicinc.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 438/591] Revert "usb: common: usb-conn-gpio: Set last role to unknown before initial detection"
 Date:   Sun, 16 Jul 2023 21:49:37 +0200
-Message-ID: <20230716195005.935347253@linuxfoundation.org>
+Message-ID: <20230716194935.243810793@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,73 +58,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 4826c59453b3b4677d6bf72814e7ababdea86949 upstream.
+[ Upstream commit df49f2a0ac4a34c0cb4b5c233fcfa0add644c43c ]
 
-WHen the ring exits, cleanup is done and the final cancelation and
-waiting on completions is done by io_ring_exit_work. That function is
-invoked by kworker, which doesn't take any signals. Because of that, it
-doesn't really matter if we wait for completions in TASK_INTERRUPTIBLE
-or TASK_UNINTERRUPTIBLE state. However, it does matter to the hung task
-detection checker!
+This reverts commit edd60d24bd858cef165274e4cd6cab43bdc58d15.
 
-Normally we expect cancelations and completions to happen rather
-quickly. Some test cases, however, will exit the ring and park the
-owning task stopped (eg via SIGSTOP). If the owning task needs to run
-task_work to complete requests, then io_ring_exit_work won't make any
-progress until the task is runnable again. Hence io_ring_exit_work can
-trigger the hung task detection, which is particularly problematic if
-panic-on-hung-task is enabled.
+Heikki reports that this should not be a global flag just to work around
+one broken driver and should be fixed differently, so revert it.
 
-As the ring exit doesn't take signals to begin with, have it wait
-interruptibly rather than uninterruptibly. io_uring has a separate
-stuck-exit warning that triggers independently anyway, so we're not
-really missing anything by making this switch.
-
-Cc: stable@vger.kernel.org # 5.10+
-Link: https://lore.kernel.org/r/b0e4aaef-7088-56ce-244c-976edeac0e66@kernel.dk
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Fixes: edd60d24bd85 ("usb: common: usb-conn-gpio: Set last role to unknown before initial detection")
+Link: https://lore.kernel.org/r/ZImE4L3YgABnCIsP@kuha.fi.intel.com
+Cc: Prashanth K <quic_prashk@quicinc.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/usb/cdns3/core.c                       | 2 --
+ drivers/usb/common/usb-conn-gpio.c             | 3 ---
+ drivers/usb/musb/jz4740.c                      | 2 --
+ drivers/usb/roles/intel-xhci-usb-role-switch.c | 2 --
+ include/linux/usb/role.h                       | 1 -
+ 5 files changed, 10 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3050,7 +3050,18 @@ static __cold void io_ring_exit_work(str
- 			/* there is little hope left, don't run it too often */
- 			interval = HZ * 60;
- 		}
--	} while (!wait_for_completion_timeout(&ctx->ref_comp, interval));
-+		/*
-+		 * This is really an uninterruptible wait, as it has to be
-+		 * complete. But it's also run from a kworker, which doesn't
-+		 * take signals, so it's fine to make it interruptible. This
-+		 * avoids scenarios where we knowingly can wait much longer
-+		 * on completions, for example if someone does a SIGSTOP on
-+		 * a task that needs to finish task_work to make this loop
-+		 * complete. That's a synthetic situation that should not
-+		 * cause a stuck task backtrace, and hence a potential panic
-+		 * on stuck tasks if that is enabled.
-+		 */
-+	} while (!wait_for_completion_interruptible_timeout(&ctx->ref_comp, interval));
- 
- 	init_completion(&exit.completion);
- 	init_task_work(&exit.task_work, io_tctx_exit_cb);
-@@ -3074,7 +3085,12 @@ static __cold void io_ring_exit_work(str
- 			continue;
- 
- 		mutex_unlock(&ctx->uring_lock);
--		wait_for_completion(&exit.completion);
-+		/*
-+		 * See comment above for
-+		 * wait_for_completion_interruptible_timeout() on why this
-+		 * wait is marked as interruptible.
-+		 */
-+		wait_for_completion_interruptible(&exit.completion);
- 		mutex_lock(&ctx->uring_lock);
+diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+index 69d2921f2d3b5..dbcdf3b24b477 100644
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -252,8 +252,6 @@ static enum usb_role cdns_hw_role_state_machine(struct cdns *cdns)
+ 		if (!vbus)
+ 			role = USB_ROLE_NONE;
+ 		break;
+-	default:
+-		break;
  	}
- 	mutex_unlock(&ctx->uring_lock);
+ 
+ 	dev_dbg(cdns->dev, "role %d -> %d\n", cdns->role, role);
+diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
+index 30bdb81934bc8..e20874caba363 100644
+--- a/drivers/usb/common/usb-conn-gpio.c
++++ b/drivers/usb/common/usb-conn-gpio.c
+@@ -257,9 +257,6 @@ static int usb_conn_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, info);
+ 	device_set_wakeup_capable(&pdev->dev, true);
+ 
+-	/* Set last role to unknown before performing the initial detection */
+-	info->last_role = USB_ROLE_UNKNOWN;
+-
+ 	/* Perform initial detection */
+ 	usb_conn_queue_dwork(info, 0);
+ 
+diff --git a/drivers/usb/musb/jz4740.c b/drivers/usb/musb/jz4740.c
+index df4e9d397d986..d1e4e0deb7535 100644
+--- a/drivers/usb/musb/jz4740.c
++++ b/drivers/usb/musb/jz4740.c
+@@ -91,8 +91,6 @@ static int jz4740_musb_role_switch_set(struct usb_role_switch *sw,
+ 	case USB_ROLE_HOST:
+ 		atomic_notifier_call_chain(&phy->notifier, USB_EVENT_ID, phy);
+ 		break;
+-	default:
+-		break;
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/usb/roles/intel-xhci-usb-role-switch.c b/drivers/usb/roles/intel-xhci-usb-role-switch.c
+index 4d6a3dd06e011..5c96e929acea0 100644
+--- a/drivers/usb/roles/intel-xhci-usb-role-switch.c
++++ b/drivers/usb/roles/intel-xhci-usb-role-switch.c
+@@ -97,8 +97,6 @@ static int intel_xhci_usb_set_role(struct usb_role_switch *sw,
+ 		val |= SW_VBUS_VALID;
+ 		drd_config = DRD_CONFIG_STATIC_DEVICE;
+ 		break;
+-	default:
+-		break;
+ 	}
+ 	val |= SW_IDPIN_EN;
+ 	if (data->enable_sw_switch) {
+diff --git a/include/linux/usb/role.h b/include/linux/usb/role.h
+index 65e790a28913e..b5deafd91f67b 100644
+--- a/include/linux/usb/role.h
++++ b/include/linux/usb/role.h
+@@ -11,7 +11,6 @@ enum usb_role {
+ 	USB_ROLE_NONE,
+ 	USB_ROLE_HOST,
+ 	USB_ROLE_DEVICE,
+-	USB_ROLE_UNKNOWN,
+ };
+ 
+ typedef int (*usb_role_switch_set_t)(struct usb_role_switch *sw,
+-- 
+2.39.2
+
 
 
