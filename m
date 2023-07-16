@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E589C755532
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E34C7755327
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232419AbjGPUia (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:38:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58480 "EHLO
+        id S231634AbjGPUP7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:15:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232416AbjGPUi3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:29 -0400
+        with ESMTP id S231629AbjGPUP4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:15:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 062559F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332D61BE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:15:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99CAB60EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2FAC433C7;
-        Sun, 16 Jul 2023 20:38:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C67A160EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:15:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FD0C433C8;
+        Sun, 16 Jul 2023 20:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539908;
-        bh=U17vQNkQVv2P7h02o5rSzWvB1FbiYJ3N8EKMh/rhc0E=;
+        s=korg; t=1689538554;
+        bh=VVh4nhVbkA3LNIZ+8jXpsyTeMDZ3FScErTp+UEIEdAk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z8Zo1rYC/Qddr7+GPLFxabzoWuLfMv9oh5qLn5XWa4Wcx5838Jq82tUoKJLOZ9gXh
-         WstrYJ7RrunHua66JjYPa5KgQ8Mf516p3mFrmrpiu5PJQ3pVUXDpw5hclsyBoUgt44
-         h6pdnQRYgIQaSf7KRXqRrXgoxypsqLSzOu3OnKl0=
+        b=fcrvanszKlaQSKhiARozWTZWDBlZicq+/q4SEssHOLJZT4/UHpseK1f1c5HKiz/Km
+         twb/MRAavgv0fm/7jPcUFC9X8RYS9uk7cPtSwd7IHsl5wrJru1OcAZC4sjiiTKNVbv
+         gKaQkc9KrnukBsBDaXV3gSG+7KEcmMHwjzgprjps=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Marko <robert.marko@sartura.hr>,
-        Steen Hegelund <Steen.Hegelund@microchip.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        patches@lists.linux.dev, Wells Lu <wellslutw@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/591] arm64: dts: microchip: sparx5: do not use PSCI on reference boards
+Subject: [PATCH 6.4 461/800] pinctrl:sunplus: Add check for kmalloc
 Date:   Sun, 16 Jul 2023 21:45:14 +0200
-Message-ID: <20230716194928.393824836@linuxfoundation.org>
+Message-ID: <20230716194959.789102795@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,72 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robert Marko <robert.marko@sartura.hr>
+From: Wells Lu <wellslutw@gmail.com>
 
-[ Upstream commit 70be83708c925b3f72c508e4756e48ad2330c830 ]
+[ Upstream commit 73f8ce7f961afcb3be49352efeb7c26cc1c00cc4 ]
 
-PSCI is not implemented on SparX-5 at all, there is no ATF and U-boot that
-is shipped does not implement it as well.
+Fix Smatch static checker warning:
+potential null dereference 'configs'. (kmalloc returns null)
 
-I have tried flashing the latest BSP 2022.12 U-boot which did not work.
-After contacting Microchip, they confirmed that there is no ATF for the
-SoC nor PSCI implementation which is unfortunate in 2023.
+Changes in v2:
+1. Add free allocated memory before returned -ENOMEM.
+2. Add call of_node_put() before returned -ENOMEM.
 
-So, disable PSCI as otherwise kernel crashes as soon as it tries probing
-PSCI with, and the crash is only visible if earlycon is used.
-
-Since PSCI is not implemented, switch core bringup to use spin-tables
-which are implemented in the vendor U-boot and actually work.
-
-Tested on PCB134 with eMMC (VSC5640EV).
-
-Fixes: 6694aee00a4b ("arm64: dts: sparx5: Add basic cpu support")
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Acked-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-Link: https://lore.kernel.org/r/20230221105039.316819-1-robert.marko@sartura.hr
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: aa74c44be19c ("pinctrl: Add driver for Sunplus SP7021")
+Signed-off-by: Wells Lu <wellslutw@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/1685277277-12209-1-git-send-email-wellslutw@gmail.com
+[Rebased on the patch from Lu Hongfei]
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/microchip/sparx5.dtsi            |  2 +-
- arch/arm64/boot/dts/microchip/sparx5_pcb_common.dtsi | 12 ++++++++++++
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/pinctrl/sunplus/sppctl.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/microchip/sparx5.dtsi b/arch/arm64/boot/dts/microchip/sparx5.dtsi
-index 2dd5e38820b16..088d89801c276 100644
---- a/arch/arm64/boot/dts/microchip/sparx5.dtsi
-+++ b/arch/arm64/boot/dts/microchip/sparx5.dtsi
-@@ -61,7 +61,7 @@ arm-pmu {
- 		interrupt-affinity = <&cpu0>, <&cpu1>;
- 	};
+diff --git a/drivers/pinctrl/sunplus/sppctl.c b/drivers/pinctrl/sunplus/sppctl.c
+index e91ce5b5d5598..150996949ede7 100644
+--- a/drivers/pinctrl/sunplus/sppctl.c
++++ b/drivers/pinctrl/sunplus/sppctl.c
+@@ -971,8 +971,7 @@ static int sppctl_dt_node_to_map(struct pinctrl_dev *pctldev, struct device_node
  
--	psci {
-+	psci: psci {
- 		compatible = "arm,psci-0.2";
- 		method = "smc";
- 	};
-diff --git a/arch/arm64/boot/dts/microchip/sparx5_pcb_common.dtsi b/arch/arm64/boot/dts/microchip/sparx5_pcb_common.dtsi
-index 9d1a082de3e29..32bb76b3202a0 100644
---- a/arch/arm64/boot/dts/microchip/sparx5_pcb_common.dtsi
-+++ b/arch/arm64/boot/dts/microchip/sparx5_pcb_common.dtsi
-@@ -6,6 +6,18 @@
- /dts-v1/;
- #include "sparx5.dtsi"
- 
-+&psci {
-+	status = "disabled";
-+};
-+
-+&cpu0 {
-+	enable-method = "spin-table";
-+};
-+
-+&cpu1 {
-+	enable-method = "spin-table";
-+};
-+
- &uart0 {
- 	status = "okay";
- };
+ sppctl_map_err:
+ 	for (i = 0; i < (*num_maps); i++)
+-		if (((*map)[i].type == PIN_MAP_TYPE_CONFIGS_PIN) &&
+-		    (*map)[i].data.configs.configs)
++		if ((*map)[i].type == PIN_MAP_TYPE_CONFIGS_PIN)
+ 			kfree((*map)[i].data.configs.configs);
+ 	kfree(*map);
+ 	of_node_put(parent);
 -- 
 2.39.2
 
