@@ -2,124 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A56275538C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D9637555C0
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:44:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231774AbjGPUUO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:20:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44934 "EHLO
+        id S232621AbjGPUoR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:44:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbjGPUUN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:20:13 -0400
+        with ESMTP id S232622AbjGPUoQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:44:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B071C0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:20:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C35D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:44:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AAFE60E9D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:20:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27787C433C8;
-        Sun, 16 Jul 2023 20:20:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2611360EBF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:44:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E877C433C7;
+        Sun, 16 Jul 2023 20:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538811;
-        bh=LtB4ShNcEktL5ObqaI938kmMHXVJy7/UkxlXMxx2PeI=;
+        s=korg; t=1689540254;
+        bh=rWtpXK0gATeqjSKcX3i2aH30oiDwKQysvw6IvO9oV00=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Kgv4dS8UpaGgf4ozgzZetT6FC4RO9e7UNeUTWzT9C2I1q4GM/3j10TGhyQG4nMuPV
-         qs/fb9Nx9hECs7ja+jaATMxCadS06e9YAtZpkhUv2c94Wy4MAb1wfk+NZrA4yyKXMH
-         Te1IzpZBYGnZYhoAxVJyqkdDGs74GyXUv0TjHdwU=
+        b=1luM7vgED8m/71asW5lq6VwYeaqoGVvdFlTP90KOB7wqb37/OD87bg19xMofUhjSI
+         xriu/4/YgY2TfLXk7d9W93RQF/tPPREJVkplvBRzvTlyyVo79e2bCqBIou0VOpcHiK
+         ADMocyurbsRz6khPnMvJj5ICRotHgwCM4qejYiFg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Umang Jain <umang.jain@ideasonboard.com>,
+        patches@lists.linux.dev, Justin Tee <justin.tee@broadcom.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 584/800] staging: vchiq_arm: mark vchiq_platform_init() static
+Subject: [PATCH 6.1 298/591] scsi: lpfc: Revise NPIV ELS unsol rcv cmpl logic to drop ndlp based on nlp_state
 Date:   Sun, 16 Jul 2023 21:47:17 +0200
-Message-ID: <20230716195002.655402134@linuxfoundation.org>
+Message-ID: <20230716194931.606978970@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit e152c58d7a48194d6b530d8e004d650fd01568b6 ]
+[ Upstream commit 9914a3d033d3e1d836a43e93e9738e7dd44a096a ]
 
-This function has no callers from other files, and the declaration
-was removed a while ago, causing a W=1 warning:
+When NPIV ports are zoned to devices that support both initiator and target
+mode, a remote device's initiated PRLI results in unintended final kref
+clean up of the device's ndlp structure.  This disrupts NPIV ports'
+discovery for target devices that support both initiator and target mode.
 
-drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c:465:5: error: no previous prototype for 'vchiq_platform_init'
+Modify the NPIV lpfc_drop_node clause such that we allow the ndlp to live
+so long as it was in NLP_STE_PLOGI_ISSUE, NLP_STE_REG_LOGIN_ISSUE, or
+NLP_STE_PRLI_ISSUE nlp_state.  This allows lpfc's issued PRLI completion
+routine to determine if the final kref clean up should execute rather than
+a remote device's issued PRLI.
 
-Marking it static solves this problem but introduces a new warning
-since gcc determines that 'g_fragments_base' is never initialized
-in some kernel configurations:
-
-In file included from include/linux/string.h:254,
-                 from include/linux/bitmap.h:11,
-                 from include/linux/cpumask.h:12,
-                 from include/linux/mm_types_task.h:14,
-                 from include/linux/mm_types.h:5,
-                 from include/linux/buildid.h:5,
-                 from include/linux/module.h:14,
-                 from drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c:8:
-In function 'memcpy_to_page',
-    inlined from 'free_pagelist' at drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c:433:4:
-include/linux/fortify-string.h:57:33: error: argument 2 null where non-null expected [-Werror=nonnull]
-include/linux/highmem.h:427:9: note: in expansion of macro 'memcpy'
-  427 |         memcpy(to + offset, from, len);
-      |         ^~~~~~
-
-Add a NULL pointer check for this in addition to the static annotation
-to avoid both.
-
-Fixes: 89cc4218f640 ("staging: vchiq_arm: drop unnecessary declarations")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Umang Jain <umang.jain@ideasonboard.com>
-Link: https://lore.kernel.org/r/20230516202603.560554-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: db651ec22524 ("scsi: lpfc: Correct used_rpi count when devloss tmo fires with no recovery")
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20230523183206.7728-5-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_els.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index 90a3958d1f297..aa2313f3bcab8 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -415,7 +415,7 @@ free_pagelist(struct vchiq_instance *instance, struct vchiq_pagelist_info *pagel
- 	pagelistinfo->scatterlist_mapped = 0;
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index ddd5949d8fc01..e21c73a3803ec 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -5413,9 +5413,19 @@ lpfc_cmpl_els_rsp(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+ 				ndlp->nlp_flag &= ~NLP_RELEASE_RPI;
+ 				spin_unlock_irq(&ndlp->lock);
+ 			}
++			lpfc_drop_node(vport, ndlp);
++		} else if (ndlp->nlp_state != NLP_STE_PLOGI_ISSUE &&
++			   ndlp->nlp_state != NLP_STE_REG_LOGIN_ISSUE &&
++			   ndlp->nlp_state != NLP_STE_PRLI_ISSUE) {
++			/* Drop ndlp if there is no planned or outstanding
++			 * issued PRLI.
++			 *
++			 * In cases when the ndlp is acting as both an initiator
++			 * and target function, let our issued PRLI determine
++			 * the final ndlp kref drop.
++			 */
++			lpfc_drop_node(vport, ndlp);
+ 		}
+-
+-		lpfc_drop_node(vport, ndlp);
+ 	}
  
- 	/* Deal with any partial cache lines (fragments) */
--	if (pagelist->type >= PAGELIST_READ_WITH_FRAGMENTS) {
-+	if (pagelist->type >= PAGELIST_READ_WITH_FRAGMENTS && g_fragments_base) {
- 		char *fragments = g_fragments_base +
- 			(pagelist->type - PAGELIST_READ_WITH_FRAGMENTS) *
- 			g_fragments_size;
-@@ -462,7 +462,7 @@ free_pagelist(struct vchiq_instance *instance, struct vchiq_pagelist_info *pagel
- 	cleanup_pagelistinfo(instance, pagelistinfo);
- }
- 
--int vchiq_platform_init(struct platform_device *pdev, struct vchiq_state *state)
-+static int vchiq_platform_init(struct platform_device *pdev, struct vchiq_state *state)
- {
- 	struct device *dev = &pdev->dev;
- 	struct vchiq_drvdata *drvdata = platform_get_drvdata(pdev);
+ 	/* Release the originating I/O reference. */
 -- 
 2.39.2
 
