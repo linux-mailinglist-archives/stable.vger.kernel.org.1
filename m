@@ -2,157 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D95A97556D2
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD08D75546E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232989AbjGPUy0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:54:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41706 "EHLO
+        id S232136AbjGPUaT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:30:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232991AbjGPUyZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:54:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3961C10D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:54:24 -0700 (PDT)
+        with ESMTP id S232120AbjGPUaT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:30:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E7D4E46;
+        Sun, 16 Jul 2023 13:30:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C25A060EB3
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:54:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0A0C433C8;
-        Sun, 16 Jul 2023 20:54:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A12AC60EAE;
+        Sun, 16 Jul 2023 20:30:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF745C433C7;
+        Sun, 16 Jul 2023 20:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540863;
-        bh=2s7RTo3VNv6TmVXLN6GEj8GSY4RWSlqZJQSydBtaFVk=;
+        s=korg; t=1689539414;
+        bh=ExzEbA/RIzTxjKUcd5Ih5Si564HbUIS8oZ/FuVczb5g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w5JkWRmvlB/Y0Au83cUH1a/alcWGGysAlFOi7+OZkjdLQDc/UEoI7MmHe4zgp4o+l
-         hSlTu62LBd1k4DfXJSB744DyA/hNC6Rp8ULfwdrOUvtHrH9XW3j4oTqrJ+gSlU46KD
-         fCpPu57vsNcgKwSqbUlKH0qexfPIwHdlXzenkrSg=
+        b=UANksxT4i2gk58mCdpEjB/JIRdD+KqDeUfEMyEsliBgk+GGhzyYYrPRTuBannQ6VV
+         +bqW/b8oWQ8nh2Mbs0ue0SJTtyX+z1Rl/i6ucvIU2woSmCL4FGmLNgQBIcbkl+X+4r
+         vepNY1w8q8m0LkFIZDFiLWtx2ACnkIuOVVRgdOS0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Artur Rojek <contact@artur-rojek.eu>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 514/591] sh: dma: Fix DMA channel offset calculation
+        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+        io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andres Freund <andres@anarazel.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 800/800] io_uring: Use io_schedule* in cqring wait
 Date:   Sun, 16 Jul 2023 21:50:53 +0200
-Message-ID: <20230716194937.178623300@linuxfoundation.org>
+Message-ID: <20230716195007.731909670@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Artur Rojek <contact@artur-rojek.eu>
+From: Andres Freund <andres@anarazel.de>
 
-[ Upstream commit e82e47584847129a20b8c9f4a1dcde09374fb0e0 ]
+commit 8a796565cec3601071cbbd27d6304e202019d014 upstream.
 
-Various SoCs of the SH3, SH4 and SH4A family, which use this driver,
-feature a differing number of DMA channels, which can be distributed
-between up to two DMAC modules. The existing implementation fails to
-correctly accommodate for all those variations, resulting in wrong
-channel offset calculations and leading to kernel panics.
+I observed poor performance of io_uring compared to synchronous IO. That
+turns out to be caused by deeper CPU idle states entered with io_uring,
+due to io_uring using plain schedule(), whereas synchronous IO uses
+io_schedule().
 
-Rewrite dma_base_addr() in order to properly calculate channel offsets
-in a DMAC module. Fix dmaor_read_reg() and dmaor_write_reg(), so that
-the correct DMAC module base is selected for the DMAOR register.
+The losses due to this are substantial. On my cascade lake workstation,
+t/io_uring from the fio repository e.g. yields regressions between 20%
+and 40% with the following command:
+./t/io_uring -r 5 -X0 -d 1 -s 1 -c 1 -p 0 -S$use_sync -R 0 /mnt/t2/fio/write.0.0
 
-Fixes: 7f47c7189b3e8f19 ("sh: dma: More legacy cpu dma chainsawing.")
-Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230527164452.64797-2-contact@artur-rojek.eu
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is repeatable with different filesystems, using raw block devices
+and using different block devices.
+
+Use io_schedule_prepare() / io_schedule_finish() in
+io_cqring_wait_schedule() to address the difference.
+
+After that using io_uring is on par or surpassing synchronous IO (using
+registered files etc makes it reliably win, but arguably is a less fair
+comparison).
+
+There are other calls to schedule() in io_uring/, but none immediately
+jump out to be similarly situated, so I did not touch them. Similarly,
+it's possible that mutex_lock_io() should be used, but it's not clear if
+there are cases where that matters.
+
+Cc: stable@vger.kernel.org # 5.10+
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: io-uring@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Andres Freund <andres@anarazel.de>
+Link: https://lore.kernel.org/r/20230707162007.194068-1-andres@anarazel.de
+[axboe: minor style fixup]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sh/drivers/dma/dma-sh.c | 37 +++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ io_uring/io_uring.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sh/drivers/dma/dma-sh.c b/arch/sh/drivers/dma/dma-sh.c
-index 96c626c2cd0a4..306fba1564e5e 100644
---- a/arch/sh/drivers/dma/dma-sh.c
-+++ b/arch/sh/drivers/dma/dma-sh.c
-@@ -18,6 +18,18 @@
- #include <cpu/dma-register.h>
- #include <cpu/dma.h>
- 
-+/*
-+ * Some of the SoCs feature two DMAC modules. In such a case, the channels are
-+ * distributed equally among them.
-+ */
-+#ifdef	SH_DMAC_BASE1
-+#define	SH_DMAC_NR_MD_CH	(CONFIG_NR_ONCHIP_DMA_CHANNELS / 2)
-+#else
-+#define	SH_DMAC_NR_MD_CH	CONFIG_NR_ONCHIP_DMA_CHANNELS
-+#endif
-+
-+#define	SH_DMAC_CH_SZ		0x10
-+
- /*
-  * Define the default configuration for dual address memory-memory transfer.
-  * The 0x400 value represents auto-request, external->external.
-@@ -29,7 +41,7 @@ static unsigned long dma_find_base(unsigned int chan)
- 	unsigned long base = SH_DMAC_BASE0;
- 
- #ifdef SH_DMAC_BASE1
--	if (chan >= 6)
-+	if (chan >= SH_DMAC_NR_MD_CH)
- 		base = SH_DMAC_BASE1;
- #endif
- 
-@@ -40,13 +52,13 @@ static unsigned long dma_base_addr(unsigned int chan)
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2575,6 +2575,8 @@ int io_run_task_work_sig(struct io_ring_
+ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+ 					  struct io_wait_queue *iowq)
  {
- 	unsigned long base = dma_find_base(chan);
- 
--	/* Normalize offset calculation */
--	if (chan >= 9)
--		chan -= 6;
--	if (chan >= 4)
--		base += 0x10;
-+	chan = (chan % SH_DMAC_NR_MD_CH) * SH_DMAC_CH_SZ;
++	int token, ret;
 +
-+	/* DMAOR is placed inside the channel register space. Step over it. */
-+	if (chan >= DMAOR)
-+		base += SH_DMAC_CH_SZ;
- 
--	return base + (chan * 0x10);
-+	return base + chan;
+ 	if (unlikely(READ_ONCE(ctx->check_cq)))
+ 		return 1;
+ 	if (unlikely(!llist_empty(&ctx->work_llist)))
+@@ -2585,11 +2587,20 @@ static inline int io_cqring_wait_schedul
+ 		return -EINTR;
+ 	if (unlikely(io_should_wake(iowq)))
+ 		return 0;
++
++	/*
++	 * Use io_schedule_prepare/finish, so cpufreq can take into account
++	 * that the task is waiting for IO - turns out to be important for low
++	 * QD IO.
++	 */
++	token = io_schedule_prepare();
++	ret = 0;
+ 	if (iowq->timeout == KTIME_MAX)
+ 		schedule();
+ 	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
+-		return -ETIME;
+-	return 0;
++		ret = -ETIME;
++	io_schedule_finish(token);
++	return ret;
  }
  
- #ifdef CONFIG_SH_DMA_IRQ_MULTI
-@@ -250,12 +262,11 @@ static int sh_dmac_get_dma_residue(struct dma_channel *chan)
- #define NR_DMAOR	1
- #endif
- 
--/*
-- * DMAOR bases are broken out amongst channel groups. DMAOR0 manages
-- * channels 0 - 5, DMAOR1 6 - 11 (optional).
-- */
--#define dmaor_read_reg(n)		__raw_readw(dma_find_base((n)*6))
--#define dmaor_write_reg(n, data)	__raw_writew(data, dma_find_base(n)*6)
-+#define dmaor_read_reg(n)		__raw_readw(dma_find_base((n) * \
-+						    SH_DMAC_NR_MD_CH) + DMAOR)
-+#define dmaor_write_reg(n, data)	__raw_writew(data, \
-+						     dma_find_base((n) * \
-+						     SH_DMAC_NR_MD_CH) + DMAOR)
- 
- static inline int dmaor_reset(int no)
- {
--- 
-2.39.2
-
+ /*
 
 
