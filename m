@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42F41755698
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 733AD75543F
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232904AbjGPUwG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:52:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40278 "EHLO
+        id S232042AbjGPU2Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:28:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232775AbjGPUwE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:04 -0400
+        with ESMTP id S232041AbjGPU2P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:28:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA878D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9CD69F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:28:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FF3C60DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4180BC433C7;
-        Sun, 16 Jul 2023 20:52:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 81B1A60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:28:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C18FC433C7;
+        Sun, 16 Jul 2023 20:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540722;
-        bh=BPwsSy3rbyn3axhgZNDt8YLPpsHv+/zt8YMxnZfNXec=;
+        s=korg; t=1689539293;
+        bh=fr9tjqv66lJRa/6aTa5Dna/KfbpxsxmUd81zJSlCMgY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=viO+bpt7BooGxPbp1zJhJH3GGTmj3cvxQfBmIZBLHxwUJUvtgP0E5jfPFL7sgyGGy
-         KsNqIUiIkurULDC+FSUGnVcNmYQNjjNXsbM/BDWKb2h/E65Npd3pw08B+0xhA/S08Z
-         LxeVFSsVo+Cl2467cMvnjJZOyua+CDUpv9yLW8IU=
+        b=w94TPuLZEJPA++4guNwh5v3Tv+FOieAQFQ2eHdHVC3BjTQQKyelj1IfIFlxee6w8w
+         dmupveXeVC57k0FuEt1tN1xEopMYHHX3kS3e23O31H/HgL89HSl6GF4PmyeGJL55kL
+         zQwBo7U0eTxEL3hgm8v9WKfT8oNtOXOV+rvk2g0Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Prashanth K <quic_prashk@quicinc.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 438/591] Revert "usb: common: usb-conn-gpio: Set last role to unknown before initial detection"
-Date:   Sun, 16 Jul 2023 21:49:37 +0200
-Message-ID: <20230716194935.243810793@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Zhao <yuzhao@google.com>,
+        syzbot+87c490fd2be656269b6a@syzkaller.appspotmail.com,
+        Yosry Ahmed <yosryahmed@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 725/800] mm/mglru: make memcg_lru->lock irq safe
+Date:   Sun, 16 Jul 2023 21:49:38 +0200
+Message-ID: <20230716195005.958642380@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,97 +56,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Yu Zhao <yuzhao@google.com>
 
-[ Upstream commit df49f2a0ac4a34c0cb4b5c233fcfa0add644c43c ]
+commit 814bc1de03ea4361101408e63a68e4b82aef22cb upstream.
 
-This reverts commit edd60d24bd858cef165274e4cd6cab43bdc58d15.
+lru_gen_rotate_memcg() can happen in softirq if memory.soft_limit_in_bytes
+is set.  This requires memcg_lru->lock to be irq safe.  Lockdep warns on
+this.
 
-Heikki reports that this should not be a global flag just to work around
-one broken driver and should be fixed differently, so revert it.
+This problem only affects memcg v1.
 
-Reported-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Fixes: edd60d24bd85 ("usb: common: usb-conn-gpio: Set last role to unknown before initial detection")
-Link: https://lore.kernel.org/r/ZImE4L3YgABnCIsP@kuha.fi.intel.com
-Cc: Prashanth K <quic_prashk@quicinc.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lkml.kernel.org/r/20230619193821.2710944-1-yuzhao@google.com
+Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: syzbot+87c490fd2be656269b6a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=87c490fd2be656269b6a
+Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/core.c                       | 2 --
- drivers/usb/common/usb-conn-gpio.c             | 3 ---
- drivers/usb/musb/jz4740.c                      | 2 --
- drivers/usb/roles/intel-xhci-usb-role-switch.c | 2 --
- include/linux/usb/role.h                       | 1 -
- 5 files changed, 10 deletions(-)
+ mm/vmscan.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index 69d2921f2d3b5..dbcdf3b24b477 100644
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -252,8 +252,6 @@ static enum usb_role cdns_hw_role_state_machine(struct cdns *cdns)
- 		if (!vbus)
- 			role = USB_ROLE_NONE;
- 		break;
--	default:
--		break;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 5bf98d0a22c9..6114a1fc6c68 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4728,10 +4728,11 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
+ {
+ 	int seg;
+ 	int old, new;
++	unsigned long flags;
+ 	int bin = get_random_u32_below(MEMCG_NR_BINS);
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+ 
+-	spin_lock(&pgdat->memcg_lru.lock);
++	spin_lock_irqsave(&pgdat->memcg_lru.lock, flags);
+ 
+ 	VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
+ 
+@@ -4766,7 +4767,7 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
+ 	if (!pgdat->memcg_lru.nr_memcgs[old] && old == get_memcg_gen(pgdat->memcg_lru.seq))
+ 		WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
+ 
+-	spin_unlock(&pgdat->memcg_lru.lock);
++	spin_unlock_irqrestore(&pgdat->memcg_lru.lock, flags);
+ }
+ 
+ void lru_gen_online_memcg(struct mem_cgroup *memcg)
+@@ -4779,7 +4780,7 @@ void lru_gen_online_memcg(struct mem_cgroup *memcg)
+ 		struct pglist_data *pgdat = NODE_DATA(nid);
+ 		struct lruvec *lruvec = get_lruvec(memcg, nid);
+ 
+-		spin_lock(&pgdat->memcg_lru.lock);
++		spin_lock_irq(&pgdat->memcg_lru.lock);
+ 
+ 		VM_WARN_ON_ONCE(!hlist_nulls_unhashed(&lruvec->lrugen.list));
+ 
+@@ -4790,7 +4791,7 @@ void lru_gen_online_memcg(struct mem_cgroup *memcg)
+ 
+ 		lruvec->lrugen.gen = gen;
+ 
+-		spin_unlock(&pgdat->memcg_lru.lock);
++		spin_unlock_irq(&pgdat->memcg_lru.lock);
  	}
+ }
  
- 	dev_dbg(cdns->dev, "role %d -> %d\n", cdns->role, role);
-diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
-index 30bdb81934bc8..e20874caba363 100644
---- a/drivers/usb/common/usb-conn-gpio.c
-+++ b/drivers/usb/common/usb-conn-gpio.c
-@@ -257,9 +257,6 @@ static int usb_conn_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, info);
- 	device_set_wakeup_capable(&pdev->dev, true);
+@@ -4814,7 +4815,7 @@ void lru_gen_release_memcg(struct mem_cgroup *memcg)
+ 		struct pglist_data *pgdat = NODE_DATA(nid);
+ 		struct lruvec *lruvec = get_lruvec(memcg, nid);
  
--	/* Set last role to unknown before performing the initial detection */
--	info->last_role = USB_ROLE_UNKNOWN;
--
- 	/* Perform initial detection */
- 	usb_conn_queue_dwork(info, 0);
+-		spin_lock(&pgdat->memcg_lru.lock);
++		spin_lock_irq(&pgdat->memcg_lru.lock);
  
-diff --git a/drivers/usb/musb/jz4740.c b/drivers/usb/musb/jz4740.c
-index df4e9d397d986..d1e4e0deb7535 100644
---- a/drivers/usb/musb/jz4740.c
-+++ b/drivers/usb/musb/jz4740.c
-@@ -91,8 +91,6 @@ static int jz4740_musb_role_switch_set(struct usb_role_switch *sw,
- 	case USB_ROLE_HOST:
- 		atomic_notifier_call_chain(&phy->notifier, USB_EVENT_ID, phy);
- 		break;
--	default:
--		break;
+ 		VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
+ 
+@@ -4826,7 +4827,7 @@ void lru_gen_release_memcg(struct mem_cgroup *memcg)
+ 		if (!pgdat->memcg_lru.nr_memcgs[gen] && gen == get_memcg_gen(pgdat->memcg_lru.seq))
+ 			WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
+ 
+-		spin_unlock(&pgdat->memcg_lru.lock);
++		spin_unlock_irq(&pgdat->memcg_lru.lock);
  	}
+ }
  
- 	return 0;
-diff --git a/drivers/usb/roles/intel-xhci-usb-role-switch.c b/drivers/usb/roles/intel-xhci-usb-role-switch.c
-index 4d6a3dd06e011..5c96e929acea0 100644
---- a/drivers/usb/roles/intel-xhci-usb-role-switch.c
-+++ b/drivers/usb/roles/intel-xhci-usb-role-switch.c
-@@ -97,8 +97,6 @@ static int intel_xhci_usb_set_role(struct usb_role_switch *sw,
- 		val |= SW_VBUS_VALID;
- 		drd_config = DRD_CONFIG_STATIC_DEVICE;
- 		break;
--	default:
--		break;
- 	}
- 	val |= SW_IDPIN_EN;
- 	if (data->enable_sw_switch) {
-diff --git a/include/linux/usb/role.h b/include/linux/usb/role.h
-index 65e790a28913e..b5deafd91f67b 100644
---- a/include/linux/usb/role.h
-+++ b/include/linux/usb/role.h
-@@ -11,7 +11,6 @@ enum usb_role {
- 	USB_ROLE_NONE,
- 	USB_ROLE_HOST,
- 	USB_ROLE_DEVICE,
--	USB_ROLE_UNKNOWN,
- };
- 
- typedef int (*usb_role_switch_set_t)(struct usb_role_switch *sw,
 -- 
-2.39.2
+2.41.0
 
 
 
