@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDEFE7551A1
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C00227551A2
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:58:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230382AbjGPT6i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 15:58:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
+        id S230384AbjGPT6l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 15:58:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230378AbjGPT6h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:58:37 -0400
+        with ESMTP id S230378AbjGPT6l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:58:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 041AAEE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:58:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B953FEE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:58:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9722560DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 19:58:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87EBC433C7;
-        Sun, 16 Jul 2023 19:58:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 586B160DFD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 19:58:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0F7C433C8;
+        Sun, 16 Jul 2023 19:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537516;
-        bh=SbQ2Pzw342501cCoPIFsRAKwylSS6ZXdlJkz/+hlcls=;
+        s=korg; t=1689537518;
+        bh=i7uih+24jYbrPu5DxwVGvZ3QitkVp6MhvX3slJqvBm8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QRoxHRJicTTCo5/7yLZ5XWZCb4qSGN8BIrjfq004wzjzjqI9J86ttTI3TgG2LDFod
-         QSkn66PHIcrCZ0pwD/hYAH4hxDNa/LAL65f55raJdOyFhPyA4XpLFRZ2daepEvw87+
-         Ot+FLQFQDNJnSwDsYZVwUlAo1umY6ZxCmVYBMJp8=
+        b=x/fiw5zYTj0LmN8Ju0iMLPxiO7N7on7IS9aqzxxkuS8Pdvq358dPKTEnso62cpZhg
+         ViBhs7NUr7llBiW3vq82OdWfej1iSoPZ4uLBa/DBAmcyhA9Hc4PQ4gfv3zr0QMv3ld
+         6qJOtO3G/axmrvtWfup93offiwNAHGABsXy0o4rI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Nicky Veitch <nicky.veitch@oracle.com>,
+        Alan Maguire <alan.maguire@oracle.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Quentin Monnet <quentin@isovalent.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 124/800] nfc: llcp: fix possible use of uninitialized variable in nfc_llcp_send_connect()
-Date:   Sun, 16 Jul 2023 21:39:37 +0200
-Message-ID: <20230716194951.985741610@linuxfoundation.org>
+Subject: [PATCH 6.4 125/800] bpftool: JIT limited misreported as negative value on aarch64
+Date:   Sun, 16 Jul 2023 21:39:38 +0200
+Message-ID: <20230716194952.008087589@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -56,38 +58,148 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-[ Upstream commit 0d9b41daa5907756a31772d8af8ac5ff25cf17c1 ]
+[ Upstream commit 04cb8453a91c7c22f60ddadb6cef0d19abb33bb5 ]
 
-If sock->service_name is NULL, the local variable
-service_name_tlv_length will not be assigned by nfc_llcp_build_tlv(),
-later leading to using value frmo the stack.  Smatch warning:
+On aarch64, "bpftool feature" reports an incorrect BPF JIT limit:
 
-  net/nfc/llcp_commands.c:442 nfc_llcp_send_connect() error: uninitialized symbol 'service_name_tlv_length'.
+$ sudo /sbin/bpftool feature
+Scanning system configuration...
+bpf() syscall restricted to privileged users
+JIT compiler is enabled
+JIT compiler hardening is disabled
+JIT compiler kallsyms exports are enabled for root
+skipping kernel config, can't open file: No such file or directory
+Global memory limit for JIT compiler for unprivileged users is -201326592 bytes
 
-Fixes: de9e5aeb4f40 ("NFC: llcp: Fix usage of llcp_add_tlv()")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This is because /proc/sys/net/core/bpf_jit_limit reports
+
+$ sudo cat /proc/sys/net/core/bpf_jit_limit
+68169519595520
+
+...and an int is assumed in read_procfs().  Change read_procfs()
+to return a long to avoid negative value reporting.
+
+Fixes: 7a4522bbef0c ("tools: bpftool: add probes for /proc/ eBPF parameters")
+Reported-by: Nicky Veitch <nicky.veitch@oracle.com>
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Quentin Monnet <quentin@isovalent.com>
+Link: https://lore.kernel.org/bpf/20230512113134.58996-1-alan.maguire@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/llcp_commands.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/bpf/bpftool/feature.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
-index 41e3a20c89355..cdb001de06928 100644
---- a/net/nfc/llcp_commands.c
-+++ b/net/nfc/llcp_commands.c
-@@ -390,7 +390,8 @@ int nfc_llcp_send_connect(struct nfc_llcp_sock *sock)
- 	const u8 *service_name_tlv = NULL;
- 	const u8 *miux_tlv = NULL;
- 	const u8 *rw_tlv = NULL;
--	u8 service_name_tlv_length, miux_tlv_length,  rw_tlv_length, rw;
-+	u8 service_name_tlv_length = 0;
-+	u8 miux_tlv_length,  rw_tlv_length, rw;
- 	int err;
- 	u16 size = 0;
- 	__be16 miux;
+diff --git a/tools/bpf/bpftool/feature.c b/tools/bpf/bpftool/feature.c
+index da16e6a27cccd..0675d6a464138 100644
+--- a/tools/bpf/bpftool/feature.c
++++ b/tools/bpf/bpftool/feature.c
+@@ -167,12 +167,12 @@ static int get_vendor_id(int ifindex)
+ 	return strtol(buf, NULL, 0);
+ }
+ 
+-static int read_procfs(const char *path)
++static long read_procfs(const char *path)
+ {
+ 	char *endptr, *line = NULL;
+ 	size_t len = 0;
+ 	FILE *fd;
+-	int res;
++	long res;
+ 
+ 	fd = fopen(path, "r");
+ 	if (!fd)
+@@ -194,7 +194,7 @@ static int read_procfs(const char *path)
+ 
+ static void probe_unprivileged_disabled(void)
+ {
+-	int res;
++	long res;
+ 
+ 	/* No support for C-style ouptut */
+ 
+@@ -216,14 +216,14 @@ static void probe_unprivileged_disabled(void)
+ 			printf("Unable to retrieve required privileges for bpf() syscall\n");
+ 			break;
+ 		default:
+-			printf("bpf() syscall restriction has unknown value %d\n", res);
++			printf("bpf() syscall restriction has unknown value %ld\n", res);
+ 		}
+ 	}
+ }
+ 
+ static void probe_jit_enable(void)
+ {
+-	int res;
++	long res;
+ 
+ 	/* No support for C-style ouptut */
+ 
+@@ -245,7 +245,7 @@ static void probe_jit_enable(void)
+ 			printf("Unable to retrieve JIT-compiler status\n");
+ 			break;
+ 		default:
+-			printf("JIT-compiler status has unknown value %d\n",
++			printf("JIT-compiler status has unknown value %ld\n",
+ 			       res);
+ 		}
+ 	}
+@@ -253,7 +253,7 @@ static void probe_jit_enable(void)
+ 
+ static void probe_jit_harden(void)
+ {
+-	int res;
++	long res;
+ 
+ 	/* No support for C-style ouptut */
+ 
+@@ -275,7 +275,7 @@ static void probe_jit_harden(void)
+ 			printf("Unable to retrieve JIT hardening status\n");
+ 			break;
+ 		default:
+-			printf("JIT hardening status has unknown value %d\n",
++			printf("JIT hardening status has unknown value %ld\n",
+ 			       res);
+ 		}
+ 	}
+@@ -283,7 +283,7 @@ static void probe_jit_harden(void)
+ 
+ static void probe_jit_kallsyms(void)
+ {
+-	int res;
++	long res;
+ 
+ 	/* No support for C-style ouptut */
+ 
+@@ -302,14 +302,14 @@ static void probe_jit_kallsyms(void)
+ 			printf("Unable to retrieve JIT kallsyms export status\n");
+ 			break;
+ 		default:
+-			printf("JIT kallsyms exports status has unknown value %d\n", res);
++			printf("JIT kallsyms exports status has unknown value %ld\n", res);
+ 		}
+ 	}
+ }
+ 
+ static void probe_jit_limit(void)
+ {
+-	int res;
++	long res;
+ 
+ 	/* No support for C-style ouptut */
+ 
+@@ -322,7 +322,7 @@ static void probe_jit_limit(void)
+ 			printf("Unable to retrieve global memory limit for JIT compiler for unprivileged users\n");
+ 			break;
+ 		default:
+-			printf("Global memory limit for JIT compiler for unprivileged users is %d bytes\n", res);
++			printf("Global memory limit for JIT compiler for unprivileged users is %ld bytes\n", res);
+ 		}
+ 	}
+ }
 -- 
 2.39.2
 
