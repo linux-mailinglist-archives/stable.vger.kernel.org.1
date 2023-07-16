@@ -2,43 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22E837551BD
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E31A07551BF
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:59:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230451AbjGPT7q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 15:59:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59310 "EHLO
+        id S230452AbjGPT7s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 15:59:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230452AbjGPT7p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:59:45 -0400
+        with ESMTP id S230456AbjGPT7r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:59:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC7E1B9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:59:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D1F9EE;
+        Sun, 16 Jul 2023 12:59:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FE2F60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 19:59:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FCEC433C8;
-        Sun, 16 Jul 2023 19:59:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33C9660E88;
+        Sun, 16 Jul 2023 19:59:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8D5C433C7;
+        Sun, 16 Jul 2023 19:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537582;
-        bh=MfCGnfutks5Lvll2yVjRrb1WAy0uTa5zKSZ1/VDgM9U=;
+        s=korg; t=1689537585;
+        bh=CfvX07BV0hbFAZLUURjGpPig0lkEpFxstEfCfTwUF1Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=026oryvR3+2rxwbpbsxzZTXMYlJ1hM2ENss81P1OLZ+kgaucQdMYY2HmdRR7xCzsx
-         6caaQaGAdbOM36WQqMeTf85ag+rXHXYEk82e+Z7PYD+LiicUw8GXZHiirmbMIoz56r
-         oaBMFgvVCR6J45RNJdoky0/VCfdNzM/tP6g3TVBM=
+        b=g7K3WX019gqubbnwpTe5iDaUNp9uzbIzuuBreihLfzMxUgGMDSkXInuHH2Z3qmKyn
+         TN2Qj241XFnJDylz2zk+Ckd5LCT7PrOg0bq78/S1GlRxd94V1UVGmuuGwvm1umWHyn
+         UvLavhBREuJg/HVOO3ZKZwP/n0CLIkwg6bncvBZs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kacinski <kuba@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev, Daniel Borkmann <daniel@iogearbox.net>,
+        Christian Brauner <brauner@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Neil Horman <nhorman@tuxdriver.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Xin Long <lucien.xin@gmail.com>, linux-sctp@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 118/800] net/handshake: Unpin sock->file if a handshake is cancelled
-Date:   Sun, 16 Jul 2023 21:39:31 +0200
-Message-ID: <20230716194951.848894569@linuxfoundation.org>
+Subject: [PATCH 6.4 119/800] sctp: add bpf_bypass_getsockopt proto callback
+Date:   Sun, 16 Jul 2023 21:39:32 +0200
+Message-ID: <20230716194951.871294090@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -56,57 +62,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
 
-[ Upstream commit f921bd41001ccff2249f5f443f2917f7ef937daf ]
+[ Upstream commit 2598619e012cee5273a2821441b9a051ad931249 ]
 
-If user space never calls DONE, sock->file's reference count remains
-elevated. Enable sock->file to be freed eventually in this case.
+Implement ->bpf_bypass_getsockopt proto callback and filter out
+SCTP_SOCKOPT_PEELOFF, SCTP_SOCKOPT_PEELOFF_FLAGS and SCTP_SOCKOPT_CONNECTX3
+socket options from running eBPF hook on them.
 
-Reported-by: Jakub Kacinski <kuba@kernel.org>
-Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+SCTP_SOCKOPT_PEELOFF and SCTP_SOCKOPT_PEELOFF_FLAGS options do fd_install(),
+and if BPF_CGROUP_RUN_PROG_GETSOCKOPT hook returns an error after success of
+the original handler sctp_getsockopt(...), userspace will receive an error
+from getsockopt syscall and will be not aware that fd was successfully
+installed into a fdtable.
+
+As pointed by Marcelo Ricardo Leitner it seems reasonable to skip
+bpf getsockopt hook for SCTP_SOCKOPT_CONNECTX3 sockopt too.
+Because internaly, it triggers connect() and if error is masked
+then userspace will be confused.
+
+This patch was born as a result of discussion around a new SCM_PIDFD interface:
+https://lore.kernel.org/all/20230413133355.350571-3-aleksandr.mikhalitsyn@canonical.com/
+
+Fixes: 0d01da6afc54 ("bpf: implement getsockopt and setsockopt hooks")
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Stanislav Fomichev <sdf@google.com>
+Cc: Neil Horman <nhorman@tuxdriver.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: linux-sctp@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Suggested-by: Stanislav Fomichev <sdf@google.com>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/handshake/handshake.h | 1 +
- net/handshake/request.c   | 4 ++++
- 2 files changed, 5 insertions(+)
+ net/sctp/socket.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/net/handshake/handshake.h b/net/handshake/handshake.h
-index 4dac965c99df0..8aeaadca844fd 100644
---- a/net/handshake/handshake.h
-+++ b/net/handshake/handshake.h
-@@ -31,6 +31,7 @@ struct handshake_req {
- 	struct list_head		hr_list;
- 	struct rhash_head		hr_rhash;
- 	unsigned long			hr_flags;
-+	struct file			*hr_file;
- 	const struct handshake_proto	*hr_proto;
- 	struct sock			*hr_sk;
- 	void				(*hr_odestruct)(struct sock *sk);
-diff --git a/net/handshake/request.c b/net/handshake/request.c
-index 94d5cef3e048b..d78d41abb3d99 100644
---- a/net/handshake/request.c
-+++ b/net/handshake/request.c
-@@ -239,6 +239,7 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
- 	}
- 	req->hr_odestruct = req->hr_sk->sk_destruct;
- 	req->hr_sk->sk_destruct = handshake_sk_destruct;
-+	req->hr_file = sock->file;
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index cda8c2874691d..a68e1d541b128 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -8281,6 +8281,22 @@ static int sctp_getsockopt(struct sock *sk, int level, int optname,
+ 	return retval;
+ }
  
- 	ret = -EOPNOTSUPP;
- 	net = sock_net(req->hr_sk);
-@@ -334,6 +335,9 @@ bool handshake_req_cancel(struct sock *sk)
- 		return false;
- 	}
- 
-+	/* Request accepted and waiting for DONE */
-+	fput(req->hr_file);
++static bool sctp_bpf_bypass_getsockopt(int level, int optname)
++{
++	if (level == SOL_SCTP) {
++		switch (optname) {
++		case SCTP_SOCKOPT_PEELOFF:
++		case SCTP_SOCKOPT_PEELOFF_FLAGS:
++		case SCTP_SOCKOPT_CONNECTX3:
++			return true;
++		default:
++			return false;
++		}
++	}
 +
- out_true:
- 	trace_handshake_cancel(net, req, sk);
- 
++	return false;
++}
++
+ static int sctp_hash(struct sock *sk)
+ {
+ 	/* STUB */
+@@ -9650,6 +9666,7 @@ struct proto sctp_prot = {
+ 	.shutdown    =	sctp_shutdown,
+ 	.setsockopt  =	sctp_setsockopt,
+ 	.getsockopt  =	sctp_getsockopt,
++	.bpf_bypass_getsockopt	= sctp_bpf_bypass_getsockopt,
+ 	.sendmsg     =	sctp_sendmsg,
+ 	.recvmsg     =	sctp_recvmsg,
+ 	.bind        =	sctp_bind,
+@@ -9705,6 +9722,7 @@ struct proto sctpv6_prot = {
+ 	.shutdown	= sctp_shutdown,
+ 	.setsockopt	= sctp_setsockopt,
+ 	.getsockopt	= sctp_getsockopt,
++	.bpf_bypass_getsockopt	= sctp_bpf_bypass_getsockopt,
+ 	.sendmsg	= sctp_sendmsg,
+ 	.recvmsg	= sctp_recvmsg,
+ 	.bind		= sctp_bind,
 -- 
 2.39.2
 
