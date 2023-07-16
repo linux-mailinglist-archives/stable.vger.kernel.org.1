@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88C8775566F
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ADE375540C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:26:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232851AbjGPUud (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:50:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39508 "EHLO
+        id S231962AbjGPUZ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:25:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232855AbjGPUuc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:50:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DFB6D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:50:31 -0700 (PDT)
+        with ESMTP id S231960AbjGPUZ6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885021A5
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3A5260EA2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:50:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3030C433C7;
-        Sun, 16 Jul 2023 20:50:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 11DE360EBF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCBAC433C7;
+        Sun, 16 Jul 2023 20:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540630;
-        bh=5w/SXJvSSN0lvDF8NdC5CubC4dBvV/ZW1pOyj+a4LPA=;
+        s=korg; t=1689539156;
+        bh=efs/B3IZVrWOen70zee6qdnPzCC5J6IivO86y5E28qU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iFA9xMJVpob9prenSD/RJpnDzJ3amLzH+khoWIAps+A/XTnUCYroopdJwfxCRoCgD
-         zi7Az6Y7xcHemRK4fB6s3a6/T1Fkd4EbPS1x2V9uoFq5qdbziTFVbbSaklgG8hmpti
-         MGUkoNRCFyh7IqThwQxZm20YXlWotf73IINhW/3E=
+        b=bQw8KZfs52p2DJgNg7GAL1OLjQEZ8zvdqtSO4lNsIsvv/6uXBsfqyGQTknxondX0T
+         +v2ZtXmgLZClCr4W9Wp1tiDddwGQi7dSHtVMAYHvrnTVbuww3XT7ClO0FbF6LGaYQ4
+         IDetlZ1fznt03WNqD9+w3eUKx0pBHlQEc3P5E8uw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 404/591] clk: qcom: ipq6018: fix networking resets
+Subject: [PATCH 6.4 690/800] powerpc: dts: turris1x.dts: Fix PCIe MEM size for pci2 node
 Date:   Sun, 16 Jul 2023 21:49:03 +0200
-Message-ID: <20230716194934.369766237@linuxfoundation.org>
+Message-ID: <20230716195005.151198794@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,70 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robert Marko <robimarko@gmail.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 349b5bed539b491b7894a5186a895751fd8ba6c7 ]
+[ Upstream commit abaa02fc944f2f9f2c2e1925ddaceaf35c48528c ]
 
-Networking resets in IPQ6018 all use bitmask as they require multiple
-bits to be set and cleared instead of a single bit.
+Freescale PCIe controllers on their PCIe Root Ports do not have any
+mappable PCI BAR allocate from PCIe MEM.
 
-So, current networking resets have the same register and bit 0 set which
-is clearly incorrect.
+Information about 1MB window on BAR0 of PCIe Root Port was misleading
+because Freescale PCIe controllers have at BAR0 position different register
+PEXCSRBAR, and kernel correctly skipts BAR0 for these Freescale PCIe Root
+Ports.
 
-Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
-Signed-off-by: Robert Marko <robimarko@gmail.com>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230526190855.2941291-2-robimarko@gmail.com
+So update comment about P2020 PCIe Root Port and decrease PCIe MEM size
+required for PCIe controller (pci2 node) on which is on-board xHCI
+controller.
+
+lspci confirms that on P2020 PCIe Root Port is no PCI BAR and /proc/iomem
+sees that only c0000000-c000ffff and c0010000-c0011fff ranges are used.
+
+Fixes: 54c15ec3b738 ("powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230505172818.18416-1-pali@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq6018.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ arch/powerpc/boot/dts/turris1x.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
-index 5c5d1b04ea7af..cde62a11f5736 100644
---- a/drivers/clk/qcom/gcc-ipq6018.c
-+++ b/drivers/clk/qcom/gcc-ipq6018.c
-@@ -4517,24 +4517,24 @@ static const struct qcom_reset_map gcc_ipq6018_resets[] = {
- 	[GCC_PCIE0_AHB_ARES] = { 0x75040, 5 },
- 	[GCC_PCIE0_AXI_MASTER_STICKY_ARES] = { 0x75040, 6 },
- 	[GCC_PCIE0_AXI_SLAVE_STICKY_ARES] = { 0x75040, 7 },
--	[GCC_PPE_FULL_RESET] = { 0x68014, 0 },
--	[GCC_UNIPHY0_SOFT_RESET] = { 0x56004, 0 },
-+	[GCC_PPE_FULL_RESET] = { .reg = 0x68014, .bitmask = 0xf0000 },
-+	[GCC_UNIPHY0_SOFT_RESET] = { .reg = 0x56004, .bitmask = 0x3ff2 },
- 	[GCC_UNIPHY0_XPCS_RESET] = { 0x56004, 2 },
--	[GCC_UNIPHY1_SOFT_RESET] = { 0x56104, 0 },
-+	[GCC_UNIPHY1_SOFT_RESET] = { .reg = 0x56104, .bitmask = 0x32 },
- 	[GCC_UNIPHY1_XPCS_RESET] = { 0x56104, 2 },
--	[GCC_EDMA_HW_RESET] = { 0x68014, 0 },
--	[GCC_NSSPORT1_RESET] = { 0x68014, 0 },
--	[GCC_NSSPORT2_RESET] = { 0x68014, 0 },
--	[GCC_NSSPORT3_RESET] = { 0x68014, 0 },
--	[GCC_NSSPORT4_RESET] = { 0x68014, 0 },
--	[GCC_NSSPORT5_RESET] = { 0x68014, 0 },
--	[GCC_UNIPHY0_PORT1_ARES] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT2_ARES] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT3_ARES] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT4_ARES] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT5_ARES] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT_4_5_RESET] = { 0x56004, 0 },
--	[GCC_UNIPHY0_PORT_4_RESET] = { 0x56004, 0 },
-+	[GCC_EDMA_HW_RESET] = { .reg = 0x68014, .bitmask = 0x300000 },
-+	[GCC_NSSPORT1_RESET] = { .reg = 0x68014, .bitmask = 0x1000003 },
-+	[GCC_NSSPORT2_RESET] = { .reg = 0x68014, .bitmask = 0x200000c },
-+	[GCC_NSSPORT3_RESET] = { .reg = 0x68014, .bitmask = 0x4000030 },
-+	[GCC_NSSPORT4_RESET] = { .reg = 0x68014, .bitmask = 0x8000300 },
-+	[GCC_NSSPORT5_RESET] = { .reg = 0x68014, .bitmask = 0x10000c00 },
-+	[GCC_UNIPHY0_PORT1_ARES] = { .reg = 0x56004, .bitmask = 0x30 },
-+	[GCC_UNIPHY0_PORT2_ARES] = { .reg = 0x56004, .bitmask = 0xc0 },
-+	[GCC_UNIPHY0_PORT3_ARES] = { .reg = 0x56004, .bitmask = 0x300 },
-+	[GCC_UNIPHY0_PORT4_ARES] = { .reg = 0x56004, .bitmask = 0xc00 },
-+	[GCC_UNIPHY0_PORT5_ARES] = { .reg = 0x56004, .bitmask = 0x3000 },
-+	[GCC_UNIPHY0_PORT_4_5_RESET] = { .reg = 0x56004, .bitmask = 0x3c02 },
-+	[GCC_UNIPHY0_PORT_4_RESET] = { .reg = 0x56004, .bitmask = 0xc02 },
- 	[GCC_LPASS_BCR] = {0x1F000, 0},
- 	[GCC_UBI32_TBU_BCR] = {0x65000, 0},
- 	[GCC_LPASS_TBU_BCR] = {0x6C000, 0},
+diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
+index 6612160c19d59..dff1ea074d9d9 100644
+--- a/arch/powerpc/boot/dts/turris1x.dts
++++ b/arch/powerpc/boot/dts/turris1x.dts
+@@ -476,12 +476,12 @@ pci2: pcie@ffe08000 {
+ 		 * channel 1 (but only USB 2.0 subset) to USB 2.0 pins on mPCIe
+ 		 * slot 1 (CN5), channels 2 and 3 to connector P600.
+ 		 *
+-		 * P2020 PCIe Root Port uses 1MB of PCIe MEM and xHCI controller
++		 * P2020 PCIe Root Port does not use PCIe MEM and xHCI controller
+ 		 * uses 64kB + 8kB of PCIe MEM. No PCIe IO is used or required.
+-		 * So allocate 2MB of PCIe MEM for this PCIe bus.
++		 * So allocate 128kB of PCIe MEM for this PCIe bus.
+ 		 */
+ 		reg = <0 0xffe08000 0 0x1000>;
+-		ranges = <0x02000000 0x0 0xc0000000 0 0xc0000000 0x0 0x00200000>, /* MEM */
++		ranges = <0x02000000 0x0 0xc0000000 0 0xc0000000 0x0 0x00020000>, /* MEM */
+ 			 <0x01000000 0x0 0x00000000 0 0xffc20000 0x0 0x00010000>; /* IO */
+ 
+ 		pcie@0 {
 -- 
 2.39.2
 
