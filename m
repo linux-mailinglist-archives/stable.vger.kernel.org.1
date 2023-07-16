@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A580D75549B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B387755274
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232200AbjGPUcP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:32:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53376 "EHLO
+        id S231327AbjGPUIF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:08:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232228AbjGPUcO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:14 -0400
+        with ESMTP id S231331AbjGPUIF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2BD9E40
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01BAEC0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69FFE60EBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A049C433C8;
-        Sun, 16 Jul 2023 20:32:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 896CF60EB3
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E43C433C8;
+        Sun, 16 Jul 2023 20:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539528;
-        bh=44wYcN7dU3HjPXSPPhoYLcbj/0dBYkBjyGKjKQzP/0M=;
+        s=korg; t=1689538083;
+        bh=JLmTFhhiJx+jeTkmH2n3N7jH6lYJdxLI0yNrC+26B7w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mVj/sqtBL9BMDjsKCDNFBDnZe0u56bRUucjuwG96UDZLPKx3wcMH6gjORDJOYex4W
-         8Xe4U8LBs9hDMqvospSW3fEErBSLzDcgWPFhqvoWqFB/zHbqn5u3vbhocuvhpLIe4Y
-         F35SisP3KlOpRH1WhTVIJHb6FSbwE7z9xaLQcfV4=
+        b=ez2d3zT7NCLsgY1tOMLS/18C7NuJI94LTE75kxRr9bApkBnHWSGFo/K6ap5UOXvNQ
+         Qow+cnzs0oTg1rp9xTtH884XXFZHzEszVMKUf1pT2evw2gILJYCpxHxYcruu2NkiO3
+         w7rdRkDZKNpFUCt8KBg79od0kaiIbfn/ur0t7I4I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wen Yang <wenyang.linux@foxmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        patches@lists.linux.dev, Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/591] tick/rcu: Fix bogus ratelimit condition
+Subject: [PATCH 6.4 325/800] arm64: dts: qcom: pm7250b: add missing spmi-vadc include
 Date:   Sun, 16 Jul 2023 21:42:58 +0200
-Message-ID: <20230716194924.891743169@linuxfoundation.org>
+Message-ID: <20230716194956.619060491@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,44 +55,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wen Yang <wenyang.linux@foxmail.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit a7e282c77785c7eabf98836431b1f029481085ad ]
+[ Upstream commit 83022f6484b11a60dbf9a95a88c7ef8e59c4b19c ]
 
-The ratelimit logic in report_idle_softirq() is broken because the
-exit condition is always true:
+This file is using definitions from the spmi-vadc header, so we need to
+include it.
 
-	static int ratelimit;
-
-	if (ratelimit < 10)
-		return false;  ---> always returns here
-
-	ratelimit++;           ---> no chance to run
-
-Make it check for >= 10 instead.
-
-Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
-Signed-off-by: Wen Yang <wenyang.linux@foxmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/tencent_5AAA3EEAB42095C9B7740BE62FBF9A67E007@qq.com
+Fixes: 11975b9b8135 ("arm64: dts: qcom: Add pm7250b PMIC")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230407-pm7250b-sid-v1-1-fc648478cc25@fairphone.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-sched.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/pm7250b.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index d6fb6a676bbbb..1ad89eec2a55f 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1046,7 +1046,7 @@ static bool report_idle_softirq(void)
- 			return false;
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+index d709d955a2f5a..daa6f1d30efa0 100644
+--- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+@@ -3,6 +3,7 @@
+  * Copyright (C) 2022 Luca Weiss <luca.weiss@fairphone.com>
+  */
  
--	if (ratelimit < 10)
-+	if (ratelimit >= 10)
- 		return false;
++#include <dt-bindings/iio/qcom,spmi-vadc.h>
+ #include <dt-bindings/interrupt-controller/irq.h>
+ #include <dt-bindings/spmi/spmi.h>
  
- 	/* On RT, softirqs handling may be waiting on some lock */
 -- 
 2.39.2
 
