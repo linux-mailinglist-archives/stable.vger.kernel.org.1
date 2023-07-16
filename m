@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9C707551A5
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 051987551A6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:58:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230378AbjGPT6x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 15:58:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58432 "EHLO
+        id S230388AbjGPT6y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 15:58:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230400AbjGPT6t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:58:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C06E50
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:58:48 -0700 (PDT)
+        with ESMTP id S230386AbjGPT6v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:58:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E130EE58
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:58:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A5B9960DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 19:58:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60FCC433C7;
-        Sun, 16 Jul 2023 19:58:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8161B60DFD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 19:58:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F829C433C9;
+        Sun, 16 Jul 2023 19:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537527;
-        bh=Hzgyikucn2yL+8Wa22Xi1559yTuYzC9eFhP+GH+7xm0=;
+        s=korg; t=1689537529;
+        bh=IOrhnCHD4VyZgNbTtjriZbL9x3fnCuM+pZCbxX8fbAk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yT5dwO64yAyIavT+XeEUf6r2dPCtVEeBG1NPTkld8m1RlhqkmVZzHwUfu/4raBidf
-         6oH4qRZ/34JG6cStp9kflL7JzAiz0H53TV6MVZie9spyzDhxyKxOlgJphm93utoTjZ
-         Vt0otDartu9V/vPZuyIPwNR2nP3wXuMgMO9zSOPA=
+        b=YOUVPGtvy8nnSSQy+vPkVwW1EMtDtY9VyPWqD8S98kqOEBK14AasR9qE6nOT5Umgw
+         x0f/MwW3DOBJqtV7bY6Rw9obWGTl3EJkTI3mm/tUh96odslfJt81inUmwnWj9iBsJc
+         ijCOZxXF01FowJsR8I4IJXFPbvFpk+q+oM+5GgDU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexey Gladkov <legion@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Stanislav Fomichev <sdf@google.com>,
+        patches@lists.linux.dev,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 128/800] selftests/bpf: Do not use sign-file as testcase
-Date:   Sun, 16 Jul 2023 21:39:41 +0200
-Message-ID: <20230716194952.076668254@linuxfoundation.org>
+Subject: [PATCH 6.4 129/800] regulator: rk808: fix asynchronous probing
+Date:   Sun, 16 Jul 2023 21:39:42 +0200
+Message-ID: <20230716194952.099043098@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -47,60 +46,49 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexey Gladkov <legion@kernel.org>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-[ Upstream commit f04a32b2c5b539e3c097cb5c7c1df12a8f4a0cf0 ]
+[ Upstream commit 1b9e86d445a0f5c6d8dcbaf11508cb5dfb5848a8 ]
 
-The sign-file utility (from scripts/) is used in prog_tests/verify_pkcs7_sig.c,
-but the utility should not be called as a test. Executing this utility produces
-the following error:
+If the probe routine fails with -EPROBE_DEFER after taking over the
+OF node from its parent driver, reprobing triggers pinctrl_bind_pins()
+and that will fail. Fix this by setting of_node_reused, so that the
+device does not try to setup pin muxing.
 
-  selftests: /linux/tools/testing/selftests/bpf: urandom_read
-  ok 16 selftests: /linux/tools/testing/selftests/bpf: urandom_read
+For me this always happens once the driver is marked to prefer async
+probing and never happens without that flag.
 
-  selftests: /linux/tools/testing/selftests/bpf: sign-file
-  not ok 17 selftests: /linux/tools/testing/selftests/bpf: sign-file # exit=2
-
-Also, urandom_read is mistakenly used as a test. It does not lead to an error,
-but should be moved over to TEST_GEN_FILES as well. The empty TEST_CUSTOM_PROGS
-can then be removed.
-
-Fixes: fc97590668ae ("selftests/bpf: Add test for bpf_verify_pkcs7_signature() kfunc")
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Link: https://lore.kernel.org/bpf/ZEuWFk3QyML9y5QQ@example.org
-Link: https://lore.kernel.org/bpf/88e3ab23029d726a2703adcf6af8356f7a2d3483.1684316821.git.legion@kernel.org
+Fixes: 259b93b21a9f ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in 4.14")
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20230504173618.142075-12-sebastian.reichel@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/regulator/rk808-regulator.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index 28d2c77262bed..538df8fb8c42b 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -88,8 +88,7 @@ TEST_GEN_PROGS_EXTENDED = test_sock_addr test_skb_cgroup_id_user \
- 	xskxceiver xdp_redirect_multi xdp_synproxy veristat xdp_hw_metadata \
- 	xdp_features
+diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
+index 3637e81654a8e..80ba782d89239 100644
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -1336,6 +1336,7 @@ static int rk808_regulator_probe(struct platform_device *pdev)
  
--TEST_CUSTOM_PROGS = $(OUTPUT)/urandom_read $(OUTPUT)/sign-file
--TEST_GEN_FILES += liburandom_read.so
-+TEST_GEN_FILES += liburandom_read.so urandom_read sign-file
+ 	config.dev = &pdev->dev;
+ 	config.dev->of_node = pdev->dev.parent->of_node;
++	config.dev->of_node_reused = true;
+ 	config.driver_data = pdata;
+ 	config.regmap = regmap;
  
- # Emit succinct information message describing current building step
- # $1 - generic step name (e.g., CC, LINK, etc);
 -- 
 2.39.2
 
