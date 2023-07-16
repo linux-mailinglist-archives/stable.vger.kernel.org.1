@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8C275555E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5225755319
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:15:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232492AbjGPUkO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:40:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59360 "EHLO
+        id S231600AbjGPUPY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:15:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232490AbjGPUkK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:10 -0400
+        with ESMTP id S231599AbjGPUPT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:15:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BBE0AB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06ADE1B7
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:15:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B75C960EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D9EC433C8;
-        Sun, 16 Jul 2023 20:40:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90B6160EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:15:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0227C433CC;
+        Sun, 16 Jul 2023 20:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540009;
-        bh=c826lnSD+HmaRLa1jKtAh9Jd7MoUbXZvVUCMz6jnVIM=;
+        s=korg; t=1689538518;
+        bh=sY4KMhT5t1ANyRtnt4U5bUdQCtoZnGqKkuByCo66e3w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wh4OIZ9KhVUHBFqkvWGrjMZ5djyDjLhAOulRBu9xwaoi9zt6+RtysQMRlDefchWbi
-         VuWwSkMDnDJN1hrddH+IcSCMqp3EnLUdZ4VRN0UjyuMUnl4+dqwCrKA2eqLrtl//if
-         hsi29WpgwLn8JAZKBGdBOQBVbEwbCWc116O5J80I=
+        b=RAEE8DXL0Nf5Svia2A/zVC9f1frifRe8lMo0DyomLKe4xzQsAJFcyzyfb27PC8iNh
+         Mba4NVklbmuzkmJQ/Qc39enfSzYEA1kUe/fXIVPtQTb3LdOf55FkROP/wUTW351TE0
+         hGSFxp4oHZAu2P5vIVNlY008xeVgnpe/tDwHD2Ek=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 193/591] ARM: dts: qcom: msm8974: do not use underscore in node name (again)
+Subject: [PATCH 6.4 479/800] pinctrl: microchip-sgpio: check return value of devm_kasprintf()
 Date:   Sun, 16 Jul 2023 21:45:32 +0200
-Message-ID: <20230716194928.869763106@linuxfoundation.org>
+Message-ID: <20230716195000.203884431@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,36 +57,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit 311bbc884b2edcf584b67d331be85ce43b27586f ]
+[ Upstream commit 310cd4c206cd04696ccbfd1927b5ab6973e8cc8e ]
 
-Align RPM requests node with DT schema by using hyphen instead of
-underscore.
+devm_kasprintf() returns a pointer to dynamically allocated memory.
+Pointer could be NULL in case allocation fails. Check pointer validity.
+Identified with coccinelle (kmerr.cocci script).
 
-Fixes: f300826d27be ("ARM: dts: qcom-msm8974: Sort and clean up nodes")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230410175232.22317-1-krzysztof.kozlowski@linaro.org
+Fixes: 7e5ea974e61c ("pinctrl: pinctrl-microchip-sgpio: Add pinctrl driver for Microsemi Serial GPIO")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230615105333.585304-3-claudiu.beznea@microchip.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-msm8974.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-microchip-sgpio.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
-index 7a9be0acf3f5a..c4b2e9ac24940 100644
---- a/arch/arm/boot/dts/qcom-msm8974.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
-@@ -300,7 +300,7 @@ rpm {
- 			qcom,ipc = <&apcs 8 0>;
- 			qcom,smd-edge = <15>;
- 
--			rpm_requests: rpm_requests {
-+			rpm_requests: rpm-requests {
- 				compatible = "qcom,rpm-msm8974";
- 				qcom,smd-channels = "rpm_requests";
- 
+diff --git a/drivers/pinctrl/pinctrl-microchip-sgpio.c b/drivers/pinctrl/pinctrl-microchip-sgpio.c
+index 4794602316e7d..666d8b7cdbad3 100644
+--- a/drivers/pinctrl/pinctrl-microchip-sgpio.c
++++ b/drivers/pinctrl/pinctrl-microchip-sgpio.c
+@@ -818,6 +818,9 @@ static int microchip_sgpio_register_bank(struct device *dev,
+ 	pctl_desc->name = devm_kasprintf(dev, GFP_KERNEL, "%s-%sput",
+ 					 dev_name(dev),
+ 					 bank->is_input ? "in" : "out");
++	if (!pctl_desc->name)
++		return -ENOMEM;
++
+ 	pctl_desc->pctlops = &sgpio_pctl_ops;
+ 	pctl_desc->pmxops = &sgpio_pmx_ops;
+ 	pctl_desc->confops = &sgpio_confops;
 -- 
 2.39.2
 
