@@ -2,117 +2,215 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A46175552A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57DB37552E3
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:13:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232405AbjGPUiI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:38:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58342 "EHLO
+        id S231526AbjGPUNJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:13:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232403AbjGPUiH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C493DBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:06 -0700 (PDT)
+        with ESMTP id S231524AbjGPUNI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:13:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56CEC0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:13:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F8EA60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A87FC433C7;
-        Sun, 16 Jul 2023 20:38:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5739060E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:13:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE47C433C8;
+        Sun, 16 Jul 2023 20:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539885;
-        bh=vQpHe41j9Z0+7Cxw81hEY7xP7WZhtH6uXbzvAH6n4ro=;
+        s=korg; t=1689538386;
+        bh=y7VRiLT8hSrsmV6QzmdIteHviiG4TkZZsdh5b24euI0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cklphd9DmAl63Er3nTOZrRTXLnxG4V0AAxzBF/JkMiN7Xbt4R8JftkDW3IKCAaDDt
-         1LaDI+L2fn2wZ8bziHDrTswDX3w+yX38CTD1DF4NUDSSfGl62pWBrxlkVSoXjespEE
-         idzSWc6AESSLtwWU5G4+ZX/+szSRDKH6KQ0otiHU=
+        b=cCZOEGz4P/wMCNZITEHx8jJj5q8jvFIVr0HIjH2eAD2z9iw3EJfXfc45UKaLkp0z5
+         YclBPz7V7m0isgDiT2jv49YaQ8CUrV2Dek56JAHtfzg1mDzfORjweQJziKHteWPbBv
+         1lswUdCQti6IQ/wS6ze2oETGe2H0emcYPNE/Piag=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cambda Zhu <cambda@linux.alibaba.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Miklos Szeredi <mszeredi@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/591] ipvlan: Fix return value of ipvlan_queue_xmit()
+Subject: [PATCH 6.4 425/800] ovl: update of dentry revalidate flags after copy up
 Date:   Sun, 16 Jul 2023 21:44:38 +0200
-Message-ID: <20230716194927.467913910@linuxfoundation.org>
+Message-ID: <20230716194958.960743977@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cambda Zhu <cambda@linux.alibaba.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 8a9922e7be6d042fa00f894c376473b17a162b66 ]
+[ Upstream commit b07d5cc93e1b28df47a72c519d09d0a836043613 ]
 
-ipvlan_queue_xmit() should return NET_XMIT_XXX, but
-ipvlan_xmit_mode_l2/l3() returns rx_handler_result_t or NET_RX_XXX
-in some cases. ipvlan_rcv_frame() will only return RX_HANDLER_CONSUMED
-in ipvlan_xmit_mode_l2/l3() because 'local' is true. It's equal to
-NET_XMIT_SUCCESS. But dev_forward_skb() can return NET_RX_SUCCESS or
-NET_RX_DROP, and returning NET_RX_DROP(NET_XMIT_DROP) will increase
-both ipvlan and ipvlan->phy_dev drops counter.
+After copy up, we may need to update d_flags if upper dentry is on a
+remote fs and lower dentries are not.
 
-The skb to forward can be treated as xmitted successfully. This patch
-makes ipvlan_queue_xmit() return NET_XMIT_SUCCESS for forward skb.
+Add helpers to allow incremental update of the revalidate flags.
 
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Signed-off-by: Cambda Zhu <cambda@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230626093347.7492-1-cambda@linux.alibaba.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: bccece1ead36 ("ovl: allow remote upper")
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/overlayfs/copy_up.c   |  2 ++
+ fs/overlayfs/dir.c       |  3 +--
+ fs/overlayfs/export.c    |  3 +--
+ fs/overlayfs/namei.c     |  3 +--
+ fs/overlayfs/overlayfs.h |  6 ++++--
+ fs/overlayfs/super.c     |  2 +-
+ fs/overlayfs/util.c      | 24 ++++++++++++++++++++----
+ 7 files changed, 30 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index 2de3bd3b0c278..59e29e08398a0 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -585,7 +585,8 @@ static int ipvlan_xmit_mode_l3(struct sk_buff *skb, struct net_device *dev)
- 				consume_skb(skb);
- 				return NET_XMIT_DROP;
- 			}
--			return ipvlan_rcv_frame(addr, &skb, true);
-+			ipvlan_rcv_frame(addr, &skb, true);
-+			return NET_XMIT_SUCCESS;
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index f658cc8ea4920..95dce240ba17a 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -575,6 +575,7 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
+ 			/* Restore timestamps on parent (best effort) */
+ 			ovl_set_timestamps(ofs, upperdir, &c->pstat);
+ 			ovl_dentry_set_upper_alias(c->dentry);
++			ovl_dentry_update_reval(c->dentry, upper);
  		}
  	}
- out:
-@@ -611,7 +612,8 @@ static int ipvlan_xmit_mode_l2(struct sk_buff *skb, struct net_device *dev)
- 					consume_skb(skb);
- 					return NET_XMIT_DROP;
- 				}
--				return ipvlan_rcv_frame(addr, &skb, true);
-+				ipvlan_rcv_frame(addr, &skb, true);
-+				return NET_XMIT_SUCCESS;
- 			}
- 		}
- 		skb = skb_share_check(skb, GFP_ATOMIC);
-@@ -623,7 +625,8 @@ static int ipvlan_xmit_mode_l2(struct sk_buff *skb, struct net_device *dev)
- 		 * the skb for the main-dev. At the RX side we just return
- 		 * RX_PASS for it to be processed further on the stack.
- 		 */
--		return dev_forward_skb(ipvlan->phy_dev, skb);
-+		dev_forward_skb(ipvlan->phy_dev, skb);
-+		return NET_XMIT_SUCCESS;
+ 	inode_unlock(udir);
+@@ -894,6 +895,7 @@ static int ovl_do_copy_up(struct ovl_copy_up_ctx *c)
+ 		inode_unlock(udir);
  
- 	} else if (is_multicast_ether_addr(eth->h_dest)) {
- 		skb_reset_mac_header(skb);
+ 		ovl_dentry_set_upper_alias(c->dentry);
++		ovl_dentry_update_reval(c->dentry, ovl_dentry_upper(c->dentry));
+ 	}
+ 
+ out:
+diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
+index fc25fb95d5fc0..9be52d8013c83 100644
+--- a/fs/overlayfs/dir.c
++++ b/fs/overlayfs/dir.c
+@@ -269,8 +269,7 @@ static int ovl_instantiate(struct dentry *dentry, struct inode *inode,
+ 
+ 	ovl_dir_modified(dentry->d_parent, false);
+ 	ovl_dentry_set_upper_alias(dentry);
+-	ovl_dentry_update_reval(dentry, newdentry,
+-			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_reval(dentry, newdentry);
+ 
+ 	if (!hardlink) {
+ 		/*
+diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+index defd4e231ad2c..5c36fb3a7bab1 100644
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -326,8 +326,7 @@ static struct dentry *ovl_obtain_alias(struct super_block *sb,
+ 	if (upper_alias)
+ 		ovl_dentry_set_upper_alias(dentry);
+ 
+-	ovl_dentry_update_reval(dentry, upper,
+-			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_reval(dentry, upper);
+ 
+ 	return d_instantiate_anon(dentry, inode);
+ 
+diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+index cfb3420b7df0e..100a492d2b2a6 100644
+--- a/fs/overlayfs/namei.c
++++ b/fs/overlayfs/namei.c
+@@ -1122,8 +1122,7 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
+ 			ovl_set_flag(OVL_UPPERDATA, inode);
+ 	}
+ 
+-	ovl_dentry_update_reval(dentry, upperdentry,
+-			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_reval(dentry, upperdentry);
+ 
+ 	revert_creds(old_cred);
+ 	if (origin_path) {
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index 4d0b278f5630e..e100c55bb924a 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -375,8 +375,10 @@ bool ovl_index_all(struct super_block *sb);
+ bool ovl_verify_lower(struct super_block *sb);
+ struct ovl_entry *ovl_alloc_entry(unsigned int numlower);
+ bool ovl_dentry_remote(struct dentry *dentry);
+-void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *upperdentry,
+-			     unsigned int mask);
++void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *realdentry);
++void ovl_dentry_init_reval(struct dentry *dentry, struct dentry *upperdentry);
++void ovl_dentry_init_flags(struct dentry *dentry, struct dentry *upperdentry,
++			   unsigned int mask);
+ bool ovl_dentry_weird(struct dentry *dentry);
+ enum ovl_path_type ovl_path_type(struct dentry *dentry);
+ void ovl_path_upper(struct dentry *dentry, struct path *path);
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index f97ad8b40dbbd..ae1058fbfb5b2 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1877,7 +1877,7 @@ static struct dentry *ovl_get_root(struct super_block *sb,
+ 	ovl_dentry_set_flag(OVL_E_CONNECTED, root);
+ 	ovl_set_upperdata(d_inode(root));
+ 	ovl_inode_init(d_inode(root), &oip, ino, fsid);
+-	ovl_dentry_update_reval(root, upperdentry, DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_flags(root, upperdentry, DCACHE_OP_WEAK_REVALIDATE);
+ 
+ 	return root;
+ }
+diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+index 923d66d131c16..6a0652bd51f24 100644
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -94,14 +94,30 @@ struct ovl_entry *ovl_alloc_entry(unsigned int numlower)
+ 	return oe;
+ }
+ 
++#define OVL_D_REVALIDATE (DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE)
++
+ bool ovl_dentry_remote(struct dentry *dentry)
+ {
+-	return dentry->d_flags &
+-		(DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	return dentry->d_flags & OVL_D_REVALIDATE;
++}
++
++void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *realdentry)
++{
++	if (!ovl_dentry_remote(realdentry))
++		return;
++
++	spin_lock(&dentry->d_lock);
++	dentry->d_flags |= realdentry->d_flags & OVL_D_REVALIDATE;
++	spin_unlock(&dentry->d_lock);
++}
++
++void ovl_dentry_init_reval(struct dentry *dentry, struct dentry *upperdentry)
++{
++	return ovl_dentry_init_flags(dentry, upperdentry, OVL_D_REVALIDATE);
+ }
+ 
+-void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *upperdentry,
+-			     unsigned int mask)
++void ovl_dentry_init_flags(struct dentry *dentry, struct dentry *upperdentry,
++			   unsigned int mask)
+ {
+ 	struct ovl_entry *oe = OVL_E(dentry);
+ 	unsigned int i, flags = 0;
 -- 
 2.39.2
 
