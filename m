@@ -2,104 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40733755567
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C558755332
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232505AbjGPUkg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59848 "EHLO
+        id S231644AbjGPUQc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:16:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232517AbjGPUkf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF77F103
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:32 -0700 (PDT)
+        with ESMTP id S231652AbjGPUQb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51333E5B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1824A60DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2963AC433C8;
-        Sun, 16 Jul 2023 20:40:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AC0A60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4F3C433C9;
+        Sun, 16 Jul 2023 20:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540031;
-        bh=Clv1TpHpdJtJIs0mBmASaN96j7+PyDoTAXD5bAg1pUc=;
+        s=korg; t=1689538584;
+        bh=Das22z4GLBnvRGB9TZFJek2UaW1AHz7fRpx9uomxse8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U9h57X4pNbvSyzzw+pRz7o2U6RhV5/UDKgPHWdC2ktNQqwIqDw9bTUCvkTO08FSYm
-         Vijyps0DrAWbdsbX78NaNwbeId6GAeXHKqN4Koodh0Zr7VWzGNZx6tQSq4wUFmXPF/
-         NF8SfnYBJjW65HEWXKzQX/dj2wWofEqRpD9zRegA=
+        b=09t5lsrUenCxigNk3RTt0JbnTlx6pMXQeZHCf69FQfx3QZ6h/xUcUm8OC60UqejBn
+         eEcXiqonTt+1yACSiN4tr0/+YqDPyMXmj2i+BGi+Nl+mxZcW/0FNY64YB/Sy8xFwdh
+         ERD2J48WnauyE29H5sbKqvBn3DgDgUWST2JLQ/fE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Hans-Frieder Vogt <hfdevel@gmx.net>
-Subject: [PATCH 6.1 218/591] ARM: dts: meson8: correct uart_B and uart_C clock references
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 504/800] crypto: marvell/cesa - Fix type mismatch warning
 Date:   Sun, 16 Jul 2023 21:45:57 +0200
-Message-ID: <20230716194929.511149059@linuxfoundation.org>
+Message-ID: <20230716195000.800645251@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 98b503c7fb13a17a47d8ebf15fa8f7c10118e75c ]
+[ Upstream commit efbc7764c4446566edb76ca05e903b5905673d2e ]
 
-On Meson8 uart_B and uart_C do not work, because they are relying on
-incorrect clocks. Change the references of pclk to the correct CLKID
-(UART1 for uart_B and UART2 for uart_C), to allow use of the two uarts.
+Commit df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3") uncovered
+a type mismatch in cesa 3des support that leads to a memcpy beyond the
+end of a structure:
 
-This was originally reported by Hans-Frieder Vogt for Meson8b [0], but
-the same bug is also present in meson8.dtsi
+In function 'fortify_memcpy_chk',
+    inlined from 'mv_cesa_des3_ede_setkey' at drivers/crypto/marvell/cesa/cipher.c:307:2:
+include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  583 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-[0] https://lore.kernel.org/linux-amlogic/trinity-bf20bcb9-790b-4ab9-99e3-0831ef8257f4-1680878185420@3c-app-gmx-bap55/
+This is probably harmless as the actual data that is copied has the correct
+type, but clearly worth fixing nonetheless.
 
-Fixes: 57007bfb5469 ("ARM: dts: meson8: Fix the UART device-tree schema validation")
-Reported-by: Hans-Frieder Vogt <hfdevel@gmx.net> # for meson8b.dtsi
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20230516203029.1031174-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 4ada48397823 ("crypto: marvell/cesa - add Triple-DES support")
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/meson8.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/marvell/cesa/cipher.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/meson8.dtsi b/arch/arm/boot/dts/meson8.dtsi
-index 0f8bac8bac8bb..f9da7faa2186b 100644
---- a/arch/arm/boot/dts/meson8.dtsi
-+++ b/arch/arm/boot/dts/meson8.dtsi
-@@ -749,13 +749,13 @@ &uart_A {
+diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
+index c6f2fa753b7c0..0f37dfd42d850 100644
+--- a/drivers/crypto/marvell/cesa/cipher.c
++++ b/drivers/crypto/marvell/cesa/cipher.c
+@@ -297,7 +297,7 @@ static int mv_cesa_des_setkey(struct crypto_skcipher *cipher, const u8 *key,
+ static int mv_cesa_des3_ede_setkey(struct crypto_skcipher *cipher,
+ 				   const u8 *key, unsigned int len)
+ {
+-	struct mv_cesa_des_ctx *ctx = crypto_skcipher_ctx(cipher);
++	struct mv_cesa_des3_ctx *ctx = crypto_skcipher_ctx(cipher);
+ 	int err;
  
- &uart_B {
- 	compatible = "amlogic,meson8-uart";
--	clocks = <&xtal>, <&clkc CLKID_UART0>, <&clkc CLKID_CLK81>;
-+	clocks = <&xtal>, <&clkc CLKID_UART1>, <&clkc CLKID_CLK81>;
- 	clock-names = "xtal", "pclk", "baud";
- };
- 
- &uart_C {
- 	compatible = "amlogic,meson8-uart";
--	clocks = <&xtal>, <&clkc CLKID_UART0>, <&clkc CLKID_CLK81>;
-+	clocks = <&xtal>, <&clkc CLKID_UART2>, <&clkc CLKID_CLK81>;
- 	clock-names = "xtal", "pclk", "baud";
- };
- 
+ 	err = verify_skcipher_des3_key(cipher, key);
 -- 
 2.39.2
 
