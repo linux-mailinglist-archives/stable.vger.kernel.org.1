@@ -2,94 +2,172 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47676755681
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E48EE755426
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232879AbjGPUvP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:51:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39774 "EHLO
+        id S232017AbjGPU1M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:27:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232873AbjGPUvN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:51:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 356A1E1
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:13 -0700 (PDT)
+        with ESMTP id S232014AbjGPU1L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6264B9F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:27:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF76D60DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC94C433C8;
-        Sun, 16 Jul 2023 20:51:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 005D660EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:27:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1FBC433C9;
+        Sun, 16 Jul 2023 20:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540672;
-        bh=dcZe0kwwzgnQiIyhOpmQ+jtE7EzkbofqGzpTj2WWe58=;
+        s=korg; t=1689539229;
+        bh=lpKjYR8YtBNqgcYQ1biYaEaYfki/fu2fE6kWjePgTPw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WUehK6hVlkfFUrBS46MId2cSBCg0vZsYyGCwow3sYd1mAOJ9wMS0ht4jgN75fwJx2
-         1aiewUj8J1R7i7MbEwdO3ydfq3bjG/JOhcPxwCRrY/7EDTbfIajCcRVMFxuqQ9gEQI
-         hbwX+hjvyWd5PdjHjqrngum5JJd327hzzv9fSQUg=
+        b=BM3lRIoKYaLmYxidBgZFVCSud/e/TcZLmUEoqCzrePQCeeFtzCF6NbAZMYN3E5++U
+         whXnOGb8vKdeKgTZTVCrxhx2zVdUq/551kMeT9OFVjtP8mAW/FqqT7Uzo7NqFxps0d
+         RBJvx2GuqBuVw2wSJqojdWlIzvyTYbEAkm05AO7Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 447/591] mfd: stmfx: Nullify stmfx->vdd in case of error
-Date:   Sun, 16 Jul 2023 21:49:46 +0200
-Message-ID: <20230716194935.473307142@linuxfoundation.org>
+        patches@lists.linux.dev, Mingzhe Zou <mingzhe.zou@easystack.cn>,
+        Coly Li <colyli@suse.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 734/800] bcache: fixup btree_cache_wait list damage
+Date:   Sun, 16 Jul 2023 21:49:47 +0200
+Message-ID: <20230716195006.164974281@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Mingzhe Zou <mingzhe.zou@easystack.cn>
 
-[ Upstream commit 7c81582c0bccb4757186176f0ee12834597066ad ]
+commit f0854489fc07d2456f7cc71a63f4faf9c716ffbe upstream.
 
-Nullify stmfx->vdd in case devm_regulator_get_optional() returns an error.
-And simplify code by returning an error only if return code is not -ENODEV,
-which means there is no vdd regulator and it is not an issue.
+We get a kernel crash about "list_add corruption. next->prev should be
+prev (ffff9c801bc01210), but was ffff9c77b688237c.
+(next=ffffae586d8afe68)."
 
-Fixes: d75846ed08e6 ("mfd: stmfx: Fix dev_err_probe() call in stmfx_chip_init()")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://lore.kernel.org/r/20230609092804.793100-2-amelie.delaunay@foss.st.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+crash> struct list_head 0xffff9c801bc01210
+struct list_head {
+  next = 0xffffae586d8afe68,
+  prev = 0xffffae586d8afe68
+}
+crash> struct list_head 0xffff9c77b688237c
+struct list_head {
+  next = 0x0,
+  prev = 0x0
+}
+crash> struct list_head 0xffffae586d8afe68
+struct list_head struct: invalid kernel virtual address: ffffae586d8afe68  type: "gdb_readmem_callback"
+Cannot access memory at address 0xffffae586d8afe68
+
+[230469.019492] Call Trace:
+[230469.032041]  prepare_to_wait+0x8a/0xb0
+[230469.044363]  ? bch_btree_keys_free+0x6c/0xc0 [escache]
+[230469.056533]  mca_cannibalize_lock+0x72/0x90 [escache]
+[230469.068788]  mca_alloc+0x2ae/0x450 [escache]
+[230469.080790]  bch_btree_node_get+0x136/0x2d0 [escache]
+[230469.092681]  bch_btree_check_thread+0x1e1/0x260 [escache]
+[230469.104382]  ? finish_wait+0x80/0x80
+[230469.115884]  ? bch_btree_check_recurse+0x1a0/0x1a0 [escache]
+[230469.127259]  kthread+0x112/0x130
+[230469.138448]  ? kthread_flush_work_fn+0x10/0x10
+[230469.149477]  ret_from_fork+0x35/0x40
+
+bch_btree_check_thread() and bch_dirty_init_thread() may call
+mca_cannibalize() to cannibalize other cached btree nodes. Only one thread
+can do it at a time, so the op of other threads will be added to the
+btree_cache_wait list.
+
+We must call finish_wait() to remove op from btree_cache_wait before free
+it's memory address. Otherwise, the list will be damaged. Also should call
+bch_cannibalize_unlock() to release the btree_cache_alloc_lock and wake_up
+other waiters.
+
+Fixes: 8e7102273f59 ("bcache: make bch_btree_check() to be multithreaded")
+Fixes: b144e45fc576 ("bcache: make bch_sectors_dirty_init() to be multithreaded")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20230615121223.22502-7-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/stmfx.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/md/bcache/btree.c     |   11 ++++++++++-
+ drivers/md/bcache/btree.h     |    1 +
+ drivers/md/bcache/writeback.c |   10 ++++++++++
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/stmfx.c b/drivers/mfd/stmfx.c
-index 61a8aad564a4e..b1ecd85ad2a8a 100644
---- a/drivers/mfd/stmfx.c
-+++ b/drivers/mfd/stmfx.c
-@@ -330,9 +330,8 @@ static int stmfx_chip_init(struct i2c_client *client)
- 	stmfx->vdd = devm_regulator_get_optional(&client->dev, "vdd");
- 	ret = PTR_ERR_OR_ZERO(stmfx->vdd);
- 	if (ret) {
--		if (ret == -ENODEV)
--			stmfx->vdd = NULL;
--		else
-+		stmfx->vdd = NULL;
-+		if (ret != -ENODEV)
- 			return dev_err_probe(&client->dev, ret, "Failed to get VDD regulator\n");
- 	}
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -885,7 +885,7 @@ static struct btree *mca_cannibalize(str
+  * cannibalize_bucket() will take. This means every time we unlock the root of
+  * the btree, we need to release this lock if we have it held.
+  */
+-static void bch_cannibalize_unlock(struct cache_set *c)
++void bch_cannibalize_unlock(struct cache_set *c)
+ {
+ 	spin_lock(&c->btree_cannibalize_lock);
+ 	if (c->btree_cache_alloc_lock == current) {
+@@ -1968,6 +1968,15 @@ static int bch_btree_check_thread(void *
+ 			c->gc_stats.nodes++;
+ 			bch_btree_op_init(&op, 0);
+ 			ret = bcache_btree(check_recurse, p, c->root, &op);
++			/*
++			 * The op may be added to cache_set's btree_cache_wait
++			 * in mca_cannibalize(), must ensure it is removed from
++			 * the list and release btree_cache_alloc_lock before
++			 * free op memory.
++			 * Otherwise, the btree_cache_wait will be damaged.
++			 */
++			bch_cannibalize_unlock(c);
++			finish_wait(&c->btree_cache_wait, &(&op)->wait);
+ 			if (ret)
+ 				goto out;
+ 		}
+--- a/drivers/md/bcache/btree.h
++++ b/drivers/md/bcache/btree.h
+@@ -282,6 +282,7 @@ void bch_initial_gc_finish(struct cache_
+ void bch_moving_gc(struct cache_set *c);
+ int bch_btree_check(struct cache_set *c);
+ void bch_initial_mark_key(struct cache_set *c, int level, struct bkey *k);
++void bch_cannibalize_unlock(struct cache_set *c);
  
--- 
-2.39.2
-
+ static inline void wake_up_gc(struct cache_set *c)
+ {
+--- a/drivers/md/bcache/writeback.c
++++ b/drivers/md/bcache/writeback.c
+@@ -890,6 +890,16 @@ static int bch_root_node_dirty_init(stru
+ 	if (ret < 0)
+ 		pr_warn("sectors dirty init failed, ret=%d!\n", ret);
+ 
++	/*
++	 * The op may be added to cache_set's btree_cache_wait
++	 * in mca_cannibalize(), must ensure it is removed from
++	 * the list and release btree_cache_alloc_lock before
++	 * free op memory.
++	 * Otherwise, the btree_cache_wait will be damaged.
++	 */
++	bch_cannibalize_unlock(c);
++	finish_wait(&c->btree_cache_wait, &(&op.op)->wait);
++
+ 	return ret;
+ }
+ 
 
 
