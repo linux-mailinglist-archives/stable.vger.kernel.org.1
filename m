@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D969475534F
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9701755379
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231679AbjGPURi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43474 "EHLO
+        id S231735AbjGPUT0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:19:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231673AbjGPURh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:37 -0400
+        with ESMTP id S231743AbjGPUTZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17C5DC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18344126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A1E3960EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4D4C433C8;
-        Sun, 16 Jul 2023 20:17:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A4C5960E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E8DC433C8;
+        Sun, 16 Jul 2023 20:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538655;
-        bh=TXdBClRXVvi48yJrwfyN5ghEtX7rxVGUBD6tVegiZis=;
+        s=korg; t=1689538764;
+        bh=upnEBz1ZGhx67M8PPI0EKNw8HzMCoyrFtjSApqaDWcg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vr7uO29YvEI9mm6Dl4mj88N5vdmDCoCTSQlTEbUK1VjEXxDVDaNYNeKb266yXHaxu
-         krCjtypX7ijHRZ8l6gUSwyAgXP+YkAtAl6RHeViVFIZqfkYU7qtmvNY9FmfNohghXV
-         ugQ2vWVRSsAhyAR9lf+nAlkbCmm1//bauSQOCwzY=
+        b=bTprwubtBpvJIoK1jXWUjLO61rmU9/twfJQzPUviZmY6QtqqWfBhui1RW7lig3Ade
+         SX1UHUS/ItMmrf72j4txH7tmD2dB9kyx8Z3A6sBzALaGaQfqmwdG/9TDQLw143vOSW
+         ERnrBudHaRPDFG/ZCnO2WQxptOGt8E3AxjG92vbs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@infradead.org>,
-        Demi Marie Obenour <demi@invisiblethingslab.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 527/800] block: increment diskseq on all media change events
-Date:   Sun, 16 Jul 2023 21:46:20 +0200
-Message-ID: <20230716195001.334797800@linuxfoundation.org>
+        patches@lists.linux.dev, Christian Loehle <cloehle@hyperstone.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.4 528/800] mmc: block: ioctl: do write error check for spi
+Date:   Sun, 16 Jul 2023 21:46:21 +0200
+Message-ID: <20230716195001.358024018@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -55,55 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Demi Marie Obenour <demi@invisiblethingslab.com>
+From: Christian Loehle <CLoehle@hyperstone.com>
 
-commit b90ecc0379eb7bbe79337b0c7289390a98752646 upstream.
+commit 568898cbc8b570311b3b94a3202b8233f4168144 upstream.
 
-Currently, associating a loop device with a different file descriptor
-does not increment its diskseq.  This allows the following race
-condition:
+SPI doesn't have the usual PROG path we can check for error bits
+after moving back to TRAN. Instead it holds the line LOW until
+completion. We can then check if the card shows any errors or
+is in IDLE state, indicating the line is no longer LOW because
+the card was reset.
 
-1. Program X opens a loop device
-2. Program X gets the diskseq of the loop device.
-3. Program X associates a file with the loop device.
-4. Program X passes the loop device major, minor, and diskseq to
-   something.
-5. Program X exits.
-6. Program Y detaches the file from the loop device.
-7. Program Y attaches a different file to the loop device.
-8. The opener finally gets around to opening the loop device and checks
-   that the diskseq is what it expects it to be.  Even though the
-   diskseq is the expected value, the result is that the opener is
-   accessing the wrong file.
-
->From discussions with Christoph Hellwig, it appears that
-disk_force_media_change() was supposed to call inc_diskseq(), but in
-fact it does not.  Adding a Fixes: tag to indicate this.  Christoph's
-Reported-by is because he stated that disk_force_media_change()
-calls inc_diskseq(), which is what led me to discover that it should but
-does not.
-
-Reported-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
-Fixes: e6138dc12de9 ("block: add a helper to raise a media changed event")
-Cc: stable@vger.kernel.org # 5.15+
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230607170837.1559-1-demi@invisiblethingslab.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/55920f880c9742f486f64aa44e25508e@hyperstone.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/disk-events.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/core/block.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/block/disk-events.c
-+++ b/block/disk-events.c
-@@ -307,6 +307,7 @@ bool disk_force_media_change(struct gend
- 	if (!(events & DISK_EVENT_MEDIA_CHANGE))
- 		return false;
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -178,6 +178,7 @@ static void mmc_blk_rw_rq_prep(struct mm
+ 			       int recovery_mode,
+ 			       struct mmc_queue *mq);
+ static void mmc_blk_hsq_req_done(struct mmc_request *mrq);
++static int mmc_spi_err_check(struct mmc_card *card);
  
-+	inc_diskseq(disk);
- 	if (__invalidate_device(disk->part0, true))
- 		pr_warn("VFS: busy inodes on changed media %s\n",
- 			disk->disk_name);
+ static struct mmc_blk_data *mmc_blk_get(struct gendisk *disk)
+ {
+@@ -608,6 +609,11 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	if ((card->host->caps & MMC_CAP_WAIT_WHILE_BUSY) && use_r1b_resp)
+ 		return 0;
+ 
++	if (mmc_host_is_spi(card->host)) {
++		if (idata->ic.write_flag || r1b_resp || cmd.flags & MMC_RSP_SPI_BUSY)
++			return mmc_spi_err_check(card);
++		return err;
++	}
+ 	/* Ensure RPMB/R1B command has completed by polling with CMD13. */
+ 	if (idata->rpmb || r1b_resp)
+ 		err = mmc_poll_for_busy(card, busy_timeout_ms, false,
 
 
