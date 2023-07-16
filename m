@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57F35755582
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1759875534E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232546AbjGPUlc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:41:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60764 "EHLO
+        id S231655AbjGPURf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:17:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232544AbjGPUlc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 557EB9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:31 -0700 (PDT)
+        with ESMTP id S231673AbjGPURe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CEEA1B7
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8B5660EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072B7C433C7;
-        Sun, 16 Jul 2023 20:41:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C771760EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C38C433C8;
+        Sun, 16 Jul 2023 20:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540090;
-        bh=/z0e6RnTQ8pO/7M5QlMCBWMHlCU2JTqhNZlH91hmfCc=;
+        s=korg; t=1689538652;
+        bh=W9lKpO2hpnjOaCep9TJPM21+VDoQMnHx66l/UlLwexw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NkDvLo2UQ/cwLU47QQuG+TArkWsfxBZwbWrlnbsDPZZKnG5d5J0PmKpKP3KZu1kgh
-         jcjoP3hxDBLurSayp5QF4Qhu6hPwyFiMO2wrToJ4kUI5ddh9TQYdGM4cZ2lgq7GEvI
-         kfHzMXclBbzrJ5Pwkyp5tZoFQmi9oQEOrnwLKrK4=
+        b=qB6yoR6t3uFcp8jekp3BQ8F5rQUyT2EA7JIzlOGVROW1R+49+j4WTC6k0QL0vMDiB
+         MNv3c4kYdnQuCmRxDrN7ALHFEPP8j5RwaU1czxOzoMnypFREsHKTpCoiqagTEex12q
+         7LuvKMUWvQ417I9ee5Vv5M+0mvQnEtKDKsTj2sag=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 240/591] drm/amd/display: Fix artifacting on eDP panels when engaging freesync video mode
+        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 526/800] block: change all __u32 annotations to __be32 in affs_hardblocks.h
 Date:   Sun, 16 Jul 2023 21:46:19 +0200
-Message-ID: <20230716194930.077357106@linuxfoundation.org>
+Message-ID: <20230716195001.311308540@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,46 +57,142 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-[ Upstream commit b18f05a0666aecd5cb19c26a8305bcfa4e9d6502 ]
+commit 95a55437dc49fb3342c82e61f5472a71c63d9ed0 upstream.
 
-[Why]
-When freesync video mode is enabled, switching resolution from native
-mode to one of the freesync video compatible modes can trigger continous
-artifacts on some eDP panels when running under KDE. The articating can be seen in the
-attached bug report.
+The Amiga partition parser module uses signed int for partition sector
+address and count, which will overflow for disks larger than 1 TB.
 
-[How]
-Fix this by restricting updates that require full commit by using the same checks
-for stream and scaling changes in the the enable pass of dm_update_crtc_state()
-along with the check for compatible timings for freesync vide mode.
+Use u64 as type for sector address and size to allow using disks up to
+2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+format allows to specify disk sizes up to 2^128 bytes (though native
+OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+u64 overflow carefully to protect against overflowing sector_t.
 
-Bug: https://gitlab.freedesktop.org/drm/amd/-/issues/2162
-Fixes: da5e14909776 ("drm/amd/display: Fix hang when skipping modeset")
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bug was reported originally in 2012, and the fix was created by
+the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+discussed and reviewed on linux-m68k at that time but never officially
+submitted (now resubmitted as patch 1 of this series).
+
+Patch 3 (this series) adds additional error checking and warning
+messages. One of the error checks now makes use of the previously
+unused rdb_CylBlocks field, which causes a 'sparse' warning
+(cast to restricted __be32).
+
+Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
+on-disk format of RDB and partition blocks is always big endian.
+
+Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20230620201725.7020-3-schmitzmic@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/uapi/linux/affs_hardblocks.h |   68 +++++++++++++++++------------------
+ 1 file changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 91c308cf27eb2..b854eec2787e2 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8873,6 +8873,8 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
+--- a/include/uapi/linux/affs_hardblocks.h
++++ b/include/uapi/linux/affs_hardblocks.h
+@@ -7,42 +7,42 @@
+ /* Just the needed definitions for the RDB of an Amiga HD. */
  
- 		/* Now check if we should set freesync video mode */
- 		if (amdgpu_freesync_vid_mode && dm_new_crtc_state->stream &&
-+		    dc_is_stream_unchanged(new_stream, dm_old_crtc_state->stream) &&
-+		    dc_is_stream_scaling_unchanged(new_stream, dm_old_crtc_state->stream) &&
- 		    is_timing_unchanged_for_freesync(new_crtc_state,
- 						     old_crtc_state)) {
- 			new_crtc_state->mode_changed = false;
--- 
-2.39.2
-
+ struct RigidDiskBlock {
+-	__u32	rdb_ID;
++	__be32	rdb_ID;
+ 	__be32	rdb_SummedLongs;
+-	__s32	rdb_ChkSum;
+-	__u32	rdb_HostID;
++	__be32	rdb_ChkSum;
++	__be32	rdb_HostID;
+ 	__be32	rdb_BlockBytes;
+-	__u32	rdb_Flags;
+-	__u32	rdb_BadBlockList;
++	__be32	rdb_Flags;
++	__be32	rdb_BadBlockList;
+ 	__be32	rdb_PartitionList;
+-	__u32	rdb_FileSysHeaderList;
+-	__u32	rdb_DriveInit;
+-	__u32	rdb_Reserved1[6];
+-	__u32	rdb_Cylinders;
+-	__u32	rdb_Sectors;
+-	__u32	rdb_Heads;
+-	__u32	rdb_Interleave;
+-	__u32	rdb_Park;
+-	__u32	rdb_Reserved2[3];
+-	__u32	rdb_WritePreComp;
+-	__u32	rdb_ReducedWrite;
+-	__u32	rdb_StepRate;
+-	__u32	rdb_Reserved3[5];
+-	__u32	rdb_RDBBlocksLo;
+-	__u32	rdb_RDBBlocksHi;
+-	__u32	rdb_LoCylinder;
+-	__u32	rdb_HiCylinder;
+-	__u32	rdb_CylBlocks;
+-	__u32	rdb_AutoParkSeconds;
+-	__u32	rdb_HighRDSKBlock;
+-	__u32	rdb_Reserved4;
++	__be32	rdb_FileSysHeaderList;
++	__be32	rdb_DriveInit;
++	__be32	rdb_Reserved1[6];
++	__be32	rdb_Cylinders;
++	__be32	rdb_Sectors;
++	__be32	rdb_Heads;
++	__be32	rdb_Interleave;
++	__be32	rdb_Park;
++	__be32	rdb_Reserved2[3];
++	__be32	rdb_WritePreComp;
++	__be32	rdb_ReducedWrite;
++	__be32	rdb_StepRate;
++	__be32	rdb_Reserved3[5];
++	__be32	rdb_RDBBlocksLo;
++	__be32	rdb_RDBBlocksHi;
++	__be32	rdb_LoCylinder;
++	__be32	rdb_HiCylinder;
++	__be32	rdb_CylBlocks;
++	__be32	rdb_AutoParkSeconds;
++	__be32	rdb_HighRDSKBlock;
++	__be32	rdb_Reserved4;
+ 	char	rdb_DiskVendor[8];
+ 	char	rdb_DiskProduct[16];
+ 	char	rdb_DiskRevision[4];
+ 	char	rdb_ControllerVendor[8];
+ 	char	rdb_ControllerProduct[16];
+ 	char	rdb_ControllerRevision[4];
+-	__u32	rdb_Reserved5[10];
++	__be32	rdb_Reserved5[10];
+ };
+ 
+ #define	IDNAME_RIGIDDISK	0x5244534B	/* "RDSK" */
+@@ -50,16 +50,16 @@ struct RigidDiskBlock {
+ struct PartitionBlock {
+ 	__be32	pb_ID;
+ 	__be32	pb_SummedLongs;
+-	__s32	pb_ChkSum;
+-	__u32	pb_HostID;
++	__be32	pb_ChkSum;
++	__be32	pb_HostID;
+ 	__be32	pb_Next;
+-	__u32	pb_Flags;
+-	__u32	pb_Reserved1[2];
+-	__u32	pb_DevFlags;
++	__be32	pb_Flags;
++	__be32	pb_Reserved1[2];
++	__be32	pb_DevFlags;
+ 	__u8	pb_DriveName[32];
+-	__u32	pb_Reserved2[15];
++	__be32	pb_Reserved2[15];
+ 	__be32	pb_Environment[17];
+-	__u32	pb_EReserved[15];
++	__be32	pb_EReserved[15];
+ };
+ 
+ #define	IDNAME_PARTITION	0x50415254	/* "PART" */
 
 
