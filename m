@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1759875534E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C841C755584
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231655AbjGPURf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:17:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43428 "EHLO
+        id S232547AbjGPUli (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:41:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231673AbjGPURe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CEEA1B7
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:33 -0700 (PDT)
+        with ESMTP id S232544AbjGPUli (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07A0CD9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C771760EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C38C433C8;
-        Sun, 16 Jul 2023 20:17:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A56760EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EA6C433C7;
+        Sun, 16 Jul 2023 20:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538652;
-        bh=W9lKpO2hpnjOaCep9TJPM21+VDoQMnHx66l/UlLwexw=;
+        s=korg; t=1689540096;
+        bh=eChpkFqjQpgHo+0kp79sDAgmC8+UC7KJ0eA+G6EKAcQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qB6yoR6t3uFcp8jekp3BQ8F5rQUyT2EA7JIzlOGVROW1R+49+j4WTC6k0QL0vMDiB
-         MNv3c4kYdnQuCmRxDrN7ALHFEPP8j5RwaU1czxOzoMnypFREsHKTpCoiqagTEex12q
-         7LuvKMUWvQ417I9ee5Vv5M+0mvQnEtKDKsTj2sag=
+        b=m2i0GvGwjkqhg+aZ/zDe9tXCyVqO06aA+fC4i9uF5Ou9AAIW3WdtELqWzNuVVxauB
+         qeyLb2pcyRGS9WCBJLJRyigMT9mo6yXTrvNx1HkVE0YOjf05hDqQUeqFcE8AuV6xVT
+         DFIeQGI3IS1prtcPN8hCrgav2TCCMNSkicB6r72c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 526/800] block: change all __u32 annotations to __be32 in affs_hardblocks.h
-Date:   Sun, 16 Jul 2023 21:46:19 +0200
-Message-ID: <20230716195001.311308540@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 241/591] drm/radeon: fix possible division-by-zero errors
+Date:   Sun, 16 Jul 2023 21:46:20 +0200
+Message-ID: <20230716194930.103595086@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,142 +56,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Schmitz <schmitzmic@gmail.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 95a55437dc49fb3342c82e61f5472a71c63d9ed0 upstream.
+[ Upstream commit 1becc57cd1a905e2aa0e1eca60d2a37744525c4a ]
 
-The Amiga partition parser module uses signed int for partition sector
-address and count, which will overflow for disks larger than 1 TB.
+Function rv740_get_decoded_reference_divider() may return 0 due to
+unpredictable reference divider value calculated in
+radeon_atom_get_clock_dividers(). This will lead to
+division-by-zero error once that value is used as a divider
+in calculating 'clk_s'.
+While unlikely, this issue should nonetheless be prevented so add a
+sanity check for such cases by testing 'decoded_ref' value against 0.
 
-Use u64 as type for sector address and size to allow using disks up to
-2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
-format allows to specify disk sizes up to 2^128 bytes (though native
-OS limitations reduce this somewhat, to max 2^68 bytes), so check for
-u64 overflow carefully to protect against overflowing sector_t.
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-This bug was reported originally in 2012, and the fix was created by
-the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
-discussed and reviewed on linux-m68k at that time but never officially
-submitted (now resubmitted as patch 1 of this series).
+v2: minor coding style fixes (Alex)
+In practice this should actually happen as the vbios should be
+properly populated.
 
-Patch 3 (this series) adds additional error checking and warning
-messages. One of the error checks now makes use of the previously
-unused rdb_CylBlocks field, which causes a 'sparse' warning
-(cast to restricted __be32).
-
-Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
-on-disk format of RDB and partition blocks is always big endian.
-
-Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Message-ID: <201206192146.09327.Martin@lichtvoll.de>
-Cc: <stable@vger.kernel.org> # 5.2
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/20230620201725.7020-3-schmitzmic@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 66229b200598 ("drm/radeon/kms: add dpm support for rv7xx (v4)")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/affs_hardblocks.h |   68 +++++++++++++++++------------------
- 1 file changed, 34 insertions(+), 34 deletions(-)
+ drivers/gpu/drm/radeon/cypress_dpm.c | 8 ++++++--
+ drivers/gpu/drm/radeon/ni_dpm.c      | 8 ++++++--
+ drivers/gpu/drm/radeon/rv740_dpm.c   | 8 ++++++--
+ 3 files changed, 18 insertions(+), 6 deletions(-)
 
---- a/include/uapi/linux/affs_hardblocks.h
-+++ b/include/uapi/linux/affs_hardblocks.h
-@@ -7,42 +7,42 @@
- /* Just the needed definitions for the RDB of an Amiga HD. */
+diff --git a/drivers/gpu/drm/radeon/cypress_dpm.c b/drivers/gpu/drm/radeon/cypress_dpm.c
+index fdddbbaecbb74..72a0768df00f7 100644
+--- a/drivers/gpu/drm/radeon/cypress_dpm.c
++++ b/drivers/gpu/drm/radeon/cypress_dpm.c
+@@ -557,8 +557,12 @@ static int cypress_populate_mclk_value(struct radeon_device *rdev,
+ 						     ASIC_INTERNAL_MEMORY_SS, vco_freq)) {
+ 			u32 reference_clock = rdev->clock.mpll.reference_freq;
+ 			u32 decoded_ref = rv740_get_decoded_reference_divider(dividers.ref_div);
+-			u32 clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
+-			u32 clk_v = ss.percentage *
++			u32 clk_s, clk_v;
++
++			if (!decoded_ref)
++				return -EINVAL;
++			clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
++			clk_v = ss.percentage *
+ 				(0x4000 * dividers.whole_fb_div + 0x800 * dividers.frac_fb_div) / (clk_s * 625);
  
- struct RigidDiskBlock {
--	__u32	rdb_ID;
-+	__be32	rdb_ID;
- 	__be32	rdb_SummedLongs;
--	__s32	rdb_ChkSum;
--	__u32	rdb_HostID;
-+	__be32	rdb_ChkSum;
-+	__be32	rdb_HostID;
- 	__be32	rdb_BlockBytes;
--	__u32	rdb_Flags;
--	__u32	rdb_BadBlockList;
-+	__be32	rdb_Flags;
-+	__be32	rdb_BadBlockList;
- 	__be32	rdb_PartitionList;
--	__u32	rdb_FileSysHeaderList;
--	__u32	rdb_DriveInit;
--	__u32	rdb_Reserved1[6];
--	__u32	rdb_Cylinders;
--	__u32	rdb_Sectors;
--	__u32	rdb_Heads;
--	__u32	rdb_Interleave;
--	__u32	rdb_Park;
--	__u32	rdb_Reserved2[3];
--	__u32	rdb_WritePreComp;
--	__u32	rdb_ReducedWrite;
--	__u32	rdb_StepRate;
--	__u32	rdb_Reserved3[5];
--	__u32	rdb_RDBBlocksLo;
--	__u32	rdb_RDBBlocksHi;
--	__u32	rdb_LoCylinder;
--	__u32	rdb_HiCylinder;
--	__u32	rdb_CylBlocks;
--	__u32	rdb_AutoParkSeconds;
--	__u32	rdb_HighRDSKBlock;
--	__u32	rdb_Reserved4;
-+	__be32	rdb_FileSysHeaderList;
-+	__be32	rdb_DriveInit;
-+	__be32	rdb_Reserved1[6];
-+	__be32	rdb_Cylinders;
-+	__be32	rdb_Sectors;
-+	__be32	rdb_Heads;
-+	__be32	rdb_Interleave;
-+	__be32	rdb_Park;
-+	__be32	rdb_Reserved2[3];
-+	__be32	rdb_WritePreComp;
-+	__be32	rdb_ReducedWrite;
-+	__be32	rdb_StepRate;
-+	__be32	rdb_Reserved3[5];
-+	__be32	rdb_RDBBlocksLo;
-+	__be32	rdb_RDBBlocksHi;
-+	__be32	rdb_LoCylinder;
-+	__be32	rdb_HiCylinder;
-+	__be32	rdb_CylBlocks;
-+	__be32	rdb_AutoParkSeconds;
-+	__be32	rdb_HighRDSKBlock;
-+	__be32	rdb_Reserved4;
- 	char	rdb_DiskVendor[8];
- 	char	rdb_DiskProduct[16];
- 	char	rdb_DiskRevision[4];
- 	char	rdb_ControllerVendor[8];
- 	char	rdb_ControllerProduct[16];
- 	char	rdb_ControllerRevision[4];
--	__u32	rdb_Reserved5[10];
-+	__be32	rdb_Reserved5[10];
- };
+ 			mpll_ss1 &= ~CLKV_MASK;
+diff --git a/drivers/gpu/drm/radeon/ni_dpm.c b/drivers/gpu/drm/radeon/ni_dpm.c
+index 672d2239293e0..3e1c1a392fb7b 100644
+--- a/drivers/gpu/drm/radeon/ni_dpm.c
++++ b/drivers/gpu/drm/radeon/ni_dpm.c
+@@ -2241,8 +2241,12 @@ static int ni_populate_mclk_value(struct radeon_device *rdev,
+ 						     ASIC_INTERNAL_MEMORY_SS, vco_freq)) {
+ 			u32 reference_clock = rdev->clock.mpll.reference_freq;
+ 			u32 decoded_ref = rv740_get_decoded_reference_divider(dividers.ref_div);
+-			u32 clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
+-			u32 clk_v = ss.percentage *
++			u32 clk_s, clk_v;
++
++			if (!decoded_ref)
++				return -EINVAL;
++			clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
++			clk_v = ss.percentage *
+ 				(0x4000 * dividers.whole_fb_div + 0x800 * dividers.frac_fb_div) / (clk_s * 625);
  
- #define	IDNAME_RIGIDDISK	0x5244534B	/* "RDSK" */
-@@ -50,16 +50,16 @@ struct RigidDiskBlock {
- struct PartitionBlock {
- 	__be32	pb_ID;
- 	__be32	pb_SummedLongs;
--	__s32	pb_ChkSum;
--	__u32	pb_HostID;
-+	__be32	pb_ChkSum;
-+	__be32	pb_HostID;
- 	__be32	pb_Next;
--	__u32	pb_Flags;
--	__u32	pb_Reserved1[2];
--	__u32	pb_DevFlags;
-+	__be32	pb_Flags;
-+	__be32	pb_Reserved1[2];
-+	__be32	pb_DevFlags;
- 	__u8	pb_DriveName[32];
--	__u32	pb_Reserved2[15];
-+	__be32	pb_Reserved2[15];
- 	__be32	pb_Environment[17];
--	__u32	pb_EReserved[15];
-+	__be32	pb_EReserved[15];
- };
+ 			mpll_ss1 &= ~CLKV_MASK;
+diff --git a/drivers/gpu/drm/radeon/rv740_dpm.c b/drivers/gpu/drm/radeon/rv740_dpm.c
+index d57a3e1df8d63..4464fd21a3029 100644
+--- a/drivers/gpu/drm/radeon/rv740_dpm.c
++++ b/drivers/gpu/drm/radeon/rv740_dpm.c
+@@ -249,8 +249,12 @@ int rv740_populate_mclk_value(struct radeon_device *rdev,
+ 						     ASIC_INTERNAL_MEMORY_SS, vco_freq)) {
+ 			u32 reference_clock = rdev->clock.mpll.reference_freq;
+ 			u32 decoded_ref = rv740_get_decoded_reference_divider(dividers.ref_div);
+-			u32 clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
+-			u32 clk_v = 0x40000 * ss.percentage *
++			u32 clk_s, clk_v;
++
++			if (!decoded_ref)
++				return -EINVAL;
++			clk_s = reference_clock * 5 / (decoded_ref * ss.rate);
++			clk_v = 0x40000 * ss.percentage *
+ 				(dividers.whole_fb_div + (dividers.frac_fb_div / 8)) / (clk_s * 10000);
  
- #define	IDNAME_PARTITION	0x50415254	/* "PART" */
+ 			mpll_ss1 &= ~CLKV_MASK;
+-- 
+2.39.2
+
 
 
