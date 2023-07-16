@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23CE3755381
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7CC67555D8
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:45:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231752AbjGPUTt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:19:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44692 "EHLO
+        id S232642AbjGPUpN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231751AbjGPUTs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE31C0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:47 -0700 (PDT)
+        with ESMTP id S232649AbjGPUpM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:45:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B48F6E45
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:45:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 016CB60E9D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A57C433C8;
-        Sun, 16 Jul 2023 20:19:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54A8460EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:45:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6879CC433C9;
+        Sun, 16 Jul 2023 20:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538786;
-        bh=D8ie1eqjMTmf9EzHLT3urpkwADiWirvrQkEpywxft1s=;
+        s=korg; t=1689540310;
+        bh=H6AQEucR+NeeiJtWOFSzGLNQac2h7ccUxIC3aOhoBbQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ByExQhYH3CuEa101OeWsi6xCZ5UVyGx0ubDhGXrvCdi8LhO1qVm60Ld9DuugbkRzs
-         vFgHqiplVRYd5zUjaq0AbBVGUpfQ0jOguoHfhc8EkCd6nlcvw2VCPpOg0/732LEBN6
-         UTteujEY4wD8b/HqXuXuIphQnAc/t2NE1XHbWrYY=
+        b=wKpXxyfBTSUH7ergWkP0qw1a9AAs9OVHtKE9VB9d6gRC3GBGIyKQn7fh6VYghf1Bt
+         ryc5VBRXtPCjasCU9pkltZKLgv2FQPrsTu0uKg6XkjfMtj0BcLS87FarFgyk2IAL2b
+         /pNP10gXu9ldZDen8/Q1g7zlGUYLSfUO3TtuUCx8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 576/800] media: hi846: fix usage of pm_runtime_get_if_in_use()
+Subject: [PATCH 6.1 290/591] platform/x86: lenovo-yogabook: Reprobe devices on remove()
 Date:   Sun, 16 Jul 2023 21:47:09 +0200
-Message-ID: <20230716195002.463175042@linuxfoundation.org>
+Message-ID: <20230716194931.396837388@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,42 +54,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Kepplinger <martin.kepplinger@puri.sm>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 04fc06f6dc1592ed5d675311ac50d8fba5db62ab ]
+[ Upstream commit 711bcc0cb34e96a60e88d7b0260862781de3e530 ]
 
-pm_runtime_get_if_in_use() does not only return nonzero values when
-the device is in use, it can return a negative errno too.
+Ensure that both the keyboard touchscreen and the digitizer have their
+driver bound after remove(). Without this modprobing lenovo-yogabook-wmi
+after a rmmod fails because lenovo-yogabook-wmi defers probing until
+both devices have their driver bound.
 
-And especially during resuming from system suspend, when runtime pm
-is not yet up again, -EAGAIN is being returned, so the subsequent
-pm_runtime_put() call results in a refcount underflow.
-
-Fix system-resume by handling -EAGAIN of pm_runtime_get_if_in_use().
-
-Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-Fixes: e8c0882685f9 ("media: i2c: add driver for the SK Hynix Hi-846 8M pixel camera")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: c0549b72d99d ("platform/x86: lenovo-yogabook-wmi: Add driver for Lenovo Yoga Book")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230430165807.472798-4-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/hi846.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/lenovo-yogabook-wmi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
-index 306dc35e925fd..f8709cdf28b39 100644
---- a/drivers/media/i2c/hi846.c
-+++ b/drivers/media/i2c/hi846.c
-@@ -1353,7 +1353,8 @@ static int hi846_set_ctrl(struct v4l2_ctrl *ctrl)
- 					 exposure_max);
- 	}
+diff --git a/drivers/platform/x86/lenovo-yogabook-wmi.c b/drivers/platform/x86/lenovo-yogabook-wmi.c
+index 3a6de4ab74a41..5948ffa74acd5 100644
+--- a/drivers/platform/x86/lenovo-yogabook-wmi.c
++++ b/drivers/platform/x86/lenovo-yogabook-wmi.c
+@@ -332,9 +332,20 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
+ static void yogabook_wmi_remove(struct wmi_device *wdev)
+ {
+ 	struct yogabook_wmi *data = dev_get_drvdata(&wdev->dev);
++	int r = 0;
  
--	if (!pm_runtime_get_if_in_use(&client->dev))
-+	ret = pm_runtime_get_if_in_use(&client->dev);
-+	if (!ret || ret == -EAGAIN)
- 		return 0;
- 
- 	switch (ctrl->id) {
+ 	free_irq(data->backside_hall_irq, data);
+ 	cancel_work_sync(&data->work);
++
++	if (!test_bit(YB_KBD_IS_ON, &data->flags))
++		r |= device_reprobe(data->kbd_dev);
++
++	if (!test_bit(YB_DIGITIZER_IS_ON, &data->flags))
++		r |= device_reprobe(data->dig_dev);
++
++	if (r)
++		dev_warn(&wdev->dev, "Reprobe of devices failed\n");
++
+ 	put_device(data->dig_dev);
+ 	put_device(data->kbd_dev);
+ 	acpi_dev_put(data->dig_adev);
 -- 
 2.39.2
 
