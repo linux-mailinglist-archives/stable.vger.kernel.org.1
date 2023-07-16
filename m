@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81F0D7551DB
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98D77755204
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:02:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230476AbjGPUBB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:01:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60164 "EHLO
+        id S231146AbjGPUCu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:02:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230509AbjGPUA7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:00:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CB1DE59
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:00:57 -0700 (PDT)
+        with ESMTP id S231156AbjGPUCu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:02:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E14D4123
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:02:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 92FB260E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:00:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E429C433C8;
-        Sun, 16 Jul 2023 20:00:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7097460EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:02:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B51C433C7;
+        Sun, 16 Jul 2023 20:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537656;
-        bh=62K0WszaT3mlMketJ5ZweNUrbkN1HHBvu6cDd0gDNZo=;
+        s=korg; t=1689537767;
+        bh=iqDqjgSTtgxavhLrQvhbsZTaaGyWDlnURyRzZUZDE7Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BG/3MW4jAT8qLN1pAMEGWkz2KW0i04SfaSdrrr5CK59Xtmek/4yKPz3jTva5xMPXw
-         FJfSYRs+3BqmnYLCbvlQ54p/ZdUqcGGyWF7EfrMEzRYbS46PgIVIb+VrQRc+/ywfvg
-         USoKtXRm6fL8qgcGrdkH9l/81AqlxCm6sFFKd/ho=
+        b=wjC1I/UCQuISbURX6WD0WOmlptOYNXevQvGtlQeqnJ1f9uYOG7UQuF7jjd/vpJ7qR
+         qLZUPn5yJ6r18UhrQvMvMkkjIs3Fb2zP9Yd7bO/R/1NhwOjEqjrJPMFzpnkRmQ2z4m
+         1yk4R9dRtIFDRZcjy+gKC7Zih8TEKJ3rbKJWrLc4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 173/800] wifi: iwlwifi: mvm: add support for Extra EHT LTF
-Date:   Sun, 16 Jul 2023 21:40:26 +0200
-Message-ID: <20230716194953.125711498@linuxfoundation.org>
+Subject: [PATCH 6.4 174/800] wifi: iwlwifi: mvm: correctly access HE/EHT sband capa
+Date:   Sun, 16 Jul 2023 21:40:27 +0200
+Message-ID: <20230716194953.148399300@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -46,106 +45,182 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 18c0ffb404db2093b6afdc8ae15f18ba3975e1ed ]
+[ Upstream commit f912959875761084fda351e1257dcfa9d1fa3037 ]
 
-Add support for Extra EHT LTF defined in 9.4.2.313
-EHT Capabilities element.
+We can't just dereference the sband->iftype_data pointer,
+that's an array so we need to access the right entry. Use
+the previously introduced helper functions to do that.
 
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230613155501.de019d7cc174.I806f0f6042b89274192701a60b4f7900822db666@changeid
+There are also cases, e.g. when loading with disable_11ax=1,
+where the pointer might be NULL but we still attempt to use
+it, causing a crash.
+
+Fixes: 529281bdf0fc ("iwlwifi: mvm: limit TLC according to our HE capabilities")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: f91295987576 ("wifi: iwlwifi: mvm: correctly access HE/EHT sband capa")
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230614123446.a1f2b17ee39b.I8808120be744be8804815ce9e3e24ce6d2b424e3@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/rs.h    |  2 ++
- .../net/wireless/intel/iwlwifi/iwl-nvm-parse.c    |  2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 15 +++++++++++++++
- include/linux/ieee80211.h                         |  1 +
- 4 files changed, 20 insertions(+)
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 46 +++++++++++--------
+ 1 file changed, 26 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
-index c9a48fc5fac88..a1a272433b09b 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
-@@ -21,6 +21,7 @@
-  * @IWL_TLC_MNG_CFG_FLAGS_HE_DCM_NSS_2_MSK: enable HE Dual Carrier Modulation
-  *					    for BPSK (MCS 0) with 2 spatial
-  *					    streams
-+ * @IWL_TLC_MNG_CFG_FLAGS_EHT_EXTRA_LTF_MSK: enable support for EHT extra LTF
-  */
- enum iwl_tlc_mng_cfg_flags {
- 	IWL_TLC_MNG_CFG_FLAGS_STBC_MSK			= BIT(0),
-@@ -28,6 +29,7 @@ enum iwl_tlc_mng_cfg_flags {
- 	IWL_TLC_MNG_CFG_FLAGS_HE_STBC_160MHZ_MSK	= BIT(2),
- 	IWL_TLC_MNG_CFG_FLAGS_HE_DCM_NSS_1_MSK		= BIT(3),
- 	IWL_TLC_MNG_CFG_FLAGS_HE_DCM_NSS_2_MSK		= BIT(4),
-+	IWL_TLC_MNG_CFG_FLAGS_EHT_EXTRA_LTF_MSK		= BIT(6),
- };
- 
- /**
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 7dcb1c3ab7282..be0eb69f2248a 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -975,6 +975,8 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
- 		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[6] &=
- 			~(IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK |
- 			  IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP);
-+		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[5] |=
-+			IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF;
- 	}
- 
- 	if (fw_has_capa(&fw->ucode_capa, IWL_UCODE_TLV_CAPA_BROADCAST_TWT))
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-index f72d1ca3cfedc..8a5341c37aa21 100644
+index 8a5341c37aa21..680180b894794 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-@@ -591,6 +591,21 @@ void iwl_mvm_rs_fw_rate_init(struct iwl_mvm *mvm,
- 	int cmd_ver;
- 	int ret;
+@@ -63,12 +63,11 @@ static u8 rs_fw_sgi_cw_support(struct ieee80211_link_sta *link_sta)
+ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
+ 				  struct ieee80211_vif *vif,
+ 				  struct ieee80211_link_sta *link_sta,
+-				  struct ieee80211_supported_band *sband)
++				  const struct ieee80211_sta_he_cap *sband_he_cap)
+ {
+ 	struct ieee80211_sta_ht_cap *ht_cap = &link_sta->ht_cap;
+ 	struct ieee80211_sta_vht_cap *vht_cap = &link_sta->vht_cap;
+ 	struct ieee80211_sta_he_cap *he_cap = &link_sta->he_cap;
+-	const struct ieee80211_sta_he_cap *sband_he_cap;
+ 	bool vht_ena = vht_cap->vht_supported;
+ 	u16 flags = 0;
  
-+	/* Enable external EHT LTF only for GL device and if there's
-+	 * mutual support by AP and client
-+	 */
-+	if (CSR_HW_REV_TYPE(mvm->trans->hw_rev) == IWL_CFG_MAC_TYPE_GL &&
-+	    sband->iftype_data->eht_cap.has_eht &&
-+	    sband->iftype_data->eht_cap.eht_cap_elem.phy_cap_info[5] &
-+	    IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF &&
-+	    link_sta->eht_cap.has_eht &&
-+	    link_sta->eht_cap.eht_cap_elem.phy_cap_info[5] &
-+	    IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF) {
-+		IWL_DEBUG_RATE(mvm, "Set support for Extra EHT LTF\n");
-+		cfg_cmd.flags |=
-+			cpu_to_le16(IWL_TLC_MNG_CFG_FLAGS_EHT_EXTRA_LTF_MSK);
-+	}
-+
- 	rcu_read_lock();
- 	mvm_link_sta = rcu_dereference(mvmsta->link[link_id]);
- 	if (WARN_ON_ONCE(!mvm_link_sta)) {
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index c4cf296e7eafe..141c0cf65f2d9 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -2856,6 +2856,7 @@ ieee80211_he_spr_size(const u8 *he_spr_ie)
+@@ -94,7 +93,6 @@ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
+ 	    IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
+ 		flags |= IWL_TLC_MNG_CFG_FLAGS_LDPC_MSK;
  
- /* Maximum number of supported EHT LTF is split */
- #define IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LTF_MASK	0xc0
-+#define IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF		0x40
- #define IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF_MASK	0x07
+-	sband_he_cap = ieee80211_get_he_iftype_cap_vif(sband, vif);
+ 	if (sband_he_cap &&
+ 	    !(sband_he_cap->he_cap_elem.phy_cap_info[1] &
+ 			IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
+@@ -196,16 +194,14 @@ static u16 rs_fw_he_ieee80211_mcs_to_rs_mcs(u16 mcs)
  
- #define IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK			0x78
+ static void
+ rs_fw_he_set_enabled_rates(const struct ieee80211_link_sta *link_sta,
+-			   struct ieee80211_supported_band *sband,
++			   const struct ieee80211_sta_he_cap *sband_he_cap,
+ 			   struct iwl_tlc_config_cmd_v4 *cmd)
+ {
+ 	const struct ieee80211_sta_he_cap *he_cap = &link_sta->he_cap;
+ 	u16 mcs_160 = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
+ 	u16 mcs_80 = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80);
+-	u16 tx_mcs_80 =
+-		le16_to_cpu(sband->iftype_data->he_cap.he_mcs_nss_supp.tx_mcs_80);
+-	u16 tx_mcs_160 =
+-		le16_to_cpu(sband->iftype_data->he_cap.he_mcs_nss_supp.tx_mcs_160);
++	u16 tx_mcs_80 = le16_to_cpu(sband_he_cap->he_mcs_nss_supp.tx_mcs_80);
++	u16 tx_mcs_160 = le16_to_cpu(sband_he_cap->he_mcs_nss_supp.tx_mcs_160);
+ 	int i;
+ 	u8 nss = link_sta->rx_nss;
+ 
+@@ -288,7 +284,8 @@ rs_fw_rs_mcs2eht_mcs(enum IWL_TLC_MCS_PER_BW bw,
+ static void
+ rs_fw_eht_set_enabled_rates(struct ieee80211_vif *vif,
+ 			    const struct ieee80211_link_sta *link_sta,
+-			    struct ieee80211_supported_band *sband,
++			    const struct ieee80211_sta_he_cap *sband_he_cap,
++			    const struct ieee80211_sta_eht_cap *sband_eht_cap,
+ 			    struct iwl_tlc_config_cmd_v4 *cmd)
+ {
+ 	/* peer RX mcs capa */
+@@ -296,7 +293,7 @@ rs_fw_eht_set_enabled_rates(struct ieee80211_vif *vif,
+ 		&link_sta->eht_cap.eht_mcs_nss_supp;
+ 	/* our TX mcs capa */
+ 	const struct ieee80211_eht_mcs_nss_supp *eht_tx_mcs =
+-		&sband->iftype_data->eht_cap.eht_mcs_nss_supp;
++		&sband_eht_cap->eht_mcs_nss_supp;
+ 
+ 	enum IWL_TLC_MCS_PER_BW bw;
+ 	struct ieee80211_eht_mcs_nss_supp_20mhz_only mcs_rx_20;
+@@ -315,7 +312,7 @@ rs_fw_eht_set_enabled_rates(struct ieee80211_vif *vif,
+ 	}
+ 
+ 	/* nic is 20Mhz only */
+-	if (!(sband->iftype_data->he_cap.he_cap_elem.phy_cap_info[0] &
++	if (!(sband_he_cap->he_cap_elem.phy_cap_info[0] &
+ 	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL)) {
+ 		mcs_tx_20 = eht_tx_mcs->only_20mhz;
+ 	} else {
+@@ -369,6 +366,8 @@ rs_fw_eht_set_enabled_rates(struct ieee80211_vif *vif,
+ static void rs_fw_set_supp_rates(struct ieee80211_vif *vif,
+ 				 struct ieee80211_link_sta *link_sta,
+ 				 struct ieee80211_supported_band *sband,
++				 const struct ieee80211_sta_he_cap *sband_he_cap,
++				 const struct ieee80211_sta_eht_cap *sband_eht_cap,
+ 				 struct iwl_tlc_config_cmd_v4 *cmd)
+ {
+ 	int i;
+@@ -387,12 +386,13 @@ static void rs_fw_set_supp_rates(struct ieee80211_vif *vif,
+ 	cmd->mode = IWL_TLC_MNG_MODE_NON_HT;
+ 
+ 	/* HT/VHT rates */
+-	if (link_sta->eht_cap.has_eht) {
++	if (link_sta->eht_cap.has_eht && sband_he_cap && sband_eht_cap) {
+ 		cmd->mode = IWL_TLC_MNG_MODE_EHT;
+-		rs_fw_eht_set_enabled_rates(vif, link_sta, sband, cmd);
+-	} else if (he_cap->has_he) {
++		rs_fw_eht_set_enabled_rates(vif, link_sta, sband_he_cap,
++					    sband_eht_cap, cmd);
++	} else if (he_cap->has_he && sband_he_cap) {
+ 		cmd->mode = IWL_TLC_MNG_MODE_HE;
+-		rs_fw_he_set_enabled_rates(link_sta, sband, cmd);
++		rs_fw_he_set_enabled_rates(link_sta, sband_he_cap, cmd);
+ 	} else if (vht_cap->vht_supported) {
+ 		cmd->mode = IWL_TLC_MNG_MODE_VHT;
+ 		rs_fw_vht_set_enabled_rates(link_sta, vht_cap, cmd);
+@@ -575,13 +575,17 @@ void iwl_mvm_rs_fw_rate_init(struct iwl_mvm *mvm,
+ 	u32 cmd_id = WIDE_ID(DATA_PATH_GROUP, TLC_MNG_CONFIG_CMD);
+ 	struct ieee80211_supported_band *sband = hw->wiphy->bands[band];
+ 	u16 max_amsdu_len = rs_fw_get_max_amsdu_len(sta, link_conf, link_sta);
++	const struct ieee80211_sta_he_cap *sband_he_cap =
++		ieee80211_get_he_iftype_cap_vif(sband, vif);
++	const struct ieee80211_sta_eht_cap *sband_eht_cap =
++		ieee80211_get_eht_iftype_cap_vif(sband, vif);
+ 	struct iwl_mvm_link_sta *mvm_link_sta;
+ 	struct iwl_lq_sta_rs_fw *lq_sta;
+ 	struct iwl_tlc_config_cmd_v4 cfg_cmd = {
+ 		.max_ch_width = mvmsta->authorized ?
+ 			rs_fw_bw_from_sta_bw(link_sta) : IWL_TLC_MNG_CH_WIDTH_20MHZ,
+ 		.flags = cpu_to_le16(rs_fw_get_config_flags(mvm, vif, link_sta,
+-							    sband)),
++							    sband_he_cap)),
+ 		.chains = rs_fw_set_active_chains(iwl_mvm_get_valid_tx_ant(mvm)),
+ 		.sgi_ch_width_supp = rs_fw_sgi_cw_support(link_sta),
+ 		.max_mpdu_len = iwl_mvm_is_csum_supported(mvm) ?
+@@ -595,9 +599,9 @@ void iwl_mvm_rs_fw_rate_init(struct iwl_mvm *mvm,
+ 	 * mutual support by AP and client
+ 	 */
+ 	if (CSR_HW_REV_TYPE(mvm->trans->hw_rev) == IWL_CFG_MAC_TYPE_GL &&
+-	    sband->iftype_data->eht_cap.has_eht &&
+-	    sband->iftype_data->eht_cap.eht_cap_elem.phy_cap_info[5] &
+-	    IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF &&
++	    sband_eht_cap &&
++	    sband_eht_cap->eht_cap_elem.phy_cap_info[5] &
++		IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF &&
+ 	    link_sta->eht_cap.has_eht &&
+ 	    link_sta->eht_cap.eht_cap_elem.phy_cap_info[5] &
+ 	    IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF) {
+@@ -623,7 +627,9 @@ void iwl_mvm_rs_fw_rate_init(struct iwl_mvm *mvm,
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+ 	iwl_mvm_reset_frame_stats(mvm);
+ #endif
+-	rs_fw_set_supp_rates(vif, link_sta, sband, &cfg_cmd);
++	rs_fw_set_supp_rates(vif, link_sta, sband,
++			     sband_he_cap, sband_eht_cap,
++			     &cfg_cmd);
+ 
+ 	/*
+ 	 * since TLC offload works with one mode we can assume
 -- 
 2.39.2
 
