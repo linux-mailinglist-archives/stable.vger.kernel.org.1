@@ -2,92 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E0CD755309
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F11275552F
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231589AbjGPUOi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:14:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41032 "EHLO
+        id S232412AbjGPUiW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:38:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231587AbjGPUOi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:14:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BDF690
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:37 -0700 (PDT)
+        with ESMTP id S232413AbjGPUiV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B27BA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E48BF60EB3
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D6EC433C7;
-        Sun, 16 Jul 2023 20:14:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4460860EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E972C433C8;
+        Sun, 16 Jul 2023 20:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538476;
-        bh=p6M69ZO0XbkZdjNADJARWO8RMiGy2uNYuolHUJzP1w0=;
+        s=korg; t=1689539899;
+        bh=kSwWEuHZH4v7RbCGNvEiW/j4GFuGkz2LIvxEC+cR2x8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CfQhZZGprbU6ryAWoAqE4xI2KIEL6THloGCpkiKU3VLxMpfqqYbpGpMCoCS5oPgYs
-         4rBDeLmnx2CpJ8ZuYkC8Mpoge7zlXn7KRM8Tj1DVsA4G9NG8ux50xvFY8QicrIXtXu
-         gZ+ZzsnhgsQ8a2Wx8thrVr7Z8e/I1aCSRiwdQ06M=
+        b=wbN9fMrLcUmtGZN5J7ZqyFyXBC/S+EC5NNWSsIP0qGb8LT+DpK6hQKsIf5lwm6VDN
+         oGQAxS51ImXO1fr/Z+Vgc8YcdsIfNHxwwHj0yKw9Ey3/7txiLIgmcHGWkvt4uMf+9L
+         5MFvv0/8Pqy6oldin8nQV1WPdTZhw8xv7cOGOd3E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xi Pardee <xi.pardee@intel.com>,
-        "David E. Box" <david.e.box@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+        Arthur Grillo <arthurgrillo@riseup.net>,
+        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 457/800] platform/x86:intel/pmc: Remove Meteor Lake S platform support
-Date:   Sun, 16 Jul 2023 21:45:10 +0200
-Message-ID: <20230716194959.697793269@linuxfoundation.org>
+Subject: [PATCH 6.1 172/591] drm/vkms: Fix RGB565 pixel conversion
+Date:   Sun, 16 Jul 2023 21:45:11 +0200
+Message-ID: <20230716194928.316351379@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xi Pardee <xi.pardee@intel.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 416a87c972b978d71ab828442d1d48e3bd194855 ]
+[ Upstream commit ab87f558dcfb2562c3497e89600dec798a446665 ]
 
-commit c5ad454a12c6 ("platform/x86: intel/pmc/core: Add Meteor Lake
-support to pmc core driver") was supposed to add support for Meter
-Lake P/M and mistakenly added support for Meteor Lake S instead. Meteor
-Lake P/M support was added later and MTL-S support needs to be removed
-since its currently assigned to the wrong register maps.
+Currently, the pixel conversion isn't rounding the fixed-point values
+before assigning it to the RGB coefficients, which is causing the IGT
+pixel-format tests to fail. So, use the drm_fixp2int_round() fixed-point
+helper to round the values when assigning it to the RGB coefficients.
 
-Fixes: c5ad454a12c6 ("platform/x86: intel/pmc/core: Add Meteor Lake support to pmc core driver")
-Signed-off-by: Xi Pardee <xi.pardee@intel.com>
-Signed-off-by: David E. Box <david.e.box@linux.intel.com>
-Link: https://lore.kernel.org/r/20230601004706.871528-1-xi.pardee@intel.com
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Tested with igt@kms_plane@pixel-format and igt@kms_plane@pixel-format-source-clamping.
+
+[v2]:
+    * Use drm_fixp2int_round() to fix the pixel conversion instead of
+      casting the values to s32 (Melissa Wen).
+
+Fixes: 89b03aeaef16 ("drm/vkms: fix 32bit compilation error by replacing macros")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Arthur Grillo <arthurgrillo@riseup.net>
+Signed-off-by: Maíra Canal <mairacanal@riseup.net>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230512104044.65034-2-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/pmc/core.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/vkms/vkms_formats.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
-index da6e7206d38b5..b8711330e4112 100644
---- a/drivers/platform/x86/intel/pmc/core.c
-+++ b/drivers/platform/x86/intel/pmc/core.c
-@@ -1039,7 +1039,6 @@ static const struct x86_cpu_id intel_pmc_core_ids[] = {
- 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,        tgl_core_init),
- 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,		adl_core_init),
- 	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,	adl_core_init),
--	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE,          mtl_core_init),
- 	X86_MATCH_INTEL_FAM6_MODEL(METEORLAKE_L,	mtl_core_init),
- 	{}
- };
+diff --git a/drivers/gpu/drm/vkms/vkms_formats.c b/drivers/gpu/drm/vkms/vkms_formats.c
+index 8d948c73741ef..b11342026485f 100644
+--- a/drivers/gpu/drm/vkms/vkms_formats.c
++++ b/drivers/gpu/drm/vkms/vkms_formats.c
+@@ -97,9 +97,9 @@ static void RGB565_to_argb_u16(u8 *src_pixels, struct pixel_argb_u16 *out_pixel)
+ 	s64 fp_b = drm_int2fixp(rgb_565 & 0x1f);
+ 
+ 	out_pixel->a = (u16)0xffff;
+-	out_pixel->r = drm_fixp2int(drm_fixp_mul(fp_r, fp_rb_ratio));
+-	out_pixel->g = drm_fixp2int(drm_fixp_mul(fp_g, fp_g_ratio));
+-	out_pixel->b = drm_fixp2int(drm_fixp_mul(fp_b, fp_rb_ratio));
++	out_pixel->r = drm_fixp2int_round(drm_fixp_mul(fp_r, fp_rb_ratio));
++	out_pixel->g = drm_fixp2int_round(drm_fixp_mul(fp_g, fp_g_ratio));
++	out_pixel->b = drm_fixp2int_round(drm_fixp_mul(fp_b, fp_rb_ratio));
+ }
+ 
+ void vkms_compose_row(struct line_buffer *stage_buffer, struct vkms_plane_state *plane, int y)
+@@ -216,9 +216,9 @@ static void argb_u16_to_RGB565(struct vkms_frame_info *frame_info,
+ 		s64 fp_g = drm_int2fixp(in_pixels[x].g);
+ 		s64 fp_b = drm_int2fixp(in_pixels[x].b);
+ 
+-		u16 r = drm_fixp2int(drm_fixp_div(fp_r, fp_rb_ratio));
+-		u16 g = drm_fixp2int(drm_fixp_div(fp_g, fp_g_ratio));
+-		u16 b = drm_fixp2int(drm_fixp_div(fp_b, fp_rb_ratio));
++		u16 r = drm_fixp2int_round(drm_fixp_div(fp_r, fp_rb_ratio));
++		u16 g = drm_fixp2int_round(drm_fixp_div(fp_g, fp_g_ratio));
++		u16 b = drm_fixp2int_round(drm_fixp_div(fp_b, fp_rb_ratio));
+ 
+ 		*dst_pixels = cpu_to_le16(r << 11 | g << 5 | b);
+ 	}
 -- 
 2.39.2
 
