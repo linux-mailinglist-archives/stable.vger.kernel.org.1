@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62276754E45
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9746754E46
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:16:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229687AbjGPKQZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 06:16:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38502 "EHLO
+        id S229760AbjGPKQk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 06:16:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229825AbjGPKQY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:16:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BC521707
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:16:16 -0700 (PDT)
+        with ESMTP id S229774AbjGPKQj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:16:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8BD8E46
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:16:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B2F4160C80
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:16:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67C7C433C8;
-        Sun, 16 Jul 2023 10:16:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 310C860BDC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:16:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA5AC433C7;
+        Sun, 16 Jul 2023 10:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689502575;
-        bh=MpKzjfuxhtZt2E3EuJS6uUrRD+rECUsFntGW3ZpBsu8=;
+        s=korg; t=1689502596;
+        bh=OuHGtk15LLbVDJQJ/VnoDzUKMbbhoo0X/Ov1b1ofGvs=;
         h=Subject:To:Cc:From:Date:From;
-        b=je+aLNjnqWCxUSSdUMxs9Jsq5s62Yu7Q36ZahUyGzZyHVqGdnZh6USSke8l/URWUQ
-         hMNqqipisXYPQHxZ3ywCk79morl5e/zNkPZJa5UQ37mqmqMjZxwXUeAiVYMTxRJZb4
-         4FlEFV6Q1VsQQrECd1eB0gwI9o1ZYIPL5wfW9oSM=
-Subject: FAILED: patch "[PATCH] btrfs: fix range_end calculation in extent_write_locked_range" failed to apply to 5.10-stable tree
-To:     hch@lst.de, dsterba@suse.com, josef@toxicpanda.com
+        b=x9clV1toninlYDPAL1UzC06aElSDyv9MB10YDvON0z20tjsxzoCKhsvilTsjkDrXZ
+         Yjsw16SQmMZLO/5az3ik5+waTIewHs7dM+dyZIWDZewB9009FGpM7mJolV7LzLu7EH
+         TDatD3IpEivgayF1GoHFFcru+zzkwJtaEJsmXtFI=
+Subject: FAILED: patch "[PATCH] btrfs: insert tree mod log move in push_node_left" failed to apply to 6.1-stable tree
+To:     boris@bur.io, dsterba@suse.com, fdmanana@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 12:16:08 +0200
-Message-ID: <2023071607-crunchy-washbowl-2fd3@gregkh>
+Date:   Sun, 16 Jul 2023 12:16:33 +0200
+Message-ID: <2023071633-shell-happily-3a92@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,23 +49,41 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 36614a3beba33a05ad78d4dcb9aa1d00e8a7d01
+git cherry-pick -x 5cead5422a0e3d13b0bcee986c0f5c4ebb94100b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071607-crunchy-washbowl-2fd3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071633-shell-happily-3a92@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+5cead5422a0e ("btrfs: insert tree mod log move in push_node_left")
+e23efd8e8767 ("btrfs: add eb to btrfs_node_key_ptr_offset")
+07e81dc94474 ("btrfs: move accessor helpers into accessors.h")
+ad1ac5012c2b ("btrfs: move btrfs_map_token to accessors")
+55e5cfd36da5 ("btrfs: remove fs_info::pending_changes and related code")
+7966a6b5959b ("btrfs: move fs_info::flags enum to fs.h")
+fc97a410bd78 ("btrfs: move mount option definitions to fs.h")
+0d3a9cf8c306 ("btrfs: convert incompat and compat flag test helpers to macros")
+ec8eb376e271 ("btrfs: move BTRFS_FS_STATE* definitions and helpers to fs.h")
+9b569ea0be6f ("btrfs: move the printk helpers out of ctree.h")
+e118578a8df7 ("btrfs: move assert helpers out of ctree.h")
+c7f13d428ea1 ("btrfs: move fs wide helpers out of ctree.h")
+63a7cb130718 ("btrfs: auto enable discard=async when possible")
+7a66eda351ba ("btrfs: move the btrfs_verity_descriptor_item defs up in ctree.h")
+956504a331a6 ("btrfs: move trans_handle_cachep out of ctree.h")
+f1e5c6185ca1 ("btrfs: move flush related definitions to space-info.h")
+ed4c491a3db2 ("btrfs: move BTRFS_MAX_MIRRORS into scrub.c")
+4300c58f8090 ("btrfs: move btrfs on-disk definitions out of ctree.h")
+d60d956eb41f ("btrfs: remove unused set/clear_pending_info helpers")
 
 thanks,
 
@@ -73,33 +91,324 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 36614a3beba33a05ad78d4dcb9aa1d00e8a7d01f Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Wed, 31 May 2023 08:04:50 +0200
-Subject: [PATCH] btrfs: fix range_end calculation in extent_write_locked_range
+From 5cead5422a0e3d13b0bcee986c0f5c4ebb94100b Mon Sep 17 00:00:00 2001
+From: Boris Burkov <boris@bur.io>
+Date: Thu, 1 Jun 2023 11:55:14 -0700
+Subject: [PATCH] btrfs: insert tree mod log move in push_node_left
 
-The range_end field in struct writeback_control is inclusive, just like
-the end parameter passed to extent_write_locked_range.  Not doing this
-could cause extra writeout, which is harmless but suboptimal.
+There is a fairly unlikely race condition in tree mod log rewind that
+can result in a kernel panic which has the following trace:
 
-Fixes: 771ed689d2cd ("Btrfs: Optimize compressed writeback and reads")
-CC: stable@vger.kernel.org # 5.9+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: David Sterba <dsterba@suse.com>
+  [530.569] BTRFS critical (device sda3): unable to find logical 0 length 4096
+  [530.585] BTRFS critical (device sda3): unable to find logical 0 length 4096
+  [530.602] BUG: kernel NULL pointer dereference, address: 0000000000000002
+  [530.618] #PF: supervisor read access in kernel mode
+  [530.629] #PF: error_code(0x0000) - not-present page
+  [530.641] PGD 0 P4D 0
+  [530.647] Oops: 0000 [#1] SMP
+  [530.654] CPU: 30 PID: 398973 Comm: below Kdump: loaded Tainted: G S         O  K   5.12.0-0_fbk13_clang_7455_gb24de3bdb045 #1
+  [530.680] Hardware name: Quanta Mono Lake-M.2 SATA 1HY9U9Z001G/Mono Lake-M.2 SATA, BIOS F20_3A15 08/16/2017
+  [530.703] RIP: 0010:__btrfs_map_block+0xaa/0xd00
+  [530.755] RSP: 0018:ffffc9002c2f7600 EFLAGS: 00010246
+  [530.767] RAX: ffffffffffffffea RBX: ffff888292e41000 RCX: f2702d8b8be15100
+  [530.784] RDX: ffff88885fda6fb8 RSI: ffff88885fd973c8 RDI: ffff88885fd973c8
+  [530.800] RBP: ffff888292e410d0 R08: ffffffff82fd7fd0 R09: 00000000fffeffff
+  [530.816] R10: ffffffff82e57fd0 R11: ffffffff82e57d70 R12: 0000000000000000
+  [530.832] R13: 0000000000001000 R14: 0000000000001000 R15: ffffc9002c2f76f0
+  [530.848] FS:  00007f38d64af000(0000) GS:ffff88885fd80000(0000) knlGS:0000000000000000
+  [530.866] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [530.880] CR2: 0000000000000002 CR3: 00000002b6770004 CR4: 00000000003706e0
+  [530.896] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [530.912] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [530.928] Call Trace:
+  [530.934]  ? btrfs_printk+0x13b/0x18c
+  [530.943]  ? btrfs_bio_counter_inc_blocked+0x3d/0x130
+  [530.955]  btrfs_map_bio+0x75/0x330
+  [530.963]  ? kmem_cache_alloc+0x12a/0x2d0
+  [530.973]  ? btrfs_submit_metadata_bio+0x63/0x100
+  [530.984]  btrfs_submit_metadata_bio+0xa4/0x100
+  [530.995]  submit_extent_page+0x30f/0x360
+  [531.004]  read_extent_buffer_pages+0x49e/0x6d0
+  [531.015]  ? submit_extent_page+0x360/0x360
+  [531.025]  btree_read_extent_buffer_pages+0x5f/0x150
+  [531.037]  read_tree_block+0x37/0x60
+  [531.046]  read_block_for_search+0x18b/0x410
+  [531.056]  btrfs_search_old_slot+0x198/0x2f0
+  [531.066]  resolve_indirect_ref+0xfe/0x6f0
+  [531.076]  ? ulist_alloc+0x31/0x60
+  [531.084]  ? kmem_cache_alloc_trace+0x12e/0x2b0
+  [531.095]  find_parent_nodes+0x720/0x1830
+  [531.105]  ? ulist_alloc+0x10/0x60
+  [531.113]  iterate_extent_inodes+0xea/0x370
+  [531.123]  ? btrfs_previous_extent_item+0x8f/0x110
+  [531.134]  ? btrfs_search_path_in_tree+0x240/0x240
+  [531.146]  iterate_inodes_from_logical+0x98/0xd0
+  [531.157]  ? btrfs_search_path_in_tree+0x240/0x240
+  [531.168]  btrfs_ioctl_logical_to_ino+0xd9/0x180
+  [531.179]  btrfs_ioctl+0xe2/0x2eb0
+
+This occurs when logical inode resolution takes a tree mod log sequence
+number, and then while backref walking hits a rewind on a busy node
+which has the following sequence of tree mod log operations (numbers
+filled in from a specific example, but they are somewhat arbitrary)
+
+  REMOVE_WHILE_FREEING slot 532
+  REMOVE_WHILE_FREEING slot 531
+  REMOVE_WHILE_FREEING slot 530
+  ...
+  REMOVE_WHILE_FREEING slot 0
+  REMOVE slot 455
+  REMOVE slot 454
+  REMOVE slot 453
+  ...
+  REMOVE slot 0
+  ADD slot 455
+  ADD slot 454
+  ADD slot 453
+  ...
+  ADD slot 0
+  MOVE src slot 0 -> dst slot 456 nritems 533
+  REMOVE slot 455
+  REMOVE slot 454
+  REMOVE slot 453
+  ...
+  REMOVE slot 0
+
+When this sequence gets applied via btrfs_tree_mod_log_rewind, it
+allocates a fresh rewind eb, and first inserts the correct key info for
+the 533 elements, then overwrites the first 456 of them, then decrements
+the count by 456 via the add ops, then rewinds the move by doing a
+memmove from 456:988->0:532. We have never written anything past 532, so
+that memmove writes garbage into the 0:532 range. In practice, this
+results in a lot of fully 0 keys. The rewind then puts valid keys into
+slots 0:455 with the last removes, but 456:532 are still invalid.
+
+When search_old_slot uses this eb, if it uses one of those invalid
+slots, it can then read the extent buffer and issue a bio for offset 0
+which ultimately panics looking up extent mappings.
+
+This bad tree mod log sequence gets generated when the node balancing
+code happens to do a balance_node_right followed by a push_node_left
+while logging in the tree mod log. Illustrated for ebs L and R (left and
+right):
+
+	L                 R
+  start:
+  [XXX|YYY|...]      [ZZZ|...|...]
+  balance_node_right:
+  [XXX|YYY|...]      [...|ZZZ|...] move Z to make room for Y
+  [XXX|...|...]      [YYY|ZZZ|...] copy Y from L to R
+  push_node_left:
+  [XXX|YYY|...]      [...|ZZZ|...] copy Y from R to L
+  [XXX|YYY|...]      [ZZZ|...|...] move Z into emptied space (NOT LOGGED!)
+
+This is because balance_node_right logs a move, but push_node_left
+explicitly doesn't. That is because logging the move would remove the
+overwritten src < dst range in the right eb, which was already logged
+when we called btrfs_tree_mod_log_eb_copy. The correct sequence would
+include a move from 456:988 to 0:532 after remove 0:455 and before
+removing 0:532. Reversing that sequence would entail creating keys for
+0:532, then moving those keys out to 456:988, then creating more keys
+for 0:455.
+
+i.e.,
+
+  REMOVE_WHILE_FREEING slot 532
+  REMOVE_WHILE_FREEING slot 531
+  REMOVE_WHILE_FREEING slot 530
+  ...
+  REMOVE_WHILE_FREEING slot 0
+  MOVE src slot 456 -> dst slot 0 nritems 533
+  REMOVE slot 455
+  REMOVE slot 454
+  REMOVE slot 453
+  ...
+  REMOVE slot 0
+  ADD slot 455
+  ADD slot 454
+  ADD slot 453
+  ...
+  ADD slot 0
+  MOVE src slot 0 -> dst slot 456 nritems 533
+  REMOVE slot 455
+  REMOVE slot 454
+  REMOVE slot 453
+  ...
+  REMOVE slot 0
+
+Fix this to log the move but avoid the double remove by putting all the
+logging logic in btrfs_tree_mod_log_eb_copy which has enough information
+to detect these cases and properly log moves, removes, and adds. Leave
+btrfs_tree_mod_log_insert_move to handle insert_ptr and delete_ptr's
+tree mod logging.
+
+(Un)fortunately, this is quite difficult to reproduce, and I was only
+able to reproduce it by adding sleeps in btrfs_search_old_slot that
+would encourage more log rewinding during ino_to_logical ioctls. I was
+able to hit the warning in the previous patch in the series without the
+fix quite quickly, but not after this patch.
+
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index d5b3b15f7ab2..0726c82db309 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2310,7 +2310,7 @@ int extent_write_locked_range(struct inode *inode, u64 start, u64 end)
- 	struct writeback_control wbc_writepages = {
- 		.sync_mode	= WB_SYNC_ALL,
- 		.range_start	= start,
--		.range_end	= end + 1,
-+		.range_end	= end,
- 		.no_cgroup_owner = 1,
- 	};
- 	struct btrfs_bio_ctrl bio_ctrl = {
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 2f2071d64c52..385524224037 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -2785,8 +2785,8 @@ static int push_node_left(struct btrfs_trans_handle *trans,
+ 
+ 	if (push_items < src_nritems) {
+ 		/*
+-		 * Don't call btrfs_tree_mod_log_insert_move() here, key removal
+-		 * was already fully logged by btrfs_tree_mod_log_eb_copy() above.
++		 * btrfs_tree_mod_log_eb_copy handles logging the move, so we
++		 * don't need to do an explicit tree mod log operation for it.
+ 		 */
+ 		memmove_extent_buffer(src, btrfs_node_key_ptr_offset(src, 0),
+ 				      btrfs_node_key_ptr_offset(src, push_items),
+@@ -2847,8 +2847,11 @@ static int balance_node_right(struct btrfs_trans_handle *trans,
+ 		btrfs_abort_transaction(trans, ret);
+ 		return ret;
+ 	}
+-	ret = btrfs_tree_mod_log_insert_move(dst, push_items, 0, dst_nritems);
+-	BUG_ON(ret < 0);
++
++	/*
++	 * btrfs_tree_mod_log_eb_copy handles logging the move, so we don't
++	 * need to do an explicit tree mod log operation for it.
++	 */
+ 	memmove_extent_buffer(dst, btrfs_node_key_ptr_offset(dst, push_items),
+ 				      btrfs_node_key_ptr_offset(dst, 0),
+ 				      (dst_nritems) *
+diff --git a/fs/btrfs/tree-mod-log.c b/fs/btrfs/tree-mod-log.c
+index 39545d1d2e9a..07c086f9e35e 100644
+--- a/fs/btrfs/tree-mod-log.c
++++ b/fs/btrfs/tree-mod-log.c
+@@ -248,6 +248,26 @@ int btrfs_tree_mod_log_insert_key(struct extent_buffer *eb, int slot,
+ 	return ret;
+ }
+ 
++static struct tree_mod_elem *tree_mod_log_alloc_move(struct extent_buffer *eb,
++						     int dst_slot, int src_slot,
++						     int nr_items)
++{
++	struct tree_mod_elem *tm;
++
++	tm = kzalloc(sizeof(*tm), GFP_NOFS);
++	if (!tm)
++		return ERR_PTR(-ENOMEM);
++
++	tm->logical = eb->start;
++	tm->slot = src_slot;
++	tm->move.dst_slot = dst_slot;
++	tm->move.nr_items = nr_items;
++	tm->op = BTRFS_MOD_LOG_MOVE_KEYS;
++	RB_CLEAR_NODE(&tm->node);
++
++	return tm;
++}
++
+ int btrfs_tree_mod_log_insert_move(struct extent_buffer *eb,
+ 				   int dst_slot, int src_slot,
+ 				   int nr_items)
+@@ -265,18 +285,13 @@ int btrfs_tree_mod_log_insert_move(struct extent_buffer *eb,
+ 	if (!tm_list)
+ 		return -ENOMEM;
+ 
+-	tm = kzalloc(sizeof(*tm), GFP_NOFS);
+-	if (!tm) {
+-		ret = -ENOMEM;
++	tm = tree_mod_log_alloc_move(eb, dst_slot, src_slot, nr_items);
++	if (IS_ERR(tm)) {
++		ret = PTR_ERR(tm);
++		tm = NULL;
+ 		goto free_tms;
+ 	}
+ 
+-	tm->logical = eb->start;
+-	tm->slot = src_slot;
+-	tm->move.dst_slot = dst_slot;
+-	tm->move.nr_items = nr_items;
+-	tm->op = BTRFS_MOD_LOG_MOVE_KEYS;
+-
+ 	for (i = 0; i + dst_slot < src_slot && i < nr_items; i++) {
+ 		tm_list[i] = alloc_tree_mod_elem(eb, i + dst_slot,
+ 				BTRFS_MOD_LOG_KEY_REMOVE_WHILE_MOVING);
+@@ -489,6 +504,10 @@ int btrfs_tree_mod_log_eb_copy(struct extent_buffer *dst,
+ 	struct tree_mod_elem **tm_list_add, **tm_list_rem;
+ 	int i;
+ 	bool locked = false;
++	struct tree_mod_elem *dst_move_tm = NULL;
++	struct tree_mod_elem *src_move_tm = NULL;
++	u32 dst_move_nr_items = btrfs_header_nritems(dst) - dst_offset;
++	u32 src_move_nr_items = btrfs_header_nritems(src) - (src_offset + nr_items);
+ 
+ 	if (!tree_mod_need_log(fs_info, NULL))
+ 		return 0;
+@@ -501,6 +520,26 @@ int btrfs_tree_mod_log_eb_copy(struct extent_buffer *dst,
+ 	if (!tm_list)
+ 		return -ENOMEM;
+ 
++	if (dst_move_nr_items) {
++		dst_move_tm = tree_mod_log_alloc_move(dst, dst_offset + nr_items,
++						      dst_offset, dst_move_nr_items);
++		if (IS_ERR(dst_move_tm)) {
++			ret = PTR_ERR(dst_move_tm);
++			dst_move_tm = NULL;
++			goto free_tms;
++		}
++	}
++	if (src_move_nr_items) {
++		src_move_tm = tree_mod_log_alloc_move(src, src_offset,
++						      src_offset + nr_items,
++						      src_move_nr_items);
++		if (IS_ERR(src_move_tm)) {
++			ret = PTR_ERR(src_move_tm);
++			src_move_tm = NULL;
++			goto free_tms;
++		}
++	}
++
+ 	tm_list_add = tm_list;
+ 	tm_list_rem = tm_list + nr_items;
+ 	for (i = 0; i < nr_items; i++) {
+@@ -523,6 +562,11 @@ int btrfs_tree_mod_log_eb_copy(struct extent_buffer *dst,
+ 		goto free_tms;
+ 	locked = true;
+ 
++	if (dst_move_tm) {
++		ret = tree_mod_log_insert(fs_info, dst_move_tm);
++		if (ret)
++			goto free_tms;
++	}
+ 	for (i = 0; i < nr_items; i++) {
+ 		ret = tree_mod_log_insert(fs_info, tm_list_rem[i]);
+ 		if (ret)
+@@ -531,6 +575,11 @@ int btrfs_tree_mod_log_eb_copy(struct extent_buffer *dst,
+ 		if (ret)
+ 			goto free_tms;
+ 	}
++	if (src_move_tm) {
++		ret = tree_mod_log_insert(fs_info, src_move_tm);
++		if (ret)
++			goto free_tms;
++	}
+ 
+ 	write_unlock(&fs_info->tree_mod_log_lock);
+ 	kfree(tm_list);
+@@ -538,6 +587,12 @@ int btrfs_tree_mod_log_eb_copy(struct extent_buffer *dst,
+ 	return 0;
+ 
+ free_tms:
++	if (dst_move_tm && !RB_EMPTY_NODE(&dst_move_tm->node))
++		rb_erase(&dst_move_tm->node, &fs_info->tree_mod_log);
++	kfree(dst_move_tm);
++	if (src_move_tm && !RB_EMPTY_NODE(&src_move_tm->node))
++		rb_erase(&src_move_tm->node, &fs_info->tree_mod_log);
++	kfree(src_move_tm);
+ 	for (i = 0; i < nr_items * 2; i++) {
+ 		if (tm_list[i] && !RB_EMPTY_NODE(&tm_list[i]->node))
+ 			rb_erase(&tm_list[i]->node, &fs_info->tree_mod_log);
 
