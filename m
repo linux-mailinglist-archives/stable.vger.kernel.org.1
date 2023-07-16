@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A4807552A1
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CF2E7554B2
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:33:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231402AbjGPUKG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:10:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38296 "EHLO
+        id S232273AbjGPUdR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:33:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231417AbjGPUKE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:04 -0400
+        with ESMTP id S232276AbjGPUdQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B4E2199
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D842F9F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3512E60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:09:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438B7C433C8;
-        Sun, 16 Jul 2023 20:09:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CE9E60EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BDDEC433C7;
+        Sun, 16 Jul 2023 20:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538197;
-        bh=0z5LVC64C3WRwKBXQHV3cvK/+o9LRQxAWrPVkFcbe5A=;
+        s=korg; t=1689539593;
+        bh=DPDUfakqA+FzFF03aHcXNLyzPtz0bOWAzWYBgjS6PfA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DnWCga29zj+uULwrHFyaSp19x6epHy9Y7s8hW6Z0moygCpi4fPBn7r5n2MNDI/m3f
-         UrjkvShPOP2DP8McI+/Il/K/4M1lOk5rxjsMuyCLseyQYohdyGaGaQ7rL8tg7uu3L5
-         vIDvLDsTrqXpHzPFuNixii/HOb7WYI0Ua1E0nvdE=
+        b=Xi2O4z11dBGgWArF7IOviiQb/x8fLipz88BFbyo3SwWkbl07+BxmIeM0BzvysIGHq
+         3+PvlgxsbEaWH6fKGW1UQFErw4xpq2mF43Qo6Vx2127oEB8hpeK0uUcL1EPI1inzwK
+         R8r6Sowkt3npJGLCcWc/zJyLe9fCVZTnoYy8s+lI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matt Roper <matthew.d.roper@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
+        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 348/800] drm/i915/display: Move display device info to header under display/
+Subject: [PATCH 6.1 062/591] locking/atomic: arm: fix sync ops
 Date:   Sun, 16 Jul 2023 21:43:21 +0200
-Message-ID: <20230716194957.162427895@linuxfoundation.org>
+Message-ID: <20230716194925.484253327@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,166 +56,189 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 05aa8e0135094ae3d1e6837b5457a740266d7cfc ]
+[ Upstream commit dda5f312bb09e56e7a1c3e3851f2000eb2e9c879 ]
 
-Moving display-specific substructure definitions will help keep display
-more self-contained and make it easier to re-use in other drivers (i.e.,
-Xe) in the future.
+The sync_*() ops on arch/arm are defined in terms of the regular bitops
+with no special handling. This is not correct, as UP kernels elide
+barriers for the fully-ordered operations, and so the required ordering
+is lost when such UP kernels are run under a hypervsior on an SMP
+system.
 
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230523195609.73627-2-matthew.d.roper@intel.com
-Stable-dep-of: 19db2062094c ("drm/i915: No 10bit gamma on desktop gen3 parts")
+Fix this by defining sync ops with the required barriers.
+
+Note: On 32-bit arm, the sync_*() ops are currently only used by Xen,
+which requires ARMv7, but the semantics can be implemented for ARMv6+.
+
+Fixes: e54d2f61528165bb ("xen/arm: sync_bitops")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230605070124.3741859-2-mark.rutland@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/i915/display/intel_display_device.h   | 60 +++++++++++++++++++
- drivers/gpu/drm/i915/intel_device_info.h      | 49 +--------------
- 2 files changed, 62 insertions(+), 47 deletions(-)
- create mode 100644 drivers/gpu/drm/i915/display/intel_display_device.h
+ arch/arm/include/asm/assembler.h   | 17 +++++++++++++++++
+ arch/arm/include/asm/sync_bitops.h | 29 +++++++++++++++++++++++++----
+ arch/arm/lib/bitops.h              | 14 +++++++++++---
+ arch/arm/lib/testchangebit.S       |  4 ++++
+ arch/arm/lib/testclearbit.S        |  4 ++++
+ arch/arm/lib/testsetbit.S          |  4 ++++
+ 6 files changed, 65 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_device.h b/drivers/gpu/drm/i915/display/intel_display_device.h
-new file mode 100644
-index 0000000000000..c689d582dbf13
---- /dev/null
-+++ b/drivers/gpu/drm/i915/display/intel_display_device.h
-@@ -0,0 +1,60 @@
-+/* SPDX-License-Identifier: MIT */
+diff --git a/arch/arm/include/asm/assembler.h b/arch/arm/include/asm/assembler.h
+index 90fbe4a3f9c84..84912b19cac85 100644
+--- a/arch/arm/include/asm/assembler.h
++++ b/arch/arm/include/asm/assembler.h
+@@ -402,6 +402,23 @@ ALT_UP_B(.L0_\@)
+ #endif
+ 	.endm
+ 
 +/*
-+ * Copyright © 2023 Intel Corporation
++ * Raw SMP data memory barrier
++ */
++	.macro	__smp_dmb mode
++#if __LINUX_ARM_ARCH__ >= 7
++	.ifeqs "\mode","arm"
++	dmb	ish
++	.else
++	W(dmb)	ish
++	.endif
++#elif __LINUX_ARM_ARCH__ == 6
++	mcr	p15, 0, r0, c7, c10, 5	@ dmb
++#else
++	.error "Incompatible SMP platform"
++#endif
++	.endm
++
+ #if defined(CONFIG_CPU_V7M)
+ 	/*
+ 	 * setmode is used to assert to be in svc mode during boot. For v7-M
+diff --git a/arch/arm/include/asm/sync_bitops.h b/arch/arm/include/asm/sync_bitops.h
+index 6f5d627c44a3c..f46b3c570f92e 100644
+--- a/arch/arm/include/asm/sync_bitops.h
++++ b/arch/arm/include/asm/sync_bitops.h
+@@ -14,14 +14,35 @@
+  * ops which are SMP safe even on a UP kernel.
+  */
+ 
++/*
++ * Unordered
 + */
 +
-+#ifndef __INTEL_DISPLAY_DEVICE_H__
-+#define __INTEL_DISPLAY_DEVICE_H__
+ #define sync_set_bit(nr, p)		_set_bit(nr, p)
+ #define sync_clear_bit(nr, p)		_clear_bit(nr, p)
+ #define sync_change_bit(nr, p)		_change_bit(nr, p)
+-#define sync_test_and_set_bit(nr, p)	_test_and_set_bit(nr, p)
+-#define sync_test_and_clear_bit(nr, p)	_test_and_clear_bit(nr, p)
+-#define sync_test_and_change_bit(nr, p)	_test_and_change_bit(nr, p)
+ #define sync_test_bit(nr, addr)		test_bit(nr, addr)
+-#define arch_sync_cmpxchg		arch_cmpxchg
+ 
++/*
++ * Fully ordered
++ */
 +
-+#include <linux/types.h>
++int _sync_test_and_set_bit(int nr, volatile unsigned long * p);
++#define sync_test_and_set_bit(nr, p)	_sync_test_and_set_bit(nr, p)
 +
-+#include "display/intel_display_limits.h"
++int _sync_test_and_clear_bit(int nr, volatile unsigned long * p);
++#define sync_test_and_clear_bit(nr, p)	_sync_test_and_clear_bit(nr, p)
 +
-+#define DEV_INFO_DISPLAY_FOR_EACH_FLAG(func) \
-+	/* Keep in alphabetical order */ \
-+	func(cursor_needs_physical); \
-+	func(has_cdclk_crawl); \
-+	func(has_cdclk_squash); \
-+	func(has_ddi); \
-+	func(has_dp_mst); \
-+	func(has_dsb); \
-+	func(has_fpga_dbg); \
-+	func(has_gmch); \
-+	func(has_hotplug); \
-+	func(has_hti); \
-+	func(has_ipc); \
-+	func(has_overlay); \
-+	func(has_psr); \
-+	func(has_psr_hw_tracking); \
-+	func(overlay_needs_physical); \
-+	func(supports_tv);
++int _sync_test_and_change_bit(int nr, volatile unsigned long * p);
++#define sync_test_and_change_bit(nr, p)	_sync_test_and_change_bit(nr, p)
 +
-+struct intel_display_device_info {
-+	u8 abox_mask;
++#define arch_sync_cmpxchg(ptr, old, new)				\
++({									\
++	__typeof__(*(ptr)) __ret;					\
++	__smp_mb__before_atomic();					\
++	__ret = arch_cmpxchg_relaxed((ptr), (old), (new));		\
++	__smp_mb__after_atomic();					\
++	__ret;								\
++})
+ 
+ #endif
+diff --git a/arch/arm/lib/bitops.h b/arch/arm/lib/bitops.h
+index 95bd359912889..f069d1b2318e6 100644
+--- a/arch/arm/lib/bitops.h
++++ b/arch/arm/lib/bitops.h
+@@ -28,7 +28,7 @@ UNWIND(	.fnend		)
+ ENDPROC(\name		)
+ 	.endm
+ 
+-	.macro	testop, name, instr, store
++	.macro	__testop, name, instr, store, barrier
+ ENTRY(	\name		)
+ UNWIND(	.fnstart	)
+ 	ands	ip, r1, #3
+@@ -38,7 +38,7 @@ UNWIND(	.fnstart	)
+ 	mov	r0, r0, lsr #5
+ 	add	r1, r1, r0, lsl #2	@ Get word offset
+ 	mov	r3, r2, lsl r3		@ create mask
+-	smp_dmb
++	\barrier
+ #if __LINUX_ARM_ARCH__ >= 7 && defined(CONFIG_SMP)
+ 	.arch_extension	mp
+ 	ALT_SMP(W(pldw)	[r1])
+@@ -50,13 +50,21 @@ UNWIND(	.fnstart	)
+ 	strex	ip, r2, [r1]
+ 	cmp	ip, #0
+ 	bne	1b
+-	smp_dmb
++	\barrier
+ 	cmp	r0, #0
+ 	movne	r0, #1
+ 2:	bx	lr
+ UNWIND(	.fnend		)
+ ENDPROC(\name		)
+ 	.endm
 +
-+	struct {
-+		u16 size; /* in blocks */
-+		u8 slice_mask;
-+	} dbuf;
++	.macro	testop, name, instr, store
++	__testop \name, \instr, \store, smp_dmb
++	.endm
 +
-+#define DEFINE_FLAG(name) u8 name:1
-+	DEV_INFO_DISPLAY_FOR_EACH_FLAG(DEFINE_FLAG);
-+#undef DEFINE_FLAG
++	.macro	sync_testop, name, instr, store
++	__testop \name, \instr, \store, __smp_dmb
++	.endm
+ #else
+ 	.macro	bitop, name, instr
+ ENTRY(	\name		)
+diff --git a/arch/arm/lib/testchangebit.S b/arch/arm/lib/testchangebit.S
+index 4ebecc67e6e04..f13fe9bc2399a 100644
+--- a/arch/arm/lib/testchangebit.S
++++ b/arch/arm/lib/testchangebit.S
+@@ -10,3 +10,7 @@
+                 .text
+ 
+ testop	_test_and_change_bit, eor, str
 +
-+	/* Global register offset for the display engine */
-+	u32 mmio_offset;
-+
-+	/* Register offsets for the various display pipes and transcoders */
-+	u32 pipe_offsets[I915_MAX_TRANSCODERS];
-+	u32 trans_offsets[I915_MAX_TRANSCODERS];
-+	u32 cursor_offsets[I915_MAX_PIPES];
-+
-+	struct {
-+		u32 degamma_lut_size;
-+		u32 gamma_lut_size;
-+		u32 degamma_lut_tests;
-+		u32 gamma_lut_tests;
-+	} color;
-+};
-+
++#if __LINUX_ARM_ARCH__ >= 6
++sync_testop	_sync_test_and_change_bit, eor, str
 +#endif
-diff --git a/drivers/gpu/drm/i915/intel_device_info.h b/drivers/gpu/drm/i915/intel_device_info.h
-index f032f2500f505..c14bc3f5d0fa1 100644
---- a/drivers/gpu/drm/i915/intel_device_info.h
-+++ b/drivers/gpu/drm/i915/intel_device_info.h
-@@ -29,7 +29,7 @@
+diff --git a/arch/arm/lib/testclearbit.S b/arch/arm/lib/testclearbit.S
+index 009afa0f5b4a7..4d2c5ca620ebf 100644
+--- a/arch/arm/lib/testclearbit.S
++++ b/arch/arm/lib/testclearbit.S
+@@ -10,3 +10,7 @@
+                 .text
  
- #include "intel_step.h"
+ testop	_test_and_clear_bit, bicne, strne
++
++#if __LINUX_ARM_ARCH__ >= 6
++sync_testop	_sync_test_and_clear_bit, bicne, strne
++#endif
+diff --git a/arch/arm/lib/testsetbit.S b/arch/arm/lib/testsetbit.S
+index f3192e55acc87..649dbab65d8d0 100644
+--- a/arch/arm/lib/testsetbit.S
++++ b/arch/arm/lib/testsetbit.S
+@@ -10,3 +10,7 @@
+                 .text
  
--#include "display/intel_display_limits.h"
-+#include "display/intel_display_device.h"
- 
- #include "gt/intel_engine_types.h"
- #include "gt/intel_context_types.h"
-@@ -180,25 +180,6 @@ enum intel_ppgtt_type {
- 	func(unfenced_needs_alignment); \
- 	func(hws_needs_physical);
- 
--#define DEV_INFO_DISPLAY_FOR_EACH_FLAG(func) \
--	/* Keep in alphabetical order */ \
--	func(cursor_needs_physical); \
--	func(has_cdclk_crawl); \
--	func(has_cdclk_squash); \
--	func(has_ddi); \
--	func(has_dp_mst); \
--	func(has_dsb); \
--	func(has_fpga_dbg); \
--	func(has_gmch); \
--	func(has_hotplug); \
--	func(has_hti); \
--	func(has_ipc); \
--	func(has_overlay); \
--	func(has_psr); \
--	func(has_psr_hw_tracking); \
--	func(overlay_needs_physical); \
--	func(supports_tv);
--
- struct intel_ip_version {
- 	u8 ver;
- 	u8 rel;
-@@ -276,33 +257,7 @@ struct intel_device_info {
- 	DEV_INFO_FOR_EACH_FLAG(DEFINE_FLAG);
- #undef DEFINE_FLAG
- 
--	struct {
--		u8 abox_mask;
--
--		struct {
--			u16 size; /* in blocks */
--			u8 slice_mask;
--		} dbuf;
--
--#define DEFINE_FLAG(name) u8 name:1
--		DEV_INFO_DISPLAY_FOR_EACH_FLAG(DEFINE_FLAG);
--#undef DEFINE_FLAG
--
--		/* Global register offset for the display engine */
--		u32 mmio_offset;
--
--		/* Register offsets for the various display pipes and transcoders */
--		u32 pipe_offsets[I915_MAX_TRANSCODERS];
--		u32 trans_offsets[I915_MAX_TRANSCODERS];
--		u32 cursor_offsets[I915_MAX_PIPES];
--
--		struct {
--			u32 degamma_lut_size;
--			u32 gamma_lut_size;
--			u32 degamma_lut_tests;
--			u32 gamma_lut_tests;
--		} color;
--	} display;
-+	struct intel_display_device_info display;
- 
- 	/*
- 	 * Initial runtime info. Do not access outside of i915_driver_create().
+ testop	_test_and_set_bit, orreq, streq
++
++#if __LINUX_ARM_ARCH__ >= 6
++sync_testop	_sync_test_and_set_bit, orreq, streq
++#endif
 -- 
 2.39.2
 
