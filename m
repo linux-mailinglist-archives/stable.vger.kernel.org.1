@@ -2,118 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED0ED7552EE
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A8A75550E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:37:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231546AbjGPUNk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:13:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40566 "EHLO
+        id S232353AbjGPUhF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:37:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231543AbjGPUNj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:13:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95AD1C0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:13:38 -0700 (PDT)
+        with ESMTP id S232354AbjGPUhB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:37:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 030A4198
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:36:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 34B4860EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:13:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A87C433C8;
-        Sun, 16 Jul 2023 20:13:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D000960EBD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC49DC433C8;
+        Sun, 16 Jul 2023 20:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538417;
-        bh=fLFVgxk4wdXRdqPVgv4XpOOmaugD8QgNPs9TuZoT2PM=;
+        s=korg; t=1689539812;
+        bh=t5kppTVDtydrcMnWFPQJieEi7Cy2DCG1zIdibxQNoEk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aTR/yfQ6XHK1QKwtNYlXUmfFHIySAPTjRWJmqeRjjSRGeSXRngr3+9pXtwmDkHng2
-         eHHjyPxn1nye6BRtZF1uRoFcSpYS0qBUMyCIkKBMCVhwXIqIkMTkrth2PozanKjFHQ
-         qewZCK0BZdd1IvRmEe7eisHK3DTRbrIGJxiKzpp0=
+        b=MSPExVcujSBSJ8Ll6/Rd6ESm8WBZFkHO1afqUuDJQYAJDjSfJhkBUd7RTj1s32GY3
+         vftwNIhm/lGNWdTIaLsE6XMcTw+sh+EUbIb7QU4QH4TeAUSUEOsTMENKtsGabSXVMv
+         lBbuhQf46xn+ZBg88ImNftsfatj9UWNSqS6HmB3M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Wesley Chalmers <Wesley.Chalmers@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 426/800] ASoC: imx-audmix: check return value of devm_kasprintf()
-Date:   Sun, 16 Jul 2023 21:44:39 +0200
-Message-ID: <20230716194958.982308405@linuxfoundation.org>
+Subject: [PATCH 6.1 141/591] drm/amd/display: Add logging for display MALL refresh setting
+Date:   Sun, 16 Jul 2023 21:44:40 +0200
+Message-ID: <20230716194927.518622526@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Wesley Chalmers <Wesley.Chalmers@amd.com>
 
-[ Upstream commit 2f76e1d6ca524a888d29aafe29f2ad2003857971 ]
+[ Upstream commit cd8f067a46d34dee3188da184912ae3d64d98444 ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory.
-Pointer could be NULL in case allocation fails. Check pointer validity.
-Identified with coccinelle (kmerr.cocci script).
+[WHY]
+Add log entry for when display refresh from MALL
+settings are sent to SMU.
 
-Fixes: b86ef5367761 ("ASoC: fsl: Add Audio Mixer machine driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230614121509.443926-1-claudiu.beznea@microchip.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 1664641ea946 ("drm/amd/display: Add logger for SMU msg")
+Signed-off-by: Wesley Chalmers <Wesley.Chalmers@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-audmix.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ .../drm/amd/display/dc/clk_mgr/dcn30/dcn30_clk_mgr_smu_msg.c   | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-index b2c5aca92c6bf..f9ed8fcc03c48 100644
---- a/sound/soc/fsl/imx-audmix.c
-+++ b/sound/soc/fsl/imx-audmix.c
-@@ -228,6 +228,8 @@ static int imx_audmix_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn30/dcn30_clk_mgr_smu_msg.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn30/dcn30_clk_mgr_smu_msg.c
+index 1fbf1c105dc12..bdbf183066981 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn30/dcn30_clk_mgr_smu_msg.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn30/dcn30_clk_mgr_smu_msg.c
+@@ -312,6 +312,9 @@ void dcn30_smu_set_display_refresh_from_mall(struct clk_mgr_internal *clk_mgr, b
+ 	/* bits 8:7 for cache timer scale, bits 6:1 for cache timer delay, bit 0 = 1 for enable, = 0 for disable */
+ 	uint32_t param = (cache_timer_scale << 7) | (cache_timer_delay << 1) | (enable ? 1 : 0);
  
- 		dai_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s%s",
- 					  fe_name_pref, args.np->full_name + 1);
-+		if (!dai_name)
-+			return -ENOMEM;
- 
- 		dev_info(pdev->dev.parent, "DAI FE name:%s\n", dai_name);
- 
-@@ -236,6 +238,8 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 			capture_dai_name =
- 				devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
- 					       dai_name, "CPU-Capture");
-+			if (!capture_dai_name)
-+				return -ENOMEM;
- 		}
- 
- 		/*
-@@ -269,6 +273,8 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 				       "AUDMIX-Playback-%d", i);
- 		be_cp = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 				       "AUDMIX-Capture-%d", i);
-+		if (!be_name || !be_pb || !be_cp)
-+			return -ENOMEM;
- 
- 		priv->dai[num_dai + i].cpus	= &dlc[2];
- 		priv->dai[num_dai + i].codecs	= &dlc[3];
-@@ -293,6 +299,9 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 		priv->dapm_routes[i].source =
- 			devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
- 				       dai_name, "CPU-Playback");
-+		if (!priv->dapm_routes[i].source)
-+			return -ENOMEM;
++	smu_print("SMU Set display refresh from mall: enable = %d, cache_timer_delay = %d, cache_timer_scale = %d\n",
++		enable, cache_timer_delay, cache_timer_scale);
 +
- 		priv->dapm_routes[i].sink = be_pb;
- 		priv->dapm_routes[num_dai + i].source   = be_pb;
- 		priv->dapm_routes[num_dai + i].sink     = be_cp;
+ 	dcn30_smu_send_msg_with_param(clk_mgr,
+ 			DALSMC_MSG_SetDisplayRefreshFromMall, param, NULL);
+ }
 -- 
 2.39.2
 
