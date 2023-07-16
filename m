@@ -2,97 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BC8475553D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D104975530E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232431AbjGPUiz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:38:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58706 "EHLO
+        id S231598AbjGPUOx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:14:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232429AbjGPUiz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F44EBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:54 -0700 (PDT)
+        with ESMTP id S231594AbjGPUOw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:14:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AEB41B7
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0300160DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AB6C433C7;
-        Sun, 16 Jul 2023 20:38:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE62C60EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8DEC433C7;
+        Sun, 16 Jul 2023 20:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539933;
-        bh=4EsI5Qjj1TrbZEYA9ZBfPSxbzsjN7jZZTpXFmzP2b0Y=;
+        s=korg; t=1689538490;
+        bh=DQUa3mqu3z7Z5tKHUw7Bosn1IPdmhPhPz8/aaKUR73Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AY0hzE6wImkUf9EMlq1yzZg1zaZ7FnTfRQtoCW4kaTrLKPxrPMVy27FjujJURi94c
-         lb8J4WO6niJMUmM2ra1F+Y+juG/Icl7LRjL26WCqXWIJ0QWASItpaZjvykjRCiJMbV
-         HHGFEoABnCJ0e966ubtbyn5BdfEQiwftNpwPB6Qw=
+        b=kceLYowpnn1hyCJiLofxi4zo7bICelEQaHMRadoNQIR0Dc4oqqK8V2qkc5VFWIQUx
+         nnC//5+5NzCv+dv/QztO21Tk7OusIJua8SaS1vhAupkXEmpBgYCMMloMuS5gJhkLjl
+         IL9Nc1fYtdKCYY/fyWJJgZJbnvFfh5MpI67ZzyMU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/591] RDMA/bnxt_re: Fix to remove an unnecessary log
-Date:   Sun, 16 Jul 2023 21:45:22 +0200
-Message-ID: <20230716194928.601587330@linuxfoundation.org>
+Subject: [PATCH 6.4 470/800] perf dwarf-aux: Fix off-by-one in die_get_varname()
+Date:   Sun, 16 Jul 2023 21:45:23 +0200
+Message-ID: <20230716194959.998576885@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 43774bc156614346fe5dacabc8e8c229167f2536 ]
+[ Upstream commit 3abfcfd847717d232e36963f31a361747c388fe7 ]
 
-During destroy_qp, driver sets the qp handle in the existing CQEs
-belonging to the QP being destroyed to NULL. As a result, a poll_cq after
-destroy_qp can report unnecessary messages.  Remove this noise from system
-logs.
+The die_get_varname() returns "(unknown_type)" string if it failed to
+find a type for the variable.  But it had a space before the opening
+parenthesis and it made the closing parenthesis cut off due to the
+off-by-one in the string length (14).
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://lore.kernel.org/r/1684478897-12247-6-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 88fd633cdfa19060 ("perf probe: No need to use formatting strbuf method")
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230612234102.3909116-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ tools/perf/util/dwarf-aux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 640d932bec376..74d56900387a1 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -2734,11 +2734,8 @@ static int bnxt_qplib_cq_process_terminal(struct bnxt_qplib_cq *cq,
+diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
+index b074144097710..3bff678745635 100644
+--- a/tools/perf/util/dwarf-aux.c
++++ b/tools/perf/util/dwarf-aux.c
+@@ -1103,7 +1103,7 @@ int die_get_varname(Dwarf_Die *vr_die, struct strbuf *buf)
+ 	ret = die_get_typename(vr_die, buf);
+ 	if (ret < 0) {
+ 		pr_debug("Failed to get type, make it unknown.\n");
+-		ret = strbuf_add(buf, " (unknown_type)", 14);
++		ret = strbuf_add(buf, "(unknown_type)", 14);
+ 	}
  
- 	qp = (struct bnxt_qplib_qp *)((unsigned long)
- 				      le64_to_cpu(hwcqe->qp_handle));
--	if (!qp) {
--		dev_err(&cq->hwq.pdev->dev,
--			"FP: CQ Process terminal qp is NULL\n");
-+	if (!qp)
- 		return -EINVAL;
--	}
- 
- 	/* Must block new posting of SQ and RQ */
- 	qp->state = CMDQ_MODIFY_QP_NEW_STATE_ERR;
+ 	return ret < 0 ? ret : strbuf_addf(buf, "\t%s", dwarf_diename(vr_die));
 -- 
 2.39.2
 
