@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4106755566
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40733755567
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232469AbjGPUkc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:40:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59554 "EHLO
+        id S232505AbjGPUkg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:40:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232514AbjGPUkb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:31 -0400
+        with ESMTP id S232517AbjGPUkf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEAD6BC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF77F103
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 465D360E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A409C433C8;
-        Sun, 16 Jul 2023 20:40:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1824A60DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2963AC433C8;
+        Sun, 16 Jul 2023 20:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540028;
-        bh=NHZ0binSqDfu7Myte/mqAa+2PBEkzFlrRtZ95K69NC4=;
+        s=korg; t=1689540031;
+        bh=Clv1TpHpdJtJIs0mBmASaN96j7+PyDoTAXD5bAg1pUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xGqA+2B5K1FVDxdS/eTalFDBtOCd6sznx4/pQB0NG6sg39za+HGBfBbUFhntUud2S
-         n/4JRmmsYJsgf5k7VnD6weZCJ1HhZADVjN8k8667J8mF6YbVcQLv2/sSc1qD+HIZgH
-         wZ8kkWSx+o5vqL+dIW+nfqq7gY9aUDmC/Q9O7TgI=
+        b=U9h57X4pNbvSyzzw+pRz7o2U6RhV5/UDKgPHWdC2ktNQqwIqDw9bTUCvkTO08FSYm
+         Vijyps0DrAWbdsbX78NaNwbeId6GAeXHKqN4Koodh0Zr7VWzGNZx6tQSq4wUFmXPF/
+         NF8SfnYBJjW65HEWXKzQX/dj2wWofEqRpD9zRegA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 217/591] ASoC: es8316: Do not set rate constraints for unsupported MCLKs
-Date:   Sun, 16 Jul 2023 21:45:56 +0200
-Message-ID: <20230716194929.485836212@linuxfoundation.org>
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Hans-Frieder Vogt <hfdevel@gmx.net>
+Subject: [PATCH 6.1 218/591] ARM: dts: meson8: correct uart_B and uart_C clock references
+Date:   Sun, 16 Jul 2023 21:45:57 +0200
+Message-ID: <20230716194929.511149059@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -56,89 +57,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 60413129ee2b38a80347489270af7f6e1c1de4d0 ]
+[ Upstream commit 98b503c7fb13a17a47d8ebf15fa8f7c10118e75c ]
 
-When using the codec through the generic audio graph card, there are at
-least two calls of es8316_set_dai_sysclk(), with the effect of limiting
-the allowed sample rates according to the MCLK/LRCK ratios supported by
-the codec:
+On Meson8 uart_B and uart_C do not work, because they are relying on
+incorrect clocks. Change the references of pclk to the correct CLKID
+(UART1 for uart_B and UART2 for uart_C), to allow use of the two uarts.
 
-1. During audio card setup, to set the initial MCLK - see
-   asoc_simple_init_dai().
+This was originally reported by Hans-Frieder Vogt for Meson8b [0], but
+the same bug is also present in meson8.dtsi
 
-2. Before opening a stream, to update MCLK, according to the stream
-   sample rate and the multiplication factor - see
-   asoc_simple_hw_params().
+[0] https://lore.kernel.org/linux-amlogic/trinity-bf20bcb9-790b-4ab9-99e3-0831ef8257f4-1680878185420@3c-app-gmx-bap55/
 
-In some cases the initial MCLK might be set to a frequency that doesn't
-match any of the supported ratios, e.g. 12287999 instead of 12288000,
-which is only 1 Hz below the supported clock, as that is what the
-hardware reports. This creates an empty list of rate constraints, which
-is further passed to snd_pcm_hw_constraint_list() via
-es8316_pcm_startup(), and causes the following error on the very first
-access of the sound card:
-
-  $ speaker-test -D hw:Analog,0 -F S16_LE -c 2 -t wav
-  Broken configuration for playback: no configurations available: Invalid argument
-  Setting of hwparams failed: Invalid argument
-
-Note that all subsequent retries succeed thanks to the updated MCLK set
-at point 2 above, which uses a computed frequency value instead of a
-reading from the hardware registers. Normally this would have mitigated
-the issue, but es8316_pcm_startup() executes before the 2nd call to
-es8316_set_dai_sysclk(), hence it cannot make use of the updated
-constraints.
-
-Since es8316_pcm_hw_params() performs anyway a final validation of MCLK
-against the stream sample rate and the supported MCLK/LRCK ratios, fix
-the issue by ensuring that sysclk_constraints list is only set when at
-least one supported sample rate is autodetected by the codec.
-
-Fixes: b8b88b70875a ("ASoC: add es8316 codec driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20230530181140.483936-3-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 57007bfb5469 ("ARM: dts: meson8: Fix the UART device-tree schema validation")
+Reported-by: Hans-Frieder Vogt <hfdevel@gmx.net> # for meson8b.dtsi
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20230516203029.1031174-1-martin.blumenstingl@googlemail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/es8316.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/arm/boot/dts/meson8.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
-index 2bfcd9af39172..87775378362e7 100644
---- a/sound/soc/codecs/es8316.c
-+++ b/sound/soc/codecs/es8316.c
-@@ -369,13 +369,11 @@ static int es8316_set_dai_sysclk(struct snd_soc_dai *codec_dai,
- 	int count = 0;
+diff --git a/arch/arm/boot/dts/meson8.dtsi b/arch/arm/boot/dts/meson8.dtsi
+index 0f8bac8bac8bb..f9da7faa2186b 100644
+--- a/arch/arm/boot/dts/meson8.dtsi
++++ b/arch/arm/boot/dts/meson8.dtsi
+@@ -749,13 +749,13 @@ &uart_A {
  
- 	es8316->sysclk = freq;
-+	es8316->sysclk_constraints.list = NULL;
-+	es8316->sysclk_constraints.count = 0;
+ &uart_B {
+ 	compatible = "amlogic,meson8-uart";
+-	clocks = <&xtal>, <&clkc CLKID_UART0>, <&clkc CLKID_CLK81>;
++	clocks = <&xtal>, <&clkc CLKID_UART1>, <&clkc CLKID_CLK81>;
+ 	clock-names = "xtal", "pclk", "baud";
+ };
  
--	if (freq == 0) {
--		es8316->sysclk_constraints.list = NULL;
--		es8316->sysclk_constraints.count = 0;
--
-+	if (freq == 0)
- 		return 0;
--	}
+ &uart_C {
+ 	compatible = "amlogic,meson8-uart";
+-	clocks = <&xtal>, <&clkc CLKID_UART0>, <&clkc CLKID_CLK81>;
++	clocks = <&xtal>, <&clkc CLKID_UART2>, <&clkc CLKID_CLK81>;
+ 	clock-names = "xtal", "pclk", "baud";
+ };
  
- 	ret = clk_set_rate(es8316->mclk, freq);
- 	if (ret)
-@@ -391,8 +389,10 @@ static int es8316_set_dai_sysclk(struct snd_soc_dai *codec_dai,
- 			es8316->allowed_rates[count++] = freq / ratio;
- 	}
- 
--	es8316->sysclk_constraints.list = es8316->allowed_rates;
--	es8316->sysclk_constraints.count = count;
-+	if (count) {
-+		es8316->sysclk_constraints.list = es8316->allowed_rates;
-+		es8316->sysclk_constraints.count = count;
-+	}
- 
- 	return 0;
- }
 -- 
 2.39.2
 
