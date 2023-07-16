@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 497E07553E5
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DAF3755631
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:48:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231895AbjGPUYM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:24:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47164 "EHLO
+        id S232791AbjGPUsT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:48:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231905AbjGPUYL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:24:11 -0400
+        with ESMTP id S232784AbjGPUsT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:48:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7E8FBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:24:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B4C9D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:48:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E51260EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:24:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600F8C433C7;
-        Sun, 16 Jul 2023 20:24:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C87F60EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:48:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AECBC433C7;
+        Sun, 16 Jul 2023 20:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539049;
-        bh=iKgop/YqvfTxvVeDM5Pi1BX2sh9/7BWrLHkFRPGWxOs=;
+        s=korg; t=1689540495;
+        bh=Dr127yvcE77Ap6Ci6GNJeIIif9hHu6W3bkp0B4tEWKg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0RnKTKqMf094w82r6rO6UXQ154RoUHIxlth79g+XTutM8bJAt/iuAj15+8CWdQej1
-         f2EzoFpmHBjc1tR/aSp6JydpJqCyzePXsnaYDre8CxhO2GE+medx0wj/J2vwIc4XmK
-         HgMqkTlVtgjjTaArhqbWBscRyuyjtvKs3Q60nH38=
+        b=SnGdoIhJsTvwiqPxIg4kJfLtBhnz/zOsoeRNl4n7RRKHma9+vY0SYpy+mGB7/ekvx
+         XKEOe57nZk7oKwHDYDqBs65mfIAuP35Ov0btPFV4lPuAVYGS/qgoFb6UfOpZX9mBvd
+         hWLqyF4c7IaGeXq6dwlywDvxatEeowk5SIG8xnXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 670/800] net: dsa: tag_sja1105: always prefer source port information from INCL_SRCPT
+Subject: [PATCH 6.1 384/591] dt-bindings: power: reset: qcom-pon: Only allow reboot-mode pre-pmk8350
 Date:   Sun, 16 Jul 2023 21:48:43 +0200
-Message-ID: <20230716195004.684545892@linuxfoundation.org>
+Message-ID: <20230716194933.855685517@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,101 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit c1ae02d876898b1b8ca1e12c6f84d7b406263800 ]
+[ Upstream commit d41dab4c031edaa460a484113394327aa52dc0bd ]
 
-Currently the sja1105 tagging protocol prefers using the source port
-information from the VLAN header if that is available, falling back to
-the INCL_SRCPT option if it isn't. The VLAN header is available for all
-frames except for META frames initiated by the switch (containing RX
-timestamps), and thus, the "if (is_link_local)" branch is practically
-dead.
+As pointed out by Shazad [1], PMICs using a separate HLOS+PBS scheme
+(so PMK8350 and newer) are expected to pass reboot mode data through SDAM,
+as the reboot mode registers are absent in the HLOS reg space.
 
-The tag_8021q source port identification has become more loose
-("imprecise") and will report a plausible rather than exact bridge port,
-when under a bridge (be it VLAN-aware or VLAN-unaware). But link-local
-traffic always needs to know the precise source port. With incorrect
-source port reporting, for example PTP traffic over 2 bridged ports will
-all be seen on sockets opened on the first such port, which is incorrect.
+Limit the reboot-mode.yaml inclusion to PMICs without a separate PBS
+region.
 
-Now that the tagging protocol has been changed to make link-local frames
-always contain source port information, we can reverse the order of the
-checks so that we always give precedence to that information (which is
-always precise) in lieu of the tag_8021q VID which is only precise for a
-standalone port.
+[1] https://lore.kernel.org/linux-arm-msm/12f13183-c381-25f7-459e-62e0c2b19498@quicinc.com/
 
-Fixes: d7f9787a763f ("net: dsa: tag_8021q: add support for imprecise RX based on the VBID")
-Fixes: 91495f21fcec ("net: dsa: tag_8021q: replace the SVL bridging with VLAN-unaware IVL bridging")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 03fccdc76dce ("dt-bindings: power: reset: qcom-pon: Add new compatible "qcom,pmk8350-pon"")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/tag_sja1105.c | 38 +++++++++++++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 9 deletions(-)
+ Documentation/devicetree/bindings/power/reset/qcom,pon.yaml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
-index a5f3b73da417f..92a626a05e829 100644
---- a/net/dsa/tag_sja1105.c
-+++ b/net/dsa/tag_sja1105.c
-@@ -545,10 +545,7 @@ static struct sk_buff *sja1105_rcv(struct sk_buff *skb,
- 	is_link_local = sja1105_is_link_local(skb);
- 	is_meta = sja1105_is_meta_frame(skb);
+diff --git a/Documentation/devicetree/bindings/power/reset/qcom,pon.yaml b/Documentation/devicetree/bindings/power/reset/qcom,pon.yaml
+index d96170eecbd22..0b1eca734d3b1 100644
+--- a/Documentation/devicetree/bindings/power/reset/qcom,pon.yaml
++++ b/Documentation/devicetree/bindings/power/reset/qcom,pon.yaml
+@@ -56,7 +56,6 @@ required:
+ unevaluatedProperties: false
  
--	if (sja1105_skb_has_tag_8021q(skb)) {
--		/* Normal traffic path. */
--		sja1105_vlan_rcv(skb, &source_port, &switch_id, &vbid, &vid);
--	} else if (is_link_local) {
-+	if (is_link_local) {
- 		/* Management traffic path. Switch embeds the switch ID and
- 		 * port ID into bytes of the destination MAC, courtesy of
- 		 * the incl_srcpt options.
-@@ -562,16 +559,39 @@ static struct sk_buff *sja1105_rcv(struct sk_buff *skb,
- 		sja1105_meta_unpack(skb, &meta);
- 		source_port = meta.source_port;
- 		switch_id = meta.switch_id;
--	} else {
-+	}
+ allOf:
+-  - $ref: reboot-mode.yaml#
+   - if:
+       properties:
+         compatible:
+@@ -66,6 +65,9 @@ allOf:
+               - qcom,pms405-pon
+               - qcom,pm8998-pon
+     then:
++      allOf:
++        - $ref: reboot-mode.yaml#
 +
-+	/* Normal data plane traffic and link-local frames are tagged with
-+	 * a tag_8021q VLAN which we have to strip
-+	 */
-+	if (sja1105_skb_has_tag_8021q(skb)) {
-+		int tmp_source_port = -1, tmp_switch_id = -1;
-+
-+		sja1105_vlan_rcv(skb, &tmp_source_port, &tmp_switch_id, &vbid,
-+				 &vid);
-+		/* Preserve the source information from the INCL_SRCPT option,
-+		 * if available. This allows us to not overwrite a valid source
-+		 * port and switch ID with zeroes when receiving link-local
-+		 * frames from a VLAN-unaware bridged port (non-zero vbid) or a
-+		 * VLAN-aware bridged port (non-zero vid).
-+		 */
-+		if (source_port == -1)
-+			source_port = tmp_source_port;
-+		if (switch_id == -1)
-+			switch_id = tmp_switch_id;
-+	} else if (source_port == -1 && switch_id == -1) {
-+		/* Packets with no source information have no chance of
-+		 * getting accepted, drop them straight away.
-+		 */
- 		return NULL;
- 	}
- 
--	if (vbid >= 1)
-+	if (source_port != -1 && switch_id != -1)
-+		skb->dev = dsa_master_find_slave(netdev, switch_id, source_port);
-+	else if (vbid >= 1)
- 		skb->dev = dsa_tag_8021q_find_port_by_vbid(netdev, vbid);
--	else if (source_port == -1 || switch_id == -1)
--		skb->dev = dsa_find_designated_bridge_port_by_vid(netdev, vid);
- 	else
--		skb->dev = dsa_master_find_slave(netdev, switch_id, source_port);
-+		skb->dev = dsa_find_designated_bridge_port_by_vid(netdev, vid);
- 	if (!skb->dev) {
- 		netdev_warn(netdev, "Couldn't decode source port\n");
- 		return NULL;
+       properties:
+         reg:
+           maxItems: 1
 -- 
 2.39.2
 
