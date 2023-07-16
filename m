@@ -2,67 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36EAF7550F5
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8B877550F9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:28:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbjGPTZ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 15:25:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47712 "EHLO
+        id S230071AbjGPT2e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 15:28:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229697AbjGPTZz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:25:55 -0400
-Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3EABE4C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:25:54 -0700 (PDT)
-Received: by mail-vk1-xa30.google.com with SMTP id 71dfb90a1353d-4814bea10e0so1252494e0c.1
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:25:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689535553; x=1692127553;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SSAuqt+s4WpqnMkPR0UJ8Xay9OvKHBk6xAfxVDPkGGQ=;
-        b=GCfnrMXYxp6tDgtZAagG8EKzfgEUkVMqLXnYtg5sUR5EMzDvuVV7JWq8MfFipjIqwp
-         rQWsJLvKS3lRUTIoET8y9ScSg8YJkueRQBIMPFKiK5Ht8RCUrUCsCLc30sRywisgwuYa
-         nLb0CvZurNsuecbNXH5SJbeg2xgpy3fZtgWFcqmbw0/QSt6XTJrrtiNePq+1g15mwoq3
-         WKeQ2nYtg8zriWqSdiThh58oCfl9O7kfNJ9WM0qNKbHZOhFWomvLC5fXwqNHmGT/3QDv
-         wuUdHkzD/emtDWaae5ODNqd9uqDeVuBXwmdmZwhAIZK+jJ5OMfLVLDFs9WzLS02quVZp
-         LSSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689535553; x=1692127553;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SSAuqt+s4WpqnMkPR0UJ8Xay9OvKHBk6xAfxVDPkGGQ=;
-        b=L5E1hWjoeguaMqAgL8mZzsrHlHGMyH6sYlnRNFTi4NHH83BOsJ4WjlL4PdHaP0UQvZ
-         VkDSFJ5VYS7P/AIpmYDypk0NFj4b0A53djZ8AoqCMeuF//YDpdb+zl/JUH4b2REP3HJ2
-         CnWHJrsSRf+MmmKFU5cGMXwIOGOP3tFN31jCFo5yGi9psSOxYcxXOQIfbKMLFieOAf6f
-         Q3xexCBoymucnEOpRzYGjKSg5cIMNOljutdlCfV3adfkhZXAjsMIPUwkXwj7DJxnMtif
-         1uPGh632m1mYXBAL2fWstdT+niAfr9iGPn4aT8G2Gs7eN3F/wZlO0qgEL2hQ7U3FKXqq
-         ddwQ==
-X-Gm-Message-State: ABy/qLb1uZVtWfTyJ/aDNPLvuVhYIXul5R+XIj1fTPsPsXWidbXEU31r
-        IbaYcynHZnkSpbAIMZGHWa1Ae5YsIPeAg4hNSdrTL4vu6Z6nmfSuIbs=
-X-Google-Smtp-Source: APBJJlHvGNUdX+Ovjs7gI07fwd/iRKlv+A+q7ObU+aBtLpCouxGSumprEh+gumIKhAED0yGvDqX1C9BaAGBFEGGRinY=
-X-Received: by 2002:a1f:db86:0:b0:481:90c6:d059 with SMTP id
- s128-20020a1fdb86000000b0048190c6d059mr855078vkg.2.1689535553336; Sun, 16 Jul
- 2023 12:25:53 -0700 (PDT)
+        with ESMTP id S229591AbjGPT2d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:28:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA7C2199
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:28:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4855660E08
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 19:28:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578A3C433C7;
+        Sun, 16 Jul 2023 19:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689535711;
+        bh=uYS765a6JKO6DxL/KnFYMXvghkKuSZWOKjtN2BlCytI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Y9yyWDNhLldUoopYMvPjHTdOyfQSREULLEyzAgvcklfYT9B7ZIGkFOfir1eXqpP+J
+         t1/VGJY5ljS6N9kp7HbekrURVAFC9FwAinDiO0UXAk4lQ5apGGwUtoik87xHOzmmJ4
+         lVhoRFt/ZMEPdEiwteHITVQZpHvLd2wyk//xIkys=
+Date:   Sun, 16 Jul 2023 21:28:29 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>, stable@vger.kernel.org,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: Re: [PATCH 1/9] drm/amdgpu: make sure BOs are locked in
+ amdgpu_vm_get_memory
+Message-ID: <2023071654-flattery-fidgety-0e31@gregkh>
+References: <20230707150734.746135-1-alexander.deucher@amd.com>
+ <2023071649-gradation-reckless-5db5@gregkh>
+ <bfb99ba9-8fb3-1af7-d0b2-c617bbd5c2b6@amd.com>
 MIME-Version: 1.0
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Mon, 17 Jul 2023 00:55:42 +0530
-Message-ID: <CA+G9fYs5n6aobE04YZy3Qy1ZMhAvH6-uQRqidgFmSoei91iW8g@mail.gmail.com>
-Subject: stable-rc 6.1: x86: clang build failed - block/blk-cgroup.c:1237:6:
- error: variable 'ret' is used uninitialized whenever 'if' condition is true
-To:     linux-stable <stable@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        clang-built-linux <llvm@lists.linux.dev>,
-        lkft-triage@lists.linaro.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Anders Roxell <anders.roxell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bfb99ba9-8fb3-1af7-d0b2-c617bbd5c2b6@amd.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,41 +57,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Linux stable-rc 6.1 build failed x86 and i386 with clang.
+On Sun, Jul 16, 2023 at 02:22:36PM -0500, Mario Limonciello wrote:
+> On 7/16/23 14:16, Greg KH wrote:
+> > On Fri, Jul 07, 2023 at 11:07:26AM -0400, Alex Deucher wrote:
+> > > From: Christian König <christian.koenig@amd.com>
+> > > 
+> > > We need to grab the lock of the BO or otherwise can run into a crash
+> > > when we try to inspect the current location.
+> > > 
+> > > Signed-off-by: Christian König <christian.koenig@amd.com>
+> > > Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+> > > Acked-by: Guchun Chen <guchun.chen@amd.com>
+> > > Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> > > (cherry picked from commit e2ad8e2df432498b1cee2af04df605723f4d75e6)
+> > > Cc: stable@vger.kernel.org # 6.3.x
+> > > ---
+> > >   drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 69 +++++++++++++++-----------
+> > >   1 file changed, 39 insertions(+), 30 deletions(-)
+> > 
+> > I've applied the first 7 patches here to 6.4.y, which I am guessing is
+> > where you want them applied to, yet you didn't really say?
+> > 
+> > The last 2 did not apply :(
+> > 
+> > And some of these should go into 6.1.y also?  Please send a patch series
+> > and give me a hint as to where they should be applied to next time so I
+> > don't have to guess...
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> In this case the individual patches with specific requirements have:
+> 
+> Cc: stable@vger.kernel.org # version
+> 
+> They were sent before 6.3 went EOL, so here is the updated summary from
+> them:
+> 6.4.y:
+> 1, 2, 3, 4, 5, 6, 7, 8, 9
+> 
+> 6.1.y:
+> 3, 4, 5, 6, 7, 8, 9
+> 
+> 3 is particularly important for 6.1.y as we have active regressions reported
+> related to it on 6.1.y.
+> 
+> So can you please take 3-7 to 6.1.y and I'll look more closely at what is
+> wrong with 8 and 9 on 6.1.y and 6.4.y and resend them?
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+I can't really pick out these for 6.1 from the larger series as I'm
+drowning in patches at the moment.  Please send a backported series and
+I'll be glad to queue that up.
 
-Build log:
------------
-block/blk-cgroup.c:1237:6: error: variable 'ret' is used uninitialized
-whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
-        if (init_blkcg_llists(blkcg))
-            ^~~~~~~~~~~~~~~~~~~~~~~~
-block/blk-cgroup.c:1287:9: note: uninitialized use occurs here
-        return ret;
-               ^~~
-block/blk-cgroup.c:1237:2: note: remove the 'if' if its condition is
-always false
-        if (init_blkcg_llists(blkcg))
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-block/blk-cgroup.c:1222:33: note: initialize the variable 'ret' to
-silence this warning
-        struct cgroup_subsys_state *ret;
-                                       ^
-                                        = NULL
-1 error generated.
+thanks,
 
-Links,
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y-sanity/build/v6.1.38-599-g5071846d06ef/testrun/18327562/suite/build/test/clang-lkftconfig/history/
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2SfFoWj9NmKWHRijR0hcoXGjLhr/
-
- tuxmake \
- --runtime podman --target-arch x86_64 \
- --toolchain clang-16 \
- --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2SfFoWj9NmKWHRijR0hcoXGjLhr/config
-\
- LLVM=1 LLVM_IAS=1
-
---
-Linaro LKFT
-https://lkft.linaro.org
+greg k-h
