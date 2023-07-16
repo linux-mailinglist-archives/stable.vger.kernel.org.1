@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D069B75536E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8AC755588
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231733AbjGPUTE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:19:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44306 "EHLO
+        id S232556AbjGPUlu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:41:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231725AbjGPUTA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B01AB126
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:59 -0700 (PDT)
+        with ESMTP id S232553AbjGPUlt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CD0CBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3775760DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439A3C433C7;
-        Sun, 16 Jul 2023 20:18:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B360260E2C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39B4C433C8;
+        Sun, 16 Jul 2023 20:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538738;
-        bh=e1hzWDr5yruFlKZBTPl82JhEFaK/Tl22tnzYuMa7L10=;
+        s=korg; t=1689540107;
+        bh=2ted/eJLqgxXXbao25Kces2KMcpmj+UtsjKnYVJA2ig=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NQga6i4MQ9T4OEiOCq2erAGrfXn2Q2NV+UGk8Eb13gg5QYKTj2rbrwutctGhwnlDj
-         Wqo93zK4z0u0FqoJ6yfA/PnankQwWDOUJxn9rz6GORok69hxG8M9yR33G6/yTXw0q9
-         zeW4rEUu1a4mQmM9LndtE6ssQxc4CzAv1e3SeZBQ=
+        b=TQlqg1vGwj752ZGeyWHZQdDP+CA63myw/O3urQleGM6dhu0zF6AOZ6GS3ZSHr5i0z
+         ESQsJh6QuuAyuO/yOwSgFDgaNgMXMuiQliA62zwpXsH14PMnKN94wThXMwpEg1X8Z9
+         eL8rRwQs1g9K0hMK9JTbn9DquTKskn9ULUET6fqI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ding Hui <dinghui@sangfor.com.cn>,
-        Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.4 531/800] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()
+        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 245/591] RDMA/rxe: Fix access checks in rxe_check_bind_mw
 Date:   Sun, 16 Jul 2023 21:46:24 +0200
-Message-ID: <20230716195001.429537604@linuxfoundation.org>
+Message-ID: <20230716194930.208203565@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,138 +55,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ding Hui <dinghui@sangfor.com.cn>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-commit fc80fc2d4e39137869da3150ee169b40bf879287 upstream.
+[ Upstream commit 425e1c9018fdf25cb4531606cc92d9d01a55534f ]
 
-After the listener svc_sock is freed, and before invoking svc_tcp_accept()
-for the established child sock, there is a window that the newsock
-retaining a freed listener svc_sock in sk_user_data which cloning from
-parent. In the race window, if data is received on the newsock, we will
-observe use-after-free report in svc_tcp_listen_data_ready().
+The subroutine rxe_check_bind_mw() in rxe_mw.c performs checks on the mw
+access flags before they are set so they always succeed.  This patch
+instead checks the access flags passed in the send wqe.
 
-Reproduce by two tasks:
-
-1. while :; do rpc.nfsd 0 ; rpc.nfsd; done
-2. while :; do echo "" | ncat -4 127.0.0.1 2049 ; done
-
-KASAN report:
-
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
-  Read of size 8 at addr ffff888139d96228 by task nc/102553
-  CPU: 7 PID: 102553 Comm: nc Not tainted 6.3.0+ #18
-  Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0x33/0x50
-   print_address_description.constprop.0+0x27/0x310
-   print_report+0x3e/0x70
-   kasan_report+0xae/0xe0
-   svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
-   tcp_data_queue+0x9f4/0x20e0
-   tcp_rcv_established+0x666/0x1f60
-   tcp_v4_do_rcv+0x51c/0x850
-   tcp_v4_rcv+0x23fc/0x2e80
-   ip_protocol_deliver_rcu+0x62/0x300
-   ip_local_deliver_finish+0x267/0x350
-   ip_local_deliver+0x18b/0x2d0
-   ip_rcv+0x2fb/0x370
-   __netif_receive_skb_one_core+0x166/0x1b0
-   process_backlog+0x24c/0x5e0
-   __napi_poll+0xa2/0x500
-   net_rx_action+0x854/0xc90
-   __do_softirq+0x1bb/0x5de
-   do_softirq+0xcb/0x100
-   </IRQ>
-   <TASK>
-   ...
-   </TASK>
-
-  Allocated by task 102371:
-   kasan_save_stack+0x1e/0x40
-   kasan_set_track+0x21/0x30
-   __kasan_kmalloc+0x7b/0x90
-   svc_setup_socket+0x52/0x4f0 [sunrpc]
-   svc_addsock+0x20d/0x400 [sunrpc]
-   __write_ports_addfd+0x209/0x390 [nfsd]
-   write_ports+0x239/0x2c0 [nfsd]
-   nfsctl_transaction_write+0xac/0x110 [nfsd]
-   vfs_write+0x1c3/0xae0
-   ksys_write+0xed/0x1c0
-   do_syscall_64+0x38/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-  Freed by task 102551:
-   kasan_save_stack+0x1e/0x40
-   kasan_set_track+0x21/0x30
-   kasan_save_free_info+0x2a/0x50
-   __kasan_slab_free+0x106/0x190
-   __kmem_cache_free+0x133/0x270
-   svc_xprt_free+0x1e2/0x350 [sunrpc]
-   svc_xprt_destroy_all+0x25a/0x440 [sunrpc]
-   nfsd_put+0x125/0x240 [nfsd]
-   nfsd_svc+0x2cb/0x3c0 [nfsd]
-   write_threads+0x1ac/0x2a0 [nfsd]
-   nfsctl_transaction_write+0xac/0x110 [nfsd]
-   vfs_write+0x1c3/0xae0
-   ksys_write+0xed/0x1c0
-   do_syscall_64+0x38/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Fix the UAF by simply doing nothing in svc_tcp_listen_data_ready()
-if state != TCP_LISTEN, that will avoid dereferencing svsk for all
-child socket.
-
-Link: https://lore.kernel.org/lkml/20230507091131.23540-1-dinghui@sangfor.com.cn/
-Fixes: fa9251afc33c ("SUNRPC: Call the default socket callbacks instead of open coding")
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 32a577b4c3a9 ("RDMA/rxe: Add support for bind MW work requests")
+Link: https://lore.kernel.org/r/20230530221334.89432-4-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svcsock.c |   23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_mw.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -826,12 +826,6 @@ static void svc_tcp_listen_data_ready(st
- 
- 	trace_sk_data_ready(sk);
- 
--	if (svsk) {
--		/* Refer to svc_setup_socket() for details. */
--		rmb();
--		svsk->sk_odata(sk);
--	}
--
- 	/*
- 	 * This callback may called twice when a new connection
- 	 * is established as a child socket inherits everything
-@@ -840,13 +834,18 @@ static void svc_tcp_listen_data_ready(st
- 	 *    when one of child sockets become ESTABLISHED.
- 	 * 2) data_ready method of the child socket may be called
- 	 *    when it receives data before the socket is accepted.
--	 * In case of 2, we should ignore it silently.
-+	 * In case of 2, we should ignore it silently and DO NOT
-+	 * dereference svsk.
- 	 */
--	if (sk->sk_state == TCP_LISTEN) {
--		if (svsk) {
--			set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
--			svc_xprt_enqueue(&svsk->sk_xprt);
--		}
-+	if (sk->sk_state != TCP_LISTEN)
-+		return;
-+
-+	if (svsk) {
-+		/* Refer to svc_setup_socket() for details. */
-+		rmb();
-+		svsk->sk_odata(sk);
-+		set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
-+		svc_xprt_enqueue(&svsk->sk_xprt);
- 	}
+diff --git a/drivers/infiniband/sw/rxe/rxe_mw.c b/drivers/infiniband/sw/rxe/rxe_mw.c
+index 70252991320a0..cebc9f0f428d8 100644
+--- a/drivers/infiniband/sw/rxe/rxe_mw.c
++++ b/drivers/infiniband/sw/rxe/rxe_mw.c
+@@ -48,7 +48,7 @@ int rxe_dealloc_mw(struct ib_mw *ibmw)
  }
  
+ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+-			 struct rxe_mw *mw, struct rxe_mr *mr)
++			 struct rxe_mw *mw, struct rxe_mr *mr, int access)
+ {
+ 	if (mw->ibmw.type == IB_MW_TYPE_1) {
+ 		if (unlikely(mw->state != RXE_MW_STATE_VALID)) {
+@@ -58,7 +58,7 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+ 		}
+ 
+ 		/* o10-36.2.2 */
+-		if (unlikely((mw->access & IB_ZERO_BASED))) {
++		if (unlikely((access & IB_ZERO_BASED))) {
+ 			rxe_dbg_mw(mw, "attempt to bind a zero based type 1 MW\n");
+ 			return -EINVAL;
+ 		}
+@@ -104,7 +104,7 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+ 	}
+ 
+ 	/* C10-74 */
+-	if (unlikely((mw->access &
++	if (unlikely((access &
+ 		      (IB_ACCESS_REMOTE_WRITE | IB_ACCESS_REMOTE_ATOMIC)) &&
+ 		     !(mr->access & IB_ACCESS_LOCAL_WRITE))) {
+ 		rxe_dbg_mw(mw,
+@@ -113,7 +113,7 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+ 	}
+ 
+ 	/* C10-75 */
+-	if (mw->access & IB_ZERO_BASED) {
++	if (access & IB_ZERO_BASED) {
+ 		if (unlikely(wqe->wr.wr.mw.length > mr->ibmr.length)) {
+ 			rxe_dbg_mw(mw,
+ 				"attempt to bind a ZB MW outside of the MR\n");
+@@ -133,12 +133,12 @@ static int rxe_check_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+ }
+ 
+ static void rxe_do_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
+-		      struct rxe_mw *mw, struct rxe_mr *mr)
++		      struct rxe_mw *mw, struct rxe_mr *mr, int access)
+ {
+ 	u32 key = wqe->wr.wr.mw.rkey & 0xff;
+ 
+ 	mw->rkey = (mw->rkey & ~0xff) | key;
+-	mw->access = wqe->wr.wr.mw.access;
++	mw->access = access;
+ 	mw->state = RXE_MW_STATE_VALID;
+ 	mw->addr = wqe->wr.wr.mw.addr;
+ 	mw->length = wqe->wr.wr.mw.length;
+@@ -169,6 +169,7 @@ int rxe_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe)
+ 	struct rxe_dev *rxe = to_rdev(qp->ibqp.device);
+ 	u32 mw_rkey = wqe->wr.wr.mw.mw_rkey;
+ 	u32 mr_lkey = wqe->wr.wr.mw.mr_lkey;
++	int access = wqe->wr.wr.mw.access;
+ 
+ 	mw = rxe_pool_get_index(&rxe->mw_pool, mw_rkey >> 8);
+ 	if (unlikely(!mw)) {
+@@ -198,11 +199,11 @@ int rxe_bind_mw(struct rxe_qp *qp, struct rxe_send_wqe *wqe)
+ 
+ 	spin_lock_bh(&mw->lock);
+ 
+-	ret = rxe_check_bind_mw(qp, wqe, mw, mr);
++	ret = rxe_check_bind_mw(qp, wqe, mw, mr, access);
+ 	if (ret)
+ 		goto err_unlock;
+ 
+-	rxe_do_bind_mw(qp, wqe, mw, mr);
++	rxe_do_bind_mw(qp, wqe, mw, mr, access);
+ err_unlock:
+ 	spin_unlock_bh(&mw->lock);
+ err_drop_mr:
+-- 
+2.39.2
+
 
 
