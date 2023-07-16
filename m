@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 025BB75554D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5716E75552E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232457AbjGPUjf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:39:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59010 "EHLO
+        id S232408AbjGPUiT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:38:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232453AbjGPUjf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:39:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4965BA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:39:33 -0700 (PDT)
+        with ESMTP id S232412AbjGPUiS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5D20AB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C74260E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:39:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1D4C433C8;
-        Sun, 16 Jul 2023 20:39:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 719C060E2C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8600CC433C7;
+        Sun, 16 Jul 2023 20:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539972;
-        bh=rOUnfFZUXqACKy9tsxS7Hpv73/dKlaiCHZ3I+upxQAo=;
+        s=korg; t=1689539896;
+        bh=YIpzZuw5JXREqB/17gj8LXGGgXnidZ1rwqgBf9dcKOg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n+w9wuizvQBl5Bz7m3JxRnmzIpfW1WdKosf3ci5JAHmDHJsDS7sLeHIelCB3I1xwl
-         Le0aDXnhxP8dCwsIT4VvqfjfZT3O4YU7qrcxfg1oLo84/ZjifripW+XUzB7bRiJFCl
-         7N7nBiezw0ISTWx0qBwksRRiryTC09INWZyaQP/k=
+        b=S2q8i2MsdnbuPL2OuBSQqyOLsYEPsrsEIp6gUiwgPzkm6a98OpGmOie5p7FOZtKbF
+         Tz9VPbTa7bSqi4iVe6GwfnQcZhUkKEihFkyxewscKUFUhIkCVucwZtM2LsK9H9uHJK
+         e5OwTKngvX3Bk1tBMomoQWDAziAl8aICS6+rO0vQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arthur Grillo <arthurgrillo@riseup.net>,
+        patches@lists.linux.dev,
         =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+        Arthur Grillo <arthurgrillo@riseup.net>,
         =?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 170/591] drm/vkms: isolate pixel conversion functionality
-Date:   Sun, 16 Jul 2023 21:45:09 +0200
-Message-ID: <20230716194928.263859371@linuxfoundation.org>
+Subject: [PATCH 6.1 171/591] drm: Add fixed-point helper to get rounded integer values
+Date:   Sun, 16 Jul 2023 21:45:10 +0200
+Message-ID: <20230716194928.289672074@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -46,10 +47,10 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,261 +59,50 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 322d716a3e8a74fb75cd0f657647be4df253fd2f ]
+[ Upstream commit 8b25320887d7feac98875546ea0f521628b745bb ]
 
-Currently, the pixel conversion functions repeat the same loop to
-iterate the rows. Instead of repeating the same code for each pixel
-format, create a function to wrap the loop and isolate the pixel
-conversion functionality.
+Create a new fixed-point helper to allow us to return the rounded value
+of our fixed point value.
 
-Suggested-by: Arthur Grillo <arthurgrillo@riseup.net>
+[v2]:
+    * Create the function drm_fixp2int_round() (Melissa Wen).
+[v3]:
+    * Use drm_fixp2int() instead of shifting manually (Arthur Grillo).
+
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Reviewed-by: Arthur Grillo <arthurgrillo@riseup.net>
 Signed-off-by: Maíra Canal <mairacanal@riseup.net>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230418130525.128733-2-mcanal@igalia.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20230512104044.65034-1-mcanal@igalia.com
 Stable-dep-of: ab87f558dcfb ("drm/vkms: Fix RGB565 pixel conversion")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vkms/vkms_composer.c |   4 +-
- drivers/gpu/drm/vkms/vkms_drv.h      |   4 +-
- drivers/gpu/drm/vkms/vkms_formats.c  | 125 +++++++++++----------------
- drivers/gpu/drm/vkms/vkms_formats.h  |   2 +-
- drivers/gpu/drm/vkms/vkms_plane.c    |   2 +-
- 5 files changed, 56 insertions(+), 81 deletions(-)
+ include/drm/drm_fixed.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/vkms/vkms_composer.c b/drivers/gpu/drm/vkms/vkms_composer.c
-index 8e53fa80742b2..80164e79af006 100644
---- a/drivers/gpu/drm/vkms/vkms_composer.c
-+++ b/drivers/gpu/drm/vkms/vkms_composer.c
-@@ -99,7 +99,7 @@ static void blend(struct vkms_writeback_job *wb,
- 			if (!check_y_limit(plane[i]->frame_info, y))
- 				continue;
- 
--			plane[i]->plane_read(stage_buffer, plane[i]->frame_info, y);
-+			vkms_compose_row(stage_buffer, plane[i], y);
- 			pre_mul_alpha_blend(plane[i]->frame_info, stage_buffer,
- 					    output_buffer);
- 		}
-@@ -118,7 +118,7 @@ static int check_format_funcs(struct vkms_crtc_state *crtc_state,
- 	u32 n_active_planes = crtc_state->num_active_planes;
- 
- 	for (size_t i = 0; i < n_active_planes; i++)
--		if (!planes[i]->plane_read)
-+		if (!planes[i]->pixel_read)
- 			return -1;
- 
- 	if (active_wb && !active_wb->wb_write)
-diff --git a/drivers/gpu/drm/vkms/vkms_drv.h b/drivers/gpu/drm/vkms/vkms_drv.h
-index 0a67b8073f7e5..de4efc0a3bd01 100644
---- a/drivers/gpu/drm/vkms/vkms_drv.h
-+++ b/drivers/gpu/drm/vkms/vkms_drv.h
-@@ -56,8 +56,7 @@ struct vkms_writeback_job {
- struct vkms_plane_state {
- 	struct drm_shadow_plane_state base;
- 	struct vkms_frame_info *frame_info;
--	void (*plane_read)(struct line_buffer *buffer,
--			   const struct vkms_frame_info *frame_info, int y);
-+	void (*pixel_read)(u8 *src_buffer, struct pixel_argb_u16 *out_pixel);
- };
- 
- struct vkms_plane {
-@@ -155,6 +154,7 @@ int vkms_verify_crc_source(struct drm_crtc *crtc, const char *source_name,
- /* Composer Support */
- void vkms_composer_worker(struct work_struct *work);
- void vkms_set_composer(struct vkms_output *out, bool enabled);
-+void vkms_compose_row(struct line_buffer *stage_buffer, struct vkms_plane_state *plane, int y);
- 
- /* Writeback */
- int vkms_enable_writeback_connector(struct vkms_device *vkmsdev);
-diff --git a/drivers/gpu/drm/vkms/vkms_formats.c b/drivers/gpu/drm/vkms/vkms_formats.c
-index d4950688b3f17..8d948c73741ef 100644
---- a/drivers/gpu/drm/vkms/vkms_formats.c
-+++ b/drivers/gpu/drm/vkms/vkms_formats.c
-@@ -42,100 +42,75 @@ static void *get_packed_src_addr(const struct vkms_frame_info *frame_info, int y
- 	return packed_pixels_addr(frame_info, x_src, y_src);
+diff --git a/include/drm/drm_fixed.h b/include/drm/drm_fixed.h
+index 553210c02ee0f..03cb890690e83 100644
+--- a/include/drm/drm_fixed.h
++++ b/include/drm/drm_fixed.h
+@@ -70,6 +70,7 @@ static inline u32 dfixed_div(fixed20_12 A, fixed20_12 B)
  }
  
--static void ARGB8888_to_argb_u16(struct line_buffer *stage_buffer,
--				 const struct vkms_frame_info *frame_info, int y)
-+static void ARGB8888_to_argb_u16(u8 *src_pixels, struct pixel_argb_u16 *out_pixel)
- {
--	struct pixel_argb_u16 *out_pixels = stage_buffer->pixels;
--	u8 *src_pixels = get_packed_src_addr(frame_info, y);
--	int x_limit = min_t(size_t, drm_rect_width(&frame_info->dst),
--			    stage_buffer->n_pixels);
--
--	for (size_t x = 0; x < x_limit; x++, src_pixels += 4) {
--		/*
--		 * The 257 is the "conversion ratio". This number is obtained by the
--		 * (2^16 - 1) / (2^8 - 1) division. Which, in this case, tries to get
--		 * the best color value in a pixel format with more possibilities.
--		 * A similar idea applies to others RGB color conversions.
--		 */
--		out_pixels[x].a = (u16)src_pixels[3] * 257;
--		out_pixels[x].r = (u16)src_pixels[2] * 257;
--		out_pixels[x].g = (u16)src_pixels[1] * 257;
--		out_pixels[x].b = (u16)src_pixels[0] * 257;
--	}
-+	/*
-+	 * The 257 is the "conversion ratio". This number is obtained by the
-+	 * (2^16 - 1) / (2^8 - 1) division. Which, in this case, tries to get
-+	 * the best color value in a pixel format with more possibilities.
-+	 * A similar idea applies to others RGB color conversions.
-+	 */
-+	out_pixel->a = (u16)src_pixels[3] * 257;
-+	out_pixel->r = (u16)src_pixels[2] * 257;
-+	out_pixel->g = (u16)src_pixels[1] * 257;
-+	out_pixel->b = (u16)src_pixels[0] * 257;
+ #define DRM_FIXED_POINT		32
++#define DRM_FIXED_POINT_HALF	16
+ #define DRM_FIXED_ONE		(1ULL << DRM_FIXED_POINT)
+ #define DRM_FIXED_DECIMAL_MASK	(DRM_FIXED_ONE - 1)
+ #define DRM_FIXED_DIGITS_MASK	(~DRM_FIXED_DECIMAL_MASK)
+@@ -86,6 +87,11 @@ static inline int drm_fixp2int(s64 a)
+ 	return ((s64)a) >> DRM_FIXED_POINT;
  }
  
--static void XRGB8888_to_argb_u16(struct line_buffer *stage_buffer,
--				 const struct vkms_frame_info *frame_info, int y)
-+static void XRGB8888_to_argb_u16(u8 *src_pixels, struct pixel_argb_u16 *out_pixel)
- {
--	struct pixel_argb_u16 *out_pixels = stage_buffer->pixels;
--	u8 *src_pixels = get_packed_src_addr(frame_info, y);
--	int x_limit = min_t(size_t, drm_rect_width(&frame_info->dst),
--			    stage_buffer->n_pixels);
--
--	for (size_t x = 0; x < x_limit; x++, src_pixels += 4) {
--		out_pixels[x].a = (u16)0xffff;
--		out_pixels[x].r = (u16)src_pixels[2] * 257;
--		out_pixels[x].g = (u16)src_pixels[1] * 257;
--		out_pixels[x].b = (u16)src_pixels[0] * 257;
--	}
-+	out_pixel->a = (u16)0xffff;
-+	out_pixel->r = (u16)src_pixels[2] * 257;
-+	out_pixel->g = (u16)src_pixels[1] * 257;
-+	out_pixel->b = (u16)src_pixels[0] * 257;
- }
- 
--static void ARGB16161616_to_argb_u16(struct line_buffer *stage_buffer,
--				     const struct vkms_frame_info *frame_info,
--				     int y)
-+static void ARGB16161616_to_argb_u16(u8 *src_pixels, struct pixel_argb_u16 *out_pixel)
- {
--	struct pixel_argb_u16 *out_pixels = stage_buffer->pixels;
--	u16 *src_pixels = get_packed_src_addr(frame_info, y);
--	int x_limit = min_t(size_t, drm_rect_width(&frame_info->dst),
--			    stage_buffer->n_pixels);
-+	u16 *pixels = (u16 *)src_pixels;
- 
--	for (size_t x = 0; x < x_limit; x++, src_pixels += 4) {
--		out_pixels[x].a = le16_to_cpu(src_pixels[3]);
--		out_pixels[x].r = le16_to_cpu(src_pixels[2]);
--		out_pixels[x].g = le16_to_cpu(src_pixels[1]);
--		out_pixels[x].b = le16_to_cpu(src_pixels[0]);
--	}
-+	out_pixel->a = le16_to_cpu(pixels[3]);
-+	out_pixel->r = le16_to_cpu(pixels[2]);
-+	out_pixel->g = le16_to_cpu(pixels[1]);
-+	out_pixel->b = le16_to_cpu(pixels[0]);
- }
- 
--static void XRGB16161616_to_argb_u16(struct line_buffer *stage_buffer,
--				     const struct vkms_frame_info *frame_info,
--				     int y)
-+static void XRGB16161616_to_argb_u16(u8 *src_pixels, struct pixel_argb_u16 *out_pixel)
- {
--	struct pixel_argb_u16 *out_pixels = stage_buffer->pixels;
--	u16 *src_pixels = get_packed_src_addr(frame_info, y);
--	int x_limit = min_t(size_t, drm_rect_width(&frame_info->dst),
--			    stage_buffer->n_pixels);
-+	u16 *pixels = (u16 *)src_pixels;
- 
--	for (size_t x = 0; x < x_limit; x++, src_pixels += 4) {
--		out_pixels[x].a = (u16)0xffff;
--		out_pixels[x].r = le16_to_cpu(src_pixels[2]);
--		out_pixels[x].g = le16_to_cpu(src_pixels[1]);
--		out_pixels[x].b = le16_to_cpu(src_pixels[0]);
--	}
-+	out_pixel->a = (u16)0xffff;
-+	out_pixel->r = le16_to_cpu(pixels[2]);
-+	out_pixel->g = le16_to_cpu(pixels[1]);
-+	out_pixel->b = le16_to_cpu(pixels[0]);
- }
- 
--static void RGB565_to_argb_u16(struct line_buffer *stage_buffer,
--			       const struct vkms_frame_info *frame_info, int y)
-+static void RGB565_to_argb_u16(u8 *src_pixels, struct pixel_argb_u16 *out_pixel)
- {
--	struct pixel_argb_u16 *out_pixels = stage_buffer->pixels;
--	u16 *src_pixels = get_packed_src_addr(frame_info, y);
--	int x_limit = min_t(size_t, drm_rect_width(&frame_info->dst),
--			       stage_buffer->n_pixels);
-+	u16 *pixels = (u16 *)src_pixels;
- 
- 	s64 fp_rb_ratio = drm_fixp_div(drm_int2fixp(65535), drm_int2fixp(31));
- 	s64 fp_g_ratio = drm_fixp_div(drm_int2fixp(65535), drm_int2fixp(63));
- 
--	for (size_t x = 0; x < x_limit; x++, src_pixels++) {
--		u16 rgb_565 = le16_to_cpu(*src_pixels);
--		s64 fp_r = drm_int2fixp((rgb_565 >> 11) & 0x1f);
--		s64 fp_g = drm_int2fixp((rgb_565 >> 5) & 0x3f);
--		s64 fp_b = drm_int2fixp(rgb_565 & 0x1f);
-+	u16 rgb_565 = le16_to_cpu(*pixels);
-+	s64 fp_r = drm_int2fixp((rgb_565 >> 11) & 0x1f);
-+	s64 fp_g = drm_int2fixp((rgb_565 >> 5) & 0x3f);
-+	s64 fp_b = drm_int2fixp(rgb_565 & 0x1f);
- 
--		out_pixels[x].a = (u16)0xffff;
--		out_pixels[x].r = drm_fixp2int(drm_fixp_mul(fp_r, fp_rb_ratio));
--		out_pixels[x].g = drm_fixp2int(drm_fixp_mul(fp_g, fp_g_ratio));
--		out_pixels[x].b = drm_fixp2int(drm_fixp_mul(fp_b, fp_rb_ratio));
--	}
-+	out_pixel->a = (u16)0xffff;
-+	out_pixel->r = drm_fixp2int(drm_fixp_mul(fp_r, fp_rb_ratio));
-+	out_pixel->g = drm_fixp2int(drm_fixp_mul(fp_g, fp_g_ratio));
-+	out_pixel->b = drm_fixp2int(drm_fixp_mul(fp_b, fp_rb_ratio));
++static inline int drm_fixp2int_round(s64 a)
++{
++	return drm_fixp2int(a + (1 << (DRM_FIXED_POINT_HALF - 1)));
 +}
 +
-+void vkms_compose_row(struct line_buffer *stage_buffer, struct vkms_plane_state *plane, int y)
-+{
-+	struct pixel_argb_u16 *out_pixels = stage_buffer->pixels;
-+	struct vkms_frame_info *frame_info = plane->frame_info;
-+	u8 *src_pixels = get_packed_src_addr(frame_info, y);
-+	int limit = min_t(size_t, drm_rect_width(&frame_info->dst), stage_buffer->n_pixels);
-+
-+	for (size_t x = 0; x < limit; x++, src_pixels += frame_info->cpp)
-+		plane->pixel_read(src_pixels, &out_pixels[x]);
- }
- 
- /*
-@@ -249,7 +224,7 @@ static void argb_u16_to_RGB565(struct vkms_frame_info *frame_info,
- 	}
- }
- 
--void *get_frame_to_line_function(u32 format)
-+void *get_pixel_conversion_function(u32 format)
+ static inline int drm_fixp2int_ceil(s64 a)
  {
- 	switch (format) {
- 	case DRM_FORMAT_ARGB8888:
-diff --git a/drivers/gpu/drm/vkms/vkms_formats.h b/drivers/gpu/drm/vkms/vkms_formats.h
-index 43b7c19790181..c5b113495d0c0 100644
---- a/drivers/gpu/drm/vkms/vkms_formats.h
-+++ b/drivers/gpu/drm/vkms/vkms_formats.h
-@@ -5,7 +5,7 @@
- 
- #include "vkms_drv.h"
- 
--void *get_frame_to_line_function(u32 format);
-+void *get_pixel_conversion_function(u32 format);
- 
- void *get_line_to_frame_function(u32 format);
- 
-diff --git a/drivers/gpu/drm/vkms/vkms_plane.c b/drivers/gpu/drm/vkms/vkms_plane.c
-index c3a845220e10c..80e964589cecb 100644
---- a/drivers/gpu/drm/vkms/vkms_plane.c
-+++ b/drivers/gpu/drm/vkms/vkms_plane.c
-@@ -123,7 +123,7 @@ static void vkms_plane_atomic_update(struct drm_plane *plane,
- 	frame_info->offset = fb->offsets[0];
- 	frame_info->pitch = fb->pitches[0];
- 	frame_info->cpp = fb->format->cpp[0];
--	vkms_plane_state->plane_read = get_frame_to_line_function(fmt);
-+	vkms_plane_state->pixel_read = get_pixel_conversion_function(fmt);
- }
- 
- static int vkms_plane_atomic_check(struct drm_plane *plane,
+ 	if (a > 0)
 -- 
 2.39.2
 
