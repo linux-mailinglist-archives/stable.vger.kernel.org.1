@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94A98755651
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3227553E0
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232869AbjGPUte (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:49:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38370 "EHLO
+        id S231899AbjGPUX6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:23:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232830AbjGPUt1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2931EE6C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:24 -0700 (PDT)
+        with ESMTP id S231895AbjGPUX5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:23:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B94BE1A5
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B630A60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E20C433C7;
-        Sun, 16 Jul 2023 20:49:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DAA060DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD59C433C7;
+        Sun, 16 Jul 2023 20:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540563;
-        bh=5QApwTPCH18XXVwku9TAguAgPztDNXCF9f0eH1QGCts=;
+        s=korg; t=1689539035;
+        bh=15Ww9JzwZFyKJ37u2c8y8UIlSsnBC4+pR60qbDapO/s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AF9RFQtD3l1h4YgizJ9JAoZ5wYT5EgqetCG08iBmnpgFyUXPi2UzWgK9o79Ze9WZq
-         oy/USrYfgZh1XJBO7w9DpI4h6T+i6oaxFx+RGv3bZFi0Amfab4WLl1JXdjRLWpP30M
-         1l9MHMiSIhtBGUfPOs9YY4y/WzMIl5HZa1QnF1ig=
+        b=w51PF8bWIcVTavWOCaOvxalimUGiU6EsgHBowcnaKiysCJECgPV8OkChoN+v5x/4s
+         HlGPsjTBs4ztbaz0kT9Y3bUSE8nI++chJZ2MDAYR803PaC8ExoMYwv4U9i1nE52Lmp
+         R0u9g9Ko0Yy+or/862YQUdojQyY8rXko0Ub+inaw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hersen Wu <hersenxs.wu@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 370/591] Revert "drm/amd/display: edp do not add non-edid timings"
-Date:   Sun, 16 Jul 2023 21:48:29 +0200
-Message-ID: <20230716194933.492224780@linuxfoundation.org>
+        patches@lists.linux.dev, Gal Pressman <gal@nvidia.com>,
+        Dragos Tatulea <dtatulea@nvidia.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>, Feng Liu <feliu@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 657/800] virtio-vdpa: Fix unchecked call to NULL set_vq_affinity
+Date:   Sun, 16 Jul 2023 21:48:30 +0200
+Message-ID: <20230716195004.371909670@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-commit d6149086b45e150c170beaa4546495fd1880724c upstream.
+[ Upstream commit fe37efba475375caa2dbc71cb06f53f7086277ef ]
 
-This change causes regression when eDP and external display in mirror
-mode. When external display supports low resolution than eDP, use eDP
-timing to driver external display may cause corruption on external
-display.
+The referenced patch calls set_vq_affinity without checking if the op is
+valid. This patch adds the check.
 
-This reverts commit e749dd10e5f292061ad63d2b030194bf7d7d452c.
-
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2655
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3dad56823b53 ("virtio-vdpa: Support interrupt affinity spreading mechanism")
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Message-Id: <20230504135053.2283816-1-dtatulea@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Feng Liu <feliu@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/virtio/virtio_vdpa.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6972,13 +6972,7 @@ static int amdgpu_dm_connector_get_modes
- 				drm_add_modes_noedid(connector, 640, 480);
- 	} else {
- 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
--		/* most eDP supports only timings from its edid,
--		 * usually only detailed timings are available
--		 * from eDP edid. timings which are not from edid
--		 * may damage eDP
--		 */
--		if (connector->connector_type != DRM_MODE_CONNECTOR_eDP)
--			amdgpu_dm_connector_add_common_modes(encoder, connector);
-+		amdgpu_dm_connector_add_common_modes(encoder, connector);
- 		amdgpu_dm_connector_add_freesync_modes(connector, edid);
+diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
+index eb6aee8c06b2c..989e2d7184ce4 100644
+--- a/drivers/virtio/virtio_vdpa.c
++++ b/drivers/virtio/virtio_vdpa.c
+@@ -385,7 +385,9 @@ static int virtio_vdpa_find_vqs(struct virtio_device *vdev, unsigned int nvqs,
+ 			err = PTR_ERR(vqs[i]);
+ 			goto err_setup_vq;
+ 		}
+-		ops->set_vq_affinity(vdpa, i, &masks[i]);
++
++		if (ops->set_vq_affinity)
++			ops->set_vq_affinity(vdpa, i, &masks[i]);
  	}
- 	amdgpu_dm_fbc_init(connector);
+ 
+ 	cb.callback = virtio_vdpa_config_cb;
+-- 
+2.39.2
+
 
 
