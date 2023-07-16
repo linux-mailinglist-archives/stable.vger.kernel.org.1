@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5EC2755737
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BC0C75572A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:58:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233117AbjGPU6Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:58:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44996 "EHLO
+        id S233120AbjGPU6D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:58:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233116AbjGPU6Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:58:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B9E8E9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:58:23 -0700 (PDT)
+        with ESMTP id S233121AbjGPU5v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:57:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D212E5C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:57:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A048B60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:58:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0712EC433C8;
-        Sun, 16 Jul 2023 20:58:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 962D860E71
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:57:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0323C433C7;
+        Sun, 16 Jul 2023 20:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689541100;
-        bh=PT85VmMSCmhF8xBs/JYdQvdWlBnmjrxUSUkYFLmAVTY=;
+        s=korg; t=1689541067;
+        bh=sh4PXW6Kr5AyDSqId6FLNtnbTfJmyStQpAWxwk6vm+c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CxjRwC40TRjFuWw7H5KWyrnuARh+oxFLirztv+TaXP7GidZcZc7Tkd+0DGQJhoIZY
-         aApAICwQNq10lGNN1zA/3BO4NpSQDTzMuty39nNvEQFnyNV6s4gKRb0cdGWiHwwWoZ
-         Pb8E7EzkmRKYUDNHdpLzqhOCnq2Mz4OsWjTtRfuQ=
+        b=SncEjLA6uVqHqghue0GE7LplsPX439EGFv3q1K6azqcbuO4rhxQBRE1bJAQMZdLhe
+         meaDAMqSkPg/M18Ahyhs8HnYdiPTBiOXCj88H1tG8DqeV8rgJa5GMBWkEMop0LqL2+
+         IWkxGIKW/DYypxcgjCx3xbAmWTNLXSeOPClmF7PU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Imre Deak <imre.deak@intel.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>
-Subject: [PATCH 6.1 579/591] drm/i915/tc: Fix system resume MST mode restore for DP-alt sinks
-Date:   Sun, 16 Jul 2023 21:51:58 +0200
-Message-ID: <20230716194938.837928439@linuxfoundation.org>
+        patches@lists.linux.dev, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 580/591] mtd: parsers: refer to ARCH_BCMBCA instead of ARCH_BCM4908
+Date:   Sun, 16 Jul 2023 21:51:59 +0200
+Message-ID: <20230716194938.863751271@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -55,140 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Imre Deak <imre.deak@intel.com>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-commit 06f66261a1567d66b9d35c87393b6edfbea4c8f8 upstream.
+commit 085679b15b5af65f9610f619afde41da0f966194 upstream.
 
-At least restoring the MST topology during system resume needs to use
-AUX before the display HW readout->sanitization sequence is complete,
-but on TC ports the PHY may be in the wrong mode for this, resulting in
-the AUX transfers to fail.
+Commit dd5c672d7ca9 ("arm64: bcmbca: Merge ARCH_BCM4908 to ARCH_BCMBCA")
+removes config ARCH_BCM4908 as config ARCH_BCMBCA has the same intent.
 
-The initial TC port mode is kept fixed as BIOS left it for the above HW
-readout sequence (to prevent changing the mode on an enabled port).  If
-the port is disabled this initial mode is TBT - as in any case the PHY
-ownership is not held - even if a DP-alt sink is connected. Thus, the
-AUX transfers during this time will use TBT mode instead of the expected
-DP-alt mode and so time out.
+Probably due to concurrent development, commit 002181f5b150 ("mtd: parsers:
+add Broadcom's U-Boot parser") introduces 'Broadcom's U-Boot partition
+parser' that depends on ARCH_BCM4908, but this use was not visible during
+the config refactoring from the commit above. Hence, these two changes
+create a reference to a non-existing config symbol.
 
-Fix the above by connecting the PHY during port initialization if the
-port is disabled, which will switch to the expected mode (DP-alt in the
-above case).
+Adjust the MTD_BRCM_U_BOOT definition to refer to ARCH_BCMBCA instead of
+ARCH_BCM4908 to remove the reference to the non-existing config symbol
+ARCH_BCM4908.
 
-As the encoder/pipe HW state isn't read-out yet at this point, check if
-the port is enabled based on the DDI_BUF enabled flag. Save the read-out
-initial mode, so intel_tc_port_sanitize_mode() can check this wrt. the
-read-out encoder HW state.
-
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230316131724.359612-5-imre.deak@intel.com
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20221116124932.4748-1-lukas.bulwahn@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_types.h |    1 
- drivers/gpu/drm/i915/display/intel_tc.c            |   49 +++++++++++++++++++--
- 2 files changed, 47 insertions(+), 3 deletions(-)
+ drivers/mtd/parsers/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -1763,6 +1763,7 @@ struct intel_digital_port {
- 	bool tc_legacy_port:1;
- 	char tc_port_name[8];
- 	enum tc_port_mode tc_mode;
-+	enum tc_port_mode tc_init_mode;
- 	enum phy_fia tc_phy_fia;
- 	u8 tc_phy_fia_idx;
+--- a/drivers/mtd/parsers/Kconfig
++++ b/drivers/mtd/parsers/Kconfig
+@@ -22,7 +22,7 @@ config MTD_BCM63XX_PARTS
  
---- a/drivers/gpu/drm/i915/display/intel_tc.c
-+++ b/drivers/gpu/drm/i915/display/intel_tc.c
-@@ -5,6 +5,7 @@
- 
- #include "i915_drv.h"
- #include "i915_reg.h"
-+#include "intel_de.h"
- #include "intel_display.h"
- #include "intel_display_power_map.h"
- #include "intel_display_types.h"
-@@ -116,6 +117,24 @@ assert_tc_cold_blocked(struct intel_digi
- 	drm_WARN_ON(&i915->drm, !enabled);
- }
- 
-+static enum intel_display_power_domain
-+tc_port_power_domain(struct intel_digital_port *dig_port)
-+{
-+	struct drm_i915_private *i915 = to_i915(dig_port->base.base.dev);
-+	enum tc_port tc_port = intel_port_to_tc(i915, dig_port->base.port);
-+
-+	return POWER_DOMAIN_PORT_DDI_LANES_TC1 + tc_port - TC_PORT_1;
-+}
-+
-+static void
-+assert_tc_port_power_enabled(struct intel_digital_port *dig_port)
-+{
-+	struct drm_i915_private *i915 = to_i915(dig_port->base.base.dev);
-+
-+	drm_WARN_ON(&i915->drm,
-+		    !intel_display_power_is_enabled(i915, tc_port_power_domain(dig_port)));
-+}
-+
- u32 intel_tc_port_get_lane_mask(struct intel_digital_port *dig_port)
- {
- 	struct drm_i915_private *i915 = to_i915(dig_port->base.base.dev);
-@@ -693,6 +712,16 @@ static void __intel_tc_port_put_link(str
- 	dig_port->tc_link_refcount--;
- }
- 
-+static bool tc_port_is_enabled(struct intel_digital_port *dig_port)
-+{
-+	struct drm_i915_private *i915 = to_i915(dig_port->base.base.dev);
-+
-+	assert_tc_port_power_enabled(dig_port);
-+
-+	return intel_de_read(i915, DDI_BUF_CTL(dig_port->base.port)) &
-+	       DDI_BUF_CTL_ENABLE;
-+}
-+
- /**
-  * intel_tc_port_init_mode: Read out HW state and init the given port's TypeC mode
-  * @dig_port: digital port
-@@ -715,9 +744,23 @@ void intel_tc_port_init_mode(struct inte
- 	tc_cold_wref = tc_cold_block(dig_port, &domain);
- 
- 	dig_port->tc_mode = intel_tc_port_get_current_mode(dig_port);
-+	/*
-+	 * Save the initial mode for the state check in
-+	 * intel_tc_port_sanitize_mode().
-+	 */
-+	dig_port->tc_init_mode = dig_port->tc_mode;
-+	dig_port->tc_lock_wakeref = tc_cold_block(dig_port, &dig_port->tc_lock_power_domain);
-+
-+	/*
-+	 * The PHY needs to be connected for AUX to work during HW readout and
-+	 * MST topology resume, but the PHY mode can only be changed if the
-+	 * port is disabled.
-+	 */
-+	if (!tc_port_is_enabled(dig_port))
-+		intel_tc_port_update_mode(dig_port, 1, false);
-+
- 	/* Prevent changing dig_port->tc_mode until intel_tc_port_sanitize_mode() is called. */
- 	__intel_tc_port_get_link(dig_port);
--	dig_port->tc_lock_wakeref = tc_cold_block(dig_port, &dig_port->tc_lock_power_domain);
- 
- 	tc_cold_unblock(dig_port, domain, tc_cold_wref);
- 
-@@ -764,11 +807,11 @@ void intel_tc_port_sanitize_mode(struct
- 		 * we'll just switch to disconnected mode from it here without
- 		 * a note.
- 		 */
--		if (dig_port->tc_mode != TC_PORT_TBT_ALT)
-+		if (dig_port->tc_init_mode != TC_PORT_TBT_ALT)
- 			drm_dbg_kms(&i915->drm,
- 				    "Port %s: PHY left in %s mode on disabled port, disconnecting it\n",
- 				    dig_port->tc_port_name,
--				    tc_port_mode_name(dig_port->tc_mode));
-+				    tc_port_mode_name(dig_port->tc_init_mode));
- 		icl_tc_phy_disconnect(dig_port);
- 		__intel_tc_port_put_link(dig_port);
- 
+ config MTD_BRCM_U_BOOT
+ 	tristate "Broadcom's U-Boot partition parser"
+-	depends on ARCH_BCM4908 || COMPILE_TEST
++	depends on ARCH_BCMBCA || COMPILE_TEST
+ 	help
+ 	  Broadcom uses a custom way of storing U-Boot environment variables.
+ 	  They are placed inside U-Boot partition itself at unspecified offset.
 
 
