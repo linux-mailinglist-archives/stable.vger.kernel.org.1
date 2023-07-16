@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F7927552E0
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 332AF7554F3
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:35:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231518AbjGPUNB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:13:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40204 "EHLO
+        id S232312AbjGPUfn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:35:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231501AbjGPUNA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:13:00 -0400
+        with ESMTP id S232313AbjGPUfm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:35:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6610190
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:12:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9593BE40
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:35:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EF59760EA6
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:12:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BC4C433C8;
-        Sun, 16 Jul 2023 20:12:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 282BC60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:35:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F7EC433C9;
+        Sun, 16 Jul 2023 20:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538378;
-        bh=jBI0J247DjJExCj7GLAqUJ1bBj9RLJva4hacAEW1Fzw=;
+        s=korg; t=1689539739;
+        bh=kQiBnlv7gBNtg/e/LUp3qXRpCbpB9gJ/1oy7zfC4GXY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ubY1Z3xc/+pS4wuR556p9gDrScpx+DLEa+Y9rUrcX2oJZEVnDRpFnQzW8+6Lc2f2x
-         8fiy+F3B1cvfSClkJUzkbcRMSj+/g0RYlLyVzYOakrNmD8mSP209Hj891GJrPCyYxz
-         zVYJWohs8lCu5paItBCnMgAWUFpBBSoo3XJarJD4=
+        b=12x2BiHSux7zBNLZ/F4jr1w4uIBtkof7WzR5iAq5fXXC1/oJJOG1wLMvoiOKfzC8s
+         0Umwtb4oG4pt/20EReWi1yF2KvGjQCqxwmANOR38oclP2Rf8Fe84bjdQRAAkLlp1cI
+         HD0E6VzzUcUxMXAtnnyhvBOLhC08FSXQpOMuvLkQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 400/800] drm/msm/dsi: Remove incorrect references to slice_count
-Date:   Sun, 16 Jul 2023 21:44:13 +0200
-Message-ID: <20230716194958.362602099@linuxfoundation.org>
+Subject: [PATCH 6.1 115/591] wifi: cfg80211/mac80211: Fix ML element common size calculation
+Date:   Sun, 16 Jul 2023 21:44:14 +0200
+Message-ID: <20230716194926.853020964@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,81 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 155fa3a91d64221eb0885fd221cc8085dbef908f ]
+[ Upstream commit 1403b109c9a5244dc6ab79154f04eecc209ef3d2 ]
 
-Currently, slice_count is being used to calculate word count and
-pkt_per_line. Instead, these values should be calculated using slice per
-packet, which is not the same as slice_count.
+The common size is part of the length in the data
+so don't add it again.
 
-Slice count represents the number of slices per interface, and its value
-will not always match that of slice per packet. For example, it is possible
-to have cases where there are multiple slices per interface but the panel
-specifies only one slice per packet.
-
-Thus, use the default value of one slice per packet and remove slice_count
-from the aforementioned calculations.
-
-Fixes: 08802f515c3c ("drm/msm/dsi: Add support for DSC configuration")
-Fixes: bc6b6ff8135c ("drm/msm/dsi: Use DSC slice(s) packet size to compute word count")
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/541965/
-Link: https://lore.kernel.org/r/20230405-add-dsc-support-v6-5-95eab864d1b6@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: ce6e1f600b0c ("wifi: ieee80211: Fix the common size calculation for reconfiguration ML")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ include/linux/ieee80211.h | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index 961689a255c47..735a7f6386df8 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -850,18 +850,17 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
- 	 */
- 	slice_per_intf = DIV_ROUND_UP(hdisplay, dsc->slice_width);
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index d3088666f3f44..470fafce2e707 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -4573,18 +4573,17 @@ static inline u8 ieee80211_mle_common_size(const u8 *data)
  
--	/*
--	 * If slice_count is greater than slice_per_intf
--	 * then default to 1. This can happen during partial
--	 * update.
--	 */
--	if (dsc->slice_count > slice_per_intf)
--		dsc->slice_count = 1;
--
- 	total_bytes_per_intf = dsc->slice_chunk_size * slice_per_intf;
- 
- 	eol_byte_num = total_bytes_per_intf % 3;
--	pkt_per_line = slice_per_intf / dsc->slice_count;
-+
-+	/*
-+	 * Typically, pkt_per_line = slice_per_intf * slice_per_pkt.
-+	 *
-+	 * Since the current driver only supports slice_per_pkt = 1,
-+	 * pkt_per_line will be equal to slice per intf for now.
-+	 */
-+	pkt_per_line = slice_per_intf;
- 
- 	if (is_cmd_mode) /* packet data type */
- 		reg = DSI_COMMAND_COMPRESSION_MODE_CTRL_STREAM0_DATATYPE(MIPI_DSI_DCS_LONG_WRITE);
-@@ -985,7 +984,14 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
- 		if (!msm_host->dsc)
- 			wc = hdisplay * dsi_get_bpp(msm_host->format) / 8 + 1;
- 		else
--			wc = msm_host->dsc->slice_chunk_size * msm_host->dsc->slice_count + 1;
-+			/*
-+			 * When DSC is enabled, WC = slice_chunk_size * slice_per_pkt + 1.
-+			 * Currently, the driver only supports default value of slice_per_pkt = 1
-+			 *
-+			 * TODO: Expand mipi_dsi_device struct to hold slice_per_pkt info
-+			 *       and adjust DSC math to account for slice_per_pkt.
-+			 */
-+			wc = msm_host->dsc->slice_chunk_size + 1;
- 
- 		dsi_write(msm_host, REG_DSI_CMD_MDP_STREAM0_CTRL,
- 			DSI_CMD_MDP_STREAM0_CTRL_WORD_COUNT(wc) |
+ 	switch (u16_get_bits(control, IEEE80211_ML_CONTROL_TYPE)) {
+ 	case IEEE80211_ML_CONTROL_TYPE_BASIC:
+-		common += sizeof(struct ieee80211_mle_basic_common_info);
+-		break;
+ 	case IEEE80211_ML_CONTROL_TYPE_PREQ:
+-		common += sizeof(struct ieee80211_mle_preq_common_info);
++	case IEEE80211_ML_CONTROL_TYPE_TDLS:
++		/*
++		 * The length is the first octet pointed by mle->variable so no
++		 * need to add anything
++		 */
+ 		break;
+ 	case IEEE80211_ML_CONTROL_TYPE_RECONF:
+ 		if (control & IEEE80211_MLC_RECONF_PRES_MLD_MAC_ADDR)
+ 			common += ETH_ALEN;
+ 		return common;
+-	case IEEE80211_ML_CONTROL_TYPE_TDLS:
+-		common += sizeof(struct ieee80211_mle_tdls_common_info);
+-		break;
+ 	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+ 		if (control & IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR)
+ 			common += ETH_ALEN;
 -- 
 2.39.2
 
