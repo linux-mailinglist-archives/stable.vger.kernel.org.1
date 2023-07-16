@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D892875561D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B37287553DC
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232736AbjGPUrm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:47:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36842 "EHLO
+        id S231894AbjGPUXq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:23:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232732AbjGPUrl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:47:41 -0400
+        with ESMTP id S231890AbjGPUXq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:23:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8595CD9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:47:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A44B5BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D18460DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:47:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5AAC433C8;
-        Sun, 16 Jul 2023 20:47:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A8EB60DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E49C433C8;
+        Sun, 16 Jul 2023 20:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540459;
-        bh=0tcqVNSTf99UKfOObiqCCc26cJ6qUzBuwXHjnm5pMvg=;
+        s=korg; t=1689539024;
+        bh=Q28LyStVbehDrWtWY3BQfU9sutZfWqRYpn2cxnh32Io=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JUuSpqxzfpFKpmhszJRJKpWLNrZ2U+ehTRr9poXX3cuMI2NZsCgfjEZLnU3Mf+5ct
-         Ph/F4SCD6SlOtuzrlUjah90Hf0XcRACCjCdVH52zRnP0BDTiNcKIZ4He30njB8HUiG
-         tDD6Yz1FAkNV5nKiMsbHHEVcH9u82W0a+TbWx/NM=
+        b=Lg2XSDCo0H2vLXdHbS3Lq3czBYXwEIDjJGxoOP7whu7rrAAQXmoBEWk4cY+VSLzPy
+         rMl3HWtKgmgHO+/nJBAWJjXNfrA6kKyMiELK9rgmKjj5KV62PG5iG23/Txn2nXrsjS
+         nTokMeknRxsA9GvKn0jg0HvS0METTpM+Olg/iqMU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 343/591] crypto: kpp - Add helper to set reqsize
-Date:   Sun, 16 Jul 2023 21:48:02 +0200
-Message-ID: <20230716194932.784082721@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Richard Leitner <richard.leitner@skidata.com>
+Subject: [PATCH 6.4 630/800] nvmem: imx-ocotp: Reverse MAC addresses on all i.MX derivates
+Date:   Sun, 16 Jul 2023 21:48:03 +0200
+Message-ID: <20230716195003.745083865@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +57,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 56861cbde1b9f3b34d300e6ba87f2c3de1a9c309 ]
+[ Upstream commit 8a00fc606312c68b98add8fe8e6f7a013ce29e78 ]
 
-The value of reqsize should only be changed through a helper.
-To do so we need to first add a helper for this.
+Not just i.MX8M, but all i.MX6/7 (and subtypes) need to reverse the
+MAC address read from fuses. Exceptions are i.MX6SLL and i.MX7ULP which
+do not support ethernet at all.
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: eb7713f5ca97 ("crypto: qat - unmap buffer before free for DH")
+Fixes: d0221a780cbc ("nvmem: imx-ocotp: add support for post processing")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Tested-by: Richard Leitner <richard.leitner@skidata.com> # imx6q
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Message-ID: <20230611140330.154222-3-srinivas.kandagatla@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/crypto/internal/kpp.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/nvmem/imx-ocotp.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/include/crypto/internal/kpp.h b/include/crypto/internal/kpp.h
-index 9cb0662ebe871..31ff3c1986ef0 100644
---- a/include/crypto/internal/kpp.h
-+++ b/include/crypto/internal/kpp.h
-@@ -50,6 +50,12 @@ static inline void *kpp_request_ctx(struct kpp_request *req)
- 	return req->__ctx;
- }
+diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
+index ac0edb6398f1e..c1af271052276 100644
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -97,7 +97,6 @@ struct ocotp_params {
+ 	unsigned int bank_address_words;
+ 	void (*set_timing)(struct ocotp_priv *priv);
+ 	struct ocotp_ctrl_reg ctrl;
+-	bool reverse_mac_address;
+ };
  
-+static inline void kpp_set_reqsize(struct crypto_kpp *kpp,
-+				   unsigned int reqsize)
-+{
-+	crypto_kpp_alg(kpp)->reqsize = reqsize;
-+}
-+
- static inline void *kpp_tfm_ctx(struct crypto_kpp *tfm)
- {
- 	return tfm->base.__crt_ctx;
+ static int imx_ocotp_wait_for_busy(struct ocotp_priv *priv, u32 flags)
+@@ -545,7 +544,6 @@ static const struct ocotp_params imx8mq_params = {
+ 	.bank_address_words = 0,
+ 	.set_timing = imx_ocotp_set_imx6_timing,
+ 	.ctrl = IMX_OCOTP_BM_CTRL_DEFAULT,
+-	.reverse_mac_address = true,
+ };
+ 
+ static const struct ocotp_params imx8mm_params = {
+@@ -553,7 +551,6 @@ static const struct ocotp_params imx8mm_params = {
+ 	.bank_address_words = 0,
+ 	.set_timing = imx_ocotp_set_imx6_timing,
+ 	.ctrl = IMX_OCOTP_BM_CTRL_DEFAULT,
+-	.reverse_mac_address = true,
+ };
+ 
+ static const struct ocotp_params imx8mn_params = {
+@@ -561,7 +558,6 @@ static const struct ocotp_params imx8mn_params = {
+ 	.bank_address_words = 0,
+ 	.set_timing = imx_ocotp_set_imx6_timing,
+ 	.ctrl = IMX_OCOTP_BM_CTRL_DEFAULT,
+-	.reverse_mac_address = true,
+ };
+ 
+ static const struct ocotp_params imx8mp_params = {
+@@ -569,7 +565,6 @@ static const struct ocotp_params imx8mp_params = {
+ 	.bank_address_words = 0,
+ 	.set_timing = imx_ocotp_set_imx6_timing,
+ 	.ctrl = IMX_OCOTP_BM_CTRL_8MP,
+-	.reverse_mac_address = true,
+ };
+ 
+ static const struct of_device_id imx_ocotp_dt_ids[] = {
+@@ -624,8 +619,7 @@ static int imx_ocotp_probe(struct platform_device *pdev)
+ 	imx_ocotp_nvmem_config.size = 4 * priv->params->nregs;
+ 	imx_ocotp_nvmem_config.dev = dev;
+ 	imx_ocotp_nvmem_config.priv = priv;
+-	if (priv->params->reverse_mac_address)
+-		imx_ocotp_nvmem_config.layout = &imx_ocotp_layout;
++	imx_ocotp_nvmem_config.layout = &imx_ocotp_layout;
+ 
+ 	priv->config = &imx_ocotp_nvmem_config;
+ 
 -- 
 2.39.2
 
