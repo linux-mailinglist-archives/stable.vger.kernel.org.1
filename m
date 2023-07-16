@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F432755418
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 150F0755685
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:51:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231979AbjGPU0f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:26:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48792 "EHLO
+        id S232876AbjGPUvX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:51:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231992AbjGPU0e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:26:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3A4E4F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:31 -0700 (PDT)
+        with ESMTP id S232873AbjGPUvW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:51:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DB8E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C962760EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93CFC433C8;
-        Sun, 16 Jul 2023 20:26:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 321B160EA2
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E413C433C7;
+        Sun, 16 Jul 2023 20:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539190;
-        bh=8R0PrA9qErlW8QwzAjAUWE0x8v9ZipQ2Rjmzxjgu8Q8=;
+        s=korg; t=1689540680;
+        bh=EtXBL588rAZue7eXHuBVVNlYaLjtCL31FUVUTsGisoA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FmXRUg3+rzu3YhmIVkxMwWVO5FJsA81YOTJwDeWVxIxH/gtA3t3mOxPNmgqxeMhtZ
-         v0jPwX2G1RnY4XagPQPBegzSOhq8IL9qcA/SyxsaWaLaD/rQaBTxrJ0FeIlxBNVYj1
-         WPz3SdYdFEEmYuGy9HBXQv1j9obZy5DBYMvUqNbs=
+        b=a97cPkOde0CYxNtzlfqe3Wd29sMikELRLoZ4KCIgirCbU9xFU2/DKXxkXo9FfzRtz
+         cRwjlxqdurV5urBiJcCf+s/oRqMj42RhSXsEZpVOszyT80UW2Vk+vPzC/HNUA2k9rL
+         mhLi9jD338vARfVozUhnBMZTQl68P5q0qHu6tmUA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.4 718/800] arm64/signal: Restore TPIDR2 register rather than memory state
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Andrew Halaney <ahalaney@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 432/591] usb: dwc3: qcom: Release the correct resources in dwc3_qcom_remove()
 Date:   Sun, 16 Jul 2023 21:49:31 +0200
-Message-ID: <20230716195005.795837369@linuxfoundation.org>
+Message-ID: <20230716194935.091975758@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,40 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 616cb2f4b141852cac3dfffe8354c8bf19e9999d upstream.
+[ Upstream commit 8fd95da2cfb5046c4bb5a3cdc9eb7963ba8b10dd ]
 
-Currently when restoring the TPIDR2 signal context we set the new value
-from the signal frame in the thread data structure but not the register,
-following the pattern for the rest of the data we are restoring. This does
-not work in the case of TPIDR2, the register always has the value for the
-current task. This means that either we return to userspace and ignore the
-new value or we context switch and save the register value on top of the
-newly restored value.
+In the probe, some resources are allocated with
+dwc3_qcom_of_register_core() or dwc3_qcom_acpi_register_core(). The
+corresponding resources are already coorectly freed in the error handling
+path of the probe, but not in the remove function.
 
-Load the value from the signal context into the register instead.
+Fix it.
 
-Fixes: 39e54499280f ("arm64/signal: Include TPIDR2 in the signal context")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.3.x
-Link: https://lore.kernel.org/r/20230621-arm64-fix-tpidr2-signal-restore-v2-1-c8e8fcc10302@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Message-ID: <c0215a84cdf18fb3514c81842783ec53cf149deb.1685891059.git.christophe.jaillet@wanadoo.fr>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/signal.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-qcom.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -398,7 +398,7 @@ static int restore_tpidr2_context(struct
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index 482260182d656..9c01e963ae467 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -950,11 +950,15 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ static int dwc3_qcom_remove(struct platform_device *pdev)
+ {
+ 	struct dwc3_qcom *qcom = platform_get_drvdata(pdev);
++	struct device_node *np = pdev->dev.of_node;
+ 	struct device *dev = &pdev->dev;
+ 	int i;
  
- 	__get_user_error(tpidr2_el0, &user->tpidr2->tpidr2, err);
- 	if (!err)
--		current->thread.tpidr2_el0 = tpidr2_el0;
-+		write_sysreg_s(tpidr2_el0, SYS_TPIDR2_EL0);
+ 	device_remove_software_node(&qcom->dwc3->dev);
+-	of_platform_depopulate(dev);
++	if (np)
++		of_platform_depopulate(&pdev->dev);
++	else
++		platform_device_put(pdev);
  
- 	return err;
- }
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+-- 
+2.39.2
+
 
 
