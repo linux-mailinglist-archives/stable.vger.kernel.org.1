@@ -2,111 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BCEE75557E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F0575534B
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232523AbjGPUl1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:41:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60670 "EHLO
+        id S231661AbjGPUR3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:17:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232554AbjGPUl0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6906120
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:25 -0700 (PDT)
+        with ESMTP id S231655AbjGPUR2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95B611BF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D07160EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E630C433C7;
-        Sun, 16 Jul 2023 20:41:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28BE060E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D712C433C8;
+        Sun, 16 Jul 2023 20:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540084;
-        bh=utLTqTO/SVByZxBCLv7kkP36GQI0GMHWPwqbxuFIOPs=;
+        s=korg; t=1689538646;
+        bh=g+3ruqFHovZ8MFFYXii+O9VihbOq6uqSxPTrEf1wkks=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oD7+5tddNBvchZw2di/445Setoc4b2PROwLmmX6S+SOveJnS5ZUrx1dTL5A9XDxST
-         s18XH62aOCty5K6XAg9D3AobZo6xLa/qW4nuziiTI3fNAqbj8opyfpJweb7GCMAvg/
-         9YDUp4tHViMnmBjgbmfEx3868ruiQebAYOv4CrL4=
+        b=jsIeF8o1DBNJVJjPkT2vOYCBVV3mpaukIgI4CVuMbRLdEOtmGOB6eX8sRoBJx3DTY
+         UYj90uep/6evCF49LPNzCaWHnLQTBhZTEEUlGHvdfO1IrEV0kVZmtlDtSM10ef+CTq
+         c8iDxkvcjgswph9kMk3BPMbHia749WHrtla2E2ws=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 238/591] drm/amdkfd: Fix potential deallocation of previously deallocated memory.
+        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 524/800] block: fix signed int overflow in Amiga partition support
 Date:   Sun, 16 Jul 2023 21:46:17 +0200
-Message-ID: <20230716194930.027653644@linuxfoundation.org>
+Message-ID: <20230716195001.264062468@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-[ Upstream commit cabbdea1f1861098991768d7bbf5a49ed1608213 ]
+commit fc3d092c6bb48d5865fec15ed5b333c12f36288c upstream.
 
-Pointer mqd_mem_obj can be deallocated in kfd_gtt_sa_allocate().
-The function then returns non-zero value, which causes the second deallocation.
+The Amiga partition parser module uses signed int for partition sector
+address and count, which will overflow for disks larger than 1 TB.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Use sector_t as type for sector address and size to allow using disks
+up to 2 TB without LBD support, and disks larger than 2 TB with LBD.
 
-Fixes: d1f8f0d17d40 ("drm/amdkfd: Move non-sdma mqd allocation out of init_mqd")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bug was reported originally in 2012, and the fix was created by
+the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+discussed and reviewed on linux-m68k at that time but never officially
+submitted. This patch differs from Joanne's patch only in its use of
+sector_t instead of unsigned int. No checking for overflows is done
+(see patch 3 of this series for that).
+
+Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Tested-by: Martin Steigerwald <Martin@lichtvoll.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230620201725.7020-2-schmitzmic@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ block/partitions/amiga.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-index 0778e587a2d68..eaf084acb706f 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-@@ -115,18 +115,19 @@ static struct kfd_mem_obj *allocate_mqd(struct kfd_dev *kfd,
- 			&(mqd_mem_obj->gtt_mem),
- 			&(mqd_mem_obj->gpu_addr),
- 			(void *)&(mqd_mem_obj->cpu_ptr), true);
-+
-+		if (retval) {
-+			kfree(mqd_mem_obj);
-+			return NULL;
-+		}
- 	} else {
- 		retval = kfd_gtt_sa_allocate(kfd, sizeof(struct v9_mqd),
- 				&mqd_mem_obj);
--	}
--
--	if (retval) {
--		kfree(mqd_mem_obj);
--		return NULL;
-+		if (retval)
-+			return NULL;
- 	}
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -31,7 +31,8 @@ int amiga_partition(struct parsed_partit
+ 	unsigned char *data;
+ 	struct RigidDiskBlock *rdb;
+ 	struct PartitionBlock *pb;
+-	int start_sect, nr_sects, blk, part, res = 0;
++	sector_t start_sect, nr_sects;
++	int blk, part, res = 0;
+ 	int blksize = 1;	/* Multiplier for disk block size */
+ 	int slot = 1;
  
- 	return mqd_mem_obj;
--
- }
+@@ -96,14 +97,14 @@ int amiga_partition(struct parsed_partit
  
- static void init_mqd(struct mqd_manager *mm, void **mqd,
--- 
-2.39.2
-
+ 		/* Tell Kernel about it */
+ 
+-		nr_sects = (be32_to_cpu(pb->pb_Environment[10]) + 1 -
+-			    be32_to_cpu(pb->pb_Environment[9])) *
++		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
++			   be32_to_cpu(pb->pb_Environment[9])) *
+ 			   be32_to_cpu(pb->pb_Environment[3]) *
+ 			   be32_to_cpu(pb->pb_Environment[5]) *
+ 			   blksize;
+ 		if (!nr_sects)
+ 			continue;
+-		start_sect = be32_to_cpu(pb->pb_Environment[9]) *
++		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
+ 			     be32_to_cpu(pb->pb_Environment[3]) *
+ 			     be32_to_cpu(pb->pb_Environment[5]) *
+ 			     blksize;
 
 
