@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27176755612
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 687047553CE
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232725AbjGPUrO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:47:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36348 "EHLO
+        id S231867AbjGPUXL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:23:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232715AbjGPUrN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:47:13 -0400
+        with ESMTP id S231872AbjGPUXK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:23:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44792E50
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:47:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D9491A5
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C1E1560E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:47:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5909C433C7;
-        Sun, 16 Jul 2023 20:47:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02EAD60EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEE6C433C8;
+        Sun, 16 Jul 2023 20:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540431;
-        bh=yR3tLSxtRZAvF1rRQ4nojQYQYF38Es+hEftBMrpqFvU=;
+        s=korg; t=1689538988;
+        bh=KQuGWxw2uvq6MAh0ZJuNmSFZ0aFdpkItQbEtiRsO/AM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yq5RlW/UwiBYdHGAsT36EfijTCitVXPhUX7wbi6jiWjpx/USz75dtEvACe88DPZ+D
-         mWUsFYZ/T1j0uD9U3YZODqQDxe17iIoiwP5F694U1d2RxZEnr9KAiRgxm97eRD+YWq
-         /yWO+rIcRjOMf1Os6uNsihka/X9+KQ3DdJDMiJgw=
+        b=A8MSvgqL5jJWCmu7H2bjzyqj9QNg6WHBWUUlchKPeSY65y7RA800pdqMg68QGbqmU
+         u3AozXbnvyhGiuDWpslYtuwYL2NF+YWeV4V/NrXYGN9M2lpITUgqnILKMm8kSiwQ3z
+         aCP4oCe9BjjNykGQ4SRCMCTBdd1A0dHX8r1cgEOI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Will Deacon <will@kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Brian Norris <briannorris@chromium.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 360/591] arm64: sme: Use STR P to clear FFR context field in streaming SVE mode
-Date:   Sun, 16 Jul 2023 21:48:19 +0200
-Message-ID: <20230716194933.227283046@linuxfoundation.org>
+Subject: [PATCH 6.4 647/800] pwm: sysfs: Do not apply state to already disabled PWMs
+Date:   Sun, 16 Jul 2023 21:48:20 +0200
+Message-ID: <20230716195004.143502984@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,73 +58,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Will Deacon <will@kernel.org>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 893b24181b4c4bf1fa2841b1ed192e5413a97cb1 ]
+[ Upstream commit 38ba83598633373f47951384cfc389181c8d1bed ]
 
-The FFR is a predicate register which can vary between 16 and 256 bits
-in size depending upon the configured vector length. When saving the
-SVE state in streaming SVE mode, the FFR register is inaccessible and
-so commit 9f5848665788 ("arm64/sve: Make access to FFR optional") simply
-clears the FFR field of the in-memory context structure. Unfortunately,
-it achieves this using an unconditional 8-byte store and so if the SME
-vector length is anything other than 64 bytes in size we will either
-fail to clear the entire field or, worse, we will corrupt memory
-immediately following the structure. This has led to intermittent kfence
-splats in CI [1] and can trigger kmalloc Redzone corruption messages
-when running the 'fp-stress' kselftest:
+If the PWM is exported but not enabled, do not call pwm_class_apply_state().
+First of all, in this case, period may still be unconfigured and this would
+make pwm_class_apply_state() return -EINVAL, and then suspend would fail.
+Second, it makes little sense to apply state onto PWM that is not enabled
+before suspend.
 
- | =============================================================================
- | BUG kmalloc-1k (Not tainted): kmalloc Redzone overwritten
- | -----------------------------------------------------------------------------
- |
- | 0xffff000809bf1e22-0xffff000809bf1e27 @offset=7714. First byte 0x0 instead of 0xcc
- | Allocated in do_sme_acc+0x9c/0x220 age=2613 cpu=1 pid=531
- |  __kmalloc+0x8c/0xcc
- |  do_sme_acc+0x9c/0x220
- |  ...
+Failing case:
+"
+$ echo 1 > /sys/class/pwm/pwmchip4/export
+$ echo mem > /sys/power/state
+...
+pwm pwmchip4: PM: dpm_run_callback(): pwm_class_suspend+0x1/0xa8 returns -22
+pwm pwmchip4: PM: failed to suspend: error -22
+PM: Some devices failed to suspend, or early wake event detected
+"
 
-Replace the 8-byte store with a store of a predicate register which has
-been zero-initialised with PFALSE, ensuring that the entire field is
-cleared in memory.
+Working case:
+"
+$ echo 1 > /sys/class/pwm/pwmchip4/export
+$ echo 100 > /sys/class/pwm/pwmchip4/pwm1/period
+$ echo 10 > /sys/class/pwm/pwmchip4/pwm1/duty_cycle
+$ echo mem > /sys/power/state
+...
+"
 
-[1] https://lore.kernel.org/r/CA+G9fYtU7HsV0R0dp4XEH5xXHSJFw8KyDf5VQrLLfMxWfxQkag@mail.gmail.com
+Do not call pwm_class_apply_state() in case the PWM is disabled
+to fix this issue.
 
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>
-Fixes: 9f5848665788 ("arm64/sve: Make access to FFR optional")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Link: https://lore.kernel.org/r/20230628155605.22296-1-will@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 7fd4edc57bbae ("pwm: sysfs: Add suspend/resume support")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Fixes: ef2bf4997f7d ("pwm: Improve args checking in pwm_apply_state()")
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/fpsimdmacros.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pwm/sysfs.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/arm64/include/asm/fpsimdmacros.h b/arch/arm64/include/asm/fpsimdmacros.h
-index 5e0910cf48321..696d247cf8fb0 100644
---- a/arch/arm64/include/asm/fpsimdmacros.h
-+++ b/arch/arm64/include/asm/fpsimdmacros.h
-@@ -294,12 +294,12 @@
-  _for n, 0, 15,	_sve_str_p	\n, \nxbase, \n - 16
- 		cbz		\save_ffr, 921f
- 		_sve_rdffr	0
--		_sve_str_p	0, \nxbase
--		_sve_ldr_p	0, \nxbase, -16
- 		b		922f
- 921:
--		str		xzr, [x\nxbase]		// Zero out FFR
-+		_sve_pfalse	0			// Zero out FFR
- 922:
-+		_sve_str_p	0, \nxbase
-+		_sve_ldr_p	0, \nxbase, -16
- 		mrs		x\nxtmp, fpsr
- 		str		w\nxtmp, [\xpfpsr]
- 		mrs		x\nxtmp, fpcr
+diff --git a/drivers/pwm/sysfs.c b/drivers/pwm/sysfs.c
+index 1a106ec329392..8d1254761e4dd 100644
+--- a/drivers/pwm/sysfs.c
++++ b/drivers/pwm/sysfs.c
+@@ -424,6 +424,13 @@ static int pwm_class_resume_npwm(struct device *parent, unsigned int npwm)
+ 		if (!export)
+ 			continue;
+ 
++		/* If pwmchip was not enabled before suspend, do nothing. */
++		if (!export->suspend.enabled) {
++			/* release lock taken in pwm_class_get_state */
++			mutex_unlock(&export->lock);
++			continue;
++		}
++
+ 		state.enabled = export->suspend.enabled;
+ 		ret = pwm_class_apply_state(export, pwm, &state);
+ 		if (ret < 0)
+@@ -448,7 +455,17 @@ static int pwm_class_suspend(struct device *parent)
+ 		if (!export)
+ 			continue;
+ 
++		/*
++		 * If pwmchip was not enabled before suspend, save
++		 * state for resume time and do nothing else.
++		 */
+ 		export->suspend = state;
++		if (!state.enabled) {
++			/* release lock taken in pwm_class_get_state */
++			mutex_unlock(&export->lock);
++			continue;
++		}
++
+ 		state.enabled = false;
+ 		ret = pwm_class_apply_state(export, pwm, &state);
+ 		if (ret < 0) {
 -- 
 2.39.2
 
