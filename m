@@ -2,66 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D516B75573C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41B737558A7
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 01:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233128AbjGPU74 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:59:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45362 "EHLO
+        id S230004AbjGPXdl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 19:33:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233125AbjGPU7z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:59:55 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C414C10F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:59:54 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-cb7b6ecb3cdso3537052276.1
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:59:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689541194; x=1692133194;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rnCUhuc6/jksrUiWuYIP+ADB5dignYd5LGSVOcuDu3s=;
-        b=zpbkYyFC5UickzqgfC2zdQp2NFs2QaB+iB7duhaz4f2edqTmksEHEGsPgJqL8/rVQs
-         VjqvLC7TBz8xAEH+MsfGAWfeSHx/N/1zJ5NXduQzxTaT9LF1U3kcF/nWKLbn7is6oghu
-         v/lHcwIDWsN24g/9m7OipEVC76TcJMszLWBsBmmx77PTuwp2tZNAVai0ErXseepQK7j2
-         G/acTtuJdP/nMs/ik/ZYTWHxRMKyHNIVqktsHIb3UoXNDX81LgNDjQ2J5ed77xwhvx+h
-         DQboEe5SI41UU5kExdZ5HiSn2082tRnL/pMQtq8lIC/SF6Sfc+JIxzuwFFu/Hn1WeAoV
-         2ATQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689541194; x=1692133194;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rnCUhuc6/jksrUiWuYIP+ADB5dignYd5LGSVOcuDu3s=;
-        b=MUAYbFOBPps1j4Ku6EBXBctd13KmcrxYQ986FsB5HIQRIg1V+9ar3IM2t5hIGRjWZK
-         nGUnKVoT0TVjYoB2ztRbtz8G3ypCIs82NCD5wvtzkRpFuTJobM1/89ZZh2LHSu7I3TLs
-         mBhO7PYoyXC/s1yuW+7xrtxU7R+kCY35FTmVGfc5xHGtVOhdiGoEiL9/F/x5T3O6fZi/
-         1yiJScfpzVwkznd8GtynoLROw0zmAxXKmxCPPANFoQCMWE9hMuBrC3UpuaFVAtYzxQ0E
-         0clR1KDigpjEnTSHa27uXcyNshlnC4on84o67W9OA89rHr1IWrsa+HOCaTuRPWsIzYUR
-         H43g==
-X-Gm-Message-State: ABy/qLaQtyQUNW85hpLMcja33DldOaJ1nAOBjpmPlvJwB7awaEsGY7sR
-        vOM54nGkTPaELqpgPN0LQzfD5G3wxudooq9VdxVP+g==
-X-Google-Smtp-Source: APBJJlHBKKnuT1m876CXFMUYhRj/PSYNHCSNh2P8HK+3zVoxjz+7U6x5WzLDq+3xDuKmtzKjGJPTc+BB3ptx8k/nwkE=
-X-Received: by 2002:a0d:d647:0:b0:573:2e7a:1733 with SMTP id
- y68-20020a0dd647000000b005732e7a1733mr11881495ywd.45.1689541193986; Sun, 16
- Jul 2023 13:59:53 -0700 (PDT)
+        with ESMTP id S229461AbjGPXdl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 19:33:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C6A3D1;
+        Sun, 16 Jul 2023 16:33:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9840160EE9;
+        Sun, 16 Jul 2023 23:33:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2567C43395;
+        Sun, 16 Jul 2023 23:33:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689550419;
+        bh=Ja9IYjqwNzmeISofK1hhZQkSnGHcbD0jYQgPpeuxanI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=KPedHonJ+1xUSpZC+ZJSrhK2jIwbYYKVbiPMKpYSv4IL0MiL6siOsXnqw+/xzA7+q
+         lfvdor5Cbw2vewFsyp34mOQLyiQtZTC2tusnrYIhlc1EGfBd/+VxBh3fD67SMuNLso
+         pV8S+REUQIE5/NFGCVLMhr7hi0oSOGkNvw+eRDAwHYuu+cQ5hTV1aaTsjWeN8tE5na
+         PC2lUeWK6tLqdR5XvGETNXi56UsoXGWCsUoiTsh3GLekmJ/1nkcJIJt5yhpPZKGHjn
+         wWeaZJuNM5gJWC9ksjdpXZcc64tIX21zGaxmoEqcxpnF9N2zgZMwMl44QfnJ0l9tY9
+         RtrRsd8lABtWg==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-51cff235226so8115760a12.0;
+        Sun, 16 Jul 2023 16:33:38 -0700 (PDT)
+X-Gm-Message-State: ABy/qLZQxX+wY34Wd2i2cDJEr7tqrDOxYVIygcV0osdI2EW85AbD1vNk
+        v8F3BDK0xL30BJtT1WkO1pjEqgOm4wDo0OeRbcw=
+X-Google-Smtp-Source: APBJJlEcBvXJxvd+KrBJuk0Vi8K5mZ3tcQx3JefAFzqKUbu1AoQrNc3PHaoeV7oErHoCHJMGuTnhuYfeFD4/gBGxpk0=
+X-Received: by 2002:a05:6402:524e:b0:51d:cf7b:c9f0 with SMTP id
+ t14-20020a056402524e00b0051dcf7bc9f0mr11056350edd.12.1689550417039; Sun, 16
+ Jul 2023 16:33:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230613213150.908462-1-linus.walleij@linaro.org>
-In-Reply-To: <20230613213150.908462-1-linus.walleij@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 16 Jul 2023 22:59:42 +0200
-Message-ID: <CACRpkdbp0STSKxBG6qgpqu=xg0+-zAdK2se11oKhjD9MGQZ1NA@mail.gmail.com>
-Subject: Re: [PATCH] power: supply: ab8500: Set typing and props
-To:     Sebastian Reichel <sre@kernel.org>,
-        Marcus Cooper <codekipper@gmail.com>
-Cc:     linux-pm@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
-        stable@vger.kernel.org
+References: <20230702025708.784106-1-guoren@kernel.org> <20230704164003.GB83892@hirez.programming.kicks-ass.net>
+ <CAJF2gTTc0Gyo=K-0dCW6wu7q=Wq34hgTB69qJ7VSF_KAgKhavA@mail.gmail.com> <20230710080152.GA3028865@hirez.programming.kicks-ass.net>
+In-Reply-To: <20230710080152.GA3028865@hirez.programming.kicks-ass.net>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Mon, 17 Jul 2023 07:33:25 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTTt23iSDG_m4ihPhXhYDrz3Xnih=KGLx_ayBLbzPqaTaQ@mail.gmail.com>
+Message-ID: <CAJF2gTTt23iSDG_m4ihPhXhYDrz3Xnih=KGLx_ayBLbzPqaTaQ@mail.gmail.com>
+Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
+        luto@kernel.org, conor.dooley@microchip.com, heiko@sntech.de,
+        jszhang@kernel.org, lazyparser@gmail.com, falcon@tinylab.org,
+        chenhuacai@kernel.org, apatel@ventanamicro.com,
+        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
+        palmer@dabbelt.com, bjorn@rivosinc.com, daniel.thompson@linaro.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
+        Guo Ren <guoren@linux.alibaba.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,41 +71,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Sebastian,
+On Mon, Jul 10, 2023 at 4:02=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> On Sun, Jul 09, 2023 at 10:30:22AM +0800, Guo Ren wrote:
+> > On Wed, Jul 5, 2023 at 12:40=E2=80=AFAM Peter Zijlstra <peterz@infradea=
+d.org> wrote:
+> > >
+> > > On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
+> > > > From: Guo Ren <guoren@linux.alibaba.com>
+> > > >
+> > > > The irqentry_nmi_enter/exit would force the current context into in=
+_interrupt.
+> > > > That would trigger the kernel to dead panic, but the kdb still need=
+s "ebreak" to
+> > > > debug the kernel.
+> > > >
+> > > > Move irqentry_nmi_enter/exit to exception_enter/exit could correct =
+handle_break
+> > > > of the kernel side.
+> > >
+> > > This doesn't explain much if anything :/
+> > >
+> > > I'm confused (probably because I don't know RISC-V very well), what's
+> > > EBREAK and how does it happen?
+> > EBREAK is just an instruction of riscv which would rise breakpoint exce=
+ption.
+> >
+> >
+> > >
+> > > Specifically, if EBREAK can happen inside an local_irq_disable() regi=
+on,
+> > > then the below change is actively wrong. Any exception/interrupt that
+> > > can happen while local_irq_disable() must be treated like an NMI.
+> > When the ebreak happend out of local_irq_disable region, but
+> > __nmi_enter forces handle_break() into in_interupt() state. So how
+>
+> And why is that a problem? I think I'm missing something fundamental
+> here...
+The irqentry_nmi_enter() would force the current context to get
+in_interrupt=3Dtrue, although ebreak happens in the context which is
+in_interrupt=3Dfalse.
+A lot of checking codes, such as:
+        if (in_interrupt())
+                panic("Fatal exception in interrupt");
+It would make the kernel panic, but we don't panic; we want back to the she=
+ll.
+eg:
+echo BUG > /sys/kernel/debug/provoke-crash/DIRECT
 
-could you apply this patch please?
+>
+> > about:
+> >
+> > diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
+> > index f910dfccbf5d..69f7043a98b9 100644
+> > --- a/arch/riscv/kernel/traps.c
+> > +++ b/arch/riscv/kernel/traps.c
+> > @@ -18,6 +18,7 @@
+> >  #include <linux/irq.h>
+> >  #include <linux/kexec.h>
+> >  #include <linux/entry-common.h>
+> > +#include <linux/context_tracking.h>
+> >
+> >  #include <asm/asm-prototypes.h>
+> >  #include <asm/bug.h>
+> > @@ -285,12 +286,18 @@ asmlinkage __visible __trap_section void
+> > do_trap_break(struct pt_regs *regs)
+> >                 handle_break(regs);
+> >
+> >                 irqentry_exit_to_user_mode(regs);
+> > -       } else {
+> > +       } else if (in_interrupt()){
+> >                 irqentry_state_t state =3D irqentry_nmi_enter(regs);
+> >
+> >                 handle_break(regs);
+> >
+> >                 irqentry_nmi_exit(regs, state);
+> > +       } else {
+> > +               enum ctx_state prev_state =3D exception_enter();
+> > +
+> > +               handle_break(regs);
+> > +
+> > +               exception_exit(prev_state);
+> >         }
+> >  }
+>
+> That's wrong. If you want to make it conditional, you have to look at
+> !(regs->status & SR_IE) (that's the interrupt enable flag of the
+> interrupted context, right?)
+>
+> When you hit an EBREAK when IRQs were disabled, you must be NMI like.
+>
+> But making it conditional like this makes it really hard to write a
+> handler though, it basically must assume it will be NMI contetx (because
+> it can't know) so there is no point in sometimes not doing NMI context.
 
-It's a regression.
 
-Yours,
-Linus Walleij
 
-On Tue, Jun 13, 2023 at 11:31=E2=80=AFPM Linus Walleij <linus.walleij@linar=
-o.org> wrote:
 
-> I had the following weird phenomena on a mobile phone: while
-> the capacity in /sys/class/power_supply/ab8500_fg/capacity
-> would reflect the actual charge and capacity of the battery,
-> only 1/3 of the value was shown on the battery status
-> indicator and warnings for low battery appeared.
->
-> It turns out that utemp, the Freedesktop temperature daemon,
-> will average all the power supplies of type "battery" in
-> /sys/class/power_supply/* if there is more than one battery.
->
-> For the AB8500, there was "battery" ab8500_fg, ab8500_btemp
-> and ab8500_chargalg. The latter two don't know anything
-> about the battery, and should not be considered. They were
-> however averaged and with the capacity of 0.
->
-> Flag ab8500_btemp and ab8500_chargalg with type "unknown"
-> so they are not averaged as batteries.
->
-> Remove the technology prop from ab8500_btemp as well, all
-> it does is snoop in on knowledge from another supply.
->
-> After this the battery indicator shows the right value.
->
-> Cc: Stefan Hansson <newbyte@disroot.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+
+
+--=20
+Best Regards
+ Guo Ren
