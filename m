@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 467BA7552B9
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B501F7554EF
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:35:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231448AbjGPULK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:11:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39188 "EHLO
+        id S232308AbjGPUff (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:35:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231451AbjGPULJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:09 -0400
+        with ESMTP id S232079AbjGPUfe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:35:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170119B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78299D2
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:35:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA1BB60DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5EAC433C8;
-        Sun, 16 Jul 2023 20:11:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 07DB860EBD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:35:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2E8C433C9;
+        Sun, 16 Jul 2023 20:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538268;
-        bh=uxKuMO4/p8krY9HGOxbkonB0nk0HkjYrrDACyEuuIdA=;
+        s=korg; t=1689539728;
+        bh=cgfTOxyRrI59hsuhKGSL6VtWXAC6MVGSDOYDNLnAu2A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aDp+iQOqg23Rd2w2C6AtdvpcUDI4MnxJGvjB5HurV97hnop7y4r+Jq8Qnn7lmeNfE
-         dVLDwnUDTBYtBDcB7gtVlddkpfJofGdFq0RRalmjKgc3STiW5OcDNL1bEjRMwfoDVA
-         vCvCQ2Uq8q60xi6BlJO4h5TSe1SwYufxrUuTMBqc=
+        b=utVHKKl8+xyMQ6JQw0UihXvA0tJmnZ6rQkt08xRIL6UZWp/5hlY6v942kvduQ+KU0
+         n9oe6KamEd7ich/axIkNJ4yH2PHhQMwaj40g3RgzRrWevEN3vPKL6QsEdZm2j9MgUw
+         Gx0gvjADMaaxKY8id0b8U/4OL0Cv6Okseiu+FyU4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 388/800] arm64: dts: qcom: sm8250-edo: Panel framebuffer is 2.5k instead of 4k
-Date:   Sun, 16 Jul 2023 21:44:01 +0200
-Message-ID: <20230716194958.085005165@linuxfoundation.org>
+Subject: [PATCH 6.1 103/591] mmc: mediatek: Avoid ugly error message when SDIO wakeup IRQ isnt used
+Date:   Sun, 16 Jul 2023 21:44:02 +0200
+Message-ID: <20230716194926.540170201@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,50 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 223ce29c8b7e5b00f01a68387aabeefd77d97f06 ]
+[ Upstream commit a3332b7aad346b14770797e03ddd02ebdb14db41 ]
 
-The framebuffer configuration for edo pdx203, written in edo dtsi (which
-is overwritten in pdx206 dts for its smaller panel) has to use a
-1096x2560 configuration as this is what the panel (and framebuffer area)
-has been initialized to.  Downstream userspace also has access to (and
-uses) this 2.5k mode by default, and only switches the panel to 4k when
-requested.
+When I boot a kukui-kodama board, I see an ugly warning in my kernel
+log:
+  mtk-msdc 11240000.mmc: error -ENXIO: IRQ sdio_wakeup not found
 
-This is similar to commit be8de06dc397 ("arm64: dts: qcom:
-sm8150-kumano: Panel framebuffer is 2.5k instead of 4k") which fixed the
-same for the previous generation Sony platform.
+It's pretty normal not to have an "sdio_wakeup" IRQ defined. In fact,
+no device trees in mainline seem to have it. Let's use the
+platform_get_irq_byname_optional() to avoid the error message.
 
-Fixes: 69cdb97ef652 ("arm64: dts: qcom: sm8250: Add support for SONY Xperia 1 II / 5 II (Edo platform)")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230606211418.587676-1-marijn.suijten@somainline.org
+Fixes: 527f36f5efa4 ("mmc: mediatek: add support for SDIO eint wakup IRQ")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/r/20230510064434.1.I935404c5396e6bf952e99bb7ffb744c6f7fd430b@changeid
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/mmc/host/mtk-sd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-index 2f22d348d45d7..dcabb714f0f35 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-@@ -26,9 +26,10 @@ chosen {
- 		framebuffer: framebuffer@9c000000 {
- 			compatible = "simple-framebuffer";
- 			reg = <0 0x9c000000 0 0x2300000>;
--			width = <1644>;
--			height = <3840>;
--			stride = <(1644 * 4)>;
-+			/* pdx203 BL initializes in 2.5k mode, not 4k */
-+			width = <1096>;
-+			height = <2560>;
-+			stride = <(1096 * 4)>;
- 			format = "a8r8g8b8";
- 			/*
- 			 * That's a lot of clocks, but it's necessary due
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index 425efb3fba048..1a0d4dc24717c 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2685,7 +2685,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 
+ 	/* Support for SDIO eint irq ? */
+ 	if ((mmc->pm_caps & MMC_PM_WAKE_SDIO_IRQ) && (mmc->pm_caps & MMC_PM_KEEP_POWER)) {
+-		host->eint_irq = platform_get_irq_byname(pdev, "sdio_wakeup");
++		host->eint_irq = platform_get_irq_byname_optional(pdev, "sdio_wakeup");
+ 		if (host->eint_irq > 0) {
+ 			host->pins_eint = pinctrl_lookup_state(host->pinctrl, "state_eint");
+ 			if (IS_ERR(host->pins_eint)) {
 -- 
 2.39.2
 
