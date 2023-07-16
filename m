@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03C8F755414
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82FCD75566C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232000AbjGPU01 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:26:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48510 "EHLO
+        id S232850AbjGPUu1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:50:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232009AbjGPU0Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:26:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6841126
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:20 -0700 (PDT)
+        with ESMTP id S232851AbjGPUu1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:50:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945A2E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:50:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A9C560EBF
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B10C433C9;
-        Sun, 16 Jul 2023 20:26:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 25CB360EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:50:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E13C433C7;
+        Sun, 16 Jul 2023 20:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539178;
-        bh=OAwa4yHFrLFWnhI9AOF1MEHPvOmbJPFxZWG6pgcXj+I=;
+        s=korg; t=1689540624;
+        bh=lLXcF4hRbzFMzyPYAWRYx6IlvZ5bXZ4CReogufbvYi4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R3c+Zy9U/HEnmzxNz/rgKt41aRaoogNm5Hl94lOsoioCoUjezPsGgVnibtQur32iI
-         eRpa/3YRclqO+4jdKrJLHe77Uwo2zRoA+TlB6G+IKejSVUxUm91PjwJzJe0h0QZcO1
-         06MaY+Oi2bZ+XypEzy8uiCDMPEDOtT6tVsgE+4eQ=
+        b=ZBkxUlPDEZ7W74Q8mNVHTkWSOx4nWlJ6CD3KHHg/G7Kbof8SBJKPqEyvkHrZFL/Ir
+         yVUMMmtd1MmF3OVycVW4QKEb1kI22dS/SDXq1IZgF9rDxHrQTWPMvcVV4KSzNREu4+
+         QDkvCfvy7q1qkW37HLARc2zI8uVAeIPKIPuFEDVI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
-        Dave Chinner <david@fromorbit.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 715/800] writeback: account the number of pages written back
+Subject: [PATCH 6.1 429/591] f2fs: fix potential deadlock due to unpaired node_write lock use
 Date:   Sun, 16 Jul 2023 21:49:28 +0200
-Message-ID: <20230716195005.725847022@linuxfoundation.org>
+Message-ID: <20230716194935.015494345@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,76 +55,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 8344a3d44be3d18671e18c4ba23bb03dd21e14ad ]
+[ Upstream commit f082c6b205a06953f26c40bdc7621cc5a58ceb7c ]
 
-nr_to_write is a count of pages, so we need to decrease it by the number
-of pages in the folio we just wrote, not by 1.  Most callers specify
-either LONG_MAX or 1, so are unaffected, but writeback_sb_inodes() might
-end up writing 512x as many pages as it asked for.
+If S_NOQUOTA is cleared from inode during data page writeback of quota
+file, it may miss to unlock node_write lock, result in potential
+deadlock, fix to use the lock in paired.
 
-Dave added:
+Kworker					Thread
+- writepage
+ if (IS_NOQUOTA())
+   f2fs_down_read(&sbi->node_write);
+					- vfs_cleanup_quota_inode
+					 - inode->i_flags &= ~S_NOQUOTA;
+ if (IS_NOQUOTA())
+   f2fs_up_read(&sbi->node_write);
 
-: XFS is the only filesystem this would affect, right?  AFAIA, nothing
-: else enables large folios and uses writeback through
-: write_cache_pages() at this point...
-:
-: In which case, I'd be surprised if much difference, if any, gets
-: noticed by anyone.
-
-Link: https://lkml.kernel.org/r/20230628185548.981888-1-willy@infradead.org
-Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Dave Chinner <david@fromorbit.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 79963d967b49 ("f2fs: shrink node_write lock coverage")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page-writeback.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/f2fs/compress.c | 7 ++++---
+ fs/f2fs/data.c     | 7 ++++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index db79439990073..6faa09f1783b3 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -2434,6 +2434,7 @@ int write_cache_pages(struct address_space *mapping,
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index b160863eca141..e50d5848c1001 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1235,6 +1235,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ 	unsigned int last_index = cc->cluster_size - 1;
+ 	loff_t psize;
+ 	int i, err;
++	bool quota_inode = IS_NOQUOTA(inode);
  
- 		for (i = 0; i < nr_folios; i++) {
- 			struct folio *folio = fbatch.folios[i];
-+			unsigned long nr;
+ 	/* we should bypass data pages to proceed the kworkder jobs */
+ 	if (unlikely(f2fs_cp_error(sbi))) {
+@@ -1242,7 +1243,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ 		goto out_free;
+ 	}
  
- 			done_index = folio->index;
+-	if (IS_NOQUOTA(inode)) {
++	if (quota_inode) {
+ 		/*
+ 		 * We need to wait for node_write to avoid block allocation during
+ 		 * checkpoint. This can only happen to quota writes which can cause
+@@ -1364,7 +1365,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ 		set_inode_flag(inode, FI_FIRST_BLOCK_WRITTEN);
  
-@@ -2471,6 +2472,7 @@ int write_cache_pages(struct address_space *mapping,
+ 	f2fs_put_dnode(&dn);
+-	if (IS_NOQUOTA(inode))
++	if (quota_inode)
+ 		f2fs_up_read(&sbi->node_write);
+ 	else
+ 		f2fs_unlock_op(sbi);
+@@ -1390,7 +1391,7 @@ static int f2fs_write_compressed_pages(struct compress_ctx *cc,
+ out_put_dnode:
+ 	f2fs_put_dnode(&dn);
+ out_unlock_op:
+-	if (IS_NOQUOTA(inode))
++	if (quota_inode)
+ 		f2fs_up_read(&sbi->node_write);
+ 	else
+ 		f2fs_unlock_op(sbi);
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 36db9aab47790..c230824ab5e6e 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -2759,6 +2759,7 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
+ 	loff_t psize = (loff_t)(page->index + 1) << PAGE_SHIFT;
+ 	unsigned offset = 0;
+ 	bool need_balance_fs = false;
++	bool quota_inode = IS_NOQUOTA(inode);
+ 	int err = 0;
+ 	struct f2fs_io_info fio = {
+ 		.sbi = sbi,
+@@ -2816,19 +2817,19 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
+ 		goto out;
  
- 			trace_wbc_writepage(wbc, inode_to_bdi(mapping->host));
- 			error = writepage(folio, wbc, data);
-+			nr = folio_nr_pages(folio);
- 			if (unlikely(error)) {
- 				/*
- 				 * Handle errors according to the type of
-@@ -2489,8 +2491,7 @@ int write_cache_pages(struct address_space *mapping,
- 					error = 0;
- 				} else if (wbc->sync_mode != WB_SYNC_ALL) {
- 					ret = error;
--					done_index = folio->index +
--						folio_nr_pages(folio);
-+					done_index = folio->index + nr;
- 					done = 1;
- 					break;
- 				}
-@@ -2504,7 +2505,8 @@ int write_cache_pages(struct address_space *mapping,
- 			 * keep going until we have written all the pages
- 			 * we tagged for writeback prior to entering this loop.
- 			 */
--			if (--wbc->nr_to_write <= 0 &&
-+			wbc->nr_to_write -= nr;
-+			if (wbc->nr_to_write <= 0 &&
- 			    wbc->sync_mode == WB_SYNC_NONE) {
- 				done = 1;
- 				break;
+ 	/* Dentry/quota blocks are controlled by checkpoint */
+-	if (S_ISDIR(inode->i_mode) || IS_NOQUOTA(inode)) {
++	if (S_ISDIR(inode->i_mode) || quota_inode) {
+ 		/*
+ 		 * We need to wait for node_write to avoid block allocation during
+ 		 * checkpoint. This can only happen to quota writes which can cause
+ 		 * the below discard race condition.
+ 		 */
+-		if (IS_NOQUOTA(inode))
++		if (quota_inode)
+ 			f2fs_down_read(&sbi->node_write);
+ 
+ 		fio.need_lock = LOCK_DONE;
+ 		err = f2fs_do_write_data_page(&fio);
+ 
+-		if (IS_NOQUOTA(inode))
++		if (quota_inode)
+ 			f2fs_up_read(&sbi->node_write);
+ 
+ 		goto done;
 -- 
 2.39.2
 
