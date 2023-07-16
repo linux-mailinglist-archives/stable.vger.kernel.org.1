@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2FFF75533C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAD8A755591
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:42:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231652AbjGPUQ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:16:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42482 "EHLO
+        id S232562AbjGPUmP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:42:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231668AbjGPUQz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:55 -0400
+        with ESMTP id S232558AbjGPUmO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02FBAC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB659F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB2CC60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D38C433C8;
-        Sun, 16 Jul 2023 20:16:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14FF860EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27221C433C7;
+        Sun, 16 Jul 2023 20:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538610;
-        bh=bZ4mPcvZXM0pZba6TbjXQQu+FGoZKOLzIyV/qR0Xkwc=;
+        s=korg; t=1689540132;
+        bh=U5ogyaKs9+E4TZ4ChkVaSQon/5mwnzBoCuQ4OQzC6C0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z5+Zk3tdMGnmpLOwAQJeisWZOZrWz7s1zNF8Ql3kgxCYv9K2IWUaB0iuNhwEiSIkF
-         yRMuc/ad96e7+Bh7yG20YDTU4FhusGSAYgviYAU3nUEq1JVExhR7R/rc1F/raWW73b
-         GdixKEsaLPA7v1s0/91HthTSS+31LHMvRocbXIaU=
+        b=pog3ir7HUDFUJJtEUdlPjUWdUF9s8mWivKW4YFzPQoj/mDhqgWIadWDD3LxlS9wij
+         909UhAwel/qceLQtNMJ0WplBWLuQKuxclRjyLOLE7JWNt3LV46Cjjd1I+OqiOTy8Kq
+         m/rb3jDpsHCb3e2HrRAymNTAgEuRepd6z2N17xFI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        patches@lists.linux.dev, Keerthy <j-keerthy@ti.com>,
+        Udit Kumar <u-kumar1@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 512/800] NFSv4.2: fix wrong shrinker_id
-Date:   Sun, 16 Jul 2023 21:46:05 +0200
-Message-ID: <20230716195000.984871701@linuxfoundation.org>
+Subject: [PATCH 6.1 227/591] arm64: dts: ti: k3-j7200: Fix physical address of pin
+Date:   Sun, 16 Jul 2023 21:46:06 +0200
+Message-ID: <20230716194929.744708506@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,168 +56,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+From: Keerthy <j-keerthy@ti.com>
 
-[ Upstream commit 7f7ab336898f281e58540ef781a8fb375acc32a9 ]
+[ Upstream commit 3d011933000ed9054c649952d83162d24f020a93 ]
 
-Currently, the list_lru::shrinker_id corresponding to the nfs4_xattr
-shrinkers is wrong:
+wkup_pmx splits into multiple regions. Like
 
->>> prog["nfs4_xattr_cache_lru"].shrinker_id
-(int)0
->>> prog["nfs4_xattr_entry_lru"].shrinker_id
-(int)0
->>> prog["nfs4_xattr_large_entry_lru"].shrinker_id
-(int)0
->>> prog["nfs4_xattr_cache_shrinker"].id
-(int)18
->>> prog["nfs4_xattr_entry_shrinker"].id
-(int)19
->>> prog["nfs4_xattr_large_entry_shrinker"].id
-(int)20
+    wkup_pmx0 -> 13 pins (WKUP_PADCONFIG 0 - 12)
+    wkup_pmx1 -> 2 pins (WKUP_PADCONFIG 14 - 15)
+    wkup_pmx2 -> 59 pins (WKUP_PADCONFIG 26 - 84)
+    wkup_pmx3 -> 8 pins (WKUP_PADCONFIG 93 - 100)
 
-This is not what we expect, which will cause these shrinkers
-not to be found in shrink_slab_memcg().
+With this split, pin offset needs to be adjusted to
+match with new pmx for all pins above wkup_pmx0.
 
-We should assign shrinker::id before calling list_lru_init_memcg(),
-so that the corresponding list_lru::shrinker_id will be assigned
-the correct value like below:
+Example a pin under wkup_pmx1 should start from 0 instead of
+old offset(0x38 WKUP_PADCONFIG 14 offset)
 
->>> prog["nfs4_xattr_cache_lru"].shrinker_id
-(int)16
->>> prog["nfs4_xattr_entry_lru"].shrinker_id
-(int)17
->>> prog["nfs4_xattr_large_entry_lru"].shrinker_id
-(int)18
->>> prog["nfs4_xattr_cache_shrinker"].id
-(int)16
->>> prog["nfs4_xattr_entry_shrinker"].id
-(int)17
->>> prog["nfs4_xattr_large_entry_shrinker"].id
-(int)18
+J7200 Datasheet (Table 6-106, Section 6.4 Pin Multiplexing) :
+https://www.ti.com/lit/ds/symlink/dra821u.pdf
 
-So just do it.
+Fixes: 9ae21ac445e9 ("arm64: dts: ti: k3-j7200: Fix wakeup pinmux range")
 
-Fixes: 95ad37f90c33 ("NFSv4.2: add client side xattr caching.")
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Keerthy <j-keerthy@ti.com>
+Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20230419040007.3022780-2-u-kumar1@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs42xattr.c | 79 +++++++++++++++++++++++++--------------------
- 1 file changed, 44 insertions(+), 35 deletions(-)
+ .../dts/ti/k3-j7200-common-proc-board.dts     | 28 +++++++++----------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/fs/nfs/nfs42xattr.c b/fs/nfs/nfs42xattr.c
-index 76ae118342066..911f634ba3da7 100644
---- a/fs/nfs/nfs42xattr.c
-+++ b/fs/nfs/nfs42xattr.c
-@@ -991,6 +991,29 @@ static void nfs4_xattr_cache_init_once(void *p)
- 	INIT_LIST_HEAD(&cache->dispose);
- }
+diff --git a/arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts b/arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts
+index 50009f963a324..5840063f61293 100644
+--- a/arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts
++++ b/arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts
+@@ -83,25 +83,25 @@ vdd_sd_dv: gpio-regulator-TLV71033 {
+ &wkup_pmx2 {
+ 	mcu_cpsw_pins_default: mcu-cpsw-pins-default {
+ 		pinctrl-single,pins = <
+-			J721E_WKUP_IOPAD(0x0068, PIN_OUTPUT, 0) /* MCU_RGMII1_TX_CTL */
+-			J721E_WKUP_IOPAD(0x006c, PIN_INPUT, 0) /* MCU_RGMII1_RX_CTL */
+-			J721E_WKUP_IOPAD(0x0070, PIN_OUTPUT, 0) /* MCU_RGMII1_TD3 */
+-			J721E_WKUP_IOPAD(0x0074, PIN_OUTPUT, 0) /* MCU_RGMII1_TD2 */
+-			J721E_WKUP_IOPAD(0x0078, PIN_OUTPUT, 0) /* MCU_RGMII1_TD1 */
+-			J721E_WKUP_IOPAD(0x007c, PIN_OUTPUT, 0) /* MCU_RGMII1_TD0 */
+-			J721E_WKUP_IOPAD(0x0088, PIN_INPUT, 0) /* MCU_RGMII1_RD3 */
+-			J721E_WKUP_IOPAD(0x008c, PIN_INPUT, 0) /* MCU_RGMII1_RD2 */
+-			J721E_WKUP_IOPAD(0x0090, PIN_INPUT, 0) /* MCU_RGMII1_RD1 */
+-			J721E_WKUP_IOPAD(0x0094, PIN_INPUT, 0) /* MCU_RGMII1_RD0 */
+-			J721E_WKUP_IOPAD(0x0080, PIN_OUTPUT, 0) /* MCU_RGMII1_TXC */
+-			J721E_WKUP_IOPAD(0x0084, PIN_INPUT, 0) /* MCU_RGMII1_RXC */
++			J721E_WKUP_IOPAD(0x0000, PIN_OUTPUT, 0) /* MCU_RGMII1_TX_CTL */
++			J721E_WKUP_IOPAD(0x0004, PIN_INPUT, 0) /* MCU_RGMII1_RX_CTL */
++			J721E_WKUP_IOPAD(0x0008, PIN_OUTPUT, 0) /* MCU_RGMII1_TD3 */
++			J721E_WKUP_IOPAD(0x000c, PIN_OUTPUT, 0) /* MCU_RGMII1_TD2 */
++			J721E_WKUP_IOPAD(0x0010, PIN_OUTPUT, 0) /* MCU_RGMII1_TD1 */
++			J721E_WKUP_IOPAD(0x0014, PIN_OUTPUT, 0) /* MCU_RGMII1_TD0 */
++			J721E_WKUP_IOPAD(0x0020, PIN_INPUT, 0) /* MCU_RGMII1_RD3 */
++			J721E_WKUP_IOPAD(0x0024, PIN_INPUT, 0) /* MCU_RGMII1_RD2 */
++			J721E_WKUP_IOPAD(0x0028, PIN_INPUT, 0) /* MCU_RGMII1_RD1 */
++			J721E_WKUP_IOPAD(0x002c, PIN_INPUT, 0) /* MCU_RGMII1_RD0 */
++			J721E_WKUP_IOPAD(0x0018, PIN_OUTPUT, 0) /* MCU_RGMII1_TXC */
++			J721E_WKUP_IOPAD(0x001c, PIN_INPUT, 0) /* MCU_RGMII1_RXC */
+ 		>;
+ 	};
  
-+static int nfs4_xattr_shrinker_init(struct shrinker *shrinker,
-+				    struct list_lru *lru, const char *name)
-+{
-+	int ret = 0;
-+
-+	ret = register_shrinker(shrinker, name);
-+	if (ret)
-+		return ret;
-+
-+	ret = list_lru_init_memcg(lru, shrinker);
-+	if (ret)
-+		unregister_shrinker(shrinker);
-+
-+	return ret;
-+}
-+
-+static void nfs4_xattr_shrinker_destroy(struct shrinker *shrinker,
-+					struct list_lru *lru)
-+{
-+	unregister_shrinker(shrinker);
-+	list_lru_destroy(lru);
-+}
-+
- int __init nfs4_xattr_cache_init(void)
- {
- 	int ret = 0;
-@@ -1002,44 +1025,30 @@ int __init nfs4_xattr_cache_init(void)
- 	if (nfs4_xattr_cache_cachep == NULL)
- 		return -ENOMEM;
- 
--	ret = list_lru_init_memcg(&nfs4_xattr_large_entry_lru,
--	    &nfs4_xattr_large_entry_shrinker);
--	if (ret)
--		goto out4;
--
--	ret = list_lru_init_memcg(&nfs4_xattr_entry_lru,
--	    &nfs4_xattr_entry_shrinker);
--	if (ret)
--		goto out3;
--
--	ret = list_lru_init_memcg(&nfs4_xattr_cache_lru,
--	    &nfs4_xattr_cache_shrinker);
--	if (ret)
--		goto out2;
--
--	ret = register_shrinker(&nfs4_xattr_cache_shrinker, "nfs-xattr_cache");
-+	ret = nfs4_xattr_shrinker_init(&nfs4_xattr_cache_shrinker,
-+				       &nfs4_xattr_cache_lru,
-+				       "nfs-xattr_cache");
- 	if (ret)
- 		goto out1;
- 
--	ret = register_shrinker(&nfs4_xattr_entry_shrinker, "nfs-xattr_entry");
-+	ret = nfs4_xattr_shrinker_init(&nfs4_xattr_entry_shrinker,
-+				       &nfs4_xattr_entry_lru,
-+				       "nfs-xattr_entry");
- 	if (ret)
--		goto out;
-+		goto out2;
- 
--	ret = register_shrinker(&nfs4_xattr_large_entry_shrinker,
--				"nfs-xattr_large_entry");
-+	ret = nfs4_xattr_shrinker_init(&nfs4_xattr_large_entry_shrinker,
-+				       &nfs4_xattr_large_entry_lru,
-+				       "nfs-xattr_large_entry");
- 	if (!ret)
- 		return 0;
- 
--	unregister_shrinker(&nfs4_xattr_entry_shrinker);
--out:
--	unregister_shrinker(&nfs4_xattr_cache_shrinker);
--out1:
--	list_lru_destroy(&nfs4_xattr_cache_lru);
-+	nfs4_xattr_shrinker_destroy(&nfs4_xattr_entry_shrinker,
-+				    &nfs4_xattr_entry_lru);
- out2:
--	list_lru_destroy(&nfs4_xattr_entry_lru);
--out3:
--	list_lru_destroy(&nfs4_xattr_large_entry_lru);
--out4:
-+	nfs4_xattr_shrinker_destroy(&nfs4_xattr_cache_shrinker,
-+				    &nfs4_xattr_cache_lru);
-+out1:
- 	kmem_cache_destroy(nfs4_xattr_cache_cachep);
- 
- 	return ret;
-@@ -1047,11 +1056,11 @@ int __init nfs4_xattr_cache_init(void)
- 
- void nfs4_xattr_cache_exit(void)
- {
--	unregister_shrinker(&nfs4_xattr_large_entry_shrinker);
--	unregister_shrinker(&nfs4_xattr_entry_shrinker);
--	unregister_shrinker(&nfs4_xattr_cache_shrinker);
--	list_lru_destroy(&nfs4_xattr_large_entry_lru);
--	list_lru_destroy(&nfs4_xattr_entry_lru);
--	list_lru_destroy(&nfs4_xattr_cache_lru);
-+	nfs4_xattr_shrinker_destroy(&nfs4_xattr_large_entry_shrinker,
-+				    &nfs4_xattr_large_entry_lru);
-+	nfs4_xattr_shrinker_destroy(&nfs4_xattr_entry_shrinker,
-+				    &nfs4_xattr_entry_lru);
-+	nfs4_xattr_shrinker_destroy(&nfs4_xattr_cache_shrinker,
-+				    &nfs4_xattr_cache_lru);
- 	kmem_cache_destroy(nfs4_xattr_cache_cachep);
- }
+ 	mcu_mdio_pins_default: mcu-mdio1-pins-default {
+ 		pinctrl-single,pins = <
+-			J721E_WKUP_IOPAD(0x009c, PIN_OUTPUT, 0) /* (L1) MCU_MDIO0_MDC */
+-			J721E_WKUP_IOPAD(0x0098, PIN_INPUT, 0) /* (L4) MCU_MDIO0_MDIO */
++			J721E_WKUP_IOPAD(0x0034, PIN_OUTPUT, 0) /* (L1) MCU_MDIO0_MDC */
++			J721E_WKUP_IOPAD(0x0030, PIN_INPUT, 0) /* (L4) MCU_MDIO0_MDIO */
+ 		>;
+ 	};
+ };
 -- 
 2.39.2
 
