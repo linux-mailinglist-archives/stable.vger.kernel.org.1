@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 366287553BC
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DF877555CC
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231845AbjGPUWX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:22:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46186 "EHLO
+        id S232633AbjGPUom (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:44:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231844AbjGPUWW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:22 -0400
+        with ESMTP id S232630AbjGPUol (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:44:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D061990
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA437D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:44:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6652B60E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748D8C433C8;
-        Sun, 16 Jul 2023 20:22:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DE2360EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:44:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F31C433C8;
+        Sun, 16 Jul 2023 20:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538940;
-        bh=Or0qWWw9I9R3T4enKIpxcMeDn1ngPxzrF0S+FtIYdAQ=;
+        s=korg; t=1689540279;
+        bh=U3nwGdPbT9I/ZVSItLdYNIIfVO3tJWnS+NU7PhdK4nc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HnywVahSoe9OPf+AeCEv9hpFZvLXcHLlxMiYdnv6T/uzzLeDH6Bh9CxrJjgieeFg+
-         BJ2tmxbm6Qc+d2bc3VODJAf6OB15PeZ92bNNwFL7lXxRJvAHaPM4FUFhQ4NxAviGn5
-         AQS/fXuILi2CLTOPuQMOtVLdHJHXbhZSrY38o+WM=
+        b=aI1PQlBrCPI1E0ScVgvrY+Wdsj+6726yr6UXqOVP15pxvhXQgFUcXeomLjZmLNVFs
+         wWS+A5+giQbAUqwFnllGb3FWGY6tU2/W54CZtYmU2HGp+b1YhLx4Jmnuo4iBAOHXic
+         LwZSCkvuZxQbzIqtZiEdE/zFXfjGzDCzvdqEzzLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
+        patches@lists.linux.dev, Marco Elver <elver@google.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 591/800] extcon: Fix kernel doc of property capability fields to avoid warnings
-Date:   Sun, 16 Jul 2023 21:47:24 +0200
-Message-ID: <20230716195002.827867961@linuxfoundation.org>
+Subject: [PATCH 6.1 306/591] kcsan: Dont expect 64 bits atomic builtins from 32 bits architectures
+Date:   Sun, 16 Jul 2023 21:47:25 +0200
+Message-ID: <20230716194931.808729125@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +56,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 73346b9965ebda2feb7fef8629e9b28baee820e3 ]
+[ Upstream commit 353e7300a1db928e427462f2745f9a2cd1625b3d ]
 
-Kernel documentation has to be synchronized with a code, otherwise
-the validator is not happy:
+Activating KCSAN on a 32 bits architecture leads to the following
+link-time failure:
 
-     Function parameter or member 'usb_bits' not described in 'extcon_cable'
-     Function parameter or member 'chg_bits' not described in 'extcon_cable'
-     Function parameter or member 'jack_bits' not described in 'extcon_cable'
-     Function parameter or member 'disp_bits' not described in 'extcon_cable'
+    LD      .tmp_vmlinux.kallsyms1
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_load':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_load_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_store':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_store_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_exchange':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_exchange_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_add':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_add_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_sub':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_sub_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_and':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_and_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_or':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_or_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_xor':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_xor_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_fetch_nand':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_fetch_nand_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_compare_exchange_strong':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_compare_exchange_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_compare_exchange_weak':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_compare_exchange_8'
+  powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic64_compare_exchange_val':
+  kernel/kcsan/core.c:1273: undefined reference to `__atomic_compare_exchange_8'
 
-Describe the fields added in the past.
+32 bits architectures don't have 64 bits atomic builtins. Only
+include DEFINE_TSAN_ATOMIC_OPS(64) on 64 bits architectures.
 
-Fixes: ceaa98f442cf ("extcon: Add the support for the capability of each property")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Fixes: 0f8ad5f2e934 ("kcsan: Add support for atomic builtins")
+Suggested-by: Marco Elver <elver@google.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Marco Elver <elver@google.com>
+Acked-by: Marco Elver <elver@google.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/d9c6afc28d0855240171a4e0ad9ffcdb9d07fceb.1683892665.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/extcon.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/kcsan/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
-index efaf234582d97..370b5b26d10b7 100644
---- a/drivers/extcon/extcon.c
-+++ b/drivers/extcon/extcon.c
-@@ -210,6 +210,10 @@ static const struct __extcon_info {
-  * @chg_propval:	the array of charger connector properties
-  * @jack_propval:	the array of jack connector properties
-  * @disp_propval:	the array of display connector properties
-+ * @usb_bits:		the bit array of the USB connector property capabilities
-+ * @chg_bits:		the bit array of the charger connector property capabilities
-+ * @jack_bits:		the bit array of the jack connector property capabilities
-+ * @disp_bits:		the bit array of the display connector property capabilities
-  */
- struct extcon_cable {
- 	struct extcon_dev *edev;
+diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
+index 5a60cc52adc0c..8a7baf4e332e3 100644
+--- a/kernel/kcsan/core.c
++++ b/kernel/kcsan/core.c
+@@ -1270,7 +1270,9 @@ static __always_inline void kcsan_atomic_builtin_memorder(int memorder)
+ DEFINE_TSAN_ATOMIC_OPS(8);
+ DEFINE_TSAN_ATOMIC_OPS(16);
+ DEFINE_TSAN_ATOMIC_OPS(32);
++#ifdef CONFIG_64BIT
+ DEFINE_TSAN_ATOMIC_OPS(64);
++#endif
+ 
+ void __tsan_atomic_thread_fence(int memorder);
+ void __tsan_atomic_thread_fence(int memorder)
 -- 
 2.39.2
 
