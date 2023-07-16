@@ -2,93 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72B83755545
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:39:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 040C0755315
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232433AbjGPUjP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:39:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58892 "EHLO
+        id S231608AbjGPUPS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:15:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232438AbjGPUjO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:39:14 -0400
+        with ESMTP id S231611AbjGPUPL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:15:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CB8CAB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:39:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC6EC1BE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:15:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C070C60E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:39:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C83C433C7;
-        Sun, 16 Jul 2023 20:39:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D15E60EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:15:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333D2C433C7;
+        Sun, 16 Jul 2023 20:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539953;
-        bh=56f1In5tbzygGHl5qDvchEX5W2hG6dnIKV1N39LOWoI=;
+        s=korg; t=1689538509;
+        bh=NamyjZLwDGs2YaSjbnqfaM1hm3x8cLrwCYMrFZaDtyw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QRtmE/kuxSrr0emrjpoap64jeUNEFDfKsOOzDwwLC4GUB92g/5hY98gOA0cPDWxPd
-         gHEaCI75aO18pRQYak1uZicUyzI+/fBeY0zIKed3HlZCxasLyBrMH6CwsrJzCOBM51
-         fYSLbqui+M3j0dMqQWBIg29vyQcJ42swGC0KF3yU=
+        b=bI3ss0l5tbY6MOw3rSvwYeR+LQkEUT7DYjgIXPCtMW0koZH1Gywfc2squ9USaaI7H
+         Q+gGx5SayE0SDIxOM0Lq7jm+q8BsI/ca0WV3DfduuuxWTQlGhkSf1wdBvBasIXy42T
+         RA3/XzdlPzTN6fHAD5MbC9sPirssjItdsAuA3piE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Ravi Bangoria <ravi.bangoria@amd.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 190/591] ARM: dts: gta04: Move model property out of pinctrl node
+Subject: [PATCH 6.4 476/800] perf tool x86: Fix perf_env memory leak
 Date:   Sun, 16 Jul 2023 21:45:29 +0200
-Message-ID: <20230716194928.791988106@linuxfoundation.org>
+Message-ID: <20230716195000.135889785@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 4ffec92e70ac5097b9f67ec154065305b16a3b46 ]
+[ Upstream commit 99d4850062a84564f36923764bb93935ef2ed108 ]
 
-The model property should be at the top level, let's move it out
-of the pinctrl node.
+Found by leak sanitizer:
+```
+==1632594==ERROR: LeakSanitizer: detected memory leaks
 
-Fixes: d2eaf949d2c3 ("ARM: dts: omap3-gta04a5one: define GTA04A5 variant with OneNAND")
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Cc: H. Nikolaus Schaller <hns@goldelico.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Direct leak of 21 byte(s) in 1 object(s) allocated from:
+    #0 0x7f2953a7077b in __interceptor_strdup ../../../../src/libsanitizer/asan/asan_interceptors.cpp:439
+    #1 0x556701d6fbbf in perf_env__read_cpuid util/env.c:369
+    #2 0x556701d70589 in perf_env__cpuid util/env.c:465
+    #3 0x55670204bba2 in x86__is_amd_cpu arch/x86/util/env.c:14
+    #4 0x5567020487a2 in arch__post_evsel_config arch/x86/util/evsel.c:83
+    #5 0x556701d8f78b in evsel__config util/evsel.c:1366
+    #6 0x556701ef5872 in evlist__config util/record.c:108
+    #7 0x556701cd6bcd in test__PERF_RECORD tests/perf-record.c:112
+    #8 0x556701cacd07 in run_test tests/builtin-test.c:236
+    #9 0x556701cacfac in test_and_print tests/builtin-test.c:265
+    #10 0x556701cadddb in __cmd_test tests/builtin-test.c:402
+    #11 0x556701caf2aa in cmd_test tests/builtin-test.c:559
+    #12 0x556701d3b557 in run_builtin tools/perf/perf.c:323
+    #13 0x556701d3bac8 in handle_internal_command tools/perf/perf.c:377
+    #14 0x556701d3be90 in run_argv tools/perf/perf.c:421
+    #15 0x556701d3c3f8 in main tools/perf/perf.c:537
+    #16 0x7f2952a46189 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+SUMMARY: AddressSanitizer: 21 byte(s) leaked in 1 allocation(s).
+```
+
+Fixes: f7b58cbdb3ff36eb ("perf mem/c2c: Add load store event mappings for AMD")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20230613235416.1650755-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/omap3-gta04a5one.dts | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/perf/arch/x86/util/env.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/omap3-gta04a5one.dts b/arch/arm/boot/dts/omap3-gta04a5one.dts
-index 9db9fe67cd63b..95df45cc70c09 100644
---- a/arch/arm/boot/dts/omap3-gta04a5one.dts
-+++ b/arch/arm/boot/dts/omap3-gta04a5one.dts
-@@ -5,9 +5,11 @@
+diff --git a/tools/perf/arch/x86/util/env.c b/tools/perf/arch/x86/util/env.c
+index 33b87f8ac1cc1..3e537ffb1353a 100644
+--- a/tools/perf/arch/x86/util/env.c
++++ b/tools/perf/arch/x86/util/env.c
+@@ -13,7 +13,7 @@ bool x86__is_amd_cpu(void)
  
- #include "omap3-gta04a5.dts"
- 
--&omap3_pmx_core {
-+/ {
- 	model = "Goldelico GTA04A5/Letux 2804 with OneNAND";
-+};
- 
-+&omap3_pmx_core {
- 	gpmc_pins: pinmux_gpmc_pins {
- 		pinctrl-single,pins = <
- 
+ 	perf_env__cpuid(&env);
+ 	is_amd = env.cpuid && strstarts(env.cpuid, "AuthenticAMD") ? 1 : -1;
+-
++	perf_env__exit(&env);
+ ret:
+ 	return is_amd >= 1 ? true : false;
+ }
 -- 
 2.39.2
 
