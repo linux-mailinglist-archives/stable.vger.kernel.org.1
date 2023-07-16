@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C085B75558E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 565C875533A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232561AbjGPUmG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:42:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32938 "EHLO
+        id S231300AbjGPUQx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:16:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232558AbjGPUmG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:06 -0400
+        with ESMTP id S231663AbjGPUQv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C9949F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1521B7
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B4BB060EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B5DC433C8;
-        Sun, 16 Jul 2023 20:42:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23BBA60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32330C433C8;
+        Sun, 16 Jul 2023 20:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540124;
-        bh=XyocUilrO7CofVsKrv3mYHz9JqTTG4tBbiYS3kNwYqc=;
+        s=korg; t=1689538604;
+        bh=QqtTgza+i5ASLYE5row+MTSsUOzvKN05F5d1KtMBnQw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gsQqcgVhzHgjoY5DJi/uvJ8RW9ahMqN5jLlwhqkbplMhMlQ3YX3QaaeLdIHEE2IHl
-         Pz1MnFa3JfsTiWAC3vuLtoye0pGsxIhCP8p3EDJ70MQs7R1sxKSTHaaNf1ivVl4gHS
-         4bKGrc0YprXerJ4nBa/paVkkfn81zvDgVfbJZHAU=
+        b=rkBO3kiYB4D9HfERoC2Z9TN7z3wByI/Gl3I1NhigObETNR0/Nj10So+D2V/ykPNCt
+         KbbuwEciLoEhyslQbymOohvk8Szf8ZBLLcLIUmE9A2axz8BFEzAIX1Uw53FHtT3T91
+         F7LLEaij9WL3DgL47Ik2ib95rvHQ3W+mhOo0XrvA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Hareshx Sankar Raj <hareshx.sankar.raj@intel.com>,
+        Bolemx Sivanagaleela <bolemx.sivanagaleela@intel.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 224/591] arm64: dts: renesas: ulcb-kf: Remove flow control for SCIF1
+Subject: [PATCH 6.4 510/800] crypto: qat - unmap buffer before free for DH
 Date:   Sun, 16 Jul 2023 21:46:03 +0200
-Message-ID: <20230716194929.668039555@linuxfoundation.org>
+Message-ID: <20230716195000.937846270@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,44 +59,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Hareshx Sankar Raj <hareshx.sankar.raj@intel.com>
 
-[ Upstream commit 1a2c4e5635177939a088d22fa35c6a7032725663 ]
+[ Upstream commit eb7713f5ca97697b92f225127440d1525119b8de ]
 
-The schematics are misleading, the flow control is for HSCIF1. We need
-SCIF1 for GNSS/GPS which does not use flow control.
+The callback function for DH frees the memory allocated for the
+destination buffer before unmapping it.
+This sequence is wrong.
 
-Fixes: c6c816e22bc8 ("arm64: dts: ulcb-kf: enable SCIF1")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230525084823.4195-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Change the cleanup sequence to unmap the buffer before freeing it.
+
+Fixes: 029aa4624a7f ("crypto: qat - remove dma_free_coherent() for DH")
+Signed-off-by: Hareshx Sankar Raj <hareshx.sankar.raj@intel.com>
+Co-developed-by: Bolemx Sivanagaleela <bolemx.sivanagaleela@intel.com>
+Signed-off-by: Bolemx Sivanagaleela <bolemx.sivanagaleela@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/ulcb-kf.dtsi | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/crypto/intel/qat/qat_common/qat_asym_algs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/ulcb-kf.dtsi b/arch/arm64/boot/dts/renesas/ulcb-kf.dtsi
-index 408871c2859d1..588b14b66b6fb 100644
---- a/arch/arm64/boot/dts/renesas/ulcb-kf.dtsi
-+++ b/arch/arm64/boot/dts/renesas/ulcb-kf.dtsi
-@@ -393,7 +393,7 @@ hscif0_pins: hscif0 {
- 	};
+diff --git a/drivers/crypto/intel/qat/qat_common/qat_asym_algs.c b/drivers/crypto/intel/qat/qat_common/qat_asym_algs.c
+index 935a7e012946e..8806242469a06 100644
+--- a/drivers/crypto/intel/qat/qat_common/qat_asym_algs.c
++++ b/drivers/crypto/intel/qat/qat_common/qat_asym_algs.c
+@@ -170,15 +170,14 @@ static void qat_dh_cb(struct icp_qat_fw_pke_resp *resp)
+ 	}
  
- 	scif1_pins: scif1 {
--		groups = "scif1_data_b", "scif1_ctrl";
-+		groups = "scif1_data_b";
- 		function = "scif1";
- 	};
+ 	areq->dst_len = req->ctx.dh->p_size;
++	dma_unmap_single(dev, req->out.dh.r, req->ctx.dh->p_size,
++			 DMA_FROM_DEVICE);
+ 	if (req->dst_align) {
+ 		scatterwalk_map_and_copy(req->dst_align, areq->dst, 0,
+ 					 areq->dst_len, 1);
+ 		kfree_sensitive(req->dst_align);
+ 	}
  
-@@ -447,7 +447,6 @@ rsnd_for_pcm3168a_capture: endpoint {
- &scif1 {
- 	pinctrl-0 = <&scif1_pins>;
- 	pinctrl-names = "default";
--	uart-has-rtscts;
- 
- 	status = "okay";
- };
+-	dma_unmap_single(dev, req->out.dh.r, req->ctx.dh->p_size,
+-			 DMA_FROM_DEVICE);
+-
+ 	dma_unmap_single(dev, req->phy_in, sizeof(struct qat_dh_input_params),
+ 			 DMA_TO_DEVICE);
+ 	dma_unmap_single(dev, req->phy_out,
 -- 
 2.39.2
 
