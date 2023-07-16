@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 031B7755502
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 208167552D2
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:12:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232343AbjGPUg1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:36:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56624 "EHLO
+        id S231489AbjGPUMV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:12:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232354AbjGPUg0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:36:26 -0400
+        with ESMTP id S231486AbjGPUMU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:12:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A0E1E46
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:36:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D9F90
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:12:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FACF60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:36:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3E2C433C7;
-        Sun, 16 Jul 2023 20:36:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45DAA60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:12:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A48C433C9;
+        Sun, 16 Jul 2023 20:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539781;
-        bh=2s59Cv9H42bS0/+mvf62ZWXETgE+P6oJNZaniiLEoSk=;
+        s=korg; t=1689538338;
+        bh=+m9bvWEQPAGLwKZF/Wcbhzo/GlF94TIOApA2HLekngU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zWskrxciGL79GSz/Z0B4GD2u7Fk4LN14MZCx+GMJSMvWqLNp/6WHLDZxhAgOOYsXp
-         sMp55Bqlnht+JNk2BIDdLLuFtZRHlBVdZv7pbTG0+YAhbreuwF+EYCKIZZgTj5vJ+P
-         897jUWmDxXylNP93D2CXs1xs3xsBIISminZVyGaM=
+        b=Dxhq5wys64oYvynFZpL2Kn/IJU5veaPlhtj7KJP/N4vep4gf8Pt9j1yOBhxMUW/ic
+         qk6eN4rBa8SUtiGQB4bZy5SSnLdWctOrhxypOfLgugsa8hL/ziOhZB1/gFLgAwB7Q2
+         B6c7NBRFj2OoV4dH1qlGV/tNff/HlViQ+or4LKHE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jarod Wilson <jarod@redhat.com>, Moshe Tal <moshet@nvidia.com>,
-        Jussi Maki <joamaki@gmail.com>,
-        Jay Vosburgh <j.vosburgh@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/591] bonding: do not assume skb mac_header is set
+Subject: [PATCH 6.4 415/800] clk: mediatek: clk-mt8173-apmixedsys: Fix iomap not released issue
 Date:   Sun, 16 Jul 2023 21:44:28 +0200
-Message-ID: <20230716194927.214632128@linuxfoundation.org>
+Message-ID: <20230716194958.726971259@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,88 +58,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 6a940abdef3162e5723f1495b8a49859d1708f79 ]
+[ Upstream commit b270ae61730e0ebccee39a21dd3311d6896a38ae ]
 
-Drivers must not assume in their ndo_start_xmit() that
-skbs have their mac_header set. skb->data is all what is needed.
+In case of error after of_ioremap() the resource must be released:
+call iounmap() where appropriate to fix that.
 
-bonding seems to be one of the last offender as caught by syzbot:
-
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 skb_mac_offset include/linux/skbuff.h:2913 [inline]
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_xmit_hash drivers/net/bonding/bond_main.c:4170 [inline]
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5149 [inline]
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_3ad_xor_xmit drivers/net/bonding/bond_main.c:5186 [inline]
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 __bond_start_xmit drivers/net/bonding/bond_main.c:5442 [inline]
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_start_xmit+0x14ab/0x19d0 drivers/net/bonding/bond_main.c:5470
-Modules linked in:
-CPU: 1 PID: 12155 Comm: syz-executor.3 Not tainted 6.1.30-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
-RIP: 0010:skb_mac_header include/linux/skbuff.h:2907 [inline]
-RIP: 0010:skb_mac_offset include/linux/skbuff.h:2913 [inline]
-RIP: 0010:bond_xmit_hash drivers/net/bonding/bond_main.c:4170 [inline]
-RIP: 0010:bond_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5149 [inline]
-RIP: 0010:bond_3ad_xor_xmit drivers/net/bonding/bond_main.c:5186 [inline]
-RIP: 0010:__bond_start_xmit drivers/net/bonding/bond_main.c:5442 [inline]
-RIP: 0010:bond_start_xmit+0x14ab/0x19d0 drivers/net/bonding/bond_main.c:5470
-Code: 8b 7c 24 30 e8 76 dd 1a 01 48 85 c0 74 0d 48 89 c3 e8 29 67 2e fe e9 15 ef ff ff e8 1f 67 2e fe e9 10 ef ff ff e8 15 67 2e fe <0f> 0b e9 45 f8 ff ff e8 09 67 2e fe e9 dc fa ff ff e8 ff 66 2e fe
-RSP: 0018:ffffc90002fff6e0 EFLAGS: 00010283
-RAX: ffffffff835874db RBX: 000000000000ffff RCX: 0000000000040000
-RDX: ffffc90004dcf000 RSI: 00000000000000b5 RDI: 00000000000000b6
-RBP: ffffc90002fff8b8 R08: ffffffff83586d16 R09: ffffffff83586584
-R10: 0000000000000007 R11: ffff8881599fc780 R12: ffff88811b6a7b7e
-R13: 1ffff110236d4f6f R14: ffff88811b6a7ac0 R15: 1ffff110236d4f76
-FS: 00007f2e9eb47700(0000) GS:ffff8881f6b00000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b2e421000 CR3: 000000010e6d4000 CR4: 00000000003526e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-[<ffffffff8471a49f>] netdev_start_xmit include/linux/netdevice.h:4925 [inline]
-[<ffffffff8471a49f>] __dev_direct_xmit+0x4ef/0x850 net/core/dev.c:4380
-[<ffffffff851d845b>] dev_direct_xmit include/linux/netdevice.h:3043 [inline]
-[<ffffffff851d845b>] packet_direct_xmit+0x18b/0x300 net/packet/af_packet.c:284
-[<ffffffff851c7472>] packet_snd net/packet/af_packet.c:3112 [inline]
-[<ffffffff851c7472>] packet_sendmsg+0x4a22/0x64d0 net/packet/af_packet.c:3143
-[<ffffffff8467a4b2>] sock_sendmsg_nosec net/socket.c:716 [inline]
-[<ffffffff8467a4b2>] sock_sendmsg net/socket.c:736 [inline]
-[<ffffffff8467a4b2>] __sys_sendto+0x472/0x5f0 net/socket.c:2139
-[<ffffffff8467a715>] __do_sys_sendto net/socket.c:2151 [inline]
-[<ffffffff8467a715>] __se_sys_sendto net/socket.c:2147 [inline]
-[<ffffffff8467a715>] __x64_sys_sendto+0xe5/0x100 net/socket.c:2147
-[<ffffffff8553071f>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-[<ffffffff8553071f>] do_syscall_64+0x2f/0x50 arch/x86/entry/common.c:80
-[<ffffffff85600087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Fixes: 7b8fc0103bb5 ("bonding: add a vlan+srcmac tx hashing option")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jarod Wilson <jarod@redhat.com>
-Cc: Moshe Tal <moshet@nvidia.com>
-Cc: Jussi Maki <joamaki@gmail.com>
-Cc: Jay Vosburgh <j.vosburgh@gmail.com>
-Cc: Andy Gospodarek <andy@greyhouse.net>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230622152304.2137482-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 41138fbf876c ("clk: mediatek: mt8173: Migrate to platform driver and common probe")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230615122051.546985-4-angelogioacchino.delregno@collabora.com
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/mediatek/clk-mt8173-apmixedsys.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 9ed80f7106515..91d84df91123b 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -4168,7 +4168,7 @@ u32 bond_xmit_hash(struct bonding *bond, struct sk_buff *skb)
- 		return skb->hash;
+diff --git a/drivers/clk/mediatek/clk-mt8173-apmixedsys.c b/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
+index c7adcfcc12e27..307c24aa1fb41 100644
+--- a/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
++++ b/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
+@@ -151,8 +151,10 @@ static int clk_mt8173_apmixed_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
  
- 	return __bond_xmit_hash(bond, skb, skb->data, skb->protocol,
--				skb_mac_offset(skb), skb_network_offset(skb),
-+				0, skb_network_offset(skb),
- 				skb_headlen(skb));
+ 	clk_data = mtk_alloc_clk_data(CLK_APMIXED_NR_CLK);
+-	if (IS_ERR_OR_NULL(clk_data))
++	if (IS_ERR_OR_NULL(clk_data)) {
++		iounmap(base);
+ 		return -ENOMEM;
++	}
+ 
+ 	fhctl_parse_dt(fhctl_node, pllfhs, ARRAY_SIZE(pllfhs));
+ 	r = mtk_clk_register_pllfhs(node, plls, ARRAY_SIZE(plls),
+@@ -186,6 +188,7 @@ static int clk_mt8173_apmixed_probe(struct platform_device *pdev)
+ 				  ARRAY_SIZE(pllfhs), clk_data);
+ free_clk_data:
+ 	mtk_free_clk_data(clk_data);
++	iounmap(base);
+ 	return r;
  }
  
 -- 
