@@ -2,146 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83A387554B9
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFC427552C0
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232284AbjGPUdd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:33:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54406 "EHLO
+        id S231464AbjGPULb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:11:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232282AbjGPUdc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D163BA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:32 -0700 (PDT)
+        with ESMTP id S231454AbjGPULa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 228D99B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7341E60DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DC7C433C7;
-        Sun, 16 Jul 2023 20:33:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ACD6260EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECC0C433C8;
+        Sun, 16 Jul 2023 20:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539610;
-        bh=BIiR+O4iH9YKbcSq1ysbM+TURaD5foYBudwOThLEXmc=;
+        s=korg; t=1689538288;
+        bh=FQoESSiI7TjZW74vinrEmlJIfPEd5LEaYVbCSycoAH8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rXkX11Dqp95iJNjzWYZWjpPraoJlI+4xT6L6EE3D6MzcMDGybOU7yjmyMglJeA35P
-         gV++LWByX5NsLCm3nE0dEoQWv8K7nH7+3L1YkN2ZiAN4Y0Wr5msxSK3mx7NU5XFBln
-         2f/pubsl8g0NVGAbmODoSuT0Mn+R7M4+fWkzG8VQ=
+        b=2bX6uqnDaekDCoB59nuSr3XJ3gZNd1czZR/ln1X3EeXDkFm3PXw6Sx30vyunaGnTJ
+         WT4pMjMq7btOtdbkTlqwLlW3W4dhLftAFEm9d6NPyPiNuuhERfk6PBsrlfXDTeEAFn
+         4nVBjqMC/s7cTT0qH2wJJfPuVb7hado5o0fFaQFc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Gregg Wonderly <greggwonderly@seqtechllc.com>,
-        Peter Seiderer <ps.report@gmx.net>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Keerthy <j-keerthy@ti.com>,
+        Udit Kumar <u-kumar1@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/591] wifi: ath9k: fix AR9003 mac hardware hang check register offset calculation
+Subject: [PATCH 6.4 354/800] arm64: dts: ti: k3-j7200: Fix physical address of pin
 Date:   Sun, 16 Jul 2023 21:43:27 +0200
-Message-ID: <20230716194925.641057934@linuxfoundation.org>
+Message-ID: <20230716194957.301743832@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Seiderer <ps.report@gmx.net>
+From: Keerthy <j-keerthy@ti.com>
 
-[ Upstream commit 3e56c80931c7615250fe4bf83f93b57881969266 ]
+[ Upstream commit 3d011933000ed9054c649952d83162d24f020a93 ]
 
-Fix ath9k_hw_verify_hang()/ar9003_hw_detect_mac_hang() register offset
-calculation (do not overflow the shift for the second register/queues
-above five, use the register layout described in the comments above
-ath9k_hw_verify_hang() instead).
+wkup_pmx splits into multiple regions. Like
 
-Fixes: 222e04830ff0 ("ath9k: Fix MAC HW hang check for AR9003")
+    wkup_pmx0 -> 13 pins (WKUP_PADCONFIG 0 - 12)
+    wkup_pmx1 -> 2 pins (WKUP_PADCONFIG 14 - 15)
+    wkup_pmx2 -> 59 pins (WKUP_PADCONFIG 26 - 84)
+    wkup_pmx3 -> 8 pins (WKUP_PADCONFIG 93 - 100)
 
-Reported-by: Gregg Wonderly <greggwonderly@seqtechllc.com>
-Link: https://lore.kernel.org/linux-wireless/E3A9C354-0CB7-420C-ADEF-F0177FB722F4@seqtechllc.com/
-Signed-off-by: Peter Seiderer <ps.report@gmx.net>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230422212423.26065-1-ps.report@gmx.net
+With this split, pin offset needs to be adjusted to
+match with new pmx for all pins above wkup_pmx0.
+
+Example a pin under wkup_pmx1 should start from 0 instead of
+old offset(0x38 WKUP_PADCONFIG 14 offset)
+
+J7200 Datasheet (Table 6-106, Section 6.4 Pin Multiplexing) :
+https://www.ti.com/lit/ds/symlink/dra821u.pdf
+
+Fixes: 9ae21ac445e9 ("arm64: dts: ti: k3-j7200: Fix wakeup pinmux range")
+
+Signed-off-by: Keerthy <j-keerthy@ti.com>
+Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20230419040007.3022780-2-u-kumar1@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/ar9003_hw.c | 27 ++++++++++++++--------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ .../dts/ti/k3-j7200-common-proc-board.dts     | 28 +++++++++----------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_hw.c b/drivers/net/wireless/ath/ath9k/ar9003_hw.c
-index 42f00a2a8c800..cf5648188459c 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_hw.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_hw.c
-@@ -1099,17 +1099,22 @@ static bool ath9k_hw_verify_hang(struct ath_hw *ah, unsigned int queue)
- {
- 	u32 dma_dbg_chain, dma_dbg_complete;
- 	u8 dcu_chain_state, dcu_complete_state;
-+	unsigned int dbg_reg, reg_offset;
- 	int i;
+diff --git a/arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts b/arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts
+index 0d39d6b8cc0ca..63633e4f6c59f 100644
+--- a/arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts
++++ b/arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts
+@@ -83,25 +83,25 @@ vdd_sd_dv: gpio-regulator-TLV71033 {
+ &wkup_pmx2 {
+ 	mcu_cpsw_pins_default: mcu-cpsw-pins-default {
+ 		pinctrl-single,pins = <
+-			J721E_WKUP_IOPAD(0x0068, PIN_OUTPUT, 0) /* MCU_RGMII1_TX_CTL */
+-			J721E_WKUP_IOPAD(0x006c, PIN_INPUT, 0) /* MCU_RGMII1_RX_CTL */
+-			J721E_WKUP_IOPAD(0x0070, PIN_OUTPUT, 0) /* MCU_RGMII1_TD3 */
+-			J721E_WKUP_IOPAD(0x0074, PIN_OUTPUT, 0) /* MCU_RGMII1_TD2 */
+-			J721E_WKUP_IOPAD(0x0078, PIN_OUTPUT, 0) /* MCU_RGMII1_TD1 */
+-			J721E_WKUP_IOPAD(0x007c, PIN_OUTPUT, 0) /* MCU_RGMII1_TD0 */
+-			J721E_WKUP_IOPAD(0x0088, PIN_INPUT, 0) /* MCU_RGMII1_RD3 */
+-			J721E_WKUP_IOPAD(0x008c, PIN_INPUT, 0) /* MCU_RGMII1_RD2 */
+-			J721E_WKUP_IOPAD(0x0090, PIN_INPUT, 0) /* MCU_RGMII1_RD1 */
+-			J721E_WKUP_IOPAD(0x0094, PIN_INPUT, 0) /* MCU_RGMII1_RD0 */
+-			J721E_WKUP_IOPAD(0x0080, PIN_OUTPUT, 0) /* MCU_RGMII1_TXC */
+-			J721E_WKUP_IOPAD(0x0084, PIN_INPUT, 0) /* MCU_RGMII1_RXC */
++			J721E_WKUP_IOPAD(0x0000, PIN_OUTPUT, 0) /* MCU_RGMII1_TX_CTL */
++			J721E_WKUP_IOPAD(0x0004, PIN_INPUT, 0) /* MCU_RGMII1_RX_CTL */
++			J721E_WKUP_IOPAD(0x0008, PIN_OUTPUT, 0) /* MCU_RGMII1_TD3 */
++			J721E_WKUP_IOPAD(0x000c, PIN_OUTPUT, 0) /* MCU_RGMII1_TD2 */
++			J721E_WKUP_IOPAD(0x0010, PIN_OUTPUT, 0) /* MCU_RGMII1_TD1 */
++			J721E_WKUP_IOPAD(0x0014, PIN_OUTPUT, 0) /* MCU_RGMII1_TD0 */
++			J721E_WKUP_IOPAD(0x0020, PIN_INPUT, 0) /* MCU_RGMII1_RD3 */
++			J721E_WKUP_IOPAD(0x0024, PIN_INPUT, 0) /* MCU_RGMII1_RD2 */
++			J721E_WKUP_IOPAD(0x0028, PIN_INPUT, 0) /* MCU_RGMII1_RD1 */
++			J721E_WKUP_IOPAD(0x002c, PIN_INPUT, 0) /* MCU_RGMII1_RD0 */
++			J721E_WKUP_IOPAD(0x0018, PIN_OUTPUT, 0) /* MCU_RGMII1_TXC */
++			J721E_WKUP_IOPAD(0x001c, PIN_INPUT, 0) /* MCU_RGMII1_RXC */
+ 		>;
+ 	};
  
--	for (i = 0; i < NUM_STATUS_READS; i++) {
--		if (queue < 6)
--			dma_dbg_chain = REG_READ(ah, AR_DMADBG_4);
--		else
--			dma_dbg_chain = REG_READ(ah, AR_DMADBG_5);
-+	if (queue < 6) {
-+		dbg_reg = AR_DMADBG_4;
-+		reg_offset = queue * 5;
-+	} else {
-+		dbg_reg = AR_DMADBG_5;
-+		reg_offset = (queue - 6) * 5;
-+	}
- 
-+	for (i = 0; i < NUM_STATUS_READS; i++) {
-+		dma_dbg_chain = REG_READ(ah, dbg_reg);
- 		dma_dbg_complete = REG_READ(ah, AR_DMADBG_6);
- 
--		dcu_chain_state = (dma_dbg_chain >> (5 * queue)) & 0x1f;
-+		dcu_chain_state = (dma_dbg_chain >> reg_offset) & 0x1f;
- 		dcu_complete_state = dma_dbg_complete & 0x3;
- 
- 		if ((dcu_chain_state != 0x6) || (dcu_complete_state != 0x1))
-@@ -1128,6 +1133,7 @@ static bool ar9003_hw_detect_mac_hang(struct ath_hw *ah)
- 	u8 dcu_chain_state, dcu_complete_state;
- 	bool dcu_wait_frdone = false;
- 	unsigned long chk_dcu = 0;
-+	unsigned int reg_offset;
- 	unsigned int i = 0;
- 
- 	dma_dbg_4 = REG_READ(ah, AR_DMADBG_4);
-@@ -1139,12 +1145,15 @@ static bool ar9003_hw_detect_mac_hang(struct ath_hw *ah)
- 		goto exit;
- 
- 	for (i = 0; i < ATH9K_NUM_TX_QUEUES; i++) {
--		if (i < 6)
-+		if (i < 6) {
- 			chk_dbg = dma_dbg_4;
--		else
-+			reg_offset = i * 5;
-+		} else {
- 			chk_dbg = dma_dbg_5;
-+			reg_offset = (i - 6) * 5;
-+		}
- 
--		dcu_chain_state = (chk_dbg >> (5 * i)) & 0x1f;
-+		dcu_chain_state = (chk_dbg >> reg_offset) & 0x1f;
- 		if (dcu_chain_state == 0x6) {
- 			dcu_wait_frdone = true;
- 			chk_dcu |= BIT(i);
+ 	mcu_mdio_pins_default: mcu-mdio1-pins-default {
+ 		pinctrl-single,pins = <
+-			J721E_WKUP_IOPAD(0x009c, PIN_OUTPUT, 0) /* (L1) MCU_MDIO0_MDC */
+-			J721E_WKUP_IOPAD(0x0098, PIN_INPUT, 0) /* (L4) MCU_MDIO0_MDIO */
++			J721E_WKUP_IOPAD(0x0034, PIN_OUTPUT, 0) /* (L1) MCU_MDIO0_MDC */
++			J721E_WKUP_IOPAD(0x0030, PIN_INPUT, 0) /* (L4) MCU_MDIO0_MDIO */
+ 		>;
+ 	};
+ };
 -- 
 2.39.2
 
