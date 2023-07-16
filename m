@@ -2,115 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DB987555D0
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB017553B6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:22:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232634AbjGPUoy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34358 "EHLO
+        id S231842AbjGPUWN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:22:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232635AbjGPUoy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:44:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ADFFE50
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:44:52 -0700 (PDT)
+        with ESMTP id S231839AbjGPUWM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A0390
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C72F360DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6863C433C8;
-        Sun, 16 Jul 2023 20:44:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E90F60EBF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3AAC433CB;
+        Sun, 16 Jul 2023 20:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540291;
-        bh=XtbKHEAoAVXkwuBWG+umUjmsPP5dvgobbhM4IXT/Ctg=;
+        s=korg; t=1689538929;
+        bh=rdIWD7r6DZi3hViVn9p/ycnfYlJvYh0/PwLuC+iNWEU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P1Srw5GhR0Yhwt+SqC8XC2B2UvPCZGdlIZyTcazCh4E0utld0/Q50xPWLVGcUq7Y6
-         mvwfVBRoNH9g3zndW7MRrk/m+CsEW3Orm+69erJb2ETTsx7x2bPpbJozM0RkEzqWhw
-         zboommMQUi/CPZ3rJ5HRxcgmSV2w+YbYzrzxt4F4=
+        b=IOv4Gj+IJaTzQfwDLtvxbQw5jRG6pG/0Bax3EFbfUqJsxL9LB4UVFBoYmhllJoAkR
+         UFTMBLhTolmOjUDp2fQyrg+7Wa6XF6bTwoQFfHucqvjLTJppaipR2pTO2FAa0swcLq
+         KR/kwdmsQl/l64brLjd4y1kQKG3+1o7pQDG9r4ag=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Mark Pearson <mpearson-lenovo@squebb.ca>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
+        Douglas Anderson <dianders@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 310/591] platform/x86: thinkpad_acpi: Fix lkp-tests warnings for platform profiles
-Date:   Sun, 16 Jul 2023 21:47:29 +0200
-Message-ID: <20230716194931.911852237@linuxfoundation.org>
+Subject: [PATCH 6.4 597/800] serial: core: lock port for start_rx() in uart_resume_port()
+Date:   Sun, 16 Jul 2023 21:47:30 +0200
+Message-ID: <20230716195002.969685517@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: John Ogness <john.ogness@linutronix.de>
 
-[ Upstream commit f999e23ce66c1555d7b653fba171a88ecee53704 ]
+[ Upstream commit 51e45fba14bf08b66bca764a083c7f2e2ff62f01 ]
 
-Fix issues identified in dytc_profile_refresh identified by lkp-tests.
-drivers/platform/x86/thinkpad_acpi.c:10538
-	dytc_profile_refresh() error: uninitialized symbol 'funcmode'.
-drivers/platform/x86/thinkpad_acpi.c:10531
-	dytc_profile_refresh() error: uninitialized symbol 'output'.
-drivers/platform/x86/thinkpad_acpi.c:10537
-	dytc_profile_refresh() error: uninitialized symbol 'output'.
+The only user of the start_rx() callback (qcom_geni) directly calls
+its own stop_rx() callback. Since stop_rx() requires that the
+port->lock is taken and interrupts are disabled, the start_rx()
+callback has the same requirement.
 
-These issues should not lead to real problems in the field as the refresh
-function should only be called if MMC or PSC mode enabled. But good to fix.
-
-Thanks to Dan Carpenter and the lkp-tests project for flagging these.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202306011202.1hbgLRD4-lkp@intel.com/
-Fixes: 1bc5d819f0b9 ("platform/x86: thinkpad_acpi: Fix profile modes on Intel platforms")
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20230606151804.8819-1-mpearson-lenovo@squebb.ca
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: cfab87c2c271 ("serial: core: Introduce callback for start_rx and do stop_rx in suspend only if this callback implementation is present.")
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20230525093159.223817-5-john.ogness@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/tty/serial/serial_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 5b2c8dd2861b7..e7ece2738de94 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -10528,8 +10528,8 @@ static int dytc_profile_set(struct platform_profile_handler *pprof,
- static void dytc_profile_refresh(void)
- {
- 	enum platform_profile_option profile;
--	int output, err = 0;
--	int perfmode, funcmode;
-+	int output = 0, err = 0;
-+	int perfmode, funcmode = 0;
- 
- 	mutex_lock(&dytc_mutex);
- 	if (dytc_capabilities & BIT(DYTC_FC_MMC)) {
-@@ -10542,6 +10542,8 @@ static void dytc_profile_refresh(void)
- 		err = dytc_command(DYTC_CMD_GET, &output);
- 		/* Check if we are PSC mode, or have AMT enabled */
- 		funcmode = (output >> DYTC_GET_FUNCTION_BIT) & 0xF;
-+	} else { /* Unknown profile mode */
-+		err = -ENODEV;
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index a664778492c46..ea4a70055ad9f 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -2430,8 +2430,11 @@ int uart_resume_port(struct uart_driver *drv, struct uart_port *uport)
+ 		if (console_suspend_enabled)
+ 			uart_change_pm(state, UART_PM_STATE_ON);
+ 		uport->ops->set_termios(uport, &termios, NULL);
+-		if (!console_suspend_enabled && uport->ops->start_rx)
++		if (!console_suspend_enabled && uport->ops->start_rx) {
++			spin_lock_irq(&uport->lock);
+ 			uport->ops->start_rx(uport);
++			spin_unlock_irq(&uport->lock);
++		}
+ 		if (console_suspend_enabled)
+ 			console_start(uport->cons);
  	}
- 	mutex_unlock(&dytc_mutex);
- 	if (err)
 -- 
 2.39.2
 
