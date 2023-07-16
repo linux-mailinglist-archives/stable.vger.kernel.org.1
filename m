@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EDF77553B4
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9827553DF
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231838AbjGPUWE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46030 "EHLO
+        id S231897AbjGPUXz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231827AbjGPUWD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A899BC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:02 -0700 (PDT)
+        with ESMTP id S231895AbjGPUXy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:23:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E826E1A5
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9572660EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D92FC433C8;
-        Sun, 16 Jul 2023 20:22:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 798B760EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85113C433C8;
+        Sun, 16 Jul 2023 20:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538921;
-        bh=h7qiG4x3uUb4ByGbXkBhVkj4IPtszaIsoWUFFoEd1Cw=;
+        s=korg; t=1689539032;
+        bh=db8/g5L7JsHUPENpLQha8mxIbhmiKm43MFGVbFYOT1c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IZf/gmOBj18Udjo0LnMAo+gLv/mHOM7UxFAyFTmuSxBW/Sv5/VpYJSV+irVYmzbFj
-         8A5lyPnraBRAk/mUpvGglXBSfEBfxP9qu/ewta1by6fo2zE+d4g+ZOdO5yzPh/kfHS
-         7jQbkOHVubj5yCU7yNVB7Fx6evYYCTGcmpNL+seo=
+        b=Y9GmZ8H8X2VKfL8atxuqN8QFDAiBzSeGRL8rpCOhuVBRbxsJALL1+GUbgYR2baq6D
+         w3d9z2xsm7+MSRySuJhppziAP8u1B4v48VBETKKrl4dL41UNpp58Nid4R3/OtuiHPU
+         5Td99GatpyeFLgkxv1MBn1O0Q5dv/XMQSPMv0bYI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, William White <chwhite@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Daniel Bristot de Oliveira <bristot@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 622/800] rtla/hwnoise: Reduce runtime to 75%
-Date:   Sun, 16 Jul 2023 21:47:55 +0200
-Message-ID: <20230716195003.560952083@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 623/800] mfd: wcd934x: Fix an error handling path in wcd934x_slim_probe()
+Date:   Sun, 16 Jul 2023 21:47:56 +0200
+Message-ID: <20230716195003.584031450@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -48,60 +45,62 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 7bc4d3089a50050d4df0af63423a5d907c3bdb1a ]
+[ Upstream commit f190b4891a3f9fac123a7afd378d4143a2723313 ]
 
-osnoise runs 100% of time by default. It makes sense because osnoise
-is preemptive. hwnoise checks preemption once a second, so it
-reduces system progress.
+If devm_gpiod_get_optional() fails, some resources need to be released, as
+already done in the .remove() function.
 
-Reduce runtime to 75% to avoid problems by default. I added a Fixes
-as it might avoid problems for first time users as it lands on distros.
+While at it, remove the unneeded error code from a dev_err_probe() call.
+It is already added in a human readable way by dev_err_probe() itself.
 
-Link: https://lkml.kernel.org/r/af0b7113ffc00031b9af4bb40ef5889a27dadf8c.1686066600.git.bristot@kernel.org
-
-Cc: William White <chwhite@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Fixes: 1f428356c38d ("rtla: Add hwnoise tool")
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 6a0ee2a61a31 ("mfd: wcd934x: Replace legacy gpio interface for gpiod")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/02d8447f6d1df52cc8357aae698152e9a9be67c6.1684565021.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/osnoise_top.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/mfd/wcd934x.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/osnoise_top.c b/tools/tracing/rtla/src/osnoise_top.c
-index 562f2e4b18c57..3ece8c09ecd95 100644
---- a/tools/tracing/rtla/src/osnoise_top.c
-+++ b/tools/tracing/rtla/src/osnoise_top.c
-@@ -340,8 +340,14 @@ struct osnoise_top_params *osnoise_top_parse_args(int argc, char **argv)
- 	if (!params)
- 		exit(1);
+diff --git a/drivers/mfd/wcd934x.c b/drivers/mfd/wcd934x.c
+index 07e884087f2c7..281470d6b0b99 100644
+--- a/drivers/mfd/wcd934x.c
++++ b/drivers/mfd/wcd934x.c
+@@ -258,8 +258,9 @@ static int wcd934x_slim_probe(struct slim_device *sdev)
+ 	usleep_range(600, 650);
+ 	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(reset_gpio)) {
+-		return dev_err_probe(dev, PTR_ERR(reset_gpio),
+-				"Failed to get reset gpio: err = %ld\n", PTR_ERR(reset_gpio));
++		ret = dev_err_probe(dev, PTR_ERR(reset_gpio),
++				    "Failed to get reset gpio\n");
++		goto err_disable_regulators;
+ 	}
+ 	msleep(20);
+ 	gpiod_set_value(reset_gpio, 1);
+@@ -269,6 +270,10 @@ static int wcd934x_slim_probe(struct slim_device *sdev)
+ 	dev_set_drvdata(dev, ddata);
  
--	if (strcmp(argv[0], "hwnoise") == 0)
-+	if (strcmp(argv[0], "hwnoise") == 0) {
- 		params->mode = MODE_HWNOISE;
-+		/*
-+		 * Reduce CPU usage for 75% to avoid killing the system.
-+		 */
-+		params->runtime = 750000;
-+		params->period = 1000000;
-+	}
+ 	return 0;
++
++err_disable_regulators:
++	regulator_bulk_disable(WCD934X_MAX_SUPPLY, ddata->supplies);
++	return ret;
+ }
  
- 	while (1) {
- 		static struct option long_options[] = {
+ static void wcd934x_slim_remove(struct slim_device *sdev)
 -- 
 2.39.2
 
