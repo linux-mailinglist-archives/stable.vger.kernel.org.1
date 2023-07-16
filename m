@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1237553E3
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1038C755633
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:48:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231907AbjGPUYJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:24:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47126 "EHLO
+        id S232758AbjGPUsR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:48:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231905AbjGPUYG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:24:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3428FBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:24:05 -0700 (PDT)
+        with ESMTP id S232799AbjGPUsP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:48:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1346CE61
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:48:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B4A6E60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:24:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67C2C433C8;
-        Sun, 16 Jul 2023 20:24:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A613560ECB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:48:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F55C433BC;
+        Sun, 16 Jul 2023 20:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539044;
-        bh=2ISJhy1RPwVrHQ5L+W5GHrJMWJ5qw92udeM5B/UO4wY=;
+        s=korg; t=1689540493;
+        bh=HcxjWD8tOc6sGxoH9bh+lo1nEOvDGxgGTM1YEVCMaHo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xq7Ey8izkZklCzfXCr7LQhgV1B2md/zQD9LHSKLu83sUDkd9h+go3kHLy0NGacvCm
-         Xso18lgS1K27IorfdXGYa/ye6njTDd4/C0cWHCfKsTvRntvI60aHT7v8pKANoTOQyZ
-         WHzy53HjhBoOHVuVLLd76xLg+USyyPLcDFpFf1H4=
+        b=SP6TYThhP2UE+iOYcCrIQSOA9Xrklff8ZOr1jXLI2IJo3cLZzJmOhHe4ODQoW70yZ
+         9AwVSunAz9pRRpD4Vgu9KcTFQ9uV7e3HBR0rHlwiznIT79eEc7pshXWaFp4eFQhKBo
+         jr+YfGf6b966ZtfoM5LXNpMcZhJqdqz+CfuMpJd0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@oracle.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 668/800] net: dsa: felix: dont drop PTP frames with tag_8021q when RX timestamping is disabled
-Date:   Sun, 16 Jul 2023 21:48:41 +0200
-Message-ID: <20230716195004.627556754@linuxfoundation.org>
+Subject: [PATCH 6.1 383/591] w1: fix loop in w1_fini()
+Date:   Sun, 16 Jul 2023 21:48:42 +0200
+Message-ID: <20230716194933.830468885@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,68 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-[ Upstream commit 2edcfcbb3c5946609be1d8875473a240b170673b ]
+[ Upstream commit 83f3fcf96fcc7e5405b37d9424c7ef26bfa203f8 ]
 
-The driver implements a workaround for the fact that it doesn't have an
-IRQ source to tell it whether PTP frames are available through the
-extraction registers, for those frames to be processed and passed
-towards the network stack. That workaround is to configure the switch,
-through felix_hwtstamp_set() -> felix_update_trapping_destinations(),
-to create two copies of PTP packets: one sent over Ethernet to the DSA
-master, and one to be consumed through the aforementioned CPU extraction
-queue registers.
+The __w1_remove_master_device() function calls:
 
-The reason why we want PTP packets to be consumed through the CPU
-extraction registers in the first place is because we want to see their
-hardware RX timestamp. With tag_8021q, that is only visible that way,
-and it isn't visible with the copy of the packet that's transmitted over
-Ethernet.
+	list_del(&dev->w1_master_entry);
 
-The problem with the workaround implementation is that it drops the
-packet received over Ethernet, in expectation of its copy being present
-in the CPU extraction registers. However, if felix_hwtstamp_set() hasn't
-run (aka PTP RX timestamping is disabled), the driver will drop the
-original PTP frame and there will be no copy of it in the CPU extraction
-registers. So, the network stack will simply not see any PTP frame.
+So presumably this can cause an endless loop.
 
-Look at the port's trapping configuration to see whether the driver has
-previously enabled the CPU extraction registers. If it hasn't, just
-don't RX timestamp the frame and let it be passed up the stack by DSA,
-which is perfectly fine.
-
-Fixes: 0a6f17c6ae21 ("net: dsa: tag_ocelot_8021q: add support for PTP timestamping")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 7785925dd8e0 ("[PATCH] w1: cleanups.")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/ocelot/felix.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/w1/w1.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
-index 80861ac090ae3..70c0e2b1936b3 100644
---- a/drivers/net/dsa/ocelot/felix.c
-+++ b/drivers/net/dsa/ocelot/felix.c
-@@ -1725,6 +1725,18 @@ static bool felix_rxtstamp(struct dsa_switch *ds, int port,
- 	u32 tstamp_hi;
- 	u64 tstamp;
+diff --git a/drivers/w1/w1.c b/drivers/w1/w1.c
+index 4a2ddf730a3ac..2eee26b7fc4a3 100644
+--- a/drivers/w1/w1.c
++++ b/drivers/w1/w1.c
+@@ -1263,10 +1263,10 @@ static int __init w1_init(void)
  
-+	switch (type & PTP_CLASS_PMASK) {
-+	case PTP_CLASS_L2:
-+		if (!(ocelot->ports[port]->trap_proto & OCELOT_PROTO_PTP_L2))
-+			return false;
-+		break;
-+	case PTP_CLASS_IPV4:
-+	case PTP_CLASS_IPV6:
-+		if (!(ocelot->ports[port]->trap_proto & OCELOT_PROTO_PTP_L4))
-+			return false;
-+		break;
-+	}
-+
- 	/* If the "no XTR IRQ" workaround is in use, tell DSA to defer this skb
- 	 * for RX timestamping. Then free it, and poll for its copy through
- 	 * MMIO in the CPU port module, and inject that into the stack from
+ static void __exit w1_fini(void)
+ {
+-	struct w1_master *dev;
++	struct w1_master *dev, *n;
+ 
+ 	/* Set netlink removal messages and some cleanup */
+-	list_for_each_entry(dev, &w1_masters, w1_master_entry)
++	list_for_each_entry_safe(dev, n, &w1_masters, w1_master_entry)
+ 		__w1_remove_master_device(dev);
+ 
+ 	w1_fini_netlink();
 -- 
 2.39.2
 
