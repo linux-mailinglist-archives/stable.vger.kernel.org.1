@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E64375537A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6F6D755387
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231741AbjGPUT3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:19:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44524 "EHLO
+        id S231759AbjGPUT7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:19:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231743AbjGPUT2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:28 -0400
+        with ESMTP id S231761AbjGPUT7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF562126
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA45C0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6565860EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7213DC433C7;
-        Sun, 16 Jul 2023 20:19:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C5D460DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B00CC433C7;
+        Sun, 16 Jul 2023 20:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538766;
-        bh=XAn90j28PlqBuotgxphtM4hf5LN+4nlSWCgByg1PUkU=;
+        s=korg; t=1689538797;
+        bh=iZtEMpetjq9RvHLXlACO4Mf0j3utTALl6hRW+zLAfnM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uDIqdcJexn+aE8aghM0ik0Osp3UHba4l4cgiEj43gF8JrLJSIsAXmnX6QDlXMYysV
-         JklGiT/3TyQDsBYL6Yviymu/L2ugjloN83wH7tMYI2HOBqemkONe3vBV3NV/Kpykzm
-         hHnLlmJu5UAwkl2joUtuV2XIpYp4IcCgWcBBKqFM=
+        b=fLLrd/L5UsKM7Ra+/RAemZw4tFRgYpf0h1EdiCnRrZDDYBwdSaufwWeAO7vwFRNib
+         cBYCJH5ycTvonolekRxdvTgmeKeodNgABmtdxOspdyIlrkJh6rvqFyFFXp5KzMk+5Y
+         tYfDhGff9Z+vp4TT1Mg0JiHFGDJFTpHsusJpbkrM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
+        patches@lists.linux.dev, Taniya Das <quic_tdas@quicinc.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 561/800] clk: qcom: mmcc-msm8974: remove oxili_ocmemgx_clk
-Date:   Sun, 16 Jul 2023 21:46:54 +0200
-Message-ID: <20230716195002.119626164@linuxfoundation.org>
+Subject: [PATCH 6.4 562/800] clk: qcom: camcc-sc7180: Add parent dependency to all camera GDSCs
+Date:   Sun, 16 Jul 2023 21:46:55 +0200
+Message-ID: <20230716195002.142399384@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -57,71 +57,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit 853c064b57491d739bfd0cc35ff75c5ea9c5e8f5 ]
+[ Upstream commit 3e4d179532423f299554cd0dedabdd9d2fdd238d ]
 
-After the internal discussions, it looks like this clock is managed by
-RPM itself. Linux kernel should not touch it on its own, as this causes
-disagreement with RPM. Shutting down this clock causes the OCMEM<->GPU
-interface to stop working, resulting in GPU hangchecks/timeouts.
+Camera titan top GDSC is a parent supply to all other camera GDSCs. Titan
+top GDSC is required to be enabled before enabling any other camera GDSCs
+and it should be disabled only after all other camera GDSCs are disabled.
+Ensure this behavior by marking titan top GDSC as parent of all other
+camera GDSCs.
 
-Fixes: d8b212014e69 ("clk: qcom: Add support for MSM8974's multimedia clock controller (MMCC)")
-Suggested-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Luca Weiss <luca@z3ntu.xyz>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Fixes: 15d09e830bbc ("clk: qcom: camcc: Add camera clock controller driver for SC7180")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230508153319.2371645-1-dmitry.baryshkov@linaro.org
+Link: https://lore.kernel.org/r/20230501142932.13049-1-quic_tdas@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-msm8974.c | 19 -------------------
- 1 file changed, 19 deletions(-)
+ drivers/clk/qcom/camcc-sc7180.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/qcom/mmcc-msm8974.c b/drivers/clk/qcom/mmcc-msm8974.c
-index 4273fce9a4a4c..b90a9f362f5f7 100644
---- a/drivers/clk/qcom/mmcc-msm8974.c
-+++ b/drivers/clk/qcom/mmcc-msm8974.c
-@@ -2204,23 +2204,6 @@ static struct clk_branch ocmemcx_ocmemnoc_clk = {
+diff --git a/drivers/clk/qcom/camcc-sc7180.c b/drivers/clk/qcom/camcc-sc7180.c
+index e2b4804695f37..8a4ba7a19ed12 100644
+--- a/drivers/clk/qcom/camcc-sc7180.c
++++ b/drivers/clk/qcom/camcc-sc7180.c
+@@ -1480,12 +1480,21 @@ static struct clk_branch cam_cc_sys_tmr_clk = {
  	},
  };
  
--static struct clk_branch oxili_ocmemgx_clk = {
--	.halt_reg = 0x402c,
--	.clkr = {
--		.enable_reg = 0x402c,
--		.enable_mask = BIT(0),
--		.hw.init = &(struct clk_init_data){
--			.name = "oxili_ocmemgx_clk",
--			.parent_data = (const struct clk_parent_data[]){
--				{ .fw_name = "gfx3d_clk_src", .name = "gfx3d_clk_src" },
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
--			.ops = &clk_branch2_ops,
--		},
++static struct gdsc titan_top_gdsc = {
++	.gdscr = 0xb134,
++	.pd = {
++		.name = "titan_top_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++};
++
+ static struct gdsc bps_gdsc = {
+ 	.gdscr = 0x6004,
+ 	.pd = {
+ 		.name = "bps_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &titan_top_gdsc.pd,
+ 	.flags = HW_CTRL,
+ };
+ 
+@@ -1495,6 +1504,7 @@ static struct gdsc ife_0_gdsc = {
+ 		.name = "ife_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &titan_top_gdsc.pd,
+ };
+ 
+ static struct gdsc ife_1_gdsc = {
+@@ -1503,6 +1513,7 @@ static struct gdsc ife_1_gdsc = {
+ 		.name = "ife_1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &titan_top_gdsc.pd,
+ };
+ 
+ static struct gdsc ipe_0_gdsc = {
+@@ -1512,15 +1523,9 @@ static struct gdsc ipe_0_gdsc = {
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+ 	.flags = HW_CTRL,
++	.parent = &titan_top_gdsc.pd,
+ };
+ 
+-static struct gdsc titan_top_gdsc = {
+-	.gdscr = 0xb134,
+-	.pd = {
+-		.name = "titan_top_gdsc",
 -	},
+-	.pwrsts = PWRSTS_OFF_ON,
 -};
--
- static struct clk_branch ocmemnoc_clk = {
- 	.halt_reg = 0x50b4,
- 	.clkr = {
-@@ -2512,7 +2495,6 @@ static struct clk_regmap *mmcc_msm8226_clocks[] = {
- 	[MMSS_MMSSNOC_AXI_CLK] = &mmss_mmssnoc_axi_clk.clkr,
- 	[MMSS_S0_AXI_CLK] = &mmss_s0_axi_clk.clkr,
- 	[OCMEMCX_AHB_CLK] = &ocmemcx_ahb_clk.clkr,
--	[OXILI_OCMEMGX_CLK] = &oxili_ocmemgx_clk.clkr,
- 	[OXILI_GFX3D_CLK] = &oxili_gfx3d_clk.clkr,
- 	[OXILICX_AHB_CLK] = &oxilicx_ahb_clk.clkr,
- 	[OXILICX_AXI_CLK] = &oxilicx_axi_clk.clkr,
-@@ -2670,7 +2652,6 @@ static struct clk_regmap *mmcc_msm8974_clocks[] = {
- 	[MMSS_S0_AXI_CLK] = &mmss_s0_axi_clk.clkr,
- 	[OCMEMCX_AHB_CLK] = &ocmemcx_ahb_clk.clkr,
- 	[OCMEMCX_OCMEMNOC_CLK] = &ocmemcx_ocmemnoc_clk.clkr,
--	[OXILI_OCMEMGX_CLK] = &oxili_ocmemgx_clk.clkr,
- 	[OCMEMNOC_CLK] = &ocmemnoc_clk.clkr,
- 	[OXILI_GFX3D_CLK] = &oxili_gfx3d_clk.clkr,
- 	[OXILICX_AHB_CLK] = &oxilicx_ahb_clk.clkr,
+ 
+ static struct clk_hw *cam_cc_sc7180_hws[] = {
+ 	[CAM_CC_PLL2_OUT_EARLY] = &cam_cc_pll2_out_early.hw,
 -- 
 2.39.2
 
