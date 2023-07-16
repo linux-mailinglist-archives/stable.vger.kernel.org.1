@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 006D67553AD
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:21:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C101A7555E5
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:45:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231834AbjGPUVq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:21:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45764 "EHLO
+        id S232685AbjGPUpt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:45:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231830AbjGPUVn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:21:43 -0400
+        with ESMTP id S232679AbjGPUpq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:45:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B8D61B7
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:21:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5891CE41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:45:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EE5660EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:21:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBDAC433C8;
-        Sun, 16 Jul 2023 20:21:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D6D9460EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:45:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF11C433C8;
+        Sun, 16 Jul 2023 20:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538901;
-        bh=lJyTzmpmLEKb6OuldQt4ezrELGjxmj0Qpl9HeM63lWs=;
+        s=korg; t=1689540344;
+        bh=/UyJFN8YF2iwl/EKXJKmFOlG+TPPmgaKLa2LZEvvaHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o8l/QrAfk1aORKupmGWTwHwmYZIjfFtf05C560oM1k/CNhPKupAy44RAI5uc3xhCS
-         efjC5ttLrHr239HWbZeuJsadKR+MxJoeahpZ2TpEIPm99Eq3OvphQmZXVt+x25vvYM
-         Xgdx49y548chzocaTf97UTaZ1hA60AW5P5/sie9M=
+        b=hkR7Kl71UWHFhKCosOXiWiir0oOX0G+dCUqbIQ97xC4Q3dd0Fdw7Kz0emCuIONgCG
+         qg1uE23jzTp+2ifwQsvU+6T0b04HeQ38hl1QjuETVZNcXDXnEYT1Tx7L015xPBJm+6
+         q63KjtuldmmVZcie3HQhGcGlPhoOTflYPnFYCsCs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Shunsuke Mie <mie@igel.co.jp>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 616/800] f2fs: flush error flags in workqueue
+Subject: [PATCH 6.1 330/591] PCI: endpoint: Fix a Kconfig prompt of vNTB driver
 Date:   Sun, 16 Jul 2023 21:47:49 +0200
-Message-ID: <20230716195003.419322357@linuxfoundation.org>
+Message-ID: <20230716194932.432366010@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,103 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Shunsuke Mie <mie@igel.co.jp>
 
-[ Upstream commit 901c12d144570ed2558f4a6806201453c5b01bea ]
+[ Upstream commit 37587673cda963ec950e4983db5023802f9b5ff2 ]
 
-In IRQ context, it wakes up workqueue to record errors into on-disk
-superblock fields rather than in-memory fields.
+vNTB driver and NTB driver have same Kconfig prompt. Changed to make it
+distinguishable.
 
-Fixes: 1aa161e43106 ("f2fs: fix scheduling while atomic in decompression path")
-Fixes: 95fa90c9e5a7 ("f2fs: support recording errors into superblock")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Link: https://lore.kernel.org/r/20230202103832.2038286-1-mie@igel.co.jp
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Shunsuke Mie <mie@igel.co.jp>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c |  2 +-
- fs/f2fs/f2fs.h     |  1 +
- fs/f2fs/super.c    | 26 +++++++++++++++++++++++---
- 3 files changed, 25 insertions(+), 4 deletions(-)
+ drivers/pci/endpoint/functions/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 905b7c39a2b32..1132d3cd8f337 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -744,7 +744,7 @@ void f2fs_decompress_cluster(struct decompress_io_ctx *dic, bool in_task)
+diff --git a/drivers/pci/endpoint/functions/Kconfig b/drivers/pci/endpoint/functions/Kconfig
+index 9fd5608868718..8efb6a869e7ce 100644
+--- a/drivers/pci/endpoint/functions/Kconfig
++++ b/drivers/pci/endpoint/functions/Kconfig
+@@ -27,7 +27,7 @@ config PCI_EPF_NTB
+ 	  If in doubt, say "N" to disable Endpoint NTB driver.
  
- 		/* Avoid f2fs_commit_super in irq context */
- 		if (!in_task)
--			f2fs_save_errors(sbi, ERROR_FAIL_DECOMPRESSION);
-+			f2fs_handle_error_async(sbi, ERROR_FAIL_DECOMPRESSION);
- 		else
- 			f2fs_handle_error(sbi, ERROR_FAIL_DECOMPRESSION);
- 		goto out_release;
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 35a025d7e305b..d867056a01f65 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3558,6 +3558,7 @@ void f2fs_save_errors(struct f2fs_sb_info *sbi, unsigned char flag);
- void f2fs_handle_critical_error(struct f2fs_sb_info *sbi, unsigned char reason,
- 							bool irq_context);
- void f2fs_handle_error(struct f2fs_sb_info *sbi, unsigned char error);
-+void f2fs_handle_error_async(struct f2fs_sb_info *sbi, unsigned char error);
- int f2fs_commit_super(struct f2fs_sb_info *sbi, bool recover);
- int f2fs_sync_fs(struct super_block *sb, int sync);
- int f2fs_sanity_check_ckpt(struct f2fs_sb_info *sbi);
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 51812f4595813..17082dc3c1a34 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -3980,6 +3980,11 @@ static void f2fs_record_stop_reason(struct f2fs_sb_info *sbi)
- 	f2fs_down_write(&sbi->sb_lock);
- 
- 	spin_lock_irqsave(&sbi->error_lock, flags);
-+	if (sbi->error_dirty) {
-+		memcpy(F2FS_RAW_SUPER(sbi)->s_errors, sbi->errors,
-+							MAX_F2FS_ERRORS);
-+		sbi->error_dirty = false;
-+	}
- 	memcpy(raw_super->s_stop_reason, sbi->stop_reason, MAX_STOP_REASON);
- 	spin_unlock_irqrestore(&sbi->error_lock, flags);
- 
-@@ -4019,12 +4024,10 @@ static bool f2fs_update_errors(struct f2fs_sb_info *sbi)
- 	return need_update;
- }
- 
--void f2fs_handle_error(struct f2fs_sb_info *sbi, unsigned char error)
-+static void f2fs_record_errors(struct f2fs_sb_info *sbi, unsigned char error)
- {
- 	int err;
- 
--	f2fs_save_errors(sbi, error);
--
- 	f2fs_down_write(&sbi->sb_lock);
- 
- 	if (!f2fs_update_errors(sbi))
-@@ -4038,6 +4041,23 @@ void f2fs_handle_error(struct f2fs_sb_info *sbi, unsigned char error)
- 	f2fs_up_write(&sbi->sb_lock);
- }
- 
-+void f2fs_handle_error(struct f2fs_sb_info *sbi, unsigned char error)
-+{
-+	f2fs_save_errors(sbi, error);
-+	f2fs_record_errors(sbi, error);
-+}
-+
-+void f2fs_handle_error_async(struct f2fs_sb_info *sbi, unsigned char error)
-+{
-+	f2fs_save_errors(sbi, error);
-+
-+	if (!sbi->error_dirty)
-+		return;
-+	if (!test_bit(error, (unsigned long *)sbi->errors))
-+		return;
-+	schedule_work(&sbi->s_error_work);
-+}
-+
- static bool system_going_down(void)
- {
- 	return system_state == SYSTEM_HALT || system_state == SYSTEM_POWER_OFF
+ config PCI_EPF_VNTB
+-	tristate "PCI Endpoint NTB driver"
++	tristate "PCI Endpoint Virtual NTB driver"
+ 	depends on PCI_ENDPOINT
+ 	depends on NTB
+ 	select CONFIGFS_FS
 -- 
 2.39.2
 
