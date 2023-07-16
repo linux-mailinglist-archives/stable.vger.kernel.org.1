@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 136147554A5
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3536C75525A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:07:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232234AbjGPUcl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:32:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53896 "EHLO
+        id S231288AbjGPUG7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:06:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232248AbjGPUck (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:40 -0400
+        with ESMTP id S231301AbjGPUG7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:06:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EE57BC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2631E10FB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:06:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2410D60EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BCAC433C7;
-        Sun, 16 Jul 2023 20:32:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A98B60EBD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:06:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3C1C433C7;
+        Sun, 16 Jul 2023 20:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539557;
-        bh=NnW+CSPdz5l/g8gIeBXAk5L6kXTHROrX+7vJitTNmlU=;
+        s=korg; t=1689538005;
+        bh=eyZ+ca6UjsjUkv/EF9WRoDccA1vXAWQz/i7CLnkCDzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rjyTjArXNlUYmBQOa9WETVRoNRaBQEw/x3KBwNeCmzhp1Qp8AsFGfsLCvF088v4Cr
-         2ZH7g4wpwEcIzbsqPlGLXZ+9rw6EfBoVPVa1tBdT2ebjerRgO22GGfkYo4mO7+fi09
-         JPmXxu4DbKlu/0lADS/MV3nzh758JOFIc3g8/XTw=
+        b=ht5Qb03/NNjPZYEBUfZFctezpKFwkQ1dMucO5xLJElIvU+jiaCDH7WXST3h7odEYb
+         uy7IzMKhjCfQQUNP9OmHHCvNgOYpkKnnMSTGLILV8G2+BGfzS1pUCmQN4d1LBbReyx
+         alWlped1UED3rDZN759GNgLQt1jqzaRxl5j90z7o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/591] virt: sevguest: Add CONFIG_CRYPTO dependency
+Subject: [PATCH 6.4 298/800] ARM: dts: qcom: msm8974: do not use underscore in node name (again)
 Date:   Sun, 16 Jul 2023 21:42:31 +0200
-Message-ID: <20230716194924.182219201@linuxfoundation.org>
+Message-ID: <20230716194956.002298243@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,42 +57,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 84b9b44b99780d35fe72ac63c4724f158771e898 ]
+[ Upstream commit 311bbc884b2edcf584b67d331be85ce43b27586f ]
 
-This driver fails to link when CRYPTO is disabled, or in a loadable
-module:
+Align RPM requests node with DT schema by using hyphen instead of
+underscore.
 
-  WARNING: unmet direct dependencies detected for CRYPTO_GCM
-  WARNING: unmet direct dependencies detected for CRYPTO_AEAD2
-    Depends on [m]: CRYPTO [=m]
-    Selected by [y]:
-    - SEV_GUEST [=y] && VIRT_DRIVERS [=y] && AMD_MEM_ENCRYPT [=y]
-
-x86_64-linux-ld: crypto/aead.o: in function `crypto_register_aeads':
-
-Fixes: fce96cf04430 ("virt: Add SEV-SNP guest driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230117171416.2715125-1-arnd@kernel.org
+Fixes: f300826d27be ("ARM: dts: qcom-msm8974: Sort and clean up nodes")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230410175232.22317-1-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/coco/sev-guest/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/qcom-msm8974.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/virt/coco/sev-guest/Kconfig b/drivers/virt/coco/sev-guest/Kconfig
-index f9db0799ae67c..da2d7ca531f0f 100644
---- a/drivers/virt/coco/sev-guest/Kconfig
-+++ b/drivers/virt/coco/sev-guest/Kconfig
-@@ -2,6 +2,7 @@ config SEV_GUEST
- 	tristate "AMD SEV Guest driver"
- 	default m
- 	depends on AMD_MEM_ENCRYPT
-+	select CRYPTO
- 	select CRYPTO_AEAD2
- 	select CRYPTO_GCM
- 	help
+diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
+index 7ed0d925a4e99..a22616491dc0e 100644
+--- a/arch/arm/boot/dts/qcom-msm8974.dtsi
++++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+@@ -301,7 +301,7 @@ rpm {
+ 			qcom,ipc = <&apcs 8 0>;
+ 			qcom,smd-edge = <15>;
+ 
+-			rpm_requests: rpm_requests {
++			rpm_requests: rpm-requests {
+ 				compatible = "qcom,rpm-msm8974";
+ 				qcom,smd-channels = "rpm_requests";
+ 
 -- 
 2.39.2
 
