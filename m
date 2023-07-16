@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B74F755237
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC8E755238
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:05:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231238AbjGPUFN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:05:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34644 "EHLO
+        id S231239AbjGPUFQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:05:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231232AbjGPUFM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:05:12 -0400
+        with ESMTP id S231232AbjGPUFP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:05:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F599D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:05:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A8629D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:05:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 533F360EA2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:05:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63063C433C8;
-        Sun, 16 Jul 2023 20:05:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 301F560EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:05:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD80C433C8;
+        Sun, 16 Jul 2023 20:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537910;
-        bh=S36sNbKGbhjQYrgRgrLWose6/Vt4tZ8xWzRS3ZENiGU=;
+        s=korg; t=1689537913;
+        bh=8Opw2j0BGEwHN1MeAS3eZDWs3Kl/+aKqzOJJnYnVFpA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eY2+GcYdxv00KEtJ3923b9mU5Q/aH60SH9UGfH7eFXJbnC7hsD50C2uHOcR/35ofl
-         dTMPD5E4tC434f4z2p54+eR6ShBVbzb2mj961yAXUTJQFSb8V9OyVsBMGheSnxucjR
-         OvRll7gH/f4nadawAASwcwRdvtu+LDTUMuoQi0F8=
+        b=0ZjKYZd8qyeatKm+nH/aKgFZD+lDPZOYhYKfLeFpv8yxERllumKHQHFGl8q2fw2MB
+         ULOkwZMEJ6+IgvEm83GJ2oN4H9qeCSH+ZzD0twcE3RbyooLa/7suog6OmEawlF1TcR
+         s5xOzdMo2M58vPfOgCNBzSDMF4jLjzgHymUn26WQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 264/800] drm/bridge: tc358767: Switch to devm MIPI-DSI helpers
-Date:   Sun, 16 Jul 2023 21:41:57 +0200
-Message-ID: <20230716194955.229165475@linuxfoundation.org>
+        patches@lists.linux.dev, Devi Priya <quic_devipriy@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 265/800] arm64: dts: qcom: ipq9574: Update the size of GICC & GICV regions
+Date:   Sun, 16 Jul 2023 21:41:58 +0200
+Message-ID: <20230716194955.252198930@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -55,45 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Devi Priya <quic_devipriy@quicinc.com>
 
-[ Upstream commit f47d6140b7a4c858d82d263e7577ff6fb5279a9c ]
+[ Upstream commit 6fb45762691d12d9812c41d20b2f5db1412047ae ]
 
-DSI device registering and attaching needs to be undone upon
-deregistration. This fixes module unload/load.
+Update the size of GICC and GICV regions to 8kB as the GICC_DIR & GICV_DIR
+registers lie in the second 4kB region. Also, add target CPU encoding.
 
-Fixes: bbfd3190b656 ("drm/bridge: tc358767: Add DSI-to-DPI mode support")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230517122107.1766673-1-alexander.stein@ew.tq-group.com
+Fixes: 97cb36ff52a1 ("arm64: dts: qcom: Add ipq9574 SoC and AL02 board support")
+Signed-off-by: Devi Priya <quic_devipriy@quicinc.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230425084010.15581-2-quic_devipriy@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358767.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/ipq9574.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
-index 91f7cb56a654d..d6349af4f1b62 100644
---- a/drivers/gpu/drm/bridge/tc358767.c
-+++ b/drivers/gpu/drm/bridge/tc358767.c
-@@ -1890,7 +1890,7 @@ static int tc_mipi_dsi_host_attach(struct tc_data *tc)
- 	if (dsi_lanes < 0)
- 		return dsi_lanes;
+diff --git a/arch/arm64/boot/dts/qcom/ipq9574.dtsi b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
+index 0ed19fbf7d87d..6e3a88ee06152 100644
+--- a/arch/arm64/boot/dts/qcom/ipq9574.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
+@@ -173,14 +173,14 @@ blsp1_uart2: serial@78b1000 {
+ 		intc: interrupt-controller@b000000 {
+ 			compatible = "qcom,msm-qgic2";
+ 			reg = <0x0b000000 0x1000>,  /* GICD */
+-			      <0x0b002000 0x1000>,  /* GICC */
++			      <0x0b002000 0x2000>,  /* GICC */
+ 			      <0x0b001000 0x1000>,  /* GICH */
+-			      <0x0b004000 0x1000>;  /* GICV */
++			      <0x0b004000 0x2000>;  /* GICV */
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			interrupt-controller;
+ 			#interrupt-cells = <3>;
+-			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>;
+ 			ranges = <0 0x0b00c000 0x3000>;
  
--	dsi = mipi_dsi_device_register_full(host, &info);
-+	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
- 	if (IS_ERR(dsi))
- 		return dev_err_probe(dev, PTR_ERR(dsi),
- 				     "failed to create dsi device\n");
-@@ -1901,7 +1901,7 @@ static int tc_mipi_dsi_host_attach(struct tc_data *tc)
- 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
- 			  MIPI_DSI_MODE_LPM | MIPI_DSI_CLOCK_NON_CONTINUOUS;
- 
--	ret = mipi_dsi_attach(dsi);
-+	ret = devm_mipi_dsi_attach(dev, dsi);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to attach dsi to host: %d\n", ret);
- 		return ret;
+ 			v2m0: v2m@0 {
 -- 
 2.39.2
 
