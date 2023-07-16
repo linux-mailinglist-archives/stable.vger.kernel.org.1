@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 317597553D8
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A8827553FF
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231881AbjGPUXg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:23:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46806 "EHLO
+        id S231946AbjGPUZY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:25:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231853AbjGPUXf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:23:35 -0400
+        with ESMTP id S231939AbjGPUZY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A47949F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A2DBBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CEA860EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373BBC433C9;
-        Sun, 16 Jul 2023 20:23:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FB3D60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E59AC433C8;
+        Sun, 16 Jul 2023 20:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539013;
-        bh=zRCxc49ZdtsKPK3VpXN5vetKmod5IJ7xsEEHxwIU1OA=;
+        s=korg; t=1689539122;
+        bh=U6CAtW2Odg4WQCREoGlMZ6wh7AvC/vtSsyKVcEHnjF8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wsQ9d+L13e+rvV7eYnRRFDJErirdxotNKAxEqDc83zXd00319zy1nXO+bO+ie1eGl
-         J+LFgxkP7H8JkMS9ac5cVqrGtCs6ob8cThvpS6gW9bk/gsYPPf1SVuUbfJbBRWwAWz
-         hD7nNTz/SOTkQmboOc2lFuDxKmtsN2tseyr4nx6A=
+        b=NRIWQoXTuIQ8CsI1SvgI97PMmoJ+86sjsRXkLzlpzIfp5AGoUTG0Z2hyMXpiGejmL
+         80a1dUm2cMOc1ZCM7w5+yAN5GrHyRx9C0p2ivIACg0DJOLZ2rb7wOpJWf2kx9e4Kt1
+         R9UIf0JC5gopKbHHZbzCJIetVZEEijnFBj74w9Ds=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ashutosh Dixit <ashutosh.dixit@intel.com>,
-        Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
-        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 655/800] drm/i915/guc/slpc: Apply min softlimit correctly
-Date:   Sun, 16 Jul 2023 21:48:28 +0200
-Message-ID: <20230716195004.325527685@linuxfoundation.org>
+Subject: [PATCH 6.4 656/800] f2fs: check return value of freeze_super()
+Date:   Sun, 16 Jul 2023 21:48:29 +0200
+Message-ID: <20230716195004.348621913@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -57,51 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 3e49de73fb89272dea01ba420c7ccbcf6b96aed7 ]
+[ Upstream commit 8bec7dd1b3f7d7769d433d67bde404de948a2d95 ]
 
-The scenario being fixed here is depicted in the following sequence-
+freeze_super() can fail, it needs to check its return value and do
+error handling in f2fs_resize_fs().
 
-modprobe i915
-echo 1 > /sys/class/drm/card0/gt/gt0/slpc_ignore_eff_freq
-echo 300 > /sys/class/drm/card0/gt_min_freq_mhz (RPn)
-cat /sys/class/drm/card0/gt_cur_freq_mhz --> cur == RPn as expected
-echo 1 > /sys/kernel/debug/dri/0/gt0/reset --> reset
-cat /sys/class/drm/card0/gt_min_freq_mhz --> cached freq is RPn
-cat /sys/class/drm/card0/gt_cur_freq_mhz --> it's not RPn, but RPe!!
-
-When SLPC reinitializes, it sets SLPC min freq to efficient frequency.
-Even if we disable efficient freq post that, we should restore the cached
-min freq (via H2G) for it to take effect.
-
-v2: Clarify commit message (Ashutosh)
-
-Fixes: 95ccf312a1e4 ("drm/i915/guc/slpc: Allow SLPC to use efficient frequency")
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230621014257.1769564-1-vinay.belgaumkar@intel.com
-(cherry picked from commit da86b2b13f1d1ca26745b951ac94421f3137539a)
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Fixes: 04f0b2eaa3b3 ("f2fs: ioctl for removing a range from F2FS")
+Fixes: b4b10061ef98 ("f2fs: refactor resize_fs to avoid meta updates in progress")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_guc_slpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/gc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_slpc.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_slpc.c
-index 56dbba1ef6684..cc18e8f664864 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_slpc.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_slpc.c
-@@ -606,7 +606,7 @@ static int slpc_set_softlimits(struct intel_guc_slpc *slpc)
- 		if (unlikely(ret))
- 			return ret;
- 		slpc_to_gt(slpc)->defaults.min_freq = slpc->min_freq_softlimit;
--	} else if (slpc->min_freq_softlimit != slpc->min_freq) {
-+	} else {
- 		return intel_guc_slpc_set_min_freq(slpc,
- 						   slpc->min_freq_softlimit);
- 	}
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 67f1b58d424ed..719b1ba32a78b 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -2175,7 +2175,9 @@ int f2fs_resize_fs(struct file *filp, __u64 block_count)
+ 	if (err)
+ 		return err;
+ 
+-	freeze_super(sbi->sb);
++	err = freeze_super(sbi->sb);
++	if (err)
++		return err;
+ 
+ 	if (f2fs_readonly(sbi->sb)) {
+ 		thaw_super(sbi->sb);
 -- 
 2.39.2
 
