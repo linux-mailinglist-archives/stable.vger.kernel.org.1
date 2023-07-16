@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74AC4755637
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C747553E9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232802AbjGPUsi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:48:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37658 "EHLO
+        id S231912AbjGPUYX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:24:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232803AbjGPUsf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:48:35 -0400
+        with ESMTP id S231905AbjGPUYX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:24:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80BE5E57
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:48:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DE781A5
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:24:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 94C8E60EBF
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:48:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF07C433C7;
-        Sun, 16 Jul 2023 20:48:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFD3460E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:24:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5135C433C8;
+        Sun, 16 Jul 2023 20:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540507;
-        bh=KrIhQVJaVsnTPVIzhrhYVpzIzKNqwdh3dafuwhnClos=;
+        s=korg; t=1689539061;
+        bh=PwJC8NZD9Uyj4kuEAY3MdIoNj2xWJq6gaojlV3Ef8Ms=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ftj5/YnepVDMYLZUPwtYFKQNynv7AuPd+0j2wf6DztOIqEEwhxYTyk1qlsxM9Uizo
-         ARfrzzgvM5t4nSkzOTS/t1SnVSMElHv0AOcyRdD8XQRASeB3z9IQuVl2XqIXlnsIa8
-         frbosT4TxOjbCWOcOwCXiWkx9H6yM07AcD4zxNuE=
+        b=zTydMBiKLh9T7tsITOsA2Q7ui9oXlGX+MgWj2G56VUHOlQhP3hCyh7UVPHBBEEFz/
+         eDu3+TLI/e+7FZDqqtqFYLnQbx7vGcih1IM1A6Z4E0J9lxKmFUFua3vCkpcnssL7UV
+         eRtYY0BcFLD90BSctAMKHh5oDm6E7htcUA+PEit0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 388/591] usb: dwc2: Fix some error handling paths
+Subject: [PATCH 6.4 674/800] Bluetooth: MGMT: Fix marking SCAN_RSP as not connectable
 Date:   Sun, 16 Jul 2023 21:48:47 +0200
-Message-ID: <20230716194933.957901134@linuxfoundation.org>
+Message-ID: <20230716195004.778699241@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,79 +56,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit ada050c69108bc34be13ecc11f7fad0f20ebadc4 ]
+[ Upstream commit 73f55453ea5236a586a7f1b3d5e2ee051d655351 ]
 
-dwc2_driver_probe() calls dwc2_lowlevel_hw_init() which deassert some reset
-lines.
-Should an error happen in dwc2_lowlevel_hw_init() after calling
-reset_control_deassert() or in the probe after calling
-dwc2_lowlevel_hw_init(), the reset lines remain deasserted.
+When receiving a scan response there is no way to know if the remote
+device is connectable or not, so when it cannot be merged don't
+make any assumption and instead just mark it with a new flag defined as
+MGMT_DEV_FOUND_SCAN_RSP so userspace can tell it is a standalone
+SCAN_RSP.
 
-Add some devm_add_action_or_reset() calls to re-assert the lines if needed.
-
-Update the remove function accordingly.
-
-This change is compile-tested only.
-
-Fixes: 83f8da562f8b ("usb: dwc2: Add reset control to dwc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/c64537b5339342bd00f7c2152b8fc23792b9f95a.1683306479.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-bluetooth/CABBYNZ+CYMsDSPTxBn09Js3BcdC-x7vZFfyLJ3ppZGGwJKmUTw@mail.gmail.com/
+Fixes: c70a7e4cc8d2 ("Bluetooth: Add support for Not Connectable flag for Device Found events")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ include/net/bluetooth/mgmt.h |  1 +
+ net/bluetooth/hci_event.c    | 15 +++++----------
+ 2 files changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index d1589ba7d322d..58f53faab340f 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -175,6 +175,11 @@ int dwc2_lowlevel_hw_disable(struct dwc2_hsotg *hsotg)
- 	return ret;
- }
+diff --git a/include/net/bluetooth/mgmt.h b/include/net/bluetooth/mgmt.h
+index a5801649f6196..5e68b3dd44222 100644
+--- a/include/net/bluetooth/mgmt.h
++++ b/include/net/bluetooth/mgmt.h
+@@ -979,6 +979,7 @@ struct mgmt_ev_auth_failed {
+ #define MGMT_DEV_FOUND_NOT_CONNECTABLE		BIT(2)
+ #define MGMT_DEV_FOUND_INITIATED_CONN		BIT(3)
+ #define MGMT_DEV_FOUND_NAME_REQUEST_FAILED	BIT(4)
++#define MGMT_DEV_FOUND_SCAN_RSP			BIT(5)
  
-+static void dwc2_reset_control_assert(void *data)
-+{
-+	reset_control_assert(data);
-+}
-+
- static int dwc2_lowlevel_hw_init(struct dwc2_hsotg *hsotg)
- {
- 	int i, ret;
-@@ -185,6 +190,10 @@ static int dwc2_lowlevel_hw_init(struct dwc2_hsotg *hsotg)
- 				     "error getting reset control\n");
+ #define MGMT_EV_DEVICE_FOUND		0x0012
+ struct mgmt_ev_device_found {
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 09ba6d8987ee1..21e26d3b286cc 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6316,23 +6316,18 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
+ 		return;
+ 	}
  
- 	reset_control_deassert(hsotg->reset);
-+	ret = devm_add_action_or_reset(hsotg->dev, dwc2_reset_control_assert,
-+				       hsotg->reset);
-+	if (ret)
-+		return ret;
+-	/* When receiving non-connectable or scannable undirected
+-	 * advertising reports, this means that the remote device is
+-	 * not connectable and then clearly indicate this in the
+-	 * device found event.
+-	 *
+-	 * When receiving a scan response, then there is no way to
++	/* When receiving a scan response, then there is no way to
+ 	 * know if the remote device is connectable or not. However
+ 	 * since scan responses are merged with a previously seen
+ 	 * advertising report, the flags field from that report
+ 	 * will be used.
+ 	 *
+-	 * In the really unlikely case that a controller get confused
+-	 * and just sends a scan response event, then it is marked as
+-	 * not connectable as well.
++	 * In the unlikely case that a controller just sends a scan
++	 * response event that doesn't match the pending report, then
++	 * it is marked as a standalone SCAN_RSP.
+ 	 */
+ 	if (type == LE_ADV_SCAN_RSP)
+-		flags = MGMT_DEV_FOUND_NOT_CONNECTABLE;
++		flags = MGMT_DEV_FOUND_SCAN_RSP;
  
- 	hsotg->reset_ecc = devm_reset_control_get_optional(hsotg->dev, "dwc2-ecc");
- 	if (IS_ERR(hsotg->reset_ecc))
-@@ -192,6 +201,10 @@ static int dwc2_lowlevel_hw_init(struct dwc2_hsotg *hsotg)
- 				     "error getting reset control for ecc\n");
- 
- 	reset_control_deassert(hsotg->reset_ecc);
-+	ret = devm_add_action_or_reset(hsotg->dev, dwc2_reset_control_assert,
-+				       hsotg->reset_ecc);
-+	if (ret)
-+		return ret;
- 
- 	/*
- 	 * Attempt to find a generic PHY, then look for an old style
-@@ -306,9 +319,6 @@ static int dwc2_driver_remove(struct platform_device *dev)
- 	if (hsotg->ll_hw_enabled)
- 		dwc2_lowlevel_hw_disable(hsotg);
- 
--	reset_control_assert(hsotg->reset);
--	reset_control_assert(hsotg->reset_ecc);
--
- 	return 0;
- }
- 
+ 	/* If there's nothing pending either store the data from this
+ 	 * event or send an immediate device found event if the data
 -- 
 2.39.2
 
