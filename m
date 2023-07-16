@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B857556A7
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80ADE755466
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:30:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232916AbjGPUwj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40772 "EHLO
+        id S232088AbjGPU35 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:29:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232925AbjGPUwi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:38 -0400
+        with ESMTP id S232115AbjGPU34 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B87109
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82123D3
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 761EF60E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853D8C433C7;
-        Sun, 16 Jul 2023 20:52:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DCD960DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BB3C433C8;
+        Sun, 16 Jul 2023 20:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540756;
-        bh=3+uk3lHB9I/y/j0MUypH9xNqMEo4gsLCJGi55I5rWzE=;
+        s=korg; t=1689539394;
+        bh=alRoF2r4u/LOYSlw63bqPvhwLo00F56nZB4PX8IDM3k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t5T29BsTV+vHMGUE1z9X8RtCvp2ZNT1pval8DGU2T4g5n8wSQ1om90LwbiPusfSNT
-         fOXMvmqQYum07Je/RHaoYnYZHLlPfCuAqzaNsEs/ueWAti7IGxPDqkVH8cNq3jIkM8
-         JJFMPSBFeHXqmE8LIqHo4muyzKWGtGHy2jvFxZGg=
+        b=0fLgKIOL9mGLIXvupplFYdng/a6ZzLrMICel3qxEOF2hjX35sUzZYfFPDMDb2WTqK
+         fsMziBDZtEbVXCIJ9a07SbK52WypZycLdHCJ0TPcw144ahOVLaP4E9aaA0349sR6/T
+         h64Ec5I7uUm/Wt+/wS91dP30VSUlj5UW6no/6FPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 477/591] net: dsa: felix: dont drop PTP frames with tag_8021q when RX timestamping is disabled
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 763/800] btrfs: add missing error handling when logging operation while COWing extent buffer
 Date:   Sun, 16 Jul 2023 21:50:16 +0200
-Message-ID: <20230716194936.242136742@linuxfoundation.org>
+Message-ID: <20230716195006.873044341@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,70 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 2edcfcbb3c5946609be1d8875473a240b170673b ]
+commit d09c51521f22f9cbdfb1cf63e5c456077c622c84 upstream.
 
-The driver implements a workaround for the fact that it doesn't have an
-IRQ source to tell it whether PTP frames are available through the
-extraction registers, for those frames to be processed and passed
-towards the network stack. That workaround is to configure the switch,
-through felix_hwtstamp_set() -> felix_update_trapping_destinations(),
-to create two copies of PTP packets: one sent over Ethernet to the DSA
-master, and one to be consumed through the aforementioned CPU extraction
-queue registers.
+When COWing an extent buffer that is not the root node, we need to log in
+the tree mod log that we replaced a pointer in the parent node, otherwise
+a tree mod log user doing a search on the b+tree can return incorrect
+results (that miss something). We are doing the call to
+btrfs_tree_mod_log_insert_key() but we totally ignore its return value.
 
-The reason why we want PTP packets to be consumed through the CPU
-extraction registers in the first place is because we want to see their
-hardware RX timestamp. With tag_8021q, that is only visible that way,
-and it isn't visible with the copy of the packet that's transmitted over
-Ethernet.
+So fix this by adding the missing error handling, resulting in a
+transaction abort and freeing the COWed extent buffer.
 
-The problem with the workaround implementation is that it drops the
-packet received over Ethernet, in expectation of its copy being present
-in the CPU extraction registers. However, if felix_hwtstamp_set() hasn't
-run (aka PTP RX timestamping is disabled), the driver will drop the
-original PTP frame and there will be no copy of it in the CPU extraction
-registers. So, the network stack will simply not see any PTP frame.
-
-Look at the port's trapping configuration to see whether the driver has
-previously enabled the CPU extraction registers. If it hasn't, just
-don't RX timestamp the frame and let it be passed up the stack by DSA,
-which is perfectly fine.
-
-Fixes: 0a6f17c6ae21 ("net: dsa: tag_ocelot_8021q: add support for PTP timestamping")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f230475e62f7 ("Btrfs: put all block modifications into the tree mod log")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/ocelot/felix.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/btrfs/ctree.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
-index dd3a18cc89dd2..4faabc4364aa7 100644
---- a/drivers/net/dsa/ocelot/felix.c
-+++ b/drivers/net/dsa/ocelot/felix.c
-@@ -1705,6 +1705,18 @@ static bool felix_rxtstamp(struct dsa_switch *ds, int port,
- 	u32 tstamp_hi;
- 	u64 tstamp;
- 
-+	switch (type & PTP_CLASS_PMASK) {
-+	case PTP_CLASS_L2:
-+		if (!(ocelot->ports[port]->trap_proto & OCELOT_PROTO_PTP_L2))
-+			return false;
-+		break;
-+	case PTP_CLASS_IPV4:
-+	case PTP_CLASS_IPV6:
-+		if (!(ocelot->ports[port]->trap_proto & OCELOT_PROTO_PTP_L4))
-+			return false;
-+		break;
-+	}
-+
- 	/* If the "no XTR IRQ" workaround is in use, tell DSA to defer this skb
- 	 * for RX timestamping. Then free it, and poll for its copy through
- 	 * MMIO in the CPU port module, and inject that into the stack from
--- 
-2.39.2
-
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -594,8 +594,14 @@ static noinline int __btrfs_cow_block(st
+ 		add_root_to_dirty_list(root);
+ 	} else {
+ 		WARN_ON(trans->transid != btrfs_header_generation(parent));
+-		btrfs_tree_mod_log_insert_key(parent, parent_slot,
+-					      BTRFS_MOD_LOG_KEY_REPLACE);
++		ret = btrfs_tree_mod_log_insert_key(parent, parent_slot,
++						    BTRFS_MOD_LOG_KEY_REPLACE);
++		if (ret) {
++			btrfs_tree_unlock(cow);
++			free_extent_buffer(cow);
++			btrfs_abort_transaction(trans, ret);
++			return ret;
++		}
+ 		btrfs_set_node_blockptr(parent, parent_slot,
+ 					cow->start);
+ 		btrfs_set_node_ptr_generation(parent, parent_slot,
 
 
