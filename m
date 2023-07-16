@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E6FD7553B7
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DB987555D0
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:44:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231840AbjGPUWN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:22:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46112 "EHLO
+        id S232634AbjGPUoy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:44:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231827AbjGPUWM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:12 -0400
+        with ESMTP id S232635AbjGPUoy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:44:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D0499F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ADFFE50
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:44:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 35F9260EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BFAC433C8;
-        Sun, 16 Jul 2023 20:22:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C72F360DFD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:44:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6863C433C8;
+        Sun, 16 Jul 2023 20:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538926;
-        bh=0j0gljsKBs+ec3Yf/2gB8d1DPYOoteFiYAAErf6yQDM=;
+        s=korg; t=1689540291;
+        bh=XtbKHEAoAVXkwuBWG+umUjmsPP5dvgobbhM4IXT/Ctg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AlphU+RK9/AwdttQq3lQX5EJrnjrLTz4uQZAnN0Z2yWhoXbuFX4X4hGu9rLbx1dj0
-         LsCp2RvnbFta/an8l81ChDlt9mpJ+DtonDkeZbfYhaU/rZzMtMMS6JoNKH8zKbgPTl
-         sZO5rLeAkKr4K72VFxIhdInkqwqD+kTBsOWvoorA=
+        b=P1Srw5GhR0Yhwt+SqC8XC2B2UvPCZGdlIZyTcazCh4E0utld0/Q50xPWLVGcUq7Y6
+         mvwfVBRoNH9g3zndW7MRrk/m+CsEW3Orm+69erJb2ETTsx7x2bPpbJozM0RkEzqWhw
+         zboommMQUi/CPZ3rJ5HRxcgmSV2w+YbYzrzxt4F4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Mark Pearson <mpearson-lenovo@squebb.ca>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 596/800] serial: 8250: lock port for stop_rx() in omap8250_irq()
+Subject: [PATCH 6.1 310/591] platform/x86: thinkpad_acpi: Fix lkp-tests warnings for platform profiles
 Date:   Sun, 16 Jul 2023 21:47:29 +0200
-Message-ID: <20230716195002.945902780@linuxfoundation.org>
+Message-ID: <20230716194931.911852237@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +57,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit ca73a892c5bec4b08a2fa22b3015e98ed905abb7 ]
+[ Upstream commit f999e23ce66c1555d7b653fba171a88ecee53704 ]
 
-The uarts_ops stop_rx() callback expects that the port->lock is
-taken and interrupts are disabled.
+Fix issues identified in dytc_profile_refresh identified by lkp-tests.
+drivers/platform/x86/thinkpad_acpi.c:10538
+	dytc_profile_refresh() error: uninitialized symbol 'funcmode'.
+drivers/platform/x86/thinkpad_acpi.c:10531
+	dytc_profile_refresh() error: uninitialized symbol 'output'.
+drivers/platform/x86/thinkpad_acpi.c:10537
+	dytc_profile_refresh() error: uninitialized symbol 'output'.
 
-Fixes: 1fe0e1fa3209 ("serial: 8250_omap: Handle optional overrun-throttle-ms property")
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20230525093159.223817-4-john.ogness@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+These issues should not lead to real problems in the field as the refresh
+function should only be called if MMC or PSC mode enabled. But good to fix.
+
+Thanks to Dan Carpenter and the lkp-tests project for flagging these.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202306011202.1hbgLRD4-lkp@intel.com/
+Fixes: 1bc5d819f0b9 ("platform/x86: thinkpad_acpi: Fix profile modes on Intel platforms")
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20230606151804.8819-1-mpearson-lenovo@squebb.ca
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/thinkpad_acpi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 05dc568bd3898..05704d8c56566 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -651,7 +651,9 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 5b2c8dd2861b7..e7ece2738de94 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10528,8 +10528,8 @@ static int dytc_profile_set(struct platform_profile_handler *pprof,
+ static void dytc_profile_refresh(void)
+ {
+ 	enum platform_profile_option profile;
+-	int output, err = 0;
+-	int perfmode, funcmode;
++	int output = 0, err = 0;
++	int perfmode, funcmode = 0;
  
- 		up->ier = port->serial_in(port, UART_IER);
- 		if (up->ier & (UART_IER_RLSI | UART_IER_RDI)) {
-+			spin_lock(&port->lock);
- 			port->ops->stop_rx(port);
-+			spin_unlock(&port->lock);
- 		} else {
- 			/* Keep restarting the timer until
- 			 * the input overrun subsides.
+ 	mutex_lock(&dytc_mutex);
+ 	if (dytc_capabilities & BIT(DYTC_FC_MMC)) {
+@@ -10542,6 +10542,8 @@ static void dytc_profile_refresh(void)
+ 		err = dytc_command(DYTC_CMD_GET, &output);
+ 		/* Check if we are PSC mode, or have AMT enabled */
+ 		funcmode = (output >> DYTC_GET_FUNCTION_BIT) & 0xF;
++	} else { /* Unknown profile mode */
++		err = -ENODEV;
+ 	}
+ 	mutex_unlock(&dytc_mutex);
+ 	if (err)
 -- 
 2.39.2
 
