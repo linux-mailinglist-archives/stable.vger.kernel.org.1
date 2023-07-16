@@ -2,111 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C73FA7554D3
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30EDB7552AF
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232336AbjGPUel (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:34:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55022 "EHLO
+        id S231440AbjGPUKn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:10:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232335AbjGPUek (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461C5D2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:39 -0700 (PDT)
+        with ESMTP id S231433AbjGPUKl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA3F59B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B969760E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80CFC433C8;
-        Sun, 16 Jul 2023 20:34:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88BEF60EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997BFC433C8;
+        Sun, 16 Jul 2023 20:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539678;
-        bh=aodLKqIfeAy7x8lErqPn0TghLwhLAwlY0omqe3ICSsQ=;
+        s=korg; t=1689538240;
+        bh=x+npZbv8mH+79cB6bj0I7u9mYEceT9vRQ5CndDDH0Us=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C3vRUOxkKglAkYorIkHlwGtok2Fk0IP+HSWbX82WYklO0upxgMrRDVEsJs9kcD4GB
-         OpAF/lO9twUdnKnxMwFb1Sk4WTbttp+QjtrK2fD2+YeN22glHg/QOtPBvc/MnkcFDL
-         I/QwPonk4T/GOM+iYC+4CG8SCPf3tpt859H6RzXE=
+        b=TuNGoVb6VJdVO62KlTHU4PVKkBToYquKJLGJ3YL7TtcJ/PD9Z02zPDuOvGSDtcm7p
+         6y82Y04qGUr5ifggtjldbwsu5QCnXPZ9grYrW5YpeimKbJ2+jC8VzBvx+HMkNZ+1t/
+         etdzMW5NmV9BlEMVxX3WNDHP76dGwsVqYBmvaQ6M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jesper Dangaard Brouer <brouer@redhat.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Tariq Toukan <tariqt@nvidia.com>,
+        patches@lists.linux.dev, Kai Ma <kaima@hust.edu.cn>,
+        Peng Fan <peng.fan@nxp.com>,
+        Jesse Taube <Mr.Bossman075@gmail.com>,
+        Abel Vesa <abel.vesa@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/591] samples/bpf: xdp1 and xdp2 reduce XDPBUFSIZE to 60
-Date:   Sun, 16 Jul 2023 21:43:51 +0200
-Message-ID: <20230716194926.259887787@linuxfoundation.org>
+Subject: [PATCH 6.4 379/800] clk: imx: clk-imxrt1050: fix memory leak in imxrt1050_clocks_probe
+Date:   Sun, 16 Jul 2023 21:43:52 +0200
+Message-ID: <20230716194957.877760837@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jesper Dangaard Brouer <brouer@redhat.com>
+From: Kai Ma <kaima@hust.edu.cn>
 
-[ Upstream commit 60548b825b082cedf89b275c21c28b1e1d030e50 ]
+[ Upstream commit 1b280598ab3bd8a2dc8b96a12530d5b1ee7a8f4a ]
 
-Default samples/pktgen scripts send 60 byte packets as hardware adds
-4-bytes FCS checksum, which fulfils minimum Ethernet 64 bytes frame
-size.
+Use devm_of_iomap() instead of of_iomap() to automatically
+handle the unused ioremap region. If any error occurs, regions allocated by
+kzalloc() will leak, but using devm_kzalloc() instead will automatically
+free the memory using devm_kfree().
 
-XDP layer will not necessary have access to the 4-bytes FCS checksum.
+Also, fix error handling of hws by adding unregister_hws label, which
+unregisters remaining hws when iomap failed.
 
-This leads to bpf_xdp_load_bytes() failing as it tries to copy 64-bytes
-from an XDP packet that only have 60-bytes available.
-
-Fixes: 772251742262 ("samples/bpf: fixup some tools to be able to support xdp multibuffer")
-Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/bpf/168545704139.2996228.2516528552939485216.stgit@firesoul
+Fixes: 7154b046d8f3 ("clk: imx: Add initial support for i.MXRT1050 clock driver")
+Signed-off-by: Kai Ma <kaima@hust.edu.cn>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Acked-by: Jesse Taube <Mr.Bossman075@gmail.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20230418113451.151312-1-kaima@hust.edu.cn
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/xdp1_kern.c | 2 +-
- samples/bpf/xdp2_kern.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-imxrt1050.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/samples/bpf/xdp1_kern.c b/samples/bpf/xdp1_kern.c
-index 0a5c704badd00..d91f27cbcfa99 100644
---- a/samples/bpf/xdp1_kern.c
-+++ b/samples/bpf/xdp1_kern.c
-@@ -39,7 +39,7 @@ static int parse_ipv6(void *data, u64 nh_off, void *data_end)
- 	return ip6h->nexthdr;
- }
+diff --git a/drivers/clk/imx/clk-imxrt1050.c b/drivers/clk/imx/clk-imxrt1050.c
+index fd5c51fc92c0e..08d155feb035a 100644
+--- a/drivers/clk/imx/clk-imxrt1050.c
++++ b/drivers/clk/imx/clk-imxrt1050.c
+@@ -42,7 +42,7 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
+ 	struct device_node *anp;
+ 	int ret;
  
--#define XDPBUFSIZE	64
-+#define XDPBUFSIZE	60
- SEC("xdp.frags")
- int xdp_prog1(struct xdp_md *ctx)
- {
-diff --git a/samples/bpf/xdp2_kern.c b/samples/bpf/xdp2_kern.c
-index 67804ecf7ce37..8bca674451ed1 100644
---- a/samples/bpf/xdp2_kern.c
-+++ b/samples/bpf/xdp2_kern.c
-@@ -55,7 +55,7 @@ static int parse_ipv6(void *data, u64 nh_off, void *data_end)
- 	return ip6h->nexthdr;
- }
+-	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws,
++	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
+ 					  IMXRT1050_CLK_END), GFP_KERNEL);
+ 	if (WARN_ON(!clk_hw_data))
+ 		return -ENOMEM;
+@@ -53,10 +53,12 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
+ 	hws[IMXRT1050_CLK_OSC] = imx_get_clk_hw_by_name(np, "osc");
  
--#define XDPBUFSIZE	64
-+#define XDPBUFSIZE	60
- SEC("xdp.frags")
- int xdp_prog1(struct xdp_md *ctx)
- {
+ 	anp = of_find_compatible_node(NULL, NULL, "fsl,imxrt-anatop");
+-	pll_base = of_iomap(anp, 0);
++	pll_base = devm_of_iomap(dev, anp, 0, NULL);
+ 	of_node_put(anp);
+-	if (WARN_ON(!pll_base))
+-		return -ENOMEM;
++	if (WARN_ON(IS_ERR(pll_base))) {
++		ret = PTR_ERR(pll_base);
++		goto unregister_hws;
++	}
+ 
+ 	/* Anatop clocks */
+ 	hws[IMXRT1050_CLK_DUMMY] = imx_clk_hw_fixed("dummy", 0UL);
+@@ -104,8 +106,10 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
+ 
+ 	/* CCM clocks */
+ 	ccm_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (WARN_ON(IS_ERR(ccm_base)))
+-		return PTR_ERR(ccm_base);
++	if (WARN_ON(IS_ERR(ccm_base))) {
++		ret = PTR_ERR(ccm_base);
++		goto unregister_hws;
++	}
+ 
+ 	hws[IMXRT1050_CLK_ARM_PODF] = imx_clk_hw_divider("arm_podf", "pll1_arm", ccm_base + 0x10, 0, 3);
+ 	hws[IMXRT1050_CLK_PRE_PERIPH_SEL] = imx_clk_hw_mux("pre_periph_sel", ccm_base + 0x18, 18, 2,
+@@ -149,8 +153,12 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
+ 	ret = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to register clks for i.MXRT1050.\n");
+-		imx_unregister_hw_clocks(hws, IMXRT1050_CLK_END);
++		goto unregister_hws;
+ 	}
++	return 0;
++
++unregister_hws:
++	imx_unregister_hw_clocks(hws, IMXRT1050_CLK_END);
+ 	return ret;
+ }
+ static const struct of_device_id imxrt1050_clk_of_match[] = {
 -- 
 2.39.2
 
