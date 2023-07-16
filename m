@@ -2,91 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BC8075544E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E31707556B2
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:53:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232069AbjGPU26 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:28:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50734 "EHLO
+        id S232940AbjGPUxI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:53:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232068AbjGPU25 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:28:57 -0400
+        with ESMTP id S232935AbjGPUxG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:53:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D7A89F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:28:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8182E9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:53:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B10660EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:28:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C413C433C8;
-        Sun, 16 Jul 2023 20:28:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 460E960DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:53:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C98C433C8;
+        Sun, 16 Jul 2023 20:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539335;
-        bh=01jCrS5B+z6Nw4qJZ5yxfHzFJ9JmhhnKwbAGUAnjkPo=;
+        s=korg; t=1689540784;
+        bh=jYia2HJK0JNf9erage2YNKyTU5v33WGxUllnwwDr8/Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PkZCFL1M1rt0lJ7iDPD8saceCsjHtoWTLvqpm3rh3LLJHB13/ZCh3Efpo//vY7zcm
-         iKa19C+NPrz3efB7C/Kc5puWN2QmhwuL9sfcq93p+eCslijqv9qy+jW/hRrx3BZJyY
-         4kS+/a9e75ST3JdugPqxG9/2U7WNRcYAYfme2Cpo=
+        b=IIMz3DtDnLUfXST6Qbdoj2+rzXtC2uUoOBSe5vtD9KtxKB0K3LqtYLgaG9Jm3eErh
+         3Vm6DB/UIUUn/G3iZi7RdP78O9mgs4/ykL3n30q4wSFycWpd1jfOenJpzjgTMwF7cl
+         1sD17cj9gY2yuwbl+AiI/ekoCrCQKZd4VCdvhh30=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>, Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.4 772/800] leds: trigger: netdev: Recheck NETDEV_LED_MODE_LINKUP on dev rename
+        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 486/591] ibmvnic: Do not reset dql stats on NON_FATAL err
 Date:   Sun, 16 Jul 2023 21:50:25 +0200
-Message-ID: <20230716195007.080179743@linuxfoundation.org>
+Message-ID: <20230716194936.469605497@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit cee4bd16c3195a701be683f7da9e88c6e11acb73 upstream.
+[ Upstream commit 48538ccb825b05544ec308a509e2cc9c013402db ]
 
-Dev can be renamed also while up for supported device. We currently
-wrongly clear the NETDEV_LED_MODE_LINKUP flag on NETDEV_CHANGENAME
-event.
+All ibmvnic resets, make a call to netdev_tx_reset_queue() when
+re-opening the device. netdev_tx_reset_queue() resets the num_queued
+and num_completed byte counters. These stats are used in Byte Queue
+Limit (BQL) algorithms. The difference between these two stats tracks
+the number of bytes currently sitting on the physical NIC. ibmvnic
+increases the number of queued bytes though calls to
+netdev_tx_sent_queue() in the drivers xmit function. When, VIOS reports
+that it is done transmitting bytes, the ibmvnic device increases the
+number of completed bytes through calls to netdev_tx_completed_queue().
+It is important to note that the driver batches its transmit calls and
+num_queued is increased every time that an skb is added to the next
+batch, not necessarily when the batch is sent to VIOS for transmission.
 
-Fix this by rechecking if the carrier is ok on NETDEV_CHANGENAME and
-correctly set the NETDEV_LED_MODE_LINKUP bit.
+Unlike other reset types, a NON FATAL reset will not flush the sub crq
+tx buffers. Therefore, it is possible for the batched skb array to be
+partially full. So if there is call to netdev_tx_reset_queue() when
+re-opening the device, the value of num_queued (0) would not account
+for the skb's that are currently batched. Eventually, when the batch
+is sent to VIOS, the call to netdev_tx_completed_queue() would increase
+num_completed to a value greater than the num_queued. This causes a
+BUG_ON crash:
 
-Fixes: 5f820ed52371 ("leds: trigger: netdev: fix handling on interface rename")
-Cc: stable@vger.kernel.org # v5.5+
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230419210743.3594-2-ansuelsmth@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ibmvnic 30000002: Firmware reports error, cause: adapter problem.
+Starting recovery...
+ibmvnic 30000002: tx error 600
+ibmvnic 30000002: tx error 600
+ibmvnic 30000002: tx error 600
+ibmvnic 30000002: tx error 600
+------------[ cut here ]------------
+kernel BUG at lib/dynamic_queue_limits.c:27!
+Oops: Exception in kernel mode, sig: 5
+[....]
+NIP dql_completed+0x28/0x1c0
+LR ibmvnic_complete_tx.isra.0+0x23c/0x420 [ibmvnic]
+Call Trace:
+ibmvnic_complete_tx.isra.0+0x3f8/0x420 [ibmvnic] (unreliable)
+ibmvnic_interrupt_tx+0x40/0x70 [ibmvnic]
+__handle_irq_event_percpu+0x98/0x270
+---[ end trace ]---
+
+Therefore, do not reset the dql stats when performing a NON_FATAL reset.
+
+Fixes: 0d973388185d ("ibmvnic: Introduce xmit_more support using batched subCRQ hcalls")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/trigger/ledtrig-netdev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/ibm/ibmvnic.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/leds/trigger/ledtrig-netdev.c
-+++ b/drivers/leds/trigger/ledtrig-netdev.c
-@@ -318,6 +318,9 @@ static int netdev_trig_notify(struct not
- 	clear_bit(NETDEV_LED_MODE_LINKUP, &trigger_data->mode);
- 	switch (evt) {
- 	case NETDEV_CHANGENAME:
-+		if (netif_carrier_ok(dev))
-+			set_bit(NETDEV_LED_MODE_LINKUP, &trigger_data->mode);
-+		fallthrough;
- 	case NETDEV_REGISTER:
- 		if (trigger_data->net_dev)
- 			dev_put(trigger_data->net_dev);
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 9282381a438fe..bc97f24b08270 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -1625,7 +1625,14 @@ static int __ibmvnic_open(struct net_device *netdev)
+ 		if (prev_state == VNIC_CLOSED)
+ 			enable_irq(adapter->tx_scrq[i]->irq);
+ 		enable_scrq_irq(adapter, adapter->tx_scrq[i]);
+-		netdev_tx_reset_queue(netdev_get_tx_queue(netdev, i));
++		/* netdev_tx_reset_queue will reset dql stats. During NON_FATAL
++		 * resets, don't reset the stats because there could be batched
++		 * skb's waiting to be sent. If we reset dql stats, we risk
++		 * num_completed being greater than num_queued. This will cause
++		 * a BUG_ON in dql_completed().
++		 */
++		if (adapter->reset_reason != VNIC_RESET_NON_FATAL)
++			netdev_tx_reset_queue(netdev_get_tx_queue(netdev, i));
+ 	}
+ 
+ 	rc = set_link_state(adapter, IBMVNIC_LOGICAL_LNK_UP);
+-- 
+2.39.2
+
 
 
