@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37F6A75540D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E7A6755665
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231960AbjGPU0B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:26:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48170 "EHLO
+        id S232807AbjGPUuH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:50:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231972AbjGPU0B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:26:01 -0400
+        with ESMTP id S232803AbjGPUuG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:50:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50196BC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E768AD9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:50:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE7C660EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1105C433C8;
-        Sun, 16 Jul 2023 20:25:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F38860EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:50:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E120C433C7;
+        Sun, 16 Jul 2023 20:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539159;
-        bh=IXAQm7r1PimoJCWHcEqlJ2R4NqjE05PYXp3/QDvrqJM=;
+        s=korg; t=1689540604;
+        bh=hDpL2A7ocdiTfNxc9l3GHz7iVW4RnqulqfgJ/1KS4Jw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tPZfMROxIqyKRmUUjPZ/onyLIStlZUbSqcY7Nl61aQ3SFHB17tv3meurlGmm7Lhjw
-         7Yg3zMtuh6hdgXM/QJIHHY2JI2jK00LlyeHTujhGJp5JNFVCIzSioDXjdhYh39VYQV
-         jycLpgquAVZV35Mke3R6/OCSGwZS23rt8N/0+zK4=
+        b=wXjUcPA93nW+rWHgl+JzNyTALHotuWPR/dGhuEtUhsDAvjm3nX6Ya4sBmHG1FkYNK
+         LpC2mffKG2gq7YMYariFB363E9gQjIUy3zj6sgl7U4FoSvIbqOCsUqejhNnIvPZvu/
+         FEhB8tnC+/t55DCdCP4FqwVB88jF4XWyWDdipgdQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Conor Dooley <conor@kernel.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Conor Dooley <conor.dooley@microchip.com>,
+        patches@lists.linux.dev, Clark Wang <xiaoning.wang@nxp.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 708/800] risc-v: Fix order of IPI enablement vs RCU startup
+Subject: [PATCH 6.1 422/591] i3c: master: svc: fix cpu schedule in spin lock
 Date:   Sun, 16 Jul 2023 21:49:21 +0200
-Message-ID: <20230716195005.565481736@linuxfoundation.org>
+Message-ID: <20230716194934.833584091@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,52 +56,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Zyngier <maz@kernel.org>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-[ Upstream commit 6259f3443c6a376aa077816ac92e9ddeb0817d09 ]
+[ Upstream commit 33beadb3b1ab74e69db2c49d9663f3a93a273943 ]
 
-Conor reports that risc-v tries to enable IPIs before telling the
-core code to enable RCU. With the introduction of the mapple tree
-as a backing store for the irq descriptors, this results in
-a very shouty boot sequence, as RCU is legitimately upset.
+pm_runtime_resume_and_get() may call sleep(). It cannot be used in
+svc_i3c_master_start_xfer_locked(), because it is in a spin lock.
 
-Restore some sanity by moving the risc_ipi_enable() call after
-notify_cpu_starting(), which explicitly enables RCU on the calling
-CPU.
+Move the pm runtime operations to svc_i3c_master_enqueue_xfer().
 
-Fixes: 832f15f42646 ("RISC-V: Treat IPIs as normal Linux IRQs")
-Reported-by: Conor Dooley <conor@kernel.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230703-dupe-frying-79ae2ccf94eb@spud
-Cc: Anup Patel <apatel@ventanamicro.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20230703183126.1567625-1-maz@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Fixes: 05be23ef78f7 ("i3c: master: svc: add runtime pm support")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20230517033030.3068085-2-xiaoning.wang@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/smpboot.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
-index 445a4efee267d..6765f1ce79625 100644
---- a/arch/riscv/kernel/smpboot.c
-+++ b/arch/riscv/kernel/smpboot.c
-@@ -161,10 +161,11 @@ asmlinkage __visible void smp_callin(void)
- 	mmgrab(mm);
- 	current->active_mm = mm;
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index d6e9ed74cdcf4..d47360f8a1f36 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -1090,12 +1090,6 @@ static void svc_i3c_master_start_xfer_locked(struct svc_i3c_master *master)
+ 	if (!xfer)
+ 		return;
  
--	riscv_ipi_enable();
+-	ret = pm_runtime_resume_and_get(master->dev);
+-	if (ret < 0) {
+-		dev_err(master->dev, "<%s> Cannot get runtime PM.\n", __func__);
+-		return;
+-	}
 -
- 	store_cpu_topology(curr_cpuid);
- 	notify_cpu_starting(curr_cpuid);
+ 	svc_i3c_master_clear_merrwarn(master);
+ 	svc_i3c_master_flush_fifo(master);
+ 
+@@ -1110,9 +1104,6 @@ static void svc_i3c_master_start_xfer_locked(struct svc_i3c_master *master)
+ 			break;
+ 	}
+ 
+-	pm_runtime_mark_last_busy(master->dev);
+-	pm_runtime_put_autosuspend(master->dev);
+-
+ 	xfer->ret = ret;
+ 	complete(&xfer->comp);
+ 
+@@ -1133,6 +1124,13 @@ static void svc_i3c_master_enqueue_xfer(struct svc_i3c_master *master,
+ 					struct svc_i3c_xfer *xfer)
+ {
+ 	unsigned long flags;
++	int ret;
 +
-+	riscv_ipi_enable();
++	ret = pm_runtime_resume_and_get(master->dev);
++	if (ret < 0) {
++		dev_err(master->dev, "<%s> Cannot get runtime PM.\n", __func__);
++		return;
++	}
+ 
+ 	init_completion(&xfer->comp);
+ 	spin_lock_irqsave(&master->xferqueue.lock, flags);
+@@ -1143,6 +1141,9 @@ static void svc_i3c_master_enqueue_xfer(struct svc_i3c_master *master,
+ 		svc_i3c_master_start_xfer_locked(master);
+ 	}
+ 	spin_unlock_irqrestore(&master->xferqueue.lock, flags);
 +
- 	numa_add_cpu(curr_cpuid);
- 	set_cpu_online(curr_cpuid, 1);
- 	probe_vendor_features(curr_cpuid);
++	pm_runtime_mark_last_busy(master->dev);
++	pm_runtime_put_autosuspend(master->dev);
+ }
+ 
+ static bool
 -- 
 2.39.2
 
