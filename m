@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3879755430
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2055775568D
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232020AbjGPU1h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:27:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49928 "EHLO
+        id S232905AbjGPUvn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:51:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbjGPU1g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:36 -0400
+        with ESMTP id S232901AbjGPUvm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:51:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA8F19F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:27:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43EE2E9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F89560EBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:27:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA27C433C8;
-        Sun, 16 Jul 2023 20:27:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B9B5A60E9E
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA65DC433C7;
+        Sun, 16 Jul 2023 20:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539254;
-        bh=ZO6GXEu8ExPLioPg8uE6mWMIoZF1YO5hcJ9dNu+zi5s=;
+        s=korg; t=1689540700;
+        bh=RMp4xByG4ffeO0OOKmDWbpxiTLqmBseqZwL54lV+3dg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C+bY7Nbx16sXcOn23wcaZRZ/YVTSUiW14pftXMBbgB3lkLOOpvyzLRdKf9GwlqcpX
-         jDGXm9fLp9MtMJr3N7ngbYJ+azR6AnSVVKq8G+fd+kBuzinknMpBL864KhJT2nKBEq
-         s6Caq7PpViEKgldpdc7QR93cm2mMvjzICvBsyikg=
+        b=ZnGvThgVifB98X5MJKn2d1O7l2l/rsaCjjWTiBz+I3YS4Nyh/lrP3HPbYyTl6nIeZ
+         IHIUAKBknKxaX8vwi2j6tu6hXOVSSZO+8ZqcRwXEay07FZ7r6QchV335bmhvGnlzdT
+         PW51m9iU1UAXKi3OFJQo5ewz28xSFCTyGmqzqNTw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Hugh Dickins <hughd@google.com>,
-        David Howells <dhowells@redhat.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 742/800] shmem: use ramfs_kill_sb() for kill_sb method of ramfs-based tmpfs
+        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        Yury Norov <yury.norov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 456/591] lib/bitmap: drop optimization of bitmap_{from,to}_arr64
 Date:   Sun, 16 Jul 2023 21:49:55 +0200
-Message-ID: <20230716195006.355766215@linuxfoundation.org>
+Message-ID: <20230716194935.703759168@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,60 +57,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Yury Norov <yury.norov@gmail.com>
 
-commit 36ce9d76b0a93bae799e27e4f5ac35478c676592 upstream.
+[ Upstream commit c1d2ba10f594046831d14b03f194e8d05e78abad ]
 
-As the ramfs-based tmpfs uses ramfs_init_fs_context() for the
-init_fs_context method, which allocates fc->s_fs_info, use ramfs_kill_sb()
-to free it and avoid a memory leak.
+bitmap_{from,to}_arr64() optimization is overly optimistic on 32-bit LE
+architectures when it's wired to bitmap_copy_clear_tail().
 
-Link: https://lkml.kernel.org/r/20230607161523.2876433-1-roberto.sassu@huaweicloud.com
-Fixes: c3b1b1cbf002 ("ramfs: add support for "mode=" mount option")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+bitmap_copy_clear_tail() takes care of unused bits in the bitmap up to
+the next word boundary. But on 32-bit machines when copying bits from
+bitmap to array of 64-bit words, it's expected that the unused part of
+a recipient array must be cleared up to 64-bit boundary, so the last 4
+bytes may stay untouched when nbits % 64 <= 32.
+
+While the copying part of the optimization works correct, that clear-tail
+trick makes corresponding tests reasonably fail:
+
+test_bitmap: bitmap_to_arr64(nbits == 1): tail is not safely cleared: 0xa5a5a5a500000001 (must be 0x0000000000000001)
+
+Fix it by removing bitmap_{from,to}_arr64() optimization for 32-bit LE
+arches.
+
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/lkml/20230225184702.GA3587246@roeck-us.net/
+Fixes: 0a97953fd221 ("lib: add bitmap_{from,to}_arr64")
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ramfs/inode.c      |    2 +-
- include/linux/ramfs.h |    1 +
- mm/shmem.c            |    2 +-
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ include/linux/bitmap.h | 8 +++-----
+ lib/bitmap.c           | 2 +-
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
---- a/fs/ramfs/inode.c
-+++ b/fs/ramfs/inode.c
-@@ -278,7 +278,7 @@ int ramfs_init_fs_context(struct fs_cont
- 	return 0;
- }
+diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
+index 7d6d73b781472..03644237e1efb 100644
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -302,12 +302,10 @@ void bitmap_to_arr32(u32 *buf, const unsigned long *bitmap,
+ #endif
  
--static void ramfs_kill_sb(struct super_block *sb)
-+void ramfs_kill_sb(struct super_block *sb)
- {
- 	kfree(sb->s_fs_info);
- 	kill_litter_super(sb);
---- a/include/linux/ramfs.h
-+++ b/include/linux/ramfs.h
-@@ -7,6 +7,7 @@
- struct inode *ramfs_get_inode(struct super_block *sb, const struct inode *dir,
- 	 umode_t mode, dev_t dev);
- extern int ramfs_init_fs_context(struct fs_context *fc);
-+extern void ramfs_kill_sb(struct super_block *sb);
+ /*
+- * On 64-bit systems bitmaps are represented as u64 arrays internally. On LE32
+- * machines the order of hi and lo parts of numbers match the bitmap structure.
+- * In both cases conversion is not needed when copying data from/to arrays of
+- * u64.
++ * On 64-bit systems bitmaps are represented as u64 arrays internally. So,
++ * the conversion is not needed when copying data from/to arrays of u64.
+  */
+-#if (BITS_PER_LONG == 32) && defined(__BIG_ENDIAN)
++#if BITS_PER_LONG == 32
+ void bitmap_from_arr64(unsigned long *bitmap, const u64 *buf, unsigned int nbits);
+ void bitmap_to_arr64(u64 *buf, const unsigned long *bitmap, unsigned int nbits);
+ #else
+diff --git a/lib/bitmap.c b/lib/bitmap.c
+index 1c81413c51f86..ddb31015e38ae 100644
+--- a/lib/bitmap.c
++++ b/lib/bitmap.c
+@@ -1495,7 +1495,7 @@ void bitmap_to_arr32(u32 *buf, const unsigned long *bitmap, unsigned int nbits)
+ EXPORT_SYMBOL(bitmap_to_arr32);
+ #endif
  
- #ifdef CONFIG_MMU
- static inline int
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -4196,7 +4196,7 @@ static struct file_system_type shmem_fs_
- 	.name		= "tmpfs",
- 	.init_fs_context = ramfs_init_fs_context,
- 	.parameters	= ramfs_fs_parameters,
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= ramfs_kill_sb,
- 	.fs_flags	= FS_USERNS_MOUNT,
- };
- 
+-#if (BITS_PER_LONG == 32) && defined(__BIG_ENDIAN)
++#if BITS_PER_LONG == 32
+ /**
+  * bitmap_from_arr64 - copy the contents of u64 array of bits to bitmap
+  *	@bitmap: array of unsigned longs, the destination bitmap
+-- 
+2.39.2
+
 
 
