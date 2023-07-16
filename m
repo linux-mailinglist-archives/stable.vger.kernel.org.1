@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68EBE75542C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF655755697
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230128AbjGPU13 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:27:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49850 "EHLO
+        id S232909AbjGPUwF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:52:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231404AbjGPU12 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C1EC9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:27:27 -0700 (PDT)
+        with ESMTP id S232907AbjGPUwB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69BDE57
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0368160EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:27:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B47C433C7;
-        Sun, 16 Jul 2023 20:27:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55EE060EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652F2C433C7;
+        Sun, 16 Jul 2023 20:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539246;
-        bh=q4gBomRWSHlLu2mgdTVXvd7/P42V9agy63QCWCx4iHA=;
+        s=korg; t=1689540719;
+        bh=Ybfm+uW9wEG43vjWIU7BJwKq6yzjsM/b07/vWWAee48=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yr6dZdoZi9Z68TFyalNXZB7RaKBms0MfgO1sX1cUyP7YieCRTQiVj627vrDs5Pvj6
-         74g/Q5vybM7ed1K/YyWs9m4NmcSLXgIn1CeEdDUkA8eThsAlS3dLjwzd4gnmOgC6Jn
-         mav7jGZfESf9Kxv/1ScAZaW7LoJO17uxFLq4efbQ=
+        b=LFwnDxaVIXjK2HRi0ErJCI49okvuC3DPB5/YPuzLMJnGHsh9AKjahGb3KdByH4vwY
+         5ZIMMBz5Bdt3AcKNFrq+EmJs3SYTCrL3XMPsen5G2pPE4CWhBtLeEYrhP27RzdD1pu
+         nlbMnxBXljaNOZmDt+lgRnW9gtcyX+S7vs0WgHw4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dai Ngo <dai.ngo@oracle.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.4 722/800] NFSD: add encoding of op_recall flag for write delegation
-Date:   Sun, 16 Jul 2023 21:49:35 +0200
-Message-ID: <20230716195005.888785217@linuxfoundation.org>
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 437/591] mfd: intel-lpss: Add missing check for platform_get_resource
+Date:   Sun, 16 Jul 2023 21:49:36 +0200
+Message-ID: <20230716194935.217743325@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,32 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-commit 58f5d894006d82ed7335e1c37182fbc5f08c2f51 upstream.
+[ Upstream commit d918e0d5824495a75d00b879118b098fcab36fdb ]
 
-Modified nfsd4_encode_open to encode the op_recall flag properly
-for OPEN result with write delegation granted.
+Add the missing check for platform_get_resource and return error
+if it fails.
 
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4b45efe85263 ("mfd: Add support for Intel Sunrisepoint LPSS devices")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20230609014818.28475-1-jiasheng@iscas.ac.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/intel-lpss-acpi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3956,7 +3956,7 @@ nfsd4_encode_open(struct nfsd4_compoundr
- 		p = xdr_reserve_space(xdr, 32);
- 		if (!p)
- 			return nfserr_resource;
--		*p++ = cpu_to_be32(0);
-+		*p++ = cpu_to_be32(open->op_recall);
+diff --git a/drivers/mfd/intel-lpss-acpi.c b/drivers/mfd/intel-lpss-acpi.c
+index a143c8dca2d93..212818aef93e2 100644
+--- a/drivers/mfd/intel-lpss-acpi.c
++++ b/drivers/mfd/intel-lpss-acpi.c
+@@ -183,6 +183,9 @@ static int intel_lpss_acpi_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
  
- 		/*
- 		 * TODO: space_limit's in delegations
+ 	info->mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!info->mem)
++		return -ENODEV;
++
+ 	info->irq = platform_get_irq(pdev, 0);
+ 
+ 	ret = intel_lpss_probe(&pdev->dev, info);
+-- 
+2.39.2
+
 
 
