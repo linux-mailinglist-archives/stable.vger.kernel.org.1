@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C63E0755321
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC12C755574
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231624AbjGPUPn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:15:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41542 "EHLO
+        id S232517AbjGPUlM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:41:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231618AbjGPUPm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:15:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F7051B9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:15:41 -0700 (PDT)
+        with ESMTP id S232537AbjGPUlH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3C3E63
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0617C60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:15:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17308C433C8;
-        Sun, 16 Jul 2023 20:15:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DB9F60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822A1C433C7;
+        Sun, 16 Jul 2023 20:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538540;
-        bh=3oFi179g+ZxZVreJ5Aqi4NgEacGvnSOGcqeM/j0xf0s=;
+        s=korg; t=1689540056;
+        bh=E1Tp7pLUqn+2cX9FbA9td496pDIY1nEkO+0u5Pme7e4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OgErQDphMkdqFyEiufosLeP0FZ2H1x8bu7haElonZHMfWE8ChcVRiLbHbFxOH6sbc
-         PiwNsw5yDpZu8uzuXzHEvzn+vaYtil7A8HgJhTUZtuNqSS8Kyxg29tgtIJ7+NWf61Q
-         qCysNwJCRDFbvzcnr0EV5I6PQMr4OU+2PTj460Ys=
+        b=md7/WAef9w/NDqLQOLRal28lM/2TK6SR/CeR8XOEk+bFaXppZom9wbEASUYAC8u4l
+         J1ulHldEwKjU529brauW2by1zZb1wmwsUFfr7rJKGE9LPTOE4CWyhHffJ8cu9SkB99
+         qvvpq62P3Y7Qt0tn+05ix/Kmgao+KagEE4J23cCo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
-        JeeHeng Sia <jeeheng.sia@starfivetech.com>,
-        Song Shuai <songshuaishuai@tinylab.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 486/800] riscv: hibernation: Remove duplicate call of suspend_restore_csrs
+Subject: [PATCH 6.1 200/591] arm64: dts: qcom: sm8350: Add GPI DMA compatible fallback
 Date:   Sun, 16 Jul 2023 21:45:39 +0200
-Message-ID: <20230716195000.368880265@linuxfoundation.org>
+Message-ID: <20230716194929.046683397@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,39 +57,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Song Shuai <songshuaishuai@tinylab.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit c6399b893043a5bb634de8677362f96684f1c0c8 ]
+[ Upstream commit b561e225dee5412609fd98340ca71ba0ab2e4b36 ]
 
-The suspend_restore_csrs is called in both __hibernate_cpu_resume
-and the `else` of subsequent swsusp_arch_suspend.
+Use SM6350 as fallback for GPI DMA, to indicate devices are compatible
+and that drivers can bind with only one compatible.
 
-Removing the first call makes both suspend_{save,restore}_csrs
-left in swsusp_arch_suspend for clean code.
-
-Fixes: c0317210012e ("RISC-V: Add arch functions to support hibernation/suspend-to-disk")
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: JeeHeng Sia <jeeheng.sia@starfivetech.com>
-Signed-off-by: Song Shuai <songshuaishuai@tinylab.org>
-Link: https://lore.kernel.org/r/20230522025020.285042-1-songshuaishuai@tinylab.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20221018230352.1238479-5-krzysztof.kozlowski@linaro.org
+Stable-dep-of: 41d6bca799b3 ("arm64: dts: qcom: sm8350: correct DMA controller unit address")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/hibernate-asm.S | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/kernel/hibernate-asm.S b/arch/riscv/kernel/hibernate-asm.S
-index effaf5ca5da0e..f3e62e766cb29 100644
---- a/arch/riscv/kernel/hibernate-asm.S
-+++ b/arch/riscv/kernel/hibernate-asm.S
-@@ -28,7 +28,6 @@ ENTRY(__hibernate_cpu_resume)
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+index ca7c428a741d4..9430166ee45b5 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -678,7 +678,7 @@ ipcc: mailbox@408000 {
+ 		};
  
- 	REG_L	a0, hibernate_cpu_context
+ 		gpi_dma2: dma-controller@800000 {
+-			compatible = "qcom,sm8350-gpi-dma";
++			compatible = "qcom,sm8350-gpi-dma", "qcom,sm6350-gpi-dma";
+ 			reg = <0 0x00800000 0 0x60000>;
+ 			interrupts = <GIC_SPI 588 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 589 IRQ_TYPE_LEVEL_HIGH>,
+@@ -904,7 +904,7 @@ spi19: spi@894000 {
+ 		};
  
--	suspend_restore_csrs
- 	suspend_restore_regs
+ 		gpi_dma0: dma-controller@900000 {
+-			compatible = "qcom,sm8350-gpi-dma";
++			compatible = "qcom,sm8350-gpi-dma", "qcom,sm6350-gpi-dma";
+ 			reg = <0 0x09800000 0 0x60000>;
+ 			interrupts = <GIC_SPI 244 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>,
+@@ -1207,7 +1207,7 @@ spi7: spi@99c000 {
+ 		};
  
- 	/* Return zero value. */
+ 		gpi_dma1: dma-controller@a00000 {
+-			compatible = "qcom,sm8350-gpi-dma";
++			compatible = "qcom,sm8350-gpi-dma", "qcom,sm6350-gpi-dma";
+ 			reg = <0 0x00a00000 0 0x60000>;
+ 			interrupts = <GIC_SPI 279 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 280 IRQ_TYPE_LEVEL_HIGH>,
 -- 
 2.39.2
 
