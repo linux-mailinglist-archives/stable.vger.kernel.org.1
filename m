@@ -2,96 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 970AD755358
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC127555A2
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231689AbjGPUSC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:18:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43814 "EHLO
+        id S232580AbjGPUnA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:43:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231685AbjGPUSC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:02 -0400
+        with ESMTP id S232578AbjGPUm7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328C6C0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C025D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C4D3860EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BBAC433C7;
-        Sun, 16 Jul 2023 20:17:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF44860EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1ADAC433C7;
+        Sun, 16 Jul 2023 20:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538680;
-        bh=sWBueieJqdX6m0TbcW81A0xTvN7ScSLN5EVttWTB0Ew=;
+        s=korg; t=1689540178;
+        bh=uJgijLok/zSNxgLtHjpcbsnq/5GSHVUpbYgh0kv8FB0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GufEFlAxgaDuL8jlNpcXukKMZfjf20A8eiDGGhyswQT54seWpT+sOz/EjcGAHvOLR
-         jQNmkchR1bJP3h0cnqA+wWqI/k5d73i38xpzcdevOduSbup/+6Mz7rppBxneCaeI+9
-         MZaD/2amzmTES1q6ZSWlZxywX5zjjGlw0xCUDEec=
+        b=M2yD+4TZtKuP4y3t8WdJhMEFmRz2bl7APkC75CNT6YCY4qkx8dyvryeJtw/KnrKx4
+         VB/kb5mBT+7H6bMH5C3/082L++6lRG9XygsJhhlWlQTcHQpRdveonR5r511l+wjL+F
+         UO4SMlqZve8a9kysukymaEd1QUmYdMDVBHTfwFQM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Triplett <josh@joshtriplett.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Masahiro Yamada <masahiroy@kernel.org>,
+        patches@lists.linux.dev, Yuxing Liu <lyx2022@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        Abel Vesa <abel.vesa@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 538/800] kbuild: builddeb: always make modules_install, to install modules.builtin*
-Date:   Sun, 16 Jul 2023 21:46:31 +0200
-Message-ID: <20230716195001.589520199@linuxfoundation.org>
+Subject: [PATCH 6.1 253/591] clk: imx: clk-imx8mp: improve error handling in imx8mp_clocks_probe()
+Date:   Sun, 16 Jul 2023 21:46:32 +0200
+Message-ID: <20230716194930.429849210@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josh Triplett <josh@joshtriplett.org>
+From: Yuxing Liu <lyx2022@hust.edu.cn>
 
-[ Upstream commit 4243afdb932677a03770753be8c54b3190a512e8 ]
+[ Upstream commit 878b02d5f3b56cb090dbe2c70c89273be144087f ]
 
-Even for a non-modular kernel, the kernel builds modules.builtin and
-modules.builtin.modinfo, with information about the built-in modules.
-Tools such as initramfs-tools need these files to build a working
-initramfs on some systems, such as those requiring firmware.
+Replace of_iomap() and kzalloc() with devm_of_iomap() and devm_kzalloc()
+which can automatically release the related memory when the device
+or driver is removed or unloaded to avoid potential memory leak.
 
-Now that `make modules_install` works even in non-modular kernels and
-installs these files, unconditionally invoke it when building a Debian
-package.
+In this case, iounmap(anatop_base) in line 427,433 are removed
+as manual release is not required.
 
-Signed-off-by: Josh Triplett <josh@joshtriplett.org>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Stable-dep-of: 1240dabe8d58 ("kbuild: deb-pkg: remove the CONFIG_MODULES check in buildeb")
+Besides, referring to clk-imx8mq.c, check the return code of
+of_clk_add_hw_provider, if it returns negtive, print error info
+and unregister hws, which makes the program more robust.
+
+Fixes: 9c140d992676 ("clk: imx: Add support for i.MX8MP clock driver")
+Signed-off-by: Yuxing Liu <lyx2022@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20230503070607.2462-1-lyx2022@hust.edu.cn
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/package/builddeb | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx8mp.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/scripts/package/builddeb b/scripts/package/builddeb
-index 252faaa5561cc..f500e39101581 100755
---- a/scripts/package/builddeb
-+++ b/scripts/package/builddeb
-@@ -62,8 +62,8 @@ install_linux_image () {
- 		${MAKE} -f ${srctree}/Makefile INSTALL_DTBS_PATH="${pdir}/usr/lib/linux-image-${KERNELRELEASE}" dtbs_install
- 	fi
+diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
+index 5d68d975b4eb1..05c02f4e2a143 100644
+--- a/drivers/clk/imx/clk-imx8mp.c
++++ b/drivers/clk/imx/clk-imx8mp.c
+@@ -413,25 +413,22 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *np;
+ 	void __iomem *anatop_base, *ccm_base;
++	int err;
  
-+	${MAKE} -f ${srctree}/Makefile INSTALL_MOD_PATH="${pdir}" modules_install
- 	if is_enabled CONFIG_MODULES; then
--		${MAKE} -f ${srctree}/Makefile INSTALL_MOD_PATH="${pdir}" modules_install
- 		rm -f "${pdir}/lib/modules/${KERNELRELEASE}/build"
- 		rm -f "${pdir}/lib/modules/${KERNELRELEASE}/source"
- 		if [ "${SRCARCH}" = um ] ; then
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mp-anatop");
+-	anatop_base = of_iomap(np, 0);
++	anatop_base = devm_of_iomap(dev, np, 0, NULL);
+ 	of_node_put(np);
+-	if (WARN_ON(!anatop_base))
+-		return -ENOMEM;
++	if (WARN_ON(IS_ERR(anatop_base)))
++		return PTR_ERR(anatop_base);
+ 
+ 	np = dev->of_node;
+ 	ccm_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (WARN_ON(IS_ERR(ccm_base))) {
+-		iounmap(anatop_base);
++	if (WARN_ON(IS_ERR(ccm_base)))
+ 		return PTR_ERR(ccm_base);
+-	}
+ 
+-	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws, IMX8MP_CLK_END), GFP_KERNEL);
+-	if (WARN_ON(!clk_hw_data)) {
+-		iounmap(anatop_base);
++	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws, IMX8MP_CLK_END), GFP_KERNEL);
++	if (WARN_ON(!clk_hw_data))
+ 		return -ENOMEM;
+-	}
+ 
+ 	clk_hw_data->num = IMX8MP_CLK_END;
+ 	hws = clk_hw_data->hws;
+@@ -711,7 +708,12 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+ 
+ 	imx_check_clk_hws(hws, IMX8MP_CLK_END);
+ 
+-	of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
++	err = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
++	if (err < 0) {
++		dev_err(dev, "failed to register hws for i.MX8MP\n");
++		imx_unregister_hw_clocks(hws, IMX8MP_CLK_END);
++		return err;
++	}
+ 
+ 	imx_register_uart_clocks(4);
+ 
 -- 
 2.39.2
 
