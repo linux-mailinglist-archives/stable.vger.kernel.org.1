@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB05E75553A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BF5F7552F5
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232422AbjGPUit (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:38:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58646 "EHLO
+        id S231558AbjGPUOA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:14:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232433AbjGPUir (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:47 -0400
+        with ESMTP id S231561AbjGPUN7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:13:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149ABAB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EB1B1BF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:13:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A706760EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09B2C433C7;
-        Sun, 16 Jul 2023 20:38:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C44B460EB3
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:13:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC93C433C7;
+        Sun, 16 Jul 2023 20:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539925;
-        bh=/f/qe/x5uw5guA6TWeQzDNDdWGfZFolipMOvbV/kCZM=;
+        s=korg; t=1689538437;
+        bh=c4HTzXza9W8Vq2rTaM1DaC7jvjQkFvKAZOKficqe/eI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wJ/d0tPRjrpejvNXw/oFn/eh7nGUvNLsYFxEculYG9QJbVbLr/EXtXzdb6aGo1qoy
-         c9TpNOyiMTOjc8fBrocNDXyNG999Ev2e3eoEJeEAQHhbcdwV2BQTVg8XGtDH13iWF7
-         ARLUPeqv60iyFwnImNh9cmCEiygpCoqNDmgKPGEA=
+        b=AAnpks+3vuPDcHjMCgvuKrzSG7e2zACl5u+dLsW4CKph1KV8bSMri5/Sxs9UzwFN/
+         0b+0zcXLthG2RINnofe5DLotKWKuxx4yVWe+oiFq99CkZyO1Cj56YHm90TDxooCvW/
+         sVqBvGSlaC7kdViPvJ57V476RTCXq1YBv8qdjghU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marek Vasut <marek.vasut+renesas@mailbox.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Sui Jingfeng <suijingfeng@loongson.cn>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/591] clk: vc7: Fix .driver_data content in i2c_device_id
-Date:   Sun, 16 Jul 2023 21:45:02 +0200
-Message-ID: <20230716194928.082850237@linuxfoundation.org>
+Subject: [PATCH 6.4 450/800] PCI: Add pci_clear_master() stub for non-CONFIG_PCI
+Date:   Sun, 16 Jul 2023 21:45:03 +0200
+Message-ID: <20230716194959.535684865@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,41 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Sui Jingfeng <suijingfeng@loongson.cn>
 
-[ Upstream commit b5e10beeafaa3266559c582dde7534ae3fe8cefb ]
+[ Upstream commit 2aa5ac633259843f656eb6ecff4cf01e8e810c5e ]
 
-The .driver_data content in i2c_device_id table must match the
-.data content in of_device_id table, else device_get_match_data()
-would return bogus value on i2c_device_id match. Align the two
-tables.
+Add a pci_clear_master() stub when CONFIG_PCI is not set so drivers that
+support both PCI and platform devices don't need #ifdefs or extra Kconfig
+symbols for the PCI parts.
 
-The i2c_device_id table is now converted from of_device_id using
-'s@.compatible = "renesas,\([^"]\+"\), .data = \(.*\)@"\1, .driver_data = (kernel_ulong_t)\2@'
-
-Fixes: 48c5e98fedd9 ("clk: Renesas versaclock7 ccf device driver")
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Link: https://lore.kernel.org/r/20230507133906.15061-2-marek.vasut+renesas@mailbox.org
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+[bhelgaas: commit log]
+Fixes: 6a479079c072 ("PCI: Add pci_clear_master() as opposite of pci_set_master()")
+Link: https://lore.kernel.org/r/20230531102744.2354313-1-suijingfeng@loongson.cn
+Signed-off-by: Sui Jingfeng <suijingfeng@loongson.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-versaclock7.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/pci.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/clk-versaclock7.c b/drivers/clk/clk-versaclock7.c
-index 8e4f86e852aa0..0ae191f50b4b2 100644
---- a/drivers/clk/clk-versaclock7.c
-+++ b/drivers/clk/clk-versaclock7.c
-@@ -1282,7 +1282,7 @@ static const struct regmap_config vc7_regmap_config = {
- };
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 60b8772b5bd45..c69a2cc1f4123 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1903,6 +1903,7 @@ static inline int pci_dev_present(const struct pci_device_id *ids)
+ #define pci_dev_put(dev)	do { } while (0)
  
- static const struct i2c_device_id vc7_i2c_id[] = {
--	{ "rc21008a", VC7_RC21008A },
-+	{ "rc21008a", .driver_data = (kernel_ulong_t)&vc7_rc21008a_info },
- 	{}
- };
- MODULE_DEVICE_TABLE(i2c, vc7_i2c_id);
+ static inline void pci_set_master(struct pci_dev *dev) { }
++static inline void pci_clear_master(struct pci_dev *dev) { }
+ static inline int pci_enable_device(struct pci_dev *dev) { return -EIO; }
+ static inline void pci_disable_device(struct pci_dev *dev) { }
+ static inline int pcim_enable_device(struct pci_dev *pdev) { return -EIO; }
 -- 
 2.39.2
 
