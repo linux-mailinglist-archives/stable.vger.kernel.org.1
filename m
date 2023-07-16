@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAF42754DFC
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 11:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DA9C754DFD
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 11:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbjGPJLe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 05:11:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55618 "EHLO
+        id S229840AbjGPJLn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 05:11:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229920AbjGPJLd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 05:11:33 -0400
+        with ESMTP id S229760AbjGPJLm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 05:11:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2773DDF
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 02:11:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231D6DF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 02:11:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A97160959
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 09:11:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A27DC433C7;
-        Sun, 16 Jul 2023 09:11:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2F1360C50
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 09:11:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCC1C433C7;
+        Sun, 16 Jul 2023 09:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689498690;
-        bh=cEcAG4OpUL1Y1fF9doz8hCEDFql0UclkGuQOPMxskdE=;
+        s=korg; t=1689498700;
+        bh=KfSoUqOp2GS2gyP4KFKNIk3yZqGTIGk7a09t6rGUsw8=;
         h=Subject:To:Cc:From:Date:From;
-        b=UXmAqJDwXZf3N60+pq/QkzOcD0MfcWlw5bp2KX+PtwNHDWCGR1HYfdDW3peiCHoqP
-         +cWqy3LlaGRVJpG1o7T7oUDrAV0/CL1k8L5DFMesKaurdiNdeovbmpRbPZW+miPVI4
-         li5RJ62ElDmjKAQz6kGMkFkuMGjM4R1QdjZ+PVko=
-Subject: FAILED: patch "[PATCH] um: Use HOST_DIR for mrproper" failed to apply to 4.19-stable tree
+        b=qiaqyzQcVEU4TKSJDO78H0Wud6CbpgKzA4mnww3s876TjPsd2PpOjN/5/9BZSwStS
+         N60aXst0u87zhJLYrs7/B5YTNmg+YqRS+FycYljUo6Y2jNHO5V4ldjM1X4ko2KH59N
+         PriLP9OUI/g8ROA7O56eC8Z3RDsbVTwjwMEWBKK4=
+Subject: FAILED: patch "[PATCH] um: Use HOST_DIR for mrproper" failed to apply to 4.14-stable tree
 To:     keescook@chromium.org, anton.ivanov@cambridgegreys.com,
         azeemshaikh38@gmail.com, johannes@sipsolutions.net, richard@nod.at
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 11:11:23 +0200
-Message-ID: <2023071622-improving-scrambler-114b@gregkh>
+Date:   Sun, 16 Jul 2023 11:11:29 +0200
+Message-ID: <2023071628-dazzling-pretense-8a8d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x a5a319ec2c2236bb96d147c16196d2f1f3799301
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071622-improving-scrambler-114b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071628-dazzling-pretense-8a8d@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
