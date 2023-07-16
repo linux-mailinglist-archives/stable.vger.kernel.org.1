@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7767275527B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F5D675527C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231339AbjGPUIY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:08:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37332 "EHLO
+        id S231340AbjGPUI1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:08:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231338AbjGPUIX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:23 -0400
+        with ESMTP id S231338AbjGPUI0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 488399D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135D09B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D8DBD60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66AAC433C8;
-        Sun, 16 Jul 2023 20:08:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A098460E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE487C433C8;
+        Sun, 16 Jul 2023 20:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538102;
-        bh=oN5GZesW5DeVHv0zzJsWgM/T1GNoayPofxM/GylSqFE=;
+        s=korg; t=1689538105;
+        bh=VG9bn1XSTYn5KbuMOla46P1+L12uWP5L90tr1OfucO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1tMs/OG8SuQplqF7Kew9t5YTexdhljZN5h+/5IDZzf/sx5YXOzL48kfsDpcV0E0tv
-         kC1FojI40CDzRFq57sltVeM3f86C/gvPLtZzcydpXoJ3elQIzb2jJYUZqfgzsNjEy1
-         kdh6ZvUqkQmifh0uP2c4tSQ813+WJTe8zp0inPBU=
+        b=LOC3W/KD2VjSHv7IDDEho/PXzF490Snl0M5ogh0AWP9ekWwKnV+neQ/MeVpgc8Ryl
+         e906WhGnTrCD+cUGWk8pW/bB6isKh2VaSKKo71JM0H+j8egXiPwTSGz7xKuLZx/SMu
+         q9yGRUlB5yvTGVvETxwsPR2XHHB3Bqq+jEoJ6OkA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Markus Mayer <mmayer@broadcom.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 331/800] memory: brcmstb_dpfe: fix testing array offset after use
-Date:   Sun, 16 Jul 2023 21:43:04 +0200
-Message-ID: <20230716194956.771783650@linuxfoundation.org>
+Subject: [PATCH 6.4 332/800] ARM: dts: qcom: apq8074-dragonboard: Set DMA as remotely controlled
+Date:   Sun, 16 Jul 2023 21:43:05 +0200
+Message-ID: <20230716194956.794712508@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -56,48 +57,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 1d9e93fad549bc38f593147479ee063f2872c170 ]
+[ Upstream commit e60c230588d88036f974cec7e93361e2c4f62226 ]
 
-Code should first check for valid value of array offset, then use it as
-the index.  Fixes smatch warning:
+Add the qcom,controlled-remotely property for the blsp2_bam
+controller node. This board requires this, otherwise the board stalls
+during the boot for some reason (most probably because TZ mishandles the
+protection error and keeps on looping somewhere inside).
 
-  drivers/memory/brcmstb_dpfe.c:443 __send_command() error: testing array offset 'cmd' after use.
-
-Fixes: 2f330caff577 ("memory: brcmstb: Add driver for DPFE")
-Acked-by: Markus Mayer <mmayer@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20230513112931.176066-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 62bc81792223 dts: msm8974: Add blsp2_bam dma node
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230507190735.2333145-3-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/brcmstb_dpfe.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/qcom-apq8074-dragonboard.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/memory/brcmstb_dpfe.c b/drivers/memory/brcmstb_dpfe.c
-index 76c82e9c8fceb..9339f80b21c50 100644
---- a/drivers/memory/brcmstb_dpfe.c
-+++ b/drivers/memory/brcmstb_dpfe.c
-@@ -434,15 +434,17 @@ static void __finalize_command(struct brcmstb_dpfe_priv *priv)
- static int __send_command(struct brcmstb_dpfe_priv *priv, unsigned int cmd,
- 			  u32 result[])
- {
--	const u32 *msg = priv->dpfe_api->command[cmd];
- 	void __iomem *regs = priv->regs;
- 	unsigned int i, chksum, chksum_idx;
-+	const u32 *msg;
- 	int ret = 0;
- 	u32 resp;
+diff --git a/arch/arm/boot/dts/qcom-apq8074-dragonboard.dts b/arch/arm/boot/dts/qcom-apq8074-dragonboard.dts
+index 1345df7cbd002..6b047c6793707 100644
+--- a/arch/arm/boot/dts/qcom-apq8074-dragonboard.dts
++++ b/arch/arm/boot/dts/qcom-apq8074-dragonboard.dts
+@@ -23,6 +23,10 @@ &blsp1_uart2 {
+ 	status = "okay";
+ };
  
- 	if (cmd >= DPFE_CMD_MAX)
- 		return -1;
- 
-+	msg = priv->dpfe_api->command[cmd];
++&blsp2_dma {
++	qcom,controlled-remotely;
++};
 +
- 	mutex_lock(&priv->lock);
- 
- 	/* Wait for DCPU to become ready */
+ &blsp2_i2c5 {
+ 	status = "okay";
+ 	clock-frequency = <200000>;
 -- 
 2.39.2
 
