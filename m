@@ -2,106 +2,155 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84849755653
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C780175541F
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232858AbjGPUtj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38572 "EHLO
+        id S231995AbjGPU1E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:27:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232865AbjGPUtd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:33 -0400
+        with ESMTP id S232006AbjGPU1D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B87EA10E4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4371E7B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56F5060EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65437C433C8;
-        Sun, 16 Jul 2023 20:49:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 31FDB60EC4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFFFC433C8;
+        Sun, 16 Jul 2023 20:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540568;
-        bh=bBaFDHZhDoEXvt0yc8DPrqJ9k2QIoLBwiOqwTA+HsGo=;
+        s=korg; t=1689539209;
+        bh=HtlcifJ1IG2kYajyytBeLW9HI7cYPADRnynM3mGNID4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uiVJSbii/aSMGuFrK009pcEuG/kdYsPYr2fe3EAHtG9enRjerAZoiIaR4Sihzvs8u
-         X0AYFt9CJpwpOGrfJfR5cUrrEL4k2xlwIHylCbdUqeMeKQgxs/JA+5Hw9XIRyUxY4a
-         FjVP3XJc0MWw2QfMjqacQNmFnQmpMLYbtbbiIZIY=
+        b=LKGV4hVFo8450orkhwqTMbhRdYP3UOHvwlTDgLtF76HYm9GBt/foQkZYBfIk674gC
+         LkHQJOzSas4WApPixnEl3k40tPZ/zatAfA2MlchO7q5fsquA5S37Uc2wPLtVUm6DMB
+         i3qOAAhzlRnqg1is44W8XoC+YpVrEGsCqHso9aSk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
+        patches@lists.linux.dev, Ilya Maximets <i.maximets@ovn.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Magnus Karlsson <magnus.karlsson@intel.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Jason Wang <jasowang@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 410/591] usb: gadget: u_serial: Add null pointer check in gserial_suspend
-Date:   Sun, 16 Jul 2023 21:49:09 +0200
-Message-ID: <20230716194934.521292017@linuxfoundation.org>
+Subject: [PATCH 6.4 697/800] xsk: Honor SO_BINDTODEVICE on bind
+Date:   Sun, 16 Jul 2023 21:49:10 +0200
+Message-ID: <20230716195005.311248119@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit 2f6ecb89fe8feb2b60a53325b0eeb9866d88909a ]
+[ Upstream commit f7306acec9aae9893d15e745c8791124d42ab10a ]
 
-Consider a case where gserial_disconnect has already cleared
-gser->ioport. And if gserial_suspend gets called afterwards,
-it will lead to accessing of gser->ioport and thus causing
-null pointer dereference.
+Initial creation of an AF_XDP socket requires CAP_NET_RAW capability. A
+privileged process might create the socket and pass it to a non-privileged
+process for later use. However, that process will be able to bind the socket
+to any network interface. Even though it will not be able to receive any
+traffic without modification of the BPF map, the situation is not ideal.
 
-Avoid this by adding a null pointer check. Added a static
-spinlock to prevent gser->ioport from becoming null after
-the newly added null pointer check.
+Sockets already have a mechanism that can be used to restrict what interface
+they can be attached to. That is SO_BINDTODEVICE.
 
-Fixes: aba3a8d01d62 ("usb: gadget: u_serial: add suspend resume callbacks")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Link: https://lore.kernel.org/r/1683278317-11774-1-git-send-email-quic_prashk@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To change the SO_BINDTODEVICE binding the process will need CAP_NET_RAW.
+
+Make xsk_bind() honor the SO_BINDTODEVICE in order to allow safer workflow
+when non-privileged process is using AF_XDP.
+
+The intended workflow is following:
+
+  1. First process creates a bare socket with socket(AF_XDP, ...).
+  2. First process loads the XSK program to the interface.
+  3. First process adds the socket fd to a BPF map.
+  4. First process ties socket fd to a particular interface using
+     SO_BINDTODEVICE.
+  5. First process sends socket fd to a second process.
+  6. Second process allocates UMEM.
+  7. Second process binds socket to the interface with bind(...).
+  8. Second process sends/receives the traffic.
+
+All the steps above are possible today if the first process is privileged
+and the second one has sufficient RLIMIT_MEMLOCK and no capabilities.
+However, the second process will be able to bind the socket to any interface
+it wants on step 7 and send traffic from it. With the proposed change, the
+second process will be able to bind the socket only to a specific interface
+chosen by the first process at step 4.
+
+Fixes: 965a99098443 ("xsk: add support for bind for Rx")
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://lore.kernel.org/bpf/20230703175329.3259672-1-i.maximets@ovn.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_serial.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ Documentation/networking/af_xdp.rst | 9 +++++++++
+ net/xdp/xsk.c                       | 5 +++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadget/function/u_serial.c
-index db6fd0238d4b4..ea2c5b6cde8cd 100644
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -1419,10 +1419,19 @@ EXPORT_SYMBOL_GPL(gserial_disconnect);
+diff --git a/Documentation/networking/af_xdp.rst b/Documentation/networking/af_xdp.rst
+index 247c6c4127e94..1cc35de336a41 100644
+--- a/Documentation/networking/af_xdp.rst
++++ b/Documentation/networking/af_xdp.rst
+@@ -433,6 +433,15 @@ start N bytes into the buffer leaving the first N bytes for the
+ application to use. The final option is the flags field, but it will
+ be dealt with in separate sections for each UMEM flag.
  
- void gserial_suspend(struct gserial *gser)
- {
--	struct gs_port	*port = gser->ioport;
-+	struct gs_port	*port;
- 	unsigned long	flags;
++SO_BINDTODEVICE setsockopt
++--------------------------
++
++This is a generic SOL_SOCKET option that can be used to tie AF_XDP
++socket to a particular network interface.  It is useful when a socket
++is created by a privileged process and passed to a non-privileged one.
++Once the option is set, kernel will refuse attempts to bind that socket
++to a different interface.  Updating the value requires CAP_NET_RAW.
++
+ XDP_STATISTICS getsockopt
+ -------------------------
  
--	spin_lock_irqsave(&port->port_lock, flags);
-+	spin_lock_irqsave(&serial_port_lock, flags);
-+	port = gser->ioport;
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index cc1e7f15fa731..32dd55b9ce8a8 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -886,6 +886,7 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
+ 	struct sock *sk = sock->sk;
+ 	struct xdp_sock *xs = xdp_sk(sk);
+ 	struct net_device *dev;
++	int bound_dev_if;
+ 	u32 flags, qid;
+ 	int err = 0;
+ 
+@@ -899,6 +900,10 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
+ 		      XDP_USE_NEED_WAKEUP))
+ 		return -EINVAL;
+ 
++	bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
++	if (bound_dev_if && bound_dev_if != sxdp->sxdp_ifindex)
++		return -EINVAL;
 +
-+	if (!port) {
-+		spin_unlock_irqrestore(&serial_port_lock, flags);
-+		return;
-+	}
-+
-+	spin_lock(&port->port_lock);
-+	spin_unlock(&serial_port_lock);
- 	port->suspended = true;
- 	spin_unlock_irqrestore(&port->port_lock, flags);
- }
+ 	rtnl_lock();
+ 	mutex_lock(&xs->mutex);
+ 	if (xs->state != XSK_READY) {
 -- 
 2.39.2
 
