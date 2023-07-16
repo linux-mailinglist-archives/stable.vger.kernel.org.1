@@ -2,112 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3037C755458
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6DE77556DC
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232078AbjGPU30 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:29:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50960 "EHLO
+        id S233004AbjGPUys (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:54:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232076AbjGPU3Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:25 -0400
+        with ESMTP id S232997AbjGPUyr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:54:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77DEC9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68D66E9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:54:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1543C60EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BFCC433C7;
-        Sun, 16 Jul 2023 20:29:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0825C60EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:54:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC10C433C7;
+        Sun, 16 Jul 2023 20:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539363;
-        bh=eOKgwWNmIAIJPW22r7D/3ZTnJYVOsyMo6upcA9qISc8=;
+        s=korg; t=1689540885;
+        bh=peL2XbH8F5ayGq/MNzCJX4bJ2hpF8RqOxOTG8lfB5Ag=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V7mHQC9c+c2+itJa6AhTEEDIgKiEJ7ktPMqGmik3GR4gN5cGU2PT+C4DlHTupKv7/
-         zdXNPypzABR3HSW6aYoWVQUmJSi6DhbndF2WySULMk2D+wMPfX45CqCdgbi633sXIg
-         iwmdtW4goYu9o1S/xIrrzkfyYsiPA3bdf9j2imiM=
+        b=hXNBnjmLIl2XHvnUmQ0mWB+61UnBoIFo1NC3WUX1oYC7RGKTlzsBfJj2ivKqWDn5v
+         dg+9xSHlqubJsoc56XXe51Xs7W1sxq+EJAnLa09ns8nXac/l2wO6x3UdBe+CC96/8d
+         A31MFgZC2emizN3tDtL9ZpCZou4uZUQG5Vp+6yoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.4 781/800] kbuild: Add KBUILD_CPPFLAGS to as-option invocation
+        patches@lists.linux.dev, Hariprasad Kelam <hkelam@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 495/591] octeontx2-af: Add validation before accessing cgx and lmac
 Date:   Sun, 16 Jul 2023 21:50:34 +0200
-Message-ID: <20230716195007.288247507@linuxfoundation.org>
+Message-ID: <20230716194936.704235990@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-commit 43fc0a99906e04792786edf8534d8d58d1e9de0c upstream.
+[ Upstream commit 79ebb53772c95d3a6ae51b3c65f9985fdd430df6 ]
 
-After commit feb843a469fb ("kbuild: add $(CLANG_FLAGS) to
-KBUILD_CPPFLAGS"), there is an error while building certain PowerPC
-assembly files with clang:
+with the addition of new MAC blocks like CN10K RPM and CN10KB
+RPM_USX, LMACs are noncontiguous and CGX blocks are also
+noncontiguous. But during RVU driver initialization, the driver
+is assuming they are contiguous and trying to access
+cgx or lmac with their id which is resulting in kernel panic.
 
-  arch/powerpc/lib/copypage_power7.S: Assembler messages:
-  arch/powerpc/lib/copypage_power7.S:34: Error: junk at end of line: `0b01000'
-  arch/powerpc/lib/copypage_power7.S:35: Error: junk at end of line: `0b01010'
-  arch/powerpc/lib/copypage_power7.S:37: Error: junk at end of line: `0b01000'
-  arch/powerpc/lib/copypage_power7.S:38: Error: junk at end of line: `0b01010'
-  arch/powerpc/lib/copypage_power7.S:40: Error: junk at end of line: `0b01010'
-  clang: error: assembler command failed with exit code 1 (use -v to see invocation)
+This patch fixes the issue by adding proper checks.
 
-as-option only uses KBUILD_AFLAGS, so after removing CLANG_FLAGS from
-KBUILD_AFLAGS, there is no more '--target=' or '--prefix=' flags. As a
-result of those missing flags, the host target
-will be tested during as-option calls and likely fail, meaning necessary
-flags may not get added when building assembly files, resulting in
-errors like seen above.
+[   23.219150] pc : cgx_lmac_read+0x38/0x70
+[   23.219154] lr : rvu_program_channels+0x3f0/0x498
+[   23.223852] sp : ffff000100d6fc80
+[   23.227158] x29: ffff000100d6fc80 x28: ffff00010009f880 x27:
+000000000000005a
+[   23.234288] x26: ffff000102586768 x25: 0000000000002500 x24:
+fffffffffff0f000
 
-Add KBUILD_CPPFLAGS to as-option invocations to clear up the errors.
-This should have been done in commit d5c8d6e0fa61 ("kbuild: Update
-assembler calls to use proper flags and language target"), which
-switched from using the assembler target to the assembler-with-cpp
-target, so flags that affect preprocessing are passed along in all
-relevant tests. as-option now mirrors cc-option.
-
-Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/CA+G9fYs=koW9WardsTtora+nMgLR3raHz-LSLr58tgX4T5Mxag@mail.gmail.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 91c6945ea1f9 ("octeontx2-af: cn10k: Add RPM MAC support")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.compiler |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -32,7 +32,7 @@ try-run = $(shell set -e;		\
- # Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index afdddfced7e69..65c0373d34d12 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -167,6 +167,9 @@ void cgx_lmac_write(int cgx_id, int lmac_id, u64 offset, u64 val)
+ {
+ 	struct cgx *cgx_dev = cgx_get_pdata(cgx_id);
  
- as-option = $(call try-run,\
--	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
-+	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
++	/* Software must not access disabled LMAC registers */
++	if (!is_lmac_valid(cgx_dev, lmac_id))
++		return;
+ 	cgx_write(cgx_dev, lmac_id, offset, val);
+ }
  
- # as-instr
- # Usage: aflags-y += $(call as-instr,instr,option1,option2)
+@@ -174,6 +177,10 @@ u64 cgx_lmac_read(int cgx_id, int lmac_id, u64 offset)
+ {
+ 	struct cgx *cgx_dev = cgx_get_pdata(cgx_id);
+ 
++	/* Software must not access disabled LMAC registers */
++	if (!is_lmac_valid(cgx_dev, lmac_id))
++		return 0;
++
+ 	return cgx_read(cgx_dev, lmac_id, offset);
+ }
+ 
+-- 
+2.39.2
+
 
 
