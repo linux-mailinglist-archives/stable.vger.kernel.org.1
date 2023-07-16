@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF63C7552E9
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 257C57552EA
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:13:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231532AbjGPUN0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:13:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40434 "EHLO
+        id S231537AbjGPUN2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:13:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231537AbjGPUNZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:13:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68A8F1BF
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:13:24 -0700 (PDT)
+        with ESMTP id S231542AbjGPUN1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:13:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D3E90
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:13:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F2EEA60E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:13:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C5BC433C8;
-        Sun, 16 Jul 2023 20:13:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C7EAF60EB3
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:13:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C1BC433C8;
+        Sun, 16 Jul 2023 20:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538403;
-        bh=9P9kM6IpkhDOKDcWf9Bqdy+aX30Bqt56Q+QC3y7SJRM=;
+        s=korg; t=1689538406;
+        bh=H6AQEucR+NeeiJtWOFSzGLNQac2h7ccUxIC3aOhoBbQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QCajLa01Vet5wi9fbDT+KYGfW4BPF8+m6AZ42bqT8jQniHWvQyLHez/16fWeiMZTY
-         Miw+NMeYiSzq4Fl+VbevM10dzkvpZTZ4Vny13tnItaYhHillXiamLa0khdm+A9EHBZ
-         UUzz6DSFpmZIX67y8tsYUKnRMFP4j6SJn8vqDDKg=
+        b=UXCXcWTVRfWjEBziWtYugio748nE5OwxJg4Z/t/Fri79QaHP8/dnVuPddcgD7px+0
+         H4rItX/ZMJnFmj7kv+hQSVp+IQ6kyuV5x3peYEmUTUBKa0TxFtfWUov3Bt79GNsO3U
+         w5NJEBnWvH+IOADyKlfYuSs5kyhKDp422EWQWsIQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 439/800] platform/x86: lenovo-yogabook: Fix work race on remove()
-Date:   Sun, 16 Jul 2023 21:44:52 +0200
-Message-ID: <20230716194959.280690598@linuxfoundation.org>
+Subject: [PATCH 6.4 440/800] platform/x86: lenovo-yogabook: Reprobe devices on remove()
+Date:   Sun, 16 Jul 2023 21:44:53 +0200
+Message-ID: <20230716194959.303597998@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -44,10 +44,10 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -56,86 +56,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 9148cd2eb4450a8e9c49c8a14201fb82f651128f ]
+[ Upstream commit 711bcc0cb34e96a60e88d7b0260862781de3e530 ]
 
-When yogabook_wmi_remove() runs yogabook_wmi_work might still be running
-and using the devices which yogabook_wmi_remove() puts.
-
-To avoid this move to explicitly cancelling the work rather then using
-devm_work_autocancel().
-
-This requires also making the yogabook_backside_hall_irq handler non
-devm managed, so that it cannot re-queue the work while
-yogabook_wmi_remove() runs.
+Ensure that both the keyboard touchscreen and the digitizer have their
+driver bound after remove(). Without this modprobing lenovo-yogabook-wmi
+after a rmmod fails because lenovo-yogabook-wmi defers probing until
+both devices have their driver bound.
 
 Fixes: c0549b72d99d ("platform/x86: lenovo-yogabook-wmi: Add driver for Lenovo Yoga Book")
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230430165807.472798-3-hdegoede@redhat.com
+Link: https://lore.kernel.org/r/20230430165807.472798-4-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lenovo-yogabook-wmi.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/platform/x86/lenovo-yogabook-wmi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/platform/x86/lenovo-yogabook-wmi.c b/drivers/platform/x86/lenovo-yogabook-wmi.c
-index 5f4bd1eec38a9..3a6de4ab74a41 100644
+index 3a6de4ab74a41..5948ffa74acd5 100644
 --- a/drivers/platform/x86/lenovo-yogabook-wmi.c
 +++ b/drivers/platform/x86/lenovo-yogabook-wmi.c
-@@ -2,7 +2,6 @@
- /* WMI driver for Lenovo Yoga Book YB1-X90* / -X91* tablets */
- 
- #include <linux/acpi.h>
--#include <linux/devm-helpers.h>
- #include <linux/gpio/consumer.h>
- #include <linux/gpio/machine.h>
- #include <linux/interrupt.h>
-@@ -248,10 +247,7 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
- 	data->brightness = YB_KBD_BL_DEFAULT;
- 	set_bit(YB_KBD_IS_ON, &data->flags);
- 	set_bit(YB_DIGITIZER_IS_ON, &data->flags);
--
--	r = devm_work_autocancel(&wdev->dev, &data->work, yogabook_wmi_work);
--	if (r)
--		return r;
-+	INIT_WORK(&data->work, yogabook_wmi_work);
- 
- 	data->kbd_adev = acpi_dev_get_first_match_dev("GDIX1001", NULL, -1);
- 	if (!data->kbd_adev) {
-@@ -299,10 +295,9 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
- 	}
- 	data->backside_hall_irq = r;
- 
--	r = devm_request_irq(&wdev->dev, data->backside_hall_irq,
--			     yogabook_backside_hall_irq,
--			     IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
--			     "backside_hall_sw", data);
-+	r = request_irq(data->backside_hall_irq, yogabook_backside_hall_irq,
-+			IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
-+			"backside_hall_sw", data);
- 	if (r) {
- 		dev_err_probe(&wdev->dev, r, "Requesting backside_hall_sw IRQ\n");
- 		goto error_put_devs;
-@@ -318,11 +313,14 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
- 	r = devm_led_classdev_register(&wdev->dev, &data->kbd_bl_led);
- 	if (r < 0) {
- 		dev_err_probe(&wdev->dev, r, "Registering backlight LED device\n");
--		goto error_put_devs;
-+		goto error_free_irq;
- 	}
- 
- 	return 0;
- 
-+error_free_irq:
-+	free_irq(data->backside_hall_irq, data);
-+	cancel_work_sync(&data->work);
- error_put_devs:
- 	put_device(data->dig_dev);
- 	put_device(data->kbd_dev);
-@@ -335,6 +333,8 @@ static void yogabook_wmi_remove(struct wmi_device *wdev)
+@@ -332,9 +332,20 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
+ static void yogabook_wmi_remove(struct wmi_device *wdev)
  {
  	struct yogabook_wmi *data = dev_get_drvdata(&wdev->dev);
++	int r = 0;
  
-+	free_irq(data->backside_hall_irq, data);
-+	cancel_work_sync(&data->work);
+ 	free_irq(data->backside_hall_irq, data);
+ 	cancel_work_sync(&data->work);
++
++	if (!test_bit(YB_KBD_IS_ON, &data->flags))
++		r |= device_reprobe(data->kbd_dev);
++
++	if (!test_bit(YB_DIGITIZER_IS_ON, &data->flags))
++		r |= device_reprobe(data->dig_dev);
++
++	if (r)
++		dev_warn(&wdev->dev, "Reprobe of devices failed\n");
++
  	put_device(data->dig_dev);
  	put_device(data->kbd_dev);
  	acpi_dev_put(data->dig_adev);
