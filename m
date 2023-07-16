@@ -2,134 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3D27755596
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 970AD755358
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbjGPUmb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:42:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33072 "EHLO
+        id S231689AbjGPUSC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232558AbjGPUma (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:30 -0400
+        with ESMTP id S231685AbjGPUSC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C95D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328C6C0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA2BA60EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB33DC433C9;
-        Sun, 16 Jul 2023 20:42:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4D3860EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BBAC433C7;
+        Sun, 16 Jul 2023 20:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540147;
-        bh=qepKOyubWEemUPw9SAzbuQ9h9FpiDqF6Dp6f6K17c2g=;
+        s=korg; t=1689538680;
+        bh=sWBueieJqdX6m0TbcW81A0xTvN7ScSLN5EVttWTB0Ew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V+4P4LAopKr/l7KLoGjAYHzKQw53Zdus2jxyb9HixPxf+eZsDvj5k0qGDNGe3EuZW
-         f4lL8n4MHXfW9WlfYIL3oG4qVzZkq5jpsPjGZwhv+PFsHu8/mn0V4Zb7F+uq4nQz1d
-         h9L8+v9bn0Ze7PJkqzIZPhlWbCJDnUpmcckbBd78=
+        b=GufEFlAxgaDuL8jlNpcXukKMZfjf20A8eiDGGhyswQT54seWpT+sOz/EjcGAHvOLR
+         jQNmkchR1bJP3h0cnqA+wWqI/k5d73i38xpzcdevOduSbup/+6Mz7rppBxneCaeI+9
+         MZaD/2amzmTES1q6ZSWlZxywX5zjjGlw0xCUDEec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhanhao Hu <zero12113@hust.edu.cn>,
-        Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev, Josh Triplett <josh@joshtriplett.org>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 252/591] clk: imx93: fix memory leak and missing unwind goto in imx93_clocks_probe
+Subject: [PATCH 6.4 538/800] kbuild: builddeb: always make modules_install, to install modules.builtin*
 Date:   Sun, 16 Jul 2023 21:46:31 +0200
-Message-ID: <20230716194930.391760082@linuxfoundation.org>
+Message-ID: <20230716195001.589520199@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhanhao Hu <zero12113@hust.edu.cn>
+From: Josh Triplett <josh@joshtriplett.org>
 
-[ Upstream commit e02ba11b457647050cb16e7cad16cec3c252fade ]
+[ Upstream commit 4243afdb932677a03770753be8c54b3190a512e8 ]
 
-In function probe(), it returns directly without unregistered hws
-when error occurs.
+Even for a non-modular kernel, the kernel builds modules.builtin and
+modules.builtin.modinfo, with information about the built-in modules.
+Tools such as initramfs-tools need these files to build a working
+initramfs on some systems, such as those requiring firmware.
 
-Fix this by adding 'goto unregister_hws;' on line 295 and
-line 310.
+Now that `make modules_install` works even in non-modular kernels and
+installs these files, unconditionally invoke it when building a Debian
+package.
 
-Use devm_kzalloc() instead of kzalloc() to automatically
-free the memory using devm_kfree() when error occurs.
-
-Replace of_iomap() with devm_of_iomap() to automatically
-handle the unused ioremap region and delete 'iounmap(anatop_base);'
-in unregister_hws.
-
-Fixes: 24defbe194b6 ("clk: imx: add i.MX93 clk")
-Signed-off-by: Zhanhao Hu <zero12113@hust.edu.cn>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230601033825.336558-1-zero12113@hust.edu.cn
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Josh Triplett <josh@joshtriplett.org>
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: 1240dabe8d58 ("kbuild: deb-pkg: remove the CONFIG_MODULES check in buildeb")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx93.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ scripts/package/builddeb | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx93.c b/drivers/clk/imx/clk-imx93.c
-index 02d6a9894521d..5e3d299190c89 100644
---- a/drivers/clk/imx/clk-imx93.c
-+++ b/drivers/clk/imx/clk-imx93.c
-@@ -261,7 +261,7 @@ static int imx93_clocks_probe(struct platform_device *pdev)
- 	void __iomem *base, *anatop_base;
- 	int i, ret;
+diff --git a/scripts/package/builddeb b/scripts/package/builddeb
+index 252faaa5561cc..f500e39101581 100755
+--- a/scripts/package/builddeb
++++ b/scripts/package/builddeb
+@@ -62,8 +62,8 @@ install_linux_image () {
+ 		${MAKE} -f ${srctree}/Makefile INSTALL_DTBS_PATH="${pdir}/usr/lib/linux-image-${KERNELRELEASE}" dtbs_install
+ 	fi
  
--	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws,
-+	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
- 					  IMX93_CLK_END), GFP_KERNEL);
- 	if (!clk_hw_data)
- 		return -ENOMEM;
-@@ -285,10 +285,12 @@ static int imx93_clocks_probe(struct platform_device *pdev)
- 								    "sys_pll_pfd2", 1, 2);
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx93-anatop");
--	anatop_base = of_iomap(np, 0);
-+	anatop_base = devm_of_iomap(dev, np, 0, NULL);
- 	of_node_put(np);
--	if (WARN_ON(!anatop_base))
--		return -ENOMEM;
-+	if (WARN_ON(IS_ERR(anatop_base))) {
-+		ret = PTR_ERR(base);
-+		goto unregister_hws;
-+	}
- 
- 	clks[IMX93_CLK_AUDIO_PLL] = imx_clk_fracn_gppll("audio_pll", "osc_24m", anatop_base + 0x1200,
- 							&imx_fracn_gppll);
-@@ -298,8 +300,8 @@ static int imx93_clocks_probe(struct platform_device *pdev)
- 	np = dev->of_node;
- 	base = devm_platform_ioremap_resource(pdev, 0);
- 	if (WARN_ON(IS_ERR(base))) {
--		iounmap(anatop_base);
--		return PTR_ERR(base);
-+		ret = PTR_ERR(base);
-+		goto unregister_hws;
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(root_array); i++) {
-@@ -329,7 +331,6 @@ static int imx93_clocks_probe(struct platform_device *pdev)
- 
- unregister_hws:
- 	imx_unregister_hw_clocks(clks, IMX93_CLK_END);
--	iounmap(anatop_base);
- 
- 	return ret;
- }
++	${MAKE} -f ${srctree}/Makefile INSTALL_MOD_PATH="${pdir}" modules_install
+ 	if is_enabled CONFIG_MODULES; then
+-		${MAKE} -f ${srctree}/Makefile INSTALL_MOD_PATH="${pdir}" modules_install
+ 		rm -f "${pdir}/lib/modules/${KERNELRELEASE}/build"
+ 		rm -f "${pdir}/lib/modules/${KERNELRELEASE}/source"
+ 		if [ "${SRCARCH}" = um ] ; then
 -- 
 2.39.2
 
