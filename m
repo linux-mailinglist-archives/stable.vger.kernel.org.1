@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6953B754DDC
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 10:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 707C3754DDD
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 10:45:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbjGPIpi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 04:45:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51218 "EHLO
+        id S229915AbjGPIps (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 04:45:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjGPIpi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 04:45:38 -0400
+        with ESMTP id S229462AbjGPIps (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 04:45:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BAA119A
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 01:45:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E85D919A
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 01:45:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD8C760C5A
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 08:45:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD134C433C8;
-        Sun, 16 Jul 2023 08:45:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 870AA60C5A
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 08:45:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96267C433C8;
+        Sun, 16 Jul 2023 08:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689497136;
-        bh=Xn1yhomb0Q1+CrJkBY4bgVYZClvG5gk2punscxbuU6M=;
+        s=korg; t=1689497146;
+        bh=E1Mv6MAeraIcnS2mgeScZlbFu5wZOI2VWV4g3Mihhtg=;
         h=Subject:To:Cc:From:Date:From;
-        b=QMzJIjCkAcwFf5QwP0BjwZp82jmKwNlOTZmKh3WO5lG3TaPzCRlILjggstbGyaEsT
-         4MSesOqrsEmUjYXOW2iAKnrtRThcPa6d5yA+RzhfMdSEwMG7QHZN86zlHXzubyhG3z
-         6x6GzhbXg3Cn05HXOZLJbeaTVDP7Ib5lS2Z5ElSk=
-Subject: FAILED: patch "[PATCH] i2c: qup: Add missing unwind goto in qup_i2c_probe()" failed to apply to 4.14-stable tree
+        b=H4rR6xLyEfpnKfwMjf7ddSgyPPRR3q8yARyBPaXGBvPz9z6MUEC1mv4NhXcpRajEm
+         orfFBWARCVZY9Xlv6foFVHhFOzTD+GyxqnMWfWsC2Wk+nczcEg5JqSaq9ivXyrVb0A
+         1BFgC7zdnH9R6UmqXul9sVI5H8zn5vHsdhb3VTHM=
+Subject: FAILED: patch "[PATCH] i2c: qup: Add missing unwind goto in qup_i2c_probe()" failed to apply to 5.4-stable tree
 To:     d202180596@hust.edu.cn, andi.shyti@kernel.org, dzm91@hust.edu.cn,
         stable@vger.kernel.org, wsa@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 10:45:25 +0200
-Message-ID: <2023071625-mulch-item-f645@gregkh>
+Date:   Sun, 16 Jul 2023 10:45:43 +0200
+Message-ID: <2023071643-deputize-alias-9624@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x cd9489623c29aa2f8cc07088168afb6e0d5ef06d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071625-mulch-item-f645@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071643-deputize-alias-9624@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,7 +70,6 @@ cd9489623c29 ("i2c: qup: Add missing unwind goto in qup_i2c_probe()")
 e42688ed5cf5 ("i2c: busses: remove duplicate dev_err()")
 e0442d762139 ("i2c: busses: convert to devm_platform_ioremap_resource")
 90224e6468e1 ("i2c: drivers: Use generic definitions for bus frequencies")
-351c8a09b00b ("Merge branch 'i2c/for-5.4' of git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux")
 
 thanks,
 
