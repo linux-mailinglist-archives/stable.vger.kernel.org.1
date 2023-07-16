@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B6817551E5
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4DB7551F0
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:01:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230508AbjGPUBY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:01:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60754 "EHLO
+        id S231129AbjGPUBz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:01:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230509AbjGPUBX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:01:23 -0400
+        with ESMTP id S231126AbjGPUBy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:01:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1896EF7
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:01:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 947D79D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:01:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9441C60EAA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:01:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41C9C433C7;
-        Sun, 16 Jul 2023 20:01:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33C7760EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:01:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46366C433C7;
+        Sun, 16 Jul 2023 20:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537681;
-        bh=F6zY0k0KC17y7tsUNiggfl0a40HhoLCxhjWcgcFJvV8=;
+        s=korg; t=1689537711;
+        bh=uIBpqFhJ9A0sGHFzkKHP0AqumEdBc5S5Cf1Oi1UM37Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yzPgcgLqvfVR5NBL4A6x/kh5LFDKsY1478fk2DQTziYHYu+7XDKxQe98/AL0/iZpQ
-         BYALDXrAnVT+1Oab/YVTvdGoFziyGnVVf46uoHPN2RikKZ00sW8VC6zl1J9Viihy8u
-         S0ru7G1kvR5AG2fKzvNoF0/Z2x14La/7G49tc5LI=
+        b=AIsVXcf6Ipu7Y2cpuMuPJi+CEJRHyZZdzdxvot9rxIT5Hf+uhbjkEuO1XOKGKVZqk
+         EsTKGdOjmgcYQPzGpsMBrysnKd8NC5km6L5sIi/5mdyNnurskVxFSaB150cTuEcByC
+         ZgMLa+K+7KST2SuaT0RMr/xtDnOIZjk+HSLBiUQY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 175/800] wifi: iwlwifi: pull from TXQs with softirqs disabled
-Date:   Sun, 16 Jul 2023 21:40:28 +0200
-Message-ID: <20230716194953.171461426@linuxfoundation.org>
+Subject: [PATCH 6.4 176/800] wifi: iwlwifi: pcie: fix NULL pointer dereference in iwl_pcie_irq_rx_msix_handler()
+Date:   Sun, 16 Jul 2023 21:40:29 +0200
+Message-ID: <20230716194953.194200824@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -55,45 +57,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-[ Upstream commit 96fb6f47db24a712d650b0a9b9074873f273fb0e ]
+[ Upstream commit 1902f1953b8ba100ee8705cb8a6f1a9795550eca ]
 
-In mac80211, it's required that we pull from TXQs by calling
-ieee80211_tx_dequeue() only with softirqs disabled. However,
-in iwl_mvm_queue_state_change() we're often called with them
-enabled, e.g. from flush if anything was flushed, triggering
-a mac80211 warning.
+rxq can be NULL only when trans_pcie->rxq is NULL and entry->entry
+is zero. For the case when entry->entry is not equal to 0, rxq
+won't be NULL even if trans_pcie->rxq is NULL. Modify checker to
+check for trans_pcie->rxq.
 
-Fix that by disabling the softirqs across the TX call.
-
-Fixes: cfbc6c4c5b91 ("iwlwifi: mvm: support mac80211 TXQs model")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: abc599efa67b ("iwlwifi: pcie: don't crash when rx queues aren't allocated in interrupt")
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230614123446.0feef7fa81db.I4dd62542d955b40dd8f0af34fa4accb9d0d17c7e@changeid
+Link: https://lore.kernel.org/r/20230614123446.5a5eb3889a4a.I375a1d58f16b48cd2044e7b7caddae512d7c86fd@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 6ba4ad6b1380b..8a4415ef540d1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1742,8 +1742,11 @@ static void iwl_mvm_queue_state_change(struct iwl_op_mode *op_mode,
- 		else
- 			set_bit(IWL_MVM_TXQ_STATE_STOP_FULL, &mvmtxq->state);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index 0d7890f99a5fb..90a46faaaffdf 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -1636,14 +1636,14 @@ irqreturn_t iwl_pcie_irq_rx_msix_handler(int irq, void *dev_id)
+ 	struct msix_entry *entry = dev_id;
+ 	struct iwl_trans_pcie *trans_pcie = iwl_pcie_get_trans_pcie(entry);
+ 	struct iwl_trans *trans = trans_pcie->trans;
+-	struct iwl_rxq *rxq = &trans_pcie->rxq[entry->entry];
++	struct iwl_rxq *rxq;
  
--		if (start && mvmsta->sta_state != IEEE80211_STA_NOTEXIST)
-+		if (start && mvmsta->sta_state != IEEE80211_STA_NOTEXIST) {
-+			local_bh_disable();
- 			iwl_mvm_mac_itxq_xmit(mvm->hw, txq);
-+			local_bh_enable();
-+		}
+ 	trace_iwlwifi_dev_irq_msix(trans->dev, entry, false, 0, 0);
+ 
+ 	if (WARN_ON(entry->entry >= trans->num_rx_queues))
+ 		return IRQ_NONE;
+ 
+-	if (!rxq) {
++	if (!trans_pcie->rxq) {
+ 		if (net_ratelimit())
+ 			IWL_ERR(trans,
+ 				"[%d] Got MSI-X interrupt before we have Rx queues\n",
+@@ -1651,6 +1651,7 @@ irqreturn_t iwl_pcie_irq_rx_msix_handler(int irq, void *dev_id)
+ 		return IRQ_NONE;
  	}
  
- out:
++	rxq = &trans_pcie->rxq[entry->entry];
+ 	lock_map_acquire(&trans->sync_cmd_lockdep_map);
+ 	IWL_DEBUG_ISR(trans, "[%d] Got interrupt\n", entry->entry);
+ 
 -- 
 2.39.2
 
