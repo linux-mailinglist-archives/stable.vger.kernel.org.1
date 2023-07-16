@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CBFA755493
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F2E75525C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:07:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232206AbjGPUb6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:31:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53042 "EHLO
+        id S231292AbjGPUHJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:07:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232207AbjGPUbw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:31:52 -0400
+        with ESMTP id S231298AbjGPUHI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:07:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88677E48
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:31:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C29DB172D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:06:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DE4F60EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:31:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D32CC433C8;
-        Sun, 16 Jul 2023 20:31:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA2EF60EBF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:06:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00AE7C433C8;
+        Sun, 16 Jul 2023 20:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539506;
-        bh=OQwUDxUZut63Iz4v5xigsxKLefG9Mjr1/mSDKCTPGxw=;
+        s=korg; t=1689538011;
+        bh=SgNvYQsalSrC36NyEjl3SVQqsSpbele75XkT3SZlyKg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VubmYBeQQDmgOT/qtJ7Xpck3Uvf9+R8wSXt1Y9JKWT+QANxPkmqHLUtrXyDlvLuwb
-         8+h2jhoPG8qDXqZ7BrskqWFJ8oM/bzE9LVfom98A51Ze+IrR5+1yk9EogwVj6Xf0pT
-         BJlM+dP52ljsBm06QW1YZa64+8DK/h/alIXCGD5M=
+        b=Ho20FiJWWdx+diXjWw05VxtKkdJKS99OQsu9uySdkQE5PzaDTKhYNt13VxeDlpn9v
+         Ww6+A697x1EsYKPjcCoXb0AQ/PDxKSJY4T9VEySOmhdoRl2LEHbDs+Y25CB0CW6U8K
+         HzbWPdqoPWz9g0ylaA3YGVEfnPduKmVNR//UHmdg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
-        NeilBrown <neilb@suse.de>, Ido Schimmel <idosch@nvidia.com>,
-        Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/591] lockd: drop inappropriate svc_get() from locked_get()
+Subject: [PATCH 6.4 300/800] arm64: dts: qcom: ipq6018: correct qrng unit address
 Date:   Sun, 16 Jul 2023 21:42:33 +0200
-Message-ID: <20230716194924.234374869@linuxfoundation.org>
+Message-ID: <20230716194956.048165146@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,55 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: NeilBrown <neilb@suse.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 665e89ab7c5af1f2d260834c861a74b01a30f95f ]
+[ Upstream commit 085058786a7890dd44ec623fe5ac74db870f6b93 ]
 
-The below-mentioned patch was intended to simplify refcounting on the
-svc_serv used by locked.  The goal was to only ever have a single
-reference from the single thread.  To that end we dropped a call to
-lockd_start_svc() (except when creating thread) which would take a
-reference, and dropped the svc_put(serv) that would drop that reference.
+Match unit-address to reg entry to fix dtbs W=1 warnings:
 
-Unfortunately we didn't also remove the svc_get() from
-lockd_create_svc() in the case where the svc_serv already existed.
-So after the patch:
- - on the first call the svc_serv was allocated and the one reference
-   was given to the thread, so there are no extra references
- - on subsequent calls svc_get() was called so there is now an extra
-   reference.
-This is clearly not consistent.
+  Warning (simple_bus_reg): /soc/qrng@e1000: simple-bus unit address format error, expected "e3000"
 
-The inconsistency is also clear in the current code in lockd_get()
-takes *two* references, one on nlmsvc_serv and one by incrementing
-nlmsvc_users.   This clearly does not match lockd_put().
-
-So: drop that svc_get() from lockd_get() (which used to be in
-lockd_create_svc().
-
-Reported-by: Ido Schimmel <idosch@idosch.org>
-Closes: https://lore.kernel.org/linux-nfs/ZHsI%2FH16VX9kJQX1@shredder/T/#u
-Fixes: b73a2972041b ("lockd: move lockd_start_svc() call into lockd_create_svc()")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230419211856.79332-1-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svc.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/lockd/svc.c b/fs/lockd/svc.c
-index 59ef8a1f843f3..5579e67da17db 100644
---- a/fs/lockd/svc.c
-+++ b/fs/lockd/svc.c
-@@ -355,7 +355,6 @@ static int lockd_get(void)
- 	int error;
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+index f531797f26195..c58eeb4376abe 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -302,7 +302,7 @@ mdio: mdio@90000 {
+ 			status = "disabled";
+ 		};
  
- 	if (nlmsvc_serv) {
--		svc_get(nlmsvc_serv);
- 		nlmsvc_users++;
- 		return 0;
- 	}
+-		prng: qrng@e1000 {
++		prng: qrng@e3000 {
+ 			compatible = "qcom,prng-ee";
+ 			reg = <0x0 0x000e3000 0x0 0x1000>;
+ 			clocks = <&gcc GCC_PRNG_AHB_CLK>;
 -- 
 2.39.2
 
