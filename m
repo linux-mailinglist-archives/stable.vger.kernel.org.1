@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A33327555BD
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CF06755389
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232617AbjGPUoI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:44:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33968 "EHLO
+        id S231764AbjGPUUG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:20:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232615AbjGPUoH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:44:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E319D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:44:07 -0700 (PDT)
+        with ESMTP id S231771AbjGPUUE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:20:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CCE1126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:20:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A0E7260E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:44:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD980C433C8;
-        Sun, 16 Jul 2023 20:44:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D93CB60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:20:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E589BC433C8;
+        Sun, 16 Jul 2023 20:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540246;
-        bh=M5zZZn2QzNVkJrQXkh4w92BjVIEEf+XuJjwqHCpR7+c=;
+        s=korg; t=1689538803;
+        bh=aPCdBMrlgF+gklBIlDerPQRDP5Yqkv8wEVLWVDG4rPg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N/t/TPgvqpMb8/HCk+/FfPCWV/g1TESRPxRiqD1eHHEuRpRtsRl4m2DOlRGY0yYS4
-         Z3iGWHFuoa8q0v7NLHRRplRG9RefD6NXPTITxJj0Vmg3F7PLb63gnrsr5hleRhf0Be
-         vEPAe0XZSTZFS6C+WDgwsTm8XMxGUx4aIoPxD+ss=
+        b=XlGyS02k4fl1+vQPLd9Q6O+ik3OygaOOG5Q4lmjsCHYpZ7mQRQqnDxerFwI891s75
+         bY+Nc9VIv2TEA0mGEGGO3wktDk6hwiR5xw3pmm2aR+CWXMMl4w6Svy5o/FnKDqX+9O
+         R8osnlApLXBsdPoIGU0tfHz3KQc1Ye2qQFFlzLdI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Junyan Ye <yejunyan@hust.edu.cn>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        patches@lists.linux.dev,
+        Manikanta Mylavarapu <quic_mmanikan@quicinc.com>,
+        Kathiravan T <quic_kathirav@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 295/591] PCI: ftpci100: Release the clock resources
+Subject: [PATCH 6.4 581/800] clk: qcom: ipq5332: fix the src parameter in ftbl_gcc_apss_axi_clk_src
 Date:   Sun, 16 Jul 2023 21:47:14 +0200
-Message-ID: <20230716194931.527364959@linuxfoundation.org>
+Message-ID: <20230716195002.579765473@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,73 +57,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Junyan Ye <yejunyan@hust.edu.cn>
+From: Kathiravan T <quic_kathirav@quicinc.com>
 
-[ Upstream commit c60738de85f40b0b9f5cb23c21f9246e5a47908c ]
+[ Upstream commit 81c1ef89a45eccd5603f1e27e281d14fefcb81f9 ]
 
-Smatch reported:
-1. drivers/pci/controller/pci-ftpci100.c:526 faraday_pci_probe() warn:
-'clk' from clk_prepare_enable() not released on lines: 442,451,462,478,512,517.
-2. drivers/pci/controller/pci-ftpci100.c:526 faraday_pci_probe() warn:
-'p->bus_clk' from clk_prepare_enable() not released on lines: 451,462,478,512,517.
+480MHz is derived from P_GPLL4_OUT_AUX not from P_GPLL4_OUT_MAIN. Update
+the freq_tbl with the correct src.
 
-The clock resource is obtained by devm_clk_get(), and then
-clk_prepare_enable() makes the clock resource ready for use. After that,
-clk_disable_unprepare() should be called to release the clock resource
-when it is no longer needed. However, while doing some error handling
-in faraday_pci_probe(), clk_disable_unprepare() is not called to release
-clk and p->bus_clk before returning. These return lines are exactly 442,
-451, 462, 478, 512, 517.
-
-Fix this warning by replacing devm_clk_get() with devm_clk_get_enabled(),
-which is equivalent to devm_clk_get() + clk_prepare_enable(). And with
-devm_clk_get_enabled(), the clock will automatically be disabled,
-unprepared and freed when the device is unbound from the bus.
-
-Link: https://lore.kernel.org/r/20230508043641.23807-1-yejunyan@hust.edu.cn
-Fixes: b3c433efb8a3 ("PCI: faraday: Fix wrong pointer passed to PTR_ERR()")
-Fixes: 2eeb02b28579 ("PCI: faraday: Add clock handling")
-Fixes: 783a862563f7 ("PCI: faraday: Use pci_parse_request_of_pci_ranges()")
-Fixes: d3c68e0a7e34 ("PCI: faraday: Add Faraday Technology FTPCI100 PCI Host Bridge driver")
-Fixes: f1e8bd21e39e ("PCI: faraday: Convert IRQ masking to raw PCI config accessors")
-Signed-off-by: Junyan Ye <yejunyan@hust.edu.cn>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 3d89d52970fd ("clk: qcom: add Global Clock controller (GCC) driver for IPQ5332 SoC")
+Reported-by: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
+Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230417044342.9406-1-quic_kathirav@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pci-ftpci100.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/clk/qcom/gcc-ipq5332.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pci-ftpci100.c b/drivers/pci/controller/pci-ftpci100.c
-index 0cfd9d5a497c9..f7e61e169d838 100644
---- a/drivers/pci/controller/pci-ftpci100.c
-+++ b/drivers/pci/controller/pci-ftpci100.c
-@@ -429,22 +429,12 @@ static int faraday_pci_probe(struct platform_device *pdev)
- 	p->dev = dev;
+diff --git a/drivers/clk/qcom/gcc-ipq5332.c b/drivers/clk/qcom/gcc-ipq5332.c
+index 1ad23aa8aa5a9..b9ab67649130a 100644
+--- a/drivers/clk/qcom/gcc-ipq5332.c
++++ b/drivers/clk/qcom/gcc-ipq5332.c
+@@ -366,7 +366,7 @@ static struct clk_rcg2 gcc_adss_pwm_clk_src = {
+ };
  
- 	/* Retrieve and enable optional clocks */
--	clk = devm_clk_get(dev, "PCLK");
-+	clk = devm_clk_get_enabled(dev, "PCLK");
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
--	ret = clk_prepare_enable(clk);
--	if (ret) {
--		dev_err(dev, "could not prepare PCLK\n");
--		return ret;
--	}
--	p->bus_clk = devm_clk_get(dev, "PCICLK");
-+	p->bus_clk = devm_clk_get_enabled(dev, "PCICLK");
- 	if (IS_ERR(p->bus_clk))
- 		return PTR_ERR(p->bus_clk);
--	ret = clk_prepare_enable(p->bus_clk);
--	if (ret) {
--		dev_err(dev, "could not prepare PCICLK\n");
--		return ret;
--	}
- 
- 	p->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(p->base))
+ static const struct freq_tbl ftbl_gcc_apss_axi_clk_src[] = {
+-	F(480000000, P_GPLL4_OUT_MAIN, 2.5, 0, 0),
++	F(480000000, P_GPLL4_OUT_AUX, 2.5, 0, 0),
+ 	F(533333333, P_GPLL0_OUT_MAIN, 1.5, 0, 0),
+ 	{ }
+ };
 -- 
 2.39.2
 
