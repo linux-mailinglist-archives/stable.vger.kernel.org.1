@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2055775568D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95909755431
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232905AbjGPUvn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:51:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40234 "EHLO
+        id S232026AbjGPU1k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:27:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232901AbjGPUvm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:51:42 -0400
+        with ESMTP id S229496AbjGPU1j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43EE2E9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D90BBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:27:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B9B5A60E9E
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA65DC433C7;
-        Sun, 16 Jul 2023 20:51:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 353E160EBF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:27:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412C7C433C7;
+        Sun, 16 Jul 2023 20:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540700;
-        bh=RMp4xByG4ffeO0OOKmDWbpxiTLqmBseqZwL54lV+3dg=;
+        s=korg; t=1689539257;
+        bh=saUuJtmgNOcRzC2+LuidwK54LuvYfbb+AABWeOWjxZA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZnGvThgVifB98X5MJKn2d1O7l2l/rsaCjjWTiBz+I3YS4Nyh/lrP3HPbYyTl6nIeZ
-         IHIUAKBknKxaX8vwi2j6tu6hXOVSSZO+8ZqcRwXEay07FZ7r6QchV335bmhvGnlzdT
-         PW51m9iU1UAXKi3OFJQo5ewz28xSFCTyGmqzqNTw=
+        b=BlpNxuqEz6LtkPve6M1sLJfEVLUXw0cCsOn7hD9UY2ept9CS4BC+gAreu6yIk+kwd
+         DKv0PFLfqAWGYvoIUOGXISN23y+TOxmNIJxq3KcvRUna7+g/FlEdGJ610JmC7VKUxi
+         UVvvNWREp/k3BG2gwNxpeeIz1XEgILDxAb+b7bDY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Yury Norov <yury.norov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 456/591] lib/bitmap: drop optimization of bitmap_{from,to}_arr64
-Date:   Sun, 16 Jul 2023 21:49:55 +0200
-Message-ID: <20230716194935.703759168@linuxfoundation.org>
+        patches@lists.linux.dev, Sherry Yang <sherry.yang@oracle.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.4 743/800] nfsd: use vfs setgid helper
+Date:   Sun, 16 Jul 2023 21:49:56 +0200
+Message-ID: <20230716195006.378923738@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,75 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yury Norov <yury.norov@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit c1d2ba10f594046831d14b03f194e8d05e78abad ]
+commit 2d8ae8c417db284f598dffb178cc01e7db0f1821 upstream.
 
-bitmap_{from,to}_arr64() optimization is overly optimistic on 32-bit LE
-architectures when it's wired to bitmap_copy_clear_tail().
+We've aligned setgid behavior over multiple kernel releases. The details
+can be found in commit cf619f891971 ("Merge tag 'fs.ovl.setgid.v6.2' of
+git://git.kernel.org/pub/scm/linux/kernel/git/vfs/idmapping") and
+commit 426b4ca2d6a5 ("Merge tag 'fs.setgid.v6.0' of
+git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux").
+Consistent setgid stripping behavior is now encapsulated in the
+setattr_should_drop_sgid() helper which is used by all filesystems that
+strip setgid bits outside of vfs proper. Usually ATTR_KILL_SGID is
+raised in e.g., chown_common() and is subject to the
+setattr_should_drop_sgid() check to determine whether the setgid bit can
+be retained. Since nfsd is raising ATTR_KILL_SGID unconditionally it
+will cause notify_change() to strip it even if the caller had the
+necessary privileges to retain it. Ensure that nfsd only raises
+ATR_KILL_SGID if the caller lacks the necessary privileges to retain the
+setgid bit.
 
-bitmap_copy_clear_tail() takes care of unused bits in the bitmap up to
-the next word boundary. But on 32-bit machines when copying bits from
-bitmap to array of 64-bit words, it's expected that the unused part of
-a recipient array must be cleared up to 64-bit boundary, so the last 4
-bytes may stay untouched when nbits % 64 <= 32.
+Without this patch the setgid stripping tests in LTP will fail:
 
-While the copying part of the optimization works correct, that clear-tail
-trick makes corresponding tests reasonably fail:
+> As you can see, the problem is S_ISGID (0002000) was dropped on a
+> non-group-executable file while chown was invoked by super-user, while
 
-test_bitmap: bitmap_to_arr64(nbits == 1): tail is not safely cleared: 0xa5a5a5a500000001 (must be 0x0000000000000001)
+[...]
 
-Fix it by removing bitmap_{from,to}_arr64() optimization for 32-bit LE
-arches.
+> fchown02.c:66: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/lkml/20230225184702.GA3587246@roeck-us.net/
-Fixes: 0a97953fd221 ("lib: add bitmap_{from,to}_arr64")
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[...]
+
+> chown02.c:57: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
+
+With this patch all tests pass.
+
+Reported-by: Sherry Yang <sherry.yang@oracle.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bitmap.h | 8 +++-----
- lib/bitmap.c           | 2 +-
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ fs/nfsd/vfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
-index 7d6d73b781472..03644237e1efb 100644
---- a/include/linux/bitmap.h
-+++ b/include/linux/bitmap.h
-@@ -302,12 +302,10 @@ void bitmap_to_arr32(u32 *buf, const unsigned long *bitmap,
- #endif
- 
- /*
-- * On 64-bit systems bitmaps are represented as u64 arrays internally. On LE32
-- * machines the order of hi and lo parts of numbers match the bitmap structure.
-- * In both cases conversion is not needed when copying data from/to arrays of
-- * u64.
-+ * On 64-bit systems bitmaps are represented as u64 arrays internally. So,
-+ * the conversion is not needed when copying data from/to arrays of u64.
-  */
--#if (BITS_PER_LONG == 32) && defined(__BIG_ENDIAN)
-+#if BITS_PER_LONG == 32
- void bitmap_from_arr64(unsigned long *bitmap, const u64 *buf, unsigned int nbits);
- void bitmap_to_arr64(u64 *buf, const unsigned long *bitmap, unsigned int nbits);
- #else
-diff --git a/lib/bitmap.c b/lib/bitmap.c
-index 1c81413c51f86..ddb31015e38ae 100644
---- a/lib/bitmap.c
-+++ b/lib/bitmap.c
-@@ -1495,7 +1495,7 @@ void bitmap_to_arr32(u32 *buf, const unsigned long *bitmap, unsigned int nbits)
- EXPORT_SYMBOL(bitmap_to_arr32);
- #endif
- 
--#if (BITS_PER_LONG == 32) && defined(__BIG_ENDIAN)
-+#if BITS_PER_LONG == 32
- /**
-  * bitmap_from_arr64 - copy the contents of u64 array of bits to bitmap
-  *	@bitmap: array of unsigned longs, the destination bitmap
--- 
-2.39.2
-
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -388,7 +388,9 @@ nfsd_sanitize_attrs(struct inode *inode,
+ 				iap->ia_mode &= ~S_ISGID;
+ 		} else {
+ 			/* set ATTR_KILL_* bits and let VFS handle it */
+-			iap->ia_valid |= (ATTR_KILL_SUID | ATTR_KILL_SGID);
++			iap->ia_valid |= ATTR_KILL_SUID;
++			iap->ia_valid |=
++				setattr_should_drop_sgid(&nop_mnt_idmap, inode);
+ 		}
+ 	}
+ }
 
 
