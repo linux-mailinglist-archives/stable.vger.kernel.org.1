@@ -2,87 +2,205 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 465F77555B8
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6BEB755382
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232601AbjGPUn5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:43:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33844 "EHLO
+        id S231755AbjGPUTv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:19:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232615AbjGPUn4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:56 -0400
+        with ESMTP id S231751AbjGPUTv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B632FD9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B96F90
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5539B60EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF2FC433C8;
-        Sun, 16 Jul 2023 20:43:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD43B60E9D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD374C433C7;
+        Sun, 16 Jul 2023 20:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540234;
-        bh=FyInWm0q1Wkpii3gFFMCFUgbcTHa3j4jUVZVbCaa/6E=;
+        s=korg; t=1689538789;
+        bh=rhu/ApJ2l+uClfHnn+bAgVtOU6+dPXY2VjGaUWCfjyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iIZlS6cX0cv5Qsnn4W2HywTuXvP/qzkNqFUs/EWUI1ZhwND1l9EtuuAKXR8DNw0vE
-         P0qxiD7ZB7gA6A5Nh2zAcECTE8v7UCsxlBvJF+wUVXhycWN80fN0HKZMyFMUvyF96F
-         HpbQX7IkjwJJpiOI19BReEB+ltwBXlCrlTDdY/OQ=
+        b=zZjGb7FrRn6qH1JvEKXWxUDqh9D8vF7munf8XMGS4uqNbPewQknEVD+r4vylGsqsQ
+         E9wzN6/NfGmBodhNz0Mb9yZnYCBAO3FjVSfomn50C/cbUNn6wwPboof2dZduRhWBcX
+         YDQwJSByHztItfyKmHBLtKpE5JIoRTdMg7l7mWAs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 291/591] platform/x86: lenovo-yogabook: Set default keyboard backligh brightness on probe()
+Subject: [PATCH 6.4 577/800] media: mediatek: vcodec: using decoder status instead of core work count
 Date:   Sun, 16 Jul 2023 21:47:10 +0200
-Message-ID: <20230716194931.422305644@linuxfoundation.org>
+Message-ID: <20230716195002.485449226@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit 9e6380d6573181c555ca1b5019b08d19a9ee581c ]
+[ Upstream commit 2864e304faec04c2674328aad0e820a9cd84cdec ]
 
-Set default keyboard backlight brightness on probe(), this fixes
-the backlight being off after a rmmod + modprobe.
+Adding the definition of decoder status to separate different decoder
+period for core hardware.
 
-Fixes: c0549b72d99d ("platform/x86: lenovo-yogabook-wmi: Add driver for Lenovo Yoga Book")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230430165807.472798-5-hdegoede@redhat.com
+core_work_cnt is the number of core work queued to work queue, the control
+is very complex, leading to some unreasonable test result.
+
+Using parameter status to indicate whether queue core work to work queue.
+
+Fixes: 2e0ef56d81cb ("media: mediatek: vcodec: making sure queue_work successfully")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lenovo-yogabook-wmi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../platform/mediatek/vcodec/vdec_msg_queue.c | 33 ++++++++-----------
+ .../platform/mediatek/vcodec/vdec_msg_queue.h | 16 +++++++--
+ 2 files changed, 28 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/platform/x86/lenovo-yogabook-wmi.c b/drivers/platform/x86/lenovo-yogabook-wmi.c
-index 5948ffa74acd5..d57fcc8388519 100644
---- a/drivers/platform/x86/lenovo-yogabook-wmi.c
-+++ b/drivers/platform/x86/lenovo-yogabook-wmi.c
-@@ -295,6 +295,9 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
- 	}
- 	data->backside_hall_irq = r;
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+index f3073d1e7f420..03f8d7cd8eddc 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+@@ -71,7 +71,6 @@ static void vdec_msg_queue_dec(struct vdec_msg_queue *msg_queue, int hardware_in
+ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf *buf)
+ {
+ 	struct list_head *head;
+-	int status;
  
-+	/* Set default brightness before enabling the IRQ */
-+	yogabook_wmi_set_kbd_backlight(data->wdev, YB_KBD_BL_DEFAULT);
+ 	head = vdec_get_buf_list(msg_ctx->hardware_index, buf);
+ 	if (!head) {
+@@ -87,12 +86,9 @@ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf
+ 	if (msg_ctx->hardware_index != MTK_VDEC_CORE) {
+ 		wake_up_all(&msg_ctx->ready_to_use);
+ 	} else {
+-		if (buf->ctx->msg_queue.core_work_cnt <
+-			atomic_read(&buf->ctx->msg_queue.core_list_cnt)) {
+-			status = queue_work(buf->ctx->dev->core_workqueue,
+-					    &buf->ctx->msg_queue.core_work);
+-			if (status)
+-				buf->ctx->msg_queue.core_work_cnt++;
++		if (!(buf->ctx->msg_queue.status & CONTEXT_LIST_QUEUED)) {
++			queue_work(buf->ctx->dev->core_workqueue, &buf->ctx->msg_queue.core_work);
++			buf->ctx->msg_queue.status |= CONTEXT_LIST_QUEUED;
+ 		}
+ 	}
+ 
+@@ -261,7 +257,10 @@ static void vdec_msg_queue_core_work(struct work_struct *work)
+ 		container_of(msg_queue, struct mtk_vcodec_ctx, msg_queue);
+ 	struct mtk_vcodec_dev *dev = ctx->dev;
+ 	struct vdec_lat_buf *lat_buf;
+-	int status;
 +
- 	r = request_irq(data->backside_hall_irq, yogabook_backside_hall_irq,
- 			IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
- 			"backside_hall_sw", data);
++	spin_lock(&ctx->dev->msg_queue_core_ctx.ready_lock);
++	ctx->msg_queue.status &= ~CONTEXT_LIST_QUEUED;
++	spin_unlock(&ctx->dev->msg_queue_core_ctx.ready_lock);
+ 
+ 	lat_buf = vdec_msg_queue_dqbuf(&dev->msg_queue_core_ctx);
+ 	if (!lat_buf)
+@@ -278,17 +277,13 @@ static void vdec_msg_queue_core_work(struct work_struct *work)
+ 	vdec_msg_queue_qbuf(&ctx->msg_queue.lat_ctx, lat_buf);
+ 
+ 	wake_up_all(&ctx->msg_queue.core_dec_done);
+-	spin_lock(&dev->msg_queue_core_ctx.ready_lock);
+-	lat_buf->ctx->msg_queue.core_work_cnt--;
+-
+-	if (lat_buf->ctx->msg_queue.core_work_cnt <
+-		atomic_read(&lat_buf->ctx->msg_queue.core_list_cnt)) {
+-		status = queue_work(lat_buf->ctx->dev->core_workqueue,
+-				    &lat_buf->ctx->msg_queue.core_work);
+-		if (status)
+-			lat_buf->ctx->msg_queue.core_work_cnt++;
++	if (!(ctx->msg_queue.status & CONTEXT_LIST_QUEUED) &&
++	    atomic_read(&msg_queue->core_list_cnt)) {
++		spin_lock(&ctx->dev->msg_queue_core_ctx.ready_lock);
++		ctx->msg_queue.status |= CONTEXT_LIST_QUEUED;
++		spin_unlock(&ctx->dev->msg_queue_core_ctx.ready_lock);
++		queue_work(ctx->dev->core_workqueue, &msg_queue->core_work);
+ 	}
+-	spin_unlock(&dev->msg_queue_core_ctx.ready_lock);
+ }
+ 
+ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
+@@ -303,13 +298,13 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
+ 		return 0;
+ 
+ 	msg_queue->ctx = ctx;
+-	msg_queue->core_work_cnt = 0;
+ 	vdec_msg_queue_init_ctx(&msg_queue->lat_ctx, MTK_VDEC_LAT0);
+ 	INIT_WORK(&msg_queue->core_work, vdec_msg_queue_core_work);
+ 
+ 	atomic_set(&msg_queue->lat_list_cnt, 0);
+ 	atomic_set(&msg_queue->core_list_cnt, 0);
+ 	init_waitqueue_head(&msg_queue->core_dec_done);
++	msg_queue->status = CONTEXT_LIST_EMPTY;
+ 
+ 	msg_queue->wdma_addr.size =
+ 		vde_msg_queue_get_trans_size(ctx->picinfo.buf_w,
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
+index a5d44bc97c16b..8f82d14847726 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
+@@ -21,6 +21,18 @@ struct mtk_vcodec_ctx;
+ struct mtk_vcodec_dev;
+ typedef int (*core_decode_cb_t)(struct vdec_lat_buf *lat_buf);
+ 
++/**
++ * enum core_ctx_status - Context decode status for core hardwre.
++ * @CONTEXT_LIST_EMPTY: No buffer queued on core hardware(must always be 0)
++ * @CONTEXT_LIST_QUEUED: Buffer queued to core work list
++ * @CONTEXT_LIST_DEC_DONE: context decode done
++ */
++enum core_ctx_status {
++	CONTEXT_LIST_EMPTY = 0,
++	CONTEXT_LIST_QUEUED,
++	CONTEXT_LIST_DEC_DONE,
++};
++
+ /**
+  * struct vdec_msg_queue_ctx - represents a queue for buffers ready to be processed
+  * @ready_to_use: ready used queue used to signalize when get a job queue
+@@ -77,7 +89,7 @@ struct vdec_lat_buf {
+  * @lat_list_cnt: used to record each instance lat list count
+  * @core_list_cnt: used to record each instance core list count
+  * @core_dec_done: core work queue decode done event
+- * @core_work_cnt: the number of core work in work queue
++ * @status: current context decode status for core hardware
+  */
+ struct vdec_msg_queue {
+ 	struct vdec_lat_buf lat_buf[NUM_BUFFER_COUNT];
+@@ -93,7 +105,7 @@ struct vdec_msg_queue {
+ 	atomic_t lat_list_cnt;
+ 	atomic_t core_list_cnt;
+ 	wait_queue_head_t core_dec_done;
+-	int core_work_cnt;
++	int status;
+ };
+ 
+ /**
 -- 
 2.39.2
 
