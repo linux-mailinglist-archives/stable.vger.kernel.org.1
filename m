@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1AB75544A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 622057556AF
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232056AbjGPU2r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:28:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50600 "EHLO
+        id S232934AbjGPUw6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:52:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232063AbjGPU2q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:28:46 -0400
+        with ESMTP id S232935AbjGPUw6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748521B7
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:28:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F7B4109
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 037E760E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:28:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11896C433C8;
-        Sun, 16 Jul 2023 20:28:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE8BD60DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA66C433C7;
+        Sun, 16 Jul 2023 20:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539324;
-        bh=7rEibQ5YmuAqqDQYxCbxtVddeAgT4Zv5EKxTXfHNkII=;
+        s=korg; t=1689540776;
+        bh=iOL6T904AKaSomWeVSUah6/IhD2adloQI9ifXwaLOSU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qhfp65ctd3530rzYQAIyHDtcNZ8uGgl80jQYIHTI3gjtr90n4+uEHrF8MblNZ/gjy
-         02WN90PeTktzLiUfXEIuQ/Dx9OBHlYZ6jFdrCbGg2V/oA7Y7OGzIMxt/yC30o/EGD2
-         l09Wmlp66Xw4EfXDhHkXe5hJnGR4hFcdOCN184vA=
+        b=u1oTXGbqi4z6RV4k9mBfS1ngSxUkKlUAteAY3uD7JyPH0p48QL2Zn8V2s/lReHTjl
+         U4QQG3gSUhtYkMFcwtCHe+/xNTxz9/e0Et8txNsh4stYdyI/FK9tb9Vy7nf8ie/nwi
+         mQz8DCX2wD/518WfJCTOp36uySDLefRNaEItJrS0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev
-Subject: [PATCH 6.4 768/800] regulator: tps65219: Fix matching interrupts for their regulators
-Date:   Sun, 16 Jul 2023 21:50:21 +0200
-Message-ID: <20230716195006.988116948@linuxfoundation.org>
+        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 483/591] Bluetooth: MGMT: add CIS feature bits to controller information
+Date:   Sun, 16 Jul 2023 21:50:22 +0200
+Message-ID: <20230716194936.394818225@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,58 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Pauli Virtanen <pav@iki.fi>
 
-commit f050e56de80591fee55bedbdf5b6b998c740cd0c upstream.
+[ Upstream commit 2394186a2cefb9a45a029281a55749804dd8c556 ]
 
-The driver's probe() first registers regulators in a loop and then in a
-second loop passes them as irq data to the interrupt handlers.  However
-the function to get the regulator for given name
-tps65219_get_rdev_by_name() was a no-op due to argument passed by value,
-not pointer, thus the second loop assigned always same value - from
-previous loop.  The interrupts, when fired, where executed with wrong
-data.  Compiler also noticed it:
+Userspace needs to know whether the adapter has feature support for
+Connected Isochronous Stream - Central/Peripheral, so it can set up
+LE Audio features accordingly.
 
-  drivers/regulator/tps65219-regulator.c: In function ‘tps65219_get_rdev_by_name’:
-  drivers/regulator/tps65219-regulator.c:292:60: error: parameter ‘dev’ set but not used [-Werror=unused-but-set-parameter]
+Expose these feature bits as settings in MGMT controller info.
 
-Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
-Cc: <stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com
-Link: https://lore.kernel.org/r/20230507144656.192800-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 73f55453ea52 ("Bluetooth: MGMT: Fix marking SCAN_RSP as not connectable")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/tps65219-regulator.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/bluetooth/mgmt.h |  2 ++
+ net/bluetooth/mgmt.c         | 12 ++++++++++++
+ 2 files changed, 14 insertions(+)
 
---- a/drivers/regulator/tps65219-regulator.c
-+++ b/drivers/regulator/tps65219-regulator.c
-@@ -289,13 +289,13 @@ static irqreturn_t tps65219_regulator_ir
+diff --git a/include/net/bluetooth/mgmt.h b/include/net/bluetooth/mgmt.h
+index 743f6f59dff81..e18a927669c0a 100644
+--- a/include/net/bluetooth/mgmt.h
++++ b/include/net/bluetooth/mgmt.h
+@@ -109,6 +109,8 @@ struct mgmt_rp_read_index_list {
+ #define MGMT_SETTING_STATIC_ADDRESS	0x00008000
+ #define MGMT_SETTING_PHY_CONFIGURATION	0x00010000
+ #define MGMT_SETTING_WIDEBAND_SPEECH	0x00020000
++#define MGMT_SETTING_CIS_CENTRAL	0x00040000
++#define MGMT_SETTING_CIS_PERIPHERAL	0x00080000
  
- static int tps65219_get_rdev_by_name(const char *regulator_name,
- 				     struct regulator_dev *rdevtbl[7],
--				     struct regulator_dev *dev)
-+				     struct regulator_dev **dev)
- {
- 	int i;
+ #define MGMT_OP_READ_INFO		0x0004
+ #define MGMT_READ_INFO_SIZE		0
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index fc4ba0884da96..815f2abe918ef 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -859,6 +859,12 @@ static u32 get_supported_settings(struct hci_dev *hdev)
+ 	    hdev->set_bdaddr)
+ 		settings |= MGMT_SETTING_CONFIGURATION;
  
- 	for (i = 0; i < ARRAY_SIZE(regulators); i++) {
- 		if (strcmp(regulator_name, regulators[i].name) == 0) {
--			dev = rdevtbl[i];
-+			*dev = rdevtbl[i];
- 			return 0;
- 		}
- 	}
-@@ -348,7 +348,7 @@ static int tps65219_regulator_probe(stru
- 		irq_data[i].dev = tps->dev;
- 		irq_data[i].type = irq_type;
++	if (cis_central_capable(hdev))
++		settings |= MGMT_SETTING_CIS_CENTRAL;
++
++	if (cis_peripheral_capable(hdev))
++		settings |= MGMT_SETTING_CIS_PERIPHERAL;
++
+ 	settings |= MGMT_SETTING_PHY_CONFIGURATION;
  
--		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
-+		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, &rdev);
- 		if (IS_ERR(rdev)) {
- 			dev_err(tps->dev, "Failed to get rdev for %s\n",
- 				irq_type->regulator_name);
+ 	return settings;
+@@ -932,6 +938,12 @@ static u32 get_current_settings(struct hci_dev *hdev)
+ 	if (hci_dev_test_flag(hdev, HCI_WIDEBAND_SPEECH_ENABLED))
+ 		settings |= MGMT_SETTING_WIDEBAND_SPEECH;
+ 
++	if (cis_central_capable(hdev))
++		settings |= MGMT_SETTING_CIS_CENTRAL;
++
++	if (cis_peripheral_capable(hdev))
++		settings |= MGMT_SETTING_CIS_PERIPHERAL;
++
+ 	return settings;
+ }
+ 
+-- 
+2.39.2
+
 
 
