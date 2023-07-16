@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 429DD7552E7
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EED1C75551A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:37:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231538AbjGPUNU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:13:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40380 "EHLO
+        id S232384AbjGPUh0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:37:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231529AbjGPUNT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:13:19 -0400
+        with ESMTP id S232375AbjGPUhZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:37:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED7290
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:13:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95B519F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:37:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7434360EA6
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:13:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8395DC433C8;
-        Sun, 16 Jul 2023 20:13:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD31660EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:37:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC81C433C7;
+        Sun, 16 Jul 2023 20:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538397;
-        bh=OG+o7ENvenI1LO8yawpHtl1zafpz8T71YyI6z7Ho7rI=;
+        s=korg; t=1689539843;
+        bh=n/oljC0FY07lJmRjErLGlwUKeqL2pL1Zof8z/apBXvA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xU7pQ+CVl+WgE8iXR8+AQQLv5tiLca3Z5ppgrhb0DE2rc/fp2tpdAeTduZv4IBTaf
-         rDxa3tLL1mJHTECLfrPwvkqTZbOKMLVTz+ZhZ125JLIMHAIS/bvkU4gTI6emXM6YwC
-         Gqg5akD9GuJCyBtOS9fb2dIAj1AQtMfQ+95COCJ0=
+        b=Yz5Liy7kdVjsNlP3jP2h/OGFmgT3qyN0vNy4IvTVyZ8Au0JknxazXMhOfvCcOdDgp
+         GhBT2ZKFxzv6FivO8bgj/TRCapH2+MmMl+YfiPUV1LZbLo9wHbXFjtYfKqospxFidR
+         sj6WMR3XBh6x0Koq6p78afpy8nT8lokIeR7txKqo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinhong Zhu <jinhongzhu@hust.edu.cn>,
-        Dan Carpenter <error27@gmail.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 437/800] scsi: qedf: Fix NULL dereference in error handling
+        patches@lists.linux.dev,
+        Francesco Dolcini <francesco.dolcini@toradex.com>,
+        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 151/591] drm/bridge: tc358768: Add atomic_get_input_bus_fmts() implementation
 Date:   Sun, 16 Jul 2023 21:44:50 +0200
-Message-ID: <20230716194959.234261598@linuxfoundation.org>
+Message-ID: <20230716194927.772893806@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +55,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jinhong Zhu <jinhongzhu@hust.edu.cn>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[ Upstream commit f025312b089474a54e4859f3453771314d9e3d4f ]
+[ Upstream commit cec5ccef85bd0128cf895612de54a9d21d2015d0 ]
 
-Smatch reported:
+Add atomic_get_input_bus_fmts() implementation, tc358768 has a parallel
+RGB input interface with the actual bus format depending on the amount
+of parallel input data lines.
 
-drivers/scsi/qedf/qedf_main.c:3056 qedf_alloc_global_queues()
-warn: missing unwind goto?
+Without this change when the tc358768 is used with less than 24bit the
+color mapping is completely wrong.
 
-At this point in the function, nothing has been allocated so we can return
-directly. In particular the "qedf->global_queues" have not been allocated
-so calling qedf_free_global_queues() will lead to a NULL dereference when
-we check if (!gl[i]) and "gl" is NULL.
-
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Signed-off-by: Jinhong Zhu <jinhongzhu@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230502140022.2852-1-jinhongzhu@hust.edu.cn
-Reviewed-by: Dan Carpenter <error27@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230330095941.428122-7-francesco@dolcini.it
+Stable-dep-of: ee18698e212b ("drm/bridge: tc358768: fix TCLK_TRAILCNT computation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/tc358768.c | 44 +++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index 3b64de81ea0d3..2a31ddc99dde5 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -3041,9 +3041,8 @@ static int qedf_alloc_global_queues(struct qedf_ctx *qedf)
- 	 * addresses of our queues
- 	 */
- 	if (!qedf->p_cpuq) {
--		status = -EINVAL;
- 		QEDF_ERR(&qedf->dbg_ctx, "p_cpuq is NULL.\n");
--		goto mem_alloc_failure;
-+		return -EINVAL;
+diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
+index 765bdebbd06f9..8f7efb14ebdc7 100644
+--- a/drivers/gpu/drm/bridge/tc358768.c
++++ b/drivers/gpu/drm/bridge/tc358768.c
+@@ -9,6 +9,7 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/i2c.h>
+ #include <linux/kernel.h>
++#include <linux/media-bus-format.h>
+ #include <linux/module.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+@@ -919,6 +920,44 @@ static void tc358768_bridge_enable(struct drm_bridge *bridge)
  	}
+ }
  
- 	qedf->global_queues = kzalloc((sizeof(struct global_queue *)
++#define MAX_INPUT_SEL_FORMATS	1
++
++static u32 *
++tc358768_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
++				   struct drm_bridge_state *bridge_state,
++				   struct drm_crtc_state *crtc_state,
++				   struct drm_connector_state *conn_state,
++				   u32 output_fmt,
++				   unsigned int *num_input_fmts)
++{
++	struct tc358768_priv *priv = bridge_to_tc358768(bridge);
++	u32 *input_fmts;
++
++	*num_input_fmts = 0;
++
++	input_fmts = kcalloc(MAX_INPUT_SEL_FORMATS, sizeof(*input_fmts),
++			     GFP_KERNEL);
++	if (!input_fmts)
++		return NULL;
++
++	switch (priv->pd_lines) {
++	case 16:
++		input_fmts[0] = MEDIA_BUS_FMT_RGB565_1X16;
++		break;
++	case 18:
++		input_fmts[0] = MEDIA_BUS_FMT_RGB666_1X18;
++		break;
++	default:
++	case 24:
++		input_fmts[0] = MEDIA_BUS_FMT_RGB888_1X24;
++		break;
++	};
++
++	*num_input_fmts = MAX_INPUT_SEL_FORMATS;
++
++	return input_fmts;
++}
++
+ static const struct drm_bridge_funcs tc358768_bridge_funcs = {
+ 	.attach = tc358768_bridge_attach,
+ 	.mode_valid = tc358768_bridge_mode_valid,
+@@ -926,6 +965,11 @@ static const struct drm_bridge_funcs tc358768_bridge_funcs = {
+ 	.enable = tc358768_bridge_enable,
+ 	.disable = tc358768_bridge_disable,
+ 	.post_disable = tc358768_bridge_post_disable,
++
++	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
++	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
++	.atomic_reset = drm_atomic_helper_bridge_reset,
++	.atomic_get_input_bus_fmts = tc358768_atomic_get_input_bus_fmts,
+ };
+ 
+ static const struct drm_bridge_timings default_tc358768_timings = {
 -- 
 2.39.2
 
