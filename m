@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA92F755355
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8002C755560
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231701AbjGPUR4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:17:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43744 "EHLO
+        id S232513AbjGPUkU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:40:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231685AbjGPURx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C945790
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:52 -0700 (PDT)
+        with ESMTP id S232507AbjGPUkT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8112E197
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FB3860E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995B6C433C7;
-        Sun, 16 Jul 2023 20:17:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 104E760EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2373CC433C8;
+        Sun, 16 Jul 2023 20:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538671;
-        bh=Z8wTJDecwhHadfa82ZPgW5IPax1ypUq/yEt4smLHJrQ=;
+        s=korg; t=1689540017;
+        bh=dxtod1BFb6C84L1YQyrN7JN4ESgCOOuzwFwxUHH8KQg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nqg4Bpsu4nain1SoyKDSgt/B7ruvTHK9dEdL0IOOlCAHKhf7J3W4TW6+4MdGcDYd1
-         bL44ROGqIMC0jVilxepyI2d5fCP8Xjyimew/LdhHyATjdYr8lEtz4Yp7zPCFIA+Z4k
-         BZH+Qzp0WHcwqdkDaZfR4N3w/wneg1hxMG05ZaxA=
+        b=Z8wocUalq53JVuDk8H1tXxJAdTX8izt9Ueh7S/990jNdvaEOghYEDh3tiQnNi/ZPC
+         yKZ6QgGu/Mxw1iySbyVbbXQTuOUallrESm77PiEXK1IUPqwir2sU1Ym8nraGTI0dDW
+         d66MIYEzQ4fIN7K+V7CM/QdxCOvIUJk4SqPPLW08=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+726dc8c62c3536431ceb@syzkaller.appspotmail.com,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 499/800] hwrng: virtio - Fix race on data_avail and actual data
+Subject: [PATCH 6.1 213/591] ARM: dts: stm32: Shorten the AV96 HDMI sound card name
 Date:   Sun, 16 Jul 2023 21:45:52 +0200
-Message-ID: <20230716195000.684312101@linuxfoundation.org>
+Message-ID: <20230716194929.380012906@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,84 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit ac52578d6e8d300dd50f790f29a24169b1edd26c ]
+[ Upstream commit 0cf765e598712addec34d0208cc1418c151fefb2 ]
 
-The virtio rng device kicks off a new entropy request whenever the
-data available reaches zero.  When a new request occurs at the end
-of a read operation, that is, when the result of that request is
-only needed by the next reader, then there is a race between the
-writing of the new data and the next reader.
+Fix the following error in kernel log due to too long sound card name:
+"
+asoc-audio-graph-card sound: ASoC: driver name too long 'STM32MP1-AV96-HDMI' -> 'STM32MP1-AV96-H'
+"
 
-This is because there is no synchronisation whatsoever between the
-writer and the reader.
-
-Fix this by writing data_avail with smp_store_release and reading
-it with smp_load_acquire when we first enter read.  The subsequent
-reads are safe because they're either protected by the first load
-acquire, or by the completion mechanism.
-
-Also remove the redundant zeroing of data_idx in random_recv_done
-(data_idx must already be zero at this point) and data_avail in
-request_entropy (ditto).
-
-Reported-by: syzbot+726dc8c62c3536431ceb@syzkaller.appspotmail.com
-Fixes: f7f510ec1957 ("virtio: An entropy device, as suggested by hpa.")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: e027da342772 ("ARM: dts: stm32: Add bindings for audio on AV96")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/virtio-rng.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/hw_random/virtio-rng.c b/drivers/char/hw_random/virtio-rng.c
-index f7690e0f92ede..e41a84e6b4b56 100644
---- a/drivers/char/hw_random/virtio-rng.c
-+++ b/drivers/char/hw_random/virtio-rng.c
-@@ -4,6 +4,7 @@
-  *  Copyright (C) 2007, 2008 Rusty Russell IBM Corporation
-  */
+diff --git a/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi b/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi
+index 2c246ac641533..f068e4fcc404f 100644
+--- a/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi
++++ b/arch/arm/boot/dts/stm32mp15xx-dhcor-avenger96.dtsi
+@@ -88,7 +88,7 @@ sd_switch: regulator-sd_switch {
  
-+#include <asm/barrier.h>
- #include <linux/err.h>
- #include <linux/hw_random.h>
- #include <linux/scatterlist.h>
-@@ -37,13 +38,13 @@ struct virtrng_info {
- static void random_recv_done(struct virtqueue *vq)
- {
- 	struct virtrng_info *vi = vq->vdev->priv;
-+	unsigned int len;
- 
- 	/* We can get spurious callbacks, e.g. shared IRQs + virtio_pci. */
--	if (!virtqueue_get_buf(vi->vq, &vi->data_avail))
-+	if (!virtqueue_get_buf(vi->vq, &len))
- 		return;
- 
--	vi->data_idx = 0;
--
-+	smp_store_release(&vi->data_avail, len);
- 	complete(&vi->have_data);
- }
- 
-@@ -52,7 +53,6 @@ static void request_entropy(struct virtrng_info *vi)
- 	struct scatterlist sg;
- 
- 	reinit_completion(&vi->have_data);
--	vi->data_avail = 0;
- 	vi->data_idx = 0;
- 
- 	sg_init_one(&sg, vi->data, sizeof(vi->data));
-@@ -88,7 +88,7 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
- 	read = 0;
- 
- 	/* copy available data */
--	if (vi->data_avail) {
-+	if (smp_load_acquire(&vi->data_avail)) {
- 		chunk = copy_data(vi, buf, size);
- 		size -= chunk;
- 		read += chunk;
+ 	sound {
+ 		compatible = "audio-graph-card";
+-		label = "STM32MP1-AV96-HDMI";
++		label = "STM32-AV96-HDMI";
+ 		dais = <&sai2a_port>;
+ 		status = "okay";
+ 	};
 -- 
 2.39.2
 
