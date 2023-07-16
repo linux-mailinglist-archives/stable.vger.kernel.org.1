@@ -2,121 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC96375530D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BC8475553D
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231593AbjGPUOu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:14:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41100 "EHLO
+        id S232431AbjGPUiz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:38:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231591AbjGPUOt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:14:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C2D290
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:48 -0700 (PDT)
+        with ESMTP id S232429AbjGPUiz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F44EBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B16660E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E4DC433C8;
-        Sun, 16 Jul 2023 20:14:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0300160DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AB6C433C7;
+        Sun, 16 Jul 2023 20:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538487;
-        bh=7oXSZxL4iLMZr1YXHc1AByR1VeHToOFHm/BNnKmO+OA=;
+        s=korg; t=1689539933;
+        bh=4EsI5Qjj1TrbZEYA9ZBfPSxbzsjN7jZZTpXFmzP2b0Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=04UC6AKydKSO66yGCaogF8XQsYJfN88hImQ6Uww0e+yP+FlP2Rd1hQyCxviziBX1y
-         nBql+D7XFBuqh9+//XS9F6z24rEeL2Pw6KecVlcbLYEKAea/G3sgilHowlSzGHkSAd
-         R2ysftg8kuvpaX/F8yPBoZJXvGg83zJI4kfdYdm8=
+        b=AY0hzE6wImkUf9EMlq1yzZg1zaZ7FnTfRQtoCW4kaTrLKPxrPMVy27FjujJURi94c
+         lb8J4WO6niJMUmM2ra1F+Y+juG/Icl7LRjL26WCqXWIJ0QWASItpaZjvykjRCiJMbV
+         HHGFEoABnCJ0e966ubtbyn5BdfEQiwftNpwPB6Qw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "David E. Box" <david.e.box@linux.intel.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 469/800] platform/x86/intel/pmc/mtl: Put devices in D3 during resume
+Subject: [PATCH 6.1 183/591] RDMA/bnxt_re: Fix to remove an unnecessary log
 Date:   Sun, 16 Jul 2023 21:45:22 +0200
-Message-ID: <20230716194959.975316047@linuxfoundation.org>
+Message-ID: <20230716194928.601587330@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David E. Box <david.e.box@linux.intel.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit f2b689ab2f8cc089cc7659c323f282e6a1fb6d64 ]
+[ Upstream commit 43774bc156614346fe5dacabc8e8c229167f2536 ]
 
-An earlier commit placed some driverless devices in D3 during boot so that
-they don't block package cstate entry on Meteor Lake. Also place these
-devices in D3 after resume from suspend.
+During destroy_qp, driver sets the qp handle in the existing CQEs
+belonging to the QP being destroyed to NULL. As a result, a poll_cq after
+destroy_qp can report unnecessary messages.  Remove this noise from system
+logs.
 
-Fixes: 336ba968d3e3 ("platform/x86/intel/pmc/mtl: Put GNA/IPU/VPU devices in D3")
-Signed-off-by: David E. Box <david.e.box@linux.intel.com>
-Link: https://lore.kernel.org/r/20230607233849.239047-2-david.e.box@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Link: https://lore.kernel.org/r/1684478897-12247-6-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/pmc/mtl.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/pmc/mtl.c b/drivers/platform/x86/intel/pmc/mtl.c
-index e8cc156412ce5..2b00ad9da621b 100644
---- a/drivers/platform/x86/intel/pmc/mtl.c
-+++ b/drivers/platform/x86/intel/pmc/mtl.c
-@@ -68,16 +68,29 @@ static void mtl_set_device_d3(unsigned int device)
- 	}
- }
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 640d932bec376..74d56900387a1 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -2734,11 +2734,8 @@ static int bnxt_qplib_cq_process_terminal(struct bnxt_qplib_cq *cq,
  
-+/*
-+ * Set power state of select devices that do not have drivers to D3
-+ * so that they do not block Package C entry.
-+ */
-+static void mtl_d3_fixup(void)
-+{
-+	mtl_set_device_d3(MTL_GNA_PCI_DEV);
-+	mtl_set_device_d3(MTL_IPU_PCI_DEV);
-+	mtl_set_device_d3(MTL_VPU_PCI_DEV);
-+}
-+
-+static int mtl_resume(struct pmc_dev *pmcdev)
-+{
-+	mtl_d3_fixup();
-+	return pmc_core_resume_common(pmcdev);
-+}
-+
- void mtl_core_init(struct pmc_dev *pmcdev)
- {
- 	pmcdev->map = &mtl_reg_map;
- 	pmcdev->core_configure = mtl_core_configure;
+ 	qp = (struct bnxt_qplib_qp *)((unsigned long)
+ 				      le64_to_cpu(hwcqe->qp_handle));
+-	if (!qp) {
+-		dev_err(&cq->hwq.pdev->dev,
+-			"FP: CQ Process terminal qp is NULL\n");
++	if (!qp)
+ 		return -EINVAL;
+-	}
  
--	/*
--	 * Set power state of select devices that do not have drivers to D3
--	 * so that they do not block Package C entry.
--	 */
--	mtl_set_device_d3(MTL_GNA_PCI_DEV);
--	mtl_set_device_d3(MTL_IPU_PCI_DEV);
--	mtl_set_device_d3(MTL_VPU_PCI_DEV);
-+	mtl_d3_fixup();
-+
-+	pmcdev->resume = mtl_resume;
- }
+ 	/* Must block new posting of SQ and RQ */
+ 	qp->state = CMDQ_MODIFY_QP_NEW_STATE_ERR;
 -- 
 2.39.2
 
