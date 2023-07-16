@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F9747554A9
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36BB3755285
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232257AbjGPUcv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:32:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54090 "EHLO
+        id S231356AbjGPUI5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:08:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232256AbjGPUcu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:50 -0400
+        with ESMTP id S231354AbjGPUIw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD537BA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D16E199
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 556B960EC2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DC4C433C8;
-        Sun, 16 Jul 2023 20:32:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C7B4C60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84BEC433C8;
+        Sun, 16 Jul 2023 20:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539568;
-        bh=mddHfCZOj08YPDg3xP5mC6hbrpl7NdRv4zM6Vuzk1G8=;
+        s=korg; t=1689538130;
+        bh=sRe831DrJdiIgE09fwtktx67qKztkVDTNsm/VW7LuN0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vYUCU332DPdbKg1jLPUU9wohG5JZJWJLB7VKUi7+F2MAlQRxPtXj6IbPT9VZGET6U
-         3rhhjpwJ5V8kZOx2Lz8mzbRblhGUCXflvgzFpuP0f8pnIXvl5g3LHwJ9fD8DpiYN8o
-         Ul/My4CioR/T6zxkR/qKwD0Q4v6rf8wu+pm9f4+s=
+        b=mXaW+ucEo7ff4aeX6qbq83kzJ+uzxWK0RS2nC+IYrE3d6WXMsyPtzbLPiCJnMyPoh
+         0wK0zCpXHk0hfbtnMbd9ncYcPzIWwV2g3oXrGyqRKCNlLIZNelsBrNJ8e15hrUOnYN
+         PmT7NQxKgHaT8JuRqnxyupoIQinGQ9lBbX6F+HDQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tejun Heo <tj@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/591] rcu-tasks: Stop rcu_tasks_invoke_cbs() from using never-onlined CPUs
+Subject: [PATCH 6.4 340/800] ARM: dts: iwg20d-q7-common: Fix backlight pwm specifier
 Date:   Sun, 16 Jul 2023 21:43:13 +0200
-Message-ID: <20230716194925.280311264@linuxfoundation.org>
+Message-ID: <20230716194956.978417737@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,123 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 401b0de3ae4fa49d1014c8941e26d9a25f37e7cf ]
+[ Upstream commit 0501fdec106a291c43b3c1b525cf22ab4c24b2d8 ]
 
-The rcu_tasks_invoke_cbs() function relies on queue_work_on() to silently
-fall back to WORK_CPU_UNBOUND when the specified CPU is offline.  However,
-the queue_work_on() function's silent fallback mechanism relies on that
-CPU having been online at some time in the past.  When queue_work_on()
-is passed a CPU that has never been online, workqueue lockups ensue,
-which can be bad for your kernel's general health and well-being.
+make dtbs_check:
 
-This commit therefore checks whether a given CPU has ever been online,
-and, if not substitutes WORK_CPU_UNBOUND in the subsequent call to
-queue_work_on().  Why not simply omit the queue_work_on() call entirely?
-Because this function is flooding callback-invocation notifications
-to all CPUs, and must deal with possibilities that include a sparse
-cpu_possible_mask.
+    arch/arm/boot/dts/renesas/r8a7743-iwg20d-q7.dtb: backlight: pwms: [[58, 0, 5000000], [0]] is too long
+	    From schema: Documentation/devicetree/bindings/leds/backlight/pwm-backlight.yaml
+    arch/arm/boot/dts/renesas/r8a7743-iwg20d-q7-dbcm-ca.dtb: backlight: pwms: [[67, 0, 5000000], [0]] is too long
+	    From schema: Documentation/devicetree/bindings/leds/backlight/pwm-backlight.yaml
+    arch/arm/boot/dts/renesas/r8a7744-iwg20d-q7-dbcm-ca.dtb: backlight: pwms: [[67, 0, 5000000], [0]] is too long
+	    From schema: Documentation/devicetree/bindings/leds/backlight/pwm-backlight.yaml
+    arch/arm/boot/dts/renesas/r8a7744-iwg20d-q7.dtb: backlight: pwms: [[58, 0, 5000000], [0]] is too long
+	    From schema: Documentation/devicetree/bindings/leds/backlight/pwm-backlight.yaml
 
-This commit also moves the setting of the rcu_data structure's
-->beenonline field to rcu_cpu_starting(), which executes on the
-incoming CPU before that CPU has ever enabled interrupts.  This ensures
-that the required workqueues are present.  In addition, because the
-incoming CPU has not yet enabled its interrupts, there cannot yet have
-been any softirq handlers running on this CPU, which means that the
-WARN_ON_ONCE(!rdp->beenonline) within the RCU_SOFTIRQ handler cannot
-have triggered yet.
+PWM specifiers referring to R-Car PWM Timer Controllers should contain
+only two cells.
 
-Fixes: d363f833c6d88 ("rcu-tasks: Use workqueues for multiple rcu_tasks_invoke_cbs() invocations")
-Reported-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Fix this by dropping the bogus third cell.
+
+Fixes: 6f89dd9e9325d05b ("ARM: dts: iwg20d-q7-common: Add LCD support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/6e5c3167424a43faf8c1fa68d9667b3d87dc86d8.1684855911.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcu.h   |  6 ++++++
- kernel/rcu/tasks.h |  7 +++++--
- kernel/rcu/tree.c  | 12 +++++++++++-
- 3 files changed, 22 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/iwg20d-q7-common.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
-index be5979da07f59..48d8f754b730e 100644
---- a/kernel/rcu/rcu.h
-+++ b/kernel/rcu/rcu.h
-@@ -583,4 +583,10 @@ void show_rcu_tasks_trace_gp_kthread(void);
- static inline void show_rcu_tasks_trace_gp_kthread(void) {}
- #endif
+diff --git a/arch/arm/boot/dts/iwg20d-q7-common.dtsi b/arch/arm/boot/dts/iwg20d-q7-common.dtsi
+index 03caea6fc6ffa..4351c5a02fa59 100644
+--- a/arch/arm/boot/dts/iwg20d-q7-common.dtsi
++++ b/arch/arm/boot/dts/iwg20d-q7-common.dtsi
+@@ -49,7 +49,7 @@ audio_clock: audio_clock {
+ 	lcd_backlight: backlight {
+ 		compatible = "pwm-backlight";
  
-+#ifdef CONFIG_TINY_RCU
-+static inline bool rcu_cpu_beenfullyonline(int cpu) { return true; }
-+#else
-+bool rcu_cpu_beenfullyonline(int cpu);
-+#endif
-+
- #endif /* __LINUX_RCU_H */
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index c8409601fec38..df968321feada 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -455,6 +455,7 @@ static void rcu_tasks_invoke_cbs(struct rcu_tasks *rtp, struct rcu_tasks_percpu
- {
- 	int cpu;
- 	int cpunext;
-+	int cpuwq;
- 	unsigned long flags;
- 	int len;
- 	struct rcu_head *rhp;
-@@ -465,11 +466,13 @@ static void rcu_tasks_invoke_cbs(struct rcu_tasks *rtp, struct rcu_tasks_percpu
- 	cpunext = cpu * 2 + 1;
- 	if (cpunext < smp_load_acquire(&rtp->percpu_dequeue_lim)) {
- 		rtpcp_next = per_cpu_ptr(rtp->rtpcpu, cpunext);
--		queue_work_on(cpunext, system_wq, &rtpcp_next->rtp_work);
-+		cpuwq = rcu_cpu_beenfullyonline(cpunext) ? cpunext : WORK_CPU_UNBOUND;
-+		queue_work_on(cpuwq, system_wq, &rtpcp_next->rtp_work);
- 		cpunext++;
- 		if (cpunext < smp_load_acquire(&rtp->percpu_dequeue_lim)) {
- 			rtpcp_next = per_cpu_ptr(rtp->rtpcpu, cpunext);
--			queue_work_on(cpunext, system_wq, &rtpcp_next->rtp_work);
-+			cpuwq = rcu_cpu_beenfullyonline(cpunext) ? cpunext : WORK_CPU_UNBOUND;
-+			queue_work_on(cpuwq, system_wq, &rtpcp_next->rtp_work);
- 		}
- 	}
- 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 5b5ed772f620a..917a1e43f7839 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -4138,7 +4138,6 @@ int rcutree_prepare_cpu(unsigned int cpu)
- 	 */
- 	rnp = rdp->mynode;
- 	raw_spin_lock_rcu_node(rnp);		/* irqs already disabled. */
--	rdp->beenonline = true;	 /* We have now been online. */
- 	rdp->gp_seq = READ_ONCE(rnp->gp_seq);
- 	rdp->gp_seq_needed = rdp->gp_seq;
- 	rdp->cpu_no_qs.b.norm = true;
-@@ -4165,6 +4164,16 @@ static void rcutree_affinity_setting(unsigned int cpu, int outgoing)
- 	rcu_boost_kthread_setaffinity(rdp->mynode, outgoing);
- }
- 
-+/*
-+ * Has the specified (known valid) CPU ever been fully online?
-+ */
-+bool rcu_cpu_beenfullyonline(int cpu)
-+{
-+	struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
-+
-+	return smp_load_acquire(&rdp->beenonline);
-+}
-+
- /*
-  * Near the end of the CPU-online process.  Pretty much all services
-  * enabled, and the CPU is now very much alive.
-@@ -4268,6 +4277,7 @@ void rcu_cpu_starting(unsigned int cpu)
- 		raw_spin_unlock_rcu_node(rnp);
- 	}
- 	arch_spin_unlock(&rcu_state.ofl_lock);
-+	smp_store_release(&rdp->beenonline, true);
- 	smp_mb(); /* Ensure RCU read-side usage follows above initialization. */
- }
- 
+-		pwms = <&pwm3 0 5000000 0>;
++		pwms = <&pwm3 0 5000000>;
+ 		brightness-levels = <0 4 8 16 32 64 128 255>;
+ 		default-brightness-level = <7>;
+ 		enable-gpios = <&gpio5 14 GPIO_ACTIVE_HIGH>;
 -- 
 2.39.2
 
