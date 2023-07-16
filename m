@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56299754E4C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2550F754E4D
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:18:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229697AbjGPKSj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 06:18:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38926 "EHLO
+        id S229539AbjGPKSu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 06:18:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjGPKSi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:18:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECFE4186
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:18:37 -0700 (PDT)
+        with ESMTP id S229805AbjGPKSl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:18:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B76C91BE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:18:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B28560C7E
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:18:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD9CC433C7;
-        Sun, 16 Jul 2023 10:18:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54B2D60C7D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:18:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D61C433C7;
+        Sun, 16 Jul 2023 10:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689502716;
-        bh=8BgADLjZMC2yMNsqXYSXHIXD9GHu+YjJldYWgppkX90=;
+        s=korg; t=1689502719;
+        bh=tISqBcabgsu7QlwAZP6E/BWD70mf5Q01qnXjvgwqG0Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=XeG1lQVbuI+bgeJgCEADx/T6a2XGnwayarfx7jpirTPnRh094rEpiJm4VXEPRIxET
-         UTsq/jtH2I9NOtFAIT63HGDTZyBziQ64cOsKOVt/aNDq5JxWNCB2JjqRvoS/hX9ycH
-         1pbcdV6HiRN2XjXHEMRcOWouOsU2o8nNYs8IbyKQ=
-Subject: FAILED: patch "[PATCH] btrfs: add missing error handling when logging operation" failed to apply to 5.15-stable tree
+        b=JIxPviWsNcIYh4zP3knVF1Yqe/JsrQ+7K9TpmvRn35AYHSlajuzZdZnJ2jUnF+Gb/
+         7FNtI02YAsp7pDMCbOFN0vUOlKacAk/Em/psFdJwKXUuCnTn8gOtPkPJcbENQ8nnuu
+         Cep38Bbqs+UODArq7KaQetj0v0YnpL3AfRUz9rJI=
+Subject: FAILED: patch "[PATCH] btrfs: add missing error handling when logging operation" failed to apply to 5.10-stable tree
 To:     fdmanana@suse.com, dsterba@suse.com, wqu@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 12:18:31 +0200
-Message-ID: <2023071631-retake-dollar-89ea@gregkh>
+Date:   Sun, 16 Jul 2023 12:18:32 +0200
+Message-ID: <2023071632-modified-gauze-0d86@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,25 +49,32 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x d09c51521f22f9cbdfb1cf63e5c456077c622c84
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071631-retake-dollar-89ea@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071632-modified-gauze-0d86@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 d09c51521f22 ("btrfs: add missing error handling when logging operation while COWing extent buffer")
 33cff222faff ("btrfs: remove gfp_t flag from btrfs_tree_mod_log_insert_key()")
 879b22219831 ("btrfs: switch GFP_ATOMIC to GFP_NOFS when fixing up low keys")
+f3a84ccd28d0 ("btrfs: move the tree mod log code into its own file")
+dbcc7d57bffc ("btrfs: fix race when cloning extent buffer during rewind of an old root")
+cac06d843f25 ("btrfs: introduce the skeleton of btrfs_subpage structure")
+1b7ec85ef490 ("btrfs: pass root owner to read_tree_block")
+bfb484d922a3 ("btrfs: cleanup extent buffer readahead")
+ac5887c8e013 ("btrfs: locking: remove all the blocking helpers")
+196d59ab9ccc ("btrfs: switch extent buffer tree lock to rw_semaphore")
 
 thanks,
 
