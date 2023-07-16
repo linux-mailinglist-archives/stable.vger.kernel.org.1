@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DD3E755429
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B360755688
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232018AbjGPU1U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49756 "EHLO
+        id S232873AbjGPUv2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:51:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232006AbjGPU1T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D937C9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:27:18 -0700 (PDT)
+        with ESMTP id S232892AbjGPUv2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:51:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BB71E45
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CDDE60EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:27:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0A1C433C8;
-        Sun, 16 Jul 2023 20:27:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE86360DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE45BC433C8;
+        Sun, 16 Jul 2023 20:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539237;
-        bh=sAvxDAvpZIGEhfezrcwVQoH/pX2QTjTEtDwlUABkclQ=;
+        s=korg; t=1689540686;
+        bh=EJz73ZbXKgKBDytimUerB75VxU9y57I2UoRp3f3MSVA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x+0Y5Z/JaeVG1UaGhM4UsRL9ElvKrbUV1BoH2ld0ZbiNpS6Uy1AgrGsP70vC+eENQ
-         KHLRg68EpyKME9vYjblyCyMsoucbzL2NMD9+2+p2ZOgKAUQKcj/p1PwmHn8C5ZXCd9
-         T9AB3Vgu/nbR04ro9hEVRHb90Zq16n6k+IDWp1nI=
+        b=2rLIzB/omNVijM+7dJHLSgGMue7kdqrFHw9e/8KleuHL4EDnUOOBJu44hSFkieLLD
+         otErkdGdD+U6As8fjEY1XDIW83qkjquFriA0SyjxRNlZUtUBa9neCezntZVtrcLXsC
+         wUnQ0k8uWmKWI44Dd2RmG/x5ICimJsq3KwG7geto=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Siddh Raman Pant <code@siddh.me>,
-        David Howells <dhowells@redhat.com>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.4 737/800] watch_queue: prevent dangling pipe pointer
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 451/591] misc: fastrpc: check return value of devm_kasprintf()
 Date:   Sun, 16 Jul 2023 21:49:50 +0200
-Message-ID: <20230716195006.235853293@linuxfoundation.org>
+Message-ID: <20230716194935.577313563@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,88 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Siddh Raman Pant <code@siddh.me>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-commit 943211c87427f25bd22e0e63849fb486bb5f87fa upstream.
+[ Upstream commit af2e19d82a116bc622eea84c9faadd5f7e20bec4 ]
 
-NULL the dangling pipe reference while clearing watch_queue.
+devm_kasprintf() returns a pointer to dynamically allocated memory.
+Pointer could be NULL in case allocation fails. Check pointer validity.
+Identified with coccinelle (kmerr.cocci script).
 
-If not done, a reference to a freed pipe remains in the watch_queue,
-as this function is called before freeing a pipe in free_pipe_info()
-(see line 834 of fs/pipe.c).
-
-The sole use of wqueue->defunct is for checking if the watch queue has
-been cleared, but wqueue->pipe is also NULLed while clearing.
-
-Thus, wqueue->defunct is superfluous, as wqueue->pipe can be checked
-for NULL. Hence, the former can be removed.
-
-Tested with keyutils testsuite.
-
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
-Acked-by: David Howells <dhowells@redhat.com>
-Message-Id: <20230605143616.640517-1-code@siddh.me>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 3abe3ab3cdab ("misc: fastrpc: add secure domain support")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230615102546.581899-1-claudiu.beznea@microchip.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/watch_queue.h |    3 +--
- kernel/watch_queue.c        |   12 ++++++------
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ drivers/misc/fastrpc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/linux/watch_queue.h
-+++ b/include/linux/watch_queue.h
-@@ -38,7 +38,7 @@ struct watch_filter {
- struct watch_queue {
- 	struct rcu_head		rcu;
- 	struct watch_filter __rcu *filter;
--	struct pipe_inode_info	*pipe;		/* The pipe we're using as a buffer */
-+	struct pipe_inode_info	*pipe;		/* Pipe we use as a buffer, NULL if queue closed */
- 	struct hlist_head	watches;	/* Contributory watches */
- 	struct page		**notes;	/* Preallocated notifications */
- 	unsigned long		*notes_bitmap;	/* Allocation bitmap for notes */
-@@ -46,7 +46,6 @@ struct watch_queue {
- 	spinlock_t		lock;
- 	unsigned int		nr_notes;	/* Number of notes */
- 	unsigned int		nr_pages;	/* Number of pages in notes[] */
--	bool			defunct;	/* T when queues closed */
- };
- 
- /*
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -42,7 +42,7 @@ MODULE_AUTHOR("Red Hat, Inc.");
- static inline bool lock_wqueue(struct watch_queue *wqueue)
- {
- 	spin_lock_bh(&wqueue->lock);
--	if (unlikely(wqueue->defunct)) {
-+	if (unlikely(!wqueue->pipe)) {
- 		spin_unlock_bh(&wqueue->lock);
- 		return false;
- 	}
-@@ -104,9 +104,6 @@ static bool post_one_notification(struct
- 	unsigned int head, tail, mask, note, offset, len;
- 	bool done = false;
- 
--	if (!pipe)
--		return false;
--
- 	spin_lock_irq(&pipe->rd_wait.lock);
- 
- 	mask = pipe->ring_size - 1;
-@@ -603,8 +600,11 @@ void watch_queue_clear(struct watch_queu
- 	rcu_read_lock();
- 	spin_lock_bh(&wqueue->lock);
- 
--	/* Prevent new notifications from being stored. */
--	wqueue->defunct = true;
-+	/*
-+	 * This pipe can be freed by callers like free_pipe_info().
-+	 * Removing this reference also prevents new notifications.
-+	 */
-+	wqueue->pipe = NULL;
- 
- 	while (!hlist_empty(&wqueue->watches)) {
- 		watch = hlist_entry(wqueue->watches.first, struct watch, queue_node);
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index 8b1e8661c3d73..e5cabb9012135 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -2030,6 +2030,9 @@ static int fastrpc_device_register(struct device *dev, struct fastrpc_channel_ct
+ 	fdev->miscdev.fops = &fastrpc_fops;
+ 	fdev->miscdev.name = devm_kasprintf(dev, GFP_KERNEL, "fastrpc-%s%s",
+ 					    domain, is_secured ? "-secure" : "");
++	if (!fdev->miscdev.name)
++		return -ENOMEM;
++
+ 	err = misc_register(&fdev->miscdev);
+ 	if (!err) {
+ 		if (is_secured)
+-- 
+2.39.2
+
 
 
