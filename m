@@ -2,136 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FDD7755196
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9524755225
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230369AbjGPT6J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 15:58:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
+        id S231196AbjGPUEX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:04:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230364AbjGPT6I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:58:08 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9465E199
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:58:06 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-676f16e0bc4so2437880b3a.0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:58:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689537486; x=1692129486;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jagK6W3Oq8o4h/qY3DcH94VOC4EH9NpTXk44VjvlGnQ=;
-        b=DR6QdxaJaVp0ziX8DImyhwSo3wxUR0BISAkY84DZxE1N6RlBkYGHSGGN5kK91YpX65
-         +MqQR6zI9VjZW6UD2Z8KNmHPQGsH+qk9sPXw0Maq0HGCiBHBsCoIowt9I9APi7cdeb2n
-         wXAtbPc7mKfIi+/YCongIkQpbq69LcBLEYj3J8DGrzs5XiLGXiH7y7OHEEuy0mxDsP6H
-         6mXWPKrZM7FjK4nfNVqACkYcHQVVXZHOFXL2ry88GNxDG2g2tDvNRJCRo56evyRHzkbk
-         ain8fgnOORYYxRDfGLb2INNGyr2Ud2+jOgsCNl6a3SC2cNIrzgrK1ZpAzkRuA3B2pypw
-         Q0DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689537486; x=1692129486;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jagK6W3Oq8o4h/qY3DcH94VOC4EH9NpTXk44VjvlGnQ=;
-        b=IDqDTGGkX2N917kYs9/lHce0XDylpqgb3DqkRkXrAHB3BlUQ7aNdtZPeWFkfdBJ2iM
-         Wh6tBPAyolgWX6CePWAqs6hl5siTTdjx/gzeCdWEf7CD4JQmj2ncwbVsCrYnEsm9Eeos
-         kMOmG/NSDf3l0GZUxabbe6IFndhwmKIYrOeFcXnqAY2lC6kj4pwmlI9ifEOSc7vhwsqh
-         I5bteAUf8X0N9y3NE1XC5eJf0Nb7NMZvUe3tRvW+LMYhl7sOw/Q40/nwe5DFfCFxfac8
-         Jf+g2BmqI6bk2HIxToGvKTWIarGtYSl8tetQ0x3O+fDOKjxVGBDmzHRLhFVjmlk1eCQA
-         rqaA==
-X-Gm-Message-State: ABy/qLYkAAUGXHnU2e6Ls6LzxG8GPcgynUF7xmBk2WSxb/yRjapu9aqK
-        Kg6v7GObZW3EKRvYhoTnmfomlZLlDt8=
-X-Google-Smtp-Source: APBJJlHv1pasNJIRYDN1JTIGmDw82XRQAE86npAtUWUref42ofKSKN4q7SAAkz2licFsgoUmDSD06w==
-X-Received: by 2002:a05:6a20:a110:b0:132:c73a:88fd with SMTP id q16-20020a056a20a11000b00132c73a88fdmr11460361pzk.48.1689537485922;
-        Sun, 16 Jul 2023 12:58:05 -0700 (PDT)
-Received: from ?IPV6:2001:df0:0:200c:210:18ff:fe59:7883? ([2001:df0:0:200c:210:18ff:fe59:7883])
-        by smtp.gmail.com with ESMTPSA id e26-20020a62aa1a000000b006749c22d079sm10420050pff.167.2023.07.16.12.58.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Jul 2023 12:58:05 -0700 (PDT)
-Message-ID: <48b276d9-13e8-ae60-40ef-3fec2fe495cb@gmail.com>
-Date:   Mon, 17 Jul 2023 07:58:00 +1200
+        with ESMTP id S231206AbjGPUEW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:04:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5975A1B4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:04:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC28C60EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:04:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA453C433C8;
+        Sun, 16 Jul 2023 20:04:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689537860;
+        bh=ou/S/4/+1QUYBlAR2OQqqhXP1X7F3n/R8j5ylY0esbA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=BwZC4lHcnBC0U35KKm1XSwpIeit6MZWUM7BVZvoHeHsV6ZsIfhI6thSxVXuV213pe
+         Wx5sWCbUEHtnBUqpmRcqfg2MqlauZ2Y/DtScl+ocZJLm5uFDm8SSOzfg+h45GKwqbu
+         VLGMojDjmJX4rmmiEVwKUIrT0rbzQ3XXjannmp9M=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jarod Wilson <jarod@redhat.com>, Moshe Tal <moshet@nvidia.com>,
+        Jussi Maki <joamaki@gmail.com>,
+        Jay Vosburgh <j.vosburgh@gmail.com>,
+        Andy Gospodarek <andy@greyhouse.net>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 206/800] bonding: do not assume skb mac_header is set
+Date:   Sun, 16 Jul 2023 21:40:59 +0200
+Message-ID: <20230716194953.882518496@linuxfoundation.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 5.10.y] block: add overflow checks for Amiga partition
- support
-Content-Language: en-US
-To:     Greg KH <greg@kroah.com>
-Cc:     stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
-References: <2023071116-umbrella-fog-a65f@gregkh>
- <20230715232820.8735-1-schmitzmic@gmail.com>
- <2023071639-senorita-vigorous-bcd6@gregkh>
-From:   Michael Schmitz <schmitzmic@gmail.com>
-In-Reply-To: <2023071639-senorita-vigorous-bcd6@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Thanks Greg!
+From: Eric Dumazet <edumazet@google.com>
 
-On 17/07/23 03:21, Greg KH wrote:
-> On Sun, Jul 16, 2023 at 11:28:20AM +1200, Michael Schmitz wrote:
->> The Amiga partition parser module uses signed int for partition sector
->> address and count, which will overflow for disks larger than 1 TB.
->>
->> Use u64 as type for sector address and size to allow using disks up to
->> 2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
->> format allows to specify disk sizes up to 2^128 bytes (though native
->> OS limitations reduce this somewhat, to max 2^68 bytes), so check for
->> u64 overflow carefully to protect against overflowing sector_t.
->>
->> Bail out if sector addresses overflow 32 bits on kernels without LBD
->> support.
->>
->> This bug was reported originally in 2012, and the fix was created by
->> the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
->> discussed and reviewed on linux-m68k at that time but never officially
->> submitted (now resubmitted as patch 1 in this series).
->> This patch adds additional error checking and warning messages.
->>
->> Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
->> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
->> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->> Message-ID: <201206192146.09327.Martin@lichtvoll.de>
->> Cc: <stable@vger.kernel.org> # 5.2
->> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
->> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
->> Reviewed-by: Christoph Hellwig <hch@infradead.org>
->> Link: https://lore.kernel.org/r/20230620201725.7020-4-schmitzmic@gmail.com
->> Signed-off-by: Jens Axboe <axboe@kernel.dk>
->> (cherry picked from commit b6f3f28f604ba3de4724ad82bea6adb1300c0b5f)
->> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
->>
->> ---
->>
->> Changes since 5.10-stable:
->>
->> - fix merge conflicts
->> ---
-> All now queued up, thanks.
->
-> greg k-h
-Just to clarify: that does include
+[ Upstream commit 6a940abdef3162e5723f1495b8a49859d1708f79 ]
 
-https://git.kernel.dk/cgit/linux/commit/?h=block-6.5&id=7eb1e47696aa231b1a567846bbe3a1e1befe1854
+Drivers must not assume in their ndo_start_xmit() that
+skbs have their mac_header set. skb->data is all what is needed.
 
-queued up by Jens, which does not have a stable tag (as per our 
-discussion earlier)?
+bonding seems to be one of the last offender as caught by syzbot:
 
-Link: https://lore.kernel.org/r/2023070456-vertigo-fanfare-1a8e@gregkh
-Link: https://lore.kernel.org/r/c9bcd3ca-8260-3f29-26d1-0c00e2b098a3@kernel.dk
+WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 skb_mac_offset include/linux/skbuff.h:2913 [inline]
+WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_xmit_hash drivers/net/bonding/bond_main.c:4170 [inline]
+WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5149 [inline]
+WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_3ad_xor_xmit drivers/net/bonding/bond_main.c:5186 [inline]
+WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 __bond_start_xmit drivers/net/bonding/bond_main.c:5442 [inline]
+WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_start_xmit+0x14ab/0x19d0 drivers/net/bonding/bond_main.c:5470
+Modules linked in:
+CPU: 1 PID: 12155 Comm: syz-executor.3 Not tainted 6.1.30-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
+RIP: 0010:skb_mac_header include/linux/skbuff.h:2907 [inline]
+RIP: 0010:skb_mac_offset include/linux/skbuff.h:2913 [inline]
+RIP: 0010:bond_xmit_hash drivers/net/bonding/bond_main.c:4170 [inline]
+RIP: 0010:bond_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5149 [inline]
+RIP: 0010:bond_3ad_xor_xmit drivers/net/bonding/bond_main.c:5186 [inline]
+RIP: 0010:__bond_start_xmit drivers/net/bonding/bond_main.c:5442 [inline]
+RIP: 0010:bond_start_xmit+0x14ab/0x19d0 drivers/net/bonding/bond_main.c:5470
+Code: 8b 7c 24 30 e8 76 dd 1a 01 48 85 c0 74 0d 48 89 c3 e8 29 67 2e fe e9 15 ef ff ff e8 1f 67 2e fe e9 10 ef ff ff e8 15 67 2e fe <0f> 0b e9 45 f8 ff ff e8 09 67 2e fe e9 dc fa ff ff e8 ff 66 2e fe
+RSP: 0018:ffffc90002fff6e0 EFLAGS: 00010283
+RAX: ffffffff835874db RBX: 000000000000ffff RCX: 0000000000040000
+RDX: ffffc90004dcf000 RSI: 00000000000000b5 RDI: 00000000000000b6
+RBP: ffffc90002fff8b8 R08: ffffffff83586d16 R09: ffffffff83586584
+R10: 0000000000000007 R11: ffff8881599fc780 R12: ffff88811b6a7b7e
+R13: 1ffff110236d4f6f R14: ffff88811b6a7ac0 R15: 1ffff110236d4f76
+FS: 00007f2e9eb47700(0000) GS:ffff8881f6b00000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b2e421000 CR3: 000000010e6d4000 CR4: 00000000003526e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+[<ffffffff8471a49f>] netdev_start_xmit include/linux/netdevice.h:4925 [inline]
+[<ffffffff8471a49f>] __dev_direct_xmit+0x4ef/0x850 net/core/dev.c:4380
+[<ffffffff851d845b>] dev_direct_xmit include/linux/netdevice.h:3043 [inline]
+[<ffffffff851d845b>] packet_direct_xmit+0x18b/0x300 net/packet/af_packet.c:284
+[<ffffffff851c7472>] packet_snd net/packet/af_packet.c:3112 [inline]
+[<ffffffff851c7472>] packet_sendmsg+0x4a22/0x64d0 net/packet/af_packet.c:3143
+[<ffffffff8467a4b2>] sock_sendmsg_nosec net/socket.c:716 [inline]
+[<ffffffff8467a4b2>] sock_sendmsg net/socket.c:736 [inline]
+[<ffffffff8467a4b2>] __sys_sendto+0x472/0x5f0 net/socket.c:2139
+[<ffffffff8467a715>] __do_sys_sendto net/socket.c:2151 [inline]
+[<ffffffff8467a715>] __se_sys_sendto net/socket.c:2147 [inline]
+[<ffffffff8467a715>] __x64_sys_sendto+0xe5/0x100 net/socket.c:2147
+[<ffffffff8553071f>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+[<ffffffff8553071f>] do_syscall_64+0x2f/0x50 arch/x86/entry/common.c:80
+[<ffffffff85600087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Cheers,
+Fixes: 7b8fc0103bb5 ("bonding: add a vlan+srcmac tx hashing option")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jarod Wilson <jarod@redhat.com>
+Cc: Moshe Tal <moshet@nvidia.com>
+Cc: Jussi Maki <joamaki@gmail.com>
+Cc: Jay Vosburgh <j.vosburgh@gmail.com>
+Cc: Andy Gospodarek <andy@greyhouse.net>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20230622152304.2137482-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/bonding/bond_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-     Michael
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index edbaa1444f8ec..091e035c76a6f 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -4197,7 +4197,7 @@ u32 bond_xmit_hash(struct bonding *bond, struct sk_buff *skb)
+ 		return skb->hash;
+ 
+ 	return __bond_xmit_hash(bond, skb, skb->data, skb->protocol,
+-				skb_mac_offset(skb), skb_network_offset(skb),
++				0, skb_network_offset(skb),
+ 				skb_headlen(skb));
+ }
+ 
+-- 
+2.39.2
+
 
 
