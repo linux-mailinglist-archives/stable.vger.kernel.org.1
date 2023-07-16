@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C59E0755255
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ACE1755483
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:31:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231263AbjGPUGj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:06:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35776 "EHLO
+        id S232181AbjGPUbL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:31:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231286AbjGPUGi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:06:38 -0400
+        with ESMTP id S232178AbjGPUbK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:31:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB5FE4A
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:06:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B79C69F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:31:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17B0660EB3
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:06:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D95C433C7;
-        Sun, 16 Jul 2023 20:06:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 57C8660E2C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:31:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5AEC433C7;
+        Sun, 16 Jul 2023 20:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537994;
-        bh=tsJwQTjv4AJmvjMGeXqrH2J3KknpHCsAeO4KFwjLEVc=;
+        s=korg; t=1689539467;
+        bh=wKWC2KPSLhfDuCAUTsjPhculpc52tO9fg5QLopGaGfw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rg6g2pkeFIB/4V9MSuUb2OBkPlo+OcD6pwTCS8DGJ2yohQLAfCGwdL+W+x0ZUE6Dn
-         BT3UunJIOctNFdVaqSKC8jlC6ACsRv+eNtVkNtSo4IUJnYPOPGbON+VFkjNODYVBDm
-         8Lj2YFyiSdlI0tD/JdCrzdyhy8beY7cQXMVmrFsA=
+        b=ysqaLhuSmFBSAS/kntpJIzvlsUoS+qaRDjl6q/yJBvRpoy/CujhMMdLUrdpysosZ+
+         L+sSwlqC2Vb0G8e6pNExVL+Ufm4OStmiu4TxnL1+mBnPPsLjyb9TzAxv0X32z3jjyI
+         Gz87kmRPJsRqApKWdagjXH4xDkKMthYYtaRLUQ30=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 294/800] ARM/gpio: Push OMAP2 quirk down into TWL4030 driver
+        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>,
+        Yue Hu <huyue2@coolpad.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 008/591] erofs: kill hooked chains to avoid loops on deduplicated compressed images
 Date:   Sun, 16 Jul 2023 21:42:27 +0200
-Message-ID: <20230716194955.911524275@linuxfoundation.org>
+Message-ID: <20230716194924.078950630@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,249 +54,221 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit d5f4fa60d63aa54ae33339895b88d8932b6037ed ]
+[ Upstream commit 967c28b23f6c89bb8eef6a046ea88afe0d7c1029 ]
 
-The TWL4030 GPIO driver has a custom platform data .set_up()
-callback to call back into the platform and do misc stuff such
-as hog and export a GPIO for WLAN PWR on a specific OMAP3 board.
+After heavily stressing EROFS with several images which include a
+hand-crafted image of repeated patterns for more than 46 days, I found
+two chains could be linked with each other almost simultaneously and
+form a loop so that the entire loop won't be submitted.  As a
+consequence, the corresponding file pages will remain locked forever.
 
-Avoid all the kludgery in the platform data and the boardfile
-and just put the quirks right into the driver. Make it
-conditional on OMAP3.
+It can be _only_ observed on data-deduplicated compressed images.
+For example, consider two chains with five pclusters in total:
+	Chain 1:  2->3->4->5    -- The tail pcluster is 5;
+        Chain 2:  5->1->2       -- The tail pcluster is 2.
 
-I think the exported GPIO is used by some kind of userspace
-so ordinary DTS hogs will probably not work.
+Chain 2 could link to Chain 1 with pcluster 5; and Chain 1 could link
+to Chain 2 at the same time with pcluster 2.
 
-Fixes: 92bf78b33b0b ("gpio: omap: use dynamic allocation of base")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Since hooked chains are all linked locklessly now, I have no idea how
+to simply avoid the race.  Instead, let's avoid hooked chains completely
+until I could work out a proper way to fix this and end users finally
+tell us that it's needed to add it back.
+
+Actually, this optimization can be found with multi-threaded workloads
+(especially even more often on deduplicated compressed images), yet I'm
+not sure about the overall system impacts of not having this compared
+with implementation complexity.
+
+Fixes: 267f2492c8f7 ("erofs: introduce multi-reference pclusters (fully-referenced)")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Link: https://lore.kernel.org/r/20230526201459.128169-4-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/omap_device.c  |  1 -
- arch/arm/mach-omap2/pdata-quirks.c | 41 +----------------------
- drivers/gpio/gpio-twl4030.c        | 52 +++++++++++++++++++++---------
- include/linux/mfd/twl.h            |  3 --
- 4 files changed, 37 insertions(+), 60 deletions(-)
+ fs/erofs/zdata.c | 72 ++++++++----------------------------------------
+ 1 file changed, 11 insertions(+), 61 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/omap_device.c b/arch/arm/mach-omap2/omap_device.c
-index 4afa2f08e6681..fca7869c8075a 100644
---- a/arch/arm/mach-omap2/omap_device.c
-+++ b/arch/arm/mach-omap2/omap_device.c
-@@ -244,7 +244,6 @@ static int _omap_device_notifier_call(struct notifier_block *nb,
- 	case BUS_NOTIFY_ADD_DEVICE:
- 		if (pdev->dev.of_node)
- 			omap_device_build_from_dt(pdev);
--		omap_auxdata_legacy_init(dev);
- 		fallthrough;
- 	default:
- 		od = to_omap_device(pdev);
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
-index 04208cc52784e..c363ad8d6a06c 100644
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -6,6 +6,7 @@
-  */
- #include <linux/clk.h>
- #include <linux/davinci_emac.h>
-+#include <linux/gpio/machine.h>
- #include <linux/gpio/consumer.h>
- #include <linux/gpio.h>
- #include <linux/init.h>
-@@ -41,7 +42,6 @@ struct pdata_init {
- };
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index aaddb6781465e..92b2e4ddb7ce9 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -94,11 +94,8 @@ struct z_erofs_pcluster {
  
- static struct of_dev_auxdata omap_auxdata_lookup[];
--static struct twl4030_gpio_platform_data twl_gpio_auxdata;
+ /* let's avoid the valid 32-bit kernel addresses */
  
- #ifdef CONFIG_MACH_NOKIA_N8X0
- static void __init omap2420_n8x0_legacy_init(void)
-@@ -98,22 +98,6 @@ static struct iommu_platform_data omap3_iommu_isp_pdata = {
- };
- #endif
- 
--static int omap3_sbc_t3730_twl_callback(struct device *dev,
--					   unsigned gpio,
--					   unsigned ngpio)
--{
--	int res;
+-/* the chained workgroup has't submitted io (still open) */
++/* the end of a chain of pclusters */
+ #define Z_EROFS_PCLUSTER_TAIL           ((void *)0x5F0ECAFE)
+-/* the chained workgroup has already submitted io */
+-#define Z_EROFS_PCLUSTER_TAIL_CLOSED    ((void *)0x5F0EDEAD)
 -
--	res = gpio_request_one(gpio + 2, GPIOF_OUT_INIT_HIGH,
--			       "wlan pwr");
--	if (res)
--		return res;
--
--	gpiod_export(gpio_to_desc(gpio), 0);
--
--	return 0;
--}
--
- static void __init omap3_sbc_t3x_usb_hub_init(int gpio, char *hub_name)
- {
- 	int err = gpio_request_one(gpio, GPIOF_OUT_INIT_LOW, hub_name);
-@@ -131,11 +115,6 @@ static void __init omap3_sbc_t3x_usb_hub_init(int gpio, char *hub_name)
- 	msleep(1);
- }
+ #define Z_EROFS_PCLUSTER_NIL            (NULL)
  
--static void __init omap3_sbc_t3730_twl_init(void)
--{
--	twl_gpio_auxdata.setup = omap3_sbc_t3730_twl_callback;
--}
--
- static void __init omap3_sbc_t3730_legacy_init(void)
- {
- 	omap3_sbc_t3x_usb_hub_init(167, "sb-t35 usb hub");
-@@ -393,21 +372,6 @@ static struct ti_prm_platform_data ti_prm_pdata = {
- 	.clkdm_lookup = clkdm_lookup,
- };
+ struct z_erofs_decompressqueue {
+@@ -375,20 +372,6 @@ int __init z_erofs_init_zip_subsystem(void)
  
--/*
-- * GPIOs for TWL are initialized by the I2C bus and need custom
-- * handing until DSS has device tree bindings.
-- */
--void omap_auxdata_legacy_init(struct device *dev)
--{
--	if (dev->platform_data)
--		return;
--
--	if (strcmp("twl4030-gpio", dev_name(dev)))
--		return;
--
--	dev->platform_data = &twl_gpio_auxdata;
--}
--
- #if defined(CONFIG_ARCH_OMAP3) && IS_ENABLED(CONFIG_SND_SOC_OMAP_MCBSP)
- static struct omap_mcbsp_platform_data mcbsp_pdata;
- static void __init omap3_mcbsp_init(void)
-@@ -427,9 +391,6 @@ static struct pdata_init auxdata_quirks[] __initdata = {
- 	{ "nokia,n800", omap2420_n8x0_legacy_init, },
- 	{ "nokia,n810", omap2420_n8x0_legacy_init, },
- 	{ "nokia,n810-wimax", omap2420_n8x0_legacy_init, },
--#endif
--#ifdef CONFIG_ARCH_OMAP3
--	{ "compulab,omap3-sbc-t3730", omap3_sbc_t3730_twl_init, },
- #endif
- 	{ /* sentinel */ },
- };
-diff --git a/drivers/gpio/gpio-twl4030.c b/drivers/gpio/gpio-twl4030.c
-index c1bb2c3ca6f29..446599ac234a9 100644
---- a/drivers/gpio/gpio-twl4030.c
-+++ b/drivers/gpio/gpio-twl4030.c
-@@ -17,7 +17,9 @@
- #include <linux/interrupt.h>
- #include <linux/kthread.h>
- #include <linux/irq.h>
-+#include <linux/gpio/machine.h>
- #include <linux/gpio/driver.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/of.h>
- #include <linux/irqdomain.h>
-@@ -465,8 +467,7 @@ static int gpio_twl4030_debounce(u32 debounce, u8 mmc_cd)
- 				REG_GPIO_DEBEN1, 3);
- }
- 
--static struct twl4030_gpio_platform_data *of_gpio_twl4030(struct device *dev,
--				struct twl4030_gpio_platform_data *pdata)
-+static struct twl4030_gpio_platform_data *of_gpio_twl4030(struct device *dev)
- {
- 	struct twl4030_gpio_platform_data *omap_twl_info;
- 
-@@ -474,9 +475,6 @@ static struct twl4030_gpio_platform_data *of_gpio_twl4030(struct device *dev,
- 	if (!omap_twl_info)
- 		return NULL;
- 
--	if (pdata)
--		*omap_twl_info = *pdata;
--
- 	omap_twl_info->use_leds = of_property_read_bool(dev->of_node,
- 			"ti,use-leds");
- 
-@@ -504,9 +502,18 @@ static int gpio_twl4030_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
-+/* Called from the registered devm action */
-+static void gpio_twl4030_power_off_action(void *data)
-+{
-+	struct gpio_desc *d = data;
-+
-+	gpiod_unexport(d);
-+	gpiochip_free_own_desc(d);
-+}
-+
- static int gpio_twl4030_probe(struct platform_device *pdev)
- {
--	struct twl4030_gpio_platform_data *pdata = dev_get_platdata(&pdev->dev);
-+	struct twl4030_gpio_platform_data *pdata;
- 	struct device_node *node = pdev->dev.of_node;
- 	struct gpio_twl4030_priv *priv;
- 	int ret, irq_base;
-@@ -546,9 +553,7 @@ static int gpio_twl4030_probe(struct platform_device *pdev)
- 
- 	mutex_init(&priv->mutex);
- 
--	if (node)
--		pdata = of_gpio_twl4030(&pdev->dev, pdata);
--
-+	pdata = of_gpio_twl4030(&pdev->dev);
- 	if (pdata == NULL) {
- 		dev_err(&pdev->dev, "Platform data is missing\n");
- 		return -ENXIO;
-@@ -585,17 +590,32 @@ static int gpio_twl4030_probe(struct platform_device *pdev)
- 		goto out;
- 	}
- 
--	platform_set_drvdata(pdev, priv);
-+	/*
-+	 * Special quirk for the OMAP3 to hog and export a WLAN power
-+	 * GPIO.
-+	 */
-+	if (IS_ENABLED(CONFIG_ARCH_OMAP3) &&
-+	    of_machine_is_compatible("compulab,omap3-sbc-t3730")) {
-+		struct gpio_desc *d;
- 
--	if (pdata->setup) {
--		int status;
-+		d = gpiochip_request_own_desc(&priv->gpio_chip,
-+						 2, "wlan pwr",
-+						 GPIO_ACTIVE_HIGH,
-+						 GPIOD_OUT_HIGH);
-+		if (IS_ERR(d))
-+			return dev_err_probe(&pdev->dev, PTR_ERR(d),
-+					     "unable to hog wlan pwr GPIO\n");
-+
-+		gpiod_export(d, 0);
-+
-+		ret = devm_add_action_or_reset(&pdev->dev, gpio_twl4030_power_off_action, d);
-+		if (ret)
-+			return dev_err_probe(&pdev->dev, ret,
-+					     "failed to install power off handler\n");
- 
--		status = pdata->setup(&pdev->dev, priv->gpio_chip.base,
--				      TWL4030_GPIO_MAX);
--		if (status)
--			dev_dbg(&pdev->dev, "setup --> %d\n", status);
- 	}
- 
-+	platform_set_drvdata(pdev, priv);
- out:
- 	return ret;
- }
-diff --git a/include/linux/mfd/twl.h b/include/linux/mfd/twl.h
-index 6e3d99b7a0ee6..c062d91a67d92 100644
---- a/include/linux/mfd/twl.h
-+++ b/include/linux/mfd/twl.h
-@@ -593,9 +593,6 @@ struct twl4030_gpio_platform_data {
+ enum z_erofs_pclustermode {
+ 	Z_EROFS_PCLUSTER_INFLIGHT,
+-	/*
+-	 * The current pclusters was the tail of an exist chain, in addition
+-	 * that the previous processed chained pclusters are all decided to
+-	 * be hooked up to it.
+-	 * A new chain will be created for the remaining pclusters which are
+-	 * not processed yet, so different from Z_EROFS_PCLUSTER_FOLLOWED,
+-	 * the next pcluster cannot reuse the whole page safely for inplace I/O
+-	 * in the following scenario:
+-	 *  ________________________________________________________________
+-	 * |      tail (partial) page     |       head (partial) page       |
+-	 * |   (belongs to the next pcl)  |   (belongs to the current pcl)  |
+-	 * |_______PCLUSTER_FOLLOWED______|________PCLUSTER_HOOKED__________|
+-	 */
+-	Z_EROFS_PCLUSTER_HOOKED,
+ 	/*
+ 	 * a weak form of Z_EROFS_PCLUSTER_FOLLOWED, the difference is that it
+ 	 * could be dispatched into bypass queue later due to uptodated managed
+@@ -406,8 +389,8 @@ enum z_erofs_pclustermode {
+ 	 *  ________________________________________________________________
+ 	 * |  tail (partial) page |          head (partial) page           |
+ 	 * |  (of the current cl) |      (of the previous collection)      |
+-	 * | PCLUSTER_FOLLOWED or |                                        |
+-	 * |_____PCLUSTER_HOOKED__|___________PCLUSTER_FOLLOWED____________|
++	 * |                      |                                        |
++	 * |__PCLUSTER_FOLLOWED___|___________PCLUSTER_FOLLOWED____________|
+ 	 *
+ 	 * [  (*) the above page can be used as inplace I/O.               ]
  	 */
- 	u32		pullups;
- 	u32		pulldowns;
--
--	int		(*setup)(struct device *dev,
--				unsigned gpio, unsigned ngpio);
- };
+@@ -420,7 +403,7 @@ struct z_erofs_decompress_frontend {
+ 	struct z_erofs_bvec_iter biter;
  
- struct twl4030_madc_platform_data {
+ 	struct page *candidate_bvpage;
+-	struct z_erofs_pcluster *pcl, *tailpcl;
++	struct z_erofs_pcluster *pcl;
+ 	z_erofs_next_pcluster_t owned_head;
+ 	enum z_erofs_pclustermode mode;
+ 
+@@ -626,19 +609,7 @@ static void z_erofs_try_to_claim_pcluster(struct z_erofs_decompress_frontend *f)
+ 		return;
+ 	}
+ 
+-	/*
+-	 * type 2, link to the end of an existing open chain, be careful
+-	 * that its submission is controlled by the original attached chain.
+-	 */
+-	if (*owned_head != &pcl->next && pcl != f->tailpcl &&
+-	    cmpxchg(&pcl->next, Z_EROFS_PCLUSTER_TAIL,
+-		    *owned_head) == Z_EROFS_PCLUSTER_TAIL) {
+-		*owned_head = Z_EROFS_PCLUSTER_TAIL;
+-		f->mode = Z_EROFS_PCLUSTER_HOOKED;
+-		f->tailpcl = NULL;
+-		return;
+-	}
+-	/* type 3, it belongs to a chain, but it isn't the end of the chain */
++	/* type 2, it belongs to an ongoing chain */
+ 	f->mode = Z_EROFS_PCLUSTER_INFLIGHT;
+ }
+ 
+@@ -699,9 +670,6 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
+ 			goto err_out;
+ 		}
+ 	}
+-	/* used to check tail merging loop due to corrupted images */
+-	if (fe->owned_head == Z_EROFS_PCLUSTER_TAIL)
+-		fe->tailpcl = pcl;
+ 	fe->owned_head = &pcl->next;
+ 	fe->pcl = pcl;
+ 	return 0;
+@@ -722,7 +690,6 @@ static int z_erofs_collector_begin(struct z_erofs_decompress_frontend *fe)
+ 
+ 	/* must be Z_EROFS_PCLUSTER_TAIL or pointed to previous pcluster */
+ 	DBG_BUGON(fe->owned_head == Z_EROFS_PCLUSTER_NIL);
+-	DBG_BUGON(fe->owned_head == Z_EROFS_PCLUSTER_TAIL_CLOSED);
+ 
+ 	if (!(map->m_flags & EROFS_MAP_META)) {
+ 		grp = erofs_find_workgroup(fe->inode->i_sb,
+@@ -741,10 +708,6 @@ static int z_erofs_collector_begin(struct z_erofs_decompress_frontend *fe)
+ 
+ 	if (ret == -EEXIST) {
+ 		mutex_lock(&fe->pcl->lock);
+-		/* used to check tail merging loop due to corrupted images */
+-		if (fe->owned_head == Z_EROFS_PCLUSTER_TAIL)
+-			fe->tailpcl = fe->pcl;
+-
+ 		z_erofs_try_to_claim_pcluster(fe);
+ 	} else if (ret) {
+ 		return ret;
+@@ -901,8 +864,7 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
+ 	 * those chains are handled asynchronously thus the page cannot be used
+ 	 * for inplace I/O or bvpage (should be processed in a strict order.)
+ 	 */
+-	tight &= (fe->mode >= Z_EROFS_PCLUSTER_HOOKED &&
+-		  fe->mode != Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE);
++	tight &= (fe->mode > Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE);
+ 
+ 	cur = end - min_t(unsigned int, offset + end - map->m_la, end);
+ 	if (!(map->m_flags & EROFS_MAP_MAPPED)) {
+@@ -1283,10 +1245,7 @@ static void z_erofs_decompress_queue(const struct z_erofs_decompressqueue *io,
+ 	};
+ 	z_erofs_next_pcluster_t owned = io->head;
+ 
+-	while (owned != Z_EROFS_PCLUSTER_TAIL_CLOSED) {
+-		/* impossible that 'owned' equals Z_EROFS_WORK_TPTR_TAIL */
+-		DBG_BUGON(owned == Z_EROFS_PCLUSTER_TAIL);
+-		/* impossible that 'owned' equals Z_EROFS_PCLUSTER_NIL */
++	while (owned != Z_EROFS_PCLUSTER_TAIL) {
+ 		DBG_BUGON(owned == Z_EROFS_PCLUSTER_NIL);
+ 
+ 		be.pcl = container_of(owned, struct z_erofs_pcluster, next);
+@@ -1303,7 +1262,7 @@ static void z_erofs_decompressqueue_work(struct work_struct *work)
+ 		container_of(work, struct z_erofs_decompressqueue, u.work);
+ 	struct page *pagepool = NULL;
+ 
+-	DBG_BUGON(bgq->head == Z_EROFS_PCLUSTER_TAIL_CLOSED);
++	DBG_BUGON(bgq->head == Z_EROFS_PCLUSTER_TAIL);
+ 	z_erofs_decompress_queue(bgq, &pagepool);
+ 
+ 	erofs_release_pages(&pagepool);
+@@ -1465,7 +1424,7 @@ static struct z_erofs_decompressqueue *jobqueue_init(struct super_block *sb,
+ 		q->sync = true;
+ 	}
+ 	q->sb = sb;
+-	q->head = Z_EROFS_PCLUSTER_TAIL_CLOSED;
++	q->head = Z_EROFS_PCLUSTER_TAIL;
+ 	return q;
+ }
+ 
+@@ -1483,11 +1442,7 @@ static void move_to_bypass_jobqueue(struct z_erofs_pcluster *pcl,
+ 	z_erofs_next_pcluster_t *const submit_qtail = qtail[JQ_SUBMIT];
+ 	z_erofs_next_pcluster_t *const bypass_qtail = qtail[JQ_BYPASS];
+ 
+-	DBG_BUGON(owned_head == Z_EROFS_PCLUSTER_TAIL_CLOSED);
+-	if (owned_head == Z_EROFS_PCLUSTER_TAIL)
+-		owned_head = Z_EROFS_PCLUSTER_TAIL_CLOSED;
+-
+-	WRITE_ONCE(pcl->next, Z_EROFS_PCLUSTER_TAIL_CLOSED);
++	WRITE_ONCE(pcl->next, Z_EROFS_PCLUSTER_TAIL);
+ 
+ 	WRITE_ONCE(*submit_qtail, owned_head);
+ 	WRITE_ONCE(*bypass_qtail, &pcl->next);
+@@ -1558,15 +1513,10 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 		unsigned int i = 0;
+ 		bool bypass = true;
+ 
+-		/* no possible 'owned_head' equals the following */
+-		DBG_BUGON(owned_head == Z_EROFS_PCLUSTER_TAIL_CLOSED);
+ 		DBG_BUGON(owned_head == Z_EROFS_PCLUSTER_NIL);
+-
+ 		pcl = container_of(owned_head, struct z_erofs_pcluster, next);
++		owned_head = READ_ONCE(pcl->next);
+ 
+-		/* close the main owned chain at first */
+-		owned_head = cmpxchg(&pcl->next, Z_EROFS_PCLUSTER_TAIL,
+-				     Z_EROFS_PCLUSTER_TAIL_CLOSED);
+ 		if (z_erofs_is_inline_pcluster(pcl)) {
+ 			move_to_bypass_jobqueue(pcl, qtail, owned_head);
+ 			continue;
 -- 
 2.39.2
 
