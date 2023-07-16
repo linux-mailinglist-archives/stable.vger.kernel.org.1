@@ -2,99 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C1F875560F
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44D6E7553CC
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232718AbjGPUrI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:47:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36260 "EHLO
+        id S231866AbjGPUXF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:23:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232715AbjGPUrH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:47:07 -0400
+        with ESMTP id S231853AbjGPUXE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:23:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D8FFE9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:47:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC9BF9F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C10460DFD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:47:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299F5C433C7;
-        Sun, 16 Jul 2023 20:47:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AD5160EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACCDC433C8;
+        Sun, 16 Jul 2023 20:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540425;
-        bh=6BNnVQEwf5HEmGmAczCKRHIpmcGRVlbnLKzShfPXdc8=;
+        s=korg; t=1689538982;
+        bh=RMp4xByG4ffeO0OOKmDWbpxiTLqmBseqZwL54lV+3dg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G2WzG7ToyptQs2Y5bQSFGmfYT7BdralZ+QLCXpe8N56FZls84WxKA8wbkXPcyxLcc
-         Z30+b9PQuOH+THe1PUqZa8bxeIF+Vd/mKvcr7EO6Mh+8RVItH2nFwtv3f+3pUXQntt
-         lJS76qjEueT9i4ntjKfg/sfJTKtXaAIpBhG7Pm8Q=
+        b=lhCHHJwyILsWLKKgrExPH40gXGIxvp5F4OXyWZO/4UOm6cZCof/jfrdvX9FcDeC7g
+         AHvT7mY6XcY+pbm/Kyaw1GR+IEVU7SvkIoVcMeV5UEe1yLtsFJikUXkidQt0iZujOk
+         cxdGN3tWYQQmwRlIQFRc96kqnpFQdp8j4AczEnAU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        Yury Norov <yury.norov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 359/591] ksmbd: avoid field overflow warning
+Subject: [PATCH 6.4 645/800] lib/bitmap: drop optimization of bitmap_{from,to}_arr64
 Date:   Sun, 16 Jul 2023 21:48:18 +0200
-Message-ID: <20230716194933.201663221@linuxfoundation.org>
+Message-ID: <20230716195004.096975819@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Yury Norov <yury.norov@gmail.com>
 
-[ Upstream commit 9cedc58bdbe9fff9aacd0ca19ee5777659f28fd7 ]
+[ Upstream commit c1d2ba10f594046831d14b03f194e8d05e78abad ]
 
-clang warns about a possible field overflow in a memcpy:
+bitmap_{from,to}_arr64() optimization is overly optimistic on 32-bit LE
+architectures when it's wired to bitmap_copy_clear_tail().
 
-In file included from fs/smb/server/smb_common.c:7:
-include/linux/fortify-string.h:583:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-                        __write_overflow_field(p_size_field, size);
+bitmap_copy_clear_tail() takes care of unused bits in the bitmap up to
+the next word boundary. But on 32-bit machines when copying bits from
+bitmap to array of 64-bit words, it's expected that the unused part of
+a recipient array must be cleared up to 64-bit boundary, so the last 4
+bytes may stay untouched when nbits % 64 <= 32.
 
-It appears to interpret the "&out[baselen + 4]" as referring to a single
-byte of the character array, while the equivalen "out + baselen + 4" is
-seen as an offset into the array.
+While the copying part of the optimization works correct, that clear-tail
+trick makes corresponding tests reasonably fail:
 
-I don't see that kind of warning elsewhere, so just go with the simple
-rework.
+test_bitmap: bitmap_to_arr64(nbits == 1): tail is not safely cleared: 0xa5a5a5a500000001 (must be 0x0000000000000001)
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix it by removing bitmap_{from,to}_arr64() optimization for 32-bit LE
+arches.
+
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/lkml/20230225184702.GA3587246@roeck-us.net/
+Fixes: 0a97953fd221 ("lib: add bitmap_{from,to}_arr64")
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/bitmap.h | 8 +++-----
+ lib/bitmap.c           | 2 +-
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
-index 05d7f3e910bf4..d937e2f45c829 100644
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -536,7 +536,7 @@ int ksmbd_extract_shortname(struct ksmbd_conn *conn, const char *longname,
- 	out[baselen + 3] = PERIOD;
+diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
+index 7d6d73b781472..03644237e1efb 100644
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -302,12 +302,10 @@ void bitmap_to_arr32(u32 *buf, const unsigned long *bitmap,
+ #endif
  
- 	if (dot_present)
--		memcpy(&out[baselen + 4], extension, 4);
-+		memcpy(out + baselen + 4, extension, 4);
- 	else
- 		out[baselen + 4] = '\0';
- 	smbConvertToUTF16((__le16 *)shortname, out, PATH_MAX,
+ /*
+- * On 64-bit systems bitmaps are represented as u64 arrays internally. On LE32
+- * machines the order of hi and lo parts of numbers match the bitmap structure.
+- * In both cases conversion is not needed when copying data from/to arrays of
+- * u64.
++ * On 64-bit systems bitmaps are represented as u64 arrays internally. So,
++ * the conversion is not needed when copying data from/to arrays of u64.
+  */
+-#if (BITS_PER_LONG == 32) && defined(__BIG_ENDIAN)
++#if BITS_PER_LONG == 32
+ void bitmap_from_arr64(unsigned long *bitmap, const u64 *buf, unsigned int nbits);
+ void bitmap_to_arr64(u64 *buf, const unsigned long *bitmap, unsigned int nbits);
+ #else
+diff --git a/lib/bitmap.c b/lib/bitmap.c
+index 1c81413c51f86..ddb31015e38ae 100644
+--- a/lib/bitmap.c
++++ b/lib/bitmap.c
+@@ -1495,7 +1495,7 @@ void bitmap_to_arr32(u32 *buf, const unsigned long *bitmap, unsigned int nbits)
+ EXPORT_SYMBOL(bitmap_to_arr32);
+ #endif
+ 
+-#if (BITS_PER_LONG == 32) && defined(__BIG_ENDIAN)
++#if BITS_PER_LONG == 32
+ /**
+  * bitmap_from_arr64 - copy the contents of u64 array of bits to bitmap
+  *	@bitmap: array of unsigned longs, the destination bitmap
 -- 
 2.39.2
 
