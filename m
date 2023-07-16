@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF2DE7552A3
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D7F17554C3
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231432AbjGPUKL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:10:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38356 "EHLO
+        id S231191AbjGPUeK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231421AbjGPUKH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:07 -0400
+        with ESMTP id S232296AbjGPUeJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDB17199
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AB6C9F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7045560EA6
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1D6C433C8;
-        Sun, 16 Jul 2023 20:10:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E3CCC60EBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00256C433C8;
+        Sun, 16 Jul 2023 20:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538205;
-        bh=xAa1JIoGXStC9d2UBb0oF6qYIBYAVWX/JMz5LBppIls=;
+        s=korg; t=1689539647;
+        bh=WAR53mxGkIU82Q3+eW9wml1m3JfU1HooDPdEdoMPoQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BREggxCrSPWs4ASkbQBQ08dh4UyHjQUqOFmVMl5BAuN+IWxjmEOLYop7D9BCKHwuX
-         EyWEq29cDOZe/qm4b+uIa9oDZZydOLJdRbV+HltyBecjnC25PVysf1do+h6Y8Vq4le
-         H98yXlphoj7MDzBDaGnarcRvWLB1XyfMpPynztJ0=
+        b=kWd6N0P3ee85ATXpieVL2QD1+8BdZlzhf+/2CwEROIOqXP7IEUqCtFcXzFZyzK4y3
+         MP6YttI2zbW8vOVwsFEKxF3/iEtLE3Gb2pnKWcOiW0XK6h7++dEgtqtgz6BagE6zyw
+         znSkfyMGJEKXCJUH1M+Mez1Gz5LB1CAuxcZ2Vdsc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        patches@lists.linux.dev, Yafang Shao <laoar.shao@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Song Liu <song@kernel.org>, Jiri Olsa <olsajiri@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 368/800] soc: mediatek: SVS: Fix MT8192 GPU node name
+Subject: [PATCH 6.1 082/591] bpf: Fix memleak due to fentry attach failure
 Date:   Sun, 16 Jul 2023 21:43:41 +0200
-Message-ID: <20230716194957.624062678@linuxfoundation.org>
+Message-ID: <20230716194926.002769910@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,43 +56,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit 95094495401bdf6a0649d220dfd095e6079b5e39 ]
+[ Upstream commit 108598c39eefbedc9882273ac0df96127a629220 ]
 
-Device tree node names should be generic. The planned device node name
-for the GPU, according to the bindings and posted DT changes, is "gpu",
-not "mali".
+If it fails to attach fentry, the allocated bpf trampoline image will be
+left in the system. That can be verified by checking /proc/kallsyms.
 
-Fix the GPU node name in the SVS driver to follow.
+This meamleak can be verified by a simple bpf program as follows:
 
-Fixes: 0bbb09b2af9d ("soc: mediatek: SVS: add mt8192 SVS GPU driver")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Link: https://lore.kernel.org/r/20230531063532.2240038-1-wenst@chromium.org
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+  SEC("fentry/trap_init")
+  int fentry_run()
+  {
+      return 0;
+  }
+
+It will fail to attach trap_init because this function is freed after
+kernel init, and then we can find the trampoline image is left in the
+system by checking /proc/kallsyms.
+
+  $ tail /proc/kallsyms
+  ffffffffc0613000 t bpf_trampoline_6442453466_1  [bpf]
+  ffffffffc06c3000 t bpf_trampoline_6442453466_1  [bpf]
+
+  $ bpftool btf dump file /sys/kernel/btf/vmlinux | grep "FUNC 'trap_init'"
+  [2522] FUNC 'trap_init' type_id=119 linkage=static
+
+  $ echo $((6442453466 & 0x7fffffff))
+  2522
+
+Note that there are two left bpf trampoline images, that is because the
+libbpf will fallback to raw tracepoint if -EINVAL is returned.
+
+Fixes: e21aa341785c ("bpf: Fix fexit trampoline.")
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Song Liu <song@kernel.org>
+Cc: Jiri Olsa <olsajiri@gmail.com>
+Link: https://lore.kernel.org/bpf/20230515130849.57502-2-laoar.shao@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-svs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/trampoline.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mtk-svs.c b/drivers/soc/mediatek/mtk-svs.c
-index 81585733c8a99..3a2f97cd52720 100644
---- a/drivers/soc/mediatek/mtk-svs.c
-+++ b/drivers/soc/mediatek/mtk-svs.c
-@@ -2061,9 +2061,9 @@ static int svs_mt8192_platform_probe(struct svs_platform *svsp)
- 		svsb = &svsp->banks[idx];
+diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
+index 91d8de938a3dd..30af8f66e17b4 100644
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -279,11 +279,8 @@ bpf_trampoline_get_progs(const struct bpf_trampoline *tr, int *total, bool *ip_a
+ 	return tlinks;
+ }
  
- 		if (svsb->type == SVSB_HIGH)
--			svsb->opp_dev = svs_add_device_link(svsp, "mali");
-+			svsb->opp_dev = svs_add_device_link(svsp, "gpu");
- 		else if (svsb->type == SVSB_LOW)
--			svsb->opp_dev = svs_get_subsys_device(svsp, "mali");
-+			svsb->opp_dev = svs_get_subsys_device(svsp, "gpu");
+-static void __bpf_tramp_image_put_deferred(struct work_struct *work)
++static void bpf_tramp_image_free(struct bpf_tramp_image *im)
+ {
+-	struct bpf_tramp_image *im;
+-
+-	im = container_of(work, struct bpf_tramp_image, work);
+ 	bpf_image_ksym_del(&im->ksym);
+ 	bpf_jit_free_exec(im->image);
+ 	bpf_jit_uncharge_modmem(PAGE_SIZE);
+@@ -291,6 +288,14 @@ static void __bpf_tramp_image_put_deferred(struct work_struct *work)
+ 	kfree_rcu(im, rcu);
+ }
  
- 		if (IS_ERR(svsb->opp_dev))
- 			return dev_err_probe(svsp->dev, PTR_ERR(svsb->opp_dev),
++static void __bpf_tramp_image_put_deferred(struct work_struct *work)
++{
++	struct bpf_tramp_image *im;
++
++	im = container_of(work, struct bpf_tramp_image, work);
++	bpf_tramp_image_free(im);
++}
++
+ /* callback, fexit step 3 or fentry step 2 */
+ static void __bpf_tramp_image_put_rcu(struct rcu_head *rcu)
+ {
+@@ -465,7 +470,7 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
+ 					  &tr->func.model, tr->flags, tlinks,
+ 					  tr->func.addr);
+ 	if (err < 0)
+-		goto out;
++		goto out_free;
+ 
+ 	set_memory_ro((long)im->image, 1);
+ 	set_memory_x((long)im->image, 1);
+@@ -495,7 +500,7 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
+ 	}
+ #endif
+ 	if (err)
+-		goto out;
++		goto out_free;
+ 
+ 	if (tr->cur_image)
+ 		bpf_tramp_image_put(tr->cur_image);
+@@ -506,6 +511,10 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
+ 		tr->flags = orig_flags;
+ 	kfree(tlinks);
+ 	return err;
++
++out_free:
++	bpf_tramp_image_free(im);
++	goto out;
+ }
+ 
+ static enum bpf_tramp_prog_type bpf_attach_type_to_tramp(struct bpf_prog *prog)
 -- 
 2.39.2
 
