@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5B4375556F
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AD1375531C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:15:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232565AbjGPUlI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:41:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60412 "EHLO
+        id S231614AbjGPUP2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:15:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232543AbjGPUlF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D29CD10CC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:46 -0700 (PDT)
+        with ESMTP id S231610AbjGPUP2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:15:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 685D21B7
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:15:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63AC460EBD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE94C433C7;
-        Sun, 16 Jul 2023 20:40:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2BA760EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:15:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA85C433C9;
+        Sun, 16 Jul 2023 20:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540045;
-        bh=OIKGTJaaRAdzVI6pT3FCln6/I1Gcbt32AxXRxcrRIDo=;
+        s=korg; t=1689538526;
+        bh=wKk65Xx5bxwxBXHIKSkLE2150R30Uk3WwBv7IhxsWnw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wvKiye5AMEFdbS4COeGKXKVPlIDTGUGMm6jK4TDnVoLEQ8brLZWGefMTtWWOO7gNw
-         H+p9GelxhKXURohcD/di3DGb8OVXkip/OEPZUdKNwARBgAXd+RTTfcA/cXuyFcK9jn
-         kQ/MQb6Q49LUYNeSwXcoBwkCRKsn64aoTHAR9A0Y=
+        b=t4+R+3nl5Meef/pIM2Lrqro4VwKdKkH+Gzq2xOHk+3zON/cczfWKBq7DE21MkrCoC
+         L/wGgmedMvOSErnkjeBy8UDtyETMrKyQPsKG1J7a3zTwbQclLItQ1iuD4wEU7LmgBa
+         7PnAaupY4VxaKHfR/8sSvO/Wdzk5ffQOmSB7/w2M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Bart Van Assche <bvanassche@acm.org>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bean Huo <beanhuo@micron.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 196/591] arm64: dts: qcom: msm8994: correct SPMI unit address
+Subject: [PATCH 6.4 482/800] scsi: ufs: core: Remove a ufshcd_add_command_trace() call
 Date:   Sun, 16 Jul 2023 21:45:35 +0200
-Message-ID: <20230716194928.944398385@linuxfoundation.org>
+Message-ID: <20230716195000.274398335@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,37 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 24f0f6a8059c7108d4ee3476c95db1e7ff4feb79 ]
+[ Upstream commit 72554035b9797e00e68cd866e6cefa7f0b2c6f76 ]
 
-Match unit-address to reg entry to fix dtbs W=1 warnings:
+ufshcd_add_command_trace() traces SCSI commands. Remove a
+ufshcd_add_command_trace() call from a code path that is not related to
+SCSI commands.
 
-  Warning (simple_bus_reg): /soc/spmi@fc4c0000: simple-bus unit address format error, expected "fc4cf000"
-
-Fixes: b0ad598f8ec0 ("arm64: dts: qcom: msm8994: Add SPMI PMIC arbiter device")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230419211856.79332-8-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20230531224050.25554-1-bvanassche@acm.org
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 0fef6bb730c4 ("scsi: ufs: core: mcq: Fix the incorrect OCS value for the device command")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8994.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8994.dtsi b/arch/arm64/boot/dts/qcom/msm8994.dtsi
-index 7ed59e698c14d..3c6c2cf99fb9d 100644
---- a/arch/arm64/boot/dts/qcom/msm8994.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8994.dtsi
-@@ -746,7 +746,7 @@ restart@fc4ab000 {
- 			reg = <0xfc4ab000 0x4>;
- 		};
- 
--		spmi_bus: spmi@fc4c0000 {
-+		spmi_bus: spmi@fc4cf000 {
- 			compatible = "qcom,spmi-pmic-arb";
- 			reg = <0xfc4cf000 0x1000>,
- 			      <0xfc4cb000 0x1000>,
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 7c133852dc8a4..41f383b588865 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -5451,7 +5451,6 @@ void ufshcd_compl_one_cqe(struct ufs_hba *hba, int task_tag,
+ 		   lrbp->command_type == UTP_CMD_TYPE_UFS_STORAGE) {
+ 		if (hba->dev_cmd.complete) {
+ 			hba->dev_cmd.cqe = cqe;
+-			ufshcd_add_command_trace(hba, task_tag, UFS_DEV_COMP);
+ 			complete(hba->dev_cmd.complete);
+ 			ufshcd_clk_scaling_update_busy(hba);
+ 		}
 -- 
 2.39.2
 
