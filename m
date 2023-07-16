@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B74587553C9
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99D627555F4
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:46:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231862AbjGPUXB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:23:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46548 "EHLO
+        id S232701AbjGPUqR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:46:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231874AbjGPUW5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 570D2E46
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:55 -0700 (PDT)
+        with ESMTP id S232699AbjGPUqQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:46:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E7FE61
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:46:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DBC5A60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6C0C433C8;
-        Sun, 16 Jul 2023 20:22:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B123660EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:46:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ECCC433C7;
+        Sun, 16 Jul 2023 20:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538974;
-        bh=zwFxB9uSf1fhT3gnZvWfuX2AivR7DrL8NbpQVka2umM=;
+        s=korg; t=1689540372;
+        bh=Das22z4GLBnvRGB9TZFJek2UaW1AHz7fRpx9uomxse8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bidh3Zyj9UwlGJqEuvoTJti+Wq448aX+Bl2Y/PWsy1IkEep9agLdXiI75uXgueoKr
-         De9aKM6r9Y8o3+niqyezLPtiNw8Fxn4KYcTSNLRNYssmbps2zmrGFjLkY+7wYwBuGd
-         eh+t+FwABgOBBybGvI9L2hg04hY0ZlAdOqok1KKA=
+        b=KQeWl++blVa1cEa0opMv9YVvAZ0fzCTPu6F4G4DEVAvThJBECK31qgbcMxeORPZqX
+         7WlQBx72b1tEzxKOgF921R+6AD6p07F2neLfuu3zRS0vAc0bxAQnuHRqTzehX87Eu/
+         cbAyo4yXF1QqFhSn69IVvD2+W6MLDiBMrFPNoOIQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Prashanth K <quic_prashk@quicinc.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 625/800] Revert "usb: common: usb-conn-gpio: Set last role to unknown before initial detection"
+Subject: [PATCH 6.1 339/591] crypto: marvell/cesa - Fix type mismatch warning
 Date:   Sun, 16 Jul 2023 21:47:58 +0200
-Message-ID: <20230716195003.628872558@linuxfoundation.org>
+Message-ID: <20230716194932.675036978@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,95 +57,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit df49f2a0ac4a34c0cb4b5c233fcfa0add644c43c ]
+[ Upstream commit efbc7764c4446566edb76ca05e903b5905673d2e ]
 
-This reverts commit edd60d24bd858cef165274e4cd6cab43bdc58d15.
+Commit df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3") uncovered
+a type mismatch in cesa 3des support that leads to a memcpy beyond the
+end of a structure:
 
-Heikki reports that this should not be a global flag just to work around
-one broken driver and should be fixed differently, so revert it.
+In function 'fortify_memcpy_chk',
+    inlined from 'mv_cesa_des3_ede_setkey' at drivers/crypto/marvell/cesa/cipher.c:307:2:
+include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  583 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Reported-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Fixes: edd60d24bd85 ("usb: common: usb-conn-gpio: Set last role to unknown before initial detection")
-Link: https://lore.kernel.org/r/ZImE4L3YgABnCIsP@kuha.fi.intel.com
-Cc: Prashanth K <quic_prashk@quicinc.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is probably harmless as the actual data that is copied has the correct
+type, but clearly worth fixing nonetheless.
+
+Fixes: 4ada48397823 ("crypto: marvell/cesa - add Triple-DES support")
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/core.c                       | 2 --
- drivers/usb/common/usb-conn-gpio.c             | 3 ---
- drivers/usb/musb/jz4740.c                      | 2 --
- drivers/usb/roles/intel-xhci-usb-role-switch.c | 2 --
- include/linux/usb/role.h                       | 1 -
- 5 files changed, 10 deletions(-)
+ drivers/crypto/marvell/cesa/cipher.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index 69d2921f2d3b5..dbcdf3b24b477 100644
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -252,8 +252,6 @@ static enum usb_role cdns_hw_role_state_machine(struct cdns *cdns)
- 		if (!vbus)
- 			role = USB_ROLE_NONE;
- 		break;
--	default:
--		break;
- 	}
+diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
+index c6f2fa753b7c0..0f37dfd42d850 100644
+--- a/drivers/crypto/marvell/cesa/cipher.c
++++ b/drivers/crypto/marvell/cesa/cipher.c
+@@ -297,7 +297,7 @@ static int mv_cesa_des_setkey(struct crypto_skcipher *cipher, const u8 *key,
+ static int mv_cesa_des3_ede_setkey(struct crypto_skcipher *cipher,
+ 				   const u8 *key, unsigned int len)
+ {
+-	struct mv_cesa_des_ctx *ctx = crypto_skcipher_ctx(cipher);
++	struct mv_cesa_des3_ctx *ctx = crypto_skcipher_ctx(cipher);
+ 	int err;
  
- 	dev_dbg(cdns->dev, "role %d -> %d\n", cdns->role, role);
-diff --git a/drivers/usb/common/usb-conn-gpio.c b/drivers/usb/common/usb-conn-gpio.c
-index 30bdb81934bc8..e20874caba363 100644
---- a/drivers/usb/common/usb-conn-gpio.c
-+++ b/drivers/usb/common/usb-conn-gpio.c
-@@ -257,9 +257,6 @@ static int usb_conn_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, info);
- 	device_set_wakeup_capable(&pdev->dev, true);
- 
--	/* Set last role to unknown before performing the initial detection */
--	info->last_role = USB_ROLE_UNKNOWN;
--
- 	/* Perform initial detection */
- 	usb_conn_queue_dwork(info, 0);
- 
-diff --git a/drivers/usb/musb/jz4740.c b/drivers/usb/musb/jz4740.c
-index 6d880c4cce36e..5aabdd7e2511d 100644
---- a/drivers/usb/musb/jz4740.c
-+++ b/drivers/usb/musb/jz4740.c
-@@ -95,8 +95,6 @@ static int jz4740_musb_role_switch_set(struct usb_role_switch *sw,
- 	case USB_ROLE_HOST:
- 		atomic_notifier_call_chain(&phy->notifier, USB_EVENT_ID, phy);
- 		break;
--	default:
--		break;
- 	}
- 
- 	return 0;
-diff --git a/drivers/usb/roles/intel-xhci-usb-role-switch.c b/drivers/usb/roles/intel-xhci-usb-role-switch.c
-index 4d6a3dd06e011..5c96e929acea0 100644
---- a/drivers/usb/roles/intel-xhci-usb-role-switch.c
-+++ b/drivers/usb/roles/intel-xhci-usb-role-switch.c
-@@ -97,8 +97,6 @@ static int intel_xhci_usb_set_role(struct usb_role_switch *sw,
- 		val |= SW_VBUS_VALID;
- 		drd_config = DRD_CONFIG_STATIC_DEVICE;
- 		break;
--	default:
--		break;
- 	}
- 	val |= SW_IDPIN_EN;
- 	if (data->enable_sw_switch) {
-diff --git a/include/linux/usb/role.h b/include/linux/usb/role.h
-index 65e790a28913e..b5deafd91f67b 100644
---- a/include/linux/usb/role.h
-+++ b/include/linux/usb/role.h
-@@ -11,7 +11,6 @@ enum usb_role {
- 	USB_ROLE_NONE,
- 	USB_ROLE_HOST,
- 	USB_ROLE_DEVICE,
--	USB_ROLE_UNKNOWN,
- };
- 
- typedef int (*usb_role_switch_set_t)(struct usb_role_switch *sw,
+ 	err = verify_skcipher_des3_key(cipher, key);
 -- 
 2.39.2
 
