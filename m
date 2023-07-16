@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89521755539
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD58675553B
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232435AbjGPUir (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:38:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
+        id S232427AbjGPUiu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:38:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232424AbjGPUio (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51BF79F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:43 -0700 (PDT)
+        with ESMTP id S232424AbjGPUit (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D64E5BA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC46760EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB01C433C8;
-        Sun, 16 Jul 2023 20:38:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72C4E60EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806B1C433C8;
+        Sun, 16 Jul 2023 20:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539922;
-        bh=xNCwMWciGskOXqgafz38fG8flMZa59fR/gSEK5tPP4Y=;
+        s=korg; t=1689539927;
+        bh=X1ES200BLNWqFSf2Qsc4iuWzRtiFBsi85iQUoOSaIp4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KkUYmo24wCqi4fjsIej1NNqMwLfVlLG7Z24RoglJuj1jfSgsG+oocU+U2mrNy+XIq
-         zLRbQu7+oeOMKGUxYihGNFc1Ly5uG2VnxFgdS0EpDnpi2uBfRLQfWhEQb1dcZN6YmU
-         dMrh5JszIKSuNZUbsYz2TbTKygRlyhTYQcXFl19M=
+        b=ncCCRAmcsk1V9EF5Ra1UziUVorkhWF/MI9wtUQt7ER0RZx1F+bio65j0m1AaSYbFf
+         WvzDdffU9PdzgXwTq4DESKd1DXI3wUN8PHY/X2SpAaViH93IJUkVlq48ebo8ABfIVk
+         LlsPAzsmXLQSC1OzLZ+qCoXCGzPovn1S5zdyQIak=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+        Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
         Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
         Selvin Xavier <selvin.xavier@broadcom.com>,
         Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/591] RDMA/bnxt_re: Fix to remove unnecessary return labels
-Date:   Sun, 16 Jul 2023 21:45:19 +0200
-Message-ID: <20230716194928.523428535@linuxfoundation.org>
+Subject: [PATCH 6.1 181/591] RDMA/bnxt_re: Use unique names while registering interrupts
+Date:   Sun, 16 Jul 2023 21:45:20 +0200
+Message-ID: <20230716194928.549269830@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -49,10 +48,10 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -61,62 +60,153 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 9b3ee47796f529e5bc31a355d6cb756d68a7079a ]
+[ Upstream commit ff2e4bfd162cf66a112a81509e419805add44d64 ]
 
-If there is no cleanup needed then just return directly.  This cleans up
-the code and improve readability.
+bnxt_re currently uses the names "bnxt_qplib_creq" and "bnxt_qplib_nq-0"
+while registering IRQs. There is no way to distinguish the IRQs of
+different device ports when there are multiple IB devices registered.
+This could make the scenarios worse where one want to pin IRQs of a device
+port to certain CPUs.
+
+Fixed the code to use unique names which has PCI BDF information while
+registering interrupts like: "bnxt_re-nq-0@pci:0000:65:00.0" and
+"bnxt_re-creq@pci:0000:65:00.1".
 
 Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://lore.kernel.org/r/1684478897-12247-3-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Link: https://lore.kernel.org/r/1684478897-12247-4-git-send-email-selvin.xavier@broadcom.com
+Reviewed-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
 Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
 Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c   | 12 ++++++++++--
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h   |  2 +-
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 15 +++++++++++++--
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.h |  1 +
+ 4 files changed, 25 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index a143bd3580a27..4abe1f59b3689 100644
+index 4abe1f59b3689..640d932bec376 100644
 --- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
 +++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1605,7 +1605,7 @@ static int bnxt_qplib_put_inline(struct bnxt_qplib_qp *qp,
- 		il_src = (void *)wqe->sg_list[indx].addr;
- 		t_len += len;
- 		if (t_len > qp->max_inline_data)
--			goto bad;
-+			return -ENOMEM;
- 		while (len) {
- 			if (pull_dst) {
- 				pull_dst = false;
-@@ -1629,8 +1629,6 @@ static int bnxt_qplib_put_inline(struct bnxt_qplib_qp *qp,
- 	}
+@@ -418,6 +418,8 @@ void bnxt_qplib_nq_stop_irq(struct bnxt_qplib_nq *nq, bool kill)
  
- 	return t_len;
--bad:
--	return -ENOMEM;
+ 	irq_set_affinity_hint(nq->msix_vec, NULL);
+ 	free_irq(nq->msix_vec, nq);
++	kfree(nq->name);
++	nq->name = NULL;
+ 	nq->requested = false;
  }
  
- static u32 bnxt_qplib_put_sges(struct bnxt_qplib_hwq *hwq,
-@@ -2060,7 +2058,7 @@ int bnxt_qplib_create_cq(struct bnxt_qplib_res *res, struct bnxt_qplib_cq *cq)
- 	hwq_attr.sginfo = &cq->sg_info;
- 	rc = bnxt_qplib_alloc_init_hwq(&cq->hwq, &hwq_attr);
- 	if (rc)
--		goto exit;
-+		return rc;
+@@ -444,6 +446,7 @@ void bnxt_qplib_disable_nq(struct bnxt_qplib_nq *nq)
+ int bnxt_qplib_nq_start_irq(struct bnxt_qplib_nq *nq, int nq_indx,
+ 			    int msix_vector, bool need_init)
+ {
++	struct bnxt_qplib_res *res = nq->res;
+ 	int rc;
  
- 	RCFW_CMD_PREP(req, CREATE_CQ, cmd_flags);
+ 	if (nq->requested)
+@@ -455,9 +458,14 @@ int bnxt_qplib_nq_start_irq(struct bnxt_qplib_nq *nq, int nq_indx,
+ 	else
+ 		tasklet_enable(&nq->nq_tasklet);
  
-@@ -2101,7 +2099,6 @@ int bnxt_qplib_create_cq(struct bnxt_qplib_res *res, struct bnxt_qplib_cq *cq)
+-	snprintf(nq->name, sizeof(nq->name), "bnxt_qplib_nq-%d", nq_indx);
++	nq->name = kasprintf(GFP_KERNEL, "bnxt_re-nq-%d@pci:%s",
++			     nq_indx, pci_name(res->pdev));
++	if (!nq->name)
++		return -ENOMEM;
+ 	rc = request_irq(nq->msix_vec, bnxt_qplib_nq_irq, 0, nq->name, nq);
+ 	if (rc) {
++		kfree(nq->name);
++		nq->name = NULL;
+ 		tasklet_disable(&nq->nq_tasklet);
+ 		return rc;
+ 	}
+@@ -471,7 +479,7 @@ int bnxt_qplib_nq_start_irq(struct bnxt_qplib_nq *nq, int nq_indx,
+ 			 nq->msix_vec, nq_indx);
+ 	}
+ 	nq->requested = true;
+-	bnxt_qplib_ring_nq_db(&nq->nq_db.dbinfo, nq->res->cctx, true);
++	bnxt_qplib_ring_nq_db(&nq->nq_db.dbinfo, res->cctx, true);
  
- fail:
- 	bnxt_qplib_free_hwq(res, &cq->hwq);
--exit:
  	return rc;
  }
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index 0375019525431..f859710f9a7f4 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -471,7 +471,7 @@ typedef int (*srqn_handler_t)(struct bnxt_qplib_nq *nq,
+ struct bnxt_qplib_nq {
+ 	struct pci_dev			*pdev;
+ 	struct bnxt_qplib_res		*res;
+-	char				name[32];
++	char				*name;
+ 	struct bnxt_qplib_hwq		hwq;
+ 	struct bnxt_qplib_nq_db		nq_db;
+ 	u16				ring_id;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index e28f0eb5b55d4..9c63b8b62edfc 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -648,6 +648,8 @@ void bnxt_qplib_rcfw_stop_irq(struct bnxt_qplib_rcfw *rcfw, bool kill)
+ 		tasklet_kill(&creq->creq_tasklet);
  
+ 	free_irq(creq->msix_vec, rcfw);
++	kfree(creq->irq_name);
++	creq->irq_name = NULL;
+ 	creq->requested = false;
+ }
+ 
+@@ -680,9 +682,11 @@ int bnxt_qplib_rcfw_start_irq(struct bnxt_qplib_rcfw *rcfw, int msix_vector,
+ 			      bool need_init)
+ {
+ 	struct bnxt_qplib_creq_ctx *creq;
++	struct bnxt_qplib_res *res;
+ 	int rc;
+ 
+ 	creq = &rcfw->creq;
++	res = rcfw->res;
+ 
+ 	if (creq->requested)
+ 		return -EFAULT;
+@@ -692,15 +696,22 @@ int bnxt_qplib_rcfw_start_irq(struct bnxt_qplib_rcfw *rcfw, int msix_vector,
+ 		tasklet_setup(&creq->creq_tasklet, bnxt_qplib_service_creq);
+ 	else
+ 		tasklet_enable(&creq->creq_tasklet);
++
++	creq->irq_name = kasprintf(GFP_KERNEL, "bnxt_re-creq@pci:%s",
++				   pci_name(res->pdev));
++	if (!creq->irq_name)
++		return -ENOMEM;
+ 	rc = request_irq(creq->msix_vec, bnxt_qplib_creq_irq, 0,
+-			 "bnxt_qplib_creq", rcfw);
++			 creq->irq_name, rcfw);
+ 	if (rc) {
++		kfree(creq->irq_name);
++		creq->irq_name = NULL;
+ 		tasklet_disable(&creq->creq_tasklet);
+ 		return rc;
+ 	}
+ 	creq->requested = true;
+ 
+-	bnxt_qplib_ring_nq_db(&creq->creq_db.dbinfo, rcfw->res->cctx, true);
++	bnxt_qplib_ring_nq_db(&creq->creq_db.dbinfo, res->cctx, true);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
+index 0a3d8e7da3d42..b887e7fbad9ef 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
+@@ -174,6 +174,7 @@ struct bnxt_qplib_creq_ctx {
+ 	u16				ring_id;
+ 	int				msix_vec;
+ 	bool				requested; /*irq handler installed */
++	char				*irq_name;
+ };
+ 
+ /* RCFW Communication Channels */
 -- 
 2.39.2
 
