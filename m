@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6F6D755387
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55E997555A9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231759AbjGPUT7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:19:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44852 "EHLO
+        id S232593AbjGPUnR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:43:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231761AbjGPUT7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA45C0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:58 -0700 (PDT)
+        with ESMTP id S232578AbjGPUnR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50048D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C5D460DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B00CC433C7;
-        Sun, 16 Jul 2023 20:19:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1A4760EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1332C433C7;
+        Sun, 16 Jul 2023 20:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538797;
-        bh=iZtEMpetjq9RvHLXlACO4Mf0j3utTALl6hRW+zLAfnM=;
+        s=korg; t=1689540195;
+        bh=pm1L9YGMsJGm2ixjsVM96woEy1RUWaTCNgFMYFSc6qk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fLLrd/L5UsKM7Ra+/RAemZw4tFRgYpf0h1EdiCnRrZDDYBwdSaufwWeAO7vwFRNib
-         cBYCJH5ycTvonolekRxdvTgmeKeodNgABmtdxOspdyIlrkJh6rvqFyFFXp5KzMk+5Y
-         tYfDhGff9Z+vp4TT1Mg0JiHFGDJFTpHsusJpbkrM=
+        b=x89zLCXatJfoX0nLfPcCAmDnbxNvksPohc8pygS1z6YCvSoJAJ1dw98XOV8ObtDtJ
+         W/kz8AXyOlWPbkXQR6L7tt8fxGwO+V1mSRMQPB4LegW/EAbtmA4qU32z7Ri8wAKFPh
+         t5G6Rqx0Buy1Fyqy+sz8w4jgf1fZljz6sTNMdO10=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Taniya Das <quic_tdas@quicinc.com>,
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Tony Lindgren <tony@atomide.com>,
         Stephen Boyd <sboyd@kernel.org>,
-        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 562/800] clk: qcom: camcc-sc7180: Add parent dependency to all camera GDSCs
+Subject: [PATCH 6.1 276/591] clk: keystone: sci-clk: check return value of kasprintf()
 Date:   Sun, 16 Jul 2023 21:46:55 +0200
-Message-ID: <20230716195002.142399384@linuxfoundation.org>
+Message-ID: <20230716194931.036896843@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,86 +57,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit 3e4d179532423f299554cd0dedabdd9d2fdd238d ]
+[ Upstream commit b73ed981da6d25c921aaefa7ca3df85bbd85b7fc ]
 
-Camera titan top GDSC is a parent supply to all other camera GDSCs. Titan
-top GDSC is required to be enabled before enabling any other camera GDSCs
-and it should be disabled only after all other camera GDSCs are disabled.
-Ensure this behavior by marking titan top GDSC as parent of all other
-camera GDSCs.
+kasprintf() returns a pointer to dynamically allocated memory.
+Pointer could be NULL in case allocation fails. Check pointer validity.
+Identified with coccinelle (kmerr.cocci script).
 
-Fixes: 15d09e830bbc ("clk: qcom: camcc: Add camera clock controller driver for SC7180")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230501142932.13049-1-quic_tdas@quicinc.com
+Fixes: b745c0794e2f ("clk: keystone: Add sci-clk driver support")
+Depends-on: 96488c09b0f4 ("clk: keystone: sci-clk: cut down the clock name length")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230530093913.1656095-7-claudiu.beznea@microchip.com
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/camcc-sc7180.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/clk/keystone/sci-clk.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/qcom/camcc-sc7180.c b/drivers/clk/qcom/camcc-sc7180.c
-index e2b4804695f37..8a4ba7a19ed12 100644
---- a/drivers/clk/qcom/camcc-sc7180.c
-+++ b/drivers/clk/qcom/camcc-sc7180.c
-@@ -1480,12 +1480,21 @@ static struct clk_branch cam_cc_sys_tmr_clk = {
- 	},
- };
+diff --git a/drivers/clk/keystone/sci-clk.c b/drivers/clk/keystone/sci-clk.c
+index d4b4e74e22da6..254f2cf24be21 100644
+--- a/drivers/clk/keystone/sci-clk.c
++++ b/drivers/clk/keystone/sci-clk.c
+@@ -294,6 +294,8 @@ static int _sci_clk_build(struct sci_clk_provider *provider,
  
-+static struct gdsc titan_top_gdsc = {
-+	.gdscr = 0xb134,
-+	.pd = {
-+		.name = "titan_top_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+};
-+
- static struct gdsc bps_gdsc = {
- 	.gdscr = 0x6004,
- 	.pd = {
- 		.name = "bps_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &titan_top_gdsc.pd,
- 	.flags = HW_CTRL,
- };
+ 	name = kasprintf(GFP_KERNEL, "clk:%d:%d", sci_clk->dev_id,
+ 			 sci_clk->clk_id);
++	if (!name)
++		return -ENOMEM;
  
-@@ -1495,6 +1504,7 @@ static struct gdsc ife_0_gdsc = {
- 		.name = "ife_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &titan_top_gdsc.pd,
- };
+ 	init.name = name;
  
- static struct gdsc ife_1_gdsc = {
-@@ -1503,6 +1513,7 @@ static struct gdsc ife_1_gdsc = {
- 		.name = "ife_1_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &titan_top_gdsc.pd,
- };
- 
- static struct gdsc ipe_0_gdsc = {
-@@ -1512,15 +1523,9 @@ static struct gdsc ipe_0_gdsc = {
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
- 	.flags = HW_CTRL,
-+	.parent = &titan_top_gdsc.pd,
- };
- 
--static struct gdsc titan_top_gdsc = {
--	.gdscr = 0xb134,
--	.pd = {
--		.name = "titan_top_gdsc",
--	},
--	.pwrsts = PWRSTS_OFF_ON,
--};
- 
- static struct clk_hw *cam_cc_sc7180_hws[] = {
- 	[CAM_CC_PLL2_OUT_EARLY] = &cam_cc_pll2_out_early.hw,
 -- 
 2.39.2
 
