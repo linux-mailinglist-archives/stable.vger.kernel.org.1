@@ -2,111 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9FAB755388
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 165EB7555BC
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:44:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231761AbjGPUUC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:20:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44864 "EHLO
+        id S232616AbjGPUoG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231764AbjGPUUC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:20:02 -0400
+        with ESMTP id S232615AbjGPUoF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:44:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A66BC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:20:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D9BE43
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:44:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19B6760E9D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:20:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26194C433C8;
-        Sun, 16 Jul 2023 20:19:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C808060EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:44:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5B3C433C7;
+        Sun, 16 Jul 2023 20:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538800;
-        bh=hMVz/u0DUiBtT3oW4HAV5m38Z1xFxNT68qkd8kJwots=;
+        s=korg; t=1689540243;
+        bh=iuWJK9SJxVMKP5LwSNVXIZp5xRy5szBPUxKW9nQngyQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZCnmT2VtUCKHHhMjJ0JX4XeIoPJ1yGoQNTFNvKoZ1dgjoFtBhQy6HzI6EFWqXaMnt
-         WmxksJvugjfoSb6eS81Dz+K/pkUet2FaTkYJoU2/JESWhx7+lrCdAXnmd7vzQnC9H0
-         YYDPFI0MyXRXPWV6wikDofTr5j8CGpPS7FXTZz9w=
+        b=MIUU09X9HkR4G7M0kvTvqzpSqKUWIdXcnYT1Tj1nYZWaydFTpGsNqWoa9zbK3iz0k
+         GvZSCS/LgmVfFaZbJM3ACDiHitqjXRTtVuZfVlz6dtmW2I3gt0jGghkxIf8ejDywxW
+         hFTEussfGHL9abwko7S6bYSoljKS8vFyZd6OB2sE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        Rongguang Wei <weirongguang@kylinos.cn>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 580/800] clk: qcom: dispcc-qcm2290: Fix GPLL0_OUT_DIV handling
+Subject: [PATCH 6.1 294/591] PCI: pciehp: Cancel bringup sequence if card is not present
 Date:   Sun, 16 Jul 2023 21:47:13 +0200
-Message-ID: <20230716195002.556865328@linuxfoundation.org>
+Message-ID: <20230716194931.500306056@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Rongguang Wei <weirongguang@kylinos.cn>
 
-[ Upstream commit 63d56adf04b5795e54440dc5b7afddecb2966863 ]
+[ Upstream commit e8afd0d9fccc27c8ad263db5cf5952cfcf72d6fe ]
 
-GPLL0_OUT_DIV (.fw_name = "gcc_disp_gpll0_div_clk_src") was previously
-made to reuse the same parent enum entry as GPLL0_OUT_MAIN
-(.fw_name = "gcc_disp_gpll0_clk_src") in parent_map_2.
+If a PCIe hotplug slot has an Attention Button, the normal hot-add flow is:
 
-Resolve it by introducing its own entry in the parent enum and
-correctly assigning it in disp_cc_parent_map_2[].
+  - Slot is empty and slot power is off
+  - User inserts card in slot and presses Attention Button
+  - OS blinks Power Indicator for 5 seconds
+  - After 5 seconds, OS turns on Power Indicator, turns on slot power, and
+    enumerates the device
 
-Fixes: cc517ea3333f ("clk: qcom: Add display clock controller driver for QCM2290")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230412-topic-qcm_dispcc-v2-2-bce7dd512fe4@linaro.org
+Previously, if a user pressed the Attention Button on an *empty* slot,
+pciehp logged the following messages and blinked the Power Indicator
+until a second button press:
+
+  [0.000] pciehp: Button press: will power on in 5 sec
+  [0.001] # Power Indicator starts blinking
+  [5.001] # 5 second timeout; slot is empty, so we should cancel the
+            request to power on and turn off Power Indicator
+
+  [7.000] # Power Indicator still blinking
+  [8.000] # possible card insertion
+  [9.000] pciehp: Button press: canceling request to power on
+
+The first button press incorrectly left the slot in BLINKINGON_STATE, so
+the second was interpreted as a "cancel power on" event regardless of
+whether a card was present.
+
+If the slot is empty, turn off the Power Indicator and return from
+BLINKINGON_STATE to OFF_STATE after 5 seconds, effectively canceling the
+request to power on.  Putting the slot in OFF_STATE also means the second
+button press will correctly request a slot power on if the slot is
+occupied.
+
+[bhelgaas: commit log]
+Link: https://lore.kernel.org/r/20230512021518.336460-1-clementwei90@163.com
+Fixes: d331710ea78f ("PCI: pciehp: Become resilient to missed events")
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-qcm2290.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/pci/hotplug/pciehp_ctrl.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/clk/qcom/dispcc-qcm2290.c b/drivers/clk/qcom/dispcc-qcm2290.c
-index ee62aca4e5bb2..44dd5cfcc1504 100644
---- a/drivers/clk/qcom/dispcc-qcm2290.c
-+++ b/drivers/clk/qcom/dispcc-qcm2290.c
-@@ -28,6 +28,7 @@ enum {
- 	P_DISP_CC_PLL0_OUT_MAIN,
- 	P_DSI0_PHY_PLL_OUT_BYTECLK,
- 	P_DSI0_PHY_PLL_OUT_DSICLK,
-+	P_GPLL0_OUT_DIV,
- 	P_GPLL0_OUT_MAIN,
- 	P_SLEEP_CLK,
- };
-@@ -84,7 +85,7 @@ static const struct clk_parent_data disp_cc_parent_data_1[] = {
- 
- static const struct parent_map disp_cc_parent_map_2[] = {
- 	{ P_BI_TCXO_AO, 0 },
--	{ P_GPLL0_OUT_MAIN, 4 },
-+	{ P_GPLL0_OUT_DIV, 4 },
- };
- 
- static const struct clk_parent_data disp_cc_parent_data_2[] = {
-@@ -153,8 +154,8 @@ static struct clk_regmap_div disp_cc_mdss_byte0_div_clk_src = {
- 
- static const struct freq_tbl ftbl_disp_cc_mdss_ahb_clk_src[] = {
- 	F(19200000, P_BI_TCXO_AO, 1, 0, 0),
--	F(37500000, P_GPLL0_OUT_MAIN, 8, 0, 0),
--	F(75000000, P_GPLL0_OUT_MAIN, 4, 0, 0),
-+	F(37500000, P_GPLL0_OUT_DIV, 8, 0, 0),
-+	F(75000000, P_GPLL0_OUT_DIV, 4, 0, 0),
- 	{ }
- };
- 
+diff --git a/drivers/pci/hotplug/pciehp_ctrl.c b/drivers/pci/hotplug/pciehp_ctrl.c
+index 529c348084401..32baba1b7f131 100644
+--- a/drivers/pci/hotplug/pciehp_ctrl.c
++++ b/drivers/pci/hotplug/pciehp_ctrl.c
+@@ -256,6 +256,14 @@ void pciehp_handle_presence_or_link_change(struct controller *ctrl, u32 events)
+ 	present = pciehp_card_present(ctrl);
+ 	link_active = pciehp_check_link_active(ctrl);
+ 	if (present <= 0 && link_active <= 0) {
++		if (ctrl->state == BLINKINGON_STATE) {
++			ctrl->state = OFF_STATE;
++			cancel_delayed_work(&ctrl->button_work);
++			pciehp_set_indicators(ctrl, PCI_EXP_SLTCTL_PWR_IND_OFF,
++					      INDICATOR_NOOP);
++			ctrl_info(ctrl, "Slot(%s): Card not present\n",
++				  slot_name(ctrl));
++		}
+ 		mutex_unlock(&ctrl->state_lock);
+ 		return;
+ 	}
 -- 
 2.39.2
 
