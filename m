@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0191F75567D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A16F5755422
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232881AbjGPUvM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39818 "EHLO
+        id S232007AbjGPU1J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232884AbjGPUvC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:51:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C643BE1
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:01 -0700 (PDT)
+        with ESMTP id S232006AbjGPU1I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99A5D10D1
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6557660EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7576DC433C7;
-        Sun, 16 Jul 2023 20:51:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 779CA60EBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A22AC433C7;
+        Sun, 16 Jul 2023 20:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540660;
-        bh=UDFHIa//qAXE0YJ441616BDGSkFA+R0YV+9DQ3865zk=;
+        s=korg; t=1689539217;
+        bh=17Ifbts8QW9KEUGf80N5/Da3hggWorhsoIEWwn0omTA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s7sBG22C7GLIxwEAfK2OORCKiqLVpejQ/8Gpw1DshEVvrzG7kPFCJrFyP9cBjjjT6
-         ZSL1zTdx5X/WxFJpjx8bDSGferCVBVJ7N7b3qRCmmWFeEkhNxRclsHOtKpQEt4K2hV
-         igF09wfe2X1xVRapXavLcGk8tlH1y35D3zfo36i8=
+        b=vSbBS9XvVL/p9yWubylQ1s44o3RsA4UfPx8N3cVMiNS28Yr5BG69kEerFa0P1m+WJ
+         tAhtiHF+ORNYPOUjv+dZA1fV9ERBrvxIJJdwiW+gBfdmQGXZSI70IdtsoeUQ9mFGfw
+         74spjiXYESlz8R4WH2B+ZVZYV2KHP+q0zZScwGKs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yi Yingao <m202271736@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 443/591] nvmem: sunplus-ocotp: release otp->clk before return
-Date:   Sun, 16 Jul 2023 21:49:42 +0200
-Message-ID: <20230716194935.370435109@linuxfoundation.org>
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.4 730/800] wifi: cfg80211: fix regulatory disconnect for non-MLO
+Date:   Sun, 16 Jul 2023 21:49:43 +0200
+Message-ID: <20230716195006.074433484@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,59 +53,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yi Yingao <m202271736@hust.edu.cn>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 095bb8ba45f28ed15296eb5b7662e03e57d5e34e ]
+commit b22552fcaf1970360005c805d7fba4046cf2ab4a upstream.
 
-Smatch reports:
-drivers/nvmem/sunplus-ocotp.c:205 sp_ocotp_probe()
-warn: 'otp->clk' from clk_prepare() not released on lines: 196.
+The multi-link loop here broke disconnect when multi-link
+operation (MLO) isn't active for a given interface, since
+in that case valid_links is 0 (indicating no links, i.e.
+no MLO.)
 
-In the function sp_ocotp_probe(struct platform_device *pdev), otp->clk may
-not be released before return.
+Fix this by taking that into account properly and skipping
+the link only if there are valid_links in the first place.
 
-To fix this issue, using function clk_unprepare() to release otp->clk.
-
-Fixes: 8747ec2e9762 ("nvmem: Add driver for OCOTP in Sunplus SP7021")
-Signed-off-by: Yi Yingao <m202271736@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Message-ID: <20230509085237.5917-1-m202271736@hust.edu.cn>
+Cc: stable@vger.kernel.org
+Fixes: 7b0a0e3c3a88 ("wifi: cfg80211: do some rework towards MLO link APIs")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/r/20230616222844.eb073d650c75.I72739923ef80919889ea9b50de9e4ba4baa836ae@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/sunplus-ocotp.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/wireless/reg.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvmem/sunplus-ocotp.c b/drivers/nvmem/sunplus-ocotp.c
-index 52b928a7a6d58..f85350b17d672 100644
---- a/drivers/nvmem/sunplus-ocotp.c
-+++ b/drivers/nvmem/sunplus-ocotp.c
-@@ -192,9 +192,11 @@ static int sp_ocotp_probe(struct platform_device *pdev)
- 	sp_ocotp_nvmem_config.dev = dev;
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -2352,7 +2352,7 @@ static bool reg_wdev_chan_valid(struct w
  
- 	nvmem = devm_nvmem_register(dev, &sp_ocotp_nvmem_config);
--	if (IS_ERR(nvmem))
--		return dev_err_probe(&pdev->dev, PTR_ERR(nvmem),
-+	if (IS_ERR(nvmem)) {
-+		ret = dev_err_probe(&pdev->dev, PTR_ERR(nvmem),
- 						"register nvmem device fail\n");
-+		goto err;
-+	}
- 
- 	platform_set_drvdata(pdev, nvmem);
- 
-@@ -203,6 +205,9 @@ static int sp_ocotp_probe(struct platform_device *pdev)
- 		(int)OTP_WORD_SIZE, (int)QAC628_OTP_SIZE);
- 
- 	return 0;
-+err:
-+	clk_unprepare(otp->clk);
-+	return ret;
- }
- 
- static const struct of_device_id sp_ocotp_dt_ids[] = {
--- 
-2.39.2
-
+ 		if (!wdev->valid_links && link > 0)
+ 			break;
+-		if (!(wdev->valid_links & BIT(link)))
++		if (wdev->valid_links && !(wdev->valid_links & BIT(link)))
+ 			continue;
+ 		switch (iftype) {
+ 		case NL80211_IFTYPE_AP:
 
 
