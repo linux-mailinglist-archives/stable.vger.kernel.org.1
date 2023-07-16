@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B45977554A2
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1279D755262
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232222AbjGPUcc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:32:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53802 "EHLO
+        id S231293AbjGPUHT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:07:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232207AbjGPUca (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:30 -0400
+        with ESMTP id S231313AbjGPUHQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:07:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8C1CBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DCEA12E
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:07:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8848960EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C03C433C8;
-        Sun, 16 Jul 2023 20:32:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D29060EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:07:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7EAC433C8;
+        Sun, 16 Jul 2023 20:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539549;
-        bh=VqxWKmb/0zdOtq5FCmTillsvEWryJh9FiRP6aP+TNOw=;
+        s=korg; t=1689538028;
+        bh=xukQpDAT8F1awCCf6wjXZoLQ2P7/PckyQVhIC3BiM9U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KZzt/CdE9kYb5Ntvc9Z4HqKtwwCQzaY+CHGPDHUDGC0d6mWeHw2se1u0BPNEb11GJ
-         4b9rWWxnKkcaublqp9jN6Urpd2t6i/VU9eayAX5K46Dt507cutITQG2S7H+6QGILAN
-         pejEVj3EK/r/XDsZW8jA/tGbmJ3p9vRFX6IY9F9w=
+        b=so4AYIpLpzzDEXh0DfR/QODIVYfdsBNOewRitnU+z1znrTy4hfLZ00LdJC1VCnUyQ
+         ZOs90kZsU6q9ts8SEXvPZS0j8Nb3/iQ51e1+YVRRXv30mRRCM3F2O2WYLMZ8MQA1gy
+         8YFFeY50y68e+D7Ws9woZFdUQEafJcU5FSYDWz7Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chaitanya Kulkarni <kch@nvidia.com>,
-        Yi Zhang <yi.zhang@redhat.com>, Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Keith Busch <kbusch@kernel.org>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/591] nvme-core: fix memory leak in dhchap_secret_store
+Subject: [PATCH 6.4 305/800] arm64: dts: qcom: msm8953: correct WCNSS unit address
 Date:   Sun, 16 Jul 2023 21:42:38 +0200
-Message-ID: <20230716194924.361682444@linuxfoundation.org>
+Message-ID: <20230716194956.161468750@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,75 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit a836ca33c5b07d34dd5347af9f64d25651d12674 ]
+[ Upstream commit 751038676e3075a5cb816034f7d5ba6e95f4486d ]
 
-Free dhchap_secret in nvme_ctrl_dhchap_secret_store() before we return
-fix following kmemleack:-
+Match unit-address to reg entry to fix dtbs W=1 warnings:
 
-unreferenced object 0xffff8886376ea800 (size 64):
-  comm "check", pid 22048, jiffies 4344316705 (age 92.199s)
-  hex dump (first 32 bytes):
-    44 48 48 43 2d 31 3a 30 30 3a 6e 78 72 35 4b 67  DHHC-1:00:nxr5Kg
-    75 58 34 75 6f 41 78 73 4a 61 34 63 2f 68 75 4c  uX4uoAxsJa4c/huL
-  backtrace:
-    [<0000000030ce5d4b>] __kmalloc+0x4b/0x130
-    [<000000009be1cdc1>] nvme_ctrl_dhchap_secret_store+0x8f/0x160 [nvme_core]
-    [<00000000ac06c96a>] kernfs_fop_write_iter+0x12b/0x1c0
-    [<00000000437e7ced>] vfs_write+0x2ba/0x3c0
-    [<00000000f9491baf>] ksys_write+0x5f/0xe0
-    [<000000001c46513d>] do_syscall_64+0x3b/0x90
-    [<00000000ecf348fe>] entry_SYSCALL_64_after_hwframe+0x72/0xdc
-unreferenced object 0xffff8886376eaf00 (size 64):
-  comm "check", pid 22048, jiffies 4344316736 (age 92.168s)
-  hex dump (first 32 bytes):
-    44 48 48 43 2d 31 3a 30 30 3a 6e 78 72 35 4b 67  DHHC-1:00:nxr5Kg
-    75 58 34 75 6f 41 78 73 4a 61 34 63 2f 68 75 4c  uX4uoAxsJa4c/huL
-  backtrace:
-    [<0000000030ce5d4b>] __kmalloc+0x4b/0x130
-    [<000000009be1cdc1>] nvme_ctrl_dhchap_secret_store+0x8f/0x160 [nvme_core]
-    [<00000000ac06c96a>] kernfs_fop_write_iter+0x12b/0x1c0
-    [<00000000437e7ced>] vfs_write+0x2ba/0x3c0
-    [<00000000f9491baf>] ksys_write+0x5f/0xe0
-    [<000000001c46513d>] do_syscall_64+0x3b/0x90
-    [<00000000ecf348fe>] entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  Warning (simple_bus_reg): /soc@0/remoteproc@a21b000: simple-bus unit address format error, expected "a204000"
 
-Fixes: f50fff73d620 ("nvme: implement In-Band authentication")
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: b12428640ebe ("arm64: dts: MSM8953: Add wcnss nodes")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230419211856.79332-6-krzysztof.kozlowski@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8953.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index b63511f481a7f..3956164272253 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3825,14 +3825,17 @@ static ssize_t nvme_ctrl_dhchap_secret_store(struct device *dev,
- 		int ret;
+diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+index 4038e47a4610e..d1d6f80bb2e6b 100644
+--- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+@@ -1425,7 +1425,7 @@ i2c_8: i2c@7af8000 {
+ 			status = "disabled";
+ 		};
  
- 		ret = nvme_auth_generate_key(dhchap_secret, &key);
--		if (ret)
-+		if (ret) {
-+			kfree(dhchap_secret);
- 			return ret;
-+		}
- 		kfree(opts->dhchap_secret);
- 		opts->dhchap_secret = dhchap_secret;
- 		host_key = ctrl->host_key;
- 		ctrl->host_key = key;
- 		nvme_auth_free_key(host_key);
--	}
-+	} else
-+		kfree(dhchap_secret);
- 	/* Start re-authentication */
- 	dev_info(ctrl->device, "re-authenticating controller\n");
- 	queue_work(nvme_wq, &ctrl->dhchap_auth_work);
+-		wcnss: remoteproc@a21b000 {
++		wcnss: remoteproc@a204000 {
+ 			compatible = "qcom,pronto-v3-pil", "qcom,pronto";
+ 			reg = <0x0a204000 0x2000>, <0x0a202000 0x1000>, <0x0a21b000 0x3000>;
+ 			reg-names = "ccu", "dxe", "pmu";
 -- 
 2.39.2
 
