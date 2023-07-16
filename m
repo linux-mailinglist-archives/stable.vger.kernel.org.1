@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5002D75536B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3D237555A0
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:42:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231718AbjGPUSw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:18:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44216 "EHLO
+        id S232587AbjGPUmz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:42:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231714AbjGPUSw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4738BE41
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:51 -0700 (PDT)
+        with ESMTP id S232586AbjGPUmy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756D7E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D1F4160DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1A1C433C7;
-        Sun, 16 Jul 2023 20:18:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1416960EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5F6C433C9;
+        Sun, 16 Jul 2023 20:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538730;
-        bh=8Hr3iyO+/36/RjL9z8EGbDr9VxBl2y5tHy+jZxsREd0=;
+        s=korg; t=1689540172;
+        bh=UTEuWEHz7U2+y8HbfUKNCmIIGiEzeIEPM01UABI50pU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qpIMMre8VMHJJmRrnnONu+kf4h6pm8jm0E65mXdik6t5V1kmH+tel2OOZXOkSLUA8
-         lBfG4JriGgyIWSZmnmR0SgFRmFoMtDH305FYrgFpmug0nujxeEZp6uGV/Y0RxrCsUu
-         RgUFns71kf++29kLH2pJt14W8eCFurebd29EI22U=
+        b=GT+sUeXZkzNajAQb/U8FtOjOoYv5r28yXpyLJfH1HtPpeCGZj/x/0bQwGA+cvQK9C
+         u/R0mmiZ8WdjNhABcGTVtB/FW/wXQl0Sa1tnid9hrnlRFHaHoC4k4EmzC/o4xYwFi2
+         nidf3H4w2FaGE30xlGRji6Gr846Ju8aYTpo2WlxM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        patches@lists.linux.dev, Tao Zhou <tao.zhou1@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Alex Deucher <Alexander.Deucher@amd.com>,
+        Luben Tuikov <luben.tuikov@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 555/800] xhci: Improve the XHCI system resume time
+Subject: [PATCH 6.1 269/591] drm/amdgpu: Fix usage of UMC fill record in RAS
 Date:   Sun, 16 Jul 2023 21:46:48 +0200
-Message-ID: <20230716195001.982147177@linuxfoundation.org>
+Message-ID: <20230716194930.858270605@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +58,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Luben Tuikov <luben.tuikov@amd.com>
 
-[ Upstream commit 1c024241d018cf9fc17aa8d95c3fe77d671d7142 ]
+[ Upstream commit 71344a718a9fda8c551cdc4381d354f9a9907f6f ]
 
-Avoid extra 120ms delay during system resume.
+The fixed commit listed in the Fixes tag below, introduced a bug in
+amdgpu_ras.c::amdgpu_reserve_page_direct(), in that when introducing the new
+amdgpu_umc_fill_error_record() and internally in that new function the physical
+address (argument "uint64_t retired_page"--wrong name) is right-shifted by
+AMDGPU_GPU_PAGE_SHIFT. Thus, in amdgpu_reserve_page_direct() when we pass
+"address" to that new function, we should NOT right-shift it, since this
+results, erroneously, in the page address to be 0 for first
+2^(2*AMDGPU_GPU_PAGE_SHIFT) memory addresses.
 
-The xHC controller may signal wake up to 120ms before showing which usb
-device caused the wake on the xHC port registers.
+This commit fixes this bug.
 
-The xhci driver therefore checks for port activity up to 120ms during
-resume, making sure that the hub driver can see the port change, and
-won't immediately runtime suspend back due to no port activity.
-
-This is however only needed for runtime resume as system resume will
-resume all child hubs and other child usb devices anyway.
-
-Fixes: 253f588c70f6 ("xhci: Improve detection of device initiated wake signal.")
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20230428140056.1318981-3-Basavaraj.Natikar@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Tao Zhou <tao.zhou1@amd.com>
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Alex Deucher <Alexander.Deucher@amd.com>
+Fixes: 400013b268cb ("drm/amdgpu: add umc_fill_error_record to make code more simple")
+Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
+Link: https://lore.kernel.org/r/20230610113536.10621-1-luben.tuikov@amd.com
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 65d54c8a24928..b81313ffeb768 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -1117,7 +1117,7 @@ int xhci_resume(struct xhci_hcd *xhci, pm_message_t msg)
- 		 * the first wake signalling failed, give it that chance.
- 		 */
- 		pending_portevent = xhci_pending_portevent(xhci);
--		if (!pending_portevent) {
-+		if (!pending_portevent && msg.event == PM_EVENT_AUTO_RESUME) {
- 			msleep(120);
- 			pending_portevent = xhci_pending_portevent(xhci);
- 		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index a4b47e1bd111d..09fc464f5f128 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -170,8 +170,7 @@ static int amdgpu_reserve_page_direct(struct amdgpu_device *adev, uint64_t addre
+ 
+ 	memset(&err_rec, 0x0, sizeof(struct eeprom_table_record));
+ 	err_data.err_addr = &err_rec;
+-	amdgpu_umc_fill_error_record(&err_data, address,
+-			(address >> AMDGPU_GPU_PAGE_SHIFT), 0, 0);
++	amdgpu_umc_fill_error_record(&err_data, address, address, 0, 0);
+ 
+ 	if (amdgpu_bad_page_threshold != 0) {
+ 		amdgpu_ras_add_bad_pages(adev, err_data.err_addr,
 -- 
 2.39.2
 
