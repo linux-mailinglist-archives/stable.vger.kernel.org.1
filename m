@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D89D7755275
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A6CC755276
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231331AbjGPUII (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:08:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37210 "EHLO
+        id S231332AbjGPUIK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:08:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231330AbjGPUIH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A784DC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:06 -0700 (PDT)
+        with ESMTP id S231330AbjGPUIK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EA189B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44F3160E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5724EC433C8;
-        Sun, 16 Jul 2023 20:08:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 031CB60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146C5C433C7;
+        Sun, 16 Jul 2023 20:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538085;
-        bh=j+Za9LH4KLNBu+n+19lmjDMAOtzAHGisoFpXP3o7yDA=;
+        s=korg; t=1689538088;
+        bh=XAVVqNWA1cFqnzxlsghtjTHTdQEQo27SW9tKe+OTRwM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k6kxD4ieheeyekl78dsqVJccinltz+5Mx6wwsbzLE4XattgYit2Vldnp8ke0btTye
-         WJmZqBg+Zas/P6DSHkBiySPvZK1fxSfPNuH/JkzSa6N9VK7aac+rQMQRxmxQ/rDbwM
-         KqFq1H2jRd7wH769lBQkWRPTfhoo6SpSFVbpTVLs=
+        b=tfoSMukV7wYuaxpFx/OYRlv8Iqz97nNqqkMEg+1eBH2Ba/NxVKBJn7JxZtYeyrNFU
+         6RoQJZ8OCZudT9Nu9Stt1K7WD5lCemZZnh2zbV1CYzZSiv4ynZ4Bq4KFqGdwg3QC2i
+         YZnw1mM2ByNn+5WezWnFOFRlMzenmIt8gfA81N1k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Julius Werner <jwerner@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 326/800] arm64: dts: qcom: apq8096: fix fixed regulator name property
-Date:   Sun, 16 Jul 2023 21:42:59 +0200
-Message-ID: <20230716194956.643288382@linuxfoundation.org>
+Subject: [PATCH 6.4 327/800] arm64: dts: mediatek: mt8183: Add mediatek,broken-save-restore-fw to kukui
+Date:   Sun, 16 Jul 2023 21:43:00 +0200
+Message-ID: <20230716194956.678024192@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -47,57 +48,51 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit c77612a07d18d4425fd8ddd532a8a9b8e1970c53 ]
+[ Upstream commit 42127f578ebde652d1373e0233356fbd351675c4 ]
 
-Correct the typo in 'regulator-name' property.
+Firmware shipped on mt8183 Chromebooks is affected by the GICR
+save/restore issue as described by the patch ("dt-bindings:
+interrupt-controller: arm,gic-v3: Add quirk for Mediatek SoCs w/
+broken FW"). Add the quirk property.
 
-  apq8096-ifc6640.dtb: v1p05-regulator: 'regulator-name' is a required property
-  apq8096-ifc6640.dtb: v1p05-regulator: Unevaluated properties are not allowed ('reglator-name' was unexpected)
-
-Fixes: 6cbdec2d3ca6 ("arm64: dts: qcom: msm8996: Introduce IFC6640")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230507174516.264936-3-krzysztof.kozlowski@linaro.org
+Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
+Reviewed-by: Julius Werner <jwerner@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230515131353.v2.3.I525a2ed4260046d43c885ee1275e91707743df1c@changeid
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts b/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts
-index 71e0a500599c8..ed2e2f6c6775a 100644
---- a/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8096-ifc6640.dts
-@@ -26,7 +26,7 @@ chosen {
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+index 63952c1251dfd..8892b2f64a0f0 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+@@ -292,6 +292,10 @@ dsi_out: endpoint {
+ 	};
+ };
  
- 	v1p05: v1p05-regulator {
- 		compatible = "regulator-fixed";
--		reglator-name = "v1p05";
-+		regulator-name = "v1p05";
- 		regulator-always-on;
- 		regulator-boot-on;
- 
-@@ -38,7 +38,7 @@ v1p05: v1p05-regulator {
- 
- 	v12_poe: v12-poe-regulator {
- 		compatible = "regulator-fixed";
--		reglator-name = "v12_poe";
-+		regulator-name = "v12_poe";
- 		regulator-always-on;
- 		regulator-boot-on;
- 
++&gic {
++	mediatek,broken-save-restore-fw;
++};
++
+ &gpu {
+ 	mali-supply = <&mt6358_vgpu_reg>;
+ };
 -- 
 2.39.2
 
