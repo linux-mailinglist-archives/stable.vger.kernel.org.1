@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 399DE7553A6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 442FA7555E1
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:45:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231815AbjGPUVY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:21:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45596 "EHLO
+        id S232663AbjGPUpd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:45:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231819AbjGPUVX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:21:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84EF91BF
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:21:22 -0700 (PDT)
+        with ESMTP id S232650AbjGPUpc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:45:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BC1DD9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:45:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 080EC60E9D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:21:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A7FC433C7;
-        Sun, 16 Jul 2023 20:21:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE6A660EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:45:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBC9C433C8;
+        Sun, 16 Jul 2023 20:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538881;
-        bh=5yUpshApNav88vZIvKAdFXNkOTF+7eIyBAzeo0SK7Yo=;
+        s=korg; t=1689540330;
+        bh=N93S4C96SglN10KiffBmIelG5SbtRMT9HHtXfUX8yNs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iTXt2ieTneLgTDqjEBupeAZfzSiLr0NR7AocjxSFTOeD88ciYczhM0YpNvbpeUjCb
-         9p56Tk3nIbWn2xTZNbm4wKiYXVaZXl6e+4I5K2KsZHLgQRoAzQCkbz+Wg5fluF0G2B
-         3x6SUwpbOhce9BhSvYzbLpH103r+oA4n1ig2Qiak=
+        b=jeoaKO2hFJzLLnI0PZHROCHP8D3TK4B0DFQEP7KQS8IrbM+YWTQvpcy53O7o4rfI5
+         aJn91RJGQa6K+cDNs5DmMmT3cUc9SPRXh5TsUN6UTnnqtcXMh0M2YNH5V7ugv1xKBA
+         1Gmi6aHn5U995m5SEaki1fdvrFZeagvkem/lFlsE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        patches@lists.linux.dev,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 610/800] sh: Avoid using IRQ0 on SH3 and SH4
-Date:   Sun, 16 Jul 2023 21:47:43 +0200
-Message-ID: <20230716195003.277384753@linuxfoundation.org>
+Subject: [PATCH 6.1 325/591] PCI: qcom: Disable write access to read only registers for IP v2.9.0
+Date:   Sun, 16 Jul 2023 21:47:44 +0200
+Message-ID: <20230716194932.300278019@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,121 +57,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit a8ac2961148e8c720dc760f2e06627cd5c55a154 ]
+[ Upstream commit 200b8f85f2021362adcc8efb575652a2aa44c099 ]
 
-IRQ0 is no longer returned by platform_get_irq() and its ilk -- they now
-return -EINVAL instead.  However, the kernel code supporting SH3/4-based
-SoCs still maps the IRQ #s starting at 0 -- modify that code to start the
-IRQ #s from 16 instead.
+In the post init sequence of v2.9.0, write access to read only registers
+are not disabled after updating the registers. Fix it by disabling the
+access after register update.
 
-The patch should mostly affect the AP-SH4A-3A/AP-SH4AD-0A boards as they
-indeed are using IRQ0 for the SMSC911x compatible Ethernet chip.
+While at it, let's also add a newline after existing dw_pcie_dbi_ro_wr_en()
+guard function to align with rest of the driver.
 
-Fixes: ce753ad1549c ("platform: finally disallow IRQ0 in platform_get_irq() and its ilk")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/71105dbf-cdb0-72e1-f9eb-eeda8e321696@omp.ru
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230619150408.8468-4-manivannan.sadhasivam@linaro.org
+Fixes: 0cf7c2efe8ac ("PCI: qcom: Add IPQ60xx support")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/include/mach-common/mach/highlander.h | 2 +-
- arch/sh/include/mach-common/mach/r2d.h        | 2 +-
- arch/sh/include/mach-dreamcast/mach/sysasic.h | 2 +-
- arch/sh/include/mach-se/mach/se7724.h         | 2 +-
- arch/sh/kernel/cpu/sh3/entry.S                | 4 ++--
- include/linux/sh_intc.h                       | 6 +++---
- 6 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/sh/include/mach-common/mach/highlander.h b/arch/sh/include/mach-common/mach/highlander.h
-index fb44c299d0337..b12c795584225 100644
---- a/arch/sh/include/mach-common/mach/highlander.h
-+++ b/arch/sh/include/mach-common/mach/highlander.h
-@@ -176,7 +176,7 @@
- #define IVDR_CK_ON	4		/* iVDR Clock ON */
- #endif
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index 77f4dc244b3f7..49905b2a99607 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -1403,6 +1403,7 @@ static int qcom_pcie_post_init_2_9_0(struct qcom_pcie *pcie)
+ 	writel(0, pcie->parf + PARF_Q2A_FLUSH);
  
--#define HL_FPGA_IRQ_BASE	200
-+#define HL_FPGA_IRQ_BASE	(200 + 16)
- #define HL_NR_IRL		15
+ 	dw_pcie_dbi_ro_wr_en(pci);
++
+ 	writel(PCIE_CAP_SLOT_VAL, pci->dbi_base + offset + PCI_EXP_SLTCAP);
  
- #define IRQ_AX88796		(HL_FPGA_IRQ_BASE + 0)
-diff --git a/arch/sh/include/mach-common/mach/r2d.h b/arch/sh/include/mach-common/mach/r2d.h
-index 0d7e483c7d3f5..69bc1907c5637 100644
---- a/arch/sh/include/mach-common/mach/r2d.h
-+++ b/arch/sh/include/mach-common/mach/r2d.h
-@@ -47,7 +47,7 @@
+ 	val = readl(pci->dbi_base + offset + PCI_EXP_LNKCAP);
+@@ -1412,6 +1413,8 @@ static int qcom_pcie_post_init_2_9_0(struct qcom_pcie *pcie)
+ 	writel(PCI_EXP_DEVCTL2_COMP_TMOUT_DIS, pci->dbi_base + offset +
+ 			PCI_EXP_DEVCTL2);
  
- #define IRLCNTR1	(PA_BCR + 0)	/* Interrupt Control Register1 */
++	dw_pcie_dbi_ro_wr_dis(pci);
++
+ 	for (i = 0; i < 256; i++)
+ 		writel(0, pcie->parf + PARF_BDF_TO_SID_TABLE_N + (4 * i));
  
--#define R2D_FPGA_IRQ_BASE	100
-+#define R2D_FPGA_IRQ_BASE	(100 + 16)
- 
- #define IRQ_VOYAGER		(R2D_FPGA_IRQ_BASE + 0)
- #define IRQ_EXT			(R2D_FPGA_IRQ_BASE + 1)
-diff --git a/arch/sh/include/mach-dreamcast/mach/sysasic.h b/arch/sh/include/mach-dreamcast/mach/sysasic.h
-index ed69ce7f20301..3b27be9a527ea 100644
---- a/arch/sh/include/mach-dreamcast/mach/sysasic.h
-+++ b/arch/sh/include/mach-dreamcast/mach/sysasic.h
-@@ -22,7 +22,7 @@
-    takes.
- */
- 
--#define HW_EVENT_IRQ_BASE  48
-+#define HW_EVENT_IRQ_BASE  (48 + 16)
- 
- /* IRQ 13 */
- #define HW_EVENT_VSYNC     (HW_EVENT_IRQ_BASE +  5) /* VSync */
-diff --git a/arch/sh/include/mach-se/mach/se7724.h b/arch/sh/include/mach-se/mach/se7724.h
-index 1fe28820dfa95..ea6c46633b337 100644
---- a/arch/sh/include/mach-se/mach/se7724.h
-+++ b/arch/sh/include/mach-se/mach/se7724.h
-@@ -37,7 +37,7 @@
- #define IRQ2_IRQ        evt2irq(0x640)
- 
- /* Bits in IRQ012 registers */
--#define SE7724_FPGA_IRQ_BASE	220
-+#define SE7724_FPGA_IRQ_BASE	(220 + 16)
- 
- /* IRQ0 */
- #define IRQ0_BASE	SE7724_FPGA_IRQ_BASE
-diff --git a/arch/sh/kernel/cpu/sh3/entry.S b/arch/sh/kernel/cpu/sh3/entry.S
-index e48b3dd996f58..b1f5b3c58a018 100644
---- a/arch/sh/kernel/cpu/sh3/entry.S
-+++ b/arch/sh/kernel/cpu/sh3/entry.S
-@@ -470,9 +470,9 @@ ENTRY(handle_interrupt)
- 	mov	r4, r0		! save vector->jmp table offset for later
- 
- 	shlr2	r4		! vector to IRQ# conversion
--	add	#-0x10, r4
- 
--	cmp/pz	r4		! is it a valid IRQ?
-+	mov	#0x10, r5
-+	cmp/hs	r5, r4		! is it a valid IRQ?
- 	bt	10f
- 
- 	/*
-diff --git a/include/linux/sh_intc.h b/include/linux/sh_intc.h
-index 37ad81058d6ae..27ae79191bdc3 100644
---- a/include/linux/sh_intc.h
-+++ b/include/linux/sh_intc.h
-@@ -13,9 +13,9 @@
- /*
-  * Convert back and forth between INTEVT and IRQ values.
-  */
--#ifdef CONFIG_CPU_HAS_INTEVT
--#define evt2irq(evt)		(((evt) >> 5) - 16)
--#define irq2evt(irq)		(((irq) + 16) << 5)
-+#ifdef CONFIG_CPU_HAS_INTEVT	/* Avoid IRQ0 (invalid for platform devices) */
-+#define evt2irq(evt)		((evt) >> 5)
-+#define irq2evt(irq)		((irq) << 5)
- #else
- #define evt2irq(evt)		(evt)
- #define irq2evt(irq)		(irq)
 -- 
 2.39.2
 
