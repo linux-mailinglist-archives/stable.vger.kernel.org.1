@@ -2,98 +2,220 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4BDC7554B0
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A4807552A1
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232272AbjGPUdM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54270 "EHLO
+        id S231402AbjGPUKG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:10:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232274AbjGPUdK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5410CD2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:09 -0700 (PDT)
+        with ESMTP id S231417AbjGPUKE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B4E2199
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E1D6F60E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10C7C433C8;
-        Sun, 16 Jul 2023 20:33:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3512E60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:09:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438B7C433C8;
+        Sun, 16 Jul 2023 20:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539588;
-        bh=CB6BsmXIdFZ8HNKNBv0Zv9kANptIDDpS437LKNLLTOg=;
+        s=korg; t=1689538197;
+        bh=0z5LVC64C3WRwKBXQHV3cvK/+o9LRQxAWrPVkFcbe5A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b1BSxfK9VVmJ3SShCup4UC//nYcK/bDW3okTkz1pheAIbXwTkORsJS3JChucCJOg7
-         2BJFreMyHvtx/44hUPk5dL2r5HwJdnZuE9pqQ4SviAmrOnMO9GXXb7d4qCBczlHK2T
-         UOJig3z/XegVqRHNhO3WxFoPyG/w53hIroLNII7E=
+        b=DnWCga29zj+uULwrHFyaSp19x6epHy9Y7s8hW6Z0moygCpi4fPBn7r5n2MNDI/m3f
+         UrjkvShPOP2DP8McI+/Il/K/4M1lOk5rxjsMuyCLseyQYohdyGaGaQ7rL8tg7uu3L5
+         vIDvLDsTrqXpHzPFuNixii/HOb7WYI0Ua1E0nvdE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Juergen Gross <jgross@suse.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        patches@lists.linux.dev, Matt Roper <matthew.d.roper@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Lucas De Marchi <lucas.demarchi@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/591] x86/mm: Fix __swp_entry_to_pte() for Xen PV guests
-Date:   Sun, 16 Jul 2023 21:43:20 +0200
-Message-ID: <20230716194925.458842044@linuxfoundation.org>
+Subject: [PATCH 6.4 348/800] drm/i915/display: Move display device info to header under display/
+Date:   Sun, 16 Jul 2023 21:43:21 +0200
+Message-ID: <20230716194957.162427895@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Juergen Gross <jgross@suse.com>
+From: Matt Roper <matthew.d.roper@intel.com>
 
-[ Upstream commit 0f88130e8a6fd185b0aeb5d8e286083735f2585a ]
+[ Upstream commit 05aa8e0135094ae3d1e6837b5457a740266d7cfc ]
 
-Normally __swp_entry_to_pte() is never called with a value translating
-to a valid PTE. The only known exception is pte_swap_tests(), resulting
-in a WARN splat in Xen PV guests, as __pte_to_swp_entry() did
-translate the PFN of the valid PTE to a guest local PFN, while
-__swp_entry_to_pte() doesn't do the opposite translation.
+Moving display-specific substructure definitions will help keep display
+more self-contained and make it easier to re-use in other drivers (i.e.,
+Xe) in the future.
 
-Fix that by using __pte() in __swp_entry_to_pte() instead of open
-coding the native variant of it.
-
-For correctness do the similar conversion for __swp_entry_to_pmd().
-
-Fixes: 05289402d717 ("mm/debug_vm_pgtable: add tests validating arch helpers for core MM features")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230306123259.12461-1-jgross@suse.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230523195609.73627-2-matthew.d.roper@intel.com
+Stable-dep-of: 19db2062094c ("drm/i915: No 10bit gamma on desktop gen3 parts")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/pgtable_64.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../drm/i915/display/intel_display_device.h   | 60 +++++++++++++++++++
+ drivers/gpu/drm/i915/intel_device_info.h      | 49 +--------------
+ 2 files changed, 62 insertions(+), 47 deletions(-)
+ create mode 100644 drivers/gpu/drm/i915/display/intel_display_device.h
 
-diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-index e479491da8d51..07cd53eeec770 100644
---- a/arch/x86/include/asm/pgtable_64.h
-+++ b/arch/x86/include/asm/pgtable_64.h
-@@ -237,8 +237,8 @@ static inline void native_pgd_clear(pgd_t *pgd)
+diff --git a/drivers/gpu/drm/i915/display/intel_display_device.h b/drivers/gpu/drm/i915/display/intel_display_device.h
+new file mode 100644
+index 0000000000000..c689d582dbf13
+--- /dev/null
++++ b/drivers/gpu/drm/i915/display/intel_display_device.h
+@@ -0,0 +1,60 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#ifndef __INTEL_DISPLAY_DEVICE_H__
++#define __INTEL_DISPLAY_DEVICE_H__
++
++#include <linux/types.h>
++
++#include "display/intel_display_limits.h"
++
++#define DEV_INFO_DISPLAY_FOR_EACH_FLAG(func) \
++	/* Keep in alphabetical order */ \
++	func(cursor_needs_physical); \
++	func(has_cdclk_crawl); \
++	func(has_cdclk_squash); \
++	func(has_ddi); \
++	func(has_dp_mst); \
++	func(has_dsb); \
++	func(has_fpga_dbg); \
++	func(has_gmch); \
++	func(has_hotplug); \
++	func(has_hti); \
++	func(has_ipc); \
++	func(has_overlay); \
++	func(has_psr); \
++	func(has_psr_hw_tracking); \
++	func(overlay_needs_physical); \
++	func(supports_tv);
++
++struct intel_display_device_info {
++	u8 abox_mask;
++
++	struct {
++		u16 size; /* in blocks */
++		u8 slice_mask;
++	} dbuf;
++
++#define DEFINE_FLAG(name) u8 name:1
++	DEV_INFO_DISPLAY_FOR_EACH_FLAG(DEFINE_FLAG);
++#undef DEFINE_FLAG
++
++	/* Global register offset for the display engine */
++	u32 mmio_offset;
++
++	/* Register offsets for the various display pipes and transcoders */
++	u32 pipe_offsets[I915_MAX_TRANSCODERS];
++	u32 trans_offsets[I915_MAX_TRANSCODERS];
++	u32 cursor_offsets[I915_MAX_PIPES];
++
++	struct {
++		u32 degamma_lut_size;
++		u32 gamma_lut_size;
++		u32 degamma_lut_tests;
++		u32 gamma_lut_tests;
++	} color;
++};
++
++#endif
+diff --git a/drivers/gpu/drm/i915/intel_device_info.h b/drivers/gpu/drm/i915/intel_device_info.h
+index f032f2500f505..c14bc3f5d0fa1 100644
+--- a/drivers/gpu/drm/i915/intel_device_info.h
++++ b/drivers/gpu/drm/i915/intel_device_info.h
+@@ -29,7 +29,7 @@
  
- #define __pte_to_swp_entry(pte)		((swp_entry_t) { pte_val((pte)) })
- #define __pmd_to_swp_entry(pmd)		((swp_entry_t) { pmd_val((pmd)) })
--#define __swp_entry_to_pte(x)		((pte_t) { .pte = (x).val })
--#define __swp_entry_to_pmd(x)		((pmd_t) { .pmd = (x).val })
-+#define __swp_entry_to_pte(x)		(__pte((x).val))
-+#define __swp_entry_to_pmd(x)		(__pmd((x).val))
+ #include "intel_step.h"
  
- extern int kern_addr_valid(unsigned long addr);
- extern void cleanup_highmap(void);
+-#include "display/intel_display_limits.h"
++#include "display/intel_display_device.h"
+ 
+ #include "gt/intel_engine_types.h"
+ #include "gt/intel_context_types.h"
+@@ -180,25 +180,6 @@ enum intel_ppgtt_type {
+ 	func(unfenced_needs_alignment); \
+ 	func(hws_needs_physical);
+ 
+-#define DEV_INFO_DISPLAY_FOR_EACH_FLAG(func) \
+-	/* Keep in alphabetical order */ \
+-	func(cursor_needs_physical); \
+-	func(has_cdclk_crawl); \
+-	func(has_cdclk_squash); \
+-	func(has_ddi); \
+-	func(has_dp_mst); \
+-	func(has_dsb); \
+-	func(has_fpga_dbg); \
+-	func(has_gmch); \
+-	func(has_hotplug); \
+-	func(has_hti); \
+-	func(has_ipc); \
+-	func(has_overlay); \
+-	func(has_psr); \
+-	func(has_psr_hw_tracking); \
+-	func(overlay_needs_physical); \
+-	func(supports_tv);
+-
+ struct intel_ip_version {
+ 	u8 ver;
+ 	u8 rel;
+@@ -276,33 +257,7 @@ struct intel_device_info {
+ 	DEV_INFO_FOR_EACH_FLAG(DEFINE_FLAG);
+ #undef DEFINE_FLAG
+ 
+-	struct {
+-		u8 abox_mask;
+-
+-		struct {
+-			u16 size; /* in blocks */
+-			u8 slice_mask;
+-		} dbuf;
+-
+-#define DEFINE_FLAG(name) u8 name:1
+-		DEV_INFO_DISPLAY_FOR_EACH_FLAG(DEFINE_FLAG);
+-#undef DEFINE_FLAG
+-
+-		/* Global register offset for the display engine */
+-		u32 mmio_offset;
+-
+-		/* Register offsets for the various display pipes and transcoders */
+-		u32 pipe_offsets[I915_MAX_TRANSCODERS];
+-		u32 trans_offsets[I915_MAX_TRANSCODERS];
+-		u32 cursor_offsets[I915_MAX_PIPES];
+-
+-		struct {
+-			u32 degamma_lut_size;
+-			u32 gamma_lut_size;
+-			u32 degamma_lut_tests;
+-			u32 gamma_lut_tests;
+-		} color;
+-	} display;
++	struct intel_display_device_info display;
+ 
+ 	/*
+ 	 * Initial runtime info. Do not access outside of i915_driver_create().
 -- 
 2.39.2
 
