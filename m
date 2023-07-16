@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F1E755729
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DA72755705
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:56:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233096AbjGPU6A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:58:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44434 "EHLO
+        id S233062AbjGPU42 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:56:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233114AbjGPU5q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:57:46 -0400
+        with ESMTP id S233058AbjGPU41 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:56:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B0A1113
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:57:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B658E58
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:56:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD66C60E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:57:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FE8C433C7;
-        Sun, 16 Jul 2023 20:57:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6636360E9E
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:56:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6C0C433C7;
+        Sun, 16 Jul 2023 20:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689541064;
-        bh=OfCf5GkWf+JZp4yOUdrwytwyUS/PMQanFcRKs1UF1aM=;
+        s=korg; t=1689540982;
+        bh=EI6wO8giUQQhQh4W06TpXwyA+1EUB0MmphoebsFXEns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WelSPIG5CzM8UfaxGbTZDsN2yZQtlG+fusBpOCSBwPVJJeZJ8SrGNINuWC+arv+cf
-         INecXqGZqE7G7oEJyFZbewiCgz/8H1a9X/Vw1w8w+RaglWAdWkfvgsFfk3SEUs4/QJ
-         fFb201/ncT+WsQEuV3KCFdVT1Ul9R/WqdPe7tOIU=
+        b=iWxxUq/3O9Cto5BQq1onBwnGNsCy8QHaCkaPO8xIvFGa0iAoL8Ih4DB3aKkjwQuBi
+         ldDjv7HNt0QRdwaTcJco9NwH4YvzkX9lz3iAjCz8wNXpVOSQpJ4nbZ1bjoAuNidhps
+         VRsj3SHf8gkoVtL+/77vl1Ko3CTdj2rddpZ8x1CU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
         Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 549/591] fs: Establish locking order for unrelated directories
-Date:   Sun, 16 Jul 2023 21:51:28 +0200
-Message-ID: <20230716194938.062349641@linuxfoundation.org>
+Subject: [PATCH 6.1 550/591] fs: Lock moved directories
+Date:   Sun, 16 Jul 2023 21:51:29 +0200
+Message-ID: <20230716194938.086888916@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -56,102 +56,124 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Jan Kara <jack@suse.cz>
 
-commit f23ce757185319886ca80c4864ce5f81ac6cc9e9 upstream.
+commit 28eceeda130f5058074dd007d9c59d2e8bc5af2e upstream.
 
-Currently the locking order of inode locks for directories that are not
-in ancestor relationship is not defined because all operations that
-needed to lock two directories like this were serialized by
-sb->s_vfs_rename_mutex. However some filesystems need to lock two
-subdirectories for RENAME_EXCHANGE operations and for this we need the
-locking order established even for two tree-unrelated directories.
-Provide a helper function lock_two_inodes() that establishes lock
-ordering for any two inodes and use it in lock_two_directories().
+When a directory is moved to a different directory, some filesystems
+(udf, ext4, ocfs2, f2fs, and likely gfs2, reiserfs, and others) need to
+update their pointer to the parent and this must not race with other
+operations on the directory. Lock the directories when they are moved.
+Although not all filesystems need this locking, we perform it in
+vfs_rename() because getting the lock ordering right is really difficult
+and we don't want to expose these locking details to filesystems.
 
 CC: stable@vger.kernel.org
 Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230601105830.13168-4-jack@suse.cz>
+Message-Id: <20230601105830.13168-5-jack@suse.cz>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/inode.c    |   42 ++++++++++++++++++++++++++++++++++++++++++
- fs/internal.h |    2 ++
- fs/namei.c    |    4 ++--
- 3 files changed, 46 insertions(+), 2 deletions(-)
+ Documentation/filesystems/directory-locking.rst |   26 ++++++++++++------------
+ fs/namei.c                                      |   22 ++++++++++++--------
+ 2 files changed, 28 insertions(+), 20 deletions(-)
 
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -1104,6 +1104,48 @@ void discard_new_inode(struct inode *ino
- EXPORT_SYMBOL(discard_new_inode);
+--- a/Documentation/filesystems/directory-locking.rst
++++ b/Documentation/filesystems/directory-locking.rst
+@@ -22,12 +22,11 @@ exclusive.
+ 3) object removal.  Locking rules: caller locks parent, finds victim,
+ locks victim and calls the method.  Locks are exclusive.
  
- /**
-+ * lock_two_inodes - lock two inodes (may be regular files but also dirs)
-+ *
-+ * Lock any non-NULL argument. The caller must make sure that if he is passing
-+ * in two directories, one is not ancestor of the other.  Zero, one or two
-+ * objects may be locked by this function.
-+ *
-+ * @inode1: first inode to lock
-+ * @inode2: second inode to lock
-+ * @subclass1: inode lock subclass for the first lock obtained
-+ * @subclass2: inode lock subclass for the second lock obtained
-+ */
-+void lock_two_inodes(struct inode *inode1, struct inode *inode2,
-+		     unsigned subclass1, unsigned subclass2)
-+{
-+	if (!inode1 || !inode2) {
-+		/*
-+		 * Make sure @subclass1 will be used for the acquired lock.
-+		 * This is not strictly necessary (no current caller cares) but
-+		 * let's keep things consistent.
-+		 */
-+		if (!inode1)
-+			swap(inode1, inode2);
-+		goto lock;
-+	}
-+
-+	/*
-+	 * If one object is directory and the other is not, we must make sure
-+	 * to lock directory first as the other object may be its child.
-+	 */
-+	if (S_ISDIR(inode2->i_mode) == S_ISDIR(inode1->i_mode)) {
-+		if (inode1 > inode2)
-+			swap(inode1, inode2);
-+	} else if (!S_ISDIR(inode1->i_mode))
-+		swap(inode1, inode2);
-+lock:
-+	if (inode1)
-+		inode_lock_nested(inode1, subclass1);
-+	if (inode2 && inode2 != inode1)
-+		inode_lock_nested(inode2, subclass2);
-+}
-+
-+/**
-  * lock_two_nondirectories - take two i_mutexes on non-directory objects
-  *
-  * Lock any non-NULL argument that is not a directory.
---- a/fs/internal.h
-+++ b/fs/internal.h
-@@ -153,6 +153,8 @@ extern long prune_icache_sb(struct super
- int dentry_needs_remove_privs(struct user_namespace *, struct dentry *dentry);
- bool in_group_or_capable(struct user_namespace *mnt_userns,
- 			 const struct inode *inode, vfsgid_t vfsgid);
-+void lock_two_inodes(struct inode *inode1, struct inode *inode2,
-+		     unsigned subclass1, unsigned subclass2);
+-4) rename() that is _not_ cross-directory.  Locking rules: caller locks
+-the parent and finds source and target.  In case of exchange (with
+-RENAME_EXCHANGE in flags argument) lock both.  In any case,
+-if the target already exists, lock it.  If the source is a non-directory,
+-lock it.  If we need to lock both, lock them in inode pointer order.
+-Then call the method.  All locks are exclusive.
++4) rename() that is _not_ cross-directory.  Locking rules: caller locks the
++parent and finds source and target.  We lock both (provided they exist).  If we
++need to lock two inodes of different type (dir vs non-dir), we lock directory
++first.  If we need to lock two inodes of the same type, lock them in inode
++pointer order.  Then call the method.  All locks are exclusive.
+ NB: we might get away with locking the source (and target in exchange
+ case) shared.
  
- /*
-  * fs-writeback.c
+@@ -44,15 +43,17 @@ All locks are exclusive.
+ rules:
+ 
+ 	* lock the filesystem
+-	* lock parents in "ancestors first" order.
++	* lock parents in "ancestors first" order. If one is not ancestor of
++	  the other, lock them in inode pointer order.
+ 	* find source and target.
+ 	* if old parent is equal to or is a descendent of target
+ 	  fail with -ENOTEMPTY
+ 	* if new parent is equal to or is a descendent of source
+ 	  fail with -ELOOP
+-	* If it's an exchange, lock both the source and the target.
+-	* If the target exists, lock it.  If the source is a non-directory,
+-	  lock it.  If we need to lock both, do so in inode pointer order.
++	* Lock both the source and the target provided they exist. If we
++	  need to lock two inodes of different type (dir vs non-dir), we lock
++	  the directory first. If we need to lock two inodes of the same type,
++	  lock them in inode pointer order.
+ 	* call the method.
+ 
+ All ->i_rwsem are taken exclusive.  Again, we might get away with locking
+@@ -66,8 +67,9 @@ If no directory is its own ancestor, the
+ 
+ Proof:
+ 
+-	First of all, at any moment we have a partial ordering of the
+-	objects - A < B iff A is an ancestor of B.
++	First of all, at any moment we have a linear ordering of the
++	objects - A < B iff (A is an ancestor of B) or (B is not an ancestor
++        of A and ptr(A) < ptr(B)).
+ 
+ 	That ordering can change.  However, the following is true:
+ 
 --- a/fs/namei.c
 +++ b/fs/namei.c
-@@ -3007,8 +3007,8 @@ struct dentry *lock_rename(struct dentry
- 		return p;
- 	}
+@@ -4661,7 +4661,7 @@ SYSCALL_DEFINE2(link, const char __user
+  *	   sb->s_vfs_rename_mutex. We might be more accurate, but that's another
+  *	   story.
+  *	c) we have to lock _four_ objects - parents and victim (if it exists),
+- *	   and source (if it is not a directory).
++ *	   and source.
+  *	   And that - after we got ->i_mutex on parents (until then we don't know
+  *	   whether the target exists).  Solution: try to be smart with locking
+  *	   order for inodes.  We rely on the fact that tree topology may change
+@@ -4745,10 +4745,16 @@ int vfs_rename(struct renamedata *rd)
  
--	inode_lock_nested(p1->d_inode, I_MUTEX_PARENT);
--	inode_lock_nested(p2->d_inode, I_MUTEX_PARENT2);
-+	lock_two_inodes(p1->d_inode, p2->d_inode,
-+			I_MUTEX_PARENT, I_MUTEX_PARENT2);
- 	return NULL;
- }
- EXPORT_SYMBOL(lock_rename);
+ 	take_dentry_name_snapshot(&old_name, old_dentry);
+ 	dget(new_dentry);
+-	if (!is_dir || (flags & RENAME_EXCHANGE))
+-		lock_two_nondirectories(source, target);
+-	else if (target)
+-		inode_lock(target);
++	/*
++	 * Lock all moved children. Moved directories may need to change parent
++	 * pointer so they need the lock to prevent against concurrent
++	 * directory changes moving parent pointer. For regular files we've
++	 * historically always done this. The lockdep locking subclasses are
++	 * somewhat arbitrary but RENAME_EXCHANGE in particular can swap
++	 * regular files and directories so it's difficult to tell which
++	 * subclasses to use.
++	 */
++	lock_two_inodes(source, target, I_MUTEX_NORMAL, I_MUTEX_NONDIR2);
+ 
+ 	error = -EPERM;
+ 	if (IS_SWAPFILE(source) || (target && IS_SWAPFILE(target)))
+@@ -4796,9 +4802,9 @@ int vfs_rename(struct renamedata *rd)
+ 			d_exchange(old_dentry, new_dentry);
+ 	}
+ out:
+-	if (!is_dir || (flags & RENAME_EXCHANGE))
+-		unlock_two_nondirectories(source, target);
+-	else if (target)
++	if (source)
++		inode_unlock(source);
++	if (target)
+ 		inode_unlock(target);
+ 	dput(new_dentry);
+ 	if (!error) {
 
 
