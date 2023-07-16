@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C1DF75556A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3772C755336
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232507AbjGPUkq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:40:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60094 "EHLO
+        id S231664AbjGPUQr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232525AbjGPUko (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:44 -0400
+        with ESMTP id S231675AbjGPUQn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:16:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67764E71
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 949641BE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:16:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4E0860EC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FC2C433C7;
-        Sun, 16 Jul 2023 20:40:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DCE9C60EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:16:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4C7C433C8;
+        Sun, 16 Jul 2023 20:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540037;
-        bh=tDEY2Jg+E3JWJHtY7yGVeW6buAETziqXevjbXQJTiX4=;
+        s=korg; t=1689538593;
+        bh=0Wb3YN3LSSc+Q9OQiUzx0KyYdz06qQFnu6448qEC0cc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1iwJpii0NBkUTSyIWanrVkyiPaID7B0N4uR7UpG/6fHaK3q/zS6rCwTvaj6PVMzG/
-         U8qJ6f7vrsG17nl5Q4UJdtn072V+4yR0M8SyuYOZLfX3KcMbwQmRSj2GRXHWfLCC5g
-         SOymm0UMniFH69ESBQ/bWlim7UrYCDHbNmd4fvoA=
+        b=qmR0ScXelJpe7kP1JA+YyeW+jwRqpls9aYXh38X0SUCy8APUPKjOfFDaahICNExtA
+         iz5okkz1213xN3YY+vgTV5JjWmqslI0oO1ZWkOkTCkAnczxuS0/HeRsCJX/VXK2sRe
+         fWk/vcsuVX+viN5qNmYqjqSHItTnAM4A1KdFpo/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Shiraz Saleem <shiraz.saleem@intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Pierre-Cl=C3=A9ment=20Tosi?= <ptosi@google.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 220/591] RDMA/irdma: avoid fortify-string warning in irdma_clr_wqes
-Date:   Sun, 16 Jul 2023 21:45:59 +0200
-Message-ID: <20230716194929.562766840@linuxfoundation.org>
+Subject: [PATCH 6.4 507/800] scripts/mksysmap: Fix badly escaped $
+Date:   Sun, 16 Jul 2023 21:46:00 +0200
+Message-ID: <20230716195000.869222265@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,62 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Pierre-Clément Tosi <ptosi@google.com>
 
-[ Upstream commit b002760f877c0d91ecd3c78565b52f4bbac379dd ]
+[ Upstream commit ec336aa83162fe0f3d554baed2d4e2589b69ec6e ]
 
-Commit df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3") triggers a
-warning for fortified memset():
+The backslash characters escaping '$' in the command to sed (intended to
+prevent it from interpreting '$' as "end-of-line") are currently being
+consumed by the Shell (where they mean that sh should not evaluate what
+follows '$' as a variable name). This means that
 
-In function 'fortify_memset_chk',
-    inlined from 'irdma_clr_wqes' at drivers/infiniband/hw/irdma/uk.c:103:4:
-include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  493 |                         __write_overflow_field(p_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    sed -e "/ \$/d"
 
-The problem here isthat the inner array only has four 8-byte elements, so
-clearing 4096 bytes overflows that. As this structure is part of an outer
-array, change the code to pass a pointer to the irdma_qp_quanta instead,
-and change the size argument for readability, matching the comment above
-it.
+executes the script
 
-Fixes: 551c46edc769 ("RDMA/irdma: Add user/kernel shared libraries")
-Link: https://lore.kernel.org/r/20230523111859.2197825-1-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+    / $/d
+
+instead of the intended
+
+    / \$/d
+
+So escape twice in mksysmap any '$' that actually needs to reach sed
+escaped so that the backslash survives the Shell.
+
+Fixes: c4802044a0a7 ("scripts/mksysmap: use sed with in-line comments")
+Fixes: 320e7c9d4494 ("scripts/kallsyms: move compiler-generated symbol patterns to mksysmap")
+Signed-off-by: Pierre-Clément Tosi <ptosi@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/uk.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ scripts/mksysmap | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/uk.c b/drivers/infiniband/hw/irdma/uk.c
-index 16183e894da77..dd428d915c175 100644
---- a/drivers/infiniband/hw/irdma/uk.c
-+++ b/drivers/infiniband/hw/irdma/uk.c
-@@ -93,16 +93,18 @@ static int irdma_nop_1(struct irdma_qp_uk *qp)
-  */
- void irdma_clr_wqes(struct irdma_qp_uk *qp, u32 qp_wqe_idx)
- {
--	__le64 *wqe;
-+	struct irdma_qp_quanta *sq;
- 	u32 wqe_idx;
+diff --git a/scripts/mksysmap b/scripts/mksysmap
+index cb3b1fff3eee8..ec33385261022 100755
+--- a/scripts/mksysmap
++++ b/scripts/mksysmap
+@@ -32,7 +32,7 @@ ${NM} -n ${1} | sed >${2} -e "
+ #  (do not forget a space before each pattern)
  
- 	if (!(qp_wqe_idx & 0x7F)) {
- 		wqe_idx = (qp_wqe_idx + 128) % qp->sq_ring.size;
--		wqe = qp->sq_base[wqe_idx].elem;
-+		sq = qp->sq_base + wqe_idx;
- 		if (wqe_idx)
--			memset(wqe, qp->swqe_polarity ? 0 : 0xFF, 0x1000);
-+			memset(sq, qp->swqe_polarity ? 0 : 0xFF,
-+			       128 * sizeof(*sq));
- 		else
--			memset(wqe, qp->swqe_polarity ? 0xFF : 0, 0x1000);
-+			memset(sq, qp->swqe_polarity ? 0xFF : 0,
-+			       128 * sizeof(*sq));
- 	}
- }
+ # local symbols for ARM, MIPS, etc.
+-/ \$/d
++/ \\$/d
  
+ # local labels, .LBB, .Ltmpxxx, .L__unnamed_xx, .LASANPC, etc.
+ / \.L/d
+@@ -41,7 +41,7 @@ ${NM} -n ${1} | sed >${2} -e "
+ / __efistub_/d
+ 
+ # arm64 local symbols in non-VHE KVM namespace
+-/ __kvm_nvhe_\$/d
++/ __kvm_nvhe_\\$/d
+ / __kvm_nvhe_\.L/d
+ 
+ # arm64 lld
 -- 
 2.39.2
 
