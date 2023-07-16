@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCEE8754E3B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B79A7754E3C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229379AbjGPKPX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 06:15:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38134 "EHLO
+        id S229462AbjGPKPc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 06:15:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjGPKPW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:15:22 -0400
+        with ESMTP id S229450AbjGPKPa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:15:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F6EE47
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:15:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33489E47
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:15:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46F2960BDC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:15:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47686C433C8;
-        Sun, 16 Jul 2023 10:15:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C427760C7D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:15:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD67CC433C8;
+        Sun, 16 Jul 2023 10:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689502519;
-        bh=ea1OZYqlv+3Lr23ufumASGJsf4TjkxWGlPhl8tOI3MU=;
+        s=korg; t=1689502528;
+        bh=SNUZRkdXi7kpOmcZMuT5+Et5fo4o4p1DKluKdq4PUOs=;
         h=Subject:To:Cc:From:Date:From;
-        b=EeXO2sWrJzY1ho4oDgQQfJTWXa2k4p6ZH9whCvoS95xYthmK/OuBSybqq3H+Dmoa6
-         Q2ubzYCxtQcM3KxcJSghxk4jIK4a50u+3a9zSmOUupt4rt7ElH+xoampVAkVXH7Sy8
-         PjLxRJXLO2BSFO4JvVhLZzqXbmULn49j/kd/GYPM=
-Subject: FAILED: patch "[PATCH] btrfs: fix dirty_metadata_bytes for redirtied buffers" failed to apply to 6.1-stable tree
+        b=k9zaxFSXQ9XLqURcyhK7+wruLYOHzOc1NVX6l2Q9+wqydjiXHz41Ck9p2vJlNr3J2
+         DeQRvVpfOQhjd8NmIAZaLkwr3FE29SLTHF07GUkr7AilsT6Z1lDiWm8Er7EVgynmMT
+         eSHL1eFpC+A2ei5qkdDE78PSHCtqdDnIfE508rBU=
+Subject: FAILED: patch "[PATCH] btrfs: fix dirty_metadata_bytes for redirtied buffers" failed to apply to 5.15-stable tree
 To:     hch@lst.de, dsterba@suse.com, naohiro.aota@wdc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 12:15:16 +0200
-Message-ID: <2023071616-exact-egotistic-c92e@gregkh>
+Date:   Sun, 16 Jul 2023 12:15:17 +0200
+Message-ID: <2023071617-same-snowbird-770b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x f18cc97845aa4ae0e795c088c979fe1642b3b8e5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071616-exact-egotistic-c92e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071617-same-snowbird-770b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
