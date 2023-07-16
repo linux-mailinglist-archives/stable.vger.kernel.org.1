@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05DB0755499
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA624755272
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232204AbjGPUcN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:32:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53056 "EHLO
+        id S231328AbjGPUIA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:08:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232221AbjGPUcL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:11 -0400
+        with ESMTP id S231343AbjGPUH7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:07:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A920E4F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 536D29B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:07:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4AF260EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FCCC433C7;
-        Sun, 16 Jul 2023 20:32:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E6FA560E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:07:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065E8C433C7;
+        Sun, 16 Jul 2023 20:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539523;
-        bh=8eZhiBiJ6y/XU/Pj/aKVLuqs6c3hzJjRGaIQ8ZBlusU=;
+        s=korg; t=1689538077;
+        bh=hEd9Dl1BnV2HT2houBCfENnqi5F1sjUS3TpawDAVmOw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R4jgFBHjCD7VAbcpAyvsVdOI0+z9uo1hlKvF3WxwTdV87BJ/uIqDXZc3CZjlywzGB
-         S3GhO5mqbQ2NylMBdftWAkZv0aRCQsnjWbQ2wSRYy7hK/K8Pjv27gHezgPDW24QUXI
-         CH8zo9f/hBcfNbPonPSDFNg6h8J8dLgTnMjlZcUQ=
+        b=EQAKtoaQFlLXfOWDh7IfZv+Fp+o4kEgkAR3WSr3PeflrxW8CgL54b/VoV8IiFU+HS
+         pLoEs115RUxNu2zGhovAu9ivVTxk8pw9/mXodgJSOlsoBdTcHoA2e2kcrQXW9JgcMz
+         4x2GmUNBSaFZ5nOdyTgpdeF539WPmsJqH5Qnh7dw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/591] erofs: fix compact 4B support for 16k block size
+        patches@lists.linux.dev,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 323/800] ARM: ep93xx: fix missing-prototype warnings
 Date:   Sun, 16 Jul 2023 21:42:56 +0200
-Message-ID: <20230716194924.840233078@linuxfoundation.org>
+Message-ID: <20230716194956.573562036@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 001b8ccd0650727e54ec16ef72bf1b8eeab7168e ]
+[ Upstream commit 419013740ea1e4343d8ade535d999f59fa28e460 ]
 
-In compact 4B, two adjacent lclusters are packed together as a unit to
-form on-disk indexes for effective random access, as below:
+ep93xx_clocksource_read() is only called from the file it is declared in,
+while ep93xx_timer_init() is declared in a header that is not included here.
 
-(amortized = 4, vcnt = 2)
-       _____________________________________________
-      |___@_____ encoded bits __________|_ blkaddr _|
-      0        .                                    amortized * vcnt = 8
-      .             .
-      .                  .              amortized * vcnt - 4 = 4
-      .                        .
-      .____________________________.
-      |_type (2 bits)_|_clusterofs_|
+arch/arm/mach-ep93xx/timer-ep93xx.c:120:13: error: no previous prototype for 'ep93xx_timer_init'
+arch/arm/mach-ep93xx/timer-ep93xx.c:63:5: error: no previous prototype for 'ep93xx_clocksource_read'
 
-Therefore, encoded bits for each pack are 32 bits (4 bytes). IOWs,
-since each lcluster can get 16 bits for its type and clusterofs, the
-maximum supported lclustersize for compact 4B format is 16k (14 bits).
-
-Fix this to enable compact 4B format for 16k lclusters (blocks), which
-is tested on an arm64 server with 16k page size.
-
-Fixes: 152a333a5895 ("staging: erofs: add compacted compression indexes support")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230601112341.56960-1-hsiangkao@linux.alibaba.com
+Fixes: 000bc17817bf ("ARM: ep93xx: switch to GENERIC_CLOCKEVENTS")
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://lore.kernel.org/r/20230516153109.514251-3-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zmap.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ arch/arm/mach-ep93xx/timer-ep93xx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index 3961bb55dea11..0337b70b2dac4 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -271,7 +271,7 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
- 	u8 *in, type;
- 	bool big_pcluster;
+diff --git a/arch/arm/mach-ep93xx/timer-ep93xx.c b/arch/arm/mach-ep93xx/timer-ep93xx.c
+index dd4b164d18317..a9efa7bc2fa12 100644
+--- a/arch/arm/mach-ep93xx/timer-ep93xx.c
++++ b/arch/arm/mach-ep93xx/timer-ep93xx.c
+@@ -9,6 +9,7 @@
+ #include <linux/io.h>
+ #include <asm/mach/time.h>
+ #include "soc.h"
++#include "platform.h"
  
--	if (1 << amortizedshift == 4)
-+	if (1 << amortizedshift == 4 && lclusterbits <= 14)
- 		vcnt = 2;
- 	else if (1 << amortizedshift == 2 && lclusterbits == 12)
- 		vcnt = 16;
-@@ -373,7 +373,6 @@ static int compacted_load_cluster_from_disk(struct z_erofs_maprecorder *m,
+ /*************************************************************************
+  * Timer handling for EP93xx
+@@ -60,7 +61,7 @@ static u64 notrace ep93xx_read_sched_clock(void)
+ 	return ret;
+ }
+ 
+-u64 ep93xx_clocksource_read(struct clocksource *c)
++static u64 ep93xx_clocksource_read(struct clocksource *c)
  {
- 	struct inode *const inode = m->inode;
- 	struct erofs_inode *const vi = EROFS_I(inode);
--	const unsigned int lclusterbits = vi->z_logical_clusterbits;
- 	const erofs_off_t ebase = sizeof(struct z_erofs_map_header) +
- 		ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
- 	const unsigned int totalidx = DIV_ROUND_UP(inode->i_size, EROFS_BLKSIZ);
-@@ -381,9 +380,6 @@ static int compacted_load_cluster_from_disk(struct z_erofs_maprecorder *m,
- 	unsigned int amortizedshift;
- 	erofs_off_t pos;
- 
--	if (lclusterbits != 12)
--		return -EOPNOTSUPP;
--
- 	if (lcn >= totalidx)
- 		return -EINVAL;
+ 	u64 ret;
  
 -- 
 2.39.2
