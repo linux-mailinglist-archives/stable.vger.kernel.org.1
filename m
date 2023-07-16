@@ -2,120 +2,297 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 582D3755437
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA37D7556B5
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:53:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232029AbjGPU1y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:27:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50170 "EHLO
+        id S232946AbjGPUxQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:53:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbjGPU1x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:53 -0400
+        with ESMTP id S232943AbjGPUxP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:53:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94581126
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:27:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32137109
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:53:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F9C960EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:27:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBB6C433C8;
-        Sun, 16 Jul 2023 20:27:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4C3C60EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:53:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F0CC433C7;
+        Sun, 16 Jul 2023 20:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539271;
-        bh=lpHgPp03kY/XegNE/KXUK0Tdog9lw2oHIt6IAqdQ92g=;
+        s=korg; t=1689540793;
+        bh=XUZIgryo3JdXy54WDljTwgv4sUUZze75GhEf4k8JkEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nk5AHSp07ofPbBWSBeKMwAQfUOmNJiqp4dX2Yb20+NKqi8j50/ZSromcx5MOZ6ZsK
-         ZR5UZHh9BVV/l+tcQExHBxbT+0fFUv0eZdvmsHQQVyIjZ4jXxyIoIB9YnTvXER+clZ
-         I18ZSRmvgMYGTriDiMQsfahasoXW7vfCq218ceqo=
+        b=TO9Z/+VD0R1Y58FST+Ot1SBxq0fP5c3dwujKnpDHkbxZNkTwo8kx026QAe0Iemshj
+         y7BjzjCP9xYzx1H7BOGK9pHl62Xhue3MKcGJCUmixHEZtQtIyuuJxPBbi2YiEVB2Ly
+         H0cfKujwLSfs7i1MEgW7fIH+503QjKmN9s/R5hfA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.4 748/800] Revert "udf: Protect rename against modification of moved directory"
+        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
+        Tejun Heo <tj@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 462/591] blk-cgroup: Optimize blkcg_rstat_flush()
 Date:   Sun, 16 Jul 2023 21:50:01 +0200
-Message-ID: <20230716195006.495963506@linuxfoundation.org>
+Message-ID: <20230716194935.854833912@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Waiman Long <longman@redhat.com>
 
-commit 7517ce5dc4d6963ef9ace2acb3f081ef8cd8a1e3 upstream.
+[ Upstream commit 3b8cc6298724021da845f2f9fd7dd4b6829a6817 ]
 
-This reverts commit f950fd0529130a617b3da526da9fb6a896ce87c2. The
-locking is going to be provided by vfs_rename() in the following
-patches.
+For a system with many CPUs and block devices, the time to do
+blkcg_rstat_flush() from cgroup_rstat_flush() can be rather long. It
+can be especially problematic as interrupt is disabled during the flush.
+It was reported that it might take seconds to complete in some extreme
+cases leading to hard lockup messages.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230601105830.13168-2-jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As it is likely that not all the percpu blkg_iostat_set's has been
+updated since the last flush, those stale blkg_iostat_set's don't need
+to be flushed in this case. This patch optimizes blkcg_rstat_flush()
+by keeping a lockless list of recently updated blkg_iostat_set's in a
+newly added percpu blkcg->lhead pointer.
+
+The blkg_iostat_set is added to a lockless list on the update side
+in blk_cgroup_bio_start(). It is removed from the lockless list when
+flushed in blkcg_rstat_flush(). Due to racing, it is possible that
+blk_iostat_set's in the lockless list may have no new IO stats to be
+flushed, but that is OK.
+
+To protect against destruction of blkg, a percpu reference is gotten
+when putting into the lockless list and put back when removed.
+
+When booting up an instrumented test kernel with this patch on a
+2-socket 96-thread system with cgroup v2, out of the 2051 calls to
+cgroup_rstat_flush() after bootup, 1788 of the calls were exited
+immediately because of empty lockless list. After an all-cpu kernel
+build, the ratio became 6295424/6340513. That was more than 99%.
+
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20221105005902.407297-3-longman@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: ad7c3b41e86b ("blk-throttle: Fix io statistics for cgroup v1")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/namei.c |   14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ block/blk-cgroup.c | 76 ++++++++++++++++++++++++++++++++++++++++++----
+ block/blk-cgroup.h | 10 ++++++
+ 2 files changed, 80 insertions(+), 6 deletions(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -793,11 +793,6 @@ static int udf_rename(struct mnt_idmap *
- 			if (!empty_dir(new_inode))
- 				goto out_oiter;
- 		}
--		/*
--		 * We need to protect against old_inode getting converted from
--		 * ICB to normal directory.
--		 */
--		inode_lock_nested(old_inode, I_MUTEX_NONDIR2);
- 		retval = udf_fiiter_find_entry(old_inode, &dotdot_name,
- 					       &diriter);
- 		if (retval == -ENOENT) {
-@@ -806,10 +801,8 @@ static int udf_rename(struct mnt_idmap *
- 				old_inode->i_ino);
- 			retval = -EFSCORRUPTED;
- 		}
--		if (retval) {
--			inode_unlock(old_inode);
-+		if (retval)
- 			goto out_oiter;
--		}
- 		has_diriter = true;
- 		tloc = lelb_to_cpu(diriter.fi.icb.extLocation);
- 		if (udf_get_lb_pblock(old_inode->i_sb, &tloc, 0) !=
-@@ -889,7 +882,6 @@ static int udf_rename(struct mnt_idmap *
- 			       udf_dir_entry_len(&diriter.fi));
- 		udf_fiiter_write_fi(&diriter, NULL);
- 		udf_fiiter_release(&diriter);
--		inode_unlock(old_inode);
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 60f366f98fa2b..2c7be256ff879 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -60,6 +60,37 @@ static struct workqueue_struct *blkcg_punt_bio_wq;
  
- 		inode_dec_link_count(old_dir);
- 		if (new_inode)
-@@ -901,10 +893,8 @@ static int udf_rename(struct mnt_idmap *
+ #define BLKG_DESTROY_BATCH_SIZE  64
+ 
++/*
++ * Lockless lists for tracking IO stats update
++ *
++ * New IO stats are stored in the percpu iostat_cpu within blkcg_gq (blkg).
++ * There are multiple blkg's (one for each block device) attached to each
++ * blkcg. The rstat code keeps track of which cpu has IO stats updated,
++ * but it doesn't know which blkg has the updated stats. If there are many
++ * block devices in a system, the cost of iterating all the blkg's to flush
++ * out the IO stats can be high. To reduce such overhead, a set of percpu
++ * lockless lists (lhead) per blkcg are used to track the set of recently
++ * updated iostat_cpu's since the last flush. An iostat_cpu will be put
++ * onto the lockless list on the update side [blk_cgroup_bio_start()] if
++ * not there yet and then removed when being flushed [blkcg_rstat_flush()].
++ * References to blkg are gotten and then put back in the process to
++ * protect against blkg removal.
++ *
++ * Return: 0 if successful or -ENOMEM if allocation fails.
++ */
++static int init_blkcg_llists(struct blkcg *blkcg)
++{
++	int cpu;
++
++	blkcg->lhead = alloc_percpu_gfp(struct llist_head, GFP_KERNEL);
++	if (!blkcg->lhead)
++		return -ENOMEM;
++
++	for_each_possible_cpu(cpu)
++		init_llist_head(per_cpu_ptr(blkcg->lhead, cpu));
++	return 0;
++}
++
+ /**
+  * blkcg_css - find the current css
+  *
+@@ -237,8 +268,10 @@ static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct gendisk *disk,
+ 	blkg->blkcg = blkcg;
+ 
+ 	u64_stats_init(&blkg->iostat.sync);
+-	for_each_possible_cpu(cpu)
++	for_each_possible_cpu(cpu) {
+ 		u64_stats_init(&per_cpu_ptr(blkg->iostat_cpu, cpu)->sync);
++		per_cpu_ptr(blkg->iostat_cpu, cpu)->blkg = blkg;
++	}
+ 
+ 	for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 		struct blkcg_policy *pol = blkcg_policy[i];
+@@ -831,7 +864,9 @@ static void blkcg_iostat_update(struct blkcg_gq *blkg, struct blkg_iostat *cur,
+ static void blkcg_rstat_flush(struct cgroup_subsys_state *css, int cpu)
+ {
+ 	struct blkcg *blkcg = css_to_blkcg(css);
+-	struct blkcg_gq *blkg;
++	struct llist_head *lhead = per_cpu_ptr(blkcg->lhead, cpu);
++	struct llist_node *lnode;
++	struct blkg_iostat_set *bisc, *next_bisc;
+ 
+ 	/* Root-level stats are sourced from system-wide IO stats */
+ 	if (!cgroup_parent(css->cgroup))
+@@ -839,12 +874,21 @@ static void blkcg_rstat_flush(struct cgroup_subsys_state *css, int cpu)
+ 
+ 	rcu_read_lock();
+ 
+-	hlist_for_each_entry_rcu(blkg, &blkcg->blkg_list, blkcg_node) {
++	lnode = llist_del_all(lhead);
++	if (!lnode)
++		goto out;
++
++	/*
++	 * Iterate only the iostat_cpu's queued in the lockless list.
++	 */
++	llist_for_each_entry_safe(bisc, next_bisc, lnode, lnode) {
++		struct blkcg_gq *blkg = bisc->blkg;
+ 		struct blkcg_gq *parent = blkg->parent;
+-		struct blkg_iostat_set *bisc = per_cpu_ptr(blkg->iostat_cpu, cpu);
+ 		struct blkg_iostat cur;
+ 		unsigned int seq;
+ 
++		WRITE_ONCE(bisc->lqueued, false);
++
+ 		/* fetch the current per-cpu values */
+ 		do {
+ 			seq = u64_stats_fetch_begin(&bisc->sync);
+@@ -857,8 +901,10 @@ static void blkcg_rstat_flush(struct cgroup_subsys_state *css, int cpu)
+ 		if (parent && parent->parent)
+ 			blkcg_iostat_update(parent, &blkg->iostat.cur,
+ 					    &blkg->iostat.last);
++		percpu_ref_put(&blkg->refcnt);
  	}
- 	return 0;
- out_oiter:
--	if (has_diriter) {
-+	if (has_diriter)
- 		udf_fiiter_release(&diriter);
--		inode_unlock(old_inode);
--	}
- 	udf_fiiter_release(&oiter);
  
- 	return retval;
++out:
+ 	rcu_read_unlock();
+ }
+ 
+@@ -1136,6 +1182,7 @@ static void blkcg_css_free(struct cgroup_subsys_state *css)
+ 
+ 	mutex_unlock(&blkcg_pol_mutex);
+ 
++	free_percpu(blkcg->lhead);
+ 	kfree(blkcg);
+ }
+ 
+@@ -1158,6 +1205,9 @@ blkcg_css_alloc(struct cgroup_subsys_state *parent_css)
+ 		}
+ 	}
+ 
++	if (init_blkcg_llists(blkcg))
++		goto free_blkcg;
++
+ 	for (i = 0; i < BLKCG_MAX_POLS ; i++) {
+ 		struct blkcg_policy *pol = blkcg_policy[i];
+ 		struct blkcg_policy_data *cpd;
+@@ -1199,7 +1249,8 @@ blkcg_css_alloc(struct cgroup_subsys_state *parent_css)
+ 	for (i--; i >= 0; i--)
+ 		if (blkcg->cpd[i])
+ 			blkcg_policy[i]->cpd_free_fn(blkcg->cpd[i]);
+-
++	free_percpu(blkcg->lhead);
++free_blkcg:
+ 	if (blkcg != &blkcg_root)
+ 		kfree(blkcg);
+ unlock:
+@@ -1952,6 +2003,7 @@ static int blk_cgroup_io_type(struct bio *bio)
+ 
+ void blk_cgroup_bio_start(struct bio *bio)
+ {
++	struct blkcg *blkcg = bio->bi_blkg->blkcg;
+ 	int rwd = blk_cgroup_io_type(bio), cpu;
+ 	struct blkg_iostat_set *bis;
+ 	unsigned long flags;
+@@ -1970,9 +2022,21 @@ void blk_cgroup_bio_start(struct bio *bio)
+ 	}
+ 	bis->cur.ios[rwd]++;
+ 
++	/*
++	 * If the iostat_cpu isn't in a lockless list, put it into the
++	 * list to indicate that a stat update is pending.
++	 */
++	if (!READ_ONCE(bis->lqueued)) {
++		struct llist_head *lhead = this_cpu_ptr(blkcg->lhead);
++
++		llist_add(&bis->lnode, lhead);
++		WRITE_ONCE(bis->lqueued, true);
++		percpu_ref_get(&bis->blkg->refcnt);
++	}
++
+ 	u64_stats_update_end_irqrestore(&bis->sync, flags);
+ 	if (cgroup_subsys_on_dfl(io_cgrp_subsys))
+-		cgroup_rstat_updated(bio->bi_blkg->blkcg->css.cgroup, cpu);
++		cgroup_rstat_updated(blkcg->css.cgroup, cpu);
+ 	put_cpu();
+ }
+ 
+diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
+index aa2b286bc825f..1e94e404eaa80 100644
+--- a/block/blk-cgroup.h
++++ b/block/blk-cgroup.h
+@@ -18,6 +18,7 @@
+ #include <linux/cgroup.h>
+ #include <linux/kthread.h>
+ #include <linux/blk-mq.h>
++#include <linux/llist.h>
+ 
+ struct blkcg_gq;
+ struct blkg_policy_data;
+@@ -43,6 +44,9 @@ struct blkg_iostat {
+ 
+ struct blkg_iostat_set {
+ 	struct u64_stats_sync		sync;
++	struct blkcg_gq		       *blkg;
++	struct llist_node		lnode;
++	int				lqueued;	/* queued in llist */
+ 	struct blkg_iostat		cur;
+ 	struct blkg_iostat		last;
+ };
+@@ -97,6 +101,12 @@ struct blkcg {
+ 	struct blkcg_policy_data	*cpd[BLKCG_MAX_POLS];
+ 
+ 	struct list_head		all_blkcgs_node;
++
++	/*
++	 * List of updated percpu blkg_iostat_set's since the last flush.
++	 */
++	struct llist_head __percpu	*lhead;
++
+ #ifdef CONFIG_BLK_CGROUP_FC_APPID
+ 	char                            fc_app_id[FC_APPID_LEN];
+ #endif
+-- 
+2.39.2
+
 
 
