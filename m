@@ -2,111 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE20D755434
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15D9D7556A9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232023AbjGPU1t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50088 "EHLO
+        id S232931AbjGPUwp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232031AbjGPU1r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D2B81B9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:27:47 -0700 (PDT)
+        with ESMTP id S232933AbjGPUwp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A34E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9370560E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:27:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B65C433C9;
-        Sun, 16 Jul 2023 20:27:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EDEB260EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094AAC433C8;
+        Sun, 16 Jul 2023 20:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539266;
-        bh=9Kzx93ONTewq3YHkLEe+8eOQGn5cKefBKEsEJfh+VDY=;
+        s=korg; t=1689540762;
+        bh=jeR7zNMeiEkB8qBgww/lkVvvrZLakAhgmJ6UayelPv0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ek7API/9NpTGHI50uM/WN8h+sYRdQmsAKaALAZoARfM/C0K3iIPmg40lMAbNnMHTA
-         m7sWdCTjyr7jIidoDG2jvXQqt994cfbYqx1dh4WjiWSk7svaS8/EV0U/9xJmmePe34
-         Lbz3FxU4z0gCz2aYrLUq8LeOpyRPpTjfmUtIcj2A=
+        b=kL6fQT+d5GdRUjubTa+er29DUg51YkoIYp8MURU8d5MSRo44c+U//BISfw1jPvJFr
+         rXFFQbiAfRCgAsDQ3Ds/ZUkEkAhO4S14zIMNNK0sWrfh1dLldIsHp4xa1kFwH/8H0Y
+         vorTyPyVVEz8mM0gqVw+m4jA2rSEHN7WElZO2ewo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ted Tso <tytso@mit.edu>,
-        Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.4 746/800] ext4: Remove ext4 locking of moved directory
-Date:   Sun, 16 Jul 2023 21:49:59 +0200
-Message-ID: <20230716195006.448596679@linuxfoundation.org>
+        patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 461/591] md/raid10: fix the condition to call bio_end_io_acct()
+Date:   Sun, 16 Jul 2023 21:50:00 +0200
+Message-ID: <20230716194935.828235246@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Li Nan <linan122@huawei.com>
 
-commit 3658840cd363f2be094f5dfd2f0b174a9055dd0f upstream.
+[ Upstream commit 125bfc7cd750e68c99f1d446e2c22abea08c237f ]
 
-Remove locking of moved directory in ext4_rename2(). We will take care
-of it in VFS instead. This effectively reverts commit 0813299c586b
-("ext4: Fix possible corruption when moving a directory") and followup
-fixes.
+/sys/block/[device]/queue/iostats is used to control whether to count io
+stat. Write 0 to it will clear queue_flags QUEUE_FLAG_IO_STAT which means
+iostats is disabled. If we disable iostats and later endable it, the io
+issued during this period will be counted incorrectly, inflight will be
+decreased to -1.
 
-CC: Ted Tso <tytso@mit.edu>
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230601105830.13168-1-jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  //T1 set iostats
+  echo 0 > /sys/block/md0/queue/iostats
+   clear QUEUE_FLAG_IO_STAT
+
+			//T2 issue io
+			if (QUEUE_FLAG_IO_STAT) -> false
+			 bio_start_io_acct
+			  inflight++
+
+  echo 1 > /sys/block/md0/queue/iostats
+   set QUEUE_FLAG_IO_STAT
+
+					//T3 io end
+					if (QUEUE_FLAG_IO_STAT) -> true
+					 bio_end_io_acct
+					  inflight--	-> -1
+
+Also, if iostats is enabled while issuing io but disabled while io end,
+inflight will never be decreased.
+
+Fix it by checking start_time when io end. If start_time is not 0, call
+bio_end_io_acct().
+
+Fixes: 528bc2cf2fcc ("md/raid10: enable io accounting")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230609094320.2397604-1-linan666@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/namei.c |   17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ drivers/md/raid10.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -3834,19 +3834,10 @@ static int ext4_rename(struct mnt_idmap
- 			return retval;
- 	}
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index ea6228ff3bb5e..d2098fcd6a270 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -325,7 +325,7 @@ static void raid_end_bio_io(struct r10bio *r10_bio)
+ 	if (!test_bit(R10BIO_Uptodate, &r10_bio->state))
+ 		bio->bi_status = BLK_STS_IOERR;
  
--	/*
--	 * We need to protect against old.inode directory getting converted
--	 * from inline directory format into a normal one.
--	 */
--	if (S_ISDIR(old.inode->i_mode))
--		inode_lock_nested(old.inode, I_MUTEX_NONDIR2);
--
- 	old.bh = ext4_find_entry(old.dir, &old.dentry->d_name, &old.de,
- 				 &old.inlined);
--	if (IS_ERR(old.bh)) {
--		retval = PTR_ERR(old.bh);
--		goto unlock_moved_dir;
--	}
-+	if (IS_ERR(old.bh))
-+		return PTR_ERR(old.bh);
- 
+-	if (blk_queue_io_stat(bio->bi_bdev->bd_disk->queue))
++	if (r10_bio->start_time)
+ 		bio_end_io_acct(bio, r10_bio->start_time);
+ 	bio_endio(bio);
  	/*
- 	 *  Check for inode number is _not_ due to possible IO errors.
-@@ -4043,10 +4034,6 @@ release_bh:
- 	brelse(old.bh);
- 	brelse(new.bh);
- 
--unlock_moved_dir:
--	if (S_ISDIR(old.inode->i_mode))
--		inode_unlock(old.inode);
--
- 	return retval;
- }
- 
+-- 
+2.39.2
+
 
 
