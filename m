@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AE9375551C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF63C7552E9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232385AbjGPUhb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:37:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57926 "EHLO
+        id S231532AbjGPUN0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:13:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230318AbjGPUha (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:37:30 -0400
+        with ESMTP id S231537AbjGPUNZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:13:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3180AB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:37:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68A8F1BF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:13:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8921B60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:37:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99083C433C7;
-        Sun, 16 Jul 2023 20:37:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2EEA60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:13:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C5BC433C8;
+        Sun, 16 Jul 2023 20:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539849;
-        bh=JC3JZlkhTHwSPIsRl9q9jsm0gJ1EwpFTR5ZcHTdk5oo=;
+        s=korg; t=1689538403;
+        bh=9P9kM6IpkhDOKDcWf9Bqdy+aX30Bqt56Q+QC3y7SJRM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wF/LTK5aofDWy2wn4audXQ9R0R5m81qXAJxiHrSJIEzcK4a6E9eMCA9IRkbGK8ddq
-         aHjfW87ATHeun0wbZtYSIl63OB65xYXZh1gT3jRg4D/ZxMgR5yuN3jHA/yHsSBrVKs
-         umfh6vxyUuwamyZbv7UiYMsmdFD6DAiFyM5YYK78=
+        b=QCajLa01Vet5wi9fbDT+KYGfW4BPF8+m6AZ42bqT8jQniHWvQyLHez/16fWeiMZTY
+         Miw+NMeYiSzq4Fl+VbevM10dzkvpZTZ4Vny13tnItaYhHillXiamLa0khdm+A9EHBZ
+         UUzz6DSFpmZIX67y8tsYUKnRMFP4j6SJn8vqDDKg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Francesco Dolcini <francesco.dolcini@toradex.com>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/591] drm/bridge: tc358768: fix THS_ZEROCNT computation
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 439/800] platform/x86: lenovo-yogabook: Fix work race on remove()
 Date:   Sun, 16 Jul 2023 21:44:52 +0200
-Message-ID: <20230716194927.824144473@linuxfoundation.org>
+Message-ID: <20230716194959.280690598@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +54,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 77a089328da791118af9692543a5eedc79eb5fd4 ]
+[ Upstream commit 9148cd2eb4450a8e9c49c8a14201fb82f651128f ]
 
-Correct computation of THS_ZEROCNT register.
+When yogabook_wmi_remove() runs yogabook_wmi_work might still be running
+and using the devices which yogabook_wmi_remove() puts.
 
-This register must be set to a value that ensure that
-THS_PREPARE + THS_ZERO > 145ns + 10*UI
+To avoid this move to explicitly cancelling the work rather then using
+devm_work_autocancel().
 
-with the actual value of (THS_PREPARE + THS_ZERO) being
+This requires also making the yogabook_backside_hall_irq handler non
+devm managed, so that it cannot re-queue the work while
+yogabook_wmi_remove() runs.
 
-((1 to 2) + 1 + (TCLK_ZEROCNT + 1) + (3 to 4)) x ByteClk cycle +
-  + HSByteClk x (2 + (1 to 2)) + (PHY delay)
-
-with PHY delay being about
-
-(8 + (5 to 6)) x MIPIBitClk cycle in the BitClk conversion.
-
-Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230427142934.55435-7-francesco@dolcini.it
+Fixes: c0549b72d99d ("platform/x86: lenovo-yogabook-wmi: Add driver for Lenovo Yoga Book")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230430165807.472798-3-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/platform/x86/lenovo-yogabook-wmi.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
-index 822de6e356a2c..014585b9582b9 100644
---- a/drivers/gpu/drm/bridge/tc358768.c
-+++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -762,9 +762,10 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 	/* 40ns + 4*UI < THS_PREPARE < 85ns + 6*UI */
- 	val = 50 + tc358768_to_ns(4 * ui_nsk);
- 	val = tc358768_ns_to_cnt(val, dsibclk_nsk) - 1;
--	/* THS_ZERO > 145ns + 10*UI */
--	val2 = tc358768_ns_to_cnt(145 - tc358768_to_ns(ui_nsk), dsibclk_nsk);
--	val |= (val2 - tc358768_to_ns(phy_delay_nsk)) << 8;
-+	/* THS_PREPARE + THS_ZERO > 145ns + 10*UI */
-+	raw_val = tc358768_ns_to_cnt(145 - tc358768_to_ns(3 * ui_nsk), dsibclk_nsk) - 10;
-+	val2 = clamp(raw_val, 0, 127);
-+	val |= val2 << 8;
- 	dev_dbg(priv->dev, "THS_HEADERCNT: 0x%x\n", val);
- 	tc358768_write(priv, TC358768_THS_HEADERCNT, val);
+diff --git a/drivers/platform/x86/lenovo-yogabook-wmi.c b/drivers/platform/x86/lenovo-yogabook-wmi.c
+index 5f4bd1eec38a9..3a6de4ab74a41 100644
+--- a/drivers/platform/x86/lenovo-yogabook-wmi.c
++++ b/drivers/platform/x86/lenovo-yogabook-wmi.c
+@@ -2,7 +2,6 @@
+ /* WMI driver for Lenovo Yoga Book YB1-X90* / -X91* tablets */
  
+ #include <linux/acpi.h>
+-#include <linux/devm-helpers.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/gpio/machine.h>
+ #include <linux/interrupt.h>
+@@ -248,10 +247,7 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
+ 	data->brightness = YB_KBD_BL_DEFAULT;
+ 	set_bit(YB_KBD_IS_ON, &data->flags);
+ 	set_bit(YB_DIGITIZER_IS_ON, &data->flags);
+-
+-	r = devm_work_autocancel(&wdev->dev, &data->work, yogabook_wmi_work);
+-	if (r)
+-		return r;
++	INIT_WORK(&data->work, yogabook_wmi_work);
+ 
+ 	data->kbd_adev = acpi_dev_get_first_match_dev("GDIX1001", NULL, -1);
+ 	if (!data->kbd_adev) {
+@@ -299,10 +295,9 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
+ 	}
+ 	data->backside_hall_irq = r;
+ 
+-	r = devm_request_irq(&wdev->dev, data->backside_hall_irq,
+-			     yogabook_backside_hall_irq,
+-			     IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
+-			     "backside_hall_sw", data);
++	r = request_irq(data->backside_hall_irq, yogabook_backside_hall_irq,
++			IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
++			"backside_hall_sw", data);
+ 	if (r) {
+ 		dev_err_probe(&wdev->dev, r, "Requesting backside_hall_sw IRQ\n");
+ 		goto error_put_devs;
+@@ -318,11 +313,14 @@ static int yogabook_wmi_probe(struct wmi_device *wdev, const void *context)
+ 	r = devm_led_classdev_register(&wdev->dev, &data->kbd_bl_led);
+ 	if (r < 0) {
+ 		dev_err_probe(&wdev->dev, r, "Registering backlight LED device\n");
+-		goto error_put_devs;
++		goto error_free_irq;
+ 	}
+ 
+ 	return 0;
+ 
++error_free_irq:
++	free_irq(data->backside_hall_irq, data);
++	cancel_work_sync(&data->work);
+ error_put_devs:
+ 	put_device(data->dig_dev);
+ 	put_device(data->kbd_dev);
+@@ -335,6 +333,8 @@ static void yogabook_wmi_remove(struct wmi_device *wdev)
+ {
+ 	struct yogabook_wmi *data = dev_get_drvdata(&wdev->dev);
+ 
++	free_irq(data->backside_hall_irq, data);
++	cancel_work_sync(&data->work);
+ 	put_device(data->dig_dev);
+ 	put_device(data->kbd_dev);
+ 	acpi_dev_put(data->dig_adev);
 -- 
 2.39.2
 
