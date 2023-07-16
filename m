@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F082754E53
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C5F0754E54
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:19:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbjGPKTn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 06:19:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39038 "EHLO
+        id S229471AbjGPKTq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 06:19:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjGPKTm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:19:42 -0400
+        with ESMTP id S229882AbjGPKTp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:19:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BBCFE46
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:19:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BBCC186
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:19:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37A8D60C7D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:19:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E58C433C8;
-        Sun, 16 Jul 2023 10:19:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EEC8060C75
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:19:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E0BC433C8;
+        Sun, 16 Jul 2023 10:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689502780;
-        bh=TCD1WfCzrok09SQDhWwKI1Mgf/PEvZDJEHs/t25+dIA=;
+        s=korg; t=1689502783;
+        bh=JrBA0Q2Utbij0QPoom3W4LNQSaOvCcQyP5P7rctzLUU=;
         h=Subject:To:Cc:From:Date:From;
-        b=SnkxfaqPf9pFUjms+ANQ9znM0QmsutWB27sNf5ngw/Un84YbPS/OBjqK8M7LcwZAd
-         VJyxHlIcBRISOUKNLzYOt3K/iLmmNbz/MBF3hufHuBpGHun98+wqmNu9wPJ59RFv/j
-         N2gijIuyKJHkaRtWUOABfI2V3x8iUYn8vzt4tdd4=
-Subject: FAILED: patch "[PATCH] btrfs: fix race between quota disable and relocation" failed to apply to 5.15-stable tree
+        b=mgnimBV0P+IBS9ZQcPun0z74ZgtmO0nlORlJ+buPWMHBdNzMv2FfT5tT+QKVHlE22
+         Nxp7ouFBFz6dByikcRYwqkwgT6DBEX7/GLMYmKhWfMZlc1pr47h+UQGFDzvZXKXNfw
+         lSMlyF/vLY91HmT76EO7c0PII3ZPYoLg3uvpp/6c=
+Subject: FAILED: patch "[PATCH] btrfs: fix race between quota disable and relocation" failed to apply to 5.10-stable tree
 To:     fdmanana@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 12:19:28 +0200
-Message-ID: <2023071628-seclusion-applied-22c4@gregkh>
+Date:   Sun, 16 Jul 2023 12:19:30 +0200
+Message-ID: <2023071629-nag-gravel-c2b8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8a4a0b2a3eaf75ca8854f856ef29690c12b2f531
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071628-seclusion-applied-22c4@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071629-nag-gravel-c2b8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
