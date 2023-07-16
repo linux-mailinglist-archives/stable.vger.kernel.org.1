@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE230754E50
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21A5C754E51
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229840AbjGPKTQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 06:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38980 "EHLO
+        id S229812AbjGPKTc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 06:19:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229812AbjGPKTP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:19:15 -0400
+        with ESMTP id S229463AbjGPKTb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:19:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 524CA186
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:19:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D065186
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:19:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E350C60C7D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:19:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1058C433C7;
-        Sun, 16 Jul 2023 10:19:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AA1A60C7D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:19:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2755EC433C7;
+        Sun, 16 Jul 2023 10:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689502753;
-        bh=tZuPYJjYFk8pfwtGYDvw6fWiIH8nsKGJmeDdsTpSWvE=;
+        s=korg; t=1689502769;
+        bh=aKxrCa1L4AcuIdbuWAcwJxn3tdh+lwpBTBofy5O3dag=;
         h=Subject:To:Cc:From:Date:From;
-        b=Z7ta3pDKkICS9U6BhM2kFZa58UZywHvJs2cIER3J+c/8K15fDFDG7zPLRbqnl0Gc9
-         1Dt/JNNSbJ4kjkhANAEBVzk9lYfoHC0HuPTVu+GkHishN4jmsaCtpIiy55rXs3Iu1H
-         zUt/lxI/PZr4usCLSd57gG6v76VwFI/m6aCfPk+k=
-Subject: FAILED: patch "[PATCH] btrfs: do not BUG_ON() on tree mod log failure at" failed to apply to 5.4-stable tree
-To:     fdmanana@suse.com, dsterba@suse.com, wqu@suse.com
+        b=MkfE+/r9q2gJ1ZhrkZOrqLNkBFDE6z9L7ko32R5zqxz/by6EtHslbxZhQql6PxOxg
+         R421L2+hHALMiPvw8a6xFxooUFe7w+jQYzGNXhcRd/oxB+GV6fQx9eKeEfed+Kukl4
+         4mYTSNiBMSUAb/GjSAoHcv4p/vWwWb53vttNrFcA=
+Subject: FAILED: patch "[PATCH] btrfs: fix race between quota disable and relocation" failed to apply to 6.4-stable tree
+To:     fdmanana@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 12:19:02 +0200
-Message-ID: <2023071602-oxford-etching-4c52@gregkh>
+Date:   Sun, 16 Jul 2023 12:19:26 +0200
+Message-ID: <2023071626-darkness-agony-ce5d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,42 +49,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 40b0a749388517de244643c09bdbb98f7dcb6ef1
+git cherry-pick -x 8a4a0b2a3eaf75ca8854f856ef29690c12b2f531
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071602-oxford-etching-4c52@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071626-darkness-agony-ce5d@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-40b0a7493885 ("btrfs: do not BUG_ON() on tree mod log failure at __btrfs_cow_block()")
-406808ab2f0b ("btrfs: use booleans where appropriate for the tree mod log functions")
-f3a84ccd28d0 ("btrfs: move the tree mod log code into its own file")
-dbcc7d57bffc ("btrfs: fix race when cloning extent buffer during rewind of an old root")
-cac06d843f25 ("btrfs: introduce the skeleton of btrfs_subpage structure")
-1b7ec85ef490 ("btrfs: pass root owner to read_tree_block")
-bfb484d922a3 ("btrfs: cleanup extent buffer readahead")
-ac5887c8e013 ("btrfs: locking: remove all the blocking helpers")
-196d59ab9ccc ("btrfs: switch extent buffer tree lock to rw_semaphore")
-bf77467a93bd ("btrfs: introduce BTRFS_NESTING_LEFT/BTRFS_NESTING_RIGHT")
-9631e4cc1a03 ("btrfs: introduce BTRFS_NESTING_COW for cow'ing blocks")
-fd7ba1c1202d ("btrfs: add nesting tags to the locking helpers")
-51899412dd95 ("btrfs: introduce btrfs_path::recurse")
-329ced799be8 ("btrfs: rename extent_buffer::lock_nested to extent_buffer::lock_recursed")
-d16c702fe4f2 ("btrfs: ctree: check key order before merging tree blocks")
-d3beaa253fd6 ("btrfs: set the lockdep class for log tree extent buffers")
-ad24466588ab ("btrfs: set the correct lockdep class for new nodes")
-d85327b1d8b7 ("btrfs: prefetch chunk tree leaves at mount")
-49e5fb46211d ("btrfs: qgroup: export qgroups in sysfs")
-5958253cf65d ("btrfs: qgroup: catch reserved space leaks at unmount time")
+
 
 thanks,
 
@@ -92,43 +73,90 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 40b0a749388517de244643c09bdbb98f7dcb6ef1 Mon Sep 17 00:00:00 2001
+From 8a4a0b2a3eaf75ca8854f856ef29690c12b2f531 Mon Sep 17 00:00:00 2001
 From: Filipe Manana <fdmanana@suse.com>
-Date: Thu, 8 Jun 2023 11:27:40 +0100
-Subject: [PATCH] btrfs: do not BUG_ON() on tree mod log failure at
- __btrfs_cow_block()
+Date: Mon, 19 Jun 2023 17:21:50 +0100
+Subject: [PATCH] btrfs: fix race between quota disable and relocation
 
-At __btrfs_cow_block(), instead of doing a BUG_ON() in case we fail to
-record a tree mod log root insertion operation, do a transaction abort
-instead. There's really no need for the BUG_ON(), we can properly
-release all resources in this context and turn the filesystem to RO mode
-and in an error state instead.
+If we disable quotas while we have a relocation of a metadata block group
+that has extents belonging to the quota root, we can cause the relocation
+to fail with -ENOENT. This is because relocation builds backref nodes for
+extents of the quota root and later needs to walk the backrefs and access
+the quota root - however if in between a task disables quotas, it results
+in deleting the quota root from the root tree (with btrfs_del_root(),
+called from btrfs_quota_disable().
 
+This can be sporadically triggered by test case btrfs/255 from fstests:
+
+  $ ./check btrfs/255
+  FSTYP         -- btrfs
+  PLATFORM      -- Linux/x86_64 debian0 6.4.0-rc6-btrfs-next-134+ #1 SMP PREEMPT_DYNAMIC Thu Jun 15 11:59:28 WEST 2023
+  MKFS_OPTIONS  -- /dev/sdc
+  MOUNT_OPTIONS -- /dev/sdc /home/fdmanana/btrfs-tests/scratch_1
+
+  btrfs/255 6s ... _check_dmesg: something found in dmesg (see /home/fdmanana/git/hub/xfstests/results//btrfs/255.dmesg)
+  - output mismatch (see /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad)
+      --- tests/btrfs/255.out	2023-03-02 21:47:53.876609426 +0000
+      +++ /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad	2023-06-16 10:20:39.267563212 +0100
+      @@ -1,2 +1,4 @@
+       QA output created by 255
+      +ERROR: error during balancing '/home/fdmanana/btrfs-tests/scratch_1': No such file or directory
+      +There may be more info in syslog - try dmesg | tail
+       Silence is golden
+      ...
+      (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/btrfs/255.out /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad'  to see the entire diff)
+  Ran: btrfs/255
+  Failures: btrfs/255
+  Failed 1 of 1 tests
+
+To fix this make the quota disable operation take the cleaner mutex, as
+relocation of a block group also takes this mutex. This is also what we
+do when deleting a subvolume/snapshot, we take the cleaner mutex in the
+cleaner kthread (at cleaner_kthread()) and then we call btrfs_del_root()
+at btrfs_drop_snapshot() while under the protection of the cleaner mutex.
+
+Fixes: bed92eae26cc ("Btrfs: qgroup implementation and prototypes")
 CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 8496535828de..d6c29564ce49 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -584,9 +584,14 @@ static noinline int __btrfs_cow_block(struct btrfs_trans_handle *trans,
- 		    btrfs_header_backref_rev(buf) < BTRFS_MIXED_BACKREF_REV)
- 			parent_start = buf->start;
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index f8735b31da16..da1f84a0eb29 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1232,12 +1232,23 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 	int ret = 0;
  
--		atomic_inc(&cow->refs);
- 		ret = btrfs_tree_mod_log_insert_root(root->node, cow, true);
--		BUG_ON(ret < 0);
-+		if (ret < 0) {
-+			btrfs_tree_unlock(cow);
-+			free_extent_buffer(cow);
-+			btrfs_abort_transaction(trans, ret);
-+			return ret;
-+		}
-+		atomic_inc(&cow->refs);
- 		rcu_assign_pointer(root->node, cow);
+ 	/*
+-	 * We need to have subvol_sem write locked, to prevent races between
+-	 * concurrent tasks trying to disable quotas, because we will unlock
+-	 * and relock qgroup_ioctl_lock across BTRFS_FS_QUOTA_ENABLED changes.
++	 * We need to have subvol_sem write locked to prevent races with
++	 * snapshot creation.
+ 	 */
+ 	lockdep_assert_held_write(&fs_info->subvol_sem);
  
- 		btrfs_free_tree_block(trans, btrfs_root_id(root), buf,
++	/*
++	 * Lock the cleaner mutex to prevent races with concurrent relocation,
++	 * because relocation may be building backrefs for blocks of the quota
++	 * root while we are deleting the root. This is like dropping fs roots
++	 * of deleted snapshots/subvolumes, we need the same protection.
++	 *
++	 * This also prevents races between concurrent tasks trying to disable
++	 * quotas, because we will unlock and relock qgroup_ioctl_lock across
++	 * BTRFS_FS_QUOTA_ENABLED changes.
++	 */
++	mutex_lock(&fs_info->cleaner_mutex);
++
+ 	mutex_lock(&fs_info->qgroup_ioctl_lock);
+ 	if (!fs_info->quota_root)
+ 		goto out;
+@@ -1319,6 +1330,7 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 		btrfs_end_transaction(trans);
+ 	else if (trans)
+ 		ret = btrfs_end_transaction(trans);
++	mutex_unlock(&fs_info->cleaner_mutex);
+ 
+ 	return ret;
+ }
 
