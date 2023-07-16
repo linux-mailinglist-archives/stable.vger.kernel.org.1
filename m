@@ -2,133 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 482817554AD
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 601C5755289
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:09:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232265AbjGPUdD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:33:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54224 "EHLO
+        id S231348AbjGPUJF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:09:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232262AbjGPUdC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7782BA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:00 -0700 (PDT)
+        with ESMTP id S231366AbjGPUJD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:09:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D84BE50
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:09:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E63D60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B74C433C7;
-        Sun, 16 Jul 2023 20:32:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F02E860EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:09:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A358C433C9;
+        Sun, 16 Jul 2023 20:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539579;
-        bh=Nxz3PYYkNkUnuZp2/1C8x8557eiEJXMxecNopkg2yBQ=;
+        s=korg; t=1689538141;
+        bh=HM7I7J9gI7XI2PQoDXi6SvCYdi0+HgYTc5gaRylWJfQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y8JpYpY1NtM7eM4sF2DShMlyX2wFpzntqjx4bLk0pIndY3QvATDyU6b0hdMBEEt5V
-         PQNar7K4Slf7E7XbYHpFaMEtIVNj+ze5iG8Z79b3AYi/LdULJCIkZl9AIyLZTUg7XV
-         x5OT3qo4dVfOuAIFgwpcxKbMx3VkDjmJhUMYG3MI=
+        b=myXP4t0sbpHkcKAiGqEoUIUoygI5taJCOghTEnXL0kRdgxHtInnVLDBwdfDGP1Hpr
+         v+3RrAuikt0qF8nH4QeQx+katGeXwX4mFgsOkLkULrdKQcRHXcpC37iv69ktRhmZ5o
+         FHoOA2CRZgL3kLcXZkwoDd6aDFYOdQdlhbW6rEbI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Davidlohr Bueso <dave@stgolabs.net>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/591] rcu/rcuscale: Stop kfree_scale_thread thread(s) after unloading rcuscale
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 344/800] fbdev: omapfb: lcd_mipid: Fix an error handling path in mipid_spi_probe()
 Date:   Sun, 16 Jul 2023 21:43:17 +0200
-Message-ID: <20230716194925.382368146@linuxfoundation.org>
+Message-ID: <20230716194957.071584013@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 23fc8df26dead16687ae6eb47b0561a4a832e2f6 ]
+[ Upstream commit 79a3908d1ea6c35157a6d907b1a9d8ec06015e7a ]
 
-Running the 'kfree_rcu_test' test case [1] results in a splat [2].
-The root cause is the kfree_scale_thread thread(s) continue running
-after unloading the rcuscale module.  This commit fixes that isue by
-invoking kfree_scale_cleanup() from rcu_scale_cleanup() when removing
-the rcuscale module.
+If 'mipid_detect()' fails, we must free 'md' to avoid a memory leak.
 
-[1] modprobe rcuscale kfree_rcu_test=1
-    // After some time
-    rmmod rcuscale
-    rmmod torture
-
-[2] BUG: unable to handle page fault for address: ffffffffc0601a87
-    #PF: supervisor instruction fetch in kernel mode
-    #PF: error_code(0x0010) - not-present page
-    PGD 11de4f067 P4D 11de4f067 PUD 11de51067 PMD 112f4d067 PTE 0
-    Oops: 0010 [#1] PREEMPT SMP NOPTI
-    CPU: 1 PID: 1798 Comm: kfree_scale_thr Not tainted 6.3.0-rc1-rcu+ #1
-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
-    RIP: 0010:0xffffffffc0601a87
-    Code: Unable to access opcode bytes at 0xffffffffc0601a5d.
-    RSP: 0018:ffffb25bc2e57e18 EFLAGS: 00010297
-    RAX: 0000000000000000 RBX: ffffffffc061f0b6 RCX: 0000000000000000
-    RDX: 0000000000000000 RSI: ffffffff962fd0de RDI: ffffffff962fd0de
-    RBP: ffffb25bc2e57ea8 R08: 0000000000000000 R09: 0000000000000000
-    R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000000
-    R13: 0000000000000000 R14: 000000000000000a R15: 00000000001c1dbe
-    FS:  0000000000000000(0000) GS:ffff921fa2200000(0000) knlGS:0000000000000000
-    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    CR2: ffffffffc0601a5d CR3: 000000011de4c006 CR4: 0000000000370ee0
-    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-    Call Trace:
-     <TASK>
-     ? kvfree_call_rcu+0xf0/0x3a0
-     ? kthread+0xf3/0x120
-     ? kthread_complete_and_exit+0x20/0x20
-     ? ret_from_fork+0x1f/0x30
-     </TASK>
-    Modules linked in: rfkill sunrpc ... [last unloaded: torture]
-    CR2: ffffffffc0601a87
-    ---[ end trace 0000000000000000 ]---
-
-Fixes: e6e78b004fa7 ("rcuperf: Add kfree_rcu() performance Tests")
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Fixes: 66d2f99d0bb5 ("omapfb: add support for MIPI-DCS compatible LCDs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcuscale.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/video/fbdev/omap/lcd_mipid.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcuscale.c b/kernel/rcu/rcuscale.c
-index 63e4c2d629a96..7854dc3226e1b 100644
---- a/kernel/rcu/rcuscale.c
-+++ b/kernel/rcu/rcuscale.c
-@@ -734,6 +734,11 @@ rcu_scale_cleanup(void)
- 	if (gp_exp && gp_async)
- 		SCALEOUT_ERRSTRING("No expedited async GPs, so went with async!");
+diff --git a/drivers/video/fbdev/omap/lcd_mipid.c b/drivers/video/fbdev/omap/lcd_mipid.c
+index e4a7f0b824ff4..a0fc4570403b8 100644
+--- a/drivers/video/fbdev/omap/lcd_mipid.c
++++ b/drivers/video/fbdev/omap/lcd_mipid.c
+@@ -571,11 +571,15 @@ static int mipid_spi_probe(struct spi_device *spi)
  
-+	if (kfree_rcu_test) {
-+		kfree_scale_cleanup();
-+		return;
-+	}
+ 	r = mipid_detect(md);
+ 	if (r < 0)
+-		return r;
++		goto free_md;
+ 
+ 	omapfb_register_panel(&md->panel);
+ 
+ 	return 0;
 +
- 	if (torture_cleanup_begin())
- 		return;
- 	if (!cur_ops) {
++free_md:
++	kfree(md);
++	return r;
+ }
+ 
+ static void mipid_spi_remove(struct spi_device *spi)
 -- 
 2.39.2
 
