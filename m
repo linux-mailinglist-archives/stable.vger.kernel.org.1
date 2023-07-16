@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7801F7553A7
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CD427555CE
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231819AbjGPUV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45634 "EHLO
+        id S232636AbjGPUos (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231821AbjGPUVZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:21:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 342D81BF
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:21:25 -0700 (PDT)
+        with ESMTP id S232634AbjGPUor (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:44:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 975F2E43
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:44:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B720760EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:21:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C767BC433C7;
-        Sun, 16 Jul 2023 20:21:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 36DC960EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:44:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CC0C433C8;
+        Sun, 16 Jul 2023 20:44:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538884;
-        bh=8P7yzFL1ajF5GBdrCzn17c4qHZZ34u3r6LBKCbsff08=;
+        s=korg; t=1689540285;
+        bh=B32SVhQMe+FpiMbO6keH5Pk5eWOnQv6AS1MyQdnAyUk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vPuuyzbCRp9G4y2siXuhtv9+I+CsrYzhQRdtLu1N6OYIPE0ZA4PF+g4mlws12B8Fd
-         i8944HIV/DWOaFhSqy3u2k3jpsxFBliv7uZfaJriWU/aqklPw77NxoiwjU6D2IeQxY
-         pA3CSe893uJfetvCWaOu6E70N1Alw1BtVVydy6vw=
+        b=Qug2gUEugicMFJxeaA3bsAnjXO1ilQhLVcOCijK0x5j8VRkRVN5YugOCsMCj1DWa4
+         k/EO1QsWXgz1mhHQNgfqXTx82xcMXmqay9ZJAwmBJK72uCbGB72kHWduaJHb6pa2Xj
+         mqgGU8CiJZlIW+uxBfRjXDzAstu1OlhbYMj48VE4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 593/800] usb: hide unused usbfs_notify_suspend/resume functions
-Date:   Sun, 16 Jul 2023 21:47:26 +0200
-Message-ID: <20230716195002.874837268@linuxfoundation.org>
+Subject: [PATCH 6.1 308/591] powerpc/signal32: Force inlining of __unsafe_save_user_regs() and save_tm_user_regs_unsafe()
+Date:   Sun, 16 Jul 2023 21:47:27 +0200
+Message-ID: <20230716194931.859874213@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +56,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 8e6bd945e6dde64fbc60ec3fe252164493a8d3a2 ]
+[ Upstream commit a03b1a0b19398a47489fdcef02ec19c2ba05a15d ]
 
-The declaration is in an #ifdef, which causes warnings when building
-with 'make W=1' and without CONFIG_PM:
+Looking at generated code for handle_signal32() shows calls to a
+function called __unsafe_save_user_regs.constprop.0 while user access
+is open.
 
-drivers/usb/core/devio.c:742:6: error: no previous prototype for 'usbfs_notify_suspend'
-drivers/usb/core/devio.c:747:6: error: no previous prototype for 'usbfs_notify_resume'
+And that __unsafe_save_user_regs.constprop.0 function has two nops at
+the begining, allowing it to be traced, which is unexpected during
+user access open window.
 
-Use the same #ifdef check around the function definitions to avoid
-the warnings and slightly shrink the USB core.
+The solution could be to mark __unsafe_save_user_regs() no trace, but
+to be on the safe side the most efficient is to flag it __always_inline
+as already done for function __unsafe_restore_general_regs(). The
+function is relatively small and only called twice, so the size
+increase will remain in the noise.
 
-Fixes: 7794f486ed0b ("usbfs: Add ioctls for runtime power management")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20230516202103.558301-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Do the same with save_tm_user_regs_unsafe() as it may suffer the
+same issue.
+
+Fixes: ef75e7318294 ("powerpc/signal32: Transform save_user_regs() and save_tm_user_regs() in 'unsafe' version")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/7e469c8f01860a69c1ada3ca6a5e2aa65f0f74b2.1685955220.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/devio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kernel/signal_32.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/core/devio.c b/drivers/usb/core/devio.c
-index fcf68818e9992..cbad2af5fd882 100644
---- a/drivers/usb/core/devio.c
-+++ b/drivers/usb/core/devio.c
-@@ -746,6 +746,7 @@ static int driver_resume(struct usb_interface *intf)
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index c114c7f25645c..7a718ed32b277 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -264,8 +264,9 @@ static void prepare_save_user_regs(int ctx_has_vsx_region)
+ #endif
+ }
+ 
+-static int __unsafe_save_user_regs(struct pt_regs *regs, struct mcontext __user *frame,
+-				   struct mcontext __user *tm_frame, int ctx_has_vsx_region)
++static __always_inline int
++__unsafe_save_user_regs(struct pt_regs *regs, struct mcontext __user *frame,
++			struct mcontext __user *tm_frame, int ctx_has_vsx_region)
+ {
+ 	unsigned long msr = regs->msr;
+ 
+@@ -364,8 +365,9 @@ static void prepare_save_tm_user_regs(void)
+ 		current->thread.ckvrsave = mfspr(SPRN_VRSAVE);
+ }
+ 
+-static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
+-				    struct mcontext __user *tm_frame, unsigned long msr)
++static __always_inline int
++save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
++			 struct mcontext __user *tm_frame, unsigned long msr)
+ {
+ 	/* Save both sets of general registers */
+ 	unsafe_save_general_regs(&current->thread.ckpt_regs, frame, failed);
+@@ -444,8 +446,9 @@ static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user
+ #else
+ static void prepare_save_tm_user_regs(void) { }
+ 
+-static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
+-				    struct mcontext __user *tm_frame, unsigned long msr)
++static __always_inline int
++save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *frame,
++			 struct mcontext __user *tm_frame, unsigned long msr)
+ {
  	return 0;
  }
- 
-+#ifdef CONFIG_PM
- /* The following routines apply to the entire device, not interfaces */
- void usbfs_notify_suspend(struct usb_device *udev)
- {
-@@ -764,6 +765,7 @@ void usbfs_notify_resume(struct usb_device *udev)
- 	}
- 	mutex_unlock(&usbfs_mutex);
- }
-+#endif
- 
- struct usb_driver usbfs_driver = {
- 	.name =		"usbfs",
 -- 
 2.39.2
 
