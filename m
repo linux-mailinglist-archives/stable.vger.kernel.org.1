@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F5E7554FA
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8CF7552BB
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232328AbjGPUgB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:36:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56112 "EHLO
+        id S231452AbjGPULQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:11:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232327AbjGPUgA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:36:00 -0400
+        with ESMTP id S231447AbjGPULP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D198BA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:36:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EBB9B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FD8160EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:35:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF32C433C8;
-        Sun, 16 Jul 2023 20:35:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B84660DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F97C433C8;
+        Sun, 16 Jul 2023 20:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539759;
-        bh=rvKtnN98+cSQHDuLVFywgMt/5YiKKt0Jw0+1rq4baBc=;
+        s=korg; t=1689538273;
+        bh=e9xxmM5KlAB5/1aP8KNrtS4G/9k4iV/qvkmZj1N8iY8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HezIPzg6lnuUPTauQL3t0uPgOe0AqWu78gBScEMKS6kdp0dFN5SS2k2Je1Ri8qxLP
-         ou1pV2shFPCKvJ7XDAU62DsBW0LWX/vkH6PDR6264YM05lpDdu4+hSr3akWwwwiM2K
-         D0hsYUJYonfIu/BDrqt4ftTdlcGXDwBK7e4nW0jM=
+        b=bgVGEbDrrZX3J9Ylpv3j97SwyfOSSN4I8CcI4ngAzKSitfTwUqQbPaOaBar9bIq5d
+         6bW5Dv35p4EdqU5zribz3gyVWI/3NKpqFDRZGa8QZuu72FRDvX+ftXbfeDfGw8CNmU
+         SUk0+MMIt6w+gFNd4KRdnCZ2rIAOdx4+yeTcoXB8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/591] memstick r592: make memstick_debug_get_tpc_name() static
+Subject: [PATCH 6.4 390/800] clk: bcm: rpi: Fix off by one in raspberrypi_discover_clocks()
 Date:   Sun, 16 Jul 2023 21:44:03 +0200
-Message-ID: <20230716194926.565614001@linuxfoundation.org>
+Message-ID: <20230716194958.131999792@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 434587df9f7fd68575f99a889cc5f2efc2eaee5e ]
+[ Upstream commit da2edb3e3c09fd1451b7f400ccd1070ef086619a ]
 
-There are no other files referencing this function, apparently
-it was left global to avoid an 'unused function' warning when
-the only caller is left out. With a 'W=1' build, it causes
-a 'missing prototype' warning though:
+Smatch detected an off by one in this code:
+    drivers/clk/bcm/clk-raspberrypi.c:374 raspberrypi_discover_clocks()
+    error: buffer overflow 'data->hws' 16 <= 16
 
-drivers/memstick/host/r592.c:47:13: error: no previous prototype for 'memstick_debug_get_tpc_name' [-Werror=missing-prototypes]
+The data->hws[] array has RPI_FIRMWARE_NUM_CLK_ID elements so the >
+comparison needs to changed to >=.
 
-Annotate the function as 'static __maybe_unused' to avoid both
-problems.
-
-Fixes: 926341250102 ("memstick: add driver for Ricoh R5C592 card reader")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230516202714.560929-1-arnd@kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 12c90f3f27bb ("clk: bcm: rpi: Add variant structure")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/5a850b08-d2f5-4794-aceb-a6b468965139@kili.mountain
+Reviewed-by: Stefan Wahren <stefan.wahren@i2se.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memstick/host/r592.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/clk/bcm/clk-raspberrypi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/memstick/host/r592.c b/drivers/memstick/host/r592.c
-index 42bfc46842b82..461f5ffd02bc1 100644
---- a/drivers/memstick/host/r592.c
-+++ b/drivers/memstick/host/r592.c
-@@ -44,12 +44,10 @@ static const char *tpc_names[] = {
-  * memstick_debug_get_tpc_name - debug helper that returns string for
-  * a TPC number
-  */
--const char *memstick_debug_get_tpc_name(int tpc)
-+static __maybe_unused const char *memstick_debug_get_tpc_name(int tpc)
- {
- 	return tpc_names[tpc-1];
- }
--EXPORT_SYMBOL(memstick_debug_get_tpc_name);
--
+diff --git a/drivers/clk/bcm/clk-raspberrypi.c b/drivers/clk/bcm/clk-raspberrypi.c
+index eb399a4d141ba..829406dc44a20 100644
+--- a/drivers/clk/bcm/clk-raspberrypi.c
++++ b/drivers/clk/bcm/clk-raspberrypi.c
+@@ -356,9 +356,9 @@ static int raspberrypi_discover_clocks(struct raspberrypi_clk *rpi,
+ 	while (clks->id) {
+ 		struct raspberrypi_clk_variant *variant;
  
- /* Read a register*/
- static inline u32 r592_read_reg(struct r592_device *dev, int address)
+-		if (clks->id > RPI_FIRMWARE_NUM_CLK_ID) {
++		if (clks->id >= RPI_FIRMWARE_NUM_CLK_ID) {
+ 			dev_err(rpi->dev, "Unknown clock id: %u (max: %u)\n",
+-					   clks->id, RPI_FIRMWARE_NUM_CLK_ID);
++					   clks->id, RPI_FIRMWARE_NUM_CLK_ID - 1);
+ 			return -EINVAL;
+ 		}
+ 
 -- 
 2.39.2
 
