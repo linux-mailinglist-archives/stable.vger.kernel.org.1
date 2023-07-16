@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44CBC7553C8
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EB8675560B
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231882AbjGPUW6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:22:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46496 "EHLO
+        id S232705AbjGPUrB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:47:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231866AbjGPUWx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:53 -0400
+        with ESMTP id S232709AbjGPUq6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:46:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9265F1B7
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E7BDE41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:46:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2275560EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA3CC433C7;
-        Sun, 16 Jul 2023 20:22:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B623060E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:46:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61F6C433CA;
+        Sun, 16 Jul 2023 20:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538971;
-        bh=dQvGgRmeWDebYmrjcUuW9pJlQaoBZO15RZPdm+KoYXI=;
+        s=korg; t=1689540417;
+        bh=91NxeDV3yF8f3CIWM7j0FuRHpBe9ibRGaFctXa8ues4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QAUoR5FxeLgy4ubYEIUZn2pLuUTAqoRQoo8Zb99L3bChnkrTOd+K85OgX+ce+YKfL
-         8KehWl+0LILwj/d7Sy+hVztjVlGGH2l2/JodxahH1GW9iROU2xBlAtRHDVJ5jyj+ME
-         BW6Ir47oPr0F5WPj5W0Wpy0VauglOMx/qqRZtqss=
+        b=efsEfFNcrPBjRmGZaKrFiRLR9eybMr2qlh96myOc+UpqnW7iCMUohn3MRGPPJxUlu
+         hqPqrhHMvV+nhhpnDLYHNb3B9OngBtEGLjb7jOwOFJ5hIFGiHq4vRV6vteEATR47AN
+         nbOBC2Gz7OC/Ji666toCtN5rbnFTbMxW4ZR5dzwQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 642/800] phy: qcom: qmp-combo: fix Display Port PHY configuration for SM8550
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        Shyam Prasad N <sprasad@microsoft.com>,
+        Steve French <stfrench@microsoft.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 356/591] cifs: prevent use-after-free by freeing the cfile later
 Date:   Sun, 16 Jul 2023 21:48:15 +0200
-Message-ID: <20230716195004.025321157@linuxfoundation.org>
+Message-ID: <20230716194933.122821293@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,76 +57,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 6cd52a2a06774c6c454ffef084c3d9b17618ca23 ]
+[ Upstream commit 33f736187d08f6bc822117629f263b97d3df4165 ]
 
-The SM8550 PHY also uses a different offset for the CMN_STATUS reg,
-use the right one for the v6 Display Port configuration.
+In smb2_compound_op we have a possible use-after-free
+which can cause hard to debug problems later on.
 
-Fixes: 49742e9edab3 ("phy: qcom-qmp-combo: Add support for SM8550")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230601-topic-sm8550-upstream-dp-phy-init-fix-v1-1-4e9da9f97991@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+This was revealed during stress testing with KASAN enabled
+kernel. Fixing it by moving the cfile free call to
+a few lines below, after the usage.
+
+Fixes: 76894f3e2f71 ("cifs: improve symlink handling for smb2+")
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/smb/client/smb2inode.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-index 87b17e5877ab8..1fdcc81661ed8 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-@@ -2142,6 +2142,7 @@ static void qmp_v4_configure_dp_tx(struct qmp_combo *qmp)
- static int qmp_v456_configure_dp_phy(struct qmp_combo *qmp,
- 				     unsigned int com_resetm_ctrl_reg,
- 				     unsigned int com_c_ready_status_reg,
-+				     unsigned int com_cmn_status_reg,
- 				     unsigned int dp_phy_status_reg)
- {
- 	const struct phy_configure_opts_dp *dp_opts = &qmp->dp_opts;
-@@ -2198,14 +2199,14 @@ static int qmp_v456_configure_dp_phy(struct qmp_combo *qmp,
- 			10000))
- 		return -ETIMEDOUT;
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index c97e049e29dd3..57526bdbab171 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -397,9 +397,6 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 					rsp_iov);
  
--	if (readl_poll_timeout(qmp->dp_serdes + QSERDES_V4_COM_CMN_STATUS,
-+	if (readl_poll_timeout(qmp->dp_serdes + com_cmn_status_reg,
- 			status,
- 			((status & BIT(0)) > 0),
- 			500,
- 			10000))
- 		return -ETIMEDOUT;
+  finished:
+-	if (cfile)
+-		cifsFileInfo_put(cfile);
+-
+ 	SMB2_open_free(&rqst[0]);
+ 	if (rc == -EREMCHG) {
+ 		pr_warn_once("server share %s deleted\n", tcon->tree_name);
+@@ -513,6 +510,9 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 		break;
+ 	}
  
--	if (readl_poll_timeout(qmp->dp_serdes + QSERDES_V4_COM_CMN_STATUS,
-+	if (readl_poll_timeout(qmp->dp_serdes + com_cmn_status_reg,
- 			status,
- 			((status & BIT(1)) > 0),
- 			500,
-@@ -2241,6 +2242,7 @@ static int qmp_v4_configure_dp_phy(struct qmp_combo *qmp)
- 
- 	ret = qmp_v456_configure_dp_phy(qmp, QSERDES_V4_COM_RESETSM_CNTRL,
- 					QSERDES_V4_COM_C_READY_STATUS,
-+					QSERDES_V4_COM_CMN_STATUS,
- 					QSERDES_V4_DP_PHY_STATUS);
- 	if (ret < 0)
- 		return ret;
-@@ -2305,6 +2307,7 @@ static int qmp_v5_configure_dp_phy(struct qmp_combo *qmp)
- 
- 	ret = qmp_v456_configure_dp_phy(qmp, QSERDES_V4_COM_RESETSM_CNTRL,
- 					QSERDES_V4_COM_C_READY_STATUS,
-+					QSERDES_V4_COM_CMN_STATUS,
- 					QSERDES_V4_DP_PHY_STATUS);
- 	if (ret < 0)
- 		return ret;
-@@ -2364,6 +2367,7 @@ static int qmp_v6_configure_dp_phy(struct qmp_combo *qmp)
- 
- 	ret = qmp_v456_configure_dp_phy(qmp, QSERDES_V6_COM_RESETSM_CNTRL,
- 					QSERDES_V6_COM_C_READY_STATUS,
-+					QSERDES_V6_COM_CMN_STATUS,
- 					QSERDES_V6_DP_PHY_STATUS);
- 	if (ret < 0)
- 		return ret;
++	if (cfile)
++		cifsFileInfo_put(cfile);
++
+ 	if (rc && err_iov && err_buftype) {
+ 		memcpy(err_iov, rsp_iov, 3 * sizeof(*err_iov));
+ 		memcpy(err_buftype, resp_buftype, 3 * sizeof(*err_buftype));
 -- 
 2.39.2
 
