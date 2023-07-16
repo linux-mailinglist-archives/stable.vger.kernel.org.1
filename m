@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58486755397
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B24537555D9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:45:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231799AbjGPUUo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:20:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45142 "EHLO
+        id S232654AbjGPUpP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:45:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbjGPUUn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:20:43 -0400
+        with ESMTP id S232649AbjGPUpP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:45:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F97190
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:20:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87848E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:45:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8BE360EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:20:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC45DC433C7;
-        Sun, 16 Jul 2023 20:20:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CCE460E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:45:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3BFC433C7;
+        Sun, 16 Jul 2023 20:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538842;
-        bh=GDGzWpb4PeW6x27Y8Ho3q8elE1iRWc41EKla1wpVPX8=;
+        s=korg; t=1689540313;
+        bh=SS2QPdxXc9dAbaHZnLKHGQRcLOOCO3CBqZ8lgQ6CMxU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y+HooEeelReL7xoTglrpUr+PPdlYaPYb8TeiSB2tNLv8YF886nMNle0uH8aKTZsQ6
-         gODmCp1SHdByx8LO4oABYDFWS787e67KnQA+mYun22s+PfpFYfxE/FRvXEHrkJdxl1
-         qgCacgr7i3WjHF4dYC7klFbeIT0UfBhGw87pEfo4=
+        b=lGGRBZ09f4Ei8el1wH1DE/05DFQSLPELJ2B8S/0ZfGQNH+/YG6326rL9RY5g8V2RB
+         FBeI3n744A+g/Ge4WLxe4xxntird4Taqp0+hEPnHOu0GL5VgV0zbA45l6EDlRAGF15
+         p1+bPrVIkHe8A8quvbPzs3oweZ6fMt9mIlBco6Yw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ming Qian <ming.qian@nxp.com>,
-        "xiahong.bao" <xiahong.bao@nxp.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Fei Shao <fshao@chromium.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 567/800] media: amphion: drop repeated codec data for vc1g format
+Subject: [PATCH 6.1 281/591] clk: Fix memory leak in devm_clk_notifier_register()
 Date:   Sun, 16 Jul 2023 21:47:00 +0200
-Message-ID: <20230716195002.258212082@linuxfoundation.org>
+Message-ID: <20230716194931.163777045@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,54 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Fei Shao <fshao@chromium.org>
 
-[ Upstream commit e1d2ccc2cdd6333584aa3d5386dc667d0837c48f ]
+[ Upstream commit 7fb933e56f77a57ef7cfc59fc34cbbf1b1fa31ff ]
 
-For format V4L2_PIX_FMT_VC1_ANNEX_G,
-the separate codec data is required only once.
-The repeated codec data may introduce some decoding error.
-so drop the repeated codec data.
+devm_clk_notifier_register() allocates a devres resource for clk
+notifier but didn't register that to the device, so the notifier didn't
+get unregistered on device detach and the allocated resource was leaked.
 
-It's amphion vpu's limitation
+Fix the issue by registering the resource through devres_add().
 
-Fixes: e670f5d672ef ("media: amphion: only insert the first sequence startcode for vc1l format")
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Tested-by: xiahong.bao <xiahong.bao@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+This issue was found with kmemleak on a Chromebook.
+
+Fixes: 6d30d50d037d ("clk: add devm variant of clk_notifier_register")
+Signed-off-by: Fei Shao <fshao@chromium.org>
+Link: https://lore.kernel.org/r/20230619112253.v2.1.I13f060c10549ef181603e921291bdea95f83033c@changeid
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_malone.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/clk/clk.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
-index e96994437429f..c1d6606ad7e57 100644
---- a/drivers/media/platform/amphion/vpu_malone.c
-+++ b/drivers/media/platform/amphion/vpu_malone.c
-@@ -1313,6 +1313,15 @@ static int vpu_malone_insert_scode_pic(struct malone_scode_t *scode, u32 codec_i
- 	return sizeof(hdr);
- }
- 
-+static int vpu_malone_insert_scode_vc1_g_seq(struct malone_scode_t *scode)
-+{
-+	if (!scode->inst->total_input_count)
-+		return 0;
-+	if (vpu_vb_is_codecconfig(to_vb2_v4l2_buffer(scode->vb)))
-+		scode->need_data = 0;
-+	return 0;
-+}
-+
- static int vpu_malone_insert_scode_vc1_g_pic(struct malone_scode_t *scode)
- {
- 	struct vb2_v4l2_buffer *vbuf;
-@@ -1460,6 +1469,7 @@ static const struct malone_scode_handler scode_handlers[] = {
- 	},
- 	{
- 		.pixelformat = V4L2_PIX_FMT_VC1_ANNEX_G,
-+		.insert_scode_seq = vpu_malone_insert_scode_vc1_g_seq,
- 		.insert_scode_pic = vpu_malone_insert_scode_vc1_g_pic,
- 	},
- 	{
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index d4a74759fe292..e0de6565800d2 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -4651,6 +4651,7 @@ int devm_clk_notifier_register(struct device *dev, struct clk *clk,
+ 	if (!ret) {
+ 		devres->clk = clk;
+ 		devres->nb = nb;
++		devres_add(dev, devres);
+ 	} else {
+ 		devres_free(devres);
+ 	}
 -- 
 2.39.2
 
