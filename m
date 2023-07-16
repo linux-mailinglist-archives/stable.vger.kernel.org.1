@@ -2,100 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 444B875537F
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88C2A7555D6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231749AbjGPUTn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:19:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44626 "EHLO
+        id S232647AbjGPUpI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:45:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231752AbjGPUTm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13CDD1B7
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:42 -0700 (PDT)
+        with ESMTP id S232646AbjGPUpH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:45:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AA33E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:45:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7191D60EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8C4C433C7;
-        Sun, 16 Jul 2023 20:19:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D468A60EBD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:45:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E161DC433C8;
+        Sun, 16 Jul 2023 20:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538780;
-        bh=5rpOE4GsLknOK2Wrlcnwwt9DRdRQzV7IFxCEADy54xc=;
+        s=korg; t=1689540305;
+        bh=r6c/BdVJB/+BwY1ChJ00Kem47Qvnf0+VTDcSPqCtIHs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1GA7bkVNc/9L7SBUzxLCXKfR5s9tQwRmI/UyP7yTFgEn4X/oBOAktCuskNEMz2pHX
-         zj7jgsyp6vbD64L+bAhthY0W00za8ADxVjDBwlEyyZ+D+zpGts6BGRPblT2id4hGCO
-         9Hcm2iN8tmg9ylr4LB6eySefmBYWupmfEtUe5rHI=
+        b=Bqp7oSJD28oUQqt45gtQDFI/ce8hf+YpH6Zmcw7wPRGEa/22Jdjt5mZ0zCBEBtbxZ
+         uHilRAb1AZ1VSini8i5m6NH+4vhwi/THY76GxfcvpEd+MBo6PFu9FgeTWerkoJ3dsL
+         ueNlk5E85ogzCyodWOPOQpgy9flFVJruQetaE5GY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 574/800] media: i2c: Correct format propagation for st-mipid02
+Subject: [PATCH 6.1 288/591] pinctrl: bcm2835: Handle gpiochip_add_pin_range() errors
 Date:   Sun, 16 Jul 2023 21:47:07 +0200
-Message-ID: <20230716195002.418306573@linuxfoundation.org>
+Message-ID: <20230716194931.344264292@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Scally <dan.scally@ideasonboard.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 306c3190b30d4d6a098888b9d7d4cefaa0ddcb91 ]
+[ Upstream commit cdf7e616120065007687fe1df0412154f259daec ]
 
-Format propagation in the st-mipid02 driver is incorrect in that when
-setting format for V4L2_SUBDEV_FORMAT_TRY on the source pad, the
-_active_ rather than _try_ format from the sink pad is propagated.
-This causes problems with format negotiation - update the function to
-propagate the correct format.
+gpiochip_add_pin_range() can fail, so better return its error code than
+a hard coded '0'.
 
-Fixes: 642bb5e88fed ("media: st-mipid02: MIPID02 CSI-2 to PARALLEL bridge driver")
-Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: d2b67744fd99 ("pinctrl: bcm2835: implement hook for missing gpio-ranges")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/98c3b5890bb72415145c9fe4e1d974711edae376.1681681402.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/st-mipid02.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/pinctrl/bcm/pinctrl-bcm2835.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/i2c/st-mipid02.c b/drivers/media/i2c/st-mipid02.c
-index 31b89aff0e86a..f20f87562bf11 100644
---- a/drivers/media/i2c/st-mipid02.c
-+++ b/drivers/media/i2c/st-mipid02.c
-@@ -736,8 +736,13 @@ static void mipid02_set_fmt_source(struct v4l2_subdev *sd,
- {
- 	struct mipid02_dev *bridge = to_mipid02_dev(sd);
+diff --git a/drivers/pinctrl/bcm/pinctrl-bcm2835.c b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
+index 0f1ab0829ffe6..fe8da3ccb0b5a 100644
+--- a/drivers/pinctrl/bcm/pinctrl-bcm2835.c
++++ b/drivers/pinctrl/bcm/pinctrl-bcm2835.c
+@@ -376,10 +376,8 @@ static int bcm2835_of_gpio_ranges_fallback(struct gpio_chip *gc,
+ 	if (!pctldev)
+ 		return 0;
  
--	/* source pad mirror active sink pad */
--	format->format = bridge->fmt;
-+	/* source pad mirror sink pad */
-+	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE)
-+		format->format = bridge->fmt;
-+	else
-+		format->format = *v4l2_subdev_get_try_format(sd, sd_state,
-+							     MIPID02_SINK_0);
-+
- 	/* but code may need to be converted */
- 	format->format.code = serial_to_parallel_code(format->format.code);
+-	gpiochip_add_pin_range(gc, pinctrl_dev_get_devname(pctldev), 0, 0,
+-			       gc->ngpio);
+-
+-	return 0;
++	return gpiochip_add_pin_range(gc, pinctrl_dev_get_devname(pctldev), 0, 0,
++				      gc->ngpio);
+ }
  
+ static const struct gpio_chip bcm2835_gpio_chip = {
 -- 
 2.39.2
 
