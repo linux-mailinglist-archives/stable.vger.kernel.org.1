@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C80AF7554CB
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C7F17552AB
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232300AbjGPUe3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54928 "EHLO
+        id S231421AbjGPUKe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:10:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232304AbjGPUe2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:28 -0400
+        with ESMTP id S231425AbjGPUKd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE4CEBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 883CA123
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 848AF60EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933B3C433C7;
-        Sun, 16 Jul 2023 20:34:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E4CF60EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA8FC433C9;
+        Sun, 16 Jul 2023 20:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539666;
-        bh=A/MalDIto8ZcXAGagnesCMHnrzFeETs0MT/EXgKM7Jo=;
+        s=korg; t=1689538231;
+        bh=EUlAzn4v+aovxDVHF8sVQJ2AMOWMnLbNYvO559t/gCo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ckluGnAdEKIwvNnuP8cYIdN9n19SqeWSPzlQzDd3KERZEwUSF+sj0aaWlY2w95qiP
-         i1qHBBj0oHx9B/wEygV9LDIyvvePlbKIEh1a6s70lQXs07jXvXV2CAVobuxL7Z/kK4
-         bnP2ARyXB/h06KX0gT/qcus4pfP3OVEjmZQ9SbX4=
+        b=z65r0hAeAaxFBcP6cdfZjnN1oOr2pjCVAs3De/4EhK7ZM5GV/ZzjXGUt9tAMQAaBu
+         BikRlCZQf7Se+Jx6xf2tZ6n3NQxK875b8w0fSsy0oQEguxMs9CxRQ19118jCynwxyU
+         Wliv6+Xkw+VOnYBLKM5luUiYWNEe4Q+7FfRIPdOU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/591] wifi: wl3501_cs: Fix an error handling path in wl3501_probe()
-Date:   Sun, 16 Jul 2023 21:43:48 +0200
-Message-ID: <20230716194926.180511718@linuxfoundation.org>
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 376/800] RDMA/bnxt_re: wraparound mbox producer index
+Date:   Sun, 16 Jul 2023 21:43:49 +0200
+Message-ID: <20230716194957.809087629@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,64 +57,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit 391af06a02e7642039ac5f6c4b2c034ab0992b5d ]
+[ Upstream commit 0af91306e17ef3d18e5f100aa58aa787869118af ]
 
-Should wl3501_config() fail, some resources need to be released as already
-done in the remove function.
+Driver is not handling the wraparound of the mbox producer index correctly.
+Currently the wraparound happens once u32 max is reached.
 
-Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/7cc9c9316489b7d69b36aeb0edd3123538500b41.1684569865.git.christophe.jaillet@wanadoo.fr
+Bit 31 of the producer index register is special and should be set
+only once for the first command. Because the producer index overflow
+setting bit31 after a long time, FW goes to initialization sequence
+and this causes FW hang.
+
+Fix is to wraparound the mbox producer index once it reaches u16 max.
+
+Fixes: cee0c7bba486 ("RDMA/bnxt_re: Refactor command queue management code")
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1686308514-11996-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/wl3501_cs.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
-index 7fb2f95134760..c45c4b7cbbaf1 100644
---- a/drivers/net/wireless/wl3501_cs.c
-+++ b/drivers/net/wireless/wl3501_cs.c
-@@ -1862,6 +1862,7 @@ static int wl3501_probe(struct pcmcia_device *p_dev)
- {
- 	struct net_device *dev;
- 	struct wl3501_card *this;
-+	int ret;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 688eaa01db649..d4ce82bebb0a5 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -180,7 +180,7 @@ static int __send_message(struct bnxt_qplib_rcfw *rcfw,
+ 	} while (bsize > 0);
+ 	cmdq->seq_num++;
  
- 	/* The io structure describes IO port mapping */
- 	p_dev->resource[0]->end	= 16;
-@@ -1873,8 +1874,7 @@ static int wl3501_probe(struct pcmcia_device *p_dev)
+-	cmdq_prod = hwq->prod;
++	cmdq_prod = hwq->prod & 0xFFFF;
+ 	if (test_bit(FIRMWARE_FIRST_FLAG, &cmdq->flags)) {
+ 		/* The very first doorbell write
+ 		 * is required to set this flag
+@@ -599,7 +599,7 @@ int bnxt_qplib_alloc_rcfw_channel(struct bnxt_qplib_res *res,
+ 		rcfw->cmdq_depth = BNXT_QPLIB_CMDQE_MAX_CNT_8192;
  
- 	dev = alloc_etherdev(sizeof(struct wl3501_card));
- 	if (!dev)
--		goto out_link;
--
-+		return -ENOMEM;
- 
- 	dev->netdev_ops		= &wl3501_netdev_ops;
- 	dev->watchdog_timeo	= 5 * HZ;
-@@ -1887,9 +1887,15 @@ static int wl3501_probe(struct pcmcia_device *p_dev)
- 	netif_stop_queue(dev);
- 	p_dev->priv = dev;
- 
--	return wl3501_config(p_dev);
--out_link:
--	return -ENOMEM;
-+	ret = wl3501_config(p_dev);
-+	if (ret)
-+		goto out_free_etherdev;
-+
-+	return 0;
-+
-+out_free_etherdev:
-+	free_netdev(dev);
-+	return ret;
- }
- 
- static int wl3501_config(struct pcmcia_device *link)
+ 	sginfo.pgsize = bnxt_qplib_cmdqe_page_size(rcfw->cmdq_depth);
+-	hwq_attr.depth = rcfw->cmdq_depth;
++	hwq_attr.depth = rcfw->cmdq_depth & 0x7FFFFFFF;
+ 	hwq_attr.stride = BNXT_QPLIB_CMDQE_UNITS;
+ 	hwq_attr.type = HWQ_TYPE_CTX;
+ 	if (bnxt_qplib_alloc_init_hwq(&cmdq->hwq, &hwq_attr)) {
 -- 
 2.39.2
 
