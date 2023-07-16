@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 767CD7554FE
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 247827552CD
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232344AbjGPUgM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:36:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56300 "EHLO
+        id S231484AbjGPUMH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:12:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232326AbjGPUgM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:36:12 -0400
+        with ESMTP id S231483AbjGPUMG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:12:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466EABA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:36:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 869C090
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:12:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF1FB60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:36:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11F4C433C7;
-        Sun, 16 Jul 2023 20:36:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CD1C60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:12:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AFCC433C8;
+        Sun, 16 Jul 2023 20:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539770;
-        bh=zH9s6XmQVOMLX/SuqZcLS/3z0qpV+GVeVXav/e5d/JU=;
+        s=korg; t=1689538324;
+        bh=UE/pqTAU1IAOwuiHgVTSxrara56RcnsDtKsASF2hkQo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sE7AphyCkvsdhSzpM26MN441g9kCDooy/zetR8GtSFIBOsqkdroSd70csCngTGIJH
-         tshIB2uM2RG8Ra+QuSkUYhHqTCRP7q0rfUgDylAxrBbnk3n/pjM7WdLy2QGI/LlOTu
-         01FbraccDlpS6l30SOozDaqYFDuJOtE1hvht0g1w=
+        b=bO+SdYPp23CqO9mtTCa7+xIeruWAOKgSa0O6uqwXptKiMQrRVNmC7IrvkqJVwA+S2
+         6LviJxEyXO/p3+gu1dQ/ImkjBSJv9UuXgqZnHTZVmJsRW8+R7H798+O7CK+OzGkYdS
+         Yo7JNlGmz7eFqymQ+YCC7AY02ojEOjfO6vVamrCY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jimmy Assarsson <extja@kvaser.com>,
-        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/591] can: kvaser_pciefd: Set hardware timestamp on transmitted packets
+Subject: [PATCH 6.4 411/800] drm/msm/dpu: fix sc7280 and sc7180 PINGPONG done interrupts
 Date:   Sun, 16 Jul 2023 21:44:24 +0200
-Message-ID: <20230716194927.109280972@linuxfoundation.org>
+Message-ID: <20230716194958.617911480@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,52 +57,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jimmy Assarsson <extja@kvaser.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit ec681b91befa982477e24a150dd6452427fe6473 ]
+[ Upstream commit 0b78be614c503ec03636f82cea52ad735c5085e7 ]
 
-Set hardware timestamp on transmitted packets.
+During IRQ conversion we have lost the PP_DONE interrupts for sc7280
+platform. This was left unnoticed, because this interrupt is only used
+for CMD outputs and probably no sc7[12]80 systems use DSI CMD panels.
 
-Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://lore.kernel.org/all/20230529134248.752036-5-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 667e9985ee24 ("drm/msm/dpu: replace IRQ lookup with the data in hw catalog")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+Patchwork: https://patchwork.freedesktop.org/patch/542175/
+Link: https://lore.kernel.org/r/20230613001004.3426676-2-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/kvaser_pciefd.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ .../drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h   |  8 ++++++--
+ .../drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h   | 16 ++++++++++++----
+ 2 files changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index 0b537292c7b19..74a47244f1291 100644
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -1519,6 +1519,7 @@ static void kvaser_pciefd_handle_nack_packet(struct kvaser_pciefd_can *can,
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
+index e905b0c6843a0..88c211876516a 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
+@@ -80,8 +80,12 @@ static const struct dpu_dspp_cfg sc7180_dspp[] = {
+ };
  
- 	if (skb) {
- 		cf->can_id |= CAN_ERR_BUSERROR;
-+		kvaser_pciefd_set_skb_timestamp(can->kv_pcie, skb, p->timestamp);
- 		netif_rx(skb);
- 	} else {
- 		stats->rx_dropped++;
-@@ -1550,8 +1551,15 @@ static int kvaser_pciefd_handle_ack_packet(struct kvaser_pciefd *pcie,
- 		netdev_dbg(can->can.dev, "Packet was flushed\n");
- 	} else {
- 		int echo_idx = p->header[0] & KVASER_PCIEFD_PACKET_SEQ_MSK;
--		int dlc = can_get_echo_skb(can->can.dev, echo_idx, NULL);
--		u8 count = ioread32(can->reg_base +
-+		int dlc;
-+		u8 count;
-+		struct sk_buff *skb;
-+
-+		skb = can->can.echo_skb[echo_idx];
-+		if (skb)
-+			kvaser_pciefd_set_skb_timestamp(pcie, skb, p->timestamp);
-+		dlc = can_get_echo_skb(can->can.dev, echo_idx, NULL);
-+		count = ioread32(can->reg_base +
- 				    KVASER_PCIEFD_KCAN_TX_NPACKETS_REG) & 0xff;
+ static const struct dpu_pingpong_cfg sc7180_pp[] = {
+-	PP_BLK("pingpong_0", PINGPONG_0, 0x70000, PINGPONG_SM8150_MASK, 0, sdm845_pp_sblk, -1, -1),
+-	PP_BLK("pingpong_1", PINGPONG_1, 0x70800, PINGPONG_SM8150_MASK, 0, sdm845_pp_sblk, -1, -1),
++	PP_BLK("pingpong_0", PINGPONG_0, 0x70000, PINGPONG_SM8150_MASK, 0, sdm845_pp_sblk,
++			DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 8),
++			-1),
++	PP_BLK("pingpong_1", PINGPONG_1, 0x70800, PINGPONG_SM8150_MASK, 0, sdm845_pp_sblk,
++			DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 9),
++			-1),
+ };
  
- 		if (count < KVASER_PCIEFD_CAN_TX_MAX_COUNT &&
+ static const struct dpu_intf_cfg sc7180_intf[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
+index 9248479c60101..7de87185d5c0c 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
+@@ -87,10 +87,18 @@ static const struct dpu_dspp_cfg sc7280_dspp[] = {
+ };
+ 
+ static const struct dpu_pingpong_cfg sc7280_pp[] = {
+-	PP_BLK_DITHER("pingpong_0", PINGPONG_0, 0x69000, 0, sc7280_pp_sblk, -1, -1),
+-	PP_BLK_DITHER("pingpong_1", PINGPONG_1, 0x6a000, 0, sc7280_pp_sblk, -1, -1),
+-	PP_BLK_DITHER("pingpong_2", PINGPONG_2, 0x6b000, 0, sc7280_pp_sblk, -1, -1),
+-	PP_BLK_DITHER("pingpong_3", PINGPONG_3, 0x6c000, 0, sc7280_pp_sblk, -1, -1),
++	PP_BLK_DITHER("pingpong_0", PINGPONG_0, 0x69000, 0, sc7280_pp_sblk,
++			DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 8),
++			-1),
++	PP_BLK_DITHER("pingpong_1", PINGPONG_1, 0x6a000, 0, sc7280_pp_sblk,
++			DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 9),
++			-1),
++	PP_BLK_DITHER("pingpong_2", PINGPONG_2, 0x6b000, 0, sc7280_pp_sblk,
++			DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 10),
++			-1),
++	PP_BLK_DITHER("pingpong_3", PINGPONG_3, 0x6c000, 0, sc7280_pp_sblk,
++			DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 11),
++			-1),
+ };
+ 
+ static const struct dpu_intf_cfg sc7280_intf[] = {
 -- 
 2.39.2
 
