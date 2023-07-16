@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91A7F755662
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC08575566D
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232817AbjGPUuC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:50:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37732 "EHLO
+        id S232852AbjGPUu3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:50:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232792AbjGPUt6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:58 -0400
+        with ESMTP id S232785AbjGPUu3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:50:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF12CE51
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57394E1
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:50:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4263660E9E
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AB8C433C8;
-        Sun, 16 Jul 2023 20:49:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE2F860EA2
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:50:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE58C433C7;
+        Sun, 16 Jul 2023 20:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540596;
-        bh=rhu/ApJ2l+uClfHnn+bAgVtOU6+dPXY2VjGaUWCfjyo=;
+        s=korg; t=1689540627;
+        bh=FaqdUIyMkvgk6FJ8+pmVw35p6XeNUShefM2Z/+8wY4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cA+xp9v++RlKpUy5I+es9hNz8XPKVHVPp5VhMrzJ05kRF3Kp0vGaTdcvxVxwKuq0L
-         ZkY/4Fvzk5tYC1McBtxgIRPkED8QS0BHqvye8NIjymSoH6nzTDMpI/3RC29QGbibL/
-         Alis6YkwEocQloi5Zcv6YyNeuoWLVTOdaSxUJj+o=
+        b=Em/siksayBDteC8eXUF1UeEuBDoePXiy4hlsd072Fu6+51D3bH/Gtz3LCq0zBLNBm
+         K/fDa3yLY3wicmgTwUwrvIyOtxV2XLjA9hSXMJzv9fVUDzCQP2MbJSTFl3BJrmAlb9
+         yCOYLTXh7gku53jG/DK/SqmJQFO1HkBEM1BiKOZw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 402/591] media: mediatek: vcodec: using decoder status instead of core work count
-Date:   Sun, 16 Jul 2023 21:49:01 +0200
-Message-ID: <20230716194934.320037823@linuxfoundation.org>
+Subject: [PATCH 6.1 403/591] clk: qcom: reset: support resetting multiple bits
+Date:   Sun, 16 Jul 2023 21:49:02 +0200
+Message-ID: <20230716194934.345237089@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -58,149 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Robert Marko <robimarko@gmail.com>
 
-[ Upstream commit 2864e304faec04c2674328aad0e820a9cd84cdec ]
+[ Upstream commit 4a5210893625f89723ea210d7c630b730abb37ad ]
 
-Adding the definition of decoder status to separate different decoder
-period for core hardware.
+This patch adds the support for giving the complete bitmask
+in reset structure and reset operation will use this bitmask
+for all reset operations.
 
-core_work_cnt is the number of core work queued to work queue, the control
-is very complex, leading to some unreasonable test result.
+Currently, reset structure only takes a single bit for each reset
+and then calculates the bitmask by using the BIT() macro.
 
-Using parameter status to indicate whether queue core work to work queue.
+However, this is not sufficient anymore for newer SoC-s like IPQ8074,
+IPQ6018 and more, since their networking resets require multiple bits
+to be asserted in order to properly reset the HW block completely.
 
-Fixes: 2e0ef56d81cb ("media: mediatek: vcodec: making sure queue_work successfully")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+So, in order to allow asserting multiple bits add "bitmask" field to
+qcom_reset_map, and then use that bitmask value if its populated in the
+driver, if its not populated, then we just default to existing behaviour
+and calculate the bitmask on the fly.
+
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20221107132901.489240-1-robimarko@gmail.com
+Stable-dep-of: 349b5bed539b ("clk: qcom: ipq6018: fix networking resets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/mediatek/vcodec/vdec_msg_queue.c | 33 ++++++++-----------
- .../platform/mediatek/vcodec/vdec_msg_queue.h | 16 +++++++--
- 2 files changed, 28 insertions(+), 21 deletions(-)
+ drivers/clk/qcom/reset.c | 4 ++--
+ drivers/clk/qcom/reset.h | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-index f3073d1e7f420..03f8d7cd8eddc 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-@@ -71,7 +71,6 @@ static void vdec_msg_queue_dec(struct vdec_msg_queue *msg_queue, int hardware_in
- int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf *buf)
- {
- 	struct list_head *head;
--	int status;
+diff --git a/drivers/clk/qcom/reset.c b/drivers/clk/qcom/reset.c
+index 2a16adb572d2b..0e914ec7aeae1 100644
+--- a/drivers/clk/qcom/reset.c
++++ b/drivers/clk/qcom/reset.c
+@@ -30,7 +30,7 @@ qcom_reset_assert(struct reset_controller_dev *rcdev, unsigned long id)
  
- 	head = vdec_get_buf_list(msg_ctx->hardware_index, buf);
- 	if (!head) {
-@@ -87,12 +86,9 @@ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf
- 	if (msg_ctx->hardware_index != MTK_VDEC_CORE) {
- 		wake_up_all(&msg_ctx->ready_to_use);
- 	} else {
--		if (buf->ctx->msg_queue.core_work_cnt <
--			atomic_read(&buf->ctx->msg_queue.core_list_cnt)) {
--			status = queue_work(buf->ctx->dev->core_workqueue,
--					    &buf->ctx->msg_queue.core_work);
--			if (status)
--				buf->ctx->msg_queue.core_work_cnt++;
-+		if (!(buf->ctx->msg_queue.status & CONTEXT_LIST_QUEUED)) {
-+			queue_work(buf->ctx->dev->core_workqueue, &buf->ctx->msg_queue.core_work);
-+			buf->ctx->msg_queue.status |= CONTEXT_LIST_QUEUED;
- 		}
- 	}
+ 	rst = to_qcom_reset_controller(rcdev);
+ 	map = &rst->reset_map[id];
+-	mask = BIT(map->bit);
++	mask = map->bitmask ? map->bitmask : BIT(map->bit);
  
-@@ -261,7 +257,10 @@ static void vdec_msg_queue_core_work(struct work_struct *work)
- 		container_of(msg_queue, struct mtk_vcodec_ctx, msg_queue);
- 	struct mtk_vcodec_dev *dev = ctx->dev;
- 	struct vdec_lat_buf *lat_buf;
--	int status;
-+
-+	spin_lock(&ctx->dev->msg_queue_core_ctx.ready_lock);
-+	ctx->msg_queue.status &= ~CONTEXT_LIST_QUEUED;
-+	spin_unlock(&ctx->dev->msg_queue_core_ctx.ready_lock);
- 
- 	lat_buf = vdec_msg_queue_dqbuf(&dev->msg_queue_core_ctx);
- 	if (!lat_buf)
-@@ -278,17 +277,13 @@ static void vdec_msg_queue_core_work(struct work_struct *work)
- 	vdec_msg_queue_qbuf(&ctx->msg_queue.lat_ctx, lat_buf);
- 
- 	wake_up_all(&ctx->msg_queue.core_dec_done);
--	spin_lock(&dev->msg_queue_core_ctx.ready_lock);
--	lat_buf->ctx->msg_queue.core_work_cnt--;
--
--	if (lat_buf->ctx->msg_queue.core_work_cnt <
--		atomic_read(&lat_buf->ctx->msg_queue.core_list_cnt)) {
--		status = queue_work(lat_buf->ctx->dev->core_workqueue,
--				    &lat_buf->ctx->msg_queue.core_work);
--		if (status)
--			lat_buf->ctx->msg_queue.core_work_cnt++;
-+	if (!(ctx->msg_queue.status & CONTEXT_LIST_QUEUED) &&
-+	    atomic_read(&msg_queue->core_list_cnt)) {
-+		spin_lock(&ctx->dev->msg_queue_core_ctx.ready_lock);
-+		ctx->msg_queue.status |= CONTEXT_LIST_QUEUED;
-+		spin_unlock(&ctx->dev->msg_queue_core_ctx.ready_lock);
-+		queue_work(ctx->dev->core_workqueue, &msg_queue->core_work);
- 	}
--	spin_unlock(&dev->msg_queue_core_ctx.ready_lock);
+ 	return regmap_update_bits(rst->regmap, map->reg, mask, mask);
  }
+@@ -44,7 +44,7 @@ qcom_reset_deassert(struct reset_controller_dev *rcdev, unsigned long id)
  
- int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
-@@ -303,13 +298,13 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
- 		return 0;
+ 	rst = to_qcom_reset_controller(rcdev);
+ 	map = &rst->reset_map[id];
+-	mask = BIT(map->bit);
++	mask = map->bitmask ? map->bitmask : BIT(map->bit);
  
- 	msg_queue->ctx = ctx;
--	msg_queue->core_work_cnt = 0;
- 	vdec_msg_queue_init_ctx(&msg_queue->lat_ctx, MTK_VDEC_LAT0);
- 	INIT_WORK(&msg_queue->core_work, vdec_msg_queue_core_work);
- 
- 	atomic_set(&msg_queue->lat_list_cnt, 0);
- 	atomic_set(&msg_queue->core_list_cnt, 0);
- 	init_waitqueue_head(&msg_queue->core_dec_done);
-+	msg_queue->status = CONTEXT_LIST_EMPTY;
- 
- 	msg_queue->wdma_addr.size =
- 		vde_msg_queue_get_trans_size(ctx->picinfo.buf_w,
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-index a5d44bc97c16b..8f82d14847726 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
-@@ -21,6 +21,18 @@ struct mtk_vcodec_ctx;
- struct mtk_vcodec_dev;
- typedef int (*core_decode_cb_t)(struct vdec_lat_buf *lat_buf);
- 
-+/**
-+ * enum core_ctx_status - Context decode status for core hardwre.
-+ * @CONTEXT_LIST_EMPTY: No buffer queued on core hardware(must always be 0)
-+ * @CONTEXT_LIST_QUEUED: Buffer queued to core work list
-+ * @CONTEXT_LIST_DEC_DONE: context decode done
-+ */
-+enum core_ctx_status {
-+	CONTEXT_LIST_EMPTY = 0,
-+	CONTEXT_LIST_QUEUED,
-+	CONTEXT_LIST_DEC_DONE,
-+};
-+
- /**
-  * struct vdec_msg_queue_ctx - represents a queue for buffers ready to be processed
-  * @ready_to_use: ready used queue used to signalize when get a job queue
-@@ -77,7 +89,7 @@ struct vdec_lat_buf {
-  * @lat_list_cnt: used to record each instance lat list count
-  * @core_list_cnt: used to record each instance core list count
-  * @core_dec_done: core work queue decode done event
-- * @core_work_cnt: the number of core work in work queue
-+ * @status: current context decode status for core hardware
-  */
- struct vdec_msg_queue {
- 	struct vdec_lat_buf lat_buf[NUM_BUFFER_COUNT];
-@@ -93,7 +105,7 @@ struct vdec_msg_queue {
- 	atomic_t lat_list_cnt;
- 	atomic_t core_list_cnt;
- 	wait_queue_head_t core_dec_done;
--	int core_work_cnt;
-+	int status;
+ 	return regmap_update_bits(rst->regmap, map->reg, mask, 0);
+ }
+diff --git a/drivers/clk/qcom/reset.h b/drivers/clk/qcom/reset.h
+index b8c113582072b..9a47c838d9b1b 100644
+--- a/drivers/clk/qcom/reset.h
++++ b/drivers/clk/qcom/reset.h
+@@ -12,6 +12,7 @@ struct qcom_reset_map {
+ 	unsigned int reg;
+ 	u8 bit;
+ 	u8 udelay;
++	u32 bitmask;
  };
  
- /**
+ struct regmap;
 -- 
 2.39.2
 
