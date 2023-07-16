@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41AF87555A4
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98D2A75536F
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232582AbjGPUnG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:43:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33436 "EHLO
+        id S231714AbjGPUTF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:19:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232578AbjGPUnF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B287DD9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:04 -0700 (PDT)
+        with ESMTP id S231730AbjGPUTD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 719811B9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5151860EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC93C433C8;
-        Sun, 16 Jul 2023 20:43:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0748F60EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B3BC433C8;
+        Sun, 16 Jul 2023 20:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540183;
-        bh=FSe72iGxmGeBDShsDo10qVXJ5M0WEDlu3+zjdieOPBo=;
+        s=korg; t=1689538741;
+        bh=LsdgNpeKysMlH/N3ZdTnTi1UBt9tjoC0VqSwvNgojdE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dF+3UpqcbdVpw6JSk4ZD5/FGism9DQqcK6I9ubLd/xadLOjaMXCb7XWIqPPIXGPiH
-         lru79GFY14WrBYL9BDRrSU9i2EMrzyRpQ/p42u6sfZpjOGpCsKJyF8y5rxrxfbTkiY
-         3CwIZlX1Ti3J7njrC3UonUEse7cgD992GVB9KYrQ=
+        b=ARXVanDx+4kWl4L0lOqhlxuMq2bY7WoSg/oNCZpl2ELzs3Ry5nUnfoOH+ZUUVZNNl
+         WyqiJYnRkNxRyKpwrc9DRJEP1w3AuSVRaHdn+/w3B/5iM3yXF4sNvefVjcn/1RHQzE
+         99cNMWJ3kZOnvuc6DJEV5+sh8S+pd1h/jNE3oCnk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Georgi Djakov <djakov@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 272/591] clk: cdce925: check return value of kasprintf()
+Subject: [PATCH 6.4 558/800] interconnect: qcom: rpm: Rename icc provider num_clocks to num_bus_clocks
 Date:   Sun, 16 Jul 2023 21:46:51 +0200
-Message-ID: <20230716194930.934569648@linuxfoundation.org>
+Message-ID: <20230716195002.050216378@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,61 +55,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit bb7d09ddbf361d51eae46f38e7c8a2b85914ea2a ]
+[ Upstream commit 1a12928e25627e02126ad2d1c12cfdba79d6bd94 ]
 
-kasprintf() returns a pointer to dynamically allocated memory.
-Pointer could be NULL in case allocation fails. Check pointer validity.
-Identified with coccinelle (kmerr.cocci script).
+In preparation for handling non-scaling clocks that we still have to
+enable, rename num_clocks to more descriptive num_bus_clocks.
 
-Fixes: 19fbbbbcd3a3 ("Add TI CDCE925 I2C controlled clock synthesizer driver")
-Depends-on: e665f029a283 ("clk: Convert to using %pOFn instead of device_node.name")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230530093913.1656095-3-claudiu.beznea@microchip.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230228-topic-qos-v8-2-ee696a2c15a9@linaro.org
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Stable-dep-of: 1ff7aedcdcdd ("interconnect: qcom: rpm: Don't use clk_get_optional for bus clocks anymore")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-cdce925.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/interconnect/qcom/icc-rpm.c | 12 ++++++------
+ drivers/interconnect/qcom/icc-rpm.h |  4 ++--
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/clk/clk-cdce925.c b/drivers/clk/clk-cdce925.c
-index ef9a2d44e40c3..d88e1d681a2ce 100644
---- a/drivers/clk/clk-cdce925.c
-+++ b/drivers/clk/clk-cdce925.c
-@@ -714,6 +714,10 @@ static int cdce925_probe(struct i2c_client *client)
- 	for (i = 0; i < data->chip_info->num_plls; ++i) {
- 		pll_clk_name[i] = kasprintf(GFP_KERNEL, "%pOFn.pll%d",
- 			client->dev.of_node, i);
-+		if (!pll_clk_name[i]) {
-+			err = -ENOMEM;
-+			goto error;
-+		}
- 		init.name = pll_clk_name[i];
- 		data->pll[i].chip = data;
- 		data->pll[i].hw.init = &init;
-@@ -755,6 +759,10 @@ static int cdce925_probe(struct i2c_client *client)
- 	init.num_parents = 1;
- 	init.parent_names = &parent_name; /* Mux Y1 to input */
- 	init.name = kasprintf(GFP_KERNEL, "%pOFn.Y1", client->dev.of_node);
-+	if (!init.name) {
-+		err = -ENOMEM;
-+		goto error;
-+	}
- 	data->clk[0].chip = data;
- 	data->clk[0].hw.init = &init;
- 	data->clk[0].index = 0;
-@@ -773,6 +781,10 @@ static int cdce925_probe(struct i2c_client *client)
- 	for (i = 1; i < data->chip_info->num_outputs; ++i) {
- 		init.name = kasprintf(GFP_KERNEL, "%pOFn.Y%d",
- 			client->dev.of_node, i+1);
-+		if (!init.name) {
-+			err = -ENOMEM;
-+			goto error;
-+		}
- 		data->clk[i].chip = data;
- 		data->clk[i].hw.init = &init;
- 		data->clk[i].index = i;
+diff --git a/drivers/interconnect/qcom/icc-rpm.c b/drivers/interconnect/qcom/icc-rpm.c
+index 5341fa169dbf1..ec39861c1764c 100644
+--- a/drivers/interconnect/qcom/icc-rpm.c
++++ b/drivers/interconnect/qcom/icc-rpm.c
+@@ -379,7 +379,7 @@ static int qcom_icc_set(struct icc_node *src, struct icc_node *dst)
+ 			return ret;
+ 	}
+ 
+-	for (i = 0; i < qp->num_clks; i++) {
++	for (i = 0; i < qp->num_bus_clks; i++) {
+ 		/*
+ 		 * Use WAKE bucket for active clock, otherwise, use SLEEP bucket
+ 		 * for other clocks.  If a platform doesn't set interconnect
+@@ -464,7 +464,7 @@ int qnoc_probe(struct platform_device *pdev)
+ 
+ 	for (i = 0; i < cd_num; i++)
+ 		qp->bus_clks[i].id = cds[i];
+-	qp->num_clks = cd_num;
++	qp->num_bus_clks = cd_num;
+ 
+ 	qp->type = desc->type;
+ 	qp->qos_offset = desc->qos_offset;
+@@ -494,11 +494,11 @@ int qnoc_probe(struct platform_device *pdev)
+ 	}
+ 
+ regmap_done:
+-	ret = devm_clk_bulk_get_optional(dev, qp->num_clks, qp->bus_clks);
++	ret = devm_clk_bulk_get_optional(dev, qp->num_bus_clks, qp->bus_clks);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = clk_bulk_prepare_enable(qp->num_clks, qp->bus_clks);
++	ret = clk_bulk_prepare_enable(qp->num_bus_clks, qp->bus_clks);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -551,7 +551,7 @@ int qnoc_probe(struct platform_device *pdev)
+ 	icc_provider_deregister(provider);
+ err_remove_nodes:
+ 	icc_nodes_remove(provider);
+-	clk_bulk_disable_unprepare(qp->num_clks, qp->bus_clks);
++	clk_bulk_disable_unprepare(qp->num_bus_clks, qp->bus_clks);
+ 
+ 	return ret;
+ }
+@@ -563,7 +563,7 @@ int qnoc_remove(struct platform_device *pdev)
+ 
+ 	icc_provider_deregister(&qp->provider);
+ 	icc_nodes_remove(&qp->provider);
+-	clk_bulk_disable_unprepare(qp->num_clks, qp->bus_clks);
++	clk_bulk_disable_unprepare(qp->num_bus_clks, qp->bus_clks);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/interconnect/qcom/icc-rpm.h b/drivers/interconnect/qcom/icc-rpm.h
+index 22bdb1e4bb123..838f3fa82278e 100644
+--- a/drivers/interconnect/qcom/icc-rpm.h
++++ b/drivers/interconnect/qcom/icc-rpm.h
+@@ -23,7 +23,7 @@ enum qcom_icc_type {
+ /**
+  * struct qcom_icc_provider - Qualcomm specific interconnect provider
+  * @provider: generic interconnect provider
+- * @num_clks: the total number of clk_bulk_data entries
++ * @num_bus_clks: the total number of bus_clks clk_bulk_data entries
+  * @type: the ICC provider type
+  * @regmap: regmap for QoS registers read/write access
+  * @qos_offset: offset to QoS registers
+@@ -32,7 +32,7 @@ enum qcom_icc_type {
+  */
+ struct qcom_icc_provider {
+ 	struct icc_provider provider;
+-	int num_clks;
++	int num_bus_clks;
+ 	enum qcom_icc_type type;
+ 	struct regmap *regmap;
+ 	unsigned int qos_offset;
 -- 
 2.39.2
 
