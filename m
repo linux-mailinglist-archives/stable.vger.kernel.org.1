@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC12C755574
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F6BC755323
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:15:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232517AbjGPUlM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:41:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60412 "EHLO
+        id S231627AbjGPUPr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:15:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232537AbjGPUlH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3C3E63
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:57 -0700 (PDT)
+        with ESMTP id S231623AbjGPUPr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:15:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F1A91BF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:15:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DB9F60E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822A1C433C7;
-        Sun, 16 Jul 2023 20:40:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE55460E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:15:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8B6C433C8;
+        Sun, 16 Jul 2023 20:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540056;
-        bh=E1Tp7pLUqn+2cX9FbA9td496pDIY1nEkO+0u5Pme7e4=;
+        s=korg; t=1689538543;
+        bh=6ZTQ9UmCbOZLFeSODdcVr2nOzO/eAbKJCh8tCUIqx+c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=md7/WAef9w/NDqLQOLRal28lM/2TK6SR/CeR8XOEk+bFaXppZom9wbEASUYAC8u4l
-         J1ulHldEwKjU529brauW2by1zZb1wmwsUFfr7rJKGE9LPTOE4CWyhHffJ8cu9SkB99
-         qvvpq62P3Y7Qt0tn+05ix/Kmgao+KagEE4J23cCo=
+        b=H9vljz4CYo/4b8TVYkQaqOkFAXoTfN3sfzqI/IGrwmQ63yDa9UTENLNM8oqvXMU/g
+         I49E6LjBnQa65Q0nx4WPF+nKhkJuiha5hEC0bgZYxkLW/mvbApVx42HJChULbpyoj1
+         grnROaR09av5DC8x5Ojyy6ZptcdQHf8q2a8/5nZ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 200/591] arm64: dts: qcom: sm8350: Add GPI DMA compatible fallback
-Date:   Sun, 16 Jul 2023 21:45:39 +0200
-Message-ID: <20230716194929.046683397@linuxfoundation.org>
+Subject: [PATCH 6.4 487/800] PCI: qcom: Use DWC helpers for modifying the read-only DBI registers
+Date:   Sun, 16 Jul 2023 21:45:40 +0200
+Message-ID: <20230716195000.391983799@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,54 +57,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit b561e225dee5412609fd98340ca71ba0ab2e4b36 ]
+[ Upstream commit 60f0072d7fb7996b9a524ef0d152e21205473192 ]
 
-Use SM6350 as fallback for GPI DMA, to indicate devices are compatible
-and that drivers can bind with only one compatible.
+DWC core already exposes dw_pcie_dbi_ro_wr_{en/dis} helper APIs for
+enabling and disabling the write access to read only DBI registers. So
+let's use them instead of doing it manually.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20221018230352.1238479-5-krzysztof.kozlowski@linaro.org
-Stable-dep-of: 41d6bca799b3 ("arm64: dts: qcom: sm8350: correct DMA controller unit address")
+Also, the existing code doesn't disable the write access when it's done.
+This is also fixed now.
+
+Link: https://lore.kernel.org/r/20230619150408.8468-3-manivannan.sadhasivam@linaro.org
+Fixes: 5d76117f070d ("PCI: qcom: Add support for IPQ8074 PCIe controller")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index ca7c428a741d4..9430166ee45b5 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -678,7 +678,7 @@ ipcc: mailbox@408000 {
- 		};
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index 4ab30892f6efb..8185db887c9db 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -61,7 +61,6 @@
+ /* DBI registers */
+ #define AXI_MSTR_RESP_COMP_CTRL0		0x818
+ #define AXI_MSTR_RESP_COMP_CTRL1		0x81c
+-#define MISC_CONTROL_1_REG			0x8bc
  
- 		gpi_dma2: dma-controller@800000 {
--			compatible = "qcom,sm8350-gpi-dma";
-+			compatible = "qcom,sm8350-gpi-dma", "qcom,sm6350-gpi-dma";
- 			reg = <0 0x00800000 0 0x60000>;
- 			interrupts = <GIC_SPI 588 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 589 IRQ_TYPE_LEVEL_HIGH>,
-@@ -904,7 +904,7 @@ spi19: spi@894000 {
- 		};
+ /* MHI registers */
+ #define PARF_DEBUG_CNT_PM_LINKST_IN_L2		0xc04
+@@ -132,9 +131,6 @@
+ /* AXI_MSTR_RESP_COMP_CTRL1 register fields */
+ #define CFG_BRIDGE_SB_INIT			BIT(0)
  
- 		gpi_dma0: dma-controller@900000 {
--			compatible = "qcom,sm8350-gpi-dma";
-+			compatible = "qcom,sm8350-gpi-dma", "qcom,sm6350-gpi-dma";
- 			reg = <0 0x09800000 0 0x60000>;
- 			interrupts = <GIC_SPI 244 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>,
-@@ -1207,7 +1207,7 @@ spi7: spi@99c000 {
- 		};
+-/* MISC_CONTROL_1_REG register fields */
+-#define DBI_RO_WR_EN				1
+-
+ /* PCI_EXP_SLTCAP register fields */
+ #define PCIE_CAP_SLOT_POWER_LIMIT_VAL		FIELD_PREP(PCI_EXP_SLTCAP_SPLV, 250)
+ #define PCIE_CAP_SLOT_POWER_LIMIT_SCALE		FIELD_PREP(PCI_EXP_SLTCAP_SPLS, 1)
+@@ -826,7 +822,9 @@ static int qcom_pcie_post_init_2_3_3(struct qcom_pcie *pcie)
+ 	writel(0, pcie->parf + PARF_Q2A_FLUSH);
  
- 		gpi_dma1: dma-controller@a00000 {
--			compatible = "qcom,sm8350-gpi-dma";
-+			compatible = "qcom,sm8350-gpi-dma", "qcom,sm6350-gpi-dma";
- 			reg = <0 0x00a00000 0 0x60000>;
- 			interrupts = <GIC_SPI 279 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 280 IRQ_TYPE_LEVEL_HIGH>,
+ 	writel(PCI_COMMAND_MASTER, pci->dbi_base + PCI_COMMAND);
+-	writel(DBI_RO_WR_EN, pci->dbi_base + MISC_CONTROL_1_REG);
++
++	dw_pcie_dbi_ro_wr_en(pci);
++
+ 	writel(PCIE_CAP_SLOT_VAL, pci->dbi_base + offset + PCI_EXP_SLTCAP);
+ 
+ 	val = readl(pci->dbi_base + offset + PCI_EXP_LNKCAP);
 -- 
 2.39.2
 
