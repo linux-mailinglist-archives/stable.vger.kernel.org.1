@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E5887553FE
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6D24755629
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:48:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231947AbjGPUZX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:25:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47800 "EHLO
+        id S232777AbjGPUsH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:48:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231939AbjGPUZX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:23 -0400
+        with ESMTP id S232769AbjGPUsG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:48:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA90126
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 995A7E1
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:48:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55BF360DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B42C433C8;
-        Sun, 16 Jul 2023 20:25:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E6D460EA2
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:48:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BADAC433C9;
+        Sun, 16 Jul 2023 20:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539119;
-        bh=uMQ8yDtOinReme1j9OS//mJ3N23L5KBZrMXQ31n0oLY=;
+        s=korg; t=1689540484;
+        bh=w62NsMXgYitHZoLxNzRJa/ijgKhotOSQz0kuWoVT9pQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xV16t6H0EhoI1oW+LeGc2iQXRDHkDRSiKeJ1Kx/7Jljcu7EIgc6u5SaQNGeGGielq
-         m52BRbqA2U0aqVzdGAPV8fXmtirNp27KerKjvhSBmPyO1cDXm/jpCFMgR4jEKSh9mH
-         eUXGvYJ99/iO7Pk2cZXgD0gaeS8eoV7MXQWDnrkc=
+        b=GFfFUA2swt4UFo7N71qBTRsgZmROrsaLtAQ+oMQrxY5LbxkbiQ7XA55yObe4Y1uiF
+         sYw3PHW6UaAAfpp2hUFk8q7jqbvzmXDemPc0eNgT/rEmWOd4H4sLyhcRlpkcJoDtOr
+         lgY+iJFehOXqI9R8H64QgKKzLUezAoAz7TiE9R60=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 665/800] spi: spi-geni-qcom: enable SPI_CONTROLLER_MUST_TX for GPI DMA mode
-Date:   Sun, 16 Jul 2023 21:48:38 +0200
-Message-ID: <20230716195004.558660996@linuxfoundation.org>
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 380/591] btrfs: fix race when deleting free space root from the dirty cow roots list
+Date:   Sun, 16 Jul 2023 21:48:39 +0200
+Message-ID: <20230716194933.752769708@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,42 +54,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit d10005837be83906bbd2078c3b4f9dfcbd6c95b6 ]
+commit babebf023e661b90b1c78b2baa384fb03a226879 upstream.
 
-The GPI DMA mode requires for TX DMA to be prepared. Force SPI core to
-provide TX buffer even if the caller didn't provide one by setting the
-SPI_CONTROLLER_MUST_TX flag.
+When deleting the free space tree we are deleting the free space root
+from the list fs_info->dirty_cowonly_roots without taking the lock that
+protects it, which is struct btrfs_fs_info::trans_lock.
+This unsynchronized list manipulation may cause chaos if there's another
+concurrent manipulation of this list, such as when adding a root to it
+with ctree.c:add_root_to_dirty_list().
 
-Fixes: b59c122484ec ("spi: spi-geni-qcom: Add support for GPI dma")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230629095847.3648597-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This can result in all sorts of weird failures caused by a race, such as
+the following crash:
+
+  [337571.278245] general protection fault, probably for non-canonical address 0xdead000000000108: 0000 [#1] PREEMPT SMP PTI
+  [337571.278933] CPU: 1 PID: 115447 Comm: btrfs Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
+  [337571.279153] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+  [337571.279572] RIP: 0010:commit_cowonly_roots+0x11f/0x250 [btrfs]
+  [337571.279928] Code: 85 38 06 00 (...)
+  [337571.280363] RSP: 0018:ffff9f63446efba0 EFLAGS: 00010206
+  [337571.280582] RAX: ffff942d98ec2638 RBX: ffff9430b82b4c30 RCX: 0000000449e1c000
+  [337571.280798] RDX: dead000000000100 RSI: ffff9430021e4900 RDI: 0000000000036070
+  [337571.281015] RBP: ffff942d98ec2000 R08: ffff942d98ec2000 R09: 000000000000015b
+  [337571.281254] R10: 0000000000000009 R11: 0000000000000001 R12: ffff942fe8fbf600
+  [337571.281476] R13: ffff942dabe23040 R14: ffff942dabe20800 R15: ffff942d92cf3b48
+  [337571.281723] FS:  00007f478adb7340(0000) GS:ffff94349fa40000(0000) knlGS:0000000000000000
+  [337571.281950] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [337571.282184] CR2: 00007f478ab9a3d5 CR3: 000000001e02c001 CR4: 0000000000370ee0
+  [337571.282416] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [337571.282647] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [337571.282874] Call Trace:
+  [337571.283101]  <TASK>
+  [337571.283327]  ? __die_body+0x1b/0x60
+  [337571.283570]  ? die_addr+0x39/0x60
+  [337571.283796]  ? exc_general_protection+0x22e/0x430
+  [337571.284022]  ? asm_exc_general_protection+0x22/0x30
+  [337571.284251]  ? commit_cowonly_roots+0x11f/0x250 [btrfs]
+  [337571.284531]  btrfs_commit_transaction+0x42e/0xf90 [btrfs]
+  [337571.284803]  ? _raw_spin_unlock+0x15/0x30
+  [337571.285031]  ? release_extent_buffer+0x103/0x130 [btrfs]
+  [337571.285305]  reset_balance_state+0x152/0x1b0 [btrfs]
+  [337571.285578]  btrfs_balance+0xa50/0x11e0 [btrfs]
+  [337571.285864]  ? __kmem_cache_alloc_node+0x14a/0x410
+  [337571.286086]  btrfs_ioctl+0x249a/0x3320 [btrfs]
+  [337571.286358]  ? mod_objcg_state+0xd2/0x360
+  [337571.286577]  ? refill_obj_stock+0xb0/0x160
+  [337571.286798]  ? seq_release+0x25/0x30
+  [337571.287016]  ? __rseq_handle_notify_resume+0x3ba/0x4b0
+  [337571.287235]  ? percpu_counter_add_batch+0x2e/0xa0
+  [337571.287455]  ? __x64_sys_ioctl+0x88/0xc0
+  [337571.287675]  __x64_sys_ioctl+0x88/0xc0
+  [337571.287901]  do_syscall_64+0x38/0x90
+  [337571.288126]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  [337571.288352] RIP: 0033:0x7f478aaffe9b
+
+So fix this by locking struct btrfs_fs_info::trans_lock before deleting
+the free space root from that list.
+
+Fixes: a5ed91828518 ("Btrfs: implement the free space B-tree")
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-geni-qcom.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/btrfs/free-space-tree.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 26ce959d98dfa..1df9d4844a68d 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -1097,6 +1097,12 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	if (mas->cur_xfer_mode == GENI_SE_FIFO)
- 		spi->set_cs = spi_geni_set_cs;
+--- a/fs/btrfs/free-space-tree.c
++++ b/fs/btrfs/free-space-tree.c
+@@ -1275,7 +1275,10 @@ int btrfs_delete_free_space_tree(struct
+ 		goto abort;
  
-+	/*
-+	 * TX is required per GSI spec, see setup_gsi_xfer().
-+	 */
-+	if (mas->cur_xfer_mode == GENI_GPI_DMA)
-+		spi->flags = SPI_CONTROLLER_MUST_TX;
+ 	btrfs_global_root_delete(free_space_root);
 +
- 	ret = request_irq(mas->irq, geni_spi_isr, 0, dev_name(dev), spi);
- 	if (ret)
- 		goto spi_geni_release_dma;
--- 
-2.39.2
-
++	spin_lock(&fs_info->trans_lock);
+ 	list_del(&free_space_root->dirty_list);
++	spin_unlock(&fs_info->trans_lock);
+ 
+ 	btrfs_tree_lock(free_space_root->node);
+ 	btrfs_clean_tree_block(free_space_root->node);
 
 
