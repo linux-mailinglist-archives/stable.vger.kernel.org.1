@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5D1E755561
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA92F755355
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:17:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232501AbjGPUkR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:40:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59442 "EHLO
+        id S231701AbjGPUR4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:17:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232498AbjGPUkQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:40:16 -0400
+        with ESMTP id S231685AbjGPURx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:17:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6A09120
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:40:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C945790
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:17:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4912460EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56FFFC433C8;
-        Sun, 16 Jul 2023 20:40:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FB3860E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:17:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995B6C433C7;
+        Sun, 16 Jul 2023 20:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540014;
-        bh=oqG3WaVgXPlKAi5K6uWLXUw3xmDxvPwaMfHC2xWB11M=;
+        s=korg; t=1689538671;
+        bh=Z8wTJDecwhHadfa82ZPgW5IPax1ypUq/yEt4smLHJrQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WhYATQbwhnFohvPPosFoZpuepd0qSILKxsy4LoDzIDh7dpfMbeHNUPZtF6u28TMRx
-         FxE5QJxWGVKPVnnRnsN337gFIXxkLuwNM1qmMXy5+c/utjQxGLbUInMmoHnRZ/t475
-         PIu9UlD6KC4sA4F5NUKsrM7xQF7XmiWKZqQMnwxU=
+        b=nqg4Bpsu4nain1SoyKDSgt/B7ruvTHK9dEdL0IOOlCAHKhf7J3W4TW6+4MdGcDYd1
+         bL44ROGqIMC0jVilxepyI2d5fCP8Xjyimew/LdhHyATjdYr8lEtz4Yp7zPCFIA+Z4k
+         BZH+Qzp0WHcwqdkDaZfR4N3w/wneg1hxMG05ZaxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Julius Werner <jwerner@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        patches@lists.linux.dev,
+        syzbot+726dc8c62c3536431ceb@syzkaller.appspotmail.com,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 212/591] arm64: dts: mediatek: mt8183: Add mediatek,broken-save-restore-fw to kukui
-Date:   Sun, 16 Jul 2023 21:45:51 +0200
-Message-ID: <20230716194929.353590596@linuxfoundation.org>
+Subject: [PATCH 6.4 499/800] hwrng: virtio - Fix race on data_avail and actual data
+Date:   Sun, 16 Jul 2023 21:45:52 +0200
+Message-ID: <20230716195000.684312101@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,41 +57,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 42127f578ebde652d1373e0233356fbd351675c4 ]
+[ Upstream commit ac52578d6e8d300dd50f790f29a24169b1edd26c ]
 
-Firmware shipped on mt8183 Chromebooks is affected by the GICR
-save/restore issue as described by the patch ("dt-bindings:
-interrupt-controller: arm,gic-v3: Add quirk for Mediatek SoCs w/
-broken FW"). Add the quirk property.
+The virtio rng device kicks off a new entropy request whenever the
+data available reaches zero.  When a new request occurs at the end
+of a read operation, that is, when the result of that request is
+only needed by the next reader, then there is a race between the
+writing of the new data and the next reader.
 
-Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
-Reviewed-by: Julius Werner <jwerner@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230515131353.v2.3.I525a2ed4260046d43c885ee1275e91707743df1c@changeid
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+This is because there is no synchronisation whatsoever between the
+writer and the reader.
+
+Fix this by writing data_avail with smp_store_release and reading
+it with smp_load_acquire when we first enter read.  The subsequent
+reads are safe because they're either protected by the first load
+acquire, or by the completion mechanism.
+
+Also remove the redundant zeroing of data_idx in random_recv_done
+(data_idx must already be zero at this point) and data_avail in
+request_entropy (ditto).
+
+Reported-by: syzbot+726dc8c62c3536431ceb@syzkaller.appspotmail.com
+Fixes: f7f510ec1957 ("virtio: An entropy device, as suggested by hpa.")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/char/hw_random/virtio-rng.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-index b4b86bb1f1a7d..632fd89e75969 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -297,6 +297,10 @@ dsi_out: endpoint {
- 	};
- };
+diff --git a/drivers/char/hw_random/virtio-rng.c b/drivers/char/hw_random/virtio-rng.c
+index f7690e0f92ede..e41a84e6b4b56 100644
+--- a/drivers/char/hw_random/virtio-rng.c
++++ b/drivers/char/hw_random/virtio-rng.c
+@@ -4,6 +4,7 @@
+  *  Copyright (C) 2007, 2008 Rusty Russell IBM Corporation
+  */
  
-+&gic {
-+	mediatek,broken-save-restore-fw;
-+};
-+
- &gpu {
- 	mali-supply = <&mt6358_vgpu_reg>;
- 	sram-supply = <&mt6358_vsram_gpu_reg>;
++#include <asm/barrier.h>
+ #include <linux/err.h>
+ #include <linux/hw_random.h>
+ #include <linux/scatterlist.h>
+@@ -37,13 +38,13 @@ struct virtrng_info {
+ static void random_recv_done(struct virtqueue *vq)
+ {
+ 	struct virtrng_info *vi = vq->vdev->priv;
++	unsigned int len;
+ 
+ 	/* We can get spurious callbacks, e.g. shared IRQs + virtio_pci. */
+-	if (!virtqueue_get_buf(vi->vq, &vi->data_avail))
++	if (!virtqueue_get_buf(vi->vq, &len))
+ 		return;
+ 
+-	vi->data_idx = 0;
+-
++	smp_store_release(&vi->data_avail, len);
+ 	complete(&vi->have_data);
+ }
+ 
+@@ -52,7 +53,6 @@ static void request_entropy(struct virtrng_info *vi)
+ 	struct scatterlist sg;
+ 
+ 	reinit_completion(&vi->have_data);
+-	vi->data_avail = 0;
+ 	vi->data_idx = 0;
+ 
+ 	sg_init_one(&sg, vi->data, sizeof(vi->data));
+@@ -88,7 +88,7 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
+ 	read = 0;
+ 
+ 	/* copy available data */
+-	if (vi->data_avail) {
++	if (smp_load_acquire(&vi->data_avail)) {
+ 		chunk = copy_data(vi, buf, size);
+ 		size -= chunk;
+ 		read += chunk;
 -- 
 2.39.2
 
