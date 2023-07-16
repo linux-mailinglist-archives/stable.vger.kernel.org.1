@@ -2,51 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1DCC7554F5
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBCDE7552C6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232316AbjGPUfr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:35:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55950 "EHLO
+        id S231470AbjGPULr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:11:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232313AbjGPUfr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:35:47 -0400
+        with ESMTP id S231477AbjGPULr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D2F8BC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:35:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02EB712E
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7B6960E65
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:35:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84E6C433C8;
-        Sun, 16 Jul 2023 20:35:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AE2B60EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974FFC433C7;
+        Sun, 16 Jul 2023 20:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539745;
-        bh=Ao0ZEJifQUDDRaYgnh0U8JI3GzeoO6jV7cvrKNgEgNc=;
+        s=korg; t=1689538305;
+        bh=ShogA3wFM7YEKbrmd0qPdQo1chb4s7R1gnfKM6tCKpk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZsBfQhJU6thkBc9pIQA93LHQPXJRIo1MjdEJ2aF1zYf79flsWVU84Cq+nTYJHH+Zl
-         vOIlOwRZUUxDxTD2Z4QMIlHy8vg2oqIyNm7aEkokZyimWxGyG0NeCjKjfeMu3GXIex
-         nzKZf4kSMDXxQfcOyMbM13ZXzKWT5LTULcm6nuC8=
+        b=EWFx7QRk6t1WF/sNps3YpfuaByHavoaWPcq+QqlsuvY5hlFrmJg7W7ntWxqKDHADR
+         a05pRlzmP6rAyPaLxbYrzZx2Lk+9lYrSi+Usjw5E458p02qj+VOZyfmUW2kXDLfYel
+         K7nWksx0kT2V/nOMeEL61cGBYfqy9RXCS5tEUPFA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev,
+        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
+        <nfraprado@collabora.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/591] mmc: Add MMC_QUIRK_BROKEN_SD_CACHE for Kingston Canvas Go Plus from 11/2019
-Date:   Sun, 16 Jul 2023 21:44:16 +0200
-Message-ID: <20230716194926.904317488@linuxfoundation.org>
+Subject: [PATCH 6.4 404/800] arm64: dts: mediatek: mt8192: Fix CPUs capacity-dmips-mhz
+Date:   Sun, 16 Jul 2023 21:44:17 +0200
+Message-ID: <20230716194958.456144727@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,166 +59,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit c467c8f081859d4f4ca4eee4fba54bb5d85d6c97 ]
+[ Upstream commit a4366b5695c984b8a3fc8b31de9e758c8f6d1aed ]
 
-This microSD card never clears Flush Cache bit after cache flush has
-been started in sd_flush_cache(). This leads e.g. to failure to mount
-file system. Add a quirk which disables the SD cache for this specific
-card from specific manufacturing date of 11/2019, since on newer dated
-cards from 05/2023 the cache flush works correctly.
+The capacity-dmips-mhz parameter was miscalculated: this SoC runs
+the first (Cortex-A55) cluster at a maximum of 2000MHz and the
+second (Cortex-A76) cluster at a maximum of 2200MHz.
 
-Fixes: 08ebf903af57 ("mmc: core: Fixup support for writeback-cache for eMMC and SD")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20230620102713.7701-1-marex@denx.de
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+In order to calculate the right capacity-dmips-mhz, the following
+test was performed:
+1. CPUFREQ governor was set to 'performance' on both clusters
+2. Ran dhrystone with 500000000 iterations for 10 times on each cluster
+3. Calculated the mean result for each cluster
+4. Calculated DMIPS/MHz: dmips_mhz = dmips_per_second / cpu_mhz
+5. Scaled results to 1024:
+   result_c0 = dmips_mhz_c0 / dmips_mhz_c1 * 1024
+
+The mean results for this SoC are:
+Cluster 0 (LITTLE): 12016411 Dhry/s
+Cluster 1 (BIG): 31702034 Dhry/s
+
+The calculated scaled results are:
+Cluster 0: 426.953226899238 (rounded to 427)
+Cluster 1: 1024
+
+Fixes: 48489980e27e ("arm64: dts: Add Mediatek SoC MT8192 and evaluation board dts and Makefile")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230602183515.3778780-1-nfraprado@collabora.com
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/card.h   | 30 +++++++++++++++++++++++-------
- drivers/mmc/core/quirks.h | 13 +++++++++++++
- drivers/mmc/core/sd.c     |  2 +-
- include/linux/mmc/card.h  |  1 +
- 4 files changed, 38 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8192.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
-index cfdd1ff40b865..4edf9057fa79d 100644
---- a/drivers/mmc/core/card.h
-+++ b/drivers/mmc/core/card.h
-@@ -53,6 +53,10 @@ struct mmc_fixup {
- 	unsigned int manfid;
- 	unsigned short oemid;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8192.dtsi b/arch/arm64/boot/dts/mediatek/mt8192.dtsi
+index 6593cd0ef2972..75eeba539e6fe 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8192.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8192.dtsi
+@@ -71,7 +71,7 @@ cpu0: cpu@0 {
+ 			d-cache-sets = <128>;
+ 			next-level-cache = <&l2_0>;
+ 			performance-domains = <&performance 0>;
+-			capacity-dmips-mhz = <530>;
++			capacity-dmips-mhz = <427>;
+ 		};
  
-+	/* Manufacturing date */
-+	unsigned short year;
-+	unsigned char month;
-+
- 	/* SDIO-specific fields. You can use SDIO_ANY_ID here of course */
- 	u16 cis_vendor, cis_device;
+ 		cpu1: cpu@100 {
+@@ -89,7 +89,7 @@ cpu1: cpu@100 {
+ 			d-cache-sets = <128>;
+ 			next-level-cache = <&l2_0>;
+ 			performance-domains = <&performance 0>;
+-			capacity-dmips-mhz = <530>;
++			capacity-dmips-mhz = <427>;
+ 		};
  
-@@ -68,6 +72,8 @@ struct mmc_fixup {
+ 		cpu2: cpu@200 {
+@@ -107,7 +107,7 @@ cpu2: cpu@200 {
+ 			d-cache-sets = <128>;
+ 			next-level-cache = <&l2_0>;
+ 			performance-domains = <&performance 0>;
+-			capacity-dmips-mhz = <530>;
++			capacity-dmips-mhz = <427>;
+ 		};
  
- #define CID_MANFID_ANY (-1u)
- #define CID_OEMID_ANY ((unsigned short) -1)
-+#define CID_YEAR_ANY ((unsigned short) -1)
-+#define CID_MONTH_ANY ((unsigned char) -1)
- #define CID_NAME_ANY (NULL)
+ 		cpu3: cpu@300 {
+@@ -125,7 +125,7 @@ cpu3: cpu@300 {
+ 			d-cache-sets = <128>;
+ 			next-level-cache = <&l2_0>;
+ 			performance-domains = <&performance 0>;
+-			capacity-dmips-mhz = <530>;
++			capacity-dmips-mhz = <427>;
+ 		};
  
- #define EXT_CSD_REV_ANY (-1u)
-@@ -81,17 +87,21 @@ struct mmc_fixup {
- #define CID_MANFID_APACER       0x27
- #define CID_MANFID_KINGSTON     0x70
- #define CID_MANFID_HYNIX	0x90
-+#define CID_MANFID_KINGSTON_SD	0x9F
- #define CID_MANFID_NUMONYX	0xFE
- 
- #define END_FIXUP { NULL }
- 
--#define _FIXUP_EXT(_name, _manfid, _oemid, _rev_start, _rev_end,	\
--		   _cis_vendor, _cis_device,				\
--		   _fixup, _data, _ext_csd_rev)				\
-+#define _FIXUP_EXT(_name, _manfid, _oemid, _year, _month,	\
-+		   _rev_start, _rev_end,			\
-+		   _cis_vendor, _cis_device,			\
-+		   _fixup, _data, _ext_csd_rev)			\
- 	{						\
- 		.name = (_name),			\
- 		.manfid = (_manfid),			\
- 		.oemid = (_oemid),			\
-+		.year = (_year),			\
-+		.month = (_month),			\
- 		.rev_start = (_rev_start),		\
- 		.rev_end = (_rev_end),			\
- 		.cis_vendor = (_cis_vendor),		\
-@@ -103,8 +113,8 @@ struct mmc_fixup {
- 
- #define MMC_FIXUP_REV(_name, _manfid, _oemid, _rev_start, _rev_end,	\
- 		      _fixup, _data, _ext_csd_rev)			\
--	_FIXUP_EXT(_name, _manfid,					\
--		   _oemid, _rev_start, _rev_end,			\
-+	_FIXUP_EXT(_name, _manfid, _oemid, CID_YEAR_ANY, CID_MONTH_ANY,	\
-+		   _rev_start, _rev_end,				\
- 		   SDIO_ANY_ID, SDIO_ANY_ID,				\
- 		   _fixup, _data, _ext_csd_rev)				\
- 
-@@ -118,8 +128,9 @@ struct mmc_fixup {
- 		      _ext_csd_rev)
- 
- #define SDIO_FIXUP(_vendor, _device, _fixup, _data)			\
--	_FIXUP_EXT(CID_NAME_ANY, CID_MANFID_ANY,			\
--		    CID_OEMID_ANY, 0, -1ull,				\
-+	_FIXUP_EXT(CID_NAME_ANY, CID_MANFID_ANY, CID_OEMID_ANY,		\
-+		   CID_YEAR_ANY, CID_MONTH_ANY,				\
-+		   0, -1ull,						\
- 		   _vendor, _device,					\
- 		   _fixup, _data, EXT_CSD_REV_ANY)			\
- 
-@@ -264,4 +275,9 @@ static inline int mmc_card_broken_sd_discard(const struct mmc_card *c)
- 	return c->quirks & MMC_QUIRK_BROKEN_SD_DISCARD;
- }
- 
-+static inline int mmc_card_broken_sd_cache(const struct mmc_card *c)
-+{
-+	return c->quirks & MMC_QUIRK_BROKEN_SD_CACHE;
-+}
-+
- #endif
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index 29b9497936df9..a7ffbc930ea9d 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -53,6 +53,15 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
- 	MMC_FIXUP("MMC32G", CID_MANFID_TOSHIBA, CID_OEMID_ANY, add_quirk_mmc,
- 		  MMC_QUIRK_BLK_NO_CMD23),
- 
-+	/*
-+	 * Kingston Canvas Go! Plus microSD cards never finish SD cache flush.
-+	 * This has so far only been observed on cards from 11/2019, while new
-+	 * cards from 2023/05 do not exhibit this behavior.
-+	 */
-+	_FIXUP_EXT("SD64G", CID_MANFID_KINGSTON_SD, 0x5449, 2019, 11,
-+		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
-+		   MMC_QUIRK_BROKEN_SD_CACHE, EXT_CSD_REV_ANY),
-+
- 	/*
- 	 * Some SD cards lockup while using CMD23 multiblock transfers.
- 	 */
-@@ -209,6 +218,10 @@ static inline void mmc_fixup_device(struct mmc_card *card,
- 		if (f->of_compatible &&
- 		    !mmc_fixup_of_compatible_match(card, f->of_compatible))
- 			continue;
-+		if (f->year != CID_YEAR_ANY && f->year != card->cid.year)
-+			continue;
-+		if (f->month != CID_MONTH_ANY && f->month != card->cid.month)
-+			continue;
- 
- 		dev_dbg(&card->dev, "calling %ps\n", f->vendor_fixup);
- 		f->vendor_fixup(card, f->data);
-diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
-index 72b664ed90cf6..246ce027ae0aa 100644
---- a/drivers/mmc/core/sd.c
-+++ b/drivers/mmc/core/sd.c
-@@ -1170,7 +1170,7 @@ static int sd_parse_ext_reg_perf(struct mmc_card *card, u8 fno, u8 page,
- 		card->ext_perf.feature_support |= SD_EXT_PERF_HOST_MAINT;
- 
- 	/* Cache support at bit 0. */
--	if (reg_buf[4] & BIT(0))
-+	if ((reg_buf[4] & BIT(0)) && !mmc_card_broken_sd_cache(card))
- 		card->ext_perf.feature_support |= SD_EXT_PERF_CACHE;
- 
- 	/* Command queue support indicated via queue depth bits (0 to 4). */
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index c726ea7812552..daa2f40d9ce65 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -294,6 +294,7 @@ struct mmc_card {
- #define MMC_QUIRK_TRIM_BROKEN	(1<<12)		/* Skip trim */
- #define MMC_QUIRK_BROKEN_HPI	(1<<13)		/* Disable broken HPI support */
- #define MMC_QUIRK_BROKEN_SD_DISCARD	(1<<14)	/* Disable broken SD discard support */
-+#define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
- 
- 	bool			reenable_cmdq;	/* Re-enable Command Queue */
- 
+ 		cpu4: cpu@400 {
 -- 
 2.39.2
 
