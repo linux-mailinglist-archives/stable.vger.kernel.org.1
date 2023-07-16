@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6977553D6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9386575561A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231877AbjGPUXa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:23:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46768 "EHLO
+        id S232731AbjGPUrd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:47:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231853AbjGPUX3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:23:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E77A9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:29 -0700 (PDT)
+        with ESMTP id S232727AbjGPUrd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:47:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B88DE41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:47:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 961F260EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C2BC433C8;
-        Sun, 16 Jul 2023 20:23:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8E4F60EA2
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:47:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C246BC433C7;
+        Sun, 16 Jul 2023 20:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539008;
-        bh=anADLG2yJBjurdAhIA1aG+IL5b9z6R+xGSE+Q8Pugow=;
+        s=korg; t=1689540451;
+        bh=goPWINpBHakM9hGM8aP8iTpP4FxULVrj6BYPsrtVxow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c4khw7EepZFqLiPgNtxkrdUEBJeTsaiFgd1xQFbPsnA2UsyYg1fMvU7g+6rEehoeZ
-         VBj+yL8SxjP0paRkHyNjMVVMKbqRDN0gEtXfCAo/G2JEUHRJqW00DzM0Pyv/n4WGBS
-         fHtV2oUJbGP5xi0qbPBtBLSC0BaKWJ4x2MvCCh30=
+        b=EyNCq7tN5gB2LyiLH2eiamhLiwAOX013wMqEEdmemhBUaqfVAbE584Ntfe8O21bK4
+         kK28o2Gr6IRRfSg04qbk9bF7Ox6IcYWalYyxeL4jo2EeMDFvaou/yDRG05+sECdMVN
+         TY1QIWktke0vSJuzJ+3vSvkxxKlkA2R/6bTNcsDw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 653/800] rtc: st-lpc: Release some resources in st_rtc_probe() in case of error
+        Fabrizio Lamarque <fl.scratchpad@gmail.com>,
+        Nuno Sa <nuno.sa@analog.com>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 367/591] iio: adc: ad7192: Fix internal/external clock selection
 Date:   Sun, 16 Jul 2023 21:48:26 +0200
-Message-ID: <20230716195004.280270929@linuxfoundation.org>
+Message-ID: <20230716194933.413613479@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,39 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Fabrizio Lamarque <fl.scratchpad@gmail.com>
 
-[ Upstream commit 06c6e1b01d9261f03629cefd1f3553503291e6cf ]
+commit f7d9e21dd274b97dc0a8dbc136a2ea8506063a96 upstream.
 
-If an error occurs after clk_get(), the corresponding resources should be
-released.
+Fix wrong selection of internal clock when mclk is defined.
 
-Use devm_clk_get() to fix it.
+Resolve a logical inversion introduced in c9ec2cb328e3.
 
-Fixes: b5b2bdfc2893 ("rtc: st: Add new driver for ST's LPC RTC")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/866af6adbc7454a7b4505eb6c28fbdc86ccff39e.1686251455.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c9ec2cb328e3 ("iio: adc: ad7192: use devm_clk_get_optional() for mclk")
+Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Cc: <Stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230530075311.400686-3-fl.scratchpad@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-st-lpc.c | 2 +-
+ drivers/iio/adc/ad7192.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-st-lpc.c b/drivers/rtc/rtc-st-lpc.c
-index 0f8e4231098ef..d04d46f9cc65a 100644
---- a/drivers/rtc/rtc-st-lpc.c
-+++ b/drivers/rtc/rtc-st-lpc.c
-@@ -228,7 +228,7 @@ static int st_rtc_probe(struct platform_device *pdev)
- 	enable_irq_wake(rtc->irq);
- 	disable_irq(rtc->irq);
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -368,7 +368,7 @@ static int ad7192_of_clock_select(struct
+ 	clock_sel = AD7192_CLK_INT;
  
--	rtc->clk = clk_get(&pdev->dev, NULL);
-+	rtc->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(rtc->clk)) {
- 		dev_err(&pdev->dev, "Unable to request clock\n");
- 		return PTR_ERR(rtc->clk);
--- 
-2.39.2
-
+ 	/* use internal clock */
+-	if (st->mclk) {
++	if (!st->mclk) {
+ 		if (of_property_read_bool(np, "adi,int-clock-output-enable"))
+ 			clock_sel = AD7192_CLK_INT_CO;
+ 	} else {
 
 
