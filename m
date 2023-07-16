@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2467755394
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C7D87555AD
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231785AbjGPUUg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:20:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45084 "EHLO
+        id S232600AbjGPUn0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:43:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbjGPUUg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:20:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9443C0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:20:34 -0700 (PDT)
+        with ESMTP id S232597AbjGPUnZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5636AD9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7018260DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:20:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CC1C433C8;
-        Sun, 16 Jul 2023 20:20:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E967160E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07783C433C8;
+        Sun, 16 Jul 2023 20:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538833;
-        bh=ZuEDeMiHkNlGi0bDcvYvQxYiAKeqKFgoEBdNAAhWRFg=;
+        s=korg; t=1689540203;
+        bh=FOEEDEquQXDAt8IIjLTPIr9KPstSZOPj+92bCvGOEaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u06xguwhBznm1IY37vKNAC1s/WrF5k7GJ0+4irggEWeTvMVdltb7VuTqVad7FI4zj
-         j8g5GiptOYYPFOE71aaF58Xb/jhFeQhkYuartYHG1SFzYIug1vBKti2wHeLGZ1ft40
-         E/9xsxI/HG1B6JHz9U2gdHGUEKfErEU7F+RNtatU=
+        b=Agzl/VWWXd/KgJM273Yk/qq6RlJw0JkgR/GM/RTCbJdim+nXtA2McOg8ckTr6B5TL
+         6nv/jxVbafoA78sK8QWy1++dBW6gdhQbmjtRj8jbz+m7rzr61TOwdoDBqvw5OcqsjU
+         KKPyVdEfMH6tU1XqiMF8YZ99xaQC+QcMbGdG2aDY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Gao Xiang <hsiangkao@linux.alibaba.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Miklos Szeredi <mszeredi@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 564/800] clk: qcom: gcc-qcm2290: Mark RCGs shared where applicable
-Date:   Sun, 16 Jul 2023 21:46:57 +0200
-Message-ID: <20230716195002.188507986@linuxfoundation.org>
+Subject: [PATCH 6.1 279/591] ovl: update of dentry revalidate flags after copy up
+Date:   Sun, 16 Jul 2023 21:46:58 +0200
+Message-ID: <20230716194931.112945929@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,305 +56,161 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 7bf654a0d95e75b415f454e10627309d650762d0 ]
+[ Upstream commit b07d5cc93e1b28df47a72c519d09d0a836043613 ]
 
-The vast majority of shared RCGs were not marked as such. Fix it.
+After copy up, we may need to update d_flags if upper dentry is on a
+remote fs and lower dentries are not.
 
-Fixes: 496d1a13d405 ("clk: qcom: Add Global Clock Controller driver for QCM2290")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Acked-by: Shawn Guo <shawn.guo@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230403174807.345185-1-konrad.dybcio@linaro.org
+Add helpers to allow incremental update of the revalidate flags.
+
+Fixes: bccece1ead36 ("ovl: allow remote upper")
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-qcm2290.c | 62 +++++++++++++++++-----------------
- 1 file changed, 31 insertions(+), 31 deletions(-)
+ fs/overlayfs/copy_up.c   |  2 ++
+ fs/overlayfs/dir.c       |  3 +--
+ fs/overlayfs/export.c    |  3 +--
+ fs/overlayfs/namei.c     |  3 +--
+ fs/overlayfs/overlayfs.h |  6 ++++--
+ fs/overlayfs/super.c     |  2 +-
+ fs/overlayfs/util.c      | 24 ++++++++++++++++++++----
+ 7 files changed, 30 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-qcm2290.c b/drivers/clk/qcom/gcc-qcm2290.c
-index 096deff2ba257..48995e50c6bd7 100644
---- a/drivers/clk/qcom/gcc-qcm2290.c
-+++ b/drivers/clk/qcom/gcc-qcm2290.c
-@@ -650,7 +650,7 @@ static struct clk_rcg2 gcc_usb30_prim_mock_utmi_clk_src = {
- 		.name = "gcc_usb30_prim_mock_utmi_clk_src",
- 		.parent_data = gcc_parents_0,
- 		.num_parents = ARRAY_SIZE(gcc_parents_0),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index 91a95bfad0d1c..edc1ebff33f5a 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -538,6 +538,7 @@ static int ovl_link_up(struct ovl_copy_up_ctx *c)
+ 			/* Restore timestamps on parent (best effort) */
+ 			ovl_set_timestamps(ofs, upperdir, &c->pstat);
+ 			ovl_dentry_set_upper_alias(c->dentry);
++			ovl_dentry_update_reval(c->dentry, upper);
+ 		}
+ 	}
+ 	inode_unlock(udir);
+@@ -857,6 +858,7 @@ static int ovl_do_copy_up(struct ovl_copy_up_ctx *c)
+ 		inode_unlock(udir);
  
-@@ -686,7 +686,7 @@ static struct clk_rcg2 gcc_camss_axi_clk_src = {
- 		.name = "gcc_camss_axi_clk_src",
- 		.parent_data = gcc_parents_4,
- 		.num_parents = ARRAY_SIZE(gcc_parents_4),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ 		ovl_dentry_set_upper_alias(c->dentry);
++		ovl_dentry_update_reval(c->dentry, ovl_dentry_upper(c->dentry));
+ 	}
  
-@@ -706,7 +706,7 @@ static struct clk_rcg2 gcc_camss_cci_clk_src = {
- 		.name = "gcc_camss_cci_clk_src",
- 		.parent_data = gcc_parents_9,
- 		.num_parents = ARRAY_SIZE(gcc_parents_9),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ out:
+diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
+index c3032cef391ef..5339ff08bd0f4 100644
+--- a/fs/overlayfs/dir.c
++++ b/fs/overlayfs/dir.c
+@@ -269,8 +269,7 @@ static int ovl_instantiate(struct dentry *dentry, struct inode *inode,
  
-@@ -728,7 +728,7 @@ static struct clk_rcg2 gcc_camss_csi0phytimer_clk_src = {
- 		.name = "gcc_camss_csi0phytimer_clk_src",
- 		.parent_data = gcc_parents_5,
- 		.num_parents = ARRAY_SIZE(gcc_parents_5),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ 	ovl_dir_modified(dentry->d_parent, false);
+ 	ovl_dentry_set_upper_alias(dentry);
+-	ovl_dentry_update_reval(dentry, newdentry,
+-			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_reval(dentry, newdentry);
  
-@@ -742,7 +742,7 @@ static struct clk_rcg2 gcc_camss_csi1phytimer_clk_src = {
- 		.name = "gcc_camss_csi1phytimer_clk_src",
- 		.parent_data = gcc_parents_5,
- 		.num_parents = ARRAY_SIZE(gcc_parents_5),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ 	if (!hardlink) {
+ 		/*
+diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+index ac9c3ad04016e..e55363d343dc6 100644
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -326,8 +326,7 @@ static struct dentry *ovl_obtain_alias(struct super_block *sb,
+ 	if (upper_alias)
+ 		ovl_dentry_set_upper_alias(dentry);
  
-@@ -764,7 +764,7 @@ static struct clk_rcg2 gcc_camss_mclk0_clk_src = {
- 		.parent_data = gcc_parents_3,
- 		.num_parents = ARRAY_SIZE(gcc_parents_3),
- 		.flags = CLK_OPS_PARENT_ENABLE,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+-	ovl_dentry_update_reval(dentry, upper,
+-			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_reval(dentry, upper);
  
-@@ -779,7 +779,7 @@ static struct clk_rcg2 gcc_camss_mclk1_clk_src = {
- 		.parent_data = gcc_parents_3,
- 		.num_parents = ARRAY_SIZE(gcc_parents_3),
- 		.flags = CLK_OPS_PARENT_ENABLE,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ 	return d_instantiate_anon(dentry, inode);
  
-@@ -794,7 +794,7 @@ static struct clk_rcg2 gcc_camss_mclk2_clk_src = {
- 		.parent_data = gcc_parents_3,
- 		.num_parents = ARRAY_SIZE(gcc_parents_3),
- 		.flags = CLK_OPS_PARENT_ENABLE,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+index 0fd1d5fdfc728..655d08d6f3f17 100644
+--- a/fs/overlayfs/namei.c
++++ b/fs/overlayfs/namei.c
+@@ -1116,8 +1116,7 @@ struct dentry *ovl_lookup(struct inode *dir, struct dentry *dentry,
+ 			ovl_set_flag(OVL_UPPERDATA, inode);
+ 	}
  
-@@ -809,7 +809,7 @@ static struct clk_rcg2 gcc_camss_mclk3_clk_src = {
- 		.parent_data = gcc_parents_3,
- 		.num_parents = ARRAY_SIZE(gcc_parents_3),
- 		.flags = CLK_OPS_PARENT_ENABLE,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+-	ovl_dentry_update_reval(dentry, upperdentry,
+-			DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_reval(dentry, upperdentry);
  
-@@ -830,7 +830,7 @@ static struct clk_rcg2 gcc_camss_ope_ahb_clk_src = {
- 		.name = "gcc_camss_ope_ahb_clk_src",
- 		.parent_data = gcc_parents_6,
- 		.num_parents = ARRAY_SIZE(gcc_parents_6),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ 	revert_creds(old_cred);
+ 	if (origin_path) {
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index e74a610a117ec..052226aa7de09 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -360,8 +360,10 @@ bool ovl_index_all(struct super_block *sb);
+ bool ovl_verify_lower(struct super_block *sb);
+ struct ovl_entry *ovl_alloc_entry(unsigned int numlower);
+ bool ovl_dentry_remote(struct dentry *dentry);
+-void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *upperdentry,
+-			     unsigned int mask);
++void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *realdentry);
++void ovl_dentry_init_reval(struct dentry *dentry, struct dentry *upperdentry);
++void ovl_dentry_init_flags(struct dentry *dentry, struct dentry *upperdentry,
++			   unsigned int mask);
+ bool ovl_dentry_weird(struct dentry *dentry);
+ enum ovl_path_type ovl_path_type(struct dentry *dentry);
+ void ovl_path_upper(struct dentry *dentry, struct path *path);
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 3d14a3f1465d1..51eec4a8e82b2 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1980,7 +1980,7 @@ static struct dentry *ovl_get_root(struct super_block *sb,
+ 	ovl_dentry_set_flag(OVL_E_CONNECTED, root);
+ 	ovl_set_upperdata(d_inode(root));
+ 	ovl_inode_init(d_inode(root), &oip, ino, fsid);
+-	ovl_dentry_update_reval(root, upperdentry, DCACHE_OP_WEAK_REVALIDATE);
++	ovl_dentry_init_flags(root, upperdentry, DCACHE_OP_WEAK_REVALIDATE);
  
-@@ -854,7 +854,7 @@ static struct clk_rcg2 gcc_camss_ope_clk_src = {
- 		.parent_data = gcc_parents_6,
- 		.num_parents = ARRAY_SIZE(gcc_parents_6),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ 	return root;
+ }
+diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+index 81a57a8d80d9a..850e8d1bf8296 100644
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -94,14 +94,30 @@ struct ovl_entry *ovl_alloc_entry(unsigned int numlower)
+ 	return oe;
+ }
  
-@@ -888,7 +888,7 @@ static struct clk_rcg2 gcc_camss_tfe_0_clk_src = {
- 		.name = "gcc_camss_tfe_0_clk_src",
- 		.parent_data = gcc_parents_7,
- 		.num_parents = ARRAY_SIZE(gcc_parents_7),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
++#define OVL_D_REVALIDATE (DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE)
++
+ bool ovl_dentry_remote(struct dentry *dentry)
+ {
+-	return dentry->d_flags &
+-		(DCACHE_OP_REVALIDATE | DCACHE_OP_WEAK_REVALIDATE);
++	return dentry->d_flags & OVL_D_REVALIDATE;
++}
++
++void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *realdentry)
++{
++	if (!ovl_dentry_remote(realdentry))
++		return;
++
++	spin_lock(&dentry->d_lock);
++	dentry->d_flags |= realdentry->d_flags & OVL_D_REVALIDATE;
++	spin_unlock(&dentry->d_lock);
++}
++
++void ovl_dentry_init_reval(struct dentry *dentry, struct dentry *upperdentry)
++{
++	return ovl_dentry_init_flags(dentry, upperdentry, OVL_D_REVALIDATE);
+ }
  
-@@ -912,7 +912,7 @@ static struct clk_rcg2 gcc_camss_tfe_0_csid_clk_src = {
- 		.name = "gcc_camss_tfe_0_csid_clk_src",
- 		.parent_data = gcc_parents_8,
- 		.num_parents = ARRAY_SIZE(gcc_parents_8),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -926,7 +926,7 @@ static struct clk_rcg2 gcc_camss_tfe_1_clk_src = {
- 		.name = "gcc_camss_tfe_1_clk_src",
- 		.parent_data = gcc_parents_7,
- 		.num_parents = ARRAY_SIZE(gcc_parents_7),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -940,7 +940,7 @@ static struct clk_rcg2 gcc_camss_tfe_1_csid_clk_src = {
- 		.name = "gcc_camss_tfe_1_csid_clk_src",
- 		.parent_data = gcc_parents_8,
- 		.num_parents = ARRAY_SIZE(gcc_parents_8),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -963,7 +963,7 @@ static struct clk_rcg2 gcc_camss_tfe_cphy_rx_clk_src = {
- 		.parent_data = gcc_parents_10,
- 		.num_parents = ARRAY_SIZE(gcc_parents_10),
- 		.flags = CLK_OPS_PARENT_ENABLE,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -984,7 +984,7 @@ static struct clk_rcg2 gcc_camss_top_ahb_clk_src = {
- 		.name = "gcc_camss_top_ahb_clk_src",
- 		.parent_data = gcc_parents_4,
- 		.num_parents = ARRAY_SIZE(gcc_parents_4),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -1006,7 +1006,7 @@ static struct clk_rcg2 gcc_gp1_clk_src = {
- 		.name = "gcc_gp1_clk_src",
- 		.parent_data = gcc_parents_2,
- 		.num_parents = ARRAY_SIZE(gcc_parents_2),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -1020,7 +1020,7 @@ static struct clk_rcg2 gcc_gp2_clk_src = {
- 		.name = "gcc_gp2_clk_src",
- 		.parent_data = gcc_parents_2,
- 		.num_parents = ARRAY_SIZE(gcc_parents_2),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -1034,7 +1034,7 @@ static struct clk_rcg2 gcc_gp3_clk_src = {
- 		.name = "gcc_gp3_clk_src",
- 		.parent_data = gcc_parents_2,
- 		.num_parents = ARRAY_SIZE(gcc_parents_2),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -1054,7 +1054,7 @@ static struct clk_rcg2 gcc_pdm2_clk_src = {
- 		.name = "gcc_pdm2_clk_src",
- 		.parent_data = gcc_parents_0,
- 		.num_parents = ARRAY_SIZE(gcc_parents_0),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -1082,7 +1082,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s0_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s0_clk_src",
- 	.parent_data = gcc_parents_1,
- 	.num_parents = ARRAY_SIZE(gcc_parents_1),
--	.ops = &clk_rcg2_ops,
-+	.ops = &clk_rcg2_shared_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s0_clk_src = {
-@@ -1098,7 +1098,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s1_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s1_clk_src",
- 	.parent_data = gcc_parents_1,
- 	.num_parents = ARRAY_SIZE(gcc_parents_1),
--	.ops = &clk_rcg2_ops,
-+	.ops = &clk_rcg2_shared_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s1_clk_src = {
-@@ -1114,7 +1114,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s2_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s2_clk_src",
- 	.parent_data = gcc_parents_1,
- 	.num_parents = ARRAY_SIZE(gcc_parents_1),
--	.ops = &clk_rcg2_ops,
-+	.ops = &clk_rcg2_shared_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s2_clk_src = {
-@@ -1130,7 +1130,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s3_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s3_clk_src",
- 	.parent_data = gcc_parents_1,
- 	.num_parents = ARRAY_SIZE(gcc_parents_1),
--	.ops = &clk_rcg2_ops,
-+	.ops = &clk_rcg2_shared_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s3_clk_src = {
-@@ -1146,7 +1146,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s4_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s4_clk_src",
- 	.parent_data = gcc_parents_1,
- 	.num_parents = ARRAY_SIZE(gcc_parents_1),
--	.ops = &clk_rcg2_ops,
-+	.ops = &clk_rcg2_shared_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s4_clk_src = {
-@@ -1162,7 +1162,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s5_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s5_clk_src",
- 	.parent_data = gcc_parents_1,
- 	.num_parents = ARRAY_SIZE(gcc_parents_1),
--	.ops = &clk_rcg2_ops,
-+	.ops = &clk_rcg2_shared_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s5_clk_src = {
-@@ -1219,7 +1219,7 @@ static struct clk_rcg2 gcc_sdcc1_ice_core_clk_src = {
- 		.name = "gcc_sdcc1_ice_core_clk_src",
- 		.parent_data = gcc_parents_0,
- 		.num_parents = ARRAY_SIZE(gcc_parents_0),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -1266,7 +1266,7 @@ static struct clk_rcg2 gcc_usb30_prim_master_clk_src = {
- 		.name = "gcc_usb30_prim_master_clk_src",
- 		.parent_data = gcc_parents_0,
- 		.num_parents = ARRAY_SIZE(gcc_parents_0),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -1280,7 +1280,7 @@ static struct clk_rcg2 gcc_usb3_prim_phy_aux_clk_src = {
- 		.name = "gcc_usb3_prim_phy_aux_clk_src",
- 		.parent_data = gcc_parents_13,
- 		.num_parents = ARRAY_SIZE(gcc_parents_13),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -1303,7 +1303,7 @@ static struct clk_rcg2 gcc_video_venus_clk_src = {
- 		.parent_data = gcc_parents_14,
- 		.num_parents = ARRAY_SIZE(gcc_parents_14),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
+-void ovl_dentry_update_reval(struct dentry *dentry, struct dentry *upperdentry,
+-			     unsigned int mask)
++void ovl_dentry_init_flags(struct dentry *dentry, struct dentry *upperdentry,
++			   unsigned int mask)
+ {
+ 	struct ovl_entry *oe = OVL_E(dentry);
+ 	unsigned int i, flags = 0;
 -- 
 2.39.2
 
