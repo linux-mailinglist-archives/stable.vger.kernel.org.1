@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03F5D755661
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D221755408
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:25:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232830AbjGPUuB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:50:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39096 "EHLO
+        id S231953AbjGPUZu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:25:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232850AbjGPUtz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:55 -0400
+        with ESMTP id S231960AbjGPUZt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4CCFE5D
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 105971B7
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B69E60E9E
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4D2C433C7;
-        Sun, 16 Jul 2023 20:49:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A53260EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA533C433C8;
+        Sun, 16 Jul 2023 20:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540593;
-        bh=Vfbj6mqGQcx16PxbsYVKOs27NtH+3mcO06Yer8Puhlg=;
+        s=korg; t=1689539148;
+        bh=LBFDSlMYGa2AvTCgdLFaCibJvefSHD+d3UqB7OUccqI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D7YZNUOn1savx/u16VCXAVocMynXPRfopo5ZPpNUv1ApjpiOiLOGSzxcpiEwPxTrV
-         JqKhkCbeUpvCZfDwOaqN1nspdl2vgWHvy52ZsmMNy8oJjffF1+Ors3nwOkAhITbmC9
-         ktsdSJcrGZWQ34e/aI7IrsLduDd5EFKsJJzWhyeE=
+        b=G9NDRbve6spaPqw/elWHGvndLzOpoozWxnBA3Ry+8zKAFzqkCflmX4l8D0hDpBqnr
+         idLzgd9crClNnyf4pbVTq1x9T/1pwc7Tm2oK73leawRjtN9MjybYoJb/91+7m84dMh
+         +WilBK/Q7NKzrVMMDCfG7i92OkfIjD3bqqfVo6nQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Hariprasad Kelam <hkelam@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 419/591] serial: 8250: lock port for UART_IER access in omap8250_irq()
+Subject: [PATCH 6.4 705/800] octeontx-af: fix hardware timestamp configuration
 Date:   Sun, 16 Jul 2023 21:49:18 +0200
-Message-ID: <20230716194934.755989603@linuxfoundation.org>
+Message-ID: <20230716195005.496095998@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,55 +57,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 25614735a647693c1260f253dc3ab32127697806 ]
+[ Upstream commit 14bb236b29922c4f57d8c05bfdbcb82677f917c9 ]
 
-omap8250_irq() accesses UART_IER. This register is modified twice
-by each console write (serial8250_console_write()) under the port
-lock. omap8250_irq() must also take the port lock to guanentee
-synchronized access to UART_IER.
+MAC block on CN10K (RPM) supports hardware timestamp configuration. The
+previous patch which added timestamp configuration support has a bug.
+Though the netdev driver requests to disable timestamp configuration,
+the driver is always enabling it.
 
-Since the port lock is already being taken for the stop_rx() callback
-and since it is safe to call cancel_delayed_work() while holding the
-port lock, simply extend the port lock region to include UART_IER
-access.
+This patch fixes the same.
 
-Fixes: 1fe0e1fa3209 ("serial: 8250_omap: Handle optional overrun-throttle-ms property")
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20230525093159.223817-8-john.ogness@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d1489208681d ("octeontx2-af: cn10k: RPM hardware timestamp configuration")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 7ecd2d379292b..17a230281ebe0 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -639,17 +639,18 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
- 	if ((lsr & UART_LSR_OE) && up->overrun_backoff_time_ms > 0) {
- 		unsigned long delay;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+index 4b8559ac0404f..095b2cc4a6999 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+@@ -763,7 +763,7 @@ static int rvu_cgx_ptp_rx_cfg(struct rvu *rvu, u16 pcifunc, bool enable)
+ 	cgxd = rvu_cgx_pdata(cgx_id, rvu);
  
-+		/* Synchronize UART_IER access against the console. */
-+		spin_lock(&port->lock);
- 		up->ier = port->serial_in(port, UART_IER);
- 		if (up->ier & (UART_IER_RLSI | UART_IER_RDI)) {
--			spin_lock(&port->lock);
- 			port->ops->stop_rx(port);
--			spin_unlock(&port->lock);
- 		} else {
- 			/* Keep restarting the timer until
- 			 * the input overrun subsides.
- 			 */
- 			cancel_delayed_work(&up->overrun_backoff);
- 		}
-+		spin_unlock(&port->lock);
- 
- 		delay = msecs_to_jiffies(up->overrun_backoff_time_ms);
- 		schedule_delayed_work(&up->overrun_backoff, delay);
+ 	mac_ops = get_mac_ops(cgxd);
+-	mac_ops->mac_enadis_ptp_config(cgxd, lmac_id, true);
++	mac_ops->mac_enadis_ptp_config(cgxd, lmac_id, enable);
+ 	/* If PTP is enabled then inform NPC that packets to be
+ 	 * parsed by this PF will have their data shifted by 8 bytes
+ 	 * and if PTP is disabled then no shift is required
 -- 
 2.39.2
 
