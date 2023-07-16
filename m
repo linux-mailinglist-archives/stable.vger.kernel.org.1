@@ -2,435 +2,211 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EC47755250
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C395755480
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231265AbjGPUG0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:06:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35450 "EHLO
+        id S232180AbjGPUbC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:31:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231273AbjGPUGZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:06:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED86D1BE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:06:21 -0700 (PDT)
+        with ESMTP id S232185AbjGPUbB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:31:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 044C3E40
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:31:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4080360EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:06:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA8BC433C8;
-        Sun, 16 Jul 2023 20:06:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A97260E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:30:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3E6C433C8;
+        Sun, 16 Jul 2023 20:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537980;
-        bh=LRxlA13nsJkvRI5xODh/XAx/7Ql8QD5Qe0Br6mTXb6E=;
+        s=korg; t=1689539458;
+        bh=4wdoPoDoU/I0fBOLHS9pBXLVVZzKXJs+p+bUTI6z/y4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kajEJjTAx4y0rhDO5/UYRedgAjvh6GRqzVJCPWcz3aF2auZUPZEdWrEyMTRmGvy/b
-         mi9EILJZzF4DWxWNB+2F+NtqeQoIMG3hD2PSiBcjGXMmmINQ9NvIZU1FQiMAOKBxX6
-         fyIm6K8f9Nsw1pfQzMBR/nCGrJng8tx1cYOtCKKw=
+        b=E46iiybdkXq4XPaMvjbcTdwiPyLzrc0EczyQPER9b18XlpjkUtoTPrJTghWRMEmxh
+         BGJnVJ4Al0j/uaeKm06EuvErGdY7V14j1ay0FYI8hHmmv3AzjL0LebSvU9Mm+Ijm5m
+         TjAa28tayPWWvpuFUUGHhPvCI92JAz859iDI/8PE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        patches@lists.linux.dev, Yue Hu <huyue2@coolpad.com>,
+        Chao Yu <chao@kernel.org>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 290/800] ARM/mmc: Convert old mmci-omap to GPIO descriptors
-Date:   Sun, 16 Jul 2023 21:42:23 +0200
-Message-ID: <20230716194955.821481806@linuxfoundation.org>
+Subject: [PATCH 6.1 005/591] erofs: avoid tagged pointers to mark sync decompression
+Date:   Sun, 16 Jul 2023 21:42:24 +0200
+Message-ID: <20230716194924.004567620@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit e519f0bb64efc2c9c8b67bb2d114dda458bdc34d ]
+[ Upstream commit cdba55067f2f9fdc7870ffcb6aef912d3468cff8 ]
 
-A recent change to the OMAP driver making it use a dynamic GPIO
-base created problems with some old OMAP1 board files, among
-them Nokia 770, SX1 and also the OMAP2 Nokia n8x0.
+We could just use a boolean in z_erofs_decompressqueue for sync
+decompression to simplify the code.
 
-Fix up all instances of GPIOs being used for the MMC driver
-by pushing the handling of power, slot selection and MMC
-"cover" into the driver as optional GPIOs.
-
-This is maybe not the most perfect solution as the MMC
-framework have some central handlers for some of the
-stuff, but it at least makes the situtation better and
-solves the immediate issue.
-
-Fixes: 92bf78b33b0b ("gpio: omap: use dynamic allocation of base")
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230204093040.97967-2-hsiangkao@linux.alibaba.com
+Stable-dep-of: 967c28b23f6c ("erofs: kill hooked chains to avoid loops on deduplicated compressed images")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap1/board-nokia770.c   | 43 ++++---------
- arch/arm/mach-omap1/board-sx1-mmc.c    |  1 -
- arch/arm/mach-omap2/board-n8x0.c       | 85 ++++++++------------------
- drivers/mmc/host/omap.c                | 46 +++++++++++++-
- include/linux/platform_data/mmc-omap.h |  2 -
- 5 files changed, 83 insertions(+), 94 deletions(-)
+ fs/erofs/zdata.c | 42 ++++++++++++++++--------------------------
+ fs/erofs/zdata.h |  2 +-
+ 2 files changed, 17 insertions(+), 27 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/board-nokia770.c b/arch/arm/mach-omap1/board-nokia770.c
-index dde74694cb4c0..9583417f5bea8 100644
---- a/arch/arm/mach-omap1/board-nokia770.c
-+++ b/arch/arm/mach-omap1/board-nokia770.c
-@@ -184,27 +184,23 @@ static struct omap_usb_config nokia770_usb_config __initdata = {
- 
- #if IS_ENABLED(CONFIG_MMC_OMAP)
- 
--#define NOKIA770_GPIO_MMC_POWER		41
--#define NOKIA770_GPIO_MMC_SWITCH	23
--
--static int nokia770_mmc_set_power(struct device *dev, int slot, int power_on,
--				int vdd)
--{
--	gpio_set_value(NOKIA770_GPIO_MMC_POWER, power_on);
--	return 0;
--}
--
--static int nokia770_mmc_get_cover_state(struct device *dev, int slot)
--{
--	return gpio_get_value(NOKIA770_GPIO_MMC_SWITCH);
--}
-+static struct gpiod_lookup_table nokia770_mmc_gpio_table = {
-+	.dev_id = "mmci-omap.1",
-+	.table = {
-+		/* Slot index 0, VSD power, GPIO 41 */
-+		GPIO_LOOKUP_IDX("gpio-32-47", 9,
-+				"vsd", 0, GPIO_ACTIVE_HIGH),
-+		/* Slot index 0, switch, GPIO 23 */
-+		GPIO_LOOKUP_IDX("gpio-16-31", 7,
-+				"cover", 0, GPIO_ACTIVE_HIGH),
-+		{ }
-+	},
-+};
- 
- static struct omap_mmc_platform_data nokia770_mmc2_data = {
- 	.nr_slots                       = 1,
- 	.max_freq                       = 12000000,
- 	.slots[0]       = {
--		.set_power		= nokia770_mmc_set_power,
--		.get_cover_state	= nokia770_mmc_get_cover_state,
- 		.ocr_mask               = MMC_VDD_32_33|MMC_VDD_33_34,
- 		.name                   = "mmcblk",
- 	},
-@@ -214,20 +210,7 @@ static struct omap_mmc_platform_data *nokia770_mmc_data[OMAP16XX_NR_MMC];
- 
- static void __init nokia770_mmc_init(void)
- {
--	int ret;
--
--	ret = gpio_request(NOKIA770_GPIO_MMC_POWER, "MMC power");
--	if (ret < 0)
--		return;
--	gpio_direction_output(NOKIA770_GPIO_MMC_POWER, 0);
--
--	ret = gpio_request(NOKIA770_GPIO_MMC_SWITCH, "MMC cover");
--	if (ret < 0) {
--		gpio_free(NOKIA770_GPIO_MMC_POWER);
--		return;
--	}
--	gpio_direction_input(NOKIA770_GPIO_MMC_SWITCH);
--
-+	gpiod_add_lookup_table(&nokia770_mmc_gpio_table);
- 	/* Only the second MMC controller is used */
- 	nokia770_mmc_data[1] = &nokia770_mmc2_data;
- 	omap1_init_mmc(nokia770_mmc_data, OMAP16XX_NR_MMC);
-diff --git a/arch/arm/mach-omap1/board-sx1-mmc.c b/arch/arm/mach-omap1/board-sx1-mmc.c
-index f1c160924dfe4..f183a8448a7b0 100644
---- a/arch/arm/mach-omap1/board-sx1-mmc.c
-+++ b/arch/arm/mach-omap1/board-sx1-mmc.c
-@@ -9,7 +9,6 @@
-  * Copyright (C) 2007 Instituto Nokia de Tecnologia - INdT
-  */
- 
--#include <linux/gpio.h>
- #include <linux/platform_device.h>
- 
- #include "hardware.h"
-diff --git a/arch/arm/mach-omap2/board-n8x0.c b/arch/arm/mach-omap2/board-n8x0.c
-index 3353b0a923d96..50b88eb23f9f8 100644
---- a/arch/arm/mach-omap2/board-n8x0.c
-+++ b/arch/arm/mach-omap2/board-n8x0.c
-@@ -11,6 +11,7 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/gpio.h>
-+#include <linux/gpio/machine.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/irq.h>
-@@ -170,22 +171,32 @@ static struct spi_board_info n800_spi_board_info[] __initdata = {
-  * GPIO23 and GPIO9		slot 2 EMMC on N810
-  *
-  */
--#define N8X0_SLOT_SWITCH_GPIO	96
--#define N810_EMMC_VSD_GPIO	23
--#define N810_EMMC_VIO_GPIO	9
--
- static int slot1_cover_open;
- static int slot2_cover_open;
- static struct device *mmc_device;
- 
--static int n8x0_mmc_switch_slot(struct device *dev, int slot)
--{
--#ifdef CONFIG_MMC_DEBUG
--	dev_dbg(dev, "Choose slot %d\n", slot + 1);
--#endif
--	gpio_set_value(N8X0_SLOT_SWITCH_GPIO, slot);
--	return 0;
--}
-+static struct gpiod_lookup_table nokia8xx_mmc_gpio_table = {
-+	.dev_id = "mmci-omap.0",
-+	.table = {
-+		/* Slot switch, GPIO 96 */
-+		GPIO_LOOKUP("gpio-80-111", 16,
-+			    "switch", GPIO_ACTIVE_HIGH),
-+		{ }
-+	},
-+};
-+
-+static struct gpiod_lookup_table nokia810_mmc_gpio_table = {
-+	.dev_id = "mmci-omap.0",
-+	.table = {
-+		/* Slot index 1, VSD power, GPIO 23 */
-+		GPIO_LOOKUP_IDX("gpio-16-31", 7,
-+				"vsd", 1, GPIO_ACTIVE_HIGH),
-+		/* Slot index 1, VIO power, GPIO 9 */
-+		GPIO_LOOKUP_IDX("gpio-0-15", 9,
-+				"vsd", 1, GPIO_ACTIVE_HIGH),
-+		{ }
-+	},
-+};
- 
- static int n8x0_mmc_set_power_menelaus(struct device *dev, int slot,
- 					int power_on, int vdd)
-@@ -256,31 +267,13 @@ static int n8x0_mmc_set_power_menelaus(struct device *dev, int slot,
- 	return 0;
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index ccf7c55d477fe..8e80871a8c1d7 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1157,12 +1157,12 @@ static void z_erofs_decompressqueue_work(struct work_struct *work)
  }
  
--static void n810_set_power_emmc(struct device *dev,
--					 int power_on)
--{
--	dev_dbg(dev, "Set EMMC power %s\n", power_on ? "on" : "off");
--
--	if (power_on) {
--		gpio_set_value(N810_EMMC_VSD_GPIO, 1);
--		msleep(1);
--		gpio_set_value(N810_EMMC_VIO_GPIO, 1);
--		msleep(1);
--	} else {
--		gpio_set_value(N810_EMMC_VIO_GPIO, 0);
--		msleep(50);
--		gpio_set_value(N810_EMMC_VSD_GPIO, 0);
--		msleep(50);
--	}
--}
--
- static int n8x0_mmc_set_power(struct device *dev, int slot, int power_on,
- 			      int vdd)
+ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
+-				       bool sync, int bios)
++				       int bios)
  {
- 	if (board_is_n800() || slot == 0)
- 		return n8x0_mmc_set_power_menelaus(dev, slot, power_on, vdd);
+ 	struct erofs_sb_info *const sbi = EROFS_SB(io->sb);
  
--	n810_set_power_emmc(dev, power_on);
-+	/* The n810 power will be handled by GPIO code in the driver */
- 
- 	return 0;
- }
-@@ -418,13 +411,6 @@ static void n8x0_mmc_shutdown(struct device *dev)
- static void n8x0_mmc_cleanup(struct device *dev)
- {
- 	menelaus_unregister_mmc_callback();
--
--	gpio_free(N8X0_SLOT_SWITCH_GPIO);
--
--	if (board_is_n810()) {
--		gpio_free(N810_EMMC_VSD_GPIO);
--		gpio_free(N810_EMMC_VIO_GPIO);
--	}
+ 	/* wake up the caller thread for sync decompression */
+-	if (sync) {
++	if (io->sync) {
+ 		if (!atomic_add_return(bios, &io->pending_bios))
+ 			complete(&io->u.done);
+ 		return;
+@@ -1294,9 +1294,8 @@ static struct page *pickup_page_for_submission(struct z_erofs_pcluster *pcl,
+ 	return page;
  }
  
- /*
-@@ -433,7 +419,6 @@ static void n8x0_mmc_cleanup(struct device *dev)
-  */
- static struct omap_mmc_platform_data mmc1_data = {
- 	.nr_slots			= 0,
--	.switch_slot			= n8x0_mmc_switch_slot,
- 	.init				= n8x0_mmc_late_init,
- 	.cleanup			= n8x0_mmc_cleanup,
- 	.shutdown			= n8x0_mmc_shutdown,
-@@ -463,14 +448,9 @@ static struct omap_mmc_platform_data mmc1_data = {
- 
- static struct omap_mmc_platform_data *mmc_data[OMAP24XX_NR_MMC];
- 
--static struct gpio n810_emmc_gpios[] __initdata = {
--	{ N810_EMMC_VSD_GPIO, GPIOF_OUT_INIT_LOW,  "MMC slot 2 Vddf" },
--	{ N810_EMMC_VIO_GPIO, GPIOF_OUT_INIT_LOW,  "MMC slot 2 Vdd"  },
--};
--
- static void __init n8x0_mmc_init(void)
+-static struct z_erofs_decompressqueue *
+-jobqueue_init(struct super_block *sb,
+-	      struct z_erofs_decompressqueue *fgq, bool *fg)
++static struct z_erofs_decompressqueue *jobqueue_init(struct super_block *sb,
++			      struct z_erofs_decompressqueue *fgq, bool *fg)
  {
--	int err;
-+	gpiod_add_lookup_table(&nokia8xx_mmc_gpio_table);
+ 	struct z_erofs_decompressqueue *q;
  
- 	if (board_is_n810()) {
- 		mmc1_data.slots[0].name = "external";
-@@ -483,20 +463,7 @@ static void __init n8x0_mmc_init(void)
- 		 */
- 		mmc1_data.slots[1].name = "internal";
- 		mmc1_data.slots[1].ban_openended = 1;
--	}
--
--	err = gpio_request_one(N8X0_SLOT_SWITCH_GPIO, GPIOF_OUT_INIT_LOW,
--			       "MMC slot switch");
--	if (err)
--		return;
--
--	if (board_is_n810()) {
--		err = gpio_request_array(n810_emmc_gpios,
--					 ARRAY_SIZE(n810_emmc_gpios));
--		if (err) {
--			gpio_free(N8X0_SLOT_SWITCH_GPIO);
--			return;
--		}
-+		gpiod_add_lookup_table(&nokia810_mmc_gpio_table);
+@@ -1313,6 +1312,7 @@ jobqueue_init(struct super_block *sb,
+ 		init_completion(&fgq->u.done);
+ 		atomic_set(&fgq->pending_bios, 0);
+ 		q->eio = false;
++		q->sync = true;
  	}
- 
- 	mmc1_data.nr_slots = 2;
-diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
-index 86454f1182bb1..6a259563690d6 100644
---- a/drivers/mmc/host/omap.c
-+++ b/drivers/mmc/host/omap.c
-@@ -26,6 +26,7 @@
- #include <linux/clk.h>
- #include <linux/scatterlist.h>
- #include <linux/slab.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/platform_data/mmc-omap.h>
- 
- 
-@@ -111,6 +112,9 @@ struct mmc_omap_slot {
- 	struct mmc_request      *mrq;
- 	struct mmc_omap_host    *host;
- 	struct mmc_host		*mmc;
-+	struct gpio_desc	*vsd;
-+	struct gpio_desc	*vio;
-+	struct gpio_desc	*cover;
- 	struct omap_mmc_slot_data *pdata;
+ 	q->sb = sb;
+ 	q->head = Z_EROFS_PCLUSTER_TAIL_CLOSED;
+@@ -1326,20 +1326,6 @@ enum {
+ 	NR_JOBQUEUES,
  };
  
-@@ -133,6 +137,7 @@ struct mmc_omap_host {
- 	int			irq;
- 	unsigned char		bus_mode;
- 	unsigned int		reg_shift;
-+	struct gpio_desc	*slot_switch;
+-static void *jobqueueset_init(struct super_block *sb,
+-			      struct z_erofs_decompressqueue *q[],
+-			      struct z_erofs_decompressqueue *fgq, bool *fg)
+-{
+-	/*
+-	 * if managed cache is enabled, bypass jobqueue is needed,
+-	 * no need to read from device for all pclusters in this queue.
+-	 */
+-	q[JQ_BYPASS] = jobqueue_init(sb, fgq + JQ_BYPASS, NULL);
+-	q[JQ_SUBMIT] = jobqueue_init(sb, fgq + JQ_SUBMIT, fg);
+-
+-	return tagptr_cast_ptr(tagptr_fold(tagptr1_t, q[JQ_SUBMIT], *fg));
+-}
+-
+ static void move_to_bypass_jobqueue(struct z_erofs_pcluster *pcl,
+ 				    z_erofs_next_pcluster_t qtail[],
+ 				    z_erofs_next_pcluster_t owned_head)
+@@ -1361,8 +1347,7 @@ static void move_to_bypass_jobqueue(struct z_erofs_pcluster *pcl,
  
- 	struct work_struct	cmd_abort_work;
- 	unsigned		abort:1;
-@@ -216,8 +221,13 @@ static void mmc_omap_select_slot(struct mmc_omap_slot *slot, int claimed)
- 
- 	if (host->current_slot != slot) {
- 		OMAP_MMC_WRITE(host, CON, slot->saved_con & 0xFC00);
--		if (host->pdata->switch_slot != NULL)
--			host->pdata->switch_slot(mmc_dev(slot->mmc), slot->id);
-+		if (host->slot_switch)
-+			/*
-+			 * With two slots and a simple GPIO switch, setting
-+			 * the GPIO to 0 selects slot ID 0, setting it to 1
-+			 * selects slot ID 1.
-+			 */
-+			gpiod_set_value(host->slot_switch, slot->id);
- 		host->current_slot = slot;
- 	}
- 
-@@ -297,6 +307,9 @@ static void mmc_omap_release_slot(struct mmc_omap_slot *slot, int clk_enabled)
- static inline
- int mmc_omap_cover_is_open(struct mmc_omap_slot *slot)
+ static void z_erofs_decompressqueue_endio(struct bio *bio)
  {
-+	/* If we have a GPIO then use that */
-+	if (slot->cover)
-+		return gpiod_get_value(slot->cover);
- 	if (slot->pdata->get_cover_state)
- 		return slot->pdata->get_cover_state(mmc_dev(slot->mmc),
- 						    slot->id);
-@@ -1106,6 +1119,11 @@ static void mmc_omap_set_power(struct mmc_omap_slot *slot, int power_on,
+-	tagptr1_t t = tagptr_init(tagptr1_t, bio->bi_private);
+-	struct z_erofs_decompressqueue *q = tagptr_unfold_ptr(t);
++	struct z_erofs_decompressqueue *q = bio->bi_private;
+ 	blk_status_t err = bio->bi_status;
+ 	struct bio_vec *bvec;
+ 	struct bvec_iter_all iter_all;
+@@ -1381,7 +1366,7 @@ static void z_erofs_decompressqueue_endio(struct bio *bio)
+ 	}
+ 	if (err)
+ 		q->eio = true;
+-	z_erofs_decompress_kickoff(q, tagptr_unfold_tags(t), -1);
++	z_erofs_decompress_kickoff(q, -1);
+ 	bio_put(bio);
+ }
  
- 	host = slot->host;
+@@ -1394,7 +1379,6 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 	struct address_space *mc = MNGD_MAPPING(EROFS_SB(sb));
+ 	z_erofs_next_pcluster_t qtail[NR_JOBQUEUES];
+ 	struct z_erofs_decompressqueue *q[NR_JOBQUEUES];
+-	void *bi_private;
+ 	z_erofs_next_pcluster_t owned_head = f->owned_head;
+ 	/* bio is NULL initially, so no need to initialize last_{index,bdev} */
+ 	pgoff_t last_index;
+@@ -1404,7 +1388,13 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 	unsigned long pflags;
+ 	int memstall = 0;
  
-+	if (slot->vsd)
-+		gpiod_set_value(slot->vsd, power_on);
-+	if (slot->vio)
-+		gpiod_set_value(slot->vio, power_on);
+-	bi_private = jobqueueset_init(sb, q, fgq, force_fg);
++	/*
++	 * if managed cache is enabled, bypass jobqueue is needed,
++	 * no need to read from device for all pclusters in this queue.
++	 */
++	q[JQ_BYPASS] = jobqueue_init(sb, fgq + JQ_BYPASS, NULL);
++	q[JQ_SUBMIT] = jobqueue_init(sb, fgq + JQ_SUBMIT, force_fg);
 +
- 	if (slot->pdata->set_power != NULL)
- 		slot->pdata->set_power(mmc_dev(slot->mmc), slot->id, power_on,
- 					vdd);
-@@ -1240,6 +1258,23 @@ static int mmc_omap_new_slot(struct mmc_omap_host *host, int id)
- 	slot->power_mode = MMC_POWER_UNDEFINED;
- 	slot->pdata = &host->pdata->slots[id];
+ 	qtail[JQ_BYPASS] = &q[JQ_BYPASS]->head;
+ 	qtail[JQ_SUBMIT] = &q[JQ_SUBMIT]->head;
  
-+	/* Check for some optional GPIO controls */
-+	slot->vsd = gpiod_get_index_optional(host->dev, "vsd",
-+					     id, GPIOD_OUT_LOW);
-+	if (IS_ERR(slot->vsd))
-+		return dev_err_probe(host->dev, PTR_ERR(slot->vsd),
-+				     "error looking up VSD GPIO\n");
-+	slot->vio = gpiod_get_index_optional(host->dev, "vio",
-+					     id, GPIOD_OUT_LOW);
-+	if (IS_ERR(slot->vio))
-+		return dev_err_probe(host->dev, PTR_ERR(slot->vio),
-+				     "error looking up VIO GPIO\n");
-+	slot->cover = gpiod_get_index_optional(host->dev, "cover",
-+						id, GPIOD_IN);
-+	if (IS_ERR(slot->cover))
-+		return dev_err_probe(host->dev, PTR_ERR(slot->cover),
-+				     "error looking up cover switch GPIO\n");
-+
- 	host->slots[id] = slot;
+@@ -1473,7 +1463,7 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 				last_bdev = mdev.m_bdev;
+ 				bio->bi_iter.bi_sector = (sector_t)cur <<
+ 					LOG_SECTORS_PER_BLOCK;
+-				bio->bi_private = bi_private;
++				bio->bi_private = q[JQ_SUBMIT];
+ 				if (f->readahead)
+ 					bio->bi_opf |= REQ_RAHEAD;
+ 				++nr_bios;
+@@ -1506,7 +1496,7 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 		kvfree(q[JQ_SUBMIT]);
+ 		return;
+ 	}
+-	z_erofs_decompress_kickoff(q[JQ_SUBMIT], *force_fg, nr_bios);
++	z_erofs_decompress_kickoff(q[JQ_SUBMIT], nr_bios);
+ }
  
- 	mmc->caps = 0;
-@@ -1349,6 +1384,13 @@ static int mmc_omap_probe(struct platform_device *pdev)
- 	if (IS_ERR(host->virt_base))
- 		return PTR_ERR(host->virt_base);
+ static void z_erofs_runqueue(struct z_erofs_decompress_frontend *f,
+diff --git a/fs/erofs/zdata.h b/fs/erofs/zdata.h
+index d98c952129852..b139de5473a97 100644
+--- a/fs/erofs/zdata.h
++++ b/fs/erofs/zdata.h
+@@ -110,7 +110,7 @@ struct z_erofs_decompressqueue {
+ 		struct work_struct work;
+ 	} u;
  
-+	host->slot_switch = gpiod_get_optional(host->dev, "switch",
-+					       GPIOD_OUT_LOW);
-+	if (IS_ERR(host->slot_switch))
-+		return dev_err_probe(host->dev, PTR_ERR(host->slot_switch),
-+				     "error looking up slot switch GPIO\n");
-+
-+
- 	INIT_WORK(&host->slot_release_work, mmc_omap_slot_release_work);
- 	INIT_WORK(&host->send_stop_work, mmc_omap_send_stop_work);
+-	bool eio;
++	bool eio, sync;
+ };
  
-diff --git a/include/linux/platform_data/mmc-omap.h b/include/linux/platform_data/mmc-omap.h
-index 91051e9907f34..054d0c3c5ec58 100644
---- a/include/linux/platform_data/mmc-omap.h
-+++ b/include/linux/platform_data/mmc-omap.h
-@@ -20,8 +20,6 @@ struct omap_mmc_platform_data {
- 	 * maximum frequency on the MMC bus */
- 	unsigned int max_freq;
- 
--	/* switch the bus to a new slot */
--	int (*switch_slot)(struct device *dev, int slot);
- 	/* initialize board-specific MMC functionality, can be NULL if
- 	 * not supported */
- 	int (*init)(struct device *dev);
+ static inline bool z_erofs_is_inline_pcluster(struct z_erofs_pcluster *pcl)
 -- 
 2.39.2
 
