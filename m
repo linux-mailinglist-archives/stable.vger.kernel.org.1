@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80024755360
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E06F77555B4
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231705AbjGPUSY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:18:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43934 "EHLO
+        id S232614AbjGPUnq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:43:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231702AbjGPUSX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:23 -0400
+        with ESMTP id S232606AbjGPUnp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E00AA90
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67837E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C73F60EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184E1C433C7;
-        Sun, 16 Jul 2023 20:18:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EF9B360EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AA6C433C8;
+        Sun, 16 Jul 2023 20:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538699;
-        bh=TPpJtr88JygWYQhE9d1M0J5jdnZNZFcnn2edHqU9sPM=;
+        s=korg; t=1689540223;
+        bh=FbeqQIkoxBavCEMtKq33puqzVh7nOi7NF2RboA8QGU8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LyhW0+GD61VjZ8PdF/ZewxBRS3EDhO1R3mP3sXW35O1lJNmESo7xaFIZyW4zhv+cz
-         SVba8w3WS/s36WUHXiLAeH4yBE4j9wIe7X2RBnw5YK3wb0tLu65xH4MWts1MbR5q/m
-         lpb8WQU64qxbDwX3rWfzwH/v9CV/hF/neAAyei4o=
+        b=DpM24MweUh0YHAAk8peoxitNau8wn6YZGKHHsAv+plSx2atb+JAtCduE+jn+vyNXN
+         ZtfXfYiCCN5wIRm1FYzaaI5ylOKxHV2vYLqgvemjkmXRcvQMkq/qqqJjNs7/AOpaO5
+         alMBfJvGA0X8QAMN0Vlk/dxzGgXWnGhtv0KVmqzA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 545/800] ksmbd: avoid field overflow warning
+        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 259/591] ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer
 Date:   Sun, 16 Jul 2023 21:46:38 +0200
-Message-ID: <20230716195001.751586484@linuxfoundation.org>
+Message-ID: <20230716194930.583478559@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 9cedc58bdbe9fff9aacd0ca19ee5777659f28fd7 ]
+[ Upstream commit 79597c8bf64ca99eab385115743131d260339da5 ]
 
-clang warns about a possible field overflow in a memcpy:
+smatch error:
+sound/pci/ac97/ac97_codec.c:2354 snd_ac97_mixer() error:
+we previously assumed 'rac97' could be null (see line 2072)
 
-In file included from fs/smb/server/smb_common.c:7:
-include/linux/fortify-string.h:583:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-                        __write_overflow_field(p_size_field, size);
+remove redundant assignment, return error if rac97 is NULL.
 
-It appears to interpret the "&out[baselen + 4]" as referring to a single
-byte of the character array, while the equivalen "out + baselen + 4" is
-seen as an offset into the array.
-
-I don't see that kind of warning elsewhere, so just go with the simple
-rework.
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: da3cec35dd3c ("ALSA: Kill snd_assert() in sound/pci/*")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20230615021732.1972194-1-suhui@nfschina.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/ac97/ac97_codec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
-index 569e5eecdf3db..3e391a7d5a3ab 100644
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -536,7 +536,7 @@ int ksmbd_extract_shortname(struct ksmbd_conn *conn, const char *longname,
- 	out[baselen + 3] = PERIOD;
+diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
+index ff685321f1a11..534ea7a256ec3 100644
+--- a/sound/pci/ac97/ac97_codec.c
++++ b/sound/pci/ac97/ac97_codec.c
+@@ -2070,8 +2070,8 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
+ 		.dev_disconnect =	snd_ac97_dev_disconnect,
+ 	};
  
- 	if (dot_present)
--		memcpy(&out[baselen + 4], extension, 4);
-+		memcpy(out + baselen + 4, extension, 4);
- 	else
- 		out[baselen + 4] = '\0';
- 	smbConvertToUTF16((__le16 *)shortname, out, PATH_MAX,
+-	if (rac97)
+-		*rac97 = NULL;
++	if (!rac97)
++		return -EINVAL;
+ 	if (snd_BUG_ON(!bus || !template))
+ 		return -EINVAL;
+ 	if (snd_BUG_ON(template->num >= 4))
 -- 
 2.39.2
 
