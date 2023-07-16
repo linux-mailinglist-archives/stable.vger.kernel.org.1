@@ -2,111 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3191F7550FA
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86CD8755111
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:35:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbjGPT33 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 15:29:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48334 "EHLO
+        id S229710AbjGPTfv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 15:35:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbjGPT32 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:29:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1EA9199
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:29:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 57E1860E08
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 19:29:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64928C433C7;
-        Sun, 16 Jul 2023 19:29:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689535766;
-        bh=k3NXveZ3zb/HaBSmZe3dw4n2/FgE7j88Xtyl3J33r3E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RxCzwx8+zulj0mUAROkImAmkg2DT1emxrDbzxzdIX65FchsoFpUgknyeR3htrehYm
-         xYCcUK9eK1pyQGa+0zy3JzOGbbWQY1bxvFVlFMTYfIMv2X02JiIQZkmstriM45yjsk
-         d1ajv8d4ubnl3hcr6/Qq8Y0NEQm7OPfZ8ehmvnAQ=
-Date:   Sun, 16 Jul 2023 21:29:24 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Andres Freund <andres@anarazel.de>, asml.silence@gmail.com,
-        stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] io_uring: Use io_schedule* in cqring
- wait" failed to apply to 6.1-stable tree
-Message-ID: <2023071616-flatworm-emptier-bbd0@gregkh>
-References: <2023071620-litigate-debunk-939a@gregkh>
- <0cfb74bb-c203-39a1-eab7-abeeae724b68@kernel.dk>
- <20230716191113.waiypudo6iqwsm56@awork3.anarazel.de>
- <46c1075b-0daf-14db-cf48-5a5105b996de@kernel.dk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46c1075b-0daf-14db-cf48-5a5105b996de@kernel.dk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229468AbjGPTfu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:35:50 -0400
+X-Greylist: delayed 302 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 16 Jul 2023 12:35:49 PDT
+Received: from abi149hd125.arn1.oracleemaildelivery.com (abi149hd125.arn1.oracleemaildelivery.com [129.149.84.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2D39E1
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:35:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
+ d=augustwikerfors.se;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=1X2J9Yn20F/BEmGq9y/x0FBrrb96P1AoI6JRoNuLx48=;
+ b=hhYQHeWeU3tWLwkcoWUkS7C8RqLLTN6gdAl5d6RHOsD6mFDYNN8KTBTyAWR1eU5dwokmiavsFfW3
+   vaVh+c1pvIKb0/s449uLlfHT75ASed294nTe6MVD72MtEHaIUizStnmLW2MMRLDGQaOOYbTZRfdx
+   4TG6s9sGdM1hM7dXn/dvWh0YijIczoFWwn+0CR0uRS5EsoUOBGipTodMsYTCzc4OXH1UeQSSspC/
+   gL57Z5mEtHYUIjERn1ZS7VYl6DQUgwMoM94eezODEqvOMNDYxRjbPt/BK+qPiZNXd2ZCL8D/MCJz
+   tGab/fg6WDylUfGRsWgR1YD0Ns8z2bMUR9lz0w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
+ d=arn1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=1X2J9Yn20F/BEmGq9y/x0FBrrb96P1AoI6JRoNuLx48=;
+ b=MTAHRUN67jyzpHcQ1EHcYebCrL+Zrea6rPHGTQrZrZydIfK3QTKJUkEdwF/jYpwcsSLEzv4ndYAy
+   oNGWRfebaxV6iVN23mJ2mWABO6rDERU7zT81tw7cEHeVILT0oqndir+WvHhjf25x9rzdqd0FYMe0
+   oR/PUQlQ7NRn6jcXvDR6MuPaC8PYjMHGsU79z+go/9wHjSqf0ku2vqKsDXTQXG9A8B45KrinkjVt
+   aTmxrs0AnN21QifSEZfaH58rgBxE7PbDE6Ycp8ifPWiF5r7oCFuAliujU1ivrOT2xH8XWwV6CK9/
+   BOCgtNbV7xdiyA/SnSWn6kQIB2wROYijXjCZLg==
+Received: by omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20230629 64bit (built Jun 29
+ 2023))
+ with ESMTPS id <0RXW009O2M78R1D0@omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
+ for stable@vger.kernel.org; Sun, 16 Jul 2023 19:30:44 +0000 (GMT)
+Message-id: <0206e2ce-ff33-6017-15ab-cc89f1eb7485@augustwikerfors.se>
+Date:   Sun, 16 Jul 2023 21:30:41 +0200
+MIME-version: 1.0
+From:   August Wikerfors <git@augustwikerfors.se>
+Subject: Re: [PATCH] nvme-pci: Add quirk for Samsung PM9B1 256G and 512G SSD
+To:     Nils Kruse <nilskruse97@gmail.com>
+Cc:     stable@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
+        Jens Axboe <axboe@fb.com>, Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+References: <b99a5149-c3d6-2a9b-1298-576a1b4b22c1@gmail.com>
+Content-language: en-US
+In-reply-to: <b99a5149-c3d6-2a9b-1298-576a1b4b22c1@gmail.com>
+Content-type: text/plain; charset=UTF-8; format=flowed
+Content-transfer-encoding: 7bit
+Reporting-Meta: AAEqHmCrKsOnH195OEdwrfg9FTxZzACbRkpk03nDz2o7ewDk7A9Vjq6UenQjGOdN
+ kAaYT+day+D9LnofH23zmNDd3QZ5lX8jc6r3qUXZ6ySVXD/J0XFfaS/xyGB21swF
+ KB/Qn5xSXzPvekOFXBEa/z1APrL5Oqn7gz8E3cqwTMdzmQuxHPruj+m4j8yN7dPC
+ pnJvaTFCAptzzSI3ic1Uo/U7oXybGWoZXcb/9Po3ZTq+EEIMdBm723wEA/S0qxw6
+ lcPst2QBkG2eqp4f9T3ARjsL2gCKKXopQZ9xl2ggPqdHLDlyDBId/iaheQyBKZSy
+ bbUQ01/zk9b5O0HIUlv9YUkVKA6ZRo9NadBU5/OYpNPnXC9NG4Ex2ykHIKmiCk5r
+ YSxq/mz+Es1mL0VLo8GsE1eWl+GLK34QinEuajla1Y3HPKmlKZmL4QbjGkTYMcOF AA==
+X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_RED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Jul 16, 2023 at 01:19:31PM -0600, Jens Axboe wrote:
-> On 7/16/23 1:11?PM, Andres Freund wrote:
-> > Hi,
-> > 
-> > On 2023-07-16 12:13:45 -0600, Jens Axboe wrote:
-> >> Here's one for 6.1-stable.
-> > 
-> > Thanks for working on that!
-> > 
-> > 
-> >> diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-> >> index cc35aba1e495..de117d3424b2 100644
-> >> --- a/io_uring/io_uring.c
-> >> +++ b/io_uring/io_uring.c
-> >> @@ -2346,7 +2346,7 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
-> >>  					  struct io_wait_queue *iowq,
-> >>  					  ktime_t *timeout)
-> >>  {
-> >> -	int ret;
-> >> +	int token, ret;
-> >>  	unsigned long check_cq;
-> >>  
-> >>  	/* make sure we run task_work before checking for signals */
-> >> @@ -2362,9 +2362,18 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
-> >>  		if (check_cq & BIT(IO_CHECK_CQ_DROPPED_BIT))
-> >>  			return -EBADR;
-> >>  	}
-> >> +
-> >> +	/*
-> >> +	 * Use io_schedule_prepare/finish, so cpufreq can take into account
-> >> +	 * that the task is waiting for IO - turns out to be important for low
-> >> +	 * QD IO.
-> >> +	 */
-> >> +	token = io_schedule_prepare();
-> >> +	ret = 0;
-> >>  	if (!schedule_hrtimeout(timeout, HRTIMER_MODE_ABS))
-> >> -		return -ETIME;
-> >> -	return 1;
-> >> +		ret = -ETIME;
-> >> +	io_schedule_finish(token);
-> >> +	return ret;
-> >>  }
-> > 
-> > To me it looks like this might have changed more than intended? Previously
-> > io_cqring_wait_schedule() returned 0 in case schedule_hrtimeout() returned
-> > non-zero, now io_cqring_wait_schedule() returns 1 in that case?  Am I missing
-> > something?
-> 
-> Ah shoot yes indeed. Greg, can you drop the 5.10/5.15/6.1 ones for now?
-> I'll get it sorted tomorrow. Sorry about that, and thanks for catching
-> that Andres!
+On 2023-06-11 13:41, Nils Kruse wrote:
+> Add a quirk for Samsung PM9B1 256G and 512G that reports duplicate ids 
+> for disk.
 
-Sure, will go drop it now, thanks.
+Is this the same issue with suspend as [1], [2] and [3] or is it a
+different case?
 
-greg k-h
+[1] https://lore.kernel.org/all/20221116171727.4083-1-git@augustwikerfors.se/t/
+[2] https://github.com/tomsom/yoga-linux/issues/9
+[3] https://lore.kernel.org/all/d0ce0f3b-9407-9207-73a4-3536f0948653@augustwikerfors.se/
