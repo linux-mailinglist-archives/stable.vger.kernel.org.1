@@ -2,373 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79A7175536A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C4B875559F
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:42:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231713AbjGPUSu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44174 "EHLO
+        id S232498AbjGPUmw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:42:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231716AbjGPUSt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:49 -0400
+        with ESMTP id S232593AbjGPUmv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75308126
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0497E45
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C76D60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9FFC433C7;
-        Sun, 16 Jul 2023 20:18:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4497160EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56FD7C433C7;
+        Sun, 16 Jul 2023 20:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538727;
-        bh=QVS3RrrxkrneH3oyC4fFUO3pyONJEs6bm1Z38AWcDSI=;
+        s=korg; t=1689540169;
+        bh=isATnDHqU9ZpG/NBC7KVfs5AdKvvF8bkd40Pun4YuKM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j5m+MFY6dwIeb5f0t+B3VdwNpQrQXK8c/31BiyECtdecNOZ7BhD7h5B6usygewvIw
-         k+FeENZaoAlAA36DxAscSqinMg7cReJ7Lxp7xRQkDP7SWm27ynR0h/s/RDIbqDrSpj
-         2OIATG3hPKJXwsskOHtRt0y8qmm/o8cKzX+418MI=
+        b=ZG4h9ssK9pN3cgfXIkmo5Vmra3tyRXuCYPrIfcw5Blxn3ALzT7ZnyQUGT5PWyav3t
+         XyFMRhC3gCm9piswC/BWUv2IGygSsmWuO0HiGE9yiF2OjnkQrsJXdBRhVW9OGpsZTt
+         ICfrKxguz3Ww01wMjetJy8zTeCiTixStzDImGIxc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 554/800] USB: Extend pci resume function to handle PM events
+        patches@lists.linux.dev, Evan Quan <Evan.Quan@amd.com>,
+        Chengming Gui <Jack.Gui@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+        Evan Quan <evan.quan@amd.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 268/591] drm/amdgpu: Fix memcpy() in sienna_cichlid_append_powerplay_table function.
 Date:   Sun, 16 Jul 2023 21:46:47 +0200
-Message-ID: <20230716195001.958588589@linuxfoundation.org>
+Message-ID: <20230716194930.831727923@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 1f7d5520719dd1fed1a2947679f6cc26a55f1e6b ]
+[ Upstream commit d50dc746ff72b9c48812dac3344fa87fbde940a3 ]
 
-Currently, the pci_resume method has only a flag indicating whether the
-system is resuming from hibernation. In order to handle all PM events like
-AUTO_RESUME (runtime resume from device in D3), RESUME (system resume from
-s2idle, S3 or S4 states) etc change the pci_resume method to handle all PM
-events.
+Fixes the following gcc with W=1:
 
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20230428140056.1318981-2-Basavaraj.Natikar@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 1c024241d018 ("xhci: Improve the XHCI system resume time")
+In file included from ./include/linux/string.h:253,
+                 from ./include/linux/bitmap.h:11,
+                 from ./include/linux/cpumask.h:12,
+                 from ./arch/x86/include/asm/cpumask.h:5,
+                 from ./arch/x86/include/asm/msr.h:11,
+                 from ./arch/x86/include/asm/processor.h:22,
+                 from ./arch/x86/include/asm/cpufeature.h:5,
+                 from ./arch/x86/include/asm/thread_info.h:53,
+                 from ./include/linux/thread_info.h:60,
+                 from ./arch/x86/include/asm/preempt.h:7,
+                 from ./include/linux/preempt.h:78,
+                 from ./include/linux/spinlock.h:56,
+                 from ./include/linux/mmzone.h:8,
+                 from ./include/linux/gfp.h:7,
+                 from ./include/linux/firmware.h:7,
+                 from drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:26:
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘sienna_cichlid_append_powerplay_table’ at drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:444:2,
+    inlined from ‘sienna_cichlid_setup_pptable’ at drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:506:8,
+    inlined from ‘sienna_cichlid_setup_pptable’ at drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:494:12:
+./include/linux/fortify-string.h:413:4: warning: call to ‘__read_overflow2_field’ declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Wattribute-warning]
+  413 |    __read_overflow2_field(q_size_field, size);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+the compiler complains about the size calculation in the memcpy() -
+"sizeof(*smc_dpm_table) - sizeof(smc_dpm_table->table_header)" is much
+larger than what fits into table_member.
+
+Hence, reuse 'smu_memcpy_trailing' for nv1x
+
+Fixes: 7077b19a38240 ("drm/amd/pm: use macro to get pptable members")
+Suggested-by: Evan Quan <Evan.Quan@amd.com>
+Cc: Evan Quan <Evan.Quan@amd.com>
+Cc: Chengming Gui <Jack.Gui@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Evan Quan <evan.quan@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hcd-pci.c    | 24 +++++++++++++-----------
- drivers/usb/host/ehci-pci.c   |  3 ++-
- drivers/usb/host/ohci-pci.c   |  8 +++++++-
- drivers/usb/host/uhci-pci.c   |  7 ++++---
- drivers/usb/host/xhci-histb.c |  2 +-
- drivers/usb/host/xhci-pci.c   |  4 ++--
- drivers/usb/host/xhci-plat.c  |  4 ++--
- drivers/usb/host/xhci-tegra.c |  2 +-
- drivers/usb/host/xhci.c       |  3 ++-
- drivers/usb/host/xhci.h       |  2 +-
- include/linux/usb/hcd.h       |  2 +-
- 11 files changed, 36 insertions(+), 25 deletions(-)
+ .../amd/pm/swsmu/smu11/sienna_cichlid_ppt.c    | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/core/hcd-pci.c b/drivers/usb/core/hcd-pci.c
-index ab2f3737764e4..990280688b254 100644
---- a/drivers/usb/core/hcd-pci.c
-+++ b/drivers/usb/core/hcd-pci.c
-@@ -415,12 +415,15 @@ static int check_root_hub_suspended(struct device *dev)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index 85d53597eb07a..f7ed3e655e397 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -431,7 +431,13 @@ static int sienna_cichlid_append_powerplay_table(struct smu_context *smu)
+ {
+ 	struct atom_smc_dpm_info_v4_9 *smc_dpm_table;
+ 	int index, ret;
+-	I2cControllerConfig_t *table_member;
++	PPTable_beige_goby_t *ppt_beige_goby;
++	PPTable_t *ppt;
++
++	if (smu->adev->ip_versions[MP1_HWIP][0] == IP_VERSION(11, 0, 13))
++		ppt_beige_goby = smu->smu_table.driver_pptable;
++	else
++		ppt = smu->smu_table.driver_pptable;
+ 
+ 	index = get_index_into_master_table(atom_master_list_of_data_tables_v2_1,
+ 					    smc_dpm_info);
+@@ -440,9 +446,13 @@ static int sienna_cichlid_append_powerplay_table(struct smu_context *smu)
+ 				      (uint8_t **)&smc_dpm_table);
+ 	if (ret)
+ 		return ret;
+-	GET_PPTABLE_MEMBER(I2cControllers, &table_member);
+-	memcpy(table_member, smc_dpm_table->I2cControllers,
+-			sizeof(*smc_dpm_table) - sizeof(smc_dpm_table->table_header));
++
++	if (smu->adev->ip_versions[MP1_HWIP][0] == IP_VERSION(11, 0, 13))
++		smu_memcpy_trailing(ppt_beige_goby, I2cControllers, BoardReserved,
++				    smc_dpm_table, I2cControllers);
++	else
++		smu_memcpy_trailing(ppt, I2cControllers, BoardReserved,
++				    smc_dpm_table, I2cControllers);
+ 
  	return 0;
  }
- 
--static int suspend_common(struct device *dev, bool do_wakeup)
-+static int suspend_common(struct device *dev, pm_message_t msg)
- {
- 	struct pci_dev		*pci_dev = to_pci_dev(dev);
- 	struct usb_hcd		*hcd = pci_get_drvdata(pci_dev);
-+	bool			do_wakeup;
- 	int			retval;
- 
-+	do_wakeup = PMSG_IS_AUTO(msg) ? true : device_may_wakeup(dev);
-+
- 	/* Root hub suspend should have stopped all downstream traffic,
- 	 * and all bus master traffic.  And done so for both the interface
- 	 * and the stub usb_device (which we check here).  But maybe it
-@@ -447,7 +450,7 @@ static int suspend_common(struct device *dev, bool do_wakeup)
- 				(retval == 0 && do_wakeup && hcd->shared_hcd &&
- 				 HCD_WAKEUP_PENDING(hcd->shared_hcd))) {
- 			if (hcd->driver->pci_resume)
--				hcd->driver->pci_resume(hcd, false);
-+				hcd->driver->pci_resume(hcd, msg);
- 			retval = -EBUSY;
- 		}
- 		if (retval)
-@@ -470,7 +473,7 @@ static int suspend_common(struct device *dev, bool do_wakeup)
- 	return retval;
- }
- 
--static int resume_common(struct device *dev, int event)
-+static int resume_common(struct device *dev, pm_message_t msg)
- {
- 	struct pci_dev		*pci_dev = to_pci_dev(dev);
- 	struct usb_hcd		*hcd = pci_get_drvdata(pci_dev);
-@@ -498,12 +501,11 @@ static int resume_common(struct device *dev, int event)
- 		 * No locking is needed because PCI controller drivers do not
- 		 * get unbound during system resume.
- 		 */
--		if (pci_dev->class == CL_EHCI && event != PM_EVENT_AUTO_RESUME)
-+		if (pci_dev->class == CL_EHCI && msg.event != PM_EVENT_AUTO_RESUME)
- 			for_each_companion(pci_dev, hcd,
- 					ehci_wait_for_companions);
- 
--		retval = hcd->driver->pci_resume(hcd,
--				event == PM_EVENT_RESTORE);
-+		retval = hcd->driver->pci_resume(hcd, msg);
- 		if (retval) {
- 			dev_err(dev, "PCI post-resume error %d!\n", retval);
- 			usb_hc_died(hcd);
-@@ -516,7 +518,7 @@ static int resume_common(struct device *dev, int event)
- 
- static int hcd_pci_suspend(struct device *dev)
- {
--	return suspend_common(dev, device_may_wakeup(dev));
-+	return suspend_common(dev, PMSG_SUSPEND);
- }
- 
- static int hcd_pci_suspend_noirq(struct device *dev)
-@@ -577,12 +579,12 @@ static int hcd_pci_resume_noirq(struct device *dev)
- 
- static int hcd_pci_resume(struct device *dev)
- {
--	return resume_common(dev, PM_EVENT_RESUME);
-+	return resume_common(dev, PMSG_RESUME);
- }
- 
- static int hcd_pci_restore(struct device *dev)
- {
--	return resume_common(dev, PM_EVENT_RESTORE);
-+	return resume_common(dev, PMSG_RESTORE);
- }
- 
- #else
-@@ -600,7 +602,7 @@ static int hcd_pci_runtime_suspend(struct device *dev)
- {
- 	int	retval;
- 
--	retval = suspend_common(dev, true);
-+	retval = suspend_common(dev, PMSG_AUTO_SUSPEND);
- 	if (retval == 0)
- 		powermac_set_asic(to_pci_dev(dev), 0);
- 	dev_dbg(dev, "hcd_pci_runtime_suspend: %d\n", retval);
-@@ -612,7 +614,7 @@ static int hcd_pci_runtime_resume(struct device *dev)
- 	int	retval;
- 
- 	powermac_set_asic(to_pci_dev(dev), 1);
--	retval = resume_common(dev, PM_EVENT_AUTO_RESUME);
-+	retval = resume_common(dev, PMSG_AUTO_RESUME);
- 	dev_dbg(dev, "hcd_pci_runtime_resume: %d\n", retval);
- 	return retval;
- }
-diff --git a/drivers/usb/host/ehci-pci.c b/drivers/usb/host/ehci-pci.c
-index 4b148fe5e43b2..889dc44262711 100644
---- a/drivers/usb/host/ehci-pci.c
-+++ b/drivers/usb/host/ehci-pci.c
-@@ -354,10 +354,11 @@ static int ehci_pci_setup(struct usb_hcd *hcd)
-  * Also they depend on separate root hub suspend/resume.
-  */
- 
--static int ehci_pci_resume(struct usb_hcd *hcd, bool hibernated)
-+static int ehci_pci_resume(struct usb_hcd *hcd, pm_message_t msg)
- {
- 	struct ehci_hcd		*ehci = hcd_to_ehci(hcd);
- 	struct pci_dev		*pdev = to_pci_dev(hcd->self.controller);
-+	bool			hibernated = (msg.event == PM_EVENT_RESTORE);
- 
- 	if (ehci_resume(hcd, hibernated) != 0)
- 		(void) ehci_pci_reinit(ehci, pdev);
-diff --git a/drivers/usb/host/ohci-pci.c b/drivers/usb/host/ohci-pci.c
-index d7b4f40f9ff4e..900ea0d368e03 100644
---- a/drivers/usb/host/ohci-pci.c
-+++ b/drivers/usb/host/ohci-pci.c
-@@ -301,6 +301,12 @@ static struct pci_driver ohci_pci_driver = {
- #endif
- };
- 
-+#ifdef CONFIG_PM
-+static int ohci_pci_resume(struct usb_hcd *hcd, pm_message_t msg)
-+{
-+	return ohci_resume(hcd, msg.event == PM_EVENT_RESTORE);
-+}
-+#endif
- static int __init ohci_pci_init(void)
- {
- 	if (usb_disabled())
-@@ -311,7 +317,7 @@ static int __init ohci_pci_init(void)
- #ifdef	CONFIG_PM
- 	/* Entries for the PCI suspend/resume callbacks are special */
- 	ohci_pci_hc_driver.pci_suspend = ohci_suspend;
--	ohci_pci_hc_driver.pci_resume = ohci_resume;
-+	ohci_pci_hc_driver.pci_resume = ohci_pci_resume;
- #endif
- 
- 	return pci_register_driver(&ohci_pci_driver);
-diff --git a/drivers/usb/host/uhci-pci.c b/drivers/usb/host/uhci-pci.c
-index 7bd2fddde770a..5edf6a08cf82c 100644
---- a/drivers/usb/host/uhci-pci.c
-+++ b/drivers/usb/host/uhci-pci.c
-@@ -169,7 +169,7 @@ static void uhci_shutdown(struct pci_dev *pdev)
- 
- #ifdef CONFIG_PM
- 
--static int uhci_pci_resume(struct usb_hcd *hcd, bool hibernated);
-+static int uhci_pci_resume(struct usb_hcd *hcd, pm_message_t state);
- 
- static int uhci_pci_suspend(struct usb_hcd *hcd, bool do_wakeup)
- {
-@@ -204,14 +204,15 @@ static int uhci_pci_suspend(struct usb_hcd *hcd, bool do_wakeup)
- 
- 	/* Check for race with a wakeup request */
- 	if (do_wakeup && HCD_WAKEUP_PENDING(hcd)) {
--		uhci_pci_resume(hcd, false);
-+		uhci_pci_resume(hcd, PMSG_SUSPEND);
- 		rc = -EBUSY;
- 	}
- 	return rc;
- }
- 
--static int uhci_pci_resume(struct usb_hcd *hcd, bool hibernated)
-+static int uhci_pci_resume(struct usb_hcd *hcd, pm_message_t msg)
- {
-+	bool hibernated = (msg.event == PM_EVENT_RESTORE);
- 	struct uhci_hcd *uhci = hcd_to_uhci(hcd);
- 
- 	dev_dbg(uhci_dev(uhci), "%s\n", __func__);
-diff --git a/drivers/usb/host/xhci-histb.c b/drivers/usb/host/xhci-histb.c
-index 08369857686e7..91ce97821de51 100644
---- a/drivers/usb/host/xhci-histb.c
-+++ b/drivers/usb/host/xhci-histb.c
-@@ -367,7 +367,7 @@ static int __maybe_unused xhci_histb_resume(struct device *dev)
- 	if (!device_may_wakeup(dev))
- 		xhci_histb_host_enable(histb);
- 
--	return xhci_resume(xhci, 0);
-+	return xhci_resume(xhci, PMSG_RESUME);
- }
- 
- static const struct dev_pm_ops xhci_histb_pm_ops = {
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 79b3691f373f3..69a5cb7eba381 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -832,7 +832,7 @@ static int xhci_pci_suspend(struct usb_hcd *hcd, bool do_wakeup)
- 	return ret;
- }
- 
--static int xhci_pci_resume(struct usb_hcd *hcd, bool hibernated)
-+static int xhci_pci_resume(struct usb_hcd *hcd, pm_message_t msg)
- {
- 	struct xhci_hcd		*xhci = hcd_to_xhci(hcd);
- 	struct pci_dev		*pdev = to_pci_dev(hcd->self.controller);
-@@ -867,7 +867,7 @@ static int xhci_pci_resume(struct usb_hcd *hcd, bool hibernated)
- 	if (xhci->quirks & XHCI_PME_STUCK_QUIRK)
- 		xhci_pme_quirk(hcd);
- 
--	retval = xhci_resume(xhci, hibernated);
-+	retval = xhci_resume(xhci, msg);
- 	return retval;
- }
- 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index b0c8e8efc43b6..f36633fa83624 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -478,7 +478,7 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	ret = xhci_resume(xhci, 0);
-+	ret = xhci_resume(xhci, PMSG_RESUME);
- 	if (ret)
- 		return ret;
- 
-@@ -507,7 +507,7 @@ static int __maybe_unused xhci_plat_runtime_resume(struct device *dev)
- 	struct usb_hcd  *hcd = dev_get_drvdata(dev);
- 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
- 
--	return xhci_resume(xhci, 0);
-+	return xhci_resume(xhci, PMSG_AUTO_RESUME);
- }
- 
- const struct dev_pm_ops xhci_plat_pm_ops = {
-diff --git a/drivers/usb/host/xhci-tegra.c b/drivers/usb/host/xhci-tegra.c
-index c75d932441436..8a9c7deb7686e 100644
---- a/drivers/usb/host/xhci-tegra.c
-+++ b/drivers/usb/host/xhci-tegra.c
-@@ -2272,7 +2272,7 @@ static int tegra_xusb_exit_elpg(struct tegra_xusb *tegra, bool runtime)
- 	if (wakeup)
- 		tegra_xhci_disable_phy_sleepwalk(tegra);
- 
--	err = xhci_resume(xhci, 0);
-+	err = xhci_resume(xhci, runtime ? PMSG_AUTO_RESUME : PMSG_RESUME);
- 	if (err < 0) {
- 		dev_err(tegra->dev, "failed to resume XHCI: %d\n", err);
- 		goto disable_phy;
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 78790dc13c5f1..65d54c8a24928 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -960,8 +960,9 @@ EXPORT_SYMBOL_GPL(xhci_suspend);
-  * This is called when the machine transition from S3/S4 mode.
-  *
-  */
--int xhci_resume(struct xhci_hcd *xhci, bool hibernated)
-+int xhci_resume(struct xhci_hcd *xhci, pm_message_t msg)
- {
-+	bool			hibernated = (msg.event == PM_EVENT_RESTORE);
- 	u32			command, temp = 0;
- 	struct usb_hcd		*hcd = xhci_to_hcd(xhci);
- 	int			retval = 0;
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 6b690ec91ff3a..f845c15073ba4 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -2140,7 +2140,7 @@ int xhci_disable_slot(struct xhci_hcd *xhci, u32 slot_id);
- int xhci_ext_cap_init(struct xhci_hcd *xhci);
- 
- int xhci_suspend(struct xhci_hcd *xhci, bool do_wakeup);
--int xhci_resume(struct xhci_hcd *xhci, bool hibernated);
-+int xhci_resume(struct xhci_hcd *xhci, pm_message_t msg);
- 
- irqreturn_t xhci_irq(struct usb_hcd *hcd);
- irqreturn_t xhci_msi_irq(int irq, void *hcd);
-diff --git a/include/linux/usb/hcd.h b/include/linux/usb/hcd.h
-index 0c7eff91adf4e..4e9623e8492b3 100644
---- a/include/linux/usb/hcd.h
-+++ b/include/linux/usb/hcd.h
-@@ -267,7 +267,7 @@ struct hc_driver {
- 	int	(*pci_suspend)(struct usb_hcd *hcd, bool do_wakeup);
- 
- 	/* called after entering D0 (etc), before resuming the hub */
--	int	(*pci_resume)(struct usb_hcd *hcd, bool hibernated);
-+	int	(*pci_resume)(struct usb_hcd *hcd, pm_message_t state);
- 
- 	/* called just before hibernate final D3 state, allows host to poweroff parts */
- 	int	(*pci_poweroff_late)(struct usb_hcd *hcd, bool do_wakeup);
 -- 
 2.39.2
 
