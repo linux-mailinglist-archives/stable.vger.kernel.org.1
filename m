@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40BFE755646
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24D2C7553F2
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:24:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232824AbjGPUtQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:49:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37782 "EHLO
+        id S231925AbjGPUYt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:24:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232828AbjGPUtD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C4F01715
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:48:50 -0700 (PDT)
+        with ESMTP id S231905AbjGPUYs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:24:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E9209F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:24:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A7FB60EA2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:48:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D27C433C9;
-        Sun, 16 Jul 2023 20:48:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D664A60DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:24:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D90C433C7;
+        Sun, 16 Jul 2023 20:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540529;
-        bh=iYTekjNKkmEGDKBmB09O++cqqZm4w0ktLimgiNwIHfc=;
+        s=korg; t=1689539086;
+        bh=yTFUlZDJjTcr1C1DRjOI2O99KYizK97NKDf20O2z42Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P7m2dsDY4sjnXNbX8ohZjdVUeqICuRvGEaYrwKeb5upMJYuT6t6adQrTubIhpvqjK
-         c2nn6cQA+e9QWjRMdJPifCUtQR3WLT0tsgmGYt+M6I49vFS8d62sMfHwFFSEulCvMC
-         /gbEZLIx2RQ/rwerpSYRG61QyLgghnhtm08J6WIY=
+        b=FLMRHZkU9oRM/P6b2M0CcnyMmnzYpfRaERH3/7ByzNmKoGN1UL8PU+UdYycmkPdaf
+         qsqPhDGshzY9VBpp8FKuJgMqmVTU3HerVHtenMpClhPhVeptag/iTENH8MFA05SWa6
+         d6zlRax3GEy1xiJ3aS74N8i3anKmhVoxJ81ZQIY8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ming Qian <ming.qian@nxp.com>,
-        "xiahong.bao" <xiahong.bao@nxp.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 395/591] media: amphion: drop repeated codec data for vc1l format
-Date:   Sun, 16 Jul 2023 21:48:54 +0200
-Message-ID: <20230716194934.137221600@linuxfoundation.org>
+Subject: [PATCH 6.4 682/800] mailbox: ti-msgmgr: Fill non-message tx data fields with 0x0
+Date:   Sun, 16 Jul 2023 21:48:55 +0200
+Message-ID: <20230716195004.965482796@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +55,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit 668ee1a3a1870381225002c246972419b98e4253 ]
+[ Upstream commit 1b712f18c461bd75f018033a15cf381e712806b5 ]
 
-For format V4L2_PIX_FMT_VC1_ANNEX_L,
-the codec data is replaced with startcode,
-and then driver drop it, otherwise it may led to decoding error.
+Sec proxy/message manager data buffer is 60 bytes with the last of the
+registers indicating transmission completion. This however poses a bit
+of a challenge.
 
-It's amphion vpu's limitation
+The backing memory for sec_proxy / message manager is regular memory,
+and all sec proxy does is to trigger a burst of all 60 bytes of data
+over to the target thread backing ring accelerator. It doesn't do a
+memory scrub when it moves data out in the burst. When we transmit
+multiple messages, remnants of previous message is also transmitted
+which results in some random data being set in TISCI fields of
+messages that have been expanded forward.
 
-Driver has dropped the first codec data,
-but need to drop the repeated codec data too.
+The entire concept of backward compatibility hinges on the fact that
+the unused message fields remain 0x0 allowing for 0x0 value to be
+specially considered when backward compatibility of message extension
+is done.
 
-Fixes: e670f5d672ef ("media: amphion: only insert the first sequence startcode for vc1l format")
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Tested-by: xiahong.bao <xiahong.bao@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+So, instead of just writing the completion register, we continue
+to fill the message buffer up with 0x0 (note: for partial message
+involving completion, we already do this).
+
+This allows us to scale and introduce ABI changes back also work with
+other boot stages that may have left data in the internal memory.
+
+While at this, be consistent and explicit with the data_reg pointer
+increment.
+
+Fixes: aace66b170ce ("mailbox: Introduce TI message manager driver")
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_malone.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mailbox/ti-msgmgr.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
-index ae094cdc9bfc8..36e563d29621f 100644
---- a/drivers/media/platform/amphion/vpu_malone.c
-+++ b/drivers/media/platform/amphion/vpu_malone.c
-@@ -1317,6 +1317,8 @@ static int vpu_malone_insert_scode_vc1_l_seq(struct malone_scode_t *scode)
- 	int size = 0;
- 	u8 rcv_seqhdr[MALONE_VC1_RCV_SEQ_HEADER_LEN];
+diff --git a/drivers/mailbox/ti-msgmgr.c b/drivers/mailbox/ti-msgmgr.c
+index ddac423ac1a91..03048cbda525e 100644
+--- a/drivers/mailbox/ti-msgmgr.c
++++ b/drivers/mailbox/ti-msgmgr.c
+@@ -430,14 +430,20 @@ static int ti_msgmgr_send_data(struct mbox_chan *chan, void *data)
+ 		/* Ensure all unused data is 0 */
+ 		data_trail &= 0xFFFFFFFF >> (8 * (sizeof(u32) - trail_bytes));
+ 		writel(data_trail, data_reg);
+-		data_reg++;
++		data_reg += sizeof(u32);
+ 	}
++
+ 	/*
+ 	 * 'data_reg' indicates next register to write. If we did not already
+ 	 * write on tx complete reg(last reg), we must do so for transmit
++	 * In addition, we also need to make sure all intermediate data
++	 * registers(if any required), are reset to 0 for TISCI backward
++	 * compatibility to be maintained.
+ 	 */
+-	if (data_reg <= qinst->queue_buff_end)
+-		writel(0, qinst->queue_buff_end);
++	while (data_reg <= qinst->queue_buff_end) {
++		writel(0, data_reg);
++		data_reg += sizeof(u32);
++	}
  
-+	if (vpu_vb_is_codecconfig(to_vb2_v4l2_buffer(scode->vb)))
-+		scode->need_data = 0;
- 	if (scode->inst->total_input_count)
- 		return 0;
- 	scode->need_data = 0;
+ 	/* If we are in polled mode, wait for a response before proceeding */
+ 	if (ti_msgmgr_chan_has_polled_queue_rx(message->chan_rx))
 -- 
 2.39.2
 
