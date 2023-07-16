@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50722754E02
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 11:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC34F754E0E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 11:25:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229539AbjGPJNA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 05:13:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55846 "EHLO
+        id S229825AbjGPJZK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 05:25:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjGPJM7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 05:12:59 -0400
+        with ESMTP id S229450AbjGPJZJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 05:25:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B67B0B3
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 02:12:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECA9710CE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 02:25:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5509160C56
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 09:12:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 639CDC433C8;
-        Sun, 16 Jul 2023 09:12:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A4C660959
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 09:25:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB7FC433C7;
+        Sun, 16 Jul 2023 09:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689498773;
-        bh=s82ywFIMLySKO/mUPP5nsaKL9AEN9z+HBcpVio0XT18=;
-        h=Subject:To:Cc:From:Date:From;
-        b=gaGkdmuhzDMZkxdj1JIeHeTUdJ9GVLKXmCo8vS1ENBt790Cw/9DxhWeHC60rTj8l9
-         m8xFEaylhUOk1bW8FOjvLI95A6Bc7M6giXhBXGNjRkA/VezMDb7hUNkXuMfCDGEwau
-         COZXPSBANvpLLxhWGcR3aB7NwU9eNywcvD+Ieg8U=
-Subject: FAILED: patch "[PATCH] shmem: use ramfs_kill_sb() for kill_sb method of ramfs-based" failed to apply to 4.14-stable tree
-To:     roberto.sassu@huawei.com, akpm@linux-foundation.org,
-        dhowells@redhat.com, hughd@google.com, stable@vger.kernel.org,
-        viro@zeniv.linux.org.uk
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 11:12:40 +0200
-Message-ID: <2023071640-facedown-shrine-ada1@gregkh>
+        s=korg; t=1689499508;
+        bh=axK01VUMA1Zr+GTd7KdxpJeItz986IhfP3eN/UaH2tA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dPUc+hWR/JlwLqaN+rSatqeouNEXOBVtyw2fEHgWvRaXkYwEexXFE3fVp3VN8jj2r
+         6j7FFA+3FOB+uL6BaJDscMebeV88p+CSHKNaWlO0VYxdQV50h76Z1ls3g8ghgGhVGY
+         8lOPVy/ON6e5ctb8edUod7R+DXE4AA266yl/rSUQ=
+Date:   Sun, 16 Jul 2023 11:24:51 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Wang Yugui <wangyugui@e16-tech.com>
+Cc:     stable@vger.kernel.org
+Subject: Re: one 'BUG_ON(ret < 0);' is still left in
+ queue-6.1/btrfs-do-not-bug_on-on-tree-mod-log-failure-at-balan.patch
+Message-ID: <2023071634-cogwheel-handgun-7cdb@gregkh>
+References: <20230715070222.55BF.409509F4@e16-tech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230715070222.55BF.409509F4@e16-tech.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -50,105 +51,15 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sat, Jul 15, 2023 at 07:02:27AM +0800, Wang Yugui wrote:
+> Hi,
+> 
+> one 'BUG_ON(ret < 0);' is still left in queue-6.1/btrfs-do-not-bug_on-on-tree-mod-log-failure-at-balan.patch 
+> 
+> so we need to rebase this patch.
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 36ce9d76b0a93bae799e27e4f5ac35478c676592
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071640-facedown-shrine-ada1@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
-
-Possible dependencies:
-
-36ce9d76b0a9 ("shmem: use ramfs_kill_sb() for kill_sb method of ramfs-based tmpfs")
-d7167b149943 ("fs_parse: fold fs_parameter_desc/fs_parameter_spec")
-96cafb9ccb15 ("fs_parser: remove fs_parameter_description name field")
-cc3c0b533ab9 ("add prefix to fs_context->log")
-c80c98f0dc5d ("ceph_parse_param(), ceph_parse_mon_ips(): switch to passing fc_log")
-7f5d38141e30 ("new primitive: __fs_parse()")
-2c3f3dc31556 ("switch rbd and libceph to p_log-based primitives")
-3fbb8d5554a1 ("struct p_log, variants of warnf() et.al. taking that one instead")
-9f09f649ca33 ("teach logfc() to handle prefices, give it saner calling conventions")
-5eede625297f ("fold struct fs_parameter_enum into struct constant_table")
-2710c957a8ef ("fs_parse: get rid of ->enums")
-0f89589a8c6f ("Pass consistent param->type to fs_parse()")
-f2aedb713c28 ("NFS: Add fs_context support.")
-e38bb238ed8c ("NFS: Convert mount option parsing to use functionality from fs_parser.h")
-e558100fda7e ("NFS: Do some tidying of the parsing code")
-48be8a66cf98 ("NFS: Add a small buffer in nfs_fs_context to avoid string dup")
-cbd071b5daa0 ("NFS: Deindent nfs_fs_context_parse_option()")
-f8ee01e3e2c8 ("NFS: Split nfs_parse_mount_options()")
-5eb005caf538 ("NFS: Rename struct nfs_parsed_mount_data to struct nfs_fs_context")
-e0a626b12474 ("NFS: Constify mount argument match tables")
+Great, can you send a new version for 5.15.y and 6.1.y?
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 36ce9d76b0a93bae799e27e4f5ac35478c676592 Mon Sep 17 00:00:00 2001
-From: Roberto Sassu <roberto.sassu@huawei.com>
-Date: Wed, 7 Jun 2023 18:15:23 +0200
-Subject: [PATCH] shmem: use ramfs_kill_sb() for kill_sb method of ramfs-based
- tmpfs
-
-As the ramfs-based tmpfs uses ramfs_init_fs_context() for the
-init_fs_context method, which allocates fc->s_fs_info, use ramfs_kill_sb()
-to free it and avoid a memory leak.
-
-Link: https://lkml.kernel.org/r/20230607161523.2876433-1-roberto.sassu@huaweicloud.com
-Fixes: c3b1b1cbf002 ("ramfs: add support for "mode=" mount option")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/fs/ramfs/inode.c b/fs/ramfs/inode.c
-index 5ba580c78835..fef477c78107 100644
---- a/fs/ramfs/inode.c
-+++ b/fs/ramfs/inode.c
-@@ -278,7 +278,7 @@ int ramfs_init_fs_context(struct fs_context *fc)
- 	return 0;
- }
- 
--static void ramfs_kill_sb(struct super_block *sb)
-+void ramfs_kill_sb(struct super_block *sb)
- {
- 	kfree(sb->s_fs_info);
- 	kill_litter_super(sb);
-diff --git a/include/linux/ramfs.h b/include/linux/ramfs.h
-index 917528d102c4..d506dc63dd47 100644
---- a/include/linux/ramfs.h
-+++ b/include/linux/ramfs.h
-@@ -7,6 +7,7 @@
- struct inode *ramfs_get_inode(struct super_block *sb, const struct inode *dir,
- 	 umode_t mode, dev_t dev);
- extern int ramfs_init_fs_context(struct fs_context *fc);
-+extern void ramfs_kill_sb(struct super_block *sb);
- 
- #ifdef CONFIG_MMU
- static inline int
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 5e54ab5f61f2..c606ab89693a 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -4199,7 +4199,7 @@ static struct file_system_type shmem_fs_type = {
- 	.name		= "tmpfs",
- 	.init_fs_context = ramfs_init_fs_context,
- 	.parameters	= ramfs_fs_parameters,
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= ramfs_kill_sb,
- 	.fs_flags	= FS_USERNS_MOUNT,
- };
- 
-
