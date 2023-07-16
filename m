@@ -2,155 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C780175541F
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5453C755656
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231995AbjGPU1E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:27:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49516 "EHLO
+        id S232913AbjGPUts (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:49:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232006AbjGPU1D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4371E7B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:50 -0700 (PDT)
+        with ESMTP id S232813AbjGPUtf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97DB0E41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 31FDB60EC4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFFFC433C8;
-        Sun, 16 Jul 2023 20:26:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17F2E60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25167C433C7;
+        Sun, 16 Jul 2023 20:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539209;
-        bh=HtlcifJ1IG2kYajyytBeLW9HI7cYPADRnynM3mGNID4=;
+        s=korg; t=1689540571;
+        bh=T12ifpQP3hUXL5kEMrHgyDRuq1yKgUw5V1rAzv+mjBI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LKGV4hVFo8450orkhwqTMbhRdYP3UOHvwlTDgLtF76HYm9GBt/foQkZYBfIk674gC
-         LkHQJOzSas4WApPixnEl3k40tPZ/zatAfA2MlchO7q5fsquA5S37Uc2wPLtVUm6DMB
-         i3qOAAhzlRnqg1is44W8XoC+YpVrEGsCqHso9aSk=
+        b=TxnYCGFvsCViscCs1l3A/dwhNW9Xqo7XzW+OS5RVjusBL/t5JvlH3BNlPDBcD44pJ
+         AjkCYmT1FeSeeoKJ7jic3rk+lkijmnHnuUEXs/mxSTjoODdDtOseiRT3Eo7uh+U1Jw
+         d8ByWSu9DB6EtSjzCknxBrVi589xQBG9jzj6V2EI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Maximets <i.maximets@ovn.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Magnus Karlsson <magnus.karlsson@intel.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Jason Wang <jasowang@redhat.com>,
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 697/800] xsk: Honor SO_BINDTODEVICE on bind
+Subject: [PATCH 6.1 411/591] extcon: Fix kernel doc of property fields to avoid warnings
 Date:   Sun, 16 Jul 2023 21:49:10 +0200
-Message-ID: <20230716195005.311248119@linuxfoundation.org>
+Message-ID: <20230716194934.546892241@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit f7306acec9aae9893d15e745c8791124d42ab10a ]
+[ Upstream commit 7e77e0b7a9f4cdf91cb0950749b40c840ea63efc ]
 
-Initial creation of an AF_XDP socket requires CAP_NET_RAW capability. A
-privileged process might create the socket and pass it to a non-privileged
-process for later use. However, that process will be able to bind the socket
-to any network interface. Even though it will not be able to receive any
-traffic without modification of the BPF map, the situation is not ideal.
+Kernel documentation has to be synchronized with a code, otherwise
+the validator is not happy:
 
-Sockets already have a mechanism that can be used to restrict what interface
-they can be attached to. That is SO_BINDTODEVICE.
+     Function parameter or member 'usb_propval' not described in 'extcon_cable'
+     Function parameter or member 'chg_propval' not described in 'extcon_cable'
+     Function parameter or member 'jack_propval' not described in 'extcon_cable'
+     Function parameter or member 'disp_propval' not described in 'extcon_cable'
 
-To change the SO_BINDTODEVICE binding the process will need CAP_NET_RAW.
+Describe the fields added in the past.
 
-Make xsk_bind() honor the SO_BINDTODEVICE in order to allow safer workflow
-when non-privileged process is using AF_XDP.
-
-The intended workflow is following:
-
-  1. First process creates a bare socket with socket(AF_XDP, ...).
-  2. First process loads the XSK program to the interface.
-  3. First process adds the socket fd to a BPF map.
-  4. First process ties socket fd to a particular interface using
-     SO_BINDTODEVICE.
-  5. First process sends socket fd to a second process.
-  6. Second process allocates UMEM.
-  7. Second process binds socket to the interface with bind(...).
-  8. Second process sends/receives the traffic.
-
-All the steps above are possible today if the first process is privileged
-and the second one has sufficient RLIMIT_MEMLOCK and no capabilities.
-However, the second process will be able to bind the socket to any interface
-it wants on step 7 and send traffic from it. With the proposed change, the
-second process will be able to bind the socket only to a specific interface
-chosen by the first process at step 4.
-
-Fixes: 965a99098443 ("xsk: add support for bind for Rx")
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://lore.kernel.org/bpf/20230703175329.3259672-1-i.maximets@ovn.org
+Fixes: 067c1652e7a7 ("extcon: Add the support for extcon property according to extcon type")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/af_xdp.rst | 9 +++++++++
- net/xdp/xsk.c                       | 5 +++++
- 2 files changed, 14 insertions(+)
+ drivers/extcon/extcon.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/networking/af_xdp.rst b/Documentation/networking/af_xdp.rst
-index 247c6c4127e94..1cc35de336a41 100644
---- a/Documentation/networking/af_xdp.rst
-+++ b/Documentation/networking/af_xdp.rst
-@@ -433,6 +433,15 @@ start N bytes into the buffer leaving the first N bytes for the
- application to use. The final option is the flags field, but it will
- be dealt with in separate sections for each UMEM flag.
- 
-+SO_BINDTODEVICE setsockopt
-+--------------------------
-+
-+This is a generic SOL_SOCKET option that can be used to tie AF_XDP
-+socket to a particular network interface.  It is useful when a socket
-+is created by a privileged process and passed to a non-privileged one.
-+Once the option is set, kernel will refuse attempts to bind that socket
-+to a different interface.  Updating the value requires CAP_NET_RAW.
-+
- XDP_STATISTICS getsockopt
- -------------------------
- 
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index cc1e7f15fa731..32dd55b9ce8a8 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -886,6 +886,7 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
- 	struct sock *sk = sock->sk;
- 	struct xdp_sock *xs = xdp_sk(sk);
- 	struct net_device *dev;
-+	int bound_dev_if;
- 	u32 flags, qid;
- 	int err = 0;
- 
-@@ -899,6 +900,10 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
- 		      XDP_USE_NEED_WAKEUP))
- 		return -EINVAL;
- 
-+	bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
-+	if (bound_dev_if && bound_dev_if != sxdp->sxdp_ifindex)
-+		return -EINVAL;
-+
- 	rtnl_lock();
- 	mutex_lock(&xs->mutex);
- 	if (xs->state != XSK_READY) {
+diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
+index e1c71359b6051..01fd920685c2c 100644
+--- a/drivers/extcon/extcon.c
++++ b/drivers/extcon/extcon.c
+@@ -206,6 +206,10 @@ static const struct __extcon_info {
+  * @attr_name:		"name" sysfs entry
+  * @attr_state:		"state" sysfs entry
+  * @attrs:		the array pointing to attr_name and attr_state for attr_g
++ * @usb_propval:	the array of USB connector properties
++ * @chg_propval:	the array of charger connector properties
++ * @jack_propval:	the array of jack connector properties
++ * @disp_propval:	the array of display connector properties
+  */
+ struct extcon_cable {
+ 	struct extcon_dev *edev;
 -- 
 2.39.2
 
