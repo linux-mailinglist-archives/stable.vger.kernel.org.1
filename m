@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D33A87554DF
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:35:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 343057552B5
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230225AbjGPUfB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:35:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55264 "EHLO
+        id S231437AbjGPULB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230425AbjGPUfA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:35:00 -0400
+        with ESMTP id S231447AbjGPULA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA752BC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B11559D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5998960EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CB3C433C8;
-        Sun, 16 Jul 2023 20:34:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F12260EB3
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B45BC433C7;
+        Sun, 16 Jul 2023 20:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539697;
-        bh=IWkkqNL0D1GaGqrjVuFdx/c/HoEuScii0PqS4uyuKIU=;
+        s=korg; t=1689538256;
+        bh=wn/MBcrypZR+gpwcOVk01MVcRvIYNewYQjL9thzdAH0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BnIlOh1l5d3XC9TA0AP4cmD4A0R8rGHoU161y+9nIds0u2P1kX4aSEmINeJ0PhhR5
-         4j0Gs4qTIPbl9sVUpFMrnvF0WSGYAgLp5cRjltIN7FwSfHmKAeFrgISVDZuDoheFlN
-         Jrxey8w4P4S/odnAjtRc1NIsG6Jo+vygn71hZg+Q=
+        b=hXDOCKjgUtyLtZ/sdZFtKCXPwmK1qwKpG15+GRoQNsGMKU+wCC56TinLtZS6ZbM4b
+         ha4dR6NcnNQiBW7ZJyz1H+gBELj99CYjzSBuyhJV9tEj4xZJ/fFNREUQgqYDBwYcOi
+         ma6YD98o73EFEiaWPaZrvAj07Mt5UGuaqC3fJjr0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haifeng Xu <haifeng.xu@shopee.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Shakeel Butt <shakeelb@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/591] selftests: cgroup: fix unexpected failure on test_memcg_low
+Subject: [PATCH 6.4 385/800] arm64: dts: qcom: sdm670: Flush RSC sleep & wake votes
 Date:   Sun, 16 Jul 2023 21:43:58 +0200
-Message-ID: <20230716194926.439929957@linuxfoundation.org>
+Message-ID: <20230716194958.016552899@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,51 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Haifeng Xu <haifeng.xu@shopee.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 19ab365762c6cc39dfdee9e13ab0d12fe4b5540d ]
+[ Upstream commit 7b04cbd81b0e60c5151a310e7b730dc4a951a211 ]
 
-Since commit f079a020ba95 ("selftests: memcg: factor out common parts of
-memory.{low,min} tests"), the value used in second alloc_anon has changed
-from 148M to 170M.  Because memory.low allows reclaiming page cache in
-child cgroups, so the memory.current is close to 30M instead of 50M.
-Therefore, adjust the expected value of parent cgroup.
+The rpmh driver will cache sleep and wake votes until the cluster
+power-domain is about to enter idle, to avoid unnecessary writes. So
+associate the apps_rsc with the cluster pd, so that it can be notified
+about this event.
 
-Link: https://lkml.kernel.org/r/20230522095233.4246-2-haifeng.xu@shopee.com
-Fixes: f079a020ba95 ("selftests: memcg: factor out common parts of memory.{low,min} tests")
-Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeelb@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Without this, only AMC votes are being commited.
+
+Fixes: 07c8ded6e373 ("arm64: dts: qcom: add sdm670 and pixel 3a device trees")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230531-topic-rsc-v1-5-b4a985f57b8b@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/cgroup/test_memcontrol.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm670.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index fe4f9f4302822..5a526a8e7d333 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -284,6 +284,7 @@ static int test_memcg_protection(const char *root, bool min)
- 	char *children[4] = {NULL};
- 	const char *attribute = min ? "memory.min" : "memory.low";
- 	long c[4];
-+	long current;
- 	int i, attempts;
- 	int fd;
+diff --git a/arch/arm64/boot/dts/qcom/sdm670.dtsi b/arch/arm64/boot/dts/qcom/sdm670.dtsi
+index b61e13db89bd5..a1c207c0266da 100644
+--- a/arch/arm64/boot/dts/qcom/sdm670.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm670.dtsi
+@@ -1282,6 +1282,7 @@ apps_rsc: rsc@179c0000 {
+ 					  <SLEEP_TCS   3>,
+ 					  <WAKE_TCS    3>,
+ 					  <CONTROL_TCS 1>;
++			power-domains = <&CLUSTER_PD>;
  
-@@ -392,7 +393,8 @@ static int test_memcg_protection(const char *root, bool min)
- 		goto cleanup;
- 	}
- 
--	if (!values_close(cg_read_long(parent[1], "memory.current"), MB(50), 3))
-+	current = min ? MB(50) : MB(30);
-+	if (!values_close(cg_read_long(parent[1], "memory.current"), current, 3))
- 		goto cleanup;
- 
- 	if (min) {
+ 			apps_bcm_voter: bcm-voter {
+ 				compatible = "qcom,bcm-voter";
 -- 
 2.39.2
 
