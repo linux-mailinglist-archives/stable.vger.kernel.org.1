@@ -2,136 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDE5A75545A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCC3C7556E1
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:54:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232087AbjGPU3c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:29:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51002 "EHLO
+        id S233022AbjGPUy5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:54:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232088AbjGPU3a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:30 -0400
+        with ESMTP id S233029AbjGPUy4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:54:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF329F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ECAF109
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:54:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B007760EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA40FC433C8;
-        Sun, 16 Jul 2023 20:29:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C0AD60EBF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:54:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE2DC433C7;
+        Sun, 16 Jul 2023 20:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539369;
-        bh=AvCSc32dKS8LKoAJpVstBaLvB21AaawCopakwGBabjE=;
+        s=korg; t=1689540893;
+        bh=n6f4gQXnJyTXONrTcEW4DkSsmxklz1CKXiJjXy79hQw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=siiVrBcbaiY0ZqavdsRLhAnLKDtWIEALVgLLq6L8M7f7+oXKnO7lnf+cE8V9eBgZe
-         UL+LnhEmG04QYBen4c+q3gIMkz8JbE07F0BPt6ZeBRAtB81mas4Ko90X99EwVLcm+k
-         jgXUDkVUPWGQBwXOANKviQPrEz2+exWM3OuYCJv0=
+        b=0NMU6XRhqbljpABTQDFiAYrhP42eh5RckJ9seGZcem1Nhd6OPxiq4HKHzd3oy8tvj
+         ooxgnXbe+nSB3Y1QfGWIE85alhtQXNO4m95Q74anHSeJG5VQz3YMRd9fIMGLn8HVWy
+         0LRUg06mbAmjwlYvn8A6NTQrPievFc/j7UMRmYE8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.4 783/800] ovl: fix null pointer dereference in ovl_permission()
-Date:   Sun, 16 Jul 2023 21:50:36 +0200
-Message-ID: <20230716195007.332930252@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 498/591] powerpc: dts: turris1x.dts: Fix PCIe MEM size for pci2 node
+Date:   Sun, 16 Jul 2023 21:50:37 +0200
+Message-ID: <20230716194936.779281067@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Pali Rohár <pali@kernel.org>
 
-commit 1a73f5b8f079fd42a544c1600beface50c63af7c upstream.
+[ Upstream commit abaa02fc944f2f9f2c2e1925ddaceaf35c48528c ]
 
-Following process:
-          P1                     P2
- path_lookupat
-  link_path_walk
-   inode_permission
-    ovl_permission
-      ovl_i_path_real(inode, &realpath)
-        path->dentry = ovl_i_dentry_upper(inode)
-                          drop_cache
-			   __dentry_kill(ovl_dentry)
-		            iput(ovl_inode)
-		             ovl_destroy_inode(ovl_inode)
-		              dput(oi->__upperdentry)
-		               dentry_kill(upperdentry)
-		                dentry_unlink_inode
-				 upperdentry->d_inode = NULL
-      realinode = d_inode(realpath.dentry) // return NULL
-      inode_permission(realinode)
-       inode->i_sb  // NULL pointer dereference
-, will trigger an null pointer dereference at realinode:
-  [  335.664979] BUG: kernel NULL pointer dereference,
-                 address: 0000000000000002
-  [  335.668032] CPU: 0 PID: 2592 Comm: ls Not tainted 6.3.0
-  [  335.669956] RIP: 0010:inode_permission+0x33/0x2c0
-  [  335.678939] Call Trace:
-  [  335.679165]  <TASK>
-  [  335.679371]  ovl_permission+0xde/0x320
-  [  335.679723]  inode_permission+0x15e/0x2c0
-  [  335.680090]  link_path_walk+0x115/0x550
-  [  335.680771]  path_lookupat.isra.0+0xb2/0x200
-  [  335.681170]  filename_lookup+0xda/0x240
-  [  335.681922]  vfs_statx+0xa6/0x1f0
-  [  335.682233]  vfs_fstatat+0x7b/0xb0
+Freescale PCIe controllers on their PCIe Root Ports do not have any
+mappable PCI BAR allocate from PCIe MEM.
 
-Fetch a reproducer in [Link].
+Information about 1MB window on BAR0 of PCIe Root Port was misleading
+because Freescale PCIe controllers have at BAR0 position different register
+PEXCSRBAR, and kernel correctly skipts BAR0 for these Freescale PCIe Root
+Ports.
 
-Use the helper ovl_i_path_realinode() to get realinode and then do
-non-nullptr checking.
+So update comment about P2020 PCIe Root Port and decrease PCIe MEM size
+required for PCIe controller (pci2 node) on which is on-board xHCI
+controller.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217405
-Fixes: 4b7791b2e958 ("ovl: handle idmappings in ovl_permission()")
-Cc: <stable@vger.kernel.org> # v5.19
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Suggested-by: Christian Brauner <brauner@kernel.org>
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+lspci confirms that on P2020 PCIe Root Port is no PCI BAR and /proc/iomem
+sees that only c0000000-c000ffff and c0010000-c0011fff ranges are used.
+
+Fixes: 54c15ec3b738 ("powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230505172818.18416-1-pali@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/inode.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/powerpc/boot/dts/turris1x.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -288,8 +288,8 @@ int ovl_permission(struct mnt_idmap *idm
- 	int err;
+diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
+index e9cda34a140e0..9377055d5565c 100644
+--- a/arch/powerpc/boot/dts/turris1x.dts
++++ b/arch/powerpc/boot/dts/turris1x.dts
+@@ -453,12 +453,12 @@ pci2: pcie@ffe08000 {
+ 		 * channel 1 (but only USB 2.0 subset) to USB 2.0 pins on mPCIe
+ 		 * slot 1 (CN5), channels 2 and 3 to connector P600.
+ 		 *
+-		 * P2020 PCIe Root Port uses 1MB of PCIe MEM and xHCI controller
++		 * P2020 PCIe Root Port does not use PCIe MEM and xHCI controller
+ 		 * uses 64kB + 8kB of PCIe MEM. No PCIe IO is used or required.
+-		 * So allocate 2MB of PCIe MEM for this PCIe bus.
++		 * So allocate 128kB of PCIe MEM for this PCIe bus.
+ 		 */
+ 		reg = <0 0xffe08000 0 0x1000>;
+-		ranges = <0x02000000 0x0 0xc0000000 0 0xc0000000 0x0 0x00200000>, /* MEM */
++		ranges = <0x02000000 0x0 0xc0000000 0 0xc0000000 0x0 0x00020000>, /* MEM */
+ 			 <0x01000000 0x0 0x00000000 0 0xffc20000 0x0 0x00010000>; /* IO */
  
- 	/* Careful in RCU walk mode */
--	ovl_i_path_real(inode, &realpath);
--	if (!realpath.dentry) {
-+	realinode = ovl_i_path_real(inode, &realpath);
-+	if (!realinode) {
- 		WARN_ON(!(mask & MAY_NOT_BLOCK));
- 		return -ECHILD;
- 	}
-@@ -302,7 +302,6 @@ int ovl_permission(struct mnt_idmap *idm
- 	if (err)
- 		return err;
- 
--	realinode = d_inode(realpath.dentry);
- 	old_cred = ovl_override_creds(inode->i_sb);
- 	if (!upperinode &&
- 	    !special_file(realinode->i_mode) && mask & MAY_WRITE) {
+ 		pcie@0 {
+-- 
+2.39.2
+
 
 
