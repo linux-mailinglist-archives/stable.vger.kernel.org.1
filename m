@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CB757552D1
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:12:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A071C755501
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:36:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231487AbjGPUMS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:12:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
+        id S232327AbjGPUgX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:36:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231486AbjGPUMR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:12:17 -0400
+        with ESMTP id S232347AbjGPUgW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:36:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A0190
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:12:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20943E51
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:36:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D7CC60EA6
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:12:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8992CC433C7;
-        Sun, 16 Jul 2023 20:12:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 407BD60EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:36:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50836C433C8;
+        Sun, 16 Jul 2023 20:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538335;
-        bh=vVHK+l8xYGF9jGwPGB2WW5EOJE1MaVr2s+z2utRCfcY=;
+        s=korg; t=1689539778;
+        bh=1KXKWdiZyRZ2ZOV6HrUiDDVWJknYrmhw4Vyvo8P7GDE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=byeY7bo3cxevYsO8Ht3Z+egJnlGULXwtGVGn7Sh+hHZWATyLQgZO/PzaydvDhT7xA
-         R1/I9YfHGh/U1ZeStSbPe2HjnFaOBBLc4RhNd5cSh/RJaldLH/sz4XrBdvPXgIlMec
-         cYBwLd4bdDUJV4EuAfH8FktistBzMFk/NMjRXdq4=
+        b=W7R/yHTE4N7UK/zja8R8nsimAk197+ZgZaZUqk2w3hFwpZr8W126g0qFdSneiV1HX
+         WsqrAr+F6AvyIs0wSzGM+8sPV6ZIKd3KPhPf0+aSxAMp745N7hyPYInzE1xOIRz6is
+         p4wEz1b1pXrEm2vtzbttShqRBHDJb1hjVTI3iCu0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Markus Schneider-Pargmann <msp@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 414/800] clk: mediatek: clk-mt8173-apmixedsys: Fix return value for of_iomap() error
+Subject: [PATCH 6.1 128/591] netlink: do not hard code device address lenth in fdb dumps
 Date:   Sun, 16 Jul 2023 21:44:27 +0200
-Message-ID: <20230716194958.703383649@linuxfoundation.org>
+Message-ID: <20230716194927.187103800@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,38 +56,155 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3dc265b369ee61db999d6d1588e888eb21dc421e ]
+[ Upstream commit aa5406950726e336c5c9585b09799a734b6e77bf ]
 
-The of_iomap() function returns NULL in case of error so usage of
-PTR_ERR() is wrong!
-Change that to return -ENOMEM in case of failure.
+syzbot reports that some netdev devices do not have a six bytes
+address [1]
 
-Fixes: 41138fbf876c ("clk: mediatek: mt8173: Migrate to platform driver and common probe")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230615122051.546985-3-angelogioacchino.delregno@collabora.com
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Replace ETH_ALEN by dev->addr_len.
+
+[1] (Case of a device where dev->addr_len = 4)
+
+BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
+BUG: KMSAN: kernel-infoleak in copyout+0xb8/0x100 lib/iov_iter.c:169
+instrument_copy_to_user include/linux/instrumented.h:114 [inline]
+copyout+0xb8/0x100 lib/iov_iter.c:169
+_copy_to_iter+0x6d8/0x1d00 lib/iov_iter.c:536
+copy_to_iter include/linux/uio.h:206 [inline]
+simple_copy_to_iter+0x68/0xa0 net/core/datagram.c:513
+__skb_datagram_iter+0x123/0xdc0 net/core/datagram.c:419
+skb_copy_datagram_iter+0x5c/0x200 net/core/datagram.c:527
+skb_copy_datagram_msg include/linux/skbuff.h:3960 [inline]
+netlink_recvmsg+0x4ae/0x15a0 net/netlink/af_netlink.c:1970
+sock_recvmsg_nosec net/socket.c:1019 [inline]
+sock_recvmsg net/socket.c:1040 [inline]
+____sys_recvmsg+0x283/0x7f0 net/socket.c:2722
+___sys_recvmsg+0x223/0x840 net/socket.c:2764
+do_recvmmsg+0x4f9/0xfd0 net/socket.c:2858
+__sys_recvmmsg net/socket.c:2937 [inline]
+__do_sys_recvmmsg net/socket.c:2960 [inline]
+__se_sys_recvmmsg net/socket.c:2953 [inline]
+__x64_sys_recvmmsg+0x397/0x490 net/socket.c:2953
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was stored to memory at:
+__nla_put lib/nlattr.c:1009 [inline]
+nla_put+0x1c6/0x230 lib/nlattr.c:1067
+nlmsg_populate_fdb_fill+0x2b8/0x600 net/core/rtnetlink.c:4071
+nlmsg_populate_fdb net/core/rtnetlink.c:4418 [inline]
+ndo_dflt_fdb_dump+0x616/0x840 net/core/rtnetlink.c:4456
+rtnl_fdb_dump+0x14ff/0x1fc0 net/core/rtnetlink.c:4629
+netlink_dump+0x9d1/0x1310 net/netlink/af_netlink.c:2268
+netlink_recvmsg+0xc5c/0x15a0 net/netlink/af_netlink.c:1995
+sock_recvmsg_nosec+0x7a/0x120 net/socket.c:1019
+____sys_recvmsg+0x664/0x7f0 net/socket.c:2720
+___sys_recvmsg+0x223/0x840 net/socket.c:2764
+do_recvmmsg+0x4f9/0xfd0 net/socket.c:2858
+__sys_recvmmsg net/socket.c:2937 [inline]
+__do_sys_recvmmsg net/socket.c:2960 [inline]
+__se_sys_recvmmsg net/socket.c:2953 [inline]
+__x64_sys_recvmmsg+0x397/0x490 net/socket.c:2953
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was created at:
+slab_post_alloc_hook+0x12d/0xb60 mm/slab.h:716
+slab_alloc_node mm/slub.c:3451 [inline]
+__kmem_cache_alloc_node+0x4ff/0x8b0 mm/slub.c:3490
+kmalloc_trace+0x51/0x200 mm/slab_common.c:1057
+kmalloc include/linux/slab.h:559 [inline]
+__hw_addr_create net/core/dev_addr_lists.c:60 [inline]
+__hw_addr_add_ex+0x2e5/0x9e0 net/core/dev_addr_lists.c:118
+__dev_mc_add net/core/dev_addr_lists.c:867 [inline]
+dev_mc_add+0x9a/0x130 net/core/dev_addr_lists.c:885
+igmp6_group_added+0x267/0xbc0 net/ipv6/mcast.c:680
+ipv6_mc_up+0x296/0x3b0 net/ipv6/mcast.c:2754
+ipv6_mc_remap+0x1e/0x30 net/ipv6/mcast.c:2708
+addrconf_type_change net/ipv6/addrconf.c:3731 [inline]
+addrconf_notify+0x4d3/0x1d90 net/ipv6/addrconf.c:3699
+notifier_call_chain kernel/notifier.c:93 [inline]
+raw_notifier_call_chain+0xe4/0x430 kernel/notifier.c:461
+call_netdevice_notifiers_info net/core/dev.c:1935 [inline]
+call_netdevice_notifiers_extack net/core/dev.c:1973 [inline]
+call_netdevice_notifiers+0x1ee/0x2d0 net/core/dev.c:1987
+bond_enslave+0xccd/0x53f0 drivers/net/bonding/bond_main.c:1906
+do_set_master net/core/rtnetlink.c:2626 [inline]
+rtnl_newlink_create net/core/rtnetlink.c:3460 [inline]
+__rtnl_newlink net/core/rtnetlink.c:3660 [inline]
+rtnl_newlink+0x378c/0x40e0 net/core/rtnetlink.c:3673
+rtnetlink_rcv_msg+0x16a6/0x1840 net/core/rtnetlink.c:6395
+netlink_rcv_skb+0x371/0x650 net/netlink/af_netlink.c:2546
+rtnetlink_rcv+0x34/0x40 net/core/rtnetlink.c:6413
+netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+netlink_unicast+0xf28/0x1230 net/netlink/af_netlink.c:1365
+netlink_sendmsg+0x122f/0x13d0 net/netlink/af_netlink.c:1913
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg net/socket.c:747 [inline]
+____sys_sendmsg+0x999/0xd50 net/socket.c:2503
+___sys_sendmsg+0x28d/0x3c0 net/socket.c:2557
+__sys_sendmsg net/socket.c:2586 [inline]
+__do_sys_sendmsg net/socket.c:2595 [inline]
+__se_sys_sendmsg net/socket.c:2593 [inline]
+__x64_sys_sendmsg+0x304/0x490 net/socket.c:2593
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Bytes 2856-2857 of 3500 are uninitialized
+Memory access of size 3500 starts at ffff888018d99104
+Data copied to user address 0000000020000480
+
+Fixes: d83b06036048 ("net: add fdb generic dump routine")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20230621174720.1845040-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt8173-apmixedsys.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/rtnetlink.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt8173-apmixedsys.c b/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
-index 8c2aa8b0f39ea..c7adcfcc12e27 100644
---- a/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
-@@ -148,7 +148,7 @@ static int clk_mt8173_apmixed_probe(struct platform_device *pdev)
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index ef2a07ae5496e..5625ed30a06f3 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -3992,7 +3992,7 @@ static int nlmsg_populate_fdb_fill(struct sk_buff *skb,
+ 	ndm->ndm_ifindex = dev->ifindex;
+ 	ndm->ndm_state   = ndm_state;
  
- 	base = of_iomap(node, 0);
- 	if (!base)
--		return PTR_ERR(base);
-+		return -ENOMEM;
+-	if (nla_put(skb, NDA_LLADDR, ETH_ALEN, addr))
++	if (nla_put(skb, NDA_LLADDR, dev->addr_len, addr))
+ 		goto nla_put_failure;
+ 	if (vid)
+ 		if (nla_put(skb, NDA_VLAN, sizeof(u16), &vid))
+@@ -4006,10 +4006,10 @@ static int nlmsg_populate_fdb_fill(struct sk_buff *skb,
+ 	return -EMSGSIZE;
+ }
  
- 	clk_data = mtk_alloc_clk_data(CLK_APMIXED_NR_CLK);
- 	if (IS_ERR_OR_NULL(clk_data))
+-static inline size_t rtnl_fdb_nlmsg_size(void)
++static inline size_t rtnl_fdb_nlmsg_size(const struct net_device *dev)
+ {
+ 	return NLMSG_ALIGN(sizeof(struct ndmsg)) +
+-	       nla_total_size(ETH_ALEN) +	/* NDA_LLADDR */
++	       nla_total_size(dev->addr_len) +	/* NDA_LLADDR */
+ 	       nla_total_size(sizeof(u16)) +	/* NDA_VLAN */
+ 	       0;
+ }
+@@ -4021,7 +4021,7 @@ static void rtnl_fdb_notify(struct net_device *dev, u8 *addr, u16 vid, int type,
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
+ 
+-	skb = nlmsg_new(rtnl_fdb_nlmsg_size(), GFP_ATOMIC);
++	skb = nlmsg_new(rtnl_fdb_nlmsg_size(dev), GFP_ATOMIC);
+ 	if (!skb)
+ 		goto errout;
+ 
 -- 
 2.39.2
 
