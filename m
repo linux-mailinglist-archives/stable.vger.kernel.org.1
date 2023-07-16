@@ -2,48 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9524755225
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC533755210
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:03:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231196AbjGPUEX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:04:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34254 "EHLO
+        id S231172AbjGPUDY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:03:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231206AbjGPUEW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:04:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5975A1B4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:04:21 -0700 (PDT)
+        with ESMTP id S231168AbjGPUDX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:03:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B029D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:03:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC28C60EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:04:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA453C433C8;
-        Sun, 16 Jul 2023 20:04:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BD2F60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:03:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1BAC433C7;
+        Sun, 16 Jul 2023 20:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537860;
-        bh=ou/S/4/+1QUYBlAR2OQqqhXP1X7F3n/R8j5ylY0esbA=;
+        s=korg; t=1689537801;
+        bh=TukPhmvxnHNVGIj+rydqQQiaM1s8jdt/fw4LTDA9EXM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BwZC4lHcnBC0U35KKm1XSwpIeit6MZWUM7BVZvoHeHsV6ZsIfhI6thSxVXuV213pe
-         Wx5sWCbUEHtnBUqpmRcqfg2MqlauZ2Y/DtScl+ocZJLm5uFDm8SSOzfg+h45GKwqbu
-         VLGMojDjmJX4rmmiEVwKUIrT0rbzQ3XXjannmp9M=
+        b=2abMgscLumxuESFfvIIBEKZvS3Effzq80/78orFhkORH4pU/Vmzi3KioD/gk61TKD
+         XRMTlotJ4M0/NzVj69fjg3IoHKDdaYwyrnis8zLM2xzRgau+gMH8eemI7BdlkYIXgK
+         tB52y5sLnqp1o5Af3DE3UiOcEVB2bgQugbzxBZiU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jarod Wilson <jarod@redhat.com>, Moshe Tal <moshet@nvidia.com>,
-        Jussi Maki <joamaki@gmail.com>,
-        Jay Vosburgh <j.vosburgh@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 206/800] bonding: do not assume skb mac_header is set
-Date:   Sun, 16 Jul 2023 21:40:59 +0200
-Message-ID: <20230716194953.882518496@linuxfoundation.org>
+Subject: [PATCH 6.4 208/800] selftests: rtnetlink: remove netdevsim device after ipsec offload test
+Date:   Sun, 16 Jul 2023 21:41:01 +0200
+Message-ID: <20230716194953.928966895@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -51,100 +46,47 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 6a940abdef3162e5723f1495b8a49859d1708f79 ]
+[ Upstream commit 5f789f103671fec3733ebe756e56adf15c90c21d ]
 
-Drivers must not assume in their ndo_start_xmit() that
-skbs have their mac_header set. skb->data is all what is needed.
+On systems where netdevsim is built-in or loaded before the test
+starts, kci_test_ipsec_offload doesn't remove the netdevsim device it
+created during the test.
 
-bonding seems to be one of the last offender as caught by syzbot:
-
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 skb_mac_offset include/linux/skbuff.h:2913 [inline]
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_xmit_hash drivers/net/bonding/bond_main.c:4170 [inline]
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5149 [inline]
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_3ad_xor_xmit drivers/net/bonding/bond_main.c:5186 [inline]
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 __bond_start_xmit drivers/net/bonding/bond_main.c:5442 [inline]
-WARNING: CPU: 1 PID: 12155 at include/linux/skbuff.h:2907 bond_start_xmit+0x14ab/0x19d0 drivers/net/bonding/bond_main.c:5470
-Modules linked in:
-CPU: 1 PID: 12155 Comm: syz-executor.3 Not tainted 6.1.30-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
-RIP: 0010:skb_mac_header include/linux/skbuff.h:2907 [inline]
-RIP: 0010:skb_mac_offset include/linux/skbuff.h:2913 [inline]
-RIP: 0010:bond_xmit_hash drivers/net/bonding/bond_main.c:4170 [inline]
-RIP: 0010:bond_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5149 [inline]
-RIP: 0010:bond_3ad_xor_xmit drivers/net/bonding/bond_main.c:5186 [inline]
-RIP: 0010:__bond_start_xmit drivers/net/bonding/bond_main.c:5442 [inline]
-RIP: 0010:bond_start_xmit+0x14ab/0x19d0 drivers/net/bonding/bond_main.c:5470
-Code: 8b 7c 24 30 e8 76 dd 1a 01 48 85 c0 74 0d 48 89 c3 e8 29 67 2e fe e9 15 ef ff ff e8 1f 67 2e fe e9 10 ef ff ff e8 15 67 2e fe <0f> 0b e9 45 f8 ff ff e8 09 67 2e fe e9 dc fa ff ff e8 ff 66 2e fe
-RSP: 0018:ffffc90002fff6e0 EFLAGS: 00010283
-RAX: ffffffff835874db RBX: 000000000000ffff RCX: 0000000000040000
-RDX: ffffc90004dcf000 RSI: 00000000000000b5 RDI: 00000000000000b6
-RBP: ffffc90002fff8b8 R08: ffffffff83586d16 R09: ffffffff83586584
-R10: 0000000000000007 R11: ffff8881599fc780 R12: ffff88811b6a7b7e
-R13: 1ffff110236d4f6f R14: ffff88811b6a7ac0 R15: 1ffff110236d4f76
-FS: 00007f2e9eb47700(0000) GS:ffff8881f6b00000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b2e421000 CR3: 000000010e6d4000 CR4: 00000000003526e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-[<ffffffff8471a49f>] netdev_start_xmit include/linux/netdevice.h:4925 [inline]
-[<ffffffff8471a49f>] __dev_direct_xmit+0x4ef/0x850 net/core/dev.c:4380
-[<ffffffff851d845b>] dev_direct_xmit include/linux/netdevice.h:3043 [inline]
-[<ffffffff851d845b>] packet_direct_xmit+0x18b/0x300 net/packet/af_packet.c:284
-[<ffffffff851c7472>] packet_snd net/packet/af_packet.c:3112 [inline]
-[<ffffffff851c7472>] packet_sendmsg+0x4a22/0x64d0 net/packet/af_packet.c:3143
-[<ffffffff8467a4b2>] sock_sendmsg_nosec net/socket.c:716 [inline]
-[<ffffffff8467a4b2>] sock_sendmsg net/socket.c:736 [inline]
-[<ffffffff8467a4b2>] __sys_sendto+0x472/0x5f0 net/socket.c:2139
-[<ffffffff8467a715>] __do_sys_sendto net/socket.c:2151 [inline]
-[<ffffffff8467a715>] __se_sys_sendto net/socket.c:2147 [inline]
-[<ffffffff8467a715>] __x64_sys_sendto+0xe5/0x100 net/socket.c:2147
-[<ffffffff8553071f>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-[<ffffffff8553071f>] do_syscall_64+0x2f/0x50 arch/x86/entry/common.c:80
-[<ffffffff85600087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Fixes: 7b8fc0103bb5 ("bonding: add a vlan+srcmac tx hashing option")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jarod Wilson <jarod@redhat.com>
-Cc: Moshe Tal <moshet@nvidia.com>
-Cc: Jussi Maki <joamaki@gmail.com>
-Cc: Jay Vosburgh <j.vosburgh@gmail.com>
-Cc: Andy Gospodarek <andy@greyhouse.net>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230622152304.2137482-1-edumazet@google.com
+Fixes: e05b2d141fef ("netdevsim: move netdev creation/destruction to dev probe")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/e1cb94f4f82f4eca4a444feec4488a1323396357.1687466906.git.sd@queasysnail.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/rtnetlink.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index edbaa1444f8ec..091e035c76a6f 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -4197,7 +4197,7 @@ u32 bond_xmit_hash(struct bonding *bond, struct sk_buff *skb)
- 		return skb->hash;
+diff --git a/tools/testing/selftests/net/rtnetlink.sh b/tools/testing/selftests/net/rtnetlink.sh
+index 383ac6fc037d0..ba286d680fd9a 100755
+--- a/tools/testing/selftests/net/rtnetlink.sh
++++ b/tools/testing/selftests/net/rtnetlink.sh
+@@ -860,6 +860,7 @@ EOF
+ 	fi
  
- 	return __bond_xmit_hash(bond, skb, skb->data, skb->protocol,
--				skb_mac_offset(skb), skb_network_offset(skb),
-+				0, skb_network_offset(skb),
- 				skb_headlen(skb));
- }
+ 	# clean up any leftovers
++	echo 0 > /sys/bus/netdevsim/del_device
+ 	$probed && rmmod netdevsim
  
+ 	if [ $ret -ne 0 ]; then
 -- 
 2.39.2
 
