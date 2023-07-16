@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00F7D7553BB
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A6C97555F6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231827AbjGPUWU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:22:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46166 "EHLO
+        id S232689AbjGPUqV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:46:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231844AbjGPUWT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:22:19 -0400
+        with ESMTP id S232699AbjGPUqU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:46:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17B949F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:22:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F75E5D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:46:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E88260EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4F2C433C8;
-        Sun, 16 Jul 2023 20:22:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5350A60EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:46:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ADCC433C8;
+        Sun, 16 Jul 2023 20:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538938;
-        bh=I/OFoFv17kJnFy4vrXrjKYDJqDnIUd9a4CPtVf08Ftk=;
+        s=korg; t=1689540377;
+        bh=iST81elIs5GPAvhGF4+LF4I6fZSLGev//0T7+nEx3Go=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BHOHqqVYI9WH/gal+zm9xCriPgVr8crnWTV9t4nRDzAxD+j7rB3Vu/95WdixYVIwg
-         meucln3mdAcqsiMgbFyinoDF1rnGQDQD86hRZSyKn769kVqAPDMo60DPPhCSLAJ3Yn
-         08fHCtU02wEcK1SiXxEGtyMgojEXEvNXGd0x+5kE=
+        b=m0+YFvuaJFzzDLUi0GZPDDPtpwNN/HboE+rbqWD1vad2CUS2lwKIZkzb8ioV/hNK5
+         yjOitkKjax6Yt9+/DK2i76XwoE5Nhf23IdvrFePQuG8U+jZT5UJRgzLBRvz27c16Td
+         qnSeiVdvsr5pnmWv/C53jzdqEidbkCpSRm442MLI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yue Zhao <findns94@gmail.com>,
-        Kees Cook <keescook@chromium.org>,
+        patches@lists.linux.dev, Sachin Sant <sachinp@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 600/800] lkdtm: replace ll_rw_block with submit_bh
-Date:   Sun, 16 Jul 2023 21:47:33 +0200
-Message-ID: <20230716195003.039161767@linuxfoundation.org>
+Subject: [PATCH 6.1 315/591] powerpc/64s: Fix VAS mm use after free
+Date:   Sun, 16 Jul 2023 21:47:34 +0200
+Message-ID: <20230716194932.041041042@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yue Zhao <findns94@gmail.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit b290df06811852d4cc36f4b8a2a30c2063197a74 ]
+[ Upstream commit b4bda59b47879cce38a6ec5a01cd3cac702b5331 ]
 
-Function ll_rw_block was removed in commit 79f597842069 ("fs/buffer:
-remove ll_rw_block() helper"). There is no unified function to sumbit
-read or write buffer in block layer for now. Consider similar sematics,
-we can choose submit_bh() to replace ll_rw_block() as predefined crash
-point. In submit_bh(), it also takes read or write flag as the first
-argument and invoke submit_bio() to submit I/O request to block layer.
+The refcount on mm is dropped before the coprocessor is detached.
 
-Fixes: 79f597842069 ("fs/buffer: remove ll_rw_block() helper")
-Signed-off-by: Yue Zhao <findns94@gmail.com>
-Acked-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230503162944.3969-1-findns94@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+Fixes: 7bc6f71bdff5f ("powerpc/vas: Define and use common vas_window struct")
+Fixes: b22f2d88e435c ("powerpc/pseries/vas: Integrate API with open/close windows")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Sachin Sant <sachinp@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230607101024.14559-1-npiggin@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/fault-injection/provoke-crashes.rst | 2 +-
- drivers/misc/lkdtm/core.c                         | 2 +-
+ arch/powerpc/platforms/powernv/vas-window.c | 2 +-
+ arch/powerpc/platforms/pseries/vas.c        | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/fault-injection/provoke-crashes.rst b/Documentation/fault-injection/provoke-crashes.rst
-index 3abe842256139..1f087e502ca6d 100644
---- a/Documentation/fault-injection/provoke-crashes.rst
-+++ b/Documentation/fault-injection/provoke-crashes.rst
-@@ -29,7 +29,7 @@ recur_count
- cpoint_name
- 	Where in the kernel to trigger the action. It can be
- 	one of INT_HARDWARE_ENTRY, INT_HW_IRQ_EN, INT_TASKLET_ENTRY,
--	FS_DEVRW, MEM_SWAPOUT, TIMERADD, SCSI_QUEUE_RQ, or DIRECT.
-+	FS_SUBMIT_BH, MEM_SWAPOUT, TIMERADD, SCSI_QUEUE_RQ, or DIRECT.
+diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
+index 0072682531d80..b664838008c12 100644
+--- a/arch/powerpc/platforms/powernv/vas-window.c
++++ b/arch/powerpc/platforms/powernv/vas-window.c
+@@ -1310,8 +1310,8 @@ int vas_win_close(struct vas_window *vwin)
+ 	/* if send window, drop reference to matching receive window */
+ 	if (window->tx_win) {
+ 		if (window->user_win) {
+-			put_vas_user_win_ref(&vwin->task_ref);
+ 			mm_context_remove_vas_window(vwin->task_ref.mm);
++			put_vas_user_win_ref(&vwin->task_ref);
+ 		}
+ 		put_rx_win(window->rxwin);
+ 	}
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index 94c023bb13e05..880b962afc057 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -507,8 +507,8 @@ static int vas_deallocate_window(struct vas_window *vwin)
+ 	vascaps[win->win_type].nr_open_windows--;
+ 	mutex_unlock(&vas_pseries_mutex);
  
- cpoint_type
- 	Indicates the action to be taken on hitting the crash point.
-diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-index b4712ff196b4e..0772e4a4757e9 100644
---- a/drivers/misc/lkdtm/core.c
-+++ b/drivers/misc/lkdtm/core.c
-@@ -79,7 +79,7 @@ static struct crashpoint crashpoints[] = {
- 	CRASHPOINT("INT_HARDWARE_ENTRY", "do_IRQ"),
- 	CRASHPOINT("INT_HW_IRQ_EN",	 "handle_irq_event"),
- 	CRASHPOINT("INT_TASKLET_ENTRY",	 "tasklet_action"),
--	CRASHPOINT("FS_DEVRW",		 "ll_rw_block"),
-+	CRASHPOINT("FS_SUBMIT_BH",		 "submit_bh"),
- 	CRASHPOINT("MEM_SWAPOUT",	 "shrink_inactive_list"),
- 	CRASHPOINT("TIMERADD",		 "hrtimer_start"),
- 	CRASHPOINT("SCSI_QUEUE_RQ",	 "scsi_queue_rq"),
+-	put_vas_user_win_ref(&vwin->task_ref);
+ 	mm_context_remove_vas_window(vwin->task_ref.mm);
++	put_vas_user_win_ref(&vwin->task_ref);
+ 
+ 	kfree(win);
+ 	return 0;
 -- 
 2.39.2
 
