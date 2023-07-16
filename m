@@ -2,148 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38D2875524E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45BFA75547D
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:30:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231270AbjGPUGR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35246 "EHLO
+        id S232141AbjGPUax (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:30:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231268AbjGPUGR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:06:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F8BC1B9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:06:16 -0700 (PDT)
+        with ESMTP id S232166AbjGPUaw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:30:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF07BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:30:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8ED360EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:06:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73E6C433C7;
-        Sun, 16 Jul 2023 20:06:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E46860EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:30:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AB9C433C7;
+        Sun, 16 Jul 2023 20:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537975;
-        bh=SLJ9YWUEtU+W/QUmpPNUZ+LwYHmU9pFdsIE9St+jDcU=;
+        s=korg; t=1689539450;
+        bh=ycImygvbZDTq4k5kMjlqHNll0+3pnHoUPou8YLUYNUk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k9jdsWxuUA7CowrOkztmz+c5JaVSUJci2RtYemN9HqhJc4ClCnPFXgDPNcLbmgYqx
-         K3e5u15jSu7y69Z39IUS9PqljHRyznZAEddPCrKAZyogIjmlIDEUmTGZB9GiT9Hmno
-         TNE9JAtU79rZg3YQoTM6aJwWn6i9jcgBRMSwOtOs=
+        b=oObSnY4LD5DKf6lOhNOQNJLEL0DcvNZMmkTkjYOc7fKV4oQYzh3hky4MSw/kQ2G7g
+         Fhgn9XvKHy6Lwenj/H7SkYjQssuzYRuTdNdsO4JJKi/AM37UC4Pl+IhhO/tuhPflI3
+         w2hsNJeu4SclF+v7zLayOpEXzV3q3y2ZMFsLXE94=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 288/800] ARM: omap1: Remove reliance on GPIO numbers from SX1
+Subject: [PATCH 6.1 002/591] fs: pipe: reveal missing function protoypes
 Date:   Sun, 16 Jul 2023 21:42:21 +0200
-Message-ID: <20230716194955.775563088@linuxfoundation.org>
+Message-ID: <20230716194923.929729751@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 480c82daa3e41873421dc2c9e2918ad7e21d7a0b ]
+[ Upstream commit 247c8d2f9837a3e29e3b6b7a4aa9c36c37659dd4 ]
 
-It appears this happens because the OMAP driver now
-allocates GPIO numbers dynamically, so all that is
-references by number is a bit up in the air.
+A couple of functions from fs/pipe.c are used both internally
+and for the watch queue code, but the declaration is only
+visible when the latter is enabled:
 
-Utilize the NULL device to define some board-specific
-GPIO lookups and use these to immediately look up the
-same GPIOs, convert to IRQ numbers and pass as resources
-to the devices. This is ugly but should work.
+fs/pipe.c:1254:5: error: no previous prototype for 'pipe_resize_ring'
+fs/pipe.c:758:15: error: no previous prototype for 'account_pipe_buffers'
+fs/pipe.c:764:6: error: no previous prototype for 'too_many_pipe_buffers_soft'
+fs/pipe.c:771:6: error: no previous prototype for 'too_many_pipe_buffers_hard'
+fs/pipe.c:777:6: error: no previous prototype for 'pipe_is_unprivileged_user'
 
-Fixes: 92bf78b33b0b ("gpio: omap: use dynamic allocation of base")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Make the visible unconditionally to avoid these warnings.
+
+Fixes: c73be61cede5 ("pipe: Add general notification queue support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Message-Id: <20230516195629.551602-1-arnd@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap1/board-sx1.c | 40 +++++++++++++++++++++++++++------
- 1 file changed, 33 insertions(+), 7 deletions(-)
+ include/linux/pipe_fs_i.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/board-sx1.c b/arch/arm/mach-omap1/board-sx1.c
-index 0c0cdd5e77c79..a13c630be7b7f 100644
---- a/arch/arm/mach-omap1/board-sx1.c
-+++ b/arch/arm/mach-omap1/board-sx1.c
-@@ -11,7 +11,8 @@
- * Maintainters : Vladimir Ananiev (aka Vovan888), Sergge
- *		oslik.ru
- */
--#include <linux/gpio.h>
-+#include <linux/gpio/machine.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/input.h>
-@@ -304,8 +305,23 @@ static struct platform_device *sx1_devices[] __initdata = {
+diff --git a/include/linux/pipe_fs_i.h b/include/linux/pipe_fs_i.h
+index 6cb65df3e3ba5..28b3c6a673975 100644
+--- a/include/linux/pipe_fs_i.h
++++ b/include/linux/pipe_fs_i.h
+@@ -241,18 +241,14 @@ void generic_pipe_buf_release(struct pipe_inode_info *, struct pipe_buffer *);
  
- /*-----------------------------------------*/
+ extern const struct pipe_buf_operations nosteal_pipe_buf_ops;
  
-+static struct gpiod_lookup_table sx1_gpio_table = {
-+	.dev_id = NULL,
-+	.table = {
-+		GPIO_LOOKUP("gpio-0-15", 1, "irda_off",
-+			    GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("gpio-0-15", 11, "switch",
-+			    GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("gpio-0-15", 15, "usb_on",
-+			    GPIO_ACTIVE_HIGH),
-+		{ }
-+	},
-+};
-+
- static void __init omap_sx1_init(void)
- {
-+	struct gpio_desc *d;
-+
- 	/* mux pins for uarts */
- 	omap_cfg_reg(UART1_TX);
- 	omap_cfg_reg(UART1_RTS);
-@@ -320,15 +336,25 @@ static void __init omap_sx1_init(void)
- 	omap_register_i2c_bus(1, 100, NULL, 0);
- 	omap1_usb_init(&sx1_usb_config);
- 	sx1_mmc_init();
-+	gpiod_add_lookup_table(&sx1_gpio_table);
+-#ifdef CONFIG_WATCH_QUEUE
+ unsigned long account_pipe_buffers(struct user_struct *user,
+ 				   unsigned long old, unsigned long new);
+ bool too_many_pipe_buffers_soft(unsigned long user_bufs);
+ bool too_many_pipe_buffers_hard(unsigned long user_bufs);
+ bool pipe_is_unprivileged_user(void);
+-#endif
  
- 	/* turn on USB power */
- 	/* sx1_setusbpower(1); can't do it here because i2c is not ready */
--	gpio_request(1, "A_IRDA_OFF");
--	gpio_request(11, "A_SWITCH");
--	gpio_request(15, "A_USB_ON");
--	gpio_direction_output(1, 1);	/*A_IRDA_OFF = 1 */
--	gpio_direction_output(11, 0);	/*A_SWITCH = 0 */
--	gpio_direction_output(15, 0);	/*A_USB_ON = 0 */
-+	d = gpiod_get(NULL, "irda_off", GPIOD_OUT_HIGH);
-+	if (IS_ERR(d))
-+		pr_err("Unable to get IRDA OFF GPIO descriptor\n");
-+	else
-+		gpiod_put(d);
-+	d = gpiod_get(NULL, "switch", GPIOD_OUT_LOW);
-+	if (IS_ERR(d))
-+		pr_err("Unable to get SWITCH GPIO descriptor\n");
-+	else
-+		gpiod_put(d);
-+	d = gpiod_get(NULL, "usb_on", GPIOD_OUT_LOW);
-+	if (IS_ERR(d))
-+		pr_err("Unable to get USB ON GPIO descriptor\n");
-+	else
-+		gpiod_put(d);
+ /* for F_SETPIPE_SZ and F_GETPIPE_SZ */
+-#ifdef CONFIG_WATCH_QUEUE
+ int pipe_resize_ring(struct pipe_inode_info *pipe, unsigned int nr_slots);
+-#endif
+ long pipe_fcntl(struct file *, unsigned int, unsigned long arg);
+ struct pipe_inode_info *get_pipe_info(struct file *file, bool for_splice);
  
- 	omapfb_set_lcd_config(&sx1_lcd_config);
- }
 -- 
 2.39.2
 
