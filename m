@@ -2,116 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F11275552F
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4B53755314
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:15:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232412AbjGPUiW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:38:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58420 "EHLO
+        id S231612AbjGPUPM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:15:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232413AbjGPUiV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:21 -0400
+        with ESMTP id S231607AbjGPUPJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:15:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B27BA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3F0C1BF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:15:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4460860EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E972C433C8;
-        Sun, 16 Jul 2023 20:38:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7271D60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:15:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88176C433C7;
+        Sun, 16 Jul 2023 20:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539899;
-        bh=kSwWEuHZH4v7RbCGNvEiW/j4GFuGkz2LIvxEC+cR2x8=;
+        s=korg; t=1689538506;
+        bh=wO2sMeKKYgErAO1sPZjBqE0HyUSDdamvzSjgu/qei2U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wbN9fMrLcUmtGZN5J7ZqyFyXBC/S+EC5NNWSsIP0qGb8LT+DpK6hQKsIf5lwm6VDN
-         oGQAxS51ImXO1fr/Z+Vgc8YcdsIfNHxwwHj0yKw9Ey3/7txiLIgmcHGWkvt4uMf+9L
-         5MFvv0/8Pqy6oldin8nQV1WPdTZhw8xv7cOGOd3E=
+        b=xB4L63+Wo0GnhWqxw3rgjWhoutg2fVRRmS9PCPtxrFiA+2TbHJSxzfVh6a//fFAi3
+         AvdEoRDn7ZXkrr5Rffi2rOxHPay9TRAjuFYbhHNe9KZM2x6bcojtwETbkzG0eOUH3g
+         wtTm97SKy+QyFmsNvb8ZR50H4L2S6PBiedPkZ7OA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-        Arthur Grillo <arthurgrillo@riseup.net>,
-        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
+        patches@lists.linux.dev, Mark Pearson <mpearson-lenovo@squebb.ca>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 172/591] drm/vkms: Fix RGB565 pixel conversion
+Subject: [PATCH 6.4 458/800] platform/x86: think-lmi: mutex protection around multiple WMI calls
 Date:   Sun, 16 Jul 2023 21:45:11 +0200
-Message-ID: <20230716194928.316351379@linuxfoundation.org>
+Message-ID: <20230716194959.720918399@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,TVD_PH_BODY_ACCOUNTS_PRE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit ab87f558dcfb2562c3497e89600dec798a446665 ]
+[ Upstream commit c41e0121a1221894a1a9c4666156db9e1def4d6c ]
 
-Currently, the pixel conversion isn't rounding the fixed-point values
-before assigning it to the RGB coefficients, which is causing the IGT
-pixel-format tests to fail. So, use the drm_fixp2int_round() fixed-point
-helper to round the values when assigning it to the RGB coefficients.
+When an attribute is being changed if the Admin account is enabled, or if
+a password is being updated then multiple WMI calls are needed.
+Add mutex protection to ensure no race conditions are introduced.
 
-Tested with igt@kms_plane@pixel-format and igt@kms_plane@pixel-format-source-clamping.
-
-[v2]:
-    * Use drm_fixp2int_round() to fix the pixel conversion instead of
-      casting the values to s32 (Melissa Wen).
-
-Fixes: 89b03aeaef16 ("drm/vkms: fix 32bit compilation error by replacing macros")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Arthur Grillo <arthurgrillo@riseup.net>
-Signed-off-by: Maíra Canal <mairacanal@riseup.net>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230512104044.65034-2-mcanal@igalia.com
+Fixes: b49f72e7f96d ("platform/x86: think-lmi: Certificate authentication support")
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230601200552.4396-1-mpearson-lenovo@squebb.ca
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vkms/vkms_formats.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/platform/x86/think-lmi.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/vkms/vkms_formats.c b/drivers/gpu/drm/vkms/vkms_formats.c
-index 8d948c73741ef..b11342026485f 100644
---- a/drivers/gpu/drm/vkms/vkms_formats.c
-+++ b/drivers/gpu/drm/vkms/vkms_formats.c
-@@ -97,9 +97,9 @@ static void RGB565_to_argb_u16(u8 *src_pixels, struct pixel_argb_u16 *out_pixel)
- 	s64 fp_b = drm_int2fixp(rgb_565 & 0x1f);
+diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
+index 1138f770149d9..6cf77bc26b05b 100644
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -14,6 +14,7 @@
+ #include <linux/acpi.h>
+ #include <linux/errno.h>
+ #include <linux/fs.h>
++#include <linux/mutex.h>
+ #include <linux/string.h>
+ #include <linux/types.h>
+ #include <linux/dmi.h>
+@@ -195,6 +196,7 @@ static const char * const level_options[] = {
+ };
+ static struct think_lmi tlmi_priv;
+ static struct class *fw_attr_class;
++static DEFINE_MUTEX(tlmi_mutex);
  
- 	out_pixel->a = (u16)0xffff;
--	out_pixel->r = drm_fixp2int(drm_fixp_mul(fp_r, fp_rb_ratio));
--	out_pixel->g = drm_fixp2int(drm_fixp_mul(fp_g, fp_g_ratio));
--	out_pixel->b = drm_fixp2int(drm_fixp_mul(fp_b, fp_rb_ratio));
-+	out_pixel->r = drm_fixp2int_round(drm_fixp_mul(fp_r, fp_rb_ratio));
-+	out_pixel->g = drm_fixp2int_round(drm_fixp_mul(fp_g, fp_g_ratio));
-+	out_pixel->b = drm_fixp2int_round(drm_fixp_mul(fp_b, fp_rb_ratio));
- }
+ /* ------ Utility functions ------------*/
+ /* Strip out CR if one is present */
+@@ -437,6 +439,9 @@ static ssize_t new_password_store(struct kobject *kobj,
+ 	/* Strip out CR if one is present, setting password won't work if it is present */
+ 	strip_cr(new_pwd);
  
- void vkms_compose_row(struct line_buffer *stage_buffer, struct vkms_plane_state *plane, int y)
-@@ -216,9 +216,9 @@ static void argb_u16_to_RGB565(struct vkms_frame_info *frame_info,
- 		s64 fp_g = drm_int2fixp(in_pixels[x].g);
- 		s64 fp_b = drm_int2fixp(in_pixels[x].b);
- 
--		u16 r = drm_fixp2int(drm_fixp_div(fp_r, fp_rb_ratio));
--		u16 g = drm_fixp2int(drm_fixp_div(fp_g, fp_g_ratio));
--		u16 b = drm_fixp2int(drm_fixp_div(fp_b, fp_rb_ratio));
-+		u16 r = drm_fixp2int_round(drm_fixp_div(fp_r, fp_rb_ratio));
-+		u16 g = drm_fixp2int_round(drm_fixp_div(fp_g, fp_g_ratio));
-+		u16 b = drm_fixp2int_round(drm_fixp_div(fp_b, fp_rb_ratio));
- 
- 		*dst_pixels = cpu_to_le16(r << 11 | g << 5 | b);
++	/* Use lock in case multiple WMI operations needed */
++	mutex_lock(&tlmi_mutex);
++
+ 	pwdlen = strlen(new_pwd);
+ 	/* pwdlen == 0 is allowed to clear the password */
+ 	if (pwdlen && ((pwdlen < setting->minlen) || (pwdlen > setting->maxlen))) {
+@@ -493,6 +498,7 @@ static ssize_t new_password_store(struct kobject *kobj,
+ 		kfree(auth_str);
  	}
+ out:
++	mutex_unlock(&tlmi_mutex);
+ 	kfree(new_pwd);
+ 	return ret ?: count;
+ }
+@@ -981,6 +987,9 @@ static ssize_t current_value_store(struct kobject *kobj,
+ 	/* Strip out CR if one is present */
+ 	strip_cr(new_setting);
+ 
++	/* Use lock in case multiple WMI operations needed */
++	mutex_lock(&tlmi_mutex);
++
+ 	/* Check if certificate authentication is enabled and active */
+ 	if (tlmi_priv.certificate_support && tlmi_priv.pwd_admin->cert_installed) {
+ 		if (!tlmi_priv.pwd_admin->signature || !tlmi_priv.pwd_admin->save_signature) {
+@@ -1039,6 +1048,7 @@ static ssize_t current_value_store(struct kobject *kobj,
+ 		kobject_uevent(&tlmi_priv.class_dev->kobj, KOBJ_CHANGE);
+ 	}
+ out:
++	mutex_unlock(&tlmi_mutex);
+ 	kfree(auth_str);
+ 	kfree(set_str);
+ 	kfree(new_setting);
 -- 
 2.39.2
 
