@@ -2,106 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2AAB755288
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 482817554AD
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:33:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231362AbjGPUJE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37706 "EHLO
+        id S232265AbjGPUdD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:33:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231354AbjGPUJA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:09:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2BBB1B4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:59 -0700 (PDT)
+        with ESMTP id S232262AbjGPUdC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7782BA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3403360E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4715CC433C9;
-        Sun, 16 Jul 2023 20:08:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E63D60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B74C433C7;
+        Sun, 16 Jul 2023 20:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538138;
-        bh=KLMhJYRoHcQ75yALAQ01hjy4S7d0Ql28OKdUyS6SF38=;
+        s=korg; t=1689539579;
+        bh=Nxz3PYYkNkUnuZp2/1C8x8557eiEJXMxecNopkg2yBQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IenDPff6FMttc+Hqyad9IMCXFMJQJII793c4zr049qxF7bBsGNsjoiiTkBQZXY7X1
-         wBUdcMIQFn0EkY9WL0CtoHS4UmSFyC+bUbe/SaBmHhbd/n0I2DwGs5nRnmrzH+herY
-         IXQYKRjbwk/GzyDrIVucR/+UJ8fl4pMuF1//QIog=
+        b=y8JpYpY1NtM7eM4sF2DShMlyX2wFpzntqjx4bLk0pIndY3QvATDyU6b0hdMBEEt5V
+         PQNar7K4Slf7E7XbYHpFaMEtIVNj+ze5iG8Z79b3AYi/LdULJCIkZl9AIyLZTUg7XV
+         x5OT3qo4dVfOuAIFgwpcxKbMx3VkDjmJhUMYG3MI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
+        patches@lists.linux.dev, Davidlohr Bueso <dave@stgolabs.net>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 343/800] drm/msm/dpu: always clear every individual pending flush mask
-Date:   Sun, 16 Jul 2023 21:43:16 +0200
-Message-ID: <20230716194957.048079628@linuxfoundation.org>
+Subject: [PATCH 6.1 058/591] rcu/rcuscale: Stop kfree_scale_thread thread(s) after unloading rcuscale
+Date:   Sun, 16 Jul 2023 21:43:17 +0200
+Message-ID: <20230716194925.382368146@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuogee Hsieh <quic_khsieh@quicinc.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit 625cbb077007698060b12d0ae5657a4d8411b153 ]
+[ Upstream commit 23fc8df26dead16687ae6eb47b0561a4a832e2f6 ]
 
-There are two tiers of pending flush control, top level and
-individual hardware block. Currently only the top level of
-flush mask is reset to 0 but the individual pending flush masks
-of particular hardware blocks are left at their previous values,
-eventually accumulating all possible bit values and typically
-flushing more than necessary.
-Reset all individual hardware block flush masks to 0 to avoid
-accidentally flushing them.
+Running the 'kfree_rcu_test' test case [1] results in a splat [2].
+The root cause is the kfree_scale_thread thread(s) continue running
+after unloading the rcuscale module.  This commit fixes that isue by
+invoking kfree_scale_cleanup() from rcu_scale_cleanup() when removing
+the rcuscale module.
 
-Changes in V13:
--- rewording commit text
--- add an empty space line as suggested
+[1] modprobe rcuscale kfree_rcu_test=1
+    // After some time
+    rmmod rcuscale
+    rmmod torture
 
-Changes in V14:
--- add Fixes tag
+[2] BUG: unable to handle page fault for address: ffffffffc0601a87
+    #PF: supervisor instruction fetch in kernel mode
+    #PF: error_code(0x0010) - not-present page
+    PGD 11de4f067 P4D 11de4f067 PUD 11de51067 PMD 112f4d067 PTE 0
+    Oops: 0010 [#1] PREEMPT SMP NOPTI
+    CPU: 1 PID: 1798 Comm: kfree_scale_thr Not tainted 6.3.0-rc1-rcu+ #1
+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
+    RIP: 0010:0xffffffffc0601a87
+    Code: Unable to access opcode bytes at 0xffffffffc0601a5d.
+    RSP: 0018:ffffb25bc2e57e18 EFLAGS: 00010297
+    RAX: 0000000000000000 RBX: ffffffffc061f0b6 RCX: 0000000000000000
+    RDX: 0000000000000000 RSI: ffffffff962fd0de RDI: ffffffff962fd0de
+    RBP: ffffb25bc2e57ea8 R08: 0000000000000000 R09: 0000000000000000
+    R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000000
+    R13: 0000000000000000 R14: 000000000000000a R15: 00000000001c1dbe
+    FS:  0000000000000000(0000) GS:ffff921fa2200000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: ffffffffc0601a5d CR3: 000000011de4c006 CR4: 0000000000370ee0
+    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+    Call Trace:
+     <TASK>
+     ? kvfree_call_rcu+0xf0/0x3a0
+     ? kthread+0xf3/0x120
+     ? kthread_complete_and_exit+0x20/0x20
+     ? ret_from_fork+0x1f/0x30
+     </TASK>
+    Modules linked in: rfkill sunrpc ... [last unloaded: torture]
+    CR2: ffffffffc0601a87
+    ---[ end trace 0000000000000000 ]---
 
-Fixes: 73bfb790ac78 ("msm:disp:dpu1: setup display datapath for SC7180 target")
-Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Patchwork: https://patchwork.freedesktop.org/patch/539508/
-Link: https://lore.kernel.org/r/1685036458-22683-8-git-send-email-quic_khsieh@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: e6e78b004fa7 ("rcuperf: Add kfree_rcu() performance Tests")
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/rcu/rcuscale.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
-index e57faf5906a8b..f6270b7a0b140 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
-@@ -117,6 +117,9 @@ static inline void dpu_hw_ctl_clear_pending_flush(struct dpu_hw_ctl *ctx)
- 	trace_dpu_hw_ctl_clear_pending_flush(ctx->pending_flush_mask,
- 				     dpu_hw_ctl_get_flush_register(ctx));
- 	ctx->pending_flush_mask = 0x0;
-+	ctx->pending_intf_flush_mask = 0;
-+	ctx->pending_wb_flush_mask = 0;
-+	ctx->pending_merge_3d_flush_mask = 0;
+diff --git a/kernel/rcu/rcuscale.c b/kernel/rcu/rcuscale.c
+index 63e4c2d629a96..7854dc3226e1b 100644
+--- a/kernel/rcu/rcuscale.c
++++ b/kernel/rcu/rcuscale.c
+@@ -734,6 +734,11 @@ rcu_scale_cleanup(void)
+ 	if (gp_exp && gp_async)
+ 		SCALEOUT_ERRSTRING("No expedited async GPs, so went with async!");
  
- 	memset(ctx->pending_dspp_flush_mask, 0,
- 		sizeof(ctx->pending_dspp_flush_mask));
++	if (kfree_rcu_test) {
++		kfree_scale_cleanup();
++		return;
++	}
++
+ 	if (torture_cleanup_begin())
+ 		return;
+ 	if (!cur_ops) {
 -- 
 2.39.2
 
