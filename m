@@ -2,165 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D7F275535D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B4D97555B1
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:43:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231699AbjGPUSO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:18:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43884 "EHLO
+        id S232602AbjGPUnh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:43:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231700AbjGPUSN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27BCAC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:12 -0700 (PDT)
+        with ESMTP id S232601AbjGPUng (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:43:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E156DD9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:43:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F71B60EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC336C433C8;
-        Sun, 16 Jul 2023 20:18:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7759460EBD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:43:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846EAC433C8;
+        Sun, 16 Jul 2023 20:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538691;
-        bh=jrKZ8o1C4ZWyWUoSV/llPZGAkXEyj34qSzP9+3vxPLw=;
+        s=korg; t=1689540214;
+        bh=Cc/XOMoNXjows13WsTci9P5/wzuyGdRAzLhZl5Y/v0I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RdOxTtsxya/tnlnntaf6RcdmnwUZq/XwWo96vNpey4rJZwun3QfKEMO7gKaJ/kChU
-         8zdBU7SGZTwLhj3BIiENymTa8h3KjOzFqAn6J4QnrUyMb6VmfWTvj7t55Eqp4KDzUK
-         1uFlA+bY2nSA+TnoTQInnUAw8kFWpP7zoaa1nH9o=
+        b=pUg5sAloDvnqSuoGDhpmh3lzbNLi2TkVF6UC9dX8PBsQ10a3DVrno9rug6/f9ZHof
+         A1g234dUHnpEhm/2CdKEj6M5UJDYMvNY18YhUIFG0wLJMMapGD0sFhNS35u2XGDvM4
+         EiT3czhWP434t03MB4xjdujVqfCi713YdlvdqiPA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shyam Prasad N <sprasad@microsoft.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 542/800] cifs: do all necessary checks for credits within or before locking
+Subject: [PATCH 6.1 256/591] clk: bcm: rpi: Fix off by one in raspberrypi_discover_clocks()
 Date:   Sun, 16 Jul 2023 21:46:35 +0200
-Message-ID: <20230716195001.681110021@linuxfoundation.org>
+Message-ID: <20230716194930.509436730@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 326a8d04f147e2bf393f6f9cdb74126ee6900607 ]
+[ Upstream commit da2edb3e3c09fd1451b7f400ccd1070ef086619a ]
 
-All the server credits and in-flight info is protected by req_lock.
-Once the req_lock is held, and we've determined that we have enough
-credits to continue, this lock cannot be dropped till we've made the
-changes to credits and in-flight count.
+Smatch detected an off by one in this code:
+    drivers/clk/bcm/clk-raspberrypi.c:374 raspberrypi_discover_clocks()
+    error: buffer overflow 'data->hws' 16 <= 16
 
-However, we used to drop the lock in order to avoid deadlock with
-the recent srv_lock. This could cause the checks already made to be
-invalidated.
+The data->hws[] array has RPI_FIRMWARE_NUM_CLK_ID elements so the >
+comparison needs to changed to >=.
 
-Fixed it by moving the server status check to before locking req_lock.
-
-Fixes: d7d7a66aacd6 ("cifs: avoid use of global locks for high contention data")
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 12c90f3f27bb ("clk: bcm: rpi: Add variant structure")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/5a850b08-d2f5-4794-aceb-a6b468965139@kili.mountain
+Reviewed-by: Stefan Wahren <stefan.wahren@i2se.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c   | 19 ++++++++++---------
- fs/smb/client/transport.c | 20 ++++++++++----------
- 2 files changed, 20 insertions(+), 19 deletions(-)
+ drivers/clk/bcm/clk-raspberrypi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index a8bb9d00d33ad..3bac586e8a8eb 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -211,6 +211,16 @@ smb2_wait_mtu_credits(struct TCP_Server_Info *server, unsigned int size,
+diff --git a/drivers/clk/bcm/clk-raspberrypi.c b/drivers/clk/bcm/clk-raspberrypi.c
+index 679f4649a7efd..278f845572813 100644
+--- a/drivers/clk/bcm/clk-raspberrypi.c
++++ b/drivers/clk/bcm/clk-raspberrypi.c
+@@ -375,9 +375,9 @@ static int raspberrypi_discover_clocks(struct raspberrypi_clk *rpi,
+ 	while (clks->id) {
+ 		struct raspberrypi_clk_variant *variant;
  
- 	spin_lock(&server->req_lock);
- 	while (1) {
-+		spin_unlock(&server->req_lock);
-+
-+		spin_lock(&server->srv_lock);
-+		if (server->tcpStatus == CifsExiting) {
-+			spin_unlock(&server->srv_lock);
-+			return -ENOENT;
-+		}
-+		spin_unlock(&server->srv_lock);
-+
-+		spin_lock(&server->req_lock);
- 		if (server->credits <= 0) {
- 			spin_unlock(&server->req_lock);
- 			cifs_num_waiters_inc(server);
-@@ -221,15 +231,6 @@ smb2_wait_mtu_credits(struct TCP_Server_Info *server, unsigned int size,
- 				return rc;
- 			spin_lock(&server->req_lock);
- 		} else {
--			spin_unlock(&server->req_lock);
--			spin_lock(&server->srv_lock);
--			if (server->tcpStatus == CifsExiting) {
--				spin_unlock(&server->srv_lock);
--				return -ENOENT;
--			}
--			spin_unlock(&server->srv_lock);
--
--			spin_lock(&server->req_lock);
- 			scredits = server->credits;
- 			/* can deadlock with reopen */
- 			if (scredits <= 8) {
-diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index 0474d0bba0a2e..f280502a2aee8 100644
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -522,6 +522,16 @@ wait_for_free_credits(struct TCP_Server_Info *server, const int num_credits,
- 	}
+-		if (clks->id > RPI_FIRMWARE_NUM_CLK_ID) {
++		if (clks->id >= RPI_FIRMWARE_NUM_CLK_ID) {
+ 			dev_err(rpi->dev, "Unknown clock id: %u (max: %u)\n",
+-					   clks->id, RPI_FIRMWARE_NUM_CLK_ID);
++					   clks->id, RPI_FIRMWARE_NUM_CLK_ID - 1);
+ 			return -EINVAL;
+ 		}
  
- 	while (1) {
-+		spin_unlock(&server->req_lock);
-+
-+		spin_lock(&server->srv_lock);
-+		if (server->tcpStatus == CifsExiting) {
-+			spin_unlock(&server->srv_lock);
-+			return -ENOENT;
-+		}
-+		spin_unlock(&server->srv_lock);
-+
-+		spin_lock(&server->req_lock);
- 		if (*credits < num_credits) {
- 			scredits = *credits;
- 			spin_unlock(&server->req_lock);
-@@ -547,15 +557,6 @@ wait_for_free_credits(struct TCP_Server_Info *server, const int num_credits,
- 				return -ERESTARTSYS;
- 			spin_lock(&server->req_lock);
- 		} else {
--			spin_unlock(&server->req_lock);
--
--			spin_lock(&server->srv_lock);
--			if (server->tcpStatus == CifsExiting) {
--				spin_unlock(&server->srv_lock);
--				return -ENOENT;
--			}
--			spin_unlock(&server->srv_lock);
--
- 			/*
- 			 * For normal commands, reserve the last MAX_COMPOUND
- 			 * credits to compound requests.
-@@ -569,7 +570,6 @@ wait_for_free_credits(struct TCP_Server_Info *server, const int num_credits,
- 			 * for servers that are slow to hand out credits on
- 			 * new sessions.
- 			 */
--			spin_lock(&server->req_lock);
- 			if (!optype && num_credits == 1 &&
- 			    server->in_flight > 2 * MAX_COMPOUND &&
- 			    *credits <= MAX_COMPOUND) {
 -- 
 2.39.2
 
