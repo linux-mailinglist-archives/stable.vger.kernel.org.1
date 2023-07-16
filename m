@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E091755619
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD6977553D6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:23:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232720AbjGPUrb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:47:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36700 "EHLO
+        id S231877AbjGPUXa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:23:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232727AbjGPUr3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:47:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44ED5E41
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:47:29 -0700 (PDT)
+        with ESMTP id S231853AbjGPUX3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:23:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E77A9F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:23:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D820F60EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:47:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8F0C433C7;
-        Sun, 16 Jul 2023 20:47:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 961F260EB0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:23:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C2BC433C8;
+        Sun, 16 Jul 2023 20:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540448;
-        bh=JW0/DLKAcM+OPrIFlUYWcnp9ythhcj7rEG/B6dHQgnM=;
+        s=korg; t=1689539008;
+        bh=anADLG2yJBjurdAhIA1aG+IL5b9z6R+xGSE+Q8Pugow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NRc2vbsCzYHVB6YtGH7+893L2b44IwljCV1OikW2nSEbKUtGgHpo6nfgFEEC5HLJb
-         4o9XpTvMcVrQmPCljdQafXAvtU5zRFExsteNaa7kmdJJUz2AA+CEGNHW5SkkcWaQ5Z
-         G0JaVw4UrmtrjdsXOHkpnaaLTpTRR7Z3rHzG+TiI=
+        b=c4khw7EepZFqLiPgNtxkrdUEBJeTsaiFgd1xQFbPsnA2UsyYg1fMvU7g+6rEehoeZ
+         VBj+yL8SxjP0paRkHyNjMVVMKbqRDN0gEtXfCAo/G2JEUHRJqW00DzM0Pyv/n4WGBS
+         fHtV2oUJbGP5xi0qbPBtBLSC0BaKWJ4x2MvCCh30=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Fabrizio Lamarque <fl.scratchpad@gmail.com>,
-        Nuno Sa <nuno.sa@analog.com>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 366/591] iio: adc: ad7192: Fix null ad7192_state pointer access
-Date:   Sun, 16 Jul 2023 21:48:25 +0200
-Message-ID: <20230716194933.387568431@linuxfoundation.org>
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 653/800] rtc: st-lpc: Release some resources in st_rtc_probe() in case of error
+Date:   Sun, 16 Jul 2023 21:48:26 +0200
+Message-ID: <20230716195004.280270929@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 9e58e3a6f8e1c483c86a04903b7b7aa0923e4426 upstream.
+[ Upstream commit 06c6e1b01d9261f03629cefd1f3553503291e6cf ]
 
-Pointer to indio_dev structure is obtained via spi_get_drvdata() at
-the beginning of function ad7192_setup(), but the spi->dev->driver_data
-member is not initialized, hence a NULL pointer is returned.
+If an error occurs after clk_get(), the corresponding resources should be
+released.
 
-Fix by changing ad7192_setup() signature to take pointer to struct
-iio_dev, and get ad7192_state pointer via st = iio_priv(indio_dev);
+Use devm_clk_get() to fix it.
 
-Fixes: bd5dcdeb3fd0 ("iio: adc: ad7192: convert to device-managed functions")
-Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Cc: <Stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230530075311.400686-2-fl.scratchpad@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b5b2bdfc2893 ("rtc: st: Add new driver for ST's LPC RTC")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/866af6adbc7454a7b4505eb6c28fbdc86ccff39e.1686251455.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7192.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/rtc/rtc-st-lpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -381,9 +381,9 @@ static int ad7192_of_clock_select(struct
- 	return clock_sel;
- }
+diff --git a/drivers/rtc/rtc-st-lpc.c b/drivers/rtc/rtc-st-lpc.c
+index 0f8e4231098ef..d04d46f9cc65a 100644
+--- a/drivers/rtc/rtc-st-lpc.c
++++ b/drivers/rtc/rtc-st-lpc.c
+@@ -228,7 +228,7 @@ static int st_rtc_probe(struct platform_device *pdev)
+ 	enable_irq_wake(rtc->irq);
+ 	disable_irq(rtc->irq);
  
--static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
-+static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
- {
--	struct iio_dev *indio_dev = spi_get_drvdata(st->sd.spi);
-+	struct ad7192_state *st = iio_priv(indio_dev);
- 	bool rej60_en, refin2_en;
- 	bool buf_en, bipolar, burnout_curr_en;
- 	unsigned long long scale_uv;
-@@ -1078,7 +1078,7 @@ static int ad7192_probe(struct spi_devic
- 		}
- 	}
- 
--	ret = ad7192_setup(st, spi->dev.of_node);
-+	ret = ad7192_setup(indio_dev, spi->dev.of_node);
- 	if (ret)
- 		return ret;
- 
+-	rtc->clk = clk_get(&pdev->dev, NULL);
++	rtc->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(rtc->clk)) {
+ 		dev_err(&pdev->dev, "Unable to request clock\n");
+ 		return PTR_ERR(rtc->clk);
+-- 
+2.39.2
+
 
 
