@@ -2,143 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08D4775527E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 732027554D9
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231341AbjGPUId (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:08:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37386 "EHLO
+        id S230342AbjGPUeu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:34:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231338AbjGPUIc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FC9A9B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:31 -0700 (PDT)
+        with ESMTP id S231139AbjGPUdz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 693009F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D3B660EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D875C433C7;
-        Sun, 16 Jul 2023 20:08:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F299960DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F37C433C8;
+        Sun, 16 Jul 2023 20:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538110;
-        bh=NHq9jf+4yUZ0pb5/w9s3Vc+L3KLjXR2RVl4Fg8KTLKQ=;
+        s=korg; t=1689539633;
+        bh=GepKi8YWqFTFAPDEljNijeMEOsJeeMqPf97Dr+6vUK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=itoUAiBWoDh8y2DDqmmK7mUNtzQnrK4drXDLlSeBWOkYnIxszSGxHVmxTS9wH5TM6
-         Z8boTzEQhSWxF6HQVkfl6h/rQYKJHC8G19ek6gD+4IryuZr8sJ7dLdRfoIj7DHKy8y
-         dOQbzoPH0GwfwiTMXERFHvodEUf+UqFsxWFkjmzM=
+        b=C7txvGtCAhivCMgZT8fvcMyTeFR+QItNCIxG1+tXMLlzBpDn63oQ1p7mOQ9NLtl6K
+         pMWsp5l7cmHwMCzqTScq9js6qXILC4aV4g3a7hQgbLQctDnaJGSPh5UEmVcI8AI9PG
+         o+BElDoPh4Nj/p5B29FeIh1qycdBRAuE30eKthNo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Mark Brown <broonie@kernel.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 334/800] ASoC: es8316: Do not set rate constraints for unsupported MCLKs
-Date:   Sun, 16 Jul 2023 21:43:07 +0200
-Message-ID: <20230716194956.840028403@linuxfoundation.org>
+Subject: [PATCH 6.1 049/591] ARM: 9303/1: kprobes: avoid missing-declaration warnings
+Date:   Sun, 16 Jul 2023 21:43:08 +0200
+Message-ID: <20230716194925.155189630@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 60413129ee2b38a80347489270af7f6e1c1de4d0 ]
+[ Upstream commit 1b9c3ddcec6a55e15d3e38e7405e2d078db02020 ]
 
-When using the codec through the generic audio graph card, there are at
-least two calls of es8316_set_dai_sysclk(), with the effect of limiting
-the allowed sample rates according to the MCLK/LRCK ratios supported by
-the codec:
+checker_stack_use_t32strd() and kprobe_handler() can be made static since
+they are not used from other files, while coverage_start_registers()
+and __kprobes_test_case() are used from assembler code, and just need
+a declaration to avoid a warning with the global definition.
 
-1. During audio card setup, to set the initial MCLK - see
-   asoc_simple_init_dai().
+arch/arm/probes/kprobes/checkers-common.c:43:18: error: no previous prototype for 'checker_stack_use_t32strd'
+arch/arm/probes/kprobes/core.c:236:16: error: no previous prototype for 'kprobe_handler'
+arch/arm/probes/kprobes/test-core.c:723:10: error: no previous prototype for 'coverage_start_registers'
+arch/arm/probes/kprobes/test-core.c:918:14: error: no previous prototype for '__kprobes_test_case_start'
+arch/arm/probes/kprobes/test-core.c:952:14: error: no previous prototype for '__kprobes_test_case_end_16'
+arch/arm/probes/kprobes/test-core.c:967:14: error: no previous prototype for '__kprobes_test_case_end_32'
 
-2. Before opening a stream, to update MCLK, according to the stream
-   sample rate and the multiplication factor - see
-   asoc_simple_hw_params().
-
-In some cases the initial MCLK might be set to a frequency that doesn't
-match any of the supported ratios, e.g. 12287999 instead of 12288000,
-which is only 1 Hz below the supported clock, as that is what the
-hardware reports. This creates an empty list of rate constraints, which
-is further passed to snd_pcm_hw_constraint_list() via
-es8316_pcm_startup(), and causes the following error on the very first
-access of the sound card:
-
-  $ speaker-test -D hw:Analog,0 -F S16_LE -c 2 -t wav
-  Broken configuration for playback: no configurations available: Invalid argument
-  Setting of hwparams failed: Invalid argument
-
-Note that all subsequent retries succeed thanks to the updated MCLK set
-at point 2 above, which uses a computed frequency value instead of a
-reading from the hardware registers. Normally this would have mitigated
-the issue, but es8316_pcm_startup() executes before the 2nd call to
-es8316_set_dai_sysclk(), hence it cannot make use of the updated
-constraints.
-
-Since es8316_pcm_hw_params() performs anyway a final validation of MCLK
-against the stream sample rate and the supported MCLK/LRCK ratios, fix
-the issue by ensuring that sysclk_constraints list is only set when at
-least one supported sample rate is autodetected by the codec.
-
-Fixes: b8b88b70875a ("ASoC: add es8316 codec driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20230530181140.483936-3-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 6624cf651f1a ("ARM: kprobes: collects stack consumption for store instructions")
+Fixes: 454f3e132d05 ("ARM/kprobes: Remove jprobe arm implementation")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/es8316.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/arm/probes/kprobes/checkers-common.c | 2 +-
+ arch/arm/probes/kprobes/core.c            | 2 +-
+ arch/arm/probes/kprobes/opt-arm.c         | 2 --
+ arch/arm/probes/kprobes/test-core.c       | 2 +-
+ arch/arm/probes/kprobes/test-core.h       | 4 ++++
+ 5 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
-index 18d485e6921a7..ccecfdf700649 100644
---- a/sound/soc/codecs/es8316.c
-+++ b/sound/soc/codecs/es8316.c
-@@ -369,13 +369,11 @@ static int es8316_set_dai_sysclk(struct snd_soc_dai *codec_dai,
- 	int count = 0;
- 
- 	es8316->sysclk = freq;
-+	es8316->sysclk_constraints.list = NULL;
-+	es8316->sysclk_constraints.count = 0;
- 
--	if (freq == 0) {
--		es8316->sysclk_constraints.list = NULL;
--		es8316->sysclk_constraints.count = 0;
--
-+	if (freq == 0)
- 		return 0;
--	}
- 
- 	ret = clk_set_rate(es8316->mclk, freq);
- 	if (ret)
-@@ -391,8 +389,10 @@ static int es8316_set_dai_sysclk(struct snd_soc_dai *codec_dai,
- 			es8316->allowed_rates[count++] = freq / ratio;
+diff --git a/arch/arm/probes/kprobes/checkers-common.c b/arch/arm/probes/kprobes/checkers-common.c
+index 4d720990cf2a3..eba7ac4725c02 100644
+--- a/arch/arm/probes/kprobes/checkers-common.c
++++ b/arch/arm/probes/kprobes/checkers-common.c
+@@ -40,7 +40,7 @@ enum probes_insn checker_stack_use_imm_0xx(probes_opcode_t insn,
+  * Different from other insn uses imm8, the real addressing offset of
+  * STRD in T32 encoding should be imm8 * 4. See ARMARM description.
+  */
+-enum probes_insn checker_stack_use_t32strd(probes_opcode_t insn,
++static enum probes_insn checker_stack_use_t32strd(probes_opcode_t insn,
+ 		struct arch_probes_insn *asi,
+ 		const struct decode_header *h)
+ {
+diff --git a/arch/arm/probes/kprobes/core.c b/arch/arm/probes/kprobes/core.c
+index 9090c3a74dcce..d8238da095df7 100644
+--- a/arch/arm/probes/kprobes/core.c
++++ b/arch/arm/probes/kprobes/core.c
+@@ -233,7 +233,7 @@ singlestep(struct kprobe *p, struct pt_regs *regs, struct kprobe_ctlblk *kcb)
+  * kprobe, and that level is reserved for user kprobe handlers, so we can't
+  * risk encountering a new kprobe in an interrupt handler.
+  */
+-void __kprobes kprobe_handler(struct pt_regs *regs)
++static void __kprobes kprobe_handler(struct pt_regs *regs)
+ {
+ 	struct kprobe *p, *cur;
+ 	struct kprobe_ctlblk *kcb;
+diff --git a/arch/arm/probes/kprobes/opt-arm.c b/arch/arm/probes/kprobes/opt-arm.c
+index dbef34ed933f2..7f65048380ca5 100644
+--- a/arch/arm/probes/kprobes/opt-arm.c
++++ b/arch/arm/probes/kprobes/opt-arm.c
+@@ -145,8 +145,6 @@ __arch_remove_optimized_kprobe(struct optimized_kprobe *op, int dirty)
  	}
- 
--	es8316->sysclk_constraints.list = es8316->allowed_rates;
--	es8316->sysclk_constraints.count = count;
-+	if (count) {
-+		es8316->sysclk_constraints.list = es8316->allowed_rates;
-+		es8316->sysclk_constraints.count = count;
-+	}
- 
- 	return 0;
  }
+ 
+-extern void kprobe_handler(struct pt_regs *regs);
+-
+ static void
+ optimized_callback(struct optimized_kprobe *op, struct pt_regs *regs)
+ {
+diff --git a/arch/arm/probes/kprobes/test-core.c b/arch/arm/probes/kprobes/test-core.c
+index c562832b86272..171c7076b89f4 100644
+--- a/arch/arm/probes/kprobes/test-core.c
++++ b/arch/arm/probes/kprobes/test-core.c
+@@ -720,7 +720,7 @@ static const char coverage_register_lookup[16] = {
+ 	[REG_TYPE_NOSPPCX]	= COVERAGE_ANY_REG | COVERAGE_SP,
+ };
+ 
+-unsigned coverage_start_registers(const struct decode_header *h)
++static unsigned coverage_start_registers(const struct decode_header *h)
+ {
+ 	unsigned regs = 0;
+ 	int i;
+diff --git a/arch/arm/probes/kprobes/test-core.h b/arch/arm/probes/kprobes/test-core.h
+index 56ad3c0aaeeac..c7297037c1623 100644
+--- a/arch/arm/probes/kprobes/test-core.h
++++ b/arch/arm/probes/kprobes/test-core.h
+@@ -454,3 +454,7 @@ void kprobe_thumb32_test_cases(void);
+ #else
+ void kprobe_arm_test_cases(void);
+ #endif
++
++void __kprobes_test_case_start(void);
++void __kprobes_test_case_end_16(void);
++void __kprobes_test_case_end_32(void);
 -- 
 2.39.2
 
