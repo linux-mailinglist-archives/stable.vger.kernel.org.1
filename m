@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E6B67553FD
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C792675564E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231944AbjGPUZT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:25:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47764 "EHLO
+        id S232825AbjGPUt1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:49:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231939AbjGPUZS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA35B9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:17 -0700 (PDT)
+        with ESMTP id S232834AbjGPUtT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D05A10DC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F35760EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E805C433C8;
-        Sun, 16 Jul 2023 20:25:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C39260EA2
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C08C433CA;
+        Sun, 16 Jul 2023 20:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539116;
-        bh=RvsSW1Hi0DPTSBPotzP+Ctk/PhA7L6l5Q7zy7Y8LtK8=;
+        s=korg; t=1689540557;
+        bh=W9lKpO2hpnjOaCep9TJPM21+VDoQMnHx66l/UlLwexw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HN1kGbdnT99Dh8Gjw80Ut6oXrn2hX0pe4zgI8oIotpVlbZcxE9jJM+M9Sh6fZsNVt
-         2xlnSt/d6owUXCz9I6O6iuQYhqHV8ii2xZnMU9bbYhQV9wKQkYkla3/ToMlxC8I7F5
-         4FWdtb3IsZ2X4eGfn2BKJBBvbSlN6c9tA9dclDDY=
+        b=zJ19ggJ2AQ5jwse1ZcNZHKT7mFa0a7aTiJNODIENUWDJWnX3thdlm3uK44tHdBmax
+         j5Is8SVxy76/KRDG3f9qsKfUH0jZksjyjVyBczNYD8Z6THa1Xyv48+/tCxDRFIlYA+
+         P2z/xdXvArXEtkQVcbW48BkvV9SSf+ZDNqgY9Qyk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 664/800] net/sched: act_ipt: zero skb->cb before calling target
+        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 378/591] block: change all __u32 annotations to __be32 in affs_hardblocks.h
 Date:   Sun, 16 Jul 2023 21:48:37 +0200
-Message-ID: <20230716195004.535273361@linuxfoundation.org>
+Message-ID: <20230716194933.699597146@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,101 +57,142 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-[ Upstream commit 93d75d475c5dc3404292976147d063ee4d808592 ]
+commit 95a55437dc49fb3342c82e61f5472a71c63d9ed0 upstream.
 
-xtables relies on skb being owned by ip stack, i.e. with ipv4
-check in place skb->cb is supposed to be IPCB.
+The Amiga partition parser module uses signed int for partition sector
+address and count, which will overflow for disks larger than 1 TB.
 
-I don't see an immediate problem (REJECT target cannot be used anymore
-now that PRE/POSTROUTING hook validation has been fixed), but better be
-safe than sorry.
+Use u64 as type for sector address and size to allow using disks up to
+2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+format allows to specify disk sizes up to 2^128 bytes (though native
+OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+u64 overflow carefully to protect against overflowing sector_t.
 
-A much better patch would be to either mark act_ipt as
-"depends on BROKEN" or remove it altogether. I plan to do this
-for -next in the near future.
+This bug was reported originally in 2012, and the fix was created by
+the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+discussed and reviewed on linux-m68k at that time but never officially
+submitted (now resubmitted as patch 1 of this series).
 
-This tc extension is broken in the sense that tc lacks an
-equivalent of NF_STOLEN verdict.
+Patch 3 (this series) adds additional error checking and warning
+messages. One of the error checks now makes use of the previously
+unused rdb_CylBlocks field, which causes a 'sparse' warning
+(cast to restricted __be32).
 
-With NF_STOLEN, target function takes complete ownership of skb, caller
-cannot dereference it anymore.
+Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
+on-disk format of RDB and partition blocks is always big endian.
 
-ACT_STOLEN cannot be used for this: it has a different meaning, caller
-is allowed to dereference the skb.
-
-At this time NF_STOLEN won't be returned by any targets as far as I can
-see, but this may change in the future.
-
-It might be possible to work around this via list of allowed
-target extensions known to only return DROP or ACCEPT verdicts, but this
-is error prone/fragile.
-
-Existing selftest only validates xt_LOG and act_ipt is restricted
-to ipv4 so I don't think this action is used widely.
-
+Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20230620201725.7020-3-schmitzmic@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ipt.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/uapi/linux/affs_hardblocks.h |   68 +++++++++++++++++------------------
+ 1 file changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/net/sched/act_ipt.c b/net/sched/act_ipt.c
-index a6b522b512dc3..598d6e299152a 100644
---- a/net/sched/act_ipt.c
-+++ b/net/sched/act_ipt.c
-@@ -21,6 +21,7 @@
- #include <linux/tc_act/tc_ipt.h>
- #include <net/tc_act/tc_ipt.h>
- #include <net/tc_wrapper.h>
-+#include <net/ip.h>
+--- a/include/uapi/linux/affs_hardblocks.h
++++ b/include/uapi/linux/affs_hardblocks.h
+@@ -7,42 +7,42 @@
+ /* Just the needed definitions for the RDB of an Amiga HD. */
  
- #include <linux/netfilter_ipv4/ip_tables.h>
+ struct RigidDiskBlock {
+-	__u32	rdb_ID;
++	__be32	rdb_ID;
+ 	__be32	rdb_SummedLongs;
+-	__s32	rdb_ChkSum;
+-	__u32	rdb_HostID;
++	__be32	rdb_ChkSum;
++	__be32	rdb_HostID;
+ 	__be32	rdb_BlockBytes;
+-	__u32	rdb_Flags;
+-	__u32	rdb_BadBlockList;
++	__be32	rdb_Flags;
++	__be32	rdb_BadBlockList;
+ 	__be32	rdb_PartitionList;
+-	__u32	rdb_FileSysHeaderList;
+-	__u32	rdb_DriveInit;
+-	__u32	rdb_Reserved1[6];
+-	__u32	rdb_Cylinders;
+-	__u32	rdb_Sectors;
+-	__u32	rdb_Heads;
+-	__u32	rdb_Interleave;
+-	__u32	rdb_Park;
+-	__u32	rdb_Reserved2[3];
+-	__u32	rdb_WritePreComp;
+-	__u32	rdb_ReducedWrite;
+-	__u32	rdb_StepRate;
+-	__u32	rdb_Reserved3[5];
+-	__u32	rdb_RDBBlocksLo;
+-	__u32	rdb_RDBBlocksHi;
+-	__u32	rdb_LoCylinder;
+-	__u32	rdb_HiCylinder;
+-	__u32	rdb_CylBlocks;
+-	__u32	rdb_AutoParkSeconds;
+-	__u32	rdb_HighRDSKBlock;
+-	__u32	rdb_Reserved4;
++	__be32	rdb_FileSysHeaderList;
++	__be32	rdb_DriveInit;
++	__be32	rdb_Reserved1[6];
++	__be32	rdb_Cylinders;
++	__be32	rdb_Sectors;
++	__be32	rdb_Heads;
++	__be32	rdb_Interleave;
++	__be32	rdb_Park;
++	__be32	rdb_Reserved2[3];
++	__be32	rdb_WritePreComp;
++	__be32	rdb_ReducedWrite;
++	__be32	rdb_StepRate;
++	__be32	rdb_Reserved3[5];
++	__be32	rdb_RDBBlocksLo;
++	__be32	rdb_RDBBlocksHi;
++	__be32	rdb_LoCylinder;
++	__be32	rdb_HiCylinder;
++	__be32	rdb_CylBlocks;
++	__be32	rdb_AutoParkSeconds;
++	__be32	rdb_HighRDSKBlock;
++	__be32	rdb_Reserved4;
+ 	char	rdb_DiskVendor[8];
+ 	char	rdb_DiskProduct[16];
+ 	char	rdb_DiskRevision[4];
+ 	char	rdb_ControllerVendor[8];
+ 	char	rdb_ControllerProduct[16];
+ 	char	rdb_ControllerRevision[4];
+-	__u32	rdb_Reserved5[10];
++	__be32	rdb_Reserved5[10];
+ };
  
-@@ -254,6 +255,7 @@ TC_INDIRECT_SCOPE int tcf_ipt_act(struct sk_buff *skb,
- 				  const struct tc_action *a,
- 				  struct tcf_result *res)
- {
-+	char saved_cb[sizeof_field(struct sk_buff, cb)];
- 	int ret = 0, result = 0;
- 	struct tcf_ipt *ipt = to_ipt(a);
- 	struct xt_action_param par;
-@@ -280,6 +282,8 @@ TC_INDIRECT_SCOPE int tcf_ipt_act(struct sk_buff *skb,
- 		state.out = skb->dev;
- 	}
+ #define	IDNAME_RIGIDDISK	0x5244534B	/* "RDSK" */
+@@ -50,16 +50,16 @@ struct RigidDiskBlock {
+ struct PartitionBlock {
+ 	__be32	pb_ID;
+ 	__be32	pb_SummedLongs;
+-	__s32	pb_ChkSum;
+-	__u32	pb_HostID;
++	__be32	pb_ChkSum;
++	__be32	pb_HostID;
+ 	__be32	pb_Next;
+-	__u32	pb_Flags;
+-	__u32	pb_Reserved1[2];
+-	__u32	pb_DevFlags;
++	__be32	pb_Flags;
++	__be32	pb_Reserved1[2];
++	__be32	pb_DevFlags;
+ 	__u8	pb_DriveName[32];
+-	__u32	pb_Reserved2[15];
++	__be32	pb_Reserved2[15];
+ 	__be32	pb_Environment[17];
+-	__u32	pb_EReserved[15];
++	__be32	pb_EReserved[15];
+ };
  
-+	memcpy(saved_cb, skb->cb, sizeof(saved_cb));
-+
- 	spin_lock(&ipt->tcf_lock);
- 
- 	tcf_lastuse_update(&ipt->tcf_tm);
-@@ -292,6 +296,9 @@ TC_INDIRECT_SCOPE int tcf_ipt_act(struct sk_buff *skb,
- 	par.state    = &state;
- 	par.target   = ipt->tcfi_t->u.kernel.target;
- 	par.targinfo = ipt->tcfi_t->data;
-+
-+	memset(IPCB(skb), 0, sizeof(struct inet_skb_parm));
-+
- 	ret = par.target->target(skb, &par);
- 
- 	switch (ret) {
-@@ -312,6 +319,9 @@ TC_INDIRECT_SCOPE int tcf_ipt_act(struct sk_buff *skb,
- 		break;
- 	}
- 	spin_unlock(&ipt->tcf_lock);
-+
-+	memcpy(skb->cb, saved_cb, sizeof(skb->cb));
-+
- 	return result;
- 
- }
--- 
-2.39.2
-
+ #define	IDNAME_PARTITION	0x50415254	/* "PART" */
 
 
