@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 799E7755420
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91A7F755662
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232001AbjGPU1G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:27:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49448 "EHLO
+        id S232817AbjGPUuC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:50:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232009AbjGPU1F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:05 -0400
+        with ESMTP id S232792AbjGPUt6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82236E6B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF12CE51
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC66660EBD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2BAC433C7;
-        Sun, 16 Jul 2023 20:26:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4263660E9E
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AB8C433C8;
+        Sun, 16 Jul 2023 20:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539212;
-        bh=N4CVBkMxDrtiSX+ZatOSbQiYI1jf/jVkmPCvSlcFw/E=;
+        s=korg; t=1689540596;
+        bh=rhu/ApJ2l+uClfHnn+bAgVtOU6+dPXY2VjGaUWCfjyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m0oqAWV1dox7gES4UH9Ejr+huUaIK69HgOlnAHq26rJ+dXBboBtmyN2Gpo6pVhs95
-         1VwyIRyBBAcpZ77+dRrrIsoZeEDHJGa5vGpyM7jR/fDaL3qIhe4LWcpDFE5CGPQO4E
-         RslcZSnBxDbL5XUnhlrCAmXsfmb/318vjHdg12NU=
+        b=cA+xp9v++RlKpUy5I+es9hNz8XPKVHVPp5VhMrzJ05kRF3Kp0vGaTdcvxVxwKuq0L
+         ZkY/4Fvzk5tYC1McBtxgIRPkED8QS0BHqvye8NIjymSoH6nzTDMpI/3RC29QGbibL/
+         Alis6YkwEocQloi5Zcv6YyNeuoWLVTOdaSxUJj+o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+9fcea5ef6dc4dc72d334@syzkaller.appspotmail.com,
-        Zeng Heng <zengheng4@huawei.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 688/800] ntfs: Fix panic about slab-out-of-bounds caused by ntfs_listxattr()
+Subject: [PATCH 6.1 402/591] media: mediatek: vcodec: using decoder status instead of core work count
 Date:   Sun, 16 Jul 2023 21:49:01 +0200
-Message-ID: <20230716195005.105417401@linuxfoundation.org>
+Message-ID: <20230716194934.320037823@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,50 +58,149 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit 3c675ddffb17a8b1e32efad5c983254af18b12c2 ]
+[ Upstream commit 2864e304faec04c2674328aad0e820a9cd84cdec ]
 
-Here is a BUG report from syzbot:
+Adding the definition of decoder status to separate different decoder
+period for core hardware.
 
-BUG: KASAN: slab-out-of-bounds in ntfs_list_ea fs/ntfs3/xattr.c:191 [inline]
-BUG: KASAN: slab-out-of-bounds in ntfs_listxattr+0x401/0x570 fs/ntfs3/xattr.c:710
-Read of size 1 at addr ffff888021acaf3d by task syz-executor128/3632
+core_work_cnt is the number of core work queued to work queue, the control
+is very complex, leading to some unreasonable test result.
 
-Call Trace:
- ntfs_list_ea fs/ntfs3/xattr.c:191 [inline]
- ntfs_listxattr+0x401/0x570 fs/ntfs3/xattr.c:710
- vfs_listxattr fs/xattr.c:457 [inline]
- listxattr+0x293/0x2d0 fs/xattr.c:804
+Using parameter status to indicate whether queue core work to work queue.
 
-Fix the logic of ea_all iteration. When the ea->name_len is 0,
-return immediately, or Add2Ptr() would visit invalid memory
-in the next loop.
-
-Fixes: be71b5cba2e6 ("fs/ntfs3: Add attrib operations")
-Reported-by: syzbot+9fcea5ef6dc4dc72d334@syzkaller.appspotmail.com
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-[almaz.alexandrovich@paragon-software.com: lines of the patch have changed]
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 2e0ef56d81cb ("media: mediatek: vcodec: making sure queue_work successfully")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/xattr.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../platform/mediatek/vcodec/vdec_msg_queue.c | 33 ++++++++-----------
+ .../platform/mediatek/vcodec/vdec_msg_queue.h | 16 +++++++--
+ 2 files changed, 28 insertions(+), 21 deletions(-)
 
-diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
-index c3de60a4543fa..fd02fcf4d4091 100644
---- a/fs/ntfs3/xattr.c
-+++ b/fs/ntfs3/xattr.c
-@@ -214,6 +214,9 @@ static ssize_t ntfs_list_ea(struct ntfs_inode *ni, char *buffer,
- 		ea = Add2Ptr(ea_all, off);
- 		ea_size = unpacked_ea_size(ea);
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+index f3073d1e7f420..03f8d7cd8eddc 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
+@@ -71,7 +71,6 @@ static void vdec_msg_queue_dec(struct vdec_msg_queue *msg_queue, int hardware_in
+ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf *buf)
+ {
+ 	struct list_head *head;
+-	int status;
  
-+		if (!ea->name_len)
-+			break;
+ 	head = vdec_get_buf_list(msg_ctx->hardware_index, buf);
+ 	if (!head) {
+@@ -87,12 +86,9 @@ int vdec_msg_queue_qbuf(struct vdec_msg_queue_ctx *msg_ctx, struct vdec_lat_buf
+ 	if (msg_ctx->hardware_index != MTK_VDEC_CORE) {
+ 		wake_up_all(&msg_ctx->ready_to_use);
+ 	} else {
+-		if (buf->ctx->msg_queue.core_work_cnt <
+-			atomic_read(&buf->ctx->msg_queue.core_list_cnt)) {
+-			status = queue_work(buf->ctx->dev->core_workqueue,
+-					    &buf->ctx->msg_queue.core_work);
+-			if (status)
+-				buf->ctx->msg_queue.core_work_cnt++;
++		if (!(buf->ctx->msg_queue.status & CONTEXT_LIST_QUEUED)) {
++			queue_work(buf->ctx->dev->core_workqueue, &buf->ctx->msg_queue.core_work);
++			buf->ctx->msg_queue.status |= CONTEXT_LIST_QUEUED;
+ 		}
+ 	}
+ 
+@@ -261,7 +257,10 @@ static void vdec_msg_queue_core_work(struct work_struct *work)
+ 		container_of(msg_queue, struct mtk_vcodec_ctx, msg_queue);
+ 	struct mtk_vcodec_dev *dev = ctx->dev;
+ 	struct vdec_lat_buf *lat_buf;
+-	int status;
 +
- 		if (buffer) {
- 			if (ret + ea->name_len + 1 > bytes_per_buffer) {
- 				err = -ERANGE;
++	spin_lock(&ctx->dev->msg_queue_core_ctx.ready_lock);
++	ctx->msg_queue.status &= ~CONTEXT_LIST_QUEUED;
++	spin_unlock(&ctx->dev->msg_queue_core_ctx.ready_lock);
+ 
+ 	lat_buf = vdec_msg_queue_dqbuf(&dev->msg_queue_core_ctx);
+ 	if (!lat_buf)
+@@ -278,17 +277,13 @@ static void vdec_msg_queue_core_work(struct work_struct *work)
+ 	vdec_msg_queue_qbuf(&ctx->msg_queue.lat_ctx, lat_buf);
+ 
+ 	wake_up_all(&ctx->msg_queue.core_dec_done);
+-	spin_lock(&dev->msg_queue_core_ctx.ready_lock);
+-	lat_buf->ctx->msg_queue.core_work_cnt--;
+-
+-	if (lat_buf->ctx->msg_queue.core_work_cnt <
+-		atomic_read(&lat_buf->ctx->msg_queue.core_list_cnt)) {
+-		status = queue_work(lat_buf->ctx->dev->core_workqueue,
+-				    &lat_buf->ctx->msg_queue.core_work);
+-		if (status)
+-			lat_buf->ctx->msg_queue.core_work_cnt++;
++	if (!(ctx->msg_queue.status & CONTEXT_LIST_QUEUED) &&
++	    atomic_read(&msg_queue->core_list_cnt)) {
++		spin_lock(&ctx->dev->msg_queue_core_ctx.ready_lock);
++		ctx->msg_queue.status |= CONTEXT_LIST_QUEUED;
++		spin_unlock(&ctx->dev->msg_queue_core_ctx.ready_lock);
++		queue_work(ctx->dev->core_workqueue, &msg_queue->core_work);
+ 	}
+-	spin_unlock(&dev->msg_queue_core_ctx.ready_lock);
+ }
+ 
+ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
+@@ -303,13 +298,13 @@ int vdec_msg_queue_init(struct vdec_msg_queue *msg_queue,
+ 		return 0;
+ 
+ 	msg_queue->ctx = ctx;
+-	msg_queue->core_work_cnt = 0;
+ 	vdec_msg_queue_init_ctx(&msg_queue->lat_ctx, MTK_VDEC_LAT0);
+ 	INIT_WORK(&msg_queue->core_work, vdec_msg_queue_core_work);
+ 
+ 	atomic_set(&msg_queue->lat_list_cnt, 0);
+ 	atomic_set(&msg_queue->core_list_cnt, 0);
+ 	init_waitqueue_head(&msg_queue->core_dec_done);
++	msg_queue->status = CONTEXT_LIST_EMPTY;
+ 
+ 	msg_queue->wdma_addr.size =
+ 		vde_msg_queue_get_trans_size(ctx->picinfo.buf_w,
+diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
+index a5d44bc97c16b..8f82d14847726 100644
+--- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
++++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.h
+@@ -21,6 +21,18 @@ struct mtk_vcodec_ctx;
+ struct mtk_vcodec_dev;
+ typedef int (*core_decode_cb_t)(struct vdec_lat_buf *lat_buf);
+ 
++/**
++ * enum core_ctx_status - Context decode status for core hardwre.
++ * @CONTEXT_LIST_EMPTY: No buffer queued on core hardware(must always be 0)
++ * @CONTEXT_LIST_QUEUED: Buffer queued to core work list
++ * @CONTEXT_LIST_DEC_DONE: context decode done
++ */
++enum core_ctx_status {
++	CONTEXT_LIST_EMPTY = 0,
++	CONTEXT_LIST_QUEUED,
++	CONTEXT_LIST_DEC_DONE,
++};
++
+ /**
+  * struct vdec_msg_queue_ctx - represents a queue for buffers ready to be processed
+  * @ready_to_use: ready used queue used to signalize when get a job queue
+@@ -77,7 +89,7 @@ struct vdec_lat_buf {
+  * @lat_list_cnt: used to record each instance lat list count
+  * @core_list_cnt: used to record each instance core list count
+  * @core_dec_done: core work queue decode done event
+- * @core_work_cnt: the number of core work in work queue
++ * @status: current context decode status for core hardware
+  */
+ struct vdec_msg_queue {
+ 	struct vdec_lat_buf lat_buf[NUM_BUFFER_COUNT];
+@@ -93,7 +105,7 @@ struct vdec_msg_queue {
+ 	atomic_t lat_list_cnt;
+ 	atomic_t core_list_cnt;
+ 	wait_queue_head_t core_dec_done;
+-	int core_work_cnt;
++	int status;
+ };
+ 
+ /**
 -- 
 2.39.2
 
