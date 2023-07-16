@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A8827553FF
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94A98755651
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231946AbjGPUZY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:25:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47808 "EHLO
+        id S232869AbjGPUte (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:49:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231939AbjGPUZY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A2DBBC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:23 -0700 (PDT)
+        with ESMTP id S232830AbjGPUt1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2931EE6C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FB3D60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E59AC433C8;
-        Sun, 16 Jul 2023 20:25:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B630A60E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E20C433C7;
+        Sun, 16 Jul 2023 20:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539122;
-        bh=U6CAtW2Odg4WQCREoGlMZ6wh7AvC/vtSsyKVcEHnjF8=;
+        s=korg; t=1689540563;
+        bh=5QApwTPCH18XXVwku9TAguAgPztDNXCF9f0eH1QGCts=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NRIWQoXTuIQ8CsI1SvgI97PMmoJ+86sjsRXkLzlpzIfp5AGoUTG0Z2hyMXpiGejmL
-         80a1dUm2cMOc1ZCM7w5+yAN5GrHyRx9C0p2ivIACg0DJOLZ2rb7wOpJWf2kx9e4Kt1
-         R9UIf0JC5gopKbHHZbzCJIetVZEEijnFBj74w9Ds=
+        b=AF9RFQtD3l1h4YgizJ9JAoZ5wYT5EgqetCG08iBmnpgFyUXPi2UzWgK9o79Ze9WZq
+         oy/USrYfgZh1XJBO7w9DpI4h6T+i6oaxFx+RGv3bZFi0Amfab4WLl1JXdjRLWpP30M
+         1l9MHMiSIhtBGUfPOs9YY4y/WzMIl5HZa1QnF1ig=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 656/800] f2fs: check return value of freeze_super()
+        patches@lists.linux.dev, Hersen Wu <hersenxs.wu@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 370/591] Revert "drm/amd/display: edp do not add non-edid timings"
 Date:   Sun, 16 Jul 2023 21:48:29 +0200
-Message-ID: <20230716195004.348621913@linuxfoundation.org>
+Message-ID: <20230716194933.492224780@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 8bec7dd1b3f7d7769d433d67bde404de948a2d95 ]
+commit d6149086b45e150c170beaa4546495fd1880724c upstream.
 
-freeze_super() can fail, it needs to check its return value and do
-error handling in f2fs_resize_fs().
+This change causes regression when eDP and external display in mirror
+mode. When external display supports low resolution than eDP, use eDP
+timing to driver external display may cause corruption on external
+display.
 
-Fixes: 04f0b2eaa3b3 ("f2fs: ioctl for removing a range from F2FS")
-Fixes: b4b10061ef98 ("f2fs: refactor resize_fs to avoid meta updates in progress")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This reverts commit e749dd10e5f292061ad63d2b030194bf7d7d452c.
+
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2655
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/gc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 67f1b58d424ed..719b1ba32a78b 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -2175,7 +2175,9 @@ int f2fs_resize_fs(struct file *filp, __u64 block_count)
- 	if (err)
- 		return err;
- 
--	freeze_super(sbi->sb);
-+	err = freeze_super(sbi->sb);
-+	if (err)
-+		return err;
- 
- 	if (f2fs_readonly(sbi->sb)) {
- 		thaw_super(sbi->sb);
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6972,13 +6972,7 @@ static int amdgpu_dm_connector_get_modes
+ 				drm_add_modes_noedid(connector, 640, 480);
+ 	} else {
+ 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
+-		/* most eDP supports only timings from its edid,
+-		 * usually only detailed timings are available
+-		 * from eDP edid. timings which are not from edid
+-		 * may damage eDP
+-		 */
+-		if (connector->connector_type != DRM_MODE_CONNECTOR_eDP)
+-			amdgpu_dm_connector_add_common_modes(encoder, connector);
++		amdgpu_dm_connector_add_common_modes(encoder, connector);
+ 		amdgpu_dm_connector_add_freesync_modes(connector, edid);
+ 	}
+ 	amdgpu_dm_fbc_init(connector);
 
 
