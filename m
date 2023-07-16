@@ -2,114 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 831DE7556BE
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78E58755453
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232959AbjGPUxj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:53:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41268 "EHLO
+        id S232077AbjGPU3L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:29:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232955AbjGPUxi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:53:38 -0400
+        with ESMTP id S232076AbjGPU3L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F0D8E9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:53:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61760126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 585E960EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:53:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE22C433C8;
-        Sun, 16 Jul 2023 20:53:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC8F760EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1A4C433C7;
+        Sun, 16 Jul 2023 20:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540815;
-        bh=1foDpg1xtMJZojOIiZudGjwo3Fm6McgVRaoFipsoY7o=;
+        s=korg; t=1689539349;
+        bh=Gfh2ziAuAO7opn0cpoE+254++AdfDLfaXW+ofUC+4+M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tPjAnv3ykqEeo2rUWDPdKz/FgSjNyH6V28b2Fik+m8vXEaSpVxNh8qW4otb58maWQ
-         DKGQOqHP+edS19ZxR7H9a7B6DRsPDRycAKFReOoSaEzG0pxQS2JtrIapo5fbzWjUrS
-         +BCRkv6fv5FZoBiY+HmKf31I/vr86491eG3TB430=
+        b=qTCgJiXs8uy/muvrElF5UlPo4LbsVNd8C5z7MEmuPCsiP/TA5+i5WjYmpnbcXwH3j
+         xT4cFzQ3SX3cq2UKzrvc6yPo3OgNuMbaLWWCTe3KgKcuBZzTqHq4yF7vp3AYWjluvZ
+         DHZ5dpUMkha3fzNxDIsWZRYysQSsSVvesDgAmhVY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 490/591] drm/amdgpu: fix number of fence calculations
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.4 776/800] fs: no need to check source
 Date:   Sun, 16 Jul 2023 21:50:29 +0200
-Message-ID: <20230716194936.569599195@linuxfoundation.org>
+Message-ID: <20230716195007.173360499@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian König <christian.koenig@amd.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 570b295248b00c3cf4cf59e397de5cb2361e10c2 ]
+commit 66d8fc0539b0d49941f313c9509a8384e4245ac1 upstream.
 
-Since adding gang submit we need to take the gang size into account
-while reserving fences.
+The @source inode must be valid. It is even checked via IS_SWAPFILE()
+above making it pretty clear. So no need to check it when we unlock.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: 4624459c84d7 ("drm/amdgpu: add gang submit frontend v6")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+What doesn't need to exist is the @target inode. The lock_two_inodes()
+helper currently swaps the @inode1 and @inode2 arguments if @inode1 is
+NULL to have consistent lock class usage. However, we know that at least
+for vfs_rename() that @inode1 is @source and thus is never NULL as per
+above. We also know that @source is a different inode than @target as
+that is checked right at the beginning of vfs_rename(). So we know that
+@source is valid and locked and that @target is locked. So drop the
+check whether @source is non-NULL.
+
+Fixes: 28eceeda130f ("fs: Lock moved directories")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202307030026.9sE2pk2x-lkp@intel.com
+Message-Id: <20230703-vfs-rename-source-v1-1-37eebb29b65b@kernel.org>
+[brauner: use commit message from patch I sent concurrently]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/namei.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 365e3fb6a9e5b..b60b6e6149bf7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -129,9 +129,6 @@ static int amdgpu_cs_p1_user_fence(struct amdgpu_cs_parser *p,
- 	bo = amdgpu_bo_ref(gem_to_amdgpu_bo(gobj));
- 	p->uf_entry.priority = 0;
- 	p->uf_entry.tv.bo = &bo->tbo;
--	/* One for TTM and two for the CS job */
--	p->uf_entry.tv.num_shared = 3;
--
- 	drm_gem_object_put(gobj);
- 
- 	size = amdgpu_bo_size(bo);
-@@ -883,15 +880,19 @@ static int amdgpu_cs_parser_bos(struct amdgpu_cs_parser *p,
- 
- 	mutex_lock(&p->bo_list->bo_list_mutex);
- 
--	/* One for TTM and one for the CS job */
-+	/* One for TTM and one for each CS job */
- 	amdgpu_bo_list_for_each_entry(e, p->bo_list)
--		e->tv.num_shared = 2;
-+		e->tv.num_shared = 1 + p->gang_size;
-+	p->uf_entry.tv.num_shared = 1 + p->gang_size;
- 
- 	amdgpu_bo_list_get_list(p->bo_list, &p->validated);
- 
- 	INIT_LIST_HEAD(&duplicates);
- 	amdgpu_vm_get_pd_bo(&fpriv->vm, &p->validated, &p->vm_pd);
- 
-+	/* Two for VM updates, one for TTM and one for each CS job */
-+	p->vm_pd.tv.num_shared = 3 + p->gang_size;
-+
- 	if (p->uf_entry.tv.bo && !ttm_to_amdgpu_bo(p->uf_entry.tv.bo)->parent)
- 		list_add(&p->uf_entry.tv.head, &p->validated);
- 
--- 
-2.39.2
-
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -4872,8 +4872,7 @@ int vfs_rename(struct renamedata *rd)
+ 			d_exchange(old_dentry, new_dentry);
+ 	}
+ out:
+-	if (source)
+-		inode_unlock(source);
++	inode_unlock(source);
+ 	if (target)
+ 		inode_unlock(target);
+ 	dput(new_dentry);
 
 
