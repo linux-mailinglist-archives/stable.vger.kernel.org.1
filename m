@@ -2,255 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 236297556A6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C480755462
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232930AbjGPUwg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:52:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40758 "EHLO
+        id S232102AbjGPU3y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:29:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232916AbjGPUwg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12493E9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:35 -0700 (PDT)
+        with ESMTP id S232100AbjGPU3x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9499F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B86660E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E64C433C8;
-        Sun, 16 Jul 2023 20:52:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3905960EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490F0C433C8;
+        Sun, 16 Jul 2023 20:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540754;
-        bh=5xkpUM/r8vbT8mcVQYPXwGudlbYN3iTdorIMwuvPkm0=;
+        s=korg; t=1689539391;
+        bh=Sdsxi8fAXKH1l5lpIGkEXV0HkfJQamwEyrdcceKP+wY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sg96fMP9S8DoAJU4lgLbpFA1/Wwq3rCOrSMbAVJwg9IS+NyFV5rVc00G+qJwQ7+QD
-         EL2bM9NEx/EgUpT6PnUJle2jPnaP8in3ONuoUCII77czE8GtlrcILYjfFpi47ThHld
-         DTRNB5eYzE4TDrLkcdbsyqmg02Hp6/C0QUKmZPC0=
+        b=WGdaG9vVYOwRR4jnF5pbNMBc3ki8z3AFKKhu1nFpG6gHflJ3+EKiLAd7eR5rvusGk
+         VchNex9s4I3XPr1ri2D/dJG2ojY5K+D4vG22b3JwCS1rSkGDIac3ZWOLiyrbVaM8O5
+         7L4582d8S+ymJUChQw19gP9q+g2W2vAnsgBuZZ0A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 476/591] net: mscc: ocelot: dont keep PTP configuration of all ports in single structure
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 762/800] btrfs: fix race when deleting quota root from the dirty cow roots list
 Date:   Sun, 16 Jul 2023 21:50:15 +0200
-Message-ID: <20230716194936.216308922@linuxfoundation.org>
+Message-ID: <20230716195006.849007341@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 45d0fcb5bc9558d0bf3d2fa7fabc5d8a88d35439 ]
+commit b31cb5a6eb7a48b0a7bfdf06832b1fd5088d8c79 upstream.
 
-In a future change, the driver will need to determine whether PTP RX
-timestamping is enabled on a port (including whether traps were set up
-on that port in particular) and that is currently not possible.
+When disabling quotas we are deleting the quota root from the list
+fs_info->dirty_cowonly_roots without taking the lock that protects it,
+which is struct btrfs_fs_info::trans_lock. This unsynchronized list
+manipulation may cause chaos if there's another concurrent manipulation
+of this list, such as when adding a root to it with
+ctree.c:add_root_to_dirty_list().
 
-The driver supports different RX filters (L2, L4) and kinds of TX
-timestamping (one-step, two-step) on its ports, but it saves all
-configuration in a single struct hwtstamp_config that is global to the
-switch. So, the latest timestamping configuration on one port
-(including a request to disable timestamping) affects what gets reported
-for all ports, even though the configuration itself is still individual
-to each port.
+This can result in all sorts of weird failures caused by a race, such as
+the following crash:
 
-The port timestamping configurations are only coupled because of the
-common structure, so replace the hwtstamp_config with a mask of trapped
-protocols saved per port. We also have the ptp_cmd to distinguish
-between one-step and two-step PTP timestamping, so with those 2 bits of
-information we can fully reconstruct a descriptive struct
-hwtstamp_config for each port, during the SIOCGHWTSTAMP ioctl.
+  [337571.278245] general protection fault, probably for non-canonical address 0xdead000000000108: 0000 [#1] PREEMPT SMP PTI
+  [337571.278933] CPU: 1 PID: 115447 Comm: btrfs Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
+  [337571.279153] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+  [337571.279572] RIP: 0010:commit_cowonly_roots+0x11f/0x250 [btrfs]
+  [337571.279928] Code: 85 38 06 00 (...)
+  [337571.280363] RSP: 0018:ffff9f63446efba0 EFLAGS: 00010206
+  [337571.280582] RAX: ffff942d98ec2638 RBX: ffff9430b82b4c30 RCX: 0000000449e1c000
+  [337571.280798] RDX: dead000000000100 RSI: ffff9430021e4900 RDI: 0000000000036070
+  [337571.281015] RBP: ffff942d98ec2000 R08: ffff942d98ec2000 R09: 000000000000015b
+  [337571.281254] R10: 0000000000000009 R11: 0000000000000001 R12: ffff942fe8fbf600
+  [337571.281476] R13: ffff942dabe23040 R14: ffff942dabe20800 R15: ffff942d92cf3b48
+  [337571.281723] FS:  00007f478adb7340(0000) GS:ffff94349fa40000(0000) knlGS:0000000000000000
+  [337571.281950] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [337571.282184] CR2: 00007f478ab9a3d5 CR3: 000000001e02c001 CR4: 0000000000370ee0
+  [337571.282416] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [337571.282647] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [337571.282874] Call Trace:
+  [337571.283101]  <TASK>
+  [337571.283327]  ? __die_body+0x1b/0x60
+  [337571.283570]  ? die_addr+0x39/0x60
+  [337571.283796]  ? exc_general_protection+0x22e/0x430
+  [337571.284022]  ? asm_exc_general_protection+0x22/0x30
+  [337571.284251]  ? commit_cowonly_roots+0x11f/0x250 [btrfs]
+  [337571.284531]  btrfs_commit_transaction+0x42e/0xf90 [btrfs]
+  [337571.284803]  ? _raw_spin_unlock+0x15/0x30
+  [337571.285031]  ? release_extent_buffer+0x103/0x130 [btrfs]
+  [337571.285305]  reset_balance_state+0x152/0x1b0 [btrfs]
+  [337571.285578]  btrfs_balance+0xa50/0x11e0 [btrfs]
+  [337571.285864]  ? __kmem_cache_alloc_node+0x14a/0x410
+  [337571.286086]  btrfs_ioctl+0x249a/0x3320 [btrfs]
+  [337571.286358]  ? mod_objcg_state+0xd2/0x360
+  [337571.286577]  ? refill_obj_stock+0xb0/0x160
+  [337571.286798]  ? seq_release+0x25/0x30
+  [337571.287016]  ? __rseq_handle_notify_resume+0x3ba/0x4b0
+  [337571.287235]  ? percpu_counter_add_batch+0x2e/0xa0
+  [337571.287455]  ? __x64_sys_ioctl+0x88/0xc0
+  [337571.287675]  __x64_sys_ioctl+0x88/0xc0
+  [337571.287901]  do_syscall_64+0x38/0x90
+  [337571.288126]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  [337571.288352] RIP: 0033:0x7f478aaffe9b
 
-Fixes: 4e3b0468e6d7 ("net: mscc: PTP Hardware Clock (PHC) support")
-Fixes: 96ca08c05838 ("net: mscc: ocelot: set up traps for PTP packets")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So fix this by locking struct btrfs_fs_info::trans_lock before deleting
+the quota root from that list.
+
+Fixes: bed92eae26cc ("Btrfs: qgroup implementation and prototypes")
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mscc/ocelot.c     |  1 -
- drivers/net/ethernet/mscc/ocelot_ptp.c | 61 +++++++++++++++++---------
- include/soc/mscc/ocelot.h              | 10 +++--
- 3 files changed, 48 insertions(+), 24 deletions(-)
+ fs/btrfs/qgroup.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
-index 13b14110a0603..01b6e13f4692f 100644
---- a/drivers/net/ethernet/mscc/ocelot.c
-+++ b/drivers/net/ethernet/mscc/ocelot.c
-@@ -2728,7 +2728,6 @@ int ocelot_init(struct ocelot *ocelot)
- 		}
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1301,7 +1301,9 @@ int btrfs_quota_disable(struct btrfs_fs_
+ 		goto out;
  	}
  
--	mutex_init(&ocelot->ptp_lock);
- 	mutex_init(&ocelot->mact_lock);
- 	mutex_init(&ocelot->fwd_domain_lock);
- 	mutex_init(&ocelot->tas_lock);
-diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
-index 673bfd70867a6..cb32234a5bf1b 100644
---- a/drivers/net/ethernet/mscc/ocelot_ptp.c
-+++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
-@@ -439,8 +439,12 @@ static int ocelot_ipv6_ptp_trap_del(struct ocelot *ocelot, int port)
- static int ocelot_setup_ptp_traps(struct ocelot *ocelot, int port,
- 				  bool l2, bool l4)
- {
-+	struct ocelot_port *ocelot_port = ocelot->ports[port];
- 	int err;
++	spin_lock(&fs_info->trans_lock);
+ 	list_del(&quota_root->dirty_list);
++	spin_unlock(&fs_info->trans_lock);
  
-+	ocelot_port->trap_proto &= ~(OCELOT_PROTO_PTP_L2 |
-+				     OCELOT_PROTO_PTP_L4);
-+
- 	if (l2)
- 		err = ocelot_l2_ptp_trap_add(ocelot, port);
- 	else
-@@ -464,6 +468,11 @@ static int ocelot_setup_ptp_traps(struct ocelot *ocelot, int port,
- 	if (err)
- 		return err;
- 
-+	if (l2)
-+		ocelot_port->trap_proto |= OCELOT_PROTO_PTP_L2;
-+	if (l4)
-+		ocelot_port->trap_proto |= OCELOT_PROTO_PTP_L4;
-+
- 	return 0;
- 
- err_ipv6:
-@@ -474,10 +483,38 @@ static int ocelot_setup_ptp_traps(struct ocelot *ocelot, int port,
- 	return err;
- }
- 
-+static int ocelot_traps_to_ptp_rx_filter(unsigned int proto)
-+{
-+	if ((proto & OCELOT_PROTO_PTP_L2) && (proto & OCELOT_PROTO_PTP_L4))
-+		return HWTSTAMP_FILTER_PTP_V2_EVENT;
-+	else if (proto & OCELOT_PROTO_PTP_L2)
-+		return HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
-+	else if (proto & OCELOT_PROTO_PTP_L4)
-+		return HWTSTAMP_FILTER_PTP_V2_L4_EVENT;
-+
-+	return HWTSTAMP_FILTER_NONE;
-+}
-+
- int ocelot_hwstamp_get(struct ocelot *ocelot, int port, struct ifreq *ifr)
- {
--	return copy_to_user(ifr->ifr_data, &ocelot->hwtstamp_config,
--			    sizeof(ocelot->hwtstamp_config)) ? -EFAULT : 0;
-+	struct ocelot_port *ocelot_port = ocelot->ports[port];
-+	struct hwtstamp_config cfg = {};
-+
-+	switch (ocelot_port->ptp_cmd) {
-+	case IFH_REW_OP_TWO_STEP_PTP:
-+		cfg.tx_type = HWTSTAMP_TX_ON;
-+		break;
-+	case IFH_REW_OP_ORIGIN_PTP:
-+		cfg.tx_type = HWTSTAMP_TX_ONESTEP_SYNC;
-+		break;
-+	default:
-+		cfg.tx_type = HWTSTAMP_TX_OFF;
-+		break;
-+	}
-+
-+	cfg.rx_filter = ocelot_traps_to_ptp_rx_filter(ocelot_port->trap_proto);
-+
-+	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
- }
- EXPORT_SYMBOL(ocelot_hwstamp_get);
- 
-@@ -509,8 +546,6 @@ int ocelot_hwstamp_set(struct ocelot *ocelot, int port, struct ifreq *ifr)
- 		return -ERANGE;
- 	}
- 
--	mutex_lock(&ocelot->ptp_lock);
--
- 	switch (cfg.rx_filter) {
- 	case HWTSTAMP_FILTER_NONE:
- 		break;
-@@ -531,28 +566,14 @@ int ocelot_hwstamp_set(struct ocelot *ocelot, int port, struct ifreq *ifr)
- 		l4 = true;
- 		break;
- 	default:
--		mutex_unlock(&ocelot->ptp_lock);
- 		return -ERANGE;
- 	}
- 
- 	err = ocelot_setup_ptp_traps(ocelot, port, l2, l4);
--	if (err) {
--		mutex_unlock(&ocelot->ptp_lock);
-+	if (err)
- 		return err;
--	}
--
--	if (l2 && l4)
--		cfg.rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
--	else if (l2)
--		cfg.rx_filter = HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
--	else if (l4)
--		cfg.rx_filter = HWTSTAMP_FILTER_PTP_V2_L4_EVENT;
--	else
--		cfg.rx_filter = HWTSTAMP_FILTER_NONE;
- 
--	/* Commit back the result & save it */
--	memcpy(&ocelot->hwtstamp_config, &cfg, sizeof(cfg));
--	mutex_unlock(&ocelot->ptp_lock);
-+	cfg.rx_filter = ocelot_traps_to_ptp_rx_filter(ocelot_port->trap_proto);
- 
- 	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
- }
-diff --git a/include/soc/mscc/ocelot.h b/include/soc/mscc/ocelot.h
-index 967ba30ea6363..195ca8f0b6f9d 100644
---- a/include/soc/mscc/ocelot.h
-+++ b/include/soc/mscc/ocelot.h
-@@ -902,6 +902,11 @@ enum macaccess_entry_type {
- 	ENTRYTYPE_MACv6,
- };
- 
-+enum ocelot_proto {
-+	OCELOT_PROTO_PTP_L2 = BIT(0),
-+	OCELOT_PROTO_PTP_L4 = BIT(1),
-+};
-+
- #define OCELOT_QUIRK_PCS_PERFORMS_RATE_ADAPTATION	BIT(0)
- #define OCELOT_QUIRK_QSGMII_PORTS_MUST_BE_UP		BIT(1)
- 
-@@ -939,6 +944,8 @@ struct ocelot_port {
- 	unsigned int			ptp_skbs_in_flight;
- 	struct sk_buff_head		tx_skbs;
- 
-+	unsigned int			trap_proto;
-+
- 	u16				mrp_ring_id;
- 
- 	u8				ptp_cmd;
-@@ -1032,12 +1039,9 @@ struct ocelot {
- 	u8				ptp:1;
- 	struct ptp_clock		*ptp_clock;
- 	struct ptp_clock_info		ptp_info;
--	struct hwtstamp_config		hwtstamp_config;
- 	unsigned int			ptp_skbs_in_flight;
- 	/* Protects the 2-step TX timestamp ID logic */
- 	spinlock_t			ts_id_lock;
--	/* Protects the PTP interface state */
--	struct mutex			ptp_lock;
- 	/* Protects the PTP clock */
- 	spinlock_t			ptp_clock_lock;
- 	struct ptp_pin_desc		ptp_pins[OCELOT_PTP_PINS_NUM];
--- 
-2.39.2
-
+ 	btrfs_tree_lock(quota_root->node);
+ 	btrfs_clear_buffer_dirty(trans, quota_root->node);
 
 
