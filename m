@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA1D275530A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89521755539
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231587AbjGPUOl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:14:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41048 "EHLO
+        id S232435AbjGPUir (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:38:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231590AbjGPUOl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:14:41 -0400
+        with ESMTP id S232424AbjGPUio (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B83C0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51BF79F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A50F660EB3
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CCAC433C8;
-        Sun, 16 Jul 2023 20:14:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC46760EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB01C433C8;
+        Sun, 16 Jul 2023 20:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538479;
-        bh=qBso+RLH1CoUkiNeU1K7MaN5gQcMHl+XcFPKlPe+Gdc=;
+        s=korg; t=1689539922;
+        bh=xNCwMWciGskOXqgafz38fG8flMZa59fR/gSEK5tPP4Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QmXgRlmL9ltKUnu6NoY2tE8b+KT9jy5kwvCGKwUQrqIjC7kde3+ihBxlylen1BVGw
-         hutPtSzP0NkzafstjNPUycvcNFdplnFyXM5eMEXMRKcL7ATzh8vWjKbiJcp3ODyFLY
-         Hk/q74KNR9M4TWrYzM+ol8+ni9fRnPlOi5Tty6Ig=
+        b=KkUYmo24wCqi4fjsIej1NNqMwLfVlLG7Z24RoglJuj1jfSgsG+oocU+U2mrNy+XIq
+         zLRbQu7+oeOMKGUxYihGNFc1Ly5uG2VnxFgdS0EpDnpi2uBfRLQfWhEQb1dcZN6YmU
+         dMrh5JszIKSuNZUbsYz2TbTKygRlyhTYQcXFl19M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 466/800] perf script: Fix allocation of evsel->priv related to per-event dump files
+Subject: [PATCH 6.1 180/591] RDMA/bnxt_re: Fix to remove unnecessary return labels
 Date:   Sun, 16 Jul 2023 21:45:19 +0200
-Message-ID: <20230716194959.904446345@linuxfoundation.org>
+Message-ID: <20230716194928.523428535@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,97 +59,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 36d3e4138e1b6cc9ab179f3f397b5548f8b1eaae ]
+[ Upstream commit 9b3ee47796f529e5bc31a355d6cb756d68a7079a ]
 
-When printing output we may want to generate per event files, where the
---per-event-dump option should be used, creating perf.data.EVENT.dump
-files instead of printing to stdout.
+If there is no cleanup needed then just return directly.  This cleans up
+the code and improve readability.
 
-The callback thar processes event thus expects that evsel->priv->fp
-should point to either the per-event FILE descriptor or to stdout.
-
-The a3af66f51bd0bca7 ("perf script: Fix crash because of missing
-evsel->priv") changeset fixed a case where evsel->priv wasn't setup,
-thus set to NULL, causing a segfault when trying to access
-evsel->priv->fp.
-
-But it did it for the non --per-event-dump case by allocating a 'struct
-perf_evsel_script' just to set its ->fp to stdout.
-
-Since evsel->priv is only freed when --per-event-dump is used, we ended
-up with a memory leak, detected using ASAN.
-
-Fix it by using the same method as perf_script__setup_per_event_dump(),
-and reuse that static 'struct perf_evsel_script'.
-
-Also check if evsel_script__new() failed.
-
-Fixes: a3af66f51bd0bca7 ("perf script: Fix crash because of missing evsel->priv")
-Reported-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Link: https://lore.kernel.org/lkml/ZH+F0wGAWV14zvMP@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Link: https://lore.kernel.org/r/1684478897-12247-3-git-send-email-selvin.xavier@broadcom.com
+Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-script.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
-index c57be48d65bb0..2ecfca0fccda0 100644
---- a/tools/perf/builtin-script.c
-+++ b/tools/perf/builtin-script.c
-@@ -2422,6 +2422,9 @@ static int process_sample_event(struct perf_tool *tool,
- 	return ret;
- }
- 
-+// Used when scr->per_event_dump is not set
-+static struct evsel_script es_stdout;
-+
- static int process_attr(struct perf_tool *tool, union perf_event *event,
- 			struct evlist **pevlist)
- {
-@@ -2430,7 +2433,6 @@ static int process_attr(struct perf_tool *tool, union perf_event *event,
- 	struct evsel *evsel, *pos;
- 	u64 sample_type;
- 	int err;
--	static struct evsel_script *es;
- 
- 	err = perf_event__process_attr(tool, event, pevlist);
- 	if (err)
-@@ -2440,14 +2442,13 @@ static int process_attr(struct perf_tool *tool, union perf_event *event,
- 	evsel = evlist__last(*pevlist);
- 
- 	if (!evsel->priv) {
--		if (scr->per_event_dump) {
-+		if (scr->per_event_dump) { 
- 			evsel->priv = evsel_script__new(evsel, scr->session->data);
--		} else {
--			es = zalloc(sizeof(*es));
--			if (!es)
-+			if (!evsel->priv)
- 				return -ENOMEM;
--			es->fp = stdout;
--			evsel->priv = es;
-+		} else { // Replicate what is done in perf_script__setup_per_event_dump()
-+			es_stdout.fp = stdout;
-+			evsel->priv = &es_stdout;
- 		}
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index a143bd3580a27..4abe1f59b3689 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -1605,7 +1605,7 @@ static int bnxt_qplib_put_inline(struct bnxt_qplib_qp *qp,
+ 		il_src = (void *)wqe->sg_list[indx].addr;
+ 		t_len += len;
+ 		if (t_len > qp->max_inline_data)
+-			goto bad;
++			return -ENOMEM;
+ 		while (len) {
+ 			if (pull_dst) {
+ 				pull_dst = false;
+@@ -1629,8 +1629,6 @@ static int bnxt_qplib_put_inline(struct bnxt_qplib_qp *qp,
  	}
  
-@@ -2753,7 +2754,6 @@ static int perf_script__fopen_per_event_dump(struct perf_script *script)
- static int perf_script__setup_per_event_dump(struct perf_script *script)
- {
- 	struct evsel *evsel;
--	static struct evsel_script es_stdout;
+ 	return t_len;
+-bad:
+-	return -ENOMEM;
+ }
  
- 	if (script->per_event_dump)
- 		return perf_script__fopen_per_event_dump(script);
+ static u32 bnxt_qplib_put_sges(struct bnxt_qplib_hwq *hwq,
+@@ -2060,7 +2058,7 @@ int bnxt_qplib_create_cq(struct bnxt_qplib_res *res, struct bnxt_qplib_cq *cq)
+ 	hwq_attr.sginfo = &cq->sg_info;
+ 	rc = bnxt_qplib_alloc_init_hwq(&cq->hwq, &hwq_attr);
+ 	if (rc)
+-		goto exit;
++		return rc;
+ 
+ 	RCFW_CMD_PREP(req, CREATE_CQ, cmd_flags);
+ 
+@@ -2101,7 +2099,6 @@ int bnxt_qplib_create_cq(struct bnxt_qplib_res *res, struct bnxt_qplib_cq *cq)
+ 
+ fail:
+ 	bnxt_qplib_free_hwq(res, &cq->hwq);
+-exit:
+ 	return rc;
+ }
+ 
 -- 
 2.39.2
 
