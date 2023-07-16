@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D05747554C6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC2E37552A6
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232296AbjGPUeS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:34:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54838 "EHLO
+        id S231417AbjGPUKV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:10:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232298AbjGPUeR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:17 -0400
+        with ESMTP id S231429AbjGPUKU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B913ABA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3489F1B4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 504F860DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63353C433C8;
-        Sun, 16 Jul 2023 20:34:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B55A160EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9561C433C8;
+        Sun, 16 Jul 2023 20:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539655;
-        bh=+plBlXy1yzlbdrU95pHyT75oy06bwN8yRytEXy6ZDCA=;
+        s=korg; t=1689538214;
+        bh=5Xs0rP7IrtOLhUV4Wke7GmulTfWYdBbBkBkJ00NlK0M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ShUNKmyUlnGQLFXxT8zEKzEFRYdXbdK4/n0SEvNCe6f2X41EZEkMoShunbon5cNZm
-         We5S/j6MTB2Cs3LTXvnCOCraBf982Cf5qRtqP1iY2j71pJ0BXvgkN8ON3seA0wM0U8
-         GyZYoeY1PM52cDKTZ2NNcHptHsP2p9GdmigrvFs8=
+        b=Q6NZ3TuUtvTQ7U8fRTh40L/P1coIzPd1ujCgY4Q28rtjsGsoG+RWwz2XKMBXcCppv
+         ozNz4FedYgR8KtUEwD3PvJzq8ZdhUu97Ebl+3KMPsOQOr2K7aaQVcbR7Tk0SgWkSNh
+         yC27VUQMcJtFs9ptfhrOGoJQys0Hk/KvAjoNRXzc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/591] regulator: core: Streamline debugfs operations
+        David Gow <davidgow@google.com>,
+        =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 371/800] HID: uclogic: Modular KUnit tests should not depend on KUNIT=y
 Date:   Sun, 16 Jul 2023 21:43:44 +0200
-Message-ID: <20230716194926.082807319@linuxfoundation.org>
+Message-ID: <20230716194957.692816284@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,96 +59,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 08880713ceec023dd94d634f1e8902728c385939 ]
+[ Upstream commit 49904a0ebf23b15aad288a10f5354e7cd8193121 ]
 
-If CONFIG_DEBUG_FS is not set:
+While KUnit tests that cannot be built as a loadable module must depend
+on "KUNIT=y", this is not true for modular tests, where it adds an
+unnecessary limitation.
 
-    regulator: Failed to create debugfs directory
-    ...
-    regulator-dummy: Failed to create debugfs directory
+Fix this by relaxing the dependency to "KUNIT".
 
-As per the comments for debugfs_create_dir(), errors returned by this
-function should be expected, and ignored:
-
- * If debugfs is not enabled in the kernel, the value -%ENODEV will be
- * returned.
- *
- * NOTE: it's expected that most callers should _ignore_ the errors returned
- * by this function. Other debugfs functions handle the fact that the "dentry"
- * passed to them could be an error and they don't crash in that case.
- * Drivers should generally work fine even if debugfs fails to init anyway.
-
-Adhere to the debugfs spirit, and streamline all operations by:
-  1. Demoting the importance of the printed error messages to debug
-     level, like is already done in create_regulator(),
-  2. Further ignoring any returned errors, as by design, all debugfs
-     functions are no-ops when passed an error pointer.
-
-Fixes: 2bf1c45be3b8f3a3 ("regulator: Fix error checking for debugfs_create_dir")
+Fixes: 08809e482a1c44d9 ("HID: uclogic: KUnit best practices and naming conventions")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/2f8bb6e113359ddfab7b59e4d4274bd4c06d6d0a.1685013051.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: José Expósito <jose.exposito89@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ drivers/hid/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index eaf9d99f1f43c..351f0fd225b14 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1918,19 +1918,17 @@ static struct regulator *create_regulator(struct regulator_dev *rdev,
+diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+index 4ce012f83253e..b977450cac752 100644
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -1285,7 +1285,7 @@ config HID_MCP2221
  
- 	if (err != -EEXIST)
- 		regulator->debugfs = debugfs_create_dir(supply_name, rdev->debugfs);
--	if (IS_ERR(regulator->debugfs)) {
-+	if (IS_ERR(regulator->debugfs))
- 		rdev_dbg(rdev, "Failed to create debugfs directory\n");
--	} else {
--		debugfs_create_u32("uA_load", 0444, regulator->debugfs,
--				   &regulator->uA_load);
--		debugfs_create_u32("min_uV", 0444, regulator->debugfs,
--				   &regulator->voltage[PM_SUSPEND_ON].min_uV);
--		debugfs_create_u32("max_uV", 0444, regulator->debugfs,
--				   &regulator->voltage[PM_SUSPEND_ON].max_uV);
--		debugfs_create_file("constraint_flags", 0444,
--				    regulator->debugfs, regulator,
--				    &constraint_flags_fops);
--	}
-+
-+	debugfs_create_u32("uA_load", 0444, regulator->debugfs,
-+			   &regulator->uA_load);
-+	debugfs_create_u32("min_uV", 0444, regulator->debugfs,
-+			   &regulator->voltage[PM_SUSPEND_ON].min_uV);
-+	debugfs_create_u32("max_uV", 0444, regulator->debugfs,
-+			   &regulator->voltage[PM_SUSPEND_ON].max_uV);
-+	debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
-+			    regulator, &constraint_flags_fops);
- 
- 	/*
- 	 * Check now if the regulator is an always on regulator - if
-@@ -5257,10 +5255,8 @@ static void rdev_init_debugfs(struct regulator_dev *rdev)
- 	}
- 
- 	rdev->debugfs = debugfs_create_dir(rname, debugfs_root);
--	if (IS_ERR(rdev->debugfs)) {
--		rdev_warn(rdev, "Failed to create debugfs directory\n");
--		return;
--	}
-+	if (IS_ERR(rdev->debugfs))
-+		rdev_dbg(rdev, "Failed to create debugfs directory\n");
- 
- 	debugfs_create_u32("use_count", 0444, rdev->debugfs,
- 			   &rdev->use_count);
-@@ -6180,7 +6176,7 @@ static int __init regulator_init(void)
- 
- 	debugfs_root = debugfs_create_dir("regulator", NULL);
- 	if (IS_ERR(debugfs_root))
--		pr_warn("regulator: Failed to create debugfs directory\n");
-+		pr_debug("regulator: Failed to create debugfs directory\n");
- 
- #ifdef CONFIG_DEBUG_FS
- 	debugfs_create_file("supply_map", 0444, debugfs_root, NULL,
+ config HID_KUNIT_TEST
+ 	tristate "KUnit tests for HID" if !KUNIT_ALL_TESTS
+-	depends on KUNIT=y
++	depends on KUNIT
+ 	depends on HID_BATTERY_STRENGTH
+ 	depends on HID_UCLOGIC
+ 	default KUNIT_ALL_TESTS
 -- 
 2.39.2
 
