@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA3EB755492
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2AAA755290
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:09:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232243AbjGPUb7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53094 "EHLO
+        id S231365AbjGPUJX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:09:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232222AbjGPUbz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:31:55 -0400
+        with ESMTP id S231360AbjGPUJX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:09:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46241E54
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:31:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1649A9D
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:09:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D693360EBD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:31:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E617CC433C7;
-        Sun, 16 Jul 2023 20:31:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C15360EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:09:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A7FC433C8;
+        Sun, 16 Jul 2023 20:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539509;
-        bh=UZVPbcctiy2oDrd4lBLw5oQMC+sGPLOxg7nNDYe3BLw=;
+        s=korg; t=1689538160;
+        bh=Xpx9YY6YGd+aohkVd8fMuCNdNsMg5l+Hiqtde0WDD+8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TRFuWI3c8XCVU/TFesklp28DcNeQtdrKZseL50LmufrNLzK/Rrk0iGW+UdLtJMI/p
-         jLa80uckhPgxZ3l/KejdO+11QK9FUPXkNI4D4rZSaAZdZmCZ8rqUjOtiH8hJ+NVygq
-         2sqLMrSux9RiZ+c1DEaqR2nKPvIVrWt4dFct14Y0=
+        b=UkLee35k7qaC8uuiT1BGMvZE5OaMVCgvM4VyoxcB8AvkqS2mWZKrrqSoh8BlPVRP6
+         TJgPGq8JZfBlSkH1z6fQPVqofcunVqbhQqUmFvzLWpsxFveBzl1m7rrrksznik0rGQ
+         ELwztP9br4FekXJdUbEzEOh2/2Xj3VRfvA086wGE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/591] block: fix blktrace debugfs entries leakage
+Subject: [PATCH 6.4 318/800] arm64: dts: qcom: apq8016-sbc: Fix regulator constraints
 Date:   Sun, 16 Jul 2023 21:42:51 +0200
-Message-ID: <20230716194924.713463921@linuxfoundation.org>
+Message-ID: <20230716194956.458741473@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,57 +57,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Stephan Gerhold <stephan@gerhold.net>
 
-[ Upstream commit dd7de3704af9989b780693d51eaea49a665bd9c2 ]
+[ Upstream commit e27654df20d77ad7549a3cf6739ebaa3aa59a088 ]
 
-Commit 99d055b4fd4b ("block: remove per-disk debugfs files in
-blk_unregister_queue") moves blk_trace_shutdown() from
-blk_release_queue() to blk_unregister_queue(), this is safe if blktrace
-is created through sysfs, however, there is a regression in corner
-case.
+For some reason DB410c has completely bogus regulator constraints that
+actually just correspond to the programmable voltages which are already
+provided by the regulator driver. Some of them are not just outside the
+recommended operating conditions of the APQ8016E SoC but even exceed
+the absolute maximum ratings, potentially risking permanent device
+damage.
 
-blktrace can still be enabled after del_gendisk() through ioctl if
-the disk is opened before del_gendisk(), and if blktrace is not shutdown
-through ioctl before closing the disk, debugfs entries will be leaked.
+In practice it's not quite as dangerous thanks to the RPM firmware:
+It turns out that it has its own voltage constraints and silently
+clamps all regulator requests. For example, requesting 3.3V for L5
+(allowed by the current regulator constraints!) still results in 1.8V
+being programmed in the actual regulator hardware.
 
-Fix this problem by shutdown blktrace in disk_release(), this is safe
-because blk_trace_remove() is reentrant.
+Experimentation with various voltages shows that the internal RPM
+voltage constraints roughly correspond to the safe "specified range"
+in the PM8916 Device Specification (rather than the "programmable
+range" used inside apq8016-sbc.dtsi right now).
 
-Fixes: 99d055b4fd4b ("block: remove per-disk debugfs files in blk_unregister_queue")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230610022003.2557284-4-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Combine those together with some fixed voltages used in the old
+msm-3.10 device tree from Qualcomm to give DB410c some actually valid
+voltage constraints.
+
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Fixes: 4c7d53d16d77 ("arm64: dts: apq8016-sbc: add regulators support")
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230510-msm8916-regulators-v1-1-54d4960a05fc@gerhold.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/genhd.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 64 ++++++++++++------------
+ 1 file changed, 32 insertions(+), 32 deletions(-)
 
-diff --git a/block/genhd.c b/block/genhd.c
-index 62a61388e752d..afab646d12c85 100644
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -25,8 +25,9 @@
- #include <linux/pm_runtime.h>
- #include <linux/badblocks.h>
- #include <linux/part_stat.h>
--#include "blk-throttle.h"
-+#include <linux/blktrace_api.h>
+diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+index 59860a2223b83..14cb217a13c1e 100644
+--- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
++++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+@@ -447,21 +447,21 @@ &smd_rpm_regulators {
+ 	vdd_l7-supply = <&pm8916_s4>;
  
-+#include "blk-throttle.h"
- #include "blk.h"
- #include "blk-mq-sched.h"
- #include "blk-rq-qos.h"
-@@ -1181,6 +1182,8 @@ static void disk_release(struct device *dev)
- 	might_sleep();
- 	WARN_ON_ONCE(disk_live(disk));
+ 	s3 {
+-		regulator-min-microvolt = <375000>;
+-		regulator-max-microvolt = <1562000>;
++		regulator-min-microvolt = <1250000>;
++		regulator-max-microvolt = <1350000>;
+ 	};
  
-+	blk_trace_remove(disk->queue);
-+
- 	/*
- 	 * To undo the all initialization from blk_mq_init_allocated_queue in
- 	 * case of a probe failure where add_disk is never called we have to
+ 	s4 {
+-		regulator-min-microvolt = <1800000>;
+-		regulator-max-microvolt = <1800000>;
++		regulator-min-microvolt = <1850000>;
++		regulator-max-microvolt = <2150000>;
+ 
+ 		regulator-always-on;
+ 		regulator-boot-on;
+ 	};
+ 
+ 	l1 {
+-		regulator-min-microvolt = <375000>;
+-		regulator-max-microvolt = <1525000>;
++		regulator-min-microvolt = <1225000>;
++		regulator-max-microvolt = <1225000>;
+ 	};
+ 
+ 	l2 {
+@@ -470,13 +470,13 @@ l2 {
+ 	};
+ 
+ 	l4 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <2050000>;
++		regulator-max-microvolt = <2050000>;
+ 	};
+ 
+ 	l5 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
+ 	};
+ 
+ 	l6 {
+@@ -485,45 +485,45 @@ l6 {
+ 	};
+ 
+ 	l7 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
+ 	};
+ 
+ 	l8 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <2900000>;
++		regulator-max-microvolt = <2900000>;
+ 	};
+ 
+ 	l9 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
+ 	};
+ 
+ 	l10 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <2800000>;
++		regulator-max-microvolt = <2800000>;
+ 	};
+ 
+ 	l11 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <2950000>;
++		regulator-max-microvolt = <2950000>;
+ 		regulator-allow-set-load;
+ 		regulator-system-load = <200000>;
+ 	};
+ 
+ 	l12 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <2950000>;
+ 	};
+ 
+ 	l13 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <3075000>;
++		regulator-max-microvolt = <3075000>;
+ 	};
+ 
+ 	l14 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
+ 	};
+ 
+ 	/**
+@@ -531,14 +531,14 @@ l14 {
+ 	 * for mezzanine boards
+ 	 */
+ 	l15 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
+ 		regulator-always-on;
+ 	};
+ 
+ 	l16 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
+ 	};
+ 
+ 	l17 {
+@@ -547,8 +547,8 @@ l17 {
+ 	};
+ 
+ 	l18 {
+-		regulator-min-microvolt = <1750000>;
+-		regulator-max-microvolt = <3337000>;
++		regulator-min-microvolt = <2700000>;
++		regulator-max-microvolt = <2700000>;
+ 	};
+ };
+ 
 -- 
 2.39.2
 
