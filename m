@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6087675558D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:42:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3A3E755377
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232560AbjGPUmD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:42:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32926 "EHLO
+        id S231738AbjGPUTV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:19:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232558AbjGPUmD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:03 -0400
+        with ESMTP id S231735AbjGPUTU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4208C9F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90D87126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CADE260EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC62C433C8;
-        Sun, 16 Jul 2023 20:42:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1ECBE60DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31853C433C8;
+        Sun, 16 Jul 2023 20:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540121;
-        bh=IwWSh8T8xOo3ga7oxR7k1yIH4LQKmZHC+164MMznWMQ=;
+        s=korg; t=1689538758;
+        bh=lt5HWPIjcvCctemT5STo5edq6WnYIWwxJ4lMFRWcoJ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HQBK6vHd2ZV8PLeMAobHY+bZZ3gu5ax21x3QGKRO7naiCTfUYWsa2NWacXZmNbYd+
-         seqxOlmFrXV5ntF2Cp5rbE+oxeNMj0vb6FaoWjXf+xPz1iMR1I5rWwRDD1XZbipjrZ
-         g75AMwPwcVE3ug3MVQT3+XoIlz1XHd6VDRgf2HkM=
+        b=EP8AwPOLXBUY31PlmhN7BlcgWoYuZEcAlG6MrYWzeXMqa0sgZ0Hv6NiSCLPmM11LQ
+         m7y/8C3oXCFsnU8qBfp/SmqPpDed5mlX8kJyGrP+yWNj4/5w8Rqtsis7ei2z5fd06H
+         hqEHEoZXui1zY2nV2pxxzdiOUHx1hsPUPc0JvtNQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kai Ma <kaima@hust.edu.cn>,
-        Peng Fan <peng.fan@nxp.com>,
-        Jesse Taube <Mr.Bossman075@gmail.com>,
-        Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 250/591] clk: imx: clk-imxrt1050: fix memory leak in imxrt1050_clocks_probe
+Subject: [PATCH 6.4 536/800] cxl/region: Fix state transitions after reset failure
 Date:   Sun, 16 Jul 2023 21:46:29 +0200
-Message-ID: <20230716194930.340186490@linuxfoundation.org>
+Message-ID: <20230716195001.544142915@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,86 +58,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kai Ma <kaima@hust.edu.cn>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 1b280598ab3bd8a2dc8b96a12530d5b1ee7a8f4a ]
+[ Upstream commit adfe19738b71a893da62cb2e30bd6bdb4299ea67 ]
 
-Use devm_of_iomap() instead of of_iomap() to automatically
-handle the unused ioremap region. If any error occurs, regions allocated by
-kzalloc() will leak, but using devm_kzalloc() instead will automatically
-free the memory using devm_kfree().
+Jonathan reports that failed attempts to reset a region (teardown its
+HDM decoder configuration) mistakenly advance the state of the region
+to "not committed". Revert to the previous state of the region on reset
+failure so that the reset can be re-attempted.
 
-Also, fix error handling of hws by adding unregister_hws label, which
-unregisters remaining hws when iomap failed.
-
-Fixes: 7154b046d8f3 ("clk: imx: Add initial support for i.MXRT1050 clock driver")
-Signed-off-by: Kai Ma <kaima@hust.edu.cn>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Acked-by: Jesse Taube <Mr.Bossman075@gmail.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230418113451.151312-1-kaima@hust.edu.cn
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reported-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Closes: http://lore.kernel.org/r/20230316171441.0000205b@Huawei.com
+Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/168696507968.3590522.14484000711718573626.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imxrt1050.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/cxl/core/region.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imxrt1050.c b/drivers/clk/imx/clk-imxrt1050.c
-index 26108e9f7e67a..64d8b65a81040 100644
---- a/drivers/clk/imx/clk-imxrt1050.c
-+++ b/drivers/clk/imx/clk-imxrt1050.c
-@@ -42,7 +42,7 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
- 	struct device_node *anp;
- 	int ret;
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index fa29bd2ec3227..bfdd424d68970 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -296,9 +296,11 @@ static ssize_t commit_store(struct device *dev, struct device_attribute *attr,
+ 	if (rc)
+ 		return rc;
  
--	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws,
-+	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
- 					  IMXRT1050_CLK_END), GFP_KERNEL);
- 	if (WARN_ON(!clk_hw_data))
- 		return -ENOMEM;
-@@ -53,10 +53,12 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
- 	hws[IMXRT1050_CLK_OSC] = imx_obtain_fixed_clk_hw(np, "osc");
- 
- 	anp = of_find_compatible_node(NULL, NULL, "fsl,imxrt-anatop");
--	pll_base = of_iomap(anp, 0);
-+	pll_base = devm_of_iomap(dev, anp, 0, NULL);
- 	of_node_put(anp);
--	if (WARN_ON(!pll_base))
--		return -ENOMEM;
-+	if (WARN_ON(IS_ERR(pll_base))) {
-+		ret = PTR_ERR(pll_base);
-+		goto unregister_hws;
-+	}
- 
- 	/* Anatop clocks */
- 	hws[IMXRT1050_CLK_DUMMY] = imx_clk_hw_fixed("dummy", 0UL);
-@@ -104,8 +106,10 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
- 
- 	/* CCM clocks */
- 	ccm_base = devm_platform_ioremap_resource(pdev, 0);
--	if (WARN_ON(IS_ERR(ccm_base)))
--		return PTR_ERR(ccm_base);
-+	if (WARN_ON(IS_ERR(ccm_base))) {
-+		ret = PTR_ERR(ccm_base);
-+		goto unregister_hws;
-+	}
- 
- 	hws[IMXRT1050_CLK_ARM_PODF] = imx_clk_hw_divider("arm_podf", "pll1_arm", ccm_base + 0x10, 0, 3);
- 	hws[IMXRT1050_CLK_PRE_PERIPH_SEL] = imx_clk_hw_mux("pre_periph_sel", ccm_base + 0x18, 18, 2,
-@@ -148,8 +152,12 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
- 	ret = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register clks for i.MXRT1050.\n");
--		imx_unregister_hw_clocks(hws, IMXRT1050_CLK_END);
-+		goto unregister_hws;
+-	if (commit)
++	if (commit) {
+ 		rc = cxl_region_decode_commit(cxlr);
+-	else {
++		if (rc == 0)
++			p->state = CXL_CONFIG_COMMIT;
++	} else {
+ 		p->state = CXL_CONFIG_RESET_PENDING;
+ 		up_write(&cxl_region_rwsem);
+ 		device_release_driver(&cxlr->dev);
+@@ -308,18 +310,20 @@ static ssize_t commit_store(struct device *dev, struct device_attribute *attr,
+ 		 * The lock was dropped, so need to revalidate that the reset is
+ 		 * still pending.
+ 		 */
+-		if (p->state == CXL_CONFIG_RESET_PENDING)
++		if (p->state == CXL_CONFIG_RESET_PENDING) {
+ 			rc = cxl_region_decode_reset(cxlr, p->interleave_ways);
++			/*
++			 * Revert to committed since there may still be active
++			 * decoders associated with this region, or move forward
++			 * to active to mark the reset successful
++			 */
++			if (rc)
++				p->state = CXL_CONFIG_COMMIT;
++			else
++				p->state = CXL_CONFIG_ACTIVE;
++		}
  	}
-+	return 0;
-+
-+unregister_hws:
-+	imx_unregister_hw_clocks(hws, IMXRT1050_CLK_END);
- 	return ret;
- }
- static const struct of_device_id imxrt1050_clk_of_match[] = {
+ 
+-	if (rc)
+-		goto out;
+-
+-	if (commit)
+-		p->state = CXL_CONFIG_COMMIT;
+-	else if (p->state == CXL_CONFIG_RESET_PENDING)
+-		p->state = CXL_CONFIG_ACTIVE;
+-
+ out:
+ 	up_write(&cxl_region_rwsem);
+ 
 -- 
 2.39.2
 
