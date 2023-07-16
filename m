@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D513A755675
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED75E75541C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:26:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232856AbjGPUun (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:50:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39576 "EHLO
+        id S231996AbjGPU06 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:26:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232785AbjGPUun (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:50:43 -0400
+        with ESMTP id S232011AbjGPU0y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:26:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42399E9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:50:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F96310DC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C2D2960DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:50:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54E4C433C7;
-        Sun, 16 Jul 2023 20:50:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EAA6660EBF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01635C433C7;
+        Sun, 16 Jul 2023 20:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540641;
-        bh=SBj9yeZaNjFgb0nWw2iiJ6T4HKXt1T/B3qdNRcQm6VI=;
+        s=korg; t=1689539201;
+        bh=mgDHGDdnZAuD9jNCP8yeJNFuskfACD3EkPOl7zGC0zM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a1o1rdrh0jmh3LXgDjoOOlsUI3kVF2P5z/OYaVwWKBO38F+NhaplkAWC8PwsU22PC
-         UaHKrp+4C5NxE/3RXk2WdCEFlsL5Pe18PkuV/o8VL9gfJ7cdnm5hYa/BL2ytb/G8JM
-         LmOGn86M+fIUDy7O+QmDm7h9eNTY0WP/umwZfm0Y=
+        b=Yntt+XwSNsUB1XLAv78cS7IYT2NU13X6/Pv9hQy+tuD29E1aV83tq36itfVcWyMeX
+         W9EvAf4zMrVK9cCUF2BqZqukTYYnElXn4Y3EooaP5HsbH1CWf8jwHNvNv0ATpQI4b8
+         W7u6x8oflLlKAl6iMggaWTK4B+09562IE9qniw3c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Umang Jain <umang.jain@ideasonboard.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 408/591] staging: vchiq_arm: mark vchiq_platform_init() static
+Subject: [PATCH 6.4 694/800] tcp: annotate data races in __tcp_oow_rate_limited()
 Date:   Sun, 16 Jul 2023 21:49:07 +0200
-Message-ID: <20230716194934.469206169@linuxfoundation.org>
+Message-ID: <20230716195005.242344723@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,70 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e152c58d7a48194d6b530d8e004d650fd01568b6 ]
+[ Upstream commit 998127cdb4699b9d470a9348ffe9f1154346be5f ]
 
-This function has no callers from other files, and the declaration
-was removed a while ago, causing a W=1 warning:
+request sockets are lockless, __tcp_oow_rate_limited() could be called
+on the same object from different cpus. This is harmless.
 
-drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c:465:5: error: no previous prototype for 'vchiq_platform_init'
+Add READ_ONCE()/WRITE_ONCE() annotations to avoid a KCSAN report.
 
-Marking it static solves this problem but introduces a new warning
-since gcc determines that 'g_fragments_base' is never initialized
-in some kernel configurations:
-
-In file included from include/linux/string.h:254,
-                 from include/linux/bitmap.h:11,
-                 from include/linux/cpumask.h:12,
-                 from include/linux/mm_types_task.h:14,
-                 from include/linux/mm_types.h:5,
-                 from include/linux/buildid.h:5,
-                 from include/linux/module.h:14,
-                 from drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c:8:
-In function 'memcpy_to_page',
-    inlined from 'free_pagelist' at drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c:433:4:
-include/linux/fortify-string.h:57:33: error: argument 2 null where non-null expected [-Werror=nonnull]
-include/linux/highmem.h:427:9: note: in expansion of macro 'memcpy'
-  427 |         memcpy(to + offset, from, len);
-      |         ^~~~~~
-
-Add a NULL pointer check for this in addition to the static annotation
-to avoid both.
-
-Fixes: 89cc4218f640 ("staging: vchiq_arm: drop unnecessary declarations")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Umang Jain <umang.jain@ideasonboard.com>
-Link: https://lore.kernel.org/r/20230516202603.560554-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4ce7e93cb3fe ("tcp: rate limit ACK sent by SYN_RECV request sockets")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_input.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index dc33490ba7fbb..705c5e283c27b 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -415,7 +415,7 @@ free_pagelist(struct vchiq_instance *instance, struct vchiq_pagelist_info *pagel
- 	pagelistinfo->scatterlist_mapped = 0;
- 
- 	/* Deal with any partial cache lines (fragments) */
--	if (pagelist->type >= PAGELIST_READ_WITH_FRAGMENTS) {
-+	if (pagelist->type >= PAGELIST_READ_WITH_FRAGMENTS && g_fragments_base) {
- 		char *fragments = g_fragments_base +
- 			(pagelist->type - PAGELIST_READ_WITH_FRAGMENTS) *
- 			g_fragments_size;
-@@ -462,7 +462,7 @@ free_pagelist(struct vchiq_instance *instance, struct vchiq_pagelist_info *pagel
- 	cleanup_pagelistinfo(instance, pagelistinfo);
- }
- 
--int vchiq_platform_init(struct platform_device *pdev, struct vchiq_state *state)
-+static int vchiq_platform_init(struct platform_device *pdev, struct vchiq_state *state)
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index bf8b22218dd46..57f1e4883b761 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -3590,8 +3590,11 @@ static int tcp_ack_update_window(struct sock *sk, const struct sk_buff *skb, u32
+ static bool __tcp_oow_rate_limited(struct net *net, int mib_idx,
+ 				   u32 *last_oow_ack_time)
  {
- 	struct device *dev = &pdev->dev;
- 	struct vchiq_drvdata *drvdata = platform_get_drvdata(pdev);
+-	if (*last_oow_ack_time) {
+-		s32 elapsed = (s32)(tcp_jiffies32 - *last_oow_ack_time);
++	/* Paired with the WRITE_ONCE() in this function. */
++	u32 val = READ_ONCE(*last_oow_ack_time);
++
++	if (val) {
++		s32 elapsed = (s32)(tcp_jiffies32 - val);
+ 
+ 		if (0 <= elapsed &&
+ 		    elapsed < READ_ONCE(net->ipv4.sysctl_tcp_invalid_ratelimit)) {
+@@ -3600,7 +3603,10 @@ static bool __tcp_oow_rate_limited(struct net *net, int mib_idx,
+ 		}
+ 	}
+ 
+-	*last_oow_ack_time = tcp_jiffies32;
++	/* Paired with the prior READ_ONCE() and with itself,
++	 * as we might be lockless.
++	 */
++	WRITE_ONCE(*last_oow_ack_time, tcp_jiffies32);
+ 
+ 	return false;	/* not rate-limited: go ahead, send dupack now! */
+ }
 -- 
 2.39.2
 
