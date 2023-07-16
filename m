@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7815A755460
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC6AC7556A5
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232097AbjGPU3s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51174 "EHLO
+        id S232924AbjGPUwd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:52:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232088AbjGPU3r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:47 -0400
+        with ESMTP id S232916AbjGPUwd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4EB19F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B419E9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A23E60DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E443C433C7;
-        Sun, 16 Jul 2023 20:29:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D3EBE60DFD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58A7C433C8;
+        Sun, 16 Jul 2023 20:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539385;
-        bh=PCvQDR+/kKuLY05zJi2ZYIZBuBuP4+tg31evnloapVY=;
+        s=korg; t=1689540751;
+        bh=oNcKor8YxzGCcaFkm4zYjmsdqphe2u6l+7pp4eimGvg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uQu/sNLqQjaiMzSPUvbeTuc3yR13KddokUEdu4NnsIP8FABPBV8eswLUw9KgsvbXf
-         pXNMlOFyrUyu3JBNnEfpN8MlYnq7lwvuCv1/JnqhEbOiBCcsvC3z4P+AXZ8ePUDHWh
-         43M1doVOB7FbdWT66LZv3sKbXRqkGEyJuPHqUtSs=
+        b=YOrg/M5L4JNIP0XSUMC5najH59sx6D0oqWPOlgsy37l4o5I0pGyEXpBXUatKny9x8
+         HEl5ymCocAacoNm8SbFcou480oXCjp0KQktlc4mrGOxNaToad83XkkjqqOwgLZ5zcK
+         xVd5sT6STzdZK91qs8H9Go7InDm23ftHqBtjseEk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Naohiro Aota <naohiro.aota@wdc.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.4 760/800] btrfs: reinsert BGs failed to reclaim
-Date:   Sun, 16 Jul 2023 21:50:13 +0200
-Message-ID: <20230716195006.798089564@linuxfoundation.org>
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 475/591] net: mscc: ocelot: dont report that RX timestamping is enabled by default
+Date:   Sun, 16 Jul 2023 21:50:14 +0200
+Message-ID: <20230716194936.192827557@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,37 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Naohiro Aota <naota@elisp.net>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 7e27180994383b7c741ad87749db01e4989a02ba upstream.
+[ Upstream commit 4fd44b82b7aceaa35c2901c6546d2c4198e0799d ]
 
-The reclaim process can temporarily fail. For example, if the space is
-getting tight, it fails to make the block group read-only. If there are no
-further writes on that block group, the block group will never get back to
-the reclaim list, and the BG never gets reclaimed. In a certain workload,
-we can leave many such block groups never reclaimed.
+PTP RX timestamping should be enabled when the user requests it, not by
+default. If it is enabled by default, it can be problematic when the
+ocelot driver is a DSA master, and it sidesteps what DSA tries to avoid
+through __dsa_master_hwtstamp_validate().
 
-So, let's get it back to the list and give it a chance to be reclaimed.
+Additionally, after the change which made ocelot trap PTP packets only
+to the CPU at ocelot_hwtstamp_set() time, it is no longer even true that
+RX timestamping is enabled by default, because until ocelot_hwtstamp_set()
+is called, the PTP traps are actually not set up. So the rx_filter field
+of ocelot->hwtstamp_config reflects an incorrect reality.
 
-Fixes: 18bb8bbf13c1 ("btrfs: zoned: automatically reclaim zones")
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 96ca08c05838 ("net: mscc: ocelot: set up traps for PTP packets")
+Fixes: 4e3b0468e6d7 ("net: mscc: PTP Hardware Clock (PHC) support")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mscc/ocelot_ptp.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1837,6 +1837,8 @@ void btrfs_reclaim_bgs_work(struct work_
- 		}
+diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
+index 2180ae94c7447..673bfd70867a6 100644
+--- a/drivers/net/ethernet/mscc/ocelot_ptp.c
++++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
+@@ -824,11 +824,6 @@ int ocelot_init_timestamp(struct ocelot *ocelot,
  
- next:
-+		if (ret)
-+			btrfs_mark_bg_to_reclaim(bg);
- 		btrfs_put_block_group(bg);
+ 	ocelot_write(ocelot, PTP_CFG_MISC_PTP_EN, PTP_CFG_MISC);
  
- 		mutex_unlock(&fs_info->reclaim_bgs_lock);
+-	/* There is no device reconfiguration, PTP Rx stamping is always
+-	 * enabled.
+-	 */
+-	ocelot->hwtstamp_config.rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+-
+ 	return 0;
+ }
+ EXPORT_SYMBOL(ocelot_init_timestamp);
+-- 
+2.39.2
+
 
 
