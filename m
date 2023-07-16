@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACCA475546A
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64D007556CD
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:54:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232126AbjGPUaG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:30:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51446 "EHLO
+        id S232982AbjGPUyP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:54:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232100AbjGPUaF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:30:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E19DEE40
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:30:03 -0700 (PDT)
+        with ESMTP id S232977AbjGPUyO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:54:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E94E9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:54:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6826860DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:30:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72145C433C9;
-        Sun, 16 Jul 2023 20:30:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A601960DFD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:54:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8640C433C8;
+        Sun, 16 Jul 2023 20:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539402;
-        bh=rE00nsTelNN9dyFmvwGWbyYm/2WqW6CqhFeMwqy9xMI=;
+        s=korg; t=1689540852;
+        bh=qULJVDIIBfIn8eSjtQWuXTA33qRrNmamBYyU7NVU44c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GR94146bqsBhNeMX/iY/ITKTZeRW5xLSD1YX1gMc9cl+e7UG67kAMVWfuFC3SjPbT
-         YjQ4quLhzInsNtOtHWRdLNq1AoreYFFeFiJ5ujqgzWC2gSX46qgq427+yMVqZCdGUJ
-         zvFufWAqrnTP9uiRfCYb5pZhcclJExEJTnea8g+0=
+        b=QPxTIWrey0XDRrxS0ydLB0n0Fn6HCQ/Z0hVxZv5CNl1dLBcuQsqd2wfFszOatXNXY
+         cIIzpDtR/M6Zn7Nbb/pqZbwXKYloviPhFfhhDDh3TyHfEWHcGBntoeh+aPtgag6QGG
+         jdiIOgzgAVk/Agnv5YyLTPgOYbLGnJ+89KE/UErs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
-        Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.4 796/800] netfilter: nf_tables: prevent OOB access in nft_byteorder_eval
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 510/591] net: dsa: sja1105: always enable the send_meta options
 Date:   Sun, 16 Jul 2023 21:50:49 +0200
-Message-ID: <20230716195007.638994827@linuxfoundation.org>
+Message-ID: <20230716194937.079776376@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,211 +57,315 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit caf3ef7468f7534771b5c44cd8dbd6f7f87c2cbd upstream.
+[ Upstream commit a372d66af48506d9f7aaae2a474cd18f14d98cb8 ]
 
-When evaluating byteorder expressions with size 2, a union with 32-bit and
-16-bit members is used. Since the 16-bit members are aligned to 32-bit,
-the array accesses will be out-of-bounds.
+incl_srcpt has the limitation, mentioned in commit b4638af8885a ("net:
+dsa: sja1105: always enable the INCL_SRCPT option"), that frames with a
+MAC DA of 01:80:c2:xx:yy:zz will be received as 01:80:c2:00:00:zz unless
+PTP RX timestamping is enabled.
 
-It may lead to a stack-out-of-bounds access like the one below:
+The incl_srcpt option was initially unconditionally enabled, then that
+changed with commit 42824463d38d ("net: dsa: sja1105: Limit use of
+incl_srcpt to bridge+vlan mode"), then again with b4638af8885a ("net:
+dsa: sja1105: always enable the INCL_SRCPT option"). Bottom line is that
+it now needs to be always enabled, otherwise the driver does not have a
+reliable source of information regarding source_port and switch_id for
+link-local traffic (tag_8021q VLANs may be imprecise since now they
+identify an entire bridging domain when ports are not standalone).
 
-[   23.095215] ==================================================================
-[   23.095625] BUG: KASAN: stack-out-of-bounds in nft_byteorder_eval+0x13c/0x320
-[   23.096020] Read of size 2 at addr ffffc90000007948 by task ping/115
-[   23.096358]
-[   23.096456] CPU: 0 PID: 115 Comm: ping Not tainted 6.4.0+ #413
-[   23.096770] Call Trace:
-[   23.096910]  <IRQ>
-[   23.097030]  dump_stack_lvl+0x60/0xc0
-[   23.097218]  print_report+0xcf/0x630
-[   23.097388]  ? nft_byteorder_eval+0x13c/0x320
-[   23.097577]  ? kasan_addr_to_slab+0xd/0xc0
-[   23.097760]  ? nft_byteorder_eval+0x13c/0x320
-[   23.097949]  kasan_report+0xc9/0x110
-[   23.098106]  ? nft_byteorder_eval+0x13c/0x320
-[   23.098298]  __asan_load2+0x83/0xd0
-[   23.098453]  nft_byteorder_eval+0x13c/0x320
-[   23.098659]  nft_do_chain+0x1c8/0xc50
-[   23.098852]  ? __pfx_nft_do_chain+0x10/0x10
-[   23.099078]  ? __kasan_check_read+0x11/0x20
-[   23.099295]  ? __pfx___lock_acquire+0x10/0x10
-[   23.099535]  ? __pfx___lock_acquire+0x10/0x10
-[   23.099745]  ? __kasan_check_read+0x11/0x20
-[   23.099929]  nft_do_chain_ipv4+0xfe/0x140
-[   23.100105]  ? __pfx_nft_do_chain_ipv4+0x10/0x10
-[   23.100327]  ? lock_release+0x204/0x400
-[   23.100515]  ? nf_hook.constprop.0+0x340/0x550
-[   23.100779]  nf_hook_slow+0x6c/0x100
-[   23.100977]  ? __pfx_nft_do_chain_ipv4+0x10/0x10
-[   23.101223]  nf_hook.constprop.0+0x334/0x550
-[   23.101443]  ? __pfx_ip_local_deliver_finish+0x10/0x10
-[   23.101677]  ? __pfx_nf_hook.constprop.0+0x10/0x10
-[   23.101882]  ? __pfx_ip_rcv_finish+0x10/0x10
-[   23.102071]  ? __pfx_ip_local_deliver_finish+0x10/0x10
-[   23.102291]  ? rcu_read_lock_held+0x4b/0x70
-[   23.102481]  ip_local_deliver+0xbb/0x110
-[   23.102665]  ? __pfx_ip_rcv+0x10/0x10
-[   23.102839]  ip_rcv+0x199/0x2a0
-[   23.102980]  ? __pfx_ip_rcv+0x10/0x10
-[   23.103140]  __netif_receive_skb_one_core+0x13e/0x150
-[   23.103362]  ? __pfx___netif_receive_skb_one_core+0x10/0x10
-[   23.103647]  ? mark_held_locks+0x48/0xa0
-[   23.103819]  ? process_backlog+0x36c/0x380
-[   23.103999]  __netif_receive_skb+0x23/0xc0
-[   23.104179]  process_backlog+0x91/0x380
-[   23.104350]  __napi_poll.constprop.0+0x66/0x360
-[   23.104589]  ? net_rx_action+0x1cb/0x610
-[   23.104811]  net_rx_action+0x33e/0x610
-[   23.105024]  ? _raw_spin_unlock+0x23/0x50
-[   23.105257]  ? __pfx_net_rx_action+0x10/0x10
-[   23.105485]  ? mark_held_locks+0x48/0xa0
-[   23.105741]  __do_softirq+0xfa/0x5ab
-[   23.105956]  ? __dev_queue_xmit+0x765/0x1c00
-[   23.106193]  do_softirq.part.0+0x49/0xc0
-[   23.106423]  </IRQ>
-[   23.106547]  <TASK>
-[   23.106670]  __local_bh_enable_ip+0xf5/0x120
-[   23.106903]  __dev_queue_xmit+0x789/0x1c00
-[   23.107131]  ? __pfx___dev_queue_xmit+0x10/0x10
-[   23.107381]  ? find_held_lock+0x8e/0xb0
-[   23.107585]  ? lock_release+0x204/0x400
-[   23.107798]  ? neigh_resolve_output+0x185/0x350
-[   23.108049]  ? mark_held_locks+0x48/0xa0
-[   23.108265]  ? neigh_resolve_output+0x185/0x350
-[   23.108514]  neigh_resolve_output+0x246/0x350
-[   23.108753]  ? neigh_resolve_output+0x246/0x350
-[   23.109003]  ip_finish_output2+0x3c3/0x10b0
-[   23.109250]  ? __pfx_ip_finish_output2+0x10/0x10
-[   23.109510]  ? __pfx_nf_hook+0x10/0x10
-[   23.109732]  __ip_finish_output+0x217/0x390
-[   23.109978]  ip_finish_output+0x2f/0x130
-[   23.110207]  ip_output+0xc9/0x170
-[   23.110404]  ip_push_pending_frames+0x1a0/0x240
-[   23.110652]  raw_sendmsg+0x102e/0x19e0
-[   23.110871]  ? __pfx_raw_sendmsg+0x10/0x10
-[   23.111093]  ? lock_release+0x204/0x400
-[   23.111304]  ? __mod_lruvec_page_state+0x148/0x330
-[   23.111567]  ? find_held_lock+0x8e/0xb0
-[   23.111777]  ? find_held_lock+0x8e/0xb0
-[   23.111993]  ? __rcu_read_unlock+0x7c/0x2f0
-[   23.112225]  ? aa_sk_perm+0x18a/0x550
-[   23.112431]  ? filemap_map_pages+0x4f1/0x900
-[   23.112665]  ? __pfx_aa_sk_perm+0x10/0x10
-[   23.112880]  ? find_held_lock+0x8e/0xb0
-[   23.113098]  inet_sendmsg+0xa0/0xb0
-[   23.113297]  ? inet_sendmsg+0xa0/0xb0
-[   23.113500]  ? __pfx_inet_sendmsg+0x10/0x10
-[   23.113727]  sock_sendmsg+0xf4/0x100
-[   23.113924]  ? move_addr_to_kernel.part.0+0x4f/0xa0
-[   23.114190]  __sys_sendto+0x1d4/0x290
-[   23.114391]  ? __pfx___sys_sendto+0x10/0x10
-[   23.114621]  ? __pfx_mark_lock.part.0+0x10/0x10
-[   23.114869]  ? lock_release+0x204/0x400
-[   23.115076]  ? find_held_lock+0x8e/0xb0
-[   23.115287]  ? rcu_is_watching+0x23/0x60
-[   23.115503]  ? __rseq_handle_notify_resume+0x6e2/0x860
-[   23.115778]  ? __kasan_check_write+0x14/0x30
-[   23.116008]  ? blkcg_maybe_throttle_current+0x8d/0x770
-[   23.116285]  ? mark_held_locks+0x28/0xa0
-[   23.116503]  ? do_syscall_64+0x37/0x90
-[   23.116713]  __x64_sys_sendto+0x7f/0xb0
-[   23.116924]  do_syscall_64+0x59/0x90
-[   23.117123]  ? irqentry_exit_to_user_mode+0x25/0x30
-[   23.117387]  ? irqentry_exit+0x77/0xb0
-[   23.117593]  ? exc_page_fault+0x92/0x140
-[   23.117806]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[   23.118081] RIP: 0033:0x7f744aee2bba
-[   23.118282] Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
-[   23.119237] RSP: 002b:00007ffd04a7c9f8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-[   23.119644] RAX: ffffffffffffffda RBX: 00007ffd04a7e0a0 RCX: 00007f744aee2bba
-[   23.120023] RDX: 0000000000000040 RSI: 000056488e9e6300 RDI: 0000000000000003
-[   23.120413] RBP: 000056488e9e6300 R08: 00007ffd04a80320 R09: 0000000000000010
-[   23.120809] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000040
-[   23.121219] R13: 00007ffd04a7dc38 R14: 00007ffd04a7ca00 R15: 00007ffd04a7e0a0
-[   23.121617]  </TASK>
-[   23.121749]
-[   23.121845] The buggy address belongs to the virtual mapping at
-[   23.121845]  [ffffc90000000000, ffffc90000009000) created by:
-[   23.121845]  irq_init_percpu_irqstack+0x1cf/0x270
-[   23.122707]
-[   23.122803] The buggy address belongs to the physical page:
-[   23.123104] page:0000000072ac19f0 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x24a09
-[   23.123609] flags: 0xfffffc0001000(reserved|node=0|zone=1|lastcpupid=0x1fffff)
-[   23.123998] page_type: 0xffffffff()
-[   23.124194] raw: 000fffffc0001000 ffffea0000928248 ffffea0000928248 0000000000000000
-[   23.124610] raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-[   23.125023] page dumped because: kasan: bad access detected
-[   23.125326]
-[   23.125421] Memory state around the buggy address:
-[   23.125682]  ffffc90000007800: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   23.126072]  ffffc90000007880: 00 00 00 00 00 f1 f1 f1 f1 f1 f1 00 00 f2 f2 00
-[   23.126455] >ffffc90000007900: 00 00 00 00 00 00 00 00 00 f2 f2 f2 f2 00 00 00
-[   23.126840]                                               ^
-[   23.127138]  ffffc90000007980: 00 00 00 00 00 00 00 00 00 00 00 00 00 f3 f3 f3
-[   23.127522]  ffffc90000007a00: f3 00 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1
-[   23.127906] ==================================================================
-[   23.128324] Disabling lock debugging due to kernel taint
+If we accept that PTP RX timestamping (and therefore, meta frame
+generation) is always enabled in hardware, then that limitation could be
+avoided and packets with any MAC DA can be properly received, because
+meta frames do contain the original bytes from the MAC DA of their
+associated link-local packet.
 
-Using simple s16 pointers for the 16-bit accesses fixes the problem. For
-the 32-bit accesses, src and dst can be used directly.
+This change enables meta frame generation unconditionally, which also
+has the nice side effects of simplifying the switch control path
+(a switch reset is no longer required on hwtstamping settings change)
+and the tagger data path (it no longer needs to be informed whether to
+expect meta frames or not - it always does).
 
-Fixes: 96518518cc41 ("netfilter: add nftables")
-Cc: stable@vger.kernel.org
-Reported-by: Tanguy DUBROCA (@SidewayRE) from @Synacktiv working with ZDI
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 227d07a07ef1 ("net: dsa: sja1105: Add support for traffic through standalone ports")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_byteorder.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/dsa/sja1105/sja1105.h      |  2 +-
+ drivers/net/dsa/sja1105/sja1105_main.c |  5 ++-
+ drivers/net/dsa/sja1105/sja1105_ptp.c  | 48 +++-----------------------
+ include/linux/dsa/sja1105.h            |  4 ---
+ net/dsa/tag_sja1105.c                  | 45 ------------------------
+ 5 files changed, 7 insertions(+), 97 deletions(-)
 
---- a/net/netfilter/nft_byteorder.c
-+++ b/net/netfilter/nft_byteorder.c
-@@ -30,11 +30,11 @@ void nft_byteorder_eval(const struct nft
- 	const struct nft_byteorder *priv = nft_expr_priv(expr);
- 	u32 *src = &regs->data[priv->sreg];
- 	u32 *dst = &regs->data[priv->dreg];
--	union { u32 u32; u16 u16; } *s, *d;
-+	u16 *s16, *d16;
- 	unsigned int i;
+diff --git a/drivers/net/dsa/sja1105/sja1105.h b/drivers/net/dsa/sja1105/sja1105.h
+index 9ba2ec2b966d9..fb3cd4c78faa8 100644
+--- a/drivers/net/dsa/sja1105/sja1105.h
++++ b/drivers/net/dsa/sja1105/sja1105.h
+@@ -250,6 +250,7 @@ struct sja1105_private {
+ 	unsigned long ucast_egress_floods;
+ 	unsigned long bcast_egress_floods;
+ 	unsigned long hwts_tx_en;
++	unsigned long hwts_rx_en;
+ 	const struct sja1105_info *info;
+ 	size_t max_xfer_len;
+ 	struct spi_device *spidev;
+@@ -287,7 +288,6 @@ struct sja1105_spi_message {
+ /* From sja1105_main.c */
+ enum sja1105_reset_reason {
+ 	SJA1105_VLAN_FILTERING = 0,
+-	SJA1105_RX_HWTSTAMPING,
+ 	SJA1105_AGEING_TIME,
+ 	SJA1105_SCHEDULING,
+ 	SJA1105_BEST_EFFORT_POLICING,
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index 8bd61f2ebb2ad..947e8f7c09880 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -867,11 +867,11 @@ static int sja1105_init_general_params(struct sja1105_private *priv)
+ 		.mac_fltres1 = SJA1105_LINKLOCAL_FILTER_A,
+ 		.mac_flt1    = SJA1105_LINKLOCAL_FILTER_A_MASK,
+ 		.incl_srcpt1 = true,
+-		.send_meta1  = false,
++		.send_meta1  = true,
+ 		.mac_fltres0 = SJA1105_LINKLOCAL_FILTER_B,
+ 		.mac_flt0    = SJA1105_LINKLOCAL_FILTER_B_MASK,
+ 		.incl_srcpt0 = true,
+-		.send_meta0  = false,
++		.send_meta0  = true,
+ 		/* Default to an invalid value */
+ 		.mirr_port = priv->ds->num_ports,
+ 		/* No TTEthernet */
+@@ -2215,7 +2215,6 @@ static int sja1105_reload_cbs(struct sja1105_private *priv)
  
--	s = (void *)src;
--	d = (void *)dst;
-+	s16 = (void *)src;
-+	d16 = (void *)dst;
+ static const char * const sja1105_reset_reasons[] = {
+ 	[SJA1105_VLAN_FILTERING] = "VLAN filtering",
+-	[SJA1105_RX_HWTSTAMPING] = "RX timestamping",
+ 	[SJA1105_AGEING_TIME] = "Ageing time",
+ 	[SJA1105_SCHEDULING] = "Time-aware scheduling",
+ 	[SJA1105_BEST_EFFORT_POLICING] = "Best-effort policing",
+diff --git a/drivers/net/dsa/sja1105/sja1105_ptp.c b/drivers/net/dsa/sja1105/sja1105_ptp.c
+index 30fb2cc40164b..a7d41e7813982 100644
+--- a/drivers/net/dsa/sja1105/sja1105_ptp.c
++++ b/drivers/net/dsa/sja1105/sja1105_ptp.c
+@@ -58,35 +58,10 @@ enum sja1105_ptp_clk_mode {
+ #define ptp_data_to_sja1105(d) \
+ 		container_of((d), struct sja1105_private, ptp_data)
  
- 	switch (priv->size) {
- 	case 8: {
-@@ -62,11 +62,11 @@ void nft_byteorder_eval(const struct nft
- 		switch (priv->op) {
- 		case NFT_BYTEORDER_NTOH:
- 			for (i = 0; i < priv->len / 4; i++)
--				d[i].u32 = ntohl((__force __be32)s[i].u32);
-+				dst[i] = ntohl((__force __be32)src[i]);
- 			break;
- 		case NFT_BYTEORDER_HTON:
- 			for (i = 0; i < priv->len / 4; i++)
--				d[i].u32 = (__force __u32)htonl(s[i].u32);
-+				dst[i] = (__force __u32)htonl(src[i]);
- 			break;
- 		}
+-/* Must be called only while the RX timestamping state of the tagger
+- * is turned off
+- */
+-static int sja1105_change_rxtstamping(struct sja1105_private *priv,
+-				      bool on)
+-{
+-	struct sja1105_ptp_data *ptp_data = &priv->ptp_data;
+-	struct sja1105_general_params_entry *general_params;
+-	struct sja1105_table *table;
+-
+-	table = &priv->static_config.tables[BLK_IDX_GENERAL_PARAMS];
+-	general_params = table->entries;
+-	general_params->send_meta1 = on;
+-	general_params->send_meta0 = on;
+-
+-	ptp_cancel_worker_sync(ptp_data->clock);
+-	skb_queue_purge(&ptp_data->skb_txtstamp_queue);
+-	skb_queue_purge(&ptp_data->skb_rxtstamp_queue);
+-
+-	return sja1105_static_config_reload(priv, SJA1105_RX_HWTSTAMPING);
+-}
+-
+ int sja1105_hwtstamp_set(struct dsa_switch *ds, int port, struct ifreq *ifr)
+ {
+-	struct sja1105_tagger_data *tagger_data = sja1105_tagger_data(ds);
+ 	struct sja1105_private *priv = ds->priv;
+ 	struct hwtstamp_config config;
+-	bool rx_on;
+-	int rc;
+ 
+ 	if (copy_from_user(&config, ifr->ifr_data, sizeof(config)))
+ 		return -EFAULT;
+@@ -104,26 +79,13 @@ int sja1105_hwtstamp_set(struct dsa_switch *ds, int port, struct ifreq *ifr)
+ 
+ 	switch (config.rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+-		rx_on = false;
++		priv->hwts_rx_en &= ~BIT(port);
  		break;
-@@ -74,11 +74,11 @@ void nft_byteorder_eval(const struct nft
- 		switch (priv->op) {
- 		case NFT_BYTEORDER_NTOH:
- 			for (i = 0; i < priv->len / 2; i++)
--				d[i].u16 = ntohs((__force __be16)s[i].u16);
-+				d16[i] = ntohs((__force __be16)s16[i]);
- 			break;
- 		case NFT_BYTEORDER_HTON:
- 			for (i = 0; i < priv->len / 2; i++)
--				d[i].u16 = (__force __u16)htons(s[i].u16);
-+				d16[i] = (__force __u16)htons(s16[i]);
- 			break;
- 		}
+ 	default:
+-		rx_on = true;
++		priv->hwts_rx_en |= BIT(port);
  		break;
+ 	}
+ 
+-	if (rx_on != tagger_data->rxtstamp_get_state(ds)) {
+-		tagger_data->rxtstamp_set_state(ds, false);
+-
+-		rc = sja1105_change_rxtstamping(priv, rx_on);
+-		if (rc < 0) {
+-			dev_err(ds->dev,
+-				"Failed to change RX timestamping: %d\n", rc);
+-			return rc;
+-		}
+-		if (rx_on)
+-			tagger_data->rxtstamp_set_state(ds, true);
+-	}
+-
+ 	if (copy_to_user(ifr->ifr_data, &config, sizeof(config)))
+ 		return -EFAULT;
+ 	return 0;
+@@ -131,7 +93,6 @@ int sja1105_hwtstamp_set(struct dsa_switch *ds, int port, struct ifreq *ifr)
+ 
+ int sja1105_hwtstamp_get(struct dsa_switch *ds, int port, struct ifreq *ifr)
+ {
+-	struct sja1105_tagger_data *tagger_data = sja1105_tagger_data(ds);
+ 	struct sja1105_private *priv = ds->priv;
+ 	struct hwtstamp_config config;
+ 
+@@ -140,7 +101,7 @@ int sja1105_hwtstamp_get(struct dsa_switch *ds, int port, struct ifreq *ifr)
+ 		config.tx_type = HWTSTAMP_TX_ON;
+ 	else
+ 		config.tx_type = HWTSTAMP_TX_OFF;
+-	if (tagger_data->rxtstamp_get_state(ds))
++	if (priv->hwts_rx_en & BIT(port))
+ 		config.rx_filter = HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
+ 	else
+ 		config.rx_filter = HWTSTAMP_FILTER_NONE;
+@@ -413,11 +374,10 @@ static long sja1105_rxtstamp_work(struct ptp_clock_info *ptp)
+ 
+ bool sja1105_rxtstamp(struct dsa_switch *ds, int port, struct sk_buff *skb)
+ {
+-	struct sja1105_tagger_data *tagger_data = sja1105_tagger_data(ds);
+ 	struct sja1105_private *priv = ds->priv;
+ 	struct sja1105_ptp_data *ptp_data = &priv->ptp_data;
+ 
+-	if (!tagger_data->rxtstamp_get_state(ds))
++	if (!(priv->hwts_rx_en & BIT(port)))
+ 		return false;
+ 
+ 	/* We need to read the full PTP clock to reconstruct the Rx
+diff --git a/include/linux/dsa/sja1105.h b/include/linux/dsa/sja1105.h
+index 159e43171cccf..c177322f793d6 100644
+--- a/include/linux/dsa/sja1105.h
++++ b/include/linux/dsa/sja1105.h
+@@ -48,13 +48,9 @@ struct sja1105_deferred_xmit_work {
+ 
+ /* Global tagger data */
+ struct sja1105_tagger_data {
+-	/* Tagger to switch */
+ 	void (*xmit_work_fn)(struct kthread_work *work);
+ 	void (*meta_tstamp_handler)(struct dsa_switch *ds, int port, u8 ts_id,
+ 				    enum sja1110_meta_tstamp dir, u64 tstamp);
+-	/* Switch to tagger */
+-	bool (*rxtstamp_get_state)(struct dsa_switch *ds);
+-	void (*rxtstamp_set_state)(struct dsa_switch *ds, bool on);
+ };
+ 
+ struct sja1105_skb_cb {
+diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
+index d3f27cd5fe244..143348962a216 100644
+--- a/net/dsa/tag_sja1105.c
++++ b/net/dsa/tag_sja1105.c
+@@ -53,11 +53,8 @@
+ #define SJA1110_TX_TRAILER_LEN			4
+ #define SJA1110_MAX_PADDING_LEN			15
+ 
+-#define SJA1105_HWTS_RX_EN			0
+-
+ struct sja1105_tagger_private {
+ 	struct sja1105_tagger_data data; /* Must be first */
+-	unsigned long state;
+ 	/* Protects concurrent access to the meta state machine
+ 	 * from taggers running on multiple ports on SMP systems
+ 	 */
+@@ -387,10 +384,6 @@ static struct sk_buff
+ 
+ 		priv = sja1105_tagger_private(ds);
+ 
+-		if (!test_bit(SJA1105_HWTS_RX_EN, &priv->state))
+-			/* Do normal processing. */
+-			return skb;
+-
+ 		spin_lock(&priv->meta_lock);
+ 		/* Was this a link-local frame instead of the meta
+ 		 * that we were expecting?
+@@ -426,12 +419,6 @@ static struct sk_buff
+ 
+ 		priv = sja1105_tagger_private(ds);
+ 
+-		/* Drop the meta frame if we're not in the right state
+-		 * to process it.
+-		 */
+-		if (!test_bit(SJA1105_HWTS_RX_EN, &priv->state))
+-			return NULL;
+-
+ 		spin_lock(&priv->meta_lock);
+ 
+ 		stampable_skb = priv->stampable_skb;
+@@ -467,30 +454,6 @@ static struct sk_buff
+ 	return skb;
+ }
+ 
+-static bool sja1105_rxtstamp_get_state(struct dsa_switch *ds)
+-{
+-	struct sja1105_tagger_private *priv = sja1105_tagger_private(ds);
+-
+-	return test_bit(SJA1105_HWTS_RX_EN, &priv->state);
+-}
+-
+-static void sja1105_rxtstamp_set_state(struct dsa_switch *ds, bool on)
+-{
+-	struct sja1105_tagger_private *priv = sja1105_tagger_private(ds);
+-
+-	if (on)
+-		set_bit(SJA1105_HWTS_RX_EN, &priv->state);
+-	else
+-		clear_bit(SJA1105_HWTS_RX_EN, &priv->state);
+-
+-	/* Initialize the meta state machine to a known state */
+-	if (!priv->stampable_skb)
+-		return;
+-
+-	kfree_skb(priv->stampable_skb);
+-	priv->stampable_skb = NULL;
+-}
+-
+ static bool sja1105_skb_has_tag_8021q(const struct sk_buff *skb)
+ {
+ 	u16 tpid = ntohs(eth_hdr(skb)->h_proto);
+@@ -547,9 +510,6 @@ static struct sk_buff *sja1105_rcv(struct sk_buff *skb,
+ 		 */
+ 		source_port = hdr->h_dest[3];
+ 		switch_id = hdr->h_dest[4];
+-		/* Clear the DMAC bytes that were mangled by the switch */
+-		hdr->h_dest[3] = 0;
+-		hdr->h_dest[4] = 0;
+ 	} else if (is_meta) {
+ 		sja1105_meta_unpack(skb, &meta);
+ 		source_port = meta.source_port;
+@@ -780,7 +740,6 @@ static void sja1105_disconnect(struct dsa_switch *ds)
+ 
+ static int sja1105_connect(struct dsa_switch *ds)
+ {
+-	struct sja1105_tagger_data *tagger_data;
+ 	struct sja1105_tagger_private *priv;
+ 	struct kthread_worker *xmit_worker;
+ 	int err;
+@@ -800,10 +759,6 @@ static int sja1105_connect(struct dsa_switch *ds)
+ 	}
+ 
+ 	priv->xmit_worker = xmit_worker;
+-	/* Export functions for switch driver use */
+-	tagger_data = &priv->data;
+-	tagger_data->rxtstamp_get_state = sja1105_rxtstamp_get_state;
+-	tagger_data->rxtstamp_set_state = sja1105_rxtstamp_set_state;
+ 	ds->tagger_data = priv;
+ 
+ 	return 0;
+-- 
+2.39.2
+
 
 
