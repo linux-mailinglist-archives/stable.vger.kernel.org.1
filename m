@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36C5E755676
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6721875541D
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232865AbjGPUur (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:50:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39608 "EHLO
+        id S231992AbjGPU1A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:27:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232785AbjGPUuq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:50:46 -0400
+        with ESMTP id S232007AbjGPU05 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:26:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 031CCD9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:50:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF96610EB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F8D960EAD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:50:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997BCC433C8;
-        Sun, 16 Jul 2023 20:50:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A497060EBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C22C433C8;
+        Sun, 16 Jul 2023 20:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540644;
-        bh=uw5cc+XnUdy0p5Sov0EVCvkq9s1jvUHAMe2O3GbMifg=;
+        s=korg; t=1689539204;
+        bh=HWM7TZENMA2w2P9bMWxiyBk2+vAHYmUZrAk4T6vv+vE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SEn7FFP3WOYl4kWICecI03fr4Mrh8y4qn0Ml0YNOVE3gfdDhzT73jCACxpJiN6tnK
-         IUZKB7MDZ1whZAeXM7eM+G6BWagXFIC8TEgFE6K2wI1OOQzu3tCSO2zmgcaIbLRUot
-         VaAdFmIJxC5c5nntuT6ZsWZ757iHXuBTct5JE7o4=
+        b=z8sG/aEp+YLPbVVkj5yGYdI8HN7rcLVgtFG9bwfFYI2hN9fDmnFA+w3bFgbuHXU8h
+         n9H+UkvRABRHhEO+fwT+YWmQ2ZxruHhu+Jl1mThYzGeogJsECxvGz+cGjt2scIXh8+
+         +AzfPdTIlbyTg8UQFE9TsAG9BYLzRkTOoNFwnQ9A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladislav Efanov <VEfanov@ispras.ru>,
-        Shawn Guo <shawn.guo@linaro.org>,
+        patches@lists.linux.dev, xieyongji@bytedance.com,
+        Maxime Coquelin <maxime.coquelin@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 409/591] usb: dwc3: qcom: Fix potential memory leak
+Subject: [PATCH 6.4 695/800] vduse: fix NULL pointer dereference
 Date:   Sun, 16 Jul 2023 21:49:08 +0200
-Message-ID: <20230716194934.495390695@linuxfoundation.org>
+Message-ID: <20230716195005.265227799@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +57,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladislav Efanov <VEfanov@ispras.ru>
+From: Maxime Coquelin <maxime.coquelin@redhat.com>
 
-[ Upstream commit 097fb3ee710d4de83b8d4f5589e8ee13e0f0541e ]
+[ Upstream commit f06cf1e1a503169280467d12d2ec89bf2c30ace7 ]
 
-Function dwc3_qcom_probe() allocates memory for resource structure
-which is pointed by parent_res pointer. This memory is not
-freed. This leads to memory leak. Use stack memory to prevent
-memory leak.
+vduse_vdpa_set_vq_affinity callback can be called
+with NULL value as cpu_mask when deleting the vduse
+device.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This patch resets virtqueue's IRQ affinity mask value
+to set all CPUs instead of dereferencing NULL cpu_mask.
 
-Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
-Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
-Acked-by: Shawn Guo <shawn.guo@linaro.org>
-Link: https://lore.kernel.org/r/20230517172518.442591-1-VEfanov@ispras.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ 4760.952149] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[ 4760.959110] #PF: supervisor read access in kernel mode
+[ 4760.964247] #PF: error_code(0x0000) - not-present page
+[ 4760.969385] PGD 0 P4D 0
+[ 4760.971927] Oops: 0000 [#1] PREEMPT SMP PTI
+[ 4760.976112] CPU: 13 PID: 2346 Comm: vdpa Not tainted 6.4.0-rc6+ #4
+[ 4760.982291] Hardware name: Dell Inc. PowerEdge R640/0W23H8, BIOS 2.8.1 06/26/2020
+[ 4760.989769] RIP: 0010:memcpy_orig+0xc5/0x130
+[ 4760.994049] Code: 16 f8 4c 89 07 4c 89 4f 08 4c 89 54 17 f0 4c 89 5c 17 f8 c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 66 90 83 fa 08 72 1b <4c> 8b 06 4c 8b 4c 16 f8 4c 89 07 4c 89 4c 17 f8 c3 cc cc cc cc 66
+[ 4761.012793] RSP: 0018:ffffb1d565abb830 EFLAGS: 00010246
+[ 4761.018020] RAX: ffff9f4bf6b27898 RBX: ffff9f4be23969c0 RCX: ffff9f4bcadf6400
+[ 4761.025152] RDX: 0000000000000008 RSI: 0000000000000000 RDI: ffff9f4bf6b27898
+[ 4761.032286] RBP: 0000000000000000 R08: 0000000000000008 R09: 0000000000000000
+[ 4761.039416] R10: 0000000000000000 R11: 0000000000000600 R12: 0000000000000000
+[ 4761.046549] R13: 0000000000000000 R14: 0000000000000080 R15: ffffb1d565abbb10
+[ 4761.053680] FS:  00007f64c2ec2740(0000) GS:ffff9f635f980000(0000) knlGS:0000000000000000
+[ 4761.061765] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 4761.067513] CR2: 0000000000000000 CR3: 0000001875270006 CR4: 00000000007706e0
+[ 4761.074645] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 4761.081775] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[ 4761.088909] PKRU: 55555554
+[ 4761.091620] Call Trace:
+[ 4761.094074]  <TASK>
+[ 4761.096180]  ? __die+0x1f/0x70
+[ 4761.099238]  ? page_fault_oops+0x171/0x4f0
+[ 4761.103340]  ? exc_page_fault+0x7b/0x180
+[ 4761.107265]  ? asm_exc_page_fault+0x22/0x30
+[ 4761.111460]  ? memcpy_orig+0xc5/0x130
+[ 4761.115126]  vduse_vdpa_set_vq_affinity+0x3e/0x50 [vduse]
+[ 4761.120533]  virtnet_clean_affinity.part.0+0x3d/0x90 [virtio_net]
+[ 4761.126635]  remove_vq_common+0x1a4/0x250 [virtio_net]
+[ 4761.131781]  virtnet_remove+0x5d/0x70 [virtio_net]
+[ 4761.136580]  virtio_dev_remove+0x3a/0x90
+[ 4761.140509]  device_release_driver_internal+0x19b/0x200
+[ 4761.145742]  bus_remove_device+0xc2/0x130
+[ 4761.149755]  device_del+0x158/0x3e0
+[ 4761.153245]  ? kernfs_find_ns+0x35/0xc0
+[ 4761.157086]  device_unregister+0x13/0x60
+[ 4761.161010]  unregister_virtio_device+0x11/0x20
+[ 4761.165543]  device_release_driver_internal+0x19b/0x200
+[ 4761.170770]  bus_remove_device+0xc2/0x130
+[ 4761.174782]  device_del+0x158/0x3e0
+[ 4761.178276]  ? __pfx_vdpa_name_match+0x10/0x10 [vdpa]
+[ 4761.183336]  device_unregister+0x13/0x60
+[ 4761.187260]  vdpa_nl_cmd_dev_del_set_doit+0x63/0xe0 [vdpa]
+
+Fixes: 28f6288eb63d ("vduse: Support set_vq_affinity callback")
+Cc: xieyongji@bytedance.com
+Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
+Message-Id: <20230622204851.318125-1-maxime.coquelin@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-qcom.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/vdpa/vdpa_user/vduse_dev.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
-index 79b22abf97276..482260182d656 100644
---- a/drivers/usb/dwc3/dwc3-qcom.c
-+++ b/drivers/usb/dwc3/dwc3-qcom.c
-@@ -800,6 +800,7 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
- 	struct device		*dev = &pdev->dev;
- 	struct dwc3_qcom	*qcom;
- 	struct resource		*res, *parent_res = NULL;
-+	struct resource		local_res;
- 	int			ret, i;
- 	bool			ignore_pipe_clk;
- 	bool			wakeup_source;
-@@ -851,9 +852,8 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
- 	if (np) {
- 		parent_res = res;
- 	} else {
--		parent_res = kmemdup(res, sizeof(struct resource), GFP_KERNEL);
--		if (!parent_res)
--			return -ENOMEM;
-+		memcpy(&local_res, res, sizeof(struct resource));
-+		parent_res = &local_res;
+diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
+index 5f5c21674fdce..0d84e6a9c3cca 100644
+--- a/drivers/vdpa/vdpa_user/vduse_dev.c
++++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+@@ -726,7 +726,11 @@ static int vduse_vdpa_set_vq_affinity(struct vdpa_device *vdpa, u16 idx,
+ {
+ 	struct vduse_dev *dev = vdpa_to_vduse(vdpa);
  
- 		parent_res->start = res->start +
- 			qcom->acpi_pdata->qscratch_base_offset;
+-	cpumask_copy(&dev->vqs[idx]->irq_affinity, cpu_mask);
++	if (cpu_mask)
++		cpumask_copy(&dev->vqs[idx]->irq_affinity, cpu_mask);
++	else
++		cpumask_setall(&dev->vqs[idx]->irq_affinity);
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.2
 
