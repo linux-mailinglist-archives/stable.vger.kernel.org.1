@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC1B87554A6
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D93D7755279
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232253AbjGPUco (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:32:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53962 "EHLO
+        id S231330AbjGPUIT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:08:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232256AbjGPUcn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:32:43 -0400
+        with ESMTP id S231335AbjGPUIS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64AB2E41
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:32:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8705C0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E582F60EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:32:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3643C433C9;
-        Sun, 16 Jul 2023 20:32:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FE3460E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAFFC433C7;
+        Sun, 16 Jul 2023 20:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539560;
-        bh=HfZJFzmVdjUwRjndIZySjgW0zgCT/1IcbZIgp119qcc=;
+        s=korg; t=1689538096;
+        bh=VCPObwJKw2KDnJ/HE9R9aYasW/LYYVO96WHrFZff1KU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FKe3znkpF4GCp6YThbRnE35TcUWxHQ1eJTANwkBtzx+8J+ojik8Dfr3J/XMExof1k
-         gOXMkd936aOcil45FCvjgeViw/hJnUItMCCqevb1PL/DaxYJtiQyPjl00+fvS6/R4A
-         /eqwvZFOYVQSU6Uq4rH/RDFITDY5bHcdS+On0HHA=
+        b=RqeD+55SNjGK2OHdfyzvwEv8EPQ2iFmpGM3mJBybaE0p8L+TxJtfIbDwY1v+/Vxv6
+         52SgNs3Pxt9lmGjoohlYY/Snc+yew1SLzd+BYUbfCJn4uo8PEGy6M4qE4f7lKJVEsT
+         YG/SHuZtKg3ArHpKI4PIJ37amWRm2uOtmbguKi0s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Geoff Blake <blakgeof@amazon.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/591] perf/arm-cmn: Fix DTC reset
+        patches@lists.linux.dev, Julius Werner <jwerner@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 329/800] arm64: dts: mediatek: mt8195: Add mediatek,broken-save-restore-fw to cherry
 Date:   Sun, 16 Jul 2023 21:43:02 +0200
-Message-ID: <20230716194924.995310921@linuxfoundation.org>
+Message-ID: <20230716194956.725679058@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,56 +58,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 71746c995cac92fcf6a65661b51211cf2009d7f0 ]
+[ Upstream commit ea6c5f21efecbaa3a14cb21c5bc0e23c84473a11 ]
 
-It turns out that my naive DTC reset logic fails to work as intended,
-since, after checking with the hardware designers, the PMU actually
-needs to be fully enabled in order to correctly clear any pending
-overflows. Therefore, invert the sequence to start with turning on both
-enables so that we can reliably get the DTCs into a known state, then
-moving to our normal counters-stopped state from there. Since all the
-DTM counters have already been unpaired during the initial discovery
-pass, we just need to additionally reset the cycle counters to ensure
-that no other unexpected overflows occur during this period.
+Firmware shipped on mt8195 Chromebooks is affected by the GICR
+save/restore issue as described by the patch ("dt-bindings:
+interrupt-controller: arm,gic-v3: Add quirk for Mediatek SoCs w/
+broken FW"). Add the quirk property.
 
-Fixes: 0ba64770a2f2 ("perf: Add Arm CMN-600 PMU driver")
-Reported-by: Geoff Blake <blakgeof@amazon.com>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/0ea4559261ea394f827c9aee5168c77a60aaee03.1684946389.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 5eb2e303ec6b ("arm64: dts: mediatek: Introduce MT8195 Cherry platform's Tomato")
+Reviewed-by: Julius Werner <jwerner@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230515131353.v2.5.Ia0b6ebbaa351e3cd67e201355b9ae67783c7d718@changeid
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index ff86075edca48..90008e24d1cc7 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -1898,9 +1898,10 @@ static int arm_cmn_init_dtc(struct arm_cmn *cmn, struct arm_cmn_node *dn, int id
- 	if (dtc->irq < 0)
- 		return dtc->irq;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+index 8ac80a136c371..f2d0726546c77 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+@@ -255,6 +255,10 @@ dptx_out: endpoint {
+ 	};
+ };
  
--	writel_relaxed(0, dtc->base + CMN_DT_PMCR);
-+	writel_relaxed(CMN_DT_DTC_CTL_DT_EN, dtc->base + CMN_DT_DTC_CTL);
-+	writel_relaxed(CMN_DT_PMCR_PMU_EN | CMN_DT_PMCR_OVFL_INTR_EN, dtc->base + CMN_DT_PMCR);
-+	writeq_relaxed(0, dtc->base + CMN_DT_PMCCNTR);
- 	writel_relaxed(0x1ff, dtc->base + CMN_DT_PMOVSR_CLR);
--	writel_relaxed(CMN_DT_PMCR_OVFL_INTR_EN, dtc->base + CMN_DT_PMCR);
- 
- 	return 0;
- }
-@@ -1960,7 +1961,7 @@ static int arm_cmn_init_dtcs(struct arm_cmn *cmn)
- 			dn->type = CMN_TYPE_CCLA;
- 	}
- 
--	writel_relaxed(CMN_DT_DTC_CTL_DT_EN, cmn->dtc[0].base + CMN_DT_DTC_CTL);
-+	arm_cmn_set_state(cmn, CMN_STATE_DISABLED);
- 
- 	return 0;
- }
++&gic {
++	mediatek,broken-save-restore-fw;
++};
++
+ &gpu {
+ 	status = "okay";
+ 	mali-supply = <&mt6315_7_vbuck1>;
 -- 
 2.39.2
 
