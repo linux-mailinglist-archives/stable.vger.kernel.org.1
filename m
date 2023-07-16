@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30EDB7552AF
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 181FE7554D4
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231440AbjGPUKn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:10:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38872 "EHLO
+        id S232335AbjGPUen (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:34:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231433AbjGPUKl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:10:41 -0400
+        with ESMTP id S232304AbjGPUem (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:34:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA3F59B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:10:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DC0DBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:34:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 88BEF60EA6
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:10:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997BFC433C8;
-        Sun, 16 Jul 2023 20:10:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FEDB60EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:34:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF75C433C8;
+        Sun, 16 Jul 2023 20:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538240;
-        bh=x+npZbv8mH+79cB6bj0I7u9mYEceT9vRQ5CndDDH0Us=;
+        s=korg; t=1689539680;
+        bh=j14J+wGwFesU7svfDm8qir2eJtl0XwdPkNltllxnJJg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TuNGoVb6VJdVO62KlTHU4PVKkBToYquKJLGJ3YL7TtcJ/PD9Z02zPDuOvGSDtcm7p
-         6y82Y04qGUr5ifggtjldbwsu5QCnXPZ9grYrW5YpeimKbJ2+jC8VzBvx+HMkNZ+1t/
-         etdzMW5NmV9BlEMVxX3WNDHP76dGwsVqYBmvaQ6M=
+        b=w0kuM0ZJXMPCxZmOpXgbOsFz9b+Z7qwGv+sILEZH3RsMnwuxFVra+PI/Dpk3Ab/v0
+         mz4rW2uwdtj4TbfNXgvX/Jjn3h9KN0t8GCarOFMawi3rtNBhIbsz6BvlhJotUl25mv
+         S74RAv1TkLtPvOgyLn8M3jppRkZf4P3b/qaIq7Gw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kai Ma <kaima@hust.edu.cn>,
-        Peng Fan <peng.fan@nxp.com>,
-        Jesse Taube <Mr.Bossman075@gmail.com>,
-        Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev,
+        Youghandhar Chintala <quic_youghand@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 379/800] clk: imx: clk-imxrt1050: fix memory leak in imxrt1050_clocks_probe
+Subject: [PATCH 6.1 093/591] wifi: ath10k: Trigger STA disconnect after reconfig complete on hardware restart
 Date:   Sun, 16 Jul 2023 21:43:52 +0200
-Message-ID: <20230716194957.877760837@linuxfoundation.org>
+Message-ID: <20230716194926.284010086@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,86 +56,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kai Ma <kaima@hust.edu.cn>
+From: Youghandhar Chintala <quic_youghand@quicinc.com>
 
-[ Upstream commit 1b280598ab3bd8a2dc8b96a12530d5b1ee7a8f4a ]
+[ Upstream commit 75bd32f5ce94bc365ba0b9b68bcf9de84a391d37 ]
 
-Use devm_of_iomap() instead of of_iomap() to automatically
-handle the unused ioremap region. If any error occurs, regions allocated by
-kzalloc() will leak, but using devm_kzalloc() instead will automatically
-free the memory using devm_kfree().
+Currently, on WCN3990, the station disconnect after hardware recovery is
+not working as expected. This is because of setting the
+IEEE80211_SDATA_DISCONNECT_HW_RESTART flag very early in the hardware
+recovery process even before the driver invokes ieee80211_hw_restart().
+On the contrary, mac80211 expects this flag to be set after
+ieee80211_hw_restart() is invoked for it to trigger station disconnect.
 
-Also, fix error handling of hws by adding unregister_hws label, which
-unregisters remaining hws when iomap failed.
+Set the IEEE80211_SDATA_DISCONNECT_HW_RESTART flag in
+ath10k_reconfig_complete() instead to fix this.
 
-Fixes: 7154b046d8f3 ("clk: imx: Add initial support for i.MXRT1050 clock driver")
-Signed-off-by: Kai Ma <kaima@hust.edu.cn>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Acked-by: Jesse Taube <Mr.Bossman075@gmail.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230418113451.151312-1-kaima@hust.edu.cn
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+The other targets are not affected by this change, since the hardware
+params flag is not set.
+
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+
+Fixes: 2c3fc50591ff ("ath10k: Trigger sta disconnect on hardware restart")
+Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230518101515.3820-1-quic_youghand@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imxrt1050.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ath/ath10k/core.c | 9 ---------
+ drivers/net/wireless/ath/ath10k/mac.c  | 7 +++++++
+ 2 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imxrt1050.c b/drivers/clk/imx/clk-imxrt1050.c
-index fd5c51fc92c0e..08d155feb035a 100644
---- a/drivers/clk/imx/clk-imxrt1050.c
-+++ b/drivers/clk/imx/clk-imxrt1050.c
-@@ -42,7 +42,7 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
- 	struct device_node *anp;
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 5eb131ab916fd..b6052dcc45ebf 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -2504,7 +2504,6 @@ EXPORT_SYMBOL(ath10k_core_napi_sync_disable);
+ static void ath10k_core_restart(struct work_struct *work)
+ {
+ 	struct ath10k *ar = container_of(work, struct ath10k, restart_work);
+-	struct ath10k_vif *arvif;
  	int ret;
  
--	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws,
-+	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
- 					  IMXRT1050_CLK_END), GFP_KERNEL);
- 	if (WARN_ON(!clk_hw_data))
- 		return -ENOMEM;
-@@ -53,10 +53,12 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
- 	hws[IMXRT1050_CLK_OSC] = imx_get_clk_hw_by_name(np, "osc");
+ 	set_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags);
+@@ -2543,14 +2542,6 @@ static void ath10k_core_restart(struct work_struct *work)
+ 		ar->state = ATH10K_STATE_RESTARTING;
+ 		ath10k_halt(ar);
+ 		ath10k_scan_finish(ar);
+-		if (ar->hw_params.hw_restart_disconnect) {
+-			list_for_each_entry(arvif, &ar->arvifs, list) {
+-				if (arvif->is_up &&
+-				    arvif->vdev_type == WMI_VDEV_TYPE_STA)
+-					ieee80211_hw_restart_disconnect(arvif->vif);
+-			}
+-		}
+-
+ 		ieee80211_restart_hw(ar->hw);
+ 		break;
+ 	case ATH10K_STATE_OFF:
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index ec8d5b29bc72c..f0729acdec50a 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -8108,6 +8108,7 @@ static void ath10k_reconfig_complete(struct ieee80211_hw *hw,
+ 				     enum ieee80211_reconfig_type reconfig_type)
+ {
+ 	struct ath10k *ar = hw->priv;
++	struct ath10k_vif *arvif;
  
- 	anp = of_find_compatible_node(NULL, NULL, "fsl,imxrt-anatop");
--	pll_base = of_iomap(anp, 0);
-+	pll_base = devm_of_iomap(dev, anp, 0, NULL);
- 	of_node_put(anp);
--	if (WARN_ON(!pll_base))
--		return -ENOMEM;
-+	if (WARN_ON(IS_ERR(pll_base))) {
-+		ret = PTR_ERR(pll_base);
-+		goto unregister_hws;
-+	}
- 
- 	/* Anatop clocks */
- 	hws[IMXRT1050_CLK_DUMMY] = imx_clk_hw_fixed("dummy", 0UL);
-@@ -104,8 +106,10 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
- 
- 	/* CCM clocks */
- 	ccm_base = devm_platform_ioremap_resource(pdev, 0);
--	if (WARN_ON(IS_ERR(ccm_base)))
--		return PTR_ERR(ccm_base);
-+	if (WARN_ON(IS_ERR(ccm_base))) {
-+		ret = PTR_ERR(ccm_base);
-+		goto unregister_hws;
-+	}
- 
- 	hws[IMXRT1050_CLK_ARM_PODF] = imx_clk_hw_divider("arm_podf", "pll1_arm", ccm_base + 0x10, 0, 3);
- 	hws[IMXRT1050_CLK_PRE_PERIPH_SEL] = imx_clk_hw_mux("pre_periph_sel", ccm_base + 0x18, 18, 2,
-@@ -149,8 +153,12 @@ static int imxrt1050_clocks_probe(struct platform_device *pdev)
- 	ret = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register clks for i.MXRT1050.\n");
--		imx_unregister_hw_clocks(hws, IMXRT1050_CLK_END);
-+		goto unregister_hws;
+ 	if (reconfig_type != IEEE80211_RECONFIG_TYPE_RESTART)
+ 		return;
+@@ -8122,6 +8123,12 @@ static void ath10k_reconfig_complete(struct ieee80211_hw *hw,
+ 		ar->state = ATH10K_STATE_ON;
+ 		ieee80211_wake_queues(ar->hw);
+ 		clear_bit(ATH10K_FLAG_RESTARTING, &ar->dev_flags);
++		if (ar->hw_params.hw_restart_disconnect) {
++			list_for_each_entry(arvif, &ar->arvifs, list) {
++				if (arvif->is_up && arvif->vdev_type == WMI_VDEV_TYPE_STA)
++					ieee80211_hw_restart_disconnect(arvif->vif);
++				}
++		}
  	}
-+	return 0;
-+
-+unregister_hws:
-+	imx_unregister_hw_clocks(hws, IMXRT1050_CLK_END);
- 	return ret;
- }
- static const struct of_device_id imxrt1050_clk_of_match[] = {
+ 
+ 	mutex_unlock(&ar->conf_mutex);
 -- 
 2.39.2
 
