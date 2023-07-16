@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A369C7552FE
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFB99755512
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:37:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231570AbjGPUOZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:14:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40964 "EHLO
+        id S232378AbjGPUhI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:37:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231580AbjGPUOX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:14:23 -0400
+        with ESMTP id S232374AbjGPUhG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:37:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2455FC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ABFDE4B
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:37:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B818A60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91BDC433C8;
-        Sun, 16 Jul 2023 20:14:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E98960EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:37:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7D3C433C9;
+        Sun, 16 Jul 2023 20:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538462;
-        bh=uZg6siGsGP9BPVl8qb5HcCYYE05B4Iy6rUl/9DaK99w=;
+        s=korg; t=1689539820;
+        bh=HsEDN0Hn+BPdg4Xsp0RUVvHd7VBJF3z+Rgt39NP/ejE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sYxxtYpnhb4BVvL2+JYPzmFpTaxJML+CsXbT17FtyVzB483j4FvieKD+qXMifNXJO
-         RUSarkHQA78mNLo+0qQPiVgrGaTvvZfdrGZ0y4feZaWu5UwBYMog5GdR6XXMfpnUPH
-         zdIPu4cYlYBNO/Kiove7HCpgj/LSE0J+w38m65iM=
+        b=Nb2ySytIjXyroX3CtZujgdvreBeXBFbW7r16oLGzhakj8aQ0QC1Jw4VdAqzQTrCJp
+         6ELimD3KyN2ZDp6VDW7hfA/LG7c5kQcM1q1NrdJhcLe/jMS3eLaVqpmbrxTRlXsHmK
+         CNeWA3YrVTiDGGZdJodr5q8ZnUOhBeU5UZsctcrc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Syed Saba Kareem <Syed.SabaKareem@amd.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 430/800] ASoC: amd: acp: clear pdm dma interrupt mask
+        Markus Elfring <elfring@users.sourceforge.net>,
+        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 144/591] drm/bridge: it6505: Move a variable assignment behind a null pointer check in receive_timing_debugfs_show()
 Date:   Sun, 16 Jul 2023 21:44:43 +0200
-Message-ID: <20230716194959.073596833@linuxfoundation.org>
+Message-ID: <20230716194927.596321115@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,36 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Syed Saba Kareem <Syed.SabaKareem@amd.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit ad60672394bd1f95c58d3d9336902f47e05126fc ]
+[ Upstream commit 0be05a75de2916421e88e0d64b001984f54df0bd ]
 
-Clear pdm dma interrupt mask in acp_dmic_shutdown().
+The address of a data structure member was determined before
+a corresponding null pointer check in the implementation of
+the function “receive_timing_debugfs_show”.
 
-'Fixes: c32bd332ce5c9 ("ASoC: amd: acp: Add generic support for
-PDM controller on ACP")'
+Thus avoid the risk for undefined behaviour by moving the assignment
+for the variable “vid” behind the null pointer check.
 
-Signed-off-by: Syed Saba Kareem <Syed.SabaKareem@amd.com>
-Link: https://lore.kernel.org/r/Message-Id: <20230622152406.3709231-1-Syed.SabaKareem@amd.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This issue was detected by using the Coccinelle software.
+
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Link: https://patchwork.freedesktop.org/patch/msgid/fa69384f-1485-142b-c4ee-3df54ac68a89@web.de
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-pdm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp/acp-pdm.c b/sound/soc/amd/acp/acp-pdm.c
-index 66ec6b6a59723..f8030b79ac17c 100644
---- a/sound/soc/amd/acp/acp-pdm.c
-+++ b/sound/soc/amd/acp/acp-pdm.c
-@@ -176,7 +176,7 @@ static void acp_dmic_dai_shutdown(struct snd_pcm_substream *substream,
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 99123eec45511..292c4f6da04af 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -3085,7 +3085,7 @@ static ssize_t receive_timing_debugfs_show(struct file *file, char __user *buf,
+ 					   size_t len, loff_t *ppos)
+ {
+ 	struct it6505 *it6505 = file->private_data;
+-	struct drm_display_mode *vid = &it6505->video_info;
++	struct drm_display_mode *vid;
+ 	u8 read_buf[READ_BUFFER_SIZE];
+ 	u8 *str = read_buf, *end = read_buf + READ_BUFFER_SIZE;
+ 	ssize_t ret, count;
+@@ -3094,6 +3094,7 @@ static ssize_t receive_timing_debugfs_show(struct file *file, char __user *buf,
+ 		return -ENODEV;
  
- 	/* Disable DMIC interrupts */
- 	ext_int_ctrl = readl(ACP_EXTERNAL_INTR_CNTL(adata, 0));
--	ext_int_ctrl |= ~PDM_DMA_INTR_MASK;
-+	ext_int_ctrl &= ~PDM_DMA_INTR_MASK;
- 	writel(ext_int_ctrl, ACP_EXTERNAL_INTR_CNTL(adata, 0));
- }
- 
+ 	it6505_calc_video_info(it6505);
++	vid = &it6505->video_info;
+ 	str += scnprintf(str, end - str, "---video timing---\n");
+ 	str += scnprintf(str, end - str, "PCLK:%d.%03dMHz\n",
+ 			 vid->clock / 1000, vid->clock % 1000);
 -- 
 2.39.2
 
