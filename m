@@ -2,89 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2752F75563E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 266697553EE
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:24:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232846AbjGPUtI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:49:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38238 "EHLO
+        id S231920AbjGPUYh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:24:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232784AbjGPUs6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:48:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA5F110D7
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:48:41 -0700 (PDT)
+        with ESMTP id S231905AbjGPUYg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:24:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22EFE9F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:24:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B9C660EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:48:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D547C433C7;
-        Sun, 16 Jul 2023 20:48:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B695160EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A4AC433C8;
+        Sun, 16 Jul 2023 20:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540521;
-        bh=+1hMspF/G9VnTE1U8jAUe9oapUDtIFZeqHZj3czvEns=;
+        s=korg; t=1689539075;
+        bh=Wurn+r556/jIlXNtGm+2w9JWEvWDpDuLTsSnhF38Wlw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OOthrHtgYoMOrwRFn/iAJG2mI0diPzB4I8b4ptaUeEZwK1RTS918mrnUZlVCO3IF6
-         LxxU/R9BvZFqt2i8KtWwZuOFgPcLEJVL1EziZK/gm5dpBoWpwlVJScyrmdONuK5GSZ
-         1kR98CXkMTO4vo08WQe2iaUM7CRkWgvOTEN/KR1E=
+        b=Y+wwrS9bsIPZ5d/nNIIC+Mgmq6IS0hUc+t8CMhsSToiCCy0umWyXoO0FMcwTxPvCe
+         vNoKYPUBLRWTSFhj3qIKtzHiK2hzp7wseB9p0S1Pvhge5ejaRaKg85geCQZC9XaDke
+         GoOjeEGRFp+Zf2WPOxn5qkdk1wniQu4Tazxo/roY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mantas Pucka <mantas@8devices.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 392/591] clk: qcom: gcc-ipq6018: Use floor ops for sdcc clocks
+Subject: [PATCH 6.4 678/800] mlxsw: minimal: fix potential memory leak in mlxsw_m_linecards_init
 Date:   Sun, 16 Jul 2023 21:48:51 +0200
-Message-ID: <20230716194934.058668720@linuxfoundation.org>
+Message-ID: <20230716195004.874585531@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mantas Pucka <mantas@8devices.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit 56e5ae0116aef87273cf1812d608645b076e4f02 ]
+[ Upstream commit 08fc75735fda3be97194bfbf3c899c87abb3d0fe ]
 
-SDCC clocks must be rounded down to avoid overclocking the controller.
+The line cards array is not freed in the error path of
+mlxsw_m_linecards_init(), which can lead to a memory leak. Fix by
+freeing the array in the error path, thereby making the error path
+identical to mlxsw_m_linecards_fini().
 
-Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
-Signed-off-by: Mantas Pucka <mantas@8devices.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/1682413909-24927-1-git-send-email-mantas@8devices.com
+Fixes: 01328e23a476 ("mlxsw: minimal: Extend module to port mapping with slot index")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/20230630012647.1078002-1-shaozhengchao@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq6018.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/minimal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
-index 3f9c2f61a5d93..5c5d1b04ea7af 100644
---- a/drivers/clk/qcom/gcc-ipq6018.c
-+++ b/drivers/clk/qcom/gcc-ipq6018.c
-@@ -1654,7 +1654,7 @@ static struct clk_rcg2 sdcc1_apps_clk_src = {
- 		.name = "sdcc1_apps_clk_src",
- 		.parent_data = gcc_xo_gpll0_gpll2_gpll0_out_main_div2,
- 		.num_parents = 4,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_floor_ops,
- 	},
- };
- 
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/minimal.c b/drivers/net/ethernet/mellanox/mlxsw/minimal.c
+index 6b56eadd736e5..6b98c3287b497 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/minimal.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/minimal.c
+@@ -417,6 +417,7 @@ static int mlxsw_m_linecards_init(struct mlxsw_m *mlxsw_m)
+ err_kmalloc_array:
+ 	for (i--; i >= 0; i--)
+ 		kfree(mlxsw_m->line_cards[i]);
++	kfree(mlxsw_m->line_cards);
+ err_kcalloc:
+ 	kfree(mlxsw_m->ports);
+ 	return err;
 -- 
 2.39.2
 
