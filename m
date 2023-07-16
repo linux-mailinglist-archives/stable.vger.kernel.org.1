@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40776754F49
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 17:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ADEC754F4B
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 17:14:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229560AbjGPPNo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 11:13:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42856 "EHLO
+        id S230085AbjGPPOM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 11:14:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjGPPNn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 11:13:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B05E1B7;
-        Sun, 16 Jul 2023 08:13:43 -0700 (PDT)
+        with ESMTP id S229451AbjGPPOL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 11:14:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 948921BF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 08:14:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDD4360CEC;
-        Sun, 16 Jul 2023 15:13:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0101C433C8;
-        Sun, 16 Jul 2023 15:13:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 13F0360C41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 15:14:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F087C433C7;
+        Sun, 16 Jul 2023 15:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689520422;
-        bh=cWG4PNnZsug6VEfKe/LFOgjXd2wLbV9Kp7KvEO+UGcA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jleRNJPpVnEDCJq7WR8xqLMk5k8IAWm32fdwviDhU3KSHK+3kOohyYSCU6w0OeW34
-         EqLBWj+/4VvtNTvLAEOtMF6NlTyAXU+ugVere7H8VvhHS8xKWkCpbKd/ifZhcJX9O5
-         pqp4VDsL/u0VGL/CPbfq48cfqvN4QwkFTe1LjDlI=
-Date:   Sun, 16 Jul 2023 17:13:39 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Zhihao Cheng <chengzhihao1@huawei.com>
-Cc:     miklos@szeredi.hu, amir73il@gmail.com,
-        linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, sashal@kernel.org
-Subject: Re: [PATCH 5.15] ovl: fix null pointer dereference in
- ovl_get_acl_rcu()
-Message-ID: <2023071631-mulch-dork-101c@gregkh>
-References: <20230710032730.2049748-1-chengzhihao1@huawei.com>
+        s=korg; t=1689520449;
+        bh=UGya93rxlJ7gTNsSlfIN7OcKcpXmZbETHAAHE7G5X4c=;
+        h=Subject:To:Cc:From:Date:From;
+        b=DeOTm8wbyTf3ZniDlutqTwzQNYRjuKz3Foylw+8mwAYw7divhN+J2qLUG/DctSfp5
+         kwOI1txnE0aQeVdPTH0BZjWUMofwwZku9yKLSh2gV0sk2OSyG15UD02fAWEcsaIQVo
+         tLAfvLX/KSyYrOWCXHNnJF9nqOOccA+at5YIc4Bg=
+Subject: FAILED: patch "[PATCH] ovl: let helper ovl_i_path_real() return the realinode" failed to apply to 6.1-stable tree
+To:     chengzhihao1@huawei.com, amir73il@gmail.com, mszeredi@redhat.com,
+        stable@vger.kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 16 Jul 2023 17:14:06 +0200
+Message-ID: <2023071606-snowdrop-strife-2a13@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230710032730.2049748-1-chengzhihao1@huawei.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,9 +49,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 11:27:30AM +0800, Zhihao Cheng wrote:
-> [ Upstream commit f4e19e595cc2e76a8a58413eb19d3d9c51328b53 ]
 
-Thanks for this, now queued up.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x b2dd05f107b11966e26fe52a313b418364cf497b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071606-snowdrop-strife-2a13@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+b2dd05f107b1 ("ovl: let helper ovl_i_path_real() return the realinode")
+e67fe63341b8 ("fs: port i_{g,u}id_into_vfs{g,u}id() to mnt_idmap")
+9452e93e6dae ("fs: port privilege checking helpers to mnt_idmap")
+f2d40141d5d9 ("fs: port inode_init_owner() to mnt_idmap")
+4609e1f18e19 ("fs: port ->permission() to pass mnt_idmap")
+13e83a4923be ("fs: port ->set_acl() to pass mnt_idmap")
+77435322777d ("fs: port ->get_acl() to pass mnt_idmap")
+011e2b717b1b ("fs: port ->tmpfile() to pass mnt_idmap")
+5ebb29bee8d5 ("fs: port ->mknod() to pass mnt_idmap")
+c54bd91e9eab ("fs: port ->mkdir() to pass mnt_idmap")
+7a77db95511c ("fs: port ->symlink() to pass mnt_idmap")
+6c960e68aaed ("fs: port ->create() to pass mnt_idmap")
+b74d24f7a74f ("fs: port ->getattr() to pass mnt_idmap")
+c1632a0f1120 ("fs: port ->setattr() to pass mnt_idmap")
+abf08576afe3 ("fs: port vfs_*() helpers to struct mnt_idmap")
+6022ec6ee2c3 ("Merge tag 'ntfs3_for_6.2' of https://github.com/Paragon-Software-Group/linux-ntfs3")
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b2dd05f107b11966e26fe52a313b418364cf497b Mon Sep 17 00:00:00 2001
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Date: Tue, 16 May 2023 22:16:17 +0800
+Subject: [PATCH] ovl: let helper ovl_i_path_real() return the realinode
+
+Let helper ovl_i_path_real() return the realinode to prepare for
+checking non-null realinode in RCU walking path.
+
+[msz] Use d_inode_rcu() since we are depending on the consitency
+between dentry and inode being non-NULL in an RCU setting.
+
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Fixes: ffa5723c6d25 ("ovl: store lower path in ovl_inode")
+Cc: <stable@vger.kernel.org> # v5.19
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index 4d0b278f5630..7398de332527 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -382,7 +382,7 @@ enum ovl_path_type ovl_path_type(struct dentry *dentry);
+ void ovl_path_upper(struct dentry *dentry, struct path *path);
+ void ovl_path_lower(struct dentry *dentry, struct path *path);
+ void ovl_path_lowerdata(struct dentry *dentry, struct path *path);
+-void ovl_i_path_real(struct inode *inode, struct path *path);
++struct inode *ovl_i_path_real(struct inode *inode, struct path *path);
+ enum ovl_path_type ovl_path_real(struct dentry *dentry, struct path *path);
+ enum ovl_path_type ovl_path_realdata(struct dentry *dentry, struct path *path);
+ struct dentry *ovl_dentry_upper(struct dentry *dentry);
+diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+index 923d66d131c1..5a6f34c7ed03 100644
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -250,7 +250,7 @@ struct dentry *ovl_i_dentry_upper(struct inode *inode)
+ 	return ovl_upperdentry_dereference(OVL_I(inode));
+ }
+ 
+-void ovl_i_path_real(struct inode *inode, struct path *path)
++struct inode *ovl_i_path_real(struct inode *inode, struct path *path)
+ {
+ 	path->dentry = ovl_i_dentry_upper(inode);
+ 	if (!path->dentry) {
+@@ -259,6 +259,8 @@ void ovl_i_path_real(struct inode *inode, struct path *path)
+ 	} else {
+ 		path->mnt = ovl_upper_mnt(OVL_FS(inode->i_sb));
+ 	}
++
++	return path->dentry ? d_inode_rcu(path->dentry) : NULL;
+ }
+ 
+ struct inode *ovl_inode_upper(struct inode *inode)
+@@ -1105,8 +1107,7 @@ void ovl_copyattr(struct inode *inode)
+ 	vfsuid_t vfsuid;
+ 	vfsgid_t vfsgid;
+ 
+-	ovl_i_path_real(inode, &realpath);
+-	realinode = d_inode(realpath.dentry);
++	realinode = ovl_i_path_real(inode, &realpath);
+ 	real_idmap = mnt_idmap(realpath.mnt);
+ 
+ 	vfsuid = i_uid_into_vfsuid(real_idmap, realinode);
+
