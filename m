@@ -2,98 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB89D75559C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD47A755367
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:18:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232572AbjGPUmo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:42:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33174 "EHLO
+        id S231710AbjGPUSm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232576AbjGPUmn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:42:43 -0400
+        with ESMTP id S231708AbjGPUSl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:18:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 392C4E43
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:42:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E146690
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:18:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC31460EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:42:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC08C433C8;
-        Sun, 16 Jul 2023 20:42:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 80E3D60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:18:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D56C433C8;
+        Sun, 16 Jul 2023 20:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540161;
-        bh=SGV2eZrGv0ELcO+NNNWFcR2B/2lcLQDcOf786xj8ExM=;
+        s=korg; t=1689538719;
+        bh=8LwEVONkqocl7Y9+GBBhadiLTkoYInVL+YVOzB7dtKM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PF1SfOy9Kt55IJkMBSX/rvosOeHfXaa9Ui2xodWzf40LT0SkoWqnFEa2asKLnvVo7
-         feXtjaH+iHIRDgmmInpfi3pM9cz8rXAsYTsHrnY9RvO9gG5V3qoQ2jVH7wESXbXSK8
-         0l3OCGGN2arHl0oCeol9UEQi4OxqXaSPfEedyLNM=
+        b=ziQX8Oe2TCjyxNw1VSMgl6Moa15Pzp/Ut6pDjzVEJhhURBeQslwwchktexsq1zkJa
+         DjEx47rvpppqmjzhhk7FvCUoiZj0a6JVtS5gW6iUVmq5dcKiuuUPAZx+SrxMJFSgpy
+         lCixhHoWabErtOufyjzA3A3EXfK14BziqF0mMe+g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        patches@lists.linux.dev, Qi Han <hanqi@vivo.com>,
+        Yangtao Li <frank.li@vivo.com>, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 265/591] drm/msm/dp: Free resources after unregistering them
+Subject: [PATCH 6.4 551/800] f2fs: do not allow to defragment files have FI_COMPRESS_RELEASED
 Date:   Sun, 16 Jul 2023 21:46:44 +0200
-Message-ID: <20230716194930.755027013@linuxfoundation.org>
+Message-ID: <20230716195001.889916618@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit fa0048a4b1fa7a50c8b0e514f5b428abdf69a6f8 ]
+[ Upstream commit 7cd2e5f75b86a1befa99834f3ed1d735eeff69e6 ]
 
-The DP component's unbind operation walks through the submodules to
-unregister and clean things up. But if the unbind happens because the DP
-controller itself is being removed, all the memory for those submodules
-has just been freed.
+If a file has FI_COMPRESS_RELEASED, all writes for it should not be
+allowed.
 
-Change the order of these operations to avoid the many use-after-free
-that otherwise happens in this code path.
-
-Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/542166/
-Link: https://lore.kernel.org/r/20230612220259.1884381-1-quic_bjorande@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 5fdb322ff2c2 ("f2fs: add F2FS_IOC_DECOMPRESS_FILE and F2FS_IOC_COMPRESS_FILE")
+Signed-off-by: Qi Han <hanqi@vivo.com>
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_display.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/file.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
-index 57b82e5d0ab12..d16c12351adb6 100644
---- a/drivers/gpu/drm/msm/dp/dp_display.c
-+++ b/drivers/gpu/drm/msm/dp/dp_display.c
-@@ -1342,9 +1342,9 @@ static int dp_display_remove(struct platform_device *pdev)
- {
- 	struct dp_display_private *dp = dev_get_dp_display_private(&pdev->dev);
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 5ac53d2627d20..fa50c6475876c 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2593,6 +2593,11 @@ static int f2fs_defragment_range(struct f2fs_sb_info *sbi,
  
-+	component_del(&pdev->dev, &dp_display_comp_ops);
- 	dp_display_deinit_sub_modules(dp);
+ 	inode_lock(inode);
  
--	component_del(&pdev->dev, &dp_display_comp_ops);
- 	platform_set_drvdata(pdev, NULL);
- 
- 	return 0;
++	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
++		err = -EINVAL;
++		goto unlock_out;
++	}
++
+ 	/* if in-place-update policy is enabled, don't waste time here */
+ 	set_inode_flag(inode, FI_OPU_WRITE);
+ 	if (f2fs_should_update_inplace(inode, NULL)) {
+@@ -2717,6 +2722,7 @@ static int f2fs_defragment_range(struct f2fs_sb_info *sbi,
+ 	clear_inode_flag(inode, FI_SKIP_WRITES);
+ out:
+ 	clear_inode_flag(inode, FI_OPU_WRITE);
++unlock_out:
+ 	inode_unlock(inode);
+ 	if (!err)
+ 		range->len = (u64)total << PAGE_SHIFT;
 -- 
 2.39.2
 
