@@ -2,93 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EF79755308
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C996755529
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:38:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231585AbjGPUOg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:14:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41024 "EHLO
+        id S232404AbjGPUiE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:38:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231587AbjGPUOf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:14:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86E761B7
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:34 -0700 (PDT)
+        with ESMTP id S232405AbjGPUiE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:38:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A898EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:38:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1093E60EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2519DC433C7;
-        Sun, 16 Jul 2023 20:14:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44E2160EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:38:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F68C433C9;
+        Sun, 16 Jul 2023 20:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538473;
-        bh=+nvfuXGaWBc5EfdQEZttQ/wkcL89p5cqfTmmq3UQDLk=;
+        s=korg; t=1689539882;
+        bh=k2CA7rI2ZOVYfokyffwdv1fmht2eZusReAvJvYCjrT0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kR4WgULbo+C/h3x8A4A2oCRzecuxSL2PDnmGIYAH0mcozUEmMnOsJ+ie4R2RSZnxH
-         BjjO2xd2ouhPYpjjxD4h0Uph6TrDkUFc7b414cGCIJv41DeP2SWfq8ilYXfaCCOk68
-         2RjMTiULy3DSqRhmQV3zGcfBNYHleUROb26bant8=
+        b=c44EQ9S9CKJ5lyX53rh0QBnjfFGpprBCHTQYS8QVTK7fgYBGB5jPD4KLhDNcCgaQP
+         hC9MX15qSSE5EGo59dkJ6b8EJ+cRq94Ve0/MkB546lJSmZ2V6KcrMgFYaIE2bEHrti
+         ba+5kl4Ko89DNPMJYJafy6LRDCHjhLptwME4vPeI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexey Romanov <avromanov@sberdevices.ru>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
+        patches@lists.linux.dev,
+        "Ilia.Gavrilov" <Ilia.Gavrilov@infotecs.ru>,
+        Simon Horman <simon.horman@corigine.com>,
+        Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 424/800] drivers: meson: secure-pwrc: always enable DMA domain
+Subject: [PATCH 6.1 138/591] netfilter: nf_conntrack_sip: fix the ct_sip_parse_numerical_param() return value.
 Date:   Sun, 16 Jul 2023 21:44:37 +0200
-Message-ID: <20230716194958.937931394@linuxfoundation.org>
+Message-ID: <20230716194927.443731566@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexey Romanov <avromanov@sberdevices.ru>
+From: Ilia.Gavrilov <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit 0bb4644d583789c97e74d3e3047189f0c59c4742 ]
+[ Upstream commit f188d30087480eab421cd8ca552fb15f55d57f4d ]
 
-Starting from commit e45f243409db ("firmware: meson_sm:
-populate platform devices from sm device tree data") pwrc
-is probed successfully and disables unused pwr domains.
-By A1 SoC family design, any TEE requires DMA pwr domain
-always enabled.
+ct_sip_parse_numerical_param() returns only 0 or 1 now.
+But process_register_request() and process_register_response() imply
+checking for a negative value if parsing of a numerical header parameter
+failed.
+The invocation in nf_nat_sip() looks correct:
+ 	if (ct_sip_parse_numerical_param(...) > 0 &&
+ 	    ...) { ... }
 
-Fixes: b3dde5013e13 ("soc: amlogic: Add support for Secure power domains controller")
-Signed-off-by: Alexey Romanov <avromanov@sberdevices.ru>
-Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20230610090414.90529-1-avromanov@sberdevices.ru
-[narmstrong: added fixes tag]
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Make the return value of the function ct_sip_parse_numerical_param()
+a tristate to fix all the cases
+a) return 1 if value is found; *val is set
+b) return 0 if value is not found; *val is unchanged
+c) return -1 on error; *val is undefined
+
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
+
+Fixes: 0f32a40fc91a ("[NETFILTER]: nf_conntrack_sip: create signalling expectations")
+Signed-off-by: Ilia.Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/amlogic/meson-secure-pwrc.c | 2 +-
+ net/netfilter/nf_conntrack_sip.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/amlogic/meson-secure-pwrc.c b/drivers/soc/amlogic/meson-secure-pwrc.c
-index e935187635267..25b4b71df9b89 100644
---- a/drivers/soc/amlogic/meson-secure-pwrc.c
-+++ b/drivers/soc/amlogic/meson-secure-pwrc.c
-@@ -105,7 +105,7 @@ static struct meson_secure_pwrc_domain_desc a1_pwrc_domains[] = {
- 	SEC_PD(ACODEC,	0),
- 	SEC_PD(AUDIO,	0),
- 	SEC_PD(OTP,	0),
--	SEC_PD(DMA,	0),
-+	SEC_PD(DMA,	GENPD_FLAG_ALWAYS_ON | GENPD_FLAG_IRQ_SAFE),
- 	SEC_PD(SD_EMMC,	0),
- 	SEC_PD(RAMA,	0),
- 	/* SRAMB is used as ATF runtime memory, and should be always on */
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index 77f5e82d8e3fe..d0eac27f6ba03 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -611,7 +611,7 @@ int ct_sip_parse_numerical_param(const struct nf_conn *ct, const char *dptr,
+ 	start += strlen(name);
+ 	*val = simple_strtoul(start, &end, 0);
+ 	if (start == end)
+-		return 0;
++		return -1;
+ 	if (matchoff && matchlen) {
+ 		*matchoff = start - dptr;
+ 		*matchlen = end - start;
 -- 
 2.39.2
 
