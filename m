@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7B67755421
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 395E7755695
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232016AbjGPU1I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49540 "EHLO
+        id S232892AbjGPUwE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:52:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232010AbjGPU1H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:07 -0400
+        with ESMTP id S232935AbjGPUwA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D27F010FB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A2BE6A
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B337360EC3
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:26:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6071C433C8;
-        Sun, 16 Jul 2023 20:26:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B1F3160DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C391BC433C7;
+        Sun, 16 Jul 2023 20:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539215;
-        bh=/r9coQI/c86bfz2AzFJBAcdPN/2Tw5gNz52TjejPKc4=;
+        s=korg; t=1689540714;
+        bh=idIg/BBJfsxnWNgLXXxjhl0qTe+yXQAeXnMDUsDeXJI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cDPzBuAW0BRGMuEnepMqNMF24y39d/7GiH7tFi7QcQJACTujAiOw12s84oUMa3iN4
-         jh41tNxRDX+D7M12x3hY0uJ/wWD7abMMqrj1SGLKiu3Q0ocp8+I+eMnG7eckImy7Hp
-         LQXNUuZg8S2YHUEJtSTPlRL9+XLmzpf7RFGl+hAo=
+        b=APepyZKPrwQeE3eIsDOaT1a1T+jfR/dleVuDAXrAZDT3sukdiAt5cTVJ5sE2UB8Nq
+         74FRoLrZL/HvAvhuWJMy0mmipMVFflhqYZ4yc4qelM9w8lNATNfZCWoDlsVC+iGYlf
+         zn4P+gnJxFuRIzPTdGB3QA8WQqKdVca+1OUeGUFE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Huacai Chen <chenhuacai@loongson.cn>,
-        Liu Peibao <liupeibao@loongson.cn>,
-        Jianmin Lv <lvjianmin@loongson.cn>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.4 721/800] irqchip/loongson-pch-pic: Fix potential incorrect hwirq assignment
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 435/591] usb: dwc3-meson-g12a: Fix an error handling path in dwc3_meson_g12a_probe()
 Date:   Sun, 16 Jul 2023 21:49:34 +0200
-Message-ID: <20230716195005.866220856@linuxfoundation.org>
+Message-ID: <20230716194935.167163595@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,51 +57,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liu Peibao <liupeibao@loongson.cn>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 783422e704ca0fa41cb2fe9ed79e46b6fe7eae29 upstream.
+[ Upstream commit 01052b91c9808e3c3b068ae2721cb728ec9aa4c0 ]
 
-In DeviceTree path, when ht_vec_base is not zero, the hwirq of PCH PIC
-will be assigned incorrectly. Because when pch_pic_domain_translate()
-adds the ht_vec_base to hwirq, the hwirq does not have the ht_vec_base
-subtracted when calling irq_domain_set_info().
+If dwc3_meson_g12a_otg_init() fails, resources allocated by the previous
+of_platform_populate() call should be released, as already done in the
+error handling path.
 
-The ht_vec_base is designed for the parent irq chip/domain of the PCH PIC.
-It seems not proper to deal this in callbacks of the PCH PIC domain and
-let's put this back like the initial commit ef8c01eb64ca ("irqchip: Add
-Loongson PCH PIC controller").
-
-Fixes: bcdd75c596c8 ("irqchip/loongson-pch-pic: Add ACPI init support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Liu Peibao <liupeibao@loongson.cn>
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230614115936.5950-3-lvjianmin@loongson.cn
+Fixes: 1e355f21d3fb ("usb: dwc3: Add Amlogic A1 DWC3 glue")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Message-ID: <9d28466de1808ccc756b4cc25fc72c482d133d13.1686403934.git.christophe.jaillet@wanadoo.fr>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongson-pch-pic.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/dwc3-meson-g12a.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-loongson-pch-pic.c
-+++ b/drivers/irqchip/irq-loongson-pch-pic.c
-@@ -164,7 +164,7 @@ static int pch_pic_domain_translate(stru
- 		if (fwspec->param_count < 2)
- 			return -EINVAL;
+diff --git a/drivers/usb/dwc3/dwc3-meson-g12a.c b/drivers/usb/dwc3/dwc3-meson-g12a.c
+index b282ad0e69c6d..eaea944ebd2ce 100644
+--- a/drivers/usb/dwc3/dwc3-meson-g12a.c
++++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
+@@ -805,7 +805,7 @@ static int dwc3_meson_g12a_probe(struct platform_device *pdev)
  
--		*hwirq = fwspec->param[0] + priv->ht_vec_base;
-+		*hwirq = fwspec->param[0];
- 		*type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
- 	} else {
- 		if (fwspec->param_count < 1)
-@@ -196,7 +196,7 @@ static int pch_pic_alloc(struct irq_doma
+ 	ret = dwc3_meson_g12a_otg_init(pdev, priv);
+ 	if (ret)
+-		goto err_phys_power;
++		goto err_plat_depopulate;
  
- 	parent_fwspec.fwnode = domain->parent->fwnode;
- 	parent_fwspec.param_count = 1;
--	parent_fwspec.param[0] = hwirq;
-+	parent_fwspec.param[0] = hwirq + priv->ht_vec_base;
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
+@@ -813,6 +813,9 @@ static int dwc3_meson_g12a_probe(struct platform_device *pdev)
  
- 	err = irq_domain_alloc_irqs_parent(domain, virq, 1, &parent_fwspec);
- 	if (err)
+ 	return 0;
+ 
++err_plat_depopulate:
++	of_platform_depopulate(dev);
++
+ err_phys_power:
+ 	for (i = 0 ; i < PHY_COUNT ; ++i)
+ 		phy_power_off(priv->phys[i]);
+-- 
+2.39.2
+
 
 
