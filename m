@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 234FD755696
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68EBE75542C
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:27:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232901AbjGPUwE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:52:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40470 "EHLO
+        id S230128AbjGPU13 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:27:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232936AbjGPUwA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:00 -0400
+        with ESMTP id S231404AbjGPU12 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:27:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA2CEE54
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:51:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C1EC9F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:27:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C97360DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:51:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEB4C433C7;
-        Sun, 16 Jul 2023 20:51:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0368160EBB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:27:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B47C433C7;
+        Sun, 16 Jul 2023 20:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540716;
-        bh=o4g3M1+T1+RobAwEH58yUdTFZodrhMEQJfF9/6uzET8=;
+        s=korg; t=1689539246;
+        bh=q4gBomRWSHlLu2mgdTVXvd7/P42V9agy63QCWCx4iHA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zOh9F62AKp6waUpAwo/lTIJLlqHEAk1DdWIcmwkURD7f6s5P4EGS0BvBdURooS1Bl
-         Lem4PVHtfB1AcASjhi8xPi7Q00E8NGF0ALg0UniKm8oYuteKrOLg+bOTD7qxKVG7Ot
-         ji81C36PbZxyKtFafXkMqDDc9Ns7BXMSZ9utDQVQ=
+        b=yr6dZdoZi9Z68TFyalNXZB7RaKBms0MfgO1sX1cUyP7YieCRTQiVj627vrDs5Pvj6
+         74g/Q5vybM7ed1K/YyWs9m4NmcSLXgIn1CeEdDUkA8eThsAlS3dLjwzd4gnmOgC6Jn
+         mav7jGZfESf9Kxv/1ScAZaW7LoJO17uxFLq4efbQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 436/591] mfd: wcd934x: Fix an error handling path in wcd934x_slim_probe()
+        patches@lists.linux.dev, Dai Ngo <dai.ngo@oracle.com>,
+        Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.4 722/800] NFSD: add encoding of op_recall flag for write delegation
 Date:   Sun, 16 Jul 2023 21:49:35 +0200
-Message-ID: <20230716194935.192184228@linuxfoundation.org>
+Message-ID: <20230716195005.888785217@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +55,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit f190b4891a3f9fac123a7afd378d4143a2723313 ]
+commit 58f5d894006d82ed7335e1c37182fbc5f08c2f51 upstream.
 
-If devm_gpiod_get_optional() fails, some resources need to be released, as
-already done in the .remove() function.
+Modified nfsd4_encode_open to encode the op_recall flag properly
+for OPEN result with write delegation granted.
 
-While at it, remove the unneeded error code from a dev_err_probe() call.
-It is already added in a human readable way by dev_err_probe() itself.
-
-Fixes: 6a0ee2a61a31 ("mfd: wcd934x: Replace legacy gpio interface for gpiod")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/02d8447f6d1df52cc8357aae698152e9a9be67c6.1684565021.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/wcd934x.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4xdr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/wcd934x.c b/drivers/mfd/wcd934x.c
-index 68e2fa2fda99c..32ed2bd863758 100644
---- a/drivers/mfd/wcd934x.c
-+++ b/drivers/mfd/wcd934x.c
-@@ -253,8 +253,9 @@ static int wcd934x_slim_probe(struct slim_device *sdev)
- 	usleep_range(600, 650);
- 	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(reset_gpio)) {
--		return dev_err_probe(dev, PTR_ERR(reset_gpio),
--				"Failed to get reset gpio: err = %ld\n", PTR_ERR(reset_gpio));
-+		ret = dev_err_probe(dev, PTR_ERR(reset_gpio),
-+				    "Failed to get reset gpio\n");
-+		goto err_disable_regulators;
- 	}
- 	msleep(20);
- 	gpiod_set_value(reset_gpio, 1);
-@@ -264,6 +265,10 @@ static int wcd934x_slim_probe(struct slim_device *sdev)
- 	dev_set_drvdata(dev, ddata);
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3956,7 +3956,7 @@ nfsd4_encode_open(struct nfsd4_compoundr
+ 		p = xdr_reserve_space(xdr, 32);
+ 		if (!p)
+ 			return nfserr_resource;
+-		*p++ = cpu_to_be32(0);
++		*p++ = cpu_to_be32(open->op_recall);
  
- 	return 0;
-+
-+err_disable_regulators:
-+	regulator_bulk_disable(WCD934X_MAX_SUPPLY, ddata->supplies);
-+	return ret;
- }
- 
- static void wcd934x_slim_remove(struct slim_device *sdev)
--- 
-2.39.2
-
+ 		/*
+ 		 * TODO: space_limit's in delegations
 
 
