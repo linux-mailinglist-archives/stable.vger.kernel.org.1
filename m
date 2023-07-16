@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D62C7554E3
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0468A7554E7
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231217AbjGPUfJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:35:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55342 "EHLO
+        id S231503AbjGPUfL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230491AbjGPUfI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:35:08 -0400
+        with ESMTP id S230491AbjGPUfK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:35:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B90D2;
-        Sun, 16 Jul 2023 13:35:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E29BEBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:35:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E1DC60EB0;
-        Sun, 16 Jul 2023 20:35:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E11C433C8;
-        Sun, 16 Jul 2023 20:35:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7888560E65
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:35:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F70C433CD;
+        Sun, 16 Jul 2023 20:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539706;
-        bh=O6TUdrDHfsVRCsKUxF9WP7MXPTpUIpz/o6QOt+IMsoY=;
+        s=korg; t=1689539708;
+        bh=OtglGoh5qyCj71K8D3PIXmAv23rQ71jP5zW+Hi6UleQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uheWh4KgtbYvUhKlOF1CuIVDbpTkzcFdMb4sNiVisjv9A03fsYJKtUNjAg9mnBqfL
-         9WXQbN3dYskEPYP7GqsVM78do9ZJnMOpx7Wzo2VVqA5glmF6Bw8N+HrhJuyhozGw8t
-         ImMdlfmPFRfCORVwzAgL6Ge28KpNhyLyWdvuBrcI=
+        b=SH9wLp+G71jcAoQ5jlFdxXi/8JbnhpL6IdVYakE0Ni5mx/wDOY9jj67FNrNnrmuNm
+         jhulQW0c58EuiRO0tgD52aHiD2GrG0tX9pgwcgdHou0wNJfFUqQmpcg2xVpFzDcQK6
+         2ryw996v3w+lFCipeGACTTBz2ejFTRmvBYK7tcRA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Borkmann <daniel@iogearbox.net>,
-        Christian Brauner <brauner@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Neil Horman <nhorman@tuxdriver.com>,
-        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        Xin Long <lucien.xin@gmail.com>, linux-sctp@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Lennart Poettering <lennart@poettering.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Yonghong Song <yhs@fb.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/591] sctp: add bpf_bypass_getsockopt proto callback
-Date:   Sun, 16 Jul 2023 21:43:34 +0200
-Message-ID: <20230716194925.824615271@linuxfoundation.org>
+Subject: [PATCH 6.1 076/591] libbpf: fix offsetof() and container_of() to work with CO-RE
+Date:   Sun, 16 Jul 2023 21:43:35 +0200
+Message-ID: <20230716194925.851180614@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -62,91 +58,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 2598619e012cee5273a2821441b9a051ad931249 ]
+[ Upstream commit bdeeed3498c7871c17465bb4f11d1bc67f9098af ]
 
-Implement ->bpf_bypass_getsockopt proto callback and filter out
-SCTP_SOCKOPT_PEELOFF, SCTP_SOCKOPT_PEELOFF_FLAGS and SCTP_SOCKOPT_CONNECTX3
-socket options from running eBPF hook on them.
+It seems like __builtin_offset() doesn't preserve CO-RE field
+relocations properly. So if offsetof() macro is defined through
+__builtin_offset(), CO-RE-enabled BPF code using container_of() will be
+subtly and silently broken.
 
-SCTP_SOCKOPT_PEELOFF and SCTP_SOCKOPT_PEELOFF_FLAGS options do fd_install(),
-and if BPF_CGROUP_RUN_PROG_GETSOCKOPT hook returns an error after success of
-the original handler sctp_getsockopt(...), userspace will receive an error
-from getsockopt syscall and will be not aware that fd was successfully
-installed into a fdtable.
+To avoid this problem, redefine offsetof() and container_of() in the
+form that works with CO-RE relocations more reliably.
 
-As pointed by Marcelo Ricardo Leitner it seems reasonable to skip
-bpf getsockopt hook for SCTP_SOCKOPT_CONNECTX3 sockopt too.
-Because internaly, it triggers connect() and if error is masked
-then userspace will be confused.
-
-This patch was born as a result of discussion around a new SCM_PIDFD interface:
-https://lore.kernel.org/all/20230413133355.350571-3-aleksandr.mikhalitsyn@canonical.com/
-
-Fixes: 0d01da6afc54 ("bpf: implement getsockopt and setsockopt hooks")
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Stanislav Fomichev <sdf@google.com>
-Cc: Neil Horman <nhorman@tuxdriver.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Cc: Xin Long <lucien.xin@gmail.com>
-Cc: linux-sctp@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Suggested-by: Stanislav Fomichev <sdf@google.com>
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 5fbc220862fc ("tools/libpf: Add offsetof/container_of macro in bpf_helpers.h")
+Reported-by: Lennart Poettering <lennart@poettering.net>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/r/20230509065502.2306180-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tools/lib/bpf/bpf_helpers.h | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index bc3d08bd7cef3..e1011311bc877 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -8279,6 +8279,22 @@ static int sctp_getsockopt(struct sock *sk, int level, int optname,
- 	return retval;
- }
+diff --git a/tools/lib/bpf/bpf_helpers.h b/tools/lib/bpf/bpf_helpers.h
+index d37c4fe2849d2..2b3b300bf4dfa 100644
+--- a/tools/lib/bpf/bpf_helpers.h
++++ b/tools/lib/bpf/bpf_helpers.h
+@@ -77,16 +77,21 @@
+ /*
+  * Helper macros to manipulate data structures
+  */
+-#ifndef offsetof
+-#define offsetof(TYPE, MEMBER)	((unsigned long)&((TYPE *)0)->MEMBER)
+-#endif
+-#ifndef container_of
++
++/* offsetof() definition that uses __builtin_offset() might not preserve field
++ * offset CO-RE relocation properly, so force-redefine offsetof() using
++ * old-school approach which works with CO-RE correctly
++ */
++#undef offsetof
++#define offsetof(type, member)	((unsigned long)&((type *)0)->member)
++
++/* redefined container_of() to ensure we use the above offsetof() macro */
++#undef container_of
+ #define container_of(ptr, type, member)				\
+ 	({							\
+ 		void *__mptr = (void *)(ptr);			\
+ 		((type *)(__mptr - offsetof(type, member)));	\
+ 	})
+-#endif
  
-+static bool sctp_bpf_bypass_getsockopt(int level, int optname)
-+{
-+	if (level == SOL_SCTP) {
-+		switch (optname) {
-+		case SCTP_SOCKOPT_PEELOFF:
-+		case SCTP_SOCKOPT_PEELOFF_FLAGS:
-+		case SCTP_SOCKOPT_CONNECTX3:
-+			return true;
-+		default:
-+			return false;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- static int sctp_hash(struct sock *sk)
- {
- 	/* STUB */
-@@ -9643,6 +9659,7 @@ struct proto sctp_prot = {
- 	.shutdown    =	sctp_shutdown,
- 	.setsockopt  =	sctp_setsockopt,
- 	.getsockopt  =	sctp_getsockopt,
-+	.bpf_bypass_getsockopt	= sctp_bpf_bypass_getsockopt,
- 	.sendmsg     =	sctp_sendmsg,
- 	.recvmsg     =	sctp_recvmsg,
- 	.bind        =	sctp_bind,
-@@ -9698,6 +9715,7 @@ struct proto sctpv6_prot = {
- 	.shutdown	= sctp_shutdown,
- 	.setsockopt	= sctp_setsockopt,
- 	.getsockopt	= sctp_getsockopt,
-+	.bpf_bypass_getsockopt	= sctp_bpf_bypass_getsockopt,
- 	.sendmsg	= sctp_sendmsg,
- 	.recvmsg	= sctp_recvmsg,
- 	.bind		= sctp_bind,
+ /*
+  * Compiler (optimization) barrier.
 -- 
 2.39.2
 
