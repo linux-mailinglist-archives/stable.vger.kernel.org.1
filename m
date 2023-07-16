@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9701755379
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A769755585
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231735AbjGPUT0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:19:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44504 "EHLO
+        id S232552AbjGPUll (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:41:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231743AbjGPUTZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:19:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18344126
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:19:25 -0700 (PDT)
+        with ESMTP id S232544AbjGPUlk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:41:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3677AB
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:41:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4C5960E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:19:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E8DC433C8;
-        Sun, 16 Jul 2023 20:19:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 52ED560EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:41:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657ABC433C7;
+        Sun, 16 Jul 2023 20:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538764;
-        bh=upnEBz1ZGhx67M8PPI0EKNw8HzMCoyrFtjSApqaDWcg=;
+        s=korg; t=1689540098;
+        bh=xlt2rCYQK8j9KdN5cAp7h4zDjdxEVsFvgl5MYrFHLEE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bTprwubtBpvJIoK1jXWUjLO61rmU9/twfJQzPUviZmY6QtqqWfBhui1RW7lig3Ade
-         SX1UHUS/ItMmrf72j4txH7tmD2dB9kyx8Z3A6sBzALaGaQfqmwdG/9TDQLw143vOSW
-         ERnrBudHaRPDFG/ZCnO2WQxptOGt8E3AxjG92vbs=
+        b=Ap2M3EkvRaXfilNXZt3FMC8C4bLkMEufEfJZa3lHusA2yeQvd2NFVPv5uRqH/92Ne
+         6mXggMdkwYqNUwSCzde/z79yAanyk23wFe+YsxwD5AlCBDYRTWv/HzRGHPJMaWeTsR
+         m45WN6c47ZrekiwJ0WGQQLVA8kF2qwwEkVxZzfz0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Loehle <cloehle@hyperstone.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.4 528/800] mmc: block: ioctl: do write error check for spi
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        David Gow <davidgow@google.com>,
+        =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 242/591] HID: uclogic: Modular KUnit tests should not depend on KUNIT=y
 Date:   Sun, 16 Jul 2023 21:46:21 +0200
-Message-ID: <20230716195001.358024018@linuxfoundation.org>
+Message-ID: <20230716194930.129922991@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,46 +57,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Loehle <CLoehle@hyperstone.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 568898cbc8b570311b3b94a3202b8233f4168144 upstream.
+[ Upstream commit 49904a0ebf23b15aad288a10f5354e7cd8193121 ]
 
-SPI doesn't have the usual PROG path we can check for error bits
-after moving back to TRAN. Instead it holds the line LOW until
-completion. We can then check if the card shows any errors or
-is in IDLE state, indicating the line is no longer LOW because
-the card was reset.
+While KUnit tests that cannot be built as a loadable module must depend
+on "KUNIT=y", this is not true for modular tests, where it adds an
+unnecessary limitation.
 
-Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/55920f880c9742f486f64aa44e25508e@hyperstone.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by relaxing the dependency to "KUNIT".
+
+Fixes: 08809e482a1c44d9 ("HID: uclogic: KUnit best practices and naming conventions")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: José Expósito <jose.exposito89@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hid/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -178,6 +178,7 @@ static void mmc_blk_rw_rq_prep(struct mm
- 			       int recovery_mode,
- 			       struct mmc_queue *mq);
- static void mmc_blk_hsq_req_done(struct mmc_request *mrq);
-+static int mmc_spi_err_check(struct mmc_card *card);
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -1262,7 +1262,7 @@ config HID_MCP2221
  
- static struct mmc_blk_data *mmc_blk_get(struct gendisk *disk)
- {
-@@ -608,6 +609,11 @@ static int __mmc_blk_ioctl_cmd(struct mm
- 	if ((card->host->caps & MMC_CAP_WAIT_WHILE_BUSY) && use_r1b_resp)
- 		return 0;
- 
-+	if (mmc_host_is_spi(card->host)) {
-+		if (idata->ic.write_flag || r1b_resp || cmd.flags & MMC_RSP_SPI_BUSY)
-+			return mmc_spi_err_check(card);
-+		return err;
-+	}
- 	/* Ensure RPMB/R1B command has completed by polling with CMD13. */
- 	if (idata->rpmb || r1b_resp)
- 		err = mmc_poll_for_busy(card, busy_timeout_ms, false,
+ config HID_KUNIT_TEST
+ 	tristate "KUnit tests for HID" if !KUNIT_ALL_TESTS
+-	depends on KUNIT=y
++	depends on KUNIT
+ 	depends on HID_UCLOGIC
+ 	default KUNIT_ALL_TESTS
+ 	help
 
 
