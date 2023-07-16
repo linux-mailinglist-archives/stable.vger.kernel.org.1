@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 901EB7554B7
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD1877552BD
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232276AbjGPUd1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:33:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54366 "EHLO
+        id S231459AbjGPULZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:11:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232282AbjGPUd1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:33:27 -0400
+        with ESMTP id S231447AbjGPULY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 664919F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:33:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7160CC0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F091860DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:33:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09637C433C7;
-        Sun, 16 Jul 2023 20:33:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0808D60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FC6C433C9;
+        Sun, 16 Jul 2023 20:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539605;
-        bh=vakl9FHS1sMgsSzjjCrVeOO6Tj4jT1L6d4TWH13xOXE=;
+        s=korg; t=1689538282;
+        bh=a+Ht65i+TOptcDvSAPVjApQH813d/w0a91YkuQF7cGg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rj0nnmUFwJrCeCX9LtkIXUxBgTaApPhNOX3p6M5f7EMuphmatgD8lmnxKUA9yFECO
-         2twi04cu7ZQAxckcSCseGeOX60gVbEuwrU2FzdN6LpUWqkAdrxLdfDNvWFgWA3AcvY
-         sjH2IF/l6tfsFp3Y0tSTwo8TRLuK3ebqU7dTjh/0=
+        b=KBKdhzr2YTEEF8l5rsfbBGcY8hQkoT/cQAOS5ZZndJFif+DnWx6moUGLI0tCbe4BR
+         znrXgCpQEGQgRu0CwMJJrWVyiiEzPfCVoD++we2MC+0XrQPZ4eQ1hNoawA0fx47+Cb
+         8eExzoKhqAt9ksqQzHgkq23DwXrMxdFFPZnWZRqA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Kees Cook <keescook@chromium.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Uma Shankar <uma.shankar@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/591] pstore/ram: Add check for kstrdup
+Subject: [PATCH 6.4 352/800] drm/i915: No 10bit gamma on desktop gen3 parts
 Date:   Sun, 16 Jul 2023 21:43:25 +0200
-Message-ID: <20230716194925.587899460@linuxfoundation.org>
+Message-ID: <20230716194957.255346725@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,35 +57,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit d97038d5ec2062733c1e016caf9baaf68cf64ea1 ]
+[ Upstream commit 19db2062094c75c64039d820c2547aad4dcfd905 ]
 
-Add check for the return value of kstrdup() and return the error
-if it fails in order to avoid NULL pointer dereference.
+Apparently desktop gen3 parts don't support the
+10bit gamma mode at all. Stop claiming otherwise.
 
-Fixes: e163fdb3f7f8 ("pstore/ram: Regularize prz label allocation lifetime")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230614093733.36048-1-jiasheng@iscas.ac.cn
+As is the case with pipe A on gen3 mobile parts, the
+PIPECONF gamma mode bit can be set but it has no
+effect on the output.
+
+PNV seems to be the only slight exception, but generally
+the desktop PNV variant looks more like a mobile part so
+this is not entirely surprising.
+
+Fixes: 67630bacae23 ("drm/i915: Add 10bit gamma mode for gen2/3")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230531135625.3467-1-ville.syrjala@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/ram_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../gpu/drm/i915/display/intel_display_device.c  | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
-index 8bf09886e7e66..2384de1c2d187 100644
---- a/fs/pstore/ram_core.c
-+++ b/fs/pstore/ram_core.c
-@@ -591,6 +591,8 @@ struct persistent_ram_zone *persistent_ram_new(phys_addr_t start, size_t size,
- 	raw_spin_lock_init(&prz->buffer_lock);
- 	prz->flags = flags;
- 	prz->label = kstrdup(label, GFP_KERNEL);
-+	if (!prz->label)
-+		goto err;
+diff --git a/drivers/gpu/drm/i915/display/intel_display_device.c b/drivers/gpu/drm/i915/display/intel_display_device.c
+index 3e2f4cd0b9f56..8c57d48e8270f 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_device.c
++++ b/drivers/gpu/drm/i915/display/intel_display_device.c
+@@ -216,7 +216,6 @@ static const struct intel_display_device_info i865g_display = {
+ 	.has_overlay = 1, \
+ 	I9XX_PIPE_OFFSETS, \
+ 	I9XX_CURSOR_OFFSETS, \
+-	I9XX_COLORS, \
+ 	\
+ 	.__runtime_defaults.ip.ver = 3, \
+ 	.__runtime_defaults.pipe_mask = BIT(PIPE_A) | BIT(PIPE_B), \
+@@ -225,12 +224,14 @@ static const struct intel_display_device_info i865g_display = {
  
- 	ret = persistent_ram_buffer_map(start, size, prz, memtype);
- 	if (ret)
+ static const struct intel_display_device_info i915g_display = {
+ 	GEN3_DISPLAY,
++	I845_COLORS,
+ 	.cursor_needs_physical = 1,
+ 	.overlay_needs_physical = 1,
+ };
+ 
+ static const struct intel_display_device_info i915gm_display = {
+ 	GEN3_DISPLAY,
++	I9XX_COLORS,
+ 	.cursor_needs_physical = 1,
+ 	.overlay_needs_physical = 1,
+ 	.supports_tv = 1,
+@@ -240,6 +241,7 @@ static const struct intel_display_device_info i915gm_display = {
+ 
+ static const struct intel_display_device_info i945g_display = {
+ 	GEN3_DISPLAY,
++	I845_COLORS,
+ 	.has_hotplug = 1,
+ 	.cursor_needs_physical = 1,
+ 	.overlay_needs_physical = 1,
+@@ -247,6 +249,7 @@ static const struct intel_display_device_info i945g_display = {
+ 
+ static const struct intel_display_device_info i945gm_display = {
+ 	GEN3_DISPLAY,
++	I9XX_COLORS,
+ 	.has_hotplug = 1,
+ 	.cursor_needs_physical = 1,
+ 	.overlay_needs_physical = 1,
+@@ -257,6 +260,13 @@ static const struct intel_display_device_info i945gm_display = {
+ 
+ static const struct intel_display_device_info g33_display = {
+ 	GEN3_DISPLAY,
++	I845_COLORS,
++	.has_hotplug = 1,
++};
++
++static const struct intel_display_device_info pnv_display = {
++	GEN3_DISPLAY,
++	I9XX_COLORS,
+ 	.has_hotplug = 1,
+ };
+ 
+@@ -669,8 +679,8 @@ static const struct {
+ 	INTEL_I965GM_IDS(&i965gm_display),
+ 	INTEL_GM45_IDS(&gm45_display),
+ 	INTEL_G45_IDS(&g45_display),
+-	INTEL_PINEVIEW_G_IDS(&g33_display),
+-	INTEL_PINEVIEW_M_IDS(&g33_display),
++	INTEL_PINEVIEW_G_IDS(&pnv_display),
++	INTEL_PINEVIEW_M_IDS(&pnv_display),
+ 	INTEL_IRONLAKE_D_IDS(&ilk_d_display),
+ 	INTEL_IRONLAKE_M_IDS(&ilk_m_display),
+ 	INTEL_SNB_D_IDS(&snb_display),
 -- 
 2.39.2
 
