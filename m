@@ -2,136 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C480755462
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48B857556A7
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:52:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232102AbjGPU3y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:29:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51278 "EHLO
+        id S232916AbjGPUwj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:52:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232100AbjGPU3x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9499F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:52 -0700 (PDT)
+        with ESMTP id S232925AbjGPUwi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:52:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B87109
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:52:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3905960EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490F0C433C8;
-        Sun, 16 Jul 2023 20:29:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 761EF60E2C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:52:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853D8C433C7;
+        Sun, 16 Jul 2023 20:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539391;
-        bh=Sdsxi8fAXKH1l5lpIGkEXV0HkfJQamwEyrdcceKP+wY=;
+        s=korg; t=1689540756;
+        bh=3+uk3lHB9I/y/j0MUypH9xNqMEo4gsLCJGi55I5rWzE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WGdaG9vVYOwRR4jnF5pbNMBc3ki8z3AFKKhu1nFpG6gHflJ3+EKiLAd7eR5rvusGk
-         VchNex9s4I3XPr1ri2D/dJG2ojY5K+D4vG22b3JwCS1rSkGDIac3ZWOLiyrbVaM8O5
-         7L4582d8S+ymJUChQw19gP9q+g2W2vAnsgBuZZ0A=
+        b=t5T29BsTV+vHMGUE1z9X8RtCvp2ZNT1pval8DGU2T4g5n8wSQ1om90LwbiPusfSNT
+         fOXMvmqQYum07Je/RHaoYnYZHLlPfCuAqzaNsEs/ueWAti7IGxPDqkVH8cNq3jIkM8
+         JJFMPSBFeHXqmE8LIqHo4muyzKWGtGHy2jvFxZGg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.4 762/800] btrfs: fix race when deleting quota root from the dirty cow roots list
-Date:   Sun, 16 Jul 2023 21:50:15 +0200
-Message-ID: <20230716195006.849007341@linuxfoundation.org>
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 477/591] net: dsa: felix: dont drop PTP frames with tag_8021q when RX timestamping is disabled
+Date:   Sun, 16 Jul 2023 21:50:16 +0200
+Message-ID: <20230716194936.242136742@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit b31cb5a6eb7a48b0a7bfdf06832b1fd5088d8c79 upstream.
+[ Upstream commit 2edcfcbb3c5946609be1d8875473a240b170673b ]
 
-When disabling quotas we are deleting the quota root from the list
-fs_info->dirty_cowonly_roots without taking the lock that protects it,
-which is struct btrfs_fs_info::trans_lock. This unsynchronized list
-manipulation may cause chaos if there's another concurrent manipulation
-of this list, such as when adding a root to it with
-ctree.c:add_root_to_dirty_list().
+The driver implements a workaround for the fact that it doesn't have an
+IRQ source to tell it whether PTP frames are available through the
+extraction registers, for those frames to be processed and passed
+towards the network stack. That workaround is to configure the switch,
+through felix_hwtstamp_set() -> felix_update_trapping_destinations(),
+to create two copies of PTP packets: one sent over Ethernet to the DSA
+master, and one to be consumed through the aforementioned CPU extraction
+queue registers.
 
-This can result in all sorts of weird failures caused by a race, such as
-the following crash:
+The reason why we want PTP packets to be consumed through the CPU
+extraction registers in the first place is because we want to see their
+hardware RX timestamp. With tag_8021q, that is only visible that way,
+and it isn't visible with the copy of the packet that's transmitted over
+Ethernet.
 
-  [337571.278245] general protection fault, probably for non-canonical address 0xdead000000000108: 0000 [#1] PREEMPT SMP PTI
-  [337571.278933] CPU: 1 PID: 115447 Comm: btrfs Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
-  [337571.279153] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-  [337571.279572] RIP: 0010:commit_cowonly_roots+0x11f/0x250 [btrfs]
-  [337571.279928] Code: 85 38 06 00 (...)
-  [337571.280363] RSP: 0018:ffff9f63446efba0 EFLAGS: 00010206
-  [337571.280582] RAX: ffff942d98ec2638 RBX: ffff9430b82b4c30 RCX: 0000000449e1c000
-  [337571.280798] RDX: dead000000000100 RSI: ffff9430021e4900 RDI: 0000000000036070
-  [337571.281015] RBP: ffff942d98ec2000 R08: ffff942d98ec2000 R09: 000000000000015b
-  [337571.281254] R10: 0000000000000009 R11: 0000000000000001 R12: ffff942fe8fbf600
-  [337571.281476] R13: ffff942dabe23040 R14: ffff942dabe20800 R15: ffff942d92cf3b48
-  [337571.281723] FS:  00007f478adb7340(0000) GS:ffff94349fa40000(0000) knlGS:0000000000000000
-  [337571.281950] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [337571.282184] CR2: 00007f478ab9a3d5 CR3: 000000001e02c001 CR4: 0000000000370ee0
-  [337571.282416] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  [337571.282647] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  [337571.282874] Call Trace:
-  [337571.283101]  <TASK>
-  [337571.283327]  ? __die_body+0x1b/0x60
-  [337571.283570]  ? die_addr+0x39/0x60
-  [337571.283796]  ? exc_general_protection+0x22e/0x430
-  [337571.284022]  ? asm_exc_general_protection+0x22/0x30
-  [337571.284251]  ? commit_cowonly_roots+0x11f/0x250 [btrfs]
-  [337571.284531]  btrfs_commit_transaction+0x42e/0xf90 [btrfs]
-  [337571.284803]  ? _raw_spin_unlock+0x15/0x30
-  [337571.285031]  ? release_extent_buffer+0x103/0x130 [btrfs]
-  [337571.285305]  reset_balance_state+0x152/0x1b0 [btrfs]
-  [337571.285578]  btrfs_balance+0xa50/0x11e0 [btrfs]
-  [337571.285864]  ? __kmem_cache_alloc_node+0x14a/0x410
-  [337571.286086]  btrfs_ioctl+0x249a/0x3320 [btrfs]
-  [337571.286358]  ? mod_objcg_state+0xd2/0x360
-  [337571.286577]  ? refill_obj_stock+0xb0/0x160
-  [337571.286798]  ? seq_release+0x25/0x30
-  [337571.287016]  ? __rseq_handle_notify_resume+0x3ba/0x4b0
-  [337571.287235]  ? percpu_counter_add_batch+0x2e/0xa0
-  [337571.287455]  ? __x64_sys_ioctl+0x88/0xc0
-  [337571.287675]  __x64_sys_ioctl+0x88/0xc0
-  [337571.287901]  do_syscall_64+0x38/0x90
-  [337571.288126]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-  [337571.288352] RIP: 0033:0x7f478aaffe9b
+The problem with the workaround implementation is that it drops the
+packet received over Ethernet, in expectation of its copy being present
+in the CPU extraction registers. However, if felix_hwtstamp_set() hasn't
+run (aka PTP RX timestamping is disabled), the driver will drop the
+original PTP frame and there will be no copy of it in the CPU extraction
+registers. So, the network stack will simply not see any PTP frame.
 
-So fix this by locking struct btrfs_fs_info::trans_lock before deleting
-the quota root from that list.
+Look at the port's trapping configuration to see whether the driver has
+previously enabled the CPU extraction registers. If it hasn't, just
+don't RX timestamp the frame and let it be passed up the stack by DSA,
+which is perfectly fine.
 
-Fixes: bed92eae26cc ("Btrfs: qgroup implementation and prototypes")
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0a6f17c6ae21 ("net: dsa: tag_ocelot_8021q: add support for PTP timestamping")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/dsa/ocelot/felix.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1301,7 +1301,9 @@ int btrfs_quota_disable(struct btrfs_fs_
- 		goto out;
- 	}
+diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
+index dd3a18cc89dd2..4faabc4364aa7 100644
+--- a/drivers/net/dsa/ocelot/felix.c
++++ b/drivers/net/dsa/ocelot/felix.c
+@@ -1705,6 +1705,18 @@ static bool felix_rxtstamp(struct dsa_switch *ds, int port,
+ 	u32 tstamp_hi;
+ 	u64 tstamp;
  
-+	spin_lock(&fs_info->trans_lock);
- 	list_del(&quota_root->dirty_list);
-+	spin_unlock(&fs_info->trans_lock);
- 
- 	btrfs_tree_lock(quota_root->node);
- 	btrfs_clear_buffer_dirty(trans, quota_root->node);
++	switch (type & PTP_CLASS_PMASK) {
++	case PTP_CLASS_L2:
++		if (!(ocelot->ports[port]->trap_proto & OCELOT_PROTO_PTP_L2))
++			return false;
++		break;
++	case PTP_CLASS_IPV4:
++	case PTP_CLASS_IPV6:
++		if (!(ocelot->ports[port]->trap_proto & OCELOT_PROTO_PTP_L4))
++			return false;
++		break;
++	}
++
+ 	/* If the "no XTR IRQ" workaround is in use, tell DSA to defer this skb
+ 	 * for RX timestamping. Then free it, and poll for its copy through
+ 	 * MMIO in the CPU port module, and inject that into the stack from
+-- 
+2.39.2
+
 
 
