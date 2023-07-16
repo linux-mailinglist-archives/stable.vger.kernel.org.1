@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58C4475545D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 468347556C0
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbjGPU3k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:29:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51040 "EHLO
+        id S232958AbjGPUxl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232088AbjGPU3j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:39 -0400
+        with ESMTP id S232955AbjGPUxk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:53:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E049F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F1FD109
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:53:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E33860EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F0FC433C7;
-        Sun, 16 Jul 2023 20:29:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22CE660DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:53:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E24C433C8;
+        Sun, 16 Jul 2023 20:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539377;
-        bh=fGOPGcvrboWGfiqg4qr/av+TDNZV0E2tA3tsdejsHXI=;
+        s=korg; t=1689540818;
+        bh=HqdfmDQGsucmWrHxME43JU/YKMeXbYVvdaiX7I4QCO0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gNbQgOPs9qQuwYKpshgwtw0kih+wmw2mUmZBsoPmMXu4KUJxVCjsjiCSScegrfduG
-         miqy39zPoqxbwuhhwtPnLBRuuZ6ABpIpTEFsA8ChSucKqzC+NbZdmlraCeQCwwAv6/
-         mxxgGHe8ffoZ5fwTYOXu+DySq0H4GoDQtQCPExDw=
+        b=kwpyzl1mCDQxCM5IAv2KHm80MSx9NUMIJyAgGZModxLdUuopLBtHBDf8JVZnND2Bk
+         HuPSeMYM+RDtasTMIyjBLDi2MNZuHHXREvoP+2EdmdrKCZlhP5uvuUx+mLBHJsoNZh
+         4sv+FRhcbyCVqpZDgci+0tRG3WcE4+ut4y5ZzjyU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.4 785/800] ovl: fix null pointer dereference in ovl_get_acl_rcu()
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 499/591] net: bridge: keep ports without IFF_UNICAST_FLT in BR_PROMISC mode
 Date:   Sun, 16 Jul 2023 21:50:38 +0200
-Message-ID: <20230716195007.380636900@linuxfoundation.org>
+Message-ID: <20230716194936.803576805@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,98 +56,198 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit f4e19e595cc2e76a8a58413eb19d3d9c51328b53 upstream.
+[ Upstream commit 6ca3c005d0604e8d2b439366e3923ea58db99641 ]
 
-Following process:
-         P1                     P2
- path_openat
-  link_path_walk
-   may_lookup
-    inode_permission(rcu)
-     ovl_permission
-      acl_permission_check
-       check_acl
-        get_cached_acl_rcu
-	 ovl_get_inode_acl
-	  realinode = ovl_inode_real(ovl_inode)
-	                      drop_cache
-		               __dentry_kill(ovl_dentry)
-				iput(ovl_inode)
-		                 ovl_destroy_inode(ovl_inode)
-		                  dput(oi->__upperdentry)
-		                   dentry_kill(upperdentry)
-		                    dentry_unlink_inode
-				     upperdentry->d_inode = NULL
-	    ovl_inode_upper
-	     upperdentry = ovl_i_dentry_upper(ovl_inode)
-	     d_inode(upperdentry) // returns NULL
-	  IS_POSIXACL(realinode) // NULL pointer dereference
-, will trigger an null pointer dereference at realinode:
-  [  205.472797] BUG: kernel NULL pointer dereference, address:
-                 0000000000000028
-  [  205.476701] CPU: 2 PID: 2713 Comm: ls Not tainted
-                 6.3.0-12064-g2edfa098e750-dirty #1216
-  [  205.478754] RIP: 0010:do_ovl_get_acl+0x5d/0x300
-  [  205.489584] Call Trace:
-  [  205.489812]  <TASK>
-  [  205.490014]  ovl_get_inode_acl+0x26/0x30
-  [  205.490466]  get_cached_acl_rcu+0x61/0xa0
-  [  205.490908]  generic_permission+0x1bf/0x4e0
-  [  205.491447]  ovl_permission+0x79/0x1b0
-  [  205.491917]  inode_permission+0x15e/0x2c0
-  [  205.492425]  link_path_walk+0x115/0x550
-  [  205.493311]  path_lookupat.isra.0+0xb2/0x200
-  [  205.493803]  filename_lookup+0xda/0x240
-  [  205.495747]  vfs_fstatat+0x7b/0xb0
+According to the synchronization rules for .ndo_get_stats() as seen in
+Documentation/networking/netdevices.rst, acquiring a plain spin_lock()
+should not be illegal, but the bridge driver implementation makes it so.
 
-Fetch a reproducer in [Link].
+After running these commands, I am being faced with the following
+lockdep splat:
 
-Use the helper ovl_i_path_realinode() to get realinode and then do
-non-nullptr checking.
+$ ip link add link swp0 name macsec0 type macsec encrypt on && ip link set swp0 up
+$ ip link add dev br0 type bridge vlan_filtering 1 && ip link set br0 up
+$ ip link set macsec0 master br0 && ip link set macsec0 up
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217404
-Fixes: 332f606b32b6 ("ovl: enable RCU'd ->get_acl()")
-Cc: <stable@vger.kernel.org> # v5.15
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Suggested-by: Christian Brauner <brauner@kernel.org>
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  ========================================================
+  WARNING: possible irq lock inversion dependency detected
+  6.4.0-04295-g31b577b4bd4a #603 Not tainted
+  --------------------------------------------------------
+  swapper/1/0 just changed the state of lock:
+  ffff6bd348724cd8 (&br->lock){+.-.}-{3:3}, at: br_forward_delay_timer_expired+0x34/0x198
+  but this lock took another, SOFTIRQ-unsafe lock in the past:
+   (&ocelot->stats_lock){+.+.}-{3:3}
+
+  and interrupts could create inverse lock ordering between them.
+
+  other info that might help us debug this:
+  Chain exists of:
+    &br->lock --> &br->hash_lock --> &ocelot->stats_lock
+
+   Possible interrupt unsafe locking scenario:
+
+         CPU0                    CPU1
+         ----                    ----
+    lock(&ocelot->stats_lock);
+                                 local_irq_disable();
+                                 lock(&br->lock);
+                                 lock(&br->hash_lock);
+    <Interrupt>
+      lock(&br->lock);
+
+   *** DEADLOCK ***
+
+(details about the 3 locks skipped)
+
+swp0 is instantiated by drivers/net/dsa/ocelot/felix.c, and this
+only matters to the extent that its .ndo_get_stats64() method calls
+spin_lock(&ocelot->stats_lock).
+
+Documentation/locking/lockdep-design.rst says:
+
+| A lock is irq-safe means it was ever used in an irq context, while a lock
+| is irq-unsafe means it was ever acquired with irq enabled.
+
+(...)
+
+| Furthermore, the following usage based lock dependencies are not allowed
+| between any two lock-classes::
+|
+|    <hardirq-safe>   ->  <hardirq-unsafe>
+|    <softirq-safe>   ->  <softirq-unsafe>
+
+Lockdep marks br->hash_lock as softirq-safe, because it is sometimes
+taken in softirq context (for example br_fdb_update() which runs in
+NET_RX softirq), and when it's not in softirq context it blocks softirqs
+by using spin_lock_bh().
+
+Lockdep marks ocelot->stats_lock as softirq-unsafe, because it never
+blocks softirqs from running, and it is never taken from softirq
+context. So it can always be interrupted by softirqs.
+
+There is a call path through which a function that holds br->hash_lock:
+fdb_add_hw_addr() will call a function that acquires ocelot->stats_lock:
+ocelot_port_get_stats64(). This can be seen below:
+
+ocelot_port_get_stats64+0x3c/0x1e0
+felix_get_stats64+0x20/0x38
+dsa_slave_get_stats64+0x3c/0x60
+dev_get_stats+0x74/0x2c8
+rtnl_fill_stats+0x4c/0x150
+rtnl_fill_ifinfo+0x5cc/0x7b8
+rtmsg_ifinfo_build_skb+0xe4/0x150
+rtmsg_ifinfo+0x5c/0xb0
+__dev_notify_flags+0x58/0x200
+__dev_set_promiscuity+0xa0/0x1f8
+dev_set_promiscuity+0x30/0x70
+macsec_dev_change_rx_flags+0x68/0x88
+__dev_set_promiscuity+0x1a8/0x1f8
+__dev_set_rx_mode+0x74/0xa8
+dev_uc_add+0x74/0xa0
+fdb_add_hw_addr+0x68/0xd8
+fdb_add_local+0xc4/0x110
+br_fdb_add_local+0x54/0x88
+br_add_if+0x338/0x4a0
+br_add_slave+0x20/0x38
+do_setlink+0x3a4/0xcb8
+rtnl_newlink+0x758/0x9d0
+rtnetlink_rcv_msg+0x2f0/0x550
+netlink_rcv_skb+0x128/0x148
+rtnetlink_rcv+0x24/0x38
+
+the plain English explanation for it is:
+
+The macsec0 bridge port is created without p->flags & BR_PROMISC,
+because it is what br_manage_promisc() decides for a VLAN filtering
+bridge with a single auto port.
+
+As part of the br_add_if() procedure, br_fdb_add_local() is called for
+the MAC address of the device, and this results in a call to
+dev_uc_add() for macsec0 while the softirq-safe br->hash_lock is taken.
+
+Because macsec0 does not have IFF_UNICAST_FLT, dev_uc_add() ends up
+calling __dev_set_promiscuity() for macsec0, which is propagated by its
+implementation, macsec_dev_change_rx_flags(), to the lower device: swp0.
+This triggers the call path:
+
+dev_set_promiscuity(swp0)
+-> rtmsg_ifinfo()
+   -> dev_get_stats()
+      -> ocelot_port_get_stats64()
+
+with a calling context that lockdep doesn't like (br->hash_lock held).
+
+Normally we don't see this, because even though many drivers that can be
+bridge ports don't support IFF_UNICAST_FLT, we need a driver that
+
+(a) doesn't support IFF_UNICAST_FLT, *and*
+(b) it forwards the IFF_PROMISC flag to another driver, and
+(c) *that* driver implements ndo_get_stats64() using a softirq-unsafe
+    spinlock.
+
+Condition (b) is necessary because the first __dev_set_rx_mode() calls
+__dev_set_promiscuity() with "bool notify=false", and thus, the
+rtmsg_ifinfo() code path won't be entered.
+
+The same criteria also hold true for DSA switches which don't report
+IFF_UNICAST_FLT. When the DSA master uses a spin_lock() in its
+ndo_get_stats64() method, the same lockdep splat can be seen.
+
+I think the deadlock possibility is real, even though I didn't reproduce
+it, and I'm thinking of the following situation to support that claim:
+
+fdb_add_hw_addr() runs on a CPU A, in a context with softirqs locally
+disabled and br->hash_lock held, and may end up attempting to acquire
+ocelot->stats_lock.
+
+In parallel, ocelot->stats_lock is currently held by a thread B (say,
+ocelot_check_stats_work()), which is interrupted while holding it by a
+softirq which attempts to lock br->hash_lock.
+
+Thread B cannot make progress because br->hash_lock is held by A. Whereas
+thread A cannot make progress because ocelot->stats_lock is held by B.
+
+When taking the issue at face value, the bridge can avoid that problem
+by simply making the ports promiscuous from a code path with a saner
+calling context (br->hash_lock not held). A bridge port without
+IFF_UNICAST_FLT is going to become promiscuous as soon as we call
+dev_uc_add() on it (which we do unconditionally), so why not be
+preemptive and make it promiscuous right from the beginning, so as to
+not be taken by surprise.
+
+With this, we've broken the links between code that holds br->hash_lock
+or br->lock and code that calls into the ndo_change_rx_flags() or
+ndo_get_stats64() ops of the bridge port.
+
+Fixes: 2796d0c648c9 ("bridge: Automatically manage port promiscuous mode.")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/inode.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/bridge/br_if.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -558,20 +558,20 @@ struct posix_acl *do_ovl_get_acl(struct
- 				 struct inode *inode, int type,
- 				 bool rcu, bool noperm)
- {
--	struct inode *realinode = ovl_inode_real(inode);
-+	struct inode *realinode;
- 	struct posix_acl *acl;
- 	struct path realpath;
- 
--	if (!IS_POSIXACL(realinode))
--		return NULL;
--
- 	/* Careful in RCU walk mode */
--	ovl_i_path_real(inode, &realpath);
--	if (!realpath.dentry) {
-+	realinode = ovl_i_path_real(inode, &realpath);
-+	if (!realinode) {
- 		WARN_ON(!rcu);
- 		return ERR_PTR(-ECHILD);
- 	}
- 
-+	if (!IS_POSIXACL(realinode))
-+		return NULL;
-+
- 	if (rcu) {
- 		/*
- 		 * If the layer is idmapped drop out of RCU path walk
+diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
+index 228fd5b20f109..0989074f316ef 100644
+--- a/net/bridge/br_if.c
++++ b/net/bridge/br_if.c
+@@ -166,8 +166,9 @@ void br_manage_promisc(struct net_bridge *br)
+ 			 * This lets us disable promiscuous mode and write
+ 			 * this config to hw.
+ 			 */
+-			if (br->auto_cnt == 0 ||
+-			    (br->auto_cnt == 1 && br_auto_port(p)))
++			if ((p->dev->priv_flags & IFF_UNICAST_FLT) &&
++			    (br->auto_cnt == 0 ||
++			     (br->auto_cnt == 1 && br_auto_port(p))))
+ 				br_port_clear_promisc(p);
+ 			else
+ 				br_port_set_promisc(p);
+-- 
+2.39.2
+
 
 
