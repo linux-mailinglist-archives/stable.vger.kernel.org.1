@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CE0F754E59
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D138754E58
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:20:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbjGPKUw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 06:20:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39202 "EHLO
+        id S229776AbjGPKUn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 06:20:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229862AbjGPKUv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:20:51 -0400
+        with ESMTP id S229862AbjGPKUm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:20:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDF201BE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:20:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2FAB1BE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:20:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75C1E60C7A
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:20:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8081FC433C7;
-        Sun, 16 Jul 2023 10:20:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A92060C79
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:20:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692B9C433C7;
+        Sun, 16 Jul 2023 10:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689502849;
-        bh=w45Me8vdD2CUvBd+PfaraXnUOAgKEQoCPTyeUni7Db4=;
+        s=korg; t=1689502840;
+        bh=qPmvF4ZTCQ7WmgZi3MRqraOHfq1qg4JAxrHLfEVy7wQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=lsqNjrFFl1iumBSxd53QjC9B1rr5aL7Jsgwtakzlj+CYklKvq6NXgV9Pk660qDmuD
-         iuQH6lRoZ6axPCYk/zBmI/sHcv25j8N88IVCOy9GUdzftKmkflkcVsxsMS6NozSvMF
-         jgMkbAJ8hiVUHk7nDPqXHzKXJ3HXQ8jqKiR1OhFY=
-Subject: FAILED: patch "[PATCH] ASoC: mediatek: mt8173: Fix snd_soc_component_initialize" failed to apply to 4.19-stable tree
+        b=qVVTCVwVie0m6SDUX3UJHWihIWfjan/5762Is32HFOEXfM3wA8zd6yaekG4O7UROz
+         /G7aPqyXx4uO1aEwMYrxeIPIRRAZww/hC8EBLMOcjJAjkzbT80ZxdlMQc6yNfvRz3+
+         AUdUcF97YmCl864A3eqrWWtmQzPYD/oI+Sg0gBzQ=
+Subject: FAILED: patch "[PATCH] ASoC: mediatek: mt8173: Fix snd_soc_component_initialize" failed to apply to 5.4-stable tree
 To:     ribalda@chromium.org, angelogioacchino.delregno@collabora.com,
         broonie@kernel.org, dan.carpenter@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Sun, 16 Jul 2023 12:20:38 +0200
-Message-ID: <2023071638-uplifting-pentagram-4572@gregkh>
+Message-ID: <2023071637-hankering-crop-89ef@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,25 +50,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x a46d37012a5be1737393b8f82fd35665e4556eee
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071638-uplifting-pentagram-4572@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071637-hankering-crop-89ef@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 a46d37012a5b ("ASoC: mediatek: mt8173: Fix snd_soc_component_initialize error path")
 8c32984bc7da ("ASoC: mediatek: mt8173: Fix debugfs registration for components")
-fceef72b68d6 ("ASoC: mt8173: use devm_platform_ioremap_resource() to simplify code")
 
 thanks,
 
