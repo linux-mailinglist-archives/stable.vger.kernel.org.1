@@ -2,90 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AC9F755456
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8BE7556DA
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:54:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232084AbjGPU3U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:29:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50908 "EHLO
+        id S232993AbjGPUym (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:54:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232078AbjGPU3T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:19 -0400
+        with ESMTP id S232997AbjGPUyl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:54:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2520BC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBEC3E9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:54:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DF0E60EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789D7C433C8;
-        Sun, 16 Jul 2023 20:29:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B41A60DFD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF33C433C7;
+        Sun, 16 Jul 2023 20:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539357;
-        bh=hBD+EzXPiQw6PDfQtkXx+sOammQYpCaP1Ke3UMb+4RY=;
+        s=korg; t=1689540879;
+        bh=WQcKjjLYlKbnUYpXszo2uOPFLgRuV0gEoPpcSOmMR4g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BLLcC8u+ljo/CmZbRyTPb5VEPBn9ErHDLs+9qU7asym6lONtLP/pJ0+BpxUjoPxfM
-         gS7H9pRFOAQ7cZjcjnRq7EJpFoXjhHY3MLB/aFQWr2q8sRSRN2v0HzE57KuL5A/Kwp
-         sB+jIVFaGyvYsw3clLJXAP/K4/HxsJylfduuc+Ao=
+        b=rNfSLL8aEhphMf6kARQdGqfFTjh7usVpFblPrDPP+qzYZ2YwzN5ky5QMTLhJfmY0A
+         WREgYydVKCpvnmw84tJX5+L8HEXFSZmI8kH3QH+c2Bpz6xgnrus1pCnrWetwUhG5PB
+         gFCpYN/kfQ9FdXFyme9fAVD7SUpeXUpVWqUbgul8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.4 779/800] powerpc/vdso: Include CLANG_FLAGS explicitly in ldflags-y
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 493/591] f2fs: fix error path handling in truncate_dnode()
 Date:   Sun, 16 Jul 2023 21:50:32 +0200
-Message-ID: <20230716195007.242114093@linuxfoundation.org>
+Message-ID: <20230716194936.647254875@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-commit a7e5eb53bf9b800d086e2ebcfebd9a3bb16bd1b0 upstream.
+[ Upstream commit 0135c482fa97e2fd8245cb462784112a00ed1211 ]
 
-A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
-KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
-When that occurs, the following error appears when building the compat
-PowerPC vDSO:
+If truncate_node() fails in truncate_dnode(), it missed to call
+f2fs_put_page(), fix it.
 
-  clang: error: unsupported option '-mbig-endian' for target 'x86_64-pc-linux-gnu'
-  make[3]: *** [.../arch/powerpc/kernel/vdso/Makefile:76: arch/powerpc/kernel/vdso/vdso32.so.dbg] Error 1
-
-Explicitly add CLANG_FLAGS to ldflags-y, so that '--target' will always
-be present.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7735730d39d7 ("f2fs: fix to propagate error from __get_meta_page()")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/vdso/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/node.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -54,7 +54,7 @@ KASAN_SANITIZE := n
- KCSAN_SANITIZE := n
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 07419c3e42a52..a010b4bc36d2c 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -941,8 +941,10 @@ static int truncate_dnode(struct dnode_of_data *dn)
+ 	dn->ofs_in_node = 0;
+ 	f2fs_truncate_data_blocks(dn);
+ 	err = truncate_node(dn);
+-	if (err)
++	if (err) {
++		f2fs_put_page(page, 1);
+ 		return err;
++	}
  
- ccflags-y := -fno-common -fno-builtin
--ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack
-+ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack $(CLANG_FLAGS)
- ldflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
- # Filter flags that clang will warn are unused for linking
- ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
+ 	return 1;
+ }
+-- 
+2.39.2
+
 
 
