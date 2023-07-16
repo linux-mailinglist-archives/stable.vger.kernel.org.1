@@ -2,43 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA49475554C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0280E7552FB
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232455AbjGPUjc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:39:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58986 "EHLO
+        id S231572AbjGPUOQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:14:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232453AbjGPUjb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:39:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F23E0BA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:39:30 -0700 (PDT)
+        with ESMTP id S231570AbjGPUOP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:14:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE434C0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83E7960DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:39:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCECC433C8;
-        Sun, 16 Jul 2023 20:39:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7285960EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C8CC433C8;
+        Sun, 16 Jul 2023 20:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539969;
-        bh=4WUeVJuHlvRvNHZpsK894FJJymCsAj/agbtLGYFsVkQ=;
+        s=korg; t=1689538453;
+        bh=++l7jwRxhPieShiTQC/ShKeGoqfC/0jswl4rq8Qi5jY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=emZI/tT3JDRVGw8lxSmhagrZNuBPZWb3Q5iL9WTx7PL6/n7TdY1G/AXKcbw/wB+wo
-         zfBzqFU389En1mcWx/H6RQCAXZB0lT5F4IrggV/uJY2EQLuBP0f3+gV4VyJu2JaAvj
-         IUSrAhJvlODv4I9zKe8oZMnQ4Wx6h+IIhHqC/83Y=
+        b=mWZuUbr1zh0+Ec3qW4JtXIbPSlrfV2VFEJ8ruqgkSabwT5AOX0GLpQqFYejMaz2dS
+         oOhaGztaN+R/xDo2VlXmrTaI4IY1EcQw9FVuAzihu+ZHteyF4vE5JSy4UTRQYxHfAj
+         pWCU219grEmO95LVN4gy2n48rsYZ1jc3DmA6mDtQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 169/591] ASoC: Intel: sof_sdw: remove SOF_SDW_TGL_HDMI for MeteorLake devices
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Andre Fredette <anfredet@redhat.com>,
+        Clark Williams <williams@redhat.com>,
+        Dave Tucker <datucker@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Derek Barbosa <debarbos@redhat.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Tiezhu Yang <yangtiezhu@loongson.cn>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 455/800] perf bench: Add missing setlocale() call to allow usage of %d style formatting
 Date:   Sun, 16 Jul 2023 21:45:08 +0200
-Message-ID: <20230716194928.238159026@linuxfoundation.org>
+Message-ID: <20230716194959.651735848@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,36 +63,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 0db94947c9d3da16aa31d152b7d26fab78b02cb9 ]
+[ Upstream commit 16203e9cd01896b4244100a8e3fb9f6e612ab2b1 ]
 
-Topologies support three HDMI links on MeteorLake devices only.
+Without this we were not getting the thousands separator for big
+numbers.
 
-Fixes: 18489174e4fb ("ASoC: intel: sof_sdw: add RT711 SDCA card for MTL platform")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
-Link: https://lore.kernel.org/r/20230512173305.65399-3-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org
+Noticed while developing 'perf bench uprobe', but the use of %' predates
+that, for instance 'perf bench syscall' uses it.
+
+Before:
+
+  # perf bench uprobe all
+  # Running uprobe/baseline benchmark...
+  # Executed 1000 usleep(1000) calls
+       Total time: 1054082243ns
+
+   1054082.243000 nsecs/op
+
+  #
+
+After:
+
+  # perf bench uprobe all
+  # Running uprobe/baseline benchmark...
+  # Executed 1,000 usleep(1000) calls
+       Total time: 1,053,715,144ns
+
+   1,053,715.144000 nsecs/op
+
+  #
+
+Fixes: c2a08203052f8975 ("perf bench: Add basic syscall benchmark")
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andre Fredette <anfredet@redhat.com>
+Cc: Clark Williams <williams@redhat.com>
+Cc: Dave Tucker <datucker@redhat.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Derek Barbosa <debarbos@redhat.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+Link: https://lore.kernel.org/lkml/ZH3lcepZ4tBYr1jv@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/builtin-bench.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index d4f92bb5e29f8..a37c85d301471 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -372,7 +372,7 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		.matches = {
- 			DMI_MATCH(DMI_PRODUCT_FAMILY, "Intel_mtlrvp"),
- 		},
--		.driver_data = (void *)(RT711_JD1 | SOF_SDW_TGL_HDMI),
-+		.driver_data = (void *)(RT711_JD1),
- 	},
- 	{}
- };
+diff --git a/tools/perf/builtin-bench.c b/tools/perf/builtin-bench.c
+index 58f1cfe1eb34b..db435b791a09b 100644
+--- a/tools/perf/builtin-bench.c
++++ b/tools/perf/builtin-bench.c
+@@ -21,6 +21,7 @@
+ #include "builtin.h"
+ #include "bench/bench.h"
+ 
++#include <locale.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -260,6 +261,7 @@ int cmd_bench(int argc, const char **argv)
+ 
+ 	/* Unbuffered output */
+ 	setvbuf(stdout, NULL, _IONBF, 0);
++	setlocale(LC_ALL, "");
+ 
+ 	if (argc < 2) {
+ 		/* No collection specified. */
 -- 
 2.39.2
 
