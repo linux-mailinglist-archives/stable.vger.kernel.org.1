@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D23FC75516D
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC26975516E
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230284AbjGPT4S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 15:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56524 "EHLO
+        id S230297AbjGPT4X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 15:56:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230306AbjGPT4R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:56:17 -0400
+        with ESMTP id S230315AbjGPT4V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:56:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33456E5E
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:56:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A936E4C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:56:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7A1160EB3
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 19:56:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6520C433C9;
-        Sun, 16 Jul 2023 19:56:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A03A60E88
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 19:56:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9847EC433C7;
+        Sun, 16 Jul 2023 19:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537373;
-        bh=gXS/otu2fAk1SNZY4u1qcgRrfRCsiL7og+jvmMAsZyo=;
+        s=korg; t=1689537376;
+        bh=IA/oBXGg0gv5duBELxPN/dxTexwPl1owgMdVSyG/mHc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xzdcar/5Ug0zLjpW9Rb556lcC0gQnuo7Jzi1JNB6PjRK5e2JnQfpX3UCdIfZ2c9HX
-         weDj71GTtI4a5dOrjQIOgKdsd33xP5ruOA90vKiM1w/y39QhpMF++EGusA2Pky3FeC
-         KhmN8ZMutmPaZH/CwpDzOZUxVCjZSvLMafLmmcbE=
+        b=SPzUB2XchEpsm/r6U0M5sSwez2g2XPCvHe3gAeuPAuPQ3vIG8kVJF63N4GufckSJQ
+         BHoZaoVjor7m45NFr1IJ8g9/8vfkv8iDub/48EG2P4MfrSP+iZ+3KL9Zd5/Lm97Cnq
+         ijZv/KPItqZrQqV4jKW64b1EiXU4o+RSpG1Bd4oI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Zhang Rui <rui.zhang@intel.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 072/800] powercap: RAPL: Fix CONFIG_IOSF_MBI dependency
-Date:   Sun, 16 Jul 2023 21:38:45 +0200
-Message-ID: <20230716194950.774380079@linuxfoundation.org>
+Subject: [PATCH 6.4 073/800] PM: domains: Move the verification of in-params from genpd_add_device()
+Date:   Sun, 16 Jul 2023 21:38:46 +0200
+Message-ID: <20230716194950.798523426@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -56,71 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 4658fe81b3f8afe8adf37734ec5fe595d90415c6 ]
+[ Upstream commit 4384a70c8813e8573d1841fd94eee873f80a7e1a ]
 
-After commit 3382388d7148 ("intel_rapl: abstract RAPL common code"),
-accessing to IOSF_MBI interface is done in the RAPL common code.
+Commit f38d1a6d0025 ("PM: domains: Allocate governor data dynamically
+based on a genpd governor") started to use the in-parameters in
+genpd_add_device(), without first doing a verification of them.
 
-Thus it is the CONFIG_INTEL_RAPL_CORE that has dependency of
-CONFIG_IOSF_MBI, while CONFIG_INTEL_RAPL_MSR does not.
+This isn't really a big problem, as most callers do a verification already.
 
-This problem was not exposed previously because all the previous RAPL
-common code users, aka, the RAPL MSR and MMIO I/F drivers, have
-CONFIG_IOSF_MBI selected.
+Therefore, let's drop the verification from genpd_add_device() and make
+sure all the callers take care of it instead.
 
-Fix the CONFIG_IOSF_MBI dependency in RAPL code. This also fixes a build
-time failure when the RAPL TPMI I/F driver is introduced without
-selecting CONFIG_IOSF_MBI.
-
-x86_64-linux-ld: vmlinux.o: in function `set_floor_freq_atom':
-intel_rapl_common.c:(.text+0x2dac9b8): undefined reference to `iosf_mbi_write'
-x86_64-linux-ld: intel_rapl_common.c:(.text+0x2daca66): undefined reference to `iosf_mbi_read'
-
-Reference to iosf_mbi.h is also removed from the RAPL MSR I/F driver.
-
-Fixes: 3382388d7148 ("intel_rapl: abstract RAPL common code")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/all/20230601213246.3271412-1-arnd@kernel.org
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: f38d1a6d0025 ("PM: domains: Allocate governor data dynamically based on a genpd governor")
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/Kconfig          | 4 +++-
- drivers/powercap/intel_rapl_msr.c | 1 -
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/base/power/domain.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/powercap/Kconfig b/drivers/powercap/Kconfig
-index 90d33cd1b670a..b063f75117738 100644
---- a/drivers/powercap/Kconfig
-+++ b/drivers/powercap/Kconfig
-@@ -18,10 +18,12 @@ if POWERCAP
- # Client driver configurations go here.
- config INTEL_RAPL_CORE
- 	tristate
-+	depends on PCI
-+	select IOSF_MBI
+diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
+index 51b9d4eaab5ea..5cb2023581d4d 100644
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -1632,9 +1632,6 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
  
- config INTEL_RAPL
- 	tristate "Intel RAPL Support via MSR Interface"
--	depends on X86 && IOSF_MBI
-+	depends on X86 && PCI
- 	select INTEL_RAPL_CORE
- 	help
- 	  This enables support for the Intel Running Average Power Limit (RAPL)
-diff --git a/drivers/powercap/intel_rapl_msr.c b/drivers/powercap/intel_rapl_msr.c
-index 7be7561f5ad64..9ea4797d70b44 100644
---- a/drivers/powercap/intel_rapl_msr.c
-+++ b/drivers/powercap/intel_rapl_msr.c
-@@ -22,7 +22,6 @@
- #include <linux/processor.h>
- #include <linux/platform_device.h>
+ 	dev_dbg(dev, "%s()\n", __func__);
  
--#include <asm/iosf_mbi.h>
- #include <asm/cpu_device_id.h>
- #include <asm/intel-family.h>
+-	if (IS_ERR_OR_NULL(genpd) || IS_ERR_OR_NULL(dev))
+-		return -EINVAL;
+-
+ 	gpd_data = genpd_alloc_dev_data(dev, gd);
+ 	if (IS_ERR(gpd_data))
+ 		return PTR_ERR(gpd_data);
+@@ -1676,6 +1673,9 @@ int pm_genpd_add_device(struct generic_pm_domain *genpd, struct device *dev)
+ {
+ 	int ret;
  
++	if (!genpd || !dev)
++		return -EINVAL;
++
+ 	mutex_lock(&gpd_list_lock);
+ 	ret = genpd_add_device(genpd, dev, dev);
+ 	mutex_unlock(&gpd_list_lock);
+@@ -2523,6 +2523,9 @@ int of_genpd_add_device(struct of_phandle_args *genpdspec, struct device *dev)
+ 	struct generic_pm_domain *genpd;
+ 	int ret;
+ 
++	if (!dev)
++		return -EINVAL;
++
+ 	mutex_lock(&gpd_list_lock);
+ 
+ 	genpd = genpd_get_from_provider(genpdspec);
 -- 
 2.39.2
 
