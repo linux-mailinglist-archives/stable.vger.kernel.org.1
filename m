@@ -2,148 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 283357552F8
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 083E375554A
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:39:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231560AbjGPUOI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:14:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40888 "EHLO
+        id S232450AbjGPUj1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:39:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231562AbjGPUOH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:14:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F0F1B9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:14:06 -0700 (PDT)
+        with ESMTP id S232441AbjGPUj0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:39:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 446559F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:39:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F86360EB3
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:14:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D349C433C7;
-        Sun, 16 Jul 2023 20:14:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD5DF60EBA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:39:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77A5C433C7;
+        Sun, 16 Jul 2023 20:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538445;
-        bh=EJKN7z1sGZthZO5nbMhmf2WitgYqgWm+TAdPWPO/Q/s=;
+        s=korg; t=1689539964;
+        bh=e0N3p8uRHXQve+zbh0CDUO0JjhMVGFsVtKuFCej/vbM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nSBxQjPdUhL2t8RodbhcCrwI2M9z9O593Ik4ttp6dtnQrUvR5SoCMz0qv+tGlccmh
-         efh4mvw3Dq/aUqYtfp81z7CoXlBY/wm17uCJi3unxsSbXgPifTV4bUMDGjes24Yd5t
-         vNB8G788TAWZEK4mccvvp4ac/81nfnHGGxALA464=
+        b=ORNRb4xI56HetFQPV77evk+cjJVPrQyVqKPSN49RSNmcOn6uuDywM7xDH1ivMX8Jh
+         4d8ba7v3G3UwrQQ+UGkA5oSGfA3wGzP0/c5Hukx/cWhj27K9nlzYXfhCkkewsGmW5G
+         SZnfACGwUfw9gR8vAuTURI6MMtWXX0ovjzRphZI0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bart Van Assche <bvanassche@acm.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 453/800] scsi: ufs: core: Fix handling of lrbp->cmd
+Subject: [PATCH 6.1 167/591] drm/panel: sharp-ls043t1le01: adjust mode settings
 Date:   Sun, 16 Jul 2023 21:45:06 +0200
-Message-ID: <20230716194959.605530875@linuxfoundation.org>
+Message-ID: <20230716194928.185034248@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 549e91a9bbaa0ee480f59357868421a61d369770 ]
+[ Upstream commit dee23b2c9e3ff46d59c5d45e1436eceb878e7c9a ]
 
-ufshcd_queuecommand() may be called two times in a row for a SCSI command
-before it is completed. Hence make the following changes:
+Using current settings causes panel flickering on APQ8074 dragonboard.
+Adjust panel settings to follow the vendor-provided mode. This also
+enables MIPI_DSI_MODE_VIDEO_SYNC_PULSE, which is also specified by the
+vendor dtsi for the mentioned dragonboard.
 
- - In the functions that submit a command, do not check the old value of
-   lrbp->cmd nor clear lrbp->cmd in error paths.
-
- - In ufshcd_release_scsi_cmd(), do not clear lrbp->cmd.
-
-See also scsi_send_eh_cmnd().
-
-This commit prevents that the following appears if a command times out:
-
-WARNING: at drivers/ufs/core/ufshcd.c:2965 ufshcd_queuecommand+0x6f8/0x9a8
-Call trace:
- ufshcd_queuecommand+0x6f8/0x9a8
- scsi_send_eh_cmnd+0x2c0/0x960
- scsi_eh_test_devices+0x100/0x314
- scsi_eh_ready_devs+0xd90/0x114c
- scsi_error_handler+0x2b4/0xb70
- kthread+0x16c/0x1e0
-
-Fixes: 5a0b0cb9bee7 ("[SCSI] ufs: Add support for sending NOP OUT UPIU")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230524203659.1394307-3-bvanassche@acm.org
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: ee0172383190 ("drm/panel: Add Sharp LS043T1LE01 MIPI DSI panel")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230507172639.2320934-1-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index c36812401ef05..7c133852dc8a4 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -2945,7 +2945,6 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
- 		(hba->clk_gating.state != CLKS_ON));
- 
- 	lrbp = &hba->lrb[tag];
--	WARN_ON(lrbp->cmd);
- 	lrbp->cmd = cmd;
- 	lrbp->task_tag = tag;
- 	lrbp->lun = ufshcd_scsi_to_upiu_lun(cmd->device->lun);
-@@ -2961,7 +2960,6 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
- 
- 	err = ufshcd_map_sg(hba, lrbp);
- 	if (err) {
--		lrbp->cmd = NULL;
- 		ufshcd_release(hba);
- 		goto out;
- 	}
-@@ -3180,7 +3178,7 @@ static int ufshcd_exec_dev_cmd(struct ufs_hba *hba,
- 	down_read(&hba->clk_scaling_lock);
- 
- 	lrbp = &hba->lrb[tag];
--	WARN_ON(lrbp->cmd);
-+	lrbp->cmd = NULL;
- 	err = ufshcd_compose_dev_cmd(hba, lrbp, cmd_type, tag);
- 	if (unlikely(err))
- 		goto out;
-@@ -5422,7 +5420,6 @@ static void ufshcd_release_scsi_cmd(struct ufs_hba *hba,
- 	struct scsi_cmnd *cmd = lrbp->cmd;
- 
- 	scsi_dma_unmap(cmd);
--	lrbp->cmd = NULL;	/* Mark the command as completed. */
- 	ufshcd_release(hba);
- 	ufshcd_clk_scaling_update_busy(hba);
+diff --git a/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c b/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
+index d1ec80a3e3c72..ef148504cf24a 100644
+--- a/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
++++ b/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
+@@ -192,15 +192,15 @@ static int sharp_nt_panel_enable(struct drm_panel *panel)
  }
-@@ -7037,7 +7034,6 @@ static int ufshcd_issue_devman_upiu_cmd(struct ufs_hba *hba,
- 	down_read(&hba->clk_scaling_lock);
  
- 	lrbp = &hba->lrb[tag];
--	WARN_ON(lrbp->cmd);
- 	lrbp->cmd = NULL;
- 	lrbp->task_tag = tag;
- 	lrbp->lun = 0;
-@@ -7209,7 +7205,6 @@ int ufshcd_advanced_rpmb_req_handler(struct ufs_hba *hba, struct utp_upiu_req *r
- 	down_read(&hba->clk_scaling_lock);
+ static const struct drm_display_mode default_mode = {
+-	.clock = 41118,
++	.clock = (540 + 48 + 32 + 80) * (960 + 3 + 10 + 15) * 60 / 1000,
+ 	.hdisplay = 540,
+ 	.hsync_start = 540 + 48,
+-	.hsync_end = 540 + 48 + 80,
+-	.htotal = 540 + 48 + 80 + 32,
++	.hsync_end = 540 + 48 + 32,
++	.htotal = 540 + 48 + 32 + 80,
+ 	.vdisplay = 960,
+ 	.vsync_start = 960 + 3,
+-	.vsync_end = 960 + 3 + 15,
+-	.vtotal = 960 + 3 + 15 + 1,
++	.vsync_end = 960 + 3 + 10,
++	.vtotal = 960 + 3 + 10 + 15,
+ };
  
- 	lrbp = &hba->lrb[tag];
--	WARN_ON(lrbp->cmd);
- 	lrbp->cmd = NULL;
- 	lrbp->task_tag = tag;
- 	lrbp->lun = UFS_UPIU_RPMB_WLUN;
+ static int sharp_nt_panel_get_modes(struct drm_panel *panel,
+@@ -280,6 +280,7 @@ static int sharp_nt_panel_probe(struct mipi_dsi_device *dsi)
+ 	dsi->lanes = 2;
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
+ 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO |
++			MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+ 			MIPI_DSI_MODE_VIDEO_HSE |
+ 			MIPI_DSI_CLOCK_NON_CONTINUOUS |
+ 			MIPI_DSI_MODE_NO_EOT_PACKET;
 -- 
 2.39.2
 
