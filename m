@@ -2,177 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFE65755052
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 20:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18EC57550D7
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:08:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229451AbjGPS07 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 14:26:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37920 "EHLO
+        id S230194AbjGPTIr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 15:08:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229579AbjGPS06 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 14:26:58 -0400
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 344A71B1;
-        Sun, 16 Jul 2023 11:26:57 -0700 (PDT)
-Received: by mail-qk1-x734.google.com with SMTP id af79cd13be357-7653bd3ff2fso440987885a.3;
-        Sun, 16 Jul 2023 11:26:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689532016; x=1692124016;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bDqz3XcpEmdsooDL2d6f33d1gtHOlfBuBe0GKeda5W0=;
-        b=cUWS7VhzpjWbASia4mJb9n5nAuciY/ehbBPP+tRDGeDiOaAHYM5x54329SMnBU+84x
-         sAVXiSUQuJep7Yqrq9EsgtgaSUA5sFOR+4cLwI+MEMsW97bclgxl61YgoGNgyHeYU8ux
-         N1azxv+QGXHymVDqLxRLMiEBgcc7kkApt82Aezf2dg5fcgqaDnjsUkcQOOsJarlb+eMp
-         Z9UeXXPklXWdqkPGEqN/JKrCrZpNiMk1yJelulvxMFUE9yH9uWqhI8NyFDeTzkBVrMdi
-         RHYFUm5QdlOa8eDZhIbUzFvK7acX5BPWVm34RY6BPPeMGYtdsxX2jsYIQpLP76VelDCu
-         YuEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689532016; x=1692124016;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bDqz3XcpEmdsooDL2d6f33d1gtHOlfBuBe0GKeda5W0=;
-        b=iJiMZsjhf0oN+zgdt8MoUItNBzSQMtX2dktFAiNP27L7+yaKd8Q+Ciknw43MvfuRuu
-         gT4X6PgpowUhVeDwWDhx4hwKW7eXgAx0Rv6iZ2t7751GUb5S6aumvTI93hEItvpAgTDk
-         XLRT5umollqEYsfuWYdS9Fqa2pKNLzZvQhMmhjMdMo64UZSJfOhCPoLyXZsMjVvgD2cR
-         E0q1A0vyQJ0Z/pxQqoIevFWYyj5ufW+aKvp4l7mzwNPWsnkodHsR/oG7UhK0IuStImV5
-         7jrxMgsDgRmlhERj1MtzPlLyg57DNXSL/FEV6Z4/K2nyBQQ2Z0Lb2FJgVUSzWkYVKAmQ
-         z7TQ==
-X-Gm-Message-State: ABy/qLaGpuC+CZX/T1PFR+IP6Z5JHhTFmyxzKGezruOzGWXiHmIa6RvI
-        torhZvGKzcuagvDnExbEHyskJY6O0Daw033b830=
-X-Google-Smtp-Source: APBJJlEbnYgGblba7Wm8fEcJ9Beo7PgjUjM/te51xDatO+GcHzCqctWU8WYDI+2v8enW0eqL6ltziK1sqt+YenIwd7Y=
-X-Received: by 2002:a05:620a:2801:b0:75b:23a1:362e with SMTP id
- f1-20020a05620a280100b0075b23a1362emr15843797qkp.63.1689532016157; Sun, 16
- Jul 2023 11:26:56 -0700 (PDT)
+        with ESMTP id S229451AbjGPTIq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:08:46 -0400
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 028F39F;
+        Sun, 16 Jul 2023 12:08:45 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.west.internal (Postfix) with ESMTP id BEE9F3200681;
+        Sun, 16 Jul 2023 15:08:41 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Sun, 16 Jul 2023 15:08:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1689534521; x=1689620921; bh=198dGszsPL5rCtAIqXxHjuksCnuo9CK9kv+
+        r+Qr4wn8=; b=QiFZbXyj6OcABjsbP3LqHaC77qXsza0to6u7gbpTK2jSFjxAvWm
+        n0zIrD2bmZSxab0fDU8MU5zZLVlOZuojaJQgoG8YJBRFymAXqX+2ICmfyB2viSgK
+        pxySbx4rJbOFCc25bCnGwCuRL425T484bu5rJA/Duiw4vUbjzr9SHqo50+3bpcoD
+        PtXR22bJSawndwfk7ze/wz4zjaJyF231F4lkKgoPIvGqS8PNd7qffL8igXBYpflL
+        H04ofs+84hoC6z2MfX5NAAHRg2GQarjjmr58cCY82QGwHG43vDEEV2r/d2xE1TJk
+        0LRv4tSAvudBTQRrwFF2+u/nTftkioKdkWg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+        1689534521; x=1689620921; bh=198dGszsPL5rCtAIqXxHjuksCnuo9CK9kv+
+        r+Qr4wn8=; b=umV+cgHxRPbUdTeoRNVocqSk5O8gwQ7g/Nyw9mAAI8vdttwu/ea
+        +L25mtkiwL0DMJqIDCxjvbcNVxagFXldB+lberRproyj/FB24HG9TxQ9N6ICShGC
+        kNsTlCjbaGv+VLOVPkOSnI+AyALfaNKmQiUS7jBOLO8WkHC3NltINod6m9NEPu7X
+        wU++W11jV4ptLLyyAlaL0YWWatLHr9CjvAiQlL8P+a2eyakKXZqd23+kpxh27i+I
+        E8xoUcfPC0OgWAGwZsS7bKQEC941odK3XGyAqBv0fBA4h5yVkm1l/6QwoLbB2lL8
+        L9glPnGZuY6h964ykuwNR5qvA3GKieRhAPw==
+X-ME-Sender: <xms:OEC0ZMHVNZrdtNF1SGsjwTZ1xUcT00wppfXmNar-G03Mvxj3P7w13Q>
+    <xme:OEC0ZFWF2bouWqBWwEVDFtKakloV4Hi2ErqGuEZjXxpzxdwjMHUDDN1kW-fEqYRQb
+    z9Pu39Q_TbYFg>
+X-ME-Received: <xmr:OEC0ZGJ7JJQQlz6KtmxsTjz-dTj3EXbzKxUQZu3hmywOwgut0cU_B42gtskOf2MuD9lWDHMBS1UXK3TJvCjXzGDyWwi42UQewHDjg7js_hM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgedtgddufeegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeelhe
+    ehudduueeggeejgfehueduffehveeukefgkeeufeeltdejteeiuedtkeekleenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
+    grhhdrtghomh
+X-ME-Proxy: <xmx:OEC0ZOEAntkWGt_UiADkznzXooCWCinorEJFwoBwCsM9-qp9LcQEhA>
+    <xmx:OEC0ZCVKwMYbyJwvuyka3CF6cT76ySjGV5OQGtSy_xlrG5HBU4nLQg>
+    <xmx:OEC0ZBNsf1MQ9MQIlCVFmz6VITZ21c63uZPapkHoWLf98AW_bYN4vQ>
+    <xmx:OUC0ZGoAUcbpu_i97LAc6UqMrHXuZeSDX0OSb1rBhtuxwcO_9HM2Nw>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 16 Jul 2023 15:08:40 -0400 (EDT)
+Date:   Sun, 16 Jul 2023 21:08:38 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: Backporting commits for generating rpi dtb symbols to stable
+Message-ID: <2023071611-lustiness-rename-8b47@gregkh>
+References: <20230716162444.zzvkm4rh7s7lu37x@pali>
+ <2023071644-earflap-amazingly-3989@gregkh>
+ <20230716163852.jnd4u4ylvifgmpby@pali>
 MIME-Version: 1.0
-References: <20230710032730.2049748-1-chengzhihao1@huawei.com>
-In-Reply-To: <20230710032730.2049748-1-chengzhihao1@huawei.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Sun, 16 Jul 2023 21:26:45 +0300
-Message-ID: <CAOQ4uxg3_SGyOvy7gSQ_1=V9Zr1PxZyLUpHMK=nN+mr0do8cvg@mail.gmail.com>
-Subject: Re: [PATCH 5.15] ovl: fix null pointer dereference in ovl_get_acl_rcu()
-To:     Zhihao Cheng <chengzhihao1@huawei.com>
-Cc:     miklos@szeredi.hu, linux-unionfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        gregkh@linuxfoundation.org, sashal@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230716163852.jnd4u4ylvifgmpby@pali>
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 6:29=E2=80=AFAM Zhihao Cheng <chengzhihao1@huawei.c=
-om> wrote:
->
-> [ Upstream commit f4e19e595cc2e76a8a58413eb19d3d9c51328b53 ]
->
-> Following process:
->          P1                     P2
->  path_openat
->   link_path_walk
->    may_lookup
->     inode_permission(rcu)
->      ovl_permission
->       acl_permission_check
->        check_acl
->         get_cached_acl_rcu
->          ovl_get_inode_acl
->           realinode =3D ovl_inode_real(ovl_inode)
->                               drop_cache
->                                __dentry_kill(ovl_dentry)
->                                 iput(ovl_inode)
->                                  ovl_destroy_inode(ovl_inode)
->                                   dput(oi->__upperdentry)
->                                    dentry_kill(upperdentry)
->                                     dentry_unlink_inode
->                                      upperdentry->d_inode =3D NULL
->             ovl_inode_upper
->              upperdentry =3D ovl_i_dentry_upper(ovl_inode)
->              d_inode(upperdentry) // returns NULL
->           IS_POSIXACL(realinode) // NULL pointer dereference
-> , will trigger an null pointer dereference at realinode:
->   [  205.472797] BUG: kernel NULL pointer dereference, address:
->                  0000000000000028
->   [  205.476701] CPU: 2 PID: 2713 Comm: ls Not tainted
->                  6.3.0-12064-g2edfa098e750-dirty #1216
->   [  205.478754] RIP: 0010:do_ovl_get_acl+0x5d/0x300
->   [  205.489584] Call Trace:
->   [  205.489812]  <TASK>
->   [  205.490014]  ovl_get_inode_acl+0x26/0x30
->   [  205.490466]  get_cached_acl_rcu+0x61/0xa0
->   [  205.490908]  generic_permission+0x1bf/0x4e0
->   [  205.491447]  ovl_permission+0x79/0x1b0
->   [  205.491917]  inode_permission+0x15e/0x2c0
->   [  205.492425]  link_path_walk+0x115/0x550
->   [  205.493311]  path_lookupat.isra.0+0xb2/0x200
->   [  205.493803]  filename_lookup+0xda/0x240
->   [  205.495747]  vfs_fstatat+0x7b/0xb0
->
-> Fetch a reproducer in [Link].
->
-> Use the helper ovl_i_path_realinode() to get realinode and then do
-> non-nullptr checking.
->
-> There are some changes from upstream commit:
-> 1. Corrusponds to do_ovl_get_acl() in 5.15 is ovl_get_acl()
-> 2. ovl_i_path_real is not imported in 5.15, we can get realinode by
->    ovl_inode_real
-> 3. CONFIG_FS_POSIX_ACL checking is dropped in commit
->    ded536561a3674327dfa4bb389085705cae22b8a ("ovl: improve ovl_get_acl()
->    if POSIX ACL support is off"), we still keep it in 5.15.
+On Sun, Jul 16, 2023 at 06:38:52PM +0200, Pali Rohár wrote:
+> On Sunday 16 July 2023 18:32:42 Greg KH wrote:
+> > On Sun, Jul 16, 2023 at 06:24:44PM +0200, Pali Rohár wrote:
+> > > Hello,
+> > > 
+> > > I see that raspberry pi bootloader throws ton of warnings when supplied
+> > > DTB file does not contain /__symbols__/ node.
+> > > 
+> > > On RPI 1B rev1 it looks like this:
+> > > 
+> > > dterror: no symbols found
+> > > dterror: no symbols found
+> > > dterror: no symbols found
+> > > dterror: no symbols found
+> > > dterror: no symbols found
+> > > dterror: no symbols found
+> > > dterror: no symbols found
+> > > dterror: no symbols found
+> > > dterror: no symbols found
+> > > dterror: no symbols found
+> > > 
+> > > Bootloader also propagates these warnings to kernel via dtb property
+> > > chosen/user-warnings and they can be read by simple command:
+> > > 
+> > > $ cat /sys/firmware/devicetree/base/chosen/user-warnings
+> > > ...
+> > > 
+> > > Upstream Linux kernel build process by default does not generate
+> > > /__symbols__/ node for DTB files, but DTB files provided by raspberrypi
+> > > foundation have them for a longer time.
+> > > 
+> > > I wanted to look at this issue, but I figured out that it is already
+> > > solved by just recent Aurelien's patches:
+> > > 
+> > > e925743edc0d ("arm: dts: bcm: Enable device-tree overlay support for RPi devices")
+> > > 3cdba279c5e9 ("arm64: dts: broadcom: Enable device-tree overlay support for RPi devices")
+> > > 
+> > > My testing showed that /__symbols__/ node is required by rpi bootloader
+> > > for overlay support even when overlayed DTB file does not use any DTB
+> > > symbol (and reference everything via full node path). So seems that
+> > > /__symbols__/ node is crucial for rpi bootloader even when symbols from
+> > > them are not used at all.
+> > > 
+> > > So I would like to ask, would you consider backporting these two
+> > > raspberry pi specific patches to stable kernel trees? Upstream kernel
+> > > would get rid of those bootloader warnings and also allow users to use
+> > > overlayed dtbs...
+> > 
+> > What kernel tree(s) should these be applied to?  What trees did you test
+> > them for?
+> > 
+> > Also, adding dt-overlay support does not seem like a stable kernel fix,
+> > as this isn't a bugfix from what I can tell, right?
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> I wanted to discuss what do you think about it. As I wrote my motivation
+> was to understood and get rid of those warnings "dterror: no symbols
+> found" from bootloader when using DTB files from mainline kernel (as
+> opposite of the DTB files from rpi foundation). And fix for it was just
+> to generate DTB files from kernel via dtc's -@ parameter, same what are
+> doing those mentioned patches (but they describe different problem for
+> which is same fix). I thought that fixing those bootloader warnings is a
+> bugfix.
 
-Zhihao,
+Why not just use the next kernel version instead?  What's forcing you to
+use an older stable kernel that didn't have dt-overlay support?
 
-Can you please provide also the backport for 6.1.
+thanks,
 
-Basically, the same as this one without the CONFIG_FS_POSIX_ACL check.
-
-Thanks,
-Amir.
-
->
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217404
-> Fixes: 332f606b32b6 ("ovl: enable RCU'd ->get_acl()")
-> Cc: <stable@vger.kernel.org> # v5.15
-> Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-> Suggested-by: Christian Brauner <brauner@kernel.org>
-> Suggested-by: Amir Goldstein <amir73il@gmail.com>
-> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-> ---
->  fs/overlayfs/inode.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-> index d41f0c8e0e2a..65e5e6eb761a 100644
-> --- a/fs/overlayfs/inode.c
-> +++ b/fs/overlayfs/inode.c
-> @@ -453,7 +453,15 @@ struct posix_acl *ovl_get_acl(struct inode *inode, i=
-nt type, bool rcu)
->         const struct cred *old_cred;
->         struct posix_acl *acl;
->
-> -       if (!IS_ENABLED(CONFIG_FS_POSIX_ACL) || !IS_POSIXACL(realinode))
-> +       if (!IS_ENABLED(CONFIG_FS_POSIX_ACL))
-> +               return NULL;
-> +
-> +       if (!realinode) {
-> +               WARN_ON(!rcu);
-> +               return ERR_PTR(-ECHILD);
-> +       }
-> +
-> +       if (!IS_POSIXACL(realinode))
->                 return NULL;
->
->         if (rcu)
-> --
-> 2.39.2
->
+greg k-h
