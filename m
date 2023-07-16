@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 350A2755482
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02C67755254
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232174AbjGPUbH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:31:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52588 "EHLO
+        id S231289AbjGPUGg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:06:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232178AbjGPUbG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:31:06 -0400
+        with ESMTP id S231286AbjGPUGf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:06:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B5989F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:31:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A357E50
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:06:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 186BE60EBA
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:31:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9F8C433C7;
-        Sun, 16 Jul 2023 20:31:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 533CF60EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:06:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D0DC433C8;
+        Sun, 16 Jul 2023 20:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539464;
-        bh=YPTWu21ZpgPv2dPsqNu6vVE6vK9C54r2v9t9VsV/j+E=;
+        s=korg; t=1689537991;
+        bh=Bk9+5vRmgz2NQtZL7hT7MF/y8Gz7xSVnALG8ga96NYM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0ndaxZRY7BwzD94OwhEnaf76KSwFHA7gm+26ibKVmPgSjNcG3NmRoHKIHvB5HUIqd
-         iyEDmsatS0I8Qb67Meu3G4YP8r2EnIdwKkW1ojRQvUkXKBx/IW1An009Zn/7QACC2T
-         TRFA4rrEIWc41CUZKSPxlYJBKujnM8aYcECqfuW0=
+        b=1h5IQ4XE+gmNm4/YSYKy0ulRF5CXC5ueA/tNRY3zTmGV4nOkFsVp/1JkH87nxF4LA
+         IlCteCHpFtWzHCh//Aq2yxBjSZkk84EQy8vVA2uOCDj+A/JVPmrEhfWFGqPx1wDgHt
+         g8mj2yaxXaQ2gdOW5QVA08YFu5Waq6RHryrwgzJ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yue Hu <huyue2@coolpad.com>,
-        Chao Yu <chao@kernel.org>,
-        Gao Xiang <hsiangkao@linux.alibaba.com>,
+        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/591] erofs: move zdata.h into zdata.c
+Subject: [PATCH 6.4 293/800] ARM: omap1: Exorcise the legacy GPIO header
 Date:   Sun, 16 Jul 2023 21:42:26 +0200
-Message-ID: <20230716194924.053446521@linuxfoundation.org>
+Message-ID: <20230716194955.888599137@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,391 +54,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit a9a94d9373349e1a53f149d2015eb6f03a8517cf ]
+[ Upstream commit c729baa8604226a8f878296bd145ab4046c80b12 ]
 
-Definitions in zdata.h are only used in zdata.c and for internal
-use only.  No logic changes.
+After fixing all the offending users referencing the global GPIO
+numberspace in OMAP1, a few sites still remain including the
+legacy <linus/gpio.h> header for no reason.
 
-Reviewed-by: Yue Hu <huyue2@coolpad.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230204093040.97967-4-hsiangkao@linux.alibaba.com
-Stable-dep-of: 967c28b23f6c ("erofs: kill hooked chains to avoid loops on deduplicated compressed images")
+Delete the last remaining users, and OMAP1 is free from legacy
+GPIO dependencies.
+
+Fixes: 92bf78b33b0b ("gpio: omap: use dynamic allocation of base")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 166 +++++++++++++++++++++++++++++++++++++++++++-
- fs/erofs/zdata.h | 177 -----------------------------------------------
- 2 files changed, 165 insertions(+), 178 deletions(-)
- delete mode 100644 fs/erofs/zdata.h
+ arch/arm/mach-omap1/devices.c  | 1 -
+ arch/arm/mach-omap1/gpio15xx.c | 1 -
+ arch/arm/mach-omap1/gpio16xx.c | 1 -
+ arch/arm/mach-omap1/irq.c      | 1 -
+ 4 files changed, 4 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 3b5f73224c22a..aaddb6781465e 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -4,13 +4,177 @@
-  *             https://www.huawei.com/
-  * Copyright (C) 2022 Alibaba Cloud
+diff --git a/arch/arm/mach-omap1/devices.c b/arch/arm/mach-omap1/devices.c
+index 5304699c7a97e..8b2c5f911e973 100644
+--- a/arch/arm/mach-omap1/devices.c
++++ b/arch/arm/mach-omap1/devices.c
+@@ -6,7 +6,6 @@
   */
--#include "zdata.h"
- #include "compress.h"
- #include <linux/prefetch.h>
- #include <linux/psi.h>
  
- #include <trace/events/erofs.h>
+ #include <linux/dma-mapping.h>
+-#include <linux/gpio.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+diff --git a/arch/arm/mach-omap1/gpio15xx.c b/arch/arm/mach-omap1/gpio15xx.c
+index 61fa26efd8653..6724af4925f24 100644
+--- a/arch/arm/mach-omap1/gpio15xx.c
++++ b/arch/arm/mach-omap1/gpio15xx.c
+@@ -8,7 +8,6 @@
+  *	Charulatha V <charu@ti.com>
+  */
  
-+#define Z_EROFS_PCLUSTER_MAX_PAGES	(Z_EROFS_PCLUSTER_MAX_SIZE / PAGE_SIZE)
-+#define Z_EROFS_INLINE_BVECS		2
-+
-+/*
-+ * let's leave a type here in case of introducing
-+ * another tagged pointer later.
-+ */
-+typedef void *z_erofs_next_pcluster_t;
-+
-+struct z_erofs_bvec {
-+	struct page *page;
-+	int offset;
-+	unsigned int end;
-+};
-+
-+#define __Z_EROFS_BVSET(name, total) \
-+struct name { \
-+	/* point to the next page which contains the following bvecs */ \
-+	struct page *nextpage; \
-+	struct z_erofs_bvec bvec[total]; \
-+}
-+__Z_EROFS_BVSET(z_erofs_bvset,);
-+__Z_EROFS_BVSET(z_erofs_bvset_inline, Z_EROFS_INLINE_BVECS);
-+
-+/*
-+ * Structure fields follow one of the following exclusion rules.
-+ *
-+ * I: Modifiable by initialization/destruction paths and read-only
-+ *    for everyone else;
-+ *
-+ * L: Field should be protected by the pcluster lock;
-+ *
-+ * A: Field should be accessed / updated in atomic for parallelized code.
-+ */
-+struct z_erofs_pcluster {
-+	struct erofs_workgroup obj;
-+	struct mutex lock;
-+
-+	/* A: point to next chained pcluster or TAILs */
-+	z_erofs_next_pcluster_t next;
-+
-+	/* L: the maximum decompression size of this round */
-+	unsigned int length;
-+
-+	/* L: total number of bvecs */
-+	unsigned int vcnt;
-+
-+	/* I: page offset of start position of decompression */
-+	unsigned short pageofs_out;
-+
-+	/* I: page offset of inline compressed data */
-+	unsigned short pageofs_in;
-+
-+	union {
-+		/* L: inline a certain number of bvec for bootstrap */
-+		struct z_erofs_bvset_inline bvset;
-+
-+		/* I: can be used to free the pcluster by RCU. */
-+		struct rcu_head rcu;
-+	};
-+
-+	union {
-+		/* I: physical cluster size in pages */
-+		unsigned short pclusterpages;
-+
-+		/* I: tailpacking inline compressed size */
-+		unsigned short tailpacking_size;
-+	};
-+
-+	/* I: compression algorithm format */
-+	unsigned char algorithmformat;
-+
-+	/* L: whether partial decompression or not */
-+	bool partial;
-+
-+	/* L: indicate several pageofs_outs or not */
-+	bool multibases;
-+
-+	/* A: compressed bvecs (can be cached or inplaced pages) */
-+	struct z_erofs_bvec compressed_bvecs[];
-+};
-+
-+/* let's avoid the valid 32-bit kernel addresses */
-+
-+/* the chained workgroup has't submitted io (still open) */
-+#define Z_EROFS_PCLUSTER_TAIL           ((void *)0x5F0ECAFE)
-+/* the chained workgroup has already submitted io */
-+#define Z_EROFS_PCLUSTER_TAIL_CLOSED    ((void *)0x5F0EDEAD)
-+
-+#define Z_EROFS_PCLUSTER_NIL            (NULL)
-+
-+struct z_erofs_decompressqueue {
-+	struct super_block *sb;
-+	atomic_t pending_bios;
-+	z_erofs_next_pcluster_t head;
-+
-+	union {
-+		struct completion done;
-+		struct work_struct work;
-+	} u;
-+	bool eio, sync;
-+};
-+
-+static inline bool z_erofs_is_inline_pcluster(struct z_erofs_pcluster *pcl)
-+{
-+	return !pcl->obj.index;
-+}
-+
-+static inline unsigned int z_erofs_pclusterpages(struct z_erofs_pcluster *pcl)
-+{
-+	if (z_erofs_is_inline_pcluster(pcl))
-+		return 1;
-+	return pcl->pclusterpages;
-+}
-+
-+/*
-+ * bit 30: I/O error occurred on this page
-+ * bit 0 - 29: remaining parts to complete this page
-+ */
-+#define Z_EROFS_PAGE_EIO			(1 << 30)
-+
-+static inline void z_erofs_onlinepage_init(struct page *page)
-+{
-+	union {
-+		atomic_t o;
-+		unsigned long v;
-+	} u = { .o = ATOMIC_INIT(1) };
-+
-+	set_page_private(page, u.v);
-+	smp_wmb();
-+	SetPagePrivate(page);
-+}
-+
-+static inline void z_erofs_onlinepage_split(struct page *page)
-+{
-+	atomic_inc((atomic_t *)&page->private);
-+}
-+
-+static inline void z_erofs_page_mark_eio(struct page *page)
-+{
-+	int orig;
-+
-+	do {
-+		orig = atomic_read((atomic_t *)&page->private);
-+	} while (atomic_cmpxchg((atomic_t *)&page->private, orig,
-+				orig | Z_EROFS_PAGE_EIO) != orig);
-+}
-+
-+static inline void z_erofs_onlinepage_endio(struct page *page)
-+{
-+	unsigned int v;
-+
-+	DBG_BUGON(!PagePrivate(page));
-+	v = atomic_dec_return((atomic_t *)&page->private);
-+	if (!(v & ~Z_EROFS_PAGE_EIO)) {
-+		set_page_private(page, 0);
-+		ClearPagePrivate(page);
-+		if (!(v & Z_EROFS_PAGE_EIO))
-+			SetPageUptodate(page);
-+		unlock_page(page);
-+	}
-+}
-+
-+#define Z_EROFS_ONSTACK_PAGES		32
-+
- /*
-  * since pclustersize is variable for big pcluster feature, introduce slab
-  * pools implementation for different pcluster sizes.
-diff --git a/fs/erofs/zdata.h b/fs/erofs/zdata.h
-deleted file mode 100644
-index f196a729c7e85..0000000000000
---- a/fs/erofs/zdata.h
-+++ /dev/null
-@@ -1,177 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * Copyright (C) 2018 HUAWEI, Inc.
-- *             https://www.huawei.com/
-- */
--#ifndef __EROFS_FS_ZDATA_H
--#define __EROFS_FS_ZDATA_H
--
--#include "internal.h"
--
--#define Z_EROFS_PCLUSTER_MAX_PAGES	(Z_EROFS_PCLUSTER_MAX_SIZE / PAGE_SIZE)
--#define Z_EROFS_INLINE_BVECS		2
--
--/*
-- * let's leave a type here in case of introducing
-- * another tagged pointer later.
-- */
--typedef void *z_erofs_next_pcluster_t;
--
--struct z_erofs_bvec {
--	struct page *page;
--	int offset;
--	unsigned int end;
--};
--
--#define __Z_EROFS_BVSET(name, total) \
--struct name { \
--	/* point to the next page which contains the following bvecs */ \
--	struct page *nextpage; \
--	struct z_erofs_bvec bvec[total]; \
--}
--__Z_EROFS_BVSET(z_erofs_bvset,);
--__Z_EROFS_BVSET(z_erofs_bvset_inline, Z_EROFS_INLINE_BVECS);
--
--/*
-- * Structure fields follow one of the following exclusion rules.
-- *
-- * I: Modifiable by initialization/destruction paths and read-only
-- *    for everyone else;
-- *
-- * L: Field should be protected by the pcluster lock;
-- *
-- * A: Field should be accessed / updated in atomic for parallelized code.
-- */
--struct z_erofs_pcluster {
--	struct erofs_workgroup obj;
--	struct mutex lock;
--
--	/* A: point to next chained pcluster or TAILs */
--	z_erofs_next_pcluster_t next;
--
--	/* L: the maximum decompression size of this round */
--	unsigned int length;
--
--	/* L: total number of bvecs */
--	unsigned int vcnt;
--
--	/* I: page offset of start position of decompression */
--	unsigned short pageofs_out;
--
--	/* I: page offset of inline compressed data */
--	unsigned short pageofs_in;
--
--	union {
--		/* L: inline a certain number of bvec for bootstrap */
--		struct z_erofs_bvset_inline bvset;
--
--		/* I: can be used to free the pcluster by RCU. */
--		struct rcu_head rcu;
--	};
--
--	union {
--		/* I: physical cluster size in pages */
--		unsigned short pclusterpages;
--
--		/* I: tailpacking inline compressed size */
--		unsigned short tailpacking_size;
--	};
--
--	/* I: compression algorithm format */
--	unsigned char algorithmformat;
--
--	/* L: whether partial decompression or not */
--	bool partial;
--
--	/* L: indicate several pageofs_outs or not */
--	bool multibases;
--
--	/* A: compressed bvecs (can be cached or inplaced pages) */
--	struct z_erofs_bvec compressed_bvecs[];
--};
--
--/* let's avoid the valid 32-bit kernel addresses */
--
--/* the chained workgroup has't submitted io (still open) */
--#define Z_EROFS_PCLUSTER_TAIL           ((void *)0x5F0ECAFE)
--/* the chained workgroup has already submitted io */
--#define Z_EROFS_PCLUSTER_TAIL_CLOSED    ((void *)0x5F0EDEAD)
--
--#define Z_EROFS_PCLUSTER_NIL            (NULL)
--
--struct z_erofs_decompressqueue {
--	struct super_block *sb;
--	atomic_t pending_bios;
--	z_erofs_next_pcluster_t head;
--
--	union {
--		struct completion done;
--		struct work_struct work;
--	} u;
--
--	bool eio, sync;
--};
--
--static inline bool z_erofs_is_inline_pcluster(struct z_erofs_pcluster *pcl)
--{
--	return !pcl->obj.index;
--}
--
--static inline unsigned int z_erofs_pclusterpages(struct z_erofs_pcluster *pcl)
--{
--	if (z_erofs_is_inline_pcluster(pcl))
--		return 1;
--	return pcl->pclusterpages;
--}
--
--/*
-- * bit 30: I/O error occurred on this page
-- * bit 0 - 29: remaining parts to complete this page
-- */
--#define Z_EROFS_PAGE_EIO			(1 << 30)
--
--static inline void z_erofs_onlinepage_init(struct page *page)
--{
--	union {
--		atomic_t o;
--		unsigned long v;
--	} u = { .o = ATOMIC_INIT(1) };
--
--	set_page_private(page, u.v);
--	smp_wmb();
--	SetPagePrivate(page);
--}
--
--static inline void z_erofs_onlinepage_split(struct page *page)
--{
--	atomic_inc((atomic_t *)&page->private);
--}
--
--static inline void z_erofs_page_mark_eio(struct page *page)
--{
--	int orig;
--
--	do {
--		orig = atomic_read((atomic_t *)&page->private);
--	} while (atomic_cmpxchg((atomic_t *)&page->private, orig,
--				orig | Z_EROFS_PAGE_EIO) != orig);
--}
--
--static inline void z_erofs_onlinepage_endio(struct page *page)
--{
--	unsigned int v;
--
--	DBG_BUGON(!PagePrivate(page));
--	v = atomic_dec_return((atomic_t *)&page->private);
--	if (!(v & ~Z_EROFS_PAGE_EIO)) {
--		set_page_private(page, 0);
--		ClearPagePrivate(page);
--		if (!(v & Z_EROFS_PAGE_EIO))
--			SetPageUptodate(page);
--		unlock_page(page);
--	}
--}
--
--#define Z_EROFS_ONSTACK_PAGES		32
--
--#endif
+-#include <linux/gpio.h>
+ #include <linux/platform_data/gpio-omap.h>
+ #include <linux/soc/ti/omap1-soc.h>
+ #include <asm/irq.h>
+diff --git a/arch/arm/mach-omap1/gpio16xx.c b/arch/arm/mach-omap1/gpio16xx.c
+index cf052714b3f8a..55acec22fef4e 100644
+--- a/arch/arm/mach-omap1/gpio16xx.c
++++ b/arch/arm/mach-omap1/gpio16xx.c
+@@ -8,7 +8,6 @@
+  *	Charulatha V <charu@ti.com>
+  */
+ 
+-#include <linux/gpio.h>
+ #include <linux/platform_data/gpio-omap.h>
+ #include <linux/soc/ti/omap1-io.h>
+ 
+diff --git a/arch/arm/mach-omap1/irq.c b/arch/arm/mach-omap1/irq.c
+index bfc7ab010ae28..af06a8753fdc3 100644
+--- a/arch/arm/mach-omap1/irq.c
++++ b/arch/arm/mach-omap1/irq.c
+@@ -35,7 +35,6 @@
+  * with this program; if not, write  to the Free Software Foundation, Inc.,
+  * 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/gpio.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/sched.h>
 -- 
 2.39.2
 
