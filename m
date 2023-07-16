@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A69E7553F5
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A908D755644
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231905AbjGPUY5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:24:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47618 "EHLO
+        id S232805AbjGPUtU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:49:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231934AbjGPUY4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:24:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54F9126
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:24:55 -0700 (PDT)
+        with ESMTP id S232784AbjGPUtI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C659DE76
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 416C860EAE
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:24:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D276C433C8;
-        Sun, 16 Jul 2023 20:24:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4316E60EBF
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5331EC433C7;
+        Sun, 16 Jul 2023 20:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539094;
-        bh=KZYMOEhtKyDQ2hpfcAvFIytXS/O4O04IaSeOaYzUJsM=;
+        s=korg; t=1689540540;
+        bh=b575pVZTQFRMo/Hrj7Ee35AI6sOk8zBbmfES1jRteZY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qLcWP8uUs5qL6FnW7b4gnymR4wYr7XsJl8m6z1kdqjPXGuVo3XAbCJ3azWrkHETH5
-         4bc86iujLxLo5iBKHcZC9AFVy2H6y35V0zasN3EBVgrM5HRsNvL9tniR894gc5iUYH
-         jaHBAjfjF5fb7CGZKu3AXOYyJHclfyDbfEPKUZ3Y=
+        b=S7rMewV+5Txyq1SLFr/ONXiTT+CnVX/XpuFZouvqglDLzWjtpwQ+psTEWV8/ZlpQ0
+         BFlXEpyCsq3wSlQHWhCcAlJPtz3P7Q62tTL+30jIeUxdRsshW0R1f2RIqniAMS7xqA
+         /L24IMJ8uece19TrVp0VIt6keSHyYIRFAwbbtQY8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hariprasad Kelam <hkelam@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        syzbot+27b0b464864741b18b99@syzkaller.appspotmail.com,
+        Duoming Zhou <duoming@zju.edu.cn>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 685/800] octeontx2-af: Fix mapping for NIX block from CGX connection
+Subject: [PATCH 6.1 399/591] media: usb: siano: Fix warning due to null work_func_t function pointer
 Date:   Sun, 16 Jul 2023 21:48:58 +0200
-Message-ID: <20230716195005.035837883@linuxfoundation.org>
+Message-ID: <20230716194934.242614987@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,72 +57,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 2e7bc57b976bb016c6569a54d95c1b8d88f9450a ]
+[ Upstream commit 6f489a966fbeb0da63d45c2c66a8957eab604bf6 ]
 
-Firmware configures NIX block mapping for all MAC blocks.
-The current implementation reads the configuration and
-creates the mapping between RVU PF  and NIX blocks. But
-this configuration is only valid for silicons that support
-multiple blocks. For all other silicons, all MAC blocks
-map to NIX0.
+The previous commit ebad8e731c1c ("media: usb: siano: Fix use after
+free bugs caused by do_submit_urb") adds cancel_work_sync() in
+smsusb_stop_streaming(). But smsusb_stop_streaming() may be called,
+even if the work_struct surb->wq has not been initialized. As a result,
+the warning will occur. One of the processes that could lead to warning
+is shown below:
 
-This patch corrects the mapping by adding a check for the same.
+smsusb_probe()
+  smsusb_init_device()
+    if (!dev->in_ep || !dev->out_ep || align < 0) {
+         smsusb_term_device(intf);
+           smsusb_stop_streaming()
+             cancel_work_sync(&dev->surbs[i].wq);
+               __cancel_work_timer()
+                 __flush_work()
+                   if (WARN_ON(!work->func)) // work->func is null
 
-Fixes: c5a73b632b90 ("octeontx2-af: Map NIX block from CGX connection")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The log reported by syzbot is shown below:
+
+WARNING: CPU: 0 PID: 897 at kernel/workqueue.c:3066 __flush_work+0x798/0xa80 kernel/workqueue.c:3063
+Modules linked in:
+CPU: 0 PID: 897 Comm: kworker/0:2 Not tainted 6.2.0-rc1-syzkaller #0
+RIP: 0010:__flush_work+0x798/0xa80 kernel/workqueue.c:3066
+...
+RSP: 0018:ffffc9000464ebf8 EFLAGS: 00010246
+RAX: 1ffff11002dbb420 RBX: 0000000000000021 RCX: 1ffffffff204fa4e
+RDX: dffffc0000000000 RSI: 0000000000000001 RDI: ffff888016dda0e8
+RBP: ffffc9000464ed98 R08: 0000000000000001 R09: ffffffff90253b2f
+R10: 0000000000000001 R11: 0000000000000000 R12: ffff888016dda0e8
+R13: ffff888016dda0e8 R14: ffff888016dda100 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff8880b9a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffd4331efe8 CR3: 000000000b48e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __cancel_work_timer+0x315/0x460 kernel/workqueue.c:3160
+ smsusb_stop_streaming drivers/media/usb/siano/smsusb.c:182 [inline]
+ smsusb_term_device+0xda/0x2d0 drivers/media/usb/siano/smsusb.c:344
+ smsusb_init_device+0x400/0x9ce drivers/media/usb/siano/smsusb.c:419
+ smsusb_probe+0xbbd/0xc55 drivers/media/usb/siano/smsusb.c:567
+...
+
+This patch adds check before cancel_work_sync(). If surb->wq has not
+been initialized, the cancel_work_sync() will not be executed.
+
+Reported-by: syzbot+27b0b464864741b18b99@syzkaller.appspotmail.com
+Fixes: ebad8e731c1c ("media: usb: siano: Fix use after free bugs caused by do_submit_urb")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.h     | 11 +++++++++++
- drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c |  2 +-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ drivers/media/usb/siano/smsusb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index d655bf04a483d..68ff3244a84a2 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -23,6 +23,7 @@
- #define	PCI_DEVID_OCTEONTX2_LBK			0xA061
+diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
+index 6f443c542c6da..640737d3b8aeb 100644
+--- a/drivers/media/usb/siano/smsusb.c
++++ b/drivers/media/usb/siano/smsusb.c
+@@ -179,7 +179,8 @@ static void smsusb_stop_streaming(struct smsusb_device_t *dev)
  
- /* Subsystem Device ID */
-+#define PCI_SUBSYS_DEVID_98XX                  0xB100
- #define PCI_SUBSYS_DEVID_96XX                  0xB200
- #define PCI_SUBSYS_DEVID_CN10K_A	       0xB900
- #define PCI_SUBSYS_DEVID_CNF10K_B              0xBC00
-@@ -669,6 +670,16 @@ static inline u16 rvu_nix_chan_cpt(struct rvu *rvu, u8 chan)
- 	return rvu->hw->cpt_chan_base + chan;
- }
+ 	for (i = 0; i < MAX_URBS; i++) {
+ 		usb_kill_urb(&dev->surbs[i].urb);
+-		cancel_work_sync(&dev->surbs[i].wq);
++		if (dev->surbs[i].wq.func)
++			cancel_work_sync(&dev->surbs[i].wq);
  
-+static inline bool is_rvu_supports_nix1(struct rvu *rvu)
-+{
-+	struct pci_dev *pdev = rvu->pdev;
-+
-+	if (pdev->subsystem_device == PCI_SUBSYS_DEVID_98XX)
-+		return true;
-+
-+	return false;
-+}
-+
- /* Function Prototypes
-  * RVU
-  */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-index 83b342fa8d753..48611e6032284 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-@@ -114,7 +114,7 @@ static void rvu_map_cgx_nix_block(struct rvu *rvu, int pf,
- 	p2x = cgx_lmac_get_p2x(cgx_id, lmac_id);
- 	/* Firmware sets P2X_SELECT as either NIX0 or NIX1 */
- 	pfvf->nix_blkaddr = BLKADDR_NIX0;
--	if (p2x == CMR_P2X_SEL_NIX1)
-+	if (is_rvu_supports_nix1(rvu) && p2x == CMR_P2X_SEL_NIX1)
- 		pfvf->nix_blkaddr = BLKADDR_NIX1;
- }
- 
+ 		if (dev->surbs[i].cb) {
+ 			smscore_putbuffer(dev->coredev, dev->surbs[i].cb);
 -- 
 2.39.2
 
