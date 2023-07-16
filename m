@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DB81755650
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E5887553FE
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:25:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232875AbjGPUtb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:49:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38276 "EHLO
+        id S231947AbjGPUZX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:25:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232855AbjGPUtX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:49:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62BEBE7B
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:49:21 -0700 (PDT)
+        with ESMTP id S231939AbjGPUZX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA90126
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC1CA60EA2
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:49:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C1EC433C7;
-        Sun, 16 Jul 2023 20:49:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55BF360DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B42C433C8;
+        Sun, 16 Jul 2023 20:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540560;
-        bh=TXdBClRXVvi48yJrwfyN5ghEtX7rxVGUBD6tVegiZis=;
+        s=korg; t=1689539119;
+        bh=uMQ8yDtOinReme1j9OS//mJ3N23L5KBZrMXQ31n0oLY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r1vbL5xDa2/bGP7tHBQpN8jW8drxQgll7f/fnLQs6t6QkOYqhSA5KMX2IE1qXoDSk
-         JHuuPfZFIc2dyTTCummSMwF2lxLoyDgTinuYkgzXEYetCbPatuOIDibt/8YyrExQ4t
-         Cn+UJJJpvmWrpvtAUrbk8E0EMiHKph78lGE6fz5o=
+        b=xV16t6H0EhoI1oW+LeGc2iQXRDHkDRSiKeJ1Kx/7Jljcu7EIgc6u5SaQNGeGGielq
+         m52BRbqA2U0aqVzdGAPV8fXmtirNp27KerKjvhSBmPyO1cDXm/jpCFMgR4jEKSh9mH
+         eUXGvYJ99/iO7Pk2cZXgD0gaeS8eoV7MXQWDnrkc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@infradead.org>,
-        Demi Marie Obenour <demi@invisiblethingslab.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 379/591] block: increment diskseq on all media change events
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 665/800] spi: spi-geni-qcom: enable SPI_CONTROLLER_MUST_TX for GPI DMA mode
 Date:   Sun, 16 Jul 2023 21:48:38 +0200
-Message-ID: <20230716194933.726121320@linuxfoundation.org>
+Message-ID: <20230716195004.558660996@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,55 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Demi Marie Obenour <demi@invisiblethingslab.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit b90ecc0379eb7bbe79337b0c7289390a98752646 upstream.
+[ Upstream commit d10005837be83906bbd2078c3b4f9dfcbd6c95b6 ]
 
-Currently, associating a loop device with a different file descriptor
-does not increment its diskseq.  This allows the following race
-condition:
+The GPI DMA mode requires for TX DMA to be prepared. Force SPI core to
+provide TX buffer even if the caller didn't provide one by setting the
+SPI_CONTROLLER_MUST_TX flag.
 
-1. Program X opens a loop device
-2. Program X gets the diskseq of the loop device.
-3. Program X associates a file with the loop device.
-4. Program X passes the loop device major, minor, and diskseq to
-   something.
-5. Program X exits.
-6. Program Y detaches the file from the loop device.
-7. Program Y attaches a different file to the loop device.
-8. The opener finally gets around to opening the loop device and checks
-   that the diskseq is what it expects it to be.  Even though the
-   diskseq is the expected value, the result is that the opener is
-   accessing the wrong file.
-
->From discussions with Christoph Hellwig, it appears that
-disk_force_media_change() was supposed to call inc_diskseq(), but in
-fact it does not.  Adding a Fixes: tag to indicate this.  Christoph's
-Reported-by is because he stated that disk_force_media_change()
-calls inc_diskseq(), which is what led me to discover that it should but
-does not.
-
-Reported-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
-Fixes: e6138dc12de9 ("block: add a helper to raise a media changed event")
-Cc: stable@vger.kernel.org # 5.15+
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230607170837.1559-1-demi@invisiblethingslab.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b59c122484ec ("spi: spi-geni-qcom: Add support for GPI dma")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230629095847.3648597-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/disk-events.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-geni-qcom.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/block/disk-events.c
-+++ b/block/disk-events.c
-@@ -307,6 +307,7 @@ bool disk_force_media_change(struct gend
- 	if (!(events & DISK_EVENT_MEDIA_CHANGE))
- 		return false;
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 26ce959d98dfa..1df9d4844a68d 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -1097,6 +1097,12 @@ static int spi_geni_probe(struct platform_device *pdev)
+ 	if (mas->cur_xfer_mode == GENI_SE_FIFO)
+ 		spi->set_cs = spi_geni_set_cs;
  
-+	inc_diskseq(disk);
- 	if (__invalidate_device(disk->part0, true))
- 		pr_warn("VFS: busy inodes on changed media %s\n",
- 			disk->disk_name);
++	/*
++	 * TX is required per GSI spec, see setup_gsi_xfer().
++	 */
++	if (mas->cur_xfer_mode == GENI_GPI_DMA)
++		spi->flags = SPI_CONTROLLER_MUST_TX;
++
+ 	ret = request_irq(mas->irq, geni_spi_isr, 0, dev_name(dev), spi);
+ 	if (ret)
+ 		goto spi_geni_release_dma;
+-- 
+2.39.2
+
 
 
