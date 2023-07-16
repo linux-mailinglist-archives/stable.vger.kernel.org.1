@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 546377556CB
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43809755455
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232970AbjGPUyJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41580 "EHLO
+        id S232080AbjGPU3R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:29:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232977AbjGPUyI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:54:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84779E9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:54:07 -0700 (PDT)
+        with ESMTP id S232076AbjGPU3Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:29:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15F5F9F
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:29:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 228DC60E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:54:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F91C433C8;
-        Sun, 16 Jul 2023 20:54:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E6B660EBC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:29:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4C4C433C8;
+        Sun, 16 Jul 2023 20:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689540846;
-        bh=LLKQHnej0ML21gq3UooSclP0rCrTMJhT/RjP/2hTKIk=;
+        s=korg; t=1689539355;
+        bh=68tpC/TdD9NeG1FBOn/qXfeOymhjRCLD8GApZb5BayA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AdAx8jick83n9FdgikUfpHPwgVLFspEoSLDxlUbgbXZzGvT6prnKEJpwNjSYh2tNl
-         ZB5IguwaiJqiJZlrf1tPE0EMUKG4591+DXhSZ7VcJOHjr75VIE6KqFFul/2o3VMfwN
-         mu7PhXA97yhb7hzq1HITLD1XzFCM1Sis4kFchBPw=
+        b=WEqjEsrhSFfRROiF/+tupSV6Bi7+LA48CxLgo3+lTSl7HTPj3dnbhGfuSA+lIKBhO
+         Rwu7KI0IeQklfl9Rwz9m24fNVNccoAO65kPWmRC4KjnJW2DO0QUhDCvtTkDtaIv5kJ
+         wVeM9ikI77fTCWE49Lmm2fuw5+WKX37a3+jHPeeo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filip Hejsek <filip.hejsek@gmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 491/591] drm/amd: Dont try to enable secure display TA multiple times
-Date:   Sun, 16 Jul 2023 21:50:30 +0200
-Message-ID: <20230716194936.593764082@linuxfoundation.org>
+        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.4 778/800] mips: Include KBUILD_CPPFLAGS in CHECKFLAGS invocation
+Date:   Sun, 16 Jul 2023 21:50:31 +0200
+Message-ID: <20230716195007.219126464@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 5c6d52ff4b61e5267b25be714eb5a9ba2a338199 ]
+commit 08f6554ff90ef189e6b8f0303e57005bddfdd6a7 upstream.
 
-If the securedisplay TA failed to load the first time, it's unlikely
-to work again after a suspend/resume cycle or reset cycle and it appears
-to be causing problems in futher attempts.
+A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
+KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
+When that occurs, the following error appears when building ARCH=mips
+with clang (tip of tree error shown):
 
-Fixes: e42dfa66d592 ("drm/amdgpu: Add secure display TA load for Renoir")
-Reported-by: Filip Hejsek <filip.hejsek@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2633
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  clang: error: unsupported option '-mabi=' for target 'x86_64-pc-linux-gnu'
+
+Add KBUILD_CPPFLAGS in the CHECKFLAGS invocation to keep everything
+working after the move.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index a3cd816f98a14..0af9fb4098e8a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -1959,6 +1959,8 @@ static int psp_securedisplay_initialize(struct psp_context *psp)
- 		psp_securedisplay_parse_resp_status(psp, securedisplay_cmd->status);
- 		dev_err(psp->adev->dev, "SECUREDISPLAY: query securedisplay TA failed. ret 0x%x\n",
- 			securedisplay_cmd->securedisplay_out_message.query_ta.query_cmd_ret);
-+		/* don't try again */
-+		psp->securedisplay_context.context.bin_desc.size_bytes = 0;
- 	}
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -346,7 +346,7 @@ KBUILD_CFLAGS += -fno-asynchronous-unwin
+ KBUILD_LDFLAGS		+= -m $(ld-emul)
  
- 	return 0;
--- 
-2.39.2
-
+ ifdef CONFIG_MIPS
+-CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
++CHECKFLAGS += $(shell $(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
+ 	grep -E -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
+ 	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
+ endif
 
 
