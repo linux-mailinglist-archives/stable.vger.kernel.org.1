@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8243175521E
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BA46755245
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:05:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231186AbjGPUED (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:04:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34156 "EHLO
+        id S231251AbjGPUFw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:05:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231185AbjGPUEC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:04:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2EF8FD
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:04:01 -0700 (PDT)
+        with ESMTP id S231259AbjGPUFv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:05:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 051A9FD
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:05:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56E6F60EB3
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:04:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6614EC433C8;
-        Sun, 16 Jul 2023 20:04:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9851560DD4
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:05:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BA7C433C8;
+        Sun, 16 Jul 2023 20:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689537840;
-        bh=JVxLT2CdNFYtjwq2SYOvpsoCzexWg/AVF5Tjmmpx96k=;
+        s=korg; t=1689537950;
+        bh=hK6WbM7ak9/4cHluDf2POQTKODUcFiz9WD8OiIVTIpI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jPp9iEfQJxwlm7zkNVVCyWyE/dWLy5sEO1rz9SRTy2tKv4DLhXtodyRbT1VkUubcK
-         3ds8D17KO1xa3adxmYtCKb7dlO98aiUjOgM4tzrkFjsobu/VKFMnRYGKPfPEEOYJmK
-         8pUTi+26zyw1cfrJFVxR6XIXGJ8ZcWocgaOzB1Js=
+        b=Bs8b/i+zudZePpzTpIhbYH+3IbGEHahV7PM4I+l26i9aMwGbaXUEUUYpojaZd3Fhi
+         i41F7N/I5knSu0oelSnHyu1Z7Y5Iei27ObVsVC3MRhW8aTRTCS6V7+DcUsimhdRbah
+         tjHUMkJiXnv9wZ0cuGNTggEPx0TFDRsZt9sC8Hec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Francesco Dolcini <francesco.dolcini@toradex.com>,
         Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 238/800] drm/bridge: tc358768: fix TCLK_ZEROCNT computation
-Date:   Sun, 16 Jul 2023 21:41:31 +0200
-Message-ID: <20230716194954.617387366@linuxfoundation.org>
+Subject: [PATCH 6.4 239/800] drm/bridge: tc358768: Add atomic_get_input_bus_fmts() implementation
+Date:   Sun, 16 Jul 2023 21:41:32 +0200
+Message-ID: <20230716194954.641117180@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -45,10 +45,10 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -57,50 +57,94 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[ Upstream commit f9cf811374f42fca31ac34aaf59ee2ae72b89879 ]
+[ Upstream commit cec5ccef85bd0128cf895612de54a9d21d2015d0 ]
 
-Correct computation of TCLK_ZEROCNT register.
+Add atomic_get_input_bus_fmts() implementation, tc358768 has a parallel
+RGB input interface with the actual bus format depending on the amount
+of parallel input data lines.
 
-This register must be set to a value that ensure that
-(TCLK-PREPARECNT + TCLK-ZERO) > 300ns
+Without this change when the tc358768 is used with less than 24bit the
+color mapping is completely wrong.
 
-with the actual value of (TCLK-PREPARECNT + TCLK-ZERO) being
-
-(1 to 2) + (TCLK_ZEROCNT + 1)) x HSByteClkCycle + (PHY output delay)
-
-with PHY output delay being about
-
-(2 to 3) x MIPIBitClk cycle in the BitClk conversion.
-
-Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 Reviewed-by: Robert Foss <rfoss@kernel.org>
 Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230427142934.55435-5-francesco@dolcini.it
+Link: https://patchwork.freedesktop.org/patch/msgid/20230330095941.428122-7-francesco@dolcini.it
+Stable-dep-of: ee18698e212b ("drm/bridge: tc358768: fix TCLK_TRAILCNT computation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/tc358768.c | 44 +++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
 diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
-index dba1bf3912f1e..aff400c360662 100644
+index aff400c360662..487bfe33edc88 100644
 --- a/drivers/gpu/drm/bridge/tc358768.c
 +++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -742,10 +742,10 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+@@ -9,6 +9,7 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/i2c.h>
+ #include <linux/kernel.h>
++#include <linux/media-bus-format.h>
+ #include <linux/module.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+@@ -918,6 +919,44 @@ static void tc358768_bridge_enable(struct drm_bridge *bridge)
+ 	}
+ }
  
- 	/* 38ns < TCLK_PREPARE < 95ns */
- 	val = tc358768_ns_to_cnt(65, dsibclk_nsk) - 1;
--	/* TCLK_PREPARE > 300ns */
--	val2 = tc358768_ns_to_cnt(300 + tc358768_to_ns(3 * ui_nsk),
--				  dsibclk_nsk);
--	val |= (val2 - tc358768_to_ns(phy_delay_nsk - dsibclk_nsk)) << 8;
-+	/* TCLK_PREPARE + TCLK_ZERO > 300ns */
-+	val2 = tc358768_ns_to_cnt(300 - tc358768_to_ns(2 * ui_nsk),
-+				  dsibclk_nsk) - 2;
-+	val |= val2 << 8;
- 	dev_dbg(priv->dev, "TCLK_HEADERCNT: 0x%x\n", val);
- 	tc358768_write(priv, TC358768_TCLK_HEADERCNT, val);
++#define MAX_INPUT_SEL_FORMATS	1
++
++static u32 *
++tc358768_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
++				   struct drm_bridge_state *bridge_state,
++				   struct drm_crtc_state *crtc_state,
++				   struct drm_connector_state *conn_state,
++				   u32 output_fmt,
++				   unsigned int *num_input_fmts)
++{
++	struct tc358768_priv *priv = bridge_to_tc358768(bridge);
++	u32 *input_fmts;
++
++	*num_input_fmts = 0;
++
++	input_fmts = kcalloc(MAX_INPUT_SEL_FORMATS, sizeof(*input_fmts),
++			     GFP_KERNEL);
++	if (!input_fmts)
++		return NULL;
++
++	switch (priv->pd_lines) {
++	case 16:
++		input_fmts[0] = MEDIA_BUS_FMT_RGB565_1X16;
++		break;
++	case 18:
++		input_fmts[0] = MEDIA_BUS_FMT_RGB666_1X18;
++		break;
++	default:
++	case 24:
++		input_fmts[0] = MEDIA_BUS_FMT_RGB888_1X24;
++		break;
++	};
++
++	*num_input_fmts = MAX_INPUT_SEL_FORMATS;
++
++	return input_fmts;
++}
++
+ static const struct drm_bridge_funcs tc358768_bridge_funcs = {
+ 	.attach = tc358768_bridge_attach,
+ 	.mode_valid = tc358768_bridge_mode_valid,
+@@ -925,6 +964,11 @@ static const struct drm_bridge_funcs tc358768_bridge_funcs = {
+ 	.enable = tc358768_bridge_enable,
+ 	.disable = tc358768_bridge_disable,
+ 	.post_disable = tc358768_bridge_post_disable,
++
++	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
++	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
++	.atomic_reset = drm_atomic_helper_bridge_reset,
++	.atomic_get_input_bus_fmts = tc358768_atomic_get_input_bus_fmts,
+ };
  
+ static const struct drm_bridge_timings default_tc358768_timings = {
 -- 
 2.39.2
 
