@@ -2,98 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CBE275529C
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 181D27555EE
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:46:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231397AbjGPUJx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:09:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38172 "EHLO
+        id S232695AbjGPUqG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:46:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231381AbjGPUJx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:09:53 -0400
-X-Greylist: delayed 1312 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 16 Jul 2023 13:09:51 PDT
-Received: from hall.aurel32.net (hall.aurel32.net [IPv6:2001:bc8:30d7:100::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9CD89B;
-        Sun, 16 Jul 2023 13:09:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
-        ; s=202004.hall; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:Reply-To:
-        Subject:Content-ID:Content-Description:X-Debbugs-Cc;
-        bh=bFvTW3Yd75y+NV7uvVkN7aJtnUibmYPb1BvWy4H8H44=; b=MzxXa9UDH9iTVZHrPCYBXP29gr
-        3DFhgIGuBisHzO6iic7qwrsy3fQ3DIHWhv9q6KRW0y10iAcI6SamH/wg7VOG4dRAzkw1JqiBO5uA4
-        ihGNLGx9iNMV4Vwq2/Y6iApxg1k/gfbnfMnH/s4oAzp5SjIkirRFsAgtNysUBwXTIZVFQZqdSeoqS
-        wz+PVhyBJFpybKVHy1VLLW7TJN7gBY1ywyy6PZcyODWFWJA8wReDbs31rfH5xOQkBy6LI/4Mj6TUP
-        K/CLVPc5iDlzgkKZIMGYVa0ve29YbbcJuselLKSsUwZz4USnDgmVv1vTLk8MbE0c0X8L/IKfwE0cn
-        d4Xg3g3A==;
-Received: from [2a01:e34:ec5d:a741:8a4c:7c4e:dc4c:1787] (helo=ohm.rr44.fr)
-        by hall.aurel32.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1qL7ik-009yRM-Pd; Sun, 16 Jul 2023 21:47:54 +0200
-Received: from aurel32 by ohm.rr44.fr with local (Exim 4.96)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1qL7ik-008uSg-0U;
-        Sun, 16 Jul 2023 21:47:54 +0200
-Date:   Sun, 16 Jul 2023 21:47:54 +0200
-From:   Aurelien Jarno <aurelien@aurel32.net>
-To:     Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-Cc:     Florian Fainelli <florian.fainelli@broadcom.com>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: Backporting commits for generating rpi dtb symbols to stable
-Message-ID: <ZLRJaiIfPtqEB9Vb@aurel32.net>
-Mail-Followup-To: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230716162444.zzvkm4rh7s7lu37x@pali>
+        with ESMTP id S232686AbjGPUqF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:46:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4FE3D9;
+        Sun, 16 Jul 2023 13:46:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48AB360DFD;
+        Sun, 16 Jul 2023 20:46:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8E1C433C8;
+        Sun, 16 Jul 2023 20:46:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689540363;
+        bh=Oc4BTr5K3vTeSxq00miA1QYT23jOa88djcW0k/clk4w=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=uU0ehauIWTAfzIUh3lo+GLcKlOsv9n5oGhFCw/HWiqf8vdAMgfQw0KGh9isGz1kkd
+         tyuawZPKTaAasKXj0vdpVBGhvA/B1Lt0FC4D5E5CapLOUcbtvpEIuUGm7qsldbXwYH
+         4j/mBpI7301zn4g/ypUQuOkt+wFrbE+SYu1qQeF8=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 336/591] crypto: nx - fix build warnings when DEBUG_FS is not enabled
+Date:   Sun, 16 Jul 2023 21:47:55 +0200
+Message-ID: <20230716194932.590657421@linuxfoundation.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20230716162444.zzvkm4rh7s7lu37x@pali>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+From: Randy Dunlap <rdunlap@infradead.org>
 
-On 2023-07-16 18:24, Pali Roh=C3=A1r wrote:
-> Hello,
->=20
-> I see that raspberry pi bootloader throws ton of warnings when supplied
-> DTB file does not contain /__symbols__/ node.
->=20
-> On RPI 1B rev1 it looks like this:
->=20
-> dterror: no symbols found
-> dterror: no symbols found
-> dterror: no symbols found
-> dterror: no symbols found
-> dterror: no symbols found
-> dterror: no symbols found
-> dterror: no symbols found
-> dterror: no symbols found
-> dterror: no symbols found
-> dterror: no symbols found
+[ Upstream commit b04b076fb56560b39d695ac3744db457e12278fd ]
 
-Do you have those errors with the default configuration? On a RPI 4,
-this only happens when setting uart_2ndstage to 1 in config.txt.
-According to the documentation, this option enables diagnostic
-information from the main firmware.
+Fix build warnings when DEBUG_FS is not enabled by using an empty
+do-while loop instead of a value:
 
-Unless this is different on RPI 1B, this means we are talking about a
-warning that happens when enabling diagnostic information, so I am not
-sure it warrants a change to stable kernels.
+In file included from ../drivers/crypto/nx/nx.c:27:
+../drivers/crypto/nx/nx.c: In function 'nx_register_algs':
+../drivers/crypto/nx/nx.h:173:33: warning: statement with no effect [-Wunused-value]
+  173 | #define NX_DEBUGFS_INIT(drv)    (0)
+../drivers/crypto/nx/nx.c:573:9: note: in expansion of macro 'NX_DEBUGFS_INIT'
+  573 |         NX_DEBUGFS_INIT(&nx_driver);
+../drivers/crypto/nx/nx.c: In function 'nx_remove':
+../drivers/crypto/nx/nx.h:174:33: warning: statement with no effect [-Wunused-value]
+  174 | #define NX_DEBUGFS_FINI(drv)    (0)
+../drivers/crypto/nx/nx.c:793:17: note: in expansion of macro 'NX_DEBUGFS_FINI'
+  793 |                 NX_DEBUGFS_FINI(&nx_driver);
 
-Regards
-Aurelien
+Also, there is no need to build nx_debugfs.o when DEBUG_FS is not
+enabled, so change the Makefile to accommodate that.
 
---=20
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                     http://aurel32.net
+Fixes: ae0222b7289d ("powerpc/crypto: nx driver code supporting nx encryption")
+Fixes: aef7b31c8833 ("powerpc/crypto: Build files for the nx device driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Breno Leitão <leitao@debian.org>
+Cc: Nayna Jain <nayna@linux.ibm.com>
+Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-crypto@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/crypto/nx/Makefile | 2 +-
+ drivers/crypto/nx/nx.h     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/crypto/nx/Makefile b/drivers/crypto/nx/Makefile
+index d00181a26dd65..483cef62acee8 100644
+--- a/drivers/crypto/nx/Makefile
++++ b/drivers/crypto/nx/Makefile
+@@ -1,7 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_CRYPTO_DEV_NX_ENCRYPT) += nx-crypto.o
+ nx-crypto-objs := nx.o \
+-		  nx_debugfs.o \
+ 		  nx-aes-cbc.o \
+ 		  nx-aes-ecb.o \
+ 		  nx-aes-gcm.o \
+@@ -11,6 +10,7 @@ nx-crypto-objs := nx.o \
+ 		  nx-sha256.o \
+ 		  nx-sha512.o
+ 
++nx-crypto-$(CONFIG_DEBUG_FS) += nx_debugfs.o
+ obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_PSERIES) += nx-compress-pseries.o nx-compress.o
+ obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_POWERNV) += nx-compress-powernv.o nx-compress.o
+ nx-compress-objs := nx-842.o
+diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
+index c6233173c612e..2697baebb6a35 100644
+--- a/drivers/crypto/nx/nx.h
++++ b/drivers/crypto/nx/nx.h
+@@ -170,8 +170,8 @@ struct nx_sg *nx_walk_and_build(struct nx_sg *, unsigned int,
+ void nx_debugfs_init(struct nx_crypto_driver *);
+ void nx_debugfs_fini(struct nx_crypto_driver *);
+ #else
+-#define NX_DEBUGFS_INIT(drv)	(0)
+-#define NX_DEBUGFS_FINI(drv)	(0)
++#define NX_DEBUGFS_INIT(drv)	do {} while (0)
++#define NX_DEBUGFS_FINI(drv)	do {} while (0)
+ #endif
+ 
+ #define NX_PAGE_NUM(x)		((u64)(x) & 0xfffffffffffff000ULL)
+-- 
+2.39.2
+
+
+
