@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CEE775540B
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37F6A75540D
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:26:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231965AbjGPUZ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:25:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48134 "EHLO
+        id S231960AbjGPU0B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:26:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231962AbjGPUZz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:25:55 -0400
+        with ESMTP id S231972AbjGPU0B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:26:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3B819F
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:25:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50196BC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:26:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BF1A60EBB
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589ACC433C8;
-        Sun, 16 Jul 2023 20:25:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE7C660EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:25:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1105C433C8;
+        Sun, 16 Jul 2023 20:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539153;
-        bh=dIarXCgL9+dTnvchD/Wzw5pTe0JnwKUmVBtKrz55R3o=;
+        s=korg; t=1689539159;
+        bh=IXAQm7r1PimoJCWHcEqlJ2R4NqjE05PYXp3/QDvrqJM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1yM7MuN1fP4/PwTKKr4a2n1PKlkYLEAhTTrMCGs8cW+y2bxKSfHWp2eL1W6zRVdG0
-         Xh3U3XTRqyf6vKdIHEbaZIUVpZsyB+BqUd5chbYIFyy+zlJsjYmc2il17nPe5DGhs1
-         ooE9zfDzBJG2t9bmLjjz9lxisxlHosz7J6nQlWAk=
+        b=tPZfMROxIqyKRmUUjPZ/onyLIStlZUbSqcY7Nl61aQ3SFHB17tv3meurlGmm7Lhjw
+         7Yg3zMtuh6hdgXM/QJIHHY2JI2jK00LlyeHTujhGJp5JNFVCIzSioDXjdhYh39VYQV
+         jycLpgquAVZV35Mke3R6/OCSGwZS23rt8N/0+zK4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexandra Winter <wintera@linux.ibm.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        Thorsten Winkler <twinkler@linux.ibm.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Conor Dooley <conor@kernel.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Conor Dooley <conor.dooley@microchip.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 707/800] s390/qeth: Fix vipa deletion
-Date:   Sun, 16 Jul 2023 21:49:20 +0200
-Message-ID: <20230716195005.542144752@linuxfoundation.org>
+Subject: [PATCH 6.4 708/800] risc-v: Fix order of IPI enablement vs RCU startup
+Date:   Sun, 16 Jul 2023 21:49:21 +0200
+Message-ID: <20230716195005.565481736@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -58,40 +59,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thorsten Winkler <twinkler@linux.ibm.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 80de809bd35e2a8999edf9f5aaa2d8de18921f11 ]
+[ Upstream commit 6259f3443c6a376aa077816ac92e9ddeb0817d09 ]
 
-Change boolean parameter of function "qeth_l3_vipa_store" inside the
-"qeth_l3_dev_vipa_del4_store" function from "true" to "false" because
-"true" is used for adding a virtual ip address and "false" for deleting.
+Conor reports that risc-v tries to enable IPIs before telling the
+core code to enable RCU. With the introduction of the mapple tree
+as a backing store for the irq descriptors, this results in
+a very shouty boot sequence, as RCU is legitimately upset.
 
-Fixes: 2390166a6b45 ("s390/qeth: clean up L3 sysfs code")
+Restore some sanity by moving the risc_ipi_enable() call after
+notify_cpu_starting(), which explicitly enables RCU on the calling
+CPU.
 
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Signed-off-by: Thorsten Winkler <twinkler@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 832f15f42646 ("RISC-V: Treat IPIs as normal Linux IRQs")
+Reported-by: Conor Dooley <conor@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230703-dupe-frying-79ae2ccf94eb@spud
+Cc: Anup Patel <apatel@ventanamicro.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20230703183126.1567625-1-maz@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/net/qeth_l3_sys.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kernel/smpboot.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/net/qeth_l3_sys.c b/drivers/s390/net/qeth_l3_sys.c
-index 9f90a860ca2c9..a6b64228ead25 100644
---- a/drivers/s390/net/qeth_l3_sys.c
-+++ b/drivers/s390/net/qeth_l3_sys.c
-@@ -625,7 +625,7 @@ static QETH_DEVICE_ATTR(vipa_add4, add4, 0644,
- static ssize_t qeth_l3_dev_vipa_del4_store(struct device *dev,
- 		struct device_attribute *attr, const char *buf, size_t count)
- {
--	return qeth_l3_vipa_store(dev, buf, true, count, QETH_PROT_IPV4);
-+	return qeth_l3_vipa_store(dev, buf, false, count, QETH_PROT_IPV4);
- }
+diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
+index 445a4efee267d..6765f1ce79625 100644
+--- a/arch/riscv/kernel/smpboot.c
++++ b/arch/riscv/kernel/smpboot.c
+@@ -161,10 +161,11 @@ asmlinkage __visible void smp_callin(void)
+ 	mmgrab(mm);
+ 	current->active_mm = mm;
  
- static QETH_DEVICE_ATTR(vipa_del4, del4, 0200, NULL,
+-	riscv_ipi_enable();
+-
+ 	store_cpu_topology(curr_cpuid);
+ 	notify_cpu_starting(curr_cpuid);
++
++	riscv_ipi_enable();
++
+ 	numa_add_cpu(curr_cpuid);
+ 	set_cpu_online(curr_cpuid, 1);
+ 	probe_vendor_features(curr_cpuid);
 -- 
 2.39.2
 
