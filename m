@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51634755390
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D42A57555C8
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:44:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231779AbjGPUUZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:20:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45000 "EHLO
+        id S232623AbjGPUob (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:44:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbjGPUUY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:20:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F6DC0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:20:23 -0700 (PDT)
+        with ESMTP id S232615AbjGPUoa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:44:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80FA1D9
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:44:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E77B60E88
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:20:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4B6C433C7;
-        Sun, 16 Jul 2023 20:20:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FFCE60EB8
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:44:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D02C433C7;
+        Sun, 16 Jul 2023 20:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538822;
-        bh=uw5cc+XnUdy0p5Sov0EVCvkq9s1jvUHAMe2O3GbMifg=;
+        s=korg; t=1689540268;
+        bh=7SevGWtBNBLfAhivgDx35DEaHKCp+g3upyG5yE7U/Hs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mePZfbvH6ry1MYZn6c2IadxNq4r1pOcY4/9KmrF2KU59+GPOtgFhVr44bOE+4wzfo
-         ihZ+lc13Vyr71ZYUZmWWSeaqGKoCgBJ/rLB4MEHiP5yDD2d1IIca5XrKC+YLMKlpEk
-         LcPAH+GHLRbH/RjGpFpkQNeqLvJe2xTdi2ws7JDI=
+        b=sJ1qvRWctwfi2alnFCyRFzQFqxLPul7HzBsqrhIwWZRDdgNZ4MEkqmcVX097WeEur
+         ZmFTA/ygjsrtpqOm6RrnWvpQPyLKuQXHVgW5nJ2Sq6qgBsBECieh/G/Mh78iK/aF5O
+         ipd5OJE49rej+s3jREg3BsmsAgqx7Tpr5YkvVL8Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladislav Efanov <VEfanov@ispras.ru>,
-        Shawn Guo <shawn.guo@linaro.org>,
+        patches@lists.linux.dev, Mark Pearson <mpearson-lenovo@squebb.ca>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 588/800] usb: dwc3: qcom: Fix potential memory leak
+Subject: [PATCH 6.1 302/591] platform/x86: think-lmi: Correct System password interface
 Date:   Sun, 16 Jul 2023 21:47:21 +0200
-Message-ID: <20230716195002.757070924@linuxfoundation.org>
+Message-ID: <20230716194931.707158093@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladislav Efanov <VEfanov@ispras.ru>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 097fb3ee710d4de83b8d4f5589e8ee13e0f0541e ]
+[ Upstream commit 97eef5983372d7aee6549d644d788fd0c10d2b6e ]
 
-Function dwc3_qcom_probe() allocates memory for resource structure
-which is pointed by parent_res pointer. This memory is not
-freed. This leads to memory leak. Use stack memory to prevent
-memory leak.
+The system password identification was incorrect. This means that if
+the password was enabled it wouldn't be detected correctly; and setting
+it would not work.
+Also updated code to use TLMI_SMP_PWD instead of TLMI_SYS_PWD to be in
+sync with Lenovo documentation.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
-Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
-Acked-by: Shawn Guo <shawn.guo@linaro.org>
-Link: https://lore.kernel.org/r/20230517172518.442591-1-VEfanov@ispras.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 640a5fa50a42 ("platform/x86: think-lmi: Opcode support")
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230601200552.4396-3-mpearson-lenovo@squebb.ca
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-qcom.c | 6 +++---
+ drivers/platform/x86/think-lmi.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
-index 79b22abf97276..482260182d656 100644
---- a/drivers/usb/dwc3/dwc3-qcom.c
-+++ b/drivers/usb/dwc3/dwc3-qcom.c
-@@ -800,6 +800,7 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
- 	struct device		*dev = &pdev->dev;
- 	struct dwc3_qcom	*qcom;
- 	struct resource		*res, *parent_res = NULL;
-+	struct resource		local_res;
- 	int			ret, i;
- 	bool			ignore_pipe_clk;
- 	bool			wakeup_source;
-@@ -851,9 +852,8 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
- 	if (np) {
- 		parent_res = res;
- 	} else {
--		parent_res = kmemdup(res, sizeof(struct resource), GFP_KERNEL);
--		if (!parent_res)
--			return -ENOMEM;
-+		memcpy(&local_res, res, sizeof(struct resource));
-+		parent_res = &local_res;
+diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
+index 4e6040c0a2201..3a511c0f13e45 100644
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -172,7 +172,7 @@ MODULE_PARM_DESC(debug_support, "Enable debug command support");
+ #define TLMI_POP_PWD (1 << 0)
+ #define TLMI_PAP_PWD (1 << 1)
+ #define TLMI_HDD_PWD (1 << 2)
+-#define TLMI_SYS_PWD (1 << 3)
++#define TLMI_SMP_PWD (1 << 6) /* System Management */
+ #define TLMI_CERT    (1 << 7)
  
- 		parent_res->start = res->start +
- 			qcom->acpi_pdata->qscratch_base_offset;
+ #define to_tlmi_pwd_setting(kobj)  container_of(kobj, struct tlmi_pwd_setting, kobj)
+@@ -1522,11 +1522,11 @@ static int tlmi_analyze(void)
+ 		tlmi_priv.pwd_power->valid = true;
+ 
+ 	if (tlmi_priv.opcode_support) {
+-		tlmi_priv.pwd_system = tlmi_create_auth("sys", "system");
++		tlmi_priv.pwd_system = tlmi_create_auth("smp", "system");
+ 		if (!tlmi_priv.pwd_system)
+ 			goto fail_clear_attr;
+ 
+-		if (tlmi_priv.pwdcfg.core.password_state & TLMI_SYS_PWD)
++		if (tlmi_priv.pwdcfg.core.password_state & TLMI_SMP_PWD)
+ 			tlmi_priv.pwd_system->valid = true;
+ 
+ 		tlmi_priv.pwd_hdd = tlmi_create_auth("hdd", "hdd");
 -- 
 2.39.2
 
