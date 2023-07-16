@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3C487553A5
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B69C7555DD
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:45:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231818AbjGPUVV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:21:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45548 "EHLO
+        id S232667AbjGPUp1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:45:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231817AbjGPUVU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:21:20 -0400
+        with ESMTP id S232650AbjGPUp0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:45:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F7CD1B9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:21:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B1FE41
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:45:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 24B7460EB8
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:21:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F20AC433C7;
-        Sun, 16 Jul 2023 20:21:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BB7060EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:45:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A345C433C7;
+        Sun, 16 Jul 2023 20:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538878;
-        bh=YPSLXDDIW9nto25eZk4+ItWKBwJgXTtjPf7rJgjGntA=;
+        s=korg; t=1689540324;
+        bh=akP9Lj5C8VCKXp0MFeJM/lrXaHfOmIx+KQPTejqD7dU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cww2zLLhsgQzhsFu7CPlh0fEt5Xt0ZAe/Me2aW/eOXGRGSGd23JE2pP3gCm5Nwxvv
-         qiWoTsN94bqxknL0xJ9Yz5NeQE11Isdc766oehIlpKEp9YVmWkMJ1mmkdOJoLteGbz
-         yJnpcif+++ISXCgKeDYNv6ucSl149zVy8jY62GaU=
+        b=lTwd8VcFnWL2lO6/DI4TfDrQv23V2Zy7/keZAg/6T9DPXaq+fXCoSK8F0zlj/TOcE
+         fi37/U7+EQphitifnuiAc4VpRXVHyztb2HtRDD+QYM1P65YoOWd0dQCwzyHa0EPTTA
+         wjVcfYvSTgyiavCEB2UIJTBnkemYQV3uVTIVwO9A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 609/800] media: atomisp: ov2680: Stop using half pixelclock for binned modes
+Subject: [PATCH 6.1 323/591] PCI: qcom: Use lower case for hex
 Date:   Sun, 16 Jul 2023 21:47:42 +0200
-Message-ID: <20230716195003.252921744@linuxfoundation.org>
+Message-ID: <20230716194932.248626365@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,77 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 7d45a432251a30ed0252655177e708229b163291 ]
+[ Upstream commit 94ebd232dbc84dfdfbf0c406137a8b2aa8b37a01 ]
 
-Stop using half pixelclock for binned modes this fixes:
-1. The exposure being twice as high for binned mods (due to the half clk)
-2. The framerate being 15 fps instead of 30 fps
+To maintain uniformity, let's use lower case for representing hexadecimal
+numbers.
 
-The original code with fixed per mode register lists did use half pixel
-clk, but this should be combined with using half for the VTS value too.
-
-Using half VTS fixes the framerate issue, but this has the undesired
-side-effect of change the exposure ctrl range (half the range, double
-the amount of exposure per step).
-
-Link: https://lore.kernel.org/r/20230604161406.69369-3-hdegoede@redhat.com
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Link: https://lore.kernel.org/r/20230316081117.14288-7-manivannan.sadhasivam@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Stable-dep-of: 60f0072d7fb7 ("PCI: qcom: Use DWC helpers for modifying the read-only DBI registers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/atomisp/i2c/atomisp-ov2680.c | 8 +-------
- drivers/staging/media/atomisp/i2c/ov2680.h         | 1 +
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/staging/media/atomisp/i2c/atomisp-ov2680.c b/drivers/staging/media/atomisp/i2c/atomisp-ov2680.c
-index c079368019e87..3a6bc3e56b10e 100644
---- a/drivers/staging/media/atomisp/i2c/atomisp-ov2680.c
-+++ b/drivers/staging/media/atomisp/i2c/atomisp-ov2680.c
-@@ -239,27 +239,21 @@ static void ov2680_calc_mode(struct ov2680_device *sensor, int width, int height
- static int ov2680_set_mode(struct ov2680_device *sensor)
- {
- 	struct i2c_client *client = sensor->client;
--	u8 pll_div, unknown, inc, fmt1, fmt2;
-+	u8 unknown, inc, fmt1, fmt2;
- 	int ret;
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index 1c8200656aef9..e65f4bf50f928 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -37,17 +37,17 @@
+ #define PARF_PCS_DEEMPH				0x34
+ #define PARF_PCS_SWING				0x38
+ #define PARF_PHY_CTRL				0x40
+-#define PARF_PHY_REFCLK				0x4C
++#define PARF_PHY_REFCLK				0x4c
+ #define PARF_CONFIG_BITS			0x50
+ #define PARF_DBI_BASE_ADDR			0x168
+-#define PARF_SLV_ADDR_SPACE_SIZE_2_3_3		0x16C /* Register offset specific to IP ver 2.3.3 */
++#define PARF_SLV_ADDR_SPACE_SIZE_2_3_3		0x16c /* Register offset specific to IP ver 2.3.3 */
+ #define PARF_MHI_CLOCK_RESET_CTRL		0x174
+ #define PARF_AXI_MSTR_WR_ADDR_HALT		0x178
+-#define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1A8
+-#define PARF_Q2A_FLUSH				0x1AC
+-#define PARF_LTSSM				0x1B0
++#define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1a8
++#define PARF_Q2A_FLUSH				0x1ac
++#define PARF_LTSSM				0x1b0
+ #define PARF_SID_OFFSET				0x234
+-#define PARF_BDF_TRANSLATE_CFG			0x24C
++#define PARF_BDF_TRANSLATE_CFG			0x24c
+ #define PARF_SLV_ADDR_SPACE_SIZE		0x358
+ #define PARF_DEVICE_TYPE			0x1000
+ #define PARF_BDF_TO_SID_TABLE_N			0x2000
+@@ -58,7 +58,7 @@
+ /* DBI registers */
+ #define AXI_MSTR_RESP_COMP_CTRL0		0x818
+ #define AXI_MSTR_RESP_COMP_CTRL1		0x81c
+-#define MISC_CONTROL_1_REG			0x8BC
++#define MISC_CONTROL_1_REG			0x8bc
  
- 	if (sensor->mode.binning) {
--		pll_div = 1;
- 		unknown = 0x23;
- 		inc = 0x31;
- 		fmt1 = 0xc2;
- 		fmt2 = 0x01;
- 	} else {
--		pll_div = 0;
- 		unknown = 0x21;
- 		inc = 0x11;
- 		fmt1 = 0xc0;
- 		fmt2 = 0x00;
- 	}
- 
--	ret = ov_write_reg8(client, 0x3086, pll_div);
--	if (ret)
--		return ret;
--
- 	ret = ov_write_reg8(client, 0x370a, unknown);
- 	if (ret)
- 		return ret;
-diff --git a/drivers/staging/media/atomisp/i2c/ov2680.h b/drivers/staging/media/atomisp/i2c/ov2680.h
-index baf49eb0659e3..eed18d6943370 100644
---- a/drivers/staging/media/atomisp/i2c/ov2680.h
-+++ b/drivers/staging/media/atomisp/i2c/ov2680.h
-@@ -172,6 +172,7 @@ static struct ov2680_reg const ov2680_global_setting[] = {
- 	{0x3082, 0x45},
- 	{0x3084, 0x09},
- 	{0x3085, 0x04},
-+	{0x3086, 0x00},
- 	{0x3503, 0x03},
- 	{0x350b, 0x36},
- 	{0x3600, 0xb4},
+ /* PARF_SYS_CTRL register fields */
+ #define MST_WAKEUP_EN				BIT(13)
 -- 
 2.39.2
 
