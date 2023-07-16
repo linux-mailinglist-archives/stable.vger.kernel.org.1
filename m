@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C767755713
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BA03755715
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:57:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233060AbjGPU5H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:57:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43814 "EHLO
+        id S233070AbjGPU5J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:57:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233085AbjGPU5F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:57:05 -0400
+        with ESMTP id S233064AbjGPU5H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:57:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AB51E7C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:57:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7556E45
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:57:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A52E760E2C
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:56:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B999AC433C8;
-        Sun, 16 Jul 2023 20:56:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D80860EAE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:57:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8948DC433C8;
+        Sun, 16 Jul 2023 20:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689541019;
-        bh=lBJxmKi3M6nvU1LUxxAqkdHH33EIOvczTyU84IPHYcM=;
+        s=korg; t=1689541021;
+        bh=RP8fZk1oATquFCC5pP+VntN/0vhm/Y6CPJSsBZz7POY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qOO+co1URGcIkNKgdZDyuD34J4E3OhFN1BWLknh2gTDDuDoMn8zvAK/w7Srqkb/kL
-         sMLqHvcsfukmXDwv8jPB9yTjTD4hM+L+SPbRXjrxMNm8yTUY/HqxCl70NcwWhWvz9+
-         H40oxGmq7RAgTBJQNwl6/I2l1NbPsZli7oidEMdg=
+        b=Yx8T86cy4WNGHdHQwsOYRBp0pTl68FG0EF0UB+eID47NozFbwfTeaJBt7fRBDFBh0
+         1akxOktgb8NcgNVTXFeSrEvlLPB1nrPSgUkMZOu+iNT4LBwz2axCX88VyaCgf+etrm
+         /WUXVsb0AaHnVCsJwEcBPSBQi9I0hn8AfrZ9zbe0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 570/591] blktrace: use inline function for blk_trace_remove() while blktrace is disabled
-Date:   Sun, 16 Jul 2023 21:51:49 +0200
-Message-ID: <20230716194938.603522563@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 571/591] fs: no need to check source
+Date:   Sun, 16 Jul 2023 21:51:50 +0200
+Message-ID: <20230716194938.628805167@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
 References: <20230716194923.861634455@linuxfoundation.org>
@@ -54,40 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Jan Kara <jack@suse.cz>
 
-commit cbe7cff4a76bc749dd70264ca5cf924e2adf9296 upstream.
+commit 66d8fc0539b0d49941f313c9509a8384e4245ac1 upstream.
 
-If config is disabled, call blk_trace_remove() directly will trigger
-build warning, hence use inline function instead, prepare to fix
-blktrace debugfs entries leakage.
+The @source inode must be valid. It is even checked via IS_SWAPFILE()
+above making it pretty clear. So no need to check it when we unlock.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230610022003.2557284-2-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+What doesn't need to exist is the @target inode. The lock_two_inodes()
+helper currently swaps the @inode1 and @inode2 arguments if @inode1 is
+NULL to have consistent lock class usage. However, we know that at least
+for vfs_rename() that @inode1 is @source and thus is never NULL as per
+above. We also know that @source is a different inode than @target as
+that is checked right at the beginning of vfs_rename(). So we know that
+@source is valid and locked and that @target is locked. So drop the
+check whether @source is non-NULL.
+
+Fixes: 28eceeda130f ("fs: Lock moved directories")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202307030026.9sE2pk2x-lkp@intel.com
+Message-Id: <20230703-vfs-rename-source-v1-1-37eebb29b65b@kernel.org>
+[brauner: use commit message from patch I sent concurrently]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blktrace_api.h |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/namei.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/include/linux/blktrace_api.h
-+++ b/include/linux/blktrace_api.h
-@@ -85,10 +85,14 @@ extern int blk_trace_remove(struct reque
- # define blk_add_driver_data(rq, data, len)		do {} while (0)
- # define blk_trace_setup(q, name, dev, bdev, arg)	(-ENOTTY)
- # define blk_trace_startstop(q, start)			(-ENOTTY)
--# define blk_trace_remove(q)				(-ENOTTY)
- # define blk_add_trace_msg(q, fmt, ...)			do { } while (0)
- # define blk_add_cgroup_trace_msg(q, cg, fmt, ...)	do { } while (0)
- # define blk_trace_note_message_enabled(q)		(false)
-+
-+static inline int blk_trace_remove(struct request_queue *q)
-+{
-+	return -ENOTTY;
-+}
- #endif /* CONFIG_BLK_DEV_IO_TRACE */
- 
- #ifdef CONFIG_COMPAT
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -4802,8 +4802,7 @@ int vfs_rename(struct renamedata *rd)
+ 			d_exchange(old_dentry, new_dentry);
+ 	}
+ out:
+-	if (source)
+-		inode_unlock(source);
++	inode_unlock(source);
+ 	if (target)
+ 		inode_unlock(target);
+ 	dput(new_dentry);
 
 
