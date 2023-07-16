@@ -2,100 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AC857554F7
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB1B17552C8
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:11:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232318AbjGPUfx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:35:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56018 "EHLO
+        id S231473AbjGPULy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:11:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232313AbjGPUfw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:35:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE68D9
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:35:51 -0700 (PDT)
+        with ESMTP id S231474AbjGPULw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:11:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85B9EC0
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:11:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3167560EB0
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:35:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BABC433C8;
-        Sun, 16 Jul 2023 20:35:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 24A3860EA6
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:11:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AE8C433C7;
+        Sun, 16 Jul 2023 20:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689539750;
-        bh=i0VCj0JBDD7guuucNIYX3frg34Yi1S8G1cgOp3IwSj8=;
+        s=korg; t=1689538310;
+        bh=isATnDHqU9ZpG/NBC7KVfs5AdKvvF8bkd40Pun4YuKM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xo7/h5T5f/KwyfaZaqnrUo2hdL8PYi+uezgwcPGbx8Qw8bz7OvvTaLhjB2vV089P7
-         cV6QDKj56RzhKy4VWGEH/HnUHUIlDBK6YOeS0bYAvXgL0yqgTffa4zMK2TfW16Kz0X
-         hK3sbSs5Xl79nkwccUnelc5cxNMEXjpHSw4My+Bk=
+        b=0C8f2qOV039gppCn3iznGRmhaXMXQBO+acvHc7qyQPx3YKdNmCh/eubfqBQ7PWjBl
+         pknJhnuxOX9nUGoIIZk8LK/dSpOFauDt8IaUdavM6XA9fEXqnHjRrYHlLCbVK1oseB
+         rnx0uwJiR8Al8Y4PKpNezWr3YexB87rAA0V0fwcM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/591] wifi: ath9k: convert msecs to jiffies where needed
-Date:   Sun, 16 Jul 2023 21:44:18 +0200
-Message-ID: <20230716194926.955316273@linuxfoundation.org>
+        patches@lists.linux.dev, Evan Quan <Evan.Quan@amd.com>,
+        Chengming Gui <Jack.Gui@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+        Evan Quan <evan.quan@amd.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 406/800] drm/amdgpu: Fix memcpy() in sienna_cichlid_append_powerplay_table function.
+Date:   Sun, 16 Jul 2023 21:44:19 +0200
+Message-ID: <20230716194958.502361680@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
+In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
+References: <20230716194949.099592437@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 2aa083acea9f61be3280184384551178f510ff51 ]
+[ Upstream commit d50dc746ff72b9c48812dac3344fa87fbde940a3 ]
 
-Since 'ieee80211_queue_delayed_work()' expects timeout in
-jiffies and not milliseconds, 'msecs_to_jiffies()' should
-be used in 'ath_restart_work()' and '__ath9k_flush()'.
+Fixes the following gcc with W=1:
 
-Fixes: d63ffc45c5d3 ("ath9k: rename tx_complete_work to hw_check_work")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230613134655.248728-1-dmantipov@yandex.ru
+In file included from ./include/linux/string.h:253,
+                 from ./include/linux/bitmap.h:11,
+                 from ./include/linux/cpumask.h:12,
+                 from ./arch/x86/include/asm/cpumask.h:5,
+                 from ./arch/x86/include/asm/msr.h:11,
+                 from ./arch/x86/include/asm/processor.h:22,
+                 from ./arch/x86/include/asm/cpufeature.h:5,
+                 from ./arch/x86/include/asm/thread_info.h:53,
+                 from ./include/linux/thread_info.h:60,
+                 from ./arch/x86/include/asm/preempt.h:7,
+                 from ./include/linux/preempt.h:78,
+                 from ./include/linux/spinlock.h:56,
+                 from ./include/linux/mmzone.h:8,
+                 from ./include/linux/gfp.h:7,
+                 from ./include/linux/firmware.h:7,
+                 from drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:26:
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘sienna_cichlid_append_powerplay_table’ at drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:444:2,
+    inlined from ‘sienna_cichlid_setup_pptable’ at drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:506:8,
+    inlined from ‘sienna_cichlid_setup_pptable’ at drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu11/sienna_cichlid_ppt.c:494:12:
+./include/linux/fortify-string.h:413:4: warning: call to ‘__read_overflow2_field’ declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Wattribute-warning]
+  413 |    __read_overflow2_field(q_size_field, size);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+the compiler complains about the size calculation in the memcpy() -
+"sizeof(*smc_dpm_table) - sizeof(smc_dpm_table->table_header)" is much
+larger than what fits into table_member.
+
+Hence, reuse 'smu_memcpy_trailing' for nv1x
+
+Fixes: 7077b19a38240 ("drm/amd/pm: use macro to get pptable members")
+Suggested-by: Evan Quan <Evan.Quan@amd.com>
+Cc: Evan Quan <Evan.Quan@amd.com>
+Cc: Chengming Gui <Jack.Gui@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Evan Quan <evan.quan@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../amd/pm/swsmu/smu11/sienna_cichlid_ppt.c    | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 7f9f06ea8a05f..6360d3356e256 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -203,7 +203,7 @@ void ath_cancel_work(struct ath_softc *sc)
- void ath_restart_work(struct ath_softc *sc)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index 85d53597eb07a..f7ed3e655e397 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -431,7 +431,13 @@ static int sienna_cichlid_append_powerplay_table(struct smu_context *smu)
  {
- 	ieee80211_queue_delayed_work(sc->hw, &sc->hw_check_work,
--				     ATH_HW_CHECK_POLL_INT);
-+				     msecs_to_jiffies(ATH_HW_CHECK_POLL_INT));
+ 	struct atom_smc_dpm_info_v4_9 *smc_dpm_table;
+ 	int index, ret;
+-	I2cControllerConfig_t *table_member;
++	PPTable_beige_goby_t *ppt_beige_goby;
++	PPTable_t *ppt;
++
++	if (smu->adev->ip_versions[MP1_HWIP][0] == IP_VERSION(11, 0, 13))
++		ppt_beige_goby = smu->smu_table.driver_pptable;
++	else
++		ppt = smu->smu_table.driver_pptable;
  
- 	if (AR_SREV_9340(sc->sc_ah) || AR_SREV_9330(sc->sc_ah))
- 		ieee80211_queue_delayed_work(sc->hw, &sc->hw_pll_work,
-@@ -2240,7 +2240,7 @@ void __ath9k_flush(struct ieee80211_hw *hw, u32 queues, bool drop,
- 	}
+ 	index = get_index_into_master_table(atom_master_list_of_data_tables_v2_1,
+ 					    smc_dpm_info);
+@@ -440,9 +446,13 @@ static int sienna_cichlid_append_powerplay_table(struct smu_context *smu)
+ 				      (uint8_t **)&smc_dpm_table);
+ 	if (ret)
+ 		return ret;
+-	GET_PPTABLE_MEMBER(I2cControllers, &table_member);
+-	memcpy(table_member, smc_dpm_table->I2cControllers,
+-			sizeof(*smc_dpm_table) - sizeof(smc_dpm_table->table_header));
++
++	if (smu->adev->ip_versions[MP1_HWIP][0] == IP_VERSION(11, 0, 13))
++		smu_memcpy_trailing(ppt_beige_goby, I2cControllers, BoardReserved,
++				    smc_dpm_table, I2cControllers);
++	else
++		smu_memcpy_trailing(ppt, I2cControllers, BoardReserved,
++				    smc_dpm_table, I2cControllers);
  
- 	ieee80211_queue_delayed_work(hw, &sc->hw_check_work,
--				     ATH_HW_CHECK_POLL_INT);
-+				     msecs_to_jiffies(ATH_HW_CHECK_POLL_INT));
+ 	return 0;
  }
- 
- static bool ath9k_tx_frames_pending(struct ieee80211_hw *hw)
 -- 
 2.39.2
 
