@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2D567550DF
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8EA97550E3
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 21:16:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230211AbjGPTMI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 15:12:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46034 "EHLO
+        id S229710AbjGPTQ5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 15:16:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjGPTMH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:12:07 -0400
+        with ESMTP id S229591AbjGPTQz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 15:16:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5287E48;
-        Sun, 16 Jul 2023 12:12:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6B78E48
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 12:16:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42F5560E26;
-        Sun, 16 Jul 2023 19:12:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54908C433C8;
-        Sun, 16 Jul 2023 19:11:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 801E860DEA
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 19:16:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8FCC433C8;
+        Sun, 16 Jul 2023 19:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689534719;
-        bh=I97EntxvAI6ZJFC9qtj5pdLgbSV02e0Kmj+FjqLB2oU=;
+        s=korg; t=1689535013;
+        bh=noq3ubvvmNLbw1q6HPLmHrANltR1jfKOJy/JqmJpQmI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=zb2QNE3VosAnExtJLtvncBw+bblddvd0dPKuaCVD46l7/ddTGki5go3YzNMv69pYO
-         tEwa7IfF5Mp8kb8hZ17OGYD6xFsmkz+jCvbfGq0zQMgL3Tr83wwHauUTjyX1VjmgKN
-         2BT6XyLpdiqpww5IToOlmbZv1mYmpN+ii2L/OMUw=
-Date:   Sun, 16 Jul 2023 21:11:56 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     linux-stable <stable@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        BERGER Olivier <olivier.berger@csgroup.eu>,
-        TRINH-THAI Florent <florent.trinh-thai@csgroup.eu>,
-        CASAUBON Jean-Michel <jean-michel.casaubon@csgroup.eu>
-Subject: Re: Backport to 4.14 and 4.19 commits 24c363623361 and 17ecffa28948
- and a798a7086c38
-Message-ID: <2023071648-filling-unscented-d998@gregkh>
-References: <5201aa35-5855-53ec-d123-1a88523971da@csgroup.eu>
+        b=SdFkIcxOc43k6iaoOcygRzZZ/iO0HRMcFh2jdQt2WG1ugwo5c/AC7E5/hNSdxBHiV
+         QRPs7QZH6zI/ajuruHS63i4vfCbtSD19pBQMCae6aYc3XEY3RqfI4TSh5PZ16sS8wR
+         n/1bqDEAlAC5C+b+tw1LgKfyQrsY6zEw0FLeGMoQ=
+Date:   Sun, 16 Jul 2023 21:16:51 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Alex Deucher <alexander.deucher@amd.com>
+Cc:     stable@vger.kernel.org, mario.limonciello@amd.com,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: Re: [PATCH 1/9] drm/amdgpu: make sure BOs are locked in
+ amdgpu_vm_get_memory
+Message-ID: <2023071649-gradation-reckless-5db5@gregkh>
+References: <20230707150734.746135-1-alexander.deucher@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <5201aa35-5855-53ec-d123-1a88523971da@csgroup.eu>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230707150734.746135-1-alexander.deucher@amd.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,35 +55,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 13, 2023 at 03:34:10PM +0000, Christophe Leroy wrote:
-> Hi,
+On Fri, Jul 07, 2023 at 11:07:26AM -0400, Alex Deucher wrote:
+> From: Christian König <christian.koenig@amd.com>
 > 
-> Could you please backport the three following commits to 4.14 and 4.19:
+> We need to grab the lock of the BO or otherwise can run into a crash
+> when we try to inspect the current location.
 > 
-> 24c363623361 ("spi: spi-fsl-spi: remove always-true conditional in 
-> fsl_spi_do_one_msg")
-> 17ecffa28948 ("spi: spi-fsl-spi: relax message sanity checking a little")
-> a798a7086c38 ("spi: spi-fsl-spi: allow changing bits_per_word while CS 
-> is still active")
-> 
-> Those three commits (the last one indeed) are needed to overcome a 
-> problem introduced in 4.14.230 by commit 42c04316d927 ("spi: fsl-cpm: 
-> Use 16 bit mode for large transfers with even size"), which leads to the 
-> following error in certain cases:
-> 
-> [  174.900526] at25 spi0.3: bits_per_word/speed_hz should be same for 
-> the same SPI transfer
-> [  174.911844] spi_master spi0: failed to transfer one message from queue
-> [  366.639467] INFO: task od:406 blocked for more than 120 seconds.
-> [  366.645155]       Not tainted 4.14.320-s3k-dev-dirty #342
-> [  366.652996] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" 
-> disables this message.
-> [  489.519450] INFO: task od:406 blocked for more than 120 seconds.
-> [  489.525156]       Not tainted 4.14.320-s3k-dev-dirty #342
-> [  489.532915] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" 
-> disables this message.
-> ...
+> Signed-off-by: Christian König <christian.koenig@amd.com>
+> Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+> Acked-by: Guchun Chen <guchun.chen@amd.com>
+> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> (cherry picked from commit e2ad8e2df432498b1cee2af04df605723f4d75e6)
+> Cc: stable@vger.kernel.org # 6.3.x
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 69 +++++++++++++++-----------
+>  1 file changed, 39 insertions(+), 30 deletions(-)
 
-Now queued up, thanks.
+I've applied the first 7 patches here to 6.4.y, which I am guessing is
+where you want them applied to, yet you didn't really say?
+
+The last 2 did not apply :(
+
+And some of these should go into 6.1.y also?  Please send a patch series
+and give me a hint as to where they should be applied to next time so I
+don't have to guess...
+
+thanks,
 
 greg k-h
