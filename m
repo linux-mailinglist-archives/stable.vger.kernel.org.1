@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DB44755278
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1131975548B
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 22:31:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231337AbjGPUIQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 16:08:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37288 "EHLO
+        id S232258AbjGPUbr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 16:31:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231330AbjGPUIP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:08:15 -0400
+        with ESMTP id S232221AbjGPUbo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 16:31:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA640123
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:08:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07FB3E48
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 13:31:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8986560DD4
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:08:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE93C433C8;
-        Sun, 16 Jul 2023 20:08:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BFC060E2C
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 20:31:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF848C433C8;
+        Sun, 16 Jul 2023 20:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689538094;
-        bh=nI9mD7Tsyq6ezv9cXjjx/m5dpHoclwWtSBp/x/SXw4A=;
+        s=korg; t=1689539487;
+        bh=V++/1YvsTGe1qL1C69TFz0cI8wPj3OPBlzzBQu73Mnk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M90DVOVB9WFVzHZ9rNPIu8jGMdrclCQlDGXmsYeVMvI4227lFMIx+XNsPT65GBYmq
-         L9b6AthxEbNZpicAkwWzqYWP918FsT/+j2cEy4FSkA533sGR4TwlXTkbXbmvSr6cwC
-         GnpJ6Ii88NSimqLlO4FQjYzE3cpI9ADhev/F7M1M=
+        b=Z0py2cGPddrWZy+KjA4tebFwgzf7pzSTzQyuvFP8lnAiFOvfV4qiM6v4kXglRVkR6
+         uaKL2RvWpyX1WOvqC8k/9uy0BxAzD/+RprUOXb+yLKVUOXsQ60C8mdBd6BGogEUbHi
+         IAk9gBUzdYAQlzbj4B9Mgv5RA5KjhEWnOZiKAwbQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 311/800] arm64: dts: qcom: sm6115: correct thermal-sensor unit address
+        patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 025/591] md/raid10: fix overflow of md/safe_mode_delay
 Date:   Sun, 16 Jul 2023 21:42:44 +0200
-Message-ID: <20230716194956.298390225@linuxfoundation.org>
+Message-ID: <20230716194924.515773984@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
-References: <20230716194949.099592437@linuxfoundation.org>
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,37 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 2358b43256080459fcc5642265ed4fec75558f8c ]
+[ Upstream commit 6beb489b2eed25978523f379a605073f99240c50 ]
 
-Match unit-address to reg entry to fix dtbs W=1 warnings:
+There is no input check when echo md/safe_mode_delay in safe_delay_store().
+And msec might also overflow when HZ < 1000 in safe_delay_show(), Fix it by
+checking overflow in safe_delay_store() and use unsigned long conversion in
+safe_delay_show().
 
-  Warning (simple_bus_reg): /soc@0/thermal-sensor@4410000: simple-bus unit address format error, expected "4411000"
-
-Fixes: 7b74cba6b13f ("arm64: dts: qcom: sm6115: Add TSENS node")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230419211856.79332-12-krzysztof.kozlowski@linaro.org
+Fixes: 72e02075a33f ("md: factor out parsing of fixed-point numbers")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230522072535.1523740-2-linan666@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6115.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/md.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6115.dtsi b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-index 43f31c1b9d5a7..ea71249bbdf3f 100644
---- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -700,7 +700,7 @@ spmi_bus: spmi@1c40000 {
- 			#interrupt-cells = <4>;
- 		};
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index bb73a541bb193..0c97531d35038 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -3830,8 +3830,9 @@ int strict_strtoul_scaled(const char *cp, unsigned long *res, int scale)
+ static ssize_t
+ safe_delay_show(struct mddev *mddev, char *page)
+ {
+-	int msec = (mddev->safemode_delay*1000)/HZ;
+-	return sprintf(page, "%d.%03d\n", msec/1000, msec%1000);
++	unsigned int msec = ((unsigned long)mddev->safemode_delay*1000)/HZ;
++
++	return sprintf(page, "%u.%03u\n", msec/1000, msec%1000);
+ }
+ static ssize_t
+ safe_delay_store(struct mddev *mddev, const char *cbuf, size_t len)
+@@ -3843,7 +3844,7 @@ safe_delay_store(struct mddev *mddev, const char *cbuf, size_t len)
+ 		return -EINVAL;
+ 	}
  
--		tsens0: thermal-sensor@4410000 {
-+		tsens0: thermal-sensor@4411000 {
- 			compatible = "qcom,sm6115-tsens", "qcom,tsens-v2";
- 			reg = <0x0 0x04411000 0x0 0x1ff>, /* TM */
- 			      <0x0 0x04410000 0x0 0x8>; /* SROT */
+-	if (strict_strtoul_scaled(cbuf, &msec, 3) < 0)
++	if (strict_strtoul_scaled(cbuf, &msec, 3) < 0 || msec > UINT_MAX / HZ)
+ 		return -EINVAL;
+ 	if (msec == 0)
+ 		mddev->safemode_delay = 0;
 -- 
 2.39.2
 
