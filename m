@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0B40754E55
-	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E41D9754E56
+	for <lists+stable@lfdr.de>; Sun, 16 Jul 2023 12:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229882AbjGPKTy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 16 Jul 2023 06:19:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39092 "EHLO
+        id S229743AbjGPKT7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 16 Jul 2023 06:19:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229743AbjGPKTx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:19:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3772186
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:19:52 -0700 (PDT)
+        with ESMTP id S229449AbjGPKT6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 16 Jul 2023 06:19:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63D8F1BE
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 03:19:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 298C360BDC
-        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:19:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382D3C433C8;
-        Sun, 16 Jul 2023 10:19:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 01E2A60BDC
+        for <stable@vger.kernel.org>; Sun, 16 Jul 2023 10:19:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1455BC433C7;
+        Sun, 16 Jul 2023 10:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689502791;
-        bh=lLYOBv/lOjGqVUO/2BsU9n4iW9+mr3okdPQiaLU1Snw=;
+        s=korg; t=1689502794;
+        bh=6vNXrvfSScGAOBBNog2igvgZJ+9mBQfQXU7vK2IA3EY=;
         h=Subject:To:Cc:From:Date:From;
-        b=vUaIoC8sMdtsE+919XLIRrsloBS/T+YCzd3Lr9lxTyXabmJGFyDEJ+JWXYokmNS/P
-         +bXPdD8uyJFRn9bv9xrQvS33naLbtpiqHcu5wVHZ0d3I1xgqEO6CM9mc5MhPxOAl49
-         6CEUrKEli5jVdBDbx/Ms07mot9+1Rdj51YDS3Ujk=
-Subject: FAILED: patch "[PATCH] btrfs: fix race between quota disable and relocation" failed to apply to 5.4-stable tree
+        b=uuqdxObDQgpGndgWmwArkn+75+6b4OfNKWiP0tjgKFNEXQLnY+AqBR2ZeGRmnDUHt
+         i4UFXQgrBpPJGYD7WZ+kBZOybOEyyEXobriXVNjyiF3lXqumtLJMNWA4ZpgL2914G9
+         FCE9GFCDR2kGg3ViTtAXl9eTid7+0TjcbN21yxjE=
+Subject: FAILED: patch "[PATCH] btrfs: fix race between quota disable and relocation" failed to apply to 4.19-stable tree
 To:     fdmanana@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 16 Jul 2023 12:19:36 +0200
-Message-ID: <2023071636-neatness-trapping-fe89@gregkh>
+Date:   Sun, 16 Jul 2023 12:19:40 +0200
+Message-ID: <2023071640-corset-tripping-baa8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8a4a0b2a3eaf75ca8854f856ef29690c12b2f531
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071636-neatness-trapping-fe89@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023071640-corset-tripping-baa8@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -71,6 +71,20 @@ a855fbe69229 ("btrfs: fix lockdep splat when enabling and disabling qgroups")
 49e5fb46211d ("btrfs: qgroup: export qgroups in sysfs")
 5958253cf65d ("btrfs: qgroup: catch reserved space leaks at unmount time")
 81f7eb00ff5b ("btrfs: destroy qgroup extent records on transaction abort")
+aac0023c2106 ("btrfs: move basic block_group definitions to their own header")
+d7cd4dd907c1 ("Btrfs: fix sysfs warning and missing raid sysfs directories")
+867363429d70 ("btrfs: migrate the delalloc space stuff to it's own home")
+fb6dea26601b ("btrfs: migrate btrfs_trans_release_chunk_metadata")
+6ef03debdb3d ("btrfs: migrate the delayed refs rsv code")
+67f9c2209e88 ("btrfs: migrate the global_block_rsv helpers to block-rsv.c")
+550fa228ee7e ("btrfs: migrate the block-rsv code to block-rsv.c")
+424a47805a81 ("btrfs: stop using block_rsv_release_bytes everywhere")
+fcec36224fc6 ("btrfs: cleanup the target logic in __btrfs_block_rsv_release")
+fed14b323db8 ("btrfs: export __btrfs_block_rsv_release")
+0b50174ad5e9 ("btrfs: export btrfs_block_rsv_add_bytes")
+d12ffdd1aa4c ("btrfs: move btrfs_block_rsv definitions into it's own header")
+0d9764f6d0fb ("btrfs: move reserve_metadata_bytes and supporting code to space-info.c")
+5da6afeb32e9 ("btrfs: move dump_space_info to space-info.c")
 
 thanks,
 
