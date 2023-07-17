@@ -2,106 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81AFD756BA0
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 20:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 226AB756BB1
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 20:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231567AbjGQSQ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 14:16:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47880 "EHLO
+        id S231245AbjGQSSU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 14:18:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231409AbjGQSQZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 14:16:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B491737;
-        Mon, 17 Jul 2023 11:16:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F3FD8611E1;
-        Mon, 17 Jul 2023 18:14:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B056C433C8;
-        Mon, 17 Jul 2023 18:14:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689617692;
-        bh=Lm7z2hIma39ARJyVJMfmqyTST1nReetRguMkdQ0eFTk=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=bkHWjO6gX3C4QljixgWueiP0/OdOcvFrH1VZ5UexKowPLJ6w9cL+Jy1nNXZE9LoLg
-         +QopuLyfpoXqgkIqs7nyfhEyka4U9q+X/ypDkzJlpa+gHMNOZHSX3Sz88GUajWUCGA
-         AEJ1yhKl+OiKg5Jrm2KTtFcXMaB1RtUlj4htDvcnPZYf462/+Krfsk1xNotmkHvkSG
-         /Q+sGwUdt9kwLsXzlkUTZx/tBAeTrEcsvyznyYISq3U2jyIgCAST0nTvg87IVXI6h2
-         2sQPckLy7iwh0wT35nSVoqWdty7PKNw3fzOOj7evesWFEOrt2cUXi+HsT5P7Q2gCRt
-         JfMGoupTzSe9w==
-From:   Mark Brown <broonie@kernel.org>
-To:     James Schulman <james.schulman@cirrus.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Cc:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20230713112112.778576-1-thomas.petazzoni@bootlin.com>
-References: <20230713112112.778576-1-thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH] ASoC: cs42l51: fix driver to properly autoload with
- automatic module loading
-Message-Id: <168961769002.448315.10905813350142726607.b4-ty@kernel.org>
-Date:   Mon, 17 Jul 2023 19:14:50 +0100
+        with ESMTP id S231892AbjGQSSJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 14:18:09 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7F8110F8;
+        Mon, 17 Jul 2023 11:17:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689617867; x=1721153867;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KMhbm2LT8v9HkqUZrNtgnMM3fiXJ5sNz/f0BPaAE4K4=;
+  b=ZKxHQbalMSyRiDs79SnJcPpnC0vSIWCmDpqLZdOcKi4Ox/MpOYoVW17P
+   Q7mgrV06YAk0i7k5/HA4RmMpDWPmqW3X3yeR92TdnAQkQIYQ6afQ1Vpv9
+   qEY0shXmitslfZ+Kr6Lv+7/zqk8HTC2tBWTGE9Urtni82Us4yVxqRbK+J
+   0LxN8IuXxsWPSmmKuF0FSPG+XKTQWuCbwb60GuHd8h2ZjPj0We5Twx64u
+   8Diwfh1IIn0Wmz31K2T7B8019uaEmdF0mMkPJhqqmBI3PDVHtJyx5XJZn
+   rxJiheT9+ramqpesTbdhU0hjJhjB9I0tJHbQzV0DU0gdKwXN2ov6vtgzP
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="396833365"
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
+   d="scan'208";a="396833365"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2023 11:17:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="726647808"
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
+   d="scan'208";a="726647808"
+Received: from b4969161e530.jf.intel.com ([10.165.56.46])
+  by fmsmga007.fm.intel.com with ESMTP; 17 Jul 2023 11:17:32 -0700
+From:   Haitao Huang <haitao.huang@linux.intel.com>
+To:     jarkko@kernel.org, dave.hansen@linux.intel.com,
+        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Cc:     kai.huang@intel.com, reinette.chatre@intel.com,
+        kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org
+Subject: [PATCH] x86/sgx: fix a NULL pointer
+Date:   Mon, 17 Jul 2023 11:17:32 -0700
+Message-Id: <20230717181732.84039-1-haitao.huang@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-099c9
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 13 Jul 2023 13:21:12 +0200, Thomas Petazzoni wrote:
-> In commit 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table
-> pointer"), 9 years ago, some random guy fixed the cs42l51 after it was
-> split into a core part and an I2C part to properly match based on a
-> Device Tree compatible string.
-> 
-> However, the fix in this commit is wrong: the MODULE_DEVICE_TABLE(of,
-> ....) is in the core part of the driver, not the I2C part. Therefore,
-> automatic module loading based on module.alias, based on matching with
-> the DT compatible string, loads the core part of the driver, but not
-> the I2C part. And threfore, the i2c_driver is not registered, and the
-> codec is not known to the system, nor matched with a DT node with the
-> corresponding compatible string.
-> 
-> [...]
+Under heavy load, the SGX EPC reclaimers (current ksgxd or future EPC
+cgroup worker) may reclaim the SECS EPC page for an enclave and set
+encl->secs.epc_page to NULL. But the SECS EPC page is used for EAUG in
+the SGX #PF handler without checking for NULL and reloading.
 
-Applied to
+Fix this by checking if SECS is loaded before EAUG and load it if it was
+reclaimed.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Fixes: 5a90d2c3f5ef8 ("x86/sgx: Support adding of pages to an initialized enclave")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
+---
+ arch/x86/kernel/cpu/sgx/encl.c | 25 ++++++++++++++++++++-----
+ arch/x86/kernel/cpu/sgx/main.c |  4 ++++
+ 2 files changed, 24 insertions(+), 5 deletions(-)
 
-Thanks!
-
-[1/1] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
-      commit: e51df4f81b02bcdd828a04de7c1eb6a92988b61e
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 2a0e90fe2abc..d39e502bb7b0 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -235,6 +235,16 @@ static struct sgx_epc_page *sgx_encl_eldu(struct sgx_encl_page *encl_page,
+ 	return epc_page;
+ }
+ 
++static struct sgx_epc_page *sgx_encl_load_secs(struct sgx_encl *encl)
++{
++	struct sgx_epc_page *epc_page = encl->secs.epc_page;
++
++	if (!epc_page) {
++		epc_page = sgx_encl_eldu(&encl->secs, NULL);
++	}
++	return epc_page;
++}
++
+ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
+ 						  struct sgx_encl_page *entry)
+ {
+@@ -248,11 +258,9 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
+ 		return entry;
+ 	}
+ 
+-	if (!(encl->secs.epc_page)) {
+-		epc_page = sgx_encl_eldu(&encl->secs, NULL);
+-		if (IS_ERR(epc_page))
+-			return ERR_CAST(epc_page);
+-	}
++	epc_page = sgx_encl_load_secs(encl);
++	if (IS_ERR(epc_page))
++		return ERR_CAST(epc_page);
+ 
+ 	epc_page = sgx_encl_eldu(entry, encl->secs.epc_page);
+ 	if (IS_ERR(epc_page))
+@@ -339,6 +347,13 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
+ 
+ 	mutex_lock(&encl->lock);
+ 
++	epc_page = sgx_encl_load_secs(encl);
++	if (IS_ERR(epc_page)) {
++		if (PTR_ERR(epc_page) == -EBUSY)
++			vmret =  VM_FAULT_NOPAGE;
++		goto err_out_unlock;
++	}
++
+ 	epc_page = sgx_alloc_epc_page(encl_page, false);
+ 	if (IS_ERR(epc_page)) {
+ 		if (PTR_ERR(epc_page) == -EBUSY)
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index 166692f2d501..4662a364ce62 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -257,6 +257,10 @@ static void sgx_reclaimer_write(struct sgx_epc_page *epc_page,
+ 
+ 	mutex_lock(&encl->lock);
+ 
++	/* Should not be possible */
++	if (WARN_ON(!(encl->secs.epc_page)))
++		goto out;
++
+ 	sgx_encl_ewb(epc_page, backing);
+ 	encl_page->epc_page = NULL;
+ 	encl->secs_child_cnt--;
+-- 
+2.25.1
 
