@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 312E5756AB1
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 19:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FA4B756AD9
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 19:40:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231366AbjGQReZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 13:34:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50328 "EHLO
+        id S229803AbjGQRk2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 13:40:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230159AbjGQReY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 13:34:24 -0400
+        with ESMTP id S230172AbjGQRk1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 13:40:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50276C7;
-        Mon, 17 Jul 2023 10:34:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53603FB;
+        Mon, 17 Jul 2023 10:40:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A69066119B;
-        Mon, 17 Jul 2023 17:34:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 12E76C4339A;
-        Mon, 17 Jul 2023 17:34:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA84461184;
+        Mon, 17 Jul 2023 17:40:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC37C433C8;
+        Mon, 17 Jul 2023 17:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689615262;
-        bh=4ZvqU758s2JKaNXLRepPna0T6aOCUUXfAyBfPR8X2VY=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=XSQ4EZW3ipVSumHvPXWYtnkSlLMtIQsp55O6t0OWefIpLJU6mOQ33fykGZQSD+XCL
-         WQO1rNHu79U+li2ThhL0UJi8n7KqE1NWixR5Lh9c2H6nYxiqTV2gI487LSAJuWObKy
-         nrt9PO+ZGljxzeatGDTeLOX7UawhMbDJsyxXJqEplq8dEY9KTGA3K3HyKSCwkvc2kL
-         cQRPGESCBHkyUv78DVU2WGtRP/jnJ56uwk3fZ8Ef9QkDA0RjuVjpAWMJn+dd7nJB1A
-         yav6BMCReubq2L3MlZ1vaZ/VA/xS0uGeTuhNI10/xy9x/t+etnsHGwZbkGVHwlw2ZV
-         2meSprAdgZ48w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E4D5FE29F36;
-        Mon, 17 Jul 2023 17:34:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1689615625;
+        bh=on7BUmcynWl5cl+hfeGAQDpz9N7KgjUlPCzBquHie8M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OmjSRpPIdod0D31pWyyKYDIiCKrfPSK+2/X2HxB8JZd1WrRi4qPPgofSOlkvHvHWc
+         sf++o7S0qRxLzUJ7NqnFIOL2BuOn/NEEMzb7a0CfS12kO9BOh71a/RRRpNwQn/EZl7
+         o+mDXbegzCrqqg491PBGG91ql2rgeolGBrsc/7fcl5nWjRXO9mGehd8c14d2IQgVIL
+         Vs+DFoUu5YJd2FnGQhOas37BZ36bFbQIlk8zeHs0GQItXiI6AqE432O5NeZljoE0c2
+         SG+zphRmoTjsJanaUTTmRCqATlYZA31WwVPyauJIaUnsd5Ddr5I/haZi2mXlso3wV1
+         UkeD4J8KZG5BA==
+Date:   Mon, 17 Jul 2023 18:40:20 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     almaz.alexandrovich@paragon-software.com, stable@vger.kernel.org,
+        ntfs3@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+        van fantasy <g1042620637@gmail.com>
+Subject: Re: [PATCH 1/1] fs/ntfs3: Check fields while reading
+Message-ID: <20230717174020.GE1082701@google.com>
+References: <20230717125013.1246975-1-lee@kernel.org>
+ <2023071733-basically-snub-5570@gregkh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH] f2fs: get out of a repeat loop when getting a
- locked data page
-From:   patchwork-bot+f2fs@kernel.org
-Message-Id: <168961526192.4078.9064603829957550841.git-patchwork-notify@kernel.org>
-Date:   Mon, 17 Jul 2023 17:34:21 +0000
-References: <20230323213919.1876157-1-jaegeuk@kernel.org>
-In-Reply-To: <20230323213919.1876157-1-jaegeuk@kernel.org>
-To:     Jaegeuk Kim <jaegeuk@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, stable@vger.kernel.org
+In-Reply-To: <2023071733-basically-snub-5570@gregkh>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -58,29 +57,26 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+On Mon, 17 Jul 2023, Greg KH wrote:
 
-This patch was applied to jaegeuk/f2fs.git (dev)
-by Jaegeuk Kim <jaegeuk@kernel.org>:
-
-On Thu, 23 Mar 2023 14:39:19 -0700 you wrote:
-> https://bugzilla.kernel.org/show_bug.cgi?id=216050
+> On Mon, Jul 17, 2023 at 01:50:13PM +0100, Lee Jones wrote:
+> > commit 0e8235d28f3a0e9eda9f02ff67ee566d5f42b66b upstream.
+> > 
+> > Added new functions index_hdr_check and index_buf_check.
+> > Now we check all stuff for correctness while reading from disk.
+> > Also fixed bug with stale nfs data.
+> > 
+> > Reported-by: van fantasy <g1042620637@gmail.com>
+> > Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+> > Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+> > Signed-off-by: Lee Jones <lee@kernel.org>
+> > ---
 > 
-> Somehow we're getting a page which has a different mapping.
-> Let's avoid the infinite loop.
-> 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-> 
-> [...]
+> What stable tree(s) is this for?
 
-Here is the summary with links:
-  - [f2fs-dev] f2fs: get out of a repeat loop when getting a locked data page
-    https://git.kernel.org/jaegeuk/f2fs/c/5a47ad28e606
+I thought you had tooling that used the Fixes: tag for this?
 
-You are awesome, thank you!
+v6.1 and v5.15 please.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Lee Jones [李琼斯]
