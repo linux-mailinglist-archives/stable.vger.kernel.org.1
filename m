@@ -2,83 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF8C2755DAC
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 10:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36E8A755DB3
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 10:02:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229634AbjGQIAt convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Mon, 17 Jul 2023 04:00:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57938 "EHLO
+        id S229918AbjGQICE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 04:02:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229817AbjGQIAs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 04:00:48 -0400
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90510C7
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 01:00:46 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-99-gw_Qv1-KMQizDysYJujtTQ-1; Mon, 17 Jul 2023 09:00:43 +0100
-X-MC-Unique: gw_Qv1-KMQizDysYJujtTQ-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 17 Jul
- 2023 09:00:42 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Mon, 17 Jul 2023 09:00:42 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Michael Schmitz' <schmitzmic@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     Jens Axboe <axboe@kernel.dk>
-Subject: RE: [PATCH 5.4.y] block: add overflow checks for Amiga partition
- support
-Thread-Topic: [PATCH 5.4.y] block: add overflow checks for Amiga partition
- support
-Thread-Index: AQHZt3Pg0NqcHeFS7kudPIS6hYGc1a+9mJiw
-Date:   Mon, 17 Jul 2023 08:00:42 +0000
-Message-ID: <cbdb7cde68dc4d239861a631436dc01d@AcuMS.aculab.com>
-References: <2023071117-convene-mockup-27f2@gregkh>
- <20230715232656.8632-1-schmitzmic@gmail.com>
-In-Reply-To: <20230715232656.8632-1-schmitzmic@gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        with ESMTP id S229619AbjGQICD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 04:02:03 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036069D;
+        Mon, 17 Jul 2023 01:02:02 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-991f956fb5aso528493966b.0;
+        Mon, 17 Jul 2023 01:02:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689580920; x=1692172920;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Md2k3SrB9PFNNZtXw1D5bjJvxlmODL3oFcv29rGU+0w=;
+        b=Tj9ESHlAIEY5Ok+t1+UQEqgXZpFohXw53hftfkkBeDtkJIo0nBvLvFnisMxq5Rj2iQ
+         8PdNEnjyaoS3UOEi9nMjIifEQFGggbFY24svukX5rnVJOCICfNyxM2s59REzz8UWfsIp
+         ZawCt/JduBAq7tD9sQFEtpyhZCVMxmJef/ARUOi/5XgDoiiri8ZVk3Ooe/THn+zFXcTM
+         z4EiPvrbE/5ScWF5My9n5UAxbY+/u23lKTRQJM9dJ7+ItLjDQcSZkrc1jpUqsaxNIZmm
+         zG/iJhwiSZQr96qBLHcF2SeD/Hsp4E00qsw5D1bKsKirfD/yPzGiMrlGRgYG+Tvf2j6d
+         BgYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689580920; x=1692172920;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Md2k3SrB9PFNNZtXw1D5bjJvxlmODL3oFcv29rGU+0w=;
+        b=WjAngw8foHGi8aI7Cz75jtYNU+tGbJFMxj6KegN4wMxnG1Sl6hgoXMuNrzYdsYFTvt
+         PaBw5nf2fWRuDw2BGy8zPJ+RGcPgjb24w3imE/H/TnWJyBGeuK63dg+Ds548EygUUczE
+         lBBSuOR644bLhuDdeBvMEz++0Y0pdhbs4WxuR2G2dw7BzkYwE+1YnCZ2QV0lfBxpFQHB
+         q1LqoclTcxTtVjiGMjHaPVEq7RYEvx1rTnamTPNJf5ka+tX2vQQb6i9HdB8sB0U/bBEW
+         jm5Xx35t39y801mGPurknekN8UEtED+8Y+zTKzG7KQsXx3i9ypArvAItz6vqEP8TDprM
+         SDDw==
+X-Gm-Message-State: ABy/qLbd88fBUbG9gCS4PVcxixSoaDaobZqy7bn5qhbmMW2Dpk1px4Yk
+        YhopwWkvP+kyn12YIfc6yEZ/uk//IH7jPRj8INA=
+X-Google-Smtp-Source: APBJJlHZQRmdkq0uytrbJpI4dB8Hr+FJMXkrPe3TaMiMWBSlVina9KNg9TPqxFql3z1+rKwkjMtlLgZZSjtgMCU/25g=
+X-Received: by 2002:a17:906:20d6:b0:994:4e9c:30c6 with SMTP id
+ c22-20020a17090620d600b009944e9c30c6mr3743404ejc.57.1689580920270; Mon, 17
+ Jul 2023 01:02:00 -0700 (PDT)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,PDS_BAD_THREAD_QP_64,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <b99a5149-c3d6-2a9b-1298-576a1b4b22c1@gmail.com> <0206e2ce-ff33-6017-15ab-cc89f1eb7485@augustwikerfors.se>
+In-Reply-To: <0206e2ce-ff33-6017-15ab-cc89f1eb7485@augustwikerfors.se>
+From:   Nils Kruse <nilskruse97@gmail.com>
+Date:   Mon, 17 Jul 2023 10:01:49 +0200
+Message-ID: <CAKVFSw+_EFNaYjOjNDQ0zOGoSFMt3yZctR47Rcss2KhkfNQJ9g@mail.gmail.com>
+Subject: Re: [PATCH] nvme-pci: Add quirk for Samsung PM9B1 256G and 512G SSD
+To:     August Wikerfors <git@augustwikerfors.se>
+Cc:     stable@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
+        Jens Axboe <axboe@fb.com>, Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Schmitz
-> Sent: 16 July 2023 00:27
-> 
-> The Amiga partition parser module uses signed int for partition sector
-> address and count, which will overflow for disks larger than 1 TB.
-> 
-> Use u64 as type for sector address and size to allow using disks up to
-> 2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
-> format allows to specify disk sizes up to 2^128 bytes (though native
-> OS limitations reduce this somewhat, to max 2^68 bytes),
+On Sun, Jul 16, 2023 at 9:30=E2=80=AFPM August Wikerfors <git@augustwikerfo=
+rs.se> wrote:
+>
+> On 2023-06-11 13:41, Nils Kruse wrote:
+> > Add a quirk for Samsung PM9B1 256G and 512G that reports duplicate ids
+> > for disk.
+>
+> Is this the same issue with suspend as [1], [2] and [3] or is it a
+> different case?
+>
+> [1] https://lore.kernel.org/all/20221116171727.4083-1-git@augustwikerfors=
+.se/t/
+> [2] https://github.com/tomsom/yoga-linux/issues/9
+> [3] https://lore.kernel.org/all/d0ce0f3b-9407-9207-73a4-3536f0948653@augu=
+stwikerfors.se/
 
-Pretty much everything (including the mass of an proton) stops
-you having a disk with anywhere near 2^64 bytes in it.
-
-	David
-
-> so check for
-> u64 overflow carefully to protect against overflowing sector_t.
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+Yes, this is the same issue.
