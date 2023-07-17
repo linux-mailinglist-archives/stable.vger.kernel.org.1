@@ -2,67 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E4E7560CF
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 12:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4433275615B
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 13:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229920AbjGQKpn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 06:45:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52132 "EHLO
+        id S229772AbjGQLS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 07:18:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbjGQKpm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 06:45:42 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EB4D11C;
-        Mon, 17 Jul 2023 03:45:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Sender:Reply-To:Content-ID:Content-Description;
-        bh=QwEVqapqGt5c5zaKWTZ1oqQBp+aqsZVTLEsdAj1XcXc=; b=KfCbhY1d2N38BQhLoS0cjcwf70
-        APYBflKw7faaRf0xF+22LOt7LWcTL6BiIZJbP9gsvGlUvD233G9fYmlEDCEQ05UmZ6bdE5eWhKDwY
-        wq8T1q++Ytsc/QON+PEtavQh4vGyYUNP5/MG+owXZijRVskGujtyBQP79W3sVA9/En1sJktXXP+U/
-        2kKcc/v+WP+dF9wwC7K49GtNC+JpS7LOoVXmXZwe8c71u/paZkipy6WfF91+0uk0KuHMFbdKXF3NF
-        Ma2l6FPIAAHR/FoQ9bjQA2odhvAdkxVis6y1BprdTbUeHLfcLkx+KDOGvJ59XhOQwce8VRdfC2lip
-        UMFlIyZw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qLLj4-0095fw-0L;
-        Mon, 17 Jul 2023 10:45:10 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8B49930020C;
-        Mon, 17 Jul 2023 12:45:08 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 667FE2463D7EF; Mon, 17 Jul 2023 12:45:08 +0200 (CEST)
-Date:   Mon, 17 Jul 2023 12:45:08 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Guo Ren <guoren@kernel.org>
-Cc:     arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
-        luto@kernel.org, conor.dooley@microchip.com, heiko@sntech.de,
-        jszhang@kernel.org, lazyparser@gmail.com, falcon@tinylab.org,
-        chenhuacai@kernel.org, apatel@ventanamicro.com,
-        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
-        palmer@dabbelt.com, bjorn@rivosinc.com, daniel.thompson@linaro.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
-        Guo Ren <guoren@linux.alibaba.com>
-Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
-Message-ID: <20230717104508.GF4253@hirez.programming.kicks-ass.net>
-References: <20230702025708.784106-1-guoren@kernel.org>
- <20230704164003.GB83892@hirez.programming.kicks-ass.net>
- <CAJF2gTTc0Gyo=K-0dCW6wu7q=Wq34hgTB69qJ7VSF_KAgKhavA@mail.gmail.com>
- <20230710080152.GA3028865@hirez.programming.kicks-ass.net>
- <CAJF2gTTt23iSDG_m4ihPhXhYDrz3Xnih=KGLx_ayBLbzPqaTaQ@mail.gmail.com>
+        with ESMTP id S229690AbjGQLSu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 07:18:50 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8910A1B9;
+        Mon, 17 Jul 2023 04:18:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1689592729; x=1721128729;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Agv739FsKb/t4lRY/iTsFiStP+D83yl/GQ08JzH9gl8=;
+  b=a7UfQPGnpO9LtDQUg/6v38MfISTZb4+JxI3pBVKNhqtXs3JcjEi/ZYw1
+   wBYTD7XLrlIWIDzSaoO2/A1pVBtF3L9e4BfSzOQRNYjTKRSXnePapNqoT
+   xcQs8lF+58uNaHsdtC7Lwp/VFukAoosQoL0jEcTOayhHmbMFmJA8iqRuX
+   XgDPkJXEG7TCecjP86byPhdqSxK/EclPfgIxl4HQFNTWyxW//mx+z/Cdl
+   T9IpkD97lgpOnm65IxJrKYDi0DGxN2rY+aZPJnYmhnh5wjnds3JDPd+kR
+   WTzqkPtfyuhq+0nzPwmbcp8d1AU+NF800LBHGohMchHtk6LWMKoI5ihRy
+   w==;
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
+   d="asc'?scan'208";a="235937339"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 17 Jul 2023 04:18:47 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 17 Jul 2023 04:18:47 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Mon, 17 Jul 2023 04:18:44 -0700
+Date:   Mon, 17 Jul 2023 12:18:11 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
+        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
+        <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>
+Subject: Re: [PATCH 6.1 000/591] 6.1.39-rc1 review
+Message-ID: <20230717-irritant-daily-7eb1e398ae8b@wendy>
+References: <20230716194923.861634455@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="GmTatSP0oHOhqa/V"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJF2gTTt23iSDG_m4ihPhXhYDrz3Xnih=KGLx_ayBLbzPqaTaQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,56 +71,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 17, 2023 at 07:33:25AM +0800, Guo Ren wrote:
-> On Mon, Jul 10, 2023 at 4:02 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > On Sun, Jul 09, 2023 at 10:30:22AM +0800, Guo Ren wrote:
-> > > On Wed, Jul 5, 2023 at 12:40 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> > > >
-> > > > On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
-> > > > > From: Guo Ren <guoren@linux.alibaba.com>
-> > > > >
-> > > > > The irqentry_nmi_enter/exit would force the current context into in_interrupt.
-> > > > > That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
-> > > > > debug the kernel.
-> > > > >
-> > > > > Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
-> > > > > of the kernel side.
-> > > >
-> > > > This doesn't explain much if anything :/
-> > > >
-> > > > I'm confused (probably because I don't know RISC-V very well), what's
-> > > > EBREAK and how does it happen?
-> > > EBREAK is just an instruction of riscv which would rise breakpoint exception.
-> > >
-> > >
-> > > >
-> > > > Specifically, if EBREAK can happen inside an local_irq_disable() region,
-> > > > then the below change is actively wrong. Any exception/interrupt that
-> > > > can happen while local_irq_disable() must be treated like an NMI.
-> > > When the ebreak happend out of local_irq_disable region, but
-> > > __nmi_enter forces handle_break() into in_interupt() state. So how
-> >
-> > And why is that a problem? I think I'm missing something fundamental
-> > here...
-> The irqentry_nmi_enter() would force the current context to get
-> in_interrupt=true, although ebreak happens in the context which is
-> in_interrupt=false.
-> A lot of checking codes, such as:
->         if (in_interrupt())
->                 panic("Fatal exception in interrupt");
+--GmTatSP0oHOhqa/V
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Why would you do that?!?
+Hey,
 
-Are you're trying to differentiate between an exception and an
-interrupt?
+On Sun, Jul 16, 2023 at 09:42:19PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.39 release.
+> There are 591 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-You *could* have ebreak in an interrupt, right? So why panic the machine
-if that happens?
+Fails to build w/ clang on RISC-V:
+block/blk-cgroup.c:1238:6: error: variable 'ret' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
 
-> It would make the kernel panic, but we don't panic; we want back to the shell.
-> eg:
-> echo BUG > /sys/kernel/debug/provoke-crash/DIRECT
+Guenter already pointed out the culprit.
 
+Other than that,
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
+Thanks,
+Conor.
 
+--GmTatSP0oHOhqa/V
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZLUjcwAKCRB4tDGHoIJi
+0joBAP4mOChOU9drzaBU3WQ6oLYYDe/AZHnrBdiPXkn403OAawEAhURGaXFiU+6M
+MYJzOb6fedutcQ7upIa8+Gv7KCOg2gY=
+=C8TV
+-----END PGP SIGNATURE-----
+
+--GmTatSP0oHOhqa/V--
