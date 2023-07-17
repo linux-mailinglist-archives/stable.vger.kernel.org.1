@@ -2,233 +2,185 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F3175668B
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 16:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A5AF7566A8
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 16:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231636AbjGQOiE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 10:38:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58880 "EHLO
+        id S231316AbjGQOk3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 10:40:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232101AbjGQOhw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 10:37:52 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AADE9E7F;
-        Mon, 17 Jul 2023 07:37:50 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3fc02a92dcfso42102855e9.0;
-        Mon, 17 Jul 2023 07:37:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689604669; x=1692196669;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nYUU8YV3BqJ0I2zWti5nCz47R+nejQLyugvMd3FOv9g=;
-        b=M8mHQyW3k62+jCLLDGKRyfwx32nZWnPK5ML+MVAtbEqjo6XWyCE8Q1dKc0vcYLNYOj
-         0tX/zmr93MOg2fjL1VrZrlaW4s16C+NrWdl97eSkyhbia1BvBh4TQp6ae59LZAKdw1sM
-         muieYaRa3vuOPD2qGm8AhzfdvM/QApB+/sXKZL9TzVy6nITKQs0WPtbUst/yWGt1NI5k
-         dga02M8OEa0oTMshB6HHlJXOkMbsbYmDZ4WJAeO+vTKvju2MFp0fD0zIvqxUWoCj9/4i
-         k+kOjfKblXmy0Rh+Fd1TyzEwgjG+LXMD+mI7FyOi3naGlkMGdgbSylkbhaK0Fp10cSDY
-         aTxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689604669; x=1692196669;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nYUU8YV3BqJ0I2zWti5nCz47R+nejQLyugvMd3FOv9g=;
-        b=BsKkmOZ1dpm2RWmMkMTu05GUo5cZJVn/uEW0GNYxtL0cppA0KhkhheyrYukJnETTC/
-         M6KOqzlTutJ5B8XqW5PGi68EH1HnAyjX8oqpMMsBaZzW/DgDxCsCKu2/kd/l41/o1+nO
-         Uf4QvkgZtYj6NUU6+n7q0ECztegOVki5zcDsWuARL+00dujGYy5wm5kR8J0oA6iVzfQM
-         lsjnNtimCMpfzH4H37KfTTS/GoP+ux5IqrWikUhFmNt7l9ylvD1TpXqRiRjAe3WNKfZV
-         5AYqvDSk/wqwrjVs/Jmh9OYDAgOUT0zjPzh8nemgzpQJUwQlAdR3EejI5k/6ftRbzi+0
-         rjwA==
-X-Gm-Message-State: ABy/qLaIShGsiVRvAjKsK91KNdCmyD9UyLwqeQyTIpsDgNp32EUG6Cle
-        eomlp7w9UNf+qZcbffZaCqM=
-X-Google-Smtp-Source: APBJJlGlBUjN/AJOghm7qejJnwmyoRu2rFRiWEIaL7/Y/DT8/Fq1mlhKtJWadteBiwX0qpkH7F2ssg==
-X-Received: by 2002:a1c:4b0e:0:b0:3fb:b4fc:be62 with SMTP id y14-20020a1c4b0e000000b003fbb4fcbe62mr9722372wma.17.1689604668611;
-        Mon, 17 Jul 2023 07:37:48 -0700 (PDT)
-Received: from [10.0.0.102] (snat-11.cgn.sat-an.net. [176.222.226.11])
-        by smtp.gmail.com with ESMTPSA id n22-20020a7bc5d6000000b003fa968e9c27sm8056153wmk.9.2023.07.17.07.37.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jul 2023 07:37:48 -0700 (PDT)
-Message-ID: <63a650a449b9937f95f5f2b47546e07e60c06630.camel@gmail.com>
-Subject: Re: [PATCH v3] Revert "usb: dwc3: core: Enable AutoRetry feature in
- the controller"
-From:   Jakub =?iso-8859-2?Q?Van=ECk?= <linuxtardis@gmail.com>
-To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Mauro Ribeiro <mauro.ribeiro@hardkernel.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date:   Mon, 17 Jul 2023 16:37:47 +0200
-In-Reply-To: <20230714213838.zil4c4wt3spbedvi@synopsys.com>
-References: <20230714122419.27741-1-linuxtardis@gmail.com>
-         <20230714213838.zil4c4wt3spbedvi@synopsys.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu1 
+        with ESMTP id S231359AbjGQOk1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 10:40:27 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C5F10E5
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 07:40:21 -0700 (PDT)
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qLPOU-0005K2-Si; Mon, 17 Jul 2023 16:40:10 +0200
+Received: from pengutronix.de (unknown [172.20.34.65])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        (Authenticated sender: mkl-all@blackshift.org)
+        by smtp.blackshift.org (Postfix) with ESMTPSA id F3B6A1F36E3;
+        Mon, 17 Jul 2023 14:40:09 +0000 (UTC)
+Date:   Mon, 17 Jul 2023 16:40:09 +0200
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     linux-can@vger.kernel.org
+Cc:     kernel@pengutronix.de, Fedor Ross <fedor.ross@ifm.com>,
+        Marek Vasut <marex@denx.de>,
+        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Thomas Kopp <thomas.kopp@microchip.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] can: mcp251xfd: __mcp251xfd_chip_set_mode(): increase
+ poll timeout
+Message-ID: <20230717-acrobat-mortality-a968f7af4551-mkl@pengutronix.de>
+References: <20230717100815.75764-1-mkl@pengutronix.de>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ci7chngldiqnrqkt"
+Content-Disposition: inline
+In-Reply-To: <20230717100815.75764-1-mkl@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:b01:1d::7b
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Thinh,
 
-On Fri, 2023-07-14 at 21:38 +0000, Thinh Nguyen wrote:
-> On Fri, Jul 14, 2023, Jakub Vanek wrote:
-> > This reverts commit b138e23d3dff90c0494925b4c1874227b81bddf7.
-> >=20
-> > AutoRetry has been found to sometimes cause controller freezes when
-> > communicating with buggy USB devices.
-> >=20
-> > This controller feature allows the controller in host mode to send
-> > non-terminating/burst retry ACKs instead of terminating retry ACKs
-> > to devices when a transaction error (CRC error or overflow) occurs.
-> >=20
-> > Unfortunately, if the USB device continues to respond with a CRC
-> > error,
-> > the controller will not complete endpoint-related commands while it
-> > keeps trying to auto-retry. [3] The xHCI driver will notice this
-> > once
-> > it tries to abort the transfer using a Stop Endpoint command and
-> > does not receive a completion in time. [1]
-> > This situation is reported to dmesg:
-> >=20
-> > [sda] tag#29 uas_eh_abort_handler 0 uas-tag 1 inflight: CMD IN
-> > [sda] tag#29 CDB: opcode=3D0x28 28 00 00 69 42 80 00 00 48 00
-> > xhci-hcd: xHCI host not responding to stop endpoint command
-> > xhci-hcd: xHCI host controller not responding, assume dead
-> > xhci-hcd: HC died; cleaning up
-> >=20
-> > Some users observed this problem on an Odroid HC2 with the JMS578
-> > USB3-to-SATA bridge. The issue can be triggered by starting
-> > a read-heavy workload on an attached SSD. After a while, the host
-> > controller would die and the SSD would disappear from the system.
-> > [1]
-> >=20
-> > Further analysis by Synopsys determined that controller revisions
-> > other than the one in Odroid HC2 are also affected by this.
-> > The recommended solution was to disable AutoRetry altogether.
-> > This change does not have a noticeable performance impact. [2]
-> >=20
-> > Revert the enablement commit. This will keep the AutoRetry bit in
-> > the default state configured during SoC design [2].
-> >=20
-> > Fixes: b138e23d3dff ("usb: dwc3: core: Enable AutoRetry feature in
-> > the controller")
-> > Link:
-> > https://urldefense.com/v3/__https://lore.kernel.org/r/a21f34c04632d250c=
-d0a78c7c6f4a1c9c7a43142.camel@gmail.com/__;!!A4F2R9G_pg!cQZmUozSCVry9wEn5TT=
-VGljEo6B_nKIel0kWXsUQbaleJZwkOyrvc4FzWTlbfcUJ7hGz9V50rn0A2WMEceULIS9y9A$
-> > =C2=A0 [1]
-> > Link:
-> > https://urldefense.com/v3/__https://lore.kernel.org/r/20230711214834.ky=
-r6ulync32d4ktk@synopsys.com/__;!!A4F2R9G_pg!cQZmUozSCVry9wEn5TTVGljEo6B_nKI=
-el0kWXsUQbaleJZwkOyrvc4FzWTlbfcUJ7hGz9V50rn0A2WMEceXrbrG9iA$
-> > =C2=A0 [2]
-> > Link:
-> > https://urldefense.com/v3/__https://lore.kernel.org/r/20230712225518.2s=
-mu7wse6djc7l5o@synopsys.com/__;!!A4F2R9G_pg!cQZmUozSCVry9wEn5TTVGljEo6B_nKI=
-el0kWXsUQbaleJZwkOyrvc4FzWTlbfcUJ7hGz9V50rn0A2WMEceWVJz8nuQ$
-> > =C2=A0 [3]
-> > Cc: stable@vger.kernel.org
-> > Cc: Mauro Ribeiro <mauro.ribeiro@hardkernel.com>
-> > Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-> > Signed-off-by: Jakub Vanek <linuxtardis@gmail.com>
-> > ---
-> > V2 -> V3: Include more findings in changelog
-> > V1 -> V2: Updated to disable AutoRetry everywhere based on Synopsys
-> > feedback
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Reworded the cha=
-ngelog a bit to make it clearer
-> >=20
-> > =C2=A0drivers/usb/dwc3/core.c | 16 ----------------
-> > =C2=A0drivers/usb/dwc3/core.h |=C2=A0 3 ---
-> > =C2=A02 files changed, 19 deletions(-)
-> >=20
-> > diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-> > index f6689b731718..a4e079d37566 100644
-> > --- a/drivers/usb/dwc3/core.c
-> > +++ b/drivers/usb/dwc3/core.c
-> > @@ -1209,22 +1209,6 @@ static int dwc3_core_init(struct dwc3 *dwc)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0dwc3_writel(dwc->regs, DWC3_GUCTL1, reg);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > =C2=A0
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (dwc->dr_mode =3D=3D USB_=
-DR_MODE_HOST ||
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dwc->dr_m=
-ode =3D=3D USB_DR_MODE_OTG) {
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0reg =3D dwc3_readl(dwc->regs, DWC3_GUCTL);
-> > -
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0/*
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 * Enable Auto retry Feature to make the controller
-> > operating in
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 * Host mode on seeing transaction errors(CRC
-> > errors or internal
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 * overrun scenerios) on IN transfers to reply to
-> > the device
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 * with a non-terminating retry ACK (i.e, an ACK
-> > transcation
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 * packet with Retry=3D1 & Nump !=3D 0)
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 */
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0reg |=3D DWC3_GUCTL_HSTINAUTORETRY;
-> > -
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0dwc3_writel(dwc->regs, DWC3_GUCTL, reg);
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > -
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Must config both num=
-ber of packets and max burst
-> > settings to enable
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * RX and/or TX thresho=
-ld.
-> > diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-> > index 8b1295e4dcdd..a69ac67d89fe 100644
-> > --- a/drivers/usb/dwc3/core.h
-> > +++ b/drivers/usb/dwc3/core.h
-> > @@ -256,9 +256,6 @@
-> > =C2=A0#define DWC3_GCTL_GBLHIBERNATIONEN=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0B=
-IT(1)
-> > =C2=A0#define DWC3_GCTL_DSBLCLKGTNG=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0BIT(0)
-> > =C2=A0
-> > -/* Global User Control Register */
-> > -#define DWC3_GUCTL_HSTINAUTORETRY=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0B=
-IT(14)
-> > -
-> > =C2=A0/* Global User Control 1 Register */
-> > =C2=A0#define DWC3_GUCTL1_DEV_DECOUPLE_L1L2_EVT=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0BIT(31)
-> > =C2=A0#define DWC3_GUCTL1_TX_IPGAP_LINECHECK_DIS=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0BIT(28)
-> > --=20
-> > 2.25.1
-> >=20
+--ci7chngldiqnrqkt
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 17.07.2023 12:08:15, Marc Kleine-Budde wrote:
+> From: Fedor Ross <fedor.ross@ifm.com>
 >=20
-> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+> The mcp251xfd controller needs an idle bus to enter 'Normal CAN 2.0
+> mode' or . The maximum length of a CAN frame is 736 bits (64 data
+> bytes, CAN-FD, EFF mode, worst case bit stuffing and interframe
+> spacing). For low bit rates like 10 kbit/s the arbitrarily chosen
+> MCP251XFD_POLL_TIMEOUT_US of 1 ms is too small.
+>=20
+> Otherwise during polling for the CAN controller to enter 'Normal CAN
+> 2.0 mode' the timeout limit is exceeded and the configuration fails
+> with:
+>=20
+> | $ ip link set dev can1 up type can bitrate 10000
+> | [  731.911072] mcp251xfd spi2.1 can1: Controller failed to enter mode C=
+AN 2.0 Mode (6) and stays in Configuration Mode (4) (con=3D0x068b0760, osc=
+=3D0x00000468).
+> | [  731.927192] mcp251xfd spi2.1 can1: CRC read error at address 0x0e0c =
+(length=3D4, data=3D00 00 00 00, CRC=3D0x0000) retrying.
+> | [  731.938101] A link change request failed with some changes committed=
+ already. Interface can1 may have been left with an inconsistent configurat=
+ion, please check.
+> | RTNETLINK answers: Connection timed out
+>=20
+> Make MCP251XFD_POLL_TIMEOUT_US timeout calculation dynamic. Use
+> maximum of 1ms and bit time of 1 full 64 data bytes CAN-FD frame in
+> EFF mode, worst case bit stuffing and interframe spacing at the
+> current bit rate.
+>=20
+> For easier backporting define the macro MCP251XFD_FRAME_LEN_MAX_BITS
+> that holds the max frame length in bits, which is 736. This can be
+> replaced by can_frame_bits(true, true, true, true, CANFD_MAX_DLEN) in
+> a cleanup patch later.
+>=20
+> Fixes: 55e5b97f003e8 ("can: mcp25xxfd: add driver for Microchip MCP25xxFD=
+ SPI CAN")
+> Signed-off-by: Fedor Ross <fedor.ross@ifm.com>
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+> Cc: Manivannan Sadhasivam <mani@kernel.org>
+> Cc: Thomas Kopp <thomas.kopp@microchip.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+> Hello,
+>=20
+> picking up Fedor's and Marek's work. I decided to make it a minimal
+> patch and add stable on Cc. The mentioned cleanup patch that replaces
+> 736 by can_frame_bits() can be done later and will go upstream via
+> can-next.
+>=20
+> regards,
+> Marc
+>=20
+> v3:
+> - use 736 as max CAN frame length, calculated by Vincent Mailhol's
+>   80a2fbce456e ("can: length: refactor frame lengths definition to add si=
+ze in bits")
+> - update commit message
+> - drop patch 2/2
+>=20
+> v2: https://lore.kernel.org/all/20230505222820.126441-1-marex@denx.de
+> - Add macros for CAN_BIT_STUFFING_OVERHEAD and CAN_IDLE_CONDITION_SAMPLES
+>   (thanks Thomas, but please double check the comments)
+> - Update commit message
+>=20
+> v1: https://lore.kernel.org/all/20230504195059.4706-1-marex@denx.de
+>=20
+> drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c | 4 +++-
+>  drivers/net/can/spi/mcp251xfd/mcp251xfd.h      | 1 +
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net=
+/can/spi/mcp251xfd/mcp251xfd-core.c
+> index 68df6d4641b5..876e8e3cbb0b 100644
+> --- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+> +++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+> @@ -227,6 +227,7 @@ static int
+>  __mcp251xfd_chip_set_mode(const struct mcp251xfd_priv *priv,
+>  			  const u8 mode_req, bool nowait)
+>  {
+> +	const struct can_bittiming *bt =3D &priv->can.bittiming;
+>  	u32 con =3D 0, con_reqop, osc =3D 0;
+>  	u8 mode;
+>  	int err;
+> @@ -251,7 +252,8 @@ __mcp251xfd_chip_set_mode(const struct mcp251xfd_priv=
+ *priv,
+>  				       FIELD_GET(MCP251XFD_REG_CON_OPMOD_MASK,
+>  						 con) =3D=3D mode_req,
+>  				       MCP251XFD_POLL_SLEEP_US,
+> -				       MCP251XFD_POLL_TIMEOUT_US);
+> +				       max_t(unsigned long, MCP251XFD_POLL_TIMEOUT_US,
+> +					     MCP251XFD_FRAME_LEN_MAX_BITS * USEC_PER_SEC / bt->bitrate));
 
-Thank you!
+This segfaults with a div by zero if bitrate is not set, yet. Fixed in
+v4.
 
-> Thanks,
-> Thinh
+regards,
+Marc
 
-Best regards,
-Jakub
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--ci7chngldiqnrqkt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmS1UsYACgkQvlAcSiqK
+BOiOTAf+KbpQoCh2yWtTm/4FrPaSctKfebjPqgm6cs+JeuUvC38oI34T9T5LEW97
+NjCHVgAxMmqoCv5sLefLYvxpsonuCBuWy/3jXBoBc049W1D8bhnXj0ehAXox/Phs
+uFBGEFC+7c2y9aZzLhEAJDW0ePX8c0NDPy4T31UvwLlr4AWdDrzGsd8NNndK/NNG
+vEDFiKRtuSGdG37MusOmaW1g6IQsKB+xqCby20AL42rV8iPX72a3BwVqV2HefcRT
+AXoETw5ZTO/H1GsT7QOOw4K62Lfv5TVvgpGYuk8aLIDLY9HxITIpOKnPmUx/JTt1
+DyVCpO9yDmb7myVxSjv2ILeOAJQSWw==
+=ql9i
+-----END PGP SIGNATURE-----
+
+--ci7chngldiqnrqkt--
