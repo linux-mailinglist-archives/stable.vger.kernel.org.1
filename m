@@ -2,89 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36E8A755DB3
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 10:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77880755E82
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 10:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229918AbjGQICE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 04:02:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58488 "EHLO
+        id S229903AbjGQIcN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 04:32:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjGQICD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 04:02:03 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036069D;
-        Mon, 17 Jul 2023 01:02:02 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-991f956fb5aso528493966b.0;
-        Mon, 17 Jul 2023 01:02:01 -0700 (PDT)
+        with ESMTP id S229886AbjGQIcL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 04:32:11 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 013D0E3
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 01:32:09 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-316f4abb1e1so1724815f8f.3
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 01:32:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689580920; x=1692172920;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Md2k3SrB9PFNNZtXw1D5bjJvxlmODL3oFcv29rGU+0w=;
-        b=Tj9ESHlAIEY5Ok+t1+UQEqgXZpFohXw53hftfkkBeDtkJIo0nBvLvFnisMxq5Rj2iQ
-         8PdNEnjyaoS3UOEi9nMjIifEQFGggbFY24svukX5rnVJOCICfNyxM2s59REzz8UWfsIp
-         ZawCt/JduBAq7tD9sQFEtpyhZCVMxmJef/ARUOi/5XgDoiiri8ZVk3Ooe/THn+zFXcTM
-         z4EiPvrbE/5ScWF5My9n5UAxbY+/u23lKTRQJM9dJ7+ItLjDQcSZkrc1jpUqsaxNIZmm
-         zG/iJhwiSZQr96qBLHcF2SeD/Hsp4E00qsw5D1bKsKirfD/yPzGiMrlGRgYG+Tvf2j6d
-         BgYg==
+        d=tessares.net; s=google; t=1689582728; x=1692174728;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IGpGIGHpL2BV0gRPe7o+mCUkh562jDYsyKn7ATcWjy4=;
+        b=l/Le4Uw/oENU8MdiPbpVIEgMsUnyY9CAc53RvkdusFs8aue63uMVlB7g8UT3sjQUUw
+         hdwwTGZffSgmh1UknkjyTdyobVcJqGY0j8K8Y+7Yp7K+W4W+FPp7QIevLmXjFv9PM9Fm
+         +AMU4wc35Pjt1wUX3RjjS5VfiD8GdwWXULTOhZWQ2lChyofxd/K2jUrM6hTHKUzumLdj
+         lWuWjk0WJR26ighG14Lk7OvIL4C3buqnJJi22YTx26uI0Yx7RyHgB1hJ9kBflO+/k0Sv
+         a4ZjCrzM+bj6gVl+yMBnAKHS5SqtRXESPDcsW3PLr4la8E5aPH/aYH/yAyKW18voAS4g
+         X3iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689580920; x=1692172920;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Md2k3SrB9PFNNZtXw1D5bjJvxlmODL3oFcv29rGU+0w=;
-        b=WjAngw8foHGi8aI7Cz75jtYNU+tGbJFMxj6KegN4wMxnG1Sl6hgoXMuNrzYdsYFTvt
-         PaBw5nf2fWRuDw2BGy8zPJ+RGcPgjb24w3imE/H/TnWJyBGeuK63dg+Ds548EygUUczE
-         lBBSuOR644bLhuDdeBvMEz++0Y0pdhbs4WxuR2G2dw7BzkYwE+1YnCZ2QV0lfBxpFQHB
-         q1LqoclTcxTtVjiGMjHaPVEq7RYEvx1rTnamTPNJf5ka+tX2vQQb6i9HdB8sB0U/bBEW
-         jm5Xx35t39y801mGPurknekN8UEtED+8Y+zTKzG7KQsXx3i9ypArvAItz6vqEP8TDprM
-         SDDw==
-X-Gm-Message-State: ABy/qLbd88fBUbG9gCS4PVcxixSoaDaobZqy7bn5qhbmMW2Dpk1px4Yk
-        YhopwWkvP+kyn12YIfc6yEZ/uk//IH7jPRj8INA=
-X-Google-Smtp-Source: APBJJlHZQRmdkq0uytrbJpI4dB8Hr+FJMXkrPe3TaMiMWBSlVina9KNg9TPqxFql3z1+rKwkjMtlLgZZSjtgMCU/25g=
-X-Received: by 2002:a17:906:20d6:b0:994:4e9c:30c6 with SMTP id
- c22-20020a17090620d600b009944e9c30c6mr3743404ejc.57.1689580920270; Mon, 17
- Jul 2023 01:02:00 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689582728; x=1692174728;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IGpGIGHpL2BV0gRPe7o+mCUkh562jDYsyKn7ATcWjy4=;
+        b=X40A23LzQpK02lJjI+E57DUEnU3Djn4X7ZevN/fitYvIrwdipzKieZ1EdQzm12AMsB
+         vAYOq8WWARvZx/kr1q/V0RNkkok0pGPIbfk6yV8oCGYgm3iC1Bqel/bQYgRumUskHQB0
+         OMTHmbqEGPh+RPuYNqVpq/UA2WaCPC2Zlbl0AmT4JpoIwjDj3zItV6qZHKe5s3hZThOi
+         p63wuvO3C82/PYldShcYCPU1roJKUKzTIe3OcATQTtbHku8rXbFCwUoe/q9kPRWxJ5KJ
+         c96Kt8m5MiWFJfDtX6j6x8RTkDsPnKcPYV+CclitvWzIB9a3fAgVHlN28Dn5s/X2qrL2
+         8NQQ==
+X-Gm-Message-State: ABy/qLbfc8JCSq3vqQLDrDYGt4J/KgHImuKKkap79fYYaF+wxQTCx2Qf
+        2rnqZByHSH4WxSZ3ciAc2zt9NQ==
+X-Google-Smtp-Source: APBJJlHVVnqlD7iFaIKgrA7nEDnmp8PC4zO1Sf7ESIkL6tmAxD4qBQpsCb0F0cPBPj5NLKAxliKaUQ==
+X-Received: by 2002:a5d:604f:0:b0:315:9c3a:43c3 with SMTP id j15-20020a5d604f000000b003159c3a43c3mr9077329wrt.15.1689582728440;
+        Mon, 17 Jul 2023 01:32:08 -0700 (PDT)
+Received: from [10.44.2.5] ([81.246.10.41])
+        by smtp.gmail.com with ESMTPSA id p5-20020a5d4e05000000b003143d80d11dsm18453833wrt.112.2023.07.17.01.32.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jul 2023 01:32:08 -0700 (PDT)
+Message-ID: <3a47f676-d661-0b7a-701b-c4cafdc25394@tessares.net>
+Date:   Mon, 17 Jul 2023 10:32:07 +0200
 MIME-Version: 1.0
-References: <b99a5149-c3d6-2a9b-1298-576a1b4b22c1@gmail.com> <0206e2ce-ff33-6017-15ab-cc89f1eb7485@augustwikerfors.se>
-In-Reply-To: <0206e2ce-ff33-6017-15ab-cc89f1eb7485@augustwikerfors.se>
-From:   Nils Kruse <nilskruse97@gmail.com>
-Date:   Mon, 17 Jul 2023 10:01:49 +0200
-Message-ID: <CAKVFSw+_EFNaYjOjNDQ0zOGoSFMt3yZctR47Rcss2KhkfNQJ9g@mail.gmail.com>
-Subject: Re: [PATCH] nvme-pci: Add quirk for Samsung PM9B1 256G and 512G SSD
-To:     August Wikerfors <git@augustwikerfors.se>
-Cc:     stable@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
-        Jens Axboe <axboe@fb.com>, Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH net 1/3] selftests: tc: set timeout to 15 minutes
+Content-Language: en-GB
+To:     shaozhengchao <shaozhengchao@huawei.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        Jiri Pirko <jiri@resnulli.us>, Shuah Khan <shuah@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Paul Blakey <paulb@mellanox.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        mptcp@lists.linux.dev
+Cc:     Pedro Tammela <pctammela@mojatatu.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+References: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
+ <20230713-tc-selftests-lkft-v1-1-1eb4fd3a96e7@tessares.net>
+ <bf7f8867-6b14-dd53-a6e4-2addee4a5ad8@huawei.com>
+From:   Matthieu Baerts <matthieu.baerts@tessares.net>
+In-Reply-To: <bf7f8867-6b14-dd53-a6e4-2addee4a5ad8@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Jul 16, 2023 at 9:30=E2=80=AFPM August Wikerfors <git@augustwikerfo=
-rs.se> wrote:
->
-> On 2023-06-11 13:41, Nils Kruse wrote:
-> > Add a quirk for Samsung PM9B1 256G and 512G that reports duplicate ids
-> > for disk.
->
-> Is this the same issue with suspend as [1], [2] and [3] or is it a
-> different case?
->
-> [1] https://lore.kernel.org/all/20221116171727.4083-1-git@augustwikerfors=
-.se/t/
-> [2] https://github.com/tomsom/yoga-linux/issues/9
-> [3] https://lore.kernel.org/all/d0ce0f3b-9407-9207-73a4-3536f0948653@augu=
-stwikerfors.se/
+Hi Zhengchao Shao,
 
-Yes, this is the same issue.
+On 14/07/2023 04:25, shaozhengchao wrote:
+> 
+> 
+> On 2023/7/14 5:16, Matthieu Baerts wrote:
+>> When looking for something else in LKFT reports [1], I noticed that the
+>> TC selftest ended with a timeout error:
+>>
+>>    not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
+>>
+>> The timeout had been introduced 3 years ago, see the Fixes commit below.
+>>
+>> This timeout is only in place when executing the selftests via the
+>> kselftests runner scripts. I guess this is not what most TC devs are
+>> using and nobody noticed the issue before.
+>>
+>> The new timeout is set to 15 minutes as suggested by Pedro [2]. It looks
+>> like it is plenty more time than what it takes in "normal" conditions.
+>>
+>> Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second
+>> timeout per test")
+>> Cc: stable@vger.kernel.org
+>> Link:
+>> https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230711/testrun/18267241/suite/kselftest-tc-testing/test/tc-testing_tdc_sh/log [1]
+>> Link:
+>> https://lore.kernel.org/netdev/0e061d4a-9a23-9f58-3b35-d8919de332d7@tessares.net/T/ [2]
+>> Suggested-by: Pedro Tammela <pctammela@mojatatu.com>
+>> Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+>> ---
+>>   tools/testing/selftests/tc-testing/settings | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/tools/testing/selftests/tc-testing/settings
+>> b/tools/testing/selftests/tc-testing/settings
+>> new file mode 100644
+>> index 000000000000..e2206265f67c
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/tc-testing/settings
+>> @@ -0,0 +1 @@
+>> +timeout=900
+>>
+> I remember last year when I tested all the tdc cases（qdisc + filter +
+> action + infra） in my vm machine, it took me nearly 20 minutes.
+> So I think it should be more than 1200 seconds if all cases need to be
+> tested.
+
+Thank you for your feedback!
+
+Be careful that here, it is the timeout to run "tdc.sh" only which is
+currently limited to:
+
+  ./tdc.py -c actions --nobuildebpf
+  ./tdc.py -c qdisc
+
+(not "filter", nor "infra" then)
+
+I guess for this, 15 minutes is more than enough, no?
+
+At least on my side, I ran it in a i386 VM without KVM and it took less
+than 3 minutes [1].
+
+Cheers,
+Matt
+
+[1]
+https://tuxapi.tuxsuite.com/v1/groups/community/projects/matthieu.baerts/tests/2SWHb7PJfqkUX1m8rLu3GXbsHE0/logs?format=html
+-- 
+Tessares | Belgium | Hybrid Access Solutions
+www.tessares.net
