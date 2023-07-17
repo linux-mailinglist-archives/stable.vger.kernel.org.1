@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2886C756DAD
+	by mail.lfdr.de (Postfix) with ESMTP id 756F3756DAE
 	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 21:54:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230473AbjGQTyE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 15:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
+        id S230498AbjGQTyF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 15:54:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230214AbjGQTyA (ORCPT
+        with ESMTP id S229634AbjGQTyA (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 15:54:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D805BC0;
-        Mon, 17 Jul 2023 12:53:58 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD6CC129;
+        Mon, 17 Jul 2023 12:53:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B8586123A;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AA9661236;
+        Mon, 17 Jul 2023 19:53:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD6FDC433C7;
         Mon, 17 Jul 2023 19:53:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD508C433C7;
-        Mon, 17 Jul 2023 19:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1689623637;
-        bh=nFzyybQVXUnWEu7DUKHjnBsyRitwtFC+uzAGiqFGuSo=;
+        s=korg; t=1689623638;
+        bh=bZ3TRdZNWU/LCjwH3x5Tm/XjAruTTn4PAhBraVh253s=;
         h=Date:To:From:Subject:From;
-        b=NzUvCBIVwwHk9OOadxnP88M1RpxpDxYP4P9ELJgwautRsWzcXdLLNV3Yeju4wXFnT
-         ONcsAFnDt4UGPbbLle/ggbQgJstwpKuw9Sj8BzW5W6Qx/JLkfoyNmSTJivFAbd/aS3
-         43fHMTZJwoNYzvBbtNqmNes2P30Y0srucqBf0vBA=
-Date:   Mon, 17 Jul 2023 12:53:57 -0700
+        b=ROUs2psjq+kxle1oywGn8uVcbztyLhOxd82tW8+l54I1ihbgm8UVR2Hubfh09YQj5
+         fbmYerwdxvEoutM+Sw9NCe0BrteB58F0Aem4AO/CoZqF4LtAEVW2hF60UdmbMryefu
+         C+cTIDE5mHCguYIRixHELk0f0vUkfpvChIXfRDxQ=
+Date:   Mon, 17 Jul 2023 12:53:58 -0700
 To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        Liam.Howlett@oracle.com, geert@linux-m68k.org,
-        zhangpeng.00@bytedance.com, akpm@linux-foundation.org
+        shuah@kernel.org, david@redhat.com, colin.i.king@gmail.com,
+        akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] maple_tree-set-the-node-limit-when-creating-a-new-root-node.patch removed from -mm tree
-Message-Id: <20230717195357.BD508C433C7@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftests-mm-mkdirty-fix-incorrect-position-of-endif.patch removed from -mm tree
+Message-Id: <20230717195358.CD6FDC433C7@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -48,66 +48,48 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: maple_tree: set the node limit when creating a new root node
+     Subject: selftests/mm: mkdirty: fix incorrect position of #endif
 has been removed from the -mm tree.  Its filename was
-     maple_tree-set-the-node-limit-when-creating-a-new-root-node.patch
+     selftests-mm-mkdirty-fix-incorrect-position-of-endif.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Peng Zhang <zhangpeng.00@bytedance.com>
-Subject: maple_tree: set the node limit when creating a new root node
-Date: Tue, 11 Jul 2023 11:54:37 +0800
+From: Colin Ian King <colin.i.king@gmail.com>
+Subject: selftests/mm: mkdirty: fix incorrect position of #endif
+Date: Wed, 12 Jul 2023 14:46:48 +0100
 
-Set the node limit of the root node so that the last pivot of all nodes is
-the node limit (if the node is not full).
+The #endif is the wrong side of a } causing a build failure when
+__NR_userfaultfd is not defined.  Fix this by moving the #end to enclose
+the }
 
-This patch also fixes a bug in mas_rev_awalk().  Effectively, always
-setting a maximum makes mas_logical_pivot() behave as mas_safe_pivot(). 
-Without this fix, it is possible that very small tasks would fail to find
-the correct gap.  Although this has not been observed with real tasks, it
-has been reported to happen in m68k nommu running the maple tree tests.
-
-Link: https://lkml.kernel.org/r/20230711035444.526-1-zhangpeng.00@bytedance.com
-Link: https://lore.kernel.org/linux-mm/CAMuHMdV4T53fOw7VPoBgPR7fP6RYqf=CBhD_y_vOg53zZX_DnA@mail.gmail.com/
-Link: https://lkml.kernel.org/r/20230711035444.526-2-zhangpeng.00@bytedance.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lkml.kernel.org/r/20230712134648.456349-1-colin.i.king@gmail.com
+Fixes: 9eac40fc0cc7 ("selftests/mm: mkdirty: test behavior of (pte|pmd)_mkdirty on VMAs without write permissions")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- lib/maple_tree.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/mm/mkdirty.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/maple_tree.c~maple_tree-set-the-node-limit-when-creating-a-new-root-node
-+++ a/lib/maple_tree.c
-@@ -3692,7 +3692,8 @@ static inline int mas_root_expand(struct
- 	mas->offset = slot;
- 	pivots[slot] = mas->last;
- 	if (mas->last != ULONG_MAX)
--		slot++;
-+		pivots[++slot] = ULONG_MAX;
-+
- 	mas->depth = 1;
- 	mas_set_height(mas);
- 	ma_set_meta(node, maple_leaf_64, 0, slot);
+--- a/tools/testing/selftests/mm/mkdirty.c~selftests-mm-mkdirty-fix-incorrect-position-of-endif
++++ a/tools/testing/selftests/mm/mkdirty.c
+@@ -321,8 +321,8 @@ close_uffd:
+ munmap:
+ 	munmap(dst, pagesize);
+ 	free(src);
+-#endif /* __NR_userfaultfd */
+ }
++#endif /* __NR_userfaultfd */
+ 
+ int main(void)
+ {
 _
 
-Patches currently in -mm which might be from zhangpeng.00@bytedance.com are
+Patches currently in -mm which might be from colin.i.king@gmail.com are
 
-maple_tree-add-test-for-mas_wr_modify-fast-path.patch
-maple_tree-add-test-for-expanding-range-in-rcu-mode.patch
-maple_tree-optimize-mas_wr_append-also-improve-duplicating-vmas.patch
-maple_tree-add-a-fast-path-case-in-mas_wr_slot_store.patch
-maple_tree-dont-use-maple_arange64_meta_max-to-indicate-no-gap.patch
-maple_tree-make-mas_validate_gaps-to-check-metadata.patch
-maple_tree-fix-mas_validate_child_slot-to-check-last-missed-slot.patch
-maple_tree-make-mas_validate_limits-check-root-node-and-node-limit.patch
-maple_tree-update-mt_validate.patch
-maple_tree-replace-mas_logical_pivot-with-mas_safe_pivot.patch
-maple_tree-drop-mas_first_entry.patch
 
