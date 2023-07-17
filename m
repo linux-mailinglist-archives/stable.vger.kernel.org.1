@@ -2,69 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 903C7756B01
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 19:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1924756B04
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 19:53:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229540AbjGQRxj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 13:53:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58972 "EHLO
+        id S230512AbjGQRxz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 13:53:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230512AbjGQRxi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 13:53:38 -0400
-Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4496B1B9
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:53:36 -0700 (PDT)
-Received: by mail-vk1-xa2f.google.com with SMTP id 71dfb90a1353d-4814bea10e0so1595513e0c.1
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:53:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689616415; x=1690221215;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vFofs3943iSVTdX7g+Ij0RCA+3gmMBbIIyZkBj1OkXA=;
-        b=ERr18YFzsG/SvYGVCzmYmjcnnPdM5rf+vbwh9Za0AmemltqZkd6bork/eCer2Wuxx5
-         lt04ghWzHdI+RYAGk12Sh7/Gi0MuW+CIry5u6wI5vZl+6n5xMSCFv085knt8moaZ1hJw
-         NIJQtQa3AoE5JoJ4H1hZ/hl01Q0x8lgwNEgqxSBvDIneU7RVi4UhEoQjDLJ4iGZJes2B
-         8odW0pJBlszMBFztGpXJp+wWOtidsw2L/YbV6Hge6NoyJAdxTSAWVGtoI12q1Zxscyqg
-         NLGt/VBcxkI54VN0I07c0m75ZR055ngGUNKM8t0rrG55Rea7lwoQskItyH1th9HUvwGX
-         APNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689616415; x=1690221215;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vFofs3943iSVTdX7g+Ij0RCA+3gmMBbIIyZkBj1OkXA=;
-        b=VPSiixmYb5FjOz4iIHPjfuCrT7Ou6qEpltLlNn3NRsgvBcVneSJ+F/4nagmMMdyagG
-         M8x30q/BOMc1FuF/AR2a7ZQjFbKOOwVNXF+x1BYkAhp7D2mTWIV3GgN2LkrmChOzy1Yv
-         0h7DPjP7QqqXL7bxopM82C/EVfkW7eXQArwAJAg5EhvV8FKjezzYCQPtv4W3eWKq6YMj
-         eOEnBfdHYuE0liW2TIg+ucAtCF7joBNC5CYzDCmDCiQy6rbvJwKT1Ky/i5NioffYDj1j
-         1Q8z2YqOesgYNLoF8TLkkVj2sQQWd0zrBQFbNXR4eyUM5YFdPighCs4rZ0MhCJUpnRgV
-         Swqw==
-X-Gm-Message-State: ABy/qLYdpbPBSUuUr8uVLJMtUozBc3gJ3DBMKNwnPaiayT2HM53bTvrr
-        eK1KH4xhWQzcjbcMzMwWUmkQ3Qj+7WVCjLhQhEobtg==
-X-Google-Smtp-Source: APBJJlEuidatGYmLfJsqEJYVBuLsmXe+VImsGqAeLJarjuy0yVjI5kUdsNb9MZEHyhFCDqh5oWqzbKWigWsV/foSG5E=
-X-Received: by 2002:a1f:3f13:0:b0:481:2ff5:c9a9 with SMTP id
- m19-20020a1f3f13000000b004812ff5c9a9mr58017vka.13.1689616415280; Mon, 17 Jul
- 2023 10:53:35 -0700 (PDT)
+        with ESMTP id S231248AbjGQRxy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 13:53:54 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38EC41B6
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:53:51 -0700 (PDT)
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qLSPt-0005Xh-M2
+        for stable@vger.kernel.org; Mon, 17 Jul 2023 19:53:49 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+        by bjornoya.blackshift.org (Postfix) with SMTP id 201251F3917
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 17:53:49 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bjornoya.blackshift.org (Postfix) with ESMTPS id 6297D1F3910;
+        Mon, 17 Jul 2023 17:53:47 +0000 (UTC)
+Received: from [172.20.34.65] (localhost [::1])
+        by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 28e38c67;
+        Mon, 17 Jul 2023 17:53:46 +0000 (UTC)
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+Date:   Mon, 17 Jul 2023 19:53:42 +0200
+Subject: [PATCH v5] can: mcp251xfd: __mcp251xfd_chip_set_mode(): increase
+ poll timeout
 MIME-Version: 1.0
-References: <20230717065535.2065582-1-quic_srichara@quicinc.com>
- <2023071729-shamrock-evidence-b698@gregkh> <2fc238aa-82c1-383a-9dca-72f979ee3c07@quicinc.com>
-In-Reply-To: <2fc238aa-82c1-383a-9dca-72f979ee3c07@quicinc.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Mon, 17 Jul 2023 20:53:24 +0300
-Message-ID: <CAA8EJpoB6Q5c27-D5HF42+OS7S7bPBGWi_Po0orMxaQ7yx3=1A@mail.gmail.com>
-Subject: Re: [PATCH V4] PCI: qcom: Fixing broken pcie bring up for 2_3_3
- configs ops
-To:     Sricharan Ramabadhran <quic_srichara@quicinc.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, agross@kernel.org,
-        andersson@kernel.org, konrad.dybcio@linaro.org, robh@kernel.org,
-        mani@kernel.org, lpieralisi@kernel.org, bhelgaas@google.com,
-        kw@linux.com, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230717-mcp251xfd-fix-increase-poll-timeout-v5-1-06600f34c684@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIACaAtWQC/5WNSw6CMBRFt2I69pl+QNCR+zAMoLzCS6Bt2kIwh
+ L1b2YHDc3Nzzs4iBsLInpedBVwpkrMZyuuF6bG1AwL1mZnkUvFKVDBrL0uxmR4MbUBWB2wjgnf
+ TBIlmdEsCYaTqOJbi0XGWTT5gPp+Vd5N5pJhc+JzRtfit//nXAgTcK1XXRmnFefvyaIclBWdpu
+ /XImuM4vkVxInzbAAAA
+To:     linux-can@vger.kernel.org
+Cc:     Fedor Ross <fedor.ross@ifm.com>, Marek Vasut <marex@denx.de>,
+        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Thomas Kopp <thomas.kopp@microchip.com>,
+        stable@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
+X-Mailer: b4 0.13-dev-099c9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5111; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=gl7EgphQ0Pan0Uvzhe7KDOVqRQFZwc8HR1hoCIfCXzk=;
+ b=owEBbQGS/pANAwAKAb5QHEoqigToAcsmYgBktYAndqQENl7T15Sma9Jq5E7G1CfDNGxOB1FXj
+ pVvtxy5j1mJATMEAAEKAB0WIQQOzYG9qPI0qV/1MlC+UBxKKooE6AUCZLWAJwAKCRC+UBxKKooE
+ 6BpOB/sEAp7vjm9MXSxMF0Cjoo4eiI1W2wW6U4oQDpcmyEtxhTBA/fq9I+t/AQ4ssuQmUs3y/5m
+ pGd3OGgGqEf6+nrrx0ZcUJ3yFIoIDFC+eLjiw+KZvLJc/1GmGXseThEVTabHt40AEKt26gZgrs5
+ eNqYvKZZC5oNUMq0wVzd2npRVytm5AdHkPPC+3qeZ/jZPMzPJACNZnU0XmY6pAN8OSYR3s6S3LY
+ xpTcGL/f+xp0XCgCW9hD6ni/1WXKIszTPUwHeLEkzpSjBjJiF0ROF0w8PGXz1WFDmiQHjSSVGiy
+ pKA45FAXKOb24e3nc9tr24hmKU9o4hqZiZDMBHCo9WpkWYEM
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:b01:1d::7b
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,45 +75,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 17 Jul 2023 at 20:16, Sricharan Ramabadhran
-<quic_srichara@quicinc.com> wrote:
->
->
->
-> On 7/17/2023 7:09 PM, Greg KH wrote:
-> > On Mon, Jul 17, 2023 at 12:25:35PM +0530, Sricharan Ramabadhran wrote:
-> >> PARF_SLV_ADDR_SPACE_SIZE_2_3_3 macro is used for IPQ8074
-> >> 2_3_3 post_init ops. PCIe slave addr size was initially set
-> >> to 0x358, but was wrongly changed to 0x168 as a part of
-> >> commit 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from
-> >> register definitions"). Fixing it, by using the right macro
-> >> PARF_SLV_ADDR_SPACE_SIZE and remove the unused
-> >> PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
-> >
-> > Note, you do have a full 72 columns to use, no need to make it smaller.
->
->   ok sure
->
-> >
-> >> Without this pcie bring up on IPQ8074 is broken now.
-> >
-> > I do not understand, something that used to work now breaks, or this is
-> > preventing a new chip from being "brought up"?
-> >
->
->   yes, ipq8074 pcie which was previously working is broken now.
->   This patch fixes it.
+From: Fedor Ross <fedor.ross@ifm.com>
 
-So, you need to describe what is broken and why. Mere "it is broken,
-fix it" is not enough.
+The mcp251xfd controller needs an idle bus to enter 'Normal CAN 2.0
+mode' or . The maximum length of a CAN frame is 736 bits (64 data
+bytes, CAN-FD, EFF mode, worst case bit stuffing and interframe
+spacing). For low bit rates like 10 kbit/s the arbitrarily chosen
+MCP251XFD_POLL_TIMEOUT_US of 1 ms is too small.
 
->
->
-> Regards,
->   Sricharan
+Otherwise during polling for the CAN controller to enter 'Normal CAN
+2.0 mode' the timeout limit is exceeded and the configuration fails
+with:
 
+| $ ip link set dev can1 up type can bitrate 10000
+| [  731.911072] mcp251xfd spi2.1 can1: Controller failed to enter mode CAN 2.0 Mode (6) and stays in Configuration Mode (4) (con=0x068b0760, osc=0x00000468).
+| [  731.927192] mcp251xfd spi2.1 can1: CRC read error at address 0x0e0c (length=4, data=00 00 00 00, CRC=0x0000) retrying.
+| [  731.938101] A link change request failed with some changes committed already. Interface can1 may have been left with an inconsistent configuration, please check.
+| RTNETLINK answers: Connection timed out
 
+Make MCP251XFD_POLL_TIMEOUT_US timeout calculation dynamic. Use
+maximum of 1ms and bit time of 1 full 64 data bytes CAN-FD frame in
+EFF mode, worst case bit stuffing and interframe spacing at the
+current bit rate.
 
+For easier backporting define the macro MCP251XFD_FRAME_LEN_MAX_BITS
+that holds the max frame length in bits, which is 736. This can be
+replaced by can_frame_bits(true, true, true, true, CANFD_MAX_DLEN) in
+a cleanup patch later.
+
+Fixes: 55e5b97f003e8 ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
+Signed-off-by: Fedor Ross <fedor.ross@ifm.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+Hello,
+
+picking up Fedor's and Marek's work. I decided to make it a minimal
+patch and add stable on Cc. The mentioned cleanup patch that replaces
+736 by can_frame_bits() can be done later and will go upstream via
+can-next.
+
+regards,
+Marc
+---
+Changes in v5:
+- use max_t() instead of max() to fix compilation on arm64
+- Link to v4: https://lore.kernel.org/all/20230717-mcp251xfd-fix-increase-poll-timeout-v4-1-67388f3c300a@pengutronix.de
+
+Changes in v4:
+- fix division by 0, if bit rate is not set yet
+- Link to v3: https://lore.kernel.org/all/20230717100815.75764-1-mkl@pengutronix.de
+
+Changes in v3: 
+- use 736 as max CAN frame length, calculated by Vincent Mailhol's
+  80a2fbce456e ("can: length: refactor frame lengths definition to add size in bits")
+- update commit message
+- drop patch 2/2
+- Link to v2: https://lore.kernel.org/all/20230505222820.126441-1-marex@denx.de
+
+Changes in v2: 
+- Add macros for CAN_BIT_STUFFING_OVERHEAD and CAN_IDLE_CONDITION_SAMPLES
+  (thanks Thomas, but please double check the comments)
+- Update commit message
+- Link to v1: https://lore.kernel.org/all/20230504195059.4706-1-marex@denx.de
+---
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c | 10 ++++++++--
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h      |  1 +
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+index 68df6d4641b5..eebf967f4711 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+@@ -227,6 +227,8 @@ static int
+ __mcp251xfd_chip_set_mode(const struct mcp251xfd_priv *priv,
+ 			  const u8 mode_req, bool nowait)
+ {
++	const struct can_bittiming *bt = &priv->can.bittiming;
++	unsigned long timeout_us = MCP251XFD_POLL_TIMEOUT_US;
+ 	u32 con = 0, con_reqop, osc = 0;
+ 	u8 mode;
+ 	int err;
+@@ -246,12 +248,16 @@ __mcp251xfd_chip_set_mode(const struct mcp251xfd_priv *priv,
+ 	if (mode_req == MCP251XFD_REG_CON_MODE_SLEEP || nowait)
+ 		return 0;
+ 
++	if (bt->bitrate)
++		timeout_us = max_t(unsigned long, timeout_us,
++				   MCP251XFD_FRAME_LEN_MAX_BITS * USEC_PER_SEC /
++				   bt->bitrate);
++
+ 	err = regmap_read_poll_timeout(priv->map_reg, MCP251XFD_REG_CON, con,
+ 				       !mcp251xfd_reg_invalid(con) &&
+ 				       FIELD_GET(MCP251XFD_REG_CON_OPMOD_MASK,
+ 						 con) == mode_req,
+-				       MCP251XFD_POLL_SLEEP_US,
+-				       MCP251XFD_POLL_TIMEOUT_US);
++				       MCP251XFD_POLL_SLEEP_US, timeout_us);
+ 	if (err != -ETIMEDOUT && err != -EBADMSG)
+ 		return err;
+ 
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+index 7024ff0cc2c0..24510b3b8020 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+@@ -387,6 +387,7 @@ static_assert(MCP251XFD_TIMESTAMP_WORK_DELAY_SEC <
+ #define MCP251XFD_OSC_STAB_TIMEOUT_US (10 * MCP251XFD_OSC_STAB_SLEEP_US)
+ #define MCP251XFD_POLL_SLEEP_US (10)
+ #define MCP251XFD_POLL_TIMEOUT_US (USEC_PER_MSEC)
++#define MCP251XFD_FRAME_LEN_MAX_BITS (736)
+ 
+ /* Misc */
+ #define MCP251XFD_NAPI_WEIGHT 32
+
+---
+base-commit: 0dd1805fe498e0cf64f68e451a8baff7e64494ec
+change-id: 20230717-mcp251xfd-fix-increase-poll-timeout-1f23b0e519b0
+
+Best regards,
 -- 
-With best wishes
-Dmitry
+Marc Kleine-Budde <mkl@pengutronix.de>
+
+
