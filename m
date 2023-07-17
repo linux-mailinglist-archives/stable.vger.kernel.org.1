@@ -2,232 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 729DD755EB2
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 10:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4A3755EFB
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 11:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbjGQIp5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 04:45:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51994 "EHLO
+        id S229925AbjGQJJD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 05:09:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjGQIp4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 04:45:56 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEF841A2
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 01:45:55 -0700 (PDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36H8g8sv009122
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 08:45:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=RycMdtM6YbAFvCzWlvMA5391al2hERkhrZEV24Qps+0=;
- b=spyMb9Kevj3STLhNJ0f44J4izManGCRoObt/taNRUV/Es/XbB+Ex23p++wZmJ5940B0p
- rKkGNbKm/Z7Gk83Yi569LZC23LaO0u6cOqeSHIf2SgmgpXtvGeBub4p2DSNZ3phR30Kn
- Idov2ulpdg2YnDs3CdCwq56Zwr3RV8uXYyB3UELd7+cBwhasxxNAs/TxzcP4VJ721t4W
- HCOJ9LerFsMRnuPaLoVlcpxKH37ppAAU6kvTx/W7dYWo/hpkC/iD7yh/b9ZwNONIdtSL
- yH+hUfIVYhveFzuDvWB7pw7QZws2+jsI4p/NtykGU4J54kZ6MprgcB5EwaNjkJ8fO2FV 3A== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rw1krs6jk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 08:45:54 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-        by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36H1sIpD027431
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 08:45:52 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-        by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3ruk350uj1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 08:45:52 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-        by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36H8jnX323200292
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 17 Jul 2023 08:45:49 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2CF292004B;
-        Mon, 17 Jul 2023 08:45:49 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E454E20040;
-        Mon, 17 Jul 2023 08:45:48 +0000 (GMT)
-Received: from [9.171.84.213] (unknown [9.171.84.213])
-        by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Mon, 17 Jul 2023 08:45:48 +0000 (GMT)
-Message-ID: <070fe3b0-5020-a74c-dd2d-22565f70d660@linux.ibm.com>
-Date:   Mon, 17 Jul 2023 10:45:48 +0200
+        with ESMTP id S229539AbjGQJJC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 05:09:02 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E87BE55;
+        Mon, 17 Jul 2023 02:08:59 -0700 (PDT)
+X-UUID: 8c62ae36248111eeb20a276fd37b9834-20230717
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Y8JNYfBYjIbnwh4BqD1zU+2zkjayx73cT2gySc48Rp0=;
+        b=C6Lmqx2Ebz3E6OLm0d82Ea0sCKeD77YG90SCaChLf69dmilXMlpleVvNl3WzhwgMb4mh+EKIx5Wiq7khNqWYysTMaovtS1GCWu9mxqT/A+IyPNAL/7AAj0ig8cUZD88BkB2g+uD/Jbw2V/k7Hp1rk5XginR4mMsX+aRyBRS8MRQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.28,REQID:bdf29437-4978-4b75-8c87-58bba670043e,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+        N:release,TS:100
+X-CID-INFO: VERSION:1.1.28,REQID:bdf29437-4978-4b75-8c87-58bba670043e,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
+        N:quarantine,TS:100
+X-CID-META: VersionHash:176cd25,CLOUDID:36b1aedc-dc79-4898-9235-1134b97257a8,B
+        ulkID:230717170853FD2V3QFP,BulkQuantity:0,Recheck:0,SF:28|17|19|48|38|29,T
+        C:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+        ,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_SDM,TF_CID_SPAM_ASC,TF_CID_SPAM_FAS,
+        TF_CID_SPAM_FSD
+X-UUID: 8c62ae36248111eeb20a276fd37b9834-20230717
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <walter.chang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 445378854; Mon, 17 Jul 2023 17:08:51 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 17 Jul 2023 17:08:50 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Mon, 17 Jul 2023 17:08:50 +0800
+From:   <walter.chang@mediatek.com>
+To:     Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>,
+        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+CC:     <wsd_upstream@mediatek.com>, <stanley.chu@mediatek.com>,
+        <Chun-hung.Wu@mediatek.com>, <Freddy.Hsin@mediatek.com>,
+        <walter.chang@mediatek.com>, <stable@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH] clocksource/drivers/arm_arch_timer: Disable timer before programming CVAL
+Date:   Mon, 17 Jul 2023 17:07:34 +0800
+Message-ID: <20230717090735.19370-1-walter.chang@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] s390/zcrypt: fix reply buffer calculations for CCA
- replies
-Content-Language: en-US
-To:     Harald Freudenberger <freude@linux.ibm.com>,
-        linux390-list@tuxmaker.boeblingen.de.ibm.com
-Cc:     stable@vger.kernel.org
-References: <20230714143630.457866-1-freude@linux.ibm.com>
-From:   Holger Dengler <dengler@linux.ibm.com>
-In-Reply-To: <20230714143630.457866-1-freude@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UD6ZBBzx6CKhLTi97KmZk392hyXP-0gX
-X-Proofpoint-GUID: UD6ZBBzx6CKhLTi97KmZk392hyXP-0gX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-17_07,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- clxscore=1011 priorityscore=1501 lowpriorityscore=0 bulkscore=0
- suspectscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307170077
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 14/07/2023 16:36, Harald Freudenberger wrote:
-> The length information for available buffer space for CCA
-> replies is covered with two fields in the T6 header prepended
-> on each CCA reply: fromcardlen1 and fromcardlen2. The sum of
-> these both values must not exceed the AP bus limit for this
-> card (24KB for CEX8, 12KB CEX7 and older) minus the always
-> present headers.
-> 
-> The current code adjusted the fromcardlen2 value in case
-> of exceeding the AP bus limit when there was a non-zero
-> value given from userspace. Some tests now showed that this
-> was the wrong assumption. Instead the userspace value given for
-> this field should always be trusted and if the sum of the
-> wo fields exceeds the AP bus limit for this card the first
+From: Walter Chang <walter.chang@mediatek.com>
 
-typo: two
+Due to the fact that the use of `writeq_relaxed()` to program CVAL is
+not guaranteed to be atomic, it is necessary to disable the timer before
+programming CVAL.
 
-> field fromcardlen1 should be adjusted instead.
-> 
-> So now the calculation is done with this new insight in mind.
-> Also some additional checks for overflow have been introduced
-> and some comments to provide some documentation for future
-> maintainers of this complicated calculation code.
-> 
-> Furthermore the 128 bytes of fix overhead which is used
-> in the current code is not correct. Investications showed
+However, if the MMIO timer is already enabled and has not yet expired,
+there is a possibility of unexpected behavior occurring: when the CPU
+enters the idle state during this period, and if the CPU's local event
+is earlier than the broadcast event, the following process occurs:
 
-typo: Investigations
+tick_broadcast_enter()
+  tick_broadcast_oneshot_control(TICK_BROADCAST_ENTER)
+    __tick_broadcast_oneshot_control()
+      ___tick_broadcast_oneshot_control()
+        tick_broadcast_set_event()
+          clockevents_program_event()
+            set_next_event_mem()
 
-> that for a reply always the same two header structs are
-> prepended before a possible payload. So this is also fixed
-> with this patch.
-> 
-> Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-> Cc: stable@vger.kernel.org
+During this process, the MMIO timer remains enabled while programming
+CVAL. To prevent such behavior, disable timer explicitly prior to
+programming CVAL.
 
-With the typos fixed and the changes below
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Fixes: 8b82c4f883a7 ("clocksource/drivers/arm_arch_timer: Move MMIO timer programming over to CVAL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Walter Chang <walter.chang@mediatek.com>
+---
+ drivers/clocksource/arm_arch_timer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-> ---
->  drivers/s390/crypto/zcrypt_msgtype6.c | 45 ++++++++++++++++++++-------
->  1 file changed, 33 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/s390/crypto/zcrypt_msgtype6.c b/drivers/s390/crypto/zcrypt_msgtype6.c
-> index 247f0ad38362..5ac110669327 100644
-> --- a/drivers/s390/crypto/zcrypt_msgtype6.c
-> +++ b/drivers/s390/crypto/zcrypt_msgtype6.c
-> @@ -551,6 +551,12 @@ static int xcrb_msg_to_type6_ep11cprb_msgx(bool userspace, struct ap_message *ap
->   *
->   * Returns 0 on success or -EINVAL, -EFAULT, -EAGAIN in case of an error.
->   */
-> +struct type86_reply_hdrs {
-> +	struct type86_hdr hdr;
-> +	struct type86_fmt2_ext fmt2;
-> +	/* ... payload may follow ... */
-> +} __packed;
-> +
-
-There is already a `struct type86_fmt2_msg` in this file (line 329 ff.).
-
->  struct type86x_reply {
->  	struct type86_hdr hdr;
->  	struct type86_fmt2_ext fmt2;
-> @@ -1101,23 +1107,38 @@ static long zcrypt_msgtype6_send_cprb(bool userspace, struct zcrypt_queue *zq,
->  				      struct ica_xcRB *xcrb,
->  				      struct ap_message *ap_msg)
->  {
-> -	int rc;
-> +	unsigned int reply_bufsize_minus_headers =
-> +		zq->reply.bufsize - sizeof(struct type86_reply_hdrs);
-
-I don't like this variable name. What about `max_payload_size`?
-
->  	struct response_type *rtype = ap_msg->private;
->  	struct {
->  		struct type6_hdr hdr;
->  		struct CPRBX cprbx;
->  		/* ... more data blocks ... */
->  	} __packed * msg = ap_msg->msg;
-> -
-> -	/*
-> -	 * Set the queue's reply buffer length minus 128 byte padding
-> -	 * as reply limit for the card firmware.
-> -	 */
-> -	msg->hdr.fromcardlen1 = min_t(unsigned int, msg->hdr.fromcardlen1,
-> -				      zq->reply.bufsize - 128);
-> -	if (msg->hdr.fromcardlen2)
-> -		msg->hdr.fromcardlen2 =
-> -			zq->reply.bufsize - msg->hdr.fromcardlen1 - 128;
-> +	int rc, delta;
-> +
-> +	/* limit each of the two from fields to AP bus limit - headers */
-
-I would also use "maximal payload size" here.
-/* limit each of the two from fields to the maximum payload size */
-
-> +	msg->hdr.fromcardlen1 = min_t(unsigned int,
-> +				      msg->hdr.fromcardlen1,
-> +				      reply_bufsize_minus_headers);
-> +	msg->hdr.fromcardlen2 = min_t(unsigned int,
-> +				      msg->hdr.fromcardlen2,
-> +				      reply_bufsize_minus_headers);
-> +
-> +	/* calculate delta if the sum of both exceeds AP bus limit - headers */
-
-dito:
-/* calculate delta if the sum of both exceeds the maximum payload size */
-
-> +	delta = msg->hdr.fromcardlen1 + msg->hdr.fromcardlen2
-> +		- reply_bufsize_minus_headers;
-> +	if (delta > 0) {
-> +		/*
-> +		 * Sum exceeds AP bus limit - headers, prune fromcardlen1
-
-dito:
- * Sum exceeds the maximum payload size, prune fromcardlen1
-
-> +		 * (always trust fromcardlen2)
-> +		 */
-> +		if (delta > msg->hdr.fromcardlen1) {
-> +			rc = -EINVAL;
-> +			goto out;
-> +		}
-> +		msg->hdr.fromcardlen1 -= delta;
-> +	}
->  
->  	init_completion(&rtype->work);
->  	rc = ap_queue_message(zq->queue, ap_msg);
-> @@ -1240,7 +1261,7 @@ static long zcrypt_msgtype6_send_ep11_cprb(bool userspace, struct zcrypt_queue *
->  	 * as reply limit for the card firmware.
->  	 */
->  	msg->hdr.fromcardlen1 = zq->reply.bufsize -
-> -		sizeof(struct type86_hdr) - sizeof(struct type86_fmt2_ext);
-> +		sizeof(struct type86_reply_hdrs);
->  
->  	init_completion(&rtype->work);
->  	rc = ap_queue_message(zq->queue, ap_msg);
-
+diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
+index e733a2a1927a..7dd2c615bce2 100644
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -792,6 +792,13 @@ static __always_inline void set_next_event_mem(const int access, unsigned long e
+ 	u64 cnt;
+ 
+ 	ctrl = arch_timer_reg_read(access, ARCH_TIMER_REG_CTRL, clk);
++
++	/* Timer must be disabled before programming CVAL */
++	if (ctrl & ARCH_TIMER_CTRL_ENABLE) {
++		ctrl &= ~ARCH_TIMER_CTRL_ENABLE;
++		arch_timer_reg_write(access, ARCH_TIMER_REG_CTRL, ctrl, clk);
++	}
++
+ 	ctrl |= ARCH_TIMER_CTRL_ENABLE;
+ 	ctrl &= ~ARCH_TIMER_CTRL_IT_MASK;
+ 
 -- 
-Mit freundlichen Grüßen / Kind regards
-Holger Dengler
---
-IBM Systems, Linux on IBM Z Development
-dengler@linux.ibm.com
+2.18.0
+
