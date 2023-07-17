@@ -2,162 +2,262 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4B0A756017
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 12:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 592BE756019
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 12:09:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbjGQKIs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 06:08:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32950 "EHLO
+        id S230030AbjGQKJG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 06:09:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231408AbjGQKIf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 06:08:35 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1191010DC
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 03:08:22 -0700 (PDT)
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1qLL9Q-0001AT-Ht
-        for stable@vger.kernel.org; Mon, 17 Jul 2023 12:08:20 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-        by bjornoya.blackshift.org (Postfix) with SMTP id 02CD61F32F0
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:08:19 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by bjornoya.blackshift.org (Postfix) with ESMTPS id 234201F32E8;
-        Mon, 17 Jul 2023 10:08:18 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-        by hardanger.blackshift.org (OpenSMTPD) with ESMTP id da2648fb;
-        Mon, 17 Jul 2023 10:08:17 +0000 (UTC)
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     linux-can@vger.kernel.org
-Cc:     kernel@pengutronix.de, Fedor Ross <fedor.ross@ifm.com>,
-        Marek Vasut <marex@denx.de>,
-        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Thomas Kopp <thomas.kopp@microchip.com>,
-        stable@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH v3] can: mcp251xfd: __mcp251xfd_chip_set_mode(): increase poll timeout
-Date:   Mon, 17 Jul 2023 12:08:15 +0200
-Message-Id: <20230717100815.75764-1-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S229579AbjGQKJC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 06:09:02 -0400
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 47A1D10D5
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 03:09:00 -0700 (PDT)
+Date:   Mon, 17 Jul 2023 12:08:54 +0200
+From:   Pablo Neira Ayuso <pablo@netfilter.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
+        Florian Westphal <fw@strlen.de>
+Subject: Re: [PATCH 6.1 588/591] netfilter: nf_tables: prevent OOB access in
+ nft_byteorder_eval
+Message-ID: <ZLUTNi6wJ4dkMQgl@calendula>
+References: <20230716194923.861634455@linuxfoundation.org>
+ <20230716194939.064148756@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:b01:1d::7b
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230716194939.064148756@linuxfoundation.org>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fedor Ross <fedor.ross@ifm.com>
+Hi Greg,
 
-The mcp251xfd controller needs an idle bus to enter 'Normal CAN 2.0
-mode' or . The maximum length of a CAN frame is 736 bits (64 data
-bytes, CAN-FD, EFF mode, worst case bit stuffing and interframe
-spacing). For low bit rates like 10 kbit/s the arbitrarily chosen
-MCP251XFD_POLL_TIMEOUT_US of 1 ms is too small.
+On Sun, Jul 16, 2023 at 09:52:07PM +0200, Greg Kroah-Hartman wrote:
+> From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+> 
+> commit caf3ef7468f7534771b5c44cd8dbd6f7f87c2cbd upstream.
 
-Otherwise during polling for the CAN controller to enter 'Normal CAN
-2.0 mode' the timeout limit is exceeded and the configuration fails
-with:
+You can also cherry-pick this commit to:
 
-| $ ip link set dev can1 up type can bitrate 10000
-| [  731.911072] mcp251xfd spi2.1 can1: Controller failed to enter mode CAN 2.0 Mode (6) and stays in Configuration Mode (4) (con=0x068b0760, osc=0x00000468).
-| [  731.927192] mcp251xfd spi2.1 can1: CRC read error at address 0x0e0c (length=4, data=00 00 00 00, CRC=0x0000) retrying.
-| [  731.938101] A link change request failed with some changes committed already. Interface can1 may have been left with an inconsistent configuration, please check.
-| RTNETLINK answers: Connection timed out
+- 5.15.y
+- 5.10.y
+- 5.4.y
+- 4.19.y
+- 4.14.y
 
-Make MCP251XFD_POLL_TIMEOUT_US timeout calculation dynamic. Use
-maximum of 1ms and bit time of 1 full 64 data bytes CAN-FD frame in
-EFF mode, worst case bit stuffing and interframe spacing at the
-current bit rate.
+Just tested here and it is good, no hunks are reported.
 
-For easier backporting define the macro MCP251XFD_FRAME_LEN_MAX_BITS
-that holds the max frame length in bits, which is 736. This can be
-replaced by can_frame_bits(true, true, true, true, CANFD_MAX_DLEN) in
-a cleanup patch later.
+Thanks.
 
-Fixes: 55e5b97f003e8 ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
-Signed-off-by: Fedor Ross <fedor.ross@ifm.com>
-Signed-off-by: Marek Vasut <marex@denx.de>
-Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Cc: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Thomas Kopp <thomas.kopp@microchip.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
-Hello,
-
-picking up Fedor's and Marek's work. I decided to make it a minimal
-patch and add stable on Cc. The mentioned cleanup patch that replaces
-736 by can_frame_bits() can be done later and will go upstream via
-can-next.
-
-regards,
-Marc
-
-v3:
-- use 736 as max CAN frame length, calculated by Vincent Mailhol's
-  80a2fbce456e ("can: length: refactor frame lengths definition to add size in bits")
-- update commit message
-- drop patch 2/2
-
-v2: https://lore.kernel.org/all/20230505222820.126441-1-marex@denx.de
-- Add macros for CAN_BIT_STUFFING_OVERHEAD and CAN_IDLE_CONDITION_SAMPLES
-  (thanks Thomas, but please double check the comments)
-- Update commit message
-
-v1: https://lore.kernel.org/all/20230504195059.4706-1-marex@denx.de
-
-drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c | 4 +++-
- drivers/net/can/spi/mcp251xfd/mcp251xfd.h      | 1 +
- 2 files changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-index 68df6d4641b5..876e8e3cbb0b 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-@@ -227,6 +227,7 @@ static int
- __mcp251xfd_chip_set_mode(const struct mcp251xfd_priv *priv,
- 			  const u8 mode_req, bool nowait)
- {
-+	const struct can_bittiming *bt = &priv->can.bittiming;
- 	u32 con = 0, con_reqop, osc = 0;
- 	u8 mode;
- 	int err;
-@@ -251,7 +252,8 @@ __mcp251xfd_chip_set_mode(const struct mcp251xfd_priv *priv,
- 				       FIELD_GET(MCP251XFD_REG_CON_OPMOD_MASK,
- 						 con) == mode_req,
- 				       MCP251XFD_POLL_SLEEP_US,
--				       MCP251XFD_POLL_TIMEOUT_US);
-+				       max_t(unsigned long, MCP251XFD_POLL_TIMEOUT_US,
-+					     MCP251XFD_FRAME_LEN_MAX_BITS * USEC_PER_SEC / bt->bitrate));
- 	if (err != -ETIMEDOUT && err != -EBADMSG)
- 		return err;
- 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-index 7024ff0cc2c0..24510b3b8020 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-@@ -387,6 +387,7 @@ static_assert(MCP251XFD_TIMESTAMP_WORK_DELAY_SEC <
- #define MCP251XFD_OSC_STAB_TIMEOUT_US (10 * MCP251XFD_OSC_STAB_SLEEP_US)
- #define MCP251XFD_POLL_SLEEP_US (10)
- #define MCP251XFD_POLL_TIMEOUT_US (USEC_PER_MSEC)
-+#define MCP251XFD_FRAME_LEN_MAX_BITS (736)
- 
- /* Misc */
- #define MCP251XFD_NAPI_WEIGHT 32
--- 
-2.40.1
-
-
+> When evaluating byteorder expressions with size 2, a union with 32-bit and
+> 16-bit members is used. Since the 16-bit members are aligned to 32-bit,
+> the array accesses will be out-of-bounds.
+> 
+> It may lead to a stack-out-of-bounds access like the one below:
+> 
+> [   23.095215] ==================================================================
+> [   23.095625] BUG: KASAN: stack-out-of-bounds in nft_byteorder_eval+0x13c/0x320
+> [   23.096020] Read of size 2 at addr ffffc90000007948 by task ping/115
+> [   23.096358]
+> [   23.096456] CPU: 0 PID: 115 Comm: ping Not tainted 6.4.0+ #413
+> [   23.096770] Call Trace:
+> [   23.096910]  <IRQ>
+> [   23.097030]  dump_stack_lvl+0x60/0xc0
+> [   23.097218]  print_report+0xcf/0x630
+> [   23.097388]  ? nft_byteorder_eval+0x13c/0x320
+> [   23.097577]  ? kasan_addr_to_slab+0xd/0xc0
+> [   23.097760]  ? nft_byteorder_eval+0x13c/0x320
+> [   23.097949]  kasan_report+0xc9/0x110
+> [   23.098106]  ? nft_byteorder_eval+0x13c/0x320
+> [   23.098298]  __asan_load2+0x83/0xd0
+> [   23.098453]  nft_byteorder_eval+0x13c/0x320
+> [   23.098659]  nft_do_chain+0x1c8/0xc50
+> [   23.098852]  ? __pfx_nft_do_chain+0x10/0x10
+> [   23.099078]  ? __kasan_check_read+0x11/0x20
+> [   23.099295]  ? __pfx___lock_acquire+0x10/0x10
+> [   23.099535]  ? __pfx___lock_acquire+0x10/0x10
+> [   23.099745]  ? __kasan_check_read+0x11/0x20
+> [   23.099929]  nft_do_chain_ipv4+0xfe/0x140
+> [   23.100105]  ? __pfx_nft_do_chain_ipv4+0x10/0x10
+> [   23.100327]  ? lock_release+0x204/0x400
+> [   23.100515]  ? nf_hook.constprop.0+0x340/0x550
+> [   23.100779]  nf_hook_slow+0x6c/0x100
+> [   23.100977]  ? __pfx_nft_do_chain_ipv4+0x10/0x10
+> [   23.101223]  nf_hook.constprop.0+0x334/0x550
+> [   23.101443]  ? __pfx_ip_local_deliver_finish+0x10/0x10
+> [   23.101677]  ? __pfx_nf_hook.constprop.0+0x10/0x10
+> [   23.101882]  ? __pfx_ip_rcv_finish+0x10/0x10
+> [   23.102071]  ? __pfx_ip_local_deliver_finish+0x10/0x10
+> [   23.102291]  ? rcu_read_lock_held+0x4b/0x70
+> [   23.102481]  ip_local_deliver+0xbb/0x110
+> [   23.102665]  ? __pfx_ip_rcv+0x10/0x10
+> [   23.102839]  ip_rcv+0x199/0x2a0
+> [   23.102980]  ? __pfx_ip_rcv+0x10/0x10
+> [   23.103140]  __netif_receive_skb_one_core+0x13e/0x150
+> [   23.103362]  ? __pfx___netif_receive_skb_one_core+0x10/0x10
+> [   23.103647]  ? mark_held_locks+0x48/0xa0
+> [   23.103819]  ? process_backlog+0x36c/0x380
+> [   23.103999]  __netif_receive_skb+0x23/0xc0
+> [   23.104179]  process_backlog+0x91/0x380
+> [   23.104350]  __napi_poll.constprop.0+0x66/0x360
+> [   23.104589]  ? net_rx_action+0x1cb/0x610
+> [   23.104811]  net_rx_action+0x33e/0x610
+> [   23.105024]  ? _raw_spin_unlock+0x23/0x50
+> [   23.105257]  ? __pfx_net_rx_action+0x10/0x10
+> [   23.105485]  ? mark_held_locks+0x48/0xa0
+> [   23.105741]  __do_softirq+0xfa/0x5ab
+> [   23.105956]  ? __dev_queue_xmit+0x765/0x1c00
+> [   23.106193]  do_softirq.part.0+0x49/0xc0
+> [   23.106423]  </IRQ>
+> [   23.106547]  <TASK>
+> [   23.106670]  __local_bh_enable_ip+0xf5/0x120
+> [   23.106903]  __dev_queue_xmit+0x789/0x1c00
+> [   23.107131]  ? __pfx___dev_queue_xmit+0x10/0x10
+> [   23.107381]  ? find_held_lock+0x8e/0xb0
+> [   23.107585]  ? lock_release+0x204/0x400
+> [   23.107798]  ? neigh_resolve_output+0x185/0x350
+> [   23.108049]  ? mark_held_locks+0x48/0xa0
+> [   23.108265]  ? neigh_resolve_output+0x185/0x350
+> [   23.108514]  neigh_resolve_output+0x246/0x350
+> [   23.108753]  ? neigh_resolve_output+0x246/0x350
+> [   23.109003]  ip_finish_output2+0x3c3/0x10b0
+> [   23.109250]  ? __pfx_ip_finish_output2+0x10/0x10
+> [   23.109510]  ? __pfx_nf_hook+0x10/0x10
+> [   23.109732]  __ip_finish_output+0x217/0x390
+> [   23.109978]  ip_finish_output+0x2f/0x130
+> [   23.110207]  ip_output+0xc9/0x170
+> [   23.110404]  ip_push_pending_frames+0x1a0/0x240
+> [   23.110652]  raw_sendmsg+0x102e/0x19e0
+> [   23.110871]  ? __pfx_raw_sendmsg+0x10/0x10
+> [   23.111093]  ? lock_release+0x204/0x400
+> [   23.111304]  ? __mod_lruvec_page_state+0x148/0x330
+> [   23.111567]  ? find_held_lock+0x8e/0xb0
+> [   23.111777]  ? find_held_lock+0x8e/0xb0
+> [   23.111993]  ? __rcu_read_unlock+0x7c/0x2f0
+> [   23.112225]  ? aa_sk_perm+0x18a/0x550
+> [   23.112431]  ? filemap_map_pages+0x4f1/0x900
+> [   23.112665]  ? __pfx_aa_sk_perm+0x10/0x10
+> [   23.112880]  ? find_held_lock+0x8e/0xb0
+> [   23.113098]  inet_sendmsg+0xa0/0xb0
+> [   23.113297]  ? inet_sendmsg+0xa0/0xb0
+> [   23.113500]  ? __pfx_inet_sendmsg+0x10/0x10
+> [   23.113727]  sock_sendmsg+0xf4/0x100
+> [   23.113924]  ? move_addr_to_kernel.part.0+0x4f/0xa0
+> [   23.114190]  __sys_sendto+0x1d4/0x290
+> [   23.114391]  ? __pfx___sys_sendto+0x10/0x10
+> [   23.114621]  ? __pfx_mark_lock.part.0+0x10/0x10
+> [   23.114869]  ? lock_release+0x204/0x400
+> [   23.115076]  ? find_held_lock+0x8e/0xb0
+> [   23.115287]  ? rcu_is_watching+0x23/0x60
+> [   23.115503]  ? __rseq_handle_notify_resume+0x6e2/0x860
+> [   23.115778]  ? __kasan_check_write+0x14/0x30
+> [   23.116008]  ? blkcg_maybe_throttle_current+0x8d/0x770
+> [   23.116285]  ? mark_held_locks+0x28/0xa0
+> [   23.116503]  ? do_syscall_64+0x37/0x90
+> [   23.116713]  __x64_sys_sendto+0x7f/0xb0
+> [   23.116924]  do_syscall_64+0x59/0x90
+> [   23.117123]  ? irqentry_exit_to_user_mode+0x25/0x30
+> [   23.117387]  ? irqentry_exit+0x77/0xb0
+> [   23.117593]  ? exc_page_fault+0x92/0x140
+> [   23.117806]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+> [   23.118081] RIP: 0033:0x7f744aee2bba
+> [   23.118282] Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+> [   23.119237] RSP: 002b:00007ffd04a7c9f8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+> [   23.119644] RAX: ffffffffffffffda RBX: 00007ffd04a7e0a0 RCX: 00007f744aee2bba
+> [   23.120023] RDX: 0000000000000040 RSI: 000056488e9e6300 RDI: 0000000000000003
+> [   23.120413] RBP: 000056488e9e6300 R08: 00007ffd04a80320 R09: 0000000000000010
+> [   23.120809] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000040
+> [   23.121219] R13: 00007ffd04a7dc38 R14: 00007ffd04a7ca00 R15: 00007ffd04a7e0a0
+> [   23.121617]  </TASK>
+> [   23.121749]
+> [   23.121845] The buggy address belongs to the virtual mapping at
+> [   23.121845]  [ffffc90000000000, ffffc90000009000) created by:
+> [   23.121845]  irq_init_percpu_irqstack+0x1cf/0x270
+> [   23.122707]
+> [   23.122803] The buggy address belongs to the physical page:
+> [   23.123104] page:0000000072ac19f0 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x24a09
+> [   23.123609] flags: 0xfffffc0001000(reserved|node=0|zone=1|lastcpupid=0x1fffff)
+> [   23.123998] page_type: 0xffffffff()
+> [   23.124194] raw: 000fffffc0001000 ffffea0000928248 ffffea0000928248 0000000000000000
+> [   23.124610] raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+> [   23.125023] page dumped because: kasan: bad access detected
+> [   23.125326]
+> [   23.125421] Memory state around the buggy address:
+> [   23.125682]  ffffc90000007800: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [   23.126072]  ffffc90000007880: 00 00 00 00 00 f1 f1 f1 f1 f1 f1 00 00 f2 f2 00
+> [   23.126455] >ffffc90000007900: 00 00 00 00 00 00 00 00 00 f2 f2 f2 f2 00 00 00
+> [   23.126840]                                               ^
+> [   23.127138]  ffffc90000007980: 00 00 00 00 00 00 00 00 00 00 00 00 00 f3 f3 f3
+> [   23.127522]  ffffc90000007a00: f3 00 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1
+> [   23.127906] ==================================================================
+> [   23.128324] Disabling lock debugging due to kernel taint
+> 
+> Using simple s16 pointers for the 16-bit accesses fixes the problem. For
+> the 32-bit accesses, src and dst can be used directly.
+> 
+> Fixes: 96518518cc41 ("netfilter: add nftables")
+> Cc: stable@vger.kernel.org
+> Reported-by: Tanguy DUBROCA (@SidewayRE) from @Synacktiv working with ZDI
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+> Reviewed-by: Florian Westphal <fw@strlen.de>
+> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  net/netfilter/nft_byteorder.c |   14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> --- a/net/netfilter/nft_byteorder.c
+> +++ b/net/netfilter/nft_byteorder.c
+> @@ -30,11 +30,11 @@ void nft_byteorder_eval(const struct nft
+>  	const struct nft_byteorder *priv = nft_expr_priv(expr);
+>  	u32 *src = &regs->data[priv->sreg];
+>  	u32 *dst = &regs->data[priv->dreg];
+> -	union { u32 u32; u16 u16; } *s, *d;
+> +	u16 *s16, *d16;
+>  	unsigned int i;
+>  
+> -	s = (void *)src;
+> -	d = (void *)dst;
+> +	s16 = (void *)src;
+> +	d16 = (void *)dst;
+>  
+>  	switch (priv->size) {
+>  	case 8: {
+> @@ -62,11 +62,11 @@ void nft_byteorder_eval(const struct nft
+>  		switch (priv->op) {
+>  		case NFT_BYTEORDER_NTOH:
+>  			for (i = 0; i < priv->len / 4; i++)
+> -				d[i].u32 = ntohl((__force __be32)s[i].u32);
+> +				dst[i] = ntohl((__force __be32)src[i]);
+>  			break;
+>  		case NFT_BYTEORDER_HTON:
+>  			for (i = 0; i < priv->len / 4; i++)
+> -				d[i].u32 = (__force __u32)htonl(s[i].u32);
+> +				dst[i] = (__force __u32)htonl(src[i]);
+>  			break;
+>  		}
+>  		break;
+> @@ -74,11 +74,11 @@ void nft_byteorder_eval(const struct nft
+>  		switch (priv->op) {
+>  		case NFT_BYTEORDER_NTOH:
+>  			for (i = 0; i < priv->len / 2; i++)
+> -				d[i].u16 = ntohs((__force __be16)s[i].u16);
+> +				d16[i] = ntohs((__force __be16)s16[i]);
+>  			break;
+>  		case NFT_BYTEORDER_HTON:
+>  			for (i = 0; i < priv->len / 2; i++)
+> -				d[i].u16 = (__force __u16)htons(s[i].u16);
+> +				d16[i] = (__force __u16)htons(s16[i]);
+>  			break;
+>  		}
+>  		break;
+> 
+> 
