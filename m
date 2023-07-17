@@ -2,145 +2,177 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B86D675670C
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 17:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B6BD7568CC
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 18:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230366AbjGQPCG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 11:02:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41798 "EHLO
+        id S232068AbjGQQOh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 12:14:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229780AbjGQPCF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 11:02:05 -0400
-Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4661BA6;
-        Mon, 17 Jul 2023 08:02:04 -0700 (PDT)
-Message-ID: <8497337677209ff8a9418f1a4873eb3a.pc@manguebit.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-        s=dkim; t=1689606122;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=54qdC8498DlkNTDRty9QASCfdA85ErVQYd+x/s04498=;
-        b=k8q+A4gkndJTbnEPkIuS9+QR9OOpVfxVQHERfYjIvdXh4fI4g0PfO+xxJ9Yfh+cixbR95+
-        v4F9SCgrveGVFTpCfhQPtge3Owkzp0vbc2JN2aUT+8OdgBGsdPq6GAt1IV/8IZhII01wMj
-        P8cXp9hA0R92fk+QNLophm9g2Vms5ZaLk8X7TRKhobwwZvvIG67HYpxhVWwUl3tK7CmcNt
-        QFgUvoDNcSMWr94XpkB02E1Uj0no9fur1IgpgVtuaR3+g31YUku6BtatSsEBTt0lgjOMRd
-        tL1oqAg3XX2f+jfCpP3e6tuZULJx0sNr5ZOly+pXDb8EnT5o/8oIKsveX46NYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-        s=dkim; t=1689606122;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=54qdC8498DlkNTDRty9QASCfdA85ErVQYd+x/s04498=;
-        b=MeM7Jod02x1RYPt9w6clN6xvoH1mCYf8JxxTqdWsAz7t0H/lqCvWId8vM3NVpz2khcM61p
-        1tvuFsX/pUEjO8VrQ8wnN64r/um7G/7KMgN+bEwDLuuFvfxICPehEYKL5U9g3hTOdRrgL2
-        mspnL0FdEVJkbRadOa/jD5Yga5+u6wd2sfZEsu6j6tUWNxhIHktzyb8ELVmPQDiX0gR4+5
-        udIh3XsFsD5hSU0iI8CrrH/J20+z/aqfoOIfdr3dAtlT7SOgRiCY4QOnljF3vchbz7naZp
-        vp4z1wWqd5kjVfAunNS6I+R+icfxlGPlR4nTJgV+rbJCw+GTKm1rSucFhT3gOA==
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=pc@manguebit.com smtp.mailfrom=pc@manguebit.com
-ARC-Seal: i=1; s=dkim; d=manguebit.com; t=1689606122; a=rsa-sha256;
-        cv=none;
-        b=kjKjMjIZ7n3pH4ia5nwuowMMBdcFkB+DxOECGgRLhGm0fJWgjv/JXYhMXMOw4AcSwRWPAI
-        koJe43EcG24B47zRFT+l4yq5RheHvyASG/eoJo7YiGHLUbpINvJ7BGEulnCWLD2vS/t4O+
-        SaPk0sMjETcdQp9nHH6xIRhPjIxkPcdT2yFV9r8/xzNQh3p+Rhv1LcEeilFahaomvjczXw
-        Ik7dNvCCNJwju/BndLwqiIkIm9iPLMgWwsft1EZkm3ozjuNJo6wOkXsfEG/Tu3VJfwbT+a
-        aV7YtZf9wMQ0yo+kWqqXjdUwbhAfGaXVi0faPps2gYu47bEUWP5Smm5FoNIiEQ==
-From:   Paulo Alcantara <pc@manguebit.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, linux-cifs@vger.kernel.org,
-        Steve French <smfrench@gmail.com>
-Subject: Re: [PATCH 4/4] smb: client: improve DFS mount check
-In-Reply-To: <2023071646-freeness-untrue-230d@gregkh>
-References: <20230628002450.18781-1-pc@manguebit.com>
- <20230628002450.18781-4-pc@manguebit.com>
- <0bb4a367ebd7ae83dd1538965e3c0d2b.pc@manguebit.com>
- <2023071306-nearly-saved-a419@gregkh>
- <b95eb538478eab38fac638dbeaf97e70.pc@manguebit.com>
- <2023071646-freeness-untrue-230d@gregkh>
-Date:   Mon, 17 Jul 2023 12:01:58 -0300
+        with ESMTP id S232177AbjGQQOX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 12:14:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A916010E3;
+        Mon, 17 Jul 2023 09:14:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C5BA61153;
+        Mon, 17 Jul 2023 16:14:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A259DC43397;
+        Mon, 17 Jul 2023 16:14:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689610457;
+        bh=Sx44thNjRKhLP9P5+or0VlNLH7j5C5I07ogs5/16HhY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=T80r1gPbXjv1SoRVNtZ7HW9NItzws0okoDQBuQEbaeOo3VBY+9GQ8qWSpRT5mMLEk
+         n65oQS6Sm6H/4UxywXaocN/LNB8vaeNQ1CQ+8OUs5Ke/YL8gIbktTjKe/EVrHECAHy
+         3HMTD9R6rdXzMnbXPCJYHlUvp1oS+QjXru7blRzLu6e8e4XuDfmmBriUCxBOjsKCvq
+         S0m+k6ERQEPs+ftiZFthFTBhDUYvxAny+jbaFR3BtmgcvsL16VUvrYfVJPgWr5u6K3
+         MBt3Uxpms6QbZLAQpMP8RItQwnXZ9GG6sNAlxvjv3EWb8HQ32Pw6lDTNv9t9h5ls5U
+         OzJUm6TbHM7Lg==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-4fb5bcb9a28so7365980e87.3;
+        Mon, 17 Jul 2023 09:14:17 -0700 (PDT)
+X-Gm-Message-State: ABy/qLbI718QoeGWzNqImWlNbJTsZHBLcKHsf1L327MqrzB09cnh7Np+
+        VdRSdQqNMLR7PW+wRFvv+aGGC28TfkhBPNprRm0=
+X-Google-Smtp-Source: APBJJlGSRK/NccnTlgPIrL/sVQ3Gt+l6oXdva756uEn+PlB77r9xvayYmDWddY+owMdYJMgTGcAOq61mjkUYKNA4wIg=
+X-Received: by 2002:a19:8c44:0:b0:4fb:8de9:ac13 with SMTP id
+ i4-20020a198c44000000b004fb8de9ac13mr8170427lfj.23.1689610455595; Mon, 17 Jul
+ 2023 09:14:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230702025708.784106-1-guoren@kernel.org> <20230704164003.GB83892@hirez.programming.kicks-ass.net>
+ <CAJF2gTTc0Gyo=K-0dCW6wu7q=Wq34hgTB69qJ7VSF_KAgKhavA@mail.gmail.com>
+ <20230710080152.GA3028865@hirez.programming.kicks-ass.net>
+ <CAJF2gTTt23iSDG_m4ihPhXhYDrz3Xnih=KGLx_ayBLbzPqaTaQ@mail.gmail.com> <20230717104508.GF4253@hirez.programming.kicks-ass.net>
+In-Reply-To: <20230717104508.GF4253@hirez.programming.kicks-ass.net>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Tue, 18 Jul 2023 00:14:03 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQDVq0zedQ+55oX=gGSqb5OkDUoN1ipVu8RUQ5U_e=a9Q@mail.gmail.com>
+Message-ID: <CAJF2gTQDVq0zedQ+55oX=gGSqb5OkDUoN1ipVu8RUQ5U_e=a9Q@mail.gmail.com>
+Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
+        luto@kernel.org, conor.dooley@microchip.com, heiko@sntech.de,
+        jszhang@kernel.org, lazyparser@gmail.com, falcon@tinylab.org,
+        chenhuacai@kernel.org, apatel@ventanamicro.com,
+        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
+        palmer@dabbelt.com, bjorn@rivosinc.com, daniel.thompson@linaro.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
+        Guo Ren <guoren@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Greg KH <gregkh@linuxfoundation.org> writes:
-
-> On Thu, Jul 13, 2023 at 06:48:00PM -0300, Paulo Alcantara wrote:
->> Hi Greg,
->> 
->> Greg KH <gregkh@linuxfoundation.org> writes:
->> 
->> > On Wed, Jul 12, 2023 at 06:10:27PM -0300, Paulo Alcantara wrote:
->> >> Paulo Alcantara <pc@manguebit.com> writes:
->> >> 
->> >> > Some servers may return error codes from REQ_GET_DFS_REFERRAL requests
->> >> > that are unexpected by the client, so to make it easier, assume
->> >> > non-DFS mounts when the client can't get the initial DFS referral of
->> >> > @ctx->UNC in dfs_mount_share().
->> >> >
->> >> > Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
->> >> > ---
->> >> >  fs/smb/client/dfs.c | 5 +++--
->> >> >  1 file changed, 3 insertions(+), 2 deletions(-)
->> >> >
->> >> > diff --git a/fs/smb/client/dfs.c b/fs/smb/client/dfs.c
->> >> > index afbaef05a1f1..a7f2e0608adf 100644
->> >> 
->> >> Stable team, could you please pick this up as a fix for
->> >> 
->> >>         8e3554150d6c ("cifs: fix sharing of DFS connections")
->> >> 
->> >> The upstream commit is 5f2a0afa9890 ("smb: client: improve DFS mount check").
->> >
->> > Does not apply cleanly, can you provide a working backport?
->> 
->> Find attached backport of
+On Mon, Jul 17, 2023 at 6:45=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
 >
->> >From 435048ee0f477947d1d93f5a9b60b2d2df2b7554 Mon Sep 17 00:00:00 2001
->> From: Paulo Alcantara <pc@manguebit.com>
->> Date: Tue, 27 Jun 2023 21:24:50 -0300
->> Subject: [PATCH stable v6.3] smb: client: improve DFS mount check
+> On Mon, Jul 17, 2023 at 07:33:25AM +0800, Guo Ren wrote:
+> > On Mon, Jul 10, 2023 at 4:02=E2=80=AFPM Peter Zijlstra <peterz@infradea=
+d.org> wrote:
+> > >
+> > > On Sun, Jul 09, 2023 at 10:30:22AM +0800, Guo Ren wrote:
+> > > > On Wed, Jul 5, 2023 at 12:40=E2=80=AFAM Peter Zijlstra <peterz@infr=
+adead.org> wrote:
+> > > > >
+> > > > > On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote=
+:
+> > > > > > From: Guo Ren <guoren@linux.alibaba.com>
+> > > > > >
+> > > > > > The irqentry_nmi_enter/exit would force the current context int=
+o in_interrupt.
+> > > > > > That would trigger the kernel to dead panic, but the kdb still =
+needs "ebreak" to
+> > > > > > debug the kernel.
+> > > > > >
+> > > > > > Move irqentry_nmi_enter/exit to exception_enter/exit could corr=
+ect handle_break
+> > > > > > of the kernel side.
+> > > > >
+> > > > > This doesn't explain much if anything :/
+> > > > >
+> > > > > I'm confused (probably because I don't know RISC-V very well), wh=
+at's
+> > > > > EBREAK and how does it happen?
+> > > > EBREAK is just an instruction of riscv which would rise breakpoint =
+exception.
+> > > >
+> > > >
+> > > > >
+> > > > > Specifically, if EBREAK can happen inside an local_irq_disable() =
+region,
+> > > > > then the below change is actively wrong. Any exception/interrupt =
+that
+> > > > > can happen while local_irq_disable() must be treated like an NMI.
+> > > > When the ebreak happend out of local_irq_disable region, but
+> > > > __nmi_enter forces handle_break() into in_interupt() state. So how
+> > >
+> > > And why is that a problem? I think I'm missing something fundamental
+> > > here...
+> > The irqentry_nmi_enter() would force the current context to get
+> > in_interrupt=3Dtrue, although ebreak happens in the context which is
+> > in_interrupt=3Dfalse.
+> > A lot of checking codes, such as:
+> >         if (in_interrupt())
+> >                 panic("Fatal exception in interrupt");
 >
-> I'm confused, 6.3.y is end-of-life, and:
+> Why would you do that?!?
 >
->> 
->> Some servers may return error codes from REQ_GET_DFS_REFERRAL requests
->> that are unexpected by the client, so to make it easier, assume
->> non-DFS mounts when the client can't get the initial DFS referral of
->> @ctx->UNC in dfs_mount_share().
->> 
->> Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
->> Signed-off-by: Steve French <stfrench@microsoft.com>
->> ---
->>  fs/cifs/dfs.c | 5 +++--
+> Are you're trying to differentiate between an exception and an
+> interrupt?
 >
-> This file is not in the 6.4.y or any older kernel tree.
+> You *could* have ebreak in an interrupt, right? So why panic the machine
+> if that happens?
+
+Do you mean the below patch? Yes, it could fix up.
+
+diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
+index f910dfccbf5d..92899db6696b 100644
+--- a/arch/riscv/kernel/traps.c
++++ b/arch/riscv/kernel/traps.c
+@@ -85,8 +85,6 @@ void die(struct pt_regs *regs, const char *str)
+        spin_unlock_irqrestore(&die_lock, flags);
+        oops_exit();
+
+-       if (in_interrupt())
+-               panic("Fatal exception in interrupt");
+        if (panic_on_oops)
+                panic("Fatal exception");
+        if (ret !=3D NOTIFY_STOP)
+diff --git a/kernel/exit.c b/kernel/exit.c
+index edb50b4c9972..a46a1aef66ce 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -940,8 +940,6 @@ void __noreturn make_task_dead(int signr)
+        struct task_struct *tsk =3D current;
+        unsigned int limit;
+
+-       if (unlikely(in_interrupt()))
+-               panic("Aiee, killing interrupt handler!");
+        if (unlikely(!tsk->pid))
+                panic("Attempted to kill the idle task!");
+
+But how does x86 deal with it without kernel/exit.c modifcation?
+
 >
-> So what tree did you make this against, and where should it be applied
-> to?
+> > It would make the kernel panic, but we don't panic; we want back to the=
+ shell.
+> > eg:
+> > echo BUG > /sys/kernel/debug/provoke-crash/DIRECT
+>
+>
+>
 
-Err, sorry about missing the EOL of 6.3.y.  The attached patch was based
-on v6.3.13 from the stable tree[1], where it didn't have the rename
-from "fs/cifs" to "fs/smb/client" yet.  Please ignore the attached
-patch.
 
-So, the commit
-
-        5f2a0afa9890 ("smb: client: improve DFS mount check")
-
-should be applied to 6.4.y.  I've checked that it applies cleanly
-against linux-6.4.y from the linux-stable-rc tree[2].
-
-Thanks.
-
-[1] git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-[2] git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+--=20
+Best Regards
+ Guo Ren
