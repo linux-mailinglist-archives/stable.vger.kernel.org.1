@@ -2,55 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57D75756D8E
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 21:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D5CF756DAA
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 21:54:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjGQTmg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 15:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40632 "EHLO
+        id S229714AbjGQTx6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 15:53:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229724AbjGQTme (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 15:42:34 -0400
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB3B132
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 12:42:30 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D659E1BF206;
-        Mon, 17 Jul 2023 19:42:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1689622948;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XBN2hYgkZC+vX2/vBakjoME0dxps0dBkBhnZWQPKiLs=;
-        b=UZlw3ThIPhfB0CmBrpMhZwVxCED6vFYJJwuDlhoSqA8tLKVL7D/rPCapNN98zleSbsa6As
-        vlZJsgm6+QsyQpAymX5t2KImlJfSFd5UTSBMJpUjhljQ4hTfD/pppYPrA8N9R9kpiuUTHe
-        F4hF873Jzzg2TqZcFlVQYleaC8T5BMs/kSPvjPrI/aq0llu3nnDuh2X1yZcyBPHPR1RSJT
-        UzSblPMTFC3WVIp+oRwDDbm13rIi8PtqJRch9XRN8op340K/tdDTdxBli3fYH2fgHlW9i6
-        1vlF+vT9kQ377Gj/l3cDr9J9PWRiWFO7nMdM7ZGqENgZrhd5rpIccGZGTYb8nw==
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Michael Walle <michael@walle.cc>,
-        <linux-mtd@lists.infradead.org>
-Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Michal Simek <michal.simek@amd.com>, stable@vger.kernel.org
-Subject: [PATCH 3/3] mtd: rawnand: pl353: Ensure program page operations are successful
-Date:   Mon, 17 Jul 2023 21:42:21 +0200
-Message-Id: <20230717194221.229778-3-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230717194221.229778-1-miquel.raynal@bootlin.com>
-References: <20230717194221.229778-1-miquel.raynal@bootlin.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+        with ESMTP id S229634AbjGQTx5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 15:53:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898A4C0;
+        Mon, 17 Jul 2023 12:53:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22B1F61236;
+        Mon, 17 Jul 2023 19:53:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D276C433C7;
+        Mon, 17 Jul 2023 19:53:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1689623635;
+        bh=NCbpY787zrxJKr3I8HVd92gbcSc8WHXVtrAGRKVrk1k=;
+        h=Date:To:From:Subject:From;
+        b=v6BgFRLpN/CEvJu4YEkTAbIi2+JV568evvOA8yhzQ+sp+CTAGPflsIVciHO7Vv+kd
+         gnudXYrzatjcIFJp4qSA/G/C1l8j1Ev3xFPJ1UjIH3t1dWsHAIdYVIyCm7kuiFE6Zf
+         nsTnJ3742irdq2b5T7XpREGv8UOaEdBOBNBOHiRY=
+Date:   Mon, 17 Jul 2023 12:53:54 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        josh@joshtriplett.org, ojeda@kernel.org, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] prctl-move-pr_get_auxv-out-of-pr_mce_kill.patch removed from -mm tree
+Message-Id: <20230717195355.6D276C433C7@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,71 +45,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The NAND core complies with the ONFI specification, which itself
-mentions that after any program or erase operation, a status check
-should be performed to see whether the operation was finished *and*
-successful.
 
-The NAND core offers helpers to finish a page write (sending the
-"PAGE PROG" command, waiting for the NAND chip to be ready again, and
-checking the operation status). But in some cases, advanced controller
-drivers might want to optimize this and craft their own page write
-helper to leverage additional hardware capabilities, thus not always
-using the core facilities.
+The quilt patch titled
+     Subject: prctl: move PR_GET_AUXV out of PR_MCE_KILL
+has been removed from the -mm tree.  Its filename was
+     prctl-move-pr_get_auxv-out-of-pr_mce_kill.patch
 
-Some drivers, like this one, do not use the core helper to finish a page
-write because the final cycles are automatically managed by the
-hardware. In this case, the additional care must be taken to manually
-perform the final status check.
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Let's read the NAND chip status at the end of the page write helper and
-return -EIO upon error.
+------------------------------------------------------
+From: Miguel Ojeda <ojeda@kernel.org>
+Subject: prctl: move PR_GET_AUXV out of PR_MCE_KILL
+Date: Sun, 9 Jul 2023 01:33:44 +0200
 
-Cc: Michal Simek <michal.simek@amd.com>
-Cc: stable@vger.kernel.org
-Fixes: 08d8c62164a3 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Somehow PR_GET_AUXV got added into PR_MCE_KILL's switch when the patch was
+applied [1].
 
+Thus move it out of the switch, to the place the patch added it.
+
+In the recently released v6.4 kernel some user could, in principle, be
+already using this feature by mapping the right page and passing the
+PR_GET_AUXV constant as a pointer:
+
+    prctl(PR_MCE_KILL, PR_GET_AUXV, ...)
+
+So this does change the behavior for users.  We could keep the bug since
+the other subcases in PR_MCE_KILL (PR_MCE_KILL_CLEAR and PR_MCE_KILL_SET)
+do not overlap.
+
+However, v6.4 may be recent enough (2 weeks old) that moving the lines
+(rather than just adding a new case) does not break anybody?  Moreover,
+the documentation in man-pages was just committed today [2].
+
+Link: https://lkml.kernel.org/r/20230708233344.361854-1-ojeda@kernel.org
+Fixes: ddc65971bb67 ("prctl: add PR_GET_AUXV to copy auxv to userspace")
+Link: https://lore.kernel.org/all/d81864a7f7f43bca6afa2a09fc2e850e4050ab42.1680611394.git.josh@joshtriplett.org/ [1]
+Link: https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/commit/?id=8cf0c06bfd3c2b219b044d4151c96f0da50af9ad [2]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-Hello Michal,
+ kernel/sys.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Same as for the Arasan controller, this is not tested, but I believe it
-is required. Let me know how testing goes.
+--- a/kernel/sys.c~prctl-move-pr_get_auxv-out-of-pr_mce_kill
++++ a/kernel/sys.c
+@@ -2535,11 +2535,6 @@ SYSCALL_DEFINE5(prctl, int, option, unsi
+ 			else
+ 				return -EINVAL;
+ 			break;
+-	case PR_GET_AUXV:
+-		if (arg4 || arg5)
+-			return -EINVAL;
+-		error = prctl_get_auxv((void __user *)arg2, arg3);
+-		break;
+ 		default:
+ 			return -EINVAL;
+ 		}
+@@ -2694,6 +2689,11 @@ SYSCALL_DEFINE5(prctl, int, option, unsi
+ 	case PR_SET_VMA:
+ 		error = prctl_set_vma(arg2, arg3, arg4, arg5);
+ 		break;
++	case PR_GET_AUXV:
++		if (arg4 || arg5)
++			return -EINVAL;
++		error = prctl_get_auxv((void __user *)arg2, arg3);
++		break;
+ #ifdef CONFIG_KSM
+ 	case PR_SET_MEMORY_MERGE:
+ 		if (arg3 || arg4 || arg5)
+_
 
-Thanks,
-Miquèl
----
- drivers/mtd/nand/raw/pl35x-nand-controller.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Patches currently in -mm which might be from ojeda@kernel.org are
 
-diff --git a/drivers/mtd/nand/raw/pl35x-nand-controller.c b/drivers/mtd/nand/raw/pl35x-nand-controller.c
-index 28b7bd7e22eb..9dd06eeb021e 100644
---- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
-+++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
-@@ -513,6 +513,7 @@ static int pl35x_nand_write_page_hwecc(struct nand_chip *chip,
- 	u32 addr1 = 0, addr2 = 0, row;
- 	u32 cmd_addr;
- 	int i, ret;
-+	u8 status;
- 
- 	ret = pl35x_smc_set_ecc_mode(nfc, chip, PL35X_SMC_ECC_CFG_MODE_APB);
- 	if (ret)
-@@ -565,6 +566,14 @@ static int pl35x_nand_write_page_hwecc(struct nand_chip *chip,
- 	if (ret)
- 		goto disable_ecc_engine;
- 
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		goto disable_ecc_engine;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		ret = -EIO;
-+
- disable_ecc_engine:
- 	pl35x_smc_set_ecc_mode(nfc, chip, PL35X_SMC_ECC_CFG_MODE_BYPASS);
- 
--- 
-2.34.1
 
