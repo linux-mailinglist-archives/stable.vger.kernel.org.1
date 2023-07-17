@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8CAD756D8D
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 21:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57D75756D8E
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 21:42:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbjGQTmf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 15:42:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40630 "EHLO
+        id S229481AbjGQTmg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 15:42:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjGQTme (ORCPT
+        with ESMTP id S229724AbjGQTme (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 15:42:34 -0400
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12932129
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 12:42:29 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A3D871BF205;
-        Mon, 17 Jul 2023 19:42:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB3B132
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 12:42:30 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D659E1BF206;
+        Mon, 17 Jul 2023 19:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1689622947;
+        t=1689622948;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5gEUn549HX6Kut5VTQH3vbjTC7LCGLE2/fOFWaktOz4=;
-        b=fbQxt2fNLkhDxfzd7Vt8XwYtMdwJgL/QKaWkeSdLrmz0X5uQpYQIzRM+m2/a4bcTGRBsz7
-        ka/0eEzwcx2uKW6lFPovIDVYLpAYM7+Iho11pdvW0KM64QUkxOD9x59Aglgdr/V23gmK0V
-        VFqLWiM61he5e0hGSgjc4FYqXGg1670S/MvWBqYicIqyPwd/Mjqf+m/aCFoRcUvcy7b1yt
-        IHEaa6ajvEgFO8jtn/nPf2N0k9HD6f/Msuzg73pmdp4T1maWUs9tiX+VRFYlzX1OnTkeT0
-        8DmPB+k/zxJ6dMZYdrvgSd0/DKxpoaIyrz8QTWNDvyNIpXEGvN8s23lR1J7dhw==
+        bh=XBN2hYgkZC+vX2/vBakjoME0dxps0dBkBhnZWQPKiLs=;
+        b=UZlw3ThIPhfB0CmBrpMhZwVxCED6vFYJJwuDlhoSqA8tLKVL7D/rPCapNN98zleSbsa6As
+        vlZJsgm6+QsyQpAymX5t2KImlJfSFd5UTSBMJpUjhljQ4hTfD/pppYPrA8N9R9kpiuUTHe
+        F4hF873Jzzg2TqZcFlVQYleaC8T5BMs/kSPvjPrI/aq0llu3nnDuh2X1yZcyBPHPR1RSJT
+        UzSblPMTFC3WVIp+oRwDDbm13rIi8PtqJRch9XRN8op340K/tdDTdxBli3fYH2fgHlW9i6
+        1vlF+vT9kQ377Gj/l3cDr9J9PWRiWFO7nMdM7ZGqENgZrhd5rpIccGZGTYb8nw==
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -38,9 +38,9 @@ To:     Richard Weinberger <richard@nod.at>,
 Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Michal Simek <michal.simek@amd.com>, stable@vger.kernel.org
-Subject: [PATCH 2/3] mtd: rawnand: arasan: Ensure program page operations are successful
-Date:   Mon, 17 Jul 2023 21:42:20 +0200
-Message-Id: <20230717194221.229778-2-miquel.raynal@bootlin.com>
+Subject: [PATCH 3/3] mtd: rawnand: pl353: Ensure program page operations are successful
+Date:   Mon, 17 Jul 2023 21:42:21 +0200
+Message-Id: <20230717194221.229778-3-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230717194221.229778-1-miquel.raynal@bootlin.com>
 References: <20230717194221.229778-1-miquel.raynal@bootlin.com>
@@ -80,62 +80,49 @@ return -EIO upon error.
 
 Cc: Michal Simek <michal.simek@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 88ffef1b65cf ("mtd: rawnand: arasan: Support the hardware BCH ECC engine")
+Fixes: 08d8c62164a3 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
 ---
 
 Hello Michal,
 
-I have not tested this, but based on a report on another driver, I
-believe the status check is also missing here and could sometimes
-lead to unnoticed partial writes.
+Same as for the Arasan controller, this is not tested, but I believe it
+is required. Let me know how testing goes.
 
-Please test on your side that everything still works and let me
-know how it goes.
-
-Thanks a lot.
+Thanks,
 Miquèl
 ---
- drivers/mtd/nand/raw/arasan-nand-controller.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/pl35x-nand-controller.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/arasan-nand-controller.c b/drivers/mtd/nand/raw/arasan-nand-controller.c
-index 906eef70cb6d..487c139316fe 100644
---- a/drivers/mtd/nand/raw/arasan-nand-controller.c
-+++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
-@@ -515,6 +515,7 @@ static int anfc_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 	unsigned int len = mtd->writesize + (oob_required ? mtd->oobsize : 0);
- 	dma_addr_t dma_addr;
+diff --git a/drivers/mtd/nand/raw/pl35x-nand-controller.c b/drivers/mtd/nand/raw/pl35x-nand-controller.c
+index 28b7bd7e22eb..9dd06eeb021e 100644
+--- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
++++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
+@@ -513,6 +513,7 @@ static int pl35x_nand_write_page_hwecc(struct nand_chip *chip,
+ 	u32 addr1 = 0, addr2 = 0, row;
+ 	u32 cmd_addr;
+ 	int i, ret;
 +	u8 status;
- 	int ret;
- 	struct anfc_op nfc_op = {
- 		.pkt_reg =
-@@ -561,10 +562,21 @@ static int anfc_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
- 	}
  
- 	/* Spare data is not protected */
--	if (oob_required)
-+	if (oob_required) {
- 		ret = nand_write_oob_std(chip, page);
-+		if (ret)
-+			return ret;
-+	}
+ 	ret = pl35x_smc_set_ecc_mode(nfc, chip, PL35X_SMC_ECC_CFG_MODE_APB);
+ 	if (ret)
+@@ -565,6 +566,14 @@ static int pl35x_nand_write_page_hwecc(struct nand_chip *chip,
+ 	if (ret)
+ 		goto disable_ecc_engine;
  
--	return ret;
 +	/* Check write status on the chip side */
 +	ret = nand_status_op(chip, &status);
 +	if (ret)
-+		return ret;
++		goto disable_ecc_engine;
 +
 +	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
++		ret = -EIO;
 +
-+	return 0;
- }
+ disable_ecc_engine:
+ 	pl35x_smc_set_ecc_mode(nfc, chip, PL35X_SMC_ECC_CFG_MODE_BYPASS);
  
- static int anfc_sel_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
 -- 
 2.34.1
 
