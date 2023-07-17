@@ -2,31 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAD9F756D8C
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 21:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CAD756D8D
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 21:42:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbjGQTmb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 15:42:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40618 "EHLO
+        id S229633AbjGQTmf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 15:42:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjGQTma (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 15:42:30 -0400
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20FC9D3
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 12:42:27 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EE27E1BF204;
-        Mon, 17 Jul 2023 19:42:21 +0000 (UTC)
+        with ESMTP id S229481AbjGQTme (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 15:42:34 -0400
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12932129
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 12:42:29 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A3D871BF205;
+        Mon, 17 Jul 2023 19:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1689622946;
+        t=1689622947;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=RW03N0S/bEhxMDlvc7ZnHFSbKTSNbVdEvn4DEIHdDvw=;
-        b=S3cq2YVGjPjyLO/zN1cJlZ/PGK5hAMYIFnMJ1pD5D/T2hlneLXaOKNuMcrvbAh78yqYs5Y
-        BNSL6M0l1tI5SMJ2x47bdO4igVcWXKwSBpX0mWBAyiUP7bp74JFn/8/ymfLzdCxQotxk5b
-        Way8MBFUx7Z8hv5ekT2cGMpRDA+nMPgBvQvV7J/kVOKErlJOJY834hrNXFJJbq0Id+GYjF
-        6OBFrKMQex+TrPF+drrhJ81hQ2nfNhFGSXZ1WcsZKKncr3/KGcDbhsN79oUudj/dDayntN
-        FVfigHBnxSfDxF6JvA86GDLjcs8+nG7GJ1v5vRYp/E0JpWvpflTE4vJI8uME6g==
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=5gEUn549HX6Kut5VTQH3vbjTC7LCGLE2/fOFWaktOz4=;
+        b=fbQxt2fNLkhDxfzd7Vt8XwYtMdwJgL/QKaWkeSdLrmz0X5uQpYQIzRM+m2/a4bcTGRBsz7
+        ka/0eEzwcx2uKW6lFPovIDVYLpAYM7+Iho11pdvW0KM64QUkxOD9x59Aglgdr/V23gmK0V
+        VFqLWiM61he5e0hGSgjc4FYqXGg1670S/MvWBqYicIqyPwd/Mjqf+m/aCFoRcUvcy7b1yt
+        IHEaa6ajvEgFO8jtn/nPf2N0k9HD6f/Msuzg73pmdp4T1maWUs9tiX+VRFYlzX1OnTkeT0
+        8DmPB+k/zxJ6dMZYdrvgSd0/DKxpoaIyrz8QTWNDvyNIpXEGvN8s23lR1J7dhw==
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
@@ -36,19 +37,21 @@ To:     Richard Weinberger <richard@nod.at>,
         <linux-mtd@lists.infradead.org>
 Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
-        stable@vger.kernel.org, Aviram Dali <aviramd@marvell.com>
-Subject: [PATCH 1/3] mtd: rawnand: marvell: Ensure program page operations are successful
-Date:   Mon, 17 Jul 2023 21:42:19 +0200
-Message-Id: <20230717194221.229778-1-miquel.raynal@bootlin.com>
+        Michal Simek <michal.simek@amd.com>, stable@vger.kernel.org
+Subject: [PATCH 2/3] mtd: rawnand: arasan: Ensure program page operations are successful
+Date:   Mon, 17 Jul 2023 21:42:20 +0200
+Message-Id: <20230717194221.229778-2-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230717194221.229778-1-miquel.raynal@bootlin.com>
+References: <20230717194221.229778-1-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: miquel.raynal@bootlin.com
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -75,51 +78,52 @@ perform the final status check.
 Let's read the NAND chip status at the end of the page write helper and
 return -EIO upon error.
 
+Cc: Michal Simek <michal.simek@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 02f26ecf8c77 ("mtd: nand: add reworked Marvell NAND controller driver")
-Reported-by: Aviram Dali <aviramd@marvell.com>
+Fixes: 88ffef1b65cf ("mtd: rawnand: arasan: Support the hardware BCH ECC engine")
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
 ---
 
-Hello Aviram,
+Hello Michal,
 
-I have not tested this, but based on your report I believe the status
-check is indeed missing here and could sometimes lead to unnoticed
-partial writes.
+I have not tested this, but based on a report on another driver, I
+believe the status check is also missing here and could sometimes
+lead to unnoticed partial writes.
 
-Please test on your side and reply with your Tested-by if you validate
-the change.
+Please test on your side that everything still works and let me
+know how it goes.
 
-Any backport on kernels predating v4.17 will likely fail because of a
-folder rename, so you will have to do the backport manually if needed.
-
-Thanks,
+Thanks a lot.
 Miquèl
 ---
- drivers/mtd/nand/raw/marvell_nand.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/arasan-nand-controller.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index 30c15e4e1cc0..576441095012 100644
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -1162,6 +1162,7 @@ static int marvell_nfc_hw_ecc_hmg_do_write_page(struct nand_chip *chip,
- 		.ndcb[2] = NDCB2_ADDR5_PAGE(page),
- 	};
- 	unsigned int oob_bytes = lt->spare_bytes + (raw ? lt->ecc_bytes : 0);
+diff --git a/drivers/mtd/nand/raw/arasan-nand-controller.c b/drivers/mtd/nand/raw/arasan-nand-controller.c
+index 906eef70cb6d..487c139316fe 100644
+--- a/drivers/mtd/nand/raw/arasan-nand-controller.c
++++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
+@@ -515,6 +515,7 @@ static int anfc_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	unsigned int len = mtd->writesize + (oob_required ? mtd->oobsize : 0);
+ 	dma_addr_t dma_addr;
 +	u8 status;
  	int ret;
+ 	struct anfc_op nfc_op = {
+ 		.pkt_reg =
+@@ -561,10 +562,21 @@ static int anfc_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
+ 	}
  
- 	/* NFCv2 needs more information about the operation being executed */
-@@ -1195,7 +1196,18 @@ static int marvell_nfc_hw_ecc_hmg_do_write_page(struct nand_chip *chip,
+ 	/* Spare data is not protected */
+-	if (oob_required)
++	if (oob_required) {
+ 		ret = nand_write_oob_std(chip, page);
++		if (ret)
++			return ret;
++	}
  
- 	ret = marvell_nfc_wait_op(chip,
- 				  PSEC_TO_MSEC(sdr->tPROG_max));
 -	return ret;
-+	if (ret)
-+		return ret;
-+
 +	/* Check write status on the chip side */
 +	ret = nand_status_op(chip, &status);
 +	if (ret)
@@ -131,30 +135,7 @@ index 30c15e4e1cc0..576441095012 100644
 +	return 0;
  }
  
- static int marvell_nfc_hw_ecc_hmg_write_page_raw(struct nand_chip *chip,
-@@ -1624,6 +1636,7 @@ static int marvell_nfc_hw_ecc_bch_write_page(struct nand_chip *chip,
- 	int data_len = lt->data_bytes;
- 	int spare_len = lt->spare_bytes;
- 	int chunk, ret;
-+	u8 status;
- 
- 	marvell_nfc_select_target(chip, chip->cur_cs);
- 
-@@ -1660,6 +1673,14 @@ static int marvell_nfc_hw_ecc_bch_write_page(struct nand_chip *chip,
- 	if (ret)
- 		return ret;
- 
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
-+
- 	return 0;
- }
- 
+ static int anfc_sel_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
 -- 
 2.34.1
 
