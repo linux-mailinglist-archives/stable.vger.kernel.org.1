@@ -2,71 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9D0D755F8C
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 11:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB766756006
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 12:03:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230498AbjGQJll (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 05:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45560 "EHLO
+        id S230437AbjGQKDZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 06:03:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230341AbjGQJlW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 05:41:22 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92ADD1992
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 02:40:32 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3fc075d9994so89285e9.0
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 02:40:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689586831; x=1692178831;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uIgEdFgE+Ee/Plepe1RFgHeUv1XxEmWrc70tprVwr20=;
-        b=WfXsyKTWiJFQeD1ne9fKmkEfM5JmpG51YuRGDw642Rz+Hlduv2pouGkb+HNkparMJb
-         r/BYmvZP3KwFmfaNSnn8AW366UJfdbPQbxUPHgpiupR7HeIv/Ta7up/WX0R2GyaTPUhM
-         I8ZaXOhHHzl6SkbIvZcIyv5QiAUkq7LABW+4KdFRPPspywX/BIe1IsYEg2uYSu6HfbJv
-         ecFp6CdLvVtL8r4YUwd+EzX/2PopG5lMbckT4VQ7sot9+78B1FWQG9w68IOUv9mvUJPF
-         YFRKzs8zM1iH1bfp8qhkj9QmHmGVyTAaeD0Kpe9HmRdcb2pxYpoprQibqP3IYke+etLf
-         +8Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689586831; x=1692178831;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uIgEdFgE+Ee/Plepe1RFgHeUv1XxEmWrc70tprVwr20=;
-        b=jy9cMLPRXqsijJkru20LF7YSFeRfesagBL/VDiOd7Dl1aYVY4vUtSwYytffTQ7eB59
-         aCs5pcVVhcvKlMuReFcdezYTY1N9nsx7JXvGLKoPkRGF/764QEhf9GsAy07OP4ADXY+Z
-         ZYrRUt/MbNX9lLmRptrTfWnZVbxoJlhUDSa93G9iOADFed3FJq9tWdp700a0qetRzbOG
-         1BJKevVzqPmtsj9sgUGERDyXMi+6ZlhR3zUxIIqLilpvH8T7GcXFps8sCPHHpunRSWe8
-         LLBnkBgf+QNrY2lXRCL0wDj3qLyIvMnRAkjl30Yy+U5K1dvr6SrmzBopyVb1V8vJM/q7
-         cv1g==
-X-Gm-Message-State: ABy/qLYZHfBhUzbNsE2c1T/Kes6UR9+CI44aypXzoYd7/EWv7bss6t8r
-        GkCX1CMMBKid7flaC1BMjYnTD7sayxbL3HtSafJ9QA==
-X-Google-Smtp-Source: APBJJlEE+vHJIyY+89IqyN2JE2fuCFTi7F/qZtnJkoZ90nz+/CdcYTA7GOHdyEcXNV//NtfhhVTp+ZsIZbrYZDUkjDo=
-X-Received: by 2002:a05:600c:1d8b:b0:3f7:3654:8d3 with SMTP id
- p11-20020a05600c1d8b00b003f7365408d3mr514591wms.2.1689586831018; Mon, 17 Jul
- 2023 02:40:31 -0700 (PDT)
+        with ESMTP id S231207AbjGQKDC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 06:03:02 -0400
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5BFE630DE
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 03:02:13 -0700 (PDT)
+Date:   Mon, 17 Jul 2023 12:02:07 +0200
+From:   Pablo Neira Ayuso <pablo@netfilter.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
+        Florian Westphal <fw@strlen.de>
+Subject: Re: [PATCH 6.1 587/591] netfilter: nf_tables: do not ignore genmask
+ when looking up chain by id
+Message-ID: <ZLURnzHumJDX5N0F@calendula>
+References: <20230716194923.861634455@linuxfoundation.org>
+ <20230716194939.039111086@linuxfoundation.org>
 MIME-Version: 1.0
-References: <202307170435.p9l0j6zC-lkp@intel.com> <CAG48ez0mT5KYe1=Bd0YHXvaM8a5OF_5OJOnF7jO1nmMteDvZMg@mail.gmail.com>
-In-Reply-To: <CAG48ez0mT5KYe1=Bd0YHXvaM8a5OF_5OJOnF7jO1nmMteDvZMg@mail.gmail.com>
-From:   Jann Horn <jannh@google.com>
-Date:   Mon, 17 Jul 2023 11:39:54 +0200
-Message-ID: <CAG48ez3P+4C9+px_eVOBM2PTcY700h26f3qJ-o4MOCxHw=dUbA@mail.gmail.com>
-Subject: Re: [stable:linux-4.14.y 4549/9999] drivers/android/binder.c:3355:
- Error: unrecognized keyword/register name `l.lwz ?ap,4(r20)'
-To:     kernel test robot <lkp@intel.com>
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Martijn Coenen <maco@android.com>,
-        stable <stable@vger.kernel.org>,
-        Stafford Horne <shorne@gmail.com>,
-        linux-openrisc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230716194939.039111086@linuxfoundation.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,42 +38,132 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[resending to correct openrisc list]
+Hi Greg,
 
-On Mon, Jul 17, 2023 at 11:37=E2=80=AFAM Jann Horn <jannh@google.com> wrote=
-:
-> On Sun, Jul 16, 2023 at 10:20=E2=80=AFPM kernel test robot <lkp@intel.com=
-> wrote:
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able.git linux-4.14.y
-> > head:   60a6e3043cc8b918c989707a5eba5fd6830a08a4
-> > commit: f40f289b96bf856e1613f17bf9426140e8b89393 [4549/9999] binder: Pr=
-event context manager from incrementing ref 0
-> > config: openrisc-randconfig-r002-20230717 (https://download.01.org/0day=
--ci/archive/20230717/202307170435.p9l0j6zC-lkp@intel.com/config)
-> > compiler: or1k-linux-gcc (GCC) 12.3.0
-> > reproduce: (https://download.01.org/0day-ci/archive/20230717/2023071704=
-35.p9l0j6zC-lkp@intel.com/reproduce)
-> [...]
-> >    drivers/android/binder.c: Assembler messages:
-> > >> drivers/android/binder.c:3355: Error: unrecognized keyword/register =
-name `l.lwz ?ap,4(r20)'
-> >    drivers/android/binder.c:3360: Error: unrecognized keyword/register =
-name `l.addi ?ap,r0,0'
-> >    drivers/android/binder.c:3427: Error: unrecognized keyword/register =
-name `l.lwz ?ap,4(r20)'
-> >    drivers/android/binder.c:3432: Error: unrecognized keyword/register =
-name `l.addi ?ap,r0,0'
-> > >> drivers/android/binder.c:3555: Error: unrecognized keyword/register =
-name `l.lwz ?ap,4(r21)'
-> >    drivers/android/binder.c:3560: Error: unrecognized keyword/register =
-name `l.addi ?ap,r0,0'
->
-> Probably same issue as
-> https://lore.kernel.org/oe-kbuild-all/202010160523.r8yMbvrW-lkp@intel.com=
-/
-> ? That thread says the fix is
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
-/arch/openrisc?h=3Dv5.9&id=3Dd877322bc1adcab9850732275670409e8bcca4c4
-> , and it was then backported to 5.4 (as
-> a6db3aab9c408e1b788c43f9fb179382f5793ea2) and 5.8.
+On Sun, Jul 16, 2023 at 09:52:06PM +0200, Greg Kroah-Hartman wrote:
+> From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+> 
+> commit 515ad530795c118f012539ed76d02bacfd426d89 upstream.
+
+You can cherry-pick this commit to:
+
+- 5.15.y
+- 5.10.y
+
+Just tested here and it is good, no hunks are reported.
+
+Thanks.
+
+> When adding a rule to a chain referring to its ID, if that chain had been
+> deleted on the same batch, the rule might end up referring to a deleted
+> chain.
+> 
+> This will lead to a WARNING like following:
+> 
+> [   33.098431] ------------[ cut here ]------------
+> [   33.098678] WARNING: CPU: 5 PID: 69 at net/netfilter/nf_tables_api.c:2037 nf_tables_chain_destroy+0x23d/0x260
+> [   33.099217] Modules linked in:
+> [   33.099388] CPU: 5 PID: 69 Comm: kworker/5:1 Not tainted 6.4.0+ #409
+> [   33.099726] Workqueue: events nf_tables_trans_destroy_work
+> [   33.100018] RIP: 0010:nf_tables_chain_destroy+0x23d/0x260
+> [   33.100306] Code: 8b 7c 24 68 e8 64 9c ed fe 4c 89 e7 e8 5c 9c ed fe 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 89 c6 89 c7 c3 cc cc cc cc <0f> 0b 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 89 c6 89 c7
+> [   33.101271] RSP: 0018:ffffc900004ffc48 EFLAGS: 00010202
+> [   33.101546] RAX: 0000000000000001 RBX: ffff888006fc0a28 RCX: 0000000000000000
+> [   33.101920] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> [   33.102649] RBP: ffffc900004ffc78 R08: 0000000000000000 R09: 0000000000000000
+> [   33.103018] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8880135ef500
+> [   33.103385] R13: 0000000000000000 R14: dead000000000122 R15: ffff888006fc0a10
+> [   33.103762] FS:  0000000000000000(0000) GS:ffff888024c80000(0000) knlGS:0000000000000000
+> [   33.104184] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   33.104493] CR2: 00007fe863b56a50 CR3: 00000000124b0001 CR4: 0000000000770ee0
+> [   33.104872] PKRU: 55555554
+> [   33.104999] Call Trace:
+> [   33.105113]  <TASK>
+> [   33.105214]  ? show_regs+0x72/0x90
+> [   33.105371]  ? __warn+0xa5/0x210
+> [   33.105520]  ? nf_tables_chain_destroy+0x23d/0x260
+> [   33.105732]  ? report_bug+0x1f2/0x200
+> [   33.105902]  ? handle_bug+0x46/0x90
+> [   33.106546]  ? exc_invalid_op+0x19/0x50
+> [   33.106762]  ? asm_exc_invalid_op+0x1b/0x20
+> [   33.106995]  ? nf_tables_chain_destroy+0x23d/0x260
+> [   33.107249]  ? nf_tables_chain_destroy+0x30/0x260
+> [   33.107506]  nf_tables_trans_destroy_work+0x669/0x680
+> [   33.107782]  ? mark_held_locks+0x28/0xa0
+> [   33.107996]  ? __pfx_nf_tables_trans_destroy_work+0x10/0x10
+> [   33.108294]  ? _raw_spin_unlock_irq+0x28/0x70
+> [   33.108538]  process_one_work+0x68c/0xb70
+> [   33.108755]  ? lock_acquire+0x17f/0x420
+> [   33.108977]  ? __pfx_process_one_work+0x10/0x10
+> [   33.109218]  ? do_raw_spin_lock+0x128/0x1d0
+> [   33.109435]  ? _raw_spin_lock_irq+0x71/0x80
+> [   33.109634]  worker_thread+0x2bd/0x700
+> [   33.109817]  ? __pfx_worker_thread+0x10/0x10
+> [   33.110254]  kthread+0x18b/0x1d0
+> [   33.110410]  ? __pfx_kthread+0x10/0x10
+> [   33.110581]  ret_from_fork+0x29/0x50
+> [   33.110757]  </TASK>
+> [   33.110866] irq event stamp: 1651
+> [   33.111017] hardirqs last  enabled at (1659): [<ffffffffa206a209>] __up_console_sem+0x79/0xa0
+> [   33.111379] hardirqs last disabled at (1666): [<ffffffffa206a1ee>] __up_console_sem+0x5e/0xa0
+> [   33.111740] softirqs last  enabled at (1616): [<ffffffffa1f5d40e>] __irq_exit_rcu+0x9e/0xe0
+> [   33.112094] softirqs last disabled at (1367): [<ffffffffa1f5d40e>] __irq_exit_rcu+0x9e/0xe0
+> [   33.112453] ---[ end trace 0000000000000000 ]---
+> 
+> This is due to the nft_chain_lookup_byid ignoring the genmask. After this
+> change, adding the new rule will fail as it will not find the chain.
+> 
+> Fixes: 837830a4b439 ("netfilter: nf_tables: add NFTA_RULE_CHAIN_ID attribute")
+> Cc: stable@vger.kernel.org
+> Reported-by: Mingi Cho of Theori working with ZDI
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+> Reviewed-by: Florian Westphal <fw@strlen.de>
+> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  net/netfilter/nf_tables_api.c |   11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> --- a/net/netfilter/nf_tables_api.c
+> +++ b/net/netfilter/nf_tables_api.c
+> @@ -2628,7 +2628,7 @@ err:
+>  
+>  static struct nft_chain *nft_chain_lookup_byid(const struct net *net,
+>  					       const struct nft_table *table,
+> -					       const struct nlattr *nla)
+> +					       const struct nlattr *nla, u8 genmask)
+>  {
+>  	struct nftables_pernet *nft_net = nft_pernet(net);
+>  	u32 id = ntohl(nla_get_be32(nla));
+> @@ -2639,7 +2639,8 @@ static struct nft_chain *nft_chain_looku
+>  
+>  		if (trans->msg_type == NFT_MSG_NEWCHAIN &&
+>  		    chain->table == table &&
+> -		    id == nft_trans_chain_id(trans))
+> +		    id == nft_trans_chain_id(trans) &&
+> +		    nft_active_genmask(chain, genmask))
+>  			return chain;
+>  	}
+>  	return ERR_PTR(-ENOENT);
+> @@ -3629,7 +3630,8 @@ static int nf_tables_newrule(struct sk_b
+>  			return -EOPNOTSUPP;
+>  
+>  	} else if (nla[NFTA_RULE_CHAIN_ID]) {
+> -		chain = nft_chain_lookup_byid(net, table, nla[NFTA_RULE_CHAIN_ID]);
+> +		chain = nft_chain_lookup_byid(net, table, nla[NFTA_RULE_CHAIN_ID],
+> +					      genmask);
+>  		if (IS_ERR(chain)) {
+>  			NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_CHAIN_ID]);
+>  			return PTR_ERR(chain);
+> @@ -10137,7 +10139,8 @@ static int nft_verdict_init(const struct
+>  						 genmask);
+>  		} else if (tb[NFTA_VERDICT_CHAIN_ID]) {
+>  			chain = nft_chain_lookup_byid(ctx->net, ctx->table,
+> -						      tb[NFTA_VERDICT_CHAIN_ID]);
+> +						      tb[NFTA_VERDICT_CHAIN_ID],
+> +						      genmask);
+>  			if (IS_ERR(chain))
+>  				return PTR_ERR(chain);
+>  		} else {
+> 
+> 
