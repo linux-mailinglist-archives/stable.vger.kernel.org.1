@@ -2,224 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F10AC756EE4
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 23:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5DB6756FAD
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 00:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbjGQVT5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 17:19:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54014 "EHLO
+        id S229863AbjGQWRl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 18:17:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230290AbjGQVTk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 17:19:40 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1D9113D
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 14:19:38 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b8b2b60731so27264305ad.2
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 14:19:38 -0700 (PDT)
+        with ESMTP id S229669AbjGQWRl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 18:17:41 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21642B2
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 15:17:40 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1b8a462e0b0so30311755ad.3
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 15:17:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689628778; x=1692220778;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=D5Pm5jzSIKj/sD7KPDF/oEosvK9rF6VJX784upTlK9Q=;
-        b=otN7GQT9vd3ibVv6n+3DDUsyBaM6PkKm9iew2PRVvKuauLiw5ZSYGf7hEYf2lp8Ch4
-         7xvpWtbSat7ZkfCXR6iidQUNq3Hn5JWBvhYwZMIWLj2NfpMaWBwcDBZ6F8y2v2ZJgYI1
-         cRVLIFRZthWIKBTeWRrU9STcHvjB6xXeCAmxqNpP7jxjmYJTPRApxiLBeOW/fRMOpJ+V
-         odnnZ/2tCnQwWxgWwS4GAPjz2M/vukDKBRZ3bM5kPC9JLocMRo1NYfo55qUsD036Pkjm
-         tz/Mawbl0I7C/PV6dz8G2ix0rfEJ+Xnlo9izUWp7vXWbIZNAXs3WZ8jdMr1hcPBoIp7h
-         xC0g==
+        d=gmail.com; s=20221208; t=1689632259; x=1692224259;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=et+MpedzBPqZZg2X4/iaGx2gZkKszzzSuFjxJeGvmys=;
+        b=JKhxQ+O2lG6Fdyl0k39/fiyWjVPbIzmRl74uPaHu0PUazzFzOzgbfagA/ZQ8LwDqzt
+         GNrGfCd/KEtJDz+oUgxqFB10htRHOw9Y6wECivKNcVATPHM0rXr9QwHpHqvsdBX4V142
+         YEGDzh6q7IxnMRs+AbaZZHHSIZQjOcYk140MpBo3KOFMTvBuLF1LRg31vLwQVCgcfkYf
+         E8k4vrLMAGDUv9fMsJtDzvoeQ5raz/VUupjgU+hblRvJ4DoE9qGZ1+nT+glINmJefv1Y
+         kBiW0mxmVtXetB+MpR/r0h7CTxh26zi5NDf3MDTAN3DO/xrzzWkASlkzAIyiHFcdN3ND
+         E3xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689628778; x=1692220778;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=D5Pm5jzSIKj/sD7KPDF/oEosvK9rF6VJX784upTlK9Q=;
-        b=P5T/6ccr5aCdb0v/TzRaY1RNm36hOmaK0Gn0XLdyFrzokhIT2cFZ75voQtBDKfI0mO
-         5SrtjfQ1rzw86J5jgn8xi1NN5nAeuRK+Osx2cQ+LkrbfYEcGDWadXWJC2fGvo05aRKCC
-         XIDMbHDKPUPdNAQutVwkDDHXlvtiKSJD1Szn3w7DGKXJo2Qttes+KlSaw91IfKZxHl/L
-         yl2gEvaz8S3FIalLSBNANODOkdqXED6bqEywHVvYuBMQQ6Y4TNKaGG27TSYwOa2b4Nor
-         xePNPYTSuJ5BqKvOb59ojN8H/0IkqUw5zhEIVM9ZyHMqXkPOF66vppWvWDvhg8JuuT6l
-         p3VQ==
-X-Gm-Message-State: ABy/qLbTLwfrwGzHsqHh+Y5sPDsFfGMNSPwB82eEmiF93RQkexKs9NsD
-        8YpQiS0uVSezyuTx5PdXc3oHumeYCaTMd3aUjzc0+Q==
-X-Google-Smtp-Source: APBJJlHjjtZlJp6rCwhmzprENiIfN0Yi4DCtksUfWXqdPl0kJf2cQ6FmI+qlWtYNuPrEeUorxjDWvQ==
-X-Received: by 2002:a17:902:b188:b0:1b8:1c1b:125a with SMTP id s8-20020a170902b18800b001b81c1b125amr11387067plr.2.1689628777961;
-        Mon, 17 Jul 2023 14:19:37 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id bf6-20020a170902b90600b001b890b3bbb1sm301950plb.211.2023.07.17.14.19.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jul 2023 14:19:37 -0700 (PDT)
-Message-ID: <64b5b069.170a0220.dc486.1507@mx.google.com>
-Date:   Mon, 17 Jul 2023 14:19:37 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20221208; t=1689632259; x=1692224259;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=et+MpedzBPqZZg2X4/iaGx2gZkKszzzSuFjxJeGvmys=;
+        b=h3WOTnelYgVQUySSict4V9X0ivsvT6J2eHXsjpkaftQL/UoPGVOwxnrw1vFaGao/fc
+         GVo+rFGKlrvstmi8Wr8/aWUp2jkWpSZv9U+m0mNxc++Inv6bKZiPyYNwoyPdcym8++1C
+         C4sDrWdAXOBNKTaKZO4sjoj7G69OFGsIUTK5ZT9tgmaoJ2S9Vi/fdMrjHvLX647g8P5Q
+         21gapm1l8oJRs0sAIYM9klADjnfl3QDT/XgMGKTWyaFcqjcAWpiEM5sv96l56rGVJFpj
+         DP2WDkHz6yVwltZ6pGUMZsmD2JQyoGvi23g5SahIEZQ1PGBOkz3ismTaKbOSo9H4D0ek
+         soLQ==
+X-Gm-Message-State: ABy/qLazsf4SK1Maaoi1R2UyyIVR9SkrpABUNrM2Sh+V+lWwNBjWeal6
+        tRs8/JgHV5KHnBG6WJzzuEE=
+X-Google-Smtp-Source: APBJJlEMpWjE4CQr9imo1ZNW7y4XhI7cMKReGMwmAKaJs38Qi9c0JuxpglT/XkUlNddILNwH4g94fA==
+X-Received: by 2002:a17:902:ee89:b0:1bb:2d0b:1a18 with SMTP id a9-20020a170902ee8900b001bb2d0b1a18mr4107117pld.50.1689632259510;
+        Mon, 17 Jul 2023 15:17:39 -0700 (PDT)
+Received: from ?IPV6:2001:df0:0:200c:210:18ff:fe59:7883? ([2001:df0:0:200c:210:18ff:fe59:7883])
+        by smtp.gmail.com with ESMTPSA id jw10-20020a170903278a00b001b8c6890623sm369335plb.7.2023.07.17.15.17.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jul 2023 15:17:38 -0700 (PDT)
+Message-ID: <f0fd6bda-7b63-ac47-a1db-4eed0164f0e3@gmail.com>
+Date:   Tue, 18 Jul 2023 10:17:29 +1200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Kernel: v6.1.38-590-gce7ec1011187
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.38-590-gce7ec1011187)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 5.4.y] block: add overflow checks for Amiga partition
+ support
+Content-Language: en-US
+To:     David Laight <David.Laight@ACULAB.COM>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc:     Jens Axboe <axboe@kernel.dk>
+References: <2023071117-convene-mockup-27f2@gregkh>
+ <20230715232656.8632-1-schmitzmic@gmail.com>
+ <cbdb7cde68dc4d239861a631436dc01d@AcuMS.aculab.com>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+In-Reply-To: <cbdb7cde68dc4d239861a631436dc01d@AcuMS.aculab.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
-1.38-590-gce7ec1011187)
+Hi David,
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
-/kernel/v6.1.38-590-gce7ec1011187/
+On 17/07/23 20:00, David Laight wrote:
+> From: Michael Schmitz
+>> Sent: 16 July 2023 00:27
+>>
+>> The Amiga partition parser module uses signed int for partition sector
+>> address and count, which will overflow for disks larger than 1 TB.
+>>
+>> Use u64 as type for sector address and size to allow using disks up to
+>> 2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+>> format allows to specify disk sizes up to 2^128 bytes (though native
+>> OS limitations reduce this somewhat, to max 2^68 bytes),
+> Pretty much everything (including the mass of an proton) stops
+> you having a disk with anywhere near 2^64 bytes in it.
 
-Tree: stable-rc
-Branch: linux-6.1.y
-Git Describe: v6.1.38-590-gce7ec1011187
-Git Commit: ce7ec101118789331617601d680d905c318b4ab6
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+I put my hopes on all that dark matter we still seem to be missing then.
 
-Warnings Detected:
+Seriously though - RDB allows for this size, no matter how unlikely. 
+2^32 heads or 2^32 sectors per track would have been seen as impossible 
+when RDB was designed. On the other hand, the '16 bit address space 
+ought to be enough for everybody' was probably still fresh in the mind 
+of the Amiga developers at that time.
 
-arc:
+All that matters is that we get the size calculations right (and then 
+let the partition core enforce the known disk size limit).
 
-arm64:
+Cheers,
 
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
+     Michael
 
 
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+>
+> 	David
+>
+>> so check for
+>> u64 overflow carefully to protect against overflowing sector_t.
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+> Registration No: 1397386 (Wales)
+>
