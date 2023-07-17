@@ -2,54 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FA4B756AD9
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 19:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 903C7756B01
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 19:53:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229803AbjGQRk2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 13:40:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54956 "EHLO
+        id S229540AbjGQRxj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 13:53:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230172AbjGQRk1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 13:40:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53603FB;
-        Mon, 17 Jul 2023 10:40:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA84461184;
-        Mon, 17 Jul 2023 17:40:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC37C433C8;
-        Mon, 17 Jul 2023 17:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689615625;
-        bh=on7BUmcynWl5cl+hfeGAQDpz9N7KgjUlPCzBquHie8M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OmjSRpPIdod0D31pWyyKYDIiCKrfPSK+2/X2HxB8JZd1WrRi4qPPgofSOlkvHvHWc
-         sf++o7S0qRxLzUJ7NqnFIOL2BuOn/NEEMzb7a0CfS12kO9BOh71a/RRRpNwQn/EZl7
-         o+mDXbegzCrqqg491PBGG91ql2rgeolGBrsc/7fcl5nWjRXO9mGehd8c14d2IQgVIL
-         Vs+DFoUu5YJd2FnGQhOas37BZ36bFbQIlk8zeHs0GQItXiI6AqE432O5NeZljoE0c2
-         SG+zphRmoTjsJanaUTTmRCqATlYZA31WwVPyauJIaUnsd5Ddr5I/haZi2mXlso3wV1
-         UkeD4J8KZG5BA==
-Date:   Mon, 17 Jul 2023 18:40:20 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     almaz.alexandrovich@paragon-software.com, stable@vger.kernel.org,
-        ntfs3@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-        van fantasy <g1042620637@gmail.com>
-Subject: Re: [PATCH 1/1] fs/ntfs3: Check fields while reading
-Message-ID: <20230717174020.GE1082701@google.com>
-References: <20230717125013.1246975-1-lee@kernel.org>
- <2023071733-basically-snub-5570@gregkh>
+        with ESMTP id S230512AbjGQRxi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 13:53:38 -0400
+Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4496B1B9
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:53:36 -0700 (PDT)
+Received: by mail-vk1-xa2f.google.com with SMTP id 71dfb90a1353d-4814bea10e0so1595513e0c.1
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:53:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689616415; x=1690221215;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vFofs3943iSVTdX7g+Ij0RCA+3gmMBbIIyZkBj1OkXA=;
+        b=ERr18YFzsG/SvYGVCzmYmjcnnPdM5rf+vbwh9Za0AmemltqZkd6bork/eCer2Wuxx5
+         lt04ghWzHdI+RYAGk12Sh7/Gi0MuW+CIry5u6wI5vZl+6n5xMSCFv085knt8moaZ1hJw
+         NIJQtQa3AoE5JoJ4H1hZ/hl01Q0x8lgwNEgqxSBvDIneU7RVi4UhEoQjDLJ4iGZJes2B
+         8odW0pJBlszMBFztGpXJp+wWOtidsw2L/YbV6Hge6NoyJAdxTSAWVGtoI12q1Zxscyqg
+         NLGt/VBcxkI54VN0I07c0m75ZR055ngGUNKM8t0rrG55Rea7lwoQskItyH1th9HUvwGX
+         APNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689616415; x=1690221215;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vFofs3943iSVTdX7g+Ij0RCA+3gmMBbIIyZkBj1OkXA=;
+        b=VPSiixmYb5FjOz4iIHPjfuCrT7Ou6qEpltLlNn3NRsgvBcVneSJ+F/4nagmMMdyagG
+         M8x30q/BOMc1FuF/AR2a7ZQjFbKOOwVNXF+x1BYkAhp7D2mTWIV3GgN2LkrmChOzy1Yv
+         0h7DPjP7QqqXL7bxopM82C/EVfkW7eXQArwAJAg5EhvV8FKjezzYCQPtv4W3eWKq6YMj
+         eOEnBfdHYuE0liW2TIg+ucAtCF7joBNC5CYzDCmDCiQy6rbvJwKT1Ky/i5NioffYDj1j
+         1Q8z2YqOesgYNLoF8TLkkVj2sQQWd0zrBQFbNXR4eyUM5YFdPighCs4rZ0MhCJUpnRgV
+         Swqw==
+X-Gm-Message-State: ABy/qLYdpbPBSUuUr8uVLJMtUozBc3gJ3DBMKNwnPaiayT2HM53bTvrr
+        eK1KH4xhWQzcjbcMzMwWUmkQ3Qj+7WVCjLhQhEobtg==
+X-Google-Smtp-Source: APBJJlEuidatGYmLfJsqEJYVBuLsmXe+VImsGqAeLJarjuy0yVjI5kUdsNb9MZEHyhFCDqh5oWqzbKWigWsV/foSG5E=
+X-Received: by 2002:a1f:3f13:0:b0:481:2ff5:c9a9 with SMTP id
+ m19-20020a1f3f13000000b004812ff5c9a9mr58017vka.13.1689616415280; Mon, 17 Jul
+ 2023 10:53:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023071733-basically-snub-5570@gregkh>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20230717065535.2065582-1-quic_srichara@quicinc.com>
+ <2023071729-shamrock-evidence-b698@gregkh> <2fc238aa-82c1-383a-9dca-72f979ee3c07@quicinc.com>
+In-Reply-To: <2fc238aa-82c1-383a-9dca-72f979ee3c07@quicinc.com>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Mon, 17 Jul 2023 20:53:24 +0300
+Message-ID: <CAA8EJpoB6Q5c27-D5HF42+OS7S7bPBGWi_Po0orMxaQ7yx3=1A@mail.gmail.com>
+Subject: Re: [PATCH V4] PCI: qcom: Fixing broken pcie bring up for 2_3_3
+ configs ops
+To:     Sricharan Ramabadhran <quic_srichara@quicinc.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, agross@kernel.org,
+        andersson@kernel.org, konrad.dybcio@linaro.org, robh@kernel.org,
+        mani@kernel.org, lpieralisi@kernel.org, bhelgaas@google.com,
+        kw@linux.com, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,26 +72,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 17 Jul 2023, Greg KH wrote:
+On Mon, 17 Jul 2023 at 20:16, Sricharan Ramabadhran
+<quic_srichara@quicinc.com> wrote:
+>
+>
+>
+> On 7/17/2023 7:09 PM, Greg KH wrote:
+> > On Mon, Jul 17, 2023 at 12:25:35PM +0530, Sricharan Ramabadhran wrote:
+> >> PARF_SLV_ADDR_SPACE_SIZE_2_3_3 macro is used for IPQ8074
+> >> 2_3_3 post_init ops. PCIe slave addr size was initially set
+> >> to 0x358, but was wrongly changed to 0x168 as a part of
+> >> commit 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from
+> >> register definitions"). Fixing it, by using the right macro
+> >> PARF_SLV_ADDR_SPACE_SIZE and remove the unused
+> >> PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
+> >
+> > Note, you do have a full 72 columns to use, no need to make it smaller.
+>
+>   ok sure
+>
+> >
+> >> Without this pcie bring up on IPQ8074 is broken now.
+> >
+> > I do not understand, something that used to work now breaks, or this is
+> > preventing a new chip from being "brought up"?
+> >
+>
+>   yes, ipq8074 pcie which was previously working is broken now.
+>   This patch fixes it.
 
-> On Mon, Jul 17, 2023 at 01:50:13PM +0100, Lee Jones wrote:
-> > commit 0e8235d28f3a0e9eda9f02ff67ee566d5f42b66b upstream.
-> > 
-> > Added new functions index_hdr_check and index_buf_check.
-> > Now we check all stuff for correctness while reading from disk.
-> > Also fixed bug with stale nfs data.
-> > 
-> > Reported-by: van fantasy <g1042620637@gmail.com>
-> > Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-> > Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
-> > Signed-off-by: Lee Jones <lee@kernel.org>
-> > ---
-> 
-> What stable tree(s) is this for?
+So, you need to describe what is broken and why. Mere "it is broken,
+fix it" is not enough.
 
-I thought you had tooling that used the Fixes: tag for this?
+>
+>
+> Regards,
+>   Sricharan
 
-v6.1 and v5.15 please.
+
 
 -- 
-Lee Jones [李琼斯]
+With best wishes
+Dmitry
