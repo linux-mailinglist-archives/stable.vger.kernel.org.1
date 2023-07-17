@@ -2,35 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 592BE756019
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 12:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01DB57560A4
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 12:38:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230030AbjGQKJG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 06:09:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33176 "EHLO
+        id S229962AbjGQKiy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 06:38:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229579AbjGQKJC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 06:09:02 -0400
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 47A1D10D5
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 03:09:00 -0700 (PDT)
-Date:   Mon, 17 Jul 2023 12:08:54 +0200
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
-        Florian Westphal <fw@strlen.de>
-Subject: Re: [PATCH 6.1 588/591] netfilter: nf_tables: prevent OOB access in
- nft_byteorder_eval
-Message-ID: <ZLUTNi6wJ4dkMQgl@calendula>
-References: <20230716194923.861634455@linuxfoundation.org>
- <20230716194939.064148756@linuxfoundation.org>
+        with ESMTP id S230033AbjGQKiv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 06:38:51 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 548A3E54
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 03:38:50 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3fbea14706eso39183155e9.2
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 03:38:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1689590329; x=1692182329;
+        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=k49KwUN7HLAjYHB0se/sS819VA3O8wFePblB1Hg/uJw=;
+        b=W9vMVRmCLjrD0qXV8QgQxD+rRU8+ppLKHpbgRig/U4IcQlodGFUbJPqFMm39b1mrhz
+         TF/tIP43ggjLxe5jsHFYqA8vuqOOiTuuWDgIqGaKNyN4pO6TRGsaHEWeIBNpmgbztRHE
+         GH3kemrRi0SI/72N9cHuzW1FaMdVev55AT8jE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689590329; x=1692182329;
+        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k49KwUN7HLAjYHB0se/sS819VA3O8wFePblB1Hg/uJw=;
+        b=Ohw+cNgEvh4G0GN9xE2tcYf8ikfjzjwygtPwzq31RVF/ZGgOdrnpmVGPJBM+UH5Dat
+         oduB3htLY2UVTqtX7TDr0trc9JQr+uL8BMLI6EkxTdsWnPnMbO9GCafT7hIrC05aDwRP
+         BzWnwj1pJJH8/mYvgRrXIIa2M+UEOVw3yrtrwdFgY+PZfualdUq1bw7WEwmgpHPu7tTn
+         LujnCXYGQxYCI4o7I8Oxz7SUTjOy2vjK1LgjzLbOJbySwlBHCf6Ov36CG/QIGfNXk/7b
+         5upiVv1Wme2baM9irUkxj144afpK0S82+kj4y0ZUrHwMifazPU/Tao+1gCbRpbsfeRqQ
+         ZQZw==
+X-Gm-Message-State: ABy/qLZMCU9gFAJK7MgjjHhsdRt/7tIFRQXR8ARSnLiwjqsA+UiDdv2S
+        xiq44kqWQp+DBnTtIkw1MYtQtA==
+X-Google-Smtp-Source: APBJJlFvGZH2UKgn01U+O6JBIOc5bUKFCAp2LXtR1VegCqqrQ5i6JC/d1qWa9YMGTJLF/6S3r6Ba5A==
+X-Received: by 2002:a05:600c:2247:b0:3fb:bc4a:46ad with SMTP id a7-20020a05600c224700b003fbbc4a46admr8890045wmm.9.1689590328735;
+        Mon, 17 Jul 2023 03:38:48 -0700 (PDT)
+Received: from [192.168.47.133] ([37.166.39.101])
+        by smtp.gmail.com with ESMTPSA id k2-20020a7bc402000000b003fc02e8ea68sm7848680wmi.13.2023.07.17.03.38.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jul 2023 03:38:47 -0700 (PDT)
+Message-ID: <f214c0a0-c9f6-bfbb-3d75-2a2f7602083f@broadcom.com>
+Date:   Mon, 17 Jul 2023 12:38:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230716194939.064148756@linuxfoundation.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: Backporting commits for generating rpi dtb symbols to stable
+To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        Greg KH <greg@kroah.com>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230716162444.zzvkm4rh7s7lu37x@pali>
+ <2023071644-earflap-amazingly-3989@gregkh>
+ <20230716163852.jnd4u4ylvifgmpby@pali>
+ <2023071611-lustiness-rename-8b47@gregkh>
+ <20230716195150.ppa6vdjogjevlzgq@pali>
+From:   Florian Fainelli <florian.fainelli@broadcom.com>
+In-Reply-To: <20230716195150.ppa6vdjogjevlzgq@pali>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="00000000000061cfba0600ac6783"
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -38,226 +74,185 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+--00000000000061cfba0600ac6783
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jul 16, 2023 at 09:52:07PM +0200, Greg Kroah-Hartman wrote:
-> From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-> 
-> commit caf3ef7468f7534771b5c44cd8dbd6f7f87c2cbd upstream.
 
-You can also cherry-pick this commit to:
 
-- 5.15.y
-- 5.10.y
-- 5.4.y
-- 4.19.y
-- 4.14.y
+On 7/16/2023 9:51 PM, Pali Rohár wrote:
+> On Sunday 16 July 2023 21:08:38 Greg KH wrote:
+>> On Sun, Jul 16, 2023 at 06:38:52PM +0200, Pali Rohár wrote:
+>>> On Sunday 16 July 2023 18:32:42 Greg KH wrote:
+>>>> On Sun, Jul 16, 2023 at 06:24:44PM +0200, Pali Rohár wrote:
+>>>>> Hello,
+>>>>>
+>>>>> I see that raspberry pi bootloader throws ton of warnings when supplied
+>>>>> DTB file does not contain /__symbols__/ node.
+>>>>>
+>>>>> On RPI 1B rev1 it looks like this:
+>>>>>
+>>>>> dterror: no symbols found
+>>>>> dterror: no symbols found
+>>>>> dterror: no symbols found
+>>>>> dterror: no symbols found
+>>>>> dterror: no symbols found
+>>>>> dterror: no symbols found
+>>>>> dterror: no symbols found
+>>>>> dterror: no symbols found
+>>>>> dterror: no symbols found
+>>>>> dterror: no symbols found
+>>>>>
+>>>>> Bootloader also propagates these warnings to kernel via dtb property
+>>>>> chosen/user-warnings and they can be read by simple command:
+>>>>>
+>>>>> $ cat /sys/firmware/devicetree/base/chosen/user-warnings
+>>>>> ...
+>>>>>
+>>>>> Upstream Linux kernel build process by default does not generate
+>>>>> /__symbols__/ node for DTB files, but DTB files provided by raspberrypi
+>>>>> foundation have them for a longer time.
+>>>>>
+>>>>> I wanted to look at this issue, but I figured out that it is already
+>>>>> solved by just recent Aurelien's patches:
+>>>>>
+>>>>> e925743edc0d ("arm: dts: bcm: Enable device-tree overlay support for RPi devices")
+>>>>> 3cdba279c5e9 ("arm64: dts: broadcom: Enable device-tree overlay support for RPi devices")
+>>>>>
+>>>>> My testing showed that /__symbols__/ node is required by rpi bootloader
+>>>>> for overlay support even when overlayed DTB file does not use any DTB
+>>>>> symbol (and reference everything via full node path). So seems that
+>>>>> /__symbols__/ node is crucial for rpi bootloader even when symbols from
+>>>>> them are not used at all.
+>>>>>
+>>>>> So I would like to ask, would you consider backporting these two
+>>>>> raspberry pi specific patches to stable kernel trees? Upstream kernel
+>>>>> would get rid of those bootloader warnings and also allow users to use
+>>>>> overlayed dtbs...
+>>>>
+>>>> What kernel tree(s) should these be applied to?  What trees did you test
+>>>> them for?
+>>>>
+>>>> Also, adding dt-overlay support does not seem like a stable kernel fix,
+>>>> as this isn't a bugfix from what I can tell, right?
+>>>>
+>>>> thanks,
+>>>>
+>>>> greg k-h
+>>>
+>>> I wanted to discuss what do you think about it. As I wrote my motivation
+>>> was to understood and get rid of those warnings "dterror: no symbols
+>>> found" from bootloader when using DTB files from mainline kernel (as
+>>> opposite of the DTB files from rpi foundation). And fix for it was just
+>>> to generate DTB files from kernel via dtc's -@ parameter, same what are
+>>> doing those mentioned patches (but they describe different problem for
+>>> which is same fix). I thought that fixing those bootloader warnings is a
+>>> bugfix.
+>>
+>> Why not just use the next kernel version instead?  What's forcing you to
+>> use an older stable kernel that didn't have dt-overlay support?
+>>
+>> thanks,
+>>
+>> greg k-h
+> 
+> Why not use the next kernel? It is pretty simple, next is the
+> development tree, not for production.
 
-Just tested here and it is good, no hunks are reported.
+Maybe "next" should have not been taken as designating linux-next, but 
+whichever kernel version you are currently using wait for 6.5 final and 
+use it since it does contains Aurelien's commits.
 
-Thanks.
+> And as I wrote in previous email,
+> I do not need here dt-overlay support. I wanted to get rid off that
+> warning messages.
 
-> When evaluating byteorder expressions with size 2, a union with 32-bit and
-> 16-bit members is used. Since the 16-bit members are aligned to 32-bit,
-> the array accesses will be out-of-bounds.
-> 
-> It may lead to a stack-out-of-bounds access like the one below:
-> 
-> [   23.095215] ==================================================================
-> [   23.095625] BUG: KASAN: stack-out-of-bounds in nft_byteorder_eval+0x13c/0x320
-> [   23.096020] Read of size 2 at addr ffffc90000007948 by task ping/115
-> [   23.096358]
-> [   23.096456] CPU: 0 PID: 115 Comm: ping Not tainted 6.4.0+ #413
-> [   23.096770] Call Trace:
-> [   23.096910]  <IRQ>
-> [   23.097030]  dump_stack_lvl+0x60/0xc0
-> [   23.097218]  print_report+0xcf/0x630
-> [   23.097388]  ? nft_byteorder_eval+0x13c/0x320
-> [   23.097577]  ? kasan_addr_to_slab+0xd/0xc0
-> [   23.097760]  ? nft_byteorder_eval+0x13c/0x320
-> [   23.097949]  kasan_report+0xc9/0x110
-> [   23.098106]  ? nft_byteorder_eval+0x13c/0x320
-> [   23.098298]  __asan_load2+0x83/0xd0
-> [   23.098453]  nft_byteorder_eval+0x13c/0x320
-> [   23.098659]  nft_do_chain+0x1c8/0xc50
-> [   23.098852]  ? __pfx_nft_do_chain+0x10/0x10
-> [   23.099078]  ? __kasan_check_read+0x11/0x20
-> [   23.099295]  ? __pfx___lock_acquire+0x10/0x10
-> [   23.099535]  ? __pfx___lock_acquire+0x10/0x10
-> [   23.099745]  ? __kasan_check_read+0x11/0x20
-> [   23.099929]  nft_do_chain_ipv4+0xfe/0x140
-> [   23.100105]  ? __pfx_nft_do_chain_ipv4+0x10/0x10
-> [   23.100327]  ? lock_release+0x204/0x400
-> [   23.100515]  ? nf_hook.constprop.0+0x340/0x550
-> [   23.100779]  nf_hook_slow+0x6c/0x100
-> [   23.100977]  ? __pfx_nft_do_chain_ipv4+0x10/0x10
-> [   23.101223]  nf_hook.constprop.0+0x334/0x550
-> [   23.101443]  ? __pfx_ip_local_deliver_finish+0x10/0x10
-> [   23.101677]  ? __pfx_nf_hook.constprop.0+0x10/0x10
-> [   23.101882]  ? __pfx_ip_rcv_finish+0x10/0x10
-> [   23.102071]  ? __pfx_ip_local_deliver_finish+0x10/0x10
-> [   23.102291]  ? rcu_read_lock_held+0x4b/0x70
-> [   23.102481]  ip_local_deliver+0xbb/0x110
-> [   23.102665]  ? __pfx_ip_rcv+0x10/0x10
-> [   23.102839]  ip_rcv+0x199/0x2a0
-> [   23.102980]  ? __pfx_ip_rcv+0x10/0x10
-> [   23.103140]  __netif_receive_skb_one_core+0x13e/0x150
-> [   23.103362]  ? __pfx___netif_receive_skb_one_core+0x10/0x10
-> [   23.103647]  ? mark_held_locks+0x48/0xa0
-> [   23.103819]  ? process_backlog+0x36c/0x380
-> [   23.103999]  __netif_receive_skb+0x23/0xc0
-> [   23.104179]  process_backlog+0x91/0x380
-> [   23.104350]  __napi_poll.constprop.0+0x66/0x360
-> [   23.104589]  ? net_rx_action+0x1cb/0x610
-> [   23.104811]  net_rx_action+0x33e/0x610
-> [   23.105024]  ? _raw_spin_unlock+0x23/0x50
-> [   23.105257]  ? __pfx_net_rx_action+0x10/0x10
-> [   23.105485]  ? mark_held_locks+0x48/0xa0
-> [   23.105741]  __do_softirq+0xfa/0x5ab
-> [   23.105956]  ? __dev_queue_xmit+0x765/0x1c00
-> [   23.106193]  do_softirq.part.0+0x49/0xc0
-> [   23.106423]  </IRQ>
-> [   23.106547]  <TASK>
-> [   23.106670]  __local_bh_enable_ip+0xf5/0x120
-> [   23.106903]  __dev_queue_xmit+0x789/0x1c00
-> [   23.107131]  ? __pfx___dev_queue_xmit+0x10/0x10
-> [   23.107381]  ? find_held_lock+0x8e/0xb0
-> [   23.107585]  ? lock_release+0x204/0x400
-> [   23.107798]  ? neigh_resolve_output+0x185/0x350
-> [   23.108049]  ? mark_held_locks+0x48/0xa0
-> [   23.108265]  ? neigh_resolve_output+0x185/0x350
-> [   23.108514]  neigh_resolve_output+0x246/0x350
-> [   23.108753]  ? neigh_resolve_output+0x246/0x350
-> [   23.109003]  ip_finish_output2+0x3c3/0x10b0
-> [   23.109250]  ? __pfx_ip_finish_output2+0x10/0x10
-> [   23.109510]  ? __pfx_nf_hook+0x10/0x10
-> [   23.109732]  __ip_finish_output+0x217/0x390
-> [   23.109978]  ip_finish_output+0x2f/0x130
-> [   23.110207]  ip_output+0xc9/0x170
-> [   23.110404]  ip_push_pending_frames+0x1a0/0x240
-> [   23.110652]  raw_sendmsg+0x102e/0x19e0
-> [   23.110871]  ? __pfx_raw_sendmsg+0x10/0x10
-> [   23.111093]  ? lock_release+0x204/0x400
-> [   23.111304]  ? __mod_lruvec_page_state+0x148/0x330
-> [   23.111567]  ? find_held_lock+0x8e/0xb0
-> [   23.111777]  ? find_held_lock+0x8e/0xb0
-> [   23.111993]  ? __rcu_read_unlock+0x7c/0x2f0
-> [   23.112225]  ? aa_sk_perm+0x18a/0x550
-> [   23.112431]  ? filemap_map_pages+0x4f1/0x900
-> [   23.112665]  ? __pfx_aa_sk_perm+0x10/0x10
-> [   23.112880]  ? find_held_lock+0x8e/0xb0
-> [   23.113098]  inet_sendmsg+0xa0/0xb0
-> [   23.113297]  ? inet_sendmsg+0xa0/0xb0
-> [   23.113500]  ? __pfx_inet_sendmsg+0x10/0x10
-> [   23.113727]  sock_sendmsg+0xf4/0x100
-> [   23.113924]  ? move_addr_to_kernel.part.0+0x4f/0xa0
-> [   23.114190]  __sys_sendto+0x1d4/0x290
-> [   23.114391]  ? __pfx___sys_sendto+0x10/0x10
-> [   23.114621]  ? __pfx_mark_lock.part.0+0x10/0x10
-> [   23.114869]  ? lock_release+0x204/0x400
-> [   23.115076]  ? find_held_lock+0x8e/0xb0
-> [   23.115287]  ? rcu_is_watching+0x23/0x60
-> [   23.115503]  ? __rseq_handle_notify_resume+0x6e2/0x860
-> [   23.115778]  ? __kasan_check_write+0x14/0x30
-> [   23.116008]  ? blkcg_maybe_throttle_current+0x8d/0x770
-> [   23.116285]  ? mark_held_locks+0x28/0xa0
-> [   23.116503]  ? do_syscall_64+0x37/0x90
-> [   23.116713]  __x64_sys_sendto+0x7f/0xb0
-> [   23.116924]  do_syscall_64+0x59/0x90
-> [   23.117123]  ? irqentry_exit_to_user_mode+0x25/0x30
-> [   23.117387]  ? irqentry_exit+0x77/0xb0
-> [   23.117593]  ? exc_page_fault+0x92/0x140
-> [   23.117806]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-> [   23.118081] RIP: 0033:0x7f744aee2bba
-> [   23.118282] Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
-> [   23.119237] RSP: 002b:00007ffd04a7c9f8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-> [   23.119644] RAX: ffffffffffffffda RBX: 00007ffd04a7e0a0 RCX: 00007f744aee2bba
-> [   23.120023] RDX: 0000000000000040 RSI: 000056488e9e6300 RDI: 0000000000000003
-> [   23.120413] RBP: 000056488e9e6300 R08: 00007ffd04a80320 R09: 0000000000000010
-> [   23.120809] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000040
-> [   23.121219] R13: 00007ffd04a7dc38 R14: 00007ffd04a7ca00 R15: 00007ffd04a7e0a0
-> [   23.121617]  </TASK>
-> [   23.121749]
-> [   23.121845] The buggy address belongs to the virtual mapping at
-> [   23.121845]  [ffffc90000000000, ffffc90000009000) created by:
-> [   23.121845]  irq_init_percpu_irqstack+0x1cf/0x270
-> [   23.122707]
-> [   23.122803] The buggy address belongs to the physical page:
-> [   23.123104] page:0000000072ac19f0 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x24a09
-> [   23.123609] flags: 0xfffffc0001000(reserved|node=0|zone=1|lastcpupid=0x1fffff)
-> [   23.123998] page_type: 0xffffffff()
-> [   23.124194] raw: 000fffffc0001000 ffffea0000928248 ffffea0000928248 0000000000000000
-> [   23.124610] raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-> [   23.125023] page dumped because: kasan: bad access detected
-> [   23.125326]
-> [   23.125421] Memory state around the buggy address:
-> [   23.125682]  ffffc90000007800: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [   23.126072]  ffffc90000007880: 00 00 00 00 00 f1 f1 f1 f1 f1 f1 00 00 f2 f2 00
-> [   23.126455] >ffffc90000007900: 00 00 00 00 00 00 00 00 00 f2 f2 f2 f2 00 00 00
-> [   23.126840]                                               ^
-> [   23.127138]  ffffc90000007980: 00 00 00 00 00 00 00 00 00 00 00 00 00 f3 f3 f3
-> [   23.127522]  ffffc90000007a00: f3 00 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1
-> [   23.127906] ==================================================================
-> [   23.128324] Disabling lock debugging due to kernel taint
-> 
-> Using simple s16 pointers for the 16-bit accesses fixes the problem. For
-> the 32-bit accesses, src and dst can be used directly.
-> 
-> Fixes: 96518518cc41 ("netfilter: add nftables")
-> Cc: stable@vger.kernel.org
-> Reported-by: Tanguy DUBROCA (@SidewayRE) from @Synacktiv working with ZDI
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-> Reviewed-by: Florian Westphal <fw@strlen.de>
-> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  net/netfilter/nft_byteorder.c |   14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> --- a/net/netfilter/nft_byteorder.c
-> +++ b/net/netfilter/nft_byteorder.c
-> @@ -30,11 +30,11 @@ void nft_byteorder_eval(const struct nft
->  	const struct nft_byteorder *priv = nft_expr_priv(expr);
->  	u32 *src = &regs->data[priv->sreg];
->  	u32 *dst = &regs->data[priv->dreg];
-> -	union { u32 u32; u16 u16; } *s, *d;
-> +	u16 *s16, *d16;
->  	unsigned int i;
->  
-> -	s = (void *)src;
-> -	d = (void *)dst;
-> +	s16 = (void *)src;
-> +	d16 = (void *)dst;
->  
->  	switch (priv->size) {
->  	case 8: {
-> @@ -62,11 +62,11 @@ void nft_byteorder_eval(const struct nft
->  		switch (priv->op) {
->  		case NFT_BYTEORDER_NTOH:
->  			for (i = 0; i < priv->len / 4; i++)
-> -				d[i].u32 = ntohl((__force __be32)s[i].u32);
-> +				dst[i] = ntohl((__force __be32)src[i]);
->  			break;
->  		case NFT_BYTEORDER_HTON:
->  			for (i = 0; i < priv->len / 4; i++)
-> -				d[i].u32 = (__force __u32)htonl(s[i].u32);
-> +				dst[i] = (__force __u32)htonl(src[i]);
->  			break;
->  		}
->  		break;
-> @@ -74,11 +74,11 @@ void nft_byteorder_eval(const struct nft
->  		switch (priv->op) {
->  		case NFT_BYTEORDER_NTOH:
->  			for (i = 0; i < priv->len / 2; i++)
-> -				d[i].u16 = ntohs((__force __be16)s[i].u16);
-> +				d16[i] = ntohs((__force __be16)s16[i]);
->  			break;
->  		case NFT_BYTEORDER_HTON:
->  			for (i = 0; i < priv->len / 2; i++)
-> -				d[i].u16 = (__force __u16)htons(s[i].u16);
-> +				d16[i] = (__force __u16)htons(s16[i]);
->  			break;
->  		}
->  		break;
-> 
-> 
+The motivation does not seem appropriate to warrant a stable backport, 
+besides as noted in the commit message including relocation information 
+inflates the resulting .dtb files, which could be seen as a regression.
+-- 
+Florian
+
+--00000000000061cfba0600ac6783
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
+QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
+UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
+M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
+Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
+14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
+a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
+XzCCBVgwggRAoAMCAQICDBP8P9hKRVySg3Qv5DANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
+RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
+UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAxMjE4MTFaFw0yNTA5MTAxMjE4MTFaMIGW
+MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
+BgNVBAoTDUJyb2FkY29tIEluYy4xGTAXBgNVBAMTEEZsb3JpYW4gRmFpbmVsbGkxLDAqBgkqhkiG
+9w0BCQEWHWZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tMIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEA+oi3jMmHltY4LMUy8Up5+1zjd1iSgUBXhwCJLj1GJQF+GwP8InemBbk5rjlC
+UwbQDeIlOfb8xGqHoQFGSW8p9V1XUw+cthISLkycex0AJ09ufePshLZygRLREU0H4ecNPMejxCte
+KdtB4COST4uhBkUCo9BSy1gkl8DJ8j/BQ1KNUx6oYe0CntRag+EnHv9TM9BeXBBLfmMRnWNhvOSk
+nSmRX0J3d9/G2A3FIC6WY2XnLW7eAZCQPa1Tz3n2B5BGOxwqhwKLGLNu2SRCPHwOdD6e0drURF7/
+Vax85/EqkVnFNlfxtZhS0ugx5gn2pta7bTdBm1IG4TX+A3B1G57rVwIDAQABo4IB3jCCAdowDgYD
+VR0PAQH/BAQDAgWgMIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZCaHR0cDovL3NlY3Vy
+ZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3J0MEEG
+CCsGAQUFBzABhjVodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWdu
+MmNhMjAyMDBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93
+d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNVHR8EQjBAMD6gPKA6
+hjhodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNy
+bDAoBgNVHREEITAfgR1mbG9yaWFuLmZhaW5lbGxpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggr
+BgEFBQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQUUwwfJ6/F
+KL0fRdVROal/Lp4lAF0wDQYJKoZIhvcNAQELBQADggEBAKBgfteDc1mChZjKBY4xAplC6uXGyBrZ
+kNGap1mHJ+JngGzZCz+dDiHRQKGpXLxkHX0BvEDZLW6LGOJ83ImrW38YMOo3ZYnCYNHA9qDOakiw
+2s1RH00JOkO5SkYdwCHj4DB9B7KEnLatJtD8MBorvt+QxTuSh4ze96Jz3kEIoHMvwGFkgObWblsc
+3/YcLBmCgaWpZ3Ksev1vJPr5n8riG3/N4on8gO5qinmmr9Y7vGeuf5dmZrYMbnb+yCBalkUmZQwY
+NxADYvcRBA0ySL6sZpj8BIIhWiXiuusuBmt2Mak2eEv0xDbovE6Z6hYyl/ZnRadbgK/ClgbY3w+O
+AfUXEZ0xggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52
+LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwT
+/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIEukrdJ179pWGA+x
+KZKG47bsapSLVHvesLQ2r9OZxOl2MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
+AQkFMQ8XDTIzMDcxNzEwMzg0OVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
+AWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEH
+MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQALSuqLXy895kNwmxp2xJod++7sJEKo2qoL
+UnIXcXgT0PDbBxF4S8jbAi/Il1H0tKcKzGEhjI99PLkK3Jmc8IJL0vqNmjMwjDyVCSs0IWU3U+No
+16NmDDqhPGhNwu6yWa4eZlAV9zmhisOZvWJDqakLzfb1XSr/KpAIM5HZkSTg5DxXe2YWR4HItKvl
+AXaI6upY1uoLZc8ceMxjvtk1PShj9z8hdFPe7JWIAiB5hpzJfPNareftKt2D4mcrspBh6Ybvug/O
+RvvdQjdhcEjtln7oC7ny+BXsW7ANeebbEUc5rqfBc3YNdo/dPwOuadrPq5SdTUgchD8ttYriVKk1
+Rnyw
+--00000000000061cfba0600ac6783--
