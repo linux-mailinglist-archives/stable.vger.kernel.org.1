@@ -2,257 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F8047560C8
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 12:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E4E7560CF
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 12:45:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbjGQKo1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 06:44:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51228 "EHLO
+        id S229920AbjGQKpn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 06:45:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230201AbjGQKo0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 06:44:26 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F7811C
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 03:44:25 -0700 (PDT)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36HAccnv000331
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:44:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=mime-version : date :
- from : to : cc : subject : reply-to : in-reply-to : references :
- message-id : content-type : content-transfer-encoding; s=pp1;
- bh=Q3aAgWLKGwgdIN2ZY4pUWxo44Fyc+ryz+Wz9Eg1YWhw=;
- b=n0EAv6FnDvyM7SlDVsEF6JJo7j8wbeYQpic0sY3FP0JK9U6Tx8lYjNoZMqSNzKBNenuV
- 9ONQVWbCadYfnqGBfzGYfiIC58hpjmocN6Yn5oOZOWPzZ9rGVLXyK6IPIiQNJ95NoUoh
- UUN5mC3zNys2uMNxP9jUP0FnBjOqqcJknXT8owSusq8nNcJDXt1qBINJ0CWvwSFTszG9
- icxuYrP9AAfL85jOWG5mWdhYZfBBTZZFNKLa1z5wpLWVfnJIvjOC3/pH4I6cI3NWl9Kd
- xyM3hKZjKbF4mSkVHGXZiOBhmtovq6TnJ+OqUmDiYRkRr15uLrXvUXrkw0/uaHxOiozf rw== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rw3vu092v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:44:24 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36H81UC8003340
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:44:22 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv65xa11p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:44:22 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-        by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36HAiLwj5243620
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 17 Jul 2023 10:44:21 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 374915805F;
-        Mon, 17 Jul 2023 10:44:21 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EE8C758051;
-        Mon, 17 Jul 2023 10:44:20 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-        by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Mon, 17 Jul 2023 10:44:20 +0000 (GMT)
+        with ESMTP id S229637AbjGQKpm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 06:45:42 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EB4D11C;
+        Mon, 17 Jul 2023 03:45:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=QwEVqapqGt5c5zaKWTZ1oqQBp+aqsZVTLEsdAj1XcXc=; b=KfCbhY1d2N38BQhLoS0cjcwf70
+        APYBflKw7faaRf0xF+22LOt7LWcTL6BiIZJbP9gsvGlUvD233G9fYmlEDCEQ05UmZ6bdE5eWhKDwY
+        wq8T1q++Ytsc/QON+PEtavQh4vGyYUNP5/MG+owXZijRVskGujtyBQP79W3sVA9/En1sJktXXP+U/
+        2kKcc/v+WP+dF9wwC7K49GtNC+JpS7LOoVXmXZwe8c71u/paZkipy6WfF91+0uk0KuHMFbdKXF3NF
+        Ma2l6FPIAAHR/FoQ9bjQA2odhvAdkxVis6y1BprdTbUeHLfcLkx+KDOGvJ59XhOQwce8VRdfC2lip
+        UMFlIyZw==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qLLj4-0095fw-0L;
+        Mon, 17 Jul 2023 10:45:10 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8B49930020C;
+        Mon, 17 Jul 2023 12:45:08 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 667FE2463D7EF; Mon, 17 Jul 2023 12:45:08 +0200 (CEST)
+Date:   Mon, 17 Jul 2023 12:45:08 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Guo Ren <guoren@kernel.org>
+Cc:     arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
+        luto@kernel.org, conor.dooley@microchip.com, heiko@sntech.de,
+        jszhang@kernel.org, lazyparser@gmail.com, falcon@tinylab.org,
+        chenhuacai@kernel.org, apatel@ventanamicro.com,
+        atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
+        palmer@dabbelt.com, bjorn@rivosinc.com, daniel.thompson@linaro.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
+        Guo Ren <guoren@linux.alibaba.com>
+Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
+Message-ID: <20230717104508.GF4253@hirez.programming.kicks-ass.net>
+References: <20230702025708.784106-1-guoren@kernel.org>
+ <20230704164003.GB83892@hirez.programming.kicks-ass.net>
+ <CAJF2gTTc0Gyo=K-0dCW6wu7q=Wq34hgTB69qJ7VSF_KAgKhavA@mail.gmail.com>
+ <20230710080152.GA3028865@hirez.programming.kicks-ass.net>
+ <CAJF2gTTt23iSDG_m4ihPhXhYDrz3Xnih=KGLx_ayBLbzPqaTaQ@mail.gmail.com>
 MIME-Version: 1.0
-Date:   Mon, 17 Jul 2023 12:44:20 +0200
-From:   Harald Freudenberger <freude@linux.ibm.com>
-To:     Holger Dengler <dengler@linux.ibm.com>
-Cc:     linux390-list@tuxmaker.boeblingen.de.ibm.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] s390/zcrypt: fix reply buffer calculations for CCA
- replies
-Reply-To: freude@linux.ibm.com
-Mail-Reply-To: freude@linux.ibm.com
-In-Reply-To: <070fe3b0-5020-a74c-dd2d-22565f70d660@linux.ibm.com>
-References: <20230714143630.457866-1-freude@linux.ibm.com>
- <070fe3b0-5020-a74c-dd2d-22565f70d660@linux.ibm.com>
-Message-ID: <f79ade2bd5ec42b8016c1e62cfd9abec@linux.ibm.com>
-X-Sender: freude@linux.ibm.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: RxQW_nffdM6kfeKxjqERX38LJXQP_9OG
-X-Proofpoint-GUID: RxQW_nffdM6kfeKxjqERX38LJXQP_9OG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-17_08,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- bulkscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
- mlxlogscore=999 phishscore=0 malwarescore=0 clxscore=1015 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307170096
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJF2gTTt23iSDG_m4ihPhXhYDrz3Xnih=KGLx_ayBLbzPqaTaQ@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-07-17 10:45, Holger Dengler wrote:
-> On 14/07/2023 16:36, Harald Freudenberger wrote:
->> The length information for available buffer space for CCA
->> replies is covered with two fields in the T6 header prepended
->> on each CCA reply: fromcardlen1 and fromcardlen2. The sum of
->> these both values must not exceed the AP bus limit for this
->> card (24KB for CEX8, 12KB CEX7 and older) minus the always
->> present headers.
->> 
->> The current code adjusted the fromcardlen2 value in case
->> of exceeding the AP bus limit when there was a non-zero
->> value given from userspace. Some tests now showed that this
->> was the wrong assumption. Instead the userspace value given for
->> this field should always be trusted and if the sum of the
->> wo fields exceeds the AP bus limit for this card the first
-> 
-> typo: two
+On Mon, Jul 17, 2023 at 07:33:25AM +0800, Guo Ren wrote:
+> On Mon, Jul 10, 2023 at 4:02 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > On Sun, Jul 09, 2023 at 10:30:22AM +0800, Guo Ren wrote:
+> > > On Wed, Jul 5, 2023 at 12:40 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> > > >
+> > > > On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
+> > > > > From: Guo Ren <guoren@linux.alibaba.com>
+> > > > >
+> > > > > The irqentry_nmi_enter/exit would force the current context into in_interrupt.
+> > > > > That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
+> > > > > debug the kernel.
+> > > > >
+> > > > > Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
+> > > > > of the kernel side.
+> > > >
+> > > > This doesn't explain much if anything :/
+> > > >
+> > > > I'm confused (probably because I don't know RISC-V very well), what's
+> > > > EBREAK and how does it happen?
+> > > EBREAK is just an instruction of riscv which would rise breakpoint exception.
+> > >
+> > >
+> > > >
+> > > > Specifically, if EBREAK can happen inside an local_irq_disable() region,
+> > > > then the below change is actively wrong. Any exception/interrupt that
+> > > > can happen while local_irq_disable() must be treated like an NMI.
+> > > When the ebreak happend out of local_irq_disable region, but
+> > > __nmi_enter forces handle_break() into in_interupt() state. So how
+> >
+> > And why is that a problem? I think I'm missing something fundamental
+> > here...
+> The irqentry_nmi_enter() would force the current context to get
+> in_interrupt=true, although ebreak happens in the context which is
+> in_interrupt=false.
+> A lot of checking codes, such as:
+>         if (in_interrupt())
+>                 panic("Fatal exception in interrupt");
 
-fixed
+Why would you do that?!?
 
-> 
->> field fromcardlen1 should be adjusted instead.
->> 
->> So now the calculation is done with this new insight in mind.
->> Also some additional checks for overflow have been introduced
->> and some comments to provide some documentation for future
->> maintainers of this complicated calculation code.
->> 
->> Furthermore the 128 bytes of fix overhead which is used
->> in the current code is not correct. Investications showed
-> 
-> typo: Investigations
+Are you're trying to differentiate between an exception and an
+interrupt?
 
-fixed ... did I forget to run the spell checker ??? ...
+You *could* have ebreak in an interrupt, right? So why panic the machine
+if that happens?
 
-> 
->> that for a reply always the same two header structs are
->> prepended before a possible payload. So this is also fixed
->> with this patch.
->> 
->> Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
->> Cc: stable@vger.kernel.org
-> 
-> With the typos fixed and the changes below
-> Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-> 
->> ---
->>  drivers/s390/crypto/zcrypt_msgtype6.c | 45 
->> ++++++++++++++++++++-------
->>  1 file changed, 33 insertions(+), 12 deletions(-)
->> 
->> diff --git a/drivers/s390/crypto/zcrypt_msgtype6.c 
->> b/drivers/s390/crypto/zcrypt_msgtype6.c
->> index 247f0ad38362..5ac110669327 100644
->> --- a/drivers/s390/crypto/zcrypt_msgtype6.c
->> +++ b/drivers/s390/crypto/zcrypt_msgtype6.c
->> @@ -551,6 +551,12 @@ static int xcrb_msg_to_type6_ep11cprb_msgx(bool 
->> userspace, struct ap_message *ap
->>   *
->>   * Returns 0 on success or -EINVAL, -EFAULT, -EAGAIN in case of an 
->> error.
->>   */
->> +struct type86_reply_hdrs {
->> +	struct type86_hdr hdr;
->> +	struct type86_fmt2_ext fmt2;
->> +	/* ... payload may follow ... */
->> +} __packed;
->> +
-> 
-> There is already a `struct type86_fmt2_msg` in this file (line 329 
-> ff.).
+> It would make the kernel panic, but we don't panic; we want back to the shell.
+> eg:
+> echo BUG > /sys/kernel/debug/provoke-crash/DIRECT
 
-Yes, I saw that. This will be consolidated with a cleanup patch series I 
-am about
-to develop just now.
 
-> 
->>  struct type86x_reply {
->>  	struct type86_hdr hdr;
->>  	struct type86_fmt2_ext fmt2;
->> @@ -1101,23 +1107,38 @@ static long zcrypt_msgtype6_send_cprb(bool 
->> userspace, struct zcrypt_queue *zq,
->>  				      struct ica_xcRB *xcrb,
->>  				      struct ap_message *ap_msg)
->>  {
->> -	int rc;
->> +	unsigned int reply_bufsize_minus_headers =
->> +		zq->reply.bufsize - sizeof(struct type86_reply_hdrs);
-> 
-> I don't like this variable name. What about `max_payload_size`?
-> 
->>  	struct response_type *rtype = ap_msg->private;
->>  	struct {
->>  		struct type6_hdr hdr;
->>  		struct CPRBX cprbx;
->>  		/* ... more data blocks ... */
->>  	} __packed * msg = ap_msg->msg;
->> -
->> -	/*
->> -	 * Set the queue's reply buffer length minus 128 byte padding
->> -	 * as reply limit for the card firmware.
->> -	 */
->> -	msg->hdr.fromcardlen1 = min_t(unsigned int, msg->hdr.fromcardlen1,
->> -				      zq->reply.bufsize - 128);
->> -	if (msg->hdr.fromcardlen2)
->> -		msg->hdr.fromcardlen2 =
->> -			zq->reply.bufsize - msg->hdr.fromcardlen1 - 128;
->> +	int rc, delta;
->> +
->> +	/* limit each of the two from fields to AP bus limit - headers */
-> 
-> I would also use "maximal payload size" here.
-> /* limit each of the two from fields to the maximum payload size */
 
-will do
-
-> 
->> +	msg->hdr.fromcardlen1 = min_t(unsigned int,
->> +				      msg->hdr.fromcardlen1,
->> +				      reply_bufsize_minus_headers);
->> +	msg->hdr.fromcardlen2 = min_t(unsigned int,
->> +				      msg->hdr.fromcardlen2,
->> +				      reply_bufsize_minus_headers);
->> +
->> +	/* calculate delta if the sum of both exceeds AP bus limit - headers 
->> */
-> 
-> dito:
-> /* calculate delta if the sum of both exceeds the maximum payload size 
-> */
-> 
-
-jaaaa...
-
->> +	delta = msg->hdr.fromcardlen1 + msg->hdr.fromcardlen2
->> +		- reply_bufsize_minus_headers;
->> +	if (delta > 0) {
->> +		/*
->> +		 * Sum exceeds AP bus limit - headers, prune fromcardlen1
-> 
-> dito:
->  * Sum exceeds the maximum payload size, prune fromcardlen1
-> 
-
-ok
-
->> +		 * (always trust fromcardlen2)
->> +		 */
->> +		if (delta > msg->hdr.fromcardlen1) {
->> +			rc = -EINVAL;
->> +			goto out;
->> +		}
->> +		msg->hdr.fromcardlen1 -= delta;
->> +	}
->> 
->>  	init_completion(&rtype->work);
->>  	rc = ap_queue_message(zq->queue, ap_msg);
->> @@ -1240,7 +1261,7 @@ static long zcrypt_msgtype6_send_ep11_cprb(bool 
->> userspace, struct zcrypt_queue *
->>  	 * as reply limit for the card firmware.
->>  	 */
->>  	msg->hdr.fromcardlen1 = zq->reply.bufsize -
->> -		sizeof(struct type86_hdr) - sizeof(struct type86_fmt2_ext);
->> +		sizeof(struct type86_reply_hdrs);
->> 
->>  	init_completion(&rtype->work);
->>  	rc = ap_queue_message(zq->queue, ap_msg);
