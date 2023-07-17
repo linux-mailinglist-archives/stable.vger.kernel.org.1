@@ -2,55 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31744756D07
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 21:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FF2E756D3F
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 21:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229765AbjGQTUH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 15:20:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57226 "EHLO
+        id S229811AbjGQTaX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 15:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229746AbjGQTUG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 15:20:06 -0400
+        with ESMTP id S230522AbjGQTaV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 15:30:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D3ACED
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 12:20:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC18E1;
+        Mon, 17 Jul 2023 12:30:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B023E61214
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 19:20:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E71C433C8;
-        Mon, 17 Jul 2023 19:20:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689621604;
-        bh=yQ03Pj8w9c5kxd+GGd4sj5+8eCj5b/jcdqbOwa4XQOs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cvWHW2NEIvq9Rm+OnrSpwbFzSfwd8FtYrcWe1cz8INzFjiqAcYU7vYoPbd6Hmfr8A
-         29YuTtWyKicfY9nj6s8JCjJhAV2ZAaDdzyiyCZw+W2ce8qslBtPBEC153+4g1kuJGk
-         yHHue+ULpb7f3ErouJVHT5W5Kcex67e1DPnWKig0=
-Date:   Mon, 17 Jul 2023 21:20:01 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Chuck Lever III <chuck.lever@oracle.com>
-Cc:     Sasha Levin <sashal@kernel.org>,
-        linux-stable <stable@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>,
-        Jakub Kacinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 6.4 118/800] net/handshake: Unpin sock->file if a
- handshake is cancelled
-Message-ID: <2023071704-grimacing-railroad-3ee3@gregkh>
-References: <20230716194949.099592437@linuxfoundation.org>
- <20230716194951.848894569@linuxfoundation.org>
- <6B82BD28-1891-499A-8721-1567612EF553@oracle.com>
- <2023071733-eligibly-altitude-4050@gregkh>
- <1043C933-AE94-4B30-A4BD-4174AA9FCC33@oracle.com>
- <2023071713-composer-consensus-7283@gregkh>
- <FFF06800-6943-4EE4-ACB8-DDA20EE0339A@oracle.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE9E86122B;
+        Mon, 17 Jul 2023 19:30:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282DCC433C8;
+        Mon, 17 Jul 2023 19:30:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689622219;
+        bh=B3lKcl6AG4VzLC8vKc3oOwsXsHm9qE0hLnyJCufjkwQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=tZBQ0hW12YiHopMYlgU/iscjagmj++kFnsMTRjCXXss4RiQSZmC+t1AoqGLtwSH/Q
+         ApRemcZP1v8V0m6UAxS1FT0C/s3o6IyBBx980E6uz1JTeeg30qeLdFNpeh9eiAS9UO
+         ypGzf+fanyWIUa5996eXCNxKos8nrQJD3hXn+b51BlcSEZIg2QtnqOntZITca/GM3F
+         rWSt60S2igAtbmHSzNBLFkG3/oW96LvlEHPby+FkCu4ayFcG44Y4eOBUCl49O4AGum
+         zt7XLhr0V/n4IPtlkN1uJL/Pb9V6soEQ9Rdl6aqDNqN/1So3uIzt8vuoZTSC0w4ClN
+         Q5VPS8kggiT0Q==
+From:   SeongJae Park <sj@kernel.org>
+To:     gregkh@linuxfoundation.org
+Cc:     ryan.roberts@arm.com, akpm@linux-foundation.org, hch@lst.de,
+        kirill.shutemov@linux.intel.com, lstoakes@gmail.com,
+        rppt@kernel.org, sj@kernel.org, stable@vger.kernel.org,
+        urezki@gmail.com, willy@infradead.org, yuzhao@google.com,
+        ziy@nvidia.com, damon@lists.linux.dev, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y] mm/damon/ops-common: atomically test and clear young on ptes and pmds
+Date:   Mon, 17 Jul 2023 19:30:08 +0000
+Message-Id: <20230717193008.122040-1-sj@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2023071613-reminder-relapse-b922@gregkh>
+References: <2023071613-reminder-relapse-b922@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <FFF06800-6943-4EE4-ACB8-DDA20EE0339A@oracle.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -61,136 +58,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 17, 2023 at 07:06:37PM +0000, Chuck Lever III wrote:
-> 
-> 
-> > On Jul 17, 2023, at 2:53 PM, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > 
-> > On Mon, Jul 17, 2023 at 05:55:46PM +0000, Chuck Lever III wrote:
-> >> 
-> >> 
-> >>> On Jul 17, 2023, at 1:10 PM, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> >>> 
-> >>> On Sun, Jul 16, 2023 at 08:43:58PM +0000, Chuck Lever III wrote:
-> >>>> 
-> >>>> 
-> >>>>> On Jul 16, 2023, at 3:39 PM, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> >>>>> 
-> >>>>> From: Chuck Lever <chuck.lever@oracle.com>
-> >>>>> 
-> >>>>> [ Upstream commit f921bd41001ccff2249f5f443f2917f7ef937daf ]
-> >>>>> 
-> >>>>> If user space never calls DONE, sock->file's reference count remains
-> >>>>> elevated. Enable sock->file to be freed eventually in this case.
-> >>>>> 
-> >>>>> Reported-by: Jakub Kacinski <kuba@kernel.org>
-> >>>>> Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
-> >>>>> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-> >>>>> Signed-off-by: David S. Miller <davem@davemloft.net>
-> >>>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> >>>>> ---
-> >>>>> net/handshake/handshake.h | 1 +
-> >>>>> net/handshake/request.c   | 4 ++++
-> >>>>> 2 files changed, 5 insertions(+)
-> >>>>> 
-> >>>>> diff --git a/net/handshake/handshake.h b/net/handshake/handshake.h
-> >>>>> index 4dac965c99df0..8aeaadca844fd 100644
-> >>>>> --- a/net/handshake/handshake.h
-> >>>>> +++ b/net/handshake/handshake.h
-> >>>>> @@ -31,6 +31,7 @@ struct handshake_req {
-> >>>>> struct list_head hr_list;
-> >>>>> struct rhash_head hr_rhash;
-> >>>>> unsigned long hr_flags;
-> >>>>> + struct file *hr_file;
-> >>>>> const struct handshake_proto *hr_proto;
-> >>>>> struct sock *hr_sk;
-> >>>>> void (*hr_odestruct)(struct sock *sk);
-> >>>>> diff --git a/net/handshake/request.c b/net/handshake/request.c
-> >>>>> index 94d5cef3e048b..d78d41abb3d99 100644
-> >>>>> --- a/net/handshake/request.c
-> >>>>> +++ b/net/handshake/request.c
-> >>>>> @@ -239,6 +239,7 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
-> >>>>> }
-> >>>>> req->hr_odestruct = req->hr_sk->sk_destruct;
-> >>>>> req->hr_sk->sk_destruct = handshake_sk_destruct;
-> >>>>> + req->hr_file = sock->file;
-> >>>>> 
-> >>>>> ret = -EOPNOTSUPP;
-> >>>>> net = sock_net(req->hr_sk);
-> >>>>> @@ -334,6 +335,9 @@ bool handshake_req_cancel(struct sock *sk)
-> >>>>> return false;
-> >>>>> }
-> >>>>> 
-> >>>>> + /* Request accepted and waiting for DONE */
-> >>>>> + fput(req->hr_file);
-> >>>>> +
-> >>>>> out_true:
-> >>>>> trace_handshake_cancel(net, req, sk);
-> >>>>> 
-> >>>>> -- 
-> >>>>> 2.39.2
-> >>>>> 
-> >>>>> 
-> >>>>> 
-> >>>> 
-> >>>> Don't take this one. It's fixed by a later commit:
-> >>>> 
-> >>>> 361b6889ae636926cdff517add240c3c8e24593a
-> >>>> 
-> >>>> that reverts it.
-> >>> 
-> >>> How?  That commit is in 6.4 already, yet this commit, is from 6.5-rc1.
-> >> 
-> >> I do not see f921bd41001ccff2249f5f443f2917f7ef937daf in v6.5-rc2.
-> >> Whatever that is, it's not in upstream.
-> > 
-> > I see it:
-> > $ git describe --contains f921bd41001ccff2249f5f443f2917f7ef937daf
-> > v6.5-rc1~163^2~292^2~1
-> > $ git show --oneline f921bd41001ccff2249f5f443f2917f7ef937daf | head -n 1
-> > f921bd41001c net/handshake: Unpin sock->file if a handshake is cancelled
-> 
-> Yes, I see it too, it's in the repo. But it's not in the commit
-> history of tag v6.5-rc2, and the source tree, as of v6.5-rc2,
-> does not have that change.
-> 
-> 
-> > $ git describe  --contains 361b6889ae636926cdff517add240c3c8e24593a
-> > v6.4-rc7~17^2~14
-> > $ git show --oneline 361b6889ae636926cdff517add240c3c8e24593a | head -n 1
-> > 361b6889ae63 net/handshake: remove fput() that causes use-after-free
-> > 
-> > So commit 361b6889ae63 ("net/handshake: remove fput() that causes
-> > use-after-free") came into 6.4-rc7, and commit f921bd41001c
-> > ("net/handshake: Unpin sock->file if a handshake is cancelled") came
-> > into 6.5-rc1.
-> 
-> f921bd41001c isn't in 6.5-rc at all, according to the commit history.
-> 
-> 
-> >> [cel@manet server-development]$ git log --pretty=oneline v6.5-rc2 -- net/handshake/
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-I think the issue is that you are comparing it to the current state of
-net/handshake, if you look overall at the log, you will see it:
+commit c11d34fa139e4b0fb4249a30f37b178353533fa1 upstream.
 
-$ git log --pretty=oneline v6.5-rc2 | grep f921bd41001ccff2249f5f443f2917f7ef937daf
-f921bd41001ccff2249f5f443f2917f7ef937daf net/handshake: Unpin sock->file if a handshake is cancelled
+It is racy to non-atomically read a pte, then clear the young bit, then
+write it back as this could discard dirty information.  Further, it is bad
+practice to directly set a pte entry within a table.  Instead clearing
+young must go through the arch-provided helper,
+ptep_test_and_clear_young() to ensure it is modified atomically and to
+give the arch code visibility and allow it to check (and potentially
+modify) the operation.
 
-Or just a normal "git log" will also show it.
+Link: https://lkml.kernel.org/r/20230602092949.545577-3-ryan.roberts@arm.com
+Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces").
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+This is a manual backport of the commit, which cannot cleanly
+cherry-picked on 5.15.y[1], on 5.15.y, specifically 5.15.120.
 
-There is a way to say "ignore the current state of the directory I'm
-asking for the log for, and just give me all the commits that touched
-it" but I can't ever remember the option to git log for it.
+[1] https://lore.kernel.org/stable/2023071613-reminder-relapse-b922@gregkh/
 
-Ah, it's the --full-history option:
+ mm/damon/vaddr.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-$ git log --pretty=oneline --full-history v6.5-rc2 -- net/handshake/ | grep f921bd41001ccff2249f5f443f2917f7ef937daf 
-f921bd41001ccff2249f5f443f2917f7ef937daf net/handshake: Unpin sock->file if a handshake is cancelled
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 1945196fd743..6ad96da15081 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -393,7 +393,7 @@ static struct page *damon_get_page(unsigned long pfn)
+ 	return page;
+ }
+ 
+-static void damon_ptep_mkold(pte_t *pte, struct mm_struct *mm,
++static void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma,
+ 			     unsigned long addr)
+ {
+ 	bool referenced = false;
+@@ -402,13 +402,11 @@ static void damon_ptep_mkold(pte_t *pte, struct mm_struct *mm,
+ 	if (!page)
+ 		return;
+ 
+-	if (pte_young(*pte)) {
++	if (ptep_test_and_clear_young(vma, addr, pte))
+ 		referenced = true;
+-		*pte = pte_mkold(*pte);
+-	}
+ 
+ #ifdef CONFIG_MMU_NOTIFIER
+-	if (mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE))
++	if (mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE))
+ 		referenced = true;
+ #endif /* CONFIG_MMU_NOTIFIER */
+ 
+@@ -419,7 +417,7 @@ static void damon_ptep_mkold(pte_t *pte, struct mm_struct *mm,
+ 	put_page(page);
+ }
+ 
+-static void damon_pmdp_mkold(pmd_t *pmd, struct mm_struct *mm,
++static void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma,
+ 			     unsigned long addr)
+ {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+@@ -429,13 +427,11 @@ static void damon_pmdp_mkold(pmd_t *pmd, struct mm_struct *mm,
+ 	if (!page)
+ 		return;
+ 
+-	if (pmd_young(*pmd)) {
++	if (pmdp_test_and_clear_young(vma, addr, pmd))
+ 		referenced = true;
+-		*pmd = pmd_mkold(*pmd);
+-	}
+ 
+ #ifdef CONFIG_MMU_NOTIFIER
+-	if (mmu_notifier_clear_young(mm, addr,
++	if (mmu_notifier_clear_young(vma->vm_mm, addr,
+ 				addr + ((1UL) << HPAGE_PMD_SHIFT)))
+ 		referenced = true;
+ #endif /* CONFIG_MMU_NOTIFIER */
+@@ -462,7 +458,7 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 		}
+ 
+ 		if (pmd_huge(*pmd)) {
+-			damon_pmdp_mkold(pmd, walk->mm, addr);
++			damon_pmdp_mkold(pmd, walk->vma, addr);
+ 			spin_unlock(ptl);
+ 			return 0;
+ 		}
+@@ -474,7 +470,7 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+ 	if (!pte_present(*pte))
+ 		goto out;
+-	damon_ptep_mkold(pte, walk->mm, addr);
++	damon_ptep_mkold(pte, walk->vma, addr);
+ out:
+ 	pte_unmap_unlock(pte, ptl);
+ 	return 0;
+-- 
+2.25.1
 
-So yes, it's really there.  Read the "History Simplification" section in
-the git log manpage for all the details as to why it didn't show up in
-your command.  And one day I'll actually remember that option...
-
-thanks,
-
-greg k-h
