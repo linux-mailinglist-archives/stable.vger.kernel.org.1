@@ -2,83 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17DF9756AAD
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 19:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACEB7756AB3
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 19:34:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231402AbjGQRd3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 13:33:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49656 "EHLO
+        id S231410AbjGQReZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 13:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231347AbjGQRd1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 13:33:27 -0400
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 938C9BD
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 10:33:24 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id 34401320095B;
-        Mon, 17 Jul 2023 13:33:21 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Mon, 17 Jul 2023 13:33:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
-        cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1689615200; x=1689701600; bh=H0
-        FVCc7wNWZqSqf0OwGUespKLuGWz7Ur0/s0EDkSaMQ=; b=I1iMLvnE8aOyhYOxG7
-        1sfRLkXgQWVatPXNbJtZHY+6zYIosruTIPQ3qnmdqnR3uhkrdgvG/OAVSxEmOgyO
-        lG37DiuftdUCCU6bFC5EfCl+CiLZIRYsgWWIHqmFdji7dbd5REBuHrfOBXjifGP5
-        cQyNJaSqRfqILhLUvQ4s9doBUFj89wCvIzOlEYjd/SFiV/IqtYwoMwV9RMLsWbYD
-        HpOeOYNaDI4U16+Il6CmVjPZ4jIKXkvcTqrBF3PIPJXH6NdITm1slXGJyx4k4hir
-        LzXNJ2StLF2W5L+broTZmffZYKgNejLOokmbpKyeO8dDHfzXgJH7T+hq6PCt9w6T
-        jmZA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1689615200; x=1689701600; bh=H0FVCc7wNWZqS
-        qf0OwGUespKLuGWz7Ur0/s0EDkSaMQ=; b=iWLVKWYBXnd7XKiUGGSK+dnQ5Rv3B
-        xQWD+QGvgJiIuM3G0PvuM6l7mNGICSo0ytlsVwisXuOx8sZeyeMj4y8pViX6ZGyQ
-        xBG9bwVRYFHWfjZJU1L/NWOg0ZrwBFz2BhyQOAwknLL6D+Gakbb7uJRk8kr5BCE9
-        uj7Hv5cKCYj6Q6YitFH7mB7P8wfnrVOe/6JVzmrJn44xEIpa4V/WQOZ+mmMT0L0d
-        MoOtObzGbh3gW2mw1VOkVg+Y4nuMVFpLXmfLlbBxdmWwAwbhlQwfbpnGobDBKixb
-        oyzbvyfnMANTcN+tPQ5yiqKCSrszp2gyH+2azQnNrKgAx0t9wyIxoBdhA==
-X-ME-Sender: <xms:YHu1ZGwzuOn7xt_gfimdS01qhPBFh_MJ9epW9dcP3_Wmi9clE9FsZw>
-    <xme:YHu1ZCQJJ1ny1BvpjB25bl492zeg1nGSGqhd8cv3g1sik1HbT1RkE3cb_hcyCdE2Z
-    C8_PL8b4GZyFaUV0Q>
-X-ME-Received: <xmr:YHu1ZIWUZaQg7H5cL-VckxLzrSLGqHmjJV0QTcsXdYYohqhFQg08fIHZQxzplXmPCHw-BHUMjSBTHgn0SPTi0MK-puf1hB4mjnRrolEAOfVaSvnVHrr317veldc3>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgedvgdduudegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehnughr
-    vghsucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuggftrf
-    grthhtvghrnhepvdfffeevhfetveffgeeiteefhfdtvdffjeevhfeuteegleduheetvedu
-    ieettddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    eprghnughrvghssegrnhgrrhgriigvlhdruggv
-X-ME-Proxy: <xmx:YHu1ZMgmL8jni9_X13YdRzMpmKmBgEd0gyGee62PhdS7JQwJGW3lMw>
-    <xmx:YHu1ZID3jgVJOXpjca_IQqg5dcJ9bHO77TktpgZLmTX8ZPyXyehG3w>
-    <xmx:YHu1ZNL9InvMBeKVrrXEsVFxYj1TT_FZ9TTueypRTXvCjqlrcmCEMg>
-    <xmx:YHu1ZLN0cYUvWA-Ds9MJco_ZQKehW0rGULj3sz8GRCzZyVj2zhSaVw>
-Feedback-ID: id4a34324:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 17 Jul 2023 13:33:20 -0400 (EDT)
-Date:   Mon, 17 Jul 2023 10:33:18 -0700
-From:   Andres Freund <andres@anarazel.de>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     gregkh@linuxfoundation.org, asml.silence@gmail.com,
-        stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] io_uring: Use io_schedule* in cqring
- wait" failed to apply to 6.1-stable tree
-Message-ID: <20230717173318.3ljqkezy3i3oatin@awork3.anarazel.de>
-References: <2023071620-litigate-debunk-939a@gregkh>
- <0cfb74bb-c203-39a1-eab7-abeeae724b68@kernel.dk>
- <222ae139-33a6-a522-0deb-dcdf044edd19@kernel.dk>
+        with ESMTP id S230362AbjGQReY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 13:34:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50695D8;
+        Mon, 17 Jul 2023 10:34:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0FE56119F;
+        Mon, 17 Jul 2023 17:34:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 08AF9C433CB;
+        Mon, 17 Jul 2023 17:34:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689615262;
+        bh=H4YvqdwXcs9eWwYRBHtp/bsnkn4MD/1phpJSu1I1qso=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=iMCRy6Piwp7fJc2J5aqFnZYSidIGFYUyZ5PRUUV5uDT/is62H9cFM4TQDnP+lvs0y
+         +w/5GH4Zxz8bLmd13kzbamExWkL1QDyG+/b1s8tSCXdICFFBxhBoMWI74iju5wmR3l
+         PJN6ifUw6p5AhI5kXLNAx65wCL6niHBbpWzgpOYPkwq3BkrvgJBC3wQvr1kPjeIp8X
+         LqAPvlRjKZ9gDy90GlIByfhaNCwP/oHt5/xLYTdmsKn+l+bsejyATYLzCL3a3uzYDV
+         Sv0Q14UTacYpem5dziUAZL1U+1c8h92+zYlASPxNrQDHZn7rhVYRVe+oKnzHWHrvWA
+         +h1656MyBgkKQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D99CBE29F33;
+        Mon, 17 Jul 2023 17:34:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <222ae139-33a6-a522-0deb-dcdf044edd19@kernel.dk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+Subject: Re: [f2fs-dev] [PATCH] f2fs: flush inode if atomic file is aborted
+From:   patchwork-bot+f2fs@kernel.org
+Message-Id: <168961526188.4078.2630269781392789426.git-patchwork-notify@kernel.org>
+Date:   Mon, 17 Jul 2023 17:34:21 +0000
+References: <20230707141142.2276510-1-jaegeuk@kernel.org>
+In-Reply-To: <20230707141142.2276510-1-jaegeuk@kernel.org>
+To:     Jaegeuk Kim <jaegeuk@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        syzbot+e1246909d526a9d470fa@syzkaller.appspotmail.com,
+        stable@vger.kernel.org
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,13 +59,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Hello:
 
-On 2023-07-17 10:39:51 -0600, Jens Axboe wrote:
-> And here's a corrected one for 6.1.
+This patch was applied to jaegeuk/f2fs.git (dev)
+by Jaegeuk Kim <jaegeuk@kernel.org>:
 
-Thanks! LGTM.
+On Fri,  7 Jul 2023 07:11:42 -0700 you wrote:
+> Let's flush the inode being aborted atomic operation to avoid stale dirty
+> inode during eviction in this call stack:
+> 
+>   f2fs_mark_inode_dirty_sync+0x22/0x40 [f2fs]
+>   f2fs_abort_atomic_write+0xc4/0xf0 [f2fs]
+>   f2fs_evict_inode+0x3f/0x690 [f2fs]
+>   ? sugov_start+0x140/0x140
+>   evict+0xc3/0x1c0
+>   evict_inodes+0x17b/0x210
+>   generic_shutdown_super+0x32/0x120
+>   kill_block_super+0x21/0x50
+>   deactivate_locked_super+0x31/0x90
+>   cleanup_mnt+0x100/0x160
+>   task_work_run+0x59/0x90
+>   do_exit+0x33b/0xa50
+>   do_group_exit+0x2d/0x80
+>   __x64_sys_exit_group+0x14/0x20
+>   do_syscall_64+0x3b/0x90
+>   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+> 
+> [...]
 
-Greetings,
+Here is the summary with links:
+  - [f2fs-dev] f2fs: flush inode if atomic file is aborted
+    https://git.kernel.org/jaegeuk/f2fs/c/eb4ebfac51db
 
-Andres Freund
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
