@@ -2,53 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85919756C84
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 20:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C6B3756C86
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 20:53:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231352AbjGQSxM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 14:53:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46220 "EHLO
+        id S229517AbjGQSxi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 14:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230321AbjGQSxM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 14:53:12 -0400
+        with ESMTP id S229476AbjGQSxi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 14:53:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2240199
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 11:53:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55F8299;
+        Mon, 17 Jul 2023 11:53:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2CB7611E8
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 18:53:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BD5C433C9;
-        Mon, 17 Jul 2023 18:53:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689619990;
-        bh=kBxBgrZN90x1NHlKRmZ7hlwufVEjGXosjxSlmKhxlTk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rqvh+9sRM2Zb4usYiuBm+VJ6mqoPHT+W1YKupoH66rkt/k+IGnknqbK1LxKNXrEeQ
-         QhwA/daNeFykYwXFhYmka9+RU4NBKtHbJLzn8hDj1DmsLJOX1zqwMOlZDb+BQkzcJF
-         XFoNs6jpKxj0mafW2HJO+17Q7Qq9AJJ5vgVLyg1s=
-Date:   Mon, 17 Jul 2023 20:53:06 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Chuck Lever III <chuck.lever@oracle.com>
-Cc:     Sasha Levin <sashal@kernel.org>,
-        linux-stable <stable@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>,
-        Jakub Kacinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 6.4 118/800] net/handshake: Unpin sock->file if a
- handshake is cancelled
-Message-ID: <2023071713-composer-consensus-7283@gregkh>
-References: <20230716194949.099592437@linuxfoundation.org>
- <20230716194951.848894569@linuxfoundation.org>
- <6B82BD28-1891-499A-8721-1567612EF553@oracle.com>
- <2023071733-eligibly-altitude-4050@gregkh>
- <1043C933-AE94-4B30-A4BD-4174AA9FCC33@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1043C933-AE94-4B30-A4BD-4174AA9FCC33@oracle.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF71F611E9;
+        Mon, 17 Jul 2023 18:53:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83D4C433C8;
+        Mon, 17 Jul 2023 18:53:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689620016;
+        bh=MJ+3g/By8w8uqFVuPWUmEVk3gER9FDbhho5+chT2JB4=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=mzcQNFn4zTUv1psOAgofMF0FP4j0vc5sfZec2W5u3AvU1paHyr1IVmCTYo2f1uxh6
+         R48jm/4L4JsZ5ARR72PKp016hza7C7BBijP3AZnIVuX0/OZgP61Z+qNk4lZgrbqtqi
+         KZultOvIcvsz09OaOyTLDHewYwygvwRnSA+aosHQMe1CB/tW/UE8UATkLXVQlOGrKY
+         E/W9OO20WDlq2Isfu13Ww4LSQ40GHwu4cfrR4cUlPYnSzCLPh2lv4VLh9gWEuVaSxg
+         PLS2BGO9vdZiffi/XoJrjJPZvpRcSA10eo8NX7+DKUmCP+qIC66IboBahm9SIwv2Er
+         /Xpw6OUlTy3pA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 17 Jul 2023 18:53:31 +0000
+Message-Id: <CU4OB1RHGF50.1X9C9BVY4XM42@seitikki>
+Cc:     <kai.huang@intel.com>, <reinette.chatre@intel.com>,
+        <kristen@linux.intel.com>, <seanjc@google.com>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Haitao Huang" <haitao.huang@linux.intel.com>,
+        <dave.hansen@linux.intel.com>, <linux-kernel@vger.kernel.org>,
+        <linux-sgx@vger.kernel.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
+X-Mailer: aerc 0.14.0
+References: <20230717181732.84039-1-haitao.huang@linux.intel.com>
+In-Reply-To: <20230717181732.84039-1-haitao.huang@linux.intel.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,124 +61,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 17, 2023 at 05:55:46PM +0000, Chuck Lever III wrote:
-> 
-> 
-> > On Jul 17, 2023, at 1:10 PM, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > 
-> > On Sun, Jul 16, 2023 at 08:43:58PM +0000, Chuck Lever III wrote:
-> >> 
-> >> 
-> >>> On Jul 16, 2023, at 3:39 PM, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> >>> 
-> >>> From: Chuck Lever <chuck.lever@oracle.com>
-> >>> 
-> >>> [ Upstream commit f921bd41001ccff2249f5f443f2917f7ef937daf ]
-> >>> 
-> >>> If user space never calls DONE, sock->file's reference count remains
-> >>> elevated. Enable sock->file to be freed eventually in this case.
-> >>> 
-> >>> Reported-by: Jakub Kacinski <kuba@kernel.org>
-> >>> Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
-> >>> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-> >>> Signed-off-by: David S. Miller <davem@davemloft.net>
-> >>> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> >>> ---
-> >>> net/handshake/handshake.h | 1 +
-> >>> net/handshake/request.c   | 4 ++++
-> >>> 2 files changed, 5 insertions(+)
-> >>> 
-> >>> diff --git a/net/handshake/handshake.h b/net/handshake/handshake.h
-> >>> index 4dac965c99df0..8aeaadca844fd 100644
-> >>> --- a/net/handshake/handshake.h
-> >>> +++ b/net/handshake/handshake.h
-> >>> @@ -31,6 +31,7 @@ struct handshake_req {
-> >>> struct list_head hr_list;
-> >>> struct rhash_head hr_rhash;
-> >>> unsigned long hr_flags;
-> >>> + struct file *hr_file;
-> >>> const struct handshake_proto *hr_proto;
-> >>> struct sock *hr_sk;
-> >>> void (*hr_odestruct)(struct sock *sk);
-> >>> diff --git a/net/handshake/request.c b/net/handshake/request.c
-> >>> index 94d5cef3e048b..d78d41abb3d99 100644
-> >>> --- a/net/handshake/request.c
-> >>> +++ b/net/handshake/request.c
-> >>> @@ -239,6 +239,7 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
-> >>> }
-> >>> req->hr_odestruct = req->hr_sk->sk_destruct;
-> >>> req->hr_sk->sk_destruct = handshake_sk_destruct;
-> >>> + req->hr_file = sock->file;
-> >>> 
-> >>> ret = -EOPNOTSUPP;
-> >>> net = sock_net(req->hr_sk);
-> >>> @@ -334,6 +335,9 @@ bool handshake_req_cancel(struct sock *sk)
-> >>> return false;
-> >>> }
-> >>> 
-> >>> + /* Request accepted and waiting for DONE */
-> >>> + fput(req->hr_file);
-> >>> +
-> >>> out_true:
-> >>> trace_handshake_cancel(net, req, sk);
-> >>> 
-> >>> -- 
-> >>> 2.39.2
-> >>> 
-> >>> 
-> >>> 
-> >> 
-> >> Don't take this one. It's fixed by a later commit:
-> >> 
-> >> 361b6889ae636926cdff517add240c3c8e24593a
-> >> 
-> >> that reverts it.
-> > 
-> > How?  That commit is in 6.4 already, yet this commit, is from 6.5-rc1.
-> 
-> I do not see f921bd41001ccff2249f5f443f2917f7ef937daf in v6.5-rc2.
-> Whatever that is, it's not in upstream.
+On Mon Jul 17, 2023 at 6:17 PM UTC, Haitao Huang wrote:
+> Under heavy load, the SGX EPC reclaimers (current ksgxd or future EPC
+> cgroup worker) may reclaim the SECS EPC page for an enclave and set
+> encl->secs.epc_page to NULL. But the SECS EPC page is used for EAUG in
+> the SGX #PF handler without checking for NULL and reloading.
+>
+> Fix this by checking if SECS is loaded before EAUG and load it if it was
+> reclaimed.
+>
+> Fixes: 5a90d2c3f5ef8 ("x86/sgx: Support adding of pages to an initialized=
+ enclave")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
+> ---
+>  arch/x86/kernel/cpu/sgx/encl.c | 25 ++++++++++++++++++++-----
+>  arch/x86/kernel/cpu/sgx/main.c |  4 ++++
+>  2 files changed, 24 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/enc=
+l.c
+> index 2a0e90fe2abc..d39e502bb7b0 100644
+> --- a/arch/x86/kernel/cpu/sgx/encl.c
+> +++ b/arch/x86/kernel/cpu/sgx/encl.c
+> @@ -235,6 +235,16 @@ static struct sgx_epc_page *sgx_encl_eldu(struct sgx=
+_encl_page *encl_page,
+>  	return epc_page;
+>  }
+> =20
+> +static struct sgx_epc_page *sgx_encl_load_secs(struct sgx_encl *encl)
+> +{
+> +	struct sgx_epc_page *epc_page =3D encl->secs.epc_page;
+> +
+> +	if (!epc_page) {
+> +		epc_page =3D sgx_encl_eldu(&encl->secs, NULL);
+> +	}
 
-I see it:
-	$ git describe --contains f921bd41001ccff2249f5f443f2917f7ef937daf
-	v6.5-rc1~163^2~292^2~1
-	$ git show --oneline f921bd41001ccff2249f5f443f2917f7ef937daf | head -n 1
-	f921bd41001c net/handshake: Unpin sock->file if a handshake is cancelled
+remove curly braces
 
-	$ git describe  --contains 361b6889ae636926cdff517add240c3c8e24593a
-	v6.4-rc7~17^2~14
-	$ git show --oneline 361b6889ae636926cdff517add240c3c8e24593a | head -n 1
-	361b6889ae63 net/handshake: remove fput() that causes use-after-free
+> +	return epc_page;
+> +}
+> +
+>  static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
+>  						  struct sgx_encl_page *entry)
+>  {
+> @@ -248,11 +258,9 @@ static struct sgx_encl_page *__sgx_encl_load_page(st=
+ruct sgx_encl *encl,
+>  		return entry;
+>  	}
+> =20
+> -	if (!(encl->secs.epc_page)) {
+> -		epc_page =3D sgx_encl_eldu(&encl->secs, NULL);
+> -		if (IS_ERR(epc_page))
+> -			return ERR_CAST(epc_page);
+> -	}
+> +	epc_page =3D sgx_encl_load_secs(encl);
+> +	if (IS_ERR(epc_page))
+> +		return ERR_CAST(epc_page);
+> =20
+>  	epc_page =3D sgx_encl_eldu(entry, encl->secs.epc_page);
+>  	if (IS_ERR(epc_page))
+> @@ -339,6 +347,13 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_=
+struct *vma,
+> =20
+>  	mutex_lock(&encl->lock);
+> =20
+> +	epc_page =3D sgx_encl_load_secs(encl);
+> +	if (IS_ERR(epc_page)) {
+> +		if (PTR_ERR(epc_page) =3D=3D -EBUSY)
+> +			vmret =3D  VM_FAULT_NOPAGE;
+> +		goto err_out_unlock;
+> +	}
+> +
+>  	epc_page =3D sgx_alloc_epc_page(encl_page, false);
+>  	if (IS_ERR(epc_page)) {
+>  		if (PTR_ERR(epc_page) =3D=3D -EBUSY)
+> diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/mai=
+n.c
+> index 166692f2d501..4662a364ce62 100644
+> --- a/arch/x86/kernel/cpu/sgx/main.c
+> +++ b/arch/x86/kernel/cpu/sgx/main.c
+> @@ -257,6 +257,10 @@ static void sgx_reclaimer_write(struct sgx_epc_page =
+*epc_page,
+> =20
+>  	mutex_lock(&encl->lock);
+> =20
+> +	/* Should not be possible */
+> +	if (WARN_ON(!(encl->secs.epc_page)))
+> +		goto out;
+> +
+>  	sgx_encl_ewb(epc_page, backing);
+>  	encl_page->epc_page =3D NULL;
+>  	encl->secs_child_cnt--;
+> --=20
+> 2.25.1
 
-So commit 361b6889ae63 ("net/handshake: remove fput() that causes
-use-after-free") came into 6.4-rc7, and commit f921bd41001c
-("net/handshake: Unpin sock->file if a handshake is cancelled") came
-into 6.5-rc1.
-
-> [cel@manet server-development]$ git log --pretty=oneline v6.5-rc2 -- net/handshake/
-> 173780ff18a93298ca84224cc79df69f9cc198ce Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
-> 361b6889ae636926cdff517add240c3c8e24593a net/handshake: remove fput() that causes use-after-free
-> 9b66ee06e5ca2698d0ba12a7ad7188cb724279e7 net: ynl: prefix uAPI header include with uapi/
-> 26fb5480a27d34975cc2b680b77af189620dd740 net/handshake: Enable the SNI extension to work properly
-> 1ce77c998f0415d7d9d91cb9bd7665e25c8f75f1 net/handshake: Unpin sock->file if a handshake is cancelled
-> fc490880e39d86c65ab2bcbd357af1950fa55e48 net/handshake: handshake_genl_notify() shouldn't ignore @flags
-> 7afc6d0a107ffbd448c96eb2458b9e64a5af7860 net/handshake: Fix uninitialized local variable
-> 7ea9c1ec66bc099b0bfba961a8a46dfe25d7d8e4 net/handshake: Fix handshake_dup() ref counting
-> a095326e2c0f33743ce8e887d5b90edf3f36cced net/handshake: Remove unneeded check from handshake_dup()
-> 18c40a1cc1d990c51381ef48cd93fdb31d5cd903 net/handshake: Fix sock->file allocation
-> b21c7ba6d9a5532add3827a3b49f49cbc0cb9779 net/handshake: Squelch allocation warning during Kunit test
-> 6aa445e39693bff9c98b12f960e66b4e18c7378b net/handshake: Fix section mismatch in handshake_exit
-> 88232ec1ec5ecf4aa5de439cff3d5e2b7adcac93 net/handshake: Add Kunit tests for the handshake consumer API
-> 2fd5532044a89d2403b543520b4902e196f7d165 net/handshake: Add a kernel API for requesting a TLSv1.3 handshake
-> 3b3009ea8abb713b022d94fba95ec270cf6e7eae net/handshake: Create a NETLINK service for handling handshake requests
-> [cel@manet server-development]$
-> 
-> But I do see 1ce77c998f0415d7d9d91cb9bd7665e25c8f75f1 and the
-> commit that reverts it, 361b6889ae636926cdff517add240c3c8e24593a.
-
-Very strange.  As this is confusing, I'll just drop it for now until
-someone can straighten it out :)
-
-thanks,
-
-greg k-h
+BR, Jarkko
