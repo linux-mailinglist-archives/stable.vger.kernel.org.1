@@ -2,68 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D7197566F6
-	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 16:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B86D675670C
+	for <lists+stable@lfdr.de>; Mon, 17 Jul 2023 17:02:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230274AbjGQO7a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 10:59:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40538 "EHLO
+        id S230366AbjGQPCG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 11:02:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229762AbjGQO73 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 10:59:29 -0400
-Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C072FE7F
-        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 07:59:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1689605968; x=1721141968;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=JeA+85lGymeBpxhPg7mm043dBovqc22VrgKsfkOn3GI=;
-  b=hhL+6ZaWzrKyl4qbuVCLf6UKn1ckdzKhozD0aFu9TxDjEoibtkDu8l0d
-   KacbtBoV4ITyuy2CTTkhPU9cOex774/hXORau8Rg/YjLqoQGYPBkM6s4X
-   8QiUrXL4bVS77+8HwhKDKZwHsTjnoOKTdmajjoFjMX2PFn7i0aH2fkyyq
-   o=;
-X-IronPort-AV: E=Sophos;i="6.01,211,1684800000"; 
-   d="scan'208";a="16703574"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-529f0975.us-east-1.amazon.com) ([10.25.36.214])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2023 14:59:26 +0000
-Received: from EX19MTAUEA001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
-        by email-inbound-relay-iad-1e-m6i4x-529f0975.us-east-1.amazon.com (Postfix) with ESMTPS id 7E0D7469D9;
-        Mon, 17 Jul 2023 14:59:24 +0000 (UTC)
-Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
- EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Mon, 17 Jul 2023 14:59:22 +0000
-Received: from [10.136.59.42] (10.136.59.42) by EX19D028UEC003.ant.amazon.com
- (10.252.137.159) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Mon, 17 Jul
- 2023 14:59:21 +0000
-Message-ID: <9c7fc5ab-1c06-8452-2747-aa89e7a1dfb6@amazon.com>
-Date:   Mon, 17 Jul 2023 10:59:18 -0400
+        with ESMTP id S229780AbjGQPCF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 11:02:05 -0400
+Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4661BA6;
+        Mon, 17 Jul 2023 08:02:04 -0700 (PDT)
+Message-ID: <8497337677209ff8a9418f1a4873eb3a.pc@manguebit.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+        s=dkim; t=1689606122;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=54qdC8498DlkNTDRty9QASCfdA85ErVQYd+x/s04498=;
+        b=k8q+A4gkndJTbnEPkIuS9+QR9OOpVfxVQHERfYjIvdXh4fI4g0PfO+xxJ9Yfh+cixbR95+
+        v4F9SCgrveGVFTpCfhQPtge3Owkzp0vbc2JN2aUT+8OdgBGsdPq6GAt1IV/8IZhII01wMj
+        P8cXp9hA0R92fk+QNLophm9g2Vms5ZaLk8X7TRKhobwwZvvIG67HYpxhVWwUl3tK7CmcNt
+        QFgUvoDNcSMWr94XpkB02E1Uj0no9fur1IgpgVtuaR3+g31YUku6BtatSsEBTt0lgjOMRd
+        tL1oqAg3XX2f+jfCpP3e6tuZULJx0sNr5ZOly+pXDb8EnT5o/8oIKsveX46NYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+        s=dkim; t=1689606122;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=54qdC8498DlkNTDRty9QASCfdA85ErVQYd+x/s04498=;
+        b=MeM7Jod02x1RYPt9w6clN6xvoH1mCYf8JxxTqdWsAz7t0H/lqCvWId8vM3NVpz2khcM61p
+        1tvuFsX/pUEjO8VrQ8wnN64r/um7G/7KMgN+bEwDLuuFvfxICPehEYKL5U9g3hTOdRrgL2
+        mspnL0FdEVJkbRadOa/jD5Yga5+u6wd2sfZEsu6j6tUWNxhIHktzyb8ELVmPQDiX0gR4+5
+        udIh3XsFsD5hSU0iI8CrrH/J20+z/aqfoOIfdr3dAtlT7SOgRiCY4QOnljF3vchbz7naZp
+        vp4z1wWqd5kjVfAunNS6I+R+icfxlGPlR4nTJgV+rbJCw+GTKm1rSucFhT3gOA==
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=pc@manguebit.com smtp.mailfrom=pc@manguebit.com
+ARC-Seal: i=1; s=dkim; d=manguebit.com; t=1689606122; a=rsa-sha256;
+        cv=none;
+        b=kjKjMjIZ7n3pH4ia5nwuowMMBdcFkB+DxOECGgRLhGm0fJWgjv/JXYhMXMOw4AcSwRWPAI
+        koJe43EcG24B47zRFT+l4yq5RheHvyASG/eoJo7YiGHLUbpINvJ7BGEulnCWLD2vS/t4O+
+        SaPk0sMjETcdQp9nHH6xIRhPjIxkPcdT2yFV9r8/xzNQh3p+Rhv1LcEeilFahaomvjczXw
+        Ik7dNvCCNJwju/BndLwqiIkIm9iPLMgWwsft1EZkm3ozjuNJo6wOkXsfEG/Tu3VJfwbT+a
+        aV7YtZf9wMQ0yo+kWqqXjdUwbhAfGaXVi0faPps2gYu47bEUWP5Smm5FoNIiEQ==
+From:   Paulo Alcantara <pc@manguebit.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, linux-cifs@vger.kernel.org,
+        Steve French <smfrench@gmail.com>
+Subject: Re: [PATCH 4/4] smb: client: improve DFS mount check
+In-Reply-To: <2023071646-freeness-untrue-230d@gregkh>
+References: <20230628002450.18781-1-pc@manguebit.com>
+ <20230628002450.18781-4-pc@manguebit.com>
+ <0bb4a367ebd7ae83dd1538965e3c0d2b.pc@manguebit.com>
+ <2023071306-nearly-saved-a419@gregkh>
+ <b95eb538478eab38fac638dbeaf97e70.pc@manguebit.com>
+ <2023071646-freeness-untrue-230d@gregkh>
+Date:   Mon, 17 Jul 2023 12:01:58 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [5.10, 5.15] New bpf kselftest failure
-Content-Language: en-US
-To:     Eduard Zingerman <eddyz87@gmail.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        "sashal@kernel.org" <sashal@kernel.org>
-CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        <ast@kernel.org>, <gilad.reti@gmail.com>
-References: <935c4751-d368-df29-33a6-9f4fcae720fa@amazon.com>
- <76dfe02eea69141b662a3a399126dba9e00e5abe.camel@gmail.com>
-From:   Luiz Capitulino <luizcap@amazon.com>
-In-Reply-To: <76dfe02eea69141b662a3a399126dba9e00e5abe.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.136.59.42]
-X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
- EX19D028UEC003.ant.amazon.com (10.252.137.159)
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,77 +72,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Greg KH <gregkh@linuxfoundation.org> writes:
 
+> On Thu, Jul 13, 2023 at 06:48:00PM -0300, Paulo Alcantara wrote:
+>> Hi Greg,
+>> 
+>> Greg KH <gregkh@linuxfoundation.org> writes:
+>> 
+>> > On Wed, Jul 12, 2023 at 06:10:27PM -0300, Paulo Alcantara wrote:
+>> >> Paulo Alcantara <pc@manguebit.com> writes:
+>> >> 
+>> >> > Some servers may return error codes from REQ_GET_DFS_REFERRAL requests
+>> >> > that are unexpected by the client, so to make it easier, assume
+>> >> > non-DFS mounts when the client can't get the initial DFS referral of
+>> >> > @ctx->UNC in dfs_mount_share().
+>> >> >
+>> >> > Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+>> >> > ---
+>> >> >  fs/smb/client/dfs.c | 5 +++--
+>> >> >  1 file changed, 3 insertions(+), 2 deletions(-)
+>> >> >
+>> >> > diff --git a/fs/smb/client/dfs.c b/fs/smb/client/dfs.c
+>> >> > index afbaef05a1f1..a7f2e0608adf 100644
+>> >> 
+>> >> Stable team, could you please pick this up as a fix for
+>> >> 
+>> >>         8e3554150d6c ("cifs: fix sharing of DFS connections")
+>> >> 
+>> >> The upstream commit is 5f2a0afa9890 ("smb: client: improve DFS mount check").
+>> >
+>> > Does not apply cleanly, can you provide a working backport?
+>> 
+>> Find attached backport of
+>
+>> >From 435048ee0f477947d1d93f5a9b60b2d2df2b7554 Mon Sep 17 00:00:00 2001
+>> From: Paulo Alcantara <pc@manguebit.com>
+>> Date: Tue, 27 Jun 2023 21:24:50 -0300
+>> Subject: [PATCH stable v6.3] smb: client: improve DFS mount check
+>
+> I'm confused, 6.3.y is end-of-life, and:
+>
+>> 
+>> Some servers may return error codes from REQ_GET_DFS_REFERRAL requests
+>> that are unexpected by the client, so to make it easier, assume
+>> non-DFS mounts when the client can't get the initial DFS referral of
+>> @ctx->UNC in dfs_mount_share().
+>> 
+>> Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+>> Signed-off-by: Steve French <stfrench@microsoft.com>
+>> ---
+>>  fs/cifs/dfs.c | 5 +++--
+>
+> This file is not in the 6.4.y or any older kernel tree.
+>
+> So what tree did you make this against, and where should it be applied
+> to?
 
-On 2023-07-17 10:55, Eduard Zingerman wrote:
+Err, sorry about missing the EOL of 6.3.y.  The attached patch was based
+on v6.3.13 from the stable tree[1], where it didn't have the rename
+from "fs/cifs" to "fs/smb/client" yet.  Please ignore the attached
+patch.
 
-> 
-> 
-> 
-> On Mon, 2023-07-17 at 09:04 -0400, Luiz Capitulino wrote:
->> Hi,
->>
->> The upstream commit below is backported to 5.10.186, 5.15.120 and 6.1.36:
->>
->> """
->> commit ecdf985d7615356b78241fdb159c091830ed0380
->> Author: Eduard Zingerman <eddyz87@gmail.com>
->> Date:   Wed Feb 15 01:20:27 2023 +0200
->>
->>       bpf: track immediate values written to stack by BPF_ST instruction
->> """
->>
->> This commit is causing the following bpf:test_verifier kselftest to fail:
->>
->> """
->> # #760/p precise: ST insn causing spi > allocated_stack FAIL
->> """
->>
-> 
-> I can reproduce the error on 6.1.36 but don't understand what's causing it yet.
-> The log is suspiciously different from master, will comment later today.
+So, the commit
 
-Thank you very much for the prompt reply, Eduard.
+        5f2a0afa9890 ("smb: client: improve DFS mount check")
 
-I'm available for further testing if needed.
+should be applied to 6.4.y.  I've checked that it applies cleanly
+against linux-6.4.y from the linux-stable-rc tree[2].
 
-- Luiz
+Thanks.
 
-> 
->> Since this test didn't fail before ecdf985d76 backport, the question is
->> if this is a test bug or if this commit introduced a regression.
->>
->> I haven't checked if this failure is present in latest Linus tree because
->> I was unable to build & run the bpf kselftests in an older distro.
->>
->> Also, there some important details about running the bpf kselftests
->> in 5.10 and 5.15:
->>
->> * On 5.10, bpf kselftest build is broken. The following upstream
->> commit needs to be cherry-picked for it to build & run:
->>
->> """
->> commit 4237e9f4a96228ccc8a7abe5e4b30834323cd353
->> Author: Gilad Reti <gilad.reti@gmail.com>
->> Date:   Wed Jan 13 07:38:08 2021 +0200
->>
->>       selftests/bpf: Add verifier test for PTR_TO_MEM spill
->> """
->>
->> * On 5.15.120 there's one additional test that's failing, but I didn't
->> debug this one:
->>
->> """
->> #150/p calls: trigger reg2btf_ids[reg→type] for reg→type > __BPF_REG_TYPE_MAX FAIL
->> FAIL
->> """
->>
->> * On 5.11 onwards, building and running bpf tests is disabled by
->> default by commit 7a6eb7c34a78498742b5f82543b7a68c1c443329, so I wonder
->> if we want to backport this to 5.10 as well?
->>
->> Thanks!
->>
->> - Luiz
->>
-> 
+[1] git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+[2] git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
