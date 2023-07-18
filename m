@@ -2,68 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9EBE7584ED
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 20:39:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49329758517
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 20:54:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230282AbjGRSj0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 14:39:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36962 "EHLO
+        id S230440AbjGRSyD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 14:54:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbjGRSjY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 14:39:24 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75F20F4
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 11:39:23 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-51cff235226so10908a12.0
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 11:39:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689705562; x=1692297562;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jkb55HhAbN5nQxp124JO5CgyYp5FwsBzn/8eguMNO/I=;
-        b=vo5NZKlbXQn4Jl6b8UAEOHnqb04wgASw6MkQZM+pF3hTs01Y0VzlGrVz8NYsDNXcPB
-         smn7BGtYuxNMkXvFUouYasWjGuNLoRZjcMnan244Wbya7Mzsfc8ItrplIUBL9Mhkspac
-         9Oo1r54niZZC+ITU302GiMZGUvwaQbse/RPw4WsdMWIqh0Ke2HBBkygdlSZ33ijXXcBk
-         OBiDSbdTvbmiQJpm56qq778Q6ijwlCTqPeTqJo8SkVFZzP+x3UdrAOL3UkAHgsKyYmVx
-         CKo9yr9BEhDiUQVXbOmQrphU1dat7sTEJ5uf+Uqe4hldnVEj+0c+moHnjXglHo7uUeSF
-         oYMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689705562; x=1692297562;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Jkb55HhAbN5nQxp124JO5CgyYp5FwsBzn/8eguMNO/I=;
-        b=TfCUMTCcpwcKb+yM+Qh2kCZjAwqNnj8Qga7CHSS7r5FHDQAs1dZNP7B5qSNnMOmmk7
-         qta1un7gxxB0VeT7WrvLnypF1GTAAdmS1gRRexwKwoajFuh/taaGbAm4WSRJJ5ZIE4lN
-         8i3VMwYSF9bmpTZ+pqbzal89sscS7sSo6Tr3yGkxTe7XTZvrj/qN+JQunL6F53HPF98h
-         mLoBApG5QYNnyqiajmghuGPdj7hFNk18mJVQbO9jUckZNcNGHuGXXqI4X7waCXm1yKQ+
-         DuCr2GeAbVoWJX9ML78z9fD2HWme4guMzc0anJFIMlkahVenF2wbs3Nw4QtGC+8ZMJ/5
-         emeA==
-X-Gm-Message-State: ABy/qLbzc1EE7doAlf9XfcZFMmRDxyFL0KTNQ/Wp2pB83bfsmhEoXaLJ
-        QXP12irj/Bn8EJ3UNWraPSpYujYIgubYWE6U5cNMBw==
-X-Google-Smtp-Source: APBJJlELhwGyjrv7JKi503vZ44u3uhfj4GPWlLn4zkwX+p1EKl4j1+y/9UEV5+hm++H5sG8LkZHJ7w==
-X-Received: by 2002:a05:6402:40c5:b0:51e:588b:20ca with SMTP id z5-20020a05640240c500b0051e588b20camr1010538edb.8.1689705561993;
-        Tue, 18 Jul 2023 11:39:21 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id c19-20020aa7c993000000b0051e1a4454b2sm1564460edt.67.2023.07.18.11.39.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 11:39:21 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH] firmware: arm_scmi: drop OF node reference in smc_chan_setup
-Date:   Tue, 18 Jul 2023 20:39:16 +0200
-Message-Id: <20230718183916.44439-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230459AbjGRSyC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 14:54:02 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF52411C;
+        Tue, 18 Jul 2023 11:53:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689706429; x=1721242429;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=UU2P+3ZsQXzcmH+F69dxcKHPXFKakkdB8q53cPswhJA=;
+  b=m2t1mNm+c8vv+noVFrNalW1BAr0JQ1RsOvHFQv8bnPqD3OMfpanrnyAj
+   cI/E0C7TXV5I1RTF58IZHhDr9UG2xMUwY9TOjpv7taQx6mHlKE4l1W/gO
+   vPx4n9XXab/O4NjAOt21uH9UZknaasw8YMl4kF7auayxfeB8s26Jk0RSt
+   7bgqrNaeZ0uXyBzgIrhMKWaldiWAj5shJS6PkV8uY28Zn/9XZLm/V2kFq
+   /Bqw4Pyz/gHfikD6fZBOXvq6Wr5fCm9BmUzpl0eIklKR3/i4iApituW8M
+   zcnw5hfwSeu+GRfMoGDFAv/h9O29MBijxzbBomXeQRY54cscF//xnaWTg
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="351156310"
+X-IronPort-AV: E=Sophos;i="6.01,214,1684825200"; 
+   d="scan'208";a="351156310"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 11:53:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
+   d="scan'208";a="867201456"
+Received: from unknown (HELO [10.209.37.195]) ([10.209.37.195])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 11:53:49 -0700
+Message-ID: <b5779418-e2a4-ca7a-866f-97e49cd272cb@intel.com>
+Date:   Tue, 18 Jul 2023 11:53:47 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
+Content-Language: en-US
+To:     Haitao Huang <haitao.huang@linux.intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org,
+        linux-sgx@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Cc:     kai.huang@intel.com, reinette.chatre@intel.com,
+        kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org
+References: <CU4OBQ8MQ2LK.2GRBPLQGVTZ3@seitikki>
+ <20230717202938.94989-1-haitao.huang@linux.intel.com>
+ <dfb1f233-aebd-50cf-8704-e83b91ee110a@intel.com>
+ <op.18ah5mn3wjvjmi@hhuan26-mobl.amr.corp.intel.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <op.18ah5mn3wjvjmi@hhuan26-mobl.amr.corp.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,32 +70,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The OF node reference obtained from of_parse_phandle() should be dropped
-if node is not compatible with arm,scmi-shmem.
+On 7/18/23 11:11, Haitao Huang wrote:
+> On Tue, 18 Jul 2023 09:27:49 -0500, Dave Hansen <dave.hansen@intel.com>
+> wrote:
+> 
+>> On 7/17/23 13:29, Haitao Huang wrote:
+>>> Under heavy load, the SGX EPC reclaimers (current ksgxd or future EPC
+>>> cgroup worker) may reclaim the SECS EPC page for an enclave and set
+>>> encl->secs.epc_page to NULL. But the SECS EPC page is used for EAUG in
+>>> the SGX #PF handler without checking for NULL and reloading.
+>>>
+>>> Fix this by checking if SECS is loaded before EAUG and load it if it was
+>>> reclaimed.
+>>
+>> It would be nice to see a _bit_ more theory of the bug in here.
+>>
+>> What is an SECS page and why is it special in a reclaim context?  Why is
+>> this so hard to hit?  What led you to discover this issue now?  What is
+>> EAUG?
+> 
+> Let me know if this clarify things.
+> 
+> The SECS page holds global states of an enclave, and all reclaimable
+> pages tracked by the SGX EPC reclaimer (ksgxd) are considered 'child'
+> pages of the SECS page corresponding to that enclave.  The reclaimer
+> only reclaims the SECS page when all its children are reclaimed. That
+> can happen on system under high EPC pressure where multiple large
+> enclaves demanding much more EPC page than physically available. In a
+> rare case, the reclaimer may reclaim all EPC pages of an enclave and it
+> SECS page, setting encl->secs.epc_page to NULL, right before the #PF
+> handler get the chance to handle a #PF for that enclave. In that case,
+> if that #PF happens to require kernel to invoke the EAUG instruction to
+> add a new EPC page for the enclave, then a NULL pointer results as
+> current code does not check if encl->secs.epc_page is NULL before using it.
 
-Fixes: 507cd4d2c5eb ("firmware: arm_scmi: Add compatibility checks for shmem node")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- drivers/firmware/arm_scmi/smc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Better, but that's *REALLY* verbose and really imprecise.  It doesn't
+_require_ "high pressure".  It could literally happen at very, very low
+pressures over a long period of time.  Please stick to the facts and
+it'll actually simplify the description.
 
-diff --git a/drivers/firmware/arm_scmi/smc.c b/drivers/firmware/arm_scmi/smc.c
-index 621c37efe3ec..2d8c510fbf52 100644
---- a/drivers/firmware/arm_scmi/smc.c
-+++ b/drivers/firmware/arm_scmi/smc.c
-@@ -137,8 +137,10 @@ static int smc_chan_setup(struct scmi_chan_info *cinfo, struct device *dev,
- 		return -ENOMEM;
- 
- 	np = of_parse_phandle(cdev->of_node, "shmem", 0);
--	if (!of_device_is_compatible(np, "arm,scmi-shmem"))
-+	if (!of_device_is_compatible(np, "arm,scmi-shmem")) {
-+		of_node_put(np);
- 		return -ENXIO;
-+	}
- 
- 	ret = of_address_to_resource(np, 0, &res);
- 	of_node_put(np);
--- 
-2.34.1
+	The SECS page holds global enclave metadata.  It can only be
+	reclaimed when there are no other enclave pages remaining.  At
+	that point, virtually nothing can be done with the enclave until
+	the SECS page is paged back in.
 
+	An enclave can not run nor generate page faults without without
+	a resident SECS page.  But it is still possible for a #PF for a
+	non-SECS page to race with paging out the SECS page.
+
+	Hitting this bug requires triggering that race.
+
+> The bug is easier to reproduce with the EPC cgroup implementation when a
+> low EPC limit is set for a group of enclave hosting processes. Without
+> the EPC cgroup it's hard to trigger the reclaimer to reclaim all child
+> pages of an SECS page. And it'd also require a machine configured with
+> large RAM relative to EPC so no OOM killer triggered before this happens.
+
+Isn't this the _normal_ case?  EPC is relatively tiny compared to RAM
+normally.
