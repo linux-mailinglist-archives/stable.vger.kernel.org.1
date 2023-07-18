@@ -2,144 +2,188 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C04E3757A8C
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 13:38:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D3B2757AFF
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 13:56:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231748AbjGRLiG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 07:38:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46576 "EHLO
+        id S231180AbjGRL4Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 07:56:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231858AbjGRLiC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 07:38:02 -0400
-Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D11941AC;
-        Tue, 18 Jul 2023 04:38:00 -0700 (PDT)
-Received: by mail-ua1-x92b.google.com with SMTP id a1e0cc1a2514c-794cddcab71so1600879241.1;
-        Tue, 18 Jul 2023 04:38:00 -0700 (PDT)
+        with ESMTP id S230321AbjGRL4P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 07:56:15 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 237141AC
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 04:56:14 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4f954d7309fso6994833e87.1
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 04:56:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689680280; x=1692272280;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5jbeHfHwPHH+SDgR4pal5407gINcU5129rjy4niAm4I=;
-        b=RLeELrML8LJOb/+BHNCEb+DOM8te0apNEn6BWKR7Kc6lnE8AlRdTHvVcnXNTLjEnCT
-         I59oAhZ4l1OLRA3/fup63Ey/PEnUwB3RghAiXoRikz7pa+YMwkPzzEK7ZZy4bjVUoSpa
-         CfAX9iLI2ORpTsdqQtyxuNtr+oKQnt9xh0xhvgZV+7PenpfuPEejNG0zFUy6HRCTjBmH
-         lTfFr1jr2+PCz747zKg7Dt79sjqbTRjtOxxjyqz9IoUrNfUZ5EL/2HYPDglmuY9NxOyO
-         1Y0Z7zdX/0iXLrNGLxyH/jy9Su9fpgvA3p0mQdFADU4jXRjQ6QIRWp+fpXXiDoPa65Tk
-         pU8Q==
+        d=linaro.org; s=google; t=1689681372; x=1690286172;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oRKIOUpFqHN91Ar5wcA4OkAo3bcs3Z398gafNkSZn8s=;
+        b=j/MU0UXt41CYH0gnbYYl/tkTjDedMm2CgVYronCMGHRv6UUU/iNedJRkb2Pctbazwl
+         itjSzmH9YoBouc16ZlJ08MV/qrTttrnXrBb357I59MaD54vVKJySlouGde1sBL/qciAl
+         D8inDDuNU2Knef24FF86PEJPgqaxENsVDUhsmQoIeAl4rW9HSX8cKgvEIsm5EUw07m1L
+         i1W30uTPPfxiQ3zXcMJEeZtU3RzOxlpdU6CJ8KVxEoQj0DL1mfaJItm591EoXCYzLUuE
+         zQxZxbAvKdYc2PTa2pgL8mtZUZDR3/U27Ki/MFe+r1H2muMtMia/L6dasfDpt42Aw29k
+         i7Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689680280; x=1692272280;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5jbeHfHwPHH+SDgR4pal5407gINcU5129rjy4niAm4I=;
-        b=b9qGnqbyZGXSk9NDNt+eJhLmsaQSS6p3sZ4L1XkL3MmPpoeZMXFEuKkY+bMNLi5eA5
-         72yJP4PsKq6O3puVlLsRYp5teUCWchBMGvTYJ02jZXPcJ12XDO1MScXJJBBMLkDW5JJf
-         r+w9l5cw+FZox6i6u+5y1zdLeQurKPg8TUXxLbcirt/lZ+DD3UhzaQ2YVQA16KXgIka6
-         ouvCq4d67uHUOAFHUPXnqQwjnGKV15ZBqT3RqlFwFMJREijpjzAvCMISGrTT6WsZHyFM
-         JuHjDARdq/1NjHHKOZYPTqLD/OgiwDFaYUEmEV9xnMe4QQ1gvnGRpPuvdOMgxEe8ERzV
-         jH1g==
-X-Gm-Message-State: ABy/qLaWrIcgv3A4qdiXvygx/h9hX2VYtMYCM4FOaQhChnmJG9d3iqjU
-        5oStaCxMm++Av/XzlbYd5jSmaV1yV1Ry+EHsyQDALBiIJy4=
-X-Google-Smtp-Source: APBJJlFAOB53TF5+0bD2ZrmeVuGZqsn/sVtaca+ZKsNLKO6TV1RuYVsQLukOUfVqkCHf58kZ95x9sqU332fjBsRdaJA=
-X-Received: by 2002:a67:e3d1:0:b0:445:2154:746b with SMTP id
- k17-20020a67e3d1000000b004452154746bmr1094389vsm.4.1689680279701; Tue, 18 Jul
- 2023 04:37:59 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689681372; x=1690286172;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oRKIOUpFqHN91Ar5wcA4OkAo3bcs3Z398gafNkSZn8s=;
+        b=XkL9rOHC4wl8K/P1qe/ZkU79XuRsfzuXJ10Xv/cJspgrfSo0oeNOqUDL5S6KUCKq9r
+         lF0I8zeA0OTu22yikL3xfOUsZRMCRp4mRjST1q/Vw1YqfmpiclGjYyUa3cJGsbCJtCyD
+         Rn+5p4jkDnOnYyppoSUR0s3DsRsg57oJUCdUoawQt5x30IRGKdrwCpnZ1FhJruDyWP0G
+         90hBuj1ddRwVbh1P+W5j6YCg7k75Wp0XTn7CWq4DtRIhAjVyXyiQaCT20EXrrWpr8E1U
+         4SED7OEOgQBwlE5H+0QY/HQfZmDbNqgO+GpBraWVAluS7RNtT+wR3LQTE2aWf4yPQSWq
+         4doA==
+X-Gm-Message-State: ABy/qLZR6H2DYRYY7BoySrqQh8/VqCtHTTkugGObgy79LuYZ9+u6v74t
+        +uTieL3w+AFRU63h3KQ9Mng//g==
+X-Google-Smtp-Source: APBJJlEmPvdXYby95fB2yf4R3hT7I+AOsJzeVLKpc9pCxbUt189y94nzaQre+EXzB9SClBl75GlmDA==
+X-Received: by 2002:a19:6557:0:b0:4f8:5ede:d453 with SMTP id c23-20020a196557000000b004f85eded453mr3606355lfj.23.1689681372392;
+        Tue, 18 Jul 2023 04:56:12 -0700 (PDT)
+Received: from [127.0.1.1] ([85.235.12.238])
+        by smtp.gmail.com with ESMTPSA id j28-20020ac253bc000000b004fba101946dsm407961lfh.187.2023.07.18.04.56.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jul 2023 04:56:11 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 18 Jul 2023 13:56:11 +0200
+Subject: [PATCH v5] mtd: spi-nor: Correct flags for Winbond w25q128
 MIME-Version: 1.0
-References: <1689669277-15291-1-git-send-email-yunlong.xing@unisoc.com>
-In-Reply-To: <1689669277-15291-1-git-send-email-yunlong.xing@unisoc.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Tue, 18 Jul 2023 14:37:48 +0300
-Message-ID: <CAOQ4uxgLhf8EyticTQUxtzUdVD=UEUTwQnTkujXE1KuaVxNQyQ@mail.gmail.com>
-Subject: Re: [PATCH] ovl: fix mount fail because the upper doesn't have space
-To:     Yunlong Xing <yunlong.xing@unisoc.com>
-Cc:     miklos@szeredi.hu, linux-unionfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        gregkh@linuxfoundation.org, sashal@kernel.org,
-        yunlongxing23@gmail.com, zhiguo.niu@unisoc.com,
-        hongyu.jin@unisoc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230718-spi-nor-winbond-w25q128-v5-1-a73653ee46c3@linaro.org>
+X-B4-Tracking: v=1; b=H4sIANp9tmQC/43NwWoDIRDG8VcJnmtxRl3XnvoeIYd11WSgaKJhk
+ xD23WMChZawsMf/B/ObO6uhUKjsa3NnJUxUKacW+mPDxsOQ9oGTb81QoBQGgNcj8ZQLv1ByOXl
+ +QX0C7LlEGDqBIWBnWLs+lhDp+pK3u9YHqudcbq9HEzzXXxMXzQk48Gj6KJ1TOMD4/UNpKPkzl
+ z17ohOuhLBBWow2gte9794h+RdSy5BskPMOwWIUxro3SK2EVIN6O2prwEep5D9onucHDmonVpo
+ BAAA=
+To:     Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Pratyush Yadav <pratyush@kernel.org>,
+        Michael Walle <michael@walle.cc>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.12.3
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 18, 2023 at 11:35=E2=80=AFAM Yunlong Xing <yunlong.xing@unisoc.=
-com> wrote:
->
-> The current ovlfs mount flow:
->
-> ovl_fill_super
->  |_ovl_get_workdir
->     |_ovl_make_workdir
->        |_ovl_check_rename_whiteout
->
-> In ovl_check_rename_whiteout(), a new file is attempted to create.But if
-> the upper doesn't have space to do this, it will return error -ENOSPC,
-> causing the mount fail. It means that if the upper is full, the overlayfs
-> cannot be mounted.It is not reasonable, so this patch will omit this erro=
-r
->  and continue mount flow.
->
-> Fixes: cad218ab3320 ("ovl: check if upper fs supports RENAME_WHITEOUT")
-> Signed-off-by: Yunlong Xing <yunlong.xing@unisoc.com>
-> ---
->  fs/overlayfs/super.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-> index 5b069f1a1e44..2cf41e978cff 100644
-> --- a/fs/overlayfs/super.c
-> +++ b/fs/overlayfs/super.c
-> @@ -744,9 +744,12 @@ static int ovl_make_workdir(struct super_block *sb, =
-struct ovl_fs *ofs,
->
->         /* Check if upper/work fs supports RENAME_WHITEOUT */
->         err =3D ovl_check_rename_whiteout(ofs);
-> -       if (err < 0)
-> -               goto out;
-> -
-> +       if (err < 0) {
-> +               if (err =3D=3D -ENOSPC)
-> +                       pr_warn("upper fs check RENAME_WHITEOUT fail due =
-to no space.\n");
-> +               else
-> +                       goto out;
-> +       }
->         rename_whiteout =3D err;
->         if (!rename_whiteout)
->                 pr_warn("upper fs does not support RENAME_WHITEOUT.\n");
-> --
+The Winbond "w25q128" (actual vendor name W25Q128JV) has
+exactly the same flags as the sibling device "w25q128jv".
+The devices both require unlocking to enable write access.
 
-This assumes that RENAME_WHITEOUT is supported.
-I rather assume it is not supported if the check fails.
-Like this is shorter (not tested):
+The actual product naming between devices vs the Linux
+strings in winbond.c:
 
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -744,12 +744,13 @@ static int ovl_make_workdir(struct super_block
-*sb, struct ovl_fs *ofs,
+0xef4018: "w25q128"   W25Q128JV-IN/IQ/JQ
+0xef7018: "w25q128jv" W25Q128JV-IM/JM
 
-        /* Check if upper/work fs supports RENAME_WHITEOUT */
-        err =3D ovl_check_rename_whiteout(ofs);
--       if (err < 0)
-+       if (err < 0 && err !=3D -ENOSPC)
-                goto out;
+The latter device, "w25q128jv" supports features named DTQ
+and QPI, otherwise it is the same.
 
--       rename_whiteout =3D err;
-+       rename_whiteout =3D err > 0;
-        if (!rename_whiteout)
--               pr_warn("upper fs does not support RENAME_WHITEOUT.\n");
-+               pr_warn("upper fs does not support RENAME_WHITEOUT (%i).\n"=
-,
-+                       err);
+Not having the right flags has the annoying side effect
+that write access does not work.
 
-Thanks,
-Amir.
+After this patch I can write to the flash on the Inteno
+XG6846 router.
+
+The flash memory also supports dual and quad SPI modes.
+This does not currently manifest, but by turning on SFDP
+parsing, the right SPI modes are emitted in
+/sys/kernel/debug/spi-nor/spi1.0/capabilities
+for this chip, so we also turn on this.
+
+Since we now have determined that SFDP parsing works on
+the device, we also detect the geometry using SFDP.
+
+After this dmesg and sysfs says:
+[    1.062401] spi-nor spi1.0: w25q128 (16384 Kbytes)
+cat erasesize
+65536
+(16384*1024)/65536 = 256 sectors
+
+spi-nor sysfs:
+cat jedec_id
+ef4018
+cat manufacturer
+winbond
+cat partname
+w25q128
+hexdump -v -C sfdp
+00000000  53 46 44 50 05 01 00 ff  00 05 01 10 80 00 00 ff
+00000010  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000020  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000030  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000040  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000050  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000060  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000070  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff
+00000080  e5 20 f9 ff ff ff ff 07  44 eb 08 6b 08 3b 42 bb
+00000090  fe ff ff ff ff ff 00 00  ff ff 40 eb 0c 20 0f 52
+000000a0  10 d8 00 00 36 02 a6 00  82 ea 14 c9 e9 63 76 33
+000000b0  7a 75 7a 75 f7 a2 d5 5c  19 f7 4d ff e9 30 f8 80
+
+Cc: stable@vger.kernel.org
+Suggested-by: Michael Walle <michael@walle.cc>
+Reviewed-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Changes in v5:
+- Detect also geometry from the SFDP table.
+- Link to v4: https://lore.kernel.org/r/20230714-spi-nor-winbond-w25q128-v4-1-89c5971df343@linaro.org
+
+Changes in v4:
+- Fix up error in commit message.
+- Pick up Michael's ACK.
+- Link to v3: https://lore.kernel.org/r/20230714-spi-nor-winbond-w25q128-v3-1-bdb2192f079b@linaro.org
+
+Changes in v3:
+- Keep NO_SFDP_FLAGS(SECT_4K) around.
+- Update commit message
+- Link to v2: https://lore.kernel.org/r/20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org
+
+Changes in v2:
+- Only add the write access flags.
+- Use SFDP parsing to properly detect the various
+  available SPI modes.
+- Link to v1: https://lore.kernel.org/r/20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org
+---
+ drivers/mtd/spi-nor/winbond.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mtd/spi-nor/winbond.c b/drivers/mtd/spi-nor/winbond.c
+index 834d6ba5ce70..63ba8e3a96f5 100644
+--- a/drivers/mtd/spi-nor/winbond.c
++++ b/drivers/mtd/spi-nor/winbond.c
+@@ -120,8 +120,9 @@ static const struct flash_info winbond_nor_parts[] = {
+ 		NO_SFDP_FLAGS(SECT_4K) },
+ 	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
+ 		NO_SFDP_FLAGS(SECT_4K) },
+-	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
+-		NO_SFDP_FLAGS(SECT_4K) },
++	{ "w25q128", INFO(0xef4018, 0, 0, 0)
++		PARSE_SFDP
++		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
+ 	{ "w25q256", INFO(0xef4019, 0, 64 * 1024, 512)
+ 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
+ 		.fixups = &w25q256_fixups },
+
+---
+base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+change-id: 20230711-spi-nor-winbond-w25q128-321a602ee267
+
+Best regards,
+-- 
+Linus Walleij <linus.walleij@linaro.org>
+
