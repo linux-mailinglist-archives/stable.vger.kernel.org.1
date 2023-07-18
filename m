@@ -2,98 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47DD975803E
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 16:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DD15758032
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 16:55:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229819AbjGRO5k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 10:57:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41408 "EHLO
+        id S232640AbjGROzV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 10:55:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230518AbjGRO5j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 10:57:39 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72E131702
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 07:57:36 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1ba2e911c24so3178741fac.0
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 07:57:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1689692256; x=1692284256;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2ajGnbQm/rLYXuNtWUbCODJbO/kcfV5H/sqF7rkfA50=;
-        b=Msx4QTQtSnVJ9XtUxSqqTdJ0CRSQW04CPD3u9jeJGkFbeTt4zs0Nvyew7U1OJGEVjZ
-         RrTu/YNaBBiYru30zFQNB19eD3V+Z0YKjZjd0JthlwVNmcmMofXdv9c0iAbYDqDh6YYz
-         kipF2gHUbJjsb7PljnF0HRUrQie7KVZXYc22o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689692256; x=1692284256;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2ajGnbQm/rLYXuNtWUbCODJbO/kcfV5H/sqF7rkfA50=;
-        b=fnf8ml+W4Qz8BwI4Xg8vXDAZj/8ofQUo5FjmRbqJL76q5hgEJZ017LPK5OoKb5qbB6
-         I5GSEf/+I/sNq/HOrr0NRVCPQl5ToKVaZAHWeH80JW58HYEo5T5Rbfc2pf5ETptcD1Uk
-         4y/pT5X7Ns0LgyNWchUSFgWV/1RkSLwNR07SGzUEin83QpnTQTVhQuVmR1i3nVlyMIWF
-         4j77N0/LDKtUqTyly1ReaPp0WlfW/E6sGOfKj+vilzi6yBLveqz3m1pg93D0knrd019y
-         /NWlTFpenEB3AZLpIk1S7qlnB6fr/nHidKjYVWARWuQXd9sUDe0nveQ8NR8bFPfV+t4+
-         KNwA==
-X-Gm-Message-State: ABy/qLYfur3dNSqMPv4Xw3bwNwSn0kCBhPVs9MnkblEQzOSGSbJ53xyg
-        LGuEEmpfZYze4i+LctGvH6CHYg==
-X-Google-Smtp-Source: APBJJlGZ/mf6wjS6YG1j3smF6gpBVoDg0/l1WxbJHkjurwV48aiML6HbMqZw5++oYLIn1hZ4MmLjYw==
-X-Received: by 2002:a05:6870:d209:b0:1b7:5ea8:1fb with SMTP id g9-20020a056870d20900b001b75ea801fbmr8939199oac.14.1689692255657;
-        Tue, 18 Jul 2023 07:57:35 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id t12-20020a9d66cc000000b006b93d1e8e7esm879561otm.69.2023.07.18.07.57.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 07:57:34 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date:   Tue, 18 Jul 2023 09:57:33 -0500
-From:   Justin Forbes <jforbes@fedoraproject.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.4 000/801] 6.4.4-rc3 review
-Message-ID: <ZLaoXb7K1O+19CEa@fedora64.linuxtx.org>
-References: <20230717201608.814406187@linuxfoundation.org>
+        with ESMTP id S232225AbjGROzU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 10:55:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3B39E0;
+        Tue, 18 Jul 2023 07:55:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 701E16160E;
+        Tue, 18 Jul 2023 14:55:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BA7C433C7;
+        Tue, 18 Jul 2023 14:55:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689692117;
+        bh=min4l/bR2fEVj3vzFg5K0E/Z3Mb/vK8ghVM0zgoNXe0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Sj745agqf7fyXuF0t2aNdV9a39HVkdXPFE510iWq6ryKyoLCBuLwAvigXQ5J23FgA
+         i510E6TmRWATLgfKQ0QSXrmAWlRl8C3U6mlpsva6nALUH+Iue9+a5fxpj+xmZddTgH
+         B6nLwl4CwzMtXLplboRNjxlI7cClbW6wY0WnEtXeV1IBErksi9gBtFCSwzlR2o4/us
+         YMosMVZTS6NOB0O28g8fl3pZtFNKKeLkuo6TORAHAoqIHdG1dzjWD3HfuV2EGLaLPo
+         G2gHyH8JzzzuVR9PxiFYrUWNzXxoCgs5koa5XMLdN6XuhlNT9//8231Bsjh5ijitlW
+         7eVKh8i+cEZxw==
+Date:   Tue, 18 Jul 2023 07:58:41 -0700
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Johan Hovold <johan+linaro@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Taniya Das <quic_tdas@quicinc.com>
+Subject: Re: [PATCH 5/8] clk: qcom: lpasscc-sc7280: fix missing resume during
+ probe
+Message-ID: <xbek6yuldy7ck3zlux76hosn4iqt52ocydovuol7geiwapslrd@j7uyxhrkiyaw>
+References: <20230718132902.21430-1-johan+linaro@kernel.org>
+ <20230718132902.21430-6-johan+linaro@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230717201608.814406187@linuxfoundation.org>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20230718132902.21430-6-johan+linaro@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 17, 2023 at 10:34:36PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.4 release.
-> There are 801 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Jul 18, 2023 at 03:28:59PM +0200, Johan Hovold wrote:
+> Drivers that enable runtime PM must make sure that the controller is
+> runtime resumed before accessing its registers to prevent the power
+> domain from being disabled.
 > 
-> Responses should be made by Wed, 19 Jul 2023 20:14:44 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.4-rc3.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-Tested rc3 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+NB: the clock framework will runtime resume the controller surrounding
+operations, even so during probe. But this is not done for resets and
+gdscs - and in some clock drivers we poke registers directly from
+probe...
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+The one time this really matters is where we associate the ahb clock
+with the runtime state, e.g. in qcs404 turingcc. On most other platforms
+we just mark these clocks always-on in gcc...
+
+Regards,
+Bjorn
+
+> Fixes: 4ab43d171181 ("clk: qcom: Add lpass clock controller driver for SC7280")
+> Cc: stable@vger.kernel.org      # 5.16
+> Cc: Taniya Das <quic_tdas@quicinc.com>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/clk/qcom/lpasscc-sc7280.c | 16 ++++++++++++----
+>  1 file changed, 12 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/clk/qcom/lpasscc-sc7280.c b/drivers/clk/qcom/lpasscc-sc7280.c
+> index 0df2b29e95e3..e6b815aec46a 100644
+> --- a/drivers/clk/qcom/lpasscc-sc7280.c
+> +++ b/drivers/clk/qcom/lpasscc-sc7280.c
+> @@ -118,9 +118,13 @@ static int lpass_cc_sc7280_probe(struct platform_device *pdev)
+>  	ret = pm_clk_add(&pdev->dev, "iface");
+>  	if (ret < 0) {
+>  		dev_err(&pdev->dev, "failed to acquire iface clock\n");
+> -		goto destroy_pm_clk;
+> +		goto err_destroy_pm_clk;
+>  	}
+>  
+> +	ret = pm_runtime_resume_and_get(&pdev->dev);
+> +	if (ret)
+> +		goto err_destroy_pm_clk;
+> +
+>  	if (!of_property_read_bool(pdev->dev.of_node, "qcom,adsp-pil-mode")) {
+>  		lpass_regmap_config.name = "qdsp6ss";
+>  		lpass_regmap_config.max_register = 0x3f;
+> @@ -128,7 +132,7 @@ static int lpass_cc_sc7280_probe(struct platform_device *pdev)
+>  
+>  		ret = qcom_cc_probe_by_index(pdev, 0, desc);
+>  		if (ret)
+> -			goto destroy_pm_clk;
+> +			goto err_put_rpm;
+>  	}
+>  
+>  	lpass_regmap_config.name = "top_cc";
+> @@ -137,11 +141,15 @@ static int lpass_cc_sc7280_probe(struct platform_device *pdev)
+>  
+>  	ret = qcom_cc_probe_by_index(pdev, 1, desc);
+>  	if (ret)
+> -		goto destroy_pm_clk;
+> +		goto err_put_rpm;
+> +
+> +	pm_runtime_put(&pdev->dev);
+>  
+>  	return 0;
+>  
+> -destroy_pm_clk:
+> +err_put_rpm:
+> +	pm_runtime_put_sync(&pdev->dev);
+> +err_destroy_pm_clk:
+>  	pm_clk_destroy(&pdev->dev);
+>  
+>  	return ret;
+> -- 
+> 2.41.0
+> 
