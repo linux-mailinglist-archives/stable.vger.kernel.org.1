@@ -2,133 +2,185 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB60F7571FA
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 04:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F29A7757246
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 05:26:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230350AbjGRCto (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 17 Jul 2023 22:49:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53344 "EHLO
+        id S231268AbjGRD0q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 17 Jul 2023 23:26:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229786AbjGRCto (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 22:49:44 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C5D19F;
-        Mon, 17 Jul 2023 19:49:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689648583; x=1721184583;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=TBlnlo2O0N/Bg2K7ED4/hpZpPRItIwwkMy25tQllHVE=;
-  b=MvTumbGl7YzHH0Wya9hGoHHO5W4iB8BeD4I+eVHzdQ9l0U5RM0KZqMN2
-   hkkOFAzs70R3ccxeYT0TUylaGlgjvuTty5HDd/kxqZmVoZrj8h9wnW0PO
-   PqLI62yU5nhmv+qRmjUD5dBIL56VbxDJ3RYfEF8rQDTmHpq6lMqe+7OVA
-   /oP7DR4ECFl+yM5n/7SBHfBsOPSoRhuUeQR4vFXnrWW+UhDsoUwEmBXrt
-   b7pkx+9OYs5qCbL8xsrkKj9XSHxjVBu34w0grBM1IKmD96ej4Zy1xhGNF
-   5Ej5sxel9zy/q0o6Cytgmp3GBxhiNKJP1e02y8O085ZAK3Iy3iLjFuxp+
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="452469926"
-X-IronPort-AV: E=Sophos;i="6.01,213,1684825200"; 
-   d="scan'208";a="452469926"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2023 19:49:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="847532876"
-X-IronPort-AV: E=Sophos;i="6.01,213,1684825200"; 
-   d="scan'208";a="847532876"
-Received: from b4969161e530.jf.intel.com ([10.165.56.46])
-  by orsmga004.jf.intel.com with ESMTP; 17 Jul 2023 19:49:42 -0700
-From:   Haitao Huang <haitao.huang@linux.intel.com>
-To:     jarkko@kernel.org, dave.hansen@linux.intel.com,
-        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Cc:     kai.huang@intel.com, reinette.chatre@intel.com,
-        kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org
-Subject: [PATCH v2] x86/sgx: fix a NULL pointer
-Date:   Mon, 17 Jul 2023 19:49:42 -0700
-Message-Id: <20230718024942.99808-1-haitao.huang@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S231202AbjGRD0I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 17 Jul 2023 23:26:08 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 375D02702
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 20:24:21 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3fbc63c2e84so51752045e9.3
+        for <stable@vger.kernel.org>; Mon, 17 Jul 2023 20:24:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689650638; x=1692242638;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8Yaw/su3dm4lGxJq+uDwrFmIvx/782XRsFqzx0jPx1s=;
+        b=IOuykNH0+ZMFFZ7k3TlbVOJ/Pa6tE/WgWM+W0l7P09FJuYempieSJwdlPHh9K3znTF
+         /3XE0ajAJ0H8RM2IfRskU7qmPxnjl9VFq+QEoL676a5BXTLgAeSgZvb8IU0zBjnLaZyz
+         Tt3gIgXCmdic49WDgEuzmzl/pAP7xL58jO/7NOqaLg6z1WN0y8TPR5Z7CvIPz1Opt7JC
+         DKeAkPBUXp9TMCFbbDNMK3VKB2+Ir1OQ588YHIcdIDehW71lzT5hszK5YsQbtd8SlmJt
+         t44GnfFbTFzBHBBXcK+czgSZSIOcGj/3Jq/Cl98VsK5OYGS62Gvjupd4vlFMTYLZmGm1
+         UlvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689650638; x=1692242638;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Yaw/su3dm4lGxJq+uDwrFmIvx/782XRsFqzx0jPx1s=;
+        b=UBOAJ1fLE60Mn8OOesMpapu1dc28QR3Qfpdx7f20if0z5It2NyZtwkEW8oWdqIeurV
+         uDdlX1VafnJnaXRDOjqdEfI2FPWMj504fmAzxaKqQtIcW6jqCSQ+V0Nun7tngtPcC83T
+         i0wL2zzp8exV0AaxyGslPvWuS13mEc2ERDgHNutyMooWl5hJ7Y7HZfNK91D1IJf3d95G
+         r8aL0oe0Pl1thJybN4W5zLSFncCwSTyNqj1LvYm6dqhnMnBkF6JisePTgymjnb7xvUdp
+         9gDh9NQAGfWRM3YwJUywbCSneA+ismb9gM7BhU02v0xmcEjBuBILzwfaTUk++zb3idCb
+         N8pA==
+X-Gm-Message-State: ABy/qLZLhUixzDKw5c+8XB2JbmH87rBbxBUl0DGcW1UrqOnLUBxpF+Y2
+        wUuYy3Zv21fkUhg3mYfInh2/N0EAWEcMTDEBxYY=
+X-Google-Smtp-Source: APBJJlEMo+94zfYvjjd0ST7tSjDvYxqx+bPRJDBcTj1MpaxD5e0ocYFgQRm385+XmJ39W4C80uucLg==
+X-Received: by 2002:a1c:e90d:0:b0:3fc:524:e80a with SMTP id q13-20020a1ce90d000000b003fc0524e80amr776137wmc.18.1689650638531;
+        Mon, 17 Jul 2023 20:23:58 -0700 (PDT)
+Received: from [192.168.2.173] ([79.115.63.146])
+        by smtp.gmail.com with ESMTPSA id m17-20020a7bce11000000b003fc07e17d4esm9223656wmc.2.2023.07.17.20.23.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jul 2023 20:23:58 -0700 (PDT)
+Message-ID: <d99d87e7-47ba-d6fe-735f-16de2a2ec280@linaro.org>
+Date:   Tue, 18 Jul 2023 06:23:55 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] mtd: spi-nor: Correct flags for Winbond w25q128
+To:     Michael Walle <michael@walle.cc>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Pratyush Yadav <pratyush@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org>
+ <f00fa2ae-6d4a-90cb-3724-2bedb96cb4fb@linaro.org>
+ <0525440a652854a2a575256cd07d3559@walle.cc>
+From:   Tudor Ambarus <tudor.ambarus@linaro.org>
+Content-Language: en-US
+In-Reply-To: <0525440a652854a2a575256cd07d3559@walle.cc>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Under heavy load, the SGX EPC reclaimer (ksgxd) may reclaim the SECS EPC
-page for an enclave and set encl->secs.epc_page to NULL. But the SECS
-EPC page is used for EAUG in the SGX #PF handler without checking for
-NULL and reloading.
 
-Fix this by checking if SECS is loaded before EAUG and loading it if it
-was reclaimed.
 
-Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized enclave")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
----
- arch/x86/kernel/cpu/sgx/encl.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+On 13.07.2023 10:01, Michael Walle wrote:
+> Hi,
+> 
+> Am 2023-07-13 05:32, schrieb Tudor Ambarus:
+>> Hi, Linus,
+>>
+>> On 13.07.2023 00:59, Linus Walleij wrote:
+>>> The Winbond "w25q128" (actual vendor name W25Q128JV)
+>>> has exactly the same flags as the sibling device
+>>> "w25q128jv". The devices both require unlocking to
+>>> enable write access.
+>>>
+>>> The actual product naming between devices vs the
+>>> Linux strings in winbond.c:
+>>>
+>>> 0xef4018: "w25q128"   W25Q128JV-IM/JM
+>>> 0xef7018: "w25q128jv" W25Q128JV-IN/IQ/JQ
+>>>
+>>> The latter device, "w25q128jv" supports features
+>>> named DTQ and QPI, otherwise it is the same.
+>>>
+>>> Not having the right flags has the annoying side
+>>> effect that write access does not work.
+>>
+>> I guess you refer to the locking flags. Probably your flash has the non
+>> volatile block protection (BP) bits from the Status Register set, which
+>> means the entire flash is write protected. The factory default for these
+>> bits is 0/disabled on this flash so someone must have played with them.
+>> The reason why one may want write protection set is to avoid inadvertent
+>> writes during power-up.
+>> One can control whether to disable the software write protection at boot
+>> time with the MTD_SPI_NOR_SWP_ configs.
+>>>
+>>> After this patch I can write to the flash on the
+>>> Inteno XG6846 router.
+>>>
+>>> The flash memory also supports dual and quad SPI
+>>> modes. This does not currently manifest, but by
+>>
+>> The fasted mode is chosen after SFDP parsing, so you should use quad
+>> reads if your controller also supports 4 I/O lines.
+>>> turning on SFDP parsing, the right SPI modes are
+>>> emitted in
+>>> /sys/kernel/debug/spi-nor/spi1.0/capabilities
+>>> for this chip, so we also turn on this.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Suggested-by: Michael Walle <michael@walle.cc>
+>>> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+>>> ---
+>>> Changes in v2:
+>>> - Only add the write access flags.
+>>> - Use SFDP parsing to properly detect the various
+>>>   available SPI modes.
+>>> - Link to v1:
+>>> https://lore.kernel.org/r/20230712-spi-nor-winbond-w25q128-v1-1-f78f3bb42a1c@linaro.org
+>>> ---
+>>>  drivers/mtd/spi-nor/winbond.c | 3 ++-
+>>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/mtd/spi-nor/winbond.c
+>>> b/drivers/mtd/spi-nor/winbond.c
+>>> index 834d6ba5ce70..6c82e525c801 100644
+>>> --- a/drivers/mtd/spi-nor/winbond.c
+>>> +++ b/drivers/mtd/spi-nor/winbond.c
+>>> @@ -121,7 +121,8 @@ static const struct flash_info
+>>> winbond_nor_parts[] = {
+>>>      { "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
+>>>          NO_SFDP_FLAGS(SECT_4K) },
+>>>      { "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
+>>
+>> while here try, using INFO with INFO(0xef4018, 0, 0, 0), those
+>> parameters shall be discovered at run-time, so we prepare to get rid of
+>> explicitly setting them sooner or later.
+> 
+> This is an entry matching various flash families from Winbond, see my
+> reply in v1. I'm not sure we should remove these as we could break the
+> older ones, which might or might not have SFDP tables. We don't know.
 
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index 2a0e90fe2abc..d3b099c75f40 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -235,6 +235,16 @@ static struct sgx_epc_page *sgx_encl_eldu(struct sgx_encl_page *encl_page,
- 	return epc_page;
- }
- 
-+static struct sgx_epc_page *sgx_encl_load_secs(struct sgx_encl *encl)
-+{
-+	struct sgx_epc_page *epc_page = encl->secs.epc_page;
-+
-+	if (!epc_page)
-+		epc_page = sgx_encl_eldu(&encl->secs, NULL);
-+
-+	return epc_page;
-+}
-+
- static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
- 						  struct sgx_encl_page *entry)
- {
-@@ -248,11 +258,9 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
- 		return entry;
- 	}
- 
--	if (!(encl->secs.epc_page)) {
--		epc_page = sgx_encl_eldu(&encl->secs, NULL);
--		if (IS_ERR(epc_page))
--			return ERR_CAST(epc_page);
--	}
-+	epc_page = sgx_encl_load_secs(encl);
-+	if (IS_ERR(epc_page))
-+		return ERR_CAST(epc_page);
- 
- 	epc_page = sgx_encl_eldu(entry, encl->secs.epc_page);
- 	if (IS_ERR(epc_page))
-@@ -339,6 +347,13 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
- 
- 	mutex_lock(&encl->lock);
- 
-+	epc_page = sgx_encl_load_secs(encl);
-+	if (IS_ERR(epc_page)) {
-+		if (PTR_ERR(epc_page) == -EBUSY)
-+			vmret = VM_FAULT_NOPAGE;
-+		goto err_out_unlock;
-+	}
-+
- 	epc_page = sgx_alloc_epc_page(encl_page, false);
- 	if (IS_ERR(epc_page)) {
- 		if (PTR_ERR(epc_page) == -EBUSY)
+I'd take the risk and break the older ones if there are some that don't
+define SFDP indeed, just to handle the conflict properly. We can't
+encourage code based on assumptions otherwise we'll get back to the
+knotted spi-nor code that we tried to untie in the last years.
 
-base-commit: 6995e2de6891c724bfeb2db33d7b87775f913ad1
--- 
-2.25.1
+> 
+>>
+>>> -        NO_SFDP_FLAGS(SECT_4K) },
+> 
+> Thus, I'd also keep this one.
+> 
+
+Keeping this one does not have the effect that you want as SECT_4K is
+used in spi_nor_no_sfdp_init_params() which is not called when
+PARSE_SFDP is set, which makes perfectly sense. Let's drop this and if
+bugs will be reported, I commit I'll fix them in the same release cycle.
+
+If both of you agree, I'll amend Linus's v4 patch when applying.
+
+Cheers,
+ta
 
