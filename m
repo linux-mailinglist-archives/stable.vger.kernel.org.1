@@ -2,62 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B120E757372
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 07:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9722475737D
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 07:59:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230398AbjGRFxE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 01:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46520 "EHLO
+        id S229524AbjGRF7x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 01:59:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230496AbjGRFw7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 01:52:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64ADE56;
-        Mon, 17 Jul 2023 22:52:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 84EB96145F;
-        Tue, 18 Jul 2023 05:52:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40276C433C7;
-        Tue, 18 Jul 2023 05:52:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689659577;
-        bh=PlSlsqHDqw67L6N41kdBC8ML9MQoqYiPEiBjjydxhOg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=bKhQPfEDuI1pDq4l9wyUuymLSoTsnxo1GvrG/Es/WawS5X4hE9bWy9pTJh4yA3Nj3
-         MxlVo6XX6Gj8/xnDHz2Y1Ci9vcWiEF6yrrf7zj0A/O6vSRnU+YUfpuxxTV4cyWbiO2
-         J7Vnz71dErFpjiDiYSwddt5vEsl5o/pyV/pJO6s5SYBb5VVZymmk4LTXqMHo4d8mCt
-         5qPlnoKxOUTnr9/2jYQsbrXI+BnP8M7CBgaucPTRkZlw80JmvS5k7fODlR4/RXA331
-         iFxBLNeqLscvckubTDjfnFkDez1N1FU+N5cnW/t/jOTILQgUsENboSXYOozQDoo1cx
-         Z5Uqa6u1j1Ktg==
-From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>,
-        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Raphael Nestler <raphael.nestler@gmail.com>,
-        Andrea Righi <andrea.righi@canonical.com>,
+        with ESMTP id S230269AbjGRF7w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 01:59:52 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC70C10C2;
+        Mon, 17 Jul 2023 22:59:51 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b8b2b60731so28861385ad.2;
+        Mon, 17 Jul 2023 22:59:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689659991; x=1692251991;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WZgx1U1mPSutohyae00KOSAim5lD82mg/ErHhPpbWQw=;
+        b=G3oBHbm9cxHBLCRB1lea28oryApGG51xlyyh3VAN/mNV4o2ks5rCBEbhXG8AySZc/H
+         zejxPbx9NBI4bf4OCmOLkPKcN8ph4B5/EWq6Y2Zfe9rm/B5O+zBi8TAXH+i6K0fL++cu
+         yKQZ469UNG2rzLmBJWISQmUI7hvm3NXP/lXk7Nc3OY46JFVrvogCvEpiyaR9oN1Iw0Wb
+         fngjW6dcUcLulRstYpvKFYjTOrHb8U9MI4hpZTuP1J0mYSTXz0YejDyIx3GixjMI6Rd6
+         9unNmA/i7Iyi8HmVEFiTO3fmm3jmU4EZ0k1nrPBiXk+dhi7MutsFSTFFnL/cCbrVLglx
+         rO7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689659991; x=1692251991;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WZgx1U1mPSutohyae00KOSAim5lD82mg/ErHhPpbWQw=;
+        b=iaFXz/0tXfx8WwS222+85StyEAUBqlrVaDEq6VxS+pJgYYyKMNRlOuxAoRQBT4yosd
+         uKu6jeulsGFenRTUTDqvtExs3YecmorAj8yXOAYBPrnR1swthGt/h03UyMFkewyqyhLo
+         fI/TWFaww2nRY7QwmqDs9hlfsA8sCAJL/iAJp4kvdfJzSKYzV+hkEe0Ry2p8wkNuyqBu
+         p0c+GVR6KGNH57fEttOAv73OhuPTwn7fXvN2d5q3TTAm1q8tCjJAYvkRwdC5QKpeXtoM
+         2K18idQlgYOfLAVTBXyoPeRThO2047qz/eqLEqh3hGg90FEW8jBzwScDlRZOdp5iMRM6
+         vHjg==
+X-Gm-Message-State: ABy/qLaiil1BPi6PYFFnSUwwz6wWT/QVFRqX3I0b1nfTls77oACGz0Qc
+        PLoC7Dnlg5AucpH+xNtLet6iX9kSWKS7fRE3
+X-Google-Smtp-Source: APBJJlGEo8z5JP96Wwh1eVTC8awXH8O/BTkxUtwpGEycThW3hHQiwoSQYtxgdhE345zJvnRTvkTR6Q==
+X-Received: by 2002:a17:902:c109:b0:1b9:cc6b:408c with SMTP id 9-20020a170902c10900b001b9cc6b408cmr11723848pli.38.1689659991061;
+        Mon, 17 Jul 2023 22:59:51 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id e16-20020a17090301d000b001b890009634sm877139plh.139.2023.07.17.22.59.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Jul 2023 22:59:50 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 1DFE282EE10F; Tue, 18 Jul 2023 12:59:44 +0700 (WIB)
+Date:   Tue, 18 Jul 2023 12:59:44 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
-Subject: [PATCH] kbuild: rust: avoid creating temporary files
-Date:   Tue, 18 Jul 2023 07:52:35 +0200
-Message-ID: <20230718055235.1050223-1-ojeda@kernel.org>
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 000/589] 6.1.39-rc3 review
+Message-ID: <ZLYqUMPXAWIoUUVG@debian.me>
+References: <20230717201547.359923764@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="AeDpJC/wnI4TchjW"
+Content-Disposition: inline
+In-Reply-To: <20230717201547.359923764@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,53 +78,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-`rustc` outputs by default the temporary files (i.e. the ones saved
-by `-Csave-temps`, such as `*.rcgu*` files) in the current working
-directory when `-o` and `--out-dir` are not given (even if
-`--emit=x=path` is given, i.e. it does not use those for temporaries).
 
-Since out-of-tree modules are compiled from the `linux` tree,
-`rustc` then tries to create them there, which may not be accessible.
+--AeDpJC/wnI4TchjW
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thus pass `--out-dir` explicitly, even if it is just for the temporary
-files.
+On Mon, Jul 17, 2023 at 10:34:23PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.39 release.
+> There are 589 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-Reported-by: Raphael Nestler <raphael.nestler@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1015
-Reported-by: Andrea Righi <andrea.righi@canonical.com>
-Tested-by: Raphael Nestler <raphael.nestler@gmail.com>
-Tested-by: Andrea Righi <andrea.righi@canonical.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- scripts/Makefile.build | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Successfully compiled and installed bindeb-pkgs on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 6413342a03f4..82e3fb19fdaf 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -264,6 +264,9 @@ $(obj)/%.lst: $(src)/%.c FORCE
- 
- rust_allowed_features := new_uninit
- 
-+# `--out-dir` is required to avoid temporaries being created by `rustc` in the
-+# current working directory, which may be not accessible in the out-of-tree
-+# modules case.
- rust_common_cmd = \
- 	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
- 	-Zallow-features=$(rust_allowed_features) \
-@@ -272,7 +275,7 @@ rust_common_cmd = \
- 	--extern alloc --extern kernel \
- 	--crate-type rlib -L $(objtree)/rust/ \
- 	--crate-name $(basename $(notdir $@)) \
--	--emit=dep-info=$(depfile)
-+	--out-dir $(dir $@) --emit=dep-info=$(depfile)
- 
- # `--emit=obj`, `--emit=asm` and `--emit=llvm-ir` imply a single codegen unit
- # will be used. We explicitly request `-Ccodegen-units=1` in any case, and
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
--- 
-2.41.0
+--=20
+An old man doll... just what I always wanted! - Clara
 
+--AeDpJC/wnI4TchjW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZLYqSwAKCRD2uYlJVVFO
+o00eAP0av/TSaLWmcQ9ryLiYGP58xF1ayuybl/YxvT9PEmXjJAEAyRi7/ZbkSwbL
+rtnm+UFSvUCw8GpO+R1kq4Yhgf+Bag4=
+=Qw23
+-----END PGP SIGNATURE-----
+
+--AeDpJC/wnI4TchjW--
