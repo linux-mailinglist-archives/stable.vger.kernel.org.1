@@ -2,97 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 009D7758380
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 19:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5E0D7583AE
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 19:43:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232177AbjGRRbh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 13:31:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56140 "EHLO
+        id S230006AbjGRRnP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 13:43:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230215AbjGRRbg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 13:31:36 -0400
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BC81B3;
-        Tue, 18 Jul 2023 10:31:35 -0700 (PDT)
-Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-345f4a3ff76so33059485ab.2;
-        Tue, 18 Jul 2023 10:31:35 -0700 (PDT)
+        with ESMTP id S229660AbjGRRnO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 13:43:14 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D5910FE
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 10:43:13 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3fbc6ab5ff5so55878085e9.1
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 10:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689701494; x=1692293494;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nN4yUB0jlAYCAuN/np605TVswMMjj5X546vn7r9nwQg=;
-        b=eBzMowJQUx3NctvOkVygaUs5EtWXyo+7DwQpNMhDxk53KiJqP1MU06g3PdkqkcqPlB
-         c5UidITkzoanC1kkTFnMHQkUOrXaK5unKl8aaaC3zzoNIua+0UMYaqoRvGmPPYj5rk+v
-         BwfdI28Qp1dX8sjDEOCS9X7aEsaQw1yJU6arX/NN0Z9s6bEwY9W+fBQ+KJxP09qfuMlA
-         6Uid/792H8vNQCvvbZUkV8dczI93Kh+nCioH9VLx5NOehUOFRo7oNkeo0Ihy9xKwAS/d
-         BBCu8YBZA1ddFrcZKBY/THmPUtBAAD+b953J3kSwwnbxUGzy2SP4Ivrpz2R/lJq7/+xx
-         kWiw==
+        d=linaro.org; s=google; t=1689702192; x=1692294192;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=98ERLGEzzFsSGM5kWcXTpFq/KRJ2f5sxbyycdksneCo=;
+        b=YYm8PUxAVR223qq2FGu7rlknrk0r+PwaSRnJClvpTpXDLBU17aO8J6lCfNRUEE4C7V
+         9ebMljIfMH/fHHANYn+Kxqh3Mw3nq5KvtYn3PKH0b5m1R2a9Ep0YI2NJqSiRtS8uCOFT
+         AKX2y3mOVAbGo9g++6hCqomP+nekoCFFg1VYSOFD2IDDO7y06Ahgr3idr6Csh3Y1TZlD
+         +YZs+XV9oKK2I/wesJ1DQd8pUhXeZZ3Af1lW7JvaHJGKj/ohhDYGnNxlr3WBH4VXDx8c
+         5TAtVsmDeVCGkyp/oZi/A964+NeZvdSiyNkPMB/sDU9WTRV1NeUzs2ITnP/4lKNKGrcZ
+         lhhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689701494; x=1692293494;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nN4yUB0jlAYCAuN/np605TVswMMjj5X546vn7r9nwQg=;
-        b=guZLcKEfTG4cTTabA55/pWVz1HDrLKJlsf/cpvwjruyz1HCECfSveyKbAmBkzkWt6E
-         lf55WTQDbF2NoSI3bAULpO1V1Ta6DSFuWF0c2JnWPGrZ7vNayTTwBG2S6wiUqzUYRebU
-         /fg3sXy2N9atPvy64ejKKjxJlqNKMGB9YFvOMZDoT2TnhPMIgSQGpdT5PvHA8VXQNari
-         tutEHHrRNVfWLjl4h5sxwBl3XpMqltt9NHdSm0mz5E9dlWbW/DYJpBP4ppbOoWW7fJ7a
-         Boh0bNU3xAm2jogx+0QKEUzZle9loiDDjRgAL8Tsn1q5Xy0ph14bRVMyD5XIHeuGFhHb
-         G/0w==
-X-Gm-Message-State: ABy/qLaQkByhDh7247TctBGaA8OTTSZkEbSjRityEc17M47faXLpvNJd
-        opTWlOQtmljYcVJjXWk1DbGJgIJuKEVM6VGdaf8=
-X-Google-Smtp-Source: APBJJlHjIYS54pkZbdWSxIcrJeV6A8rpuGLvZhb8ePllk6IBa/eKWwZ/uUyoyABRnDgxMhaM9yX3ZcCbG5bN88PPhh0=
-X-Received: by 2002:a05:6e02:1c48:b0:346:59ee:bbd with SMTP id
- d8-20020a056e021c4800b0034659ee0bbdmr142586ilg.3.1689701494635; Tue, 18 Jul
- 2023 10:31:34 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689702192; x=1692294192;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=98ERLGEzzFsSGM5kWcXTpFq/KRJ2f5sxbyycdksneCo=;
+        b=WhKuIwYMGmh0Q2XAdSN9gQl3S8E8MwUCiEIT3QnMQM06il2mHBf4ZUa5ojNMMLpSFk
+         crfqi4RIbaIDz2Mf1nxwQ5+Er+yhewQSDXp3Pi/NRLhCPvXiBtYqqyRI0CIV65PuCvae
+         MRRcHC+aQZX9xDm68HvbHidZsil/RKOz1fWuQ8Zjj4Arl4mNPqleOR5s9B57Lj4THx8y
+         5QBm16ilGiKzRm5y4h0MAdVKSHX7aVa3VASDsjR6yLej31RxHpFjXdlCqy6lzeWR6y/Z
+         rnRHH41ZbLUA7XT1CDaOdpivKki6Mu4BSb7PTaO02YlUsFldrYDPPteWHY+ZkPQqEbec
+         L7Jg==
+X-Gm-Message-State: ABy/qLaxA1LF4vXoz+M37fcyOZRLfvpVcUOgD2Y1Ced6Y2Q0weFdj89b
+        sljMboqiOnGuyJVW4fMw41f3nA==
+X-Google-Smtp-Source: APBJJlHyMltQW8ciWBdPi/f4EOTqO9ZS9c26e5KDJ8Qq+syvkgJ09AZ87262Y9A/jo9xrK8GYhDuVw==
+X-Received: by 2002:a05:600c:ac8:b0:3fc:6b:15d4 with SMTP id c8-20020a05600c0ac800b003fc006b15d4mr2658444wmr.27.1689702192236;
+        Tue, 18 Jul 2023 10:43:12 -0700 (PDT)
+Received: from 1.. ([79.115.63.146])
+        by smtp.gmail.com with ESMTPSA id b5-20020a5d6345000000b003143b14848dsm2951442wrw.102.2023.07.18.10.43.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jul 2023 10:43:11 -0700 (PDT)
+From:   Tudor Ambarus <tudor.ambarus@linaro.org>
+To:     Pratyush Yadav <pratyush@kernel.org>,
+        Michael Walle <michael@walle.cc>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Tudor Ambarus <tudor.ambarus@linaro.org>,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v5] mtd: spi-nor: Correct flags for Winbond w25q128
+Date:   Tue, 18 Jul 2023 20:43:06 +0300
+Message-Id: <168970217897.7924.10145147121934448003.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230718-spi-nor-winbond-w25q128-v5-1-a73653ee46c3@linaro.org>
+References: <20230718-spi-nor-winbond-w25q128-v5-1-a73653ee46c3@linaro.org>
 MIME-Version: 1.0
-References: <20230717201608.814406187@linuxfoundation.org>
-In-Reply-To: <20230717201608.814406187@linuxfoundation.org>
-From:   Allen Pais <stable.kernel.dev@gmail.com>
-Date:   Tue, 18 Jul 2023 10:31:23 -0700
-Message-ID: <CAJq+SaCxr6ww-kVFJMaN6QiO1AnCQv1_ONFmp=Xr+GtNgJqLfQ@mail.gmail.com>
-Subject: Re: [PATCH 6.4 000/801] 6.4.4-rc3 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=610; i=tudor.ambarus@linaro.org; h=from:subject:message-id; bh=yycelzf1xRPrlA4DjYfbz/GMcmdf2Vty6uB2xU9GFBw=; b=owGbwMvMwMXoHervvrRX5CXjabUkhpRt5zV5ePc9n3OFQV3i+da0ixGMHXt+7jgqN6Hj24Z61 Vql1DD/TkZjFgZGLgZZMUUWWSetU+f5TuTGyf67DzOIlQlkCgMXpwBMxCGSg2F1Z5l7nyNjsEFZ 7qUz0nEFgbNaMg1KYxckd1SuLlc+qN02abPGc7GetmOart22S1U0m07NOJcr+8j8pxATg4DJr4K s4kNaEjEnHxw/XLvovliKT2D9tIlFAe5hdyt7FVkvMTPMzk4Ktv12OjxW/q6xbza3q4lH2DHBHQ 3P74ppFv27GSfccS9VUS1jReKh2ac/mIjumO/u9S5NZ/aX9D8zL7YyK7ybuajy9c56vjMcKzMf/ Eo5eMefqS14fbrIb35Zi0srngpuWrKqwuurkO2dS3X6Mqcl6wSNJqTx2k0Obrr3yvtCcQ/H270z VWUq/uRtbH5nZRi0cJ/SC4HFM1+lreVOK/A/FOE1oXoCAA==
+X-Developer-Key: i=tudor.ambarus@linaro.org; a=openpgp; fpr=280B06FD4CAAD2980C46DDDF4DB1B079AD29CF3D
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> This is the start of the stable review cycle for the 6.4.4 release.
-> There are 801 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 19 Jul 2023 20:14:44 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.4-rc3.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+On Tue, 18 Jul 2023 13:56:11 +0200, Linus Walleij wrote:
+> The Winbond "w25q128" (actual vendor name W25Q128JV) has
+> exactly the same flags as the sibling device "w25q128jv".
+> The devices both require unlocking to enable write access.
+> 
+> The actual product naming between devices vs the Linux
+> strings in winbond.c:
+> 
+> [...]
 
-Compiled and booted on my x86_64 and ARM64 test systems. No errors or
-regressions.
+Applied to git://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git,
+spi-nor/next branch. Thanks!
 
-Tested-by: Allen Pais <apais@linux.microsoft.com>
+[1/1] mtd: spi-nor: Correct flags for Winbond w25q128
+      https://git.kernel.org/mtd/c/83e824a4a595
 
-Thanks.
+Cheers,
+-- 
+Tudor Ambarus <tudor.ambarus@linaro.org>
