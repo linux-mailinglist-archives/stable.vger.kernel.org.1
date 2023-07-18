@@ -2,129 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49329758517
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 20:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89B597585C4
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 21:49:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230440AbjGRSyD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 14:54:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42324 "EHLO
+        id S230317AbjGRTt2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 15:49:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230459AbjGRSyC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 14:54:02 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF52411C;
-        Tue, 18 Jul 2023 11:53:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689706429; x=1721242429;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=UU2P+3ZsQXzcmH+F69dxcKHPXFKakkdB8q53cPswhJA=;
-  b=m2t1mNm+c8vv+noVFrNalW1BAr0JQ1RsOvHFQv8bnPqD3OMfpanrnyAj
-   cI/E0C7TXV5I1RTF58IZHhDr9UG2xMUwY9TOjpv7taQx6mHlKE4l1W/gO
-   vPx4n9XXab/O4NjAOt21uH9UZknaasw8YMl4kF7auayxfeB8s26Jk0RSt
-   7bgqrNaeZ0uXyBzgIrhMKWaldiWAj5shJS6PkV8uY28Zn/9XZLm/V2kFq
-   /Bqw4Pyz/gHfikD6fZBOXvq6Wr5fCm9BmUzpl0eIklKR3/i4iApituW8M
-   zcnw5hfwSeu+GRfMoGDFAv/h9O29MBijxzbBomXeQRY54cscF//xnaWTg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="351156310"
-X-IronPort-AV: E=Sophos;i="6.01,214,1684825200"; 
-   d="scan'208";a="351156310"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 11:53:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="867201456"
-Received: from unknown (HELO [10.209.37.195]) ([10.209.37.195])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 11:53:49 -0700
-Message-ID: <b5779418-e2a4-ca7a-866f-97e49cd272cb@intel.com>
-Date:   Tue, 18 Jul 2023 11:53:47 -0700
+        with ESMTP id S230197AbjGRTt1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 15:49:27 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E261D1993
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 12:49:25 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-77dcff76e35so55784539f.1
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 12:49:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1689709765; x=1692301765;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UGcQDjq/o6t2ObZfo2BKw3K7TL3Ez2D+npEQSf00g+U=;
+        b=GYMNTAwW+OS0zoZ8XObYelbr9fY9Yib+JrDAtJHHTiuw70qayYxL/ylwZIh40Ucbq7
+         wDFwyQL0jEAe+MS1C+4QETQ1v++JeT+9s17I7YZ6S/Q+rboxZhtSRkJNvuKr4aPSLq7+
+         BvLVr5TulVNpo2Qp+Ylvcv4lcGRN9SuHA+WjUAVLIVtMz0PSeK9uPWrjDg2RkJC5xM9+
+         G/0BfnERVgn1kXLDH/Awb7m0ysfkRLp9faGnz44SHdJGk+r/E6kIdw4oEKUz6Dc71nli
+         wRK2gTR1Ber0dZiMsKLR6rz1Fg8n2DaZehZ5P1DK8J2DfuiZLnH4g0AX+Q1tswMls1j5
+         UeZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689709765; x=1692301765;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UGcQDjq/o6t2ObZfo2BKw3K7TL3Ez2D+npEQSf00g+U=;
+        b=XV7dCnsoSNf14Xox3j6E+aIDUSXIAlinD91p83nGOxksetnAGzrt+Nh7RZvsWaXWP1
+         TCafGyZHppTWF7/ntZkhIx/cA5usiJVWMJSEvqgnREEf+XEsc3ocLuDl83NoBfNQfdDu
+         STbEG0R8/S1U8650IHHZxOop8DLhKTUIMf2AHk7DI0Jfailqdt8QO2wKs+6lNDYhcz9j
+         Is5woJfMwGd/QaXMOSpapjghGiWoQJUlYaynXxfuT/BntdY+ZMM1A2G/by4PsuB0MLBr
+         W8Ck79MoYzP3/ePt+yaL6iJEQie5GuVDBqvKj5jK40+dE6RVVu40mdwtY/seLVvt3/jV
+         NUUQ==
+X-Gm-Message-State: ABy/qLZw5JERJm3BkqhTdEsJh/Kvk2dhIFfVazhELzALpgWnveB3HTE7
+        rKkwa7PJbIw1UPedLgVdWS2Mxw==
+X-Google-Smtp-Source: APBJJlFIO3UOGhj4Q8FZLu786jEuJAwxrtkB8KVTPudnVyvyxdmg+TKa5o8O1UPQHVeMc+GdYyACUg==
+X-Received: by 2002:a92:1901:0:b0:345:e438:7381 with SMTP id 1-20020a921901000000b00345e4387381mr2341960ilz.2.1689709765277;
+        Tue, 18 Jul 2023 12:49:25 -0700 (PDT)
+Received: from localhost.localdomain ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id v18-20020a92d252000000b00345e3a04f2dsm897463ilg.62.2023.07.18.12.49.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jul 2023 12:49:24 -0700 (PDT)
+From:   Jens Axboe <axboe@kernel.dk>
+To:     io-uring@vger.kernel.org, linux-xfs@vger.kernel.org
+Cc:     hch@lst.de, andres@anarazel.de, david@fromorbit.com,
+        stable@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>,
+        linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH] io_uring: Use io_schedule* in cqring wait
+Date:   Tue, 18 Jul 2023 13:49:15 -0600
+Message-Id: <20230718194920.1472184-2-axboe@kernel.dk>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230718194920.1472184-1-axboe@kernel.dk>
+References: <20230718194920.1472184-1-axboe@kernel.dk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
-Content-Language: en-US
-To:     Haitao Huang <haitao.huang@linux.intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org,
-        linux-sgx@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Cc:     kai.huang@intel.com, reinette.chatre@intel.com,
-        kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org
-References: <CU4OBQ8MQ2LK.2GRBPLQGVTZ3@seitikki>
- <20230717202938.94989-1-haitao.huang@linux.intel.com>
- <dfb1f233-aebd-50cf-8704-e83b91ee110a@intel.com>
- <op.18ah5mn3wjvjmi@hhuan26-mobl.amr.corp.intel.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <op.18ah5mn3wjvjmi@hhuan26-mobl.amr.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/18/23 11:11, Haitao Huang wrote:
-> On Tue, 18 Jul 2023 09:27:49 -0500, Dave Hansen <dave.hansen@intel.com>
-> wrote:
-> 
->> On 7/17/23 13:29, Haitao Huang wrote:
->>> Under heavy load, the SGX EPC reclaimers (current ksgxd or future EPC
->>> cgroup worker) may reclaim the SECS EPC page for an enclave and set
->>> encl->secs.epc_page to NULL. But the SECS EPC page is used for EAUG in
->>> the SGX #PF handler without checking for NULL and reloading.
->>>
->>> Fix this by checking if SECS is loaded before EAUG and load it if it was
->>> reclaimed.
->>
->> It would be nice to see a _bit_ more theory of the bug in here.
->>
->> What is an SECS page and why is it special in a reclaim context?  Why is
->> this so hard to hit?  What led you to discover this issue now?  What is
->> EAUG?
-> 
-> Let me know if this clarify things.
-> 
-> The SECS page holds global states of an enclave, and all reclaimable
-> pages tracked by the SGX EPC reclaimer (ksgxd) are considered 'child'
-> pages of the SECS page corresponding to that enclave.  The reclaimer
-> only reclaims the SECS page when all its children are reclaimed. That
-> can happen on system under high EPC pressure where multiple large
-> enclaves demanding much more EPC page than physically available. In a
-> rare case, the reclaimer may reclaim all EPC pages of an enclave and it
-> SECS page, setting encl->secs.epc_page to NULL, right before the #PF
-> handler get the chance to handle a #PF for that enclave. In that case,
-> if that #PF happens to require kernel to invoke the EAUG instruction to
-> add a new EPC page for the enclave, then a NULL pointer results as
-> current code does not check if encl->secs.epc_page is NULL before using it.
+From: Andres Freund <andres@anarazel.de>
 
-Better, but that's *REALLY* verbose and really imprecise.  It doesn't
-_require_ "high pressure".  It could literally happen at very, very low
-pressures over a long period of time.  Please stick to the facts and
-it'll actually simplify the description.
+I observed poor performance of io_uring compared to synchronous IO. That
+turns out to be caused by deeper CPU idle states entered with io_uring,
+due to io_uring using plain schedule(), whereas synchronous IO uses
+io_schedule().
 
-	The SECS page holds global enclave metadata.  It can only be
-	reclaimed when there are no other enclave pages remaining.  At
-	that point, virtually nothing can be done with the enclave until
-	the SECS page is paged back in.
+The losses due to this are substantial. On my cascade lake workstation,
+t/io_uring from the fio repository e.g. yields regressions between 20%
+and 40% with the following command:
+./t/io_uring -r 5 -X0 -d 1 -s 1 -c 1 -p 0 -S$use_sync -R 0 /mnt/t2/fio/write.0.0
 
-	An enclave can not run nor generate page faults without without
-	a resident SECS page.  But it is still possible for a #PF for a
-	non-SECS page to race with paging out the SECS page.
+This is repeatable with different filesystems, using raw block devices
+and using different block devices.
 
-	Hitting this bug requires triggering that race.
+Use io_schedule_prepare() / io_schedule_finish() in
+io_cqring_wait_schedule() to address the difference.
 
-> The bug is easier to reproduce with the EPC cgroup implementation when a
-> low EPC limit is set for a group of enclave hosting processes. Without
-> the EPC cgroup it's hard to trigger the reclaimer to reclaim all child
-> pages of an SECS page. And it'd also require a machine configured with
-> large RAM relative to EPC so no OOM killer triggered before this happens.
+After that using io_uring is on par or surpassing synchronous IO (using
+registered files etc makes it reliably win, but arguably is a less fair
+comparison).
 
-Isn't this the _normal_ case?  EPC is relatively tiny compared to RAM
-normally.
+There are other calls to schedule() in io_uring/, but none immediately
+jump out to be similarly situated, so I did not touch them. Similarly,
+it's possible that mutex_lock_io() should be used, but it's not clear if
+there are cases where that matters.
+
+Cc: stable@vger.kernel.org # 5.10+
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: io-uring@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Andres Freund <andres@anarazel.de>
+Link: https://lore.kernel.org/r/20230707162007.194068-1-andres@anarazel.de
+[axboe: minor style fixup]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ io_uring/io_uring.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index e8096d502a7c..7505de2428e0 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2489,6 +2489,8 @@ int io_run_task_work_sig(struct io_ring_ctx *ctx)
+ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+ 					  struct io_wait_queue *iowq)
+ {
++	int token, ret;
++
+ 	if (unlikely(READ_ONCE(ctx->check_cq)))
+ 		return 1;
+ 	if (unlikely(!llist_empty(&ctx->work_llist)))
+@@ -2499,11 +2501,20 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+ 		return -EINTR;
+ 	if (unlikely(io_should_wake(iowq)))
+ 		return 0;
++
++	/*
++	 * Use io_schedule_prepare/finish, so cpufreq can take into account
++	 * that the task is waiting for IO - turns out to be important for low
++	 * QD IO.
++	 */
++	token = io_schedule_prepare();
++	ret = 0;
+ 	if (iowq->timeout == KTIME_MAX)
+ 		schedule();
+ 	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
+-		return -ETIME;
+-	return 0;
++		ret = -ETIME;
++	io_schedule_finish(token);
++	return ret;
+ }
+ 
+ /*
+-- 
+2.40.1
+
