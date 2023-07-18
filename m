@@ -2,100 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5E0D7583AE
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 19:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34E2E758442
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 20:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230006AbjGRRnP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 13:43:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33348 "EHLO
+        id S230006AbjGRSLm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 14:11:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbjGRRnO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 13:43:14 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D5910FE
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 10:43:13 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3fbc6ab5ff5so55878085e9.1
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 10:43:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689702192; x=1692294192;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=98ERLGEzzFsSGM5kWcXTpFq/KRJ2f5sxbyycdksneCo=;
-        b=YYm8PUxAVR223qq2FGu7rlknrk0r+PwaSRnJClvpTpXDLBU17aO8J6lCfNRUEE4C7V
-         9ebMljIfMH/fHHANYn+Kxqh3Mw3nq5KvtYn3PKH0b5m1R2a9Ep0YI2NJqSiRtS8uCOFT
-         AKX2y3mOVAbGo9g++6hCqomP+nekoCFFg1VYSOFD2IDDO7y06Ahgr3idr6Csh3Y1TZlD
-         +YZs+XV9oKK2I/wesJ1DQd8pUhXeZZ3Af1lW7JvaHJGKj/ohhDYGnNxlr3WBH4VXDx8c
-         5TAtVsmDeVCGkyp/oZi/A964+NeZvdSiyNkPMB/sDU9WTRV1NeUzs2ITnP/4lKNKGrcZ
-         lhhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689702192; x=1692294192;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=98ERLGEzzFsSGM5kWcXTpFq/KRJ2f5sxbyycdksneCo=;
-        b=WhKuIwYMGmh0Q2XAdSN9gQl3S8E8MwUCiEIT3QnMQM06il2mHBf4ZUa5ojNMMLpSFk
-         crfqi4RIbaIDz2Mf1nxwQ5+Er+yhewQSDXp3Pi/NRLhCPvXiBtYqqyRI0CIV65PuCvae
-         MRRcHC+aQZX9xDm68HvbHidZsil/RKOz1fWuQ8Zjj4Arl4mNPqleOR5s9B57Lj4THx8y
-         5QBm16ilGiKzRm5y4h0MAdVKSHX7aVa3VASDsjR6yLej31RxHpFjXdlCqy6lzeWR6y/Z
-         rnRHH41ZbLUA7XT1CDaOdpivKki6Mu4BSb7PTaO02YlUsFldrYDPPteWHY+ZkPQqEbec
-         L7Jg==
-X-Gm-Message-State: ABy/qLaxA1LF4vXoz+M37fcyOZRLfvpVcUOgD2Y1Ced6Y2Q0weFdj89b
-        sljMboqiOnGuyJVW4fMw41f3nA==
-X-Google-Smtp-Source: APBJJlHyMltQW8ciWBdPi/f4EOTqO9ZS9c26e5KDJ8Qq+syvkgJ09AZ87262Y9A/jo9xrK8GYhDuVw==
-X-Received: by 2002:a05:600c:ac8:b0:3fc:6b:15d4 with SMTP id c8-20020a05600c0ac800b003fc006b15d4mr2658444wmr.27.1689702192236;
-        Tue, 18 Jul 2023 10:43:12 -0700 (PDT)
-Received: from 1.. ([79.115.63.146])
-        by smtp.gmail.com with ESMTPSA id b5-20020a5d6345000000b003143b14848dsm2951442wrw.102.2023.07.18.10.43.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 10:43:11 -0700 (PDT)
-From:   Tudor Ambarus <tudor.ambarus@linaro.org>
-To:     Pratyush Yadav <pratyush@kernel.org>,
-        Michael Walle <michael@walle.cc>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Tudor Ambarus <tudor.ambarus@linaro.org>,
-        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v5] mtd: spi-nor: Correct flags for Winbond w25q128
-Date:   Tue, 18 Jul 2023 20:43:06 +0300
-Message-Id: <168970217897.7924.10145147121934448003.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230718-spi-nor-winbond-w25q128-v5-1-a73653ee46c3@linaro.org>
-References: <20230718-spi-nor-winbond-w25q128-v5-1-a73653ee46c3@linaro.org>
+        with ESMTP id S229471AbjGRSLl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 14:11:41 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69BEC99;
+        Tue, 18 Jul 2023 11:11:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689703900; x=1721239900;
+  h=to:cc:subject:references:date:mime-version:
+   content-transfer-encoding:from:message-id:in-reply-to;
+  bh=p4t3OskS0H/cllBsYG2hIF8dKpFFNElLWh827nNWfh8=;
+  b=WH9YEgeCHFdiMFn1MUkZOmj/eLN53D+JXx3Som75wqjf03K53X4zcUTs
+   3jInRkbZ2rSPgpCkPdsRJRTNy+xoUiRU7juuQS0GuZRD7bvQ4I8aSDVyG
+   +9M147Yae+XZMQbIXiw0gf4wZEBPUnxzoUdtxmUn4kUCLUWhRfpm11Nmn
+   bb82RyWdjHw8FhZbVzLgAue7FBr49fteTguT2zds8DrXJtH+KLPAXIuPG
+   B37GGjtxYH5xAvmMfe+LHhKuE1RsR233m8Dpej9VAaSvntR6vT8dKjc0v
+   SAmMSKxI79wIJIWJ0WZE1iy0oHrA+KYgVvl8cqKAFNhRq4IxrL6AD6hlg
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="432458957"
+X-IronPort-AV: E=Sophos;i="6.01,214,1684825200"; 
+   d="scan'208";a="432458957"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 11:11:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="813860875"
+X-IronPort-AV: E=Sophos;i="6.01,214,1684825200"; 
+   d="scan'208";a="813860875"
+Received: from hhuan26-mobl.amr.corp.intel.com ([10.92.48.113])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-SHA; 18 Jul 2023 11:11:37 -0700
+Content-Type: text/plain; charset=iso-8859-15; format=flowed; delsp=yes
+To:     "Jarkko Sakkinen" <jarkko@kernel.org>, dave.hansen@linux.intel.com,
+        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        "Dave Hansen" <dave.hansen@intel.com>
+Cc:     kai.huang@intel.com, reinette.chatre@intel.com,
+        kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
+References: <CU4OBQ8MQ2LK.2GRBPLQGVTZ3@seitikki>
+ <20230717202938.94989-1-haitao.huang@linux.intel.com>
+ <dfb1f233-aebd-50cf-8704-e83b91ee110a@intel.com>
+Date:   Tue, 18 Jul 2023 13:11:36 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=610; i=tudor.ambarus@linaro.org; h=from:subject:message-id; bh=yycelzf1xRPrlA4DjYfbz/GMcmdf2Vty6uB2xU9GFBw=; b=owGbwMvMwMXoHervvrRX5CXjabUkhpRt5zV5ePc9n3OFQV3i+da0ixGMHXt+7jgqN6Hj24Z61 Vql1DD/TkZjFgZGLgZZMUUWWSetU+f5TuTGyf67DzOIlQlkCgMXpwBMxCGSg2F1Z5l7nyNjsEFZ 7qUz0nEFgbNaMg1KYxckd1SuLlc+qN02abPGc7GetmOart22S1U0m07NOJcr+8j8pxATg4DJr4K s4kNaEjEnHxw/XLvovliKT2D9tIlFAe5hdyt7FVkvMTPMzk4Ktv12OjxW/q6xbza3q4lH2DHBHQ 3P74ppFv27GSfccS9VUS1jReKh2ac/mIjumO/u9S5NZ/aX9D8zL7YyK7ybuajy9c56vjMcKzMf/ Eo5eMefqS14fbrIb35Zi0srngpuWrKqwuurkO2dS3X6Mqcl6wSNJqTx2k0Obrr3yvtCcQ/H270z VWUq/uRtbH5nZRi0cJ/SC4HFM1+lreVOK/A/FOE1oXoCAA==
-X-Developer-Key: i=tudor.ambarus@linaro.org; a=openpgp; fpr=280B06FD4CAAD2980C46DDDF4DB1B079AD29CF3D
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+From:   "Haitao Huang" <haitao.huang@linux.intel.com>
+Organization: Intel
+Message-ID: <op.18ah5mn3wjvjmi@hhuan26-mobl.amr.corp.intel.com>
+In-Reply-To: <dfb1f233-aebd-50cf-8704-e83b91ee110a@intel.com>
+User-Agent: Opera Mail/1.0 (Win32)
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 18 Jul 2023 13:56:11 +0200, Linus Walleij wrote:
-> The Winbond "w25q128" (actual vendor name W25Q128JV) has
-> exactly the same flags as the sibling device "w25q128jv".
-> The devices both require unlocking to enable write access.
-> 
-> The actual product naming between devices vs the Linux
-> strings in winbond.c:
-> 
-> [...]
+On Tue, 18 Jul 2023 09:27:49 -0500, Dave Hansen <dave.hansen@intel.com>  
+wrote:
 
-Applied to git://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git,
-spi-nor/next branch. Thanks!
+> On 7/17/23 13:29, Haitao Huang wrote:
+>> Under heavy load, the SGX EPC reclaimers (current ksgxd or future EPC
+>> cgroup worker) may reclaim the SECS EPC page for an enclave and set
+>> encl->secs.epc_page to NULL. But the SECS EPC page is used for EAUG in
+>> the SGX #PF handler without checking for NULL and reloading.
+>>
+>> Fix this by checking if SECS is loaded before EAUG and load it if it was
+>> reclaimed.
+>
+> It would be nice to see a _bit_ more theory of the bug in here.
+>
+> What is an SECS page and why is it special in a reclaim context?  Why is
+> this so hard to hit?  What led you to discover this issue now?  What is
+> EAUG?
 
-[1/1] mtd: spi-nor: Correct flags for Winbond w25q128
-      https://git.kernel.org/mtd/c/83e824a4a595
+Let me know if this clarify things.
 
-Cheers,
--- 
-Tudor Ambarus <tudor.ambarus@linaro.org>
+The SECS page holds global states of an enclave, and all reclaimable pages  
+tracked by the SGX EPC reclaimer (ksgxd) are considered 'child' pages of  
+the SECS page corresponding to that enclave.  The reclaimer only reclaims  
+the SECS page when all its children are reclaimed. That can happen on  
+system under high EPC pressure where multiple large enclaves demanding  
+much more EPC page than physically available. In a rare case, the  
+reclaimer may reclaim all EPC pages of an enclave and it SECS page,  
+setting encl->secs.epc_page to NULL, right before the #PF handler get the  
+chance to handle a #PF for that enclave. In that case, if that #PF happens  
+to require kernel to invoke the EAUG instruction to add a new EPC page for  
+the enclave, then a NULL pointer results as current code does not check if  
+encl->secs.epc_page is NULL before using it.
+
+The bug is easier to reproduce with the EPC cgroup implementation when a  
+low EPC limit is set for a group of enclave hosting processes. Without the  
+EPC cgroup it's hard to trigger the reclaimer to reclaim all child pages  
+of an SECS page. And it'd also require a machine configured with large RAM  
+relative to EPC so no OOM killer triggered before this happens.
+
+Thanks
+Haitao
+
