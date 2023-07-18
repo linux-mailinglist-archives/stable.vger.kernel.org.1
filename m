@@ -2,128 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFE8A757E39
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 15:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3A8B757EFE
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 16:07:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231878AbjGRNxP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 09:53:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51646 "EHLO
+        id S231709AbjGROHR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 10:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233036AbjGRNxI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 09:53:08 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4652B189
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 06:52:48 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id af79cd13be357-765a5b93b5bso525515685a.3
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 06:52:48 -0700 (PDT)
+        with ESMTP id S231806AbjGROHG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 10:07:06 -0400
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CFAB1981
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 07:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1689688367; x=1692280367;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wOGUiiwHsSBHl12XtJ8LcCiEnJDe2YWZioBcYbS55rU=;
-        b=GUVS2gtir+/tQe08uzQmG7d6ws5ez+Lo+mrnWRVxF0XAuq5WtGb+oFjzhwj5xkxqlB
-         ISFj5XxG2iWJVN/RCa9xL4A2zmq3GotkbzNGmcJoTLPX1CdgCPt93oRKihNTTJYPd77X
-         lGWn1avJRRwJFZeyAPUH9y5YZkQQfmYDmd7+s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689688367; x=1692280367;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wOGUiiwHsSBHl12XtJ8LcCiEnJDe2YWZioBcYbS55rU=;
-        b=Dx3Bx4Ea6N4GoTZBO8dMJO2LWmskLYL3xMdZDUnTHEFJ+nEt3xPpVUQDydrrKqymwp
-         erstKwjoXzSX+RL19V7odVmsxfZSLMvu72QXoCyOhV99zT/VLC1IbLXiBi+mO8eKRk9j
-         AlWAX8cBQc72I3k4sQDuCGCFfPaDygStYf4x0N0gSCp8w5eUeUEIPVMoCWIH07rzysro
-         yjDArRxhW0EGFzBZjt9YSEuIiwPSmlTl3CsF2f0mjrQJEjWcevyZkvod1PMne2r8Y7BF
-         j/QYaowOMCSD5g9xgZ4WtJ/Jx/qXWH0xwSHQm+vWxtb2paLXlSIpHgnLXzcXuGBECn8R
-         3IEQ==
-X-Gm-Message-State: ABy/qLZvB336wXXDNQ2LJGLbgzLcwntwRqpVjBx4b7tnaa+E79++pwgt
-        dgCGJ/zt8MAjKcLyYJsV/Viuyg==
-X-Google-Smtp-Source: APBJJlGBpV/uo36Ay47pSxUkAS+j1aDFdq2pvCtJBGwOJdJj6BHlnc1x4ZzsliaMooTU25QjFhYC0Q==
-X-Received: by 2002:a0c:f2d3:0:b0:632:25c5:6fb8 with SMTP id c19-20020a0cf2d3000000b0063225c56fb8mr13766258qvm.31.1689688367322;
-        Tue, 18 Jul 2023 06:52:47 -0700 (PDT)
-Received: from [192.168.0.140] (c-98-249-43-138.hsd1.va.comcast.net. [98.249.43.138])
-        by smtp.gmail.com with ESMTPSA id x21-20020a0cb215000000b006301d31e315sm747136qvd.10.2023.07.18.06.52.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Jul 2023 06:52:46 -0700 (PDT)
-Message-ID: <da595585-4929-2c21-7e48-f9f8cdad6cf7@joelfernandes.org>
-Date:   Tue, 18 Jul 2023 09:52:45 -0400
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1689689226; x=1721225226;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=3ATGcX8yVKStK7mHJZJJu4efaNzOkl3JlCdTVfuRZUA=;
+  b=gb5kXddwARxxzhnDvXl4P5wiFPwVUwSZfNgJXg0ScgSej6CIkO0dUQQg
+   ISzBSv1A17lAj/jgEgQMWStG2dx1AsflWt6FbEjPWMbeZjnHH4PDezp/b
+   DB3uPwGMiecWz8PM1lkdYODPCxJoWGNCjwuwaqMQ4hy7jxPSttYkUfpdw
+   w=;
+X-IronPort-AV: E=Sophos;i="6.01,214,1684800000"; 
+   d="scan'208";a="227471232"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-pdx-2a-m6i4x-1197e3af.us-west-2.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 14:07:02 +0000
+Received: from EX19MTAUEC001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
+        by email-inbound-relay-pdx-2a-m6i4x-1197e3af.us-west-2.amazon.com (Postfix) with ESMTPS id D04F61008B6;
+        Tue, 18 Jul 2023 14:07:00 +0000 (UTC)
+Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
+ EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Tue, 18 Jul 2023 14:06:49 +0000
+Received: from [192.168.22.131] (10.106.179.5) by
+ EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Tue, 18 Jul 2023 14:06:47 +0000
+Message-ID: <dd3ecb62-94ca-a08a-01f9-453fe0545ce8@amazon.com>
+Date:   Tue, 18 Jul 2023 10:06:44 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: Build failures / crashes in stable queue branches
+Subject: Re: [5.10, 5.15] New bpf kselftest failure
 Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>,
-        Yu Kuai <yukuai1@huaweicloud.com>
-Cc:     stable <stable@vger.kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "yukuai (C)" <yukuai3@huawei.com>
-References: <897ebb05-5a1f-e353-8877-49721c52d065@roeck-us.net>
- <20230715154923.GA2193946@google.com>
- <907909df-d64f-e40a-0c9c-fc5c225a235c@huaweicloud.com>
- <2023071625-parsnip-pursuable-b5c8@gregkh>
-From:   Joel Fernandes <joel@joelfernandes.org>
-In-Reply-To: <2023071625-parsnip-pursuable-b5c8@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+To:     Eduard Zingerman <eddyz87@gmail.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        "sashal@kernel.org" <sashal@kernel.org>
+CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        <ast@kernel.org>, <gilad.reti@gmail.com>,
+        Mykola Lysenko <mykolal@fb.com>, andrii <andrii@kernel.org>
+References: <935c4751-d368-df29-33a6-9f4fcae720fa@amazon.com>
+ <76dfe02eea69141b662a3a399126dba9e00e5abe.camel@gmail.com>
+ <9c7fc5ab-1c06-8452-2747-aa89e7a1dfb6@amazon.com>
+ <c9b10a8a551edafdfec855fbd35757c6238ad258.camel@gmail.com>
+ <bc521a2f24c416a658ab50685fbf647d4e069c8c.camel@gmail.com>
+From:   Luiz Capitulino <luizcap@amazon.com>
+In-Reply-To: <bc521a2f24c416a658ab50685fbf647d4e069c8c.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.106.179.5]
+X-ClientProxiedBy: EX19D037UWB002.ant.amazon.com (10.13.138.121) To
+ EX19D028UEC003.ant.amazon.com (10.252.137.159)
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/16/23 10:30, Greg KH wrote:
-> On Sun, Jul 16, 2023 at 11:20:33AM +0800, Yu Kuai wrote:
->> Hi,
->>
->> 在 2023/07/15 23:49, Joel Fernandes 写道:
->>> Hi Yu,
->>>
->>> On Fri, Jul 14, 2023 at 03:21:46AM -0700, Guenter Roeck wrote:
->>> [..]
->>>> ---------
->>>> 6.1.y:
->>>>
->>>> Build reference: v6.1.38-393-gb6386e7314b4
->>>> Compiler version: alpha-linux-gcc (GCC) 11.4.0
->>>> Assembler version: GNU assembler (GNU Binutils) 2.40
->>>>
->>>> Building alpha:allmodconfig ... failed
->>>> Building m68k:allmodconfig ... failed
->>>> --------------
->>>> Error log:
->>>> <stdin>:1517:2: warning: #warning syscall clone3 not implemented [-Wcpp]
->>>> In file included from block/genhd.c:28:
->>>> block/genhd.c: In function 'disk_release':
->>>> include/linux/blktrace_api.h:88:57: error: statement with no effect [-Werror=unused-value]
->>>>      88 | # define blk_trace_remove(q)                            (-ENOTTY)
->>>>         |                                                         ^
->>>> block/genhd.c:1185:9: note: in expansion of macro 'blk_trace_remove'
->>>>    1185 |         blk_trace_remove(disk->queue);
->>>
->>> 6.1 stable is broken and gives build warning without:
->>>
->>> cbe7cff4a76b ("blktrace: use inline function for blk_trace_remove() while blktrace is disabled")
->>>
->>> Could you please submit it to stable for 6.1? (I could have done that but it
->>> looks like you already backported related patches so its best for you to do
->>> it, thanks for your help!).
->>
->> Thanks for the notice, however, I'll suggest to revert this patch for
->> now, because there are follow up fixes that is not applied yet.
+
+
+On 2023-07-18 08:31, Eduard Zingerman wrote:
+
 > 
-> Which specific patch should be dropped?
 > 
+> 
+> On Tue, 2023-07-18 at 01:57 +0300, Eduard Zingerman wrote:
+>> [...]
+>> Still, when I cherry-pick [0,1,2,3] `./test_progs -a setget_sockopt` is failing.
+>> I'll investigate this failure but don't think I'll finish today.
+>>
+>> ---
+>>
+>> Alternatively, if the goal is to minimize amount of changes, we can
+>> disable or modify the 'precise: ST insn causing spi > allocated_stack'.
+>>
+>> ---
+>>
+>> Commits (in chronological order):
+>> [0] be2ef8161572 ("bpf: allow precision tracking for programs with subprogs")
+>> [1] f63181b6ae79 ("bpf: stop setting precise in current state")
+>> [2] 7a830b53c17b ("bpf: aggressively forget precise markings during state checkpointing")
+>> [3] 4f999b767769 ("selftests/bpf: make test_align selftest more robust")
+>> [4] 07d90c72efbe ("Merge branch 'BPF verifier precision tracking improvements'")
+>> [5] ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
+> 
+> I made a mistake, while resolving merge conflict for [0] yesterday.
+> After correction the `./test_progs -a setget_sockopt` passes.
+> I also noted that the following tests fail on v6.1.36:
+> 
+>    ./test_progs -a sk_assign,fexit_bpf2bpf
+> 
+> These tests are fixed by back-porting the following upstream commits:
+> - 7ce878ca81bc ("selftests/bpf: Fix sk_assign on s390x")
+> - 63d78b7e8ca2 ("selftests/bpf: Workaround verification failure for fexit_bpf2bpf/func_replace_return_code")
+> 
+> I pushed modified version of v6.1.36 to my github account, it has
+> test_verifier, test_progs, test_progs-no_alu32 and test_maps passing
+> (on my x86 setup):
+> 
+>    https://github.com/eddyz87/bpf/commits/v6.1.36-with-fixes
+> 
+> Do you need any additional actions from my side?
 
-Yu: Ping? ;-). Are you suggesting the original set be reverted, or Greg apply 
-the above fix? Let us please keep 6.1 stable unbroken. ;-)
+First, thank you very much for your work on this and getting the tests
+passing on 6.1.
 
-Apologies for my noise if the issue has already been resolved.
+In terms of action items, have you checked this situation in 5.10 and
+5.15? For 5.10, we also need 4237e9f4a96228ccc8a7abe5e4b30834323cd353
+otherwise the bpf tests don't even build there.
 
-  - Joel
+Also, would you know if something important is broken for users or is
+this just a small behavior difference between kernels?
 
-
+- Luiz
