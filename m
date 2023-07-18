@@ -2,249 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFCCD757F9E
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 16:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16EA7757FAF
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 16:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232781AbjGROdN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 10:33:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51634 "EHLO
+        id S231543AbjGROfh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 10:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233289AbjGROcv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 10:32:51 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4E001BFB;
-        Tue, 18 Jul 2023 07:32:11 -0700 (PDT)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36ID7mMK027462;
-        Tue, 18 Jul 2023 14:30:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=pLgJS/7XCewpCSZ5K3YHA+yeLj3wS8pdyKYKExN0qHY=;
- b=xwFSVsGhK2Wt0eD9cnoIp/zb+r39J5xzVJW/HzQPCJJSi3LyineTL0a5jXnh2/mAMrjQ
- SHPzCWxUnJ3gmzHkjGmYhQzwAYVqQ964ErMZmn8lEuIvhKRGk1BZA2qbHeq5nCin4E6p
- mWxVCkkl/PMzwfhe40D5UAi+VRWI/2Mz9kgR7LUWu34YF+MSO4NlAclc/oma2d6gJHue
- PAZIY36uEuj8wpDId6gyylGLANkIfZxeXfud8U2xMHCH3hGy5K8FjmIjqpH6G6/4rf8J
- FWLYoihhnR9F6WGBcuIC89dw/qXweY7kz0R+NU2TvWHv+wyMmk3kHejFoJTD0ZA1amHa /A== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3run7855xq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 18 Jul 2023 14:30:30 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 36IEB4ss000858;
-        Tue, 18 Jul 2023 14:30:29 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2175.outbound.protection.outlook.com [104.47.57.175])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3ruhw56dud-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 18 Jul 2023 14:30:29 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gZO08mT2trdDBcrF3coTxUiGYEsxp7VtbEZdZjQpNJ+zj4BJBmaolyRNbpEmkjfiSulRuod6AQsfvFWca1c/URs8VY8V0LMI6VMgamGGNyHjQLLLHZLaXKjgnNsNvtNdrHDnsEmm6mDZvnQDotgMoqJ5Srvl3ug7dQ6KIPaOc9UYns4d/B14vgXdaiqiJjWOOJuE/B7dmnkQ2PsNslvy6qIIY772v04na5E0f34RADl0PL0du+iP2cUVic5KiZK2Td1sqWVkhWfelwb/6KRtqN1fQ4Hlm/OCQUVAoKZ21lf0uDYkfRrMDYTnnNBxkukqImVEEm/SkYbWMXol9JA7/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pLgJS/7XCewpCSZ5K3YHA+yeLj3wS8pdyKYKExN0qHY=;
- b=c+hRu3uvDtknBSmHG97WGOjk1SUxJ8jV0WEbn+iJJ9Ap4+CdXvDzm5wmNqj1me5XlCxCDjRYo6hy3h6d7iM6JLi7IYFp+q+lQfX5RrrA/At4WI0JAWSlkFsI8IgLJyF4OGLpydL3jt+7SfiMrPs77hcEqvapE7LbpwGyCPmoVdCim7VdgG+VGm8XDzXh7m/gO//c8ngechmOZ2gHwjANkO28HMuXAXOQdFHUgrbViI3J+KT29EIg6fIUkWRTXL6KFLS8EdCMgJLJX9wGODzPaLFAOIAIMnC8sYq8cNGlIjDcGY/TV66HyzC+Gk6+o4yRXDJwkC4YUOoPtdmFK/dEPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        with ESMTP id S233289AbjGROfW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 10:35:22 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54607173F
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 07:35:09 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3fbf1b82de7so37048895e9.1
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 07:35:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pLgJS/7XCewpCSZ5K3YHA+yeLj3wS8pdyKYKExN0qHY=;
- b=GlRDtRNpV4UnAhQ8ujfAoPQ1zCewgBIBv5tkRCy29GSyHfvmw0gi/MbQeXOhj6ET4BF+Yyfo/UwtVP9wwMflSFmZ9LgImTOoPLoaKAsY6Wyu9aROt8JfxTW/+XqqTBuuK9pCBNoUvkikCd/HFWGLgZIntJdK1W+Rh2xCfYaobpU=
-Received: from CH0PR10MB5113.namprd10.prod.outlook.com (2603:10b6:610:c9::8)
- by DM4PR10MB6253.namprd10.prod.outlook.com (2603:10b6:8:b7::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Tue, 18 Jul
- 2023 14:30:27 +0000
-Received: from CH0PR10MB5113.namprd10.prod.outlook.com
- ([fe80::6bff:7715:4210:1e52]) by CH0PR10MB5113.namprd10.prod.outlook.com
- ([fe80::6bff:7715:4210:1e52%7]) with mapi id 15.20.6588.031; Tue, 18 Jul 2023
- 14:30:27 +0000
-Message-ID: <6736667f-6456-34b5-1d1f-47219e499001@oracle.com>
-Date:   Tue, 18 Jul 2023 07:30:23 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] mm/memory-failure: fix hardware poison check in
- unpoison_memory()
-Content-Language: en-US
-To:     Naoya Horiguchi <naoya.horiguchi@linux.dev>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        akpm@linux-foundation.org, willy@infradead.org,
-        linmiaohe@huawei.com, naoya.horiguchi@nec.com,
-        stable@vger.kernel.org
-References: <20230717181812.167757-1-sidhartha.kumar@oracle.com>
- <20230718001409.GA751192@ik1-406-35019.vs.sakura.ne.jp>
- <20230718003956.GA762147@ik1-406-35019.vs.sakura.ne.jp>
-From:   Sidhartha Kumar <sidhartha.kumar@oracle.com>
-In-Reply-To: <20230718003956.GA762147@ik1-406-35019.vs.sakura.ne.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0061.namprd03.prod.outlook.com
- (2603:10b6:a03:331::6) To CH0PR10MB5113.namprd10.prod.outlook.com
- (2603:10b6:610:c9::8)
+        d=gmail.com; s=20221208; t=1689690908; x=1692282908;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kM4rKs2O2D2FKtxI79Px9JsVvtow3vr81NJUN932aok=;
+        b=B9AviAeUUzHk7npn++Yjr0w9oLbGcbT3XGuqxm7ukjwTTVwKsH6dhsx4FmWWAw93Ca
+         KfYeoe90K/4FORDtYE8JhBea760Tz+6gpY8HjYtM1MN1qccIYJXPXhoz3zI9S7WSAiEF
+         UIxarfHAQab6Cz1nSev9elx92YT93uUwY+Ak6nyfax+8TS6J8GrwT3Ug1KSrDrb/o4zx
+         yVI2Rmvobtz5NGvmjO+t0djbtsorCSdz/SOO0Q7BYLy7pTzQQq0NyBTiPp/6Gsd+eyKQ
+         iGE/AQTYaYGhf98lncSj9r3n4Nh4y+KSGuletAFYc2hkVkGbKRVbxmAX1Af8ikz1KbS/
+         rtsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689690908; x=1692282908;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kM4rKs2O2D2FKtxI79Px9JsVvtow3vr81NJUN932aok=;
+        b=izxPw7/gUFHVXPzsyezqpe68ycO1xKGX+g0kfUs6t9tEZx5+DBt7Mh6nL8NwVKupNH
+         +V4rT0CNoYGK60ddwY5v/Hu2Xa60c6+7b9Nn9LA6hXFYxvwzgFVslx6Iu26+r7ou9s1U
+         N3iY13iulkhiB9fBSOfVxmbrfanAd/fGoMsAQu2nNvMRyE4tJVumTOp5TwEh3tkUoDro
+         OQV9UhJ2cTLKqfyA6HqkAjBmOuz0u4XJ4TI2ne1ld9pc3IymPcVamINS6R/kHZUhk7EU
+         WB0B/FQTgPG5QMeGrK+OMc07JgGhXkVPEKyDKySD9Kj1o+AfpXX9BE+g8fH6R4RH54Ai
+         X5Cw==
+X-Gm-Message-State: ABy/qLZfwhmWrhskcXeEIZpAmTMZ4m/NUP8SSHwOgWCDDE/jO7QpPT+9
+        HKMt+lpVpLK5cz0o5qibVK8=
+X-Google-Smtp-Source: APBJJlH6m9sK9mjx89Uecj4qm6C1age+m1fGCXkCijQgaie+Dd/vPNHCC5Dk8lLiSNmHc7P0FIhejA==
+X-Received: by 2002:a1c:4b0e:0:b0:3fa:9741:5b73 with SMTP id y14-20020a1c4b0e000000b003fa97415b73mr2170669wma.10.1689690907437;
+        Tue, 18 Jul 2023 07:35:07 -0700 (PDT)
+Received: from [192.168.1.95] (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
+        by smtp.gmail.com with ESMTPSA id n21-20020a1c7215000000b003fbd0c50ba2sm10617406wmc.32.2023.07.18.07.35.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jul 2023 07:35:07 -0700 (PDT)
+Message-ID: <ea1c9d1b9e120bdb8c42b2daefa6d11167208dd9.camel@gmail.com>
+Subject: Re: [5.10, 5.15] New bpf kselftest failure
+From:   Eduard Zingerman <eddyz87@gmail.com>
+To:     Luiz Capitulino <luizcap@amazon.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        "sashal@kernel.org" <sashal@kernel.org>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>, ast@kernel.org,
+        gilad.reti@gmail.com, Mykola Lysenko <mykolal@fb.com>,
+        andrii <andrii@kernel.org>
+Date:   Tue, 18 Jul 2023 17:35:05 +0300
+In-Reply-To: <dd3ecb62-94ca-a08a-01f9-453fe0545ce8@amazon.com>
+References: <935c4751-d368-df29-33a6-9f4fcae720fa@amazon.com>
+         <76dfe02eea69141b662a3a399126dba9e00e5abe.camel@gmail.com>
+         <9c7fc5ab-1c06-8452-2747-aa89e7a1dfb6@amazon.com>
+         <c9b10a8a551edafdfec855fbd35757c6238ad258.camel@gmail.com>
+         <bc521a2f24c416a658ab50685fbf647d4e069c8c.camel@gmail.com>
+         <dd3ecb62-94ca-a08a-01f9-453fe0545ce8@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR10MB5113:EE_|DM4PR10MB6253:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e446aef-b85a-4972-d7a5-08db879b87b5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /EGmqPjm0MzElYipoCA2zI3H1U/m60BKvxrNEiMD6PkGzxlcSs+9Bll1aMNDOfmpTdHVrlhiMPsAKwZkH8EP0wpPi4YGEMXfv19/7odWH+r9hCzPnxOpIqwbuo8hfXex7L2LV2q+iXK/dChfg4TW9A03m7wG4Afa8xalVOwXkfOM5fiajXzp1WELukAyM1imA1G5Q3SBP5+IHH+YGPTOyNNUH1eKij7bZdV+wUEbUdgtUlMfFQDPUim3BPhRdJqdL0cA9KLhfInNf9qPrCrnLRa92AqwsEv4cak4jStn4EpuQTXAVXxCDDHuMK/XO/EZjol73fYrk+gmU7NzP/owpRyu9mUDXW94HToJnPCP4rn0VGyrItXMzRjJi8tGXSg64kLWPNgFMLC6sw4B5mKYBe/k5CNiHVwLnAGfI/N0F2SVyGXLz84gGwwnSCSd33CSn1C+vzA1S4TLp0vMT7V9GXIo8lzjFNKNqi1wtBYj7KoDeI+Zd3aqT/RD0bsMdJz2dkFgNixacuJvylIGAf8IxCJXdBmGJUACWWl70xRVJ5LVUAqnyNZ69zI9KSvZ7GpMs1dOqx5l12ZdK2xwvU4kDJFI8zj79K6MJunpwiNpx7EYpAeQZqYc10MByjEBdr7PwUWxY4cZ80w10ZaE2My/gw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR10MB5113.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(376002)(39860400002)(396003)(366004)(346002)(451199021)(6486002)(53546011)(6506007)(966005)(38100700002)(36756003)(86362001)(2616005)(83380400001)(31696002)(186003)(6512007)(8676002)(8936002)(2906002)(41300700001)(478600001)(44832011)(4326008)(316002)(6916009)(66476007)(5660300002)(66946007)(66556008)(31686004)(6666004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SXl3cE9yeGVVRjJzemRyeUlzK0MyRDd1MG1lNEdsMHdHWWkwYnVVY2EzZnFR?=
- =?utf-8?B?ZzNmOGtlcDhrd1hKTWR2ZUlCWElHeEY4dFFqOVFwVENZNTRJdWZyQ3ZZbU1k?=
- =?utf-8?B?Z25iQ1dSN05jL1BLY21QOFVXTU1UaDhOd1YxdTFjZzV5S3czQit2MW1WQTZt?=
- =?utf-8?B?bkJGQ3Q0NnJXbEdVay9sVi9VcE5uaWMxdVEyN0RIOWtnODcxaC9LVk1NYUE4?=
- =?utf-8?B?dTdQUzNpRVVQay9wMktRdmg5NkFvSVBSSm1PUjRabnpXRE40MnZPRmVIMkNi?=
- =?utf-8?B?Uk5iejNxV3Urbmw4ODlYWkhxQUZOZXZMakE0eTYxekw3bi9aZWJVeU5YcHBC?=
- =?utf-8?B?Rkh6ODE3N3ZyTXdvaG5GbllXUE1iL05palkxOHQ3RloyRFUyTHlZQnU1NlZN?=
- =?utf-8?B?dnBBclZkdnM1UmY5Y0tiZUg2TWxMYzdmVVgwZGwrWXpNemNQRWZTb0NsbGdy?=
- =?utf-8?B?ZXVkUGgvRkdRZm5Ec0dNQ1gyUlVxbExUYVUyQ0VIUitnRE4xdVl1VnV6cDVN?=
- =?utf-8?B?R2VYeU5lSE93VDBUdnVSQStHbW1DNWpNR3kvZWxzKytjMVlUUWZqanVUOU1L?=
- =?utf-8?B?QWVIVTFKbi9LbUNBeDFoMXd3ZXNaUU5mNStUWWU1a3ZZaWhycGJEdm9NTVZo?=
- =?utf-8?B?QWMwN3Z1emlPbzhXYmxLN0txdU5yZElBd0s2cFRad1lhNDV4SnJZYTRSVGNm?=
- =?utf-8?B?bERXb1U3NFlZR2k5WlV1aE8wRnpONTJxcU94V0VIRy90QW81aEYwcVpsalcw?=
- =?utf-8?B?NGlTNzNsUlNjcUZRL3k5TUt5WEh6Z0tZTm9aZVRSWXNKNzdoZlRsVVhaUERL?=
- =?utf-8?B?Z2FXNU1rbnFZa1BDOXBuaC9XRGRwMmxTd1J4NzlYMHJJdGpQaEFaQng2WGNM?=
- =?utf-8?B?UXRhb1g1Wmc2enNZOCtrYnVpRWhSSkFGVHhacEpVS3gxNGVmdTJ1Y05VVE5O?=
- =?utf-8?B?VmdNSGlmczlrT0I1QnovU0R0cXlab2JhdElrUkF1bWMwRkxaek5aZm5hSXZZ?=
- =?utf-8?B?cUtIY0g4TFFYNHVRcnNMZ2MzSk5xRTRaazJySXBCRjVzU3ROUEpWdStHVi9h?=
- =?utf-8?B?QTRORVROckFrYmRpYllrWklCUno3Q2tiN0hlWGpOR3NRQ2FDVXFJR3N2b3pR?=
- =?utf-8?B?QjZnaUo4NDFMbFRwWUIzZzBYSXhVTHdPd1ZsRW01KzJqMDJ1TXRVUUsvRjI3?=
- =?utf-8?B?ZlBpdm9xeUpESmhWMFRuMjZkMEdNWml0dTlMOGlZbHdrcUQ4Q3ZRcmVPUVpq?=
- =?utf-8?B?OThpVHFzcy9YVzFmdmxWMjF0RFFVMnNmK1l4OEF5d1dFQnpwKzdFUFpRZEx1?=
- =?utf-8?B?dlIrWFcwNGR3cUtqbjFXLzBFL1BqOW4vdDVodWJMNTI5cndzQzZDdHIxTWgr?=
- =?utf-8?B?RnNoWTVFL051enZud1pibUZGbkpPUllrVW5PalNMR1llQ1M5UGhVVzk5U2hn?=
- =?utf-8?B?TWxUdW9WVWQzc0FpNXg4ZFBpV1pJb0FrY0FDZlZKS3Z2bm1yWFJ0ZzRkdzlr?=
- =?utf-8?B?VWpNeXVKc29lMG9TZ0g2MnlqbnlxM250Vjg3L3RkdWNNalUxSXhpV2RHeCs5?=
- =?utf-8?B?NHFPZmt0b2FjOTl1enhVaTZHWGZkUU80MzdiTjNhSEFjTDQ5L1lDSmpIM3Br?=
- =?utf-8?B?bFlMYTcvTnhUTjNmc3FZNjUzUGF0UXBsWVJOQTJ3b1BZdHJNdlBKQmdDQko3?=
- =?utf-8?B?MjluZ01Ec1RBSXEzWW9NbGhWZGFjUUxtTTRQOUs1bmE0UnV0Y1VRVkNHQWJi?=
- =?utf-8?B?U0hsQklaNXJYRTZvS3FJbHVtZEZkNWk0M21wenFkYVhQSXJHVFduWHJiUkVq?=
- =?utf-8?B?amFVR2FmZUxvZXdJVlRjakJmM3pFR3B5eXV6OVhYV3dUT0FYdEp2MDhrenNl?=
- =?utf-8?B?T3lEdi9nN2NaSVVQeU95bEpZT3NIKzFRS04vaUpOZXp6K0VoZ2p2Z016cHNt?=
- =?utf-8?B?VU9PSFNQNDFjZXNRSWJ2cm1FcGxaOUFmQXFrSGhTeUJnSmhBK1JJSkZJT2Nw?=
- =?utf-8?B?TWVFNTJ2b1pFUXNVd2JvNUN0OW1KUzJlTU1xSzlZeE93QjMzS1F4SkxYS0NB?=
- =?utf-8?B?QVdRd2JNT2NvM2pldXFFaXMzV0N2LysrVk1nOWdORERqd2pJUlJGRHBtMFdh?=
- =?utf-8?B?R3dDQW5hZ0Vxc3A2dm9LRzZvM1kxdm1EVE9BL2xaTDlTeUJCNTM3dytCR2dl?=
- =?utf-8?Q?yllXY70KJbWlC3pSLG9Dv6M=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?Q2xJRHVDUjlaTkZQQll1Q1J0Wm4rNGVuMHFDV1VHTktJSDI1MzE5RXpsNU4x?=
- =?utf-8?B?ZzFCNVlTRzNkN1hablBVZWFOMllqNWt4L3FNUUcxalVWNHQrcWRuNEEwK1lG?=
- =?utf-8?B?dDZVTGxWYmFZUTN0UjI5VlcycWVGQW1CeVUwdnpPdlNtK1RnWmpIYzV0M1h5?=
- =?utf-8?B?ZFVGOWNtRnpNNjZSZXhIS1pPbmlFcEpQY2kwZUx0TlNHcTZoWTVCTFVuSG42?=
- =?utf-8?B?L3BaeTV5aStwQUxCNlBtNXYrOFFVbHQ0bWhNZ0VReVhCZUJGcTZGL3I4cEJR?=
- =?utf-8?B?Y1RwWWRVUHJLV3h6R3FvamNzSmpZUGZDZmxOU21BMlllOUYza2hiaFVINmZm?=
- =?utf-8?B?MVRFbDlBNkkwb0RLOTRjTEc4SkkyUCsrTy9aemRmcXg4U1Rac2lDd0tLMXc2?=
- =?utf-8?B?MkFLMUZwVmxVS0lRS2M1OEdZV2NwRUxyckhEMnlNN1ErcU9hZE1jMW1NVzhv?=
- =?utf-8?B?cHFnRmtTM3pqSGlNVHpka0xvRFVaU0FXZ0lxWElrbEJiZFpneXQrN1V3WEhY?=
- =?utf-8?B?VzV3TGoyUXh2bFoxNmpubFNkaWNkN3lxdGtJUjMzUUw2RjNZRzIvbWpWNStq?=
- =?utf-8?B?Q0lkRVFFcE1wT0lnWm5sSG92KzZhb3cxZkJrWjBXbEgwVVlVTUxYOXpWaWt6?=
- =?utf-8?B?cWlZOHlLTXVYb2dPZHhNbU1GWU1LdzVFSjhxWTdlK25aT3pGUHJWNHBMVkxn?=
- =?utf-8?B?QlVvM2xXZXNCR2V5d3dISTZvSDNyWEFRYUlsRzBQUmV3a0pXMVgxc2sveVhI?=
- =?utf-8?B?VlR6L2tsWUhsZjBVU0dZdHNsSDRTNGYxN3pYRGNOSnUzV2ZacVppczFlM0p5?=
- =?utf-8?B?Z2VSenBESjNlRWphdU51N1Rsd0NzVjFJMUxBM1orcTRKa0VtMEo4bmdGQjdj?=
- =?utf-8?B?a1o0cWRCSXBrR2ZQMXI5aUY5eis4UXc2NlM0c3ZtVnlmWlNxVDJLY3RQMEZQ?=
- =?utf-8?B?WkJKSi9YTW82T3NSK09BUUJLTWR1a0VJb0VyYkFVdGRSVW12M1VDVDJCajNK?=
- =?utf-8?B?bE1KUFFWbVpMQ3dCK0pxdW9OM2xCbmFueXVkSStuRnArUk5qbnRDb1daNDk2?=
- =?utf-8?B?cjErS0lGZlFTT3puVmhQMFZycVZJV0wwVEUrUm5kejhKMjRWU1NIOUJ4ODNG?=
- =?utf-8?B?SGxNM29OL2RrOW90RjRTbGFmVDhHNUk3L2xvN1l5dEVaaGp5R1A4R3JIbS9y?=
- =?utf-8?B?cWsyWG9qT0prMDAvMmE3c3dpa0MyWllnOHNxS3hFSVkxaWM2NDNZTkp2Tzdw?=
- =?utf-8?B?M3o4OFZVbk5WSVRKTmVFOFZteXp0OFhrWXpTTjVBRkJFRUNQQT09?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e446aef-b85a-4972-d7a5-08db879b87b5
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR10MB5113.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2023 14:30:27.0657
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q9t+8OscEhml/Otd5Zv1fvimePL+PdxyV7H934dOWPJbCDHPJ+ORRNrmrnbAaDB3BeVRmo5JKeHOU8NWvcoOWb+rvvKgQEIWx8QGmeh/5/0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6253
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-18_11,2023-07-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- suspectscore=0 phishscore=0 bulkscore=0 mlxscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307180133
-X-Proofpoint-ORIG-GUID: QpJ2YtJleThNApTd8bszMPDyLrwatkK4
-X-Proofpoint-GUID: QpJ2YtJleThNApTd8bszMPDyLrwatkK4
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/17/23 5:39 PM, Naoya Horiguchi wrote:
-> On Tue, Jul 18, 2023 at 09:14:09AM +0900, Naoya Horiguchi wrote:
->> On Mon, Jul 17, 2023 at 11:18:12AM -0700, Sidhartha Kumar wrote:
->>> It was pointed out[1] that using folio_test_hwpoison() is wrong
->>> as we need to check the indiviual page that has poison.
->>> folio_test_hwpoison() only checks the head page so go back to using
->>> PageHWPoison().
->>>
->>> Reported-by: Matthew Wilcox (Oracle) <willy@infradead.org>
->>> Fixes: a6fddef49eef ("mm/memory-failure: convert unpoison_memory() to folios")
->>> Cc: stable@vger.kernel.org #v6.4
->>> Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
->>>
->>> [1]: https://lore.kernel.org/lkml/ZLIbZygG7LqSI9xe@casper.infradead.org/
->>> ---
->>>   mm/memory-failure.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>> index 02b1d8f104d51..a114c8c3039cd 100644
->>> --- a/mm/memory-failure.c
->>> +++ b/mm/memory-failure.c
->>> @@ -2523,7 +2523,7 @@ int unpoison_memory(unsigned long pfn)
->>>   		goto unlock_mutex;
->>>   	}
->>>   
->>> -	if (!folio_test_hwpoison(folio)) {
->>> +	if (!PageHWPoison(p)) {
->>
->>
->> I don't think this works for hwpoisoned hugetlb pages that have PageHWPoison
->> set on the head page, rather than on the raw subpage. In the case of
->> hwpoisoned thps, PageHWPoison is set on the raw subpage, not on the head
->> pages.  (I believe this is not detected because no one considers the
->> scenario of unpoisoning hwpoisoned thps, which is a rare case).  Perhaps the
->> function is_page_hwpoison() would be useful for this purpose?
-> 
-> Sorry, I was wrong.  Checking PageHWPoison() is fine because the users of
-> unpoison should know where the PageHWPoison is set via /proc/kpageflags.
-> So this patch is OK to me after comments from other reviewers are resolved.
-> 
+On Tue, 2023-07-18 at 10:06 -0400, Luiz Capitulino wrote:
+>=20
+> On 2023-07-18 08:31, Eduard Zingerman wrote:
+>=20
+> >=20
+> >=20
+> >=20
+> > On Tue, 2023-07-18 at 01:57 +0300, Eduard Zingerman wrote:
+> > > [...]
+> > > Still, when I cherry-pick [0,1,2,3] `./test_progs -a setget_sockopt` =
+is failing.
+> > > I'll investigate this failure but don't think I'll finish today.
+> > >=20
+> > > ---
+> > >=20
+> > > Alternatively, if the goal is to minimize amount of changes, we can
+> > > disable or modify the 'precise: ST insn causing spi > allocated_stack=
+'.
+> > >=20
+> > > ---
+> > >=20
+> > > Commits (in chronological order):
+> > > [0] be2ef8161572 ("bpf: allow precision tracking for programs with su=
+bprogs")
+> > > [1] f63181b6ae79 ("bpf: stop setting precise in current state")
+> > > [2] 7a830b53c17b ("bpf: aggressively forget precise markings during s=
+tate checkpointing")
+> > > [3] 4f999b767769 ("selftests/bpf: make test_align selftest more robus=
+t")
+> > > [4] 07d90c72efbe ("Merge branch 'BPF verifier precision tracking impr=
+ovements'")
+> > > [5] ecdf985d7615 ("bpf: track immediate values written to stack by BP=
+F_ST instruction")
+> >=20
+> > I made a mistake, while resolving merge conflict for [0] yesterday.
+> > After correction the `./test_progs -a setget_sockopt` passes.
+> > I also noted that the following tests fail on v6.1.36:
+> >=20
+> >    ./test_progs -a sk_assign,fexit_bpf2bpf
+> >=20
+> > These tests are fixed by back-porting the following upstream commits:
+> > - 7ce878ca81bc ("selftests/bpf: Fix sk_assign on s390x")
+> > - 63d78b7e8ca2 ("selftests/bpf: Workaround verification failure for fex=
+it_bpf2bpf/func_replace_return_code")
+> >=20
+> > I pushed modified version of v6.1.36 to my github account, it has
+> > test_verifier, test_progs, test_progs-no_alu32 and test_maps passing
+> > (on my x86 setup):
+> >=20
+> >    https://github.com/eddyz87/bpf/commits/v6.1.36-with-fixes
+> >=20
+> > Do you need any additional actions from my side?
+>=20
+> First, thank you very much for your work on this and getting the tests
+> passing on 6.1.
 
-Hi Naoya,
+Thank you.
 
-While taking a closer at the patch, later in unpoison_memory() there is 
-also:
+> In terms of action items, have you checked this situation in 5.10 and
+> 5.15? For 5.10, we also need 4237e9f4a96228ccc8a7abe5e4b30834323cd353
+> otherwise the bpf tests don't even build there.
 
--               ret = TestClearPageHWPoison(page) ? 0 : -EBUSY;
-+               ret = folio_test_clear_hwpoison(folio) ? 0 : -EBUSY;
+Haven't checked 5.15/5.10, will take a look.
+Are there any time-frame limitations?
+(I'd like to work on this on Wednesday or Thursday)
 
-I thought this folio conversion would be safe because page is the result 
-of a compound_head() call but I'm wondering if the same issue exists 
-here and we should be calling TestClearPageHWPoison() on the specific 
-subpage by doing TestClearPageHWPoison(p).
+>=20
+> Also, would you know if something important is broken for users or is
+> this just a small behavior difference between kernels?
+
+I think it's more like small behavior difference:
+- be2ef8161572, f63181b6ae79, 7a830b53c17b are verification
+  scalability optimizations, with these patches it is possible
+  to load a bit more complex programs (larger programs, or more
+  complex branching patterns).
+- 4f999b767769, 7ce878ca81bc, 63d78b7e8ca2 - fixes for selftests,
+  no new functionality.
 
 Thanks,
-Sidhartha Kumar
-
-> Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
-> 
-> Thanks,
-> Naoya Horiguchi
-> 
-
+Eduard
