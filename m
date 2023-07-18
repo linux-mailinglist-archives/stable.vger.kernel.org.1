@@ -2,168 +2,246 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E98BE758116
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 17:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4F0475811B
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 17:39:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232983AbjGRPiU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 11:38:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37798 "EHLO
+        id S231511AbjGRPjL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 11:39:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232674AbjGRPiT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 11:38:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E4D5198C;
-        Tue, 18 Jul 2023 08:37:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87A9D61632;
-        Tue, 18 Jul 2023 15:37:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C7DC433C9;
-        Tue, 18 Jul 2023 15:37:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689694673;
-        bh=Bu4gsHY3PTe4G9zq0dlJB1ALuaQlaOto2aj5qSjrYKo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZIFf1HG47tn2zhXBi6kTcvxFF8zu5DrIRxjOe+TfY00ISraRVMADvdrSJbb5da8g+
-         CgkOGLKDbf6qpTknZQNTzN0xYPXc6OIf/cyGnuOv1tEtJkTiUoNYFUQb4NgtAW34T0
-         CDOqbvauBaPvcwY3TkRZVpIk+lq6/8PienVUTQ+59/NZlMryZCJdBbG5dlEkDlrwUI
-         xgK+OHilT3DNhkVh0qsTbJrfjiAfc1m5JsjA63eJzbNKPXfli69zgQRZpEa1WntdoM
-         9JUf5xdv8AXxVDdoufyApxqVo/wxkLbWDIJZitDRlQ9SNLW+lyCEchQV5AjPyLORCq
-         I9KZp3AVX0d9g==
-Mime-Version: 1.0
+        with ESMTP id S231479AbjGRPjK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 11:39:10 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E294C1990
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 08:38:52 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-51e48e1f6d1so7984498a12.1
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 08:38:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689694731; x=1692286731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eLioVgA1gUOrbornlU5isW1iy/mYKUMhb3XwnGxISqM=;
+        b=BzugDmWybXG2LrJG1qrtQETWyKAh9ufRsq+N1Zj8JniX0fCV7aqopO/5FPQ2KWaa1R
+         RK/H508Mym1XQBCtY0AEclIQ0hQJjA6OTMmtmbzfHkX6aNRkgaLbeEQvAHBUXSW0pyp8
+         u/aE6Epy5RO5a7j9oVVUKHIsGPvzvyPaREFlESg255uL2gHCotlyyfO0gQbYwXjJD/jR
+         htDUqhGhNAftoa6b5p5otcwcp/OQAaEju5qL9s3FKBsmNGchPaa3A9SZj2ZXvEqhYC/k
+         pxckryTPgj7u4wwCrC6wQM2piqV5tY/BXXDJkbyawzI2F0wgnMNiB+AKP904nDuOPPej
+         lsYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689694731; x=1692286731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eLioVgA1gUOrbornlU5isW1iy/mYKUMhb3XwnGxISqM=;
+        b=JLCC9ouQcPlfOHZBhcXgVoAZF5/emjWIVwNWlJJ2QgvxCD0cuFbpbW6ts5crO0cBgv
+         rC2WNxjlxyjSFWSjoaWdA19tPorzi2uJk8+BktTm34XUrZFwDsP3fWwQ4JpjfSKfo3tH
+         2WJ87/HpUafwha0uHa4MS/RnGnduVLA/Vpi6BIbyYuuAE/xPPmnu7CtK1oqaVpM6KtwZ
+         kqnaKwlPbIFtZn2YAaUed8wRizmH1bxbdo0Sf5y9UViwdwTQgvPPaT2Mx13C2pWR0vxp
+         xN6s2IBPbT/WpXRaya8NctXltwjzIucjgSqGeTb4J6YjU2xqMSuAKpyvkPwKU2iuG+fN
+         v/VA==
+X-Gm-Message-State: ABy/qLYkwfFV2HVQ92UKgjlDmEKJf3ArZDDueyY0tdpiJo6HIGEaqfnk
+        CLWFm0eR6EtQFOzHoEui9X9jF9rghaPmDpWxE6KoWw==
+X-Google-Smtp-Source: APBJJlEhaj4EMbuNXR+5V2FXW2eoMOaK2lG9dG/p2NP/RlQMJ2MU1iasTF1aYVc3PWjBSe6nvMN3ccShiGxt1LR6T5k=
+X-Received: by 2002:a05:6402:882:b0:51f:e92a:62ba with SMTP id
+ e2-20020a056402088200b0051fe92a62bamr269135edy.9.1689694730940; Tue, 18 Jul
+ 2023 08:38:50 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230717201608.814406187@linuxfoundation.org>
+In-Reply-To: <20230717201608.814406187@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 18 Jul 2023 21:08:38 +0530
+Message-ID: <CA+G9fYs56L1OzJA=kmXmtTGXnhfjX0Va0bu5An-b5Fxcjnioqw@mail.gmail.com>
+Subject: Re: [PATCH 6.4 000/801] 6.4.4-rc3 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 18 Jul 2023 18:37:45 +0300
-Message-Id: <CU5ERP8KIR0W.JN8OYIY3AQI6@suppilovahvero>
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Haitao Huang" <haitao.huang@linux.intel.com>,
-        <dave.hansen@linux.intel.com>, <linux-kernel@vger.kernel.org>,
-        <linux-sgx@vger.kernel.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
-        <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
-Cc:     <kai.huang@intel.com>, <reinette.chatre@intel.com>,
-        <kristen@linux.intel.com>, <seanjc@google.com>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
-X-Mailer: aerc 0.14.0
-References: <CU4OBQ8MQ2LK.2GRBPLQGVTZ3@seitikki>
- <20230717202938.94989-1-haitao.huang@linux.intel.com>
-In-Reply-To: <20230717202938.94989-1-haitao.huang@linux.intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon Jul 17, 2023 at 11:29 PM EEST, Haitao Huang wrote:
-> Under heavy load, the SGX EPC reclaimers (current ksgxd or future EPC
-> cgroup worker) may reclaim the SECS EPC page for an enclave and set
-> encl->secs.epc_page to NULL. But the SECS EPC page is used for EAUG in
-> the SGX #PF handler without checking for NULL and reloading.
+On Tue, 18 Jul 2023 at 02:04, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Fix this by checking if SECS is loaded before EAUG and load it if it was
-> reclaimed.
+> This is the start of the stable review cycle for the 6.4.4 release.
+> There are 801 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Fixes: 5a90d2c3f5ef8 ("x86/sgx: Support adding of pages to an initialized=
- enclave")
-> Cc: stable@vger.kernel.org
-
-Given that
-
-	$ git describe --contains 5a90d2c3f5ef8
-	v6.0-rc1~102^2~16
-
-You could also describe this as:
-
-Cc: stable@vger.kernel.org # v6.0+
-
-> Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
-> ---
->  arch/x86/kernel/cpu/sgx/encl.c | 25 ++++++++++++++++++++-----
->  arch/x86/kernel/cpu/sgx/main.c |  4 ++++
->  2 files changed, 24 insertions(+), 5 deletions(-)
+> Responses should be made by Wed, 19 Jul 2023 20:14:44 +0000.
+> Anything received after that time might be too late.
 >
-> diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/enc=
-l.c
-> index 2a0e90fe2abc..2ab544da1664 100644
-> --- a/arch/x86/kernel/cpu/sgx/encl.c
-> +++ b/arch/x86/kernel/cpu/sgx/encl.c
-> @@ -235,6 +235,16 @@ static struct sgx_epc_page *sgx_encl_eldu(struct sgx=
-_encl_page *encl_page,
->  	return epc_page;
->  }
-> =20
-> +static struct sgx_epc_page *sgx_encl_load_secs(struct sgx_encl *encl)
-> +{
-> +	struct sgx_epc_page *epc_page =3D encl->secs.epc_page;
-> +
-> +	if (!epc_page)
-> +		epc_page =3D sgx_encl_eldu(&encl->secs, NULL);
-> +
-> +	return epc_page;
-> +}
-> +
->  static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
->  						  struct sgx_encl_page *entry)
->  {
-> @@ -248,11 +258,9 @@ static struct sgx_encl_page *__sgx_encl_load_page(st=
-ruct sgx_encl *encl,
->  		return entry;
->  	}
-> =20
-> -	if (!(encl->secs.epc_page)) {
-> -		epc_page =3D sgx_encl_eldu(&encl->secs, NULL);
-> -		if (IS_ERR(epc_page))
-> -			return ERR_CAST(epc_page);
-> -	}
-> +	epc_page =3D sgx_encl_load_secs(encl);
-> +	if (IS_ERR(epc_page))
-> +		return ERR_CAST(epc_page);
-> =20
->  	epc_page =3D sgx_encl_eldu(entry, encl->secs.epc_page);
->  	if (IS_ERR(epc_page))
-> @@ -339,6 +347,13 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_=
-struct *vma,
-> =20
->  	mutex_lock(&encl->lock);
-> =20
-> +	epc_page =3D sgx_encl_load_secs(encl);
-> +	if (IS_ERR(epc_page)) {
-> +		if (PTR_ERR(epc_page) =3D=3D -EBUSY)
-> +			vmret =3D  VM_FAULT_NOPAGE;
-> +		goto err_out_unlock;
-> +	}
-> +
->  	epc_page =3D sgx_alloc_epc_page(encl_page, false);
->  	if (IS_ERR(epc_page)) {
->  		if (PTR_ERR(epc_page) =3D=3D -EBUSY)
-> diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/mai=
-n.c
-> index 166692f2d501..4662a364ce62 100644
-> --- a/arch/x86/kernel/cpu/sgx/main.c
-> +++ b/arch/x86/kernel/cpu/sgx/main.c
-> @@ -257,6 +257,10 @@ static void sgx_reclaimer_write(struct sgx_epc_page =
-*epc_page,
-> =20
->  	mutex_lock(&encl->lock);
-> =20
-> +	/* Should not be possible */
-> +	if (WARN_ON(!(encl->secs.epc_page)))
-> +		goto out;
-> +
->  	sgx_encl_ewb(epc_page, backing);
->  	encl_page->epc_page =3D NULL;
->  	encl->secs_child_cnt--;
-> --=20
-> 2.25.1
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.4.4-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-BR, Jarkko
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.4.4-rc3
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.4.y
+* git commit: 0e8d2fdfb18871a5de031927a37af3cacbaf1d16
+* git describe: v6.4.3-802-g0e8d2fdfb188
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.4.y/build/v6.4.3=
+-802-g0e8d2fdfb188
+
+## Test Regressions (compared to v6.4.1-22-g3e37df3ffd9a)
+
+## Metric Regressions (compared to v6.4.1-22-g3e37df3ffd9a)
+
+## Test Fixes (compared to v6.4.1-22-g3e37df3ffd9a)
+
+## Metric Fixes (compared to v6.4.1-22-g3e37df3ffd9a)
+
+## Test result summary
+total: 175129, pass: 150209, fail: 2026, skip: 22723, xfail: 171
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 145 total, 145 passed, 0 failed
+* arm64: 54 total, 53 passed, 1 failed
+* i386: 41 total, 41 passed, 0 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 38 total, 36 passed, 2 failed
+* riscv: 26 total, 25 passed, 1 failed
+* s390: 16 total, 14 passed, 2 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* fwts
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
