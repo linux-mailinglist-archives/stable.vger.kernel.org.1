@@ -2,164 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 940CA75824C
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 18:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38379758253
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 18:43:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233338AbjGRQkW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 12:40:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50414 "EHLO
+        id S231146AbjGRQnJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 12:43:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233259AbjGRQkQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 12:40:16 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94362171C;
-        Tue, 18 Jul 2023 09:40:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689698409; x=1721234409;
-  h=to:cc:subject:references:date:mime-version:
-   content-transfer-encoding:from:message-id:in-reply-to;
-  bh=UD4tx2ko1Ntid4p2qUjYdfLq2O8toM+6lgpiCZu5QuE=;
-  b=PAIMvxwwyrULQCWvkXKiUzmDKJM86RRoFTRhDfxmz838paZdN7Rjs8J9
-   m+rQH2AGJzIF1VzW8aEc4ra4aNbYrk4usrQGDEMy6U5rOMwnotk+S/dD6
-   i7EHPO0xsrTGY1Cqr/FeBCufs1OZdg0U3mn5xBjZBGAJSzGXy22HTopcF
-   aA1mOkD/8J5g8GIwZw9ROOO+MloCxXvzUJVneKfLrPEHgfs7hLyJCNiQN
-   HM25LEQKzlLPbI2BQpIlfNyqzY05ZCzkT2NzgZhKNTtYlx4/DwuFg0Mik
-   XQhLRoYuOwNJH2RLEXlTp04y5HtsI0kn/P0x221JSALFL+ehzZVUlBgcq
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="397096521"
-X-IronPort-AV: E=Sophos;i="6.01,214,1684825200"; 
-   d="scan'208";a="397096521"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 09:40:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="700975518"
-X-IronPort-AV: E=Sophos;i="6.01,214,1684825200"; 
-   d="scan'208";a="700975518"
-Received: from hhuan26-mobl.amr.corp.intel.com ([10.92.48.113])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-SHA; 18 Jul 2023 09:39:57 -0700
-Content-Type: text/plain; charset=iso-8859-15; format=flowed; delsp=yes
-To:     "Jarkko Sakkinen" <jarkko@kernel.org>, dave.hansen@linux.intel.com,
-        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        "Dave Hansen" <dave.hansen@intel.com>
-Cc:     kai.huang@intel.com, reinette.chatre@intel.com,
-        kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
-References: <CU4OBQ8MQ2LK.2GRBPLQGVTZ3@seitikki>
- <20230717202938.94989-1-haitao.huang@linux.intel.com>
- <95371eef-73ec-5541-ad97-829954cfb848@intel.com>
-Date:   Tue, 18 Jul 2023 11:39:56 -0500
+        with ESMTP id S230167AbjGRQnI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 12:43:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5398610C;
+        Tue, 18 Jul 2023 09:43:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5DB16167A;
+        Tue, 18 Jul 2023 16:43:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D878C433C8;
+        Tue, 18 Jul 2023 16:43:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689698586;
+        bh=6GmurqX2i9JM34BQa9X30FmQHtnrur89oQ3WxbydzJo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PM2FYJSNOlfl7ajifO/Zb7gliIo6DLh1mRbpPrgh3TRoUhoZ6rlj70Lej34Ftn+AG
+         NytoIB0ziTr1RxHoweF9CvObomaiakj6hnRjYm3NUbcmMWRfNJ7HtyDClA2v5P8XZm
+         X4xajyR8KQeor6hPjr+IlvLImDEm6Hm3N4frcSeBH5QhHXH95p6YgWrjfyUqkej+RE
+         21SNU0aMQWNo+K01+12GvN0Up50PZYIR9v23LinCvoOrGh8w916WIZ3kQjRQbix0Ou
+         ld8g8iYvORM3N/IGSc0R/KuItkXyIpRuoiEhI1S6Q8VaNrBIBdYw2tqjia3OBybawT
+         R4nsCEcyw1haA==
+Date:   Tue, 18 Jul 2023 09:43:03 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Raphael Nestler <raphael.nestler@gmail.com>,
+        Andrea Righi <andrea.righi@canonical.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] kbuild: rust: avoid creating temporary files
+Message-ID: <20230718164303.GB1279879@dev-arch.thelio-3990X>
+References: <20230718055235.1050223-1-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   "Haitao Huang" <haitao.huang@linux.intel.com>
-Organization: Intel
-Message-ID: <op.18adwup7wjvjmi@hhuan26-mobl.amr.corp.intel.com>
-In-Reply-To: <95371eef-73ec-5541-ad97-829954cfb848@intel.com>
-User-Agent: Opera Mail/1.0 (Win32)
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230718055235.1050223-1-ojeda@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 18 Jul 2023 09:30:11 -0500, Dave Hansen <dave.hansen@intel.com>  
-wrote:
+On Tue, Jul 18, 2023 at 07:52:35AM +0200, Miguel Ojeda wrote:
+> `rustc` outputs by default the temporary files (i.e. the ones saved
+> by `-Csave-temps`, such as `*.rcgu*` files) in the current working
+> directory when `-o` and `--out-dir` are not given (even if
+> `--emit=x=path` is given, i.e. it does not use those for temporaries).
+> 
+> Since out-of-tree modules are compiled from the `linux` tree,
+> `rustc` then tries to create them there, which may not be accessible.
+> 
+> Thus pass `--out-dir` explicitly, even if it is just for the temporary
+> files.
+> 
+> Reported-by: Raphael Nestler <raphael.nestler@gmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1015
+> Reported-by: Andrea Righi <andrea.righi@canonical.com>
+> Tested-by: Raphael Nestler <raphael.nestler@gmail.com>
+> Tested-by: Andrea Righi <andrea.righi@canonical.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-> On 7/17/23 13:29, Haitao Huang wrote:
-> ...
->> @@ -248,11 +258,9 @@ static struct sgx_encl_page  
->> *__sgx_encl_load_page(struct sgx_encl *encl,
->>  		return entry;
->>  	}
->>
->> -	if (!(encl->secs.epc_page)) {
->> -		epc_page = sgx_encl_eldu(&encl->secs, NULL);
->> -		if (IS_ERR(epc_page))
->> -			return ERR_CAST(epc_page);
->> -	}
->> +	epc_page = sgx_encl_load_secs(encl);
->> +	if (IS_ERR(epc_page))
->> +		return ERR_CAST(epc_page);
->>
->>  	epc_page = sgx_encl_eldu(entry, encl->secs.epc_page);
->>  	if (IS_ERR(epc_page))
->> @@ -339,6 +347,13 @@ static vm_fault_t sgx_encl_eaug_page(struct  
->> vm_area_struct *vma,
->>
->>  	mutex_lock(&encl->lock);
->>
->> +	epc_page = sgx_encl_load_secs(encl);
->> +	if (IS_ERR(epc_page)) {
->> +		if (PTR_ERR(epc_page) == -EBUSY)
->> +			vmret =  VM_FAULT_NOPAGE;
->> +		goto err_out_unlock;
->> +	}
->
-> Whenever I see one of these "make sure it isn't NULL", I always jump to
-> asking what *keeps* it from becoming NULL again.  In both cases here, I
-> think that's encl->lock.
->
-Yes, encl->lock protects all enclave states, the xarray holding  
-encl_pages, SECS, VAs, etc.
+Seems reasonable to me.
 
-> A comment would be really nice here, maybe on sgx_encl_load_secs().   
-> Maybe:
->
-> /*
->  * Ensure the SECS page is not swapped out.  Must be called with
->  * encl->lock to protect _____ and ensure the SECS page is not
->  * swapped out again.
->  */
->
-Thanks for the suggestion. Lock should be held for the duration of SECS  
-usage.
-So something like this?
-/*
-  * Ensure the SECS page is not swapped out.  Must be called with
-  * encl->lock to protect the enclave states including SECS and
-  * ensure the SECS page is not swapped out again while being used.
-  */
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-
->> diff --git a/arch/x86/kernel/cpu/sgx/main.c  
->> b/arch/x86/kernel/cpu/sgx/main.c
->> index 166692f2d501..4662a364ce62 100644
->> --- a/arch/x86/kernel/cpu/sgx/main.c
->> +++ b/arch/x86/kernel/cpu/sgx/main.c
->> @@ -257,6 +257,10 @@ static void sgx_reclaimer_write(struct  
->> sgx_epc_page *epc_page,
->>
->>  	mutex_lock(&encl->lock);
->>
->> +	/* Should not be possible */
->> +	if (WARN_ON(!(encl->secs.epc_page)))
->> +		goto out;
->
-> That comment isn't super helpful.  We generally don't WARN_ON() things
-> that should happen.  *Why* is it not possible?
->
-
-When this part of code is reached, the reclaimer is holding at least one  
-reclaimable EPC page to reclaim for the enclave and the code below only  
-reclaims SECS when no reclaimable EPCs (number of SECS children being  
-zero) of the enclave left. So it should not be possible.
-I'll remove this change because this is really not needed for fixing the  
-bug as Kai pointed out.
-
-I added this for sanity check when implementing multiple EPC tracking  
-lists for cgroups. At one point there were list corruption issues if  
-moving EPCs between lists not managed well. With those straightened out,  
-and clear definitions of EPC states for moving them from one list to  
-another, I no longer see much value to keep this even in later cgroup  
-patches.
-
-Thanks
-Haitao
+> ---
+>  scripts/Makefile.build | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 6413342a03f4..82e3fb19fdaf 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -264,6 +264,9 @@ $(obj)/%.lst: $(src)/%.c FORCE
+>  
+>  rust_allowed_features := new_uninit
+>  
+> +# `--out-dir` is required to avoid temporaries being created by `rustc` in the
+> +# current working directory, which may be not accessible in the out-of-tree
+> +# modules case.
+>  rust_common_cmd = \
+>  	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
+>  	-Zallow-features=$(rust_allowed_features) \
+> @@ -272,7 +275,7 @@ rust_common_cmd = \
+>  	--extern alloc --extern kernel \
+>  	--crate-type rlib -L $(objtree)/rust/ \
+>  	--crate-name $(basename $(notdir $@)) \
+> -	--emit=dep-info=$(depfile)
+> +	--out-dir $(dir $@) --emit=dep-info=$(depfile)
+>  
+>  # `--emit=obj`, `--emit=asm` and `--emit=llvm-ir` imply a single codegen unit
+>  # will be used. We explicitly request `-Ccodegen-units=1` in any case, and
+> 
+> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+> -- 
+> 2.41.0
+> 
