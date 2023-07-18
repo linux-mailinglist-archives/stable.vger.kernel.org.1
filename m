@@ -2,104 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D45C37588EB
-	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 01:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5278F7589D8
+	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 02:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229475AbjGRXLu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 19:11:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38806 "EHLO
+        id S229853AbjGSABv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 20:01:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjGRXLs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 19:11:48 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F887A1;
-        Tue, 18 Jul 2023 16:11:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689721907; x=1721257907;
-  h=to:cc:subject:references:date:mime-version:
-   content-transfer-encoding:from:message-id:in-reply-to;
-  bh=epGXauxX0A+NisaFyr7qkRW9M1vL4VeMJkPviHyjRcE=;
-  b=my3UUGzZkLzEl/MQxcGrBrEM5u1mVEWpELidzcZ+q/K+k+RMGFTAm5r4
-   Mty2Kkn62wCIpRnKuxZwcOj6AtCeVp06LhXpWTcSuDHs0W0pQpl6kVkb8
-   WKCwL9i/IfQlc74fJRKmrm6SDmFQeHkqSGoHWBFrLNpXlkpGv+72VmiKp
-   7etawvNsglfiapVc7/OpRzHTmVaFK9crPGhEH/MLaaR13v1TZoDovzwUo
-   w46EJYIG4DFK79H+8yPdBDFPF9fhyNke5dRuepQLSEc3loc7VdpvN/w1l
-   RDARhsu+5FFejTs1sSZTWsc0XfIqI3xKEdA0gNiJZdSHglOWxvn1gm9NO
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="430094615"
-X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="430094615"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 16:11:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="837449283"
-X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="837449283"
-Received: from hhuan26-mobl.amr.corp.intel.com ([10.92.48.113])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-SHA; 18 Jul 2023 16:11:44 -0700
-Content-Type: text/plain; charset=iso-8859-15; format=flowed; delsp=yes
-To:     dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org,
-        linux-sgx@vger.kernel.org, "Thomas Gleixner" <tglx@linutronix.de>,
-        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        "Jarkko Sakkinen" <jarkko@kernel.org>
-Cc:     kai.huang@intel.com, reinette.chatre@intel.com,
-        kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
-References: <CU4OBQ8MQ2LK.2GRBPLQGVTZ3@seitikki>
- <20230717202938.94989-1-haitao.huang@linux.intel.com>
- <CU5ERP8KIR0W.JN8OYIY3AQI6@suppilovahvero>
-Date:   Tue, 18 Jul 2023 18:11:43 -0500
+        with ESMTP id S229603AbjGSABu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 20:01:50 -0400
+Received: from out-59.mta1.migadu.com (out-59.mta1.migadu.com [IPv6:2001:41d0:203:375::3b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 217341FC3
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 17:01:15 -0700 (PDT)
+Date:   Wed, 19 Jul 2023 08:59:46 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1689724794;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=MpJgs9wRGslX7B0v5r1djRNwrOTPSth9rMMf+bQv7bw=;
+        b=WYnZ4pp9slmQ2hwQev8HbcppJxGxief9n5Va5HFZ1X1tR64d3tufyCKwlA6RML4tADBRvB
+        B+f+tEGKcFEZzN1utrRUo0hvMhShxz/vE/k9e9lpGORIXNVD/djPI8y3fYbzt2ltu3RiOL
+        +k/JLqwpVnJErwKnw/et3BFkM+7iBgA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Naoya Horiguchi <naoya.horiguchi@linux.dev>
+To:     Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        akpm@linux-foundation.org, willy@infradead.org,
+        linmiaohe@huawei.com, naoya.horiguchi@nec.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] mm/memory-failure: fix hardware poison check in
+ unpoison_memory()
+Message-ID: <20230718235946.GA1106729@ik1-406-35019.vs.sakura.ne.jp>
+References: <20230717181812.167757-1-sidhartha.kumar@oracle.com>
+ <20230718001409.GA751192@ik1-406-35019.vs.sakura.ne.jp>
+ <20230718003956.GA762147@ik1-406-35019.vs.sakura.ne.jp>
+ <6736667f-6456-34b5-1d1f-47219e499001@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   "Haitao Huang" <haitao.huang@linux.intel.com>
-Organization: Intel
-Message-ID: <op.18av1t14wjvjmi@hhuan26-mobl.amr.corp.intel.com>
-In-Reply-To: <CU5ERP8KIR0W.JN8OYIY3AQI6@suppilovahvero>
-User-Agent: Opera Mail/1.0 (Win32)
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6736667f-6456-34b5-1d1f-47219e499001@oracle.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 18 Jul 2023 10:37:45 -0500, Jarkko Sakkinen <jarkko@kernel.org>  
-wrote:
+On Tue, Jul 18, 2023 at 07:30:23AM -0700, Sidhartha Kumar wrote:
+> On 7/17/23 5:39 PM, Naoya Horiguchi wrote:
+> > On Tue, Jul 18, 2023 at 09:14:09AM +0900, Naoya Horiguchi wrote:
+> > > On Mon, Jul 17, 2023 at 11:18:12AM -0700, Sidhartha Kumar wrote:
+> > > > It was pointed out[1] that using folio_test_hwpoison() is wrong
+> > > > as we need to check the indiviual page that has poison.
+> > > > folio_test_hwpoison() only checks the head page so go back to using
+> > > > PageHWPoison().
+> > > > 
+> > > > Reported-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > > > Fixes: a6fddef49eef ("mm/memory-failure: convert unpoison_memory() to folios")
+> > > > Cc: stable@vger.kernel.org #v6.4
+> > > > Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+> > > > 
+> > > > [1]: https://lore.kernel.org/lkml/ZLIbZygG7LqSI9xe@casper.infradead.org/
+> > > > ---
+> > > >   mm/memory-failure.c | 2 +-
+> > > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > > > index 02b1d8f104d51..a114c8c3039cd 100644
+> > > > --- a/mm/memory-failure.c
+> > > > +++ b/mm/memory-failure.c
+> > > > @@ -2523,7 +2523,7 @@ int unpoison_memory(unsigned long pfn)
+> > > >   		goto unlock_mutex;
+> > > >   	}
+> > > > -	if (!folio_test_hwpoison(folio)) {
+> > > > +	if (!PageHWPoison(p)) {
+> > > 
+> > > 
+> > > I don't think this works for hwpoisoned hugetlb pages that have PageHWPoison
+> > > set on the head page, rather than on the raw subpage. In the case of
+> > > hwpoisoned thps, PageHWPoison is set on the raw subpage, not on the head
+> > > pages.  (I believe this is not detected because no one considers the
+> > > scenario of unpoisoning hwpoisoned thps, which is a rare case).  Perhaps the
+> > > function is_page_hwpoison() would be useful for this purpose?
+> > 
+> > Sorry, I was wrong.  Checking PageHWPoison() is fine because the users of
+> > unpoison should know where the PageHWPoison is set via /proc/kpageflags.
+> > So this patch is OK to me after comments from other reviewers are resolved.
+> > 
+> 
+> Hi Naoya,
+> 
+> While taking a closer at the patch, later in unpoison_memory() there is
+> also:
+> 
+> -               ret = TestClearPageHWPoison(page) ? 0 : -EBUSY;
+> +               ret = folio_test_clear_hwpoison(folio) ? 0 : -EBUSY;
+> 
+> I thought this folio conversion would be safe because page is the result of
+> a compound_head() call but I'm wondering if the same issue exists here and
+> we should be calling TestClearPageHWPoison() on the specific subpage by
+> doing TestClearPageHWPoison(p).
 
-> On Mon Jul 17, 2023 at 11:29 PM EEST, Haitao Huang wrote:
->> Under heavy load, the SGX EPC reclaimers (current ksgxd or future EPC
->> cgroup worker) may reclaim the SECS EPC page for an enclave and set
->> encl->secs.epc_page to NULL. But the SECS EPC page is used for EAUG in
->> the SGX #PF handler without checking for NULL and reloading.
->>
->> Fix this by checking if SECS is loaded before EAUG and load it if it was
->> reclaimed.
->>
->> Fixes: 5a90d2c3f5ef8 ("x86/sgx: Support adding of pages to an  
->> initialized enclave")
->> Cc: stable@vger.kernel.org
->
-> Given that
->
-> 	$ git describe --contains 5a90d2c3f5ef8
-> 	v6.0-rc1~102^2~16
->
-> You could also describe this as:
->
-> Cc: stable@vger.kernel.org # v6.0+
+In this case (get_hwpoison_page returns 0), the target of unpoison_memory was
+buddy page or free huge page, so there seems not any realistic problem.
+But putting back to TestClearPageHWPoison() looks consistent, so I'm fine with it.
 
-Will add
-
->
-...
->
-> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->
-
-Thank you.
-Haitao
+Thanks,
+Naoya Horiguchi
