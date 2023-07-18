@@ -2,90 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1084475883B
-	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 00:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F340E7588C0
+	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 00:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231607AbjGRWHS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 18:07:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37382 "EHLO
+        id S229497AbjGRWx1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 18:53:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231639AbjGRWHH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 18:07:07 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D1A61FF7;
-        Tue, 18 Jul 2023 15:06:44 -0700 (PDT)
+        with ESMTP id S229818AbjGRWx0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 18:53:26 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E948B1988
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 15:53:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689718004; x=1721254004;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=jCMjbnqIpbK5qtNyuKgUPxCbtUR678kZQh+zhMGb05o=;
-  b=aBJOcn2trMxVN6cXitFYj5QCgA1HWbHOPDX9i+lj/qs/r7vsVEwYmva0
-   nSqNYi6DSA1tt5GXVt9T72a5VcGXGDG070PSwoEOeTKSaHj3syKYx5OLi
-   cM5f1WvEq8y+fekK3WvpnfJuRvRGc8d4fXtI4OdBqd/xbIv3e1xr/EBCV
-   w80nIlxC2QdYpprnIDVHb7pwzZ3FMqdN/7iACftbN8c+M1gRLAt5S78lr
-   Xj2HhvJs03UmV06W2Hb/ZKC4kotQoeo5utwCjubmeQ1CFJwvv0zkdexhy
-   VmolHJjqcCUJO6MIcQN0iei/ZcYF85YkY4X//33e9VEHoX8s9dTMA7uan
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="368967359"
+  t=1689720782; x=1721256782;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=5P7XMGZuIUy64clFPdCVpDqC90apgKwgNWXho8jASWY=;
+  b=LtWc/3OXqOnQ5EGDAr98XeRu+A+/jP4jSUTZLY+PlrpMKPz4NnjP/7hY
+   jbvTB4HfmUEbhZehMEn/0pNPgZxCAFRAaE7JwjrUH30k2RYxlivs+p1wu
+   Tmorw4ebhdTAlO9R2Ma9eGbBr1Rb5SV7f4i6oH6ypv0aTy0JW2SZuaNib
+   CXJ7aZIQOzPguFkA6xGtHa3nnPkd5trM5dHiNsgKrRrbZC9ipWIMBVKlL
+   Pz36PKvpSMZvdsU1TWoRBW6nyoJVaMlFkOys8D4wIcwQhT4R2C2NBDJm6
+   00teNuqz2a6PfgFJEozWo1WwarlJhh3iXMIQSNfHSEUHGpCJ0vrttOYBB
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="452705853"
 X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="368967359"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 15:06:02 -0700
+   d="scan'208";a="452705853"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 15:52:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="789217133"
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="847852003"
 X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="789217133"
-Received: from unknown (HELO [10.209.37.195]) ([10.209.37.195])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 15:06:00 -0700
-Message-ID: <891d530f-fa84-aed7-7465-b4722e983e92@intel.com>
-Date:   Tue, 18 Jul 2023 15:05:59 -0700
+   d="scan'208";a="847852003"
+Received: from invictus.jf.intel.com ([10.165.21.201])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 15:52:50 -0700
+From:   Radhakrishna Sripada <radhakrishna.sripada@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
+        stable@vger.kernel.org,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Chris Wilson <chris.p.wilson@intel.com>,
+        Fei Yang <fei.yang@intel.com>
+Subject: [PATCH v2] drm/i915/dpt: Use shmem for dpt objects
+Date:   Tue, 18 Jul 2023 15:51:18 -0700
+Message-Id: <20230718225118.2562132-1-radhakrishna.sripada@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
-Content-Language: en-US
-To:     Haitao Huang <haitao.huang@linux.intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org,
-        linux-sgx@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Cc:     kai.huang@intel.com, reinette.chatre@intel.com,
-        kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org
-References: <CU4OBQ8MQ2LK.2GRBPLQGVTZ3@seitikki>
- <20230717202938.94989-1-haitao.huang@linux.intel.com>
- <dfb1f233-aebd-50cf-8704-e83b91ee110a@intel.com>
- <op.18ah5mn3wjvjmi@hhuan26-mobl.amr.corp.intel.com>
- <b5779418-e2a4-ca7a-866f-97e49cd272cb@intel.com>
- <op.18aontlmwjvjmi@hhuan26-mobl.amr.corp.intel.com>
- <eb1aea6f-3688-f871-2335-ff911a51ef52@intel.com>
- <op.18aqz7sbwjvjmi@hhuan26-mobl.amr.corp.intel.com>
- <ad2d9610-61c0-4719-9df1-0116ef317d8a@intel.com>
- <op.18asliuzwjvjmi@hhuan26-mobl.amr.corp.intel.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <op.18asliuzwjvjmi@hhuan26-mobl.amr.corp.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/18/23 14:57, Haitao Huang wrote:
-> Okay, that explains. I would consider it still triggered by high
-> pressure blips 😄
-I'm talking about a "blip" being a single allocation.  It's *LITERALLY*
-the smallest (aka. lowest) possible quantum of memory pressure.
+Dpt objects that are created from internal get evicted when there is
+memory pressure and do not get restored when pinned during scanout. The
+pinned page table entries look corrupted and programming the display
+engine with the incorrect pte's result in DE throwing pipe faults.
 
-So go ahead and try to write the changelog without "high" or "low".
-But, sheesh, if you and are somehow using "high" and "low" to describe
-the exact same condition, I think that's a rather large communication or
-understanding problem somewhere.  It doesn't bode well for this simple
-patch.
+Create DPT objects from shmem and mark the object as dirty when pinning so
+that the object is restored when shrinker evicts an unpinned buffer object.
+
+v2: Unconditionally mark the dpt objects dirty during pinning(Chris).
+
+Fixes: 0dc987b699ce ("drm/i915/display: Add smem fallback allocation for dpt")
+Cc: <stable@vger.kernel.org> # v6.0+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Suggested-by: Chris Wilson <chris.p.wilson@intel.com>
+Signed-off-by: Fei Yang <fei.yang@intel.com>
+Signed-off-by: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_dpt.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/display/intel_dpt.c b/drivers/gpu/drm/i915/display/intel_dpt.c
+index 7c5fddb203ba..fbfd8f959f17 100644
+--- a/drivers/gpu/drm/i915/display/intel_dpt.c
++++ b/drivers/gpu/drm/i915/display/intel_dpt.c
+@@ -166,6 +166,8 @@ struct i915_vma *intel_dpt_pin(struct i915_address_space *vm)
+ 		i915_vma_get(vma);
+ 	}
+ 
++	dpt->obj->mm.dirty = true;
++
+ 	atomic_dec(&i915->gpu_error.pending_fb_pin);
+ 	intel_runtime_pm_put(&i915->runtime_pm, wakeref);
+ 
+@@ -261,7 +263,7 @@ intel_dpt_create(struct intel_framebuffer *fb)
+ 		dpt_obj = i915_gem_object_create_stolen(i915, size);
+ 	if (IS_ERR(dpt_obj) && !HAS_LMEM(i915)) {
+ 		drm_dbg_kms(&i915->drm, "Allocating dpt from smem\n");
+-		dpt_obj = i915_gem_object_create_internal(i915, size);
++		dpt_obj = i915_gem_object_create_shmem(i915, size);
+ 	}
+ 	if (IS_ERR(dpt_obj))
+ 		return ERR_CAST(dpt_obj);
+-- 
+2.34.1
+
