@@ -2,66 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34E2E758442
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 20:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAE9D7584C1
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 20:27:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230006AbjGRSLm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 14:11:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49542 "EHLO
+        id S229899AbjGRS07 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 14:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjGRSLl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 14:11:41 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69BEC99;
-        Tue, 18 Jul 2023 11:11:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689703900; x=1721239900;
-  h=to:cc:subject:references:date:mime-version:
-   content-transfer-encoding:from:message-id:in-reply-to;
-  bh=p4t3OskS0H/cllBsYG2hIF8dKpFFNElLWh827nNWfh8=;
-  b=WH9YEgeCHFdiMFn1MUkZOmj/eLN53D+JXx3Som75wqjf03K53X4zcUTs
-   3jInRkbZ2rSPgpCkPdsRJRTNy+xoUiRU7juuQS0GuZRD7bvQ4I8aSDVyG
-   +9M147Yae+XZMQbIXiw0gf4wZEBPUnxzoUdtxmUn4kUCLUWhRfpm11Nmn
-   bb82RyWdjHw8FhZbVzLgAue7FBr49fteTguT2zds8DrXJtH+KLPAXIuPG
-   B37GGjtxYH5xAvmMfe+LHhKuE1RsR233m8Dpej9VAaSvntR6vT8dKjc0v
-   SAmMSKxI79wIJIWJ0WZE1iy0oHrA+KYgVvl8cqKAFNhRq4IxrL6AD6hlg
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="432458957"
-X-IronPort-AV: E=Sophos;i="6.01,214,1684825200"; 
-   d="scan'208";a="432458957"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 11:11:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="813860875"
-X-IronPort-AV: E=Sophos;i="6.01,214,1684825200"; 
-   d="scan'208";a="813860875"
-Received: from hhuan26-mobl.amr.corp.intel.com ([10.92.48.113])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-SHA; 18 Jul 2023 11:11:37 -0700
-Content-Type: text/plain; charset=iso-8859-15; format=flowed; delsp=yes
-To:     "Jarkko Sakkinen" <jarkko@kernel.org>, dave.hansen@linux.intel.com,
-        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        "Dave Hansen" <dave.hansen@intel.com>
-Cc:     kai.huang@intel.com, reinette.chatre@intel.com,
-        kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
-References: <CU4OBQ8MQ2LK.2GRBPLQGVTZ3@seitikki>
- <20230717202938.94989-1-haitao.huang@linux.intel.com>
- <dfb1f233-aebd-50cf-8704-e83b91ee110a@intel.com>
-Date:   Tue, 18 Jul 2023 13:11:36 -0500
+        with ESMTP id S229970AbjGRS06 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 14:26:58 -0400
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0955AB6
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 11:26:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=2/Ijw2bmoECq4MixcK35xA5bhR217CcbP+OhD7HCyz8=; b=bSSacvMtha+kn4WHSS1HdFlL72
+        tIoX1uxzL580h3L4qyTXYRYCbJ77kjc3eDNiuMhVvI0joDKhcqcSehaHk/s9/GZXSUVLHjuLTKfAB
+        G4fgRWH5CpKOYWdtwLEKbPgibQIla4CCj1E+/qUrTIxZFH9QWB4pirr6uRlmxisQWtinKIYT+IBre
+        iV0p/N8dGvZhYFvXaFjScrpZEjXU0SudSKteNNDQf1aBQwHllvZFhLQZZRr0lXETEPWf/DjBqWmIF
+        tS7MOEksO/v0EHnzUvV8YXo5Z/SQEnyde+vrAl9+A5LG4H7XebTRmfE/r+8q9ovR9s+aBBwAVPI3R
+        4GbK3oWA==;
+Received: from jlbec by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1qLpPQ-005VtP-07;
+        Tue, 18 Jul 2023 18:26:52 +0000
+Date:   Tue, 18 Jul 2023 11:26:48 -0700
+From:   Joel Becker <jlbec@evilplan.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        David Howells <dhowells@redhat.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Kurt Hackel <kurt.hackel@oracle.com>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        ocfs2-devel@oss.oracle.com, Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 133/591] ocfs2: Fix use of slab data with sendpage
+Message-ID: <ZLbZaNtXL0VMDePW@google.com>
+Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        David Howells <dhowells@redhat.com>, Mark Fasheh <mark@fasheh.com>,
+        Kurt Hackel <kurt.hackel@oracle.com>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>, ocfs2-devel@oss.oracle.com,
+        Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
+References: <20230716194923.861634455@linuxfoundation.org>
+ <20230716194927.316678989@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   "Haitao Huang" <haitao.huang@linux.intel.com>
-Organization: Intel
-Message-ID: <op.18ah5mn3wjvjmi@hhuan26-mobl.amr.corp.intel.com>
-In-Reply-To: <dfb1f233-aebd-50cf-8704-e83b91ee110a@intel.com>
-User-Agent: Opera Mail/1.0 (Win32)
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230716194927.316678989@linuxfoundation.org>
+X-Burt-Line: Trees are cool.
+X-Red-Smith: Ninety feet between bases is perhaps as close as man has ever
+ come to perfection.
+Sender: Joel Becker <jlbec@ftp.linux.org.uk>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,45 +65,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 18 Jul 2023 09:27:49 -0500, Dave Hansen <dave.hansen@intel.com>  
-wrote:
+Noticing this patch only here rather than the original post, sorry.
 
-> On 7/17/23 13:29, Haitao Huang wrote:
->> Under heavy load, the SGX EPC reclaimers (current ksgxd or future EPC
->> cgroup worker) may reclaim the SECS EPC page for an enclave and set
->> encl->secs.epc_page to NULL. But the SECS EPC page is used for EAUG in
->> the SGX #PF handler without checking for NULL and reloading.
->>
->> Fix this by checking if SECS is loaded before EAUG and load it if it was
->> reclaimed.
->
-> It would be nice to see a _bit_ more theory of the bug in here.
->
-> What is an SECS page and why is it special in a reclaim context?  Why is
-> this so hard to hit?  What led you to discover this issue now?  What is
-> EAUG?
+On Sun, Jul 16, 2023 at 09:44:32PM +0200, Greg Kroah-Hartman wrote:
+> From: David Howells <dhowells@redhat.com>
+> 
 
-Let me know if this clarify things.
+ ...
 
-The SECS page holds global states of an enclave, and all reclaimable pages  
-tracked by the SGX EPC reclaimer (ksgxd) are considered 'child' pages of  
-the SECS page corresponding to that enclave.  The reclaimer only reclaims  
-the SECS page when all its children are reclaimed. That can happen on  
-system under high EPC pressure where multiple large enclaves demanding  
-much more EPC page than physically available. In a rare case, the  
-reclaimer may reclaim all EPC pages of an enclave and it SECS page,  
-setting encl->secs.epc_page to NULL, right before the #PF handler get the  
-chance to handle a #PF for that enclave. In that case, if that #PF happens  
-to require kernel to invoke the EAUG instruction to add a new EPC page for  
-the enclave, then a NULL pointer results as current code does not check if  
-encl->secs.epc_page is NULL before using it.
+> [ Upstream commit 86d7bd6e66e9925f0f04a7bcf3c92c05fdfefb5a ]
+> -	o2net_hand = kzalloc(sizeof(struct o2net_handshake), GFP_KERNEL);
+> -	o2net_keep_req = kzalloc(sizeof(struct o2net_msg), GFP_KERNEL);
+> -	o2net_keep_resp = kzalloc(sizeof(struct o2net_msg), GFP_KERNEL);
+> -	if (!o2net_hand || !o2net_keep_req || !o2net_keep_resp)
+> +	folio = folio_alloc(GFP_KERNEL | __GFP_ZERO, 0);
+> +	if (!folio)
+>  		goto out;
+>  
+> +	p = folio_address(folio);
+> +	o2net_hand = p;
+> +	p += sizeof(struct o2net_handshake);
+> +	o2net_keep_req = p;
+> +	p += sizeof(struct o2net_msg);
+> +	o2net_keep_resp = p;
 
-The bug is easier to reproduce with the EPC cgroup implementation when a  
-low EPC limit is set for a group of enclave hosting processes. Without the  
-EPC cgroup it's hard to trigger the reclaimer to reclaim all child pages  
-of an SECS page. And it'd also require a machine configured with large RAM  
-relative to EPC so no OOM killer triggered before this happens.
+Do we care that we aren't validating sizes here?  The original code
+allocates the structures by size.  This code grabs an order 0 folio and
+assumes the total size of these structures is smaller than a page.  But
+while we "know" today that the handshake messages have no payload,
+`o2net_msg.buf` could theoretically be filled by more data.  What if
+someone decided to change the code to put some payload in
+`o2net_keep_resp.buf`?  Yes, we would hope they would think to add the
+appropriate allocation.  But should we be validating this with some kind
+of safety check?
 
-Thanks
-Haitao
+Thanks,
+Joel
 
+-- 
+
+"I almost ran over an angel
+ He had a nice big fat cigar.
+ 'In a sense,' he said, 'You're alone here
+ So if you jump, you'd best jump far.'"
+
+			http://www.jlbec.org/
+			jlbec@evilplan.org
