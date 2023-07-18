@@ -2,161 +2,341 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16EA7757FAF
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 16:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB63C757FC2
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 16:38:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231543AbjGROfh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 10:35:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52336 "EHLO
+        id S232708AbjGROiP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 10:38:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233289AbjGROfW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 10:35:22 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54607173F
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 07:35:09 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3fbf1b82de7so37048895e9.1
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 07:35:09 -0700 (PDT)
+        with ESMTP id S233465AbjGROiJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 10:38:09 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AE7B198E
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 07:38:03 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-51e526e0fe4so8779520a12.3
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 07:38:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689690908; x=1692282908;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kM4rKs2O2D2FKtxI79Px9JsVvtow3vr81NJUN932aok=;
-        b=B9AviAeUUzHk7npn++Yjr0w9oLbGcbT3XGuqxm7ukjwTTVwKsH6dhsx4FmWWAw93Ca
-         KfYeoe90K/4FORDtYE8JhBea760Tz+6gpY8HjYtM1MN1qccIYJXPXhoz3zI9S7WSAiEF
-         UIxarfHAQab6Cz1nSev9elx92YT93uUwY+Ak6nyfax+8TS6J8GrwT3Ug1KSrDrb/o4zx
-         yVI2Rmvobtz5NGvmjO+t0djbtsorCSdz/SOO0Q7BYLy7pTzQQq0NyBTiPp/6Gsd+eyKQ
-         iGE/AQTYaYGhf98lncSj9r3n4Nh4y+KSGuletAFYc2hkVkGbKRVbxmAX1Af8ikz1KbS/
-         rtsA==
+        d=linaro.org; s=google; t=1689691081; x=1692283081;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=75L/3OVtvZjuTDZO1U5NULzORO9HoUjrPecBU88kFVg=;
+        b=s6UQ+0D+YlNZU5kMLy7TOrWhyfunsVOoqmewL6INjtZt+yul2arKXwZrb77/8pX/uc
+         xVBjSC/kxi5n/dBfttJmZ5rVkEwpaaPjfIdulQelmfsTMrqPpKW8yu6C43HXrzDNWPcP
+         FZYEXjbxSvXQHC9mq7KCjp/XhVHRIvhc6/dAmmeAFq1J5//ISpLWG4VHw8zCAYJp8wFc
+         2l6eRTZE2d1vPFtwRcsX3I7ca5S+OIq3/gAG3awTn36P4K9qAWOQLnAtY++qvkIsg/fS
+         vKZXyWLlYzX4WDCK4A+Qo8aMrZnHyYLgN9Bdwz0DkV2WOhU0DJpHfvuOqUJLk0d7hmab
+         3WBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689690908; x=1692282908;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kM4rKs2O2D2FKtxI79Px9JsVvtow3vr81NJUN932aok=;
-        b=izxPw7/gUFHVXPzsyezqpe68ycO1xKGX+g0kfUs6t9tEZx5+DBt7Mh6nL8NwVKupNH
-         +V4rT0CNoYGK60ddwY5v/Hu2Xa60c6+7b9Nn9LA6hXFYxvwzgFVslx6Iu26+r7ou9s1U
-         N3iY13iulkhiB9fBSOfVxmbrfanAd/fGoMsAQu2nNvMRyE4tJVumTOp5TwEh3tkUoDro
-         OQV9UhJ2cTLKqfyA6HqkAjBmOuz0u4XJ4TI2ne1ld9pc3IymPcVamINS6R/kHZUhk7EU
-         WB0B/FQTgPG5QMeGrK+OMc07JgGhXkVPEKyDKySD9Kj1o+AfpXX9BE+g8fH6R4RH54Ai
-         X5Cw==
-X-Gm-Message-State: ABy/qLZfwhmWrhskcXeEIZpAmTMZ4m/NUP8SSHwOgWCDDE/jO7QpPT+9
-        HKMt+lpVpLK5cz0o5qibVK8=
-X-Google-Smtp-Source: APBJJlH6m9sK9mjx89Uecj4qm6C1age+m1fGCXkCijQgaie+Dd/vPNHCC5Dk8lLiSNmHc7P0FIhejA==
-X-Received: by 2002:a1c:4b0e:0:b0:3fa:9741:5b73 with SMTP id y14-20020a1c4b0e000000b003fa97415b73mr2170669wma.10.1689690907437;
-        Tue, 18 Jul 2023 07:35:07 -0700 (PDT)
-Received: from [192.168.1.95] (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
-        by smtp.gmail.com with ESMTPSA id n21-20020a1c7215000000b003fbd0c50ba2sm10617406wmc.32.2023.07.18.07.35.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 07:35:07 -0700 (PDT)
-Message-ID: <ea1c9d1b9e120bdb8c42b2daefa6d11167208dd9.camel@gmail.com>
-Subject: Re: [5.10, 5.15] New bpf kselftest failure
-From:   Eduard Zingerman <eddyz87@gmail.com>
-To:     Luiz Capitulino <luizcap@amazon.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        "sashal@kernel.org" <sashal@kernel.org>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>, ast@kernel.org,
-        gilad.reti@gmail.com, Mykola Lysenko <mykolal@fb.com>,
-        andrii <andrii@kernel.org>
-Date:   Tue, 18 Jul 2023 17:35:05 +0300
-In-Reply-To: <dd3ecb62-94ca-a08a-01f9-453fe0545ce8@amazon.com>
-References: <935c4751-d368-df29-33a6-9f4fcae720fa@amazon.com>
-         <76dfe02eea69141b662a3a399126dba9e00e5abe.camel@gmail.com>
-         <9c7fc5ab-1c06-8452-2747-aa89e7a1dfb6@amazon.com>
-         <c9b10a8a551edafdfec855fbd35757c6238ad258.camel@gmail.com>
-         <bc521a2f24c416a658ab50685fbf647d4e069c8c.camel@gmail.com>
-         <dd3ecb62-94ca-a08a-01f9-453fe0545ce8@amazon.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu1 
+        d=1e100.net; s=20221208; t=1689691081; x=1692283081;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=75L/3OVtvZjuTDZO1U5NULzORO9HoUjrPecBU88kFVg=;
+        b=FED2hn0hF33wOMh0rsCCY4LK7VuoGoPACxqJ1Nl+FZrBcE9xjIBtz6MCphuFdsYmhy
+         etvQTHsDxBX1hpxfGnlnsPFVTdgnrVYcf32Ved4O/66PnPvvF+vBwekMJWXMsY5kKLpM
+         9Y0ELwY9LOfuIt1zBBhiMS5o9GK/uTBfZFjtt9SZHRZJ9Hfeni8Xv8ytzTubhxv4JtQv
+         MESIWLbtFNmewCm6dukHHftRyAWzzqO5SnI2s0N90iLa238b13nXLk3pZW6Lgb2jR5EG
+         laHnFVV8YZzkUVd4pzuX0vJ+3+TxQJu5Ctw/kctEI2m+bp9jtJpMXxqTj96BuEDeDAVY
+         hI8w==
+X-Gm-Message-State: ABy/qLalCBJ88G6umH15IzxnBe++BSSETmlJR6iOz/yQYh6jv307TCve
+        MJAhGTs9ofhCOBccX1/Q+iXU4HtGNSOMcxRgIrBliQ==
+X-Google-Smtp-Source: APBJJlF7p9wEN9sukd1YSop4aAYl8/qlgo9aJIhNuJpIH0XfrkjYqMQFEB7+XzJiNM59aUYsL91Zx6WoKY9MwC3uf9A=
+X-Received: by 2002:aa7:d5d4:0:b0:51e:3558:5eb8 with SMTP id
+ d20-20020aa7d5d4000000b0051e35585eb8mr106354eds.19.1689691081360; Tue, 18 Jul
+ 2023 07:38:01 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230717201547.359923764@linuxfoundation.org>
+In-Reply-To: <20230717201547.359923764@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 18 Jul 2023 20:07:49 +0530
+Message-ID: <CA+G9fYujXH8J99m8ZKoijGhWJAS+r1SPqd8y+gB-B9DVjsgAzA@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/589] 6.1.39-rc3 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Michal Luczaj <mhal@rbox.co>,
+        Sean Christopherson <seanjc@google.com>,
+        Aaron Lewis <aaronlewis@google.com>,
+        Mark Brown <broonie@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        kvm list <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 2023-07-18 at 10:06 -0400, Luiz Capitulino wrote:
->=20
-> On 2023-07-18 08:31, Eduard Zingerman wrote:
->=20
-> >=20
-> >=20
-> >=20
-> > On Tue, 2023-07-18 at 01:57 +0300, Eduard Zingerman wrote:
-> > > [...]
-> > > Still, when I cherry-pick [0,1,2,3] `./test_progs -a setget_sockopt` =
-is failing.
-> > > I'll investigate this failure but don't think I'll finish today.
-> > >=20
-> > > ---
-> > >=20
-> > > Alternatively, if the goal is to minimize amount of changes, we can
-> > > disable or modify the 'precise: ST insn causing spi > allocated_stack=
-'.
-> > >=20
-> > > ---
-> > >=20
-> > > Commits (in chronological order):
-> > > [0] be2ef8161572 ("bpf: allow precision tracking for programs with su=
-bprogs")
-> > > [1] f63181b6ae79 ("bpf: stop setting precise in current state")
-> > > [2] 7a830b53c17b ("bpf: aggressively forget precise markings during s=
-tate checkpointing")
-> > > [3] 4f999b767769 ("selftests/bpf: make test_align selftest more robus=
-t")
-> > > [4] 07d90c72efbe ("Merge branch 'BPF verifier precision tracking impr=
-ovements'")
-> > > [5] ecdf985d7615 ("bpf: track immediate values written to stack by BP=
-F_ST instruction")
-> >=20
-> > I made a mistake, while resolving merge conflict for [0] yesterday.
-> > After correction the `./test_progs -a setget_sockopt` passes.
-> > I also noted that the following tests fail on v6.1.36:
-> >=20
-> >    ./test_progs -a sk_assign,fexit_bpf2bpf
-> >=20
-> > These tests are fixed by back-porting the following upstream commits:
-> > - 7ce878ca81bc ("selftests/bpf: Fix sk_assign on s390x")
-> > - 63d78b7e8ca2 ("selftests/bpf: Workaround verification failure for fex=
-it_bpf2bpf/func_replace_return_code")
-> >=20
-> > I pushed modified version of v6.1.36 to my github account, it has
-> > test_verifier, test_progs, test_progs-no_alu32 and test_maps passing
-> > (on my x86 setup):
-> >=20
-> >    https://github.com/eddyz87/bpf/commits/v6.1.36-with-fixes
-> >=20
-> > Do you need any additional actions from my side?
->=20
-> First, thank you very much for your work on this and getting the tests
-> passing on 6.1.
+On Tue, 18 Jul 2023 at 02:04, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.39 release.
+> There are 589 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 19 Jul 2023 20:14:46 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.39-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Thank you.
 
-> In terms of action items, have you checked this situation in 5.10 and
-> 5.15? For 5.10, we also need 4237e9f4a96228ccc8a7abe5e4b30834323cd353
-> otherwise the bpf tests don't even build there.
+As you know LKFT runs latest kselftests from stable 6.4 on
+stable rc 6.1 branches and found two test failures on this
+round of stable rc review 6.1.39-rc3 compared with 6.1.37.
 
-Haven't checked 5.15/5.10, will take a look.
-Are there any time-frame limitations?
-(I'd like to work on this on Wednesday or Thursday)
+Test regressions:
 
->=20
-> Also, would you know if something important is broken for users or is
-> this just a small behavior difference between kernels?
+* bcm2711-rpi-4-b, kselftest-kvm
+  - kvm_get-reg-list
 
-I think it's more like small behavior difference:
-- be2ef8161572, f63181b6ae79, 7a830b53c17b are verification
-  scalability optimizations, with these patches it is possible
-  to load a bit more complex programs (larger programs, or more
-  complex branching patterns).
-- 4f999b767769, 7ce878ca81bc, 63d78b7e8ca2 - fixes for selftests,
-  no new functionality.
+* x86, kselftest-kvm
+  - kvm_vmx_pmu_caps_test
 
-Thanks,
-Eduard
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.1.39-rc3
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: ce7ec101118789331617601d680d905c318b4ab6
+* git describe: v6.1.38-590-gce7ec1011187
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.38-590-gce7ec1011187
+
+## Test Regressions (compared to v6.1.37-14-g185484ee4c4f)
+* bcm2711-rpi-4-b, kselftest-kvm
+  - kvm_get-reg-list
+
+logs:
+--
+# selftests: kvm: get-reg-list
+# vregs: Number blessed registers:   242
+# vregs: Number registers:           242 (includes 3 filtered registers)
+#
+# vregs: There are 3 missing registers.
+# The following lines are missing registers:
+#
+# ARM64_SYS_REG(3, 3, 14, 0, 1),
+# ARM64_SYS_REG(3, 3, 14, 2, 1),
+# ARM64_SYS_REG(3, 3, 14, 2, 2),
+#
+# ==== Test Assertion Failure ====
+#   aarch64/get-reg-list.c:541: !missing_regs && !failed_get &&
+!failed_set && !failed_reject
+#   pid=658 tid=658 errno=7 - Argument list too long
+#      1 0x0000000000402def: ?? ??:0
+#      2 0x0000000000401aff: ?? ??:0
+#      3 0x0000ffff81dfb22f: ?? ??:0
+#      4 0x0000ffff81dfb30b: ?? ??:0
+#      5 0x0000000000401bef: ?? ??:0
+#   vregs: There are 3 missing registers; 0 registers failed get; 0
+registers failed set; 0 registers failed reject
+# vregs+pmu: Number blessed registers:   316
+# vregs+pmu: Number registers:           316 (includes 3 filtered registers)
+#
+# vregs+pmu: There are 3 missing registers.
+# The following lines are missing registers:
+#
+# ARM64_SYS_REG(3, 3, 14, 0, 1),
+# ARM64_SYS_REG(3, 3, 14, 2, 1),
+# ARM64_SYS_REG(3, 3, 14, 2, 2),
+#
+# ==== Test Assertion Failure ====
+#   aarch64/get-reg-list.c:541: !missing_regs && !failed_get &&
+!failed_set && !failed_reject
+#   pid=662 tid=662 errno=7 - Argument list too long
+#      1 0x0000000000402def: ?? ??:0
+#      2 0x0000000000401aff: ?? ??:0
+#      3 0x0000ffff81dfb22f: ?? ??:0
+#      4 0x0000ffff81dfb30b: ?? ??:0
+#      5 0x0000000000401bef: ?? ??:0
+#   vregs+pmu: There are 3 missing registers; 0 registers failed get;
+0 registers failed set; 0 registers failed reject
+# 1..0 # SKIP - sve: sve not available, skipping tests
+#
+# 1..0 # SKIP - sve+pmu: sve not available, skipping tests
+#
+# 1..0 # SKIP - vregs+pauth_address+pauth_generic: pauth_address not
+available, skipping tests
+#
+# 1..0 # SKIP - vregs+pauth_address+pauth_generic+pmu: pauth_address
+not available, skipping tests
+#
+not ok 4 selftests: kvm: get-reg-list # exit=1
+
+Links:
+  - https://lkft.validation.linaro.org/scheduler/job/6596193#L1173
+  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.38-590-gce7ec1011187/testrun/18431257/suite/kselftest-kvm/test/kvm_get-reg-list/history/
+  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.38-590-gce7ec1011187/testrun/18431257/suite/kselftest-kvm/test/kvm_get-reg-list/details/
+
+* x86, kselftest-kvm
+  - kvm_vmx_pmu_caps_test
+
+Test log:
+--------
+# selftests: kvm: vmx_pmu_caps_test
+# ==== Test Assertion Failure ====
+#   x86_64/vmx_pmu_caps_test.c:111: !r
+#   pid=2323 tid=2323 errno=4 - Interrupted system call
+#      1 0x0000000000402c5c: ?? ??:0
+#      2 0x00007f229a0af57a: ?? ??:0
+#      3 0x00007f229a0af62f: ?? ??:0
+#      4 0x0000000000402f14: ?? ??:0
+#   Post-KVM_RUN write '0' didn't fail
+not ok 51 selftests: kvm: vmx_pmu_caps_test # exit=254
+
+links:
+ - https://lkft.validation.linaro.org/scheduler/job/6595836#L1841
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.38-590-gce7ec1011187/testrun/18434308/suite/kselftest-kvm/test/kvm_vmx_pmu_caps_test/history/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.38-590-gce7ec1011187/testrun/18434308/suite/kselftest-kvm/test/kvm_vmx_pmu_caps_test/details/
+
+
+
+## Metric Regressions (compared to v6.1.37-14-g185484ee4c4f)
+
+## Test Fixes (compared to v6.1.37-14-g185484ee4c4f)
+
+## Metric Fixes (compared to v6.1.37-14-g185484ee4c4f)
+
+## Test result summary
+total: 170933, pass: 143114, fail: 2918, skip: 24710, xfail: 191
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 151 total, 150 passed, 1 failed
+* arm64: 57 total, 56 passed, 1 failed
+* i386: 41 total, 38 passed, 3 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 38 total, 36 passed, 2 failed
+* riscv: 16 total, 15 passed, 1 failed
+* s390: 16 total, 16 passed, 0 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* fwts
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesytems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
