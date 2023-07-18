@@ -2,75 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A837574E5
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 09:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B67FB757598
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 09:44:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229820AbjGRHEU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 03:04:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59664 "EHLO
+        id S230205AbjGRHog (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 03:44:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231388AbjGRHET (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 03:04:19 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 289391BE;
-        Tue, 18 Jul 2023 00:04:18 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b8bbce9980so31220425ad.2;
-        Tue, 18 Jul 2023 00:04:18 -0700 (PDT)
+        with ESMTP id S229953AbjGRHoe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 03:44:34 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DADFC198
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 00:44:32 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3fbc6ab5ff5so49431605e9.1
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 00:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689663857; x=1692255857;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Axjn/sYToZar4H60yNlZc/j45/MEqGujqOR5kJMzvQ0=;
-        b=syzFUPiuhKsHj/zRkF4XZWy3HiXxr1fNbAK0cu1r4Jl0h56tac84Lll2SB1AN7aPCn
-         mTv5xSMW3CQBvvKoNc0KDskxHstGj7iIyJS1f8oJaztk95QjaDhhgPmQkc9zekHrlAXz
-         IePwGL70kBs11M9sdeJGusbs/4livWRpu+nlIIAospZpRfEgjAUNweonSW6belL4MeS1
-         bzxDry1QiGyqxPhr26G85KiasmJvkWxLToROvKpPZ5DIwhWrQrDHpaXZXQGi5T5iUSek
-         q86SCq12X5DnfziKkGg7nC10pHX6EgGm74coSguJo1zOIHSe63GNYXRyn2xmn9peuxe8
-         DnWQ==
+        d=linaro.org; s=google; t=1689666271; x=1692258271;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9HE+Oix7TpLVk1HmTfb4ABzqg7vkmtJM2h4JGp2urH0=;
+        b=J8RUGAcUcigaAJQXgqRjsDIrBHp2ntqz7wavjEbkn3knygg9ahwPeGqkNBIYcKfIDw
+         fL8btNa0oGfzo8Wv0ctTFMxbSoZprK+7GI5jjy6dZ8vj7Fq2z0ENcYR8y7jcIs+5fZcm
+         x4ZaWAFMpcSPWGOD79eidsUaPp9oO4HB87zzV/pzYCp0B9aya3lOkowPk/Qs4M4xR0WM
+         z8s3V7B+5+sX1hK+F70JTfQaI72EQ3JCkFdAdLAZhJASFHZ5UeVoYokXe2ZiV+0v2Cmv
+         zbXa+KZtBNM9PYh9OHZHVpX7IiWZ7Ap0/XfTV4pl0DYd8Smx1VR/437BOdY4e987lKJ5
+         n4Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689663857; x=1692255857;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Axjn/sYToZar4H60yNlZc/j45/MEqGujqOR5kJMzvQ0=;
-        b=WjD0sex//KpqMQe1BPw5Re2NnZpwDKcr/yssJXYqhCkQn5gn7CG/JU3fdqBkQK5ok9
-         tTr38e+8McorP3K0JTYWe4sHf71H/4xUljv2GWIcQDXCo2walDBontPWq/lyRcmQ3zPG
-         aYcrB8bT483T0cJjZtPsIdGE8SmXwkSs07j1VG7NYUDcVZzh6UHLz8QZpMWaIUH+DtGu
-         Bd7vZWBAFX1GhaDrtlSe6g9LKkPAEvCdpgzAvQN59w9m9m2lWx1AGGNB80YiDpWCaSjg
-         kf+DVvO8vNb88lm89ffqO9NeP8oGvSJ+DE6A/SPe1X8Tf9G4/VvLqETuUik4Lz9PTqkp
-         5xWQ==
-X-Gm-Message-State: ABy/qLYgq7960Pcau2wvLKw6L4dnytqoFVtim9MXamW/Nhjv8BivfDwH
-        7cDFzhzuNvWb9zoiMKLSaJo=
-X-Google-Smtp-Source: APBJJlFWRwBzYYJtipfyQ3793K1v9vPM0jcqBgO6bDamwOYRvtq2qTt+gU9+hQGIPLxW03UhNqBcjQ==
-X-Received: by 2002:a17:902:d3c6:b0:1b8:9552:2249 with SMTP id w6-20020a170902d3c600b001b895522249mr12243330plb.43.1689663857458;
-        Tue, 18 Jul 2023 00:04:17 -0700 (PDT)
-Received: from debian.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id a22-20020a170902b59600b001b86dd825e7sm1053041pls.108.2023.07.18.00.04.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 00:04:16 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 985AA8191864; Tue, 18 Jul 2023 14:04:13 +0700 (WIB)
-Date:   Tue, 18 Jul 2023 14:04:12 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.4 000/801] 6.4.4-rc3 review
-Message-ID: <ZLY5bHubtrAsw1MF@debian.me>
-References: <20230717201608.814406187@linuxfoundation.org>
+        d=1e100.net; s=20221208; t=1689666271; x=1692258271;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9HE+Oix7TpLVk1HmTfb4ABzqg7vkmtJM2h4JGp2urH0=;
+        b=PgmwPQ+UtQvXWt7TTcY6t7cBI9otWR3LcEvR6gmbdbEJpFyS/ctZDsc0nLoog8ENoQ
+         f3cpQOltA6xpGO3GlgFvFyqp7P76Yvr0UqpY0c+u/v2FcK8j2cweGOtUZMZUO6V3Vjvr
+         iwfNyfIW97mYUKA+qNYtNoTfKQpNm0OCiceWwR7cntl243F7RZxqlMoGRmVE8Qpw6zLn
+         Kk504fyfF6dW7lrw+nd9xm5AZBKn47DoEq6L/lN2SoXIqjCHvdq2c/meqGn1O2/1gXio
+         y56aa/qfVk6sScCDV1C5qekt0Gj3uGRekH0tKgyI1xL1+EucB6pdOscP0mGR2CpH/PFh
+         52xg==
+X-Gm-Message-State: ABy/qLYuYSEEl6LBUhp6WQg8/sjW/teXH0+1xkFw1DinI5CZyS7zBuQt
+        VAI6esaWRwgGef3raiCutpTX2g==
+X-Google-Smtp-Source: APBJJlEC+GZ2Wuo773tHd6/PokbpabY/9JONiWrESJsgr8zMIvZ0NtmsY30tsNx+iLjwk/w+wQE32A==
+X-Received: by 2002:a1c:7212:0:b0:3fb:afc0:56c5 with SMTP id n18-20020a1c7212000000b003fbafc056c5mr1232534wmc.12.1689666271265;
+        Tue, 18 Jul 2023 00:44:31 -0700 (PDT)
+Received: from [192.168.2.107] ([79.115.63.146])
+        by smtp.gmail.com with ESMTPSA id n22-20020a7bcbd6000000b003fb225d414fsm9518654wmi.21.2023.07.18.00.44.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Jul 2023 00:44:30 -0700 (PDT)
+Message-ID: <2d71326c-023e-69af-9337-62672f50fed9@linaro.org>
+Date:   Tue, 18 Jul 2023 08:44:29 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="1sg3vSecY7TDSFAN"
-Content-Disposition: inline
-In-Reply-To: <20230717201608.814406187@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] mtd: spi-nor: Correct flags for Winbond w25q128
+To:     Michael Walle <michael@walle.cc>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Pratyush Yadav <pratyush@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org>
+ <f00fa2ae-6d4a-90cb-3724-2bedb96cb4fb@linaro.org>
+ <0525440a652854a2a575256cd07d3559@walle.cc>
+ <d99d87e7-47ba-d6fe-735f-16de2a2ec280@linaro.org>
+ <e642ff27fd0bc0f1f0e293972145f680@walle.cc>
+Content-Language: en-US
+From:   Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <e642ff27fd0bc0f1f0e293972145f680@walle.cc>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,35 +84,111 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---1sg3vSecY7TDSFAN
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 17, 2023 at 10:34:36PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.4 release.
-> There are 801 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+On 7/18/23 07:25, Michael Walle wrote:
+> Hi,
+> 
+>>>> while here try, using INFO with INFO(0xef4018, 0, 0, 0), those
+>>>> parameters shall be discovered at run-time, so we prepare to get rid of
+>>>> explicitly setting them sooner or later.
+>>>
+>>> This is an entry matching various flash families from Winbond, see my
+>>> reply in v1. I'm not sure we should remove these as we could break the
+>>> older ones, which might or might not have SFDP tables. We don't know.
+>>
+>> I'd take the risk and break the older ones if there are some that don't
+>> define SFDP indeed, just to handle the conflict properly. We can't
+>> encourage code based on assumptions otherwise we'll get back to the
+>> knotted spi-nor code that we tried to untie in the last years.
+> 
+> Wait a minute, now I'm the more conservative one of the both of
+> us? (:
 
-Successfully compiled and installed bindeb-pkgs on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+;)
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> 
+> Jokes aside, basically you are saying that if there are two flashes
+> with the same id, one supports JEDEC one doesn't, we can brake the
+> latter one.
 
---=20
-An old man doll... just what I always wanted! - Clara
+I say I don't want to suffocate the code based on assumptions and I'm ready
+to take the risk and break some presumably old flashes that don't support
+SFDP. If we know for sure that we break old variants of this flash ID,
+then we have to rework the core now. Otherwise I'll rework it when a bug
+is reported.
 
---1sg3vSecY7TDSFAN
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+>>>>> -        NO_SFDP_FLAGS(SECT_4K) },
+>>>
+>>> Thus, I'd also keep this one.
+>>>
+>>
+>> Keeping this one does not have the effect that you want as SECT_4K is
+>> used in spi_nor_no_sfdp_init_params() which is not called when
+>> PARSE_SFDP is set, which makes perfectly sense. Let's drop this and if
+>> bugs will be reported, I commit I'll fix them in the same release cycle.
+> 
+> Mhh, I should have been more curious to why Linus needed the PARSE_SFDP
+> flag in the first place. Taking a closer look, that is because in the
+> legacy behavior, the SFDP is only read if the chip supports dual or
+> quad read (whatever the rationale was for that).
 
------BEGIN PGP SIGNATURE-----
+dual or quad reads are params that could be discovered in the first version of
+SFDP, that why they associated them with reading SFDP. Not great, but it
+worked.
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZLY5ZwAKCRD2uYlJVVFO
-o58xAQCNWexAdaOo/Wb5FVc2wvy9z6YkjgytmGLRAcgWggQmpAD+Ml/DN22Di3F3
-Zd/xTggvE2JYL0wtbF3i9CyU7mYJzg4=
-=usL+
------END PGP SIGNATURE-----
+> 
+> Also, if PARSE_SFDP is set, none of the no_sfdp_flags are ever handled.
+> If the chip doesn't support the SFDP is will just fail probing.
+> 
+> As I'm reading the code right now, for the new behavior
+> it is either
+>  * expect the flash supports SFDP, if not, probe fails
+>  * expect the flash to don't support SFDP, no SFDP is ever read at all
+> 
 
---1sg3vSecY7TDSFAN--
+sort of. It's more elaborate than that. Check spi_nor_init_params().
+> Shouldn't we handle the third case in the new behavior, too:
+>  * start with the static data we have and try reading SFDP to amend/correct it.
+
+This case is already supported and it's the old way of initializing flash
+parameters. Check spi_nor_init_params_deprecated().
+
+I don't want to do that for the SFDP capable flashes for now, otherwise
+we'll have again parameters initialized all over the place, which results
+in ugly hard to read code. You have the fixup hooks if you need to amend SFDP
+data. And since the first table of SFDP is mandatory (BFPT), if you set PARSE_SFDP
+and get an error, then you shouldn't have set PARSE_SFDP in the first place.
+Optional SFDP tables return void and we have a rollback mechanism for the parameters
+set in those optional tables in case of errors.
+
+> 
+> If not, will you accept breakage for future flashes, too? Looking at winbond.c
+> for example, I guess all chips with 0xef40.. 0xef50.. and 0xef60.. supports
+> SFDP nowadays and most of them only have SECT_4K set.
+
+I will. Note that you have to actually have a physical flash to do changes,
+I don't queue untested patches.
+> 
+>> If both of you agree, I'll amend Linus's v4 patch when applying.
+> 
+> So it would be the first chip without flags at all? Then we could
+> drop the entry entirely :) And if we do this, then we should also
+
+No, you have the locking flags that can't be discovered by parsing SFDP,
+thus you need to define a flash entry for it.
+
+> drop all the other entries for the newer winbond flashes.
+
+If you can test it, and there's no dedicated compatible for that flash,
+I'm ok to drop them.
+> 
+> If you decide to break older flashes, then I'd prefer to also drop
+> the n_sectors and sector_size, i.e. INFO(0xef...., 0, 0, 0).
+> 
+
+Isn't v4 already doing this? I'll amend it if not. Waiting for ack from
+both you and Linus.
+
+Cheers,
+ta
