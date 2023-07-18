@@ -2,106 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54464757B0A
-	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 13:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56407757BD8
+	for <lists+stable@lfdr.de>; Tue, 18 Jul 2023 14:31:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232141AbjGRL6P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 07:58:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60170 "EHLO
+        id S231420AbjGRMbb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 08:31:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232138AbjGRL6O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 07:58:14 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06691A5
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 04:58:13 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-5703d12ab9aso59052697b3.2
-        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 04:58:13 -0700 (PDT)
+        with ESMTP id S229862AbjGRMba (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 08:31:30 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68A9710EB
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 05:31:29 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3fbc244d384so52037445e9.0
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 05:31:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689681493; x=1690286293;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=59ojG0gIJMBH787QYkyMNNJwFmMukWGw4ED2w5fU/lw=;
-        b=uVHPntbViJbo4FXUJwPfzVmJ/yERr5p349TtlmHMxs3snOTfUAUq4P7O6zQn0tAJMH
-         e0J6puyQbNPjrvu2ZalcoW+qRx3WyWbS4h5nvKjkbLqKmthGRBp0ioafrKE3lUIBxPKr
-         hu7AQzOPk7e85nbuQEL666+eBjqPghmCIeR9txiR6w0HMuGMF+TCulfUnpnCOh7tsLzE
-         9HFd3oHCTCyQ9fUfjMwC7VDQIQR865BA6XbJYY963/YjiedLGqD+Ho2gLjie6K7kDtTc
-         1fBYRsHmoEFO/cwKBhmDJwLAqmoQX8mCrPTgFs6JbX2DOTERftyRBv+UHAOXxU1lxrrV
-         HfaQ==
+        d=gmail.com; s=20221208; t=1689683488; x=1692275488;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qA5mDnh5prJf9FI2+oYh1AdrbFvpWbEyrduG/7YL7k8=;
+        b=UJYi69m5++MtH5Ho2YqJK3M1x+IY45LOGF4ZfpTx9Ft/RNv0FHdd2Mq9j+tYG3oSSs
+         lXE6X0DLp8zF7MflZBKfZ78LWxkGJ8jKNjx/7rtn8JehpQMfSTDrgjOqp+9WhNYBLONd
+         TbR+xa6U5ee5MdW+aMiGHTr+jODA15OPrIsYLAIMdn/A7cdsspb1/YdqjCawA4Z5dadI
+         nasahdP9+nXHPiPwHl24JIy0PsNQFs1oxYbAyFzyplyigKiAzAD5HyQ4P5jTxivRzJma
+         s1T981q79PeFli5ZB0N7dVnZncDOXVLpiN/2SjQhAYkwfB7LDlxJjIXVECirHeb7foC5
+         monw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689681493; x=1690286293;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=59ojG0gIJMBH787QYkyMNNJwFmMukWGw4ED2w5fU/lw=;
-        b=jqE01I3yzy/wEkJV/1GXhDMEvTrdpJks6guVcRQy212dHlDBi9sXOQW+wiT8UfH7y1
-         hegjJGnEVGJAK000G+5ORdXEo9HicKick7CGMBn9Q2Vgj/aboXTawcEjAr8hNK6V5Lnb
-         iV/Zj1O217H86SH6j5vpdWY7HSb8xok86JfzzexNdJpVMSkaagv0GEdpKjRDTav+1kct
-         V7X8nUEw6/Olbhyl64jjJlnWPbDQxGOBDKBzg17Y7KIb+938YW2gO/P6SCTQocbWWbjR
-         ky6P99LcPI2gluHp1bUwGeGPWtIgwEJI/DGWpBQh8NebKMjEbOCdzLWKpF5URG3ussxJ
-         aK6w==
-X-Gm-Message-State: ABy/qLZO3OflkAFY2bgbGBQ4S8VcZhQdK4AtDgvkJWmIV0tYvniLjNWv
-        qqb7qOKX0MiE+AtB8956byyscCvgKvJeAMUwZhP6bA==
-X-Google-Smtp-Source: APBJJlG4qHhUdXHN3k0Odt/kIDusXhPoRU4F4Y7yU9rMcm8SVfcidsaPlWaChO7XfVB9BAR4jvh6BOmTHOxKGY0eKKc=
-X-Received: by 2002:a0d:dd45:0:b0:576:98e0:32a6 with SMTP id
- g66-20020a0ddd45000000b0057698e032a6mr15306374ywe.14.1689681493112; Tue, 18
- Jul 2023 04:58:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230712-spi-nor-winbond-w25q128-v2-1-50c9f1d58d6c@linaro.org>
- <f00fa2ae-6d4a-90cb-3724-2bedb96cb4fb@linaro.org> <0525440a652854a2a575256cd07d3559@walle.cc>
- <d99d87e7-47ba-d6fe-735f-16de2a2ec280@linaro.org> <e642ff27fd0bc0f1f0e293972145f680@walle.cc>
- <2d71326c-023e-69af-9337-62672f50fed9@linaro.org> <62083227d40d7b631c2eeac1e40c6b56@walle.cc>
- <ef557792-144e-12ef-ce14-f98982b608dc@linaro.org>
-In-Reply-To: <ef557792-144e-12ef-ce14-f98982b608dc@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 18 Jul 2023 13:58:01 +0200
-Message-ID: <CACRpkdY_3Ecw06ECVx3=xB9G1zUBDqmjuhwbaS8k3+RKNErwnA@mail.gmail.com>
-Subject: Re: [PATCH v2] mtd: spi-nor: Correct flags for Winbond w25q128
-To:     Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc:     Michael Walle <michael@walle.cc>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
+        d=1e100.net; s=20221208; t=1689683488; x=1692275488;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qA5mDnh5prJf9FI2+oYh1AdrbFvpWbEyrduG/7YL7k8=;
+        b=NM1N9vlE9mJcz8xZf68vbdU556VAqxOyOUr3s2F/acb1bKAFWu2C5Z6dKJSW5hBfRx
+         BxPhN0I0WnnEBza5xFQAM14s3SnPsulHfi4LnpKT81VMb/i7dPExF1YNjSbCPgb+usZr
+         64dponO8n3h9k3Q/3nGmsLKkD5RbKezYQagmkMeXgzp+3IsffhPKS6HDCA9scGwo3f3O
+         U8aqKao/G/jtuKmyANaXJA2xcvAJfg/jBdzL8i4rTRGeYHObZbklZpzChKgd5+/aJ/6+
+         kEHXsGjwFYsTPQD4V9id4JXl+p2uV1PVBIhaYfrNmv4gUJSs89H6d/q+EKhDFu2M3dLz
+         owbA==
+X-Gm-Message-State: ABy/qLadlwT2uzr0HS8QvSl0Yt1GPdX4v4/nqOAhqKQzLopWT/GNDhvs
+        cmGBvEN68uecHkKeTyuecuI=
+X-Google-Smtp-Source: APBJJlGUnG4ZoEbmeEoVavaUuej3QYJE0cfOGUdbCEbqb+1i/5EsI0Lmk8FtcvgRFzec05R2mtD0cA==
+X-Received: by 2002:a7b:c456:0:b0:3fb:a6ee:4cec with SMTP id l22-20020a7bc456000000b003fba6ee4cecmr1882089wmi.33.1689683487726;
+        Tue, 18 Jul 2023 05:31:27 -0700 (PDT)
+Received: from [192.168.1.95] (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
+        by smtp.gmail.com with ESMTPSA id z26-20020a7bc7da000000b003fa999cefc0sm2003096wmk.36.2023.07.18.05.31.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jul 2023 05:31:27 -0700 (PDT)
+Message-ID: <bc521a2f24c416a658ab50685fbf647d4e069c8c.camel@gmail.com>
+Subject: Re: [5.10, 5.15] New bpf kselftest failure
+From:   Eduard Zingerman <eddyz87@gmail.com>
+To:     Luiz Capitulino <luizcap@amazon.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        "sashal@kernel.org" <sashal@kernel.org>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>, ast@kernel.org,
+        gilad.reti@gmail.com, Mykola Lysenko <mykolal@fb.com>,
+        andrii <andrii@kernel.org>
+Date:   Tue, 18 Jul 2023 15:31:25 +0300
+In-Reply-To: <c9b10a8a551edafdfec855fbd35757c6238ad258.camel@gmail.com>
+References: <935c4751-d368-df29-33a6-9f4fcae720fa@amazon.com>
+         <76dfe02eea69141b662a3a399126dba9e00e5abe.camel@gmail.com>
+         <9c7fc5ab-1c06-8452-2747-aa89e7a1dfb6@amazon.com>
+         <c9b10a8a551edafdfec855fbd35757c6238ad258.camel@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.44.4-0ubuntu1 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jul 18, 2023 at 11:47=E2=80=AFAM Tudor Ambarus <tudor.ambarus@linar=
-o.org> wrote:
+On Tue, 2023-07-18 at 01:57 +0300, Eduard Zingerman wrote:
+> [...]
+> Still, when I cherry-pick [0,1,2,3] `./test_progs -a setget_sockopt` is f=
+ailing.
+> I'll investigate this failure but don't think I'll finish today.
+>=20
+> ---
+>=20
+> Alternatively, if the goal is to minimize amount of changes, we can
+> disable or modify the 'precise: ST insn causing spi > allocated_stack'.
+>=20
+> ---
+>=20
+> Commits (in chronological order):
+> [0] be2ef8161572 ("bpf: allow precision tracking for programs with subpro=
+gs")
+> [1] f63181b6ae79 ("bpf: stop setting precise in current state")
+> [2] 7a830b53c17b ("bpf: aggressively forget precise markings during state=
+ checkpointing")
+> [3] 4f999b767769 ("selftests/bpf: make test_align selftest more robust")
+> [4] 07d90c72efbe ("Merge branch 'BPF verifier precision tracking improvem=
+ents'")
+> [5] ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST=
+ instruction")
 
-> Hi, Linus,
->
-> On 7/18/23 09:32, Michael Walle wrote:
-> > FWIW, I'm fine with the removed no_sfdp_flags if INFO(, 0, 0, 0).
->
-> We'll need a v5 where you test again the flash with mtd_utils,
-> as we want to get rid of n_sectors and sectors_size and instead
-> determine them from SFDP. We agreed that the flash entry should
-> be defined with the following params:
->
->         { "w25q128", INFO(0xef4018, 0, 0, 0)
->                 PARSE_SFDP
->                 FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB)
->         },
+I made a mistake, while resolving merge conflict for [0] yesterday.
+After correction the `./test_progs -a setget_sockopt` passes.
+I also noted that the following tests fail on v6.1.36:
 
-Roger that!
+  ./test_progs -a sk_assign,fexit_bpf2bpf
 
-I sent a v5 which does this, tested by taking the reported
-size in dmesg and divide by reported (correct) eraseblock size and
-it results in the same number of sectors as well.
+These tests are fixed by back-porting the following upstream commits:
+- 7ce878ca81bc ("selftests/bpf: Fix sk_assign on s390x")
+- 63d78b7e8ca2 ("selftests/bpf: Workaround verification failure for fexit_b=
+pf2bpf/func_replace_return_code")
 
-I put the details into the commit message.
+I pushed modified version of v6.1.36 to my github account, it has
+test_verifier, test_progs, test_progs-no_alu32 and test_maps passing
+(on my x86 setup):
 
-Yours,
-Linus Walleij
+  https://github.com/eddyz87/bpf/commits/v6.1.36-with-fixes
+
+Do you need any additional actions from my side?
