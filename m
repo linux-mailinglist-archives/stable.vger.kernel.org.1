@@ -2,95 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AA60758CD2
-	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 06:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76268758D9A
+	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 08:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230259AbjGSE7I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 19 Jul 2023 00:59:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46420 "EHLO
+        id S229560AbjGSGRR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 19 Jul 2023 02:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229840AbjGSE7F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 19 Jul 2023 00:59:05 -0400
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E351BF3;
-        Tue, 18 Jul 2023 21:59:04 -0700 (PDT)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-99313a34b2dso778675966b.1;
-        Tue, 18 Jul 2023 21:59:04 -0700 (PDT)
+        with ESMTP id S230479AbjGSGRO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 19 Jul 2023 02:17:14 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FFFE1FC4
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 23:16:59 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-99313a34b2dso784423666b.1
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 23:16:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689747417; x=1692339417;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/3D3opjX717GgTUWBiU+QHvEZYFXmjd+9qv4cSuPkuA=;
+        b=fmSOGHZSbHFsabRaN28Z7YjPrEHukqwNbn/mICX7gQ4RZ8tGRUjDs7n8zF05HOiOpT
+         7GsUHsd43WCALy5vq9f9JHqv9Mgp1IUjThZkb0NVtGarbXty4p3J0ygLvOzw0m+HJxIF
+         Yc3OpMExpMeGRddyFjaj92TlieU9oGkcRv6WpUzmqfvtLKzxfkPq39F2ZoRbanBHEM/z
+         3f4OD37fwnbdM1rINn8mRU2c/uCmTbc5iVmZ20/RZqi98lat+QcIB6DRxZ1HV8R/nTi5
+         UlWhTvsbl5okc+Igl3YJGfiI+Y6RSmH0VzEAyKGsO+abEUB88Uvbm5fJwPpBIVSkBBX6
+         /Swg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689742743; x=1690347543;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j73OOjIeRuMj/hW5XddSt0G2UN09Sqon0o8YRkFJAmE=;
-        b=l/xAU3Tk5Otn7sylrbD0kn4jI/WBp77eixjcwDu9lz+Jumc2k/IiEbRyg37iJxncO8
-         Tg7pcuR5zDmcbzqskkojmwtTlQb0b69A1NS1MtdgPDggqhwQThPA1f36hOftwwC34JUn
-         ELy7xxcODkYSJkcgu/ghxeLpzunNaHGzRdzXUlCEBuuJD1p6/11Cq/luVbKiUZV2loT8
-         +NCjtgDl3xwcLhSy0ubt5IOxlSLpMFsZ1M/QuhgMY84PafkwEL/xK5eUOFUL/COn+vpP
-         fj7iMF2SEUqdsw3P8tDzihnvjNEQdbBzVc+pVrNKB6qNCmSPkUyYrxYt2ku3y0E/wVYJ
-         rbrw==
-X-Gm-Message-State: ABy/qLY92Q9d8oZ63icmQavFIAxcaX1kOPH+kH+QYaQy9PVC13KZwA2w
-        hw4dEs3C+MKkaPXF6DmcedE+dApcqTY=
-X-Google-Smtp-Source: APBJJlE5FBhwnn+ttSshK5fDq37w5f5hotxC47JdDOGMCuEPnvDrPixrpDDiWdU9TUvzvExhUXBiSQ==
-X-Received: by 2002:a17:906:2208:b0:993:f9b2:93c1 with SMTP id s8-20020a170906220800b00993f9b293c1mr1532542ejs.9.1689742742765;
-        Tue, 18 Jul 2023 21:59:02 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id x26-20020a1709064a9a00b009893b06e9e3sm1775731eju.225.2023.07.18.21.59.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Jul 2023 21:59:02 -0700 (PDT)
-Message-ID: <29a50d29-67f6-8b18-d0bb-278878f9ddac@kernel.org>
-Date:   Wed, 19 Jul 2023 06:59:01 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 6.4 000/801] 6.4.4-rc3 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        d=1e100.net; s=20221208; t=1689747417; x=1692339417;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/3D3opjX717GgTUWBiU+QHvEZYFXmjd+9qv4cSuPkuA=;
+        b=ATooYFMvFwjtBR8NGGl0aIUFW7DFG7RCvGSO8FgKU5Zq6X/PU+9PHM/Rvl/7y/TfV8
+         FTdZc8eJaNyWmx14JHUhMa6M8P0KenDfBoe9Zz7oQ6zvOP2nvbgo7iGpDSyOyN+vstiE
+         ElyBC5JftjpJ7nBWBPsd+33wR1f7D2c2kxoTt9TLAqDsQzAU48Jxh84Ym4YJPiWXeRYI
+         cx5AcK3I1ycpYDgtGP7wA4neXu8NHDW+Vq0kfFWYKJ0zHXA4tXRuK+TilWBB4VmpvbL7
+         lhhmy/XBwRu1YeTwaCSERr4JdduGuHYmi8aJTK0gFTQVYHKZpye+7McsOLpEJ5VH62F8
+         O20Q==
+X-Gm-Message-State: ABy/qLY2nK3HJJGJdWjbtAM8JCkscgAwGiQepyZ1AGn0VPXkPbQ7Ka7T
+        iUdY7Ax2Ie8OOCpIjtWozpOP7g==
+X-Google-Smtp-Source: APBJJlFjhXwP3bLyDVtTdBEjE4Qpptq7rQRnfm4betnkIHUbPN9qsfs/gSev+pgbJLc/6S/2iH+b1A==
+X-Received: by 2002:a17:906:7698:b0:986:f586:b97 with SMTP id o24-20020a170906769800b00986f5860b97mr1778494ejm.59.1689747417591;
+        Tue, 18 Jul 2023 23:16:57 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.223.104])
+        by smtp.gmail.com with ESMTPSA id w24-20020a17090633d800b009935aba3a9dsm1864576eja.48.2023.07.18.23.16.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jul 2023 23:16:57 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230717201608.814406187@linuxfoundation.org>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20230717201608.814406187@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: [PATCH v2] firmware: arm_scmi: drop OF node reference in setup
+Date:   Wed, 19 Jul 2023 08:16:52 +0200
+Message-Id: <20230719061652.8850-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 17. 07. 23, 22:34, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.4 release.
-> There are 801 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 19 Jul 2023 20:14:44 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.4-rc3.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
+The OF node reference obtained from of_parse_phandle() should be dropped
+if node is not compatible with arm,scmi-shmem.
 
-openSUSE configs¹⁾ mostly green -- arm is still building (our build 
-systems have limited resourced due to move now). x86_64 runs fine in qemu.
+Fixes: 507cd4d2c5eb ("firmware: arm_scmi: Add compatibility checks for shmem node")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Tested-by: Jiri Slaby <jirislaby@kernel.org>
+---
 
-¹⁾ armv6hl armv7hl arm64 i386 ppc64 ppc64le riscv64 s390x x86_64
+Changes in v2:
+1. Correct also mailbox.c
+---
+ drivers/firmware/arm_scmi/mailbox.c | 4 +++-
+ drivers/firmware/arm_scmi/smc.c     | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/firmware/arm_scmi/mailbox.c b/drivers/firmware/arm_scmi/mailbox.c
+index 1efa5e9392c4..19246ed1f01f 100644
+--- a/drivers/firmware/arm_scmi/mailbox.c
++++ b/drivers/firmware/arm_scmi/mailbox.c
+@@ -166,8 +166,10 @@ static int mailbox_chan_setup(struct scmi_chan_info *cinfo, struct device *dev,
+ 		return -ENOMEM;
+ 
+ 	shmem = of_parse_phandle(cdev->of_node, "shmem", idx);
+-	if (!of_device_is_compatible(shmem, "arm,scmi-shmem"))
++	if (!of_device_is_compatible(shmem, "arm,scmi-shmem")) {
++		of_node_put(shmem);
+ 		return -ENXIO;
++	}
+ 
+ 	ret = of_address_to_resource(shmem, 0, &res);
+ 	of_node_put(shmem);
+diff --git a/drivers/firmware/arm_scmi/smc.c b/drivers/firmware/arm_scmi/smc.c
+index 621c37efe3ec..2d8c510fbf52 100644
+--- a/drivers/firmware/arm_scmi/smc.c
++++ b/drivers/firmware/arm_scmi/smc.c
+@@ -137,8 +137,10 @@ static int smc_chan_setup(struct scmi_chan_info *cinfo, struct device *dev,
+ 		return -ENOMEM;
+ 
+ 	np = of_parse_phandle(cdev->of_node, "shmem", 0);
+-	if (!of_device_is_compatible(np, "arm,scmi-shmem"))
++	if (!of_device_is_compatible(np, "arm,scmi-shmem")) {
++		of_node_put(np);
+ 		return -ENXIO;
++	}
+ 
+ 	ret = of_address_to_resource(np, 0, &res);
+ 	of_node_put(np);
 -- 
-js
-suse labs
+2.34.1
 
