@@ -2,220 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38FB7759AA4
-	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 18:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8C93759AAB
+	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 18:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229449AbjGSQUM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 19 Jul 2023 12:20:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43554 "EHLO
+        id S229719AbjGSQWx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 19 Jul 2023 12:22:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbjGSQUL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 19 Jul 2023 12:20:11 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6C891733
-        for <stable@vger.kernel.org>; Wed, 19 Jul 2023 09:20:09 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-666e6541c98so7116588b3a.2
-        for <stable@vger.kernel.org>; Wed, 19 Jul 2023 09:20:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689783609; x=1692375609;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=xNLJRYfqa+6mgTv9zVNs0hfXDhMKx5CmzJBjyLGiOLQ=;
-        b=BKhC65pr0BJ4gXOvu+eoJxaxPad+K8VyOVYof3SQi6cgDcUWTnkb9SHPVH1HvdUIlN
-         2u8QskcIFJy+ZA+7YpQWIk0oXVKeIO9Fo8Hf1Zk9qsyTDIPjY/dbaVqFkVTL3LIlI1fq
-         JeVy4neWT4C/8nOS9Hj2sFP1t2c69hU9EgY8yILCXj5DVs9FlhF8paSThC8Zq5SxjYyt
-         fxOgoJI8rwphGaHHDjd6yvxbOvh2VuiQZCEjU6gJsyMIyyPyi4M1ySx1YYpVveaLQF7u
-         sQB4VILulJ0X8x+Kk6xrUYs+KPeXchUCaOAd7HRYnbTCQQo9NEyAhM1ow6B4IwiSTqmC
-         C1Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689783609; x=1692375609;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xNLJRYfqa+6mgTv9zVNs0hfXDhMKx5CmzJBjyLGiOLQ=;
-        b=gHieUbOx8e+VLcvA5dBqSShZB08z6sx+zMbPIqm1NITH/4IJktoOMbZ8NA7pwUZeMj
-         v8KQmcHeLY2M5XsEhoQDAcs0/kr3wCDUH2qNEfOsUOvwrfQwiio+YklJivXp1JXXJnkd
-         WJNgbpYBVOpdhdfIL2335rN3xB5bk/8VCiQVQRcGJFJ9qegp7RVpa85qcTtbIqzoo3Rt
-         js2cojJ2enHpa4VAbGJC3d+nV/NF5sL9Vn80GSutmX7zJbfBf4Sz9wES73n4coyf7Tri
-         Ergx06Z2H2bOpacrewCy1XPFfUci2SkH3Kp5vw8XjmYjnxVSiNpemYpiBkWMwgz/iaA7
-         zo9g==
-X-Gm-Message-State: ABy/qLbj90pRQqKNuswT8+KQzu0q56bEOzKJYKuZh5cMx0M628XFqCd9
-        uidCMmFmD8tkOTnzmQbRupTQJQ4+Y8xR9vsvspaCEQ==
-X-Google-Smtp-Source: APBJJlEeA412gBrR0CxDSFnW4OIj43rBZTVjxkZTkeJQy6Pil63bVqm78XOJ9H34Db0t1qZTI2SccA==
-X-Received: by 2002:a17:90a:72ce:b0:267:7743:9850 with SMTP id l14-20020a17090a72ce00b0026777439850mr4460563pjk.14.1689783608641;
-        Wed, 19 Jul 2023 09:20:08 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id nm8-20020a17090b19c800b0025c2c398d33sm1358125pjb.39.2023.07.19.09.20.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jul 2023 09:20:07 -0700 (PDT)
-Message-ID: <64b80d37.170a0220.93309.25df@mx.google.com>
-Date:   Wed, 19 Jul 2023 09:20:07 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229475AbjGSQWw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 19 Jul 2023 12:22:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86D2318D;
+        Wed, 19 Jul 2023 09:22:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EBF7161784;
+        Wed, 19 Jul 2023 16:22:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440ABC433C8;
+        Wed, 19 Jul 2023 16:22:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689783770;
+        bh=dp2zlWprh3aQ0p8wXOlySBFvIkjzoKk6uAidRdDwNXI=;
+        h=From:Subject:Date:To:Cc:From;
+        b=AUzM88a3kKAsyHKScqsmBk/UMAx6Ok1+sNAlGfHXUCy6C4pTVJi/LxmhNFIvpX2ys
+         1Wrp7W1eVZWnmtJGQ6zruNMGNpIEblw6kwsAG5l7aF6Lb8DG3Meb2fP0pw9sKmrJvc
+         8JuZR7T9tgw+rEJvmpmGm5TiJGW2PgIEGxgV7FnF6zM9yxUmDBoPKQMrKYx1IvKDnd
+         k278pRPKQYAbkA2EXLsUBID+2DYvRc+9+BKHfBH8nZ5AOjYD58jTCp2S0B+oYLxl8C
+         K9cqTggXA89ZhZmfyYeY7Ff1woblBrEVkukBOf0Lg8Cjn5kbi8tiGA/sjtMgRM00iu
+         aOLWgOtvVDOvQ==
+From:   Eric Van Hensbergen <ericvh@kernel.org>
+Subject: [PATCH v4 0/4] fs/9p: fix mmap regression
+Date:   Wed, 19 Jul 2023 16:22:29 +0000
+Message-Id: <20230716-fixes-overly-restrictive-mmap-v4-0-a3cd1cd32af2@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Tree: stable
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Kernel: v6.1.39
-X-Kernelci-Report-Type: build
-Subject: stable/linux-6.1.y build: 19 builds: 0 failed, 19 passed,
- 1 warning (v6.1.39)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMUNuGQC/5XOzW7CMAwH8FdBOWOWjy4hnPYe0w5p69AISJBTR
+ SDUd5/LDe0yDj78betnP0RFSljFYfMQhC3VVDKHbrsRwxTyESGNnIWW2kinLMR0wwqlIZ3vQFh
+ nSsOcGsLlEq5gZNDmUyp0eyfY6ENF6CnkYVoVvjW06SMWgoy3ed24Ej5JHn//cJ5SnQvdnw81t
+ Xb/e7spkCDt3vSayxv9dULKeN4VOoqVbvotTjOnOjdatqL1/g9n3uIMc85651XsXBfHF25Zll9
+ z0jvbiwEAAA==
+To:     Latchesar Ionkov <lucho@ionkov.net>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc:     v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
+        kernel@pengutronix.de, stable@vger.kernel.org,
+        Robert Schwebel <r.schwebel@pengutronix.de>,
+        Eric Van Hensbergen <ericvh@kernel.org>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1648; i=ericvh@kernel.org;
+ h=from:subject:message-id; bh=dp2zlWprh3aQ0p8wXOlySBFvIkjzoKk6uAidRdDwNXI=;
+ b=owEBbQKS/ZANAwAKAYj/1ftKX/+YAcsmYgBkuA3Y7VGJe3Yy1lpSSN/S6sDVpTeL+Bt6aFbc3
+ G5BJ6HgECSJAjMEAAEKAB0WIQSWlvDRlqWQmKTK0VGI/9X7Sl//mAUCZLgN2AAKCRCI/9X7Sl//
+ mHqIEACDYSv/QQ1TqXoHfQZK/4fDGKu1yLW9c3tAWBwQxBNRFDmIlYYGwWkZTlJK/MaPvTblsr/
+ DMXO5i96RGRV7EmxWBkM+G5E8/H35UavAN1Xwl12DdPW4GS4SdbPZ4ZYZf26B1QRXev2tAGGdKj
+ /oLi4zA6gapFDeHC08e8WCSGi8AcMzX+g1W7WU5ayu0G+iCksGF2Qn6dTOs0MIYj1msSCHZ149k
+ xvZOShPlRSH/xnELD8Ba2HWKhryhr/oTswuGh+vN8KCXfpkpa8po6J+87pQ2dumFaUkYj6QZe1p
+ xEL6v+5g5gH5nmUhdcVLJN6t7Jl7Uu5Ql6qPd1B07B9oBIJLETW2fU7PzqvBKnt2+T2nzsf2WQR
+ jRka4rUV9h18TqM74YWVpVZtwwO1YmThzd7C34C5WEbF3X3J4Q7yM2ClekFBEor81evYix9P+2K
+ cJOtq6VYpMPQaGA2wgiRC3wiLzJhyAzkXfnM9903N+biQLnhKfhpPTN8iBpig++6Uk3ShheYkPO
+ ioa66pXWaVOlhq/dXQX8/x7pL6P7SVYjG+tx1hyt14OHJRhBp+kYKlHFQYWwz20pu6HkiY/MWtL
+ G7BUtCeQ3FdffImILWZGd8zLJMC/RB5s1B1TE/a4gdOIVlKzjwLQ/bVkNGHxYLbmnKQFVG4Enr+
+ lRCqAbzzwT5ugiA==
+X-Developer-Key: i=ericvh@kernel.org; a=openpgp;
+ fpr=9696F0D196A59098A4CAD15188FFD5FB4A5FFF98
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-6.1.y build: 19 builds: 0 failed, 19 passed, 1 warning (v6.1.3=
-9)
+This series attempts to fix a reported exception with mmap
+on newer kernels. 
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.1.y/ke=
-rnel/v6.1.39/
+Fixes: 1543b4c5071c ("fs/9p: remove writeback fid and fix per-file modes")
+Reported-by: Robert Schwebel <r.schwebel@pengutronix.de>
+Closes: https://lore.kernel.org/v9fs/ZK25XZ%2BGpR3KHIB%2F@pengutronix.de
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+---
+Changes in v4:
+- Another attempt to fix tags for regression and stable, sorry for the
+  noise.
+- Link to v3: https://lore.kernel.org/r/20230716-fixes-overly-restrictive-mmap-v3-0-769791f474fd@kernel.org
 
-Tree: stable
-Branch: linux-6.1.y
-Git Describe: v6.1.39
-Git Commit: a456e17438819ed77f63d16926f96101ca215f09
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
-Built: 7 unique architectures
+Changes in v3:
+- Clarify debug print to read-only mmap mode versus no mmap mode in
+  v9fs_file_mmap
+- Fix suggested regression tags and propagate across series
+- Link to v2: https://lore.kernel.org/r/20230716-fixes-overly-restrictive-mmap-v2-0-147d6b93f699@kernel.org
 
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
+Changes in v2:
+- fix requested changes in commit messages
+- add patch to remove unnecessary invalidate_inode_pages in mmap readonly path
+- Link to v1: https://lore.kernel.org/r/20230716-fixes-overly-restrictive-mmap-v1-0-0683b283b932@kernel.org
 
 ---
-For more info write to <info@kernelci.org>
+Eric Van Hensbergen (4):
+      fs/9p: remove unnecessary and overrestrictive check
+      fs/9p: fix typo in comparison logic for cache mode
+      fs/9p: fix type mismatch in file cache mode helper
+      fs/9p: remove unnecessary invalidate_inode_pages2
+
+ fs/9p/fid.h      | 6 +++---
+ fs/9p/vfs_file.c | 5 +----
+ 2 files changed, 4 insertions(+), 7 deletions(-)
+---
+base-commit: 95f41d87810083d8b3dedcce46a4e356cf4a9673
+change-id: 20230716-fixes-overly-restrictive-mmap-30a23501e787
+
+Best regards,
+-- 
+Eric Van Hensbergen <ericvh@kernel.org>
+
