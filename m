@@ -2,81 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A54B758A05
-	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 02:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EE2C758ABB
+	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 03:16:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbjGSAV6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 20:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42038 "EHLO
+        id S229530AbjGSBQ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 21:16:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbjGSAV5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 20:21:57 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F2E136;
-        Tue, 18 Jul 2023 17:21:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689726116; x=1721262116;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pT6Ies0wLFEXJTKDZySE8hEP555Mfms46DvEBx71y1Q=;
-  b=EfClzMjDcRHjh+CGIP4nECRW2oY1e5OMGAq3u01Qqf/VzKKYmWdZv5rm
-   vOMQXF8cNLPfYK5+Oa6objnV9uzhqu1qeSoY7KcaTVrDjTlX7JK8SYoPf
-   B1/ajuaKIvNfpWbkyuLn5aSVMBtE+vNzB/o0CC5yHWi/2r+x/6HB+/tfs
-   sSYR45qAuLPh1xizE1bJALOuaVC3PrS6p9+8kS5y3XmRPYW9JxE+GqAhe
-   cEvQ3gTLI0W4Xegt9IDrVkFAM5Qfzy8hgaiR+5uLBkOvDOr5ErkS4Qz91
-   jlgj9/PoC+o6alG2LCwqccjhJRv1R8HAnjMB8IpHnZkZu0ckgKoHXmKVI
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="351210768"
-X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="351210768"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 17:21:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="867275772"
-Received: from unknown (HELO [10.209.37.195]) ([10.209.37.195])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 17:21:55 -0700
-Message-ID: <d718cdda-2d5b-9b4b-d90d-55449ec1ac75@intel.com>
-Date:   Tue, 18 Jul 2023 17:21:54 -0700
+        with ESMTP id S229450AbjGSBQ1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 21:16:27 -0400
+Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBC0D12F
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 18:16:25 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.30.67.143])
+        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4R5Hvm098rz4f3khY
+        for <stable@vger.kernel.org>; Wed, 19 Jul 2023 09:16:20 +0800 (CST)
+Received: from [10.174.176.73] (unknown [10.174.176.73])
+        by APP4 (Coremail) with SMTP id gCh0CgA30JNlObdk95suOQ--.45464S3;
+        Wed, 19 Jul 2023 09:16:22 +0800 (CST)
+Subject: Re: Build failures / crashes in stable queue branches
+To:     Joel Fernandes <joel@joelfernandes.org>,
+        Greg KH <gregkh@linuxfoundation.org>
+Cc:     Yu Kuai <yukuai1@huaweicloud.com>, stable <stable@vger.kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "yukuai (C)" <yukuai3@huawei.com>
+References: <897ebb05-5a1f-e353-8877-49721c52d065@roeck-us.net>
+ <20230715154923.GA2193946@google.com>
+ <907909df-d64f-e40a-0c9c-fc5c225a235c@huaweicloud.com>
+ <2023071625-parsnip-pursuable-b5c8@gregkh>
+ <da595585-4929-2c21-7e48-f9f8cdad6cf7@joelfernandes.org>
+ <2023071840-hatchling-fiction-65a8@gregkh>
+ <CAEXW_YR801_BhsevD0UjbXpt47H82=uX2oqcLoCo9pdW2NYOjw@mail.gmail.com>
+From:   Yu Kuai <yukuai1@huaweicloud.com>
+Message-ID: <af66a503-cc85-5690-0f17-708efafe338f@huaweicloud.com>
+Date:   Wed, 19 Jul 2023 09:16:21 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
-Content-Language: en-US
-To:     "Huang, Kai" <kai.huang@intel.com>,
-        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "hpa@zytor.com" <hpa@zytor.com>,
-        "haitao.huang@linux.intel.com" <haitao.huang@linux.intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc:     "kristen@linux.intel.com" <kristen@linux.intel.com>,
-        "Chatre, Reinette" <reinette.chatre@intel.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "Christopherson,, Sean" <seanjc@google.com>
-References: <CU4OBQ8MQ2LK.2GRBPLQGVTZ3@seitikki>
- <20230717202938.94989-1-haitao.huang@linux.intel.com>
- <dfb1f233-aebd-50cf-8704-e83b91ee110a@intel.com>
- <op.18ah5mn3wjvjmi@hhuan26-mobl.amr.corp.intel.com>
- <b5779418-e2a4-ca7a-866f-97e49cd272cb@intel.com>
- <op.18aontlmwjvjmi@hhuan26-mobl.amr.corp.intel.com>
- <eb1aea6f-3688-f871-2335-ff911a51ef52@intel.com>
- <op.18aqz7sbwjvjmi@hhuan26-mobl.amr.corp.intel.com>
- <ad2d9610-61c0-4719-9df1-0116ef317d8a@intel.com>
- <op.18asliuzwjvjmi@hhuan26-mobl.amr.corp.intel.com>
- <520111c9ccdd7356f9eaf20013e3e3c75b06398e.camel@intel.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <520111c9ccdd7356f9eaf20013e3e3c75b06398e.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+In-Reply-To: <CAEXW_YR801_BhsevD0UjbXpt47H82=uX2oqcLoCo9pdW2NYOjw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: gCh0CgA30JNlObdk95suOQ--.45464S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxCF48WF1kWFyDur1rAry7Jrb_yoW5Wr1DpF
+        W3JanIkF4UJr47twn2vw1YqF1Ut3y5JFW5XwnxJr1rZF4qvry5urn7Xr4j9Fy2yr18Kry0
+        qr4UtasxXFyUX37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+        JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+        CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+        2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+        W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7I2V7IY0VAS07AlzVAY
+        IcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+        v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+        c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+        0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rWUJVWrZr1UMIIF0xvEx4A2jsIE14v26r1j
+        6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUZa9
+        -UUUUU=
+X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,13 +70,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/18/23 17:14, Huang, Kai wrote:
-> Also perhaps the patch title is too vague.  Adding more information doesn't hurt
-> I think, e.g., mentioning it is a fix for NULL pointer dereference in the EAUG
-> flow.
+Hi,
 
-Yeah, let's say something like:
+在 2023/07/19 1:14, Joel Fernandes 写道:
+> On Tue, Jul 18, 2023 at 10:45 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+>>
+>> On Tue, Jul 18, 2023 at 09:52:45AM -0400, Joel Fernandes wrote:
+>>> On 7/16/23 10:30, Greg KH wrote:
+>>>> On Sun, Jul 16, 2023 at 11:20:33AM +0800, Yu Kuai wrote:
+>>>>> Hi,
+>>>>>
+>>>>> 在 2023/07/15 23:49, Joel Fernandes 写道:
+>>>>>> Hi Yu,
+>>>>>>
+>>>>>> On Fri, Jul 14, 2023 at 03:21:46AM -0700, Guenter Roeck wrote:
+>>>>>> [..]
+>>>>>>> ---------
+>>>>>>> 6.1.y:
+>>>>>>>
+>>>>>>> Build reference: v6.1.38-393-gb6386e7314b4
+>>>>>>> Compiler version: alpha-linux-gcc (GCC) 11.4.0
+>>>>>>> Assembler version: GNU assembler (GNU Binutils) 2.40
+>>>>>>>
+>>>>>>> Building alpha:allmodconfig ... failed
+>>>>>>> Building m68k:allmodconfig ... failed
+>>>>>>> --------------
+>>>>>>> Error log:
+>>>>>>> <stdin>:1517:2: warning: #warning syscall clone3 not implemented [-Wcpp]
+>>>>>>> In file included from block/genhd.c:28:
+>>>>>>> block/genhd.c: In function 'disk_release':
+>>>>>>> include/linux/blktrace_api.h:88:57: error: statement with no effect [-Werror=unused-value]
+>>>>>>>       88 | # define blk_trace_remove(q)                            (-ENOTTY)
+>>>>>>>          |                                                         ^
+>>>>>>> block/genhd.c:1185:9: note: in expansion of macro 'blk_trace_remove'
+>>>>>>>     1185 |         blk_trace_remove(disk->queue);
+>>>>>>
+>>>>>> 6.1 stable is broken and gives build warning without:
+>>>>>>
+>>>>>> cbe7cff4a76b ("blktrace: use inline function for blk_trace_remove() while blktrace is disabled")
+>>>>>>
+>>>>>> Could you please submit it to stable for 6.1? (I could have done that but it
+>>>>>> looks like you already backported related patches so its best for you to do
+>>>>>> it, thanks for your help!).
+>>>>>
+>>>>> Thanks for the notice, however, I'll suggest to revert this patch for
+>>>>> now, because there are follow up fixes that is not applied yet.
+>>>>
+>>>> Which specific patch should be dropped?
+>>>>
+>>>
+>>> Yu: Ping? ;-). Are you suggesting the original set be reverted, or Greg
+>>> apply the above fix? Let us please keep 6.1 stable unbroken. ;-)
+>>>
+>>> Apologies for my noise if the issue has already been resolved.
+>>
+>> I think it has been resolved, but testing against the latest -rc release
+>> I sent out yesterday would be appreciated.
+> 
+> Great.  Sure, I am going to run it today.
 
-	x86/sgx: Resolve SECS reclaim vs. page fault race
+Sorry about the trouble, currently this patch will cause that scsi host
+module can't be unloaded, and there are follow up fixes for this:
 
-please
+https://lore.kernel.org/all/20230621160111.1433521-1-yukuai1@huaweicloud.com/
+https://lore.kernel.org/all/20230705024001.177585-1-yukuai1@huaweicloud.com/
+
+The second patch is not applied yet, either revert the original patch or
+apply the above fix to stable as well.
+
+Thanks,
+Kuai
+> 
+> 
+>   - Joel
+> .
+> 
+
