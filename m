@@ -2,104 +2,220 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 749FD759AB4
-	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 18:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81872759C40
+	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 19:19:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbjGSQYB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 19 Jul 2023 12:24:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45242 "EHLO
+        id S230473AbjGSRT0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 19 Jul 2023 13:19:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbjGSQW4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 19 Jul 2023 12:22:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B454B6;
-        Wed, 19 Jul 2023 09:22:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AEB3361786;
-        Wed, 19 Jul 2023 16:22:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11562C433C7;
-        Wed, 19 Jul 2023 16:22:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689783775;
-        bh=k0K6ocifQ0ciwTzxXH7M8DUDHsKfrzNua/KxUjjXkFA=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-        b=T2LZDWcO5puV7VRCOsBgGotJisgKYwNNFQPAB/HDRTnd0Ladvgmjla4PWV4BzPlYt
-         i5xnpx5OP7rCjVfadkGllgwQuwN/eKoDlsQBe22il4LQzHMWer1aApYyMMSLWl93nH
-         ipkU+jYlLEzhSpmE5oJlURyvBuQEhyZpl47om/5yysQ7Smn3Qg6szrq4OY1rk6R1EV
-         QNdrGIH+VXh0LsjbUaXTquUsLvNjePH8ah6azGRLt7xXZoIqNaXR0lBsG3js4uYk2S
-         CLddkeUGPjnORTEJfT5D7Vsoy7rZaCAVSD6xKsOKY0hZtNWJtHMp3p4k1rOqqKOdt3
-         VtNvQayijlXaw==
-From:   Eric Van Hensbergen <ericvh@kernel.org>
-Date:   Wed, 19 Jul 2023 16:22:33 +0000
-Subject: [PATCH v4 4/4] fs/9p: remove unnecessary invalidate_inode_pages2
-MIME-Version: 1.0
+        with ESMTP id S231136AbjGSRTZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 19 Jul 2023 13:19:25 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C5FC189
+        for <stable@vger.kernel.org>; Wed, 19 Jul 2023 10:19:17 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-66767d628e2so4775722b3a.2
+        for <stable@vger.kernel.org>; Wed, 19 Jul 2023 10:19:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689787156; x=1692379156;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jh42tsdISO9/UzjH7/8mVZyOXK6A27D8NFnbbkhYrAo=;
+        b=4XxrrkJJ8Vzx+v9PPq7i3ZAzFAYnKTrOIr69+HpwHrgOpZpADnoEpLixphXAa06EqH
+         oTMimrm2CxORc9NrAb7BcSclbGSLfwWagPOeXYwMvYa+T4N7hmSQF+yMHwZ1PbO/6vAK
+         QXvcrPX95f/1cHkp9tvuMI4m557ETgvyXWev92h+bCflElz19ynpkOXvpkzsjHS39hRB
+         jOAn9cZ755JSxDkkJm6ow8DzbPXZiRwQK8by5Tk0gIMdP7Se+5xgDVEmkbKuwGmB62eH
+         4DnGxHXPOAimNZIoqNufz7SjvCc2u5MaJnasWMM5kspC/GmwQY9oJAi7LZ9J1C1JENiG
+         L40Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689787156; x=1692379156;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jh42tsdISO9/UzjH7/8mVZyOXK6A27D8NFnbbkhYrAo=;
+        b=TeK+E8Nr9Whr1X8LCJgPl6pWyx89K6pDhB/uGppMuBV1PkpotLYSw4S9XEHvjPHA+K
+         9dt3hIbLnZWoYbMTdPk43K2NElrWFE9nL80fedJxE0uP0cmaxskdwTQPA5hBz9nPfliN
+         lOMzGPmeoFdVWa+GGLV7cmOJAcR/kyry1fvz0/szOtpjaY7hUu2nTBFIzgYB6wDBBklq
+         Rg8pYHhtezlGQpAd3YeSYTBGukAv0K2b0idGhcoQLWOwIXJ2q2cSjt8XKtMQ8HFcsPGE
+         hLNhBvWal7cJmttI09jFx3SfTRJBcfLk8exohmxwpaVefMKPzE4242afwkp5R8Q7Ru24
+         V48Q==
+X-Gm-Message-State: ABy/qLZba1YMjtJ2yUYcfvTqUMpM8EltDlBXATgDcmkZRA4GrCx+m1Oi
+        /u5CCf5/Uy2BgDCgLWpgFqKPL925hDLcmVvxHsIhww==
+X-Google-Smtp-Source: APBJJlF+8ICw2cA0knoOu82P0vACeGwSY5ZVxWVVXM1JixDT9QTKRqn+naaGsso1AAcHBnqWs/4Jmg==
+X-Received: by 2002:a05:6a20:9147:b0:134:409f:41f4 with SMTP id x7-20020a056a20914700b00134409f41f4mr2915258pzc.24.1689787156347;
+        Wed, 19 Jul 2023 10:19:16 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id e16-20020a62aa10000000b0063f00898245sm3621695pff.146.2023.07.19.10.19.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jul 2023 10:19:15 -0700 (PDT)
+Message-ID: <64b81b13.620a0220.59dff.76a7@mx.google.com>
+Date:   Wed, 19 Jul 2023 10:19:15 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230716-fixes-overly-restrictive-mmap-v4-4-a3cd1cd32af2@kernel.org>
-References: <20230716-fixes-overly-restrictive-mmap-v4-0-a3cd1cd32af2@kernel.org>
-In-Reply-To: <20230716-fixes-overly-restrictive-mmap-v4-0-a3cd1cd32af2@kernel.org>
-To:     Latchesar Ionkov <lucho@ionkov.net>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc:     v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-        kernel@pengutronix.de, stable@vger.kernel.org,
-        Robert Schwebel <r.schwebel@pengutronix.de>,
-        Eric Van Hensbergen <ericvh@kernel.org>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=894; i=ericvh@kernel.org;
- h=from:subject:message-id; bh=k0K6ocifQ0ciwTzxXH7M8DUDHsKfrzNua/KxUjjXkFA=;
- b=owEBbQKS/ZANAwAKAYj/1ftKX/+YAcsmYgBkuA3ZNyXqWHLoseJ3EWeJrogkDkPGJ82+WR+E+
- 0fnABkiAwuJAjMEAAEKAB0WIQSWlvDRlqWQmKTK0VGI/9X7Sl//mAUCZLgN2QAKCRCI/9X7Sl//
- mH8ND/9VN84P0uGYO69TQEHK08nFdvfeZKbb3riQpl7CAFJtG+EtOYdws4XwZ8FUHomM1KMghDr
- dPYNggkxw5oDu+dtozFz92PR9eBD8Ip+DBFPoilAM/x4/Z1Uq2emVkldZYVIPu6ry/DxZ+Safne
- pWnMVYb1tK6e8gHgUL85BLi+r4koXFs7GZBtQzjGyiKGE5ruEPgc2/wRuf8z2lceXBVAwjdRvAa
- h2mvQ314jDebSO2w2eBREQvuy2BiylBEHvUHebN/agJpNSeh420tc9N/We9aiybdxflBv777gTq
- Wi3hytnPFjfErlzhhLs0wV1ZOw40DHbMSdlIfUpRg/6JcXmAZF7NEAjmysyMuf1+xtERKNjYFu9
- T2K+G1lQc0oACO07LebKqrY+aOrAYco8FZ9lEiKcnUWGEACgYiJgMIHJso9CCHY9+BM006uCuOW
- nJyWFxuRMYyYVKOh5w9jeKn3xXbx+rgTv4Fyy6Issr0hfD5+vUIckGIX36kaf1FfbsETlkzKrZI
- F1wQGbO466Ji+hjUYC5NpG5IduYMELK2gD5DrPck47M1BbGYhlO0poXe2HY2vRA0yojTLF9D7kd
- qe/S3ODW3fInC1vZsOPDoPtqGpbkF8LuX/G46f/kXVzW0Njm5eExaauysApKAC40+8cztAVmmiL
- ylMKFr4wG2hvSEg==
-X-Developer-Key: i=ericvh@kernel.org; a=openpgp;
- fpr=9696F0D196A59098A4CAD15188FFD5FB4A5FFF98
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Kernel: v6.1.39
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-6.1.y build: 19 builds: 0 failed, 19 passed,
+ 1 warning (v6.1.39)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-There was an invalidate_inode_pages2 added to readonly mmap path
-that is unnecessary since that path is only entered when writeback
-cache is disabled on mount.
+stable-rc/linux-6.1.y build: 19 builds: 0 failed, 19 passed, 1 warning (v6.=
+1.39)
 
-Cc: stable@vger.kernel.org
-Fixes: 1543b4c5071c ("fs/9p: remove writeback fid and fix per-file modes")
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
+/kernel/v6.1.39/
+
+Tree: stable-rc
+Branch: linux-6.1.y
+Git Describe: v6.1.39
+Git Commit: a456e17438819ed77f63d16926f96101ca215f09
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+
+
+Warnings summary:
+
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
 ---
- fs/9p/vfs_file.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index 9b61b480a9b0..11cd8d23f6f2 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -506,7 +506,6 @@ v9fs_file_mmap(struct file *filp, struct vm_area_struct *vma)
- 
- 	if (!(v9ses->cache & CACHE_WRITEBACK)) {
- 		p9_debug(P9_DEBUG_CACHE, "(read-only mmap mode)");
--		invalidate_inode_pages2(filp->f_mapping);
- 		return generic_file_readonly_mmap(filp, vma);
- 	}
- 
-
--- 
-2.39.2
-
+For more info write to <info@kernelci.org>
