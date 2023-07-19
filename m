@@ -2,96 +2,235 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4108758AEF
-	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 03:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45E8B758AF3
+	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 03:42:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229475AbjGSBkX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 21:40:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39172 "EHLO
+        id S229485AbjGSBmd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 21:42:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjGSBkW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 21:40:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 334871BD6;
-        Tue, 18 Jul 2023 18:40:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BAEB661680;
-        Wed, 19 Jul 2023 01:40:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 13D8DC433C7;
-        Wed, 19 Jul 2023 01:40:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689730821;
-        bh=Z0TyEYtGqfI6IcND0lcSyqGPYZx0ajPjBcu/XotKGcw=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=CqYT9gy4epOXt6zQpL/m5n6BiQztEEgdDmrpxSQ0GTZaeKUvOXCSatuMRkBsfrcaI
-         fmOw8iuqTSHdLbus8OimQFigPKKwGwEWjWxa0N3r1kPirB+rMNQidm1/AYZIrYh9kP
-         ekkFOm0qPGTD6rSqxjx8+bgXDXlFVI9Urak7JF+ABolxiWXqZWD4Jo/NkYv/aaAPqt
-         b+qBq9OzLpEdFpyN3f6FeE8tXdqkrj3BOQgQQPrW5lpt9rjRItB6jfjFT6hknjbFog
-         nc0yksKBqbbqOlgrv8dhBcbpxKUcJ+mgqf2gSrmELi85bv94zEDHD/7pNDyM1IkUCj
-         j7jSDa2KOzPIg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E05F7E22AE0;
-        Wed, 19 Jul 2023 01:40:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229463AbjGSBmc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 21:42:32 -0400
+Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4E971BCD
+        for <stable@vger.kernel.org>; Tue, 18 Jul 2023 18:42:30 -0700 (PDT)
+Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net [173.49.113.140])
+        (Authenticated sender: zack)
+        by letterbox.kde.org (Postfix) with ESMTPSA id 0E7653262AA;
+        Wed, 19 Jul 2023 02:42:25 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kde.org; s=users;
+        t=1689730948; bh=GUnUYL12ZLRuDUIED2a9wljCtTLcYkiXjN/0lQdXoAU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=KIDqkIZTjXxgneftZKtkK3UOQe0aeTIZomj8Z1NiapJC17UvwJb8dut68psl+U0Eh
+         pGqGFd5QNOvJgOr6T1I8oRd7Fr5FFBmHfXg8cWSjyqpqimbo+2Nr1H8JBJPCv5gnZg
+         1ZqLTBGuQ5/9gQxATVH8Ez+wNIzZCpflylba9uHewMYlc77fW+sierFUZJTI2l4vPb
+         WWt6Iu3ndWMQkXfNQzYh/J6CZLbERSb3MddII76jmcQ2haBsBLqMjfurpFRFsyvkyV
+         s1BacWS1knuiSeMhZmsyRS9u7Wv5EdtwGWPyorrq5g04+iOIw+tTn8+aHXNc2fDxmS
+         kBPh6bxjR4wFg==
+From:   Zack Rusin <zack@kde.org>
+To:     dri-devel@lists.freedesktop.org
+Cc:     krastevm@vmware.com, mombasawalam@vmware.com, banackm@vmware.com,
+        iforbes@vmware.com, javierm@redhat.com, ppaalanen@gmail.com,
+        contact@emersion.fr, daniel@ffwll.ch,
+        Zack Rusin <zackr@vmware.com>, stable@vger.kernel.org,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        Dave Airlie <airlied@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Gurchetan Singh <gurchetansingh@chromium.org>,
+        Chia-I Wu <olvaffe@gmail.com>,
+        virtualization@lists.linux-foundation.org,
+        spice-devel@lists.freedesktop.org,
+        Pekka Paalanen <pekka.paalanen@collabora.com>
+Subject: [PATCH v5 1/9] drm: Disable the cursor plane on atomic contexts with virtualized drivers
+Date:   Tue, 18 Jul 2023 21:42:10 -0400
+Message-Id: <20230719014218.1700057-2-zack@kde.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230719014218.1700057-1-zack@kde.org>
+References: <20230719014218.1700057-1-zack@kde.org>
+Reply-To: Zack Rusin <zackr@vmware.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/5] can: raw: fix receiver memory leak
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168973082091.10560.7182619527362375946.git-patchwork-notify@kernel.org>
-Date:   Wed, 19 Jul 2023 01:40:20 +0000
-References: <20230717180938.230816-2-mkl@pengutronix.de>
-In-Reply-To: <20230717180938.230816-2-mkl@pengutronix.de>
-To:     Marc Kleine-Budde <mkl@pengutronix.de>
-Cc:     netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-        linux-can@vger.kernel.org, kernel@pengutronix.de,
-        william.xuanziyang@huawei.com, socketcan@hartkopp.net,
-        stable@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+From: Zack Rusin <zackr@vmware.com>
 
-This series was applied to netdev/net.git (main)
-by Marc Kleine-Budde <mkl@pengutronix.de>:
+Cursor planes on virtualized drivers have special meaning and require
+that the clients handle them in specific ways, e.g. the cursor plane
+should react to the mouse movement the way a mouse cursor would be
+expected to and the client is required to set hotspot properties on it
+in order for the mouse events to be routed correctly.
 
-On Mon, 17 Jul 2023 20:09:34 +0200 you wrote:
-> From: Ziyang Xuan <william.xuanziyang@huawei.com>
-> 
-> Got kmemleak errors with the following ltp can_filter testcase:
-> 
-> for ((i=1; i<=100; i++))
-> do
->         ./can_filter &
->         sleep 0.1
-> done
-> 
-> [...]
+This breaks the contract as specified by the "universal planes". Fix it
+by disabling the cursor planes on virtualized drivers while adding
+a foundation on top of which it's possible to special case mouse cursor
+planes for clients that want it.
 
-Here is the summary with links:
-  - [net,1/5] can: raw: fix receiver memory leak
-    https://git.kernel.org/netdev/net/c/ee8b94c8510c
-  - [net,2/5] can: bcm: Fix UAF in bcm_proc_show()
-    https://git.kernel.org/netdev/net/c/55c3b96074f3
-  - [net,3/5] can: gs_usb: gs_can_open(): improve error handling
-    https://git.kernel.org/netdev/net/c/2603be9e8167
-  - [net,4/5] can: gs_usb: fix time stamp counter initialization
-    https://git.kernel.org/netdev/net/c/5886e4d5ecec
-  - [net,5/5] can: mcp251xfd: __mcp251xfd_chip_set_mode(): increase poll timeout
-    https://git.kernel.org/netdev/net/c/9efa1a5407e8
+Disabling the cursor planes makes some kms compositors which were broken,
+e.g. Weston, fallback to software cursor which works fine or at least
+better than currently while having no effect on others, e.g. gnome-shell
+or kwin, which put virtualized drivers on a deny-list when running in
+atomic context to make them fallback to legacy kms and avoid this issue.
 
-You are awesome, thank you!
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Fixes: 681e7ec73044 ("drm: Allow userspace to ask for universal plane list (v2)")
+Cc: <stable@vger.kernel.org> # v5.4+
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Gurchetan Singh <gurchetansingh@chromium.org>
+Cc: Chia-I Wu <olvaffe@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: virtualization@lists.linux-foundation.org
+Cc: spice-devel@lists.freedesktop.org
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+---
+ drivers/gpu/drm/drm_plane.c          | 13 +++++++++++++
+ drivers/gpu/drm/qxl/qxl_drv.c        |  2 +-
+ drivers/gpu/drm/vboxvideo/vbox_drv.c |  2 +-
+ drivers/gpu/drm/virtio/virtgpu_drv.c |  3 ++-
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c  |  2 +-
+ include/drm/drm_drv.h                |  9 +++++++++
+ include/drm/drm_file.h               | 12 ++++++++++++
+ 7 files changed, 39 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
+index 24e7998d1731..c6bbb0c209f4 100644
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -678,6 +678,19 @@ int drm_mode_getplane_res(struct drm_device *dev, void *data,
+ 		    !file_priv->universal_planes)
+ 			continue;
+ 
++		/*
++		 * If we're running on a virtualized driver then,
++		 * unless userspace advertizes support for the
++		 * virtualized cursor plane, disable cursor planes
++		 * because they'll be broken due to missing cursor
++		 * hotspot info.
++		 */
++		if (plane->type == DRM_PLANE_TYPE_CURSOR &&
++		    drm_core_check_feature(dev, DRIVER_CURSOR_HOTSPOT) &&
++		    file_priv->atomic &&
++		    !file_priv->supports_virtualized_cursor_plane)
++			continue;
++
+ 		if (drm_lease_held(file_priv, plane->base.id)) {
+ 			if (count < plane_resp->count_planes &&
+ 			    put_user(plane->base.id, plane_ptr + count))
+diff --git a/drivers/gpu/drm/qxl/qxl_drv.c b/drivers/gpu/drm/qxl/qxl_drv.c
+index b30ede1cf62d..91930e84a9cd 100644
+--- a/drivers/gpu/drm/qxl/qxl_drv.c
++++ b/drivers/gpu/drm/qxl/qxl_drv.c
+@@ -283,7 +283,7 @@ static const struct drm_ioctl_desc qxl_ioctls[] = {
+ };
+ 
+ static struct drm_driver qxl_driver = {
+-	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC,
++	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC | DRIVER_CURSOR_HOTSPOT,
+ 
+ 	.dumb_create = qxl_mode_dumb_create,
+ 	.dumb_map_offset = drm_gem_ttm_dumb_map_offset,
+diff --git a/drivers/gpu/drm/vboxvideo/vbox_drv.c b/drivers/gpu/drm/vboxvideo/vbox_drv.c
+index 4fee15c97c34..8ecd0863fad7 100644
+--- a/drivers/gpu/drm/vboxvideo/vbox_drv.c
++++ b/drivers/gpu/drm/vboxvideo/vbox_drv.c
+@@ -172,7 +172,7 @@ DEFINE_DRM_GEM_FOPS(vbox_fops);
+ 
+ static const struct drm_driver driver = {
+ 	.driver_features =
+-	    DRIVER_MODESET | DRIVER_GEM | DRIVER_ATOMIC,
++	    DRIVER_MODESET | DRIVER_GEM | DRIVER_ATOMIC | DRIVER_CURSOR_HOTSPOT,
+ 
+ 	.fops = &vbox_fops,
+ 	.name = DRIVER_NAME,
+diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.c b/drivers/gpu/drm/virtio/virtgpu_drv.c
+index a7ec5a3770da..60b1fd23229c 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_drv.c
++++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
+@@ -176,7 +176,8 @@ static const struct drm_driver driver = {
+ 	 * If KMS is disabled DRIVER_MODESET and DRIVER_ATOMIC are masked
+ 	 * out via drm_device::driver_features:
+ 	 */
+-	.driver_features = DRIVER_MODESET | DRIVER_GEM | DRIVER_RENDER | DRIVER_ATOMIC,
++	.driver_features = DRIVER_MODESET | DRIVER_GEM | DRIVER_RENDER | DRIVER_ATOMIC |
++			   DRIVER_CURSOR_HOTSPOT,
+ 	.open = virtio_gpu_driver_open,
+ 	.postclose = virtio_gpu_driver_postclose,
+ 
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+index 8b24ecf60e3e..d3e308fdfd5b 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -1611,7 +1611,7 @@ static const struct file_operations vmwgfx_driver_fops = {
+ 
+ static const struct drm_driver driver = {
+ 	.driver_features =
+-	DRIVER_MODESET | DRIVER_RENDER | DRIVER_ATOMIC | DRIVER_GEM,
++	DRIVER_MODESET | DRIVER_RENDER | DRIVER_ATOMIC | DRIVER_GEM | DRIVER_CURSOR_HOTSPOT,
+ 	.ioctls = vmw_ioctls,
+ 	.num_ioctls = ARRAY_SIZE(vmw_ioctls),
+ 	.master_set = vmw_master_set,
+diff --git a/include/drm/drm_drv.h b/include/drm/drm_drv.h
+index b77f2c7275b7..8303016665dd 100644
+--- a/include/drm/drm_drv.h
++++ b/include/drm/drm_drv.h
+@@ -104,6 +104,15 @@ enum drm_driver_feature {
+ 	 * acceleration should be handled by two drivers that are connected using auxiliary bus.
+ 	 */
+ 	DRIVER_COMPUTE_ACCEL            = BIT(7),
++	/**
++	 * @DRIVER_CURSOR_HOTSPOT:
++	 *
++	 * Driver supports and requires cursor hotspot information in the
++	 * cursor plane (e.g. cursor plane has to actually track the mouse
++	 * cursor and the clients are required to set hotspot in order for
++	 * the cursor planes to work correctly).
++	 */
++	DRIVER_CURSOR_HOTSPOT           = BIT(8),
+ 
+ 	/* IMPORTANT: Below are all the legacy flags, add new ones above. */
+ 
+diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
+index 010239392adf..69720ac29c67 100644
+--- a/include/drm/drm_file.h
++++ b/include/drm/drm_file.h
+@@ -228,6 +228,18 @@ struct drm_file {
+ 	 */
+ 	bool is_master;
+ 
++	/**
++	 * @supports_virtualized_cursor_plane:
++	 *
++	 * This client is capable of handling the cursor plane with the
++	 * restrictions imposed on it by the virtualized drivers.
++	 *
++	 * This implies that the cursor plane has to behave like a cursor
++	 * i.e. track cursor movement. It also requires setting of the
++	 * hotspot properties by the client on the cursor plane.
++	 */
++	bool supports_virtualized_cursor_plane;
++
+ 	/**
+ 	 * @master:
+ 	 *
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.39.2
 
