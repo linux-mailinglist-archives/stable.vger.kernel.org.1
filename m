@@ -2,94 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF70B7589D6
-	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 02:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC72D7589E4
+	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 02:06:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbjGSABt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 18 Jul 2023 20:01:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59938 "EHLO
+        id S229589AbjGSAGr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 18 Jul 2023 20:06:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229730AbjGSABs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 20:01:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CDB41BE7;
-        Tue, 18 Jul 2023 17:01:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E91B6159F;
-        Wed, 19 Jul 2023 00:00:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B6929C433C9;
-        Wed, 19 Jul 2023 00:00:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689724821;
-        bh=qxxeeH4BpVPJRWJ4+RBZAoXm54CuQ1BuSkX6X7QPBno=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=aM26f95NosLZkRBrJfElkigefJKCG4RGcGm7yoQa0kV402AWkNwxeOcvbA5zBw1nu
-         LH8/v9SpSyraWj2UFraGByiTEAsRpdyNSfxBjcKwf2yisrg1rf+ffy1cE5ivVwkUhL
-         KCi1B5rnO8iIy5XRlANVrw5nNvzm4c7/6i12TsYvFy0QaR4PsXQlbG8PSZ5HSDf8MQ
-         sd+99fC9x5txVMyehtWqt5b+s4l6E1kWLYCqTRNR/oQ0v188B61pnv/5N8Q76OlOsm
-         Rif0k4UoJyFDOkm065tfBNTz4lEy/PdHz33ZoNduRd+mOmg4urmNR/1cWh3WhxrTv6
-         Bssl9fiykT76w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 9A7C8E22AE4;
-        Wed, 19 Jul 2023 00:00:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229441AbjGSAGq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 18 Jul 2023 20:06:46 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20B97B3;
+        Tue, 18 Jul 2023 17:06:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689725205; x=1721261205;
+  h=to:cc:subject:references:date:mime-version:
+   content-transfer-encoding:from:message-id:in-reply-to;
+  bh=cVVByayn/bZnw82uquNHaQDWac1HyKeux0qRQyUY51g=;
+  b=C2klXh6Hl5jMNBeSFcJt0hWmhmX/IPVJaM5CiMUZ0bnkOxYEzvtGat57
+   Xb5s8FQYhGrpoBTLSjqfyjdGthDu/lPxGyNGEjtdTa+Oa4T4eLpTLsP34
+   H/bhJ5pqymTDUibcXdPbR7A9UfUauFawADciV3yOwULaIqS3MYW9HezDq
+   7okH/KZ5E7WHd5IZkD/VrtayME2vxOD83AJZNFObi1sW+qqIgg/Ms4G1Q
+   yXxTFuj5oT1BhYSGQkNP4cHuQpDxmslCWKMAPxoPPmY2P577hf2b+VKAw
+   QUHqhi7NDHD7nylHmoq8zzy86WOdpXOWS11gOogXXE7kzS5lcZex3OM0a
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="432521633"
+X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
+   d="scan'208";a="432521633"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 17:06:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="674099508"
+X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
+   d="scan'208";a="674099508"
+Received: from hhuan26-mobl.amr.corp.intel.com ([10.92.48.113])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-SHA; 18 Jul 2023 17:06:33 -0700
+Content-Type: text/plain; charset=utf-8; format=flowed; delsp=yes
+To:     "Jarkko Sakkinen" <jarkko@kernel.org>, dave.hansen@linux.intel.com,
+        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        "Dave Hansen" <dave.hansen@intel.com>
+Cc:     kai.huang@intel.com, reinette.chatre@intel.com,
+        kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/sgx: fix a NULL pointer
+References: <CU4OBQ8MQ2LK.2GRBPLQGVTZ3@seitikki>
+ <20230717202938.94989-1-haitao.huang@linux.intel.com>
+ <dfb1f233-aebd-50cf-8704-e83b91ee110a@intel.com>
+ <op.18ah5mn3wjvjmi@hhuan26-mobl.amr.corp.intel.com>
+ <b5779418-e2a4-ca7a-866f-97e49cd272cb@intel.com>
+ <op.18aontlmwjvjmi@hhuan26-mobl.amr.corp.intel.com>
+ <eb1aea6f-3688-f871-2335-ff911a51ef52@intel.com>
+ <op.18aqz7sbwjvjmi@hhuan26-mobl.amr.corp.intel.com>
+ <ad2d9610-61c0-4719-9df1-0116ef317d8a@intel.com>
+ <op.18asliuzwjvjmi@hhuan26-mobl.amr.corp.intel.com>
+ <891d530f-fa84-aed7-7465-b4722e983e92@intel.com>
+Date:   Tue, 18 Jul 2023 19:06:32 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] selftests: tc: increase timeout and add missing
- kconfig
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168972482162.23822.8375282604196078031.git-patchwork-notify@kernel.org>
-Date:   Wed, 19 Jul 2023 00:00:21 +0000
-References: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
-In-Reply-To: <20230713-tc-selftests-lkft-v1-0-1eb4fd3a96e7@tessares.net>
-To:     Matthieu Baerts <matthieu.baerts@tessares.net>
-Cc:     jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us,
-        shuah@kernel.org, keescook@chromium.org, davem@davemloft.net,
-        paulb@mellanox.com, marcelo.leitner@gmail.com,
-        mptcp@lists.linux.dev, pctammela@mojatatu.com,
-        skhan@linuxfoundation.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        stable@vger.kernel.org
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: Quoted-Printable
+From:   "Haitao Huang" <haitao.huang@linux.intel.com>
+Organization: Intel
+Message-ID: <op.18ayk61kwjvjmi@hhuan26-mobl.amr.corp.intel.com>
+In-Reply-To: <891d530f-fa84-aed7-7465-b4722e983e92@intel.com>
+User-Agent: Opera Mail/1.0 (Win32)
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+On Tue, 18 Jul 2023 17:05:59 -0500, Dave Hansen <dave.hansen@intel.com> =
+ =
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+wrote:
 
-On Thu, 13 Jul 2023 23:16:43 +0200 you wrote:
-> When looking for something else in LKFT reports [1], I noticed that the
-> TC selftest ended with a timeout error:
-> 
->   not ok 1 selftests: tc-testing: tdc.sh # TIMEOUT 45 seconds
-> 
-> I also noticed most of the tests were skipped because the "teardown
-> stage" did not complete successfully. It was due to missing kconfig.
-> 
-> [...]
+> On 7/18/23 14:57, Haitao Huang wrote:
+>> Okay, that explains. I would consider it still triggered by high
+>> pressure blips =F0=9F=98=84
+> I'm talking about a "blip" being a single allocation.  It's *LITERALLY=
+*
+> the smallest (aka. lowest) possible quantum of memory pressure.
+>
+> So go ahead and try to write the changelog without "high" or "low".
+> But, sheesh, if you and are somehow using "high" and "low" to describe=
 
-Here is the summary with links:
-  - [net,1/3] selftests: tc: set timeout to 15 minutes
-    https://git.kernel.org/netdev/net/c/fda05798c22a
-  - [net,2/3] selftests: tc: add 'ct' action kconfig dep
-    https://git.kernel.org/netdev/net/c/719b4774a8cb
-  - [net,3/3] selftests: tc: add ConnTrack procfs kconfig
-    https://git.kernel.org/netdev/net/c/031c99e71fed
+> the exact same condition, I think that's a rather large communication =
+or
+> understanding problem somewhere.  It doesn't bode well for this simple=
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> patch.
 
+Sorry that did not come across right. I'll send v3 (please skip v2) with=
+  =
 
+the comments added as you suggested.
+
+Thanks a lot for your time and the review.
+BR
+Haitao
