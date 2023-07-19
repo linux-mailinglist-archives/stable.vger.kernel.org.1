@@ -2,158 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77D02759C8C
-	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 19:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76AA1759D72
+	for <lists+stable@lfdr.de>; Wed, 19 Jul 2023 20:35:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbjGSRiz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 19 Jul 2023 13:38:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60418 "EHLO
+        id S229673AbjGSSfa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 19 Jul 2023 14:35:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjGSRiy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 19 Jul 2023 13:38:54 -0400
-Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.129.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DE0F10CC
-        for <stable@vger.kernel.org>; Wed, 19 Jul 2023 10:38:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
-        t=1689788288;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qxAHiS1dMKUPvSOrNPg4ns2JBXqCwmJKuYUyY8qtwHk=;
-        b=XN2Z+wVzrI7P8m/UrninbWUyJUqNwVa9n5D2GDAtWCaKBuwselXEWB5mYse5ux1VF8aTRA
-        duwOe6GAJzee0pSVa4Fqm6tmPoj1Iq9own4wLT5bnxS1QSYRSGvsB4cBa7SyxuAt/3Ngct
-        67Ogi0KLo/d1/tXCh2d5XJ8nrDK6vi8=
-Received: from g2t4621.austin.hp.com (g2t4621.austin.hp.com [15.73.212.80])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-611-vkySPCFzPUOsuizxogouvw-1; Wed, 19 Jul 2023 13:38:02 -0400
-X-MC-Unique: vkySPCFzPUOsuizxogouvw-1
-Received: from g1t6217.austin.hpicorp.net (g1t6217.austin.hpicorp.net [15.67.1.144])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by g2t4621.austin.hp.com (Postfix) with ESMTPS id B083426F;
-        Wed, 19 Jul 2023 17:37:59 +0000 (UTC)
-Received: from jam-buntu.lan (unknown [15.74.50.248])
-        by g1t6217.austin.hpicorp.net (Postfix) with ESMTP id 174AB65;
-        Wed, 19 Jul 2023 17:37:58 +0000 (UTC)
-From:   Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-To:     linux-usb@vger.kernel.org, netdev@vger.kernel.org
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, hayeswang@realtek.com, jflf_kernel@gmx.com,
-        bjorn@mork.no, svenva@chromium.org, linux-kernel@vger.kernel.org,
-        eniac-xw.zhang@hp.com,
-        Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v2] r8152: Suspend USB device before shutdown when WoL is enabled
-Date:   Wed, 19 Jul 2023 17:37:56 +0000
-Message-Id: <20230719173756.380829-1-alexandru.gagniuc@hp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2c12d7a0-3edb-48b3-abf7-135e1a8838ca@rowland.harvard.edu>
-References: <2c12d7a0-3edb-48b3-abf7-135e1a8838ca@rowland.harvard.edu>
+        with ESMTP id S229961AbjGSSf2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 19 Jul 2023 14:35:28 -0400
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B171FFB;
+        Wed, 19 Jul 2023 11:35:18 -0700 (PDT)
+Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-3a3b7fafd61so5290983b6e.2;
+        Wed, 19 Jul 2023 11:35:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689791717; x=1690396517;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WPhThja73rMrwtCLzLlEodMjDA/ciBfmdIGUhDH+5vQ=;
+        b=X+Z+q0Ps8A7gvg57y6lo4X3jlA2aRilCfFsCwdxkuxGPIk3h0dhuB0CfJYcvPVaLHT
+         tQYWNvqAMkdWsYjU/X+IzJMmLjQ+ZOsaZ3iB9O5IzCj/U+OYN1eZP0xT0wgqpP1ipMA7
+         OCktBzVSn6oy0dgLtG9dvQsWApnxlWn83JZANN2J3pjWHxQJ63i/vm+zbongHy0TJMUI
+         JxRQ4IgT2HaSnqsBCRrKBBE+9gaa6hGPmqjHKwb/LHmQBPM/CABIdr0rBJ/8fj1HISR8
+         9ChmX8tSa9KeoSWfSd9eqzLAKW97WbX8wt4zHLhbPI1XNSbZAMyTYyNtl91nbdrjVPFR
+         Nu4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689791717; x=1690396517;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WPhThja73rMrwtCLzLlEodMjDA/ciBfmdIGUhDH+5vQ=;
+        b=TkW/KEM0Xmyxk9DTWSOkrTdEhxDDvwr0JqyEC1jz5CD9sYas4jLhJFVTGVteZNz3QY
+         ddNkE1tt8PtRIA35npkCxzR82oLRn+tvxWuFtZWhgYuM5HEuhxD1UF4ShMfCAqnIKdes
+         tCzHoX+XBxSxJ/jNGHg1OaiIFY5tXt0jOPq/BshT51cwRZmlcNJ/Ub8xYDcVVEwxVQiN
+         /JnbxXpSQeDCMJiEHINEdg52MqxQtY9YhvVQhe0ayu2ECDcbwP9y8LkBTEca4oq8Gz/V
+         oOLb5B5DVx2ZF+ht8K54JU28s1E2jhmRi4WVXz/+ZSM9ZbmoqKzvydSCn3f1hpcixyyv
+         YZaw==
+X-Gm-Message-State: ABy/qLbKSjogfbUOxmYD3RSgbLH3L9RHpOrB8fRH12tB84XVJKxjxuVK
+        +cUR6vTwqB4YL0GAx0ucsuk=
+X-Google-Smtp-Source: APBJJlHVEHlTyIvqzFTB4W0vefUBSAK+mOmKyVCwFbKOOhaY3peS5u1nNan1QlfcMHTg8RLq496Rcw==
+X-Received: by 2002:a05:6808:157:b0:3a3:79ef:e2d3 with SMTP id h23-20020a056808015700b003a379efe2d3mr6395705oie.29.1689791717505;
+        Wed, 19 Jul 2023 11:35:17 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id y7-20020a056808130700b003a3860b375esm2042016oiv.34.2023.07.19.11.35.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jul 2023 11:35:17 -0700 (PDT)
+Message-ID: <c3385c4a-1864-e602-379d-fc0184053ea6@gmail.com>
+Date:   Wed, 19 Jul 2023 14:44:12 -0300
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: hp.com
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: Re: [PATCH] kbuild: rust: avoid creating temporary files
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Raphael Nestler <raphael.nestler@gmail.com>,
+        Andrea Righi <andrea.righi@canonical.com>,
+        stable@vger.kernel.org
+References: <20230718055235.1050223-1-ojeda@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20230718055235.1050223-1-ojeda@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-For Wake-on-LAN to work from S5 (shutdown), the USB link must be put
-in U3 state. If it is not, and the host "disappears", the chip will
-no longer respond to WoL triggers.
-
-To resolve this, add a notifier block and register it as a reboot
-notifier. When WoL is enabled, work through the usb_device struct to
-get to the suspend function. Calling this function puts the link in
-the correct state for WoL to function.
-
-Fixes: 21ff2e8976b1 ("r8152: support WOL")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
----
-Changes since v1:
-    * Add "Fixes:" tag to commit message
-
- drivers/net/usb/r8152.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 0738baa5b82e..abb82a80d262 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -20,6 +20,7 @@
- #include <net/ip6_checksum.h>
- #include <uapi/linux/mdio.h>
- #include <linux/mdio.h>
-+#include <linux/reboot.h>
- #include <linux/usb/cdc.h>
- #include <linux/suspend.h>
- #include <linux/atomic.h>
-@@ -876,6 +877,7 @@ struct r8152 {
- =09struct delayed_work schedule, hw_phy_work;
- =09struct mii_if_info mii;
- =09struct mutex control;=09/* use for hw setting */
-+=09struct notifier_block reboot_notifier;
- #ifdef CONFIG_PM_SLEEP
- =09struct notifier_block pm_notifier;
- #endif
-@@ -9610,6 +9612,25 @@ static bool rtl8152_supports_lenovo_macpassthru(stru=
-ct usb_device *udev)
- =09return 0;
- }
-=20
-+/* Suspend realtek chip before system shutdown
-+ *
-+ * For Wake-on-LAN to work from S5, the USB link must be put in U3 state. =
-If
-+ * the host otherwise "disappears", the chip will not respond to WoL trigg=
-ers.
-+ */
-+static int rtl8152_notify(struct notifier_block *nb, unsigned long code,
-+=09=09=09  void *unused)
-+{
-+=09struct r8152 *tp =3D container_of(nb, struct r8152, reboot_notifier);
-+=09struct device *dev =3D &tp->udev->dev;
-+
-+=09if (code =3D=3D SYS_POWER_OFF) {
-+=09=09if (tp->saved_wolopts && dev->type->pm->suspend)
-+=09=09=09dev->type->pm->suspend(dev);
-+=09}
-+
-+=09return NOTIFY_DONE;
-+}
-+
- static int rtl8152_probe(struct usb_interface *intf,
- =09=09=09 const struct usb_device_id *id)
- {
-@@ -9792,6 +9813,9 @@ static int rtl8152_probe(struct usb_interface *intf,
- =09else
- =09=09device_set_wakeup_enable(&udev->dev, false);
-=20
-+=09tp->reboot_notifier.notifier_call =3D rtl8152_notify;
-+=09register_reboot_notifier(&tp->reboot_notifier);
-+
- =09netif_info(tp, probe, netdev, "%s\n", DRIVER_VERSION);
-=20
- =09return 0;
-@@ -9812,6 +9836,7 @@ static void rtl8152_disconnect(struct usb_interface *=
-intf)
- =09if (tp) {
- =09=09rtl_set_unplug(tp);
-=20
-+=09=09unregister_reboot_notifier(&tp->reboot_notifier);
- =09=09unregister_netdev(tp->netdev);
- =09=09tasklet_kill(&tp->tx_tl);
- =09=09cancel_delayed_work_sync(&tp->hw_phy_work);
---=20
-2.39.1
-
+On 7/18/23 02:52, Miguel Ojeda wrote:
+> `rustc` outputs by default the temporary files (i.e. the ones saved
+> by `-Csave-temps`, such as `*.rcgu*` files) in the current working
+> directory when `-o` and `--out-dir` are not given (even if
+> `--emit=x=path` is given, i.e. it does not use those for temporaries).
+> 
+> Since out-of-tree modules are compiled from the `linux` tree,
+> `rustc` then tries to create them there, which may not be accessible.
+> 
+> Thus pass `--out-dir` explicitly, even if it is just for the temporary
+> files.
+> 
+> Reported-by: Raphael Nestler <raphael.nestler@gmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1015
+> Reported-by: Andrea Righi <andrea.righi@canonical.com>
+> Tested-by: Raphael Nestler <raphael.nestler@gmail.com>
+> Tested-by: Andrea Righi <andrea.righi@canonical.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> [...]
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
