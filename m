@@ -2,92 +2,173 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FE7075B79C
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 21:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 799EE75B804
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 21:32:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230198AbjGTTMD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 15:12:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57726 "EHLO
+        id S230443AbjGTTcl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 15:32:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229898AbjGTTMC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 15:12:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8904D270C;
-        Thu, 20 Jul 2023 12:11:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2036061BA7;
-        Thu, 20 Jul 2023 19:11:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A884C433C8;
-        Thu, 20 Jul 2023 19:11:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689880316;
-        bh=80XQo1u1W5RBUzP6MVZbbNCR7TVpbsOFg3kZs+CSx5E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=X9pTtHbsq9+b1vbnbii14a8DTLligelcP6UaJ1moglWtfXWh5THhzh8W+Zqklo4Rz
-         vRdB6O4BLBLxpe58Cm+7vKJ3ndX13B2bvhin1Gq257anNjmxZ71I7UwyOXu4KnjLOc
-         R8kBklK4mb3XeAoIvHIWHbjYvar/H7CQUerpG8/IteGFTc/dE2UmIw2p8TM5IKCFMt
-         Fj/eIzM4thyAdwdIBzNWcBJNj8uuYGolv36zj1v5kxWlXwv8v5nw9J7To6JIEGE6F+
-         5Bml7SGsrlXNrU9Mt5qc4jp82zf1LdNrjStFJSORhVkD725WlVsTh1OJGPcOAZmk4A
-         DQTzHfh+rLkrw==
-Date:   Thu, 20 Jul 2023 15:11:55 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH AUTOSEL 6.4 03/26] wifi: rtw89: 8851be: add 8851BE PCI
- entry and fill PCI capabilities
-Message-ID: <ZLmG+y9AMWxl68OG@sashalap>
-References: <20230709151255.512931-1-sashal@kernel.org>
- <20230709151255.512931-3-sashal@kernel.org>
- <b8854720cdd2412b920c7b548d7eebd6@realtek.com>
+        with ESMTP id S230441AbjGTTck (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 15:32:40 -0400
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A39971999
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 12:32:38 -0700 (PDT)
+Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-403470df1d0so11553391cf.0
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 12:32:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google; t=1689881557; x=1690486357;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zWhwuO2Me2HmK8/saXTSzM5wYXByZMsVez1QS7juqfo=;
+        b=e+nt62Bh5ZofrXCZ9bP/gLnuiNloOpMWtvA4dbflLB24Enl5gt0h6pur+PdY9nJNT8
+         8KZI6n+U8KkOcRbQIVOmI4YkS5Gc6bojyjiuOmhxUe3olsgwJKmPf4tRlPogOyypEJx9
+         hylKQboYNHhMq8uJIJOyQg7h1QeXp98nBK2Bg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689881557; x=1690486357;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zWhwuO2Me2HmK8/saXTSzM5wYXByZMsVez1QS7juqfo=;
+        b=X1F8Tvgyv8WAThLIjHL9gZRD799MMNKdM4hPWEHEIv/41gbFJSKfD70DnYBfLWnDMi
+         lkCq+uc4ZWy40jqX1mxhRExuMlBQF+KgDTavqaxNNEeaGD60/4luQu/Zr3jpese4KPIw
+         6EdKEDdEbWMiFfb1JbRmjIYWACSubMNiY3zFE+FEW3fVZzZiFa9haCtHPYDpQyJr9b1n
+         zKUxMxz0hDbqVBbofGf+ObOTuryPFFN3b8VNZ9RCBn/isCbCwt3Pu3l/Z4P6m36i6gQp
+         3x+61KqP7ClCNmoYsRN55ToiZgURPxGNxTFwuPbuT5p4hxM+iLr5ZEkoACGG2tuG9dDi
+         ry3w==
+X-Gm-Message-State: ABy/qLal0Bp/avO1KYOViS1dUX8DNGy2VN75vAC2sFPK4l6Npgai3tsE
+        hILl7x39DK3S/h86sDFVBxC/YA==
+X-Google-Smtp-Source: APBJJlEo+6BmEpxWjJfZHMnOZBxlZOJy0JXfy7Enc3/Bc+jVOdN2rTapd2ltYQx6HIlpsiz0lV3iYw==
+X-Received: by 2002:a05:622a:64c:b0:3ff:2cce:c625 with SMTP id a12-20020a05622a064c00b003ff2ccec625mr6081078qtb.19.1689881557534;
+        Thu, 20 Jul 2023 12:32:37 -0700 (PDT)
+Received: from [192.168.0.140] (c-98-249-43-138.hsd1.va.comcast.net. [98.249.43.138])
+        by smtp.gmail.com with ESMTPSA id d3-20020ac81183000000b00402364e77dcsm659334qtj.7.2023.07.20.12.32.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jul 2023 12:32:36 -0700 (PDT)
+Message-ID: <8682b08c-347b-5547-60e0-013dcf1f8c93@joelfernandes.org>
+Date:   Thu, 20 Jul 2023 15:32:35 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <b8854720cdd2412b920c7b548d7eebd6@realtek.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [BUG] Re: Linux 6.4.4
+Content-Language: en-US
+To:     paulmck@kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
+        jslaby@suse.cz, rcu@vger.kernel.org
+References: <2023071940-suspect-ominous-4a6a@gregkh>
+ <20230720132714.GA3726096@google.com>
+ <2b8fc10b-785e-48b9-9a38-5c1af81f9578@paulmck-laptop>
+ <CAEXW_YQO7OCdkXm_SBcPhAm8V8vMaF_5DQq7PbG9PZb7RFgA_g@mail.gmail.com>
+ <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
+From:   Joel Fernandes <joel@joelfernandes.org>
+In-Reply-To: <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 12:25:24AM +0000, Ping-Ke Shih wrote:
->
->
->> -----Original Message-----
->> From: Sasha Levin <sashal@kernel.org>
->> Sent: Sunday, July 9, 2023 11:13 PM
->> To: linux-kernel@vger.kernel.org; stable@vger.kernel.org
->> Cc: Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo <kvalo@kernel.org>; Sasha Levin <sashal@kernel.org>;
->> linux-wireless@vger.kernel.org
->> Subject: [PATCH AUTOSEL 6.4 03/26] wifi: rtw89: 8851be: add 8851BE PCI entry and fill PCI capabilities
->>
->> From: Ping-Ke Shih <pkshih@realtek.com>
->>
->> [ Upstream commit 99ff8da56322cda9eb9b37021e27b127c2d1cad8 ]
->>
->> Add PCI entry to 8851BE with its device ID 10ec:b851, also fill PCI info
->> according to its capabilities.
->>
->> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->> Signed-off-by: Kalle Valo <kvalo@kernel.org>
->> Link: https://lore.kernel.org/r/20230421024551.29994-3-pkshih@realtek.com
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->Please don't take this patch to 6.4, 6.3, 6.1, and other stable branches.
->With this patch, it still can't enable 8851BE, so let kernel 6.5 to be the
->first version that supports 8851BE.
+On 7/20/23 15:04, Paul E. McKenney wrote:
+ > On Thu, Jul 20, 2023 at 12:31:13PM -0400, Joel Fernandes wrote:
+ >> Hi Paul,
+ >>
+ >> On Thu, Jul 20, 2023 at 11:55 AM Paul E. McKenney <paulmck@kernel.org> wrote:
+ >>>
+ >>> On Thu, Jul 20, 2023 at 01:27:14PM +0000, Joel Fernandes wrote:
+[...]
+ >>>>
+ >>>> So likely RCU boosting is failing:
+ >>>>
+ >>>> The full TREE03 splat:
+ >>>> [   54.243588] ------------[ cut here ]------------
+ >>>> [   54.244547] rcu-torture: rcu_torture_boost started
+[...]
+ >>>> [   54.300499] RIP: 0010:rcu_torture_stats_print+0x5b2/0x620
+[...]
+ >>>> [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
+ >>>>
+ >>>> However, if we are to believe the '9', it appears the object did made it
+ >>>> quite some till the end of the pipe array but not until the free pool.
+ >>>
+ >>> This is from this if/for statement, correct?
+ >>>
+ >>>                  stutter_waited = stutter_wait("rcu_torture_writer");
+ >>>                  if (stutter_waited &&
+ >>>                      !atomic_read(&rcu_fwd_cb_nodelay) &&
+ >>>                      !cur_ops->slow_gps &&
+ >>>                      !torture_must_stop() &&
+ >>>                      boot_ended)
+ >>>                          for (i = 0; i < ARRAY_SIZE(rcu_tortures); i++)
+ >>>                                  if (list_empty(&rcu_tortures[i].rtort_free) &&
+ >>>                                      rcu_access_pointer(rcu_torture_current) !=
+ >>>                                      &rcu_tortures[i]) {
+ >>>                                          tracing_off();
+ >>>                                          show_rcu_gp_kthreads();
+ >>>                                          WARN(1, "%s: rtort_pipe_count:
+ >>>                                          rcu_ftrace_dump(DUMP_ALL);
+ >>>                                  }
+ >>
+ >> Yes, that's right.
+ >>
+ >>> If so, this happens when there was a stutter wait, but RCU grace
+ >>> periods failed to clear out the backlog during the several seconds that
+ >>> rcutorture was forced idle.  This might be related to the RCU priority
+ >>> boosting failure, in which a preempted reader persisted across the
+ >>> stutter interval.
+ >>
+ >> When RCU is operating normally, shouldn't the check
+ >> "(list_empty(&rcu_tortures[i].rtort_free)" not run until the preempted
+ >> reader unblocks and exits its RCU read-side critical section?
+ >
+ > Yes, but not just "until", but rather "long after".  If RCU is doing
+ > grace periods correctly, an active reader on a given rcu_tortures[]
+ > element will prevent .rtort_pipe_count from exceeding the value 2.
 
-Dropped, thanks!
+Ah ok, so the rtort_pipe_count being 9 is a sign RCU isn't making progress thus 
+making it absent from the free list.
 
--- 
-Thanks,
-Sasha
+ >
+ > The element will not be put on a list until .rtort_pipe_count is equal
+ > to RCU_TORTURE_PIPE_LEN, which is 10.
+ >
+ > This warning usually appears when something is holding up the grace-period
+ > kthread.  Historically, this has included deadlocks, missed timers,
+ > and whatever else can prevent the grace-period kthread from running.
+
+Makes sense.
+
+ >> One thing that confuses me, in the case of
+ >> "cur_ops->deferred_free(old_rp);" , the earlier do-while loop may exit
+ >> before the async callbacks can finish. So what prevents the
+ >> "(list_empty(&rcu_tortures[i].rtort_free)" check from happening before
+ >> grace periods happen? Thanks for any clarification.
+ >
+ > We only enter this code if the stutter_wait() actually waited, and by
+ > default this function will wait about five seconds.  Since the rcutorture
+ > testing goes idle during this time period (or is supposed to!), if things
+ > are working properly, knocking off ten grace periods during that time
+ > should be pretty much a given.
+
+Sure, makes sense. And this is not Lazy-RCU so 5 seconds should be plenty ;). I 
+think I was subconsciously expecting an rcu_barrier() somewhere in the code 
+before those checks, but that's not needed as you pointed that the stutter 
+should be giving enough time for RCU to make progress.
+
+So hmm, the count being 9 means that not enough RCU grace periods have passed 
+for the rcu_torture object in question thus keeping it always allocated. The GP 
+thread not getting CPU can do that indeed, or perhaps something else stalling 
+RCU like a preempted reader, length preemption disabling on a CPU and so forth.. 
+  I'll try to collect a trace when it happens.
+
+thanks,
+
+  - Joel
