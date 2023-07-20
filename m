@@ -2,64 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1939875AFCA
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 15:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 656B475B04B
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 15:43:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230090AbjGTN2F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 09:28:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46842 "EHLO
+        id S230179AbjGTNnj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 09:43:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231934AbjGTN1z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 09:27:55 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EAE82D7B
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 06:27:30 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-78654448524so33598639f.2
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 06:27:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1689859635; x=1690464435;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sq7dHUeD+Xg/tMSj+YLwfJ2caZRXOmmvG1cR5ZPGm8A=;
-        b=Tc135+5ZinqDRf/Bhdyx/BtYNsMQjvCJ5rASuyucyDEkD4ems4r4v2MtkPvRDDdYc2
-         kCwti8V/HKVPBOW/SYaNJzwp4qMg49QcEhiXGgym+XP6rKo49mxMQ0bZVeAhbwGYwAnE
-         h/FA8CNRySBf0XLwfjgIqTG+sbFnS4jc+2RGM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689859635; x=1690464435;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sq7dHUeD+Xg/tMSj+YLwfJ2caZRXOmmvG1cR5ZPGm8A=;
-        b=hKSRoAJ0yLTi6U4A/CJwk21YhmLSMtdARDRVUy7pARtuucwoJD5JAVjhbkLDOZTHze
-         FFTWAl/e1/Mocl6k70ko81wO0ejZAe4t8f+uG7QFnXDngCmygvt75AWCzlRzqg1Hb+ge
-         IkUpmEwkphSDfOpzk0aIA5ILR5WsiHgHOct7Ywb57bZhSrOtHiTnlA7X0+ZA66xsPNI+
-         MIxl5XM5QZEgdLLaJ8bpW7irTgyE1MkSPZ413yTuUeYrNm34ei8Vu0Kpx0T/QY5nCKDE
-         NH9mquCT6Z+QyXrU89fqFM6v2RHlFhsBVLStGjROPzEnHvWORCQdzeacyoxVoly5zmYN
-         sibQ==
-X-Gm-Message-State: ABy/qLb0IPRuOZrpmmZPrSFycGmdh6p/Q2kXbK3+TxDA2n0Mv94M9WWd
-        34M/ftTLNZRMoGOunEHlEu4ISw==
-X-Google-Smtp-Source: APBJJlG2tTjykjLc6oXMJS1fb3KCcg1yffV1LWPPQqNtREvqQZsKQ/3ZLAWNKu6ZiV5N/eImx4cfJg==
-X-Received: by 2002:a5e:a90b:0:b0:783:63ac:25cf with SMTP id c11-20020a5ea90b000000b0078363ac25cfmr8231109iod.7.1689859635559;
-        Thu, 20 Jul 2023 06:27:15 -0700 (PDT)
-Received: from localhost (195.121.66.34.bc.googleusercontent.com. [34.66.121.195])
-        by smtp.gmail.com with ESMTPSA id n11-20020a6bf60b000000b00786ea00bdb5sm326933ioh.2.2023.07.20.06.27.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jul 2023 06:27:14 -0700 (PDT)
-Date:   Thu, 20 Jul 2023 13:27:14 +0000
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-        jslaby@suse.cz, rcu@vger.kernel.org
-Subject: [BUG] Re: Linux 6.4.4
-Message-ID: <20230720132714.GA3726096@google.com>
-References: <2023071940-suspect-ominous-4a6a@gregkh>
+        with ESMTP id S230042AbjGTNnh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 09:43:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41373198D
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 06:43:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB07761AF8
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 13:43:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB368C433C7
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 13:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689860615;
+        bh=qFTIlNRQeD8IFZaxJlnWydEilGmNQeUdwZWlC1cmnlc=;
+        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+        b=aQ/2M4w6rPEtyCO1OsZRi65YrCEJiroomacDuR2o4Eg2gRmhZSd8cX5fpWvJhnbMq
+         RWGqiZbGtGQ2Qevv/Rj4CNBPGlqMhgjpUeGviTVX8Am6Yz8FQd1dF5Wxu1kxCxPiAi
+         D91BlDkLaRFF/e5/iD4S+C1/JuWY8S6ISWf+3F7IbTuym0XtnDAtbex4WVU7dBE1Iu
+         RabLIJwOp709j+YSSOiIPv4xFfSlWEb6cfdshmM+9kFK4iCe2w2llZaoqgJWiV5PxA
+         pT81wZwJz53+AhjirGg6VGpQyaWaXonLw6s/xtHoYr3RmLXZQwEwZsVtjtiMAb4EsD
+         lni3NMBaF5grA==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5661eb57452so520183eaf.2
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 06:43:34 -0700 (PDT)
+X-Gm-Message-State: ABy/qLY/jX/zOrnUEkoKBFQ4k9u5s27Iv1QyK68G14Kj+qLSSERU+IaR
+        hHomZkBk7Bmi6i296ahR9ucS25+v43hsySsPhkM=
+X-Google-Smtp-Source: APBJJlEpv6AUnTPkhPZSsa2pzncVNJXiXjc7ybQJHbrQOeTez08LaUSbTCybtZdyxZYtEy5RloKUuxDzZDfbiDJJO6U=
+X-Received: by 2002:a4a:3712:0:b0:566:f3f1:5f5c with SMTP id
+ r18-20020a4a3712000000b00566f3f15f5cmr2162489oor.9.1689860613935; Thu, 20 Jul
+ 2023 06:43:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023071940-suspect-ominous-4a6a@gregkh>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+Received: by 2002:ac9:53c4:0:b0:4e8:f6ff:2aab with HTTP; Thu, 20 Jul 2023
+ 06:43:33 -0700 (PDT)
+In-Reply-To: <20230720132336.7614-6-linkinjeon@kernel.org>
+References: <20230720132336.7614-1-linkinjeon@kernel.org> <20230720132336.7614-6-linkinjeon@kernel.org>
+From:   Namjae Jeon <linkinjeon@kernel.org>
+Date:   Thu, 20 Jul 2023 22:43:33 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd_kL8H4JF=cALcGcZvEuYH3V6ehvXLHWyoQNMGwzLwy3A@mail.gmail.com>
+Message-ID: <CAKYAXd_kL8H4JF=cALcGcZvEuYH3V6ehvXLHWyoQNMGwzLwy3A@mail.gmail.com>
+Subject: Re: [5.15.y PATCH 0/4] ksmbd: ZDI Vulnerability patches for 5.15.y
+To:     stable@vger.kernel.org
+Cc:     gregkh@linuxfoundation.org, stfrench@microsoft.com,
+        smfrench@gmail.com, Namjae Jeon <linkinjeon@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,119 +64,23 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jul 19, 2023 at 05:06:39PM +0200, Greg Kroah-Hartman wrote:
-> I'm announcing the release of the 6.4.4 kernel.
-> 
-> All users of the 6.4 kernel series must upgrade.
-> 
-> The updated 6.4.y git tree can be found at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.4.y
-> and can be browsed at the normal kernel.org git web browser:
-> 	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-
-I have been consistently hitting the following splat with rcutorture's TREE03
-test on 6.4.4. This happened with 6.4.4-rc3 as well.
-
-Happens at:
-		WARN_ON_ONCE(n_rcu_torture_boost_failure); // boost failed (TIMER_SOFTIRQ RT prio?)
-
-So likely RCU boosting is failing:
-
-The full TREE03 splat:
-[   54.243588] ------------[ cut here ]------------
-[   54.244547] rcu-torture: rcu_torture_boost started
-[   54.247643] WARNING: CPU: 12 PID: 166 at kernel/rcu/rcutorture.c:2227 rcu_torture_stats_print+0x5b2/0x620
-[   54.273082] Modules linked in:
-[   54.278336] CPU: 12 PID: 166 Comm: rcu_torture_sta Not tainted 6.4.4-g62813c2d2a36 #1
-[   54.288540] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[   54.300499] RIP: 0010:rcu_torture_stats_print+0x5b2/0x620
-[   54.307525] Code: 00 00 48 8b 05 3f 6c 46 02 e9 4a fe ff ff 0f 0b e9 02 fd ff ff 0f 0b e9 09 fd ff ff 0f 0b e9 10 fd ff ff 0f 0b e9 17 fd ff ff <0f> 0b e9 1e fd ff ff 0f 0b e9 21 fd ff ff e8 0b 54 ff ff 84 c0 0f
-[   54.331276] RSP: 0000:ffff9fef805efe08 EFLAGS: 00010202
-[   54.338374] RAX: 0000000000000000 RBX: ffff9fef805efe88 RCX: 00000000ffffdfff
-[   54.347738] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000001
-[   54.358923] RBP: ffff9fef805efe30 R08: 00000000ffffdfff R09: 00000000ffffdfff
-[   54.368209] R10: ffffffff94e59280 R11: ffffffff94e59280 R12: 0000000000000001
-[   54.377367] R13: 0000000000000000 R14: 00000000000002fc R15: ffffffff93514000
-[   54.386739] FS:  0000000000000000(0000) GS:ffff9c901f500000(0000) knlGS:0000000000000000
-[   54.397130] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   54.404585] CR2: 0000000000000000 CR3: 000000000308e000 CR4: 00000000000006e0
-[   54.413884] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[   54.423118] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[   54.432192] Call Trace:
-[   54.435634]  <TASK>
-[   54.438512]  ? rcu_torture_stats_print+0x5b2/0x620
-[   54.444904]  ? __warn+0x7c/0x130
-[   54.449221]  ? rcu_torture_stats_print+0x5b2/0x620
-[   54.455737]  ? report_bug+0x171/0x1a0
-[   54.460935]  ? handle_bug+0x3c/0x70
-[   54.465874]  ? exc_invalid_op+0x17/0x70
-[   54.471336]  ? asm_exc_invalid_op+0x1a/0x20
-[   54.477092]  ? __pfx_rcu_torture_stats+0x10/0x10
-[   54.483472]  ? rcu_torture_stats_print+0x5b2/0x620
-[   54.490029]  ? rcu_torture_stats_print+0x28a/0x620
-[   54.496565]  ? finish_task_switch.isra.0+0x7e/0x240
-[   54.503261]  rcu_torture_stats+0x25/0x70
-[   54.508686]  kthread+0xe3/0x110
-[   54.513141]  ? __pfx_kthread+0x10/0x10
-[   54.518330]  ret_from_fork+0x2c/0x50
-[   54.523356]  </TASK>
-[   54.526500] ---[ end trace 0000000000000000 ]---
-
-Also other issues in 6.4.4, I am seeing RCU failures with TREE07 about 40
-minutes into the test. This warning indicates that an rcu_torture object from
-the rcu_torture pool is still allocated which is an indiciation that RCU is
-not working.
-
-[ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
-
-However, if we are to believe the '9', it appears the object did made it
-quite some till the end of the pipe array but not until the free pool.
-
-The full TREE07 splat:
-[ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
-[ 2169.489413] WARNING: CPU: 4 PID: 130 at kernel/rcu/rcutorture.c:1584 rcu_torture_writer+0x7f2/0xd80
-[ 2169.504064] Modules linked in:
-[ 2169.508957] CPU: 4 PID: 130 Comm: rcu_torture_wri Not tainted 6.4.4-g62813c2d2a36 #2
-[ 2169.521735] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[ 2169.540908] RIP: 0010:rcu_torture_writer+0x7f2/0xd80
-[ 2169.548542] Code: 15 8b 62 45 02 49 8d 45 e8 48 39 c2 74 bf e8 85 03 08 00 41 8b 55 f8 48 c7 c6 d0 f7 e0 9d 48 c7 c7 d7 7b 28 9e e8 ce 29 f7 ff <0f> 0b 8b 05 9a 48 45 02 85 c0 75 97 89 d8 87 05 8e 48 45 02 85 c0
-[ 2169.578445] RSP: 0000:ffffa645804cfe20 EFLAGS: 00010282
-[ 2169.586793] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 00000000ffffdfff
-[ 2169.598069] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000009ffb
-[ 2169.609359] RBP: ffffa645804cff10 R08: 00000000ffffdfff R09: 00000000ffffdfff
-[ 2169.620717] R10: ffffffff9e659220 R11: ffffffff9e659220 R12: 0000000000000017
-[ 2169.631918] R13: ffffffff9f166b60 R14: 0000000000000000 R15: 0000000000000001
-[ 2169.643365] FS:  0000000000000000(0000) GS:ffff8b3a5f300000(0000) knlGS:0000000000000000
-[ 2169.655249] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 2169.663207] CR2: 0000000000000000 CR3: 000000001562e000 CR4: 00000000000006e0
-[ 2169.672806] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 2169.682194] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 2169.693530] Call Trace:
-[ 2169.698054]  <TASK>
-[ 2169.701786]  ? rcu_torture_writer+0x7f2/0xd80
-[ 2169.708853]  ? __warn+0x7c/0x120
-[ 2169.714088]  ? rcu_torture_writer+0x7f2/0xd80
-[ 2169.721066]  ? report_bug+0x15d/0x180
-[ 2169.726125]  ? handle_bug+0x3c/0x70
-[ 2169.730948]  ? exc_invalid_op+0x17/0x70
-[ 2169.736238]  ? asm_exc_invalid_op+0x1a/0x20
-[ 2169.742047]  ? rcu_torture_writer+0x7f2/0xd80
-[ 2169.747907]  ? __pfx_rcu_torture_writer+0x10/0x10
-[ 2169.754175]  kthread+0xcb/0xf0
-[ 2169.758407]  ? __pfx_kthread+0x10/0x10
-[ 2169.763501]  ret_from_fork+0x2c/0x50
-[ 2169.768420]  </TASK>
-[ 2169.771445] ---[ end trace 0000000000000000 ]---
-[ 2169.777698] Dumping ftrace buffer:
-[ 2169.782470]    (ftrace buffer empty)
-[ 2169.787241] ------------[ cut here ]------------
-
-
-I will continue to monitor and debug these but since I recently re-started
-testing stable (my infra was down for a long time), I don't have any
-reference for when these started happening.
-
-thanks,
-
- - Joel
-
+2023-07-20 22:23 GMT+09:00, Namjae Jeon <linkinjeon@kernel.org>:
+> These are ZDI Vulnerability patches that was not applied in linux 5.15
+> stable kernel.
+Note that same patch sent twice...
+>
+> Namjae Jeon (4):
+>   ksmbd: use ksmbd_req_buf_next() in ksmbd_smb2_check_message()
+>   ksmbd: validate command payload size
+>   ksmbd: fix out-of-bound read in smb2_write
+>   ksmbd: validate session id and tree id in the compound request
+>
+>  fs/ksmbd/server.c   | 33 ++++++++++++++++++++-------------
+>  fs/ksmbd/smb2misc.c | 38 ++++++++++++++++++++------------------
+>  fs/ksmbd/smb2pdu.c  | 44 +++++++++++++++++++++++++++++++++++++++-----
+>  3 files changed, 79 insertions(+), 36 deletions(-)
+>
+> --
+> 2.25.1
+>
+>
