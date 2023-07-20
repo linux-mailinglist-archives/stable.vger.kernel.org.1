@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFFE475B953
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 23:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F79775B950
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 23:08:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230040AbjGTVIx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 17:08:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47840 "EHLO
+        id S229492AbjGTVIt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 17:08:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjGTVIx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 17:08:53 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FFD01BC1
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 14:08:52 -0700 (PDT)
+        with ESMTP id S229484AbjGTVIs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 17:08:48 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB8041BC1
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 14:08:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689887332; x=1721423332;
+  t=1689887327; x=1721423327;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1EoYKC9OsCTE8FBOzuj74SARGZf9U7AsAFTMuvBNgs0=;
-  b=i0U+bzukZ/n1ZI4DEN2fWAPhJykCmDxSiDTVjC+wc7fjT+92Soo5j09E
-   +vdbFHViRaHH+6sCPtl1oeX1lS/UOmctNMo/erbSYoEw6QfQr+FllsduD
-   ofpwfM+xAgamN3VfkOAn8AcXAvLwWxLtp/MN0nnSb5HQcEawaKkNr3iLl
-   r55+0VNccGHYbCSQ8uNpaRCo21RiAK3qL+5DtNT8x9eyEEsffv9YctQtd
-   6pbtYdg4jEXvBqcFi0eqeROvRUa5a5iU3E1ajX739CcCy0jdZ5PbyJ8/K
-   vMSvMav0dfGOEIYVFFU9zaxRQW5YsvW3MdV/Qiigln5WrboLi9eHthlNj
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="347167431"
+  bh=A77xSGy2BM/xxMewsoLqoJlbw+7ke1qf8Iu5vvDcdPc=;
+  b=kiW9MR67XBY3qA1tKxeOlUQKaT7Q87GER5vlvWsPaoaecHbpwmqk+ncn
+   G4R7euEBo85lE0RqKu9PV/geTinphhohHbtHBq+qbWIzgDdfS1Fqw0Dg2
+   0EJfwgWqCitmHNx9V5mwkaYtdxnp9/8GX8Q7qWwJ91DgT7GxajO2F68GY
+   XKE7EFZD9CpZ36q0765Q1XqDCgCS9GvcmCA/Ppq7g/I0D65VT79mWOajc
+   sim5S325y1jU9KVS3F2OMITx/2e8yaPJOnneEjXsTh200Cwih6BinZzqa
+   4tb44qQA2x7Yo5nn7KDQfwdILY1+G4fk0msGC/qDfjkkc0swAlQ1RTRJf
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="356849022"
 X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; 
-   d="scan'208";a="347167431"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 14:08:40 -0700
+   d="scan'208";a="356849022"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 14:08:46 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="754177987"
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="838280685"
 X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; 
-   d="scan'208";a="754177987"
+   d="scan'208";a="838280685"
 Received: from sdene1-mobl1.ger.corp.intel.com (HELO intel.com) ([10.252.32.238])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 14:08:32 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 14:08:44 -0700
 From:   Andi Shyti <andi.shyti@linux.intel.com>
 To:     Jonathan Cavitt <jonathan.cavitt@intel.com>,
         Matt Roper <matthew.d.roper@intel.com>,
@@ -49,93 +49,97 @@ Cc:     intel-gfx <intel-gfx@lists.freedesktop.org>,
         dri-evel <dri-devel@lists.freedesktop.org>,
         linux-stable <stable@vger.kernel.org>,
         Andi Shyti <andi.shyti@linux.intel.com>
-Subject: [PATCH v7 7/9] drm/i915/gt: Ensure memory quiesced before invalidation for all engines
-Date:   Thu, 20 Jul 2023 23:07:35 +0200
-Message-Id: <20230720210737.761400-8-andi.shyti@linux.intel.com>
+Subject: [PATCH v7 8/9] drm/i915/gt: Poll aux invalidation register bit on invalidation
+Date:   Thu, 20 Jul 2023 23:07:36 +0200
+Message-Id: <20230720210737.761400-9-andi.shyti@linux.intel.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230720210737.761400-1-andi.shyti@linux.intel.com>
 References: <20230720210737.761400-1-andi.shyti@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit af9e423a8aae ("drm/i915/gt: Ensure memory quiesced before
-invalidation") has made sure that the memory is quiesced before
-invalidating the AUX CCS table. Do it for all the other engines
-and not just RCS.
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 
+For platforms that use Aux CCS, wait for aux invalidation to
+complete by checking the aux invalidation register bit is
+cleared.
+
+Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
 Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 ---
- drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 36 ++++++++++++++++--------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c     | 17 ++++++++++++-----
+ drivers/gpu/drm/i915/gt/intel_gpu_commands.h |  1 +
+ 2 files changed, 13 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-index 202d6ff8b5264..b6dd22eb2d9b2 100644
+index b6dd22eb2d9b2..3ded597f002a2 100644
 --- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
 +++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-@@ -316,26 +316,40 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
- {
- 	intel_engine_mask_t aux_inv = 0;
--	u32 cmd, *cs;
-+	u32 cmd_flush = 0;
-+	u32 cmd = 4;
-+	u32 *cs;
- 
--	cmd = 4;
--	if (mode & EMIT_INVALIDATE) {
-+	if (mode & EMIT_INVALIDATE)
- 		cmd += 2;
- 
--		if (HAS_AUX_CCS(rq->engine->i915) &&
--		    (rq->engine->class == VIDEO_DECODE_CLASS ||
--		     rq->engine->class == VIDEO_ENHANCEMENT_CLASS)) {
--			aux_inv = rq->engine->mask &
--				~GENMASK(_BCS(I915_MAX_BCS - 1), BCS0);
--			if (aux_inv)
--				cmd += 4;
--		}
-+	if (HAS_AUX_CCS(rq->engine->i915))
-+		aux_inv = rq->engine->mask &
-+			  ~GENMASK(_BCS(I915_MAX_BCS - 1), BCS0);
+@@ -172,7 +172,15 @@ u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv
+ 	*cs++ = MI_LOAD_REGISTER_IMM(1) | MI_LRI_MMIO_REMAP_EN;
+ 	*cs++ = i915_mmio_reg_offset(inv_reg) + gsi_offset;
+ 	*cs++ = AUX_INV;
+-	*cs++ = MI_NOOP;
 +
-+	/*
-+	 * On Aux CCS platforms the invalidation of the Aux
-+	 * table requires quiescing memory traffic beforehand
-+	 */
-+	if (aux_inv) {
-+		cmd += 4; /* for the AUX invalidation */
-+		cmd += 2; /* for the engine quiescing */
-+
-+		cmd_flush = MI_FLUSH_DW;
-+
-+		if (rq->engine->class == COPY_ENGINE_CLASS)
-+			cmd_flush |= MI_FLUSH_DW_CCS;
- 	}
++	*cs++ = MI_SEMAPHORE_WAIT_TOKEN |
++		MI_SEMAPHORE_REGISTER_POLL |
++		MI_SEMAPHORE_POLL |
++		MI_SEMAPHORE_SAD_EQ_SDD;
++	*cs++ = 0;
++	*cs++ = i915_mmio_reg_offset(inv_reg) + gsi_offset;
++	*cs++ = 0;
++	*cs++ = 0;
  
- 	cs = intel_ring_begin(rq, cmd);
- 	if (IS_ERR(cs))
- 		return PTR_ERR(cs);
+ 	return cs;
+ }
+@@ -282,10 +290,9 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 		else if (engine->class == COMPUTE_CLASS)
+ 			flags &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
  
-+	if (cmd_flush) {
-+		*cs++ = cmd_flush;
-+		*cs++ = 0;
-+	}
-+
- 	if (mode & EMIT_INVALIDATE)
- 		*cs++ = preparser_disable(true);
++		count = 8;
+ 		if (HAS_AUX_CCS(rq->engine->i915))
+-			count = 8 + 4;
+-		else
+-			count = 8;
++			count += 8;
  
+ 		cs = intel_ring_begin(rq, count);
+ 		if (IS_ERR(cs))
+@@ -332,7 +339,7 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
+ 	 * table requires quiescing memory traffic beforehand
+ 	 */
+ 	if (aux_inv) {
+-		cmd += 4; /* for the AUX invalidation */
++		cmd += 8; /* for the AUX invalidation */
+ 		cmd += 2; /* for the engine quiescing */
+ 
+ 		cmd_flush = MI_FLUSH_DW;
+diff --git a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
+index 5df7cce23197c..2bd8d98d21102 100644
+--- a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
++++ b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
+@@ -121,6 +121,7 @@
+ #define   MI_SEMAPHORE_TARGET(engine)	((engine)<<15)
+ #define MI_SEMAPHORE_WAIT	MI_INSTR(0x1c, 2) /* GEN8+ */
+ #define MI_SEMAPHORE_WAIT_TOKEN	MI_INSTR(0x1c, 3) /* GEN12+ */
++#define   MI_SEMAPHORE_REGISTER_POLL	(1 << 16)
+ #define   MI_SEMAPHORE_POLL		(1 << 15)
+ #define   MI_SEMAPHORE_SAD_GT_SDD	(0 << 12)
+ #define   MI_SEMAPHORE_SAD_GTE_SDD	(1 << 12)
 -- 
 2.40.1
 
