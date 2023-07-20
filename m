@@ -2,100 +2,198 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6CDF75AE4F
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 14:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFFB075AF97
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 15:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230171AbjGTM1U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 08:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39230 "EHLO
+        id S231342AbjGTNX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 09:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230386AbjGTM1T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 08:27:19 -0400
+        with ESMTP id S231279AbjGTNX2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 09:23:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE1F2118;
-        Thu, 20 Jul 2023 05:27:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22F410F5;
+        Thu, 20 Jul 2023 06:23:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ABB0F618F6;
-        Thu, 20 Jul 2023 12:27:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6CAC433C8;
-        Thu, 20 Jul 2023 12:27:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689856036;
-        bh=rCw+psKLDBdl6kAXIJPY9IcEhZY5IxhHwvg4KUYy27Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BwiRNKVJdr15gmyYf87c5qkAeJKVgK0bUhpYNBH1JoM8PiqO/jE0lKC7Dha56w0BT
-         7O/vwi9WBffNUurAE/FZjy7XJUz2CFkFxvVB7vCi6Ru6h6KIU083RJOIryIfENkD1X
-         oTENDWIdJqSXUAPOfCcYOIf/NGXgzL/80xC+2m1uOmTieNUgd9F7ACJib/Zssmi7kJ
-         h8IWNcPMAhii51lmlhTmMjHATZ9KWJgeQ7ghBT/98FD0E6coqekAxPi+iTbkKn/6IH
-         LI7B5Qlh4ewNKw5JkkAM1YGH45chzb7Sy41C856SadZ3c4y6onctYse05VbAblsj7m
-         JvR4b6hrEFSTA==
-Date:   Thu, 20 Jul 2023 13:27:10 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Will Deacon <will@kernel.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Shuah Khan <shuah@kernel.org>,
-        David Spickett <David.Spickett@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] arm64/fpsimd: Ensure SME storage is allocated after
- SVE VL changes
-Message-ID: <3ce4fc14-bd43-47e9-aa37-59bb3cd5d051@sirena.org.uk>
-References: <20230713-arm64-fix-sve-sme-vl-change-v1-0-129dd8611413@kernel.org>
- <20230713-arm64-fix-sve-sme-vl-change-v1-1-129dd8611413@kernel.org>
- <20230720105235.GD11034@willie-the-truck>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7ADC361A73;
+        Thu, 20 Jul 2023 13:23:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53487C433C8;
+        Thu, 20 Jul 2023 13:23:26 +0000 (UTC)
+Date:   Thu, 20 Jul 2023 15:23:23 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] USB: serial: simple: sort entries
+Message-ID: <2023072016-answering-easing-ad6b@gregkh>
+References: <20230720080049.14032-1-johan@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="CyMXBdFoH12etnuE"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230720105235.GD11034@willie-the-truck>
-X-Cookie: Ginger snap.
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230720080049.14032-1-johan@kernel.org>
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Thu, Jul 20, 2023 at 10:00:49AM +0200, Johan Hovold wrote:
+> Sort the defines and device-id entries alphabetically in order to make
+> it more obvious where new entries should be added.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+>  drivers/usb/serial/usb-serial-simple.c | 66 +++++++++++++-------------
+>  1 file changed, 33 insertions(+), 33 deletions(-)
+> 
+> diff --git a/drivers/usb/serial/usb-serial-simple.c b/drivers/usb/serial/usb-serial-simple.c
+> index 3c552e4b87ce..24b8772a345e 100644
+> --- a/drivers/usb/serial/usb-serial-simple.c
+> +++ b/drivers/usb/serial/usb-serial-simple.c
+> @@ -38,16 +38,6 @@ static struct usb_serial_driver vendor##_device = {		\
+>  	{ USB_DEVICE(0x0a21, 0x8001) }	/* MMT-7305WW */
+>  DEVICE(carelink, CARELINK_IDS);
+>  
+> -/* ZIO Motherboard USB driver */
+> -#define ZIO_IDS()			\
+> -	{ USB_DEVICE(0x1CBE, 0x0103) }
+> -DEVICE(zio, ZIO_IDS);
+> -
+> -/* Funsoft Serial USB driver */
+> -#define FUNSOFT_IDS()			\
+> -	{ USB_DEVICE(0x1404, 0xcddc) }
+> -DEVICE(funsoft, FUNSOFT_IDS);
+> -
+>  /* Infineon Flashloader driver */
+>  #define FLASHLOADER_IDS()		\
+>  	{ USB_DEVICE_INTERFACE_CLASS(0x058b, 0x0041, USB_CLASS_CDC_DATA) }, \
+> @@ -55,6 +45,11 @@ DEVICE(funsoft, FUNSOFT_IDS);
+>  	{ USB_DEVICE(0x8087, 0x0801) }
+>  DEVICE(flashloader, FLASHLOADER_IDS);
+>  
+> +/* Funsoft Serial USB driver */
+> +#define FUNSOFT_IDS()			\
+> +	{ USB_DEVICE(0x1404, 0xcddc) }
+> +DEVICE(funsoft, FUNSOFT_IDS);
+> +
+>  /* Google Serial USB SubClass */
+>  #define GOOGLE_IDS()						\
+>  	{ USB_VENDOR_AND_INTERFACE_INFO(0x18d1,			\
+> @@ -63,6 +58,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
+>  					0x01) }
+>  DEVICE(google, GOOGLE_IDS);
+>  
+> +/* HP4x (48/49) Generic Serial driver */
+> +#define HP4X_IDS()			\
+> +	{ USB_DEVICE(0x03f0, 0x0121) }
+> +DEVICE(hp4x, HP4X_IDS);
+> +
+>  /* KAUFMANN RKS+CAN VCP */
+>  #define KAUFMANN_IDS()			\
+>  	{ USB_DEVICE(0x16d0, 0x0870) }
+> @@ -73,11 +73,6 @@ DEVICE(kaufmann, KAUFMANN_IDS);
+>  	{ USB_DEVICE(0x1209, 0x8b00) }
+>  DEVICE(libtransistor, LIBTRANSISTOR_IDS);
+>  
+> -/* ViVOpay USB Serial Driver */
+> -#define VIVOPAY_IDS()			\
+> -	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
+> -DEVICE(vivopay, VIVOPAY_IDS);
+> -
+>  /* Motorola USB Phone driver */
+>  #define MOTO_IDS()			\
+>  	{ USB_DEVICE(0x05c6, 0x3197) },	/* unknown Motorola phone */	\
+> @@ -106,10 +101,10 @@ DEVICE(nokia, NOKIA_IDS);
+>  	{ USB_DEVICE(0x09d7, 0x0100) }	/* NovAtel FlexPack GPS */
+>  DEVICE_N(novatel_gps, NOVATEL_IDS, 3);
+>  
+> -/* HP4x (48/49) Generic Serial driver */
+> -#define HP4X_IDS()			\
+> -	{ USB_DEVICE(0x03f0, 0x0121) }
+> -DEVICE(hp4x, HP4X_IDS);
+> +/* Siemens USB/MPI adapter */
+> +#define SIEMENS_IDS()			\
+> +	{ USB_DEVICE(0x908, 0x0004) }
+> +DEVICE(siemens_mpi, SIEMENS_IDS);
+>  
+>  /* Suunto ANT+ USB Driver */
+>  #define SUUNTO_IDS()			\
+> @@ -117,47 +112,52 @@ DEVICE(hp4x, HP4X_IDS);
+>  	{ USB_DEVICE(0x0fcf, 0x1009) } /* Dynastream ANT USB-m Stick */
+>  DEVICE(suunto, SUUNTO_IDS);
+>  
+> -/* Siemens USB/MPI adapter */
+> -#define SIEMENS_IDS()			\
+> -	{ USB_DEVICE(0x908, 0x0004) }
+> -DEVICE(siemens_mpi, SIEMENS_IDS);
+> +/* ViVOpay USB Serial Driver */
+> +#define VIVOPAY_IDS()			\
+> +	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
+> +DEVICE(vivopay, VIVOPAY_IDS);
+> +
+> +/* ZIO Motherboard USB driver */
+> +#define ZIO_IDS()			\
+> +	{ USB_DEVICE(0x1CBE, 0x0103) }
+> +DEVICE(zio, ZIO_IDS);
+>  
+>  /* All of the above structures mushed into two lists */
+>  static struct usb_serial_driver * const serial_drivers[] = {
+>  	&carelink_device,
+> -	&zio_device,
+> -	&funsoft_device,
+>  	&flashloader_device,
+> +	&funsoft_device,
+>  	&google_device,
+> +	&hp4x_device,
+>  	&kaufmann_device,
+>  	&libtransistor_device,
+> -	&vivopay_device,
+>  	&moto_modem_device,
+>  	&motorola_tetra_device,
+>  	&nokia_device,
+>  	&novatel_gps_device,
+> -	&hp4x_device,
+> -	&suunto_device,
+>  	&siemens_mpi_device,
+> +	&suunto_device,
+> +	&vivopay_device,
+> +	&zio_device,
+>  	NULL
+>  };
+>  
+>  static const struct usb_device_id id_table[] = {
+>  	CARELINK_IDS(),
+> -	ZIO_IDS(),
+> -	FUNSOFT_IDS(),
+>  	FLASHLOADER_IDS(),
+> +	FUNSOFT_IDS(),
+>  	GOOGLE_IDS(),
+> +	HP4X_IDS(),
+>  	KAUFMANN_IDS(),
+>  	LIBTRANSISTOR_IDS(),
+> -	VIVOPAY_IDS(),
+>  	MOTO_IDS(),
+>  	MOTOROLA_TETRA_IDS(),
+>  	NOKIA_IDS(),
+>  	NOVATEL_IDS(),
+> -	HP4X_IDS(),
+> -	SUUNTO_IDS(),
+>  	SIEMENS_IDS(),
+> +	SUUNTO_IDS(),
+> +	VIVOPAY_IDS(),
+> +	ZIO_IDS(),
+>  	{ },
+>  };
+>  MODULE_DEVICE_TABLE(usb, id_table);
+> -- 
+> 2.41.0
+> 
 
---CyMXBdFoH12etnuE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, Jul 20, 2023 at 11:52:36AM +0100, Will Deacon wrote:
-> On Thu, Jul 13, 2023 at 09:06:04PM +0100, Mark Brown wrote:
-
-> > Since the ABI does not specify that changing the SVE vector length disturbs
-> > SME state, and since SVE code may not be aware of SME code in the process,
-> > we shouldn't simply discard any ZA state. Instead immediately reallocate
-> > the storage for SVE if SME is active, and disable SME if we change the SVE
-> > vector length while there is no SME state active.
-
-> What is the advantage of keep the old behaviour in this case? In other
-> words, if it's acceptable to reallocate the state when SME is active, why
-> not just reallocate in all cases?
-
-It was minimising the changes to the status quo given how attached
-people often are to these things.
-
---CyMXBdFoH12etnuE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmS5KB4ACgkQJNaLcl1U
-h9C+0gf/fQxZuh51kIYByTPW3QLeYr1gzvXo8eFWKQxVOYg96BpcLaqbrocw6ZLg
-E0VA1/CrGB56VUq99z4VY0JUrqFoupiFJE5M5MihIAUi/0PPH9LsvzvuXuIAnrK4
-CmqsOfSQTbsXhntG34dq3UkcK7VZlbK4iSZsaKig3BLtIWHBVJ1WvLpnxEkVu0Mv
-+qJM4GDgPeIXRKiMcxT6+Gd96Vza5VFUemOFSO9BGW5XzQE7Ix+NpT99XvE0MtwJ
-mTVS7V3g0F+19U08hExwfgrKS1ybUONPOqncDhwLdghsLFFOeW8WI1ttxw26afX8
-UO1YvtblScSAt6Aex+N4yBujBbHMaA==
-=NOme
------END PGP SIGNATURE-----
-
---CyMXBdFoH12etnuE--
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
