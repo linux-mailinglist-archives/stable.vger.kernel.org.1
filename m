@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B74A175B69A
+	by mail.lfdr.de (Postfix) with ESMTP id 7100275B699
 	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 20:23:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230389AbjGTSXK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S230291AbjGTSXK (ORCPT <rfc822;lists+stable@lfdr.de>);
         Thu, 20 Jul 2023 14:23:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57530 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230348AbjGTSWv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 14:22:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 438701715
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 11:22:50 -0700 (PDT)
+        with ESMTP id S231314AbjGTSWz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 14:22:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284F4270C
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 11:22:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6B6361BBC
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 18:22:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52DFC433C8;
-        Thu, 20 Jul 2023 18:22:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B9E7C61BBC
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 18:22:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB25C433CB;
+        Thu, 20 Jul 2023 18:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689877369;
-        bh=NfzdCsQnRrSBfdeS4vzouJn8xVvz6GcE4sR/zEyv7So=;
+        s=korg; t=1689877372;
+        bh=QZidAxoL+bbCpdCV4g32N0AhT3Q/PdSRHy9STcKwWpo=;
         h=Subject:To:Cc:From:Date:From;
-        b=ayVhPuorEOmHawIIoXSEywq55r0uvxzMQCq7VM3o5uG8Oxl0V10aTxP4Ehb5rMxoA
-         r2oHS3ek3mAQj+KbNnohh24JLkJZ6GxqSRrib/M0HQ8y1cJgUvSNniKb5MK7KHP+M3
-         VkPPYEKN6p6cBqETtVFJN54i0bYiDxOKxrz6ksiA=
-Subject: FAILED: patch "[PATCH] f2fs: fix deadlock in i_xattr_sem and inode page lock" failed to apply to 4.19-stable tree
+        b=ov+eF2OReF3OHg0+r7xYNsDlkIfTCZd3H4NMM74tGqvwzzC9ABDBFl3rMpUuiXEfh
+         uIY2ixzxZ9K113tsQFc7lXlQsm5M9Dm2SiHXzw2cGC37v6nvZmlMf3piaKSTU9BUSm
+         DC365hKG5IBNZ8hVZ90xrFLUt7p2mYXh/RVSLplU=
+Subject: FAILED: patch "[PATCH] f2fs: fix deadlock in i_xattr_sem and inode page lock" failed to apply to 4.14-stable tree
 To:     jaegeuk@kernel.org, chao@kernel.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 20 Jul 2023 20:22:39 +0200
-Message-ID: <2023072039-sauna-dispense-e6f1@gregkh>
+Date:   Thu, 20 Jul 2023 20:22:40 +0200
+Message-ID: <2023072040-scouting-progress-c365@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5eda1ad1aaffdfebdecf7a164e586060a210f74f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072039-sauna-dispense-e6f1@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072040-scouting-progress-c365@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
