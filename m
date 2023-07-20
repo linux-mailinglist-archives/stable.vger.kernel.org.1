@@ -2,82 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1704575B4F6
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 18:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E3BC75B506
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 18:54:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229915AbjGTQtL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 12:49:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42740 "EHLO
+        id S231479AbjGTQyR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 12:54:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231458AbjGTQtI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 12:49:08 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D58FE273D
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 09:49:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689871742; x=1721407742;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=7NX/AlPAGDSpnGK1rEuONyGAazZeaIxCWd5UEb1DPcg=;
-  b=VT9TrzaCY8C4uEteqKNSp3jpIkUpoPpUOto5DdMI/FuqqmfpvixvlwRc
-   W0fQJ7Wd4JyUjGvV3gx0pWI5v0JjRVSdugge7cvY3Gv6jpkp5GggW+xQ7
-   o4VbgIaGuTzxvcVcdlOXV+ICPzOBskHy36WcOAr5nM17qmw0RXW3WNuq7
-   MqKSkT5HCh4OnvOHOj6KBLt7O2REVwh+OZ9hjnEqJb3Txm/Z81rmDB5pg
-   YtqlV0y/+ymfLRp9B7stVcD/YCD3sel0EzZDL2nHGgBzi08v+b+5KIezc
-   qOGW6dIQkvgZnt94GZIgxTRaxQpuHTqNtlStaaITz5gv3y+qKF6OebDQ9
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="430594195"
-X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; 
-   d="scan'208";a="430594195"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 09:49:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="759635124"
-X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; 
-   d="scan'208";a="759635124"
-Received: from lkp-server02.sh.intel.com (HELO 36946fcf73d7) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 20 Jul 2023 09:49:01 -0700
-Received: from kbuild by 36946fcf73d7 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qMWpj-0006I1-0v;
-        Thu, 20 Jul 2023 16:48:56 +0000
-Date:   Fri, 21 Jul 2023 00:48:12 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andi Shyti <andi.shyti@linux.intel.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v6 5/9] drm/i915/gt: Refactor
- intel_emit_pipe_control_cs() in a single function
-Message-ID: <ZLllTD9GhIDvh09O@c507f7d2ae6a>
+        with ESMTP id S230045AbjGTQyQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 12:54:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8EAD92
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 09:53:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689872012;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=rf54fJtTcxCN7XycZmLlr/YyYttA5IpYXVAqXzPUilU=;
+        b=O2Z1BxNVm2nkcCEFLbK4fgsjq2+2Oe1/VWkYVW6LdB9Kwcz98EGCvUwpfnzrABRpnA0MJ6
+        GO1WZDmjrWGG20vo8kkJ4Ylpago1sjG+ILfAd/IQCrVtHk9rN4BcaBGoRPsNOLA4uqSBQK
+        x5blz090xlWG1eCooQCbqcmYOIRgwR4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-505-9i4lpJrQOY-wfVKCgktb4A-1; Thu, 20 Jul 2023 12:53:30 -0400
+X-MC-Unique: 9i4lpJrQOY-wfVKCgktb4A-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 31ADE800159;
+        Thu, 20 Jul 2023 16:53:30 +0000 (UTC)
+Received: from [192.168.37.1] (unknown [10.22.50.6])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 52B5D4A9004;
+        Thu, 20 Jul 2023 16:53:27 +0000 (UTC)
+From:   Benjamin Coddington <bcodding@redhat.com>
+To:     Fedor Pchelkin <pchelkin@ispras.ru>
+Cc:     Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <anna@kernel.org>, linux-nfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: [PATCH] NFSv4/pnfs: minor fix for cleanup path in
+ nfs4_get_device_info
+Date:   Thu, 20 Jul 2023 12:53:26 -0400
+Message-ID: <BAB89FB2-C67B-417C-9C53-D3F06D781586@redhat.com>
+In-Reply-To: <20230720153753.20497-1-pchelkin@ispras.ru>
+References: <20230720153753.20497-1-pchelkin@ispras.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230720164454.757075-6-andi.shyti@linux.intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On 20 Jul 2023, at 11:37, Fedor Pchelkin wrote:
 
-Thanks for your patch.
+> It is an almost improbable error case but when page allocating loop in
+> nfs4_get_device_info() fails then we should only free the already
+> allocated pages, as __free_page() can't deal with NULL arguments.
+>
+> Found by Linux Verification Center (linuxtesting.org).
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+This looks correct to me.
 
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH v6 5/9] drm/i915/gt: Refactor intel_emit_pipe_control_cs() in a single function
-Link: https://lore.kernel.org/stable/20230720164454.757075-6-andi.shyti%40linux.intel.com
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+Ben
 
