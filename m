@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A45FC75AFA1
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 15:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA09975AFA3
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 15:25:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231840AbjGTNZe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 09:25:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44238 "EHLO
+        id S230056AbjGTNZi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 09:25:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230056AbjGTNZd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 09:25:33 -0400
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E7F0171E
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 06:25:33 -0700 (PDT)
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1b8a44ee159so4805105ad.3
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 06:25:33 -0700 (PDT)
+        with ESMTP id S231489AbjGTNZh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 09:25:37 -0400
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E05A7E60
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 06:25:36 -0700 (PDT)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1b89d47ffb6so4377285ad.2
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 06:25:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689859532; x=1690464332;
+        d=1e100.net; s=20221208; t=1689859536; x=1690464336;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QhlAu1eICXeBI1J16lD6+kJmM3QBdBRmM+5AcndDW4M=;
-        b=jpPGvbcJgoCcXjHuDsiFzreo4vStD1O6+V+bcdrcg8RCTLTeZS/zq3Xnj/s5d2m36f
-         1Fh0uz1QaQ1SrP9YJOyRo5lI5EiOfxyVbSHsHMQvB/bPAbwg/ZErfdjs67wF0PEj9who
-         9C4/ZkxinhQtl6iUal/HVR0fLb4030sZQW8IHNEXmNyu77fW9S3Bch1CuU3KyR8bXoFF
-         gRXI4BH/N0t0Qw5LEtRePbPSEfiKVnic8b1GRGLNZAPFNqOR7eBakvfqJcf5ubbjJQin
-         sxiK6fm4Z+8UTITfMxXX6Cu36y7AL4pQZu9Pz4LQi4NKLrE/C2rLW6niD7pEEWKRk0/q
-         x/JA==
-X-Gm-Message-State: ABy/qLY/mUhI64gsNKvbGwmXxrv1xqH2Mq8fjSmA7QJsaHBnTlqxSaaC
-        UvEGhfr6O7WpMQ8WwoLyl8sGm1CaEXU=
-X-Google-Smtp-Source: APBJJlEPW8pBuJ1ujRGy6Umpwfjl6zU6mq16cLGznMJvFd68KwMlzzDANc8uTBpDSht0mqMGPYvOng==
-X-Received: by 2002:a17:902:700b:b0:1b6:a972:4414 with SMTP id y11-20020a170902700b00b001b6a9724414mr1702827plk.3.1689859532524;
-        Thu, 20 Jul 2023 06:25:32 -0700 (PDT)
+        bh=ijcWtsxt0S3veIzbjyQlH7TvYfZuxfwlPe7HNtFuKs8=;
+        b=kyvpJYkVK3ZSyY9AVPoUsoD8pHLUyIky4iUem5br9GUwmPBAstr4ict5DZsAg/wf0K
+         lKgTd1sDJugoE8HZ8axJBF9O1aHhWBSNUvdHzthcb1BVxOmUXfJjsM9cdG9AIDRIETFQ
+         fGVYGEmBgdWcdGW5B3Nld+dHZWHVO5u1fswO8TisvyJk6GPtLJed4ixvyq95n6ngdmRE
+         clnv5+aDUwflE5teIZzgKkWFoT4nxeRXocXO4hL1B8+/9xh6nSVfhCC8voSyCwAXohXd
+         llW//jOANpT+UosLho4Z7F2KeP68q06W8akxTaE7icEVWfQY8PRwk+de+o7BWlNdvvUY
+         1R4Q==
+X-Gm-Message-State: ABy/qLbWihCSqvhiDBf5i8b8WvOxx5Z6owX+FK9w5Yn0fuGPMlo5wx6F
+        ug0kZ5Vr1SStPgzWUQn9Q+Rpn5Wsuig=
+X-Google-Smtp-Source: APBJJlGWF1EDz3yxuEnl2y3MkxLYyEXHvNTj+b1CyVByXefeDUssvlBXv1rkl7rqHjWicR6mz1p95Q==
+X-Received: by 2002:a17:902:eccb:b0:1b9:e9b2:124b with SMTP id a11-20020a170902eccb00b001b9e9b2124bmr19086023plh.64.1689859536162;
+        Thu, 20 Jul 2023 06:25:36 -0700 (PDT)
 Received: from localhost.localdomain ([211.49.23.9])
-        by smtp.gmail.com with ESMTPSA id jg19-20020a17090326d300b001b9bebb7a9dsm1336039plb.90.2023.07.20.06.25.30
+        by smtp.gmail.com with ESMTPSA id jg19-20020a17090326d300b001b9bebb7a9dsm1336039plb.90.2023.07.20.06.25.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jul 2023 06:25:32 -0700 (PDT)
+        Thu, 20 Jul 2023 06:25:35 -0700 (PDT)
 From:   Namjae Jeon <linkinjeon@kernel.org>
 To:     stable@vger.kernel.org
 Cc:     gregkh@linuxfoundation.org, stfrench@microsoft.com,
         smfrench@gmail.com, Namjae Jeon <linkinjeon@kernel.org>,
         zdi-disclosures@trendmicro.com
-Subject: [5.15.y PATCH 3/4] ksmbd: fix out-of-bound read in smb2_write
-Date:   Thu, 20 Jul 2023 22:23:30 +0900
-Message-Id: <20230720132336.7614-4-linkinjeon@kernel.org>
+Subject: [5.15.y PATCH 4/4] ksmbd: validate session id and tree id in the compound request
+Date:   Thu, 20 Jul 2023 22:23:31 +0900
+Message-Id: <20230720132336.7614-5-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230720132336.7614-1-linkinjeon@kernel.org>
 References: <20230720132336.7614-1-linkinjeon@kernel.org>
@@ -61,44 +61,158 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 5fe7f7b78290638806211046a99f031ff26164e1 upstream.
+commit 5005bcb4219156f1bf7587b185080ec1da08518e upstream.
 
-ksmbd_smb2_check_message doesn't validate hdr->NextCommand. If
-->NextCommand is bigger than Offset + Length of smb2 write, It will
-allow oversized smb2 write length. It will cause OOB read in smb2_write.
+This patch validate session id and tree id in compound request.
+If first operation in the compound is SMB2 ECHO request, ksmbd bypass
+session and tree validation. So work->sess and work->tcon could be NULL.
+If secound request in the compound access work->sess or tcon, It cause
+NULL pointer dereferecing error.
 
 Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21164
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21165
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/smb2misc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ fs/ksmbd/server.c  | 33 ++++++++++++++++++++-------------
+ fs/ksmbd/smb2pdu.c | 44 +++++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 59 insertions(+), 18 deletions(-)
 
-diff --git a/fs/ksmbd/smb2misc.c b/fs/ksmbd/smb2misc.c
-index ad805b37b81d..c24674fc1904 100644
---- a/fs/ksmbd/smb2misc.c
-+++ b/fs/ksmbd/smb2misc.c
-@@ -352,10 +352,16 @@ int ksmbd_smb2_check_message(struct ksmbd_work *work)
- 	int command;
- 	__u32 clc_len;  /* calculated length */
- 	__u32 len = get_rfc1002_len(work->request_buf);
--	__u32 req_struct_size;
-+	__u32 req_struct_size, next_cmd = le32_to_cpu(hdr->NextCommand);
+diff --git a/fs/ksmbd/server.c b/fs/ksmbd/server.c
+index 1c5e7e023058..eb45d56b3577 100644
+--- a/fs/ksmbd/server.c
++++ b/fs/ksmbd/server.c
+@@ -184,24 +184,31 @@ static void __handle_ksmbd_work(struct ksmbd_work *work,
+ 		goto send;
+ 	}
  
--	if (le32_to_cpu(hdr->NextCommand) > 0)
--		len = le32_to_cpu(hdr->NextCommand);
-+	if ((u64)work->next_smb2_rcv_hdr_off + next_cmd > len) {
-+		pr_err("next command(%u) offset exceeds smb msg size\n",
-+				next_cmd);
+-	if (conn->ops->check_user_session) {
+-		rc = conn->ops->check_user_session(work);
+-		if (rc < 0) {
+-			command = conn->ops->get_cmd_val(work);
+-			conn->ops->set_rsp_status(work,
+-					STATUS_USER_SESSION_DELETED);
+-			goto send;
+-		} else if (rc > 0) {
+-			rc = conn->ops->get_ksmbd_tcon(work);
++	do {
++		if (conn->ops->check_user_session) {
++			rc = conn->ops->check_user_session(work);
+ 			if (rc < 0) {
+-				conn->ops->set_rsp_status(work,
+-					STATUS_NETWORK_NAME_DELETED);
++				if (rc == -EINVAL)
++					conn->ops->set_rsp_status(work,
++						STATUS_INVALID_PARAMETER);
++				else
++					conn->ops->set_rsp_status(work,
++						STATUS_USER_SESSION_DELETED);
+ 				goto send;
++			} else if (rc > 0) {
++				rc = conn->ops->get_ksmbd_tcon(work);
++				if (rc < 0) {
++					if (rc == -EINVAL)
++						conn->ops->set_rsp_status(work,
++							STATUS_INVALID_PARAMETER);
++					else
++						conn->ops->set_rsp_status(work,
++							STATUS_NETWORK_NAME_DELETED);
++					goto send;
++				}
+ 			}
+ 		}
+-	}
+ 
+-	do {
+ 		rc = __process_request(work, conn, &command);
+ 		if (rc == SERVER_HANDLER_ABORT)
+ 			break;
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 266430a2a0e0..9f9d07caa57e 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -97,7 +97,6 @@ int smb2_get_ksmbd_tcon(struct ksmbd_work *work)
+ 	struct smb2_hdr *req_hdr = work->request_buf;
+ 	int tree_id;
+ 
+-	work->tcon = NULL;
+ 	if (work->conn->ops->get_cmd_val(work) == SMB2_TREE_CONNECT_HE ||
+ 	    work->conn->ops->get_cmd_val(work) ==  SMB2_CANCEL_HE ||
+ 	    work->conn->ops->get_cmd_val(work) ==  SMB2_LOGOFF_HE) {
+@@ -111,10 +110,28 @@ int smb2_get_ksmbd_tcon(struct ksmbd_work *work)
+ 	}
+ 
+ 	tree_id = le32_to_cpu(req_hdr->Id.SyncId.TreeId);
++
++	/*
++	 * If request is not the first in Compound request,
++	 * Just validate tree id in header with work->tcon->id.
++	 */
++	if (work->next_smb2_rcv_hdr_off) {
++		if (!work->tcon) {
++			pr_err("The first operation in the compound does not have tcon\n");
++			return -EINVAL;
++		}
++		if (work->tcon->id != tree_id) {
++			pr_err("tree id(%u) is different with id(%u) in first operation\n",
++					tree_id, work->tcon->id);
++			return -EINVAL;
++		}
 +		return 1;
 +	}
 +
-+	if (next_cmd > 0)
-+		len = next_cmd;
- 	else if (work->next_smb2_rcv_hdr_off)
- 		len -= work->next_smb2_rcv_hdr_off;
+ 	work->tcon = ksmbd_tree_conn_lookup(work->sess, tree_id);
+ 	if (!work->tcon) {
+ 		pr_err("Invalid tid %d\n", tree_id);
+-		return -EINVAL;
++		return -ENOENT;
+ 	}
  
+ 	return 1;
+@@ -569,7 +586,6 @@ int smb2_check_user_session(struct ksmbd_work *work)
+ 	unsigned int cmd = conn->ops->get_cmd_val(work);
+ 	unsigned long long sess_id;
+ 
+-	work->sess = NULL;
+ 	/*
+ 	 * SMB2_ECHO, SMB2_NEGOTIATE, SMB2_SESSION_SETUP command do not
+ 	 * require a session id, so no need to validate user session's for
+@@ -580,15 +596,33 @@ int smb2_check_user_session(struct ksmbd_work *work)
+ 		return 0;
+ 
+ 	if (!ksmbd_conn_good(work))
+-		return -EINVAL;
++		return -EIO;
+ 
+ 	sess_id = le64_to_cpu(req_hdr->SessionId);
++
++	/*
++	 * If request is not the first in Compound request,
++	 * Just validate session id in header with work->sess->id.
++	 */
++	if (work->next_smb2_rcv_hdr_off) {
++		if (!work->sess) {
++			pr_err("The first operation in the compound does not have sess\n");
++			return -EINVAL;
++		}
++		if (work->sess->id != sess_id) {
++			pr_err("session id(%llu) is different with the first operation(%lld)\n",
++					sess_id, work->sess->id);
++			return -EINVAL;
++		}
++		return 1;
++	}
++
+ 	/* Check for validity of user session */
+ 	work->sess = ksmbd_session_lookup_all(conn, sess_id);
+ 	if (work->sess)
+ 		return 1;
+ 	ksmbd_debug(SMB, "Invalid user session, Uid %llu\n", sess_id);
+-	return -EINVAL;
++	return -ENOENT;
+ }
+ 
+ static void destroy_previous_session(struct ksmbd_conn *conn,
 -- 
 2.25.1
 
