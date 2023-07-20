@@ -2,129 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F16E475AB82
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 11:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B61A075ABDF
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 12:25:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbjGTJzq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 05:55:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53076 "EHLO
+        id S230031AbjGTKZL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 06:25:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230311AbjGTJzn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 05:55:43 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72663189;
-        Thu, 20 Jul 2023 02:55:38 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36K6wSsM016618;
-        Thu, 20 Jul 2023 09:55:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=XJxwtEiFZYX7CF+CV/wE/e2ibf8vhO0A+NXvjImgOcc=;
- b=CE8qbrETYpTqOoegH+XPxzEyfUF+QaY7OUa+kzs2bGnsnFqSqKfi6Ofws6eUe5nxF/xl
- WM6oVmeXLOYRk8uEnsuBGiqHt4PDL24tGHt3Jsm3Vl9+Hl19Ms+xKdmR+Q3CzCBBeGmy
- XyZz0yn5Q+Xtj0q9EmenhUPV15N08crwO2yyIpGWebD79P3Y2fN8c1mpKXGAlwRZ3Efy
- W/Ew0up9H9q1Q3ZiooQs9crW2abVTn1Y2Tu/ZI/Tk0/jPYu1+SGLVyDimvOkrOZwt/a7
- DvLRVT/0jlc6SNFkJ80qapy776QFTBBBdKtLFrKVqOj1X84xpZDPnMt/UV/CEmGck6tp Zg== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rxummrtdg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 20 Jul 2023 09:55:30 +0000
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36K9tTBK003341
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 20 Jul 2023 09:55:29 GMT
-Received: from [10.201.3.182] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 20 Jul
- 2023 02:55:25 -0700
-Message-ID: <8194aa14-6465-5b4d-1b13-72c6af818f82@quicinc.com>
-Date:   Thu, 20 Jul 2023 15:25:20 +0530
+        with ESMTP id S229628AbjGTKZK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 06:25:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B78C310D4;
+        Thu, 20 Jul 2023 03:25:09 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BB8A61943;
+        Thu, 20 Jul 2023 10:25:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82ECC433C7;
+        Thu, 20 Jul 2023 10:25:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689848708;
+        bh=k8LUVsSWJYD2I9NRsqKLB26TXdfvdNl+zpbMvFYyymc=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=Z2R14fb5oUAGWnVU+D+VUOkywZF9RRIFTPf6Gy1HCUCsNM9G6tZKFS+HBCu5EVLPz
+         vWc3QUO+N3IV5fKfnF68Ckp9FzWbKrpxwhsURS56cirRK6AtiRo3vfwTC8hPzx0rv7
+         qxoLhJf1ZT7I7AxRHbKHx5bFF9hTbbpqONyB3aHg4Pj5SBq4Bg0xMKiF3yGWd2zzWx
+         oWdNIgqJ4uvMpFVJwVNBDd8mpl1YACNoIcmqzTgnMbp2GumyzJWY/BLVdytiVw7jeJ
+         TXv9Z5u7S51F1PYaBUArIptIJUoBQEsKlMDr2pmGTv1Ppoi/eoVXVZV+6hvWpx/7zf
+         ZupIe94IGmxFw==
+Message-ID: <e5d64fae9611808c77b4e1d23a25ae643fa50177.camel@kernel.org>
+Subject: Re: [PATCH] ceph: disable sending metrics thoroughly when it's
+ disabled
+From:   Jeff Layton <jlayton@kernel.org>
+To:     xiubli@redhat.com, idryomov@gmail.com, ceph-devel@vger.kernel.org
+Cc:     vshankar@redhat.com, mchangir@redhat.com, stable@vger.kernel.org
+Date:   Thu, 20 Jul 2023 06:25:06 -0400
+In-Reply-To: <20230720033800.110717-1-xiubli@redhat.com>
+References: <20230720033800.110717-1-xiubli@redhat.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH V4] PCI: qcom: Fixing broken pcie bring up for 2_3_3
- configs ops
-Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-CC:     Greg KH <gregkh@linuxfoundation.org>, <agross@kernel.org>,
-        <andersson@kernel.org>, <konrad.dybcio@linaro.org>,
-        <robh@kernel.org>, <mani@kernel.org>, <lpieralisi@kernel.org>,
-        <bhelgaas@google.com>, <kw@linux.com>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20230717065535.2065582-1-quic_srichara@quicinc.com>
- <2023071729-shamrock-evidence-b698@gregkh>
- <2fc238aa-82c1-383a-9dca-72f979ee3c07@quicinc.com>
- <CAA8EJpoB6Q5c27-D5HF42+OS7S7bPBGWi_Po0orMxaQ7yx3=1A@mail.gmail.com>
-From:   Sricharan Ramabadhran <quic_srichara@quicinc.com>
-In-Reply-To: <CAA8EJpoB6Q5c27-D5HF42+OS7S7bPBGWi_Po0orMxaQ7yx3=1A@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: rr1XJxaMVM1MYVkl0a43KMKaCFQg7qMd
-X-Proofpoint-GUID: rr1XJxaMVM1MYVkl0a43KMKaCFQg7qMd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-20_03,2023-07-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 lowpriorityscore=0
- clxscore=1015 adultscore=0 suspectscore=0 mlxscore=0 mlxlogscore=705
- malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307200082
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Thu, 2023-07-20 at 11:38 +0800, xiubli@redhat.com wrote:
+> From: Xiubo Li <xiubli@redhat.com>
+>=20
+> Even the 'disable_send_metrics' is true so when the session is
+> being opened it will always trigger to send the metric for the
+> first time.
+>=20
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> ---
+>  fs/ceph/metric.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/fs/ceph/metric.c b/fs/ceph/metric.c
+> index cce78d769f55..6d3584f16f9a 100644
+> --- a/fs/ceph/metric.c
+> +++ b/fs/ceph/metric.c
+> @@ -216,7 +216,7 @@ static void metric_delayed_work(struct work_struct *w=
+ork)
+>  	struct ceph_mds_client *mdsc =3D
+>  		container_of(m, struct ceph_mds_client, metric);
+> =20
+> -	if (mdsc->stopping)
+> +	if (mdsc->stopping || disable_send_metrics)
+>  		return;
+> =20
+>  	if (!m->session || !check_session_state(m->session)) {
 
-
-On 7/17/2023 11:23 PM, Dmitry Baryshkov wrote:
-> On Mon, 17 Jul 2023 at 20:16, Sricharan Ramabadhran
-> <quic_srichara@quicinc.com> wrote:
->>
->>
->>
->> On 7/17/2023 7:09 PM, Greg KH wrote:
->>> On Mon, Jul 17, 2023 at 12:25:35PM +0530, Sricharan Ramabadhran wrote:
->>>> PARF_SLV_ADDR_SPACE_SIZE_2_3_3 macro is used for IPQ8074
->>>> 2_3_3 post_init ops. PCIe slave addr size was initially set
->>>> to 0x358, but was wrongly changed to 0x168 as a part of
->>>> commit 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from
->>>> register definitions"). Fixing it, by using the right macro
->>>> PARF_SLV_ADDR_SPACE_SIZE and remove the unused
->>>> PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
->>>
->>> Note, you do have a full 72 columns to use, no need to make it smaller.
->>
->>    ok sure
->>
->>>
->>>> Without this pcie bring up on IPQ8074 is broken now.
->>>
->>> I do not understand, something that used to work now breaks, or this is
->>> preventing a new chip from being "brought up"?
->>>
->>
->>    yes, ipq8074 pcie which was previously working is broken now.
->>    This patch fixes it.
-> 
-> So, you need to describe what is broken and why. Mere "it is broken,
-> fix it" is not enough.
-
-  ok sure, will change the subject and explicitly state in commit log
-  how pcie enumeration is broken up.
-
-
-Regards,
-  Sricharan
-
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
