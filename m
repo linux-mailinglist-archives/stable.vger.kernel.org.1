@@ -2,158 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA6C475B6F9
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 20:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D418A75B72F
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 20:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231979AbjGTSjQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 14:39:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41086 "EHLO
+        id S229909AbjGTS4J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 14:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232119AbjGTSjP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 14:39:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B8242D50;
-        Thu, 20 Jul 2023 11:39:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 38C0561BF4;
-        Thu, 20 Jul 2023 18:39:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B13C433CC;
-        Thu, 20 Jul 2023 18:39:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689878350;
-        bh=cJdsEMWu4Vw4UDfbXEhrIi77kKUyxBMQ+oaGSCuCK3E=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-        b=YZkcJhFTmw1HPNCUbq/w1IfKEsEptFEJD1W2JPuwWxGr7tFO9SQCTfZMaEDtHuq8l
-         e4zUx/zO+3w1TccNL5Y+8tenapCYOzqcq6IKH+pa2I0q5vpqoCTRcN3Rlf7hqUl2Lb
-         Fcs6Fw1RgUL1heKymdHm3vK1/IkTiXJkJgqFjQR1hMijVuVwprGZ02lV7O0s9EHviS
-         1tJu7D1NntfhigBfbxuXejuLWgegfJDnIpnnSS+OGTI+rvKuIe1OrOmwg0BaZcwPVz
-         SDFuCMKGoQa75D8SWoNqk6tzkMO6XEa1p6cPZjyMWqcGLUL/KwnISz/HWfVhEjTzW+
-         m5LAliREjPL+Q==
-From:   Mark Brown <broonie@kernel.org>
-Date:   Thu, 20 Jul 2023 19:38:58 +0100
-Subject: [PATCH v2 1/3] arm64/fpsimd: Ensure SME storage is allocated after
- SVE VL changes
+        with ESMTP id S229904AbjGTS4I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 14:56:08 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A77971705
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 11:56:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.at;
+ s=s31663417; t=1689879364; x=1690484164; i=reinhold.mannsberger@gmx.at;
+ bh=3zKu16pfUrrytu9Tcwl5JfS2CXatxGHmAmVagUWiOtc=;
+ h=X-UI-Sender-Class:Subject:From:Reply-To:To:Date;
+ b=Lvg/avVk55dBNwF40fbjXBOjNp3D510r1GpVt7O9CjTfnOVbMZT5KObaeqADFiq3gkU877j
+ vQ/hPTfz0VBMULfwxHjC2W/pbrqhJs3UU7KQyiC/wos+Eo1KNMXsOtBou9ZxZ3UKQl3rIXRDg
+ DOr5kMimZk+4q1s/vDqp0QqUbtufgrkAwXP95f5miY4pVvxlzcW0IHGyaad6r4k3FrS1MnH1W
+ eZTh1KZbpfgCWLproXw1/TywnlNyiuZkQVEbsqJKQ69RjfSWjbdqvUX3vCybm1lJLG7cjj3xt
+ CwkVV5+UvXuGnNvO3TulPX+BvkAOEW1jD3SY6pUejur3mhBhOjwQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [100.64.100.6] ([194.5.53.166]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MplXp-1pYiPx20ib-00q8aq for
+ <stable@vger.kernel.org>; Thu, 20 Jul 2023 20:56:04 +0200
+Message-ID: <32933d9b5e1a46e4ec60189ea389e012a8fd65d6.camel@gmx.at>
+Subject: cannot mount device with write access with kernel versions >= 4.20.0
+From:   Reinhold Mannsberger <reinhold.mannsberger@gmx.at>
+Reply-To: reinhold.mannsberger@gmx.at
+To:     stable@vger.kernel.org
+Date:   Thu, 20 Jul 2023 20:55:50 +0200
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230720-arm64-fix-sve-sme-vl-change-v2-1-8eea06b82d57@kernel.org>
-References: <20230720-arm64-fix-sve-sme-vl-change-v2-0-8eea06b82d57@kernel.org>
-In-Reply-To: <20230720-arm64-fix-sve-sme-vl-change-v2-0-8eea06b82d57@kernel.org>
-To:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc:     David Spickett <David.Spickett@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        stable@vger.kernel.org
-X-Mailer: b4 0.13-dev-099c9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3126; i=broonie@kernel.org;
- h=from:subject:message-id; bh=cJdsEMWu4Vw4UDfbXEhrIi77kKUyxBMQ+oaGSCuCK3E=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBkuX9H8a1ZEjatBHUy3+YyrBKN9Ns5zmE97HZq59se
- mG1hfjuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZLl/RwAKCRAk1otyXVSH0BFLB/
- 48MuNQeHejkUjg+G0TolCglEKFMd2HtiKuI+aYs/va+ARg5B5tGns4k2GfNlWF3F3MncLnUHAh6pi0
- uoZE8qR/HEHBQHh4ls8cAgx+zwm0BKVdRn85HEjCBA64N9Acm6AxpYS7OqZSq5gf736VUDI3tv0kTW
- hGf7qZpF95H28Wey0JMlDoHhmIgbniieL0gyklP4t5Zdvo0YwF79VKAXd1Ck/CB6G4kQLhcWvN94tU
- s9H+8v0mJHQjSzZntWYNYoFykVM1cQjTzmnXhyKy6USVDT1HWfVoPq6b6IhcfgTCMLvL6GxSCurZAz
- 3ee2zR926o69yQ3TBwXC2+a2sbrtUw
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Provags-ID: V03:K1:jXbxZEw5X7b9imjSnyTzLmUunCX0HbfwbeDR25vS/hHAFGALicM
+ s8jkeI5Ql1GPlLBadPF3Jy7Akv+MmTDks+N01nzB5ArffJb8s7LT3gGBRanTgZiZzw2YFsU
+ 4z2dCklCpEjcP037pvD7DMlL4gnbhxWUVwE9AENcRtZlmAeGUSk/K1RzdP504KbBWhJMBWz
+ NV2UWdxcp6hnO8WxzImRA==
+UI-OutboundReport: notjunk:1;M01:P0:Kppq07Uk06E=;esh7aBGziUFohJF8IjvBF6KlGF1
+ i3U7RJ0I5rHQ5Gv43Kiv/xKEyJggNH98FaVM3H4rK3slm/yks1MX2vzC+uoJVMHbPQi8SbSYs
+ 6s4Z1vmRpBJFfEOTpBXthBuzGrXy0yqiK1nWy3oXp4J0XVAR1G3/FQEk0cwQZnYOmVAxVKjBJ
+ MW3HVtGwaNid1vCw4PMDih9G5ws7YoMVuemzd1ogqJ1+iGD2q2bbTqnxjRTzLGAhyZ6QhsVo0
+ oW0lW+ThQWJ8lQcIYye6IS8gZWwmEWPj663ga/oZzlOfmKdMNYAHPQQr3ICIo3NiFcNq8rEcy
+ Xz5jxtnlsoPXTCWku2CKjVyzgCx5nxqQPl3gvc/A4SwWnY0wi7Vk+oza9ftpKa8nVVSgvr4to
+ oq6jmw1zDzstMv3JLNSAYXul7yvW/DtAd31xXPJhage9QBZX0EbpGorX/uZc2uZzaINtz9eCE
+ +LN3keeIuv74OxI5h9shK0mBILGWI8sP+547aM6amgwy67pobdu3vd3vMKGbGIQ+YZH7gjT88
+ zWgBIg/6zfOO8EXxJ/exSnVICMP6IQNAvSlVIUqe6kLjiX9eW94HQyuttmnuUg1rc+qlghXr7
+ 5jjF3jSak+hhJX5BpQH2PZ2igjV/e4syU2X3yT+1GccnYqI+gYX10KIfAfbOdKskv5Lb5ns7D
+ sh7R0vX6DfPfZv2UTe62us3fXu/PrshCrUg8hFILDeRrD/ZuoyFDqM4UUDSccEQyHRWvD4HEO
+ yt3oyKMHbDUGn0RI1I0DcLwCbuL8yHQ3YszrR34ede2tlZUTu0yTEkrhwfbR2sGLNWmE3G733
+ 5dlPH9iayT8kSFa75BpGOf6pAHSm7AwHr0nnpGb1DMv9sMHOBJjL1F5XYWTp7nfRPts4hKgiI
+ L5H/0dyAfmz5RP7h1BdXrUnhx6FvtRam90xI5mty8Bk0HInvx8FfqQhuoaW21U0bQvPEF4VX8
+ zqqmXg==
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When we reconfigure the SVE vector length we discard the backing storage
-for the SVE vectors and then reallocate on next SVE use, leaving the SME
-specific state alone. This means that we do not enable SME traps if they
-were already disabled. That means that userspace code can enter streaming
-mode without trapping, putting the task in a state where if we try to save
-the state of the task we will fault.
+Dear kernel developers!
 
-Since the ABI does not specify that changing the SVE vector length disturbs
-SME state, and since SVE code may not be aware of SME code in the process,
-we shouldn't simply discard any ZA state. Instead immediately reallocate
-the storage for SVE, and disable SME if we change the SVE vector length
-while there is no SME state active.
+Something unintended must have happened in kernel version 4.20.0.
 
-Disabling SME traps on SVE vector length changes would make the overall
-code more complex since we would have a state where we have valid SME state
-stored but might get a SME trap.
+On my PC I have an Iomega REV 35 drive. Up to kernel version 4.19.125
+that device can be mounted with write access for the root user.
+(Unfortunately I could not find a way to have write access as a normal
+user.)=C2=A0
 
-Fixes: 9e4ab6c89109 ("arm64/sme: Implement vector length configuration prctl()s")
-Reported-by: David Spickett <David.Spickett@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/arm64/kernel/fpsimd.c | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+The command I use for mounting:
+-----
+sudo mount -t udf -o
+rw,nosuid,nodev,relatime,uid=3D1000,gid=3D1000,iocharset=3Dutf8 /dev/sr1
+/media/rm_l1604/REV35
+-----
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 7a1aeb95d7c3..89d54a5242d1 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -847,6 +847,8 @@ void sve_sync_from_fpsimd_zeropad(struct task_struct *task)
- int vec_set_vector_length(struct task_struct *task, enum vec_type type,
- 			  unsigned long vl, unsigned long flags)
- {
-+	bool free_sme = false;
-+
- 	if (flags & ~(unsigned long)(PR_SVE_VL_INHERIT |
- 				     PR_SVE_SET_VL_ONEXEC))
- 		return -EINVAL;
-@@ -897,21 +899,36 @@ int vec_set_vector_length(struct task_struct *task, enum vec_type type,
- 		task->thread.fp_type = FP_STATE_FPSIMD;
- 	}
- 
--	if (system_supports_sme() && type == ARM64_VEC_SME) {
--		task->thread.svcr &= ~(SVCR_SM_MASK |
--				       SVCR_ZA_MASK);
--		clear_thread_flag(TIF_SME);
-+	if (system_supports_sme()) {
-+		if (type == ARM64_VEC_SME ||
-+		    !(task->thread.svcr & (SVCR_SM_MASK | SVCR_ZA_MASK))) {
-+			/*
-+			 * We are changing the SME VL or weren't using
-+			 * SME anyway, discard the state and force a
-+			 * reallocation.
-+			 */
-+			task->thread.svcr &= ~(SVCR_SM_MASK |
-+					       SVCR_ZA_MASK);
-+			clear_thread_flag(TIF_SME);
-+			free_sme = true;
-+		}
- 	}
- 
- 	if (task == current)
- 		put_cpu_fpsimd_context();
- 
- 	/*
--	 * Force reallocation of task SVE and SME state to the correct
--	 * size on next use:
-+	 * Free the changed states if they are not in use, SME will be
-+	 * reallocated to the correct size on next use and we just
-+	 * allocate SVE now in case it is needed for use in streaming
-+	 * mode.
- 	 */
--	sve_free(task);
--	if (system_supports_sme() && type == ARM64_VEC_SME)
-+	if (system_supports_sve()) {
-+		sve_free(task);
-+		sve_alloc(task, true);
-+	}
-+
-+	if (free_sme)
- 		sme_free(task);
- 
- 	task_set_vl(task, type, vl);
+The very same command gives the following message with kernel versions
+>=3D 4.20.0.
+-----
+mount: /dev/sr1 is write-protected, mounting read-only
+-----
 
--- 
-2.30.2
+As a result there is no chance go get write access to the device. At
+least I could not find a way to get write access.
 
+Is there any workaround for this problem? Please let me know!
+
+
+Thank you and best regards,
+
+Reinhold Mannsberger
