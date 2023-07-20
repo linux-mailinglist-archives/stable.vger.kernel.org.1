@@ -2,102 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 123DB75B5A1
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 19:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A83AD75B5E1
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 19:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229487AbjGTRaJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 13:30:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33128 "EHLO
+        id S231915AbjGTRup (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 13:50:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229823AbjGTRaH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 13:30:07 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6E811BF7;
-        Thu, 20 Jul 2023 10:30:06 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-bd61dd9a346so957017276.2;
-        Thu, 20 Jul 2023 10:30:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689874206; x=1690479006;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SCJQ65+7aQZac8L3veadNqaoOqxg9236xCtIGRaxWKA=;
-        b=Vy0VLb8pBIRmkm/OCgFwCyVIHkdJkylVc+Hzceus7ZHA7wAZiPd1yx84YA+isdig02
-         n9d9fo6a3ztiX81rtlbE20h6PR9YIXVXeKpFms6fadk9pnq9odSijinC8O/JL+qCQSfR
-         GbXl9Jh2DBWBEY55CWGUmif9q5enGEF9UAZTNBxb43g2mc6d5RHI96pDNXMsBClswwcF
-         gOxagc+I8oyWGwbWwVm7aPra4KhexdMQ+m4We2YQOKcTOuQD3JPKt9EsLzSa5hmW6mZh
-         jetcV+WhXoikm5YfxU5IUZOjB0KTBO4K9rCS0l+KV/TWbY4eENQVyaYl7r7yjZpuOK+X
-         TbwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689874206; x=1690479006;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SCJQ65+7aQZac8L3veadNqaoOqxg9236xCtIGRaxWKA=;
-        b=cPA5ihzVn2vHp3YOR/HYxQiuycmtFAEVMgRip4YYR4HNqQGb5URVJDQXkkwBwgFqgu
-         rj4mR3wKoOVFssfgWMqsNLERx7+UMM/6JU6IeSQ8Ueh43j8jno3eeXYHL1iaD6vBK8oz
-         HucoploVfgo6RQNMDThH4QTotijJgMnl3F3mHsMsYgf63YVHwuSMafeNKBfSGd4icZkg
-         DMxSNXS1/MnGKA70cfrxpIM0P2eX4K7RQocQvoTJiUuxmbfEZ+IotWdlyPjM8t/5lJRk
-         z6nxbgnWh8rAl/hGvwQt8MW+uNd7/gAON9jVT2SiRwfc3hBcn+jQwxLHhN15sonz6EGE
-         7/Kw==
-X-Gm-Message-State: ABy/qLbqP8542K+xSq6kFKh04apLd6WI6I1ShsW3oU59OX1H58PHW0h/
-        1M22Ad/JxR5c9W6BfCnvra2ROdrah+Fh/dfkJCE=
-X-Google-Smtp-Source: APBJJlHbTOValRmB/GshYtHb4Ajg/BgY2O7fJVdJ6AqgyDWmi+wB4sVPiYYN+prjLl1boydok0lSDcaStxx1GIZ4igs=
-X-Received: by 2002:a25:910:0:b0:ce7:ee46:debd with SMTP id
- 16-20020a250910000000b00ce7ee46debdmr2953145ybj.16.1689874206039; Thu, 20 Jul
- 2023 10:30:06 -0700 (PDT)
+        with ESMTP id S231939AbjGTRuo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 13:50:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7320268F;
+        Thu, 20 Jul 2023 10:50:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F9D661B95;
+        Thu, 20 Jul 2023 17:50:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29110C433C7;
+        Thu, 20 Jul 2023 17:50:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689875438;
+        bh=tA6jPNyslJC+LUacjwi2kvTq/6NHCcqxlljp7wunIe8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jK80v0ACTaeStmC6h4QNp1pZrzv0tbJx9pDdZTutOEZSz2o5PaUnz5Kcu7rhsAnhZ
+         CH112eu/lWtwN+YI1/fu8p2HLNVx1ex9Y5PfK75MzFEVV2tkMeum5SaE35yS7yoM5/
+         6C0yuU8Se2inio0BdvdVD5rjpF2PxM0LFbnmnPrQ=
+Date:   Thu, 20 Jul 2023 19:50:36 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Paul Barker <paul.barker.ct@bp.renesas.com>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 000/589] 6.1.39-rc3 review
+Message-ID: <2023072028-elevation-undead-bb94@gregkh>
+References: <20230717201547.359923764@linuxfoundation.org>
+ <9da5f8cb-5ed0-1854-0a0a-252794e01ce3@bp.renesas.com>
+ <9705c130-997d-6356-18bc-ee5ce5d8b325@roeck-us.net>
 MIME-Version: 1.0
-References: <20230718055235.1050223-1-ojeda@kernel.org> <CAK7LNAQ-hjW_19fjA+E-bQCrXcVPdN4-GvzAnEnYzna5KRVXew@mail.gmail.com>
-In-Reply-To: <CAK7LNAQ-hjW_19fjA+E-bQCrXcVPdN4-GvzAnEnYzna5KRVXew@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 20 Jul 2023 19:29:55 +0200
-Message-ID: <CANiq72kZjOGvRKoRxtgG=2DhJnMJK9TCQtTmeef_B=nLcLQD6g@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: avoid creating temporary files
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>,
-        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Raphael Nestler <raphael.nestler@gmail.com>,
-        Andrea Righi <andrea.righi@canonical.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9705c130-997d-6356-18bc-ee5ce5d8b325@roeck-us.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 20, 2023 at 7:18=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
->
-> Applied to linux-kbuild/fixes. Thanks.
->
-> I believe this is a fix, so I will include it
-> in my next pull request.
+On Mon, Jul 17, 2023 at 03:50:06PM -0700, Guenter Roeck wrote:
+> On 7/17/23 15:39, Paul Barker wrote:
+> > Hi Greg,
+> > 
+> > On 17/07/2023 21:34, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 6.1.39 release.
+> > > There are 589 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > > 
+> > > Responses should be made by Wed, 19 Jul 2023 20:14:46 +0000.
+> > > Anything received after that time might be too late.
+> > > 
+> > > The whole patch series can be found in one patch at:
+> > >     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.39-rc3.gz
+> > > or in the git tree and branch at:
+> > >     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > > and the diffstat can be found below.
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > > 
+> > 
+> > Building i386_defconfig in my Yocto Project environment (with gcc 13) fails:
+> > 
+> > | /.../kernel/workqueue.c: In function 'get_work_pwq':
+> > | /.../kernel/workqueue.c:706:24: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+> > |   706 |                 return (void *)(data & WORK_STRUCT_WQ_DATA_MASK);
+> > |       |                        ^
+> > | /.../kernel/workqueue.c: In function 'get_work_pool':
+> > | /.../kernel/workqueue.c:734:25: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+> > |   734 |                 return ((struct pool_workqueue *)
+> > |       |                         ^
+> > | /.../kernel/workqueue.c: In function 'get_work_pool_id':
+> > | /.../kernel/workqueue.c:756:25: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+> > |   756 |                 return ((struct pool_workqueue *)
+> > |       |                         ^
+> > 
+> > Cherry-picking afa4bb778e48d79e4a642ed41e3b4e0de7489a6c from mainline fixes the build for me.
+> > 
+> 
+> That is not a new problem, though. I see the same problem with v6.1.38
+> and with v6.1 if I try to build with gcc 13.1.
 
-Thanks Masahiro! Yeah, it can be considered a fix. By the way, in case you =
-want:
+Thanks, now queued up.
 
-    Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-
-I guess it can be also considered a feature (e.g. "supporting more
-setups"), but having the temporaries created where they were was
-unintentional.
-
-Cheers,
-Miguel
+greg k-h
