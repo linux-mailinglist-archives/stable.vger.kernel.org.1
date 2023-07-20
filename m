@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1C8C75B68F
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 20:22:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 257C175B693
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 20:22:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229563AbjGTSWK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 14:22:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57114 "EHLO
+        id S230168AbjGTSWm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 14:22:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjGTSWK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 14:22:10 -0400
+        with ESMTP id S230060AbjGTSWl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 14:22:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47562E6F
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 11:22:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24D0270C
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 11:22:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D034F61B7D
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 18:22:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A64C433C8;
-        Thu, 20 Jul 2023 18:22:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4729C61BBC
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 18:22:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F45C433CB;
+        Thu, 20 Jul 2023 18:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689877327;
-        bh=02TTll4zLc6+Z13xIgnTGNPNXf7KXTfF8EarFsvYefU=;
+        s=korg; t=1689877359;
+        bh=Nwr8nBCqqMsNMWOJUyV9ZX9XyLyDad3M7zXZ5TPKtXY=;
         h=Subject:To:Cc:From:Date:From;
-        b=p4nxB/lTzYd4iJVErY8+2kmc5C8Xl6VIGJv6RXMlXVLMEHR0yMw+RkosiHZ+RX0qf
-         tJpEKK4otO/IHhzTrwx9EYq2yLm1HOk9+ueyBMHi+jwtEBfKAXCprIq48sQBQKFe6y
-         iVNSo/85gfYQY/ZXmpG7Ul0OyqbLEAaLaYQAVghU=
-Subject: FAILED: patch "[PATCH] f2fs: don't reset unchangable mount option in f2fs_remount()" failed to apply to 6.1-stable tree
-To:     chao@kernel.org, jaegeuk@kernel.org, stable@vger.kernel.org
+        b=RbSwf8NNDbN3Qt8JEWwK8kBdWr97QLYRp4kp9xnwn7uEIWsVU0LO5J1Mafo2uluk0
+         YKdTc3Uu9K5m29XvvOVnnHZ/ui5e9q+EMGepyXYrkskD7pmOqy0XHpE8UGdvGHEcqJ
+         6VAT4Oe4K+nm+YzOhvbOAfq+K0m7GjV5NyEebedw=
+Subject: FAILED: patch "[PATCH] f2fs: fix deadlock in i_xattr_sem and inode page lock" failed to apply to 5.15-stable tree
+To:     jaegeuk@kernel.org, chao@kernel.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 20 Jul 2023 20:22:04 +0200
-Message-ID: <2023072004-unashamed-coping-b642@gregkh>
+Date:   Thu, 20 Jul 2023 20:22:36 +0200
+Message-ID: <2023072036-graded-regain-7c90@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,25 +49,33 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 458c15dfbce62c35fefd9ca637b20a051309c9f1
+git cherry-pick -x 5eda1ad1aaffdfebdecf7a164e586060a210f74f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072004-unashamed-coping-b642@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072036-graded-regain-7c90@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-458c15dfbce6 ("f2fs: don't reset unchangable mount option in f2fs_remount()")
-12607c1ba763 ("f2fs: specify extent cache for read explicitly")
-967eaad1fed5 ("f2fs: fix to set flush_merge opt and show noflush_merge")
+5eda1ad1aaff ("f2fs: fix deadlock in i_xattr_sem and inode page lock")
+e4544b63a7ee ("f2fs: move f2fs to use reader-unfair rwsems")
+3e0203893e0d ("f2fs: support fault injection to f2fs_trylock_op()")
+a9419b63bf41 ("f2fs: do not bother checkpoint by f2fs_get_node_info")
+0df035c7208c ("f2fs: avoid down_write on nat_tree_lock during checkpoint")
+a1e09b03e6f5 ("f2fs: use iomap for direct I/O")
+ccf7cf92373d ("f2fs: fix the f2fs_file_write_iter tracepoint")
+d4dd19ec1ea0 ("f2fs: do not expose unwritten blocks to user by DIO")
+b31bf0f96e71 ("f2fs: reduce indentation in f2fs_file_write_iter()")
+3d697a4a6b7d ("f2fs: rework write preallocations")
+5664896ba29e ("Merge tag 'f2fs-for-5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs")
 
 thanks,
 
@@ -75,134 +83,88 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 458c15dfbce62c35fefd9ca637b20a051309c9f1 Mon Sep 17 00:00:00 2001
-From: Chao Yu <chao@kernel.org>
-Date: Tue, 23 May 2023 11:58:22 +0800
-Subject: [PATCH] f2fs: don't reset unchangable mount option in f2fs_remount()
+From 5eda1ad1aaffdfebdecf7a164e586060a210f74f Mon Sep 17 00:00:00 2001
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+Date: Wed, 28 Jun 2023 01:00:56 -0700
+Subject: [PATCH] f2fs: fix deadlock in i_xattr_sem and inode page lock
 
-syzbot reports a bug as below:
+Thread #1:
 
-general protection fault, probably for non-canonical address 0xdffffc0000000009: 0000 [#1] PREEMPT SMP KASAN
-RIP: 0010:__lock_acquire+0x69/0x2000 kernel/locking/lockdep.c:4942
-Call Trace:
- lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5691
- __raw_write_lock include/linux/rwlock_api_smp.h:209 [inline]
- _raw_write_lock+0x2e/0x40 kernel/locking/spinlock.c:300
- __drop_extent_tree+0x3ac/0x660 fs/f2fs/extent_cache.c:1100
- f2fs_drop_extent_tree+0x17/0x30 fs/f2fs/extent_cache.c:1116
- f2fs_insert_range+0x2d5/0x3c0 fs/f2fs/file.c:1664
- f2fs_fallocate+0x4e4/0x6d0 fs/f2fs/file.c:1838
- vfs_fallocate+0x54b/0x6b0 fs/open.c:324
- ksys_fallocate fs/open.c:347 [inline]
- __do_sys_fallocate fs/open.c:355 [inline]
- __se_sys_fallocate fs/open.c:353 [inline]
- __x64_sys_fallocate+0xbd/0x100 fs/open.c:353
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[122554.641906][   T92]  f2fs_getxattr+0xd4/0x5fc
+    -> waiting for f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
 
-The root cause is race condition as below:
-- since it tries to remount rw filesystem, so that do_remount won't
-call sb_prepare_remount_readonly to block fallocate, there may be race
-condition in between remount and fallocate.
-- in f2fs_remount(), default_options() will reset mount option to default
-one, and then update it based on result of parse_options(), so there is
-a hole which race condition can happen.
+[122554.641927][   T92]  __f2fs_get_acl+0x50/0x284
+[122554.641948][   T92]  f2fs_init_acl+0x84/0x54c
+[122554.641969][   T92]  f2fs_init_inode_metadata+0x460/0x5f0
+[122554.641990][   T92]  f2fs_add_inline_entry+0x11c/0x350
+    -> Locked dir->inode_page by f2fs_get_node_page()
 
-Thread A			Thread B
-- f2fs_fill_super
- - parse_options
-  - clear_opt(READ_EXTENT_CACHE)
+[122554.642009][   T92]  f2fs_do_add_link+0x100/0x1e4
+[122554.642025][   T92]  f2fs_create+0xf4/0x22c
+[122554.642047][   T92]  vfs_create+0x130/0x1f4
 
-- f2fs_remount
- - default_options
-  - set_opt(READ_EXTENT_CACHE)
-				- f2fs_fallocate
-				 - f2fs_insert_range
-				  - f2fs_drop_extent_tree
-				   - __drop_extent_tree
-				    - __may_extent_tree
-				     - test_opt(READ_EXTENT_CACHE) return true
-				    - write_lock(&et->lock) access NULL pointer
- - parse_options
-  - clear_opt(READ_EXTENT_CACHE)
+Thread #2:
+
+[123996.386358][   T92]  __get_node_page+0x8c/0x504
+    -> waiting for dir->inode_page lock
+
+[123996.386383][   T92]  read_all_xattrs+0x11c/0x1f4
+[123996.386405][   T92]  __f2fs_setxattr+0xcc/0x528
+[123996.386424][   T92]  f2fs_setxattr+0x158/0x1f4
+    -> f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
+
+[123996.386443][   T92]  __f2fs_set_acl+0x328/0x430
+[123996.386618][   T92]  f2fs_set_acl+0x38/0x50
+[123996.386642][   T92]  posix_acl_chmod+0xc8/0x1c8
+[123996.386669][   T92]  f2fs_setattr+0x5e0/0x6bc
+[123996.386689][   T92]  notify_change+0x4d8/0x580
+[123996.386717][   T92]  chmod_common+0xd8/0x184
+[123996.386748][   T92]  do_fchmodat+0x60/0x124
+[123996.386766][   T92]  __arm64_sys_fchmodat+0x28/0x3c
 
 Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+d015b6c2fbb5c383bf08@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/20230522124203.3838360-1-chao@kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
+Fixes: 27161f13e3c3 "f2fs: avoid race in between read xattr & write xattr"
+Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 8eb17cc73941..6e770f82d39f 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2086,9 +2086,22 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
- 	return 0;
- }
- 
--static void default_options(struct f2fs_sb_info *sbi)
-+static void default_options(struct f2fs_sb_info *sbi, bool remount)
+diff --git a/fs/f2fs/dir.c b/fs/f2fs/dir.c
+index 887e55988450..d635c58cf5a3 100644
+--- a/fs/f2fs/dir.c
++++ b/fs/f2fs/dir.c
+@@ -775,8 +775,15 @@ int f2fs_add_dentry(struct inode *dir, const struct f2fs_filename *fname,
  {
- 	/* init some FS parameters */
-+	if (!remount) {
-+		set_opt(sbi, READ_EXTENT_CACHE);
-+		clear_opt(sbi, DISABLE_CHECKPOINT);
-+
-+		if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
-+			set_opt(sbi, DISCARD);
-+
-+		if (f2fs_sb_has_blkzoned(sbi))
-+			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
-+		else
-+			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
+ 	int err = -EAGAIN;
+ 
+-	if (f2fs_has_inline_dentry(dir))
++	if (f2fs_has_inline_dentry(dir)) {
++		/*
++		 * Should get i_xattr_sem to keep the lock order:
++		 * i_xattr_sem -> inode_page lock used by f2fs_setxattr.
++		 */
++		f2fs_down_read(&F2FS_I(dir)->i_xattr_sem);
+ 		err = f2fs_add_inline_entry(dir, fname, inode, ino, mode);
++		f2fs_up_read(&F2FS_I(dir)->i_xattr_sem);
 +	}
-+
- 	if (f2fs_sb_has_readonly(sbi))
- 		F2FS_OPTION(sbi).active_logs = NR_CURSEG_RO_TYPE;
- 	else
-@@ -2118,23 +2131,16 @@ static void default_options(struct f2fs_sb_info *sbi)
- 	set_opt(sbi, INLINE_XATTR);
- 	set_opt(sbi, INLINE_DATA);
- 	set_opt(sbi, INLINE_DENTRY);
--	set_opt(sbi, READ_EXTENT_CACHE);
- 	set_opt(sbi, NOHEAP);
--	clear_opt(sbi, DISABLE_CHECKPOINT);
- 	set_opt(sbi, MERGE_CHECKPOINT);
- 	F2FS_OPTION(sbi).unusable_cap = 0;
- 	sbi->sb->s_flags |= SB_LAZYTIME;
- 	if (!f2fs_is_readonly(sbi))
- 		set_opt(sbi, FLUSH_MERGE);
--	if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
--		set_opt(sbi, DISCARD);
--	if (f2fs_sb_has_blkzoned(sbi)) {
-+	if (f2fs_sb_has_blkzoned(sbi))
- 		F2FS_OPTION(sbi).fs_mode = FS_MODE_LFS;
--		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
--	} else {
-+	else
- 		F2FS_OPTION(sbi).fs_mode = FS_MODE_ADAPTIVE;
--		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
--	}
+ 	if (err == -EAGAIN)
+ 		err = f2fs_add_regular_entry(dir, fname, inode, ino, mode);
  
- #ifdef CONFIG_F2FS_FS_XATTR
- 	set_opt(sbi, XATTR_USER);
-@@ -2306,7 +2312,7 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
- 			clear_sbi_flag(sbi, SBI_NEED_SB_WRITE);
- 	}
+diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+index 213805d3592c..476b186b90a6 100644
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -528,10 +528,12 @@ int f2fs_getxattr(struct inode *inode, int index, const char *name,
+ 	if (len > F2FS_NAME_LEN)
+ 		return -ERANGE;
  
--	default_options(sbi);
-+	default_options(sbi, true);
+-	f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
++	if (!ipage)
++		f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+ 	error = lookup_all_xattrs(inode, ipage, index, len, name,
+ 				&entry, &base_addr, &base_size, &is_inline);
+-	f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
++	if (!ipage)
++		f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+ 	if (error)
+ 		return error;
  
- 	/* parse mount options */
- 	err = parse_options(sb, data, true);
-@@ -4346,7 +4352,7 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 		sbi->s_chksum_seed = f2fs_chksum(sbi, ~0, raw_super->uuid,
- 						sizeof(raw_super->uuid));
- 
--	default_options(sbi);
-+	default_options(sbi, false);
- 	/* parse mount options */
- 	options = kstrdup((const char *)data, GFP_KERNEL);
- 	if (data && !options) {
 
