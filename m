@@ -2,365 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93AEC75B97C
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 23:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78C1575B9DE
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 23:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229643AbjGTVZ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 17:25:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52438 "EHLO
+        id S230444AbjGTVxl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 17:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbjGTVZz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 17:25:55 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 227A526AB
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 14:25:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1689888347; x=1690493147; i=friedrich.vock@gmx.de;
- bh=mha5x6qt3FZ0n16k7ZEdln9i/QyB6IST2EATsqREXno=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=U/U+/DeZrFaGawutOc72M46H5o7boIobViGrljJJJO/3CguY38Yz+g4MOKLoBZRt3I44exT
- GqfwoZCAMErLq3o1QTqwHfzYNv8Dn9MrM6pi5jO8Y4KEea0INe+nC1ivQhVFMuKTj2s8kiRbK
- ljDGoEkVO8PQSwlJw/0dzAvxWZ29VBMNVhPDZ+9rPONzPH6aYrk7+W90c57CIn18O2CqvRuu4
- Fa2+9Mw9uqIxCs8V4oJHhAeB62SGYnBeLOx81CwUDv7kuRYqlEci8nLuUKK70/EnhHBsX8qzv
- 9bXmrB3slxQKJGo4dIEPzsEaowDPrtbbDsUHKvW2meLOZTc1dIcQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.177.3] ([213.152.113.178]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M1Hdq-1qKxG43jA2-002nSs; Thu, 20
- Jul 2023 23:25:46 +0200
-Message-ID: <a13f0c63-1937-2093-602e-9282d44dd840@gmx.de>
-Date:   Thu, 20 Jul 2023 23:25:46 +0200
+        with ESMTP id S230082AbjGTVxk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 17:53:40 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2089.outbound.protection.outlook.com [40.107.237.89])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 064B41719;
+        Thu, 20 Jul 2023 14:53:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oOy6LwCCLbiR+TOeNrQiRFyL/VKAFagTZo238T03r/CM702zpJ06tf+H4lOjSSczBTq+HyRXwIITMjI1xP48hln94wHM4XEnLQ5mch/WGMT3UDPhAfItcwbtiekhsIa+wVmHwql+WoLDfFWprvCf3zm/7A4uHnaGDiMrfknhYDv8T1Scxh11/VKPBFOwS1W1jldnPq8GcHsA4jyhaLp56znxkVzZ7Dtd8dKvwO7/DZdg5c2kVXHYp55xlklPQoLa0W8oZtR78fbvudRnW1t9r2x8PI1mdjGh9ziK+qAB4fpeYENglYQbh700mRV2PAoGLMyZXlqYmHvD3XJI+1UJFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wgxdfsaflM2nZkdxZ5yCPVSkw1ggTly0tYWaJAbSPe4=;
+ b=N6E0MtNn75WFyLuhvyaOuERQtk9GwGjzcZyPIQGKUUBIEKw0ELzNyrDHj5ugdBRvpZQi7eNuW5ABy3XMJYEqtfVEkzjI+i46Aqwd4qHEnYi9VJYg2ppu0PnL1nIV6K+/3P50VB8M+1Xx3W81enn9zTTXzSSMtubGp6M3EGLXjedDP5EDXtzwtocSilbZmKrztfsEsCnXjS5DMU4fhFTt1p+3fW3foVfTv/cvdWLHEg/NwZCTAB1mof5UZB9j+ddaMW1TpxpixXpUyKGnu4svTBaq/O37HBpB7GHaTjIw4OcN2shNHuQ+oZAw4jrWkI80mZbwB411CRFRxu+HpA/qFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wgxdfsaflM2nZkdxZ5yCPVSkw1ggTly0tYWaJAbSPe4=;
+ b=WKEqOHVT0WmD799LIC5/mHs0aOoB6onqxo2sqhGYnZK3cXnMFijPD/A2yI/gsMj0IvVSVFso1fMlkFqqk4Nn4rR8K9pAl47zXXtr+QaRMYzKgIoemgr6IPVomBaxyOe5nyziZLHr+Dj6Z/GkDofJ1NGTMIuki7k9PlwtNyoLpBs=
+Received: from BY3PR05CA0057.namprd05.prod.outlook.com (2603:10b6:a03:39b::32)
+ by PH0PR12MB7885.namprd12.prod.outlook.com (2603:10b6:510:28f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.24; Thu, 20 Jul
+ 2023 21:53:34 +0000
+Received: from DM6NAM11FT059.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:a03:39b:cafe::2c) by BY3PR05CA0057.outlook.office365.com
+ (2603:10b6:a03:39b::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.12 via Frontend
+ Transport; Thu, 20 Jul 2023 21:53:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT059.mail.protection.outlook.com (10.13.172.92) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6609.28 via Frontend Transport; Thu, 20 Jul 2023 21:53:32 +0000
+Received: from [10.236.30.70] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 20 Jul
+ 2023 16:53:29 -0500
+Message-ID: <6a43b05b-ffdd-0e6f-56a0-5b78532ee383@amd.com>
+Date:   Thu, 20 Jul 2023 16:53:23 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amdgpu: Always emit GDS switch when GDS/GWS/OA is
- used
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
 Content-Language: en-US
-To:     =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        amd-gfx@lists.freedesktop.org
-Cc:     stable@vger.kernel.org
-References: <20230707062908.9470-2-friedrich.vock@gmx.de>
- <a625bd04-1ae6-536d-d255-c3efa6351312@amd.com>
- <ef348f8d-27a6-06b2-210c-da1d8c8f3cca@gmx.de>
- <46b18e49-13e4-f5a3-e500-c4aa5bb8820a@amd.com>
-From:   Friedrich Vock <friedrich.vock@gmx.de>
-Autocrypt: addr=friedrich.vock@gmx.de; keydata=
- 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
- f7+xmX0X3AMtWz/15Y+7cPO2
-In-Reply-To: <46b18e49-13e4-f5a3-e500-c4aa5bb8820a@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:A6tbaFaHu1SuzY0VztK6QH/9jq4fH33chzhaMkqJwnPmIwXa+3T
- +mhnxQqtU4d3ifVHymxZJizzQ6kl7bStM9d17Q1PYnm/ptVcgqh3uV5C3deZ4uUCMYepa5X
- BQN2ppJc6bdtjk99bDSxQTiPKzezWuDJBSmBOgBJmNQiZCFvdPwaDlbz80ceMXcIPmpOx8Y
- 4nJpDrDdo7KLPTDuDlCAw==
-UI-OutboundReport: notjunk:1;M01:P0:CT+dReswblE=;ryM6FK4rRdpPYwnvJ78I8vCi54Y
- cafWjMrb6iyQTgPeVaCJDIuP1adBRLl6wAc+p1pPavnSzKrgopgr5mpM9NJk5ZZgLh0O3R82x
- P/xQlmCzBTipcQKd08P3MmYoKBD1X3IVp+xOV7wplZ8uULcLrS88eDWmFYJRCWiPze8N6O3d5
- 9xrtnrDoBjRZXpyy/3+zwLOa+Pq8VL55KCh63loHTqL7/IfDtsPSuP/hHOqlo0Nf6TNs0Csts
- nkqRTNWcGRQ35BDjNerDd4U28kzqOJ+gS5w08+anpcfECEVxIeS0sCOww9BfQBq8VWVNn2+Ao
- x08DFv/ekyo3jj4MuSCLLH+hUzbpRN8yOnJvynEsRDhGSWhAH3vckmGq3u95b6RDJ89mfz3F5
- NRum3ZHdkHPiJSMHRZP6fsjCrN8uhYJaQVn9t/6JYmmDh9DCpE5IwIsOWfCN8zc+e1+F98FX1
- 3Pt81//t6IXdMWvMvTd2zxsaanZ3AWWEWC5q6g8MFA6FdVoNW/hGUZ3rGnDJEdAfr5WfU9TSU
- JmbX4SO5dDNrTCBgu91pFC7GryrwJi2w8BKXMvQxKf2rbwSsEHhvT6Z87iT3I4YinZVIiRq4U
- BPrwa1CRbwprn4BbPd3JB5PdhibJBZrTy0sLN7er0gvd+jveI4NVuqutFJTmKDfRMkhfFtwTg
- V0UVTYVjHowgWBvh2qGG5dhYxOxIylLHgMJ0oYJ6CbqRakjL+0SdyBkk7edeYE6puKkfrhGKb
- k//28r06QfWmOD/3aPOye1TyIJSGiAztFeZ0MXVlGOj+kmQujEKfzOH5l1KUeNJZXPR2t18in
- Q/fUSpdpdFauMKF850wZzNgkuK6TtOvRXg+gEOKrxVszD2pzyHWEUN2M3fwhPbMSVHZZvWXPe
- yoGf1dChNpKzQb+z+98kflvy6glCvWbiko+MXdTaWyUkAZcQuXkADceh8eqfqQlHvI7OjVh/v
- gEZIXmXTpdfBhiiIZSP4Ponh//g=
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+To:     Jim Mattson <jmattson@google.com>
+CC:     <x86@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Joao Martins <joao.m.martins@oracle.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        "Paolo Bonzini" <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Juergen Gross <jgross@suse.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Alexey Kardashevskiy <aik@amd.com>, <kvm@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20230720194727.67022-1-kim.phillips@amd.com>
+ <CALMp9eTBWWcApb50432zZEGg+PMCzUELaZvdkzYngNSrriimWA@mail.gmail.com>
+From:   Kim Phillips <kim.phillips@amd.com>
+Subject: Re: [PATCH] x86/cpu: Enable STIBP if Automatic IBRS is enabled
+In-Reply-To: <CALMp9eTBWWcApb50432zZEGg+PMCzUELaZvdkzYngNSrriimWA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT059:EE_|PH0PR12MB7885:EE_
+X-MS-Office365-Filtering-Correlation-Id: a8078f53-77e7-4c0f-f8ee-08db896bc2e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: BNrk0JfUtGT4wls72NdsnXMpHiVQWdoLCrIvMMheMistZ0l4+EXRxLVvUrAFq+59vY/ZdkpOZ4JSTyaxC2IMy0W3LKVX8yubsHQjS4JClfLA+uuuJ+vjNe5SUOa+qAEzLkH5aHytHB2Ww5BI3uBMzrrhSitwM0TtieU7Wp1UCST5svim9XnMfuBltKk/+OP3T7s16k4xUUUeyckpLN/Ax0OZVub1717FI+e4J1nueSKexwymNRuAdZk6MedNmSwHnNpf8SX+pAk4U6F8GkO5forJsC0UwdZDlf87WnpeCWmBPWLE/ZbWDKvJ/FDHpAzOutSmcCJMF2EGHoKAzvM7rwsPS8pOPz1E+yRrMmpEHFRGurgMmrrF6BxmYHjRLu+E+nyrkfQIB4zXbhItRgmMRpreHY9lV98cItWw+6YyVmKNDzXSHt5kdegmXWODkF/O4YZWSup6T8Z35PkWcoAz4YiPhcscNRBuy0MnWMAv9VGe33lutCmYEaf3Jl6IodgFqRriuWtNOXF4nZ87DmRaPnrK/EIlj6z170hPiGHlZFwmr2lstM2yeBhtnrjc2T0WKmcQzNxSgQlOE0+w9QdHU9haemWYiF5hYab4kCq7rA7umx/wqpeUhDDtSc+kyubcVmc/VpFElf+QwyBuq+qqU59pL7KOmUuDzdWPCelzLpvAqhbTsHqf2WBiUxf9NEI6OV8eFru0LfTYDGqWSUZHXLPDc5/qCYOEAFZh9AtUFHtiMXKH6KsKmtYJPyxGnk7lrmqbbpLhDJ28rzXlU5g/YgobWpXLj+p5FovfRyLvA4b26AFy8hQnslP4Lmlfro8P
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230028)(4636009)(346002)(39860400002)(376002)(396003)(136003)(451199021)(82310400008)(36840700001)(46966006)(40470700004)(40480700001)(47076005)(40460700003)(54906003)(356005)(81166007)(6666004)(70206006)(41300700001)(5660300002)(82740400003)(6916009)(8936002)(4326008)(8676002)(16576012)(2616005)(70586007)(478600001)(316002)(16526019)(36860700001)(336012)(186003)(53546011)(426003)(26005)(86362001)(31696002)(36756003)(44832011)(2906002)(4744005)(7416002)(31686004)(36900700001)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2023 21:53:32.6829
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a8078f53-77e7-4c0f-f8ee-08db896bc2e8
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT059.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7885
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On 7/20/23 3:58 PM, Jim Mattson wrote:
+> On Thu, Jul 20, 2023 at 12:48 PM Kim Phillips <kim.phillips@amd.com> wrote:
+>>
+>> Unlike Intel's Enhanced IBRS feature, AMD's Automatic IBRS does not
+>> provide protection to processes running at CPL3/user mode [1].
+>>
+>> Explicitly enable STIBP to protect against cross-thread CPL3
+>> branch target injections on systems with Automatic IBRS enabled.
+> 
+> Is there any performance penalty to enabling STIBP + AUTOIBRS, aside
+> from the lost sharing?
 
-On 07.07.23 10:21, Christian K=C3=B6nig wrote:
-> Am 07.07.23 um 09:28 schrieb Friedrich Vock:
->> Hi Christian,
->>
->> On 07.07.23 08:56, Christian K=C3=B6nig wrote:
->>>
->>>
->>> Am 07.07.23 um 08:28 schrieb Friedrich Vock:
->>>> During gfxoff, the per-VMID GDS registers are reset and not restored
->>>> afterwards.
->>>
->>> Hui? Since when? Those registers should be part of the saved ones.
->>>
->>> Have you found that by observation?
->>
->> yes. I tested this on my RX 6700 XT and the Steam Deck (Vangogh). In th=
-e
->> bug report I linked, a test program using GWS I developed hangs because
->> of this.
->>
->> The hang occurs as soon as the kernel re-uses a VMID on which GWS was
->> already used once. In the hung state, inspecting the per-VMID GWS
->> registers shows that the values have been reset to 0.
->> The hang does not occur when gfxoff is disabled.
->>
->> Even without causing hangs, you can confirm the behaviour by doing the
->> following:
->> 1. Disable gfxoff.
->> 2. Set some GWS registers.
->> 3. Enable gfxoff and wait a bit.
->> 4. Disable gfxoff and read the registers again. The GWS registers have
->> been reset.
->>
->> I performed this test for the GDS_BASE/SIZE registers and it seems thes=
-e
->> aren't affected, so it's only GWS that is buggy here.
->
-> That's most like a bug in the FW then. I'm going to ask around
-> internally.
+Not to my knowledge.
 
-Did the talks with the FW team result in anything yet? It's not that
-high-priority, but it'd be nice to know if this is going to be fixed in
-the firmware or if I should make a v2 (or if this isn't going to be
-fixed at all).
+> Or does this just effectively tag the branch
+> prediction information with thread ID?
+
+I don't know the implementation, but AFAIK, AUTOIBRS and STIBP
+are independent of each other.
 
 Thanks,
-Friedrich
 
->
->> I should probably make a v2 that combines the behaviour before this
->> patch for GDS and OA, and the patched behaviour for GWS.
->
-> Yeah, that sounds like a good idea to me. But let me ping the fw teams
-> first.
->
->>
->> I'm not aware of userspace using GWS (yet, I had some ideas for using i=
-t
->> in RADV which is what I've been writing these tests for),
->> so perhaps the Cc to stable can also be omitted.
->
-> Depends on what the fw teams says. As far as I know GWS has never been
-> used widely on Linux.
->
-> Could be that they say there is a hw bug and we deprecated it for this
-> generation, or it's simply not handled by the fw and the driver needs
-> to take care of this (like this patch does) or whatever.
->
-> Thanks for the notice,
-> Christian.
->
->>
->> Thanks,
->> Friedrich
->>
->>>
->>> Thanks,
->>> Christian.
->>>
->>>
->>>> =C2=A0 The kernel needs to emit a GDS switch to manually update the
->>>> GWS registers in this case. Since gfxoff can happen between any two
->>>> submissions and the kernel has no way of knowing, emit the GDS switch
->>>> before every submission.
->>>>
->>>> Fixes: 56b0989e29 ("drm/amdgpu: fix GDS/GWS/OA switch handling")
->>>> Cc: stable@vger.kernel.org
->>>> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2530
->>>> Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
->>>> ---
->>>> =C2=A0 drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c | 22 +++++++----------=
------
->>>> =C2=A0 drivers/gpu/drm/amd/amdgpu/amdgpu_job.h |=C2=A0 1 -
->>>> =C2=A0 drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c=C2=A0 | 10 ++++++++--
->>>> =C2=A0 3 files changed, 15 insertions(+), 18 deletions(-)
->>>>
->>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
->>>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
->>>> index ff1ea99292fb..de73797e9279 100644
->>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
->>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
->>>> @@ -165,24 +165,17 @@ bool amdgpu_vmid_had_gpu_reset(struct
->>>> amdgpu_device *adev,
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 atomic_read(&a=
-dev->gpu_reset_counter);
->>>> =C2=A0 }
->>>>
->>>> -/* Check if we need to switch to another set of resources */
->>>> -static bool amdgpu_vmid_gds_switch_needed(struct amdgpu_vmid *id,
->>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct amdgpu=
-_job *job)
->>>> -{
->>>> -=C2=A0=C2=A0=C2=A0 return id->gds_base !=3D job->gds_base ||
->>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->gds_size !=3D job->gd=
-s_size ||
->>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->gws_base !=3D job->gw=
-s_base ||
->>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->gws_size !=3D job->gw=
-s_size ||
->>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->oa_base !=3D job->oa_=
-base ||
->>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->oa_size !=3D job->oa_=
-size;
->>>> -}
->>>> -
->>>> =C2=A0 /* Check if the id is compatible with the job */
->>>> =C2=A0 static bool amdgpu_vmid_compatible(struct amdgpu_vmid *id,
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct amdgpu_job *job=
-)
->>>> =C2=A0 {
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return=C2=A0 id->pd_gpu_addr =3D=3D jo=
-b->vm_pd_addr &&
->>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !amdgpu_vmid_gds_switch_n=
-eeded(id, job);
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->gds_base =3D=3D job->=
-gds_base &&
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->gds_size =3D=3D job->=
-gds_size &&
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->gws_base =3D=3D job->=
-gws_base &&
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->gws_size =3D=3D job->=
-gws_size &&
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->oa_base =3D=3D job->o=
-a_base &&
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->oa_size =3D=3D job->o=
-a_size;
->>>> =C2=A0 }
->>>>
->>>> =C2=A0 /**
->>>> @@ -434,7 +427,6 @@ int amdgpu_vmid_grab(struct amdgpu_vm *vm, struct
->>>> amdgpu_ring *ring,
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 list_move_tail=
-(&id->list, &id_mgr->ids_lru);
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>>
->>>> -=C2=A0=C2=A0=C2=A0 job->gds_switch_needed =3D amdgpu_vmid_gds_switch=
-_needed(id, job);
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (job->vm_needs_flush) {
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 id->flushed_up=
-dates =3D amdgpu_vm_tlb_seq(vm);
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma_fence_put(=
-id->last_flush);
->>>> @@ -503,7 +495,7 @@ void amdgpu_vmid_free_reserved(struct
->>>> amdgpu_device *adev,
->>>> =C2=A0=C2=A0 * @vmhub: vmhub type
->>>> =C2=A0=C2=A0 * @vmid: vmid number to use
->>>> =C2=A0=C2=A0 *
->>>> - * Reset saved GDW, GWS and OA to force switch on next flush.
->>>> + * Reset saved GDS, GWS and OA data.
->>>> =C2=A0=C2=A0 */
->>>> =C2=A0 void amdgpu_vmid_reset(struct amdgpu_device *adev, unsigned vm=
-hub,
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned vmid)
->>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.h
->>>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.h
->>>> index a963a25ddd62..2898508b1ce4 100644
->>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.h
->>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.h
->>>> @@ -53,7 +53,6 @@ struct amdgpu_job {
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint32_t=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 preamble_status;
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint32_t=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 preemption_st=
-atus;
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 vm_needs_flush;
->>>> -=C2=A0=C2=A0=C2=A0 bool=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 gds_switch_needed;
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spm_update_needed;
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 vm_pd_addr;
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 vmid;
->>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
->>>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
->>>> index 291977b93b1d..61856040cae2 100644
->>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
->>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
->>>> @@ -557,6 +557,12 @@ void amdgpu_vm_check_compute_bug(struct
->>>> amdgpu_device *adev)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>> =C2=A0 }
->>>>
->>>> +/* Check if the job needs a GDS switch */
->>>> +static bool amdgpu_vm_need_gds_switch(struct amdgpu_job *job)
->>>> +{
->>>> +=C2=A0=C2=A0=C2=A0 return job->gds_size || job->gws_size || job->oa_=
-size;
->>>> +}
->>>> +
->>>> =C2=A0 /**
->>>> =C2=A0=C2=A0 * amdgpu_vm_need_pipeline_sync - Check if pipe sync is n=
-eeded for
->>>> job.
->>>> =C2=A0=C2=A0 *
->>>> @@ -579,7 +585,7 @@ bool amdgpu_vm_need_pipeline_sync(struct
->>>> amdgpu_ring *ring,
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (job->vm_needs_flush || ring->has_c=
-ompute_vm_bug)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return true;
->>>>
->>>> -=C2=A0=C2=A0=C2=A0 if (ring->funcs->emit_gds_switch && job->gds_swit=
-ch_needed)
->>>> +=C2=A0=C2=A0=C2=A0 if (ring->funcs->emit_gds_switch &&
->>>> amdgpu_vm_need_gds_switch(job))
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return true;
->>>>
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (amdgpu_vmid_had_gpu_reset(adev, &i=
-d_mgr->ids[job->vmid]))
->>>> @@ -609,7 +615,7 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring,
->>>> struct amdgpu_job *job,
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct amdgpu_vmid *id =3D &id_mgr->id=
-s[job->vmid];
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool spm_update_needed =3D job->spm_up=
-date_needed;
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool gds_switch_needed =3D ring->funcs=
-->emit_gds_switch &&
->>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 job->gds_switch_needed;
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 amdgpu_vm_need_gds_switch=
-(job);
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool vm_flush_needed =3D job->vm_needs=
-_flush;
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct dma_fence *fence =3D NULL;
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool pasid_mapping_needed =3D false;
->>>> --
->>>> 2.41.0
->>>>
->>>
->
+Kim
