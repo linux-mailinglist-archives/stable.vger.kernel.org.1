@@ -2,63 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F14C175B955
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 23:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7E6275B96A
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 23:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230071AbjGTVI6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 17:08:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47874 "EHLO
+        id S229752AbjGTVQP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 17:16:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230039AbjGTVI5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 17:08:57 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1FD7271D
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 14:08:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689887335; x=1721423335;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=NEv9+6OpTdeTw41kcVjLqrvhHmgneTpMJz9ub+YL8FA=;
-  b=Qe7tewylLm071XiydJFPHcpHgEYvzVlycTib9w9yeBEuodP9lVQhc4/x
-   +YcKwVxPNxdAeykSviYl4qxw6r2gff6NboGQYPaBc6id6HS69muE5FOD0
-   uFELLC7nOkWnmRM9lSnBo0FMp/XQda1n/F3lBFjATYubU0ovx9/A+5uyb
-   AI9fgxPINi8H13Rn9Rlxdk8EGCoXHKCXxhhKssGrWQNCA/UJZJDCawQci
-   6Cs+9+zjjiiwdUbSCXgvuB1zl0YlYkwPwl2gY8nMYpuGjST0CRZRAQj0f
-   6t1q1Ip5wxeBmBwY4TO4Ku7ZcgYY78jPVYiJb6G68RG2v8SnYaQQIF4VN
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="370462497"
-X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; 
-   d="scan'208";a="370462497"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 14:08:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="674820327"
-X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; 
-   d="scan'208";a="674820327"
-Received: from sdene1-mobl1.ger.corp.intel.com (HELO intel.com) ([10.252.32.238])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 14:08:50 -0700
-From:   Andi Shyti <andi.shyti@linux.intel.com>
-To:     Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>
-Cc:     intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-evel <dri-devel@lists.freedesktop.org>,
-        linux-stable <stable@vger.kernel.org>,
-        Andi Shyti <andi.shyti@linux.intel.com>
-Subject: [PATCH v7 9/9] drm/i915/gt: Support aux invalidation on all engines
-Date:   Thu, 20 Jul 2023 23:07:37 +0200
-Message-Id: <20230720210737.761400-10-andi.shyti@linux.intel.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230720210737.761400-1-andi.shyti@linux.intel.com>
-References: <20230720210737.761400-1-andi.shyti@linux.intel.com>
+        with ESMTP id S229451AbjGTVQP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 17:16:15 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BDCCE52;
+        Thu, 20 Jul 2023 14:16:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=mAIECjlxNyDVRvgqQU5JRwDkhf3FG1hvVqeRd1UnP7c=; b=Zv+zeJ7FCrZRIJyvDdKRp/HRy/
+        pRg40dFXS20Df12rafoi9ZXxkg3xB4nIeQ0TWxzJp4XJrCqN6YWDDWy8W0Uuth8hz/4mw+S4tgQ4J
+        cZNpNCIszGnnAZeAf7oCQyDDLSR0XTWX3+05ZarrfOc0Zm/B3ve6E6YDj3XBsbjtaQ/bsbCSKtVHT
+        tfYOoYdyPtiqrw5sDcic36jcZOrC4MwdvCZloYoDd2Rmze4tEDJlT6WJP1QEA77ifpMlF3BZ2WcqM
+        I0jrz0fNd7UeW6TzsnZvg0OqYJ3raZm/whDktBvOUVuGhoDtTJnGyuIm+4Ro2dk9T9i8P0ZA9d9FB
+        xiARg0yg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qMb06-000SgR-Fz; Thu, 20 Jul 2023 21:15:54 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8469330020C;
+        Thu, 20 Jul 2023 23:15:53 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 6321E31B1759F; Thu, 20 Jul 2023 23:15:53 +0200 (CEST)
+Date:   Thu, 20 Jul 2023 23:15:53 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Michael Kelley <mikelley@microsoft.com>
+Cc:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] x86/hyperv: Disable IBT when hypercall page lacks
+ ENDBR instruction
+Message-ID: <20230720211553.GA3615208@hirez.programming.kicks-ass.net>
+References: <1689885237-32662-1-git-send-email-mikelley@microsoft.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1689885237-32662-1-git-send-email-mikelley@microsoft.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -67,189 +61,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Perform some refactoring with the purpose of keeping in one
-single place all the operations around the aux table
-invalidation.
+On Thu, Jul 20, 2023 at 01:33:57PM -0700, Michael Kelley wrote:
+> On hardware that supports Indirect Branch Tracking (IBT), Hyper-V VMs
+> with ConfigVersion 9.3 or later support IBT in the guest. However,
+> current versions of Hyper-V have a bug in that there's not an ENDBR64
+> instruction at the beginning of the hypercall page. 
 
-With this refactoring add more engines where the invalidation
-should be performed.
+Whoops :/
 
-Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: <stable@vger.kernel.org> # v5.8+
----
- drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 58 +++++++++++++++---------
- drivers/gpu/drm/i915/gt/gen8_engine_cs.h |  3 +-
- drivers/gpu/drm/i915/gt/intel_lrc.c      | 17 +------
- 3 files changed, 41 insertions(+), 37 deletions(-)
+> Since hypercalls are
+> made with an indirect call to the hypercall page, all hypercall attempts
+> fail with an exception and Linux panics.
+> 
+> A Hyper-V fix is in progress to add ENDBR64. But guard against the Linux
+> panic by clearing X86_FEATURE_IBT if the hypercall page doesn't start
+> with ENDBR. The VM will boot and run without IBT.
+> 
+> If future Linux 32-bit kernels were to support IBT, additional hypercall
+> page hackery would be needed to make IBT work for such kernels in a
+> Hyper-V VM.
 
-diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-index 3ded597f002a2..30fb4e0af6134 100644
---- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-@@ -165,9 +165,36 @@ static u32 preparser_disable(bool state)
- 	return MI_ARB_CHECK | 1 << 8 | state;
- }
- 
--u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg)
-+static i915_reg_t gen12_get_aux_inv_reg(struct intel_engine_cs *engine)
- {
--	u32 gsi_offset = gt->uncore->gsi_offset;
-+	if (!HAS_AUX_CCS(engine->i915))
-+		return INVALID_MMIO_REG;
-+
-+	switch (engine->id) {
-+	case RCS0:
-+		return GEN12_CCS_AUX_INV;
-+	case BCS0:
-+		return GEN12_BCS0_AUX_INV;
-+	case VCS0:
-+		return GEN12_VD0_AUX_INV;
-+	case VCS2:
-+		return GEN12_VD2_AUX_INV;
-+	case VECS0:
-+		return GEN12_VE0_AUX_INV;
-+	case CCS0:
-+		return GEN12_CCS0_AUX_INV;
-+	default:
-+		return INVALID_MMIO_REG;
-+	}
-+}
-+
-+u32 *gen12_emit_aux_table_inv(struct intel_engine_cs *engine, u32 *cs)
-+{
-+	i915_reg_t inv_reg = gen12_get_aux_inv_reg(engine);
-+	u32 gsi_offset = engine->gt->uncore->gsi_offset;
-+
-+	if (i915_mmio_reg_valid(inv_reg))
-+		return cs;
- 
- 	*cs++ = MI_LOAD_REGISTER_IMM(1) | MI_LRI_MMIO_REMAP_EN;
- 	*cs++ = i915_mmio_reg_offset(inv_reg) + gsi_offset;
-@@ -201,6 +228,11 @@ static u32 *intel_emit_pipe_control_cs(struct i915_request *rq, u32 bit_group_0,
- 	return cs;
- }
- 
-+static bool gen12_engine_has_aux_inv(struct intel_engine_cs *engine)
-+{
-+	return i915_mmio_reg_valid(gen12_get_aux_inv_reg(engine));
-+}
-+
- static int mtl_dummy_pipe_control(struct i915_request *rq)
- {
- 	/* Wa_14016712196 */
-@@ -307,11 +339,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- 
- 		cs = gen8_emit_pipe_control(cs, flags, LRC_PPHWSP_SCRATCH_ADDR);
- 
--		if (!HAS_FLAT_CCS(rq->engine->i915)) {
--			/* hsdes: 1809175790 */
--			cs = gen12_emit_aux_table_inv(rq->engine->gt, cs,
--						      GEN12_CCS_AUX_INV);
--		}
-+		cs = gen12_emit_aux_table_inv(engine, cs);
- 
- 		*cs++ = preparser_disable(false);
- 		intel_ring_advance(rq, cs);
-@@ -322,7 +350,6 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- 
- int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
- {
--	intel_engine_mask_t aux_inv = 0;
- 	u32 cmd_flush = 0;
- 	u32 cmd = 4;
- 	u32 *cs;
-@@ -330,15 +357,11 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
- 	if (mode & EMIT_INVALIDATE)
- 		cmd += 2;
- 
--	if (HAS_AUX_CCS(rq->engine->i915))
--		aux_inv = rq->engine->mask &
--			  ~GENMASK(_BCS(I915_MAX_BCS - 1), BCS0);
--
- 	/*
- 	 * On Aux CCS platforms the invalidation of the Aux
- 	 * table requires quiescing memory traffic beforehand
- 	 */
--	if (aux_inv) {
-+	if (gen12_engine_has_aux_inv(rq->engine)) {
- 		cmd += 8; /* for the AUX invalidation */
- 		cmd += 2; /* for the engine quiescing */
- 
-@@ -381,14 +404,7 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
- 	*cs++ = 0; /* upper addr */
- 	*cs++ = 0; /* value */
- 
--	if (aux_inv) { /* hsdes: 1809175790 */
--		if (rq->engine->class == VIDEO_DECODE_CLASS)
--			cs = gen12_emit_aux_table_inv(rq->engine->gt,
--						      cs, GEN12_VD0_AUX_INV);
--		else
--			cs = gen12_emit_aux_table_inv(rq->engine->gt,
--						      cs, GEN12_VE0_AUX_INV);
--	}
-+	cs = gen12_emit_aux_table_inv(rq->engine, cs);
- 
- 	if (mode & EMIT_INVALIDATE)
- 		*cs++ = preparser_disable(false);
-diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.h b/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
-index a44eda096557c..867ba697aceb8 100644
---- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
-+++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
-@@ -13,6 +13,7 @@
- #include "intel_gt_regs.h"
- #include "intel_gpu_commands.h"
- 
-+struct intel_engine_cs;
- struct intel_gt;
- struct i915_request;
- 
-@@ -46,7 +47,7 @@ u32 *gen8_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs);
- u32 *gen11_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs);
- u32 *gen12_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs);
- 
--u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg);
-+u32 *gen12_emit_aux_table_inv(struct intel_engine_cs *engine, u32 *cs);
- 
- static inline u32 *
- __gen8_emit_pipe_control(u32 *batch, u32 bit_group_0,
-diff --git a/drivers/gpu/drm/i915/gt/intel_lrc.c b/drivers/gpu/drm/i915/gt/intel_lrc.c
-index 235f3fab60a98..119deb9f938c7 100644
---- a/drivers/gpu/drm/i915/gt/intel_lrc.c
-+++ b/drivers/gpu/drm/i915/gt/intel_lrc.c
-@@ -1371,10 +1371,7 @@ gen12_emit_indirect_ctx_rcs(const struct intel_context *ce, u32 *cs)
- 	    IS_DG2_G11(ce->engine->i915))
- 		cs = gen8_emit_pipe_control(cs, PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE, 0);
- 
--	/* hsdes: 1809175790 */
--	if (!HAS_FLAT_CCS(ce->engine->i915))
--		cs = gen12_emit_aux_table_inv(ce->engine->gt,
--					      cs, GEN12_CCS_AUX_INV);
-+	cs = gen12_emit_aux_table_inv(ce->engine, cs);
- 
- 	/* Wa_16014892111 */
- 	if (IS_MTL_GRAPHICS_STEP(ce->engine->i915, M, STEP_A0, STEP_B0) ||
-@@ -1399,17 +1396,7 @@ gen12_emit_indirect_ctx_xcs(const struct intel_context *ce, u32 *cs)
- 						    PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE,
- 						    0);
- 
--	/* hsdes: 1809175790 */
--	if (!HAS_FLAT_CCS(ce->engine->i915)) {
--		if (ce->engine->class == VIDEO_DECODE_CLASS)
--			cs = gen12_emit_aux_table_inv(ce->engine->gt,
--						      cs, GEN12_VD0_AUX_INV);
--		else if (ce->engine->class == VIDEO_ENHANCEMENT_CLASS)
--			cs = gen12_emit_aux_table_inv(ce->engine->gt,
--						      cs, GEN12_VE0_AUX_INV);
--	}
--
--	return cs;
-+	return gen12_emit_aux_table_inv(ce->engine, cs);
- }
- 
- static void
--- 
-2.40.1
+There are currently no plans to add IBT support to 32bit.
 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+> ---
+>  arch/x86/hyperv/hv_init.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+> 
+> diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+> index 6c04b52..5cbee24 100644
+> --- a/arch/x86/hyperv/hv_init.c
+> +++ b/arch/x86/hyperv/hv_init.c
+> @@ -14,6 +14,7 @@
+>  #include <asm/apic.h>
+>  #include <asm/desc.h>
+>  #include <asm/sev.h>
+> +#include <asm/ibt.h>
+>  #include <asm/hypervisor.h>
+>  #include <asm/hyperv-tlfs.h>
+>  #include <asm/mshyperv.h>
+> @@ -472,6 +473,26 @@ void __init hyperv_init(void)
+>  	}
+>  
+>  	/*
+> +	 * Some versions of Hyper-V that provide IBT in guest VMs have a bug
+> +	 * in that there's no ENDBR64 instruction at the entry to the
+> +	 * hypercall page. Because hypercalls are invoked via an indirect call
+> +	 * to the hypercall page, all hypercall attempts fail when IBT is
+> +	 * enabled, and Linux panics. For such buggy versions, disable IBT.
+> +	 *
+> +	 * Fixed versions of Hyper-V always provide ENDBR64 on the hypercall
+> +	 * page, so if future Linux kernel versions enable IBT for 32-bit
+> +	 * builds, additional hypercall page hackery will be required here
+> +	 * to provide an ENDBR32.
+> +	 */
+> +#ifdef CONFIG_X86_KERNEL_IBT
+> +	if (cpu_feature_enabled(X86_FEATURE_IBT) &&
+> +	    *(u32 *)hv_hypercall_pg != gen_endbr()) {
+> +		setup_clear_cpu_cap(X86_FEATURE_IBT);
+> +		pr_info("Hyper-V: Disabling IBT because of Hyper-V bug\n");
+> +	}
+> +#endif
+
+pr_warn() perhaps?
+
+Other than that, this seems fairly straight forward. One thing I
+wondered about; wouldn't it be possible to re-write the indirect
+hypercall thingies to a direct call? I mean, once we have the hypercall
+page mapped, the address is known right?
