@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAC2775B51F
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 18:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B0C375B520
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 19:00:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231669AbjGTQ75 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 12:59:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46842 "EHLO
+        id S231652AbjGTRAA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 13:00:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231596AbjGTQ7v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 12:59:51 -0400
+        with ESMTP id S231602AbjGTQ75 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 12:59:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60E601986
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 09:59:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72D9A2733
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 09:59:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00BE761B94
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 16:59:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7D2C433C7;
-        Thu, 20 Jul 2023 16:59:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06F8E61B9D
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 16:59:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18BA0C433C7;
+        Thu, 20 Jul 2023 16:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689872389;
-        bh=BWN8RDW/F3Ur8+fhKfNO7LgQLGDCq1Ig8Du/EwBlLs0=;
+        s=korg; t=1689872392;
+        bh=nffV/93Rp/8nNOs7I2+b7A1yBIQLJMkgU19X/SytZGM=;
         h=Subject:To:Cc:From:Date:From;
-        b=lLfuHh8aIh9eBnP2BWoDOroyiUKX7T7448MMim9z7pVUbBD5fPR99JzkctR0Ouy8m
-         jLUO7nmncOP5F90H0hGnIZU9cE988L0SwTWPc5crI780p9kd2UMXSpIg+bFoU2AdPz
-         bPbUdmB+sHtsLeXk6ih/CR8Lp3x6Veez2pFOx33w=
-Subject: FAILED: patch "[PATCH] video/aperture: Only remove sysfb on the default vga pci" failed to apply to 6.1-stable tree
+        b=j2oGG0K+WbtJDIHx2++amoNgYo7pZjjiyAVL55SwA6xDeLbjuQhgIcn4mbNmzSR1o
+         OB0SQ7tJ+CbYLN55jARTd1TVOKeb2SVFGlV2TMfGTMSNS7FInXMYKsjlhvZ++3BIrR
+         VgpaHeivlbz37AXd1IN99xf9K8i8Tf/ngWBYFR1w=
+Subject: FAILED: patch "[PATCH] video/aperture: Only remove sysfb on the default vga pci" failed to apply to 5.15-stable tree
 To:     daniel.vetter@ffwll.ch, alexander.deucher@amd.com,
         aplattner@nvidia.com, daniel.vetter@intel.com, deller@gmx.de,
         javierm@redhat.com, sam@ravnborg.org, stable@vger.kernel.org,
         tzimmermann@suse.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 20 Jul 2023 18:59:44 +0200
-Message-ID: <2023072044-purist-impound-d2d6@gregkh>
+Date:   Thu, 20 Jul 2023 18:59:46 +0200
+Message-ID: <2023072046-tree-headphone-31c5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -52,19 +52,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5ae3716cfdcd286268133867f67d0803847acefc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072044-purist-impound-d2d6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072046-tree-headphone-31c5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,12 @@ Possible dependencies:
 62aeaeaa1b26 ("drm/aperture: Remove primary argument")
 80e993988b97 ("drm/gma500: Use drm_aperture_remove_conflicting_pci_framebuffers")
 81d2393485f0 ("fbdev/hyperv-fb: Do not set struct fb_info.apertures")
+e0ba1a39b8df ("fbdev/core: Avoid uninitialized read in aperture_remove_conflicting_pci_device()")
+4b760f76dd6f ("drm/arm/hdlcd: Take over EFI framebuffer properly")
+ca5f13a21404 ("fbdev: Fix order of arguments to aperture_remove_conflicting_devices()")
+8d69d008f44c ("fbdev: Convert drivers to aperture helpers")
+9d69ef183815 ("fbdev/core: Remove remove_conflicting_pci_framebuffers()")
+e23a5e14aa27 ("Backmerge tag 'v5.19-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux into drm-next")
 
 thanks,
 
