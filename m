@@ -2,89 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF9375BB0D
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 01:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8131E75BB0E
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 01:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229765AbjGTXW0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 19:22:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37544 "EHLO
+        id S229766AbjGTXXz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 19:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjGTXWZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 19:22:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E837E2D4F
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 16:22:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DC1061CAE
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B0BC433C9
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 23:22:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689895337;
-        bh=H+l5lDvqwbGfGk2Dg94YUJBcnv3izlyw0JIMOrMWtdA=;
-        h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-        b=GdHnKC7SuZifgdYuXfTkVCofJOkow6xBHhVW+qLIudc5D5zyZiEnTxGgPbG5mJIHO
-         Lkk10bs9ISh/bbtgmXxisn+66OYYECpbt1Yr6aduvcRSOaTn6q6fcEUyQQk8/8se93
-         nBb5rMrs4VFQAxOmdbJnasIFFyAabxpq8dg++vC2Kh2VyxlPrEdpGxBdGBBAdz1yv4
-         jOaTXpd/hpVPimxyFpZ72Ig9O5rnNSeTwrNcO4vg/P4g89MbaFOR5gxxZ9Ug+wQFf9
-         rfzF/n2m/6ZNHX+UKwsPKYrhxhYrDNg3Kg1xHeF4Gr1RKx4ynlEDPGDLa8VKA4AJoC
-         IPACYxJkRhdbw==
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-565db4666d7so916383eaf.0
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 16:22:17 -0700 (PDT)
-X-Gm-Message-State: ABy/qLaUNB5FWfAQw89ehv+dD3PpzA6WUK0KBKEy5QjSDx9Ym3zsWeuJ
-        0uOtbYBodh+C1stlz6rPtVmutukX+GkRfzp9xHY=
-X-Google-Smtp-Source: APBJJlHkgz5GOOFVyI6WfKg9NIrScgVE8cqrz7YgbIo6ypUrBRslS83xQVhJJhDvjUIi1b7lgh6GJIXq2MmUMUdbIyU=
-X-Received: by 2002:a4a:9250:0:b0:565:9e41:85d8 with SMTP id
- g16-20020a4a9250000000b005659e4185d8mr243839ooh.6.1689895337125; Thu, 20 Jul
- 2023 16:22:17 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:ac9:53c4:0:b0:4e8:f6ff:2aab with HTTP; Thu, 20 Jul 2023
- 16:22:16 -0700 (PDT)
-In-Reply-To: <2023072055-compel-survival-2158@gregkh>
-References: <20230720132336.7614-1-linkinjeon@kernel.org> <2023072055-compel-survival-2158@gregkh>
-From:   Namjae Jeon <linkinjeon@kernel.org>
-Date:   Fri, 21 Jul 2023 08:22:16 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd8n4VOffrV1s=HWZuv3oBvJ=tw6_aRuvkT1AmSgXSHxmw@mail.gmail.com>
-Message-ID: <CAKYAXd8n4VOffrV1s=HWZuv3oBvJ=tw6_aRuvkT1AmSgXSHxmw@mail.gmail.com>
-Subject: Re: [5.15.y PATCH 0/4] ksmbd: ZDI Vulnerability patches for 5.15.y
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, stfrench@microsoft.com, smfrench@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229555AbjGTXXy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 19:23:54 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6FE812709;
+        Thu, 20 Jul 2023 16:23:53 -0700 (PDT)
+Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
+        by linux.microsoft.com (Postfix) with ESMTPSA id AB9B6236EBE2;
+        Thu, 20 Jul 2023 16:23:52 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AB9B6236EBE2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1689895432;
+        bh=SA9Rg3cMgQ7b1lFGvwN/QhJbcx0qd36JOXDv4dAQXxY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=cVupQpfkOgBO/eAATTcmC1NeKzfe8T3WsdUXDeZPP7LR4RW3+9TH2nGRt3emkuyYJ
+         Q38NW7QQpLKa1Sn/BKofbm4IIths4zBfi1zkNRXn4/MHO/c26lOcnBj2SGHgnTsxCP
+         rnzqimOFAkzmLzcF671NKwvUXJTiOUFl9SwVTU+U=
+From:   Easwar Hariharan <eahariha@linux.microsoft.com>
+To:     stable@vger.kernel.org
+Cc:     easwar.hariharan@microsoft.com, catalin.marinas@arm.com,
+        will@kernel.org, corbet@lwn.net, robin.murphy@arm.com,
+        joro@8bytes.org, linux-arm-kernel@lists.infradead.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        iommu@lists.linux.dev
+Subject: [PATCH 5.15 0/4] ARM64 errata for stable kernel 5.15 and above
+Date:   Thu, 20 Jul 2023 16:23:30 -0700
+Message-Id: <1689895414-17425-1-git-send-email-eahariha@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-2023-07-21 2:54 GMT+09:00, Greg KH <gregkh@linuxfoundation.org>:
-> On Thu, Jul 20, 2023 at 10:23:27PM +0900, Namjae Jeon wrote:
->> These are ZDI Vulnerability patches that was not applied in linux 5.15
->> stable kernel.
->>
->> Namjae Jeon (4):
->>   ksmbd: use ksmbd_req_buf_next() in ksmbd_smb2_check_message()
->>   ksmbd: validate command payload size
->>   ksmbd: fix out-of-bound read in smb2_write
->>   ksmbd: validate session id and tree id in the compound request
->>
->>  fs/ksmbd/server.c   | 33 ++++++++++++++++++++-------------
->>  fs/ksmbd/smb2misc.c | 38 ++++++++++++++++++++------------------
->>  fs/ksmbd/smb2pdu.c  | 44 +++++++++++++++++++++++++++++++++++++++-----
->>  3 files changed, 79 insertions(+), 36 deletions(-)
->>
->> --
->> 2.25.1
->>
->
-> All now queued up now, thanks!
-Thank you!
->
-> greg k-h
->
+From: Easwar Hariharan <easwar.hariharan@microsoft.com>
+
+This series works around a few ARM64 errata. Please pick these up for
+v6.1 and v6.4 as well.
+
+Cc: Catalin Marinas <catalin.marinas@arm.com> 
+Cc: Will Deacon <will@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: iommu@lists.linux.dev
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+---
+Robin Murphy (1):
+  iommu/arm-smmu-v3: Document MMU-700 erratum 2812531
+
+Suzuki K Poulose (3):
+  arm64: errata: Add detection for TRBE overwrite in FILL mode
+  arm64: errata: Add workaround for TSB flush failures
+  arm64: errata: Add detection for TRBE write to out-of-range
+
+ Documentation/arm64/silicon-errata.rst      |  16 +++
+ arch/arm64/Kconfig                          | 115 ++++++++++++++++++++
+ arch/arm64/include/asm/barrier.h            |  16 ++-
+ arch/arm64/kernel/cpu_errata.c              |  65 +++++++++++
+ arch/arm64/tools/cpucaps                    |   3 +
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  41 +++++++
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |   1 +
+ 7 files changed, 256 insertions(+), 1 deletion(-)
+
+-- 
+2.25.1
+
