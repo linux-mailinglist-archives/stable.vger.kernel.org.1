@@ -2,65 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EAEA75B43B
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 18:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6625B75B4D1
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 18:45:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229919AbjGTQba (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 12:31:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55878 "EHLO
+        id S229666AbjGTQpd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 12:45:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjGTQb3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 12:31:29 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06D6E6F
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 09:31:26 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b6f97c7115so14767251fa.2
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 09:31:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1689870685; x=1690475485;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CQLbcSCN+2YyuVHPRVItbT+Q+tqkJu9oKiuCw5Oe340=;
-        b=MlJxPF5ThvM0GyLpEb9PGaxLrJf7fXVC+WnbtZr5eIXul2XCeW7Czs8Shjd4EL1Qmg
-         Fa79yliMRnoR3stB5j3fv29PS4l4v7xzcWa7Bs0NBNCzBhez6n+m4Wq0f+KuIuKtd4ql
-         poBR5MBm4ef83jDnkiauHf/yC+aRz01odih5Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689870685; x=1690475485;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CQLbcSCN+2YyuVHPRVItbT+Q+tqkJu9oKiuCw5Oe340=;
-        b=aWBqWx04HpL+xtG/sBaGKY5Nx8Db7aqL3OHxkrMiLZOPBdijIP2mOD7WSXZUHVhr6X
-         xKm+9ZmBxoWLAiB+cWMzb4X7z9V78P1bFTtvCjM80g/CvXuoAzVBRf4SPyVrGmGjbPA6
-         t3PRZZUzenQozl2ZQOk5yhuzkxn76GO28QW8lxjc0XmP2aka/m9TalpfKuqzDwmiwrxI
-         KJwqJDRPtmAk47rlcDqJvPqc2+gc35lnXCNuEk0oRG7tb4ddDvg1cC1CFkZ3ekI1WmyW
-         Jf6NY9kJVK1Bp93I68G20XcHwovNNysEPHSDKGTsw3bl725jWOC3Fbr3xU9AcnfU0Wr2
-         G+/w==
-X-Gm-Message-State: ABy/qLYAJLtPrDjJklPgum0dwc9gHyhdgBpNK97CYZyTipIHb8TdQq/7
-        ETX7Ks5BU6ftZ7IMwqPowboYm1pmG+g3wSJlmusqPw==
-X-Google-Smtp-Source: APBJJlHw0HhTHSnqucY0VLNy7nbD/ychKrMggduRYAFvn4K5TowI89/A/c9j6ExMpmWj0mMEKmIYV9Wk1aMk90nWBe4=
-X-Received: by 2002:a2e:b60e:0:b0:2b6:a6e7:5afa with SMTP id
- r14-20020a2eb60e000000b002b6a6e75afamr2313197ljn.12.1689870684741; Thu, 20
- Jul 2023 09:31:24 -0700 (PDT)
+        with ESMTP id S229554AbjGTQp0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 12:45:26 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050C12704
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 09:45:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689871519; x=1721407519;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=caC3Fh3jAI5QG+8EgG0KKMyJyuCyVey77wtXQjQkTxk=;
+  b=gKdcFw9L6ieU+e+ZPWoHcEPrPkfVGH0ru5PcBELokSAlPVkgKH8z7tBN
+   kQzQv76NuhjPh/4McHH7RZNqCpuUVVPU00kDn/QqCS10g7DU3STdZv2sm
+   +tbJoHdJuDAN6n3k5fyTF81gfciwVK42fGH5KabHv5vMM0kozZxdMMjlk
+   4ZHPtYWmCrW/+duaxlUc2FSv3EVHMM+uQ0kc8wa5YUgFAz5vywwSLzYo+
+   a4WOxTWxDSBkkcD4tUiSGhEmnfVTq2XvCZfBhVIQ7R7Ih91Aao03zJE0G
+   QDsoTD+wA6B5h5017HVax0HWEsZomefTyh0DUdpaQb9nBR6mwBAMa9sNh
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="351680517"
+X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; 
+   d="scan'208";a="351680517"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 09:45:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="727768310"
+X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; 
+   d="scan'208";a="727768310"
+Received: from sdene1-mobl1.ger.corp.intel.com (HELO intel.com) ([10.252.32.238])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 09:45:09 -0700
+From:   Andi Shyti <andi.shyti@linux.intel.com>
+To:     Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>
+Cc:     intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-evel <dri-devel@lists.freedesktop.org>,
+        linux-stable <stable@vger.kernel.org>,
+        Andi Shyti <andi.shyti@linux.intel.com>
+Subject: [PATCH v6 0/9] Update AUX invalidation sequence
+Date:   Thu, 20 Jul 2023 18:44:45 +0200
+Message-Id: <20230720164454.757075-1-andi.shyti@linux.intel.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <2023071940-suspect-ominous-4a6a@gregkh> <20230720132714.GA3726096@google.com>
- <2b8fc10b-785e-48b9-9a38-5c1af81f9578@paulmck-laptop>
-In-Reply-To: <2b8fc10b-785e-48b9-9a38-5c1af81f9578@paulmck-laptop>
-From:   Joel Fernandes <joel@joelfernandes.org>
-Date:   Thu, 20 Jul 2023 12:31:13 -0400
-Message-ID: <CAEXW_YQO7OCdkXm_SBcPhAm8V8vMaF_5DQq7PbG9PZb7RFgA_g@mail.gmail.com>
-Subject: Re: [BUG] Re: Linux 6.4.4
-To:     paulmck@kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-        jslaby@suse.cz, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,217 +65,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Paul,
+Hi,
 
-On Thu, Jul 20, 2023 at 11:55=E2=80=AFAM Paul E. McKenney <paulmck@kernel.o=
-rg> wrote:
->
-> On Thu, Jul 20, 2023 at 01:27:14PM +0000, Joel Fernandes wrote:
-> > On Wed, Jul 19, 2023 at 05:06:39PM +0200, Greg Kroah-Hartman wrote:
-> > > I'm announcing the release of the 6.4.4 kernel.
-> > >
-> > > All users of the 6.4 kernel series must upgrade.
-> > >
-> > > The updated 6.4.y git tree can be found at:
-> > >     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
-.git linux-6.4.y
-> > > and can be browsed at the normal kernel.org git web browser:
-> > >     https://git.kernel.org/?p=3Dlinux/kernel/git/stable/linux-stable.=
-git;a=3Dsummary
-> >
-> > I have been consistently hitting the following splat with rcutorture's =
-TREE03
-> > test on 6.4.4. This happened with 6.4.4-rc3 as well.
-> >
-> > Happens at:
-> >               WARN_ON_ONCE(n_rcu_torture_boost_failure); // boost faile=
-d (TIMER_SOFTIRQ RT prio?)
-> >
-> > So likely RCU boosting is failing:
-> >
-> > The full TREE03 splat:
-> > [   54.243588] ------------[ cut here ]------------
-> > [   54.244547] rcu-torture: rcu_torture_boost started
-> > [   54.247643] WARNING: CPU: 12 PID: 166 at kernel/rcu/rcutorture.c:222=
-7 rcu_torture_stats_print+0x5b2/0x620
-> > [   54.273082] Modules linked in:
-> > [   54.278336] CPU: 12 PID: 166 Comm: rcu_torture_sta Not tainted 6.4.4=
--g62813c2d2a36 #1
-> > [   54.288540] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS=
- 1.16.2-debian-1.16.2-1 04/01/2014
-> > [   54.300499] RIP: 0010:rcu_torture_stats_print+0x5b2/0x620
-> > [   54.307525] Code: 00 00 48 8b 05 3f 6c 46 02 e9 4a fe ff ff 0f 0b e9=
- 02 fd ff ff 0f 0b e9 09 fd ff ff 0f 0b e9 10 fd ff ff 0f 0b e9 17 fd ff ff=
- <0f> 0b e9 1e fd ff ff 0f 0b e9 21 fd ff ff e8 0b 54 ff ff 84 c0 0f
-> > [   54.331276] RSP: 0000:ffff9fef805efe08 EFLAGS: 00010202
-> > [   54.338374] RAX: 0000000000000000 RBX: ffff9fef805efe88 RCX: 0000000=
-0ffffdfff
-> > [   54.347738] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000=
-000000001
-> > [   54.358923] RBP: ffff9fef805efe30 R08: 00000000ffffdfff R09: 0000000=
-0ffffdfff
-> > [   54.368209] R10: ffffffff94e59280 R11: ffffffff94e59280 R12: 0000000=
-000000001
-> > [   54.377367] R13: 0000000000000000 R14: 00000000000002fc R15: fffffff=
-f93514000
-> > [   54.386739] FS:  0000000000000000(0000) GS:ffff9c901f500000(0000) kn=
-lGS:0000000000000000
-> > [   54.397130] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [   54.404585] CR2: 0000000000000000 CR3: 000000000308e000 CR4: 0000000=
-0000006e0
-> > [   54.413884] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000=
-000000000
-> > [   54.423118] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000=
-000000400
-> > [   54.432192] Call Trace:
-> > [   54.435634]  <TASK>
-> > [   54.438512]  ? rcu_torture_stats_print+0x5b2/0x620
-> > [   54.444904]  ? __warn+0x7c/0x130
-> > [   54.449221]  ? rcu_torture_stats_print+0x5b2/0x620
-> > [   54.455737]  ? report_bug+0x171/0x1a0
-> > [   54.460935]  ? handle_bug+0x3c/0x70
-> > [   54.465874]  ? exc_invalid_op+0x17/0x70
-> > [   54.471336]  ? asm_exc_invalid_op+0x1a/0x20
-> > [   54.477092]  ? __pfx_rcu_torture_stats+0x10/0x10
-> > [   54.483472]  ? rcu_torture_stats_print+0x5b2/0x620
-> > [   54.490029]  ? rcu_torture_stats_print+0x28a/0x620
-> > [   54.496565]  ? finish_task_switch.isra.0+0x7e/0x240
-> > [   54.503261]  rcu_torture_stats+0x25/0x70
-> > [   54.508686]  kthread+0xe3/0x110
-> > [   54.513141]  ? __pfx_kthread+0x10/0x10
-> > [   54.518330]  ret_from_fork+0x2c/0x50
-> > [   54.523356]  </TASK>
-> > [   54.526500] ---[ end trace 0000000000000000 ]---
->
-> Agreed, this indicates that RCU priority boosting isn't getting its
-> job done.  Does this consistently fail about a minute into the run,
-> or is it less deterministic than that?
+as there are new hardware directives, we need a little adaptation
+for the AUX invalidation sequence.
 
-It is not consistently a minute in, on another run it happened in an hour:
-[ 3611.018653] WARNING: CPU: 10 PID: 168 at
-kernel/rcu/rcutorture.c:2227 rcu_torture_stats_print+0x5b2/0x620
+In this version we support all the engines affected by this
+change.
 
-> > Also other issues in 6.4.4, I am seeing RCU failures with TREE07 about =
-40
-> > minutes into the test. This warning indicates that an rcu_torture objec=
-t from
-> > the rcu_torture pool is still allocated which is an indiciation that RC=
-U is
-> > not working.
-> >
-> > [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
-> >
-> > However, if we are to believe the '9', it appears the object did made i=
-t
-> > quite some till the end of the pipe array but not until the free pool.
->
-> This is from this if/for statement, correct?
->
->                 stutter_waited =3D stutter_wait("rcu_torture_writer");
->                 if (stutter_waited &&
->                     !atomic_read(&rcu_fwd_cb_nodelay) &&
->                     !cur_ops->slow_gps &&
->                     !torture_must_stop() &&
->                     boot_ended)
->                         for (i =3D 0; i < ARRAY_SIZE(rcu_tortures); i++)
->                                 if (list_empty(&rcu_tortures[i].rtort_fre=
-e) &&
->                                     rcu_access_pointer(rcu_torture_curren=
-t) !=3D
->                                     &rcu_tortures[i]) {
->                                         tracing_off();
->                                         show_rcu_gp_kthreads();
->                                         WARN(1, "%s: rtort_pipe_count: %d=
-\n", __func__, rcu_tortures[i].rtort_pipe_count);
->                                         rcu_ftrace_dump(DUMP_ALL);
->                                 }
+The stable backport has some challenges because the original
+patch that this series fixes has had more changes in between.
 
-Yes, that's right.
+This patch is slowly exploding with code refactorings and
+features added and fixed.
 
->
-> If so, this happens when there was a stutter wait, but RCU grace
-> periods failed to clear out the backlog during the several seconds that
-> rcutorture was forced idle.  This might be related to the RCU priority
-> boosting failure, in which a preempted reader persisted across the
-> stutter interval.
+Thanks a lot Nirmoy, Andrzej and Matt for your review and for the
+fruitful discussions!
 
-When RCU is operating normally, shouldn't the check
-"(list_empty(&rcu_tortures[i].rtort_free)" not run until the preempted
-reader unblocks and exits its RCU read-side critical section?
+Thanks,
+Andi
 
-One thing that confuses me, in the case of
-"cur_ops->deferred_free(old_rp);" , the earlier do-while loop may exit
-before the async callbacks can finish. So what prevents the
-"(list_empty(&rcu_tortures[i].rtort_free)" check from happening before
-grace periods happen? Thanks for any clarification.
+Changelog:
+=========
+v5 -> v6
+ - Fixed ccs flush in the engines VE and BCS. They are sent as a
+   separate command instead of added in the pipe control.
+ - Separated the CCS flusing in the pipe control patch with the
+   quiescing of the memory. They were meant to be on separate
+   patch already in the previous verision, but apparently I
+   squashed them by mistake.
 
->
-> > The full TREE07 splat:
-> > [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
-> > [ 2169.489413] WARNING: CPU: 4 PID: 130 at kernel/rcu/rcutorture.c:1584=
- rcu_torture_writer+0x7f2/0xd80
-> > [ 2169.504064] Modules linked in:
-> > [ 2169.508957] CPU: 4 PID: 130 Comm: rcu_torture_wri Not tainted 6.4.4-=
-g62813c2d2a36 #2
-> > [ 2169.521735] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS=
- 1.16.2-debian-1.16.2-1 04/01/2014
-> > [ 2169.540908] RIP: 0010:rcu_torture_writer+0x7f2/0xd80
-> > [ 2169.548542] Code: 15 8b 62 45 02 49 8d 45 e8 48 39 c2 74 bf e8 85 03=
- 08 00 41 8b 55 f8 48 c7 c6 d0 f7 e0 9d 48 c7 c7 d7 7b 28 9e e8 ce 29 f7 ff=
- <0f> 0b 8b 05 9a 48 45 02 85 c0 75 97 89 d8 87 05 8e 48 45 02 85 c0
-> > [ 2169.578445] RSP: 0000:ffffa645804cfe20 EFLAGS: 00010282
-> > [ 2169.586793] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000=
-0ffffdfff
-> > [ 2169.598069] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000=
-000009ffb
-> > [ 2169.609359] RBP: ffffa645804cff10 R08: 00000000ffffdfff R09: 0000000=
-0ffffdfff
-> > [ 2169.620717] R10: ffffffff9e659220 R11: ffffffff9e659220 R12: 0000000=
-000000017
-> > [ 2169.631918] R13: ffffffff9f166b60 R14: 0000000000000000 R15: 0000000=
-000000001
-> > [ 2169.643365] FS:  0000000000000000(0000) GS:ffff8b3a5f300000(0000) kn=
-lGS:0000000000000000
-> > [ 2169.655249] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [ 2169.663207] CR2: 0000000000000000 CR3: 000000001562e000 CR4: 0000000=
-0000006e0
-> > [ 2169.672806] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000=
-000000000
-> > [ 2169.682194] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000=
-000000400
-> > [ 2169.693530] Call Trace:
-> > [ 2169.698054]  <TASK>
-> > [ 2169.701786]  ? rcu_torture_writer+0x7f2/0xd80
-> > [ 2169.708853]  ? __warn+0x7c/0x120
-> > [ 2169.714088]  ? rcu_torture_writer+0x7f2/0xd80
-> > [ 2169.721066]  ? report_bug+0x15d/0x180
-> > [ 2169.726125]  ? handle_bug+0x3c/0x70
-> > [ 2169.730948]  ? exc_invalid_op+0x17/0x70
-> > [ 2169.736238]  ? asm_exc_invalid_op+0x1a/0x20
-> > [ 2169.742047]  ? rcu_torture_writer+0x7f2/0xd80
-> > [ 2169.747907]  ? __pfx_rcu_torture_writer+0x10/0x10
-> > [ 2169.754175]  kthread+0xcb/0xf0
-> > [ 2169.758407]  ? __pfx_kthread+0x10/0x10
-> > [ 2169.763501]  ret_from_fork+0x2c/0x50
-> > [ 2169.768420]  </TASK>
-> > [ 2169.771445] ---[ end trace 0000000000000000 ]---
-> > [ 2169.777698] Dumping ftrace buffer:
-> > [ 2169.782470]    (ftrace buffer empty)
-> > [ 2169.787241] ------------[ cut here ]------------
-> >
-> >
-> > I will continue to monitor and debug these but since I recently re-star=
-ted
-> > testing stable (my infra was down for a long time), I don't have any
-> > reference for when these started happening.
->
-> I haven't been seeing this in v6.4, though there is always the possibilit=
-y
-> that your hardware setup has timing differences from mine, so maybe my
-> testing simply isn't seeing this.
->
-> And thank you very much for testing this!!!
+v4 -> v5
+ - The AUX CCS is added as a device property instead of checking
+   against FLAT CCS. This adds the new HAS_AUX_CCS check
+   (Patch 2, new).
+ - little and trivial refactoring here and there.
+ - extended the flags{0,1}/bit_group_{0,1} renaming to other
+   functions.
+ - Created an intel_emit_pipe_control_cs() wrapper for submitting
+   the pipe control.
+ - Quiesce memory for all the engines, not just RCS (Patch 6,
+   new).
+ - The PIPE_CONTROL_CCS_FLUSH is added to all the engines.
+ - Remove redundant EMIT_FLUSH_CCS mode flag.
+ - Remove unnecessary NOOPs from the command streamer for
+   invalidating the CCS table.
+ - Use INVALID_MMIO_REG and gen12_get_aux_inv_reg() instad of
+   __MMIO(0) and reg.reg.
+ - Remove useless wrapper and just use gen12_get_aux_inv_reg().
 
-Sure, my pleasure, thanks!
+v3 -> v4
+ - A trivial patch 3 is added to rename the flags with
+   bit_group_{0,1} to align with the datasheet naming.
+ - Patch 4 fixes a confusion I made where the CCS flag was
+   applied to the wrong bit group.
 
- - Joel
+v2 -> v3
+ - added r-b from Nirmoy in patch 1 and 4.
+ - added patch 3 which enables the ccs_flush in the control pipe
+   for mtl+ compute and render engines.
+ - added redundant checks in patch 2 for enabling the EMIT_FLUSH
+   flag.
+
+v1 -> v2
+ - add a clean up preliminary patch for the existing registers
+ - add support for more engines
+ - add the Fixes tag
+
+Andi Shyti (7):
+  drm/i915/gt: Cleanup aux invalidation registers
+  drm/i915: Add the has_aux_ccs device property
+  drm/i915/gt: Rename flags with bit_group_X according to the datasheet
+  drm/i915/gt: Refactor intel_emit_pipe_control_cs() in a single
+    function
+  drm/i915/gt: Ensure memory quiesced before invalidation for all
+    engines
+  drm/i915/gt: Enable the CCS_FLUSH bit in the pipe control
+  drm/i915/gt: Support aux invalidation on all engines
+
+Jonathan Cavitt (2):
+  drm/i915/gt: Ensure memory quiesced before invalidation
+  drm/i915/gt: Poll aux invalidation register bit on invalidation
+
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c     | 222 +++++++++++++------
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.h     |  21 +-
+ drivers/gpu/drm/i915/gt/intel_gpu_commands.h |   2 +
+ drivers/gpu/drm/i915/gt/intel_gt_regs.h      |  16 +-
+ drivers/gpu/drm/i915/gt/intel_lrc.c          |  17 +-
+ drivers/gpu/drm/i915/i915_drv.h              |   1 +
+ drivers/gpu/drm/i915/i915_pci.c              |   5 +-
+ drivers/gpu/drm/i915/intel_device_info.h     |   1 +
+ 8 files changed, 186 insertions(+), 99 deletions(-)
+
+-- 
+2.40.1
+
