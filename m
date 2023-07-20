@@ -2,169 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7100275B699
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 20:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18FA575B6A3
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 20:24:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230291AbjGTSXK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 14:23:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57582 "EHLO
+        id S231422AbjGTSYW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 14:24:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231314AbjGTSWz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 14:22:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284F4270C
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 11:22:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B9E7C61BBC
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 18:22:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB25C433CB;
-        Thu, 20 Jul 2023 18:22:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689877372;
-        bh=QZidAxoL+bbCpdCV4g32N0AhT3Q/PdSRHy9STcKwWpo=;
-        h=Subject:To:Cc:From:Date:From;
-        b=ov+eF2OReF3OHg0+r7xYNsDlkIfTCZd3H4NMM74tGqvwzzC9ABDBFl3rMpUuiXEfh
-         uIY2ixzxZ9K113tsQFc7lXlQsm5M9Dm2SiHXzw2cGC37v6nvZmlMf3piaKSTU9BUSm
-         DC365hKG5IBNZ8hVZ90xrFLUt7p2mYXh/RVSLplU=
-Subject: FAILED: patch "[PATCH] f2fs: fix deadlock in i_xattr_sem and inode page lock" failed to apply to 4.14-stable tree
-To:     jaegeuk@kernel.org, chao@kernel.org, stable@vger.kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 20 Jul 2023 20:22:40 +0200
-Message-ID: <2023072040-scouting-progress-c365@gregkh>
+        with ESMTP id S231576AbjGTSYU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 14:24:20 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 767722D67
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 11:24:02 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 9D9275C01A8;
+        Thu, 20 Jul 2023 14:24:00 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Thu, 20 Jul 2023 14:24:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1689877440; x=1689963840; bh=Vu
+        Vy4pFXi/3cP4FZUSs3RNJIVZzQo3KVyIxMIk7GpXc=; b=guRKK0Uo9FE13YVUuV
+        dn1J/BAlimhuTD1bMWuf81ctFfFXwUGTd7/C9tsR0+QegBacRGtGx5dVAHESz9zN
+        asLUzt9ja/dxvN4pqSki/opMmvRBlOVo5N+aKaBnMK0G1uAwODYHTsm019vZAqwG
+        Ia6kvBzclW5wSmKePVXQLmH8kUuJh+SAqBb5XM9VVeN3Lls4YZw4Cked7tisA+ln
+        1+UGZTKdYWKakn91oQRL0P25lTfxQo0mD6ELmS9y4aMYeQlxAEwSRmbtb6AELJ7l
+        9QhEGhvZx3IkhcedKAJpIIji06fldpCEfNUd6+lGwmxN3UbzAFPSkQiTMOxDKbs1
+        ZosQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1689877440; x=1689963840; bh=VuVy4pFXi/3cP
+        4FZUSs3RNJIVZzQo3KVyIxMIk7GpXc=; b=0Alds19WeClXudDYG+GBpwbYLahrm
+        zAedQzL3oMPSrPHiLtpwoLqazCl+S7UUdbwHrnG2g4LLKlK0tfe9x9JLqm9OG9Hk
+        BXvSrVmz+/i02CNWHBTLKDKfB7DLi7rOHoptczEaIhPFpdBo6qF2UTEV2Dg7SKHu
+        bXwZhDC7KGWma93P0ymwY6TyS6uLWe3bxMauT2ogtcs+UpWafMy7HNZYLMxz/Dt7
+        7wQkLGnqnRoAifC1xuXFHX0PwKR0k/Au6YLlh93OYecexbonWND/beWXfqGMQ/hH
+        5r1GyTkuwFQAVX5r4Q4bvQSuYbRxio0OaibAufVoaaYOccYvX2OuLJUtw==
+X-ME-Sender: <xms:wHu5ZOQ2jbNNfpS0BplCkLhHvIdbp9biOGAwVGMNgTwwo6opFwsWYg>
+    <xme:wHu5ZDxTl-wxva9B3LFXlF0top3E-VMZs-VmJnqmj3dP0dJX0zW71q3lOPZ_MGXpf
+    9rnfugK7c5-Cw>
+X-ME-Received: <xmr:wHu5ZL2w5msLuwIiGXZGISG1i9ZYTqtGRq_wAWpPJsaufaVZz3MZiQqLaXk0qHCptvHcr6Fu3Lr4JjFJvJ8zoirg7F0g90Ivc7txlQx9sQ0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrhedtgdduvdefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:wHu5ZKB6Ik1vKkopchwdWwoPrU2gXh1W1yWc4tHnQXXFByD8qpI6Pw>
+    <xmx:wHu5ZHi6ndkYHqWBd40EVfs0dAmxffWqYb3sWMm7DNpI9Z9--4nK9w>
+    <xmx:wHu5ZGrRNtXRiqvCWXy_ebDULI3BJyZ7B2owQlwoJjRc3o3sc_RysA>
+    <xmx:wHu5ZCUdBrwqbr5-pedBWMJyHLCYYjOmZwa1PDTi-VbZWAinjmAwXA>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 20 Jul 2023 14:23:59 -0400 (EDT)
+Date:   Thu, 20 Jul 2023 20:23:57 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Stefan Ghinea <stefan.ghinea@windriver.com>
+Cc:     stable@vger.kernel.org, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: Re: [PATCH 5.15 1/1] f2fs: fix to avoid NULL pointer dereference
+ f2fs_write_end_io()
+Message-ID: <2023072049-tribute-lividly-f21b@gregkh>
+References: <20230719191019.15285-1-stefan.ghinea@windriver.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230719191019.15285-1-stefan.ghinea@windriver.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, Jul 19, 2023 at 10:10:19PM +0300, Stefan Ghinea wrote:
+> From: Chao Yu <chao@kernel.org>
+> 
+> commit d8189834d4348ae608083e1f1f53792cfcc2a9bc upstream
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 5eda1ad1aaffdfebdecf7a164e586060a210f74f
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023072040-scouting-progress-c365@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
-
-Possible dependencies:
-
-5eda1ad1aaff ("f2fs: fix deadlock in i_xattr_sem and inode page lock")
-e4544b63a7ee ("f2fs: move f2fs to use reader-unfair rwsems")
-3e0203893e0d ("f2fs: support fault injection to f2fs_trylock_op()")
-a9419b63bf41 ("f2fs: do not bother checkpoint by f2fs_get_node_info")
-0df035c7208c ("f2fs: avoid down_write on nat_tree_lock during checkpoint")
-a1e09b03e6f5 ("f2fs: use iomap for direct I/O")
-ccf7cf92373d ("f2fs: fix the f2fs_file_write_iter tracepoint")
-d4dd19ec1ea0 ("f2fs: do not expose unwritten blocks to user by DIO")
-b31bf0f96e71 ("f2fs: reduce indentation in f2fs_file_write_iter()")
-3d697a4a6b7d ("f2fs: rework write preallocations")
-5664896ba29e ("Merge tag 'f2fs-for-5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs")
-
-thanks,
+Both now queued up, thanks.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 5eda1ad1aaffdfebdecf7a164e586060a210f74f Mon Sep 17 00:00:00 2001
-From: Jaegeuk Kim <jaegeuk@kernel.org>
-Date: Wed, 28 Jun 2023 01:00:56 -0700
-Subject: [PATCH] f2fs: fix deadlock in i_xattr_sem and inode page lock
-
-Thread #1:
-
-[122554.641906][   T92]  f2fs_getxattr+0xd4/0x5fc
-    -> waiting for f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
-
-[122554.641927][   T92]  __f2fs_get_acl+0x50/0x284
-[122554.641948][   T92]  f2fs_init_acl+0x84/0x54c
-[122554.641969][   T92]  f2fs_init_inode_metadata+0x460/0x5f0
-[122554.641990][   T92]  f2fs_add_inline_entry+0x11c/0x350
-    -> Locked dir->inode_page by f2fs_get_node_page()
-
-[122554.642009][   T92]  f2fs_do_add_link+0x100/0x1e4
-[122554.642025][   T92]  f2fs_create+0xf4/0x22c
-[122554.642047][   T92]  vfs_create+0x130/0x1f4
-
-Thread #2:
-
-[123996.386358][   T92]  __get_node_page+0x8c/0x504
-    -> waiting for dir->inode_page lock
-
-[123996.386383][   T92]  read_all_xattrs+0x11c/0x1f4
-[123996.386405][   T92]  __f2fs_setxattr+0xcc/0x528
-[123996.386424][   T92]  f2fs_setxattr+0x158/0x1f4
-    -> f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
-
-[123996.386443][   T92]  __f2fs_set_acl+0x328/0x430
-[123996.386618][   T92]  f2fs_set_acl+0x38/0x50
-[123996.386642][   T92]  posix_acl_chmod+0xc8/0x1c8
-[123996.386669][   T92]  f2fs_setattr+0x5e0/0x6bc
-[123996.386689][   T92]  notify_change+0x4d8/0x580
-[123996.386717][   T92]  chmod_common+0xd8/0x184
-[123996.386748][   T92]  do_fchmodat+0x60/0x124
-[123996.386766][   T92]  __arm64_sys_fchmodat+0x28/0x3c
-
-Cc: <stable@vger.kernel.org>
-Fixes: 27161f13e3c3 "f2fs: avoid race in between read xattr & write xattr"
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-
-diff --git a/fs/f2fs/dir.c b/fs/f2fs/dir.c
-index 887e55988450..d635c58cf5a3 100644
---- a/fs/f2fs/dir.c
-+++ b/fs/f2fs/dir.c
-@@ -775,8 +775,15 @@ int f2fs_add_dentry(struct inode *dir, const struct f2fs_filename *fname,
- {
- 	int err = -EAGAIN;
- 
--	if (f2fs_has_inline_dentry(dir))
-+	if (f2fs_has_inline_dentry(dir)) {
-+		/*
-+		 * Should get i_xattr_sem to keep the lock order:
-+		 * i_xattr_sem -> inode_page lock used by f2fs_setxattr.
-+		 */
-+		f2fs_down_read(&F2FS_I(dir)->i_xattr_sem);
- 		err = f2fs_add_inline_entry(dir, fname, inode, ino, mode);
-+		f2fs_up_read(&F2FS_I(dir)->i_xattr_sem);
-+	}
- 	if (err == -EAGAIN)
- 		err = f2fs_add_regular_entry(dir, fname, inode, ino, mode);
- 
-diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-index 213805d3592c..476b186b90a6 100644
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -528,10 +528,12 @@ int f2fs_getxattr(struct inode *inode, int index, const char *name,
- 	if (len > F2FS_NAME_LEN)
- 		return -ERANGE;
- 
--	f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
-+	if (!ipage)
-+		f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
- 	error = lookup_all_xattrs(inode, ipage, index, len, name,
- 				&entry, &base_addr, &base_size, &is_inline);
--	f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
-+	if (!ipage)
-+		f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
- 	if (error)
- 		return error;
- 
-
