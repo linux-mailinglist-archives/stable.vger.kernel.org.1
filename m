@@ -2,170 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B51E75B83F
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 21:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 105FE75B8BE
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 22:28:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229655AbjGTTrr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 15:47:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48044 "EHLO
+        id S229586AbjGTU2d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 16:28:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjGTTrq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 15:47:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA2F31733;
-        Thu, 20 Jul 2023 12:47:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 580E861C2A;
-        Thu, 20 Jul 2023 19:47:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AE6C433C7;
-        Thu, 20 Jul 2023 19:47:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689882464;
-        bh=DwX1uNy6mTJOThmesJskJiO3f0zQ/UjEjsi7fYSoDeQ=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=F2VOzhGEq/ehzA3T7FojKe0nvvYABR7BaAGOIDRc3zB7kyFFHA8lK54shuPEhhkmw
-         LLp2y+fetfpkcgdK/tz0QUqF/4jkDeEX1t481gP22EiRadHc5WXu+y+q1onQqHz7hV
-         bD5RjIft73fv8JaYtIp2mg3gqI49YTajtIv63wdTs5yvSbwgUC+PVvXBmh4okXqURx
-         v07BYphbv8Om/rR6zc3kr6cAtnXbO+mNAHEDDD3JPDhHK/rdZPgkgjH53iAJw8UmrU
-         awqbn9sl31zZbzDDefvpkLFAzpxSWu/hqo2rrPE3rBjBE+F4GkngTyQmohYBEIy2/F
-         fi0bUPVPlLZAA==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id 4B74ACE03CF; Thu, 20 Jul 2023 12:47:44 -0700 (PDT)
-Date:   Thu, 20 Jul 2023 12:47:44 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-        jslaby@suse.cz, rcu@vger.kernel.org
-Subject: Re: [BUG] Re: Linux 6.4.4
-Message-ID: <eb04b7d0-2f49-4e01-be09-9062d9f08404@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <2023071940-suspect-ominous-4a6a@gregkh>
- <20230720132714.GA3726096@google.com>
- <2b8fc10b-785e-48b9-9a38-5c1af81f9578@paulmck-laptop>
- <CAEXW_YQO7OCdkXm_SBcPhAm8V8vMaF_5DQq7PbG9PZb7RFgA_g@mail.gmail.com>
- <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
- <8682b08c-347b-5547-60e0-013dcf1f8c93@joelfernandes.org>
+        with ESMTP id S229517AbjGTU2c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 16:28:32 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2084.outbound.protection.outlook.com [40.107.94.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F78272A;
+        Thu, 20 Jul 2023 13:28:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SFeoc/GMaT4npENXHiKaPebbYtMwJcwdzc+zILgF8HXRe3AKou/+ECn6D/hCtuqhVkOAnWX7SRnlmFr7zZ8MnvizuF5CyKS/q6FCq3R4+gKCpG1mAnMdih2frP94Nj8P8BDmu3rC6YC5NUvtX95KcAqqzAli2h3xblQUx+KraK3veXY+ONlX7VgcKsK2IQoIUe6NsKsP0Yhcu7Tx4AmLeKWdBJSf5STTCqsYpzS5WA1yyJku4j6lsFb0QYyfFOVNdrwePdO82tjHd8/6oKEybsDQJrLSOVb/Yx9YuHkN+cKoJUI8p0RnO9yYP5UcVandq7RTBpvkKiFHv9vgw446Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OoM/PHiNwVCxv2JrvAPeXjDXTa6wF1QZnD03AwUPfRk=;
+ b=HfS905KRbJTtOC4vSt1Eue1ltMUS6fHtywYAieQgQqW0S9HIj4kGf7Xn9K3DL+n5F6hyOSpWRJwoxLHgwe1R+X+quxLj/o5cRUGRa8/BbgcYCZG1ugXbHfuCZFPrFSRMn2BEVfNPCheh/zGlsTQSgy9PvJNsuVRDgQ8+dzspf1UDFzgqUo+J1C58/XgI7vzf+Q8NT7PLm/xd3Gq7ILLRxrcNNAp3TA/CXNL/oXatTvj5l1lqkNRcdiYsezFyUl/k/l/lXZVvGVolDlHsThp2vsmj5gvwqpOlz5awvtyc5ZATFsjh8Rwm73BvEb7EPrC+75HemQ4P3E0gh0pXRedCRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OoM/PHiNwVCxv2JrvAPeXjDXTa6wF1QZnD03AwUPfRk=;
+ b=Q5LLVxGuPLe9eCMB5jDiRvYhEh1dvjm84gPyes/O0mGmM78o1FBLYN9lz2XX55H/bIKyHpw8nBX9ThdSoh4os92aSfvHxZBbq7Npp9sMcz5eBoHCK8QIkAgZnv579u/26oa1cG02AUgCtNHgtEW5sj3/jkSUraAIYp9rukWgCVs=
+Received: from BN9PR03CA0356.namprd03.prod.outlook.com (2603:10b6:408:f6::31)
+ by DM4PR12MB7718.namprd12.prod.outlook.com (2603:10b6:8:102::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.24; Thu, 20 Jul
+ 2023 20:28:27 +0000
+Received: from BN8NAM11FT093.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:f6:cafe::ce) by BN9PR03CA0356.outlook.office365.com
+ (2603:10b6:408:f6::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.25 via Frontend
+ Transport; Thu, 20 Jul 2023 20:28:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT093.mail.protection.outlook.com (10.13.177.22) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6609.28 via Frontend Transport; Thu, 20 Jul 2023 20:28:26 +0000
+Received: from jallen-jump-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 20 Jul
+ 2023 15:28:25 -0500
+From:   John Allen <john.allen@amd.com>
+To:     <bp@alien8.de>, <linux-kernel@vger.kernel.org>
+CC:     <tglx@linutronix.de>, <mingo@redhat.com>, <hpa@zytor.com>,
+        <x86@kernel.org>, John Allen <john.allen@amd.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH] x86/microcode/AMD: Increase microcode PATCH_MAX_SIZE
+Date:   Thu, 20 Jul 2023 20:28:13 +0000
+Message-ID: <20230720202813.3269888-1-john.allen@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8682b08c-347b-5547-60e0-013dcf1f8c93@joelfernandes.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT093:EE_|DM4PR12MB7718:EE_
+X-MS-Office365-Filtering-Correlation-Id: 17a1e73b-56f1-44b9-bbb8-08db895fdf4c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: u0rTj2uiBmC7j08AnhbRxtsAHSpM2OhlarWRWnCxMKR4YspAVHtHBhbS6gM/BV3ssFebvTaDiPk1znx+mDx70KjHTR4RST2XBDVDamd39nXwSiGmcHrKDHagcaKrSlWM6lHPefmufJIxub7bc/DZccdZJ/6uhyqA2KHksR4fKR0sQAKkFHg6UprdIYF9g7ZcD+JDnI9UL8y8+GrW+YletvMKUmoc86Rx58Mqys8NK6Q5Lut1TGvW6HXJEWMBjImUMdC2qp+grQ2J663ZlpN3qHzN8Jc665aYYkQcMHz6/1iUp37XgLSswjWzw4y8BUOaU+orYDBPDhnLNSQa6dn3j2fW/H93ohGWLx8iZziKYyeyg5/WMfsFKzLmbyd2g1Gwx6XngCpb6qSMYSETVAQrr5vwr/fA6Jw5UIfV7QxVYiuPR1Z4vEQ+eTZ47i4Z0ceYnmfDo9Roc+avhO73PkQLA5uUUCAGnpajoczXfasU/7gD/Su20P34ufjt2j799sLKuYLtDlJmjmewjrLbaZ8HFhgQ0TwUSlqiP8yIXFVYxpirZov+ZJSBPIu9mws+Y/eDGRBFVz6hxIaGLmFYmKHeNsmMZ5zYJLcHuxoRdMPjtda0j8dI4sxTwgmONmDULjQHJHm26iowFJQ757zIOJiwBn+bdP9JRpIL+nDvy2HjVd7FricA+6oCtncjfzNdtGjJjtCghgoBZdrgrHnd9u0XKMwRNUGxgW94/Ciw8SSWLdZhTyvjRmDCmz0bY3W30J0SS+v5BEEFENgkZ1dhcNL/9g==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(39860400002)(346002)(136003)(82310400008)(451199021)(36840700001)(46966006)(40470700004)(81166007)(82740400003)(356005)(40480700001)(40460700003)(7696005)(6666004)(86362001)(336012)(1076003)(8676002)(186003)(26005)(16526019)(44832011)(316002)(41300700001)(5660300002)(70586007)(70206006)(4326008)(54906003)(4744005)(2906002)(110136005)(8936002)(83380400001)(36860700001)(2616005)(36756003)(426003)(478600001)(47076005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2023 20:28:26.3834
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17a1e73b-56f1-44b9-bbb8-08db895fdf4c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT093.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7718
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jul 20, 2023 at 03:32:35PM -0400, Joel Fernandes wrote:
-> On 7/20/23 15:04, Paul E. McKenney wrote:
-> > On Thu, Jul 20, 2023 at 12:31:13PM -0400, Joel Fernandes wrote:
-> >> Hi Paul,
-> >>
-> >> On Thu, Jul 20, 2023 at 11:55 AM Paul E. McKenney <paulmck@kernel.org> wrote:
-> >>>
-> >>> On Thu, Jul 20, 2023 at 01:27:14PM +0000, Joel Fernandes wrote:
-> [...]
-> >>>>
-> >>>> So likely RCU boosting is failing:
-> >>>>
-> >>>> The full TREE03 splat:
-> >>>> [   54.243588] ------------[ cut here ]------------
-> >>>> [   54.244547] rcu-torture: rcu_torture_boost started
-> [...]
-> >>>> [   54.300499] RIP: 0010:rcu_torture_stats_print+0x5b2/0x620
-> [...]
-> >>>> [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
-> >>>>
-> >>>> However, if we are to believe the '9', it appears the object did made it
-> >>>> quite some till the end of the pipe array but not until the free pool.
-> >>>
-> >>> This is from this if/for statement, correct?
-> >>>
-> >>>                  stutter_waited = stutter_wait("rcu_torture_writer");
-> >>>                  if (stutter_waited &&
-> >>>                      !atomic_read(&rcu_fwd_cb_nodelay) &&
-> >>>                      !cur_ops->slow_gps &&
-> >>>                      !torture_must_stop() &&
-> >>>                      boot_ended)
-> >>>                          for (i = 0; i < ARRAY_SIZE(rcu_tortures); i++)
-> >>>                                  if (list_empty(&rcu_tortures[i].rtort_free) &&
-> >>>                                      rcu_access_pointer(rcu_torture_current) !=
-> >>>                                      &rcu_tortures[i]) {
-> >>>                                          tracing_off();
-> >>>                                          show_rcu_gp_kthreads();
-> >>>                                          WARN(1, "%s: rtort_pipe_count:
-> >>>                                          rcu_ftrace_dump(DUMP_ALL);
-> >>>                                  }
-> >>
-> >> Yes, that's right.
-> >>
-> >>> If so, this happens when there was a stutter wait, but RCU grace
-> >>> periods failed to clear out the backlog during the several seconds that
-> >>> rcutorture was forced idle.  This might be related to the RCU priority
-> >>> boosting failure, in which a preempted reader persisted across the
-> >>> stutter interval.
-> >>
-> >> When RCU is operating normally, shouldn't the check
-> >> "(list_empty(&rcu_tortures[i].rtort_free)" not run until the preempted
-> >> reader unblocks and exits its RCU read-side critical section?
-> >
-> > Yes, but not just "until", but rather "long after".  If RCU is doing
-> > grace periods correctly, an active reader on a given rcu_tortures[]
-> > element will prevent .rtort_pipe_count from exceeding the value 2.
-> 
-> Ah ok, so the rtort_pipe_count being 9 is a sign RCU isn't making progress
-> thus making it absent from the free list.
+Future AMD cpus will have microcode patches that exceed the current
+limit of three 4K pages. Increase substantially to avoid future size
+increases.
 
-Yes, though RCU is -just- -barely- too slow, as one more grace period
-would have done it.
+Signed-off-by: John Allen <john.allen@amd.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/include/asm/microcode_amd.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > The element will not be put on a list until .rtort_pipe_count is equal
-> > to RCU_TORTURE_PIPE_LEN, which is 10.
-> >
-> > This warning usually appears when something is holding up the grace-period
-> > kthread.  Historically, this has included deadlocks, missed timers,
-> > and whatever else can prevent the grace-period kthread from running.
-> 
-> Makes sense.
-> 
-> >> One thing that confuses me, in the case of
-> >> "cur_ops->deferred_free(old_rp);" , the earlier do-while loop may exit
-> >> before the async callbacks can finish. So what prevents the
-> >> "(list_empty(&rcu_tortures[i].rtort_free)" check from happening before
-> >> grace periods happen? Thanks for any clarification.
-> >
-> > We only enter this code if the stutter_wait() actually waited, and by
-> > default this function will wait about five seconds.  Since the rcutorture
-> > testing goes idle during this time period (or is supposed to!), if things
-> > are working properly, knocking off ten grace periods during that time
-> > should be pretty much a given.
-> 
-> Sure, makes sense. And this is not Lazy-RCU so 5 seconds should be plenty
-> ;). I think I was subconsciously expecting an rcu_barrier() somewhere in the
-> code before those checks, but that's not needed as you pointed that the
-> stutter should be giving enough time for RCU to make progress.
+diff --git a/arch/x86/include/asm/microcode_amd.h b/arch/x86/include/asm/microcode_amd.h
+index e6662adf3af4..e3d5f5ae2f46 100644
+--- a/arch/x86/include/asm/microcode_amd.h
++++ b/arch/x86/include/asm/microcode_amd.h
+@@ -41,7 +41,7 @@ struct microcode_amd {
+ 	unsigned int			mpb[];
+ };
+ 
+-#define PATCH_MAX_SIZE (3 * PAGE_SIZE)
++#define PATCH_MAX_SIZE (8 * PAGE_SIZE)
+ 
+ #ifdef CONFIG_MICROCODE_AMD
+ extern void __init load_ucode_amd_bsp(unsigned int family);
+-- 
+2.39.3
 
-And there might need to be a call_rcu_hurry() in there somewhere,
-now that you mention it.  Which would pretty much defeat any sort of
-lazy-RCU-callback testing in rcutorture, but testing of laziness might
-need to be separate anyway.
-
-> So hmm, the count being 9 means that not enough RCU grace periods have
-> passed for the rcu_torture object in question thus keeping it always
-> allocated. The GP thread not getting CPU can do that indeed, or perhaps
-> something else stalling RCU like a preempted reader, length preemption
-> disabling on a CPU and so forth..  I'll try to collect a trace when it
-> happens.
-
-Looking forward to seeing what you come up with!
-
-							Thanx, Paul
