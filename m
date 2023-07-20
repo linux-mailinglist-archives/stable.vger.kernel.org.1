@@ -2,173 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 799EE75B804
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 21:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7652A75B821
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 21:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230443AbjGTTcl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 15:32:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41220 "EHLO
+        id S230502AbjGTTib (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 15:38:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230441AbjGTTck (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 15:32:40 -0400
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A39971999
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 12:32:38 -0700 (PDT)
-Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-403470df1d0so11553391cf.0
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 12:32:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1689881557; x=1690486357;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zWhwuO2Me2HmK8/saXTSzM5wYXByZMsVez1QS7juqfo=;
-        b=e+nt62Bh5ZofrXCZ9bP/gLnuiNloOpMWtvA4dbflLB24Enl5gt0h6pur+PdY9nJNT8
-         8KZI6n+U8KkOcRbQIVOmI4YkS5Gc6bojyjiuOmhxUe3olsgwJKmPf4tRlPogOyypEJx9
-         hylKQboYNHhMq8uJIJOyQg7h1QeXp98nBK2Bg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689881557; x=1690486357;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zWhwuO2Me2HmK8/saXTSzM5wYXByZMsVez1QS7juqfo=;
-        b=X1F8Tvgyv8WAThLIjHL9gZRD799MMNKdM4hPWEHEIv/41gbFJSKfD70DnYBfLWnDMi
-         lkCq+uc4ZWy40jqX1mxhRExuMlBQF+KgDTavqaxNNEeaGD60/4luQu/Zr3jpese4KPIw
-         6EdKEDdEbWMiFfb1JbRmjIYWACSubMNiY3zFE+FEW3fVZzZiFa9haCtHPYDpQyJr9b1n
-         zKUxMxz0hDbqVBbofGf+ObOTuryPFFN3b8VNZ9RCBn/isCbCwt3Pu3l/Z4P6m36i6gQp
-         3x+61KqP7ClCNmoYsRN55ToiZgURPxGNxTFwuPbuT5p4hxM+iLr5ZEkoACGG2tuG9dDi
-         ry3w==
-X-Gm-Message-State: ABy/qLal0Bp/avO1KYOViS1dUX8DNGy2VN75vAC2sFPK4l6Npgai3tsE
-        hILl7x39DK3S/h86sDFVBxC/YA==
-X-Google-Smtp-Source: APBJJlEo+6BmEpxWjJfZHMnOZBxlZOJy0JXfy7Enc3/Bc+jVOdN2rTapd2ltYQx6HIlpsiz0lV3iYw==
-X-Received: by 2002:a05:622a:64c:b0:3ff:2cce:c625 with SMTP id a12-20020a05622a064c00b003ff2ccec625mr6081078qtb.19.1689881557534;
-        Thu, 20 Jul 2023 12:32:37 -0700 (PDT)
-Received: from [192.168.0.140] (c-98-249-43-138.hsd1.va.comcast.net. [98.249.43.138])
-        by smtp.gmail.com with ESMTPSA id d3-20020ac81183000000b00402364e77dcsm659334qtj.7.2023.07.20.12.32.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jul 2023 12:32:36 -0700 (PDT)
-Message-ID: <8682b08c-347b-5547-60e0-013dcf1f8c93@joelfernandes.org>
-Date:   Thu, 20 Jul 2023 15:32:35 -0400
+        with ESMTP id S229457AbjGTTia (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 15:38:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3E191733;
+        Thu, 20 Jul 2023 12:38:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D97461C2C;
+        Thu, 20 Jul 2023 19:38:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20640C433C8;
+        Thu, 20 Jul 2023 19:38:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689881908;
+        bh=By0NPw7H/C/+dXpxiKt2BsETcxwIAwyz076qNq493fs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KkXrnUFkxGKR1VycaaU+e/LHj6F4FdnNy7lB+dNSK9Q61ZsVz0CREEYQ5CPAbtr3z
+         vE7NT0zo6qbfN0kKA8mL9nnBVaeRM2SzBl8Qd6DYp5q/9kcjyKBsMD1DzB46LsvuYb
+         zp9905JKe/0jYGhatoJCvet6ORCSWtNZkqq7pwic=
+Date:   Thu, 20 Jul 2023 21:38:21 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO
+ configuration
+Message-ID: <2023072040-clock-waltz-a5f2@gregkh>
+References: <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
+ <20230620100846.d58436efc061fb91074fa7e5@hugovil.com>
+ <CAHp75VcWSVgA8LFLo0-b5TfKWdHb2GfLpXV-V3PZvthTv1Xc4A@mail.gmail.com>
+ <20230620113312.882d8f0c7d5603b1c93f33fb@hugovil.com>
+ <CAHp75VfGm6=ULW6kMjsg2OgB1z1T0YdmzvCTa3DFXXX-q_RnfA@mail.gmail.com>
+ <20230620114209.fb5272ad8cf5c5e2895d68b1@hugovil.com>
+ <CAHp75VcieuYqxWrO7rknx2ROYz=rnWnKV6s9eXZ5Zd1BKc6YMg@mail.gmail.com>
+ <20230620121645.512b31a872306b43a276bbac@hugovil.com>
+ <20230719144048.4f340b8aa0a29ab65a274273@hugovil.com>
+ <2023071922-rigor-collage-804e@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [BUG] Re: Linux 6.4.4
-Content-Language: en-US
-To:     paulmck@kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-        jslaby@suse.cz, rcu@vger.kernel.org
-References: <2023071940-suspect-ominous-4a6a@gregkh>
- <20230720132714.GA3726096@google.com>
- <2b8fc10b-785e-48b9-9a38-5c1af81f9578@paulmck-laptop>
- <CAEXW_YQO7OCdkXm_SBcPhAm8V8vMaF_5DQq7PbG9PZb7RFgA_g@mail.gmail.com>
- <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
-From:   Joel Fernandes <joel@joelfernandes.org>
-In-Reply-To: <f18e165c-9196-4b41-a202-82cfd5ac7f8b@paulmck-laptop>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <2023071922-rigor-collage-804e@gregkh>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 7/20/23 15:04, Paul E. McKenney wrote:
- > On Thu, Jul 20, 2023 at 12:31:13PM -0400, Joel Fernandes wrote:
- >> Hi Paul,
- >>
- >> On Thu, Jul 20, 2023 at 11:55 AM Paul E. McKenney <paulmck@kernel.org> wrote:
- >>>
- >>> On Thu, Jul 20, 2023 at 01:27:14PM +0000, Joel Fernandes wrote:
-[...]
- >>>>
- >>>> So likely RCU boosting is failing:
- >>>>
- >>>> The full TREE03 splat:
- >>>> [   54.243588] ------------[ cut here ]------------
- >>>> [   54.244547] rcu-torture: rcu_torture_boost started
-[...]
- >>>> [   54.300499] RIP: 0010:rcu_torture_stats_print+0x5b2/0x620
-[...]
- >>>> [ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
- >>>>
- >>>> However, if we are to believe the '9', it appears the object did made it
- >>>> quite some till the end of the pipe array but not until the free pool.
- >>>
- >>> This is from this if/for statement, correct?
- >>>
- >>>                  stutter_waited = stutter_wait("rcu_torture_writer");
- >>>                  if (stutter_waited &&
- >>>                      !atomic_read(&rcu_fwd_cb_nodelay) &&
- >>>                      !cur_ops->slow_gps &&
- >>>                      !torture_must_stop() &&
- >>>                      boot_ended)
- >>>                          for (i = 0; i < ARRAY_SIZE(rcu_tortures); i++)
- >>>                                  if (list_empty(&rcu_tortures[i].rtort_free) &&
- >>>                                      rcu_access_pointer(rcu_torture_current) !=
- >>>                                      &rcu_tortures[i]) {
- >>>                                          tracing_off();
- >>>                                          show_rcu_gp_kthreads();
- >>>                                          WARN(1, "%s: rtort_pipe_count:
- >>>                                          rcu_ftrace_dump(DUMP_ALL);
- >>>                                  }
- >>
- >> Yes, that's right.
- >>
- >>> If so, this happens when there was a stutter wait, but RCU grace
- >>> periods failed to clear out the backlog during the several seconds that
- >>> rcutorture was forced idle.  This might be related to the RCU priority
- >>> boosting failure, in which a preempted reader persisted across the
- >>> stutter interval.
- >>
- >> When RCU is operating normally, shouldn't the check
- >> "(list_empty(&rcu_tortures[i].rtort_free)" not run until the preempted
- >> reader unblocks and exits its RCU read-side critical section?
- >
- > Yes, but not just "until", but rather "long after".  If RCU is doing
- > grace periods correctly, an active reader on a given rcu_tortures[]
- > element will prevent .rtort_pipe_count from exceeding the value 2.
+On Wed, Jul 19, 2023 at 09:14:23PM +0200, Greg KH wrote:
+> On Wed, Jul 19, 2023 at 02:40:48PM -0400, Hugo Villeneuve wrote:
+> > On Tue, 20 Jun 2023 12:16:45 -0400
+> > Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > 
+> > > On Tue, 20 Jun 2023 18:45:51 +0300
+> > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > 
+> > > > On Tue, Jun 20, 2023 at 6:42 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > > > On Tue, 20 Jun 2023 18:35:48 +0300
+> > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > > > > On Tue, Jun 20, 2023 at 6:33 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > > > > > On Tue, 20 Jun 2023 18:18:12 +0300
+> > > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > > > > > > On Tue, Jun 20, 2023 at 5:08 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > > > > > > > On Sun, 4 Jun 2023 22:31:04 +0300
+> > > > > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > > 
+> > > > ...
+> > > > 
+> > > > > > > > > did you have a chance to look at V8 (sent two weks ago) which fixed all
+> > > > > > > > > of what we discussed?
+> > > > > > > >
+> > > > > > > > The patch 6 already has my tag, anything specific you want me to do?
+> > > > > > >
+> > > > > > > Hi Andy,
+> > > > > > > I forgot to remove your "Reviewed-by: Andy..." tag before sending V8
+> > > > > > > since there were some changes involved in patch 6 and I wanted you to
+> > > > > > > review them. Can you confirm if the changes are correct?
+> > > > > > >
+> > > > > > > I also added a new patch "remove obsolete out_thread label". It has no
+> > > > > > > real impact on the code generation itself, but maybe you can review and
+> > > > > > > confirm if tags are ok or not, based on commit message and also
+> > > > > > > additional commit message.
+> > > > > >
+> > > > > > Both are fine to me.
+> > > > >
+> > > > > Hi,
+> > > > > Ok, thank you for reviewing this.
+> > > > >
+> > > > > I guess now we are good to go with this series if the stable tags and
+> > > > > patches order are good after Greg's review?
+> > > > 
+> > > > Taking into account that we are at rc7, and even with Fixes tags in
+> > > > your series I think Greg might take this after v6.5-0rc1 is out. It's
+> > > > up to him how to proceed with that. Note, he usually has thousands of
+> > > > patches in backlog, you might need to respin it after the above
+> > > > mentioned rc1.
+> > > 
+> > > Ok, understood.
+> > > 
+> > > Let's wait then.
+> > 
+> > Hi Andy/Greg,
+> > we are now at v6.5-rc2 and I still do not see any of our patches in
+> > linus or gregkh_tty repos.
+> > 
+> > Is there something missing from my part (or someone else) to go forward
+> > with integrating these patches (v8) for v6.5?
+> 
+> My queue is huge right now, please be patient, I want to have them all
+> handled by the end of next week...
+> 
+> You can always help out by reviewing other patches on the mailing list
+> to reduce my review load.
 
-Ah ok, so the rtort_pipe_count being 9 is a sign RCU isn't making progress thus 
-making it absent from the free list.
-
- >
- > The element will not be put on a list until .rtort_pipe_count is equal
- > to RCU_TORTURE_PIPE_LEN, which is 10.
- >
- > This warning usually appears when something is holding up the grace-period
- > kthread.  Historically, this has included deadlocks, missed timers,
- > and whatever else can prevent the grace-period kthread from running.
-
-Makes sense.
-
- >> One thing that confuses me, in the case of
- >> "cur_ops->deferred_free(old_rp);" , the earlier do-while loop may exit
- >> before the async callbacks can finish. So what prevents the
- >> "(list_empty(&rcu_tortures[i].rtort_free)" check from happening before
- >> grace periods happen? Thanks for any clarification.
- >
- > We only enter this code if the stutter_wait() actually waited, and by
- > default this function will wait about five seconds.  Since the rcutorture
- > testing goes idle during this time period (or is supposed to!), if things
- > are working properly, knocking off ten grace periods during that time
- > should be pretty much a given.
-
-Sure, makes sense. And this is not Lazy-RCU so 5 seconds should be plenty ;). I 
-think I was subconsciously expecting an rcu_barrier() somewhere in the code 
-before those checks, but that's not needed as you pointed that the stutter 
-should be giving enough time for RCU to make progress.
-
-So hmm, the count being 9 means that not enough RCU grace periods have passed 
-for the rcu_torture object in question thus keeping it always allocated. The GP 
-thread not getting CPU can do that indeed, or perhaps something else stalling 
-RCU like a preempted reader, length preemption disabling on a CPU and so forth.. 
-  I'll try to collect a trace when it happens.
+Wait, no, this series was superseeded by v8, and in there you said you
+were going to send a new series.  So please, fix it up and send the
+updated version of the series, this one isn't going to be applied for
+obvious reasons.
 
 thanks,
 
-  - Joel
+greg k-h
