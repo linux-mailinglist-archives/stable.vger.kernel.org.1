@@ -2,132 +2,208 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E8BB75A76D
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 09:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2644775A882
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 10:01:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231489AbjGTHL6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 03:11:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42954 "EHLO
+        id S231209AbjGTIBJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 04:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231503AbjGTHLd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 03:11:33 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC6692733
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 00:10:26 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1b89cfb4571so3408885ad.3
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 00:10:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689837026; x=1690441826;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vZiOti2rSZYWbFsWA6OHv4fYxFNp7o8241gPXk8Ck/Q=;
-        b=rqU1Na7VrWUQpawH3Invx0ALCoQ5EFfYxLPqnwK3A/L0VIEaGb+v7XVDCSPackKODU
-         gFrBwqx3Okco8wd+JryWSeAlRucEnQ0d8z4b1LF6imYrmyxuyTMN0dE+EPM0VTcGsuS4
-         ftpjrdCsLvRlH9wRKyzsm3KJm/vWcgUlPEFxEUUG+iAE93WK2F7EOizrYlQzcSysy1dE
-         /W2wnBOItOIYwPHZgcaLk+CbJS9TjXL8cAff4KvEUhRQrrlYLaEOmGrelMitXt7vnJ7J
-         9F3UbRd3p9lz0vxh1zSUoBC4drAGM425pLyZrHavoo4Iw2Gt4BzLFcgdYg73FhcgNtNw
-         3wug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689837026; x=1690441826;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vZiOti2rSZYWbFsWA6OHv4fYxFNp7o8241gPXk8Ck/Q=;
-        b=VU2K7F30RHzLgYIAPdLNDqd6t/F42FKcsiWIzD4PuWOeIHlDPg6NlqNzVjK4V8t5Yc
-         smT2+JypwYBWSCtOZHXjlyu4VcqsSdyScnsT6988eCQUyGcDpBkJVjnqV2KbHxqpxfMH
-         PSMbpd1dmzZPR/mwThCG45DfNWEqvYjvPubZ+OEcg3q2bOyxISeCVjlOTmY1K0ko/qtK
-         g1Ctuch2A9zli57Ean5wwpbWCcqjgzPdozCNzWi1yIU2Hu0ZF830pbgVN190UgDJMidn
-         NDNKrM3VdpsdAm3hCH+7NxW2utPt6U18Ov84NerJ9TMRc2cozwwrnrizIs8aZTSQk04R
-         +7oA==
-X-Gm-Message-State: ABy/qLZN8JijrIshUDpYuW7JPa4tZs14+gHEmilnKkvWUFIEu5dkYH26
-        Zb+++jG09o3BnmlTU3dAoE0CqXx1Yj0=
-X-Google-Smtp-Source: APBJJlEyvcd7oT4FKPciBjWLfXUhZlvCq1DIHB78hlMWM3DxEdynxfZ6AqxEaXV1TbFBqCDbR9CuNw==
-X-Received: by 2002:a17:902:ea86:b0:1bb:3498:9caa with SMTP id x6-20020a170902ea8600b001bb34989caamr4586214plb.58.1689837026251;
-        Thu, 20 Jul 2023 00:10:26 -0700 (PDT)
-Received: from ISCN5CG2520RPD.infineon.com (KD106168128197.ppp-bb.dion.ne.jp. [106.168.128.197])
-        by smtp.gmail.com with ESMTPSA id d5-20020a170902c18500b001bb20380bf2sm515821pld.13.2023.07.20.00.10.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jul 2023 00:10:25 -0700 (PDT)
-From:   tkuw584924@gmail.com
-X-Google-Original-From: Takahiro.Kuwano@infineon.com
-To:     linux-mtd@lists.infradead.org
-Cc:     tudor.ambarus@linaro.org, pratyush@kernel.org, michael@walle.cc,
-        miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-        d-gole@ti.com, tkuw584924@gmail.com, Bacem.Daassi@infineon.com,
-        Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
+        with ESMTP id S230332AbjGTIA6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 04:00:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E6902128;
+        Thu, 20 Jul 2023 01:00:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF4BE6190E;
+        Thu, 20 Jul 2023 08:00:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1618CC433C8;
+        Thu, 20 Jul 2023 08:00:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689840056;
+        bh=46vJp8e7GtUguZcfgzEColtOeIPGAL93DRmb53QG2ME=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VAaTPEpUomH/cV/hMAkRcCr01ZxUBKc8w4FXczGi8X+Y5AT3ZAS3/H7R5i/OyOoMo
+         mqS/j79NicOnq9CDB0Z4RcL9EumKMqXvajclTNriAxU0k5/FwNHv6/+l2GOp10trEO
+         sCfY7saFGuWerQ7+KLtRFZbI3dFUpPcVCMHsEwwDCQnPplye6A1FvtBoTOSxTuBq0o
+         psP12qGpoeqFo21qGCDFjDUJ6mfn+SuTXqlnllDh7CL7MXpUVQxvsnPjNtawOqkrcM
+         KL7M2eQ4s4lp1B9FqYgRe8pnPt6+A2Erg+TRAzSIc328xtVwlFMz+klKhfR/5fPMuL
+         OJ70xu8KO/vJg==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan@kernel.org>)
+        id 1qMOat-0003ea-28;
+        Thu, 20 Jul 2023 10:01:03 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Subject: [PATCH v2 2/8] mtd: spi-nor: spansion: preserve CFR2V[7] when writing MEMLAT
-Date:   Thu, 20 Jul 2023 16:09:57 +0900
-Message-Id: <a8e94532d0d64631e6068845e29c4eea273b2871.1689836066.git.Takahiro.Kuwano@infineon.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1689836065.git.Takahiro.Kuwano@infineon.com>
-References: <cover.1689836065.git.Takahiro.Kuwano@infineon.com>
+Subject: [PATCH] USB: serial: simple: sort entries
+Date:   Thu, 20 Jul 2023 10:00:49 +0200
+Message-ID: <20230720080049.14032-1-johan@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Sort the defines and device-id entries alphabetically in order to make
+it more obvious where new entries should be added.
 
-CFR2V[7] is assigned to Flash's address mode (3- or 4-ybte) and must not
-be changed when writing MEMLAT (CFR2V[3:0]). CFR2V shall be used in a read,
-update, write back fashion.
-
-Fixes: c3266af101f2 ("mtd: spi-nor: spansion: add support for Cypress Semper flash")
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/mtd/spi-nor/spansion.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/usb/serial/usb-serial-simple.c | 66 +++++++++++++-------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index f40d4ede4093..8515f7e56715 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -4,6 +4,7 @@
-  * Copyright (C) 2014, Freescale Semiconductor, Inc.
-  */
+diff --git a/drivers/usb/serial/usb-serial-simple.c b/drivers/usb/serial/usb-serial-simple.c
+index 3c552e4b87ce..24b8772a345e 100644
+--- a/drivers/usb/serial/usb-serial-simple.c
++++ b/drivers/usb/serial/usb-serial-simple.c
+@@ -38,16 +38,6 @@ static struct usb_serial_driver vendor##_device = {		\
+ 	{ USB_DEVICE(0x0a21, 0x8001) }	/* MMT-7305WW */
+ DEVICE(carelink, CARELINK_IDS);
  
-+#include <linux/bitfield.h>
- #include <linux/device.h>
- #include <linux/mtd/spi-nor.h>
+-/* ZIO Motherboard USB driver */
+-#define ZIO_IDS()			\
+-	{ USB_DEVICE(0x1CBE, 0x0103) }
+-DEVICE(zio, ZIO_IDS);
+-
+-/* Funsoft Serial USB driver */
+-#define FUNSOFT_IDS()			\
+-	{ USB_DEVICE(0x1404, 0xcddc) }
+-DEVICE(funsoft, FUNSOFT_IDS);
+-
+ /* Infineon Flashloader driver */
+ #define FLASHLOADER_IDS()		\
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x058b, 0x0041, USB_CLASS_CDC_DATA) }, \
+@@ -55,6 +45,11 @@ DEVICE(funsoft, FUNSOFT_IDS);
+ 	{ USB_DEVICE(0x8087, 0x0801) }
+ DEVICE(flashloader, FLASHLOADER_IDS);
  
-@@ -28,6 +29,7 @@
- #define SPINOR_REG_CYPRESS_CFR2			0x3
- #define SPINOR_REG_CYPRESS_CFR2V					\
- 	(SPINOR_REG_CYPRESS_VREG + SPINOR_REG_CYPRESS_CFR2)
-+#define SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK	GENMASK(3, 0)
- #define SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24	0xb
- #define SPINOR_REG_CYPRESS_CFR2_ADRBYT		BIT(7)
- #define SPINOR_REG_CYPRESS_CFR3			0x4
-@@ -161,8 +163,18 @@ static int cypress_nor_octal_dtr_en(struct spi_nor *nor)
- 	int ret;
- 	u8 addr_mode_nbytes = nor->params->addr_mode_nbytes;
- 
-+	op = (struct spi_mem_op)
-+		CYPRESS_NOR_RD_ANY_REG_OP(addr_mode_nbytes,
-+					  SPINOR_REG_CYPRESS_CFR2V, 0, buf);
++/* Funsoft Serial USB driver */
++#define FUNSOFT_IDS()			\
++	{ USB_DEVICE(0x1404, 0xcddc) }
++DEVICE(funsoft, FUNSOFT_IDS);
 +
-+	ret = spi_nor_read_any_reg(nor, &op, nor->reg_proto);
-+	if (ret)
-+		return ret;
+ /* Google Serial USB SubClass */
+ #define GOOGLE_IDS()						\
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(0x18d1,			\
+@@ -63,6 +58,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
+ 					0x01) }
+ DEVICE(google, GOOGLE_IDS);
+ 
++/* HP4x (48/49) Generic Serial driver */
++#define HP4X_IDS()			\
++	{ USB_DEVICE(0x03f0, 0x0121) }
++DEVICE(hp4x, HP4X_IDS);
 +
- 	/* Use 24 dummy cycles for memory array reads. */
--	*buf = SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24;
-+	*buf &= ~SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK;
-+	*buf |= FIELD_PREP(SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK,
-+			   SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24);
- 	op = (struct spi_mem_op)
- 		CYPRESS_NOR_WR_ANY_REG_OP(addr_mode_nbytes,
- 					  SPINOR_REG_CYPRESS_CFR2V, 1, buf);
+ /* KAUFMANN RKS+CAN VCP */
+ #define KAUFMANN_IDS()			\
+ 	{ USB_DEVICE(0x16d0, 0x0870) }
+@@ -73,11 +73,6 @@ DEVICE(kaufmann, KAUFMANN_IDS);
+ 	{ USB_DEVICE(0x1209, 0x8b00) }
+ DEVICE(libtransistor, LIBTRANSISTOR_IDS);
+ 
+-/* ViVOpay USB Serial Driver */
+-#define VIVOPAY_IDS()			\
+-	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
+-DEVICE(vivopay, VIVOPAY_IDS);
+-
+ /* Motorola USB Phone driver */
+ #define MOTO_IDS()			\
+ 	{ USB_DEVICE(0x05c6, 0x3197) },	/* unknown Motorola phone */	\
+@@ -106,10 +101,10 @@ DEVICE(nokia, NOKIA_IDS);
+ 	{ USB_DEVICE(0x09d7, 0x0100) }	/* NovAtel FlexPack GPS */
+ DEVICE_N(novatel_gps, NOVATEL_IDS, 3);
+ 
+-/* HP4x (48/49) Generic Serial driver */
+-#define HP4X_IDS()			\
+-	{ USB_DEVICE(0x03f0, 0x0121) }
+-DEVICE(hp4x, HP4X_IDS);
++/* Siemens USB/MPI adapter */
++#define SIEMENS_IDS()			\
++	{ USB_DEVICE(0x908, 0x0004) }
++DEVICE(siemens_mpi, SIEMENS_IDS);
+ 
+ /* Suunto ANT+ USB Driver */
+ #define SUUNTO_IDS()			\
+@@ -117,47 +112,52 @@ DEVICE(hp4x, HP4X_IDS);
+ 	{ USB_DEVICE(0x0fcf, 0x1009) } /* Dynastream ANT USB-m Stick */
+ DEVICE(suunto, SUUNTO_IDS);
+ 
+-/* Siemens USB/MPI adapter */
+-#define SIEMENS_IDS()			\
+-	{ USB_DEVICE(0x908, 0x0004) }
+-DEVICE(siemens_mpi, SIEMENS_IDS);
++/* ViVOpay USB Serial Driver */
++#define VIVOPAY_IDS()			\
++	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
++DEVICE(vivopay, VIVOPAY_IDS);
++
++/* ZIO Motherboard USB driver */
++#define ZIO_IDS()			\
++	{ USB_DEVICE(0x1CBE, 0x0103) }
++DEVICE(zio, ZIO_IDS);
+ 
+ /* All of the above structures mushed into two lists */
+ static struct usb_serial_driver * const serial_drivers[] = {
+ 	&carelink_device,
+-	&zio_device,
+-	&funsoft_device,
+ 	&flashloader_device,
++	&funsoft_device,
+ 	&google_device,
++	&hp4x_device,
+ 	&kaufmann_device,
+ 	&libtransistor_device,
+-	&vivopay_device,
+ 	&moto_modem_device,
+ 	&motorola_tetra_device,
+ 	&nokia_device,
+ 	&novatel_gps_device,
+-	&hp4x_device,
+-	&suunto_device,
+ 	&siemens_mpi_device,
++	&suunto_device,
++	&vivopay_device,
++	&zio_device,
+ 	NULL
+ };
+ 
+ static const struct usb_device_id id_table[] = {
+ 	CARELINK_IDS(),
+-	ZIO_IDS(),
+-	FUNSOFT_IDS(),
+ 	FLASHLOADER_IDS(),
++	FUNSOFT_IDS(),
+ 	GOOGLE_IDS(),
++	HP4X_IDS(),
+ 	KAUFMANN_IDS(),
+ 	LIBTRANSISTOR_IDS(),
+-	VIVOPAY_IDS(),
+ 	MOTO_IDS(),
+ 	MOTOROLA_TETRA_IDS(),
+ 	NOKIA_IDS(),
+ 	NOVATEL_IDS(),
+-	HP4X_IDS(),
+-	SUUNTO_IDS(),
+ 	SIEMENS_IDS(),
++	SUUNTO_IDS(),
++	VIVOPAY_IDS(),
++	ZIO_IDS(),
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(usb, id_table);
 -- 
-2.34.1
+2.41.0
 
