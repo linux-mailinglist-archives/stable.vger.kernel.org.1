@@ -2,279 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF16575A408
-	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 03:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2248475A4D0
+	for <lists+stable@lfdr.de>; Thu, 20 Jul 2023 05:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229902AbjGTBe4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 19 Jul 2023 21:34:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46604 "EHLO
+        id S229521AbjGTDkE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 19 Jul 2023 23:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229766AbjGTBez (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 19 Jul 2023 21:34:55 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5081A2107
-        for <stable@vger.kernel.org>; Wed, 19 Jul 2023 18:34:54 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-57688a146ecso3359797b3.2
-        for <stable@vger.kernel.org>; Wed, 19 Jul 2023 18:34:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689816893; x=1690421693;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i/BV8QhI2Yg0HLi9NdTgzIisR0+G5gj8nV7Uz8iT+f4=;
-        b=7BpcQLW36ZH5fze5m2CW64qezajREg2orxdNtunJAFZNK9Soj3VSEd1Cy1Hj0bWzOU
-         lH8xkw9qf172dJ1u0mR/4h1zfYVblHRU87ZM6ysa5HHWfN22BVeyoXTTQpT/vNwOB3os
-         0sAsw0C4ZCJyMbtN9qvJxsNTXWgv44m7I721tokPL4Ja9OLcjgbjgPwkIv5r5hqZpSYD
-         Yxa6mofNKH3PDgcq21aSw6KZhI06Y+JE5/7vjc6nrMOwkzG5e0LK6eZlLnpJfJPUVokv
-         PF+eQZvlbyVbe77iFYs2JjMIs/Iy4nq/q2gm5MFvFGTNq10wqJDHKYltwkBalfGgD9wg
-         t6gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689816893; x=1690421693;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i/BV8QhI2Yg0HLi9NdTgzIisR0+G5gj8nV7Uz8iT+f4=;
-        b=ZZyXDmub2tzUy98geJq8dBRN/LABqh1njGfjVNCFNEheABzmjnYevo6wd8tdY2fVdp
-         Qs7JL9eA85fracXXkbt+xUiN/ZWNBazAVWTD+K30Y3fHHIvK717t036IThASypz7f+SC
-         DyDC2ynRt7yj/HEUqtJzz1mTavVwWwjgz9LgA8DfIT9raa+qgjqgUz8HzUwsf867G6Kb
-         aeMp5JoqC0aR7N745cXJXLeuc0YkzLYSMVJTkQF0M+kvNqW7vWn44j/njRmTwuyAteIE
-         bk8367CI1GGQtK/37qskCooQ8WhMFKYxFJU5bLuCMukoE3Rx7B7kAKz+RvzIhK6lzgTu
-         N0zg==
-X-Gm-Message-State: ABy/qLZQNDvrF+f+GrcjcUlUGPdzvWWIrrV03FE+9avY5gHulMTocV+K
-        WKdLtGvAwTQJK60rYQcTJXi0CZgUgTThBZbtUmCbtQ==
-X-Google-Smtp-Source: APBJJlFlK97JJPv1R+ptJjRZjdQ+0lWWDDmHsXoB1G/kVYpbWmwmp65vrqFWfnMSzidv3vR2GT5mIabA0FQ6WUPHl7Q=
-X-Received: by 2002:a81:4e8c:0:b0:57a:9384:4c13 with SMTP id
- c134-20020a814e8c000000b0057a93844c13mr4144906ywb.49.1689816893158; Wed, 19
- Jul 2023 18:34:53 -0700 (PDT)
+        with ESMTP id S229729AbjGTDkE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 19 Jul 2023 23:40:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32CC71FCB
+        for <stable@vger.kernel.org>; Wed, 19 Jul 2023 20:39:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689824362;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=QjgK16fbYrG++Mc/Bw8sGRPVXWqbu/k0n06yN1fOyrs=;
+        b=VnhQ8AaHQH5cdzVMvUXWeF+5KR2FrZ6Kts6cGxlz1TaeOoDJHCGGKPOSKH0UlNnFrFm6zs
+        BjNtqWUd+eIkx8RZ/mRz+3YRWW6kl96F1CNNvnCvr4KMEZErY9hZTuNqurd4Np+0xl1Ymn
+        ExjAKaZILtnQpWDg9FDiJMyXnEoVsFI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-250-3rW1bbwsMO608rpmOYPrkQ-1; Wed, 19 Jul 2023 23:39:18 -0400
+X-MC-Unique: 3rW1bbwsMO608rpmOYPrkQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 415C0101A528;
+        Thu, 20 Jul 2023 03:39:18 +0000 (UTC)
+Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (ovpn-12-173.pek2.redhat.com [10.72.12.173])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6FBCD40D2839;
+        Thu, 20 Jul 2023 03:39:11 +0000 (UTC)
+From:   xiubli@redhat.com
+To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
+Cc:     jlayton@kernel.org, vshankar@redhat.com, mchangir@redhat.com,
+        Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org
+Subject: [PATCH] ceph: disable sending metrics thoroughly when it's disabled
+Date:   Thu, 20 Jul 2023 11:38:00 +0800
+Message-Id: <20230720033800.110717-1-xiubli@redhat.com>
 MIME-Version: 1.0
-References: <20230718004942.113174-1-mike.kravetz@oracle.com> <20230718004942.113174-2-mike.kravetz@oracle.com>
-In-Reply-To: <20230718004942.113174-2-mike.kravetz@oracle.com>
-From:   Jiaqi Yan <jiaqiyan@google.com>
-Date:   Wed, 19 Jul 2023 18:34:40 -0700
-Message-ID: <CACw3F503YVxgX4AUDRKGg8CTOCGdZPw966xcgDuwWs2KYckb2g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] hugetlb: Do not clear hugetlb dtor until
- allocating vmemmap
-To:     Mike Kravetz <mike.kravetz@oracle.com>
-Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Naoya Horiguchi <naoya.horiguchi@linux.dev>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Miaohe Lin <linmiaohe@huawei.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        James Houghton <jthoughton@google.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jul 17, 2023 at 5:50=E2=80=AFPM Mike Kravetz <mike.kravetz@oracle.c=
-om> wrote:
->
-> Freeing a hugetlb page and releasing base pages back to the underlying
-> allocator such as buddy or cma is performed in two steps:
-> - remove_hugetlb_folio() is called to remove the folio from hugetlb
->   lists, get a ref on the page and remove hugetlb destructor.  This
->   all must be done under the hugetlb lock.  After this call, the page
->   can be treated as a normal compound page or a collection of base
->   size pages.
-> - update_and_free_hugetlb_folio() is called to allocate vmemmap if
->   needed and the free routine of the underlying allocator is called
->   on the resulting page.  We can not hold the hugetlb lock here.
->
-> One issue with this scheme is that a memory error could occur between
-> these two steps.  In this case, the memory error handling code treats
-> the old hugetlb page as a normal compound page or collection of base
-> pages.  It will then try to SetPageHWPoison(page) on the page with an
-> error.  If the page with error is a tail page without vmemmap, a write
-> error will occur when trying to set the flag.
->
-> Address this issue by modifying remove_hugetlb_folio() and
-> update_and_free_hugetlb_folio() such that the hugetlb destructor is not
-> cleared until after allocating vmemmap.  Since clearing the destructor
-> requires holding the hugetlb lock, the clearing is done in
-> remove_hugetlb_folio() if the vmemmap is present.  This saves a
-> lock/unlock cycle.  Otherwise, destructor is cleared in
-> update_and_free_hugetlb_folio() after allocating vmemmap.
->
-> Note that this will leave hugetlb pages in a state where they are marked
-> free (by hugetlb specific page flag) and have a ref count.  This is not
-> a normal state.  The only code that would notice is the memory error
-> code, and it is set up to retry in such a case.
->
-> A subsequent patch will create a routine to do bulk processing of
-> vmemmap allocation.  This will eliminate a lock/unlock cycle for each
-> hugetlb page in the case where we are freeing a large number of pages.
->
-> Fixes: ad2fa3717b74 ("mm: hugetlb: alloc the vmemmap pages associated wit=
-h each HugeTLB page")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-> ---
->  mm/hugetlb.c | 90 ++++++++++++++++++++++++++++++++++++++--------------
->  1 file changed, 66 insertions(+), 24 deletions(-)
->
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 64a3239b6407..4a910121a647 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1579,9 +1579,37 @@ static inline void destroy_compound_gigantic_folio=
-(struct folio *folio,
->                                                 unsigned int order) { }
->  #endif
->
-> +static inline void __clear_hugetlb_destructor(struct hstate *h,
-> +                                               struct folio *folio)
-> +{
-> +       lockdep_assert_held(&hugetlb_lock);
-> +
-> +       /*
-> +        * Very subtle
-> +        *
-> +        * For non-gigantic pages set the destructor to the normal compou=
-nd
-> +        * page dtor.  This is needed in case someone takes an additional
-> +        * temporary ref to the page, and freeing is delayed until they d=
-rop
-> +        * their reference.
-> +        *
-> +        * For gigantic pages set the destructor to the null dtor.  This
-> +        * destructor will never be called.  Before freeing the gigantic
-> +        * page destroy_compound_gigantic_folio will turn the folio into =
-a
-> +        * simple group of pages.  After this the destructor does not
-> +        * apply.
-> +        *
-> +        */
-> +       if (hstate_is_gigantic(h))
-> +               folio_set_compound_dtor(folio, NULL_COMPOUND_DTOR);
-> +       else
-> +               folio_set_compound_dtor(folio, COMPOUND_PAGE_DTOR);
-> +}
-> +
->  /*
-> - * Remove hugetlb folio from lists, and update dtor so that the folio ap=
-pears
-> - * as just a compound page.
-> + * Remove hugetlb folio from lists.
-> + * If vmemmap exists for the folio, update dtor so that the folio appear=
-s
-> + * as just a compound page.  Otherwise, wait until after allocating vmem=
-map
-> + * to update dtor.
->   *
->   * A reference is held on the folio, except in the case of demote.
->   *
-> @@ -1612,31 +1640,19 @@ static void __remove_hugetlb_folio(struct hstate =
-*h, struct folio *folio,
->         }
->
->         /*
-> -        * Very subtle
-> -        *
-> -        * For non-gigantic pages set the destructor to the normal compou=
-nd
-> -        * page dtor.  This is needed in case someone takes an additional
-> -        * temporary ref to the page, and freeing is delayed until they d=
-rop
-> -        * their reference.
-> -        *
-> -        * For gigantic pages set the destructor to the null dtor.  This
-> -        * destructor will never be called.  Before freeing the gigantic
-> -        * page destroy_compound_gigantic_folio will turn the folio into =
-a
-> -        * simple group of pages.  After this the destructor does not
-> -        * apply.
-> -        *
-> -        * This handles the case where more than one ref is held when and
-> -        * after update_and_free_hugetlb_folio is called.
-> -        *
-> -        * In the case of demote we do not ref count the page as it will =
-soon
-> -        * be turned into a page of smaller size.
-> +        * We can only clear the hugetlb destructor after allocating vmem=
-map
-> +        * pages.  Otherwise, someone (memory error handling) may try to =
-write
-> +        * to tail struct pages.
-> +        */
-> +       if (!folio_test_hugetlb_vmemmap_optimized(folio))
-> +               __clear_hugetlb_destructor(h, folio);
-> +
-> +        /*
-> +         * In the case of demote we do not ref count the page as it will=
- soon
-> +         * be turned into a page of smaller size.
->          */
->         if (!demote)
->                 folio_ref_unfreeze(folio, 1);
-> -       if (hstate_is_gigantic(h))
-> -               folio_set_compound_dtor(folio, NULL_COMPOUND_DTOR);
-> -       else
-> -               folio_set_compound_dtor(folio, COMPOUND_PAGE_DTOR);
->
->         h->nr_huge_pages--;
->         h->nr_huge_pages_node[nid]--;
-> @@ -1728,6 +1744,19 @@ static void __update_and_free_hugetlb_folio(struct=
- hstate *h,
->                 return;
->         }
->
-> +       /*
-> +        * If needed, clear hugetlb destructor under the hugetlb lock.
-> +        * This must be done AFTER allocating vmemmap pages in case there=
- is an
-> +        * attempt to write to tail struct pages as in memory poison.
-> +        * It must be done BEFORE PageHWPoison handling so that any subse=
-quent
-> +        * memory errors poison individual pages instead of head.
-> +        */
-> +       if (folio_test_hugetlb(folio)) {
+From: Xiubo Li <xiubli@redhat.com>
 
-Thanks Mike, this definitely fixed the issue in v1, :)
+Even the 'disable_send_metrics' is true so when the session is
+being opened it will always trigger to send the metric for the
+first time.
 
-> +               spin_lock_irq(&hugetlb_lock);
-> +               __clear_hugetlb_destructor(h, folio);
-> +               spin_unlock_irq(&hugetlb_lock);
-> +       }
-> +
->         /*
->          * Move PageHWPoison flag from head page to the raw error pages,
->          * which makes any healthy subpages reusable.
-> @@ -3604,6 +3633,19 @@ static int demote_free_hugetlb_folio(struct hstate=
- *h, struct folio *folio)
->                 return rc;
->         }
->
-> +       /*
-> +        * The hugetlb destructor could still be set for this folio if vm=
-emmap
-> +        * was actually allocated above.  The ref count on all pages is 0=
-.
-> +        * Therefore, nobody should attempt access.  However, before dest=
-roying
-> +        * compound page below, clear the destructor. Unfortunately, this
-> +        * requires a lock/unlock cycle.
-> +        */
-> +       if (folio_test_hugetlb(folio)) {
-> +               spin_lock_irq(&hugetlb_lock);
-> +               __clear_hugetlb_destructor(h, folio);
-> +               spin_unlock_irq(&hugetlb_lock);
-> +       }
-> +
->         /*
->          * Use destroy_compound_hugetlb_folio_for_demote for all huge pag=
-e
->          * sizes as it will not ref count folios.
-> --
-> 2.41.0
->
+Cc: stable@vger.kernel.org
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+---
+ fs/ceph/metric.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/ceph/metric.c b/fs/ceph/metric.c
+index cce78d769f55..6d3584f16f9a 100644
+--- a/fs/ceph/metric.c
++++ b/fs/ceph/metric.c
+@@ -216,7 +216,7 @@ static void metric_delayed_work(struct work_struct *work)
+ 	struct ceph_mds_client *mdsc =
+ 		container_of(m, struct ceph_mds_client, metric);
+ 
+-	if (mdsc->stopping)
++	if (mdsc->stopping || disable_send_metrics)
+ 		return;
+ 
+ 	if (!m->session || !check_session_state(m->session)) {
+-- 
+2.40.1
+
