@@ -2,129 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 549E475D199
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 20:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1746975D499
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:22:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229848AbjGUSun (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 14:50:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44948 "EHLO
+        id S232114AbjGUTW6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:22:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229907AbjGUSum (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 14:50:42 -0400
+        with ESMTP id S232180AbjGUTW5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:22:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4527F30CF
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 11:50:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A88E189
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:22:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D626B61D7F
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 18:50:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48C6C433C7;
-        Fri, 21 Jul 2023 18:50:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF45061D94
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:22:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE02EC433C7;
+        Fri, 21 Jul 2023 19:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689965440;
-        bh=bAhStFhzlqoxQsyZRbak5m/yVq038vBGexsGtZpeKG4=;
+        s=korg; t=1689967375;
+        bh=lx0sYJ6p8HimMD0ZHfKMauYEW5ljtaNrXSpa2sHPqTA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M7lvAylHsXe6SymkNPlMUXE5s7KvZZb663P8Xt9Ugsd/Jg4mGSQks8/kMeDr5A4Bb
-         2NkS7pDHN9KZTEHE/RicKxV4mDWQ8O8QgyBXkScLkdtF/9b72utScRSl7/VxL9halL
-         05nA1FtKjv/xHrzaz1oJpy+HKSzIR/USwkCYfRVE=
+        b=BGpuXMOC9HljDeODUqPGkVVjcUFJoXI19z0UGnJthCDHABrSLfBDMfld3ABbYQWNV
+         fG63jWmNhT8wRGzOy/YVVypD0hnXfFVWeANDOAq3AvXEokavMVcdf9ZJjMqmBEaugs
+         Xm3MnrnDWR2uj08nJFpSsKzS/nVuEvOayNddbkEg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.4 256/292] fprobe: Release rethook after the ftrace_ops is unregistered
+        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        Mukesh Ojha <quic_mojha@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 112/223] soc: qcom: mdt_loader: Fix unconditional call to scm_pas_mem_setup
 Date:   Fri, 21 Jul 2023 18:06:05 +0200
-Message-ID: <20230721160539.939199525@linuxfoundation.org>
+Message-ID: <20230721160525.642549055@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160528.800311148@linuxfoundation.org>
-References: <20230721160528.800311148@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-commit 5f81018753dfd4989e33ece1f0cb6b8aae498b82 upstream.
+commit bcb889891371c3cf767f2b9e8768cfe2fdd3810f upstream.
 
-While running bpf selftests it's possible to get following fault:
+Commit ebeb20a9cd3f ("soc: qcom: mdt_loader: Always invoke PAS
+mem_setup") dropped the relocate check and made pas_mem_setup run
+unconditionally. The code was later moved with commit f4e526ff7e38
+("soc: qcom: mdt_loader: Extract PAS operations") to
+qcom_mdt_pas_init() effectively losing track of what was actually
+done.
 
-  general protection fault, probably for non-canonical address \
-  0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC NOPTI
-  ...
-  Call Trace:
-   <TASK>
-   fprobe_handler+0xc1/0x270
-   ? __pfx_bpf_testmod_init+0x10/0x10
-   ? __pfx_bpf_testmod_init+0x10/0x10
-   ? bpf_fentry_test1+0x5/0x10
-   ? bpf_fentry_test1+0x5/0x10
-   ? bpf_testmod_init+0x22/0x80
-   ? do_one_initcall+0x63/0x2e0
-   ? rcu_is_watching+0xd/0x40
-   ? kmalloc_trace+0xaf/0xc0
-   ? do_init_module+0x60/0x250
-   ? __do_sys_finit_module+0xac/0x120
-   ? do_syscall_64+0x37/0x90
-   ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
-   </TASK>
+The assumption that PAS mem_setup can be done anytime was effectively
+wrong, with no good reason and this caused regression on some SoC
+that use remoteproc to bringup ath11k. One example is IPQ8074 SoC that
+effectively broke resulting in remoteproc silently die and ath11k not
+working.
 
-In unregister_fprobe function we can't release fp->rethook while it's
-possible there are some of its users still running on another cpu.
+On this SoC FW relocate is not enabled and PAS mem_setup was correctly
+skipped in previous kernel version resulting in correct bringup and
+function of remoteproc and ath11k.
 
-Moving rethook_free call after fp->ops is unregistered with
-unregister_ftrace_function call.
+To fix the regression, reintroduce the relocate check in
+qcom_mdt_pas_init() and correctly skip PAS mem_setup where relocate is
+not enabled.
 
-Link: https://lore.kernel.org/all/20230615115236.3476617-1-jolsa@kernel.org/
-
-Fixes: 5b0ab78998e3 ("fprobe: Add exit_handler support")
+Fixes: ebeb20a9cd3f ("soc: qcom: mdt_loader: Always invoke PAS mem_setup")
+Tested-by: Robert Marko <robimarko@gmail.com>
+Co-developed-by: Robert Marko <robimarko@gmail.com>
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230526115511.3328-1-ansuelsmth@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/fprobe.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/soc/qcom/mdt_loader.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -366,19 +366,13 @@ int unregister_fprobe(struct fprobe *fp)
- 		    fp->ops.saved_func != fprobe_kprobe_handler))
- 		return -EINVAL;
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -210,6 +210,7 @@ int qcom_mdt_pas_init(struct device *dev
+ 	const struct elf32_hdr *ehdr;
+ 	phys_addr_t min_addr = PHYS_ADDR_MAX;
+ 	phys_addr_t max_addr = 0;
++	bool relocate = false;
+ 	size_t metadata_len;
+ 	void *metadata;
+ 	int ret;
+@@ -224,6 +225,9 @@ int qcom_mdt_pas_init(struct device *dev
+ 		if (!mdt_phdr_valid(phdr))
+ 			continue;
  
--	/*
--	 * rethook_free() starts disabling the rethook, but the rethook handlers
--	 * may be running on other processors at this point. To make sure that all
--	 * current running handlers are finished, call unregister_ftrace_function()
--	 * after this.
--	 */
--	if (fp->rethook)
--		rethook_free(fp->rethook);
--
- 	ret = unregister_ftrace_function(&fp->ops);
- 	if (ret < 0)
- 		return ret;
- 
-+	if (fp->rethook)
-+		rethook_free(fp->rethook);
++		if (phdr->p_flags & QCOM_MDT_RELOCATABLE)
++			relocate = true;
 +
- 	ftrace_free_filter(&fp->ops);
+ 		if (phdr->p_paddr < min_addr)
+ 			min_addr = phdr->p_paddr;
  
- 	return ret;
+@@ -246,11 +250,13 @@ int qcom_mdt_pas_init(struct device *dev
+ 		goto out;
+ 	}
+ 
+-	ret = qcom_scm_pas_mem_setup(pas_id, mem_phys, max_addr - min_addr);
+-	if (ret) {
+-		/* Unable to set up relocation */
+-		dev_err(dev, "error %d setting up firmware %s\n", ret, fw_name);
+-		goto out;
++	if (relocate) {
++		ret = qcom_scm_pas_mem_setup(pas_id, mem_phys, max_addr - min_addr);
++		if (ret) {
++			/* Unable to set up relocation */
++			dev_err(dev, "error %d setting up firmware %s\n", ret, fw_name);
++			goto out;
++		}
+ 	}
+ 
+ out:
 
 
