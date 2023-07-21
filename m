@@ -2,30 +2,30 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F4E175BC3B
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 04:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8FB075BC3D
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 04:23:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbjGUCWs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 20 Jul 2023 22:22:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36310 "EHLO
+        id S229528AbjGUCXS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 20 Jul 2023 22:23:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjGUCWr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 22:22:47 -0400
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B624E62
-        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 19:22:46 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R571e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0VnsWkqm_1689906162;
-Received: from e18g06460.et15sqa.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0VnsWkqm_1689906162)
+        with ESMTP id S229476AbjGUCXR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 20 Jul 2023 22:23:17 -0400
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC11110E
+        for <stable@vger.kernel.org>; Thu, 20 Jul 2023 19:23:16 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0VnsT88R_1689906193;
+Received: from e18g06460.et15sqa.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0VnsT88R_1689906193)
           by smtp.aliyun-inc.com;
-          Fri, 21 Jul 2023 10:22:43 +0800
+          Fri, 21 Jul 2023 10:23:13 +0800
 From:   Gao Xiang <hsiangkao@linux.alibaba.com>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-erofs@lists.ozlabs.org,
         Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH stable 5.10.y] erofs: fix compact 4B support for 16k block size
-Date:   Fri, 21 Jul 2023 10:22:41 +0800
-Message-Id: <20230721022241.23362-1-hsiangkao@linux.alibaba.com>
+Subject: [PATCH stable 5.4.y] erofs: fix compact 4B support for 16k block size
+Date:   Fri, 21 Jul 2023 10:23:10 +0800
+Message-Id: <20230721022310.24038-1-hsiangkao@linux.alibaba.com>
 X-Mailer: git-send-email 2.24.4
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -71,7 +71,7 @@ resolve a trivial conflict.
  1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index f18194fd8d77..a5537a9f8f36 100644
+index b5ee58fdd82f..6553f58fb289 100644
 --- a/fs/erofs/zmap.c
 +++ b/fs/erofs/zmap.c
 @@ -215,7 +215,7 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
