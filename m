@@ -2,161 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DC7D75D35D
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62B2A75D441
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 21:19:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231814AbjGUTJu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 15:09:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33356 "EHLO
+        id S232096AbjGUTT3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 15:19:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231817AbjGUTJs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:09:48 -0400
+        with ESMTP id S232114AbjGUTTV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 15:19:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D3130E8
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:09:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96D5B3A87
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 12:19:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36F8561D95
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:09:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46308C433C8;
-        Fri, 21 Jul 2023 19:09:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77A0461D6D
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 19:19:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A081C433C8;
+        Fri, 21 Jul 2023 19:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689966584;
-        bh=WzGV3XMmNHknqp3yEaKwhcYUn4VctfG6/sKfRBk6HxY=;
+        s=korg; t=1689967158;
+        bh=4BKUYAv7ZlhAJgfaFLvS+ogdT2MKJSJZOmI57hMWrOo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XiMUrMq1voDq/dm4zFsBaIfAlTmJF2DppB6rZXXGmJ6+I6CT0RFzL0xq4pwMR/nHG
-         EQwGKOZhS/T7kfFeEL0unrgcicJS0c36XbrnythRmr6EwZJEYCPTSdHP2Fd1/QiOkS
-         W1bQhx4GjEimji+A4Lf3PjbHAZCLM/1ASjXStuBg=
+        b=ZtvY+6HzMm7jyvMMHB1zDsJDzZ3iKxtLY5pPej5rSs5uhK3t54M+iFkTN3XbLZY1k
+         wClco254JM3z2tJPpLnXY4Ox2TK/6tq0AQCxkJbfWaUgjUZPSHNrENME0D1UkzVRlW
+         7VwZTrwR0KdjPaJAEntkFFo031DyZGpWBBJLMsCY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Boyd <swboyd@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
+        patches@lists.linux.dev, Ankit Kumar <ankit.kumar@samsung.com>,
+        Kanchan Joshi <joshi.k@samsung.com>,
+        Keith Busch <kbusch@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 396/532] drm/bridge: ti-sn65dsi86: Fix auxiliary bus lifetime
+Subject: [PATCH 6.1 047/223] nvme: fix the NVME_ID_NS_NVM_STS_MASK definition
 Date:   Fri, 21 Jul 2023 18:05:00 +0200
-Message-ID: <20230721160635.951395479@linuxfoundation.org>
+Message-ID: <20230721160522.861993084@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
-References: <20230721160614.695323302@linuxfoundation.org>
+In-Reply-To: <20230721160520.865493356@linuxfoundation.org>
+References: <20230721160520.865493356@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Ankit Kumar <ankit.kumar@samsung.com>
 
-[ Upstream commit 7aa83fbd712a6f08ffa67890061f26d140c2a84f ]
+[ Upstream commit b938e6603660652dc3db66d3c915fbfed3bce21d ]
 
-Memory for the "struct device" for any given device isn't supposed to
-be released until the device's release() is called. This is important
-because someone might be holding a kobject reference to the "struct
-device" and might try to access one of its members even after any
-other cleanup/uninitialization has happened.
+As per NVMe command set specification 1.0c Storage tag size is 7 bits.
 
-Code analysis of ti-sn65dsi86 shows that this isn't quite right. When
-the code was written, it was believed that we could rely on the fact
-that the child devices would all be freed before the parent devices
-and thus we didn't need to worry about a release() function. While I
-still believe that the parent's "struct device" is guaranteed to
-outlive the child's "struct device" (because the child holds a kobject
-reference to the parent), the parent's "devm" allocated memory is a
-different story. That appears to be freed much earlier.
-
-Let's make this better for ti-sn65dsi86 by allocating each auxiliary
-with kzalloc and then free that memory in the release().
-
-Fixes: bf73537f411b ("drm/bridge: ti-sn65dsi86: Break GPIO and MIPI-to-eDP bridge into sub-drivers")
-Suggested-by: Stephen Boyd <swboyd@chromium.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613065812.v2.1.I24b838a5b4151fb32bccd6f36397998ea2df9fbb@changeid
+Fixes: 4020aad85c67 ("nvme: add support for enhanced metadata")
+Signed-off-by: Ankit Kumar <ankit.kumar@samsung.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c | 33 +++++++++++++++++----------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+ include/linux/nvme.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index bbedce0eeddae..22c2ff5272c60 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -147,9 +147,9 @@
-  *                each other's read-modify-write.
-  */
- struct ti_sn65dsi86 {
--	struct auxiliary_device		bridge_aux;
--	struct auxiliary_device		gpio_aux;
--	struct auxiliary_device		aux_aux;
-+	struct auxiliary_device		*bridge_aux;
-+	struct auxiliary_device		*gpio_aux;
-+	struct auxiliary_device		*aux_aux;
+diff --git a/include/linux/nvme.h b/include/linux/nvme.h
+index d9fbc5afeaf72..e6fb36b71b59d 100644
+--- a/include/linux/nvme.h
++++ b/include/linux/nvme.h
+@@ -473,7 +473,7 @@ struct nvme_id_ns_nvm {
+ };
  
- 	struct device			*dev;
- 	struct regmap			*regmap;
-@@ -412,27 +412,34 @@ static void ti_sn65dsi86_delete_aux(void *data)
- 	auxiliary_device_delete(data);
- }
- 
--/*
-- * AUX bus docs say that a non-NULL release is mandatory, but it makes no
-- * sense for the model used here where all of the aux devices are allocated
-- * in the single shared structure. We'll use this noop as a workaround.
-- */
--static void ti_sn65dsi86_noop(struct device *dev) {}
-+static void ti_sn65dsi86_aux_device_release(struct device *dev)
-+{
-+	struct auxiliary_device *aux = container_of(dev, struct auxiliary_device, dev);
-+
-+	kfree(aux);
-+}
- 
- static int ti_sn65dsi86_add_aux_device(struct ti_sn65dsi86 *pdata,
--				       struct auxiliary_device *aux,
-+				       struct auxiliary_device **aux_out,
- 				       const char *name)
- {
- 	struct device *dev = pdata->dev;
-+	struct auxiliary_device *aux;
- 	int ret;
- 
-+	aux = kzalloc(sizeof(*aux), GFP_KERNEL);
-+	if (!aux)
-+		return -ENOMEM;
-+
- 	aux->name = name;
- 	aux->dev.parent = dev;
--	aux->dev.release = ti_sn65dsi86_noop;
-+	aux->dev.release = ti_sn65dsi86_aux_device_release;
- 	device_set_of_node_from_dev(&aux->dev, dev);
- 	ret = auxiliary_device_init(aux);
--	if (ret)
-+	if (ret) {
-+		kfree(aux);
- 		return ret;
-+	}
- 	ret = devm_add_action_or_reset(dev, ti_sn65dsi86_uninit_aux, aux);
- 	if (ret)
- 		return ret;
-@@ -441,6 +448,8 @@ static int ti_sn65dsi86_add_aux_device(struct ti_sn65dsi86 *pdata,
- 	if (ret)
- 		return ret;
- 	ret = devm_add_action_or_reset(dev, ti_sn65dsi86_delete_aux, aux);
-+	if (!ret)
-+		*aux_out = aux;
- 
- 	return ret;
- }
+ enum {
+-	NVME_ID_NS_NVM_STS_MASK		= 0x3f,
++	NVME_ID_NS_NVM_STS_MASK		= 0x7f,
+ 	NVME_ID_NS_NVM_GUARD_SHIFT	= 7,
+ 	NVME_ID_NS_NVM_GUARD_MASK	= 0x3,
+ };
 -- 
 2.39.2
 
