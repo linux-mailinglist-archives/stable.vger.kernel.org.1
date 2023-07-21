@@ -2,87 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7693C75C694
-	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 910F475C697
+	for <lists+stable@lfdr.de>; Fri, 21 Jul 2023 14:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231375AbjGUMJ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 21 Jul 2023 08:09:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33872 "EHLO
+        id S231386AbjGUMJd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 21 Jul 2023 08:09:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230475AbjGUMJZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:09:25 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7875E19B3
-        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:09:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689941361; x=1721477361;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SwrcA9sTJRVaDzGBUug5hrRnJ4Kkdw2wtJDmFY8ttGA=;
-  b=bLG/5hiYRzk92Md9B7T08l9ZVL8LgJTvOgyin6dvngxS1lAY5bNGLPI8
-   k5YsND207E0ad9U79dOG0Jhv7DyZ606BriyiNkRjySrQZoZTwDHukjkLl
-   0/HYZhQSXM6rhVGkI9QqVc6bWnn3nBDW8Y+z21Dyij36Ym+BcphAcx8OQ
-   0/NQiU9e7meu+9P8hpWzS56zarh1NRlf5DOE9Yscaw2JgtsCuoU6cjoJO
-   0p32HKAc/XRjVZ28ugKBwr5NAa68QQGEQ1CjEUZeE+ARlukl5HuwpqSFw
-   CMhA1rHcZRFX2Cs5LMpOCv2gDWdZydti+FnP+9e1nPxZIOOGmVXljWGMA
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="433238524"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="433238524"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 05:09:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="814924617"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="814924617"
-Received: from hbockhor-mobl.ger.corp.intel.com (HELO intel.com) ([10.252.54.104])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 05:09:16 -0700
-Date:   Fri, 21 Jul 2023 14:09:13 +0200
-From:   Andi Shyti <andi.shyti@linux.intel.com>
-To:     "Krzysztofik, Janusz" <janusz.krzysztofik@intel.com>
-Cc:     "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
-        "Roper, Matthew D" <matthew.d.roper@intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        "Das, Nirmoy" <nirmoy.das@intel.com>,
-        "Hajda, Andrzej" <andrzej.hajda@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        linux-stable <stable@vger.kernel.org>,
-        dri-evel <dri-devel@lists.freedesktop.org>
-Subject: Re: [v7,5/9] drm/i915/gt: Enable the CCS_FLUSH bit in the pipe
- control
-Message-ID: <ZLp1aa2lbM3abmBG@ashyti-mobl2.lan>
-References: <20230720210737.761400-6-andi.shyti@linux.intel.com>
- <4155037.1IzOArtZ34@jkrzyszt-mobl2.ger.corp.intel.com>
+        with ESMTP id S229835AbjGUMJc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 21 Jul 2023 08:09:32 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 009001701
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:09:31 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-666e6ecb52dso1250122b3a.2
+        for <stable@vger.kernel.org>; Fri, 21 Jul 2023 05:09:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1689941371; x=1690546171;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=bmp/j6+np98/sp/Cc1Em7RWFxbZAki8bB6/7dGscILY=;
+        b=uvSJ9RiPZ//qN/6pU3rqBtohnSu4PNGfW8a6wUTGqGcd9EGqWAmtUOBj2fwKk7yQ/i
+         ycpwjAWchERAQgaG8oHmoriveq30bcaTcoMEf5TKJLyBpgQD2grr9jFKo6Nq2JEw7yNJ
+         5mId11oDkLdE+4/ph4zFOsB0Qbr+89lGOC+TpFgSBXiofn2oljTJov2pVEfb4NiGEoTo
+         sC0vxPmp9HjPxHNI5SZRRy64S8LnOxrU3uPItSBc9T+nEDZIEcoDZARPSissVE00B6+x
+         NiM6XNuLIjXCGCz+F89qpYkOSUQ/8aX1P4RkHKhxvIGUMg9L4zIXHUHsWLcvTz8Qj9bw
+         kISQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689941371; x=1690546171;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bmp/j6+np98/sp/Cc1Em7RWFxbZAki8bB6/7dGscILY=;
+        b=RKHwGVJX2rHJ33NUJ5IBqfq+S+GJHaY6HJrLc/48fSDMWKbRvMT9H0bEiN43UZ3qqs
+         r8GBFnlaDyErKJNt2MA82tab04aBBfiiJ7yslDuKmuzSTUAqaPBrFg52NDc8uxYTxk8c
+         Nij4MgdeuCh680neLhBx62/GVRGc5gH8Z5nNL6aPgpqoFFhRDG+TxmjP8zwZ2LzrFoh6
+         VIveuRlQQanMUUtUAnK8dieoA1FOp+7vQxcfMVFHfXEGD85W+8E7vUNRvQUjg7Jq3kpa
+         p2ufq/MMw+oR+dS9p5P8IO6HrFMsL5m96Y2If8eQ+DuAyv3hUNYAsbFIUqRlXRMvGxjf
+         eIVg==
+X-Gm-Message-State: ABy/qLZpA5ADAUuOuBXO/318QXvQ+RlX/1ZtJ2vkDHHzEmnhA1FIwv2S
+        P9BCVg3AtNIyA7OK90f9A9RZgg+ZnSy8o+VMvq68iA==
+X-Google-Smtp-Source: APBJJlFdDOpjl2v1dcRpC97UK+dmbDQ/Lnl83ZCejtUqOhLhVaRyk+FIb/jZAXNWDBAcVkij8IhyjA==
+X-Received: by 2002:a05:6a20:394a:b0:133:2fb2:9170 with SMTP id r10-20020a056a20394a00b001332fb29170mr1734647pzg.2.1689941370998;
+        Fri, 21 Jul 2023 05:09:30 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id x42-20020a056a000bea00b006815fbe3240sm2983923pfu.11.2023.07.21.05.09.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jul 2023 05:09:30 -0700 (PDT)
+Message-ID: <64ba757a.050a0220.99d02.577b@mx.google.com>
+Date:   Fri, 21 Jul 2023 05:09:30 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4155037.1IzOArtZ34@jkrzyszt-mobl2.ger.corp.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.4.y
+X-Kernelci-Kernel: v5.4.249-239-g7cc6d2448300
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-5.4.y build: 5 builds: 0 failed, 5 passed,
+ 4 warnings (v5.4.249-239-g7cc6d2448300)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Janusz,
+stable-rc/linux-5.4.y build: 5 builds: 0 failed, 5 passed, 4 warnings (v5.4=
+.249-239-g7cc6d2448300)
 
-> > Enable the CCS_FLUSH bit 13 in the control pipe for render and
-> > compute engines in platforms starting from Meteor Lake (BSPEC
-> > 43904 and 47112).
-> > 
-> > Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
-> 
-> I'm not sure why you think that your change fixes that commit.  Can you please 
-> explain?
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
+/kernel/v5.4.249-239-g7cc6d2448300/
 
-Hardware folks have provided a new sequence for performing the
-quiescing of the engines... that's how it is :)
+Tree: stable-rc
+Branch: linux-5.4.y
+Git Describe: v5.4.249-239-g7cc6d2448300
+Git Commit: 7cc6d24483006221e3d5f3a9353738ef5bab2d56
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 4 unique architectures
 
-Thanks,
-Andi
+Warnings Detected:
+
+arc:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+
+Warnings summary:
+
+    2    ld: warning: creating DT_TEXTREL in a PIE
+    2    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
